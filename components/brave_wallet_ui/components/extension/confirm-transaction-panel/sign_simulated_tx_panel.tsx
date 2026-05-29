@@ -38,14 +38,13 @@ import {
 } from './common/pending_tx_actions_footer'
 
 // Styled Components
-import { Column, ErrorText, Row } from '../../shared/style'
+import { Column, ErrorText, Row, Text } from '../../shared/style'
 import {
   LearnMoreButton,
   TabRow,
   WarningBox,
   WarningIcon,
   WarningText,
-  WarningTitle,
 } from '../shared-panel-styles'
 import {
   SignPanelButtonRow,
@@ -172,11 +171,19 @@ export const SignSimulatedTransactionPanel = ({
             <WarningBox warningType='danger'>
               <WarningTitleRow>
                 <WarningIcon />
-                <WarningTitle warningType='danger'>
+                <Text
+                  textColor='error'
+                  variant='small.semibold'
+                >
                   {getLocale('braveWalletSignWarningTitle')}
-                </WarningTitle>
+                </Text>
               </WarningTitleRow>
-              <WarningText>{getLocale('braveWalletSignWarning')}</WarningText>
+              <WarningText
+                textColor='error'
+                variant='small.regular'
+              >
+                {getLocale('braveWalletSignWarning')}
+              </WarningText>
               <LearnMoreButton onClick={onClickLearnMore}>
                 {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
               </LearnMoreButton>

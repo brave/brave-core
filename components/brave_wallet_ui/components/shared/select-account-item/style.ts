@@ -5,7 +5,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton } from '../style'
+// Shared Styles
+import { Text, WalletButton } from '../style'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 
 interface StyleProps {
@@ -39,23 +40,18 @@ export const AccountAndAddress = styled.div`
   flex-direction: column;
 `
 
-export const AccountName = styled.span<{
+export const AccountName = styled(Text)<{
   isV2?: boolean
 }>`
-  font-family: Poppins;
   font-size: ${(p) => (p.isV2 ? '14px' : '13px')};
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
-  font-weight: 600;
-  color: ${leo.color.text.primary};
 `
 
-export const AccountAddress = styled.span<{
+export const AccountAddress = styled(Text)<{
   isV2?: boolean
 }>`
-  font-family: Poppins;
   font-size: ${(p) => (p.isV2 ? '11px' : '12px')};
   line-height: ${(p) => (p.isV2 ? '16px' : '18px')};
-  color: ${leo.color.text.secondary};
 `
 
 export const AccountCircle = styled.div<StyleProps>`

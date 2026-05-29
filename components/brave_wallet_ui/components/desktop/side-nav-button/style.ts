@@ -4,6 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
+// Shared Styles
+import { Text } from '../../shared/style'
+
 interface StyleProps {
   isSelected: boolean
   icon: string
@@ -25,11 +28,7 @@ export const StyledButton = styled.button<Partial<StyleProps>>`
   border: none;
 `
 
-export const ButtonText = styled.span<Partial<StyleProps>>`
-  font-family: Poppins;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+export const ButtonText = styled(Text)<Partial<StyleProps>>`
   color: ${(p) =>
     p.isSelected ? p.theme.palette.white : p.theme.color.text02};
 `

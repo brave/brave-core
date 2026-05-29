@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 import styled from 'styled-components'
 
 // Shared Styles
-import { Row, Column } from '../../shared/style'
+import { Row, Column, Text } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -103,25 +103,11 @@ export const PermissionsContainer = styled(Column)`
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
 `
 
-export const SectionLabel = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
-  color: ${leo.color.text.primary};
+export const SectionLabel = styled(Text)`
   margin-bottom: 8px;
 `
 
-export const SectionPoint = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
-  color: ${leo.color.text.primary};
+export const SectionPoint = styled(Text)`
   max-width: 90%;
   white-space: pre-line;
 `
@@ -152,12 +138,7 @@ export const BulletIcon = styled(Icon)<{ status: 'success' | 'error' }>`
       : leo.color.systemfeedback.errorIcon};
 `
 
-export const AddAccountText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 24px;
+export const AddAccountText = styled(Text)`
   color: ${leo.color.text.interactive};
 `
 
@@ -196,6 +177,8 @@ export const NavButton = styled(Button)`
 `
 
 export const DurationLabel = styled.div`
+  font: ${leo.font.default.regular};
+
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -204,11 +187,6 @@ export const DurationLabel = styled.div`
   background-color: ${leo.color.container.highlight};
   outline: none;
   border-radius: 8px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
   padding: 10px 8px 10px 16px;
   margin-bottom: 8px;
   color: ${leo.color.text.primary};

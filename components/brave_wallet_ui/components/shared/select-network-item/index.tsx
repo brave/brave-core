@@ -12,7 +12,8 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { CreateNetworkIcon } from '../create-network-icon/index'
 
 // Styled Components
-import { StyledWrapper, NetworkName, LeftSide, BigCheckMark } from './style'
+import { StyledWrapper, LeftSide, BigCheckMark } from './style'
+import { Text } from '../style'
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo | null
@@ -41,7 +42,15 @@ export function SelectNetworkItem(props: Props) {
             marginRight={14}
           />
         )}
-        <NetworkName>{network.chainName}</NetworkName>
+        <Text
+          data-testid='network-name'
+          textColor='primary'
+          isBold={true}
+          variant='components.tableheader'
+          textAlign='left'
+        >
+          {network.chainName}
+        </Text>
       </LeftSide>
       {selectedNetwork?.chainId === network.chainId
         && selectedNetwork?.coin === network.coin && <BigCheckMark />}

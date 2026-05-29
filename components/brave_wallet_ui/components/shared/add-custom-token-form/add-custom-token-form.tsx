@@ -420,7 +420,11 @@ export const AddCustomTokenForm = (props: Props) => {
         >
           <DividerRow>
             <AdvancedButton onClick={onToggleShowAdvancedFields}>
-              <DividerText>
+              <DividerText
+                textColor='tertiary'
+                variant='default.semibold'
+                isBold={true}
+              >
                 {getLocale('braveWalletWatchListAdvanced')}
               </DividerText>
             </AdvancedButton>
@@ -453,11 +457,21 @@ export const AddCustomTokenForm = (props: Props) => {
         </Column>
 
         {hasError && (
-          <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
+          <ErrorText
+            textColor='error'
+            textAlign='left'
+            variant='small.regular'
+          >
+            {getLocale('braveWalletWatchListError')}
+          </ErrorText>
         )}
 
         {tokenAlreadyExists && !selectedAsset && (
-          <ErrorText>
+          <ErrorText
+            textColor='error'
+            textAlign='left'
+            variant='small.regular'
+          >
             {getLocale('braveWalletCustomTokenExistsError')}
           </ErrorText>
         )}

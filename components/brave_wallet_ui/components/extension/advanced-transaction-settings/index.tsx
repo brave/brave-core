@@ -63,7 +63,12 @@ export const AdvancedTransactionSettings = (props: Props) => {
     >
       <StyledWrapper>
         <FormColumn>
-          <InputLabel>{getLocale('braveWalletEditNonce')}</InputLabel>
+          <InputLabel
+            textColor='secondary'
+            variant='default.regular'
+          >
+            {getLocale('braveWalletEditNonce')}
+          </InputLabel>
           <Input
             placeholder={getLocale(
               'braveWalletAdvancedTransactionSettingsPlaceholder',
@@ -72,7 +77,10 @@ export const AdvancedTransactionSettings = (props: Props) => {
             value={customNonce}
             onChange={handleNonceInputChanged}
           />
-          <InfoText>
+          <InfoText
+            textColor='tertiary'
+            variant='small.regular'
+          >
             {getLocale('braveWalletEditGasZeroGasPriceWarning')}
           </InfoText>
         </FormColumn>

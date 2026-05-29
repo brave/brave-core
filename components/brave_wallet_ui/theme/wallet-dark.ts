@@ -7,10 +7,16 @@ import ITheme from 'brave-ui/theme/theme-interface'
 import IThemeWallet from './wallet-theme'
 import defaultDarkTheme from 'brave-ui/theme/brave-dark'
 import colors from 'brave-ui/theme/colors'
+import { walletFontFamily } from '../utils/font.utils'
 
 const walletDarkTheme: ITheme & IThemeWallet = {
   ...defaultDarkTheme,
   name: 'Wallet Dark',
+  fontFamily: {
+    heading: walletFontFamily,
+    body: walletFontFamily,
+    system: walletFontFamily,
+  },
   color: {
     ...defaultDarkTheme.color,
     text: colors.white,

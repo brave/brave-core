@@ -54,15 +54,9 @@ export const DisclaimerWrapper = styled.div`
   margin-bottom: 10px;
 `
 
-export const DisclaimerText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
+export const DisclaimerText = styled(Text)`
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
   text-transform: none;
-  font-weight: 400;
   width: 100%;
 `
 
@@ -77,11 +71,6 @@ export const InfoIcon = styled.div`
 
 export const ImportButton = styled(LeoButton)`
   flex-grow: 0;
-`
-
-export const ErrorText = styled.span`
-  font: ${leo.font.default.regular};
-  color: ${leo.color.systemfeedback.errorText};
 `
 
 export const CreateAccountWrapper = styled(Column)`

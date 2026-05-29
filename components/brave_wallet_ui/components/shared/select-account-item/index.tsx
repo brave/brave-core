@@ -122,7 +122,11 @@ export function SelectAccountItem({
             isAddress={!showSwitchAccountsLink}
           >
             <Row justifyContent={'flex-start'}>
-              <AccountName>
+              <AccountName
+                isV2={isV2}
+                textColor='primary'
+                isBold={true}
+              >
                 {reduceAccountDisplayName(accountName, 22)}
               </AccountName>
               {showSwitchAccountsLink && !isV2 && (
@@ -138,7 +142,11 @@ export function SelectAccountItem({
               text={accountAddress}
               isAddress
             >
-              <AccountAddress>
+              <AccountAddress
+                isV2={isV2}
+                textColor='secondary'
+                isBold={false}
+              >
                 {fullAddress ? accountAddress : reduceAddress(accountAddress)}
               </AccountAddress>
             </PossibleToolTip>

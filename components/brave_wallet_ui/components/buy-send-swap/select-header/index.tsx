@@ -5,14 +5,8 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  Header,
-  HeaderText,
-  Button,
-  BackIcon,
-  HeaderSpacing,
-  PlusIcon,
-} from './style'
+import { Header, Button, BackIcon, HeaderSpacing, PlusIcon } from './style'
+import { Text } from '../../shared/style'
 
 export interface Props {
   title: string
@@ -32,7 +26,12 @@ function SelectHeader(props: Props) {
       ) : (
         <HeaderSpacing />
       )}
-      <HeaderText>{title}</HeaderText>
+      <Text
+        textColor='primary'
+        variant='default.semibold'
+      >
+        {title}
+      </Text>
       {hasAddButton ? (
         <Button onClick={onClickAdd}>
           <PlusIcon />

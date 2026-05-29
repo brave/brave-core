@@ -10,21 +10,13 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import { ScrollableColumn as ScrollableCol } from '../../../../components/shared/style'
 
 export const GroupingText = styled.h3`
+  font: ${leo.font.small.semibold};
   color: ${leo.color.text.tertiary};
-  font-family: 'Inter', 'Poppins';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
 `
 
 export const SelectAllText = styled.a`
+  font: ${leo.font.small.semibold};
   color: ${leo.color.text.interactive};
-  font-family: 'Poppins';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 20px;
   letter-spacing: 0.36px;
   cursor: pointer;
 `

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
 
@@ -16,11 +17,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const TokenSymbol = styled.h6`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 16px;
-  line-height: 1.4;
-  font-weight: 400;
+  font: ${leo.font.large.regular};
   margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
@@ -30,11 +27,7 @@ export const TokenSymbol = styled.h6`
 `
 
 export const Instructions = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 16px;
-  line-height: 1.4;
-  font-weight: 400;
+  font: ${leo.font.large.regular};
   margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
@@ -51,16 +44,14 @@ export const ButtonRow = styled.div`
 `
 
 export const OkButton = styled(WalletButton)`
+  font: ${leo.font.default.regular};
+
   background: ${(p) => p.theme.palette.blurple500};
   border: 1px solid ${(p) => p.theme.palette.blurple500};
   height: 40px;
   width: 125px;
   margin-top: 70px;
   border-radius: 100px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
   display: flex;
   align-self: center;
   justify-content: center;
@@ -70,16 +61,14 @@ export const OkButton = styled(WalletButton)`
 `
 
 export const CancelButton = styled(WalletButton)`
+  font: ${leo.font.default.regular};
+
   background: none;
   border: 1px solid ${(p) => p.theme.palette.blurple500};
   height: 40px;
   width: 125px;
   margin-top: 70px;
   border-radius: 100px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
   display: flex;
   align-self: center;
   justify-content: center;

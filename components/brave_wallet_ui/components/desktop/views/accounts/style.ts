@@ -37,14 +37,6 @@ export const TransactionsWrapper = styled(Column)`
   }
 `
 
-export const SectionTitle = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${leo.color.text.secondary};
-`
-
 export const EmptyStateWrapper = styled(Column)`
   padding: 32px;
   @media screen and (max-width: ${layoutPanelWidth}px) {

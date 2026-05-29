@@ -21,7 +21,6 @@ export const Text = styled.span<{
   --error: ${leo.color.red[40]};
   --success: ${leo.color.green[30]};
   --warning: ${leo.color.yellow[30]};
-  font-family: 'Poppins';
   color: ${(p) =>
     p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
@@ -41,15 +40,13 @@ export const Text = styled.span<{
 `
 
 export const StyledDiv = styled.div`
+  font: ${leo.font.large.regular};
+
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-family: 'Poppins';
   color: ${(p) => p.theme.color.text01};
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 20px;
   letter-spacing: 0.02em;
 `
 
@@ -171,15 +168,13 @@ export const Loader = styled(StyledDiv)`
 `
 
 export const StyledButton = styled.button`
+  font: ${leo.font.large.regular};
+
   display: flex;
-  font-family: 'Poppins';
   cursor: pointer;
   border: none;
   outline: none;
   background: none;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
   letter-spacing: 0.02em;
   flex-direction: row;
   align-items: center;
@@ -212,10 +207,7 @@ export const ShownResponsiveRow = styled(Row)<{ maxWidth?: number }>`
 `
 
 export const StyledInput = styled.input`
-  font-family: 'Poppins';
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
   outline: none;
   background-image: none;
   box-shadow: none;
@@ -243,11 +235,7 @@ export const StyledInput = styled.input`
 `
 
 export const StyledLabel = styled.label`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
+  font: ${leo.font.default.regular};
   color: ${(p) => p.theme.color.text01};
 `
 

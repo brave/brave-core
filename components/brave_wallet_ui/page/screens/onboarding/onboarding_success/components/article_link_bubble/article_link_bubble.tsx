@@ -37,7 +37,12 @@ export const ArticleLinkBubble: React.FC<ArticleLinkBubbleProps> = ({
       <BubbleIconBackground backgroundColor={iconBackgroundColor}>
         <BubbleIcon icon={icon} />
       </BubbleIconBackground>
-      <BubbleText>{text}</BubbleText>
+      <BubbleText
+        textColor='primary'
+        isBold={true}
+      >
+        {text}
+      </BubbleText>
     </Bubble>
   )
 }

@@ -68,7 +68,7 @@ std::string PolygonNetwork() {
 }
 
 std::string NetworkNameSpan() {
-  return "[class|='NetworkName']";
+  return "[data-testid='network-name']";
 }
 
 std::string NeonEVMNetworkHideButton() {

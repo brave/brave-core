@@ -120,6 +120,7 @@ export const PercentChangeIcon = styled(Icon)<{
 `
 
 export const DisabledLabel = styled.div`
+  font: ${leo.font.xSmall.semibold};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,9 +128,8 @@ export const DisabledLabel = styled.div`
   background-color: ${leo.color.green[20]};
   color: ${leo.color.green[50]};
   font-size: 10px;
-  font-weight: 700;
+  line-height: 10px;
   text-transform: uppercase;
-  font-family: 'Poppins';
   padding: 4px 6px;
   border-radius: 4px;
 `

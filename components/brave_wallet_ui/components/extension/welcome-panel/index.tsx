@@ -32,8 +32,16 @@ export const WelcomePanel = () => {
 
       <VerticalSpace space='16px' />
 
-      <Title>{getLocale('braveWalletPanelTitle')}</Title>
-      <Description>
+      <Title
+        textColor='primary'
+        variant='heading.h3'
+      >
+        {getLocale('braveWalletPanelTitle')}
+      </Title>
+      <Description
+        textColor='secondary'
+        variant='default.regular'
+      >
         {getLocale('braveWalletWelcomePanelDescription')}
       </Description>
 

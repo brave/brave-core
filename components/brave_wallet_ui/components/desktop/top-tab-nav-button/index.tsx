@@ -21,7 +21,12 @@ export class TopTabNavButton extends React.PureComponent<Props, {}> {
         isSelected={isSelected}
         onClick={onSubmit}
       >
-        <ButtonText isSelected={isSelected}>{text}</ButtonText>
+        <ButtonText
+          isSelected={isSelected}
+          isBold={true}
+        >
+          {text}
+        </ButtonText>
         <TabLine isSelected={isSelected} />
       </StyledButton>
     )

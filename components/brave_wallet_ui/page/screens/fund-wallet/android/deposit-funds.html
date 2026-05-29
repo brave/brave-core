@@ -12,12 +12,16 @@
     <title>Brave Deposit Funds</title>
 
     <link rel="stylesheet" href="chrome://resources/brave/css/nala.css">
-    <link rel="stylesheet" href="chrome://resources/brave/fonts/poppins.css">
-    <link rel="stylesheet" href="chrome://resources/brave/fonts/inter.css">
     <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
     <script src="/strings.js"></script>
     <script src="/brave_wallet_deposit_page.bundle.js"></script>
     <style>
+      html,
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+      }
+
       html {
         /* Prevent layout shift when a vertical scrollbar is added  */
         overflow-y: auto;

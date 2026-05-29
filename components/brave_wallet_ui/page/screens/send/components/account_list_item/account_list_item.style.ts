@@ -43,17 +43,14 @@ export const AddressText = styled(Text)`
 `
 
 export const DisabledLabel = styled.div`
+  font: ${leo.font.xSmall.semibold};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
   background-color: ${leo.color.green[20]};
   color: ${leo.color.green[50]};
-  font-size: 10px;
-  font-weight: 700;
   text-transform: uppercase;
-  font-family: 'Poppins';
-  line-height: 12px;
   padding: 4px 6px;
   border-radius: 4px;
 `

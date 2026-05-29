@@ -12,19 +12,16 @@ import { WalletButton } from '../../../../components/shared/style'
 export const Button = styled(WalletButton)<{
   isSelected: boolean
 }>`
+  font: ${leo.font.default.semibold};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   cursor: pointer;
-  font-family: 'Poppins';
   outline: none;
   border: none;
   background-color: none;
   background: none;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 22px;
   padding: 10px 0px 0px 0px;
   color: ${(p) =>
     p.isSelected ? leo.color.text.interactive : leo.color.text.secondary};

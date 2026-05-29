@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import { SortOrder } from '../../../constants/types'
 import styled from 'styled-components'
 
@@ -31,8 +32,7 @@ export const StyledNoContent = styled('div')<{}>`
   text-align: center;
   padding: 30px 0;
   color: ${(p) => p.theme.color.text03};
-  font-size: 14px;
-  font-family: Poppins;
+  font: ${leo.font.default.regular};
 `
 
 export const StyledTable = styled('table')`
@@ -50,10 +50,7 @@ export const StyledTHead = styled('thead')``
 
 export const StyledTH = styled('th')<Partial<StyleProps>>`
   text-align: left;
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 18px;
+  font: ${leo.font.small.semibold};
   letter-spacing: 0.01em;
   border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
   color: ${(p) =>
@@ -81,13 +78,8 @@ export const StyledTR = styled('tr')`
 export const StyledTD = styled('td')`
   vertical-align: middle;
   letter-spacing: 0.01em;
-  font-family: Poppins;
-  font-size: 14px;
-  font-weight: 400;
+  font: ${leo.font.default.regular};
   color: ${(p) => p.theme.color.text01};
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
   padding: 0 0 16px 10px;
   pointer-events: auto;
 

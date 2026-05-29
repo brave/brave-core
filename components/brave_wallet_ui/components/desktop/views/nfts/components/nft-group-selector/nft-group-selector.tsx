@@ -45,9 +45,11 @@ export const NftDropdown = ({ selectedOptionId, options, onSelect }: Props) => {
   return (
     <DropdownContainer>
       <DropdownButton onClick={() => setIsOpen((open) => !open)}>
-        <DropdownButtonText>{selectedOption.label}</DropdownButtonText>
+        <DropdownButtonText variant='default.semibold'>
+          {selectedOption.label}
+        </DropdownButtonText>
         {selectedOption.labelSummary !== 0 ? (
-          <DropdownButtonLabel>
+          <DropdownButtonLabel variant='xSmall.semibold'>
             {selectedOption.labelSummary}
           </DropdownButtonLabel>
         ) : null}

@@ -7,7 +7,8 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import ProgressRing from '@brave/leo/react/progressRing'
 
-import { WalletButton, Row } from '../style'
+// Shared Styles
+import { Text, WalletButton, Row } from '../style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { layoutPanelWidth } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
@@ -47,13 +48,8 @@ export const ButtonRow = styled(Row)`
   }
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+export const ErrorText = styled(Text)`
   margin-bottom: 10px;
-  text-align: left;
 `
 
 export const DividerRow = styled.div`
@@ -71,14 +67,8 @@ export const SubDivider = styled.div`
   background-color: ${(p) => p.theme.color.divider01};
 `
 
-export const DividerText = styled.span`
-  font-family: Poppins;
-  font-size: 15px;
-  line-height: 20px;
-  letter-spacing: 0.04em;
-  font-weight: 600;
+export const DividerText = styled(Text)`
   margin-bottom: 10px;
-  color: ${(p) => p.theme.color.text03};
 `
 export const FormWrapper = styled.div`
   display: flex;

@@ -65,7 +65,12 @@ export const AccountsHeader = ({ hiddenAccounts }: Props) => {
       padding='24px 0px'
       justifyContent='space-between'
     >
-      <HeaderTitle>{getLocale('braveWalletTopNavAccounts')}</HeaderTitle>
+      <HeaderTitle
+        textColor='primary'
+        variant='heading.h1'
+      >
+        {getLocale('braveWalletTopNavAccounts')}
+      </HeaderTitle>
       <MenuWrapper ref={portfolioOverviewMenuRef}>
         <MenuButton
           onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}

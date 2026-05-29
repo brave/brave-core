@@ -44,15 +44,13 @@ import {
   NavButton,
   DurationLabel,
 } from './connect-with-site-panel.style'
-import {
-  ConnectPanelButton,
-  AccountNameText,
-} from './select-account-item/select-account-item.style'
+import { ConnectPanelButton } from './select-account-item/select-account-item.style'
 import {
   Row,
   HorizontalSpace,
   VerticalSpace,
   VerticalDivider,
+  Text,
 } from '../../shared/style'
 
 // Utils
@@ -196,7 +194,7 @@ export const ConnectWithSite = (props: Props) => {
                     <IconCircle>
                       <AddAcountIcon name='plus-add' />
                     </IconCircle>
-                    <AddAccountText>
+                    <AddAccountText variant='default.semibold'>
                       {getLocale('braveWalletAddAccount')}
                     </AddAccountText>
                   </Row>
@@ -207,9 +205,12 @@ export const ConnectWithSite = (props: Props) => {
                 padding='8px 0px'
                 justifyContent='flex-start'
               >
-                <AccountNameText>
+                <Text
+                  variant='default.semibold'
+                  textColor='primary'
+                >
                   {getLocale('braveWalletConnectWithSite')}
-                </AccountNameText>
+                </Text>
               </Row>
               {accountsToConnect.map((account) => (
                 <SelectAccountItem
@@ -241,7 +242,11 @@ export const ConnectWithSite = (props: Props) => {
               alignItems='flex-start'
               padding='8px 16px 16px 16px'
             >
-              <SectionLabel>
+              <SectionLabel
+                textColor='primary'
+                variant='small.semibold'
+                textAlign='left'
+              >
                 {getLocale('braveWalletPermissionDuration')}
               </SectionLabel>
               {isPrivateWindow ? (
@@ -256,7 +261,11 @@ export const ConnectWithSite = (props: Props) => {
               )}
               <VerticalDivider />
               <VerticalSpace space='8px' />
-              <SectionLabel>
+              <SectionLabel
+                textColor='primary'
+                variant='small.semibold'
+                textAlign='left'
+              >
                 {getLocale('braveWalletConnectPermittedLabel')}
               </SectionLabel>
               {DAppPermittedOptions.map(
@@ -278,11 +287,21 @@ export const ConnectWithSite = (props: Props) => {
                         name='check-normal'
                       />
                     </BulletContainer>
-                    <SectionPoint>{getLocale(option.name)}</SectionPoint>
+                    <SectionPoint
+                      textColor='primary'
+                      variant='small.regular'
+                      textAlign='left'
+                    >
+                      {getLocale(option.name)}
+                    </SectionPoint>
                   </Row>
                 ),
               )}
-              <SectionLabel>
+              <SectionLabel
+                textColor='primary'
+                variant='small.semibold'
+                textAlign='left'
+              >
                 {getLocale('braveWalletConnectNotPermittedLabel')}
               </SectionLabel>
               {DAppNotPermittedOptions.map(
@@ -304,7 +323,13 @@ export const ConnectWithSite = (props: Props) => {
                         name='close'
                       />
                     </BulletContainer>
-                    <SectionPoint>{getLocale(option.name)}</SectionPoint>
+                    <SectionPoint
+                      textColor='primary'
+                      variant='small.regular'
+                      textAlign='left'
+                    >
+                      {getLocale(option.name)}
+                    </SectionPoint>
                   </Row>
                 ),
               )}

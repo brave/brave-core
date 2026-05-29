@@ -569,7 +569,10 @@ export const AccountSettingsModal = () => {
             </Input>
 
             {updateError && (
-              <ErrorText>
+              <ErrorText
+                textColor='error'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletAccountSettingsUpdateError')}
               </ErrorText>
             )}

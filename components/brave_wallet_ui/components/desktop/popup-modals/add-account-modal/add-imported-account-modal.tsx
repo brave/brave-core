@@ -53,7 +53,6 @@ import {
   CreateAccountWrapper,
   CreateAccountContent,
   FileNameText,
-  ErrorText,
   ImportButton,
   Input,
   NetworkIcon,
@@ -61,7 +60,7 @@ import {
   NetworkDescription,
   JsonFileLabel,
 } from './style'
-import { Column, Row } from '../../../shared/style'
+import { Text, Column, Row } from '../../../shared/style'
 interface Params {
   accountTypeName: string
 }
@@ -450,9 +449,12 @@ export const ImportAccountModal = () => {
             )}
 
             {hasImportError && (
-              <ErrorText>
+              <Text
+                textColor='error'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletImportAccountError')}
-              </ErrorText>
+              </Text>
             )}
 
             {!isPolkadotImport && importOption === 'key' ? (

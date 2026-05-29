@@ -39,7 +39,13 @@ export const CoinStats = (props: Props) => {
 
   return (
     <StyledWrapper>
-      <DividerText>{getLocale('braveWalletInformation')}</DividerText>
+      <DividerText
+        textColor='tertiary'
+        variant='default.semibold'
+        textAlign='left'
+      >
+        {getLocale('braveWalletInformation')}
+      </DividerText>
       <SubDivider />
       <Row>
         <StatWrapper>

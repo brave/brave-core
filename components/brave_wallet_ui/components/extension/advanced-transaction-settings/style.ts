@@ -2,7 +2,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
+
+// Shared Styles
+import { Text } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -23,16 +27,13 @@ export const FormColumn = styled.div`
   align-self: center;
 `
 
-export const InputLabel = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  color: ${(p) => p.theme.color.text02};
+export const InputLabel = styled(Text)`
   margin-bottom: 6px;
 `
 
 export const Input = styled.input`
+  font: ${leo.font.default.regular};
+
   box-sizing: border-box;
   outline: none;
   width: 100%;
@@ -41,21 +42,13 @@ export const Input = styled.input`
   box-shadow: none;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
     letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
   }
   :focus {
     outline: none;
@@ -80,11 +73,7 @@ export const ButtonRow = styled.div`
   gap: 8px;
 `
 
-export const InfoText = styled.span`
-  font-family: Poppins;
-  letter-spacing: 0.01em;
-  font-size: 12px;
-  color: ${(p) => p.theme.color.text03};
+export const InfoText = styled(Text)`
   word-break: break-word;
   margin-bottom: 12px;
 `

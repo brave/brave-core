@@ -167,7 +167,8 @@ export const SOLTransfer = ({
           justifyContent='flex-start'
         >
           <StateChangeText
-            color={isReceive ? color.systemfeedback.successIcon : undefined}
+            textColor={isReceive ? 'success' : 'secondary'}
+            variant='small.regular'
           >
             <strong>
               {isReceive ? ' + ' : ' - '}
@@ -297,7 +298,8 @@ export const SPLTokenTransfer = ({
           justifyContent='flex-start'
         >
           <StateChangeText
-            color={isReceive ? color.systemfeedback.successIcon : undefined}
+            textColor={isReceive ? 'success' : 'secondary'}
+            variant='small.regular'
           >
             <strong>
               {isReceive ? ' + ' : ' - '}
@@ -353,7 +355,10 @@ export const SPLTokenApproval = ({
         alignItems='center'
         justifyContent='flex-start'
       >
-        <StateChangeText>
+        <StateChangeText
+          textColor='secondary'
+          variant='small.regular'
+        >
           <strong>{isNft ? approval.asset.name : afterAmount}</strong>
         </StateChangeText>
       </Row>
@@ -401,7 +406,10 @@ const AddressChange = ({
       justifyContent='flex-start'
       padding={'8px 0px'}
     >
-      <StateChangeText>
+      <StateChangeText
+        textColor='secondary'
+        variant='small.regular'
+      >
         <strong>
           {reduceAddress(fromAddress)}
           <InlineViewOnBlockExplorerIconButton
@@ -458,7 +466,12 @@ export const SolStakingAuthChange = ({
             alignItems='center'
             justifyContent='flex-start'
           >
-            <StateChangeText>{getLocale('braveWalletStaker')}</StateChangeText>
+            <StateChangeText
+              textColor='secondary'
+              variant='small.regular'
+            >
+              {getLocale('braveWalletStaker')}
+            </StateChangeText>
           </Row>
           <AddressChange
             fromAddress={authChange.currentAuthorities.staker}
@@ -477,7 +490,10 @@ export const SolStakingAuthChange = ({
             alignItems='center'
             justifyContent='flex-start'
           >
-            <StateChangeText>
+            <StateChangeText
+              textColor='secondary'
+              variant='small.regular'
+            >
               {getLocale('braveWalletWithdrawer')}
             </StateChangeText>
           </Row>
@@ -510,7 +526,12 @@ export const SolAccountOwnershipChange = ({
         alignItems='center'
         justifyContent='flex-start'
       >
-        <StateChangeText>{getLocale('braveWalletOwner')}</StateChangeText>
+        <StateChangeText
+          textColor='secondary'
+          variant='small.regular'
+        >
+          {getLocale('braveWalletOwner')}
+        </StateChangeText>
       </Row>
       <AddressChange
         fromAddress={ownerChange.currentOwner}

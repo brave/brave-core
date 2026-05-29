@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 
+// Shared Styles
+import { Text } from '../../../../../../components/shared/style'
+
 // icons
 import GridIcon from '../../../../../../assets/svg-icons/grid-icon.svg'
 import IpfsIcon from '../../../../../../assets/svg-icons/ipfs-icon.svg'
@@ -82,12 +85,8 @@ export const Bubble = styled.a`
   border-radius: 8px;
 `
 
-export const BubbleText = styled.span`
+export const BubbleText = styled(Text)`
   height: 20px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
   line-height: 20px;
   display: flex;
   align-items: center;

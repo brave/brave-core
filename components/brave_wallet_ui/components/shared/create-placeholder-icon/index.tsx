@@ -169,7 +169,10 @@ export function withPlaceholderIcon<
           marginLeft={marginLeft ?? 0}
           marginRight={marginRight ?? 0}
         >
-          <PlaceholderText size={size}>
+          <PlaceholderText
+            size={size}
+            isBold={true}
+          >
             {asset?.symbol.charAt(0) || '?'}
           </PlaceholderText>
         </IconWrapper>

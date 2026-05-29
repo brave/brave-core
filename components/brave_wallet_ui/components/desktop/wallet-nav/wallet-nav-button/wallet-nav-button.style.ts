@@ -64,9 +64,7 @@ export const ButtonIcon = styled(Icon)`
 
 export const ButtonText = styled(Text)`
   color: var(--text-color);
-  font-family: 'Poppins';
   font-style: normal;
-  font-weight: 600;
   font-size: 15px;
   line-height: 20px;
   @media screen and (max-width: ${layoutSmallWidth}px) {

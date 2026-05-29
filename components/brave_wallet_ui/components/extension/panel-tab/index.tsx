@@ -20,7 +20,12 @@ export const PanelTab = (props: Props) => {
       isSelected={isSelected}
       onClick={onSubmit}
     >
-      <ButtonText isSelected={isSelected}>{text}</ButtonText>
+      <ButtonText
+        isSelected={isSelected}
+        variant='small.semibold'
+      >
+        {text}
+      </ButtonText>
       <TabLine isSelected={isSelected} />
     </StyledButton>
   )

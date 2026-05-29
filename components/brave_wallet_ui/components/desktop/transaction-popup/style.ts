@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+
+// Shared Styles
 import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
@@ -36,15 +38,6 @@ export const PopupButton = styled(WalletButton)`
   &:hover {
     background-color: ${(p) => p.theme.color.divider01};
   }
-`
-
-export const PopupButtonText = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
 `
 
 export const ClickAwayContainer = styled.div`

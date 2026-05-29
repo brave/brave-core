@@ -1,10 +1,13 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
+import { Text } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -27,18 +30,15 @@ export const FormColumn = styled.div`
   align-self: center;
 `
 
-export const InputLabel = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  color: ${(p) => p.theme.color.text02};
+export const InputLabel = styled(Text)`
   margin-bottom: 6px;
 `
 
 export const Input = styled.input<{
   hasError?: boolean
 }>`
+  font: ${leo.font.default.regular};
+
   box-sizing: border-box;
   outline: none;
   width: 100%;
@@ -52,21 +52,13 @@ export const Input = styled.input<{
       ? leo.color.systemfeedback.errorIcon
       : p.theme.color.interactive08};
   border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
     letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
   }
   :focus {
     outline: none;
@@ -91,21 +83,12 @@ export const ButtonRow = styled.div`
   gap: 8px;
 `
 
-export const Description = styled.span`
+export const Description = styled(Text)`
   width: 100%;
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: flex-start;
-  color: ${(p) => p.theme.color.text02};
 `
 
-export const CurrentBaseText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+export const CurrentBaseText = styled(Text)`
   margin-bottom: 10px;
 `
 
@@ -117,14 +100,6 @@ export const CurrentBaseRow = styled.div`
   width: 100%;
   border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
   margin-bottom: 12px;
-`
-
-export const MaximumFeeText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.01em;
 `
 
 export const MaximumFeeRow = styled.div`
@@ -143,13 +118,7 @@ export const SliderWrapper = styled.div`
   width: 100%;
 `
 
-export const SliderValue = styled.span`
-  font-family: Poppins;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.01em;
+export const SliderValue = styled(Text)`
   margin-top: 6px;
   margin-bottom: 16px;
 `
@@ -216,19 +185,7 @@ export const SliderLabelRow = styled.div`
   width: 100%;
 `
 
-export const SliderLabel = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
-  letter-spacing: 0.01em;
-`
-
-export const WarningText = styled.span`
-  font-family: Poppins;
-  letter-spacing: 0.01em;
-  font-size: 12px;
-  color: ${(p) => p.theme.color.errorText};
+export const WarningText = styled(Text)`
   word-break: break-word;
   margin-bottom: 12px;
 `

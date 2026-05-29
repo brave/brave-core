@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 // assets
@@ -42,14 +43,11 @@ export const CardButton = styled(WalletLink)`
 `
 
 export const CardButtonTextContainer = styled.div`
+  font: ${leo.font.small.regular};
+
   max-width: 70%;
 
   & > p {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
     letter-spacing: 0.02em;
     color: ${(p) => p.theme.color.text03};
     text-align: left;
@@ -57,10 +55,7 @@ export const CardButtonTextContainer = styled.div`
   }
 
   & > p:first-of-type {
-    font-weight: 500;
-    font-size: 14px;
     color: ${(p) => p.theme.color.text01};
-    line-height: 26px;
   }
 `
 

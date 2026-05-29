@@ -48,45 +48,20 @@ export const AddressAndOrb = styled.div`
   flex-direction: row;
 `
 
-export const AddressText = styled.span`
+export const AddressText = styled(Text)`
   cursor: default;
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
   margin-right: 12px;
 `
 
-export const NetworkText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
-`
-
-export const PanelTitle = styled.span`
-  font-family: Poppins;
-  font-size: 15px;
-  line-height: 20px;
-  letter-spacing: 0.04em;
+export const PanelTitle = styled(Text)`
   text-align: center;
   width: 90%;
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 600;
   margin-bottom: 6px;
 `
 
-export const Description = styled.span`
+export const Description = styled(Text)`
   width: 90%;
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
 `
 
@@ -99,25 +74,8 @@ export const TabRow = styled.div`
   margin-bottom: 10px;
 `
 
-export const DetailTextDarkBold = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
-`
-
-export const URLText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 10px;
-  line-height: 16px;
-  text-align: center;
-  letter-spacing: 0.01em;
+export const URLText = styled(Text)`
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text02};
   max-width: 80%;
   word-break: break-word;
 `
@@ -139,18 +97,6 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
   overflow-y: auto;
 `
 
-export const WarningTitle = styled.span<Partial<StyleProps>>`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: ${(p) =>
-    p.warningType === 'danger'
-      ? p.theme.color.errorText
-      : p.theme.color.text01};
-`
-
 export const WarningBoxTitleRow = styled.div`
   display: flex;
   align-items: flex-start;
@@ -159,13 +105,8 @@ export const WarningBoxTitleRow = styled.div`
   flex-wrap: wrap;
 `
 
-export const WarningText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
+export const WarningText = styled(Text)`
   text-align: left;
-  color: ${(p) => p.theme.color.errorText};
 `
 
 export const WarningBoxIcon = styled.div<{
@@ -185,10 +126,7 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LearnMoreButton = styled(WalletButton)`
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${leo.font.small.regular};
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   background: none;

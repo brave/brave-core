@@ -44,10 +44,8 @@ import {
   CurrentBaseRow,
   CurrentBaseText,
   MaximumFeeRow,
-  MaximumFeeText,
   GasSlider,
   SliderLabelRow,
-  SliderLabel,
   SliderWrapper,
   SliderValue,
   WarningText,
@@ -281,7 +279,12 @@ export const EditGas = ({
   const gasLimitComponent = React.useMemo(
     () => (
       <>
-        <InputLabel>{getLocale('braveWalletEditGasLimit')}</InputLabel>
+        <InputLabel
+          textColor='secondary'
+          variant='default.regular'
+        >
+          {getLocale('braveWalletEditGasLimit')}
+        </InputLabel>
         <Input
           placeholder='0'
           type='text'
@@ -375,17 +378,26 @@ export const EditGas = ({
     >
       <StyledWrapper>
         {isEIP1559Transaction && (
-          <Description>
+          <Description
+            textColor='secondary'
+            variant='small.regular'
+          >
             {getLocale('braveWalletEditGasDescription')}
           </Description>
         )}
         {showCustomMaxPriorityPanel && (
           <FormColumn>
             <CurrentBaseRow>
-              <CurrentBaseText>
+              <CurrentBaseText
+                textColor='primary'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletEditGasBaseFee')}
               </CurrentBaseText>
-              <CurrentBaseText>
+              <CurrentBaseText
+                textColor='primary'
+                variant='small.regular'
+              >
                 {`${new Amount(baseFeePerGas).divideByDecimals(9).format()}
                   ${getLocale('braveWalletEditGasGwei')}`}
               </CurrentBaseText>
@@ -393,7 +405,10 @@ export const EditGas = ({
 
             {gasLimitComponent}
 
-            <InputLabel>
+            <InputLabel
+              textColor='secondary'
+              variant='default.regular'
+            >
               {getLocale('braveWalletEditGasPerTipLimit')}
             </InputLabel>
             <Input
@@ -406,7 +421,10 @@ export const EditGas = ({
             />
 
             {/* Gas-Per-Price Limit */}
-            <InputLabel>
+            <InputLabel
+              textColor='secondary'
+              variant='default.regular'
+            >
               {getLocale('braveWalletEditGasPerPriceLimit')}
             </InputLabel>
             <Input
@@ -419,13 +437,19 @@ export const EditGas = ({
             />
 
             <MaximumFeeRow>
-              <MaximumFeeText>
+              <Text
+                textColor='primary'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletEditGasMaximumFee')}
-              </MaximumFeeText>
-              <MaximumFeeText>
+              </Text>
+              <Text
+                textColor='primary'
+                variant='small.regular'
+              >
                 ~${customEIP1559FiatGasFee} USD (${customEIP1559GasFee}{' '}
                 {selectedNetwork.symbol})
-              </MaximumFeeText>
+              </Text>
             </MaximumFeeRow>
             {isCustomGasBelowBaseFee && (
               <Row margin={'16px 0px'}>
@@ -452,8 +476,16 @@ export const EditGas = ({
 
         {showSuggestedMaxPriorityPanel && (
           <SliderWrapper>
-            <SliderLabel>{getLocale('braveWalletEditGasMaxFee')}:</SliderLabel>
-            <SliderValue>
+            <Text
+              textColor='secondary'
+              variant='default.regular'
+            >
+              {getLocale('braveWalletEditGasMaxFee')}:
+            </Text>
+            <SliderValue
+              textColor='primary'
+              variant='large.semibold'
+            >
               ~${suggestedEIP1559FiatGasFee} USD ({suggestedEIP1559GasFee}{' '}
               {selectedNetwork.symbol})
             </SliderValue>
@@ -465,11 +497,24 @@ export const EditGas = ({
               onChange={handleSliderChange}
             />
             <SliderLabelRow>
-              <SliderLabel>{getLocale('braveWalletEditGasLow')}</SliderLabel>
-              <SliderLabel>
+              <Text
+                textColor='secondary'
+                variant='default.regular'
+              >
+                {getLocale('braveWalletEditGasLow')}
+              </Text>
+              <Text
+                textColor='secondary'
+                variant='default.regular'
+              >
                 {getLocale('braveWalletEditGasOptimal')}
-              </SliderLabel>
-              <SliderLabel>{getLocale('braveWalletEditGasHigh')}</SliderLabel>
+              </Text>
+              <Text
+                textColor='secondary'
+                variant='default.regular'
+              >
+                {getLocale('braveWalletEditGasHigh')}
+              </Text>
             </SliderLabelRow>
           </SliderWrapper>
         )}
@@ -478,7 +523,10 @@ export const EditGas = ({
           <FormColumn>
             {gasLimitComponent}
 
-            <InputLabel>
+            <InputLabel
+              textColor='secondary'
+              variant='default.regular'
+            >
               {getLocale('braveWalletEditGasPerGasPrice')}
             </InputLabel>
             <Input
@@ -489,7 +537,10 @@ export const EditGas = ({
             />
 
             {isZeroGasPrice && (
-              <WarningText>
+              <WarningText
+                textColor='error'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletEditGasZeroGasPriceWarning')}
               </WarningText>
             )}

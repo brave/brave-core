@@ -13,43 +13,12 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
   height: 'auto',
 })
 
-export const AssetNameText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 16px;
-  line-height: 18px;
-  font-weight: 600;
-  color: ${leo.color.text.primary};
-`
-
-export const NetworkDescriptionText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-  color: ${leo.color.text.secondary};
-`
-
-export const PriceText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${leo.color.text.primary};
-`
-
 export const PercentChange = styled.div<{ isDown?: boolean }>`
+  font: ${leo.font.small.regular};
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
   color: ${(p) =>
     p.isDown
       ? leo.color.systemfeedback.errorIcon

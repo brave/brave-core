@@ -5,7 +5,8 @@
 import * as React from 'react'
 
 // Styled Components
-import { HeaderTitle, HeaderWrapper, TopRow, CloseButton } from './style'
+import { HeaderWrapper, TopRow, CloseButton } from './style'
+import { Text } from '../../shared/style'
 import { PanelTypes } from '../../../constants/types'
 
 export interface Props {
@@ -23,7 +24,12 @@ export class PanelHeader extends React.PureComponent<Props> {
     return (
       <HeaderWrapper hasSearch={false}>
         <TopRow>
-          <HeaderTitle>{title}</HeaderTitle>
+          <Text
+            textColor='secondary'
+            variant='large.semibold'
+          >
+            {title}
+          </Text>
           <CloseButton onClick={this.navigate('main')} />
         </TopRow>
       </HeaderWrapper>

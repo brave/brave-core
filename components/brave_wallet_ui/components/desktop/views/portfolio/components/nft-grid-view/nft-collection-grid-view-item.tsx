@@ -68,8 +68,18 @@ export const NftCollectionGridViewItem = ({
         justifyContent='space-between'
         margin='8px 0 0 0'
       >
-        <NFTText>{collectionToken.name}</NFTText>
-        <NFTText>{tokensInCollection.length}</NFTText>
+        <NFTText
+          textColor='primary'
+          variant='default.semibold'
+        >
+          {collectionToken.name}
+        </NFTText>
+        <NFTText
+          textColor='primary'
+          variant='default.semibold'
+        >
+          {tokensInCollection.length}
+        </NFTText>
       </Row>
     </NFTWrapper>
   )

@@ -5,7 +5,8 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
-import { WalletButton } from '../../../../../shared/style'
+// Shared Styles
+import { Text, WalletButton } from '../../../../../shared/style'
 
 export const NetworkButton = styled(WalletButton)`
   display: flex;
@@ -26,6 +27,8 @@ export const NetworkButton = styled(WalletButton)`
 `
 
 export const ActiveIndicator = styled.div`
+  font: ${leo.font.xSmall.semibold};
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,22 +37,12 @@ export const ActiveIndicator = styled.div`
   padding: 2px 6px;
   background-color: ${leo.color.primary[20]};
   color: ${leo.color.primary[50]};
-  font-family: 'Poppins';
-  font-weight: 600;
-  font-size: 10px;
-  line-height: 15px;
   text-transform: uppercase;
   letter-spacing: 0.4px;
 `
 
-export const NetworkName = styled.span`
-  font-family: 'Poppins';
-  color: ${leo.color.text.primary};
-  line-height: 24px;
+export const NetworkName = styled(Text)`
   word-wrap: wrap;
   word-break: break-all;
   text-align: left;
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
 `

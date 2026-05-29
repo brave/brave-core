@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 import { AccountModalTypes } from '../../../constants/types'
 
 // Shared Styles
-import { WalletButton, Row } from '../../shared/style'
+import { Text, WalletButton, Row } from '../../shared/style'
 import {
   layoutPanelWidth,
   layoutSmallWidth,
@@ -107,14 +107,12 @@ export const PopupButton = styled(WalletButton)<{
   }
 `
 
-export const PopupButtonText = styled.span`
+export const PopupButtonText = styled(Text).attrs({
+  textAlign: 'left',
+  variant: 'default.regular',
+  textColor: 'primary',
+})`
   flex: 1;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
 `
 
 export const ButtonIcon = styled(Icon)<{ id?: AccountModalTypes }>`

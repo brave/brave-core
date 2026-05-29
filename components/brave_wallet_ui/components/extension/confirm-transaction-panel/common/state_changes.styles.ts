@@ -7,13 +7,10 @@ import styled from 'styled-components'
 import { color } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
-export const StateChangeText = styled.span<{ color?: string }>`
-  color: ${(p) => p.color || color.text.secondary};
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
+// Shared Styles
+import { Text } from '../../../shared/style'
+
+export const StateChangeText = styled(Text)`
   vertical-align: middle;
   text-align: left;
   display: inline-flex;
@@ -21,12 +18,9 @@ export const StateChangeText = styled.span<{ color?: string }>`
   gap: 4px;
 
   strong {
-    font-family: 'Poppins';
-    font-style: normal;
     font-weight: 600;
-    font-size: 12px;
-    color: ${(p) => p.color || color.text.primary};
     word-break: break-all;
+    color: var(--primary);
   }
 `
 

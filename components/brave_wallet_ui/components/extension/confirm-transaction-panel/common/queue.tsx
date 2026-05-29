@@ -26,7 +26,10 @@ export function TransactionQueueSteps({
 
   return (
     <QueueStepRow>
-      <QueueStepText>
+      <QueueStepText
+        textColor='secondary'
+        variant='default.semibold'
+      >
         {transactionQueueNumber} {getLocale('braveWalletQueueOf')}{' '}
         {transactionsQueueLength}
       </QueueStepText>

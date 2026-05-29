@@ -5,7 +5,8 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
-import { WalletButton } from '../style'
+// Shared Styles
+import { Text, WalletButton } from '../style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 export const AssetButton = styled(WalletButton)<{
@@ -36,14 +37,6 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AssetName = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
-`
-
 export const NameColumn = styled.div`
   display: flex;
   align-items: flex-start;
@@ -51,25 +44,12 @@ export const NameColumn = styled.div`
   flex-direction: column;
 `
 
-export const NetworkDescriptionText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
-`
-
 export const PriceContainer = styled.div`
   align-self: center;
   justify-self: flex-end;
 `
 
-export const PriceText = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
-  text-align: right;
+export const PriceText = styled(Text)`
   vertical-align: middle;
 `
 

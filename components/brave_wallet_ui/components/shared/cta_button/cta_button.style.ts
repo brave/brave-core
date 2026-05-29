@@ -4,12 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Assets
 import IdeaIcon from '../../../assets/svg-icons/idea.svg'
 
 // Shared Styles
-import { WalletButton } from '../style'
+import { Text, WalletButton } from '../style'
 
 export const Button = styled(WalletButton)`
   display: flex;
@@ -28,13 +29,8 @@ export const Button = styled(WalletButton)`
   z-index: 10;
 `
 
-export const ButtonText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  color: ${(p) => p.theme.palette.white};
+export const ButtonText = styled(Text)`
+  color: ${leo.color.white};
 `
 
 export const IdeaButtonIcon = styled.span`

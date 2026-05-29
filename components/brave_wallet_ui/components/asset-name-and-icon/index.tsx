@@ -31,8 +31,20 @@ export const AssetNameAndIcon = (props: Props) => {
         loading='lazy'
       />
       <NameAndSymbolWrapper>
-        <AssetName>{assetName}</AssetName>
-        <AssetSymbol>{symbol}</AssetSymbol>
+        <AssetName
+          textColor='primary'
+          variant='default.semibold'
+          textAlign='left'
+        >
+          {assetName}
+        </AssetName>
+        <AssetSymbol
+          textColor='tertiary'
+          variant='small.regular'
+          textAlign='left'
+        >
+          {symbol}
+        </AssetSymbol>
       </NameAndSymbolWrapper>
     </StyledWrapper>
   )

@@ -102,7 +102,10 @@ export const CreateAccountTab = ({
   // render
   return (
     <StyledWrapper>
-      <Description>
+      <Description
+        textColor='primary'
+        variant='default.semibold'
+      >
         {network
           ? getLocale('braveWalletCreateAccountDescription').replace(
               '$1',

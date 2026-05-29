@@ -32,26 +32,18 @@ export const TooltipContent = styled.div`
 `
 
 export const Heading = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 20px;
+  font: ${leo.font.components.tableheader};
   letter-spacing: 0.01em;
   padding: 0;
   margin: 0;
 `
 
 export const List = styled.ul`
+  font: ${leo.font.small.regular};
   margin: 0%;
   padding-left: 20px;
 
   li {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 20px;
     letter-spacing: 0.01em;
     padding: 0;
     margin: 0;

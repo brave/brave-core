@@ -538,13 +538,23 @@ export const AddNftForm = (props: Props) => {
 
         {metadataLookupArg?.coin === BraveWallet.CoinType.ETH
           && !metadataLookupArg?.tokenId && (
-            <ErrorText>
+            <ErrorText
+              textColor='error'
+              textAlign='left'
+              variant='small.regular'
+            >
               {getLocale('braveWalletWatchListTokenIdError')}
             </ErrorText>
           )}
 
         {hasError ? (
-          <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
+          <ErrorText
+            textColor='error'
+            textAlign='left'
+            variant='small.regular'
+          >
+            {getLocale('braveWalletWatchListError')}
+          </ErrorText>
         ) : (
           <Column
             fullWidth
@@ -579,7 +589,11 @@ export const AddNftForm = (props: Props) => {
               <>
                 {hasNftMetadataError ? (
                   <Column>
-                    <ErrorText>
+                    <ErrorText
+                      textColor='error'
+                      variant='small.regular'
+                      textAlign='left'
+                    >
                       {getLocale('braveWalletFetchNftMetadataError')}
                     </ErrorText>
                   </Column>

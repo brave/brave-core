@@ -5,7 +5,9 @@
 import styled from 'styled-components'
 
 import CloseIcon from '../../../assets/svg-icons/close.svg'
-import { WalletButton } from '../../shared/style'
+
+// Shared Styles
+import { Text, WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -41,13 +43,7 @@ export const Header = styled.div`
   width: 100%;
 `
 
-export const Title = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 27px;
-  letter-spacing: 0.02em;
+export const Title = styled(Text)`
   margin-left: auto;
 `
 

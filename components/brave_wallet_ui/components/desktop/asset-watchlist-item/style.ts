@@ -51,35 +51,11 @@ export const NameAndSymbol = styled.div`
   white-space: pre-line;
 `
 
-export const AssetName = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  text-align: left;
-`
-
-export const AssetSymbol = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
-  text-align: left;
-`
-
 export const Balance = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
   width: 48%;
 `
 
