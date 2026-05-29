@@ -90,16 +90,6 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
       continue;
     }
 
-    // No filtering for cases like "https://example.com/?fbclid==", where the
-    // value is "=*"
-    const auto& itr = std::ranges::find_if_not(
-        value.cbegin(), value.cend(), [](const char ch) { return ch == '='; });
-    // The value is all "=" so we keep the param.
-    if (itr == value.cend()) {
-      output_tokens.emplace_back(token);
-      continue;
-    }
-
     if (blocked_params_set.contains(param)) {
       did_strip = true;
       continue;  // Not adding to output_tokens
