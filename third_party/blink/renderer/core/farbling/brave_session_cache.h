@@ -97,10 +97,12 @@ class CORE_EXPORT BraveSessionCache final
                        const blink::AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
-  // Returns |webgl_farbled_extension_handler_|. If that is null, then a new
-  // instance of |webgl_farbled_extension_handler_| is created.  //
-  // |supported_extensions| holds the true list of the currently
-  // supported_extension.
+  // Returns a non owning reference to |webgl_farbled_extension_handler_|.
+  // Callers must not delete it. If that is null, then a new instance of
+  // |webgl_farbled_extension_handler_| is created and its non-owning reference
+  // would be returned. |supported_extensions| is the actual
+  // list of the currently supported webgl extensions on the device which would
+  // be farbled.
   blink::WebGLFarbledExtensionHandler* GetWebGLFarbledExtensionHandler(
       const blink::Vector<blink::String>& supported_extensions);
 
