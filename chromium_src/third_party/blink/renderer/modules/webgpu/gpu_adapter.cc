@@ -10,6 +10,28 @@
 namespace blink {
 
 namespace {
+
+String ApplyFarbling(ExecutionContext* context, const String& s) {
+  // TODO(https://github.com/brave/brave-browser/issues/55927): Update
+  // BRAVE_WEBCOMPAT_WEBGL to BRAVE_WEBCOMPAT_WEBGPU when we have the support.
+  BraveFarblingLevel level = brave::GetBraveFarblingLevelFor(
+      context, ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+      BraveFarblingLevel::OFF);
+
+  switch (level) {
+    case BraveFarblingLevel::OFF:
+      return s;
+    case BraveFarblingLevel::BALANCED:
+      return base::FeatureList::IsEnabled(
+                 blink::features::kWebGLBalancedFingerprintingProtection)
+                 ? String()
+                 : s;
+    case BraveFarblingLevel::MAXIMUM:
+      return String();
+  }
+  return s;
+}
+
 // This class allows to scrub the various device identifiers in the
 // GPUAdapterInfo depending on the farbling level.
 class BraveScrubWebGpuAdapterInfo {
@@ -17,32 +39,18 @@ class BraveScrubWebGpuAdapterInfo {
   BraveScrubWebGpuAdapterInfo(ExecutionContext* context,
                               String& vendor,
                               String& architecture,
-                              String& device) {
-    // TODO(https://github.com/brave/brave-browser/issues/55927): Update
-    // BRAVE_WEBCOMPAT_WEBGL to BRAVE_WEBCOMPAT_WEBGPU when we have the support.
-    BraveFarblingLevel level = brave::GetBraveFarblingLevelFor(
-        context, ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
-        BraveFarblingLevel::OFF);
-    auto farble = [&](const String& s) -> String {
-      switch (level) {
-        case BraveFarblingLevel::OFF:
-          return s;
-        case BraveFarblingLevel::BALANCED:
-          return base::FeatureList::IsEnabled(
-                     blink::features::kWebGLBalancedFingerprintingProtection)
-                     ? String()
-                     : s;
-        case BraveFarblingLevel::MAXIMUM:
-          return String();
-      }
-      return s;
-    };
-    vendor = farble(vendor);
-    architecture = farble(architecture);
-    device = farble(device);
-  }
+                              String& device)
+      : reset_vendor_(&vendor, ApplyFarbling(context, vendor)),
+        reset_architecture_(&architecture,
+                            ApplyFarbling(context, architecture)),
+        reset_device_(&device, ApplyFarbling(context, device)) {}
 
   ~BraveScrubWebGpuAdapterInfo() = default;
+
+ private:
+  const base::AutoReset<String> reset_vendor_;
+  const base::AutoReset<String> reset_architecture_;
+  const base::AutoReset<String> reset_device_;
 };
 }  // namespace
 
