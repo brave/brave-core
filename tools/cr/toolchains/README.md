@@ -78,6 +78,37 @@ This control is important for cases where there are changes on our end for how
 the toolchain should be generated, and a new distinct archive is necessary for
 a toolchain already in use.
 
+### `download_published_dep.py`
+
+Client-side counterpart to the builders above: a gclient hook that installs
+archives published in buckets in our infra It downloads the archive, verifies
+its `sha256sum`, and extracts it straight on top of the destination path. This
+hook is not self-contained, and in fact it imports gclient code to evaluate
+condition statements that must be interpreted consistently as if they were in a
+`DEPS` file.
+
+Downloads are declared in the `EXTRA_DEPS` table, as follows:
+
+```python
+EXTRA_DEPS = {
+  'src/path/to/install/dir': {
+    'bucket': 'https://<bucket>/<prefix>/',
+    'condition': '<optional dep-level condition>',
+    'objects': [
+      {
+        'object_name': '<archive-name>.tar.xz',
+        'sha256sum': '<hex sha256>',
+        'condition': 'host_os == "linux"',  # one matching object per host
+      },
+    ],
+  },
+}
+```
+
+The archive must lay its members out relative to the destination root so it can
+be extracted directly over it. Invoke with the target path, e.g.
+`download_published_dep.py src/path/to/install/dir`.
+
 ### `build_xcode_toolchain.py`
 
 macOS-only. Builds a hermetic, reproducible Xcode toolchain archive from
