@@ -23,3 +23,28 @@ source_set("workspaces") {
     "//ui/views",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "workspaces_bubble_view_browsertest.cc" ]
+
+  deps = [
+    ":workspaces",
+    "//base",
+    "//base/test:test_support",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ui/views/frame",
+    "//brave/browser/workspaces",
+    "//chrome/browser",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+    "//ui/views",
+    "//ui/views:test_support",
+  ]
+}

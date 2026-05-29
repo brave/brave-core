@@ -1355,6 +1355,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/permissions:browser_tests",
       "//brave/browser/ui/views/split_view:browser_tests",
       "//brave/browser/ui/views/tabs:browser_tests",
+      "//brave/browser/ui/views/workspaces:browser_tests",
       "//brave/components/containers/buildflags",
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",

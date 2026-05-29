@@ -77,6 +77,10 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   const Browser* browser() const { return browser_; }
 
+  views::View* workspaces_button_for_testing() {
+    return workspaces_button_;
+  }  // IN-TEST
+
   void ToggleState();
 
   // Expand vertical tabstrip temporarily. When the returned
