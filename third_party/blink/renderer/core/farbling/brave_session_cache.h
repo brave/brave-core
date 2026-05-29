@@ -6,10 +6,12 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_FARBLING_BRAVE_SESSION_CACHE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_FARBLING_BRAVE_SESSION_CACHE_H_
 
+#include <memory>
 #include <optional>
-#include <string>
+#include <string_view>
 
 #include "base/containers/span.h"
+#include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_farbled_extension_handler.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -95,6 +97,12 @@ class CORE_EXPORT BraveSessionCache final
                        const blink::AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
+  // Returns |webgl_farbled_extension_handler_|. If that is null, then a new
+  // instance of |webgl_farbled_extension_handler_| is created.  //
+  // |supported_extensions| holds the true list of the currently
+  // supported_extension.
+  blink::WebGLFarbledExtensionHandler* GetWebGLFarbledExtensionHandler(
+      const blink::Vector<blink::String>& supported_extensions);
 
  private:
   void PerturbPixelsInternal(base::span<uint8_t> data);
@@ -102,6 +110,9 @@ class CORE_EXPORT BraveSessionCache final
   blink::HashMap<FarbleKey, int> farbled_integers_;
   brave_shields::mojom::ShieldsSettingsPtr default_shields_settings_;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
+  // A handler to farble the webgl supported extensions.
+  std::unique_ptr<blink::WebGLFarbledExtensionHandler>
+      webgl_farbled_extension_handler_;
   blink::HashMap<ContentSettingsType, BraveFarblingLevel> farbling_levels_;
 };
 
