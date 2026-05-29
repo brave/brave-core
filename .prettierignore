@@ -11,7 +11,7 @@
 /chromium_src/components/
 /chromium_src/third_party/
 /chromium_src/ui/
-/ios
+/ios/brave-ios/
 /resources
 /test
 /.storybook/
@@ -21,6 +21,7 @@
 /third_party/
 /third_party/boringtun/vendor/
 /third_party/wasm/vendor/
+/ios/third_party/
 
 # Ignore github .yml files:
 .github/**/*.yml

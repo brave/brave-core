@@ -8,6 +8,6 @@ Object.defineProperty(navigator, 'brave', {
   configurable: true,
   writable: false,
   value: Object.freeze({
-    isBrave: (): Promise<boolean> => Promise.resolve(true)
-  })
-});
+    isBrave: (): Promise<boolean> => Promise.resolve(true),
+  }),
+})

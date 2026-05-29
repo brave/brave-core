@@ -3,8 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {sendWebKitMessageWithReply} from
-    '//ios/web/public/js_messaging/resources/utils.js';
+import { sendWebKitMessageWithReply } from '//ios/web/public/js_messaging/resources/utils.js'
 
 const allowedOrigins = [
   'https://safesearch.brave.com',
@@ -14,7 +13,7 @@ const allowedOrigins = [
   'https://search.brave.com',
   'https://search.brave.software',
   'https://search.bravesoftware.com',
-];
+]
 
 if (allowedOrigins.includes(window.location.origin)) {
   Object.defineProperty(window, 'brave', {
@@ -24,13 +23,17 @@ if (allowedOrigins.includes(window.location.origin)) {
     value: {
       getCanSetDefaultSearchProvider() {
         return sendWebKitMessageWithReply(
-            'BraveSearchMakeDefaultMessageHandler', {method_id: 1});
+          'BraveSearchMakeDefaultMessageHandler',
+          { method_id: 1 },
+        )
       },
 
       setIsDefaultSearchProvider() {
         return sendWebKitMessageWithReply(
-            'BraveSearchMakeDefaultMessageHandler', {method_id: 2});
-      }
-    }
-  });
+          'BraveSearchMakeDefaultMessageHandler',
+          { method_id: 2 },
+        )
+      },
+    },
+  })
 }

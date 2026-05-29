@@ -7,5 +7,5 @@ Object.defineProperty(navigator, 'globalPrivacyControl', {
   enumerable: false,
   configurable: false,
   writable: false,
-  value: (window as any).gCrWebPlaceholderGPCEnabled
+  value: (window as any).gCrWebPlaceholderGPCEnabled,
 })
