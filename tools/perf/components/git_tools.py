@@ -115,13 +115,15 @@ def EnsureRevision(revision: str, cwd=path_util.GetBraveDir()) -> None:
   if ok:
     return
   logging.debug('Try to fetch %s', revision)
-  if GetProcessOutput(['git', 'fetch', 'origin', f'{revision}:{revision}'],
-                      cwd):
+  ok, _ = GetProcessOutput(['git', 'fetch', 'origin', f'{revision}:{revision}'],
+                           cwd)
+  if ok:
     return
 
   if cwd == path_util.GetBraveDir():
-    if GetProcessOutput(
-        ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, f'{revision}:{revision}'], cwd):
+    ok, _ = GetProcessOutput(
+        ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, f'{revision}:{revision}'], cwd)
+    if ok:
       return
 
   raise RuntimeError(f'Can\'t fetch revision {revision}')
