@@ -68,12 +68,13 @@ class AdBlockComponentServiceManager
 
   void UpdateFilterLists(base::OnceCallback<void(bool)> callback);
 
+  void ResetProviders();
+
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
  private:
   friend class ::AdBlockServiceTest;
-  void OnAdBlockOnlyModePrefChanged();
 
   void StartRegionalServices();
   void LoadComponentFiltersProviders();

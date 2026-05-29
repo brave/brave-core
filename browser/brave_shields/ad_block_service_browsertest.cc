@@ -1449,54 +1449,53 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
 }
 
-// Setting prefs sets the right tags
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
-  // Default tags exist on startup
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsToggleLists) {
+  // kTwitterEmbedListConstants UUID (enabled by default)
+  std::string twitterUuid = "84960ADD-1CC1-419F-81FC-9F116F5205CC";
+  InstallRegionalAdBlockComponent(twitterUuid, false);
+  // kLinkedInEmbedListConstants UUID (disabled by default)
+  std::string linkedInUuid = "FB626316-6CC8-4447-884B-F5A37C29B0AE";
+  InstallRegionalAdBlockComponent(linkedInUuid, false);
 
-  // Toggling prefs once is reflected in the adblock client.
-  local_state()->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType,
-                            true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+  {
+    EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(twitterUuid));
+    EXPECT_FALSE(
+        component_service_manager()->IsFilterListEnabled(linkedInUuid));
 
-  local_state()->SetBoolean(brave_shields::prefs::kFBEmbedControlType, false);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, false);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+    const auto lists = component_service_manager()->GetRegionalLists();
+    ASSERT_EQ(2UL, lists.size());
+    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(false, *lists[1].GetDict().FindBool("enabled"));
+  }
 
-  local_state()->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType,
-                            false);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, false);
-  AssertTagExists(brave_shields::kTwitterEmbeds, false);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+  // Enable LinkedIn embeds
+  {
+    local_state()->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType,
+                              true);
 
-  // Toggling prefs back is reflected in the adblock client.
-  local_state()->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType,
-                            false);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, false);
-  AssertTagExists(brave_shields::kTwitterEmbeds, false);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+    EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(twitterUuid));
+    EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(linkedInUuid));
 
-  local_state()->SetBoolean(brave_shields::prefs::kFBEmbedControlType, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, false);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+    const auto lists = component_service_manager()->GetRegionalLists();
+    ASSERT_EQ(2UL, lists.size());
+    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
+  }
 
-  local_state()->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType,
-                            true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+  // Disable Twitter embeds
+  {
+    local_state()->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType,
+                              false);
+    brave_shields::WaitForAdBlockServiceThreads();
+
+    EXPECT_FALSE(component_service_manager()->IsFilterListEnabled(twitterUuid));
+    EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(linkedInUuid));
+
+    const auto lists = component_service_manager()->GetRegionalLists();
+    ASSERT_EQ(2UL, lists.size());
+    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
+  }
 }
 
 // Load a page with a blocked image, and make sure it is collapsed.
