@@ -10,6 +10,15 @@ import re
 import brave_chromium_utils
 import override_utils
 
+with brave_chromium_utils.sys_path('//brave/tools/typescript'):
+    import tsc_timeout_retry
+
+
+@override_utils.override_function(globals())
+def main(original_function):
+    with tsc_timeout_retry.patch_subprocess_with_timeout_retry():
+        return original_function()
+
 
 def ensure_hardlink(src, dst):
     src = os.path.abspath(src) if not os.path.isabs(src) else src
