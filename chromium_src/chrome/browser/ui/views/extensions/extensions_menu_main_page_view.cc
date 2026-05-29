@@ -14,7 +14,8 @@
         base::BindRepeating(&ExtensionsMenuHandler::OnActionButtonClicked,     \
                             base::Unretained(menu_handler_), extension_id),    \
         base::BindRepeating(&ExtensionsMenuHandler::OnExtensionToggleSelected, \
-                            base::Unretained(menu_handler_), extension_id),    \
+                            base::Unretained(menu_handler_), extension_id,     \
+                            entry_state.origin),                               \
         base::BindRepeating(&ExtensionsMenuHandler::OpenSitePermissionsPage,   \
                             base::Unretained(menu_handler_), extension_id));   \
     item->Update(entry_state);                                                 \
