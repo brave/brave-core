@@ -1318,6 +1318,7 @@ function StoryContext(
                   : new Mojom.AssociatedContent(),
               ],
               error: currentError,
+              errorDetails: undefined,
               temporary: argsRef.current.isTemporaryChat,
               toolUseTaskState:
                 Mojom.TaskState[argsRef.current.toolUseTaskState],

@@ -104,6 +104,7 @@ function Conversation(props: ConversationProps) {
         currentErrorElement = (
           <ErrorConnection
             onRetry={() => context.conversationHandler.retryAPIRequest()}
+            errorDetails={state.currentErrorDetails}
           />
         )
         break

@@ -62,6 +62,7 @@ export default function createConversationApi(
             // </if>
             associatedContent: [],
             error: Mojom.APIError.None,
+            errorDetails: undefined,
             temporary: false,
             toolUseTaskState: Mojom.TaskState.kNone,
           } as Mojom.ConversationState,
@@ -141,8 +142,11 @@ export default function createConversationApi(
             }
           },
 
-          onAPIResponseError: (error) => {
-            api.getState.update({ error })
+          onAPIResponseError: (apiError, errorDetails) => {
+            api.getState.update({
+              error: apiError,
+              errorDetails: errorDetails ?? undefined,
+            })
           },
 
           onTaskStateChanged: (toolUseTaskState) => {
