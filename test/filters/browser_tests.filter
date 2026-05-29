@@ -987,6 +987,7 @@
 -PermissionRequestManagerWithFencedFrameTest.RequestPermissionThruDelegate
 -PictureInPictureWindowControllerFencedFrameBrowserTest.FencedFrameShouldNotCloseWindow
 -PlatformAppNavigationRedirectorFencedFrameBrowserTest.DoNotLaunchAppInFencedFrames
+-PrintFencedFrameBrowserTest.BrowserPrint
 -PrintFencedFrameBrowserTest.DocumentExecCommand
 -PrintFencedFrameBrowserTest.ScriptedPrint
 -SBNavigationObserverBrowserTest.FencedFrameNavigationEventsAndReferrerChain
@@ -1445,6 +1446,7 @@
 -LensOverlayControllerEntrypointsBrowserTest.OverlayHidesEntrypoints
 -LensOverlayControllerInnerTextAndApc.*
 -LensOverlayControllerInnerTextEnabledSmallByteLimitTest.*
+-LensOverlayControllerNonBlockingPrivacyNoticeForImageSearchBrowserTest.ShowUIWithPendingRegion_GrantsSessionPermissionAndOverridesRegion
 -LensOverlayControllerOverlaySearchbox.OverlaySearchboxPageClassificationAndState
 -LensOverlayControllerReinvocationBrowserTest.*
 -LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
@@ -2280,6 +2282,7 @@
 -ContentVerifierPolicyTest.*
 -CookiePolicyBrowserTest.*
 -CookiePolicyStorageBrowserTest.*
+-CredentialManagerAutofillBrowserTest.CredentialsAutofilled
 -CredentialManagerBrowserTest.*
 -CriticalClientHintsBrowserTest.*
 -CrossProfileDebuggerApiTest.GetTargets
@@ -2456,6 +2459,7 @@
 -NotificationPermissionBrowserTest.UndelegatedPermissionDeniedIfNotGrantedToOrigin
 -NotificationPermissionBrowserTest.UndelegatedPermissionsAreNotDelegated
 -OfferNotificationBubbleViewsBrowserTest.*
+-OmniboxPopupPermissionBrowserTest.DynamicWindowResizing
 -OmniboxPopupViewViewsTest.*
 -OnDiskApp/NetworkContextConfigurationBrowserTest.*
 -OnDiskApp/NetworkContextConfigurationDataPacBrowserTest.*
