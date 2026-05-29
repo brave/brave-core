@@ -10,20 +10,25 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/layout/layout_provider.h"
 
 namespace {
 
@@ -71,7 +76,14 @@ std::u16string GetEntryTitle(SidePanelEntry::Id id) {
 BraveSidePanelHeaderController::BraveSidePanelHeaderController(
     BrowserWindowInterface& browser_window,
     SidePanelEntry* entry)
-    : browser_window_(browser_window), entry_(entry->GetWeakPtr()) {}
+    : browser_window_(browser_window), entry_(entry->GetWeakPtr()) {
+  pref_change_registrar_.Init(browser_window_->GetProfile()->GetPrefs());
+  pref_change_registrar_.Add(
+      kWebViewRoundedCorners,
+      base::BindRepeating(
+          &BraveSidePanelHeaderController::OnWebViewRoundedCornersPrefChanged,
+          base::Unretained(this)));
+}
 
 BraveSidePanelHeaderController::~BraveSidePanelHeaderController() = default;
 
@@ -113,6 +125,20 @@ BraveSidePanelHeaderController::CreateCloseButton() {
       kLeoCloseIcon, IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP);
 }
 
+int BraveSidePanelHeaderController::GetTopRadius() const {
+  if (!browser_window_->GetProfile()->GetPrefs()->GetBoolean(
+          kWebViewRoundedCorners)) {
+    return 0;
+  }
+  return views::LayoutProvider::Get()->GetDistanceMetric(
+      ChromeDistanceMetric::DISTANCE_SIDE_PANEL_CONTENT_RADIUS);
+}
+
+void BraveSidePanelHeaderController::SetUpdateHeaderCallback(
+    base::RepeatingClosure callback) {
+  update_header_callback_ = std::move(callback);
+}
+
 void BraveSidePanelHeaderController::OnLaunchButtonPressed(const GURL& url) {
   ShowSingletonTab(base::to_address(browser_window_), url);
 }
@@ -120,5 +146,11 @@ void BraveSidePanelHeaderController::OnLaunchButtonPressed(const GURL& url) {
 void BraveSidePanelHeaderController::OnCloseButtonPressed() {
   if (auto* side_panel_ui = browser_window_->GetFeatures().side_panel_ui()) {
     side_panel_ui->Close();
+  }
+}
+
+void BraveSidePanelHeaderController::OnWebViewRoundedCornersPrefChanged() {
+  if (update_header_callback_) {
+    update_header_callback_.Run();
   }
 }
