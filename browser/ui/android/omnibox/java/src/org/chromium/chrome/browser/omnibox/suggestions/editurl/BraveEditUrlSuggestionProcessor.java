@@ -79,6 +79,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getGroupId(),
                     suggestion.getClipboardImageData(),
                     suggestion.hasTabMatch(),
+                    suggestion.getAndroidTabId(),
                     suggestion.getActions(),
                     suggestion.allowedToBeDefaultMatch(),
                     suggestion.getInlineAutocompletion(),
