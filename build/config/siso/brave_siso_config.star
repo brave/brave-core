@@ -341,6 +341,7 @@ def __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers):
         handlers[new_handler_name] = __create_handler([
             "brave/script/brave_chromium_utils.py",
             "brave/script/override_utils.py",
+            "brave/tools/typescript/tsc_timeout_retry.py",
         ])
 
     rule["handler"] = new_handler_name
