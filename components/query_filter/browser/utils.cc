@@ -102,7 +102,7 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
 
     if (blocked_params_set.contains(param)) {
       did_strip = true;
-      continue;
+      continue;  // Not adding to output_tokens
     }
 
     // Check next for conditional query parameter stripping which is
@@ -111,9 +111,10 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
             base::FindOrNull(kConditionalQueryStringTrackers, param);
         pattern && !re2::RE2::PartialMatch(spec, pattern->data())) {
       did_strip = true;
-      continue;
+      continue;  // Not adding to output_tokens
     }
 
+    // param wasn't found in any of our lists
     output_tokens.emplace_back(token);
   }
 
