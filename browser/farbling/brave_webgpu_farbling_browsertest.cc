@@ -55,8 +55,8 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    base::FilePath test_data_dir;
-    base::PathService::CheckedGet(brave::DIR_TEST_DATA, &test_data_dir);
+    base::FilePath test_data_dir =
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
