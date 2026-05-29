@@ -96,11 +96,12 @@ StarRandomnessMeta::StarRandomnessMeta(
   }
   std::string approved_cert_fp_str =
       local_state->GetString(kApprovedCertFPPrefName);
-  net::HashValue approved_cert_fp;
-  if (!approved_cert_fp_str.empty() &&
-      approved_cert_fp.FromString(approved_cert_fp_str)) {
-    VLOG(2) << "StarRandomnessMeta: loaded cached approved cert";
-    approved_cert_fp_ = std::make_optional(approved_cert_fp);
+  if (!approved_cert_fp_str.empty()) {
+    if (std::optional<net::HashValue> approved_cert_fp =
+            net::HashValue::FromString(approved_cert_fp_str)) {
+      VLOG(2) << "StarRandomnessMeta: loaded cached approved cert";
+      approved_cert_fp_.emplace(std::move(*approved_cert_fp));
+    }
   }
 }
 
@@ -134,7 +135,8 @@ bool StarRandomnessMeta::VerifyRandomnessCert(
     LOG(ERROR) << "StarRandomnessMeta: ssl info is missing from response info";
     return false;
   }
-  net::HashValue cert_fp_hash = net::HashValue(
+  net::HashValue cert_fp_hash(
+      net::HASH_VALUE_SHA256,
       response_info->ssl_info->cert->CalculateChainFingerprint256());
   if (cert_fp_hash != *approved_cert_fp_) {
     LOG(ERROR) << "StarRandomnessMeta: approved cert mismatch, will retry "
@@ -252,8 +254,8 @@ void StarRandomnessMeta::HandleAttestationResult(
     }
     return;
   }
-  approved_cert_fp_ = std::make_optional(
-      net::HashValue(approved_cert->CalculateChainFingerprint256()));
+  approved_cert_fp_.emplace(net::HASH_VALUE_SHA256,
+                            approved_cert->CalculateChainFingerprint256());
   std::string approved_cert_fp_str = approved_cert_fp_->ToString();
   local_state_->SetString(kApprovedCertFPPrefName, approved_cert_fp_str);
   attestation_pending_ = false;
