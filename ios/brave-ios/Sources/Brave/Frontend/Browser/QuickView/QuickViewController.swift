@@ -253,7 +253,7 @@ extension QuickViewController: TabObserver {
       tab: tab,
       profileController: profileController
     ) {
-      tab.data.detachedPrivacyHelper = detachedTabPrivacyHelper
+      tab.detachedPrivacyHelper = detachedTabPrivacyHelper
     }
   }
 
