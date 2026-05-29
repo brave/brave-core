@@ -9,14 +9,15 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -27,23 +28,24 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_service_delegate_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h"
-#endif
+#endif  // IS_WIN
+#endif  // ENABLE_BRAVE_VPN_V1
 
 namespace brave_vpn {
 namespace {
 
-std::unique_ptr<KeyedService> BuildVpnService(
-    content::BrowserContext* context) {
-  if (!brave_vpn::IsAllowedForContext(context)) {
-    return nullptr;
-  }
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 
+std::unique_ptr<KeyedService> BuildVpnService_V1(
+    content::BrowserContext* context) {
 #if !BUILDFLAG(IS_ANDROID)
   if (!g_brave_browser_process->brave_vpn_connection_manager()) {
     return nullptr;
@@ -93,6 +95,20 @@ std::unique_ptr<KeyedService> BuildVpnService(
   return vpn_service;
 }
 
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+
+std::unique_ptr<KeyedService> BuildVpnService(
+    content::BrowserContext* context) {
+  if (!brave_vpn::IsAllowedForContext(context)) {
+    return nullptr;
+  }
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+  return BuildVpnService_V1(context);
+#else
+  NOTREACHED() << "No VPN implementation available";
+#endif
+}
+
 }  // namespace
 
 // static
@@ -138,10 +154,10 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1) && BUILDFLAG(IS_WIN)
   DependsOn(brave_vpn::BraveVpnWireguardObserverFactory::GetInstance());
   DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V1) && BUILDFLAG(IS_WIN)
 }
 
 BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;

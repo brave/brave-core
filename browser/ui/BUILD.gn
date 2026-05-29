@@ -985,10 +985,12 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/browser/connection:api",
       "//brave/components/brave_vpn/common",
     ]
-    if (enable_brave_vpn_v1 && is_win) {
+  }
+  if (enable_brave_vpn_v1) {
+    deps += [ "//brave/components/brave_vpn/browser/connection:api" ]
+    if (is_win) {
       deps += [
         "//brave/components/brave_vpn/common/win",
         "//brave/components/brave_vpn/common/wireguard",
@@ -1491,14 +1493,18 @@ source_set("unit_tests") {
       deps += [
         "//base",
         "//brave/components/brave_vpn/browser",
-        "//brave/components/brave_vpn/browser/connection:api",
-        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
         "//brave/components/skus/browser",
         "//chrome/browser/prefs",
         "//chrome/browser/themes",
         "//chrome/test:test_support",
         "//skia",
         "//third_party/abseil-cpp:absl",
+      ]
+    }
+    if (enable_brave_vpn_v1) {
+      deps += [
+        "//brave/components/brave_vpn/browser/connection:api",
+        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
       ]
     }
   }
