@@ -8,18 +8,14 @@ import BraveCore
 
 public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
   private(set) weak var tab: (any TabState)?
-  private var walletService: BraveWalletBraveWalletService?
   private var showApprovePanelUIHandler: (((_ tab: (any TabState)?) -> Void))?
   private var showWalletBackUpHandler: (() -> Void)?
   private var unlockWalletHandler: (() -> Void)?
   private var showOnboardingHandler: ((Bool) -> Void)?
   private var openWalletHomeHandler: (() -> Void)?
 
-  private var walletServiceObserver: WalletServiceObserver?
-
   public init?(
     tab: some TabState,
-    walletService: BraveWalletBraveWalletService?,
     showApprovePanelUIHandler: ((_ tab: (any TabState)?) -> Void)?,
     showWalletBackUpHandler: (() -> Void)?,
     unlockWalletHandler: (() -> Void)?,
@@ -30,7 +26,6 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
       return nil
     }
     self.tab = tab
-    self.walletService = walletService
     self.showApprovePanelUIHandler = showApprovePanelUIHandler
     self.showWalletBackUpHandler = showWalletBackUpHandler
     self.unlockWalletHandler = unlockWalletHandler
@@ -38,19 +33,10 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     self.openWalletHomeHandler = openWalletHomeHandler
     super.init()
     tab.addObserver(self)
-    if let walletService {
-      walletServiceObserver = WalletServiceObserver(
-        walletService: walletService,
-        _onResetWallet: { [weak self] in
-          self?.tab?.evaluateJavaScriptUnsafe("localStorage.clear()")
-        }
-      )
-    }
   }
 
   deinit {
     tab?.removeObserver(self)
-    walletServiceObserver = nil
   }
 
   // MARK: - TabObserver

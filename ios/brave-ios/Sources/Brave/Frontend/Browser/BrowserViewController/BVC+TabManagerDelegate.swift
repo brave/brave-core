@@ -69,7 +69,6 @@ extension BrowserViewController: TabManagerDelegate {
     }
     tab.walletWebUIHelper = .init(
       tab: tab,
-      walletService: BraveWallet.ServiceFactory.get(privateMode: tab.isPrivate),
       showApprovePanelUIHandler: { [weak self] tab in
         self?.showApprovePanelUI(tab: tab)
       },
