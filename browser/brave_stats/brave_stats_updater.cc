@@ -404,7 +404,6 @@ void BraveStatsUpdater::SendServerPing() {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFirstCheckMade, false);
-  registry->RegisterBooleanPref(kStatsReportingEnabled, true);
   registry->RegisterIntegerPref(kLastCheckWOY, 0);
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());

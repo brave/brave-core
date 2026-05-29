@@ -83,6 +83,8 @@ class BraveStatsUpdaterTest : public testing::Test {
     task_environment_.AdvanceClock(base::Minutes(30));
 
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
+    testing_local_state_.registry()->RegisterBooleanPref(kStatsReportingEnabled,
+                                                         true);
     misc_metrics::GeneralBrowserUsage::RegisterPrefs(
         testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(

@@ -77,10 +77,10 @@ RegisterPolymerTemplateModifications({
     switcher.appendChild(
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.origin)]]">
-          <div slot="view" id="origin" class="cr-centered-card-container">
+          <div slot="view" id="origin">
             <template is="dom-if" if="[[renderPlugin_(
           routes_.ORIGIN, lastRoute_, inSearchMode_)]]">
-              <settings-brave-origin-page
+              <settings-brave-origin-page class="cr-centered-card-container"
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-brave-origin-page>

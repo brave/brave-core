@@ -8,7 +8,8 @@
 #include "base/containers/map_util.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -17,6 +18,10 @@
 #include "components/policy/policy_constants.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -59,10 +64,12 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(tor_info->brave_origin_pref_key, tor::prefs::kTorDisabled);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // Test that profile-level policies are NOT in browser definitions
   EXPECT_FALSE(
       browser_policy_definitions.contains(policy::key::kBraveRewardsDisabled))
       << "Profile-level policy should not be in browser definitions";
+#endif
 }
 
 TEST(BraveOriginServiceFactoryTest,
@@ -70,6 +77,7 @@ TEST(BraveOriginServiceFactoryTest,
   auto profile_policy_definitions =
       BraveOriginServiceFactory::GetProfilePolicyDefinitions();
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // Test that Brave Rewards disabled policy is correctly built (profile-level)
   const auto* rewards_info = base::FindOrNull(
       profile_policy_definitions, policy::key::kBraveRewardsDisabled);
@@ -80,6 +88,7 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(rewards_info->user_settable, false);
   EXPECT_EQ(rewards_info->brave_origin_pref_key,
             brave_rewards::prefs::kDisabledByPolicy);
+#endif
 
   // Test that browser-level policies are NOT in profile definitions
   EXPECT_FALSE(
@@ -145,9 +154,13 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_GE(browser_policy_definitions.size(), 2u)
       << "Should have at least P3A and Stats browser policies";
 
-  // Verify that we have profile-level policies
+  // Verify that we have profile-level policies. On Brave Origin builds the
+  // features that contribute profile policies (Rewards, Wallet, Wayback, etc.)
+  // are all compiled out, so the intersection is legitimately empty there.
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   EXPECT_GT(profile_policy_definitions.size(), 0u)
       << "Should have at least some profile policies";
+#endif
 }
 
 // Verifies that every policy claimed by Brave Origin is actually enforceable

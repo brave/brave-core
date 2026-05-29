@@ -124,10 +124,12 @@ TestingBraveBrowserProcess::brave_referrals_service() {
   return nullptr;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 brave_stats::BraveStatsUpdater*
 TestingBraveBrowserProcess::brave_stats_updater() {
   return nullptr;
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 brave_ads::BraveStatsHelper*
