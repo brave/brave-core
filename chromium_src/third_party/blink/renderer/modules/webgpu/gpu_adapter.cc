@@ -56,9 +56,9 @@ class BraveScrubWebGpuAdapterInfo {
 
 }  // namespace blink
 
-#define BRAVE_SCRUB_WEBGPU_ADAPTER_INFO                             \
-  BraveScrubWebGpuAdapterInfo(gpu_->GetExecutionContext(), vendor_, \
-                              architecture_, device_);
+#define BRAVE_SCRUB_WEBGPU_ADAPTER_INFO                                \
+  BraveScrubWebGpuAdapterInfo scrub_guard(gpu_->GetExecutionContext(), \
+                                          vendor_, architecture_, device_);
 
 #include <third_party/blink/renderer/modules/webgpu/gpu_adapter.cc>
 

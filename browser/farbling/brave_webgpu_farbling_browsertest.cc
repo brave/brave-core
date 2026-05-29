@@ -17,6 +17,8 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "gpu/config/gpu_switches.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/blink/public/common/features.h"
@@ -40,7 +42,13 @@ constexpr char kEmptyAdapterInfo[] = ",,";
 
 class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
  public:
-  BraveWebGPUFarblingBrowserTest() {
+  // WebGPU's navigator.gpu is gated behind [SecureContext], so the test pages
+  // must be served from a secure origin. Use an HTTPS server backed by a mock
+  // cert verifier (which accepts the test cert for any hostname) so the
+  // existing per-domain Shields fingerprinting controls keep working.
+  // See navigator_gpu.idl in the upstream.
+  BraveWebGPUFarblingBrowserTest()
+      : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitWithFeatures(
         {
             brave_shields::features::kBraveShowStrictFingerprintingMode,
@@ -52,15 +60,34 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    content::SetupCrossSiteRedirector(embedded_test_server());
+    content::SetupCrossSiteRedirector(&https_server_);
 
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
 
-    ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(https_server_.Start());
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+    // Exposes navigator.gpu / a real adapter on platforms where WebGPU isn't
+    // enabled by default (e.g. Linux CI).
+    command_line->AppendSwitch(switches::kEnableUnsafeWebGPU);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
   HostContentSettingsMap* content_settings() {
@@ -70,19 +97,19 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
   void AllowFingerprinting(const std::string& domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::ALLOW,
-        embedded_test_server()->GetURL(domain, "/"));
+        https_server_.GetURL(domain, "/"));
   }
 
   void BlockFingerprinting(const std::string& domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::BLOCK,
-        embedded_test_server()->GetURL(domain, "/"));
+        https_server_.GetURL(domain, "/"));
   }
 
   void SetFingerprintingDefault(const std::string& domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::DEFAULT,
-        embedded_test_server()->GetURL(domain, "/"));
+        https_server_.GetURL(domain, "/"));
   }
 
   content::WebContents* contents() {
@@ -90,7 +117,21 @@ class BraveWebGPUFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  net::EmbeddedTestServer https_server_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Test no scrubbing fixture.
+class BraveWebGPUDeveloperFeaturesTest : public BraveWebGPUFarblingBrowserTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    BraveWebGPUFarblingBrowserTest::SetUpCommandLine(command_line);
+    // When --enable-webgpu-developer-features is set,
+    // GPUAdapter::CreateAdapterInfoForAdapter() returns the full, real adapter
+    // info and the farbling scrubbing is intentionally bypassed.
+    command_line->AppendSwitch(switches::kEnableWebGPUDeveloperFeatures);
+  }
 };
 
 // Parameterized over whether kWebGLBalancedFingerprintingProtection is enabled,
@@ -126,7 +167,7 @@ INSTANTIATE_TEST_SUITE_P(
 // farbling, and are returned as-is under OFF and BALANCED (feature off).
 IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleAdapterInfo) {
   const std::string domain = "a.com";
-  const GURL url = embedded_test_server()->GetURL(domain, "/adapter-info.html");
+  const GURL url = https_server_.GetURL(domain, "/adapter-info.html");
 
   // Farbling level: off — collect the real adapter info as a baseline.
   AllowFingerprinting(domain);
@@ -167,8 +208,7 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleAdapterInfo) {
 // off).
 IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleDeviceAdapterInfo) {
   const std::string domain = "a.com";
-  const GURL url =
-      embedded_test_server()->GetURL(domain, "/device-adapter-info.html");
+  const GURL url = https_server_.GetURL(domain, "/device-adapter-info.html");
 
   // Farbling level: off — collect the real adapter info as a baseline.
   AllowFingerprinting(domain);
@@ -202,4 +242,61 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleDeviceAdapterInfo) {
     // kWebGLBalancedFingerprintingProtection disabled: fields must be real.
     EXPECT_EQ(actual_balanced, actual_off);
   }
+}
+
+// Tests that adapter.info fields (vendor, architecture, device) are NOT
+// scrubbed under MAXIMUM farbling when WebGPU developer features are enabled.
+IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
+                       AdapterInfoNotScrubbed) {
+  const std::string domain = "a.com";
+  const GURL url = https_server_.GetURL(domain, "/adapter-info.html");
+
+  // Farbling level: off — collect the real adapter info as a baseline.
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  const std::string actual_off =
+      EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
+
+  if (actual_off == "no-gpu" || actual_off == "no-adapter") {
+    GTEST_SKIP() << "WebGPU adapter not available in this environment";
+  }
+  // Developer features expose real values, so the baseline must not be empty.
+  ASSERT_NE(actual_off, kEmptyAdapterInfo);
+
+  // Farbling level: maximum (BlockFingerprinting →
+  // BraveFarblingLevel::MAXIMUM). Developer features bypass scrubbing, so the
+  // info must match the baseline.
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGPUAdapterInfoScript).ExtractString(),
+            actual_off);
+}
+
+// Tests that device.adapterInfo fields (vendor, architecture, device) are NOT
+// scrubbed under MAXIMUM farbling when WebGPU developer features are enabled.
+IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
+                       DeviceAdapterInfoNotScrubbed) {
+  const std::string domain = "a.com";
+  const GURL url = https_server_.GetURL(domain, "/device-adapter-info.html");
+
+  // Farbling level: off — collect the real adapter info as a baseline.
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  const std::string actual_off =
+      EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
+
+  if (actual_off == "no-gpu" || actual_off == "no-adapter" ||
+      actual_off == "no-device") {
+    GTEST_SKIP() << "WebGPU device not available in this environment";
+  }
+  // Developer features expose real values, so the baseline must not be empty.
+  ASSERT_NE(actual_off, kEmptyAdapterInfo);
+
+  // Farbling level: maximum (BlockFingerprinting →
+  // BraveFarblingLevel::MAXIMUM). Developer features bypass scrubbing, so the
+  // info must match the baseline.
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kGPUAdapterInfoScript).ExtractString(),
+            actual_off);
 }
