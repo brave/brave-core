@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { CONTINUE, SKIP, visit } from 'unist-util-visit'
-import type { Data, Node } from 'unist'
+import type { Node } from 'unist'
 import SearchWidget from '../search_widget/search_widget'
 import * as React from 'react'
 import { useAssistantEvents } from '../assistant_response/assistant_response_context'
 
 export const ALLOWED_DIRECTIVES = ['search'] as const
-type NodeType = Node<Data> & {
+type NodeType = Node & {
   name: string
   attributes: Record<string, string>
 }

@@ -1,0 +1,52 @@
+allowBuilds:
+  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/8edabba30a40320d2a9e6353a7c945cf528cf18d': true
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/9a2dbab610d619b6f7b39c853b9aff8c031f39d9': true
+  '@parcel/watcher': true
+  blake-hash: true
+  bufferutil: true
+  core-js: true
+  esbuild: true
+  keccak: true
+  protobufjs: true
+  secp256k1: true
+  svelte-preprocess: true
+  tiny-secp256k1: true
+  unrs-resolver: true
+  usb: true
+  utf-8-validate: true
+
+catalog:
+  react: 19.2.7
+  react-dom: 19.2.7
+  '@types/react': 19.2.17
+  '@types/react-dom': 19.2.3
+  styled-components: 6.4.3
+
+minimumReleaseAge: 10080
+
+nodeLinker: hoisted
+
+overrides:
+  'axios': '1.16.0'
+  'elliptic': '6.6.1'
+  'esbuild': '0.28.1'
+  'prismjs': '1.30.0'
+  'protobufjs': '7.6.3'
+  'tiny-secp256k1': '1.1.7'
+  'uuid': '14.0.0'
+  'http-proxy-middleware': '2.0.10'
+  'react': 'catalog:'
+  'react-dom': 'catalog:'
+  '@types/react': 'catalog:'
+  '@types/react-dom': 'catalog:'
+  '@brave/brave-ui>styled-components': 'catalog:'
+
+peerDependencyRules:
+  allowedVersions:
+    utf-8-validate: '6'
+
+pmOnFail: ignore
+
+savePrefix: ''
+
+verifyDepsBeforeRun: false
