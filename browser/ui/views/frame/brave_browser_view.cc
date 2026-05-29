@@ -440,7 +440,7 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Panel has different border per horizontal alignment.
   side_panel_->UpdateBorder();
-#endif
+#endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 

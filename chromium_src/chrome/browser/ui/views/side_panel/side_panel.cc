@@ -47,6 +47,10 @@ void SidePanel::SetRoundedBorderEnabled(bool enabled) {
 }
 
 void SidePanel::UpdateBorder() {
+  // To make sure |horizontal_alignemnt_| refreshed before using
+  // IsRightAligned().
+  UpdateHorizontalAlignment();
+
   const int header_top_inset =
       header_view_ ? header_view_->GetPreferredSize().height() : 0;
   gfx::Insets insets;

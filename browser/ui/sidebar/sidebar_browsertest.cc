@@ -58,6 +58,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -2253,6 +2254,74 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   }));
   RunScheduledLayouts();
   verify_state(FROM_HERE, /*rounded_corners=*/false);
+}
+
+// Verify that the panel border insets follow the sidebar's horizontal
+// alignment. Flipping kSidePanelHorizontalAlignment runs through
+// BraveBrowserView::UpdateSideBarHorizontalAlignment(), which calls
+// SidePanel::UpdateBorder(). The content-facing edge owns the separator/margin
+// and the outer edge owns the rounded-corner gap, so left alignment is the
+// mirror image of the default right alignment.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       SidebarV2BorderInsetsFollowAlignment) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* side_panel = browser_view->side_panel();
+  side_panel->DisableAnimationsForTesting();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
+
+  // When right-aligned the content-facing edge is the left and the outer edge
+  // is the right; when left-aligned the two are mirrored.
+  auto verify_state = [&](const base::Location& loc, bool right_aligned,
+                          bool rounded_corners) {
+    SCOPED_TRACE(loc.ToString());
+    const gfx::Insets insets = side_panel->GetInsets();
+    const int content_side = right_aligned ? insets.left() : insets.right();
+    const int outer_side = right_aligned ? insets.right() : insets.left();
+    if (rounded_corners) {
+      EXPECT_EQ(0, content_side)
+          << "rounded: no content-side inset (content view owns its margin)";
+      EXPECT_EQ(kRoundedCornersContentsViewMargin, outer_side)
+          << "rounded: outer-side gap for visual separation from window chrome";
+    } else {
+      EXPECT_EQ(1, content_side)
+          << "plain: 1px separator on the content-facing side";
+      EXPECT_EQ(0, outer_side) << "plain: no outer-side inset";
+    }
+  };
+
+  // Default: right-aligned.
+  ASSERT_TRUE(side_panel->IsRightAligned());
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  verify_state(FROM_HERE, /*right_aligned=*/true, /*rounded_corners=*/true);
+
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  verify_state(FROM_HERE, /*right_aligned=*/true, /*rounded_corners=*/false);
+
+  // Flip to left-aligned while visible. This drives
+  // UpdateSideBarHorizontalAlignment() -> SidePanel::UpdateBorder().
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  ASSERT_FALSE(side_panel->IsRightAligned());
+
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  verify_state(FROM_HERE, /*right_aligned=*/false, /*rounded_corners=*/true);
+
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  verify_state(FROM_HERE, /*right_aligned=*/false, /*rounded_corners=*/false);
+
+  // Flip back to right-aligned while visible to exercise the reverse
+  // transition.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  ASSERT_TRUE(side_panel->IsRightAligned());
+  RunScheduledLayouts();
+  verify_state(FROM_HERE, /*right_aligned=*/true, /*rounded_corners=*/false);
 }
 
 // Regression test: the top container separator must remain visible when a side
