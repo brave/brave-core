@@ -20,6 +20,12 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveBlockScreenFingerprinting);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveGlobalPrivacyControl);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveRoundTimeStamps);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictEventSourcePool);
+// TODO(https://github.com/brave/brave-browser/issues/55927): This was
+// originally started with only WebGL fingerprinting protections, but it got
+// trickled over to WebGPU as well. Consider updating the name here to be
+// reflective of both webgl and webgpu protections, taking into account any
+// running experiments such as
+// https://github.com/brave/brave-variations/blob/main/studies/WebGLBalancedFingerprintingProtection.json5
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(
     kWebGLBalancedFingerprintingProtection);
 

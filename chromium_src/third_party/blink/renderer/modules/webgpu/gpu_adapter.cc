@@ -5,15 +5,21 @@
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
 
+namespace {
+// This class allows to scrub the various device identifiers in the
+// GPUAdapterInfo depending on the farbling level.
 class BraveScrubWebGpuAdapterInfo {
  public:
   BraveScrubWebGpuAdapterInfo(ExecutionContext* context,
                               String& vendor,
                               String& architecture,
                               String& device) {
+    // TODO(https://github.com/brave/brave-browser/issues/55927): Update
+    // BRAVE_WEBCOMPAT_WEBGL to BRAVE_WEBCOMPAT_WEBGPU when we have the support.
     BraveFarblingLevel level = brave::GetBraveFarblingLevelFor(
         context, ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
         BraveFarblingLevel::OFF);
@@ -38,6 +44,7 @@ class BraveScrubWebGpuAdapterInfo {
 
   ~BraveScrubWebGpuAdapterInfo() = default;
 };
+}  // namespace
 
 }  // namespace blink
 
