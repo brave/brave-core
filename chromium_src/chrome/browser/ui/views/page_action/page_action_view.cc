@@ -29,16 +29,11 @@ void MaybeOverrideBorder(const page_actions::PageActionModelInterface* source,
 #define GetMinimumSize GetMinimumSize_Chromium
 #define OnNewActiveController OnNewActiveController_Chromium
 #define OnPageActionModelChanged OnPageActionModelChanged_Chromium
-#define BRAVE_PAGE_ACTION_VIEW_UPDATE_BORDER                           \
-  MaybeOverrideBorder(                                                 \
-      observation_.IsObserving() ? observation_.GetSource() : nullptr, \
-      border_insets);
 
 // Want to use default color even it's expanded.
 #define SetUseTonalColorsWhenExpanded(...) SetUseTonalColorsWhenExpanded(false)
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
 
-#undef BRAVE_PAGE_ACTION_VIEW_UPDATE_BORDER
 #undef SetUseTonalColorsWhenExpanded
 #undef OnPageActionModelChanged
 #undef OnNewActiveController
