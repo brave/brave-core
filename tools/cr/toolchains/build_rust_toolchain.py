@@ -41,13 +41,15 @@ vpython3 build_rust_toolchain.py \
 ```
 
 The output of this script is a .tar.xz archive containing two artifacts built
-against the Chromium-managed LLVM/Clang installation:
+against the Chromium-managed LLVM/Clang installation.  Members are stored at
+paths relative to a Rust toolchain root, so the archive can be extracted
+directly over `src/third_party/rust-toolchain`:
 
-  * rust-lld  — Rust's copy of the LLD linker, taken from the Chromium-built
-                LLVM install tree (`RUST_HOST_LLVM_INSTALL_DIR/bin/lld`).
-  * wasm32-unknown-unknown  — the stage-1 standard-library sysroot for the bare-
-                              metal WebAssembly target, taken from the Rust
-                              bootstrap build tree
+  * bin/rust-lld  — Rust's copy of the LLD linker, taken from the Chromium-built
+                    LLVM install tree (`RUST_HOST_LLVM_INSTALL_DIR/bin/lld`).
+  * lib/rustlib/wasm32-unknown-unknown  — the stage-1 standard-library sysroot
+                              for the bare-metal WebAssembly target, taken from
+                              the Rust bootstrap build tree
                               (`RUST_BUILD_DIR/<triple>/stage1/lib/rustlib/`).
 
 The output archive is named:
@@ -128,7 +130,8 @@ import yaml
 # Filename of the LLVM linker binary produced by the Chromium LLVM build.
 LLD = 'lld' + ('.exe' if sys.platform == 'win32' else '')
 
-# Name under which the LLD binary is stored inside the output archive.
+# Basename under which the LLD binary is stored inside the output archive (its
+# full archive path is RUST_LLD_ARCNAME).
 RUST_LLD = f'rust-{LLD}'
 
 # Filename of the standalone MSVC-style librarian produced by the LLVM build.
@@ -142,6 +145,17 @@ LLVM_LIB = 'llvm-lib.exe'
 # Rust target triple for the bare-metal WebAssembly target.  Included in the
 # build so that Chromium can compile Rust code targeting WebAssembly.
 WASM32_UNKNOWN_UNKNOWN = 'wasm32-unknown-unknown'
+
+# Member paths for each artifact inside the output archive, laid out relative
+# to a Rust toolchain root (i.e. `src/third_party/rust-toolchain`).  The archive
+# mirrors the final on-disk layout so a consumer can extract it straight over
+# the toolchain directory without knowing anything about its contents — no
+# per-file moves and no platform-specific name handling on the client side.
+# Forward slashes are used deliberately: they are the portable tar separator on
+# every platform.
+RUST_LLD_ARCNAME = f'bin/{RUST_LLD}'
+WASM32_ARCNAME = f'lib/rustlib/{WASM32_UNKNOWN_UNKNOWN}'
+LLVM_LIB_ARCNAME = f'bin/{LLVM_LIB}'
 
 # Relative path (within tools/rust/) of the Rust bootstrap configuration
 # template. build_rust.py generates config.toml from this file.
@@ -243,9 +257,9 @@ class ToolchainBuilder:
        archive from two sources inside the build tree:
 
        * The `lld` binary from `RUST_HOST_LLVM_INSTALL_DIR/bin/`,
-         stored as `rust-lld` in the archive.
+         stored as `bin/rust-lld` in the archive.
        * The `wasm32-unknown-unknown` standard-library sysroot directory
-         from the stage-1 rustlib output, stored verbatim.
+         from the stage-1 rustlib output, stored under `lib/rustlib/`.
 
     Phases 1 and 2 are wrapped in `_temporary_config_toml_template_edits`,
     which appends a `[target.wasm32-unknown-unknown]` stanza to
@@ -700,19 +714,21 @@ class ToolchainBuilder:
 
         Returns the absolute path of the archive on disk.
 
-        The archive (named via `_package_name()`) contains:
+        Members are laid out relative to a Rust toolchain root, mirroring the
+        final on-disk layout under `src/third_party/rust-toolchain`, so the
+        archive can be extracted straight over the toolchain directory:
 
-        * `rust-lld` — the LLD linker binary from
+        * `bin/rust-lld[.exe]` — the LLD linker binary from
           `RUST_HOST_LLVM_INSTALL_DIR/bin/lld[.exe]`.  Rust's toolchain ships
           its own copy of LLD under this name so that `rustc` can link without
           requiring a system linker.
-        * `wasm32-unknown-unknown/` — the stage-1 standard-library sysroot
-          directory located at
+        * `lib/rustlib/wasm32-unknown-unknown/` — the stage-1 standard-library
+          sysroot directory located at
           `RUST_BUILD_DIR/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/`.
           This directory contains the precompiled `core`, `alloc`, and `std`
           libraries needed to compile Rust code for the bare-metal WebAssembly
           target.
-        * `llvm-lib.exe` (Windows only) — the standalone MSVC-style
+        * `bin/llvm-lib.exe` (Windows only) — the standalone MSVC-style
           librarian from `RUST_HOST_LLVM_INSTALL_DIR/bin/llvm-lib.exe`. Shipping
           this binary allows us to point AR straight at it, matching the
           upstream `tools/rust/config.toml.template` pattern
@@ -728,11 +744,11 @@ class ToolchainBuilder:
 
         logging.info('Creating output archive at %s', output_archive)
         with tarfile.open(output_archive, 'w:xz') as tar:
-            tar.add(llvm_bin / LLD, arcname=RUST_LLD)
+            tar.add(llvm_bin / LLD, arcname=RUST_LLD_ARCNAME)
             tar.add(stage1_output_path / WASM32_UNKNOWN_UNKNOWN,
-                    arcname=WASM32_UNKNOWN_UNKNOWN)
+                    arcname=WASM32_ARCNAME)
             if sys.platform == 'win32':
-                tar.add(llvm_bin / LLVM_LIB, arcname=LLVM_LIB)
+                tar.add(llvm_bin / LLVM_LIB, arcname=LLVM_LIB_ARCNAME)
         return output_archive
 
     def _bootstrap_depot_tools(self):
