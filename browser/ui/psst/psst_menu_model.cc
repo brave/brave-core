@@ -6,7 +6,7 @@
 #include "brave/browser/ui/psst/psst_menu_model.h"
 
 #include "brave/app/brave_command_ids.h"
-#include "components/grit/brave_components_strings.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace psst {

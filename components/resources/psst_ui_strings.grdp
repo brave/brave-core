@@ -21,14 +21,4 @@
     <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED" formatter_data="webui=Psst" desc="Common failed state text for PSST consent dialog tasks, displayed when the whole operation broken and could not be completed">
         Task completion failed
     </message>
-    <!-- PSST context menu -->
-    <message name="IDS_IDC_PSST_LOCATION_BAR_BTN_TOOLTIP" desc="Privacy Settings Suggestion Tool (PSST) location bar's button tooltip text.">
-        Privacy Settings Suggestion Tool
-    </message>
-    <message name="IDS_IDC_PSST_DONT_SHOW_FOR_THIS_SITE" desc="Menu item label for the PSST action menu for the current site, if pressed, disables the Privacy Settings Suggestion Tool (PSST) from showing suggestions for the current site.">
-        Don't show for this site
-    </message>
-    <message name="IDS_IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING" desc="Menu item label for the PSST action menu for the current site, if pressed, disables the Privacy Settings Suggestion Tool (PSST) from tuning privacy settings.">
-        Disable Privacy settings tuning
-    </message>
 </grit-part>
