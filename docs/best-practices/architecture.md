@@ -4,7 +4,8 @@
 
 ## Chromium Dependency Layer Hierarchy
 
-All Chromium code is organized into layers with strict downward-only dependencies. **Code in a lower layer must never depend on a higher layer.**
+All Chromium code is organized into layers with strict downward-only
+dependencies. **Code in a lower layer must never depend on a higher layer.**
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -21,11 +22,16 @@ All Chromium code is organized into layers with strict downward-only dependencie
 ```
 
 **Key rules:**
+
 - Dependencies flow **downward only** — never upward
-- `//components` is for optional features shared across multiple embedders (Chrome, Android WebView, iOS, etc.)
-- Components may depend on `//content`, `//net`, `//base`, and other components — but never on embedder code (`//chrome`, `//android_webview`)
-- Components shared with iOS must either have **zero `//content` dependencies** or use a **layered component structure** (`core/` + `content/`)
-- In Brave: `brave/browser/` is the embedder layer, `brave/components/` is the components layer. The same downward-only rules apply.
+- `//components` is for optional features shared across multiple embedders
+  (Chrome, Android WebView, iOS, etc.)
+- Components may depend on `//content`, `//net`, `//base`, and other components
+  — but never on embedder code (`//chrome`, `//android_webview`)
+- Components shared with iOS must either have **zero `//content` dependencies**
+  or use a **layered component structure** (`core/` + `content/`)
+- In Brave: `brave/browser/` is the embedder layer, `brave/components/` is the
+  components layer. The same downward-only rules apply.
 
 ---
 
@@ -33,11 +39,15 @@ All Chromium code is organized into layers with strict downward-only dependencie
 
 ## ❌ No Layering Violations - Components Cannot Depend on Browser
 
-**Code in `components/` must never use `g_browser_process` or depend on `brave/browser/`.**
+**Code in `components/` must never use `g_browser_process` or depend on
+`brave/browser/`.**
 
-This is a Chromium layering violation. Components are lower-level and must not reference browser-layer code. Fix by passing dependencies via injection (constructor params, `Init()` methods, callbacks).
+This is a Chromium layering violation. Components are lower-level and must not
+reference browser-layer code. Fix by passing dependencies via injection
+(constructor params, `Init()` methods, callbacks).
 
 **BAD:**
+
 ```cpp
 // ❌ WRONG - components/ code using g_browser_process
 // In components/p3a/p3a_service.cc
@@ -48,6 +58,7 @@ void P3AService::Init() {
 ```
 
 **GOOD:**
+
 ```cpp
 // ✅ CORRECT - dependency injected via Init()
 // In components/p3a/p3a_service.cc
@@ -57,10 +68,13 @@ void P3AService::Init(
 }
 ```
 
-Similarly, code in `components/safe_browsing/` cannot have `brave/browser/` deps. Separate browser-dependent callbacks from component code.
+Similarly, code in `components/safe_browsing/` cannot have `brave/browser/`
+deps. Separate browser-dependent callbacks from component code.
 
 **Specific rules:**
-- Never use `Profile` in components - pass `PrefService` instead (use `user_prefs::UserPrefs::Get(browser_context)`)
+
+- Never use `Profile` in components - pass `PrefService` instead (use
+  `user_prefs::UserPrefs::Get(browser_context)`)
 - Never include `brave/browser/` or `chrome/browser/` from `components/`
 - Use `BrowserContext` instead of `Profile` in components
 
@@ -70,7 +84,10 @@ Similarly, code in `components/safe_browsing/` cannot have `brave/browser/` deps
 
 ## ✅ Pass the Most Specific Dependency, Not "Bag of Stuff" Objects
 
-**Always pass the most fundamental object a function actually needs, not a broader object it could extract it from.** This follows from the Chromium componentization cookbook: "Pass the most fundamental objects possible, rather than passing more complex 'everything' or 'bag of stuff' objects."
+**Always pass the most fundamental object a function actually needs, not a
+broader object it could extract it from.** This follows from the Chromium
+componentization cookbook: "Pass the most fundamental objects possible, rather
+than passing more complex 'everything' or 'bag of stuff' objects."
 
 ```cpp
 // ❌ WRONG - passing Profile when only prefs are needed
@@ -85,9 +102,11 @@ void MyComponent::Init(PrefService* prefs) {
 ```
 
 Common substitutions:
+
 - `Profile*` → `PrefService*` (when only prefs are needed)
 - `Profile*` → `BrowserContext*` (in components)
-- `BrowserContext*` → `scoped_refptr<URLLoaderFactory>` (when only network is needed)
+- `BrowserContext*` → `scoped_refptr<URLLoaderFactory>` (when only network is
+  needed)
 
 ---
 
@@ -95,11 +114,16 @@ Common substitutions:
 
 ## ✅ Prefer Internal Feature Guards Over External Ifdefs
 
-**Code should handle disabled features internally rather than requiring external `#ifdef` guards.**
+**Code should handle disabled features internally rather than requiring external
+`#ifdef` guards.**
 
-When a feature can be disabled, prefer making the factory/service return null or no-op when disabled, rather than requiring callers to wrap every usage in `#ifdef` guards. Scattered buildflags lead to missing deps and maintenance burden.
+When a feature can be disabled, prefer making the factory/service return null or
+no-op when disabled, rather than requiring callers to wrap every usage in
+`#ifdef` guards. Scattered buildflags lead to missing deps and maintenance
+burden.
 
 **BAD:**
+
 ```cpp
 // ❌ WRONG - external ifdef guards everywhere
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -109,6 +133,7 @@ When a feature can be disabled, prefer making the factory/service return null or
 ```
 
 **GOOD:**
+
 ```cpp
 // ✅ CORRECT - factory handles disabled state internally
 auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
@@ -125,9 +150,12 @@ if (rewards_service) {  // Returns null when disabled
 
 **Don't use `shared_ptr` to take ownership of something you don't own.**
 
-Using `shared_ptr` on memory owned by another class causes crashes when the `shared_ptr` frees memory that is still referenced elsewhere. Avoid shared pointers unless there is a strong reason for shared ownership.
+Using `shared_ptr` on memory owned by another class causes crashes when the
+`shared_ptr` frees memory that is still referenced elsewhere. Avoid shared
+pointers unless there is a strong reason for shared ownership.
 
 **BAD:**
+
 ```cpp
 // ❌ WRONG - taking ownership of an unowned resource
 void Init(network::ResourceRequest& request) {
@@ -137,6 +165,7 @@ void Init(network::ResourceRequest& request) {
 ```
 
 **GOOD:**
+
 ```cpp
 // ✅ CORRECT - pass by reference or raw pointer for unowned resources
 void Init(const network::ResourceRequest& request) {
@@ -150,7 +179,9 @@ void Init(const network::ResourceRequest& request) {
 
 ## Thread Safety - Service Method Calls
 
-**Calling service methods from the wrong thread causes crashes.** Always verify which thread a method expects to be called on. This is especially important for ad-block and shields services.
+**Calling service methods from the wrong thread causes crashes.** Always verify
+which thread a method expects to be called on. This is especially important for
+ad-block and shields services.
 
 ---
 
@@ -158,7 +189,9 @@ void Init(const network::ResourceRequest& request) {
 
 ## ❌ Never Access Internal/Vendor Headers Directly
 
-**Never use `#include "brave/vendor/..."` to access internal headers.** Internal headers are not part of the public API and should not be accessed using full paths to bypass visibility.
+**Never use `#include "brave/vendor/..."` to access internal headers.** Internal
+headers are not part of the public API and should not be accessed using full
+paths to bypass visibility.
 
 ```cpp
 // ❌ WRONG - accessing internal vendor headers directly
@@ -174,7 +207,9 @@ void Init(const network::ResourceRequest& request) {
 
 ## ✅ Use Pref Change Registrar Instead of Custom Observers
 
-**Use the existing `pref_change_registrar_` pattern for observing pref changes.** Don't create custom observer interfaces when the pref change registrar already handles this.
+**Use the existing `pref_change_registrar_` pattern for observing pref
+changes.** Don't create custom observer interfaces when the pref change
+registrar already handles this.
 
 ```cpp
 // ❌ WRONG - custom observer for pref changes
@@ -188,7 +223,8 @@ pref_change_registrar_.Add(
     base::BindRepeating(&MyClass::OnPrefChanged, base::Unretained(this)));
 ```
 
-Also: check if the superclass already has a `pref_change_registrar_` before adding a new one.
+Also: check if the superclass already has a `pref_change_registrar_` before
+adding a new one.
 
 ---
 
@@ -196,7 +232,8 @@ Also: check if the superclass already has a `pref_change_registrar_` before addi
 
 ## ❌ Don't Duplicate Pref Storage
 
-**Don't cache pref values in member variables when you can just read the pref at call time.**
+**Don't cache pref values in member variables when you can just read the pref at
+call time.**
 
 ```cpp
 // ❌ WRONG - duplicating pref storage
@@ -218,7 +255,8 @@ bool IsOptedIn() { return prefs_->GetBoolean(kOptedIn); }
 
 ### ✅ Use DependsOn for Factory Dependencies
 
-**If your KeyedServiceFactory depends on other services, declare it with `DependsOn`.** This ensures proper initialization order.
+**If your KeyedServiceFactory depends on other services, declare it with
+`DependsOn`.** This ensures proper initialization order.
 
 ```cpp
 MyServiceFactory::MyServiceFactory()
@@ -232,13 +270,15 @@ MyServiceFactory::MyServiceFactory()
 
 ### ✅ Return Null for Incognito Profiles
 
-**If a service shouldn't be active in incognito, return null from `GetForProfile` rather than overriding `GetBrowserContextToUse`.**
+**If a service shouldn't be active in incognito, return null from
+`GetForProfile` rather than overriding `GetBrowserContextToUse`.**
 
 <a id="ARCH-013"></a>
 
 ### ❌ Components Don't Need Their Own Component Manager
 
-**Each component does not need its own component manager.** Use a component installer policy instead.
+**Each component does not need its own component manager.** Use a component
+installer policy instead.
 
 ---
 
@@ -246,7 +286,8 @@ MyServiceFactory::MyServiceFactory()
 
 ## ✅ Use Abstract Base Classes to Avoid Layering Violations
 
-**When browser-layer code needs to be accessed from components, create an abstract base class in components and implement it in browser.**
+**When browser-layer code needs to be accessed from components, create an
+abstract base class in components and implement it in browser.**
 
 ```cpp
 // ✅ In components/ - abstract interface
@@ -269,7 +310,10 @@ Then cast to the abstract type in components without a layering violation.
 
 ## ❌ Don't Initialize Services for Wrong Profile Types
 
-**Never initialize services for profile types they shouldn't support.** For example, never initialize Rewards service for incognito profiles. The `GetBrowserContextToUse` method in factories must correctly return null for unsupported profile types.
+**Never initialize services for profile types they shouldn't support.** For
+example, never initialize Rewards service for incognito profiles. The
+`GetBrowserContextToUse` method in factories must correctly return null for
+unsupported profile types.
 
 ```cpp
 // ❌ WRONG - returns the profile even for incognito
@@ -293,9 +337,12 @@ content::BrowserContext* GetBrowserContextToUse(
 
 ## ✅ Reuse Existing Services and Singletons
 
-**Check for existing services and singletons before creating new ones.** Don't create duplicate singletons for the same purpose (e.g., don't create a new locale helper when `brave_ads::LocaleHelper` already exists).
+**Check for existing services and singletons before creating new ones.** Don't
+create duplicate singletons for the same purpose (e.g., don't create a new
+locale helper when `brave_ads::LocaleHelper` already exists).
 
-**Use observers for decoupled notifications instead of adding direct cross-service calls.**
+**Use observers for decoupled notifications instead of adding direct
+cross-service calls.**
 
 ---
 
@@ -303,7 +350,8 @@ content::BrowserContext* GetBrowserContextToUse(
 
 ## ✅ Encapsulate Cleanup in the Owning Class
 
-**Cleanup logic (like deleting files) should be encapsulated in the class that owns the resource.** Don't spread cleanup code across multiple callers.
+**Cleanup logic (like deleting files) should be encapsulated in the class that
+owns the resource.** Don't spread cleanup code across multiple callers.
 
 ```cpp
 // ❌ WRONG - caller handles cleanup details
@@ -320,7 +368,8 @@ tor_client_updater()->Cleanup();
 
 ## ✅ File Organization by Component
 
-**Group files by component, not by platform.** For example, `brave_rewards/android/` is preferred over `android/rewards/`.
+**Group files by component, not by platform.** For example,
+`brave_rewards/android/` is preferred over `android/rewards/`.
 
 ```
 # ❌ WRONG
@@ -330,7 +379,8 @@ brave/browser/android/rewards/brave_rewards_native_worker.cc
 brave/browser/brave_rewards/android/brave_rewards_native_worker.cc
 ```
 
-This keeps related code together and is consistent with Chromium patterns like `chrome/browser/history/android/`.
+This keeps related code together and is consistent with Chromium patterns like
+`chrome/browser/history/android/`.
 
 ---
 
@@ -338,7 +388,8 @@ This keeps related code together and is consistent with Chromium patterns like `
 
 ## ✅ Exclude Entire Feature API from GN When Disabled
 
-**When a feature is disabled via buildflag, exclude the entire API from the build.** Don't leave API declarations with no implementation.
+**When a feature is disabled via buildflag, exclude the entire API from the
+build.** Don't leave API declarations with no implementation.
 
 ```gn
 # ❌ WRONG - API always built, implementation conditionally empty
@@ -360,9 +411,14 @@ if (brave_wallet_enabled) {
 
 ## ✅ Use Friend Class for Test/Private Access
 
-**When tests or other classes need access to private members, use `friend` declarations instead of making methods public or protected.** This rule is about bypassing access control for convenience. It does not apply to normal inheritance where a subclass calls inherited protected methods or exposes new public methods that delegate to them.
+**When tests or other classes need access to private members, use `friend`
+declarations instead of making methods public or protected.** This rule is about
+bypassing access control for convenience. It does not apply to normal
+inheritance where a subclass calls inherited protected methods or exposes new
+public methods that delegate to them.
 
-This rule does not apply to `*ForTesting()` methods, which are an accepted Chromium convention for exposing test-only accessors.
+This rule does not apply to `*ForTesting()` methods, which are an accepted
+Chromium convention for exposing test-only accessors.
 
 ```cpp
 // ❌ WRONG - making methods public just for testing
@@ -375,7 +431,9 @@ private:
   void InternalMethod();
 ```
 
-To add a friend declaration to an upstream class, use a `#define` in a chromium_src header override that piggybacks the friend declaration onto an existing method name:
+To add a friend declaration to an upstream class, use a `#define` in a
+chromium_src header override that piggybacks the friend declaration onto an
+existing method name:
 
 ```cpp
 // chromium_src/chrome/browser/extensions/component_loader.h
@@ -394,7 +452,9 @@ To add a friend declaration to an upstream class, use a `#define` in a chromium_
 
 ## ✅ Callbacks for Queries, Observers for State Changes
 
-**Observer methods should only be triggered by state changes (Set/Create/Delete), never by query responses (Get/Fetch).** Use callbacks for query responses.
+**Observer methods should only be triggered by state changes
+(Set/Create/Delete), never by query responses (Get/Fetch).** Use callbacks for
+query responses.
 
 ```cpp
 // ❌ WRONG - observer triggered by a query
@@ -424,7 +484,8 @@ void RewardsService::SetRecurringDonation(amount) {
 
 ## ❌ Don't Expose Internal Library Types in Public Headers
 
-**Never expose internal implementation types in public component headers.** Use the component's public API types (e.g., Mojo types) instead.
+**Never expose internal implementation types in public component headers.** Use
+the component's public API types (e.g., Mojo types) instead.
 
 ```cpp
 // ❌ WRONG - internal database types in public rewards header
@@ -442,7 +503,8 @@ void DoSomething(mojom::PublisherInfoPtr info);
 
 ## ✅ source_set Name Should Match Directory
 
-**GN source_set names should match their directory name.** This makes paths predictable and readable.
+**GN source_set names should match their directory name.** This makes paths
+predictable and readable.
 
 ```gn
 # ❌ WRONG
@@ -461,7 +523,10 @@ source_set("browser") { ... }
 
 ## ✅ Use `CHECK_IS_TEST` for Null Checks That Should Only Occur in Tests
 
-**When a pointer should never be null in production but may be null in certain test configurations, use `CHECK_IS_TEST()` before the null check.** This documents that the null case is test-only and prevents confusion about whether null is a valid production state.
+**When a pointer should never be null in production but may be null in certain
+test configurations, use `CHECK_IS_TEST()` before the null check.** This
+documents that the null case is test-only and prevents confusion about whether
+null is a valid production state.
 
 ```cpp
 // ❌ WRONG - ambiguous null check
@@ -481,7 +546,9 @@ if (!service) {
 
 ## ✅ Pass Dependencies via Constructors, Not Setter Callbacks
 
-**When a service needs a dependency, pass it through the constructor rather than using a separate `Set*Callback` method.** Constructor injection makes dependencies explicit and avoids confusing initialization ordering.
+**When a service needs a dependency, pass it through the constructor rather than
+using a separate `Set*Callback` method.** Constructor injection makes
+dependencies explicit and avoids confusing initialization ordering.
 
 ```cpp
 // ❌ WRONG - setting callback from an unrelated factory
@@ -502,7 +569,10 @@ BraveVPNConnectionManager::BraveVPNConnectionManager(
 
 ## ✅ Use `ServiceIsNULLWhileTesting` for Optional Keyed Services
 
-**When a `KeyedService` should not be created during unit tests that don't provide the required dependencies, override `ServiceIsNULLWhileTesting()` to return `true` in the factory.** This is cleaner than scattering null checks throughout the codebase.
+**When a `KeyedService` should not be created during unit tests that don't
+provide the required dependencies, override `ServiceIsNULLWhileTesting()` to
+return `true` in the factory.** This is cleaner than scattering null checks
+throughout the codebase.
 
 ```cpp
 // ❌ WRONG - null checks scattered everywhere
@@ -522,7 +592,9 @@ bool MyServiceFactory::ServiceIsNULLWhileTesting() const {
 
 ## ❌ Never Call `GetOriginalProfile()` to Bypass Factory Checks
 
-**Never call `GetOriginalProfile()` or similar methods to circumvent factory profile checks.** If a factory returns null for a given profile type, that profile is not supposed to use the service. Respect the factory's decision.
+**Never call `GetOriginalProfile()` or similar methods to circumvent factory
+profile checks.** If a factory returns null for a given profile type, that
+profile is not supposed to use the service. Respect the factory's decision.
 
 ```cpp
 // ❌ WRONG - circumventing factory profile checks
@@ -542,7 +614,10 @@ if (!service)
 
 ## ✅ Use `MaybeCreateForWebContents` for Conditional Tab Helpers
 
-**When a tab helper should not be attached to all web contents (e.g., skipped for incognito or when a feature is disabled), use a static `MaybeCreateForWebContents` method** with the appropriate guards instead of always creating and checking internally.
+**When a tab helper should not be attached to all web contents (e.g., skipped
+for incognito or when a feature is disabled), use a static
+`MaybeCreateForWebContents` method** with the appropriate guards instead of
+always creating and checking internally.
 
 ```cpp
 // ❌ WRONG - always create, check internally
@@ -566,7 +641,9 @@ static void MaybeCreateForWebContents(content::WebContents* web_contents) {
 
 ## ✅ Use `ProfileKeyedServiceFactory` for New Desktop Factories
 
-**New keyed service factories on desktop should inherit from `ProfileKeyedServiceFactory`** rather than the older `BrowserContextKeyedServiceFactory`. See the Brave keyed services documentation.
+**New keyed service factories on desktop should inherit from
+`ProfileKeyedServiceFactory`** rather than the older
+`BrowserContextKeyedServiceFactory`. See the Brave keyed services documentation.
 
 ---
 
@@ -574,13 +651,17 @@ static void MaybeCreateForWebContents(content::WebContents* web_contents) {
 
 ## ✅ Guard Significant or Experimental New Functionality Behind `base::Feature`
 
-**Significant new features and experimental functionality should be guarded behind a `base::Feature` flag** so they can be remotely disabled via Griffin if issues arise. Use judgment -- not every change needs a feature flag. Feature flags are most valuable for:
+**Significant new features and experimental functionality should be guarded
+behind a `base::Feature` flag** so they can be remotely disabled via Griffin if
+issues arise. Use judgment -- not every change needs a feature flag. Feature
+flags are most valuable for:
 
 - Large or complex features with broad impact
 - Experimental or risky functionality that may need to be rolled back
 - Features where remote disabling provides a meaningful safety net
 
-Small, self-contained changes and simple bug fixes typically do not need a runtime feature flag.
+Small, self-contained changes and simple bug fixes typically do not need a
+runtime feature flag.
 
 ```cpp
 // ❌ WRONG - no feature guard, crash can't be remotely disabled
@@ -602,7 +683,9 @@ service->DoSomething();
 
 ## ✅ Unify Platform-Specific Delegates
 
-**When implementing functionality for both Android and desktop, unify the code in a single delegate** rather than duplicating it across platforms. Extract only the platform-specific parts (like tab handling) into the delegate interface.
+**When implementing functionality for both Android and desktop, unify the code
+in a single delegate** rather than duplicating it across platforms. Extract only
+the platform-specific parts (like tab handling) into the delegate interface.
 
 ```cpp
 // ❌ WRONG - duplicated logic
@@ -622,7 +705,9 @@ class UnifiedDelegate {
 
 ## ❌ Don't Silently Fall Back on Unknown Types
 
-**When handling unknown/unsupported types, prefer an explicit error rather than silently falling back to a default.** Silent fallbacks mask bugs and make debugging harder.
+**When handling unknown/unsupported types, prefer an explicit error rather than
+silently falling back to a default.** Silent fallbacks mask bugs and make
+debugging harder.
 
 ```cpp
 // ❌ WRONG - silently treats unknown files as images
@@ -645,7 +730,9 @@ std::optional<FileType> GetFileType(const std::string& mime) {
 
 ## ✅ Separate Lifecycle Events from Data Change Events in Mojo
 
-**A Mojo `Changed` event should only fire when actual data changes occur.** Don't conflate lifecycle events (model loading, listener registration) with data mutation events. Provide separate events.
+**A Mojo `Changed` event should only fire when actual data changes occur.**
+Don't conflate lifecycle events (model loading, listener registration) with data
+mutation events. Provide separate events.
 
 ```cpp
 // ❌ WRONG - Changed fires on initialization, not actual change
@@ -666,7 +753,9 @@ interface BookmarksListener {
 
 ## ✅ Use `base::BarrierCallback` for Parallel Async Aggregation
 
-**Use `base::BarrierCallback` to aggregate results from multiple parallel async operations** rather than manually tracking completion counts. This simplifies multi-callback aggregation.
+**Use `base::BarrierCallback` to aggregate results from multiple parallel async
+operations** rather than manually tracking completion counts. This simplifies
+multi-callback aggregation.
 
 ```cpp
 // ❌ WRONG - manual tracking
@@ -691,7 +780,10 @@ service3->Fetch(barrier);
 
 ## ❌ Mojom Enums Must Be Top-Level When Targeting iOS
 
-**Mojom enums cannot be nested inside mojom structs when the target includes iOS.** The Objective-C++ code generator produces invalid code for nested enums (`common.mojom.objc.mm` build failure). Always define mojom enums at the top level of the `.mojom` file.
+**Mojom enums cannot be nested inside mojom structs when the target includes
+iOS.** The Objective-C++ code generator produces invalid code for nested enums
+(`common.mojom.objc.mm` build failure). Always define mojom enums at the top
+level of the `.mojom` file.
 
 ```mojom
 // ❌ WRONG - nested enum breaks iOS build
@@ -720,7 +812,10 @@ struct ModelConfig {
 
 ## ❌ No Content-Layer Dependencies for iOS-Targeted Components
 
-**Components that must build for iOS (like `brave_wallet`) cannot depend on content-layer types** (`content::WebContents`, `content::BrowserContext`). iOS uses WebKit, not Chromium's content layer. Pass specific dependencies (`PrefService*`, `URLLoaderFactory`) instead.
+**Components that must build for iOS (like `brave_wallet`) cannot depend on
+content-layer types** (`content::WebContents`, `content::BrowserContext`). iOS
+uses WebKit, not Chromium's content layer. Pass specific dependencies
+(`PrefService*`, `URLLoaderFactory`) instead.
 
 ---
 
@@ -728,7 +823,10 @@ struct ModelConfig {
 
 ## ✅ Use Layered Component Structure (`core/` + `content/`) for iOS-Compatible Components
 
-**When a component needs to work on both iOS and content-based platforms, use a layered component structure.** Split the component into `core/` (iOS-compatible, no `//content` dependency) and `content/` (uses `//content` APIs). This follows the Chromium componentization cookbook pattern.
+**When a component needs to work on both iOS and content-based platforms, use a
+layered component structure.** Split the component into `core/` (iOS-compatible,
+no `//content` dependency) and `content/` (uses `//content` APIs). This follows
+the Chromium componentization cookbook pattern.
 
 ```
 components/brave_shields/
@@ -742,6 +840,7 @@ components/brave_shields/
 ```
 
 **Rules:**
+
 - `core/` must never depend on `//content` or `content/` subdirectories
 - `content/` may depend on `core/` and `//content`
 - iOS builds only pull in `core/`
@@ -753,7 +852,10 @@ components/brave_shields/
 
 ## ❌ No Circular Dependencies Between Components
 
-**Component dependencies must form a strictly tree-shaped graph — no circular dependencies.** If component A depends on component B, then B must never depend on A (directly or transitively). Use delegate interfaces or observers to break cycles.
+**Component dependencies must form a strictly tree-shaped graph — no circular
+dependencies.** If component A depends on component B, then B must never depend
+on A (directly or transitively). Use delegate interfaces or observers to break
+cycles.
 
 ---
 
@@ -761,7 +863,9 @@ components/brave_shields/
 
 ## ✅ Service/Decoder Code Belongs in `services/` Not `components/.../browser/`
 
-**Mojo service implementations and data decoders should live in a `services/` directory**, not inside `components/.../browser/`. This follows Chromium conventions and keeps service code at the correct architectural layer.
+**Mojo service implementations and data decoders should live in a `services/`
+directory**, not inside `components/.../browser/`. This follows Chromium
+conventions and keeps service code at the correct architectural layer.
 
 ---
 
@@ -769,12 +873,17 @@ components/brave_shields/
 
 ## ❌ Utility Process Code Must Not Depend on Browser Process Code
 
-**Code that runs in the utility process must never depend on browser process code.** Any code shared between the browser process and the utility process must live in a `common/` directory, not a `browser/` directory.
+**Code that runs in the utility process must never depend on browser process
+code.** Any code shared between the browser process and the utility process must
+live in a `common/` directory, not a `browser/` directory.
 
-This is a multi-process architecture boundary. The utility process (where sandboxed services run) is a separate process from the browser process, and dependency direction must be respected:
+This is a multi-process architecture boundary. The utility process (where
+sandboxed services run) is a separate process from the browser process, and
+dependency direction must be respected:
 
 - `components/.../browser/` — browser process only
-- `components/.../common/` — shared between processes (browser, utility, renderer)
+- `components/.../common/` — shared between processes (browser, utility,
+  renderer)
 - `components/services/...` — utility process service implementations
 
 ```
@@ -791,7 +900,8 @@ deps = [
 ]
 ```
 
-When code needs to be used by both processes, move it from `browser/` to `common/`.
+When code needs to be used by both processes, move it from `browser/` to
+`common/`.
 
 ---
 
@@ -799,7 +909,10 @@ When code needs to be used by both processes, move it from `browser/` to `common
 
 ## ✅ Prefer Static Singleton Over KeyedService When No Profile Dependency
 
-**When a service has no per-profile state and doesn't depend on profile-specific data, use a static singleton with `base::NoDestructor` instead of a `KeyedService`.** KeyedService adds unnecessary complexity when there's no profile dependency.
+**When a service has no per-profile state and doesn't depend on profile-specific
+data, use a static singleton with `base::NoDestructor` instead of a
+`KeyedService`.** KeyedService adds unnecessary complexity when there's no
+profile dependency.
 
 ```cpp
 // ❌ WRONG - KeyedService for profile-independent data
@@ -821,7 +934,9 @@ class ModelListService {
 
 ## ✅ Flag Destructive Pref Operations for UX Review
 
-**Operations that delete user data (clearing preferences, wiping storage) must be flagged for UX review before implementation.** Silent data deletion is a poor user experience and may violate user expectations.
+**Operations that delete user data (clearing preferences, wiping storage) must
+be flagged for UX review before implementation.** Silent data deletion is a poor
+user experience and may violate user expectations.
 
 ---
 
@@ -829,7 +944,9 @@ class ModelListService {
 
 ## ✅ Use Pre-Allocated Vectors for Ordered Async Results
 
-**When aggregating results from multiple parallel async calls that must maintain order, pre-allocate a vector and insert results by index** rather than using a map and sorting later.
+**When aggregating results from multiple parallel async calls that must maintain
+order, pre-allocate a vector and insert results by index** rather than using a
+map and sorting later.
 
 ```cpp
 // ❌ WRONG - map loses original order
@@ -847,7 +964,10 @@ results_[request_index] = std::move(result);
 
 ## ✅ Use Existing Mojom Types Instead of Duplicating in C++
 
-**When mojom types already describe the data shape, use them directly in C++ instead of creating redundant C++ struct types.** Duplicating types creates a synchronization burden and increases the risk of the two definitions drifting apart.
+**When mojom types already describe the data shape, use them directly in C++
+instead of creating redundant C++ struct types.** Duplicating types creates a
+synchronization burden and increases the risk of the two definitions drifting
+apart.
 
 ```cpp
 // ❌ WRONG - redundant C++ struct
@@ -867,7 +987,9 @@ void RegisterTool(mojom::ToolConfigPtr config);
 
 ## ❌ Don't Expose Cache Keys in API Interfaces
 
-**Internal cache keys should not leak into public API interfaces.** Auto-generate unique cache keys internally rather than requiring callers to provide or manage them.
+**Internal cache keys should not leak into public API interfaces.**
+Auto-generate unique cache keys internally rather than requiring callers to
+provide or manage them.
 
 ```cpp
 // ❌ WRONG - caller must know about cache keys
@@ -885,7 +1007,10 @@ void FetchData(const std::string& url, Callback cb);
 
 ## ✅ Reorder Data for UI Presentation on Client Side
 
-**Data reordering for UI presentation (sorting, grouping, prioritizing) belongs in the client/UI layer, not in the core data layer or API response.** The backend should return data in its canonical order; the frontend transforms it for display.
+**Data reordering for UI presentation (sorting, grouping, prioritizing) belongs
+in the client/UI layer, not in the core data layer or API response.** The
+backend should return data in its canonical order; the frontend transforms it
+for display.
 
 ---
 
@@ -893,7 +1018,10 @@ void FetchData(const std::string& url, Callback cb);
 
 ## ✅ Mojom Interface Naming Should Be UI-Framework Agnostic
 
-**When defining Mojom interfaces that could be consumed by different UI frameworks (WebUI, native iOS, etc.), avoid framework-specific naming like "PageHandler".** Use more neutral naming like "UIHandler" to remain consistent and not imply a web-only interface.
+**When defining Mojom interfaces that could be consumed by different UI
+frameworks (WebUI, native iOS, etc.), avoid framework-specific naming like
+"PageHandler".** Use more neutral naming like "UIHandler" to remain consistent
+and not imply a web-only interface.
 
 ```mojom
 // ❌ WRONG - implies web-only
@@ -909,7 +1037,11 @@ interface HistoryUIHandler { ... };
 
 ## ✅ Use Mojo Interfaces for Trusted/Untrusted WebUI Communication
 
-**When communicating between trusted and untrusted WebUI frames, use a mojo interface rather than `postMessage`.** The Chromium documentation advises against `postMessage` across trust boundaries. Only avoid mojo when the frame intentionally executes untrusted code and reducing API surface is a deliberate security choice.
+**When communicating between trusted and untrusted WebUI frames, use a mojo
+interface rather than `postMessage`.** The Chromium documentation advises
+against `postMessage` across trust boundaries. Only avoid mojo when the frame
+intentionally executes untrusted code and reducing API surface is a deliberate
+security choice.
 
 ---
 
@@ -917,7 +1049,9 @@ interface HistoryUIHandler { ... };
 
 ## ✅ Gate UI Restrictions at UI Layer, Not in Core Utility Functions
 
-**UI-specific restrictions should be gated at the UI layer, not in core utility functions.** Coupling core logic (like `IsFeatureEnabled()`) to UI state (like WebUI availability) creates unexpected test failures and tight coupling.
+**UI-specific restrictions should be gated at the UI layer, not in core utility
+functions.** Coupling core logic (like `IsFeatureEnabled()`) to UI state (like
+WebUI availability) creates unexpected test failures and tight coupling.
 
 ```cpp
 // ❌ WRONG - core utility coupled to UI state
@@ -939,7 +1073,10 @@ bool IsZCashShieldedTransactionsEnabled() {
 
 ## ✅ Policy-Disabled Features: Hide UI Entirely
 
-**When a feature is disabled by admin policy with ENFORCED enforcement, hide the UI entirely** rather than just disabling/greying out controls. For RECOMMENDED policies, the UI should still be visible since the user can override. On macOS, `defaults write` creates RECOMMENDED level policies, not MANDATORY.
+**When a feature is disabled by admin policy with ENFORCED enforcement, hide the
+UI entirely** rather than just disabling/greying out controls. For RECOMMENDED
+policies, the UI should still be visible since the user can override. On macOS,
+`defaults write` creates RECOMMENDED level policies, not MANDATORY.
 
 ```cpp
 // ❌ WRONG - just disabling controls
@@ -960,7 +1097,9 @@ if (IsFeatureManaged() &&
 
 ## ✅ Check Value Changed Before Firing State Notifications
 
-**Before calling observer notification methods, check if the value actually changed.** Store the old value, update, then compare. This avoids unnecessary observer notifications and potential re-renders.
+**Before calling observer notification methods, check if the value actually
+changed.** Store the old value, update, then compare. This avoids unnecessary
+observer notifications and potential re-renders.
 
 ```cpp
 // ❌ WRONG - always notifies even when value unchanged
@@ -981,7 +1120,12 @@ if (old_value != visual_content_used_percentage_) {
 
 ## ❌ Avoid Cross-Feature Module Dependencies
 
-**Feature modules should not import classes from other unrelated feature modules.** For example, a VPN feature should not directly depend on classes from the Rewards or Wallet modules. If shared functionality is needed, extract it into a common utility or use an interface/abstraction layer. Cross-feature dependencies create tight coupling that makes features hard to modify or remove independently.
+**Feature modules should not import classes from other unrelated feature
+modules.** For example, a VPN feature should not directly depend on classes from
+the Rewards or Wallet modules. If shared functionality is needed, extract it
+into a common utility or use an interface/abstraction layer. Cross-feature
+dependencies create tight coupling that makes features hard to modify or remove
+independently.
 
 ---
 
@@ -989,7 +1133,11 @@ if (old_value != visual_content_used_percentage_) {
 
 ## ✅ Shared URL Constants Belong in `brave_domains`
 
-**When a URL constant or URL-building function (like a service endpoint) is shared across multiple components with no clear single owner, place it in the `brave_domains:urls` target.** Don't duplicate it in each component, and don't add it to the legacy `brave_constants.h`. For environment-aware URLs, use `GetServicesDomain()` from `brave_domains/service_domains.h`.
+**When a URL constant or URL-building function (like a service endpoint) is
+shared across multiple components with no clear single owner, place it in the
+`brave_domains:urls` target.** Don't duplicate it in each component, and don't
+add it to the legacy `brave_constants.h`. For environment-aware URLs, use
+`GetServicesDomain()` from `brave_domains/service_domains.h`.
 
 ```cpp
 // ❌ WRONG - duplicated across components
@@ -1008,7 +1156,9 @@ GURL GetGate3URL();  // environment-aware, uses GetServicesDomain()
 
 ## ✅ Prefer Non-Optional Arrays Over Optional Arrays in Mojom
 
-**In Mojom interface definitions, prefer a non-optional array (empty for "no items") over an optional array (`array<Type>?`).** Only use optional arrays when `null` has a distinct semantic meaning from "empty."
+**In Mojom interface definitions, prefer a non-optional array (empty for "no
+items") over an optional array (`array<Type>?`).** Only use optional arrays when
+`null` has a distinct semantic meaning from "empty."
 
 ```mojom
 // ❌ AVOID - unless null means something different from empty
@@ -1028,7 +1178,10 @@ struct SearchResult {
 
 ## ❌ Don't Add New Code to `components/l10n/`
 
-**The `components/l10n/` directory is deprecated.** Use Chromium's built-in localization functionality instead. Do not add new files or classes to this directory. If no Chromium equivalent exists for your use case, discuss alternatives before resorting to `components/l10n/`.
+**The `components/l10n/` directory is deprecated.** Use Chromium's built-in
+localization functionality instead. Do not add new files or classes to this
+directory. If no Chromium equivalent exists for your use case, discuss
+alternatives before resorting to `components/l10n/`.
 
 ---
 
@@ -1036,26 +1189,37 @@ struct SearchResult {
 
 ## ✅ Match Feature Scope to the Correct Ownership Primitive
 
-**Every feature must be scoped to exactly one of four ownership primitives: Tab, Browser Window, Profile, or Global.** Choose the narrowest scope that fits the feature's data and lifetime requirements. See [Chromium Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md).
+**Every feature must be scoped to exactly one of four ownership primitives: Tab,
+Browser Window, Profile, or Global.** Choose the narrowest scope that fits the
+feature's data and lifetime requirements. See
+[Chromium Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md).
 
-| Scope | Owner | Examples |
-|-------|-------|----------|
-| **Tab** | `TabFeatures` | Find-in-page, print preview, page actions |
-| **Browser Window** | `BrowserWindowFeatures` | Omnibox, bookmarks bar, vertical tabs |
-| **Profile** | `BrowserContextKeyedServiceFactory` | Rewards, Wallet, sync services |
-| **Global** | `GlobalFeatures` | Process-wide features spanning profiles |
+| Scope              | Owner                               | Examples                                  |
+| ------------------ | ----------------------------------- | ----------------------------------------- |
+| **Tab**            | `TabFeatures`                       | Find-in-page, print preview, page actions |
+| **Browser Window** | `BrowserWindowFeatures`             | Omnibox, bookmarks bar, vertical tabs     |
+| **Profile**        | `BrowserContextKeyedServiceFactory` | Rewards, Wallet, sync services            |
+| **Global**         | `GlobalFeatures`                    | Process-wide features spanning profiles   |
 
 **Rules:**
-- Tab-scoped features must not store browser-window state (tabs can move between windows)
-- Browser-window-scoped features must not store profile state (multiple windows can share a profile)
-- Profile-scoped features use `KeyedServiceFactory` with proper `DependsOn` declarations
+
+- Tab-scoped features must not store browser-window state (tabs can move between
+  windows)
+- Browser-window-scoped features must not store profile state (multiple windows
+  can share a profile)
+- Profile-scoped features use `KeyedServiceFactory` with proper `DependsOn`
+  declarations
 - Global features are rare; most features should be profile-scoped or narrower
 
 <a id="ARCH-066"></a>
 
 ## ✅ Swap-and-Process for Reentrancy Protection
 
-**When processing a queue of pending callbacks or items, swap the queue into a local variable before iterating.** This protects against reentrancy — if processing an item triggers code that adds new items to the queue, those new items won't be processed in the current iteration and won't cause infinite loops.
+**When processing a queue of pending callbacks or items, swap the queue into a
+local variable before iterating.** This protects against reentrancy — if
+processing an item triggers code that adds new items to the queue, those new
+items won't be processed in the current iteration and won't cause infinite
+loops.
 
 ```cpp
 // ❌ WRONG - reentrancy can corrupt the iteration
@@ -1077,9 +1241,12 @@ for (auto& callback : callbacks) {
 
 ## ❌ Don't Store Window-Scoped State on Tab-Scoped Objects
 
-**Tab-scoped features must never hold references to browser-window-level objects.** Tabs can move between browser windows (drag-and-drop, "move to new window"), so storing a `Browser*` or `BrowserWindowInterface*` on a tab feature causes use-after-free or stale-reference bugs.
+**Tab-scoped features must never hold references to browser-window-level
+objects.** Tabs can move between browser windows (drag-and-drop, "move to new
+window"), so storing a `Browser*` or `BrowserWindowInterface*` on a tab feature
+causes use-after-free or stale-reference bugs.
 
-```cpp
+````cpp
 // ❌ WRONG - tab feature holding a browser pointer
 class FooTabFeature {
   raw_ptr<Browser> browser_;  // Stale when tab moves to another window!
@@ -1110,7 +1277,7 @@ if (items.empty()) {
   return;
 }
 auto barrier = base::BarrierCallback<Result>(items.size(), std::move(done_callback));
-```
+````
 
 ---
 
@@ -1118,7 +1285,10 @@ auto barrier = base::BarrierCallback<Result>(items.size(), std::move(done_callba
 
 ## ❌ Avoid Lazy Instantiation of Features
 
-**Features should be eagerly created with explicit lifetime management, not lazily instantiated on first use.** Lazy instantiation causes inconsistent initialization order between production and tests, making bugs hard to reproduce.
+**Features should be eagerly created with explicit lifetime management, not
+lazily instantiated on first use.** Lazy instantiation causes inconsistent
+initialization order between production and tests, making bugs hard to
+reproduce.
 
 ```cpp
 // ❌ WRONG - lazy instantiation
@@ -1136,13 +1306,17 @@ class MyServiceFactory : public ProfileKeyedServiceFactory {
 };
 ```
 
-For tab/window features, create them in `TabFeatures::Init()` or `BrowserWindowFeatures::Init()` respectively.
+For tab/window features, create them in `TabFeatures::Init()` or
+`BrowserWindowFeatures::Init()` respectively.
 
 <a id="ARCH-068"></a>
 
 ## ✅ New P3A Metrics Require Privacy Review
 
-**When adding new p3a (privacy-preserving analytics) metrics, post a brief description of the new metrics in the p3a Slack channel for privacy review before merging.** P3A metrics have strict privacy requirements and must be reviewed by the analytics team.
+**When adding new p3a (privacy-preserving analytics) metrics, post a brief
+description of the new metrics in the p3a Slack channel for privacy review
+before merging.** P3A metrics have strict privacy requirements and must be
+reviewed by the analytics team.
 
 ---
 
@@ -1150,7 +1324,10 @@ For tab/window features, create them in `TabFeatures::Init()` or `BrowserWindowF
 
 ## ✅ Callback Execution Must Be Consistently Sync or Async
 
-**For a given callback, execution must be either always synchronous or always asynchronous — never sometimes one and sometimes the other.** Mixed sync/async execution creates subtle bugs because callers cannot reason about when their callback will run.
+**For a given callback, execution must be either always synchronous or always
+asynchronous — never sometimes one and sometimes the other.** Mixed sync/async
+execution creates subtle bugs because callers cannot reason about when their
+callback will run.
 
 ```cpp
 // ❌ WRONG - sometimes sync, sometimes async
@@ -1179,7 +1356,10 @@ void FetchData(Callback cb) {
 
 ## ❌ Avoid Re-entrancy; Localize Control Flow
 
-**Control flow should remain as localized as possible.** Pass all relevant state as parameters rather than querying non-local state mid-execution. Re-entrant code (where a callback triggers another call back into the same object) is error-prone and hard to reason about.
+**Control flow should remain as localized as possible.** Pass all relevant state
+as parameters rather than querying non-local state mid-execution. Re-entrant
+code (where a callback triggers another call back into the same object) is
+error-prone and hard to reason about.
 
 ```cpp
 // ❌ WRONG - querying non-local state mid-operation
@@ -1195,7 +1375,8 @@ void ProcessItem(const Item& item, const Config& config) {
 }
 ```
 
-If re-entrancy is unavoidable, document it clearly and use guards (e.g., `base::AutoReset`) to prevent infinite recursion.
+If re-entrancy is unavoidable, document it clearly and use guards (e.g.,
+`base::AutoReset`) to prevent infinite recursion.
 
 ---
 
@@ -1203,9 +1384,16 @@ If re-entrancy is unavoidable, document it clearly and use guards (e.g., `base::
 
 ## ✅ Every UI Feature Needs a CUJ Test
 
-**Every feature that adds or modifies user-visible UI should have at least one Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use `BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in production code. Use browser tests or unit tests with proper dependency injection instead.
+**Every feature that adds or modifies user-visible UI should have at least one
+Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use
+`BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in
+production code. Use browser tests or unit tests with proper dependency
+injection instead.
 
-This rule applies to features with UI changes (new views, buttons, dialogs, etc.). Non-UI components such as tab helpers, services, or background logic should be covered by unit tests or browser tests appropriate to the code — a CUJ test is not required when there is no user-visible interaction to validate.
+This rule applies to features with UI changes (new views, buttons, dialogs,
+etc.). Non-UI components such as tab helpers, services, or background logic
+should be covered by unit tests or browser tests appropriate to the code — a CUJ
+test is not required when there is no user-visible interaction to validate.
 
 ```cpp
 // ✅ CORRECT - CUJ test: validates user-visible behavior end-to-end
@@ -1223,7 +1411,11 @@ IN_PROC_BROWSER_TEST_F(MyFeatureInteractiveTest, UserCanToggleFeature) {
 
 ## ❌ Avoid Change Detector Tests
 
-**Avoid change detector tests.** A change detector test is easy to spot because the test logic mirrors the production logic — it just calls the same method and checks the obvious result. These tests break whenever the implementation changes but catch no real bugs. The purpose of a unit test is to validate behavior across common and edge cases for code that has many possible valid inputs.
+**Avoid change detector tests.** A change detector test is easy to spot because
+the test logic mirrors the production logic — it just calls the same method and
+checks the obvious result. These tests break whenever the implementation changes
+but catch no real bugs. The purpose of a unit test is to validate behavior
+across common and edge cases for code that has many possible valid inputs.
 
 ```cpp
 // ❌ WRONG - change detector test: test logic mirrors production logic
@@ -1262,7 +1454,9 @@ TEST(Math, CheckIsPrime) {
 
 ## ❌ Avoid Global Functions That Access Non-Global State
 
-**Global functions (free functions, static methods) should not access non-global state.** If a function needs profile-specific or window-specific data, it should receive that data as a parameter rather than reaching into global registries.
+**Global functions (free functions, static methods) should not access non-global
+state.** If a function needs profile-specific or window-specific data, it should
+receive that data as a parameter rather than reaching into global registries.
 
 ```cpp
 // ❌ WRONG - global function reaching into non-global state
@@ -1283,16 +1477,29 @@ bool IsFeatureReady(MyService* service) {
 
 ## ✅ Use Unowned User Data Pattern for Tab/Window Feature Retrieval When External Retrieval Is Needed
 
-Tab-scoped and browser-window-scoped features use one of two ownership patterns depending on whether external code needs to retrieve them. See the upstream [Chrome Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#architecture) for background.
+Tab-scoped and browser-window-scoped features use one of two ownership patterns
+depending on whether external code needs to retrieve them. See the upstream
+[Chrome Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#architecture)
+for background.
 
-**Simple `unique_ptr` member** — Use when the feature is **self-contained** (observes events internally, doesn't need to be looked up by other code). Owned as a `unique_ptr` member of `BraveTabFeatures` / `BraveBrowserWindowFeatures`. Upstream example: `JsOptimizationsPageActionController` takes its dependencies in the constructor and is simply instantiated in `TabFeatures::Init()`:
+**Simple `unique_ptr` member** — Use when the feature is **self-contained**
+(observes events internally, doesn't need to be looked up by other code). Owned
+as a `unique_ptr` member of `BraveTabFeatures` / `BraveBrowserWindowFeatures`.
+Upstream example: `JsOptimizationsPageActionController` takes its dependencies
+in the constructor and is simply instantiated in `TabFeatures::Init()`:
 
 ```cpp
 // In BraveTabFeatures:
 std::unique_ptr<MyTabFeature> my_tab_feature_;
 ```
 
-**Unowned User Data pattern** — Use when **external code needs to retrieve** the feature from a `TabInterface` or `BrowserWindowInterface` via a static `From()` method. This separates creation/lifetime management from retrieval. Upstream example: `CommerceUiTabHelper` is retrieved externally via `CommerceUiTabHelper::From(tab)` by UI code that needs to query commerce state for a given tab. See [Unowned User Data README](https://chromium.googlesource.com/chromium/src/+/main/ui/base/unowned_user_data/README.md).
+**Unowned User Data pattern** — Use when **external code needs to retrieve** the
+feature from a `TabInterface` or `BrowserWindowInterface` via a static `From()`
+method. This separates creation/lifetime management from retrieval. Upstream
+example: `CommerceUiTabHelper` is retrieved externally via
+`CommerceUiTabHelper::From(tab)` by UI code that needs to query commerce state
+for a given tab. See
+[Unowned User Data README](https://chromium.googlesource.com/chromium/src/+/main/ui/base/unowned_user_data/README.md).
 
 Example of external retrieval that motivates this pattern:
 
@@ -1352,7 +1559,10 @@ auto* feature = MyTabFeature::From(tab);
 
 ## ✅ Use Factory Overrides for Integration Testing of Unowned User Data Features
 
-**For integration tests that need mock features in a live browser, use `GetUserDataFactoryForTesting().AddOverrideForTesting()`** to substitute a mock before browser initialization. For unit tests, attach features directly to a mock interface's `UnownedUserDataHost`.
+**For integration tests that need mock features in a live browser, use
+`GetUserDataFactoryForTesting().AddOverrideForTesting()`** to substitute a mock
+before browser initialization. For unit tests, attach features directly to a
+mock interface's `UnownedUserDataHost`.
 
 **Unit test — attach to mock interface:**
 
@@ -1378,13 +1588,17 @@ auto override = tabs::TabFeatures::GetUserDataFactoryForTesting()
         }));
 ```
 
-This avoids `BrowserWithTestWindowTest` (which Chromium discourages for production features) and enables testing with real browser infrastructure.
+This avoids `BrowserWithTestWindowTest` (which Chromium discourages for
+production features) and enables testing with real browser infrastructure.
 
 <a id="ARCH-069"></a>
 
 ## ✅ Preference Keys Must Be Correct Before Shipping
 
-**Preference keys that get persisted to disk must be spelled correctly before the first release that includes them.** Changing a preference key after it ships requires a migration path to avoid losing user data. Double-check key strings during review.
+**Preference keys that get persisted to disk must be spelled correctly before
+the first release that includes them.** Changing a preference key after it ships
+requires a migration path to avoid losing user data. Double-check key strings
+during review.
 
 ---
 
@@ -1392,13 +1606,20 @@ This avoids `BrowserWithTestWindowTest` (which Chromium discourages for producti
 
 ## ✅ Keep PRs Focused on a Single Purpose
 
-**Each pull request should have one main purpose. Avoid bundling unrelated "ride-along" changes into the same PR.** If you notice something unrelated that needs fixing while working on a PR, make that fix in a separate PR instead.
+**Each pull request should have one main purpose. Avoid bundling unrelated
+"ride-along" changes into the same PR.** If you notice something unrelated that
+needs fixing while working on a PR, make that fix in a separate PR instead.
 
-Focused PRs are easier to review, easier to revert if something goes wrong, and produce a cleaner git history. Mixing unrelated changes obscures the intent of each change and makes bisecting regressions harder.
+Focused PRs are easier to review, easier to revert if something goes wrong, and
+produce a cleaner git history. Mixing unrelated changes obscures the intent of
+each change and makes bisecting regressions harder.
 
-Small, closely related cleanups in code you are already modifying are acceptable. Formatting changes required by the formatter or presubmit are also fine but should be in a separate commit within the same PR.
+Small, closely related cleanups in code you are already modifying are
+acceptable. Formatting changes required by the formatter or presubmit are also
+fine but should be in a separate commit within the same PR.
 
 Examples of ride-along changes to avoid:
+
 - Fixing a separate bug you noticed while implementing a feature
 - Adding unrelated refactoring alongside a behavioral change
 - Large-scale renaming or reformatting unrelated to your change
@@ -1410,9 +1631,14 @@ Examples of ride-along changes to avoid:
 
 ## ❌ No Browser-Process-Only APIs in `common/` Directories
 
-**Code under `components/.../common/` must not depend on APIs that only exist in the browser process** — `PrefService`, `content::BrowserContext`, `Profile`, `g_browser_process`, etc. `common/` is compiled into any process that links the component (browser, renderer, utility), so referencing browser-only types there is meaningless or unsafe for non-browser callers.
+**Code under `components/.../common/` must not depend on APIs that only exist in
+the browser process** — `PrefService`, `content::BrowserContext`, `Profile`,
+`g_browser_process`, etc. `common/` is compiled into any process that links the
+component (browser, renderer, utility), so referencing browser-only types there
+is meaningless or unsafe for non-browser callers.
 
-This is the inverse of the `common/` rule above: code moves *into* `common/` only when it is genuinely safe for every process.
+This is the inverse of the `common/` rule above: code moves _into_ `common/`
+only when it is genuinely safe for every process.
 
 ```cpp
 // ❌ WRONG - common/ helper that takes a PrefService
@@ -1439,12 +1665,16 @@ bool IsPlaylistEnabled(PrefService* prefs);
 ```
 
 **Directory rules:**
-- `common/` — deps must be safe for every process: `//base`, mojom, shared structs
-- `browser/` — browser process only; `PrefService`, `BrowserContext`, `Profile`, `g_browser_process`
+
+- `common/` — deps must be safe for every process: `//base`, mojom, shared
+  structs
+- `browser/` — browser process only; `PrefService`, `BrowserContext`, `Profile`,
+  `g_browser_process`
 - `renderer/` — renderer process only
 - `services/` — utility process services
 
-A new `+components/prefs` line (or similar) in a `common/DEPS` file is almost always a sign that the helper belongs in `browser/` instead.
+A new `+components/prefs` line (or similar) in a `common/DEPS` file is almost
+always a sign that the helper belongs in `browser/` instead.
 
 ---
 
@@ -1452,14 +1682,22 @@ A new `+components/prefs` line (or similar) in a `common/DEPS` file is almost al
 
 ## ✅ Factory Return Value Must Be Stable Across the Browser Session
 
-**A `KeyedServiceFactory` may only return `nullptr` (or skip service creation) based on attributes that are fixed for the entire browser session** — profile type, buildflags, and feature flags. Do not gate the result on user-modifiable prefs.
+**A `KeyedServiceFactory` may only return `nullptr` (or skip service creation)
+based on attributes that are fixed for the entire browser session** — profile
+type, buildflags, and feature flags. Do not gate the result on user-modifiable
+prefs.
 
 This rule applies to both places a factory can return null:
 
-1. `BuildServiceInstanceForBrowserContext` (returning `nullptr` skips creation), and
-2. The static `GetForProfile` / `GetForBrowserContext` accessor (returning `nullptr` before delegating to the base class).
+1. `BuildServiceInstanceForBrowserContext` (returning `nullptr` skips creation),
+   and
+2. The static `GetForProfile` / `GetForBrowserContext` accessor (returning
+   `nullptr` before delegating to the base class).
 
-If the null-vs-non-null result depends on a pref that can change at runtime, the service will be present or absent for the rest of the session regardless of subsequent toggles, forcing a browser restart to apply the user's choice. Callers also start to defensively null-check what should be a stable handle.
+If the null-vs-non-null result depends on a pref that can change at runtime, the
+service will be present or absent for the rest of the session regardless of
+subsequent toggles, forcing a browser restart to apply the user's choice.
+Callers also start to defensively null-check what should be a stable handle.
 
 ```cpp
 // ❌ WRONG - factory result depends on a runtime-toggleable pref
@@ -1493,13 +1731,19 @@ BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
 ```
 
 **Valid bases for returning `nullptr` from a factory or its accessor:**
+
 - Profile type (incognito, guest, system) — see [ARCH-015](#ARCH-015)
 - `BUILDFLAG(ENABLE_*)` feature buildflags
 - `base::Feature` flags (stable for the session)
-- Managed/policy prefs that are documented to require a restart (short-term; ideally decouple)
+- Managed/policy prefs that are documented to require a restart (short-term;
+  ideally decouple)
 
 **Invalid bases:**
-- Any user-toggleable pref (e.g. `kPlaylistEnabledPref`, `kBraveWalletEnabledPref`)
+
+- Any user-toggleable pref (e.g. `kPlaylistEnabledPref`,
+  `kBraveWalletEnabledPref`)
 - Any state that can change while the browser is running
 
-If a feature must be fully disable-able at runtime, the service should remain instantiated and expose an `IsEnabled()` accessor, or callers should observe the pref directly.
+If a feature must be fully disable-able at runtime, the service should remain
+instantiated and expose an `IsEnabled()` accessor, or callers should observe the
+pref directly.
