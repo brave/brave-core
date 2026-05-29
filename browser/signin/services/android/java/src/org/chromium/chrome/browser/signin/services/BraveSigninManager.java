@@ -43,6 +43,11 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
+    public boolean isSwitchAccountAllowed() {
+        return false;
+    }
+
+    @Override
     public void signOut(@SignoutReason int signoutSource, Runnable signOutCallback) {}
 
     @Override
