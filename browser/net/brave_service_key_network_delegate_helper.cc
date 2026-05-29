@@ -6,10 +6,14 @@
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
+#include "base/containers/fixed_flat_set.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_search/common/buildflags/buildflags.h"
+#include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/update_client/buildflags.h"
@@ -22,6 +26,13 @@
 #endif
 
 namespace brave {
+
+namespace {
+
+constexpr auto kSearchDomains = base::MakeFixedFlatSet<std::string_view>(
+    {"search.brave.com", "search.brave.software"});
+
+}  // namespace
 
 template <template <typename> class T>
 int OnBeforeStartTransaction_BraveServiceKey(
@@ -43,11 +54,19 @@ int OnBeforeStartTransaction_BraveServiceKey(
   const GURL& url = ctx->request_url();
 
   if (url.SchemeIs(url::kHttpsScheme)) {
-    if (std::any_of(
+    const bool is_search_domain = kSearchDomains.contains(url.host());
+    if (is_search_domain ||
+        std::any_of(
             allowed_domains->begin(), allowed_domains->end(),
             [&url](const auto& domain) { return url.DomainIs(domain); })) {
       headers->SetHeader(kBraveServicesKeyHeader,
                          BUILDFLAG(BRAVE_SERVICES_KEY));
+    }
+    if (is_search_domain) {
+      const auto authorization = brave_service_keys::GetAuthorizationHeader(
+          BUILDFLAG(SERVICE_KEY_SEARCH), /*headers=*/{}, url, ctx->method(),
+          {"(request-target)"});
+      headers->SetHeader(authorization.first, authorization.second);
     }
   }
   return net::OK;

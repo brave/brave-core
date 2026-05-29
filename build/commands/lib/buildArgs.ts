@@ -37,6 +37,7 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'rewards_grant_staging_endpoint',
   'safebrowsing_api_endpoint',
   'service_key_aichat',
+  'service_key_search',
   'service_key_stt',
   'sparkle_dsa_private_key_file',
   'sparkle_eddsa_private_key',
