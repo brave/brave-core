@@ -12,6 +12,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -51,6 +52,11 @@ static constexpr auto kExemptedHostnames =
 // other parts untouched.
 std::optional<std::string> StripQueryParameter(std::string_view query,
                                                std::string_view spec) {
+  // Set of all the params which are blocked for |spec| from our rules.
+  const auto& rules = query_filter::QueryFilterData::GetInstance()->rules();
+  const base::flat_set<std::string> blocked_params_set =
+      query_filter::GetBlocklistedParamsForSpec(base::span(rules), spec);
+
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
   // for more information on why this approach was selected.
@@ -58,33 +64,64 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
   // Split query string by ampersands, remove tracking parameters,
   // then join the remaining query parameters, untouched, back into
   // a single query string.
-  const std::vector<std::string_view> input_kv_strings =
+  const std::vector<std::string_view> tokens =
       SplitStringPiece(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::vector<std::string_view> output_kv_strings;
-  int disallowed_count = 0;
+  std::vector<std::string_view> output_tokens;
+  bool did_strip = false;
 
-  // Set of all the params which are blocked for |spec| from our rules.
-  const auto& rules = query_filter::QueryFilterData::GetInstance()->rules();
-  const base::flat_set<std::string> blocked_params_set =
-      query_filter::GetBlocklistedParamsForSpec(base::span(rules), spec);
+  // Iterate over all tokens sequentially maintaining their order in the URL.
+  for (const auto token : tokens) {
+    // Try to parse the token as param=value.
+    const auto param_value = base::SplitStringOnce(token, "=");
 
-  for (const auto& kv_string : input_kv_strings) {
-    const std::vector<std::string_view> pieces = SplitStringPiece(
-        kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    const std::string_view key = pieces.empty() ? "" : pieces[0];
-    if (pieces.size() >= 2 &&
-        (blocked_params_set.contains(key) ||
-         (kConditionalQueryStringTrackers.count(key) == 1 &&
-          !re2::RE2::PartialMatch(
-              spec, kConditionalQueryStringTrackers.at(key).data())))) {
-      ++disallowed_count;
-    } else {
-      output_kv_strings.push_back(kv_string);
+    // Not a param=value type string, so put it back as it is.
+    if (!param_value.has_value()) {
+      output_tokens.emplace_back(token);
+      continue;
     }
+
+    const auto [param, value] = param_value.value();
+    // For cases like "https://example.com/?fbclid=&foo=1",
+    // which would have the first |token| set as "fbclid=" which when split
+    // around '=' would have an empty value string. Similarly for param and
+    // value with a URL like "https://example.com/?=&foo=1".
+    if (param.empty() || value.empty()) {
+      output_tokens.emplace_back(token);
+      continue;
+    }
+
+    // No filtering for cases like "https://example.com/?fbclid==", where the
+    // value is "=*"
+    const auto& itr = std::ranges::find_if_not(
+        value.cbegin(), value.cend(), [](const char ch) { return ch == '='; });
+    // The value is all "=" so we keep the param.
+    if (itr == value.cend()) {
+      output_tokens.emplace_back(token);
+      continue;
+    }
+
+    if (blocked_params_set.contains(param)) {
+      did_strip = true;
+      continue;  // Not adding to output_tokens
+    }
+
+    // Check next for conditional query parameter stripping which is
+    // completely independent of the |blocked_params_set|.
+    if (const auto* pattern =
+            base::FindOrNull(kConditionalQueryStringTrackers, param);
+        pattern && !re2::RE2::PartialMatch(spec, pattern->data())) {
+      did_strip = true;
+      continue;  // Not adding to output_tokens
+    }
+
+    // param wasn't found in any of our lists
+    output_tokens.emplace_back(token);
   }
-  if (disallowed_count > 0) {
-    return base::JoinString(output_kv_strings, "&");
+
+  if (did_strip) {
+    return base::JoinString(output_tokens, "&");
   }
+
   return std::nullopt;
 }
 
