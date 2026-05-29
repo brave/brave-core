@@ -31,6 +31,7 @@
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
 #include "brave/browser/ui/views/side_panel/brave_side_panel_header.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_header_controller.h"
+#include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 #endif
 
 namespace {
@@ -205,7 +206,7 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
                                           std::move(content_view));
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-  if (ShouldShowBraveHeader(entry)) {
+  if (brave::ShouldShowSidePanelHeader(entry->key().id())) {
     SidePanel* side_panel = browser_view_->side_panel();
     CHECK(side_panel);
     side_panel->AddHeaderView(std::make_unique<BraveSidePanelHeader>(
@@ -214,15 +215,6 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   }
 #endif
 }
-
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
-bool BraveSidePanelCoordinator::ShouldShowBraveHeader(
-    SidePanelEntry* entry) const {
-  const SidePanelEntry::Id id = entry->key().id();
-  return id == SidePanelEntry::Id::kReadingList ||
-         id == SidePanelEntry::Id::kBookmarks;
-}
-#endif
 
 BraveBrowserView* BraveSidePanelCoordinator::GetBraveBrowserView() {
   return static_cast<BraveBrowserView*>(browser_view_);

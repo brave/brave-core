@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Route ContentParentView::GetRoundedCorners() through Brave's corner helper.
+
+      Calls brave::GetPanelContentsRoundedCorners() with the current prefs and
+      whether the side panel has a Brave header attached.  Reading header_view_
+      state (set before AddChildView in PopulateSidePanel) avoids the timing
+      issue where coordinator->GetCurrentEntryId() still returns the previous
+      entry when OnChildViewAdded fires.
+    re_pattern:
+      '(  gfx::RoundedCornersF GetRoundedCorners\(\)
+      \{)\n    ChromeDistanceMetric corner_radius ='
+    replace: |-
+      \1
+          return brave::GetPanelContentsRoundedCorners(
+              browser_view_->GetProfile()->GetPrefs(),
+              browser_view_->side_panel()->GetHeaderView<views::View>());
+          ChromeDistanceMetric corner_radius =
