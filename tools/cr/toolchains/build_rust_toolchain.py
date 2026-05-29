@@ -687,13 +687,13 @@ class ToolchainBuilder:
             entry['script_sha256sum'] = script_sha
         entries.append(entry)
 
-        local_index.write_text(yaml.safe_dump(entries,
-                                              sort_keys=False,
-                                              default_flow_style=False),
-                               encoding='utf-8',
-                               newline='')
+        index_yaml = yaml.safe_dump(entries,
+                                    sort_keys=False,
+                                    default_flow_style=False)
+        local_index.write_text(index_yaml, encoding='utf-8', newline='')
         logging.info('Wrote toolchain index to %s (%d entries)', local_index,
                      len(entries))
+        logging.info('Toolchain index contents:\n%s', index_yaml)
 
     def _create_archive(self) -> Path:
         """Write the output .tar.xz archive to `self._out_dir`.
