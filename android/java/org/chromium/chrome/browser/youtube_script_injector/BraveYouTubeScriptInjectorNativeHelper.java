@@ -31,9 +31,10 @@ public class BraveYouTubeScriptInjectorNativeHelper {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
     }
 
-    public static void exitFullscreen(WebContents webContents) {
-        BraveYouTubeScriptInjectorNativeHelperJni.get().exitFullscreen(webContents);
-    }
+    // TODO - Uncomment once implemented in core.
+    // public static void exitFullscreen(WebContents webContents) {
+    //     BraveYouTubeScriptInjectorNativeHelperJni.get().exitFullscreen(webContents);
+    // }
 
     public static boolean hasFullscreenBeenRequested(WebContents webContents) {
         return BraveYouTubeScriptInjectorNativeHelperJni.get()
@@ -89,7 +90,8 @@ public class BraveYouTubeScriptInjectorNativeHelper {
     public interface Natives {
         void setFullscreen(WebContents webContents);
 
-        void exitFullscreen(WebContents webContents);
+        // TODO - Uncomment once implemented in core.
+        // void exitFullscreen(WebContents webContents);
 
         boolean hasFullscreenBeenRequested(WebContents webContents);
 

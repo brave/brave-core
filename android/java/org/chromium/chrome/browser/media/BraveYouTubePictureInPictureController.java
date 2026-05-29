@@ -276,7 +276,8 @@ public class BraveYouTubePictureInPictureController {
             }
             // Nudge YouTube's player out of its own fullscreen state, since YouTube tracks
             // fullscreen independently of the DOM.
-            BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
+            // TODO - Uncomment exitFullscreen once implemented in core.
+            // BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
             // Tell the YouTube WebContents to drop fullscreen directly. We do not rely on
             // FullscreenManager.exitPersistentFullscreenMode() to forward this: by the
             // time the tab-change observer has fired and we get here, the manager's internal
@@ -372,7 +373,8 @@ public class BraveYouTubePictureInPictureController {
 
         final int sessionId = mSessionId;
         mExiting = true;
-        BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
+        // TODO - Uncomment exitFullscreen once implemented in core.
+        // BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
 
         // Drive the restore from the actual renderer signal. didToggleFullscreenModeForTab
         // fires shortly after YouTube's JS exits DOM fullscreen, which is much sooner than the
