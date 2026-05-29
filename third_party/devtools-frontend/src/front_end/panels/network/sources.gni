@@ -3,4 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_devtools_front_end_panels_network_source = [ "//brave/third_party/devtools-frontend/src/front_end/panels/network/RequestAdblockView.ts" ]
+brave_devtools_front_end_panels_network_sources = [ "//brave/third_party/devtools-frontend/src/front_end/panels/network/RequestAdblockView.ts" ]
+
+brave_devtools_front_end_panels_network_deps =
+    [ "../../ui/components/legacy_wrapper:bundle" ]
