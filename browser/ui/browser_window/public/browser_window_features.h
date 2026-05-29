@@ -16,6 +16,7 @@ class BraveNonClientHitTestHelper;
 class BraveVPNController;
 class FocusModeController;
 class PlaylistSidePanelCoordinator;
+class TreeTabSessionObserver;
 
 namespace brave_rewards {
 class RewardsPanelCoordinator;
@@ -98,6 +99,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<BraveShieldsUIContentsCache> brave_shields_ui_contents_cache_;
   std::unique_ptr<BraveNonClientHitTestHelper>
       brave_non_client_hit_test_helper_;
+  std::unique_ptr<TreeTabSessionObserver> tree_tab_session_observer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

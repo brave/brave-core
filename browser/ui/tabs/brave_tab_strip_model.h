@@ -78,6 +78,7 @@ class BraveTabStripModel : public TabStripModel {
 
   void NotifyTreeTabNodeCreated(const tabs::TreeTabNode& node);
   void NotifyTreeTabNodeWillBeDestroyed(const tree_tab::TreeTabNodeId& id);
+  void NotifyTreeTabNodeReparented(const tree_tab::TreeTabNodeId& id);
 
   tabs::BraveTabStripCollection* contents_data() {
     return static_cast<tabs::BraveTabStripCollection*>(contents_data_.get());
@@ -104,6 +105,8 @@ class BraveTabStripModel : public TabStripModel {
       tree_tab_node_created_subscription_;
   std::unique_ptr<base::CallbackListSubscription>
       tree_tab_node_will_be_destroyed_subscription_;
+  std::unique_ptr<base::CallbackListSubscription>
+      tree_tab_node_moved_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_

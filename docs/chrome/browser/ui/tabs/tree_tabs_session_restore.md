@@ -7,7 +7,7 @@ hierarchy across browser sessions. Two distinct scenarios require handling:
 
 1. **Browser restart** — closing all windows and reopening; uses
    `SessionService`.
-2. **Close-tab-and-restore** — Ctrl+t / History > Recently Closed; uses
+2. **Close-tab-and-restore** — Ctrl+Shift+t / History > Recently Closed; uses
    `TabRestoreService`.
 
 See [tree_tabs_architecture.md](tree_tabs_architecture.md) for background on the
@@ -37,10 +37,10 @@ groups and split tabs — using a layered approach:
    `kCommandSetTabGroup`, `kCommandSetTabGroupMetadata2`, `kCommandSetSplitTab`,
    `kCommandSetSplitTabData`
 
-   Defined in session_commands.cc internally and exposes methods to create
-   theses commands. And
-   [`SessionService::BuildCommandsForTab](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/sessions/session_service.cc;l=629;drc=10be28b2c5e3a78f4e74d1841fc5f16aae2ab3ba)/[Browser](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/sessions/session_service_base.cc;l=736;drc=a0f96f45d931f3fc57126fad5d8050ea63bd2d25)`
-   will use these commands for full rebuilds and incrementally on live changes.
+   Defined in session_commands.cc internally and exposes methods to create these
+   commands.
+   [`SessionService::BuildCommandsForTab`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/sessions/session_service.cc;l=629;drc=10be28b2c5e3a78f4e74d1841fc5f16aae2ab3ba)/[`Browser`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/sessions/session_service_base.cc;l=736;drc=a0f96f45d931f3fc57126fad5d8050ea63bd2d25)
+   uses these commands for full rebuilds and incrementally on live changes.
 
 4. **[`RestoreSessionFromCommands`](https://source.chromium.org/chromium/chromium/src/+/main:components/sessions/core/session_service_commands.h;l=142;drc=f9d29b4ce34d252f7a124d326331901c3b942ee5)**
    — replays commands and populates `SessionTab::group` and
@@ -75,31 +75,49 @@ For tree nodes whose `current_value` is a `TabGroupTabCollection` or
 written on the first tab in the group/split, and `brave_tree_node_collapsed` is
 omitted (group/split nodes cannot be individually collapsed today).
 
+Keys are defined in `brave/browser/sessions/brave_session_keys.h`.
+
 ---
 
 ## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                  SAVE PATH — Browser Shutdown                       │
+│                  SAVE PATH — Incremental (live changes)             │
 │                                                                     │
-│  BraveBrowser::OnTreeTabChanged (TabStripModelObserver)             │
+│  TreeTabSessionObserver::OnTreeTabChanged (TabStripModelObserver)   │
 │    kNodeCreated          → UpdateTreeTabSessionDataForNode          │
 │    kNodeReparented       → UpdateTreeTabSessionDataForNode          │
 │    kNodeCollapsedStateChanged → UpdateTreeTabCollapsedState         │
+│    kNodeWillBeDestroyed  → (no-op — see note below)                 │
 │    → SessionService::AddTabExtraData (public Chromium API)          │
 │    → ScheduleCommand(CreateAddTabExtraDataCommand(...))             │
-│              │                                                      │
-│  SessionServiceBase::BuildCommandsForBrowser (periodic rebuild)     │
-│    loop per tab → BuildCommandsForTab(...)                          │
-│              → BRAVE_BUILD_COMMANDS_FOR_TREE_TAB                    │
-│              → AppendRebuildCommand(CreateAddTabExtraDataCommand)   │
-│              │                                                      │
-│  SessionService::~SessionService → Save()                           │
-│    → flushes pending commands to disk                               │
-│              │                                                      │
-│              ▼                                                      │
-│          Session file on disk                                       │
+│    → appended to pending_commands_ (flushed by save timer)          │
+│                                                                     │
+│  ⚠️  Note: kNodeCreated notification is posted as a deferred        │
+│      PostTask in TreeTabModel::AddTreeTabNode so that the           │
+│      collection tree is fully set up before observers query it.     │
+│      This means the incremental write only lands in the session     │
+│      file AFTER the task queue is flushed (e.g. at the next         │
+│      save-timer tick), not synchronously in response to the pref    │
+│      change.                                                        │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                  SAVE PATH — Full Rebuild                           │
+│              (browser shutdown / ScheduleResetCommands)             │
+│                                                                     │
+│  SessionService::ScheduleResetCommands                              │
+│    → ClearPendingCommands()   ← wipes all incremental commands      │
+│    → BuildCommandsFromBrowsers                                      │
+│        → BuildCommandsForBrowser (loop per browser)                 │
+│            → BuildCommandsForTab(...)                               │
+│            → BRAVE_BUILD_COMMANDS_FOR_TREE_TAB                      │
+│               walks tab_interface->GetParentCollection() hierarchy  │
+│               to find enclosing TREE_NODE collection, then calls    │
+│               AppendRebuildCommand(CreateAddTabExtraDataCommand)    │
+│               for all three tree keys                               │
+│                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -126,7 +144,7 @@ omitted (group/split nodes cannot be individually collapsed today).
 │    1. Build old_id → TreeTabNodeTabCollection* map                  │
 │       (using initial_tab_count + tab_visual_index as browser index) │
 │    2. Reparent collections to recreate tree hierarchy               │
-│    3. Apply collapsed state via                                     |
+│    3. Apply collapsed state via                                     │
 │    BraveTabStripModel::SetTreeTabNodeCollapsed                      │
 └─────────────────────────────────────────────────────────────────────┘
 
@@ -152,3 +170,47 @@ omitted (group/split nodes cannot be individually collapsed today).
 │      → MaybeRemoveCollection + AddCollection to reparent            │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Why Two Save Paths Are Both Needed
+
+### Incremental path
+
+`TreeTabSessionObserver::UpdateTreeTabSessionDataForNode` writes
+`AddTabExtraData` commands to `pending_commands_` whenever the tree structure
+changes at runtime (node created, reparented, or collapsed). These commands are
+flushed to disk by the save timer and survive across ordinary page navigations
+and tab movements.
+
+### Full rebuild path (`BRAVE_BUILD_COMMANDS_FOR_TREE_TAB`)
+
+`SessionService::ScheduleResetCommands` — called during
+`MoveCurrentSessionToLastSession` and on any rebuild trigger — **clears all
+pending commands** before rebuilding from scratch. If only the incremental path
+existed, tree data would be lost from the session file every time a full rebuild
+occurred (including on every normal browser shutdown that saves the session).
+The `BRAVE_BUILD_COMMANDS_FOR_TREE_TAB` macro fills this gap by reading the live
+tab-collection hierarchy directly during the rebuild loop and writing
+`AppendRebuildCommand` entries for each tab's tree membership.
+
+---
+
+## Why `kNodeWillBeDestroyed` Does Nothing
+
+When a tree node is destroyed (tab closed, or tree tabs flattened on pref
+change), `OnTreeTabChanged(kNodeWillBeDestroyed)` fires. We intentionally **do
+not** write any clearing commands here, for two reasons:
+
+1. **Closed tab restoration**: When a tab is closed, `SessionService::TabClosed`
+   removes the entire tab from the session. The tree data already attached to
+   that tab therefore disappears correctly. If we had written empty-string
+   overrides first, the `TabRestoreService` capture (which happens at the same
+   time) could see the emptied data and lose the tree placement needed for
+   Ctrl+Shift+t restoration.
+
+2. **Stale data is safe**: If tree tabs are disabled mid-session (pref toggled
+   off), the incremental tree data remains in `pending_commands_` but the next
+   full rebuild (`ScheduleResetCommands`) will naturally omit tree data because
+   `BRAVE_BUILD_COMMANDS_FOR_TREE_TAB` walks the live collection tree and finds
+   no `TREE_NODE` parents.

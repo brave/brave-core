@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
+#include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -13,6 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
+#include "brave/browser/ui/tabs/tree_tab_session_observer.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -100,6 +102,12 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 
   brave_non_client_hit_test_helper_ =
       std::make_unique<BraveNonClientHitTestHelper>();
+
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
+      browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+    tree_tab_session_observer_ = std::make_unique<TreeTabSessionObserver>(
+        profile, browser->GetTabStripModel(), browser->GetSessionID());
+  }
 }
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(

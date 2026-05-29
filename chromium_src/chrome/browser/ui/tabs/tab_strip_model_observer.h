@@ -24,6 +24,7 @@ struct TreeTabChange {
     kNodeCreated,
     kNodeWillBeDestroyed,
     kNodeCollapsedStateChanged,
+    kNodeReparented,
   };
 
   struct Delta {
@@ -51,6 +52,13 @@ struct TreeTabChange {
     raw_ref<const tabs::TreeTabNode> node;
   };
 
+  struct ReparentedChange : public Delta {
+    explicit ReparentedChange(const tabs::TreeTabNode& node);
+    ~ReparentedChange() override;
+
+    raw_ref<const tabs::TreeTabNode> node;
+  };
+
   TreeTabChange(Type type,
                 tree_tab::TreeTabNodeId id,
                 std::unique_ptr<Delta> delta);
@@ -61,6 +69,8 @@ struct TreeTabChange {
   TreeTabChange(
       tree_tab::TreeTabNodeId id,
       const CollapsedStateChangedChange& collapsed_state_changed_change);
+  TreeTabChange(tree_tab::TreeTabNodeId id,
+                const ReparentedChange& reparented_change);
   TreeTabChange(const TreeTabChange& other) = delete;
   TreeTabChange& operator=(const TreeTabChange& other) = delete;
   ~TreeTabChange();
@@ -68,6 +78,7 @@ struct TreeTabChange {
   const CreatedChange& GetCreatedChange() const;
   const WillBeDestroyedChange& GetWillBeDestroyedChange() const;
   const CollapsedStateChangedChange& GetCollapsedStateChangedChange() const;
+  const ReparentedChange& GetReparentedChange() const;
 
   Type type;
   tree_tab::TreeTabNodeId id;
