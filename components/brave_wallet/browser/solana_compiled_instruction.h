@@ -34,7 +34,7 @@ class SolanaCompiledInstruction {
 
   bool operator==(const SolanaCompiledInstruction& ins) const = default;
 
-  void Serialize(std::vector<uint8_t>& bytes) const;
+  [[nodiscard]] bool Serialize(std::vector<uint8_t>& bytes) const;
   static std::optional<SolanaCompiledInstruction> Deserialize(
       base::SpanReader<const uint8_t>& reader);
 

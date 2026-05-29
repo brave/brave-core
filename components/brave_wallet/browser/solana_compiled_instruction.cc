@@ -118,14 +118,26 @@ SolanaCompiledInstruction::FromInstruction(
                                    instruction.data());
 }
 
-void SolanaCompiledInstruction::Serialize(std::vector<uint8_t>& bytes) const {
+bool SolanaCompiledInstruction::Serialize(std::vector<uint8_t>& bytes) const {
   bytes.emplace_back(program_id_index_);
 
-  base::Extend(bytes, CompactU16Encode(account_indexes_.size()));
+  uint8_t account_indexes_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(account_indexes_.size())
+           .AssignIfValid(&account_indexes_size)) {
+    return false;
+  }
+
+  base::Extend(bytes, CompactU16Encode(account_indexes_size));
   base::Extend(bytes, account_indexes_);
 
-  base::Extend(bytes, CompactU16Encode(data_.size()));
+  uint16_t data_size = 0;
+  if (!base::CheckedNumeric<uint16_t>(data_.size()).AssignIfValid(&data_size)) {
+    return false;
+  }
+  base::Extend(bytes, CompactU16Encode(data_size));
   base::Extend(bytes, data_);
+
+  return true;
 }
 
 // https://solana.com/docs/core/transactions/transaction-structure#instructions

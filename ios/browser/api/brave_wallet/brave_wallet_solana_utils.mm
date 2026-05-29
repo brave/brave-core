@@ -7,9 +7,10 @@
 
 #include <string>
 #include <vector>
+
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/solana_utils.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 
 @implementation NSData (Base58)
 
@@ -46,8 +47,8 @@
 @implementation NSString (Base58)
 
 - (bool)isBase58EncodedSolanaPubkey {
-  return brave_wallet::IsBase58EncodedSolanaPubkey(
-      base::SysNSStringToUTF8(self));
+  return brave_wallet::SolanaAddress::FromBase58(base::SysNSStringToUTF8(self))
+      .has_value();
 }
 
 @end

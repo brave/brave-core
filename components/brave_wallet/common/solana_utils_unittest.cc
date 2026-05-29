@@ -22,16 +22,16 @@ namespace brave_wallet {
 
 TEST(SolanaUtilsUnitTest, ExtendWithEmptySignatures) {
   std::vector<uint8_t> bytes;
-  ExtendWithEmptySignatures(bytes, 0);
+  ExtendWithEmptySignatures(bytes, uint8_t{0u});
   EXPECT_TRUE(bytes.empty());
-  ExtendWithEmptySignatures(bytes, 1);
+  ExtendWithEmptySignatures(bytes, uint8_t{1u});
   EXPECT_EQ(bytes, std::vector<uint8_t>(64, 0));
-  ExtendWithEmptySignatures(bytes, 3);
+  ExtendWithEmptySignatures(bytes, uint8_t{3u});
   EXPECT_EQ(bytes, std::vector<uint8_t>(256, 0));
 
   bytes = {1, 2, 3};
-  ExtendWithEmptySignatures(bytes, 2);
-  EXPECT_EQ(base::span(bytes).subspan(0u, 3u), std::vector<uint8_t>({1, 2, 3}));
+  ExtendWithEmptySignatures(bytes, uint8_t{2u});
+  EXPECT_EQ(base::span(bytes).first(3u), std::vector<uint8_t>({1, 2, 3}));
   EXPECT_EQ(base::span(bytes).subspan(3u), std::vector<uint8_t>(128, 0));
 }
 

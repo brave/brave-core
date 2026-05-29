@@ -46,15 +46,26 @@ SolanaMessageAddressTableLookup& SolanaMessageAddressTableLookup::operator=(
     SolanaMessageAddressTableLookup&&) = default;
 SolanaMessageAddressTableLookup::~SolanaMessageAddressTableLookup() = default;
 
-void SolanaMessageAddressTableLookup::Serialize(
+bool SolanaMessageAddressTableLookup::Serialize(
     std::vector<uint8_t>& bytes) const {
+  uint8_t write_indexes_size = 0;
+  uint8_t read_indexes_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(write_indexes_.size())
+           .AssignIfValid(&write_indexes_size) ||
+      !base::CheckedNumeric<uint8_t>(read_indexes_.size())
+           .AssignIfValid(&read_indexes_size)) {
+    return false;
+  }
+
   base::Extend(bytes, account_key_.bytes());
 
-  base::Extend(bytes, CompactU16Encode(write_indexes_.size()));
+  base::Extend(bytes, CompactU16Encode(write_indexes_size));
   base::Extend(bytes, write_indexes_);
 
-  base::Extend(bytes, CompactU16Encode(read_indexes_.size()));
+  base::Extend(bytes, CompactU16Encode(read_indexes_size));
   base::Extend(bytes, read_indexes_);
+
+  return true;
 }
 
 // static

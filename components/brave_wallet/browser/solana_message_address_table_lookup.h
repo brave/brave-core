@@ -35,7 +35,7 @@ class SolanaMessageAddressTableLookup {
   ~SolanaMessageAddressTableLookup();
   bool operator==(const SolanaMessageAddressTableLookup&) const = default;
 
-  void Serialize(std::vector<uint8_t>& bytes) const;
+  [[nodiscard]] bool Serialize(std::vector<uint8_t>& bytes) const;
   static std::optional<SolanaMessageAddressTableLookup> Deserialize(
       base::SpanReader<const uint8_t>& reader);
 

@@ -245,23 +245,27 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
     return std::nullopt;
   }
 
+  base::CheckedNumeric<uint8_t> checked_static_account_keys_size =
+      static_account_keys_.size();
+
   // Calculate read and write indexes size.
-  uint16_t num_of_write_indexes = 0;
-  uint16_t num_of_read_indexes = 0;
+  base::CheckedNumeric<uint8_t> checked_num_of_write_indexes = 0;
+  base::CheckedNumeric<uint8_t> checked_num_of_read_indexes = 0;
   for (const auto& address_table_lookup : address_table_lookups_) {
-    num_of_write_indexes += address_table_lookup.write_indexes().size();
-    num_of_read_indexes += address_table_lookup.read_indexes().size();
-    if (num_of_write_indexes > UINT8_MAX || num_of_read_indexes > UINT8_MAX) {
-      return std::nullopt;
-    }
+    checked_num_of_write_indexes += address_table_lookup.write_indexes().size();
+    checked_num_of_read_indexes += address_table_lookup.read_indexes().size();
   }
 
   // This is the size of the combined array of static_accounts, write_indexes
   // from address table lookups, and read_indexes from address table lookups.
   // It cannot exceed UINT8_MAX as the account indexes used in transaction is
   // limited to UINT8_MAX.
-  if ((static_account_keys_.size() + num_of_write_indexes +
-       num_of_read_indexes) > UINT8_MAX) {
+  if (!checked_static_account_keys_size.IsValid() ||
+      !checked_num_of_write_indexes.IsValid() ||
+      !checked_num_of_read_indexes.IsValid() ||
+      !(checked_static_account_keys_size + checked_num_of_write_indexes +
+        checked_num_of_read_indexes)
+           .IsValid()) {
     return std::nullopt;
   }
 
@@ -281,7 +285,8 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
   message_bytes.emplace_back(message_header_.num_readonly_unsigned_accounts);
 
   // Compact array of account addresses.
-  base::Extend(message_bytes, CompactU16Encode(static_account_keys_.size()));
+  base::Extend(message_bytes,
+               CompactU16Encode(checked_static_account_keys_size.ValueOrDie()));
   for (size_t i = 0; i < static_account_keys_.size(); ++i) {
     base::Extend(message_bytes, static_account_keys_[i].bytes());
 
@@ -298,24 +303,39 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
   }
   base::Extend(message_bytes, recent_blockhash_bytes);
 
+  uint8_t instructions_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(instructions_.size())
+           .AssignIfValid(&instructions_size)) {
+    return std::nullopt;
+  }
+
   // Compact array of instructions.
-  base::Extend(message_bytes, CompactU16Encode(instructions_.size()));
+  base::Extend(message_bytes, CompactU16Encode(instructions_size));
   for (const auto& instruction : instructions_) {
     auto compiled_instruction = SolanaCompiledInstruction::FromInstruction(
         instruction, static_account_keys_, address_table_lookups_,
-        num_of_write_indexes);
+        checked_num_of_write_indexes.ValueOrDie());
     if (!compiled_instruction) {
       return std::nullopt;
     }
-    compiled_instruction->Serialize(message_bytes);
+    if (!compiled_instruction->Serialize(message_bytes)) {
+      return std::nullopt;
+    }
   }
 
   // Compact array of address table lookups.
   if (version_ == mojom::SolanaMessageVersion::kV0) {
-    base::Extend(message_bytes,
-                 CompactU16Encode(address_table_lookups_.size()));
+    uint8_t address_table_lookups_size = 0;
+    if (!base::CheckedNumeric<uint8_t>(address_table_lookups_.size())
+             .AssignIfValid(&address_table_lookups_size)) {
+      return std::nullopt;
+    }
+
+    base::Extend(message_bytes, CompactU16Encode(address_table_lookups_size));
     for (const auto& address_table_lookup : address_table_lookups_) {
-      address_table_lookup.Serialize(message_bytes);
+      if (!address_table_lookup.Serialize(message_bytes)) {
+        return std::nullopt;
+      }
     }
   }
 
@@ -410,6 +430,9 @@ std::optional<SolanaMessage> SolanaMessage::Deserialize(
 
   // Instructions length
   auto num_of_instructions = CompactU16Decode(reader);
+  if (!num_of_instructions) {
+    return std::nullopt;
+  }
   std::vector<SolanaCompiledInstruction> compiled_instructions;
   for (size_t i = 0; i < *num_of_instructions; ++i) {
     auto compiled_instruction = SolanaCompiledInstruction::Deserialize(reader);

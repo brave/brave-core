@@ -243,10 +243,13 @@ SolanaTransaction::GetSignedTransactionBytes(
 
   // Preparing signatures.
   std::vector<uint8_t> transaction_bytes;
-  if (signers.size() > UINT8_MAX) {
+
+  uint8_t signers_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(signers.size())
+           .AssignIfValid(&signers_size)) {
     return std::nullopt;
   }
-  base::Extend(transaction_bytes, CompactU16Encode(signers.size()));
+  base::Extend(transaction_bytes, CompactU16Encode(signers_size));
 
   // Assign selected account's signature, and keep signatures for other signers
   // from dApp transaction if exists. Fill empty signatures for
@@ -286,7 +289,7 @@ SolanaTransaction::GetSignedTransactionBytes(
       }
     }
 
-    ExtendWithEmptySignatures(transaction_bytes, 1);
+    ExtendWithEmptySignatures(transaction_bytes, uint8_t{1u});
     ++num_of_sig;
   }
   DCHECK(num_of_sig == signers.size());
@@ -311,9 +314,15 @@ std::string SolanaTransaction::GetUnsignedTransaction() const {
 
   std::vector<uint8_t> transaction_bytes;
 
-  base::Extend(transaction_bytes, CompactU16Encode(signers.size()));
+  uint8_t signers_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(signers.size())
+           .AssignIfValid(&signers_size)) {
+    return "";
+  }
+
+  base::Extend(transaction_bytes, CompactU16Encode(signers_size));
   // Insert an empty (default) signature for each signer.
-  ExtendWithEmptySignatures(transaction_bytes, signers.size());
+  ExtendWithEmptySignatures(transaction_bytes, signers_size);
   base::Extend(transaction_bytes, message_bytes);
 
   if (transaction_bytes.size() > kSolanaMaxTxSize) {

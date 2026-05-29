@@ -19,16 +19,20 @@
 namespace brave_wallet {
 
 void ExtendWithEmptySignatures(std::vector<uint8_t>& bytes,
-                               uint8_t signatures_count) {
-  bytes.insert(bytes.end(), signatures_count * kSolanaSignatureSize, 0u);
+                               base::StrictNumeric<uint8_t> signatures_count) {
+  bytes.insert(bytes.end(),
+               static_cast<uint8_t>(signatures_count) * kSolanaSignatureSize,
+               0u);
 }
 
-absl::InlinedVector<uint8_t, 3> CompactU16Encode(uint16_t u16) {
+absl::InlinedVector<uint8_t, 3> CompactU16Encode(
+    base::StrictNumeric<uint16_t> u16) {
   absl::InlinedVector<uint8_t, 3> compact_u16;
+  uint16_t u16_val = u16;
   while (true) {
-    uint8_t elem = u16 & 0x7f;
-    u16 >>= 7;
-    if (u16 == 0) {
+    uint8_t elem = u16_val & 0x7f;
+    u16_val >>= 7;
+    if (u16_val == 0) {
       compact_u16.push_back(elem);
       return compact_u16;
     }

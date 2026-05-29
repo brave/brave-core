@@ -23,13 +23,15 @@ class DictValue;
 
 namespace brave_wallet {
 
+// Adds `signatures_count` empty signatures to the bytes vector.
 void ExtendWithEmptySignatures(std::vector<uint8_t>& bytes,
-                               uint8_t signatures_count);
+                               base::StrictNumeric<uint8_t> signatures_count);
 
 // Encode uint16_t value into 1-3 bytes compact-u16.
 // See
 // https://docs.solana.com/developing/programming-model/transactions#compact-u16-format
-absl::InlinedVector<uint8_t, 3> CompactU16Encode(uint16_t u16);
+absl::InlinedVector<uint8_t, 3> CompactU16Encode(
+    base::StrictNumeric<uint16_t> u16);
 std::optional<uint16_t> CompactU16Decode(
     base::SpanReader<const uint8_t>& reader);
 
