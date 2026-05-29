@@ -345,6 +345,9 @@
   <message name="IDS_WEBSTORAGE_DELETE_DATA_DIALOG_TITLE" desc="Title of the confirmation dialog when the user ask to delete all data for an origin">
     Delete site data?
   </message>
+  <message name="IDS_WEBSITE_SETTINGS_SITE_MORE_OPTIONS_A11Y_LABEL" desc="Content description for the more options (three-dots) button next to a site in site settings.">
+    More options for <ph name="SITE_NAME">%1$s<ex>google.com</ex></ph>
+  </message>
   <message name="IDS_WEBSTORAGE_DELETE_DATA_CONTENT_DESCRIPTION" desc="Content description for the button that deletes all data for an origin">
     Delete site data? <ph name="SITE_NAME">%1$s<ex>google.com</ex></ph>
   </message>
@@ -613,10 +616,10 @@
     Sites usually use your video camera for communication features like video chatting
   </message>
   <message name="IDS_WEBSITE_SETTINGS_CAMERA_ASK" desc="Primary text corresponding to the ask button in the camera permission radio button group.">
-    Site can ask for your camera
+    Sites can ask for your camera
   </message>
   <message name="IDS_WEBSITE_SETTINGS_CAMERA_BLOCK" desc="Primary text corresponding to the block button in the camera permission radio button group.">
-    Don't allow sites to see your location
+    Don't allow sites to use your camera
   </message>
   <message name="IDS_WEBSITE_SETTINGS_CAMERA_BLOCK_DESCRIPTION" desc="Description of block camera permission.">
     Features that need a camera won't work

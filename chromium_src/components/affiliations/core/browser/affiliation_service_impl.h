@@ -20,8 +20,8 @@ class AffiliationServiceImpl : public AffiliationServiceImpl_ChromiumImpl {
       AffiliationServiceImpl_ChromiumImpl;
 
   // AffiliationService overrides:
-  void PrefetchChangePasswordURL(const GURL& urls,
-                                 base::OnceClosure callback) override;
+  void FetchChangePasswordURL(const GURL& url,
+                              base::OnceCallback<void(GURL)> callback) override;
   void Prefetch(const FacetURI& facet_uri,
                 const base::Time& keep_fresh_until) override;
   void RegisterSource(std::unique_ptr<AffiliationSource> source) override;

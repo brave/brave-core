@@ -1,21 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index b8a50b3999318cdab31d7b285976a95c7ea88740..e4f085d55b5e2cf9d68937c62243271aa14d117c 100644
+index c6328dbceb0af518411fd05aa9c97b4280f161eb..d5d1213d8c1ea29d6b4c8421ec13129a501c6233 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -63,7 +63,7 @@ import org.chromium.chrome.browser.ui.signin.SignOutCoordinator;
- import org.chromium.chrome.browser.ui.signin.SigninUtils;
- import org.chromium.chrome.browser.ui.signin.SignoutButtonPreference;
- import org.chromium.chrome.browser.ui.signin.history_sync.HistorySyncHelper;
--import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
-+import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
- import org.chromium.components.browser_ui.settings.ChromeBasePreference;
- import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
- import org.chromium.components.browser_ui.settings.SettingsUtils;
-@@ -622,6 +622,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -451,6 +451,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       */
      private void updateSyncPreferences() {
          String signedInAccountName =
 +                mGoogleActivityControls != null ? "" : // We want the next `if` to be always false.
-                 CoreAccountInfo.getEmailFrom(
-                         getIdentityManager()
-                                 .getPrimaryAccountInfo(
+                 CoreAccountInfo.getEmailFrom(getIdentityManager().getPrimaryAccountInfo());
+         // May happen if account is removed from the device while this screen is shown.
+         if (signedInAccountName == null) {

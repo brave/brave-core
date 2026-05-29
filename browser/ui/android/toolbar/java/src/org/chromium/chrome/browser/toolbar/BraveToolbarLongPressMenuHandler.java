@@ -34,7 +34,8 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
             ActivityLifecycleDispatcher lifecycleDispatcher,
             WindowAndroid windowAndroid,
             Supplier<@Nullable GURL> urlSupplier,
-            Supplier<ViewRectProvider> urlBarViewRectProviderSupplier) {
+            Supplier<ViewRectProvider> urlBarViewRectProviderSupplier,
+            Runnable onSendTabToSelfClicked) {
         super(
                 context,
                 profileSupplier,
@@ -43,7 +44,8 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
                 lifecycleDispatcher,
                 windowAndroid,
                 urlSupplier,
-                urlBarViewRectProviderSupplier);
+                urlBarViewRectProviderSupplier,
+                onSendTabToSelfClicked);
 
         mUrlSupplier = urlSupplier;
     }

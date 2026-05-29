@@ -1154,8 +1154,10 @@ void RewardsServiceImpl::NotifyPublisherPageVisit(uint64_t tab_id,
 
   auto publisher_domain = GetPublisherDomainFromURL(parsed_url);
   if (!publisher_domain) {
-    mojom::PublisherInfoPtr info;
-    OnPanelPublisherInfo(mojom::Result::NOT_FOUND, std::move(info), tab_id);
+    DeferCallback(FROM_HERE,
+                  base::BindOnce(&RewardsServiceImpl::OnPanelPublisherInfo,
+                                 AsWeakPtr(), mojom::Result::NOT_FOUND,
+                                 mojom::PublisherInfoPtr(), tab_id));
     return;
   }
 

@@ -72,7 +72,8 @@ public class TabSwitcherBottomToolbarCoordinator {
 
         View toolbar = root.findViewById(R.id.bottom_toolbar_buttons);
         ViewGroup.LayoutParams params = toolbar.getLayoutParams();
-        params.height = root.getResources().getDimensionPixelOffset(R.dimen.bottom_controls_height);
+        params.height =
+                root.getResources().getDimensionPixelOffset(R.dimen.brave_bottom_toolbar_height);
 
         mModel = new TabSwitcherBottomToolbarModel();
 

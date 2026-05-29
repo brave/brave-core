@@ -743,6 +743,9 @@
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_SITE_NOT_WORKING_DESCRIPTION_TEMPORARY" desc="Descriptive text in the page info bubble explaining the trade-off of temporarily allowing third-party cookies for this site, a change that will automatically expire in the future.">
     Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
   </message>
+  <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_PERMANENT" desc="Descriptive text in the page info third-party cookies subpage explaining the trade-off of allowing third-party cookies for this site.">
+    Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
+  </message>
   <message name="IDS_PAGE_INFO_COOKIES_THIRD_PARTY_COOKIES_LABEL" desc="A label next to a toggle that allows or blocks third-party cookies.  When the toggle is enabled, third party cookies are allowed.">
     Third-party cookies
   </message>
@@ -917,6 +920,15 @@
   </message>
   <message name="IDS_CERT_OID_SECG_EC_SECP521R1" desc="description of public key algorithm SEC_OID_SECG_EC_SECP521R1">
     SECG elliptic curve secp521r1 (aka NIST P-521)
+  </message>
+  <message name="IDS_CERT_OID_ML_DSA_44" desc="description of public key algorithm ML-DSA-44">
+    ML-DSA-44
+  </message>
+  <message name="IDS_CERT_OID_ML_DSA_65" desc="description of public key algorithm ML-DSA-65">
+    ML-DSA-65
+  </message>
+  <message name="IDS_CERT_OID_ML_DSA_87" desc="description of public key algorithm ML-DSA-87">
+    ML-DSA-87
   </message>
 
   <!-- Extended Key Usage strings shared across platforms -->

@@ -37,7 +37,8 @@
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "brave/ios/components/prefs/pref_service_bridge_impl.h"
-#include "components/os_crypt/sync/os_crypt.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -853,22 +854,32 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
 
 - (void)encryptString:(const std::string&)value
              callback:(RewardsEngineClient::EncryptStringCallback)callback {
-  std::string encrypted_value;
-  if (!OSCrypt::EncryptString(value, &encrypted_value)) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-  std::move(callback).Run(std::make_optional(encrypted_value));
+  GetApplicationContext()->GetOSCryptAsync()->GetInstance(base::BindOnce(
+      [](std::string value, RewardsEngineClient::EncryptStringCallback callback,
+         os_crypt_async::Encryptor encryptor) {
+        std::string encrypted_value;
+        if (!encryptor.EncryptString(value, &encrypted_value)) {
+          std::move(callback).Run(std::nullopt);
+          return;
+        }
+        std::move(callback).Run(std::make_optional(encrypted_value));
+      },
+      value, std::move(callback)));
 }
 
 - (void)decryptString:(const std::string&)value
              callback:(RewardsEngineClient::DecryptStringCallback)callback {
-  std::string decrypted_value;
-  if (!OSCrypt::DecryptString(value, &decrypted_value)) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-  std::move(callback).Run(std::make_optional(decrypted_value));
+  GetApplicationContext()->GetOSCryptAsync()->GetInstance(base::BindOnce(
+      [](std::string value, RewardsEngineClient::EncryptStringCallback callback,
+         os_crypt_async::Encryptor encryptor) {
+        std::string decrypted_value;
+        if (!encryptor.DecryptString(value, &decrypted_value)) {
+          std::move(callback).Run(std::nullopt);
+          return;
+        }
+        std::move(callback).Run(std::make_optional(decrypted_value));
+      },
+      value, std::move(callback)));
 }
 
 - (void)externalWalletConnected {

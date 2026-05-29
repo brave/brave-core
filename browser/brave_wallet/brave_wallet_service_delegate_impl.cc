@@ -38,8 +38,9 @@ content::WebContents* GetActiveWebContents() {
     return g_web_contents_for_testing;
   }
 
-  Browser* browser = chrome::FindLastActive();
-  return browser ? browser->tab_strip_model()->GetActiveWebContents() : nullptr;
+  BrowserWindowInterface* browser = chrome::FindLastActive();
+  return browser ? browser->GetTabStripModel()->GetActiveWebContents()
+                 : nullptr;
 }
 
 void ClearWalletStoragePartition(content::BrowserContext* context,

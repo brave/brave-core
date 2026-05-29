@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/p3a/p3a_core_metrics.h"
 
@@ -10,8 +10,8 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -42,8 +42,7 @@ enum class WindowUsageStats {
 };
 
 const char* GetPrefNameForProfile(Profile* profile) {
-  if (profile->IsIncognitoProfile() &&
-      !profile->IsTor()) {
+  if (profile->IsIncognitoProfile() && !profile->IsTor()) {
     return kLastTimeIncognitoUsed;
   }
   return nullptr;
@@ -57,19 +56,28 @@ BraveWindowTracker::BraveWindowTracker(PrefService* local_state)
     // Can happen in tests.
     return;
   }
-  BrowserList::AddObserver(this);
+  browser_collection_observation_.Observe(
+      GlobalBrowserCollection::GetInstance());
   timer_.Start(FROM_HERE, base::Minutes(kWindowUsageP3AIntervalMinutes),
                base::BindRepeating(&BraveWindowTracker::UpdateP3AValues,
                                    base::Unretained(this)));
   UpdateP3AValues();
 }
 
-BraveWindowTracker::~BraveWindowTracker() {
-  BrowserList::RemoveObserver(this);
-}
+BraveWindowTracker::~BraveWindowTracker() = default;
 
 void BraveWindowTracker::CreateInstance(PrefService* local_state) {
   g_brave_windows_tracker_instance = new BraveWindowTracker(local_state);
+}
+
+bool BraveWindowTracker::HasInstance() {
+  return g_brave_windows_tracker_instance != nullptr;
+}
+
+void BraveWindowTracker::ClearInstance() {
+  CHECK(g_brave_windows_tracker_instance);
+  delete g_brave_windows_tracker_instance;
+  g_brave_windows_tracker_instance = nullptr;
 }
 
 void BraveWindowTracker::RegisterPrefs(PrefRegistrySimple* registry) {
@@ -77,19 +85,19 @@ void BraveWindowTracker::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kTorUsed, false);
 }
 
-void BraveWindowTracker::OnBrowserAdded(Browser* browser) {
-  if (browser->profile()->IsTor()) {
+void BraveWindowTracker::OnBrowserCreated(BrowserWindowInterface* browser) {
+  if (browser->GetProfile()->IsTor()) {
     local_state_->SetBoolean(kTorUsed, true);
     return;
   }
-  const char* pref = GetPrefNameForProfile(browser->profile());
+  const char* pref = GetPrefNameForProfile(browser->GetProfile());
   if (pref) {
     local_state_->SetTime(pref, base::Time::Now());
   }
 }
 
-void BraveWindowTracker::OnBrowserSetLastActive(Browser* browser) {
-  const char* pref = GetPrefNameForProfile(browser->profile());
+void BraveWindowTracker::OnBrowserActivated(BrowserWindowInterface* browser) {
+  const char* pref = GetPrefNameForProfile(browser->GetProfile());
   if (pref) {
     local_state_->SetTime(pref, base::Time::Now());
   }

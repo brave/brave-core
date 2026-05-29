@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index 1249dc3c2f189354ee6966b0f4fda2df7e8d8839..06faaf282038010b851702f8342108d2e09b6136 100644
+index be1c5ca3b52f11b730295e869bff79c3394ad59f..3cab817b4d3e6f1b33f92128b5718cf3d0f1d6ba 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
-@@ -157,6 +157,7 @@ source_set("internal") {
+@@ -165,6 +165,7 @@ source_set("internal") {
    if (enable_extensions_core) {
      deps += [ "//chrome/browser/extensions" ]
    }

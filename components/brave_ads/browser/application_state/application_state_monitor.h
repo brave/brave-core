@@ -31,6 +31,9 @@ class ApplicationStateMonitor {
   // Returns whether the browser is currently active.
   virtual bool IsBrowserActive() const;
 
+  // Lifecycle
+  virtual void Reset() {}
+
  protected:
   // Notifies observers that the browser became active.
   void NotifyBrowserDidBecomeActive();

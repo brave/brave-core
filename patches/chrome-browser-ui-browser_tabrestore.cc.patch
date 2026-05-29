@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index dc253dfd33c5b63dfdbbc89bd3718a5244546cf6..8b59879728a69c31c4df5d8bb6f818f133a47a38 100644
+index 9291009f10ea351d0a693a1c2c985470e4383ead..76a8a064fdbf8ce7bc0732ace5b98e3bbceb0f3e 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
 @@ -39,6 +39,12 @@

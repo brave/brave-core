@@ -16,7 +16,6 @@
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/permissions/request_type.h"
-#include "components/permissions/resolvers/content_setting_permission_resolver.h"
 #include "components/prefs/pref_service.h"
 #include "components/url_formatter/elide_url.h"
 #include "components/vector_icons/vector_icons.h"
@@ -32,8 +31,7 @@ WidevinePermissionRequest::WidevinePermissionRequest(
     bool for_restart)
     : PermissionRequest(
           std::make_unique<permissions::PermissionRequestData>(
-              std::make_unique<permissions::ContentSettingPermissionResolver>(
-                  permissions::RequestType::kWidevine),
+              permissions::RequestType::kWidevine,
               false,
               requesting_origin),
           base::BindRepeating(&WidevinePermissionRequest::PermissionDecided,

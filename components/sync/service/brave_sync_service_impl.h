@@ -90,6 +90,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void RemoveAllPrefsChangeRegistrarForTesting();
   SyncServiceCrypto* GetCryptoForTesting();
   bool SetSeedForTesting(const std::string& seed);
+  DataTypeManager* GetDataTypeManagerForTesting();
   void SetInitializingForTesting();
 
  private:
@@ -148,6 +149,10 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       const signin::PrimaryAccountChangeEvent& event_details) override;
 
   bool SetSeed(const std::string& seed);
+
+#if BUILDFLAG(IS_ANDROID)
+  void MaybeAndroidSyncEverythingIfRequired();
+#endif
 
   brave_sync::Prefs brave_sync_prefs_;
 

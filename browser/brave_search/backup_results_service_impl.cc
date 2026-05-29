@@ -189,8 +189,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     int stored_height =
         local_state_->GetInteger(prefs::kBackupResultsLastViewHeight);
     gfx::Size view_size(
-        stored_width > 0 ? stored_width : base::RandInt(800, 1920),
-        stored_height > 0 ? stored_height : base::RandInt(600, 1080));
+        stored_width > 0 ? stored_width : base::RandIntInclusive(800, 1920),
+        stored_height > 0 ? stored_height : base::RandIntInclusive(600, 1080));
 #if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
     native_view->OnSizeChanged(view_size.width(), view_size.height());

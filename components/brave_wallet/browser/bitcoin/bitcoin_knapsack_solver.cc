@@ -84,8 +84,8 @@ void KnapsackSolver::SolveForTransaction(
 
       for (uint32_t group_index = 0; group_index < input_groups_.size();
            ++group_index) {
-        bool pick_group =
-            pass == 0 ? base::RandInt(0, 1) : !picked_groups[group_index];
+        bool pick_group = pass == 0 ? base::RandIntInclusive(0, 1)
+                                    : !picked_groups[group_index];
         if (!pick_group) {
           continue;
         }

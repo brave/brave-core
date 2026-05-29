@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ssl/ask_before_http_dialog_controller.cc b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
+index da0531ef33708112d7d5bff17f9faa403dc1ec42..3a20d1c1926be30a950440873de5dac383a7e9d8 100644
+--- a/chrome/browser/ssl/ask_before_http_dialog_controller.cc
++++ b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
+@@ -54,7 +54,7 @@ using HttpWarningReason =
+ namespace {
+ 
+ inline constexpr char kLearnMoreLink[] =
+-    "https://support.google.com/chrome?p=first_mode";
++    "https://support.brave.app/hc/en-us/articles/15513090104717";
+ 
+ // Helper to create the prompt body view based on the Ask-before-HTTP warning
+ // type.

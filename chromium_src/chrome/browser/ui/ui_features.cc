@@ -15,6 +15,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    {kInfobarRefresh, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
     // PDF infobar is only used on Windows and macOS upstream.
     {kPdfInfoBar, base::FEATURE_DISABLED_BY_DEFAULT},

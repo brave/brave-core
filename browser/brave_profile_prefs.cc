@@ -57,10 +57,10 @@
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "build/build_config.h"
+#include "chrome/browser/new_tab_page/ntp_pref_names.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
-#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
@@ -226,6 +226,10 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
                                 base::Value(false));
 
+  // Disable safe browsing deep scanning per security/privacy team.
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingDeepScanningEnabled,
+                                base::Value(false));
+
 #if defined(TOOLKIT_VIEWS)
   // Disable side search by default.
   // Copied from side_search_prefs.cc because it's not exported.
@@ -271,6 +275,12 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Disabled due to crash with tab group dragging.
   // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
   registry->SetDefaultPrefValue(prefs::kSplitViewDragAndDropEnabled,
+                                base::Value(false));
+
+  // Disables WebRTC logs collection.
+  registry->SetDefaultPrefValue(prefs::kWebRtcEventLogCollectionAllowed,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(prefs::kWebRtcTextLogCollectionAllowed,
                                 base::Value(false));
 }
 

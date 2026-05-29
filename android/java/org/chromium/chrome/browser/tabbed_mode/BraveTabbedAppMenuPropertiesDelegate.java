@@ -39,7 +39,6 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
-import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.hub.HubManager;
@@ -235,7 +234,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<LayoutStateProvider> layoutStateProvider,
             NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            WebFeedSnackbarController.FeedLauncher feedLauncher,
             ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             @NonNull
@@ -255,7 +253,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 appMenuDelegate,
                 layoutStateProvider,
                 bookmarkModelSupplier,
-                feedLauncher,
                 modalDialogManager,
                 snackbarManager,
                 incognitoReauthControllerOneshotSupplier,
@@ -726,16 +723,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.disable_price_tracking_menu_id,
                                 R.string.disable_price_tracking_menu_item,
                                 0)));
-
-        // AI / AI PDF
-        if (ChromeFeatureList.isEnabled(
-                ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY)) {
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.ai_web_menu_id, R.string.menu_summarize_with_ai, 0)));
-        }
 
         // Find in page
         modelList.add(

@@ -23,7 +23,6 @@
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"

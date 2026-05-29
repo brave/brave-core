@@ -103,6 +103,14 @@
     <!-- Override of chromium's toolbar hairline height -->
     <dimen name="toolbar_hairline_height">0dp</dimen>
 
-    <!-- Override of chromium's Search engine logo -->
+    <!-- Override of chromium's Search engine logo. The half-size is the icon
+         outline corner radius and must match composed_size / 2 to render as a
+         perfect circle (upstream uses 24dp/12dp on phones). -->
     <dimen name="omnibox_search_engine_logo_composed_size">20dp</dimen>
+    <dimen name="omnibox_search_engine_logo_composed_half_size">10dp</dimen>
+
+    <!-- Disable the upstream 56dp wide StatusView. Upstream centers the search engine
+         icon in this wider container on regular NTP and when the URL bar is focused,
+         which leaves a ~14dp gap before the leading lion icon in Brave's omnibox. -->
+    <dimen name="status_view_width_wide">0dp</dimen>
 </resources>

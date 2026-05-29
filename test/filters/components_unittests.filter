@@ -113,6 +113,8 @@
 # This test fails because we override GetTypesWithTemporaryGrantsInHcsm to
 # return an empty vector.
 -All/PEPCInitiatedPermissionRequestTestWithAutolocate.PEPCRequestHeuristicallyGrantedGeolocation/0
+-ContentSettingsPrefProviderTest.EphemeralGrantClearsPersistentGrant
+-ContentSettingsPrefProviderTest.EphemeralGrantSetsBlockedToAsk
 
 # These tests fail because we disable popular site suggestions functionality
 -MostVisitedSitesTest.CustomLinksCappedAtTenWhenRedesignDisabled

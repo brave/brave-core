@@ -11,7 +11,9 @@
 #include "base/test/ios/wait_util.h"
 #include "brave/ios/web/test/grit/test_resources.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
+#include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/navigation/navigation_manager.h"
+#include "ios/web/public/test/fakes/fake_web_client.h"
 #include "ios/web/public/test/navigation_test_util.h"
 #include "ios/web/public/test/web_test_with_web_state.h"
 #include "ios/web/public/test/web_view_content_test_util.h"
@@ -42,6 +44,19 @@ const char kTestWebUIURLHost2[] = "testwebui2";
 const char kWebUIPageText[] = "WebUI page";
 const char kWebUIPage2Text[] = "WebUI 2 page";
 
+class TestWebClient : public web::FakeWebClient {
+ public:
+  void AddAdditionalSchemes(Schemes* schemes) const override {
+    FakeWebClient::AddAdditionalSchemes(schemes);
+    schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
+  }
+
+  bool IsAppSpecificURL(const GURL& url) const override {
+    return FakeWebClient::IsAppSpecificURL(url) ||
+           url.SchemeIs(kChromeUIUntrustedScheme);
+  }
+};
+
 // Controller for test WebUI.
 class TestUI : public WebUIIOSController {
  public:
@@ -57,7 +72,7 @@ class TestUI : public WebUIIOSController {
     source->SetDefaultResource(resource_id);
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::FrameSrc,
-        absl::StrFormat("frame-src %s://%s", kTestWebUIScheme,
+        absl::StrFormat("frame-src %s://%s", kChromeUIUntrustedScheme,
                         kTestWebUIURLHost2));
 
     web::WebState* web_state = web_ui->GetWebState();
@@ -77,7 +92,8 @@ class TestWebUIControllerFactory : public WebUIIOSControllerFactory {
   std::unique_ptr<WebUIIOSController> CreateWebUIIOSControllerForURL(
       WebUIIOS* web_ui,
       const GURL& url) const override {
-    if (!url.SchemeIs(kTestWebUIScheme)) {
+    if (!url.SchemeIs(kTestWebUIScheme) &&
+        !url.SchemeIs(kChromeUIUntrustedScheme)) {
       return nullptr;
     }
     if (url.host() == kTestWebUIURLHost) {
@@ -90,7 +106,8 @@ class TestWebUIControllerFactory : public WebUIIOSControllerFactory {
   }
 
   NSInteger GetErrorCodeForWebUIURL(const GURL& url) const override {
-    if (url.SchemeIs(kTestWebUIScheme)) {
+    if (url.SchemeIs(kTestWebUIScheme) ||
+        url.SchemeIs(kChromeUIUntrustedScheme)) {
       return 0;
     }
     return NSURLErrorUnsupportedURL;
@@ -98,11 +115,11 @@ class TestWebUIControllerFactory : public WebUIIOSControllerFactory {
 };
 }  // namespace
 
-// A test fixture for verifying WebUI. This test fixture is copied from
+// A test fixture for verifying WebUI. This test fixture is based on
 // //ios/web/webui/web_ui_inttest.mm
 class WebUITest : public WebTestWithWebState {
  protected:
-  WebUITest() : WebTestWithWebState() {}
+  WebUITest() : WebTestWithWebState(std::make_unique<TestWebClient>()) {}
 
   void SetUp() override {
     WebTestWithWebState::SetUp();

@@ -52,9 +52,6 @@ import org.chromium.chrome.browser.commerce.ShoppingServiceFactory;
 import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtils;
 import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtilsJni;
 import org.chromium.chrome.browser.feed.FeedFeatures;
-import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
-import org.chromium.chrome.browser.feed.webfeed.WebFeedBridgeJni;
-import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.hub.HubManager;
 import org.chromium.chrome.browser.hub.Pane;
@@ -99,7 +96,6 @@ import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
 import org.chromium.components.power_bookmarks.PowerBookmarkMeta;
 import org.chromium.components.prefs.PrefService;
-import org.chromium.components.signin.identitymanager.ConsentLevel;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.sync.SyncService;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -122,9 +118,10 @@ import java.util.List;
 @RunWith(BaseRobolectricTestRunner.class)
 @DisableFeatures({
     BraveFeatureList.BRAVE_PLAYLIST,
-    ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY,
+    ChromeFeatureList.ANDROID_PAGE_INFO_AS_APP_MENU_ITEM,
     ChromeFeatureList.FEED_AUDIO_OVERVIEWS,
     ChromeFeatureList.GLIC,
+    ChromeFeatureList.LENS_OVERLAY_ANDROID,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
     DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
@@ -150,7 +147,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private ManagedBrowserUtils.Natives mManagedBrowserUtilsJniMock;
     @Mock private Profile mProfile;
     @Mock private AppMenuDelegate mAppMenuDelegate;
-    @Mock private WebFeedSnackbarController.FeedLauncher mFeedLauncher;
     @Mock private ModalDialogManager mDialogManager;
     @Mock private SnackbarManager mSnackbarManager;
     @Mock private OfflinePageUtils.Internal mOfflinePageUtils;
@@ -168,7 +164,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private UserPrefs.Natives mUserPrefsNatives;
     @Mock private PrefService mPrefService;
     @Mock private SyncService mSyncService;
-    @Mock private WebFeedBridge.Natives mWebFeedBridgeJniMock;
     @Mock private TranslateBridge.Natives mTranslateBridgeJniMock;
     @Mock private PageZoomManager mPageZoomManagerMock;
     @Mock private DefaultBrowserPromoUtils mDefaultBrowserPromoUtilsMock;
@@ -233,15 +228,13 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mSigninManager.getIdentityManager()).thenReturn(mIdentityManager);
         IdentityServicesProvider.setInstanceForTests(mIdentityService);
         when(mIdentityService.getIdentityManager(any(Profile.class))).thenReturn(mIdentityManager);
-        when(mIdentityManager.hasPrimaryAccount(ConsentLevel.SIGNIN)).thenReturn(true);
+        when(mIdentityManager.hasPrimaryAccount()).thenReturn(true);
 
         PageZoomUtils.setShouldShowMenuItemForTesting(false);
         FeedFeatures.setFakePrefsForTest(mPrefService);
         AppBannerManagerJni.setInstanceForTesting(mAppBannerManagerJniMock);
         Mockito.when(mAppBannerManagerJniMock.getInstallableWebAppManifestId(any()))
                 .thenReturn(null);
-        WebFeedBridgeJni.setInstanceForTesting(mWebFeedBridgeJniMock);
-        when(mWebFeedBridgeJniMock.isWebFeedEnabled()).thenReturn(true);
         UserPrefsJni.setInstanceForTesting(mUserPrefsNatives);
         when(mUserPrefsNatives.get(mProfile)).thenReturn(mPrefService);
 
@@ -279,7 +272,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mAppMenuDelegate,
                         mLayoutStateProviderSupplier,
                         mBookmarkModelSupplier,
-                        mFeedLauncher,
                         mDialogManager,
                         mSnackbarManager,
                         mIncognitoReauthControllerSupplier,
@@ -343,6 +335,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
+            R.id.info_menu_id,
+            R.id.page_info_divider_line_id,
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             R.id.brave_wallet_id,
@@ -379,6 +373,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
+        expectedItems.add(R.id.info_menu_id);
+        expectedItems.add(R.id.page_info_divider_line_id);
         expectedItems.add(R.id.downloads_menu_id);
         expectedItems.add(R.id.all_bookmarks_menu_id);
         expectedItems.add(R.id.brave_wallet_id);
@@ -443,6 +439,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
+            R.id.info_menu_id,
+            R.id.page_info_divider_line_id,
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             // R.id.brave_wallet_id is NOT included - disabled by policy

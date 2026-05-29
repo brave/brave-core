@@ -257,8 +257,8 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
   return false;
 #else
   // For now, we only supports fullscreen from playlist.
-  if (side_panel_coordinator_->GetCurrentEntryId(
-          SidePanelEntry::PanelType::kContent) != SidePanelEntryId::kPlaylist) {
+  if (side_panel_coordinator_->GetCurrentEntryId() !=
+      SidePanelEntryId::kPlaylist) {
     return false;
   }
 
@@ -491,15 +491,13 @@ bool SidebarContainerView::IsFullscreenByTab() const {
 }
 
 bool SidebarContainerView::IsSidePanelShowing() const {
-  return side_panel_coordinator_->IsSidePanelShowing(
-      SidePanelEntry::PanelType::kContent);
+  return side_panel_coordinator_->IsSidePanelShowing();
 }
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {
   // It is more reliable to check whether coordinator has current entry rather
   // than checking if side_panel_ is visible.
-  return side_panel_coordinator_->GetCurrentEntryId(
-             SidePanelEntry::PanelType::kContent) ||
+  return side_panel_coordinator_->GetCurrentEntryId() ||
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }
@@ -603,8 +601,7 @@ void SidebarContainerView::OnActiveIndexChanged(
     // arrived first and then OnEntryHidden() for managed is called.
     // And this method is called by last OnEntryHidden(). So, coordinator
     // already has non-managed entry.
-    if (side_panel_coordinator_->GetCurrentEntryId(
-            SidePanelEntry::PanelType::kContent)) {
+    if (side_panel_coordinator_->GetCurrentEntryId()) {
       return;
     }
 
@@ -961,8 +958,7 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
       // different tab uses ai-chat). In this case, don't need to deactivate
       // item because same item should be activated.
       if (controller->IsActiveIndex(sidebar_index) &&
-          side_panel_coordinator_->GetCurrentEntryId(
-              SidePanelEntry::PanelType::kContent) != entry->key().id()) {
+          side_panel_coordinator_->GetCurrentEntryId() != entry->key().id()) {
         controller->ActivateItemAt(std::nullopt);
         return;
       }
@@ -972,8 +968,7 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Handling non-managed entry.
   // If non-managed entry is hidden and there is no active entry,
   // panel should be hidden here.
-  if (!side_panel_coordinator_->GetCurrentEntryId(
-          SidePanelEntry::PanelType::kContent)) {
+  if (!side_panel_coordinator_->GetCurrentEntryId()) {
     HideSidebarForShowOption();
   }
 }
@@ -997,8 +992,7 @@ void SidebarContainerView::UpdateActiveItemState() {
 
   auto* controller = browser_->GetFeatures().sidebar_controller();
   std::optional<sidebar::SidebarItem::BuiltInItemType> current_type;
-  if (auto entry_id = side_panel_coordinator_->GetCurrentEntryId(
-          SidePanelEntry::PanelType::kContent)) {
+  if (auto entry_id = side_panel_coordinator_->GetCurrentEntryId()) {
     current_type = sidebar::BuiltInItemTypeFromSidePanelId(*entry_id);
   }
   controller->UpdateActiveItemState(current_type);
@@ -1030,7 +1024,7 @@ void SidebarContainerView::OnTabStripModelChanged(
       if (auto* entry = registry->GetEntryForKey(
               SidePanelEntry::Key(SidePanelEntryId::kChatUI))) {
         if (side_panel_coordinator_->IsSidePanelEntryShowing(entry->key())) {
-          side_panel_coordinator_->Close(SidePanelEntry::PanelType::kContent);
+          side_panel_coordinator_->Close();
         } else {
           entry->ClearCachedView();
         }
@@ -1069,8 +1063,7 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
   // windows also should have same visible side panel.
   if (shared_pinned_tab_service &&
       shared_pinned_tab_service->IsSharedContents(contents)) {
-    if (auto active_entry =
-            registry->GetActiveEntryFor(SidePanelEntry::PanelType::kContent)) {
+    if (auto active_entry = registry->GetActiveEntry()) {
       OnEntryShown(*active_entry);
     }
   }
@@ -1088,7 +1081,7 @@ void SidebarContainerView::AddSidePanelEntryObservation(SidePanelEntry* entry) {
   }
 
   // Brave sidebar can handle only kContent type.
-  if (entry->type() != SidePanelEntry::PanelType::kContent) {
+  if (entry->type() != SidePanelType::kContent) {
     return;
   }
 

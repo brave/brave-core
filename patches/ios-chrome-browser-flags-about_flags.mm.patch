@@ -1,12 +1,12 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 6af162b79d2cf45402b0dfd6995197ada92d29a3..780001614e64e31a89d53f73923f0d253fc100d8 100644
+index a840cf7f7b6fdbab2bb2b13c1edfcd81421c899d..259630bb93bd8577579eed539520419243b2c92f 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1354,6 +1354,7 @@ const FeatureEntry::FeatureVariation kAssistantContainerVariations[] = {
+@@ -1454,6 +1454,7 @@ const FeatureEntry::FeatureVariation kAutoSubmissionVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({
 +    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
-     {"in-product-help-demo-mode-choice",
-      flag_descriptions::kInProductHelpDemoModeName,
-      flag_descriptions::kInProductHelpDemoModeDescription, flags_ui::kOsIos,
+     {"build-external-privacy-context",
+      flag_descriptions::kBuildExternalPrivacyContextName,
+      flag_descriptions::kBuildExternalPrivacyContextDescription,

@@ -1,0 +1,54 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Add is_self_delete_supported to the ctor arg list
+
+Adding `is_self_delete_supported` so it can be used to initialise
+`is_self_delete_supported_`.
+
+This regex matches with the constructor declaration, by checking that there is
+a `std::string` somewhere in the list, and adds `is_self_delete_supported` as
+the last argument in the list.
+'''
+re_pattern = '(DeviceInfo\((?=[^)]*std::string).*?)(\);)'
+re_flags = ['DOTALL']
+replace = '''\1,
+             bool is_self_delete_supported = false\2'''
+count = 1
+
+[[substitution]]
+description = '''Add Brave-specific methods to DeviceInfo public interface
+
+Adding brave-specific methods to this type's interface. This methods used to
+exist in Chromium, but they were dropped at some point, and then reinstated on
+Brave.
+'''
+re_pattern = '(~DeviceInfo\(\);)'
+replace = '''\1
+  bool is_self_delete_supported() const { return is_self_delete_supported_; }
+  void set_is_self_delete_supported(bool is_self_delete_supported) {
+    is_self_delete_supported_ = is_self_delete_supported;
+  }
+  // Gets the OS in string form.
+  std::string GetOSString() const;
+  // Gets the device type in string form.
+  std::string GetDeviceTypeString() const;
+  // Converts the DeviceInfo values to a JS friendly DictionaryValue,
+  // which extension APIs can expose to third party apps.
+  base::DictValue ToValue() const;'''
+count = 1
+
+[[substitution]]
+description = '''Add is_self_delete_supported_ as last member of DeviceInfo
+
+This replacement adds `is_self_delete_supported_` as the last member of
+`DeviceInfo`.
+'''
+re_pattern = '(class DeviceInfo \{.*)(\n\};)'
+re_flags = ['DOTALL']
+replace = '''\1
+  bool is_self_delete_supported_;\2'''
+count = 1

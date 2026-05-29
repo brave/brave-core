@@ -17,14 +17,14 @@
 #include "brave/browser/ui/commander/ranker.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 class OmniboxView;
 class Profile;
-class BrowserList;
+class BrowserCollection;
 
 namespace commander {
 
@@ -33,7 +33,7 @@ bool IsEnabled();
 
 class CommanderService : public CommanderFrontendDelegate,
                          public KeyedService,
-                         public BrowserListObserver {
+                         public BrowserCollectionObserver {
  public:
   using CommandSources = std::vector<std::unique_ptr<CommandSource>>;
 
@@ -70,9 +70,11 @@ class CommanderService : public CommanderFrontendDelegate,
 
   void ShowCommander();
   void HideCommander();
+  void EnsureBrowserDidCloseSubscription(
+      BrowserWindowInterface* browser_window_interface);
 
-  // overrides BrowserListObserver:
-  void OnBrowserAdded(Browser* browser) override;
+  // BrowserCollectionObserver:
+  void OnBrowserCreated(BrowserWindowInterface* browser) override;
 
   // Callback for browser closed events.
   void OnBrowserDidClose(BrowserWindowInterface* browser_window_interface);
@@ -83,7 +85,7 @@ class CommanderService : public CommanderFrontendDelegate,
   std::u16string prompt_;
   std::vector<std::unique_ptr<CommandItem>> items_;
   uint32_t current_result_set_id_ = 0;
-  raw_ptr<Browser, DanglingUntriaged> last_browser_;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> last_browser_;
   raw_ptr<Profile> profile_;
 
   // Some commands have multiple steps (like move tab to window, pick a
@@ -95,14 +97,14 @@ class CommanderService : public CommanderFrontendDelegate,
   Ranker ranker_;
 
   base::ObserverList<Observer> observers_;
-  base::ScopedObservation<BrowserList, BrowserListObserver>
-      browser_list_observation_{this};
 
   // Map to track browser close callback subscriptions.
   absl::flat_hash_map<raw_ptr<BrowserWindowInterface>,
                       base::CallbackListSubscription>
       browser_close_subscriptions_;
 
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
+      browser_collection_observation_{this};
   base::WeakPtrFactory<CommanderService> weak_ptr_factory_{this};
 };
 }  // namespace commander

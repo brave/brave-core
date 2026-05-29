@@ -11,7 +11,7 @@
 #include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "chrome/browser/ui/views/page_action/page_action_controller.h"
+#include "chrome/browser/ui/page_actions/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/views/view_tracker.h"
 
@@ -60,7 +60,7 @@ class PartitionedStoragePageActionController {
   void OnPartitionedStorageMenuClosed();
 
   const raw_ref<tabs::TabInterface> tab_;
-  const raw_ref<page_actions::PageActionController> page_action_controller_;
+  const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;
   base::CallbackListSubscription did_activate_subscription_;
   base::CallbackListSubscription did_become_visible_subscription_;
   base::CallbackListSubscription will_discard_contents_subscription_;

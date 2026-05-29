@@ -9,7 +9,7 @@
 #define CheckRenderFrameType                                             \
   CheckRenderFrameType_ChromiumImpl(                                     \
       base::OnceCallback<void(bool ask_user, bool is_allowed)> callback, \
-      int render_process_id, int render_frame_id);                       \
+      content::GlobalRenderFrameHostId global_id);                       \
   static void CheckRenderFrameType
 
 #include <chrome/browser/speech/chrome_speech_recognition_manager_delegate.h>  // IWYU pragma: export

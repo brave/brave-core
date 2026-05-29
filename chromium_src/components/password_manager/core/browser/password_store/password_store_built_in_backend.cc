@@ -7,6 +7,19 @@
 
 #if BUILDFLAG(IS_ANDROID)
 
+// Upstream cr149
+// (https://chromium-review.googlesource.com/c/chromium/src/+/7772435) removed
+// `kNeedsSettingsConfirmation` and `kUnrecoverableError` from
+// `syncer::SyncService::UserActionableError` on Android. Upstream Android
+// uses the GMS-backed password manager and doesn't compile this file.
+// Brave-Android sets `use_login_database_as_backend = true` and does compile
+// it. Here we move these values back for Android to avoid build errors.
+#define kNeedsUPMBackendUpgrade                            \
+  kNeedsSettingsConfirmation = 7, kUnrecoverableError = 8, \
+  kNeedsUPMBackendUpgrade
+#include "components/sync/service/sync_service.h"
+#undef kNeedsUPMBackendUpgrade
+
 // Without this override there are error on Android cr130 build:
 // password_store_built_in_backend.cc:217:36: error: use of undeclared
 // identifier 'features'; did you mean 'sql::features'?

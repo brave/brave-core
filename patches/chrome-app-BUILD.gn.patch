@@ -1,8 +1,8 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index ae608f51c7ac8d5a6853f18b3dfa6b18d90db01c..dac96404337043b0535ca742ca0f85fecf23183f 100644
+index 606f28903e88c391552351980f762f1f52a6083f..4c86b11af3d77f7aa1741556fd728b8bddba7667 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -47,6 +47,7 @@ source_set("chrome_dll_resources") {
+@@ -48,6 +48,7 @@ source_set("chrome_dll_resources") {
        "//build:branding_buildflags",
        "//printing/buildflags",
      ]
@@ -10,7 +10,7 @@ index ae608f51c7ac8d5a6853f18b3dfa6b18d90db01c..dac96404337043b0535ca742ca0f85fe
    }
  }
  
-@@ -89,6 +90,7 @@ grit_strings("generated_resources") {
+@@ -93,6 +94,7 @@ grit_strings("generated_resources") {
    if (is_android) {
      create_android_resources = true
    }

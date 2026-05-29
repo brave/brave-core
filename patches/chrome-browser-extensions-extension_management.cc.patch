@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_management.cc b/chrome/browser/extensions/extension_management.cc
-index bea1864156f76066fe88de154d06ef5070f6f0ac..db566cc780aedaf97233ebd36bf7938d8916c47b 100644
+index aed401df146d2cd9de0aabdda6e88fc62330f9d0..40905bdaecca6caeadfb669bcf5bbfe239283f32 100644
 --- a/chrome/browser/extensions/extension_management.cc
 +++ b/chrome/browser/extensions/extension_management.cc
-@@ -1147,6 +1147,7 @@ ExtensionManagementFactory::BuildServiceInstanceForBrowserContext(
+@@ -1151,6 +1151,7 @@ ExtensionManagementFactory::BuildServiceInstanceForBrowserContext(
      content::BrowserContext* context) const {
    TRACE_EVENT0("browser,startup",
                 "ExtensionManagementFactory::BuildServiceInstanceFor");

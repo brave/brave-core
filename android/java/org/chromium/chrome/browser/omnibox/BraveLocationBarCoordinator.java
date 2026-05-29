@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -99,7 +100,9 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             Function<Tab, @Nullable Bitmap> tabFaviconFunction,
             SnackbarManager snackbarManager,
             View bottomContainerView,
-            @Nullable OmniboxChipManager omniboxChipManager) {
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable LocationBarFocusScrimHandler scrimHandler,
+            @Nullable UserEducationHelper userEducationHelper) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -140,7 +143,9 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabFaviconFunction,
                 snackbarManager,
                 bottomContainerView,
-                omniboxChipManager);
+                omniboxChipManager,
+                scrimHandler,
+                userEducationHelper);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

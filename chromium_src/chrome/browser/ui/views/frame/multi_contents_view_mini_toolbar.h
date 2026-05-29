@@ -19,7 +19,7 @@ struct VectorIcon;
 #define UpdateState(...)                                                    \
   virtual UpdateState(__VA_ARGS__);                                         \
   static const gfx::VectorIcon& GetMoreVerticalIcon();                      \
-  static std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel( \
+  static std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(   \
       TabStripModel* tab_strip_model, SplitTabMenuModel::MenuSource source, \
       int split_tab_index);                                                 \
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest, SelectTabTest);    \

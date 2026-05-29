@@ -8,6 +8,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/render_process_host.h"
 
 #define CheckRenderFrameType(...) CheckRenderFrameType_ChromiumImpl(__VA_ARGS__)
@@ -19,11 +20,10 @@ namespace speech {
 // static
 void ChromeSpeechRecognitionManagerDelegate::CheckRenderFrameType(
     base::OnceCallback<void(bool ask_user, bool is_allowed)> callback,
-    int render_process_id,
-    int render_frame_id) {
+    content::GlobalRenderFrameHostId global_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
-  if (auto* rph = content::RenderProcessHost::FromID(render_process_id)) {
+  if (auto* rph = content::RenderProcessHost::FromID(global_id.child_id)) {
     if (auto* profile = Profile::FromBrowserContext(rph->GetBrowserContext())) {
       if (profile->IsTor()) {
         // Disable speech recongition in Tor.
@@ -34,8 +34,7 @@ void ChromeSpeechRecognitionManagerDelegate::CheckRenderFrameType(
     }
   }
 
-  return CheckRenderFrameType_ChromiumImpl(std::move(callback),
-                                           render_process_id, render_frame_id);
+  return CheckRenderFrameType_ChromiumImpl(std::move(callback), global_id);
 }
 
 }  // namespace speech

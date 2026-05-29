@@ -13,7 +13,7 @@
 
 // defined at brave_split_tab_menu_model.cc to avoid BraveSplitTabMenuModel
 // dependency here.
-std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
+std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
     SplitTabMenuModel::MenuSource source);
 

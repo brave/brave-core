@@ -5,6 +5,7 @@
 
 import { CustomizeChromeApiProxy } from './customize_chrome_api_proxy.js'
 
+// eslint-disable-next-line
 import { CrLitElement, html, css } from '//resources/lit/v3_0/lit.rollup.js'
 import type { CSSResultGroup } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'

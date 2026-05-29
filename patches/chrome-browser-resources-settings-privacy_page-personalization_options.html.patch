@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 7adae56a25060ef7386b3254ad954fc479414207..eb0bcebe807d541e82993ad850090d41519743e1 100644
+index 50a3c356721437fd5bca3d2239bea82589488416..7fb3bab5748873b0d40b407aa52416c736e713e5 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -24,6 +24,7 @@
@@ -18,17 +18,17 @@ index 7adae56a25060ef7386b3254ad954fc479414207..eb0bcebe807d541e82993ad850090d41
  <if expr="_google_chrome">
  <if expr="is_chromeos">
      <!-- Ash Browser settings show a link to the OS settings instead. -->
-@@ -74,6 +76,7 @@
-         on-click="onMetricsReportingLinkClick_" external>
-     </cr-link-row>
+@@ -76,6 +78,7 @@
+       </cr-link-row>
+     </template>
  </if><!-- chromeos -->
 +</if><!-- _google_chrome -->
  <if expr="not is_chromeos">
-     <settings-toggle-button id="metricsReportingControl"
-         class="hr"
-@@ -89,13 +92,14 @@
-       </template>
-     </settings-toggle-button>
+     <template is="dom-if" if="[[!shouldUseMetricsConsentRestructure_]]">
+       <settings-toggle-button id="metricsReportingControl"
+@@ -93,13 +96,14 @@
+       </settings-toggle-button>
+     </template>
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +<if expr="_google_chrome">
@@ -42,7 +42,7 @@ index 7adae56a25060ef7386b3254ad954fc479414207..eb0bcebe807d541e82993ad850090d41
  <if expr="_google_chrome">
  <if expr="not is_chromeos">
      <settings-toggle-button id="spellCheckControl"
-@@ -151,6 +155,7 @@
+@@ -155,6 +159,7 @@
        </settings-toggle-button>
      </template>
  
@@ -50,7 +50,7 @@ index 7adae56a25060ef7386b3254ad954fc479414207..eb0bcebe807d541e82993ad850090d41
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -171,3 +176,4 @@
+@@ -175,3 +180,4 @@
        <div>$i18n{chromeSigninChoiceToast}</div>
      </cr-toast>
  </if>

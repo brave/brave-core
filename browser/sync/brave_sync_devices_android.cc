@@ -16,7 +16,6 @@
 #include "base/logging.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "chrome/android/chrome_jni_headers/BraveSyncDevices_jni.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"

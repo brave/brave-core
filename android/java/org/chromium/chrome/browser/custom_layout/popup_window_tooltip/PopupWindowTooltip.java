@@ -282,8 +282,9 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     public boolean isShowing() {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }
+
+    @SuppressWarnings("unchecked")
     public <T extends View> T findViewById(int id) {
-        // noinspection unchecked
         return (T) mContentLayout.findViewById(id);
     }
 

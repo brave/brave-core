@@ -22,7 +22,7 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui",
-    "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/browser/ui/navigator",
     "//chrome/test",
     "//chrome/test:test_support",
     "//testing/gtest",

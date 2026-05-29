@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/gen.rs b/tools/crates/gnrt/gen.rs
-index c6a03e0143eda620957d1b4fd88e9b1600a313ac..094e24923ee2fea50814f6866f9c100acc8ebc45 100644
+index 196653732069dc743ebe4ac5894f696c1aa03c92..bdc5a4d7faf33c862e4e982252d1c008ffae493c 100644
 --- a/tools/crates/gnrt/gen.rs
 +++ b/tools/crates/gnrt/gen.rs
-@@ -276,6 +276,7 @@ fn generate_for_third_party(args: GenCommandArgs, paths: &paths::ChromiumPaths)
+@@ -277,6 +277,7 @@ fn generate_for_third_party(args: GenCommandArgs, paths: &paths::ChromiumPaths)
      let all_build_files: HashMap<PathBuf, gn::BuildFile> = {
          let mut map = HashMap::new();
          for dep in &dependencies {

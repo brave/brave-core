@@ -1,0 +1,24 @@
+diff --git a/components/sync_device_info/device_info.cc b/components/sync_device_info/device_info.cc
+index 9dac3f990d14afdf8de2c2036e57f9bdf97609e8..de84c023f308e7e6e916121475ab9781dedc3dba 100644
+--- a/components/sync_device_info/device_info.cc
++++ b/components/sync_device_info/device_info.cc
+@@ -82,7 +82,8 @@ DeviceInfo::DeviceInfo(
+     bool desktop_to_ios_promo_receiving_enabled,
+     const MobilePromoOnDesktopPromoTypeSet&
+         desktop_to_ios_promo_receiving_types,
+-    GlicExperimentalTriggeringState glic_experimental_triggering_state)
++    GlicExperimentalTriggeringState glic_experimental_triggering_state,
++    bool is_self_delete_supported)
+     : guid_(guid),
+       client_name_(client_name),
+       chrome_version_(chrome_version),
+@@ -107,7 +108,8 @@ DeviceInfo::DeviceInfo(
+           desktop_to_ios_promo_receiving_enabled),
+       desktop_to_ios_promo_receiving_types_(
+           desktop_to_ios_promo_receiving_types),
+-      glic_experimental_triggering_state_(glic_experimental_triggering_state) {}
++      glic_experimental_triggering_state_(glic_experimental_triggering_state),
++      is_self_delete_supported_(is_self_delete_supported) {}
+ 
+ DeviceInfo::~DeviceInfo() = default;
+ 
