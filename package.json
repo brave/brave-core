@@ -244,7 +244,7 @@
   },
   "overrides": {
     "@zondax/ledger-filecoin": "2.0.4",
-    "axios": "1.15.2",
+    "axios": "1.16.0",
     "elliptic": "6.6.1",
     "esbuild": "0.25.0",
     "js-yaml": "4.1.1",
