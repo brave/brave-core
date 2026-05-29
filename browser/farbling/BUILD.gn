@@ -25,6 +25,7 @@ if (!is_android) {
       "brave_speech_synthesis_farbling_browsertest.cc",
       "brave_webaudio_farbling_browsertest.cc",
       "brave_webgl_farbling_browsertest.cc",
+      "brave_webgpu_farbling_browsertest.cc",
     ]
 
     deps = [
