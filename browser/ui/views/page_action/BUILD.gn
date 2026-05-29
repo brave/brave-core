@@ -42,7 +42,6 @@ source_set("page_action") {
       "psst_action_controller.h",
     ]
 
-    # TODO remove unneeded deps here
     deps += [
       "//brave/browser/ui/psst",
       "//brave/components/psst/browser/content",
