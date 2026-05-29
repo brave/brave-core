@@ -18,6 +18,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
+import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.Locale;
@@ -153,7 +154,10 @@ public class BraveIntentHandler {
     protected static String getUrlFromText(Intent intent) {
         if (intent == null) return null;
         String text = IntentUtils.safeGetStringExtra(intent, Intent.EXTRA_TEXT);
-        return (text == null || isJavascriptSchemeOrInvalidUrl(text)) ? null : text;
+        if (text == null) return null;
+        String urlScheme = ExternalNavigationHandler.getSanitizedUrlScheme(text);
+        if (ExternalIntentUrlChecker.isUnsafeExternalScheme(urlScheme)) return null;
+        return text;
     }
 
     @Nullable
@@ -195,11 +199,6 @@ public class BraveIntentHandler {
     private static String getUrlForWebapp(Intent unused_intent) {
         assert false;
         return null;
-    }
-
-    private static boolean isJavascriptSchemeOrInvalidUrl(String unused_url) {
-        assert false;
-        return false;
     }
 
     /**
