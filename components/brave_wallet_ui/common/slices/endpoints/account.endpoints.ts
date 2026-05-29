@@ -199,6 +199,39 @@ export const accountEndpoints = ({
       },
     }),
 
+    getPolkadotAddressesForNetwork: query<
+      Record<string, string>,
+      {
+        accountIds: BraveWallet.AccountId[]
+        chainId: string
+      }
+    >({
+      queryFn: async ({ accountIds, chainId }, { endpoint }, _, baseQuery) => {
+        try {
+          const { polkadotWalletService } = baseQuery(undefined).data
+          const entries = await Promise.all(
+            accountIds.map(async (accountId) => {
+              const { address, errorMessage } =
+                await polkadotWalletService.getAddress(accountId, chainId)
+              if (!address || errorMessage) {
+                throw new Error(errorMessage || 'address unavailable')
+              }
+              return [accountId.uniqueKey, address] as const
+            }),
+          )
+          return {
+            data: Object.fromEntries(entries),
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to fetch Polkadot addresses on chain ${chainId}`,
+            error,
+          )
+        }
+      },
+    }),
+
     validatePolkadotAddress: query<
       BraveWallet.PolkadotValidationStatus,
       {
