@@ -386,13 +386,6 @@ void AdBlockService::OnPreferenceChanged(const std::string& pref_name) {
   component_service_manager_->ResetProviders();
 }
 
-void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // Tags only need to be modified for the default engine.
-  engine_wrapper_.AsyncCall(&AdBlockEngineWrapper::EnableTag)
-      .WithArgs(tag, enabled);
-}
-
 void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   custom_filters_provider_->AddUserCosmeticFilter(filter);

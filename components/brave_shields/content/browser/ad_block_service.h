@@ -179,7 +179,6 @@ class AdBlockService {
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-  void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
   void ResetCosmeticFilter(std::string_view host);
   bool AreAnyBlockedElementsPresent(std::string_view host);

@@ -54,7 +54,6 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void UpdateAdBlockInstanceWithRules(const std::string& rules);
   void EnableDeveloperMode(bool enabled);
   void UpdateCustomAdBlockInstanceWithRules(const std::string& rules);
-  void AssertTagExists(const std::string& tag, bool expected_exists) const;
   void InitEmbeddedTestServer();
   base::FilePath GetTestDataDir();
   void NavigateToURL(const GURL& url);

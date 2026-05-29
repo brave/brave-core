@@ -52,8 +52,6 @@ class AdBlockEngine {
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
   void UseResources(const adblock::BraveCoreResourceStorage& storage);
-  void EnableTag(const std::string& tag, bool enabled);
-  bool TagExists(const std::string& tag);
 
   base::DictValue GetDebugInfo();
   void DiscardRegex(uint64_t regex_id);
@@ -94,7 +92,6 @@ class AdBlockEngine {
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::PerfPredictorTabHelperTest;
 
-  std::set<std::string> tags_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
       GUARDED_BY_CONTEXT(sequence_checker_);
 

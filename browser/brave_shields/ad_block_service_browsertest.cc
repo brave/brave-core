@@ -317,21 +317,6 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
   observer.WaitForAdditional();
 }
 
-void AdBlockServiceTest::AssertTagExists(const std::string& tag,
-                                         bool expected_exists) const {
-  base::test::TestFuture<bool> future;
-  g_brave_browser_process->ad_block_service()
-      ->AsyncCallAndReplyWithResult<bool>(
-          base::BindLambdaForTesting(
-              [tag](brave_shields::AdBlockEngineWrapper* wrapper) {
-                return wrapper->TagExists(tag);
-              }),
-
-          future.GetCallback());
-  ASSERT_TRUE(future.Wait());
-  ASSERT_EQ(future.Get(), expected_exists);
-}
-
 void AdBlockServiceTest::InitEmbeddedTestServer() {
   base::FilePath test_data_dir = GetTestDataDir();
 
@@ -1403,53 +1388,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-// Tags for social buttons work
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
-  UpdateAdBlockInstanceWithRules(
-      base::StrCat({"||example.com^$tag=", brave_shields::kFacebookEmbeds}));
-  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
-  g_brave_browser_process->ad_block_service()->EnableTag(
-      brave_shields::kFacebookEmbeds, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  GURL resource_url =
-      embedded_test_server()->GetURL("example.com", "/logo.png");
-  NavigateToURL(tab_url);
-  content::WebContents* contents = web_contents();
-  ASSERT_EQ(true,
-            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
-                                                "addImage($1)",
-                                                resource_url.spec())));
-  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
-}
-
-// Lack of tags for social buttons work
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
-  UpdateAdBlockInstanceWithRules("||example.com^$tag=sup");
-  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
-  g_brave_browser_process->ad_block_service()->EnableTag(
-      brave_shields::kFacebookEmbeds, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  GURL resource_url =
-      embedded_test_server()->GetURL("example.com", "/logo.png");
-  NavigateToURL(tab_url);
-  content::WebContents* contents = web_contents();
-  ASSERT_EQ(true,
-            EvalJs(contents, content::JsReplace("setExpectations(1, 0, 0, 0);"
-                                                "addImage($1)",
-                                                resource_url.spec())));
-  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-}
-
-// Tags are preserved after resetting
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
-  g_brave_browser_process->ad_block_service()->EnableTag(
-      brave_shields::kFacebookEmbeds, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  UpdateAdBlockInstanceWithRules("");
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-}
-
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsToggleLists) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       SocialMediaBlockingPrefsToggleLists) {
   // kTwitterEmbedListConstants UUID (enabled by default)
   std::string twitterUuid = "84960ADD-1CC1-419F-81FC-9F116F5205CC";
   InstallRegionalAdBlockComponent(twitterUuid, false);

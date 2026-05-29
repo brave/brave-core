@@ -83,15 +83,6 @@ OBJC_EXPORT
 /// Serializes the engine to a data file list.
 - (nullable NSData*)serialize:(NSError**)error;
 
-/// Adds a tag to the engine for consideration
-- (void)addTag:(NSString*)tag;
-
-/// Removes a tag to the engine for consideration
-- (void)removeTag:(NSString*)tag;
-
-/// Checks if a tag exists in the engine
-- (bool)tagExists:(NSString*)tag;
-
 /// Uses a list of `Resource`s from JSON format
 - (bool)useResources:(NSString*)resources;
 

@@ -59,12 +59,6 @@ mod ffi {
         /// filter list.
         fn read_list_metadata(list: &CxxVector<u8>) -> FilterListMetadata;
 
-        /// Enables a given tag for the engine.
-        fn enable_tag(&mut self, tag: &CxxString);
-        /// Disables a given tag for the engine.
-        fn disable_tag(&mut self, tag: &CxxString);
-        /// Returns true if a given tag is enabled for the engine.
-        fn tag_exists(&self, key: &CxxString) -> bool;
         /// Checks if a given request should be blocked and returns an
         /// evaluation result struct with information on a matching rule
         /// and actions.

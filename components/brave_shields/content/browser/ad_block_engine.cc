@@ -150,28 +150,10 @@ std::optional<std::string> AdBlockEngine::GetCspDirectives(
   }
 }
 
-void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (enabled) {
-    if (tags_.find(tag) == tags_.end()) {
-      ad_block_client_->enable_tag(tag);
-      tags_.insert(tag);
-    }
-  } else {
-    ad_block_client_->disable_tag(tag);
-    tags_.erase(tag);
-  }
-}
-
 void AdBlockEngine::UseResources(
     const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_->use_resource_storage(storage);
-}
-
-bool AdBlockEngine::TagExists(const std::string& tag) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return tags_.contains(tag);
 }
 
 base::DictValue AdBlockEngine::GetDebugInfo() {
@@ -269,15 +251,6 @@ void AdBlockEngine::UpdateAdBlockClient(
     ad_block_client_->set_regex_discard_policy(*regex_discard_policy_);
   }
   UseResources(storage);
-  AddKnownTagsToAdBlockInstance();
-}
-
-void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::for_each(tags_.begin(), tags_.end(), [&](const std::string& tag) {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    ad_block_client_->enable_tag(tag);
-  });
 }
 
 bool AdBlockEngine::OnFilterSetLoaded(
