@@ -764,13 +764,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
-                        "isJavascriptSchemeOrInvalidUrl",
-                        MethodModifier.STATIC,
-                        boolean.class,
-                        String.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/IntentHandler",
                         "extractUrlFromIntent",
                         MethodModifier.STATIC,
                         String.class,
