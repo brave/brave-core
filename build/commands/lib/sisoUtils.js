@@ -44,6 +44,15 @@ function writeSisoRc() {
     // RBE-buildable, but we can build most targets in Brave RBE infra.
     ninjaFlags.push('-config googlechrome')
 
+    // Disable remote execution and cache write if rbe_readonly is true.
+    if (config.rbeReadOnly) {
+      ninjaFlags.push(
+        '-re_exec_enable=false',
+        '-re_cache_enable_write=false',
+        '-re_cache_enable_read',
+      )
+    }
+
     // Configure local disk cache.
     const sisoCacheDir = config.sisoCacheDir
     if (!sisoCacheDir) {
