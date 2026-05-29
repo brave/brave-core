@@ -31,6 +31,13 @@
 #define RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh \
   DISABLED_RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
 
+// Disabling because the test references the split-view submenu by explicit
+// index (GetSubmenuModelAt(4)), which doesn't match Brave's menu since we
+// disable History Clusters and every item shifts down by one (submenu is at
+// index 3 for us).
+#define RecentlyClosedSplitsFromCurrentSession \
+  DISABLED_RecentlyClosedSplitsFromCurrentSession
+
 // Disabling these tests because upstream code won't execute
 // IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL command when history clusters aren't
 // enabled but the test doesn't check for it.
@@ -51,6 +58,7 @@
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
 
 #undef LogMenuMetricsForShowGroupedHistory
+#undef RecentlyClosedSplitsFromCurrentSession
 #undef RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
 #undef MaxTabsPerSessionAndRecency
 #undef MaxSessionsAndRecency
