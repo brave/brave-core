@@ -10,6 +10,10 @@ static_library("api_request_helper") {
   sources = [
     "api_request_helper.cc",
     "api_request_helper.h",
+    "sse_parser.cc",
+    "sse_parser.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [
@@ -23,8 +27,10 @@ static_library("api_request_helper") {
 
 source_set("unit_tests") {
   testonly = true
-  sources =
-      [ "//brave/components/api_request_helper/api_request_helper_unittest.cc" ]
+  sources = [
+    "//brave/components/api_request_helper/api_request_helper_unittest.cc",
+    "//brave/components/api_request_helper/sse_parser_unittest.cc",
+  ]
   deps = [
     ":api_request_helper",
     "//base/test:test_support",

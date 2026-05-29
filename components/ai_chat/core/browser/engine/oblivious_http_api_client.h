@@ -24,7 +24,9 @@
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/api_request_helper/sse_parser.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
 
@@ -83,10 +85,12 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
     using CompletionCallback =
         base::OnceCallback<void(int outer_response_code,
                                 int inner_response_code,
-                                std::string response_body)>;
-    using ChunkCallback = base::RepeatingCallback<void(std::string chunk)>;
+                                std::optional<base::Value> parsed_body)>;
+    using ChunkCallback =
+        base::RepeatingCallback<void(base::Value parsed_chunk)>;
 
-    InnerClient(CompletionCallback completion_callback,
+    InnerClient(scoped_refptr<base::SequencedTaskRunner> task_runner,
+                CompletionCallback completion_callback,
                 ChunkCallback chunk_callback);
 
     InnerClient(const InnerClient&) = delete;
@@ -111,15 +115,27 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
     void OnBodyChunk(const std::string& chunk) override;
 
    private:
+    void OnSSEEvent(api_request_helper::ValueOrError result);
+    void OnNonStreamingBodyParsed(api_request_helper::ValueOrError value);
+    void MaybeCompleteRequest();
     void OnPipeDisconnected();
 
+    scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
     CompletionCallback completion_callback_;
     ChunkCallback chunk_callback_;
+    api_request_helper::SSEParser sse_parser_;
+    bool on_completed_called_ = false;
+    bool is_non_streaming_body_decoding_ = false;
+    int pending_outer_response_code_ = net::HTTP_OK;
+    int pending_inner_response_code_ = 0;
+    std::optional<base::Value> pending_parsed_body_;
 
     mojo::Receiver<network::mojom::ObliviousHttpClient> completion_receiver_{
         this};
     mojo::Receiver<network::mojom::ObliviousHttpChunkClient> chunk_receiver_{
         this};
+
+    base::WeakPtrFactory<InnerClient> weak_ptr_factory_{this};
   };
 
   using InnerClientList = std::list<std::unique_ptr<InnerClient>>;
@@ -158,13 +174,10 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
                        std::optional<CredentialCacheEntry> credential,
                        int outer_response_code,
                        int inner_response_code,
-                       std::string response_body);
-  void OnInnerChunkReceived(GenerationDataCallback data_received_callback,
-                            std::string model_name,
-                            std::string chunk);
+                       std::optional<base::Value> parsed_body);
   static void OnChunkParsed(GenerationDataCallback data_received_callback,
                             std::string model_name,
-                            std::optional<base::Value> value);
+                            base::Value value);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   network::NetworkContextGetter network_context_getter_;
