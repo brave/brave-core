@@ -3,30 +3,41 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# [VPYTHON:BEGIN]
+# python_version: "3.11"
+#
+# wheel: <
+#   name: "infra/python/wheels/pyyaml-py3"
+#   version: "version:6.0.1"
+# >
+# [VPYTHON:END]
 """Build and package a minimal Rust toolchain subset for Chromium.
 
-Keep this as a *standalone* script, that can be used directly with a vanilla
-Chromium checkout, with no additional dependencies.
+Keep this as a *standalone* script that can be invoked directly with a vanilla
+Chromium checkout.
 
 To use this straight from Github just call:
 
 ```sh
 curl -sL \
     https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/build_rust_toolchain.py \
-    | python3 - \
+    | vpython3 - \
         --out-dir=./out/ \
-        --chromium-src=~/dev/chromium/src/
+        --chromium-src=~/dev/chromium/src/ \
+        --brave-subrevision=1
 ```
 
 If you do not have a Chromium checkout yet, pass `--clone-chromium` together
 with `--use-ref` to have the script fetch one automatically:
 
 ```sh
-python3 build_rust_toolchain.py \
+vpython3 build_rust_toolchain.py \
     --out-dir=./out/ \
     --chromium-src=~/dev/chromium/src/ \
     --clone-chromium \
-    --use-ref=refs/heads/main
+    --use-ref=refs/heads/main \
+    --brave-subrevision=1
 ```
 
 The output of this script is a .tar.xz archive containing two artifacts built
@@ -34,22 +45,53 @@ against the Chromium-managed LLVM/Clang installation:
 
   * rust-lld  — Rust's copy of the LLD linker, taken from the Chromium-built
                 LLVM install tree (`RUST_HOST_LLVM_INSTALL_DIR/bin/lld`).
-  * wasm32-unknown-unknown  — the stage-1 standard-library sysroot for the
-                              bare-metal WebAssembly target, taken from the
-                              Rust bootstrap build tree
+  * wasm32-unknown-unknown  — the stage-1 standard-library sysroot for the bare-
+                              metal WebAssembly target, taken from the Rust
+                              bootstrap build tree
                               (`RUST_BUILD_DIR/<triple>/stage1/lib/rustlib/`).
+
+The output archive is named:
+
+    <platform>-rust-toolchain-<RUST_REVISION>-<RUST_SUB_REVISION>
+        -llvmorg-<CLANG_REVISION>-<BRAVE_SUB_REVISION>.tar.xz
+
+For example, on Linux with `--brave-subrevision=1`:
+
+    linux-x64-rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-2
+        -llvmorg-23-init-10931-g20b6ec66-1.tar.xz
+
+`<BRAVE_SUB_REVISION>` is supplied by the caller via `--brave-subrevision`. Bump
+it for every Brave-side respin that should land as a distinct sibling archive,
+including rebuilds against a different Chromium version with the same upstream
+Rust+Clang stack, since the Chromium version is no longer encoded in the
+filename.
+
+Alongside the archive, a sibling YAML index is also written to `--out-dir`:
+
+    <platform>-rust-toolchain-<RUST_REVISION>-<RUST_SUB_REVISION>
+        -llvmorg-<CLANG_REVISION>.yaml
+
+The index aggregates every build for the same platform and upstream Rust+Clang
+combination — i.e. every distinct `<BRAVE_SUB_REVISION>` tarball under a single
+file. The script downloads the existing index from the public toolchain bucket
+(`TOOLCHAIN_BUCKET_URL`) or starts fresh if no prior index is published, appends
+a new entry for the just-built tarball with the relevant metadata, and writes
+the updated index to `--out-dir` for CI to upload back to the same path. Entries
+are appended in chronological order. The last list element is the latest build
+for the combo. The index has been introduced to preserve important information
+about the toolchain build and reproducibility. It also can be used to query how
+many versions we have for a given toolchain.
 
 The build is driven by two scripts that live in `tools/rust/` inside the
 Chromium source tree:
 
   * `build_rust.py`    — clones the Rust repository, builds LLVM/Clang via
-                         `tools/clang/scripts/build.py`, generates
-                         `config.toml` from `config.toml.template`, and
-                         runs `x.py` (the Rust bootstrap driver) to compile
-                         the toolchain.  The `--prepare-run-xpy` flag stops
-                         after setup; `--run-xpy` then forwards extra
-                         arguments directly to `x.py` with the correct
-                         environment variables in place.
+                        `tools/clang/scripts/build.py`, generates `config.toml`
+                        from `config.toml.template`, and runs `x.py` (the Rust
+                        bootstrap driver) to compile the toolchain.  The
+                        `--prepare-run-xpy` flag stops after setup; `--run-xpy`
+                        then forwards extra arguments directly to `x.py`with the
+                        correct environment variables in place.
 
   * `package_rust.py`  — strips and packages the full Rust toolchain output
                            into a `.tar.xz` archive for upload to GCS.  This
@@ -64,6 +106,8 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+from datetime import datetime, timezone
+import hashlib
 import importlib
 import logging
 from pathlib import Path
@@ -76,6 +120,10 @@ import sys
 import tarfile
 import tomllib
 from types import ModuleType
+import urllib.error
+import urllib.request
+
+import yaml
 
 # Filename of the LLVM linker binary produced by the Chromium LLVM build.
 LLD = 'lld' + ('.exe' if sys.platform == 'win32' else '')
@@ -120,6 +168,10 @@ DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 # it is one of those reliable files that are always present in any version.
 CHROME_VERSION_FILE = Path('chrome/VERSION')
 
+# The bucket in our infra where the rust toolchain is archived.
+TOOLCHAIN_BUCKET_URL = (
+    'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux')
+
 if sys.platform == 'win32':
     # Path to Git's sh.exe on Windows, which is used by
     # `tools/rust/build_rust.py` to build the toolchain on Windows.`
@@ -160,6 +212,18 @@ def _check_call(*command, cwd=None):
     subprocess.run(command, cwd=cwd, check=True)
 
 
+def _sha256_file(path: Path) -> str:
+    """Return the hex SHA-256 of *path*'s bytes, computed in 64 KiB chunks.
+
+    Streaming keeps a multi-hundred-megabyte tarball off the heap.
+    """
+    digest = hashlib.sha256()
+    with path.open('rb') as f:
+        for chunk in iter(lambda: f.read(65536), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 class ToolchainBuilder:
     """Orchestrate a minimal Rust toolchain build and package it as a .tar.xz.
 
@@ -188,34 +252,53 @@ class ToolchainBuilder:
     `config.toml.template` (inherited from the host stanza).
     """
 
-    def __init__(self, chromium_src: str, out_dir: str):
+    def __init__(self,
+                 chromium_src: str,
+                 out_dir: str,
+                 brave_subrevision: int,
+                 no_index_download: bool = False):
         """ Initialses the builder fields.
 
         Args:
             chromium_src: Path to the Chromium `src/` directory.
             out_dir: Directory where the output `.tar.xz` archive is written.
+            brave_subrevision: Integer respin counter encoded as the last
+                section of the output archive name.  See
+                `_package_name` for the full naming schema.
+            no_index_download: If True, the publishing step looks for the
+                prior index as a sibling file under `out_dir` instead of
+                downloading it from the bucket.
         """
         # The absolute path to the Chromium source directory.
-        self.chromium_src: Path = Path(chromium_src).expanduser().resolve()
+        self._chromium_src: Path = Path(chromium_src).expanduser().resolve()
 
         # path to tools/rust/ inside the Chromium source tree.
-        self.tools_rust: Path = self.chromium_src / TOOLS_RUST
+        self._tools_rust: Path = self._chromium_src / TOOLS_RUST
 
         # Absolute path to depot_tools vpython3 inside the Chromium checkout.
-        self.vpython_path: Path = self.chromium_src / VPYTHON_PATH
+        self._vpython_path: Path = self._chromium_src / VPYTHON_PATH
 
         # path to the output directory where the toolchain will be written.
-        self.out_dir: Path = Path(out_dir).expanduser().resolve()
+        self._out_dir: Path = Path(out_dir).expanduser().resolve()
 
         # Absolute path to tools/rust/config.toml.template.  This file is
         # temporarily edited during the build to add wasm32 profiler settings.
-        self.config_toml_template: Path = self.tools_rust / CONFIG_TOML_TEMPLATE
+        self._config_toml_template: Path = (self._tools_rust /
+                                            CONFIG_TOML_TEMPLATE)
 
         # Module for tools/rust/build_rust.py. Initialised by `run()`.
-        self.build_rust_module: ModuleType | None = None
+        self._build_rust_module: ModuleType | None = None
 
         # Module for tools/rust/package_rust.py. Initialised by `run()`.
-        self.package_rust_module: ModuleType | None = None
+        self._package_rust_module: ModuleType | None = None
+
+        # Integer respin counter encoded as the last section of the
+        # output archive name.
+        self._brave_subrevision: int = brave_subrevision
+
+        # When True, `_publish_archive_index` reads the prior index
+        # from `self._out_dir` instead of fetching it from the bucket.
+        self._no_index_download: bool = no_index_download
 
     def _native_target_stanza(self) -> dict[str, str | bool]:
         """Return the `[target.<native-triple>]` table from the template.
@@ -225,8 +308,8 @@ class ToolchainBuilder:
         Bare `$PLACEHOLDER` lines (not valid TOML) are stripped before
         parsing.
         """
-        target_triple = self.build_rust_module.RustTargetTriple()
-        text = self.config_toml_template.read_bytes().decode('utf-8')
+        target_triple = self._build_rust_module.RustTargetTriple()
+        text = self._config_toml_template.read_bytes().decode('utf-8')
         text = re.sub(r'(?m)^\$[A-Z_]+\s*$\n?', '', text)
         data = tomllib.loads(text)
         return dict(data['target'][target_triple])
@@ -257,8 +340,8 @@ class ToolchainBuilder:
         """
 
         def _restore_config_toml_template():
-            _check_call('git', '-C', str(self.chromium_src), 'checkout', '--',
-                        str(self.config_toml_template))
+            _check_call('git', '-C', str(self._chromium_src), 'checkout', '--',
+                        str(self._config_toml_template))
 
         _restore_config_toml_template()
 
@@ -297,8 +380,9 @@ class ToolchainBuilder:
             *(self._emit_toml_kv(k, v) for k, v in wasm.items())
         ])
 
-        logging.info('Appending to %s:\n%s', self.config_toml_template, stanza)
-        with self.config_toml_template.open('a') as file:
+        logging.info('Appending to %s:\n%s', self._config_toml_template,
+                     stanza)
+        with self._config_toml_template.open('a') as file:
             file.write('\n' + stanza + '\n')
 
         try:
@@ -320,10 +404,10 @@ class ToolchainBuilder:
         After this call returns, the build directory is ready for
         `_run_xpy` to invoke x.py directly without repeating the setup.
         """
-        _check_call(str(self.vpython_path),
+        _check_call(str(self._vpython_path),
                     'build_rust.py',
                     '--prepare-run-xpy',
-                    cwd=self.tools_rust)
+                    cwd=self._tools_rust)
 
     def _run_xpy(self):
         """Compile the stage-1 Rust toolchain via x.py.
@@ -341,9 +425,9 @@ class ToolchainBuilder:
         The resulting artifacts are placed under
         `RUST_BUILD_DIR/<host-triple>/stage1/` by the Rust bootstrap.
         """
-        target_triple: str = self.build_rust_module.RustTargetTriple()
+        target_triple: str = self._build_rust_module.RustTargetTriple()
 
-        _check_call(str(self.vpython_path),
+        _check_call(str(self._vpython_path),
                     'build_rust.py',
                     '--run-xpy',
                     '--',
@@ -354,18 +438,89 @@ class ToolchainBuilder:
                     f'{target_triple},{WASM32_UNKNOWN_UNKNOWN}',
                     '--stage',
                     '1',
-                    cwd=self.tools_rust)
+                    cwd=self._tools_rust)
+
+    def _chromium_version(self) -> str:
+        """Parse the Chromium version from `chrome/VERSION` at HEAD.
+
+        Returns the version as `MAJOR.MINOR.BUILD.PATCH`.
+        """
+        raw = subprocess.check_output(
+            ['git', 'show', f'HEAD:{CHROME_VERSION_FILE.as_posix()}'],
+            cwd=self._chromium_src,
+            text=True)
+        parts: dict[str, str] = {}
+        for line in raw.splitlines():
+            key, _, value = line.strip().partition('=')
+            parts[key] = value
+        return '{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**parts)
+
+    def _chromium_commit(self) -> str:
+        "Return the Chromium HEAD commit SHA (40-char hex)."
+        return subprocess.check_output(['git', 'rev-parse', 'HEAD'],
+                                       cwd=self._chromium_src,
+                                       text=True).strip()
+
+    def _script_sha256(self) -> str | None:
+        """SHA-256 of this script's source bytes, or `None` if unavailable.
+
+        Returns `None` when `__file__` does not point at a real file. This can
+        happen when the script is invoked via `curl ... | vpython3 -`, where
+        `__file__` is the literal string `'<stdin>'`. This is not an issue in CI
+        though because we use `vpython3 build_rust_toolchain.py`, which always
+        creates a temp file.
+
+        This function normalises the line endings to make sure we don't get
+        different results based on platform.
+        """
+        file_str = globals().get('__file__')
+        if not file_str:
+            return None
+        path = Path(file_str)
+        if not path.is_file():
+            return None
+        # `encoding='utf-8'` causes CRLF/CR to be translated to LF on read
+        return hashlib.sha256(
+            path.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
+
+    def _toolchain_name_stem(self) -> str:
+        """Shared filename stem identifying this platform + Rust + Clang combo.
+        """
+        upstream_stem = (self._package_rust_module.RUST_TOOLCHAIN_PACKAGE_NAME.
+                         removesuffix('.tar.xz'))
+        return f'{self._platform_prefix()}-{upstream_stem}'
 
     def _package_name(self) -> str:
         """Return the filename for the output archive.
 
-        The name is composed of a platform prefix followed by
-        `package_rust.RUST_TOOLCHAIN_PACKAGE_NAME` (a version-stamped string
-        of the form `rust-toolchain-<clang+rust-revision>.tar.xz`).
+        Full naming schema:
 
-        Platform prefixes mirror the GCS convention used by `package_rust.py`
-        and `tools/clang/scripts/upload.sh`:
+            <platform>-rust-toolchain-<RUST_REVISION>-<RUST_SUB_REVISION>-
+            llvmorg-<CLANG_REVISION>-<BRAVE_SUB_REVISION>.tar.xz
 
+        Sections, left to right:
+
+          1. `<platform>` — `linux-x64`, `mac`, etc.
+          2. `rust-toolchain` — literal prefix, part of upstream's
+             `package_rust.RUST_TOOLCHAIN_PACKAGE_NAME`.
+          3. `<RUST_REVISION>` — upstream Rust commit SHA in `rust-lang/rust`,
+             from `tools/rust/update_rust.py`.
+          4. `<RUST_SUB_REVISION>` — upstream's manual respin counter, from
+             `tools/rust/update_rust.py`.
+          5. `llvmorg-<CLANG_REVISION>` — LLVM/Clang version Rust was built
+             against, from `tools/clang/scripts/update.py`.
+          6. `<BRAVE_SUB_REVISION>` — integer respin counter for this script,
+             supplied via `--brave-subrevision`.
+        """
+        return f'{self._toolchain_name_stem()}-{self._brave_subrevision}.tar.xz'
+
+    def _platform_prefix(self) -> str:
+        """GCS-style platform prefix for the current host.
+
+        This function  Mirrors the convention used by `package_rust.py` and
+        `tools/clang/scripts/upload.sh`.
+
+        The output is as follows:
         +------------------+-------------------+
         | Platform         | Prefix            |
         +==================+===================+
@@ -380,45 +535,196 @@ class ToolchainBuilder:
         """
         if sys.platform == 'darwin':
             if platform.machine() == 'arm64':
-                platform_prefix = 'mac-arm64'
+                return 'mac-arm64'
+            return 'mac'
+        if sys.platform == 'win32':
+            return 'win'
+        return 'linux-x64'
+
+    def _index_name(self) -> str:
+        """Filename of the sibling YAML index for this Rust+Clang combo.
+
+        Naming:
+
+            <platform>-rust-toolchain-<RUST_REVISION>-<RUST_SUB_REVISION>
+                -llvmorg-<CLANG_REVISION>.yaml
+        """
+        return f'{self._toolchain_name_stem()}.yaml'
+
+    def _publish_archive_index(self,
+                               archive_path: Path,
+                               force_overwrite: bool = False) -> None:
+        """Update the sibling YAML index after archive creation.
+
+        This function is responsible for retrieving the existing index from the
+        bucket, and updating it based on what we have for the current build. It
+        also enforces the uniqueness of the archive, and preserves the relevant
+        details for its reproducibility.
+
+        The previous existing archive is downloaded, and the new updated archive
+        is placed under `self._out_dir`, to be uploaded back to the bucket.
+
+        Each entry in the index has these fields:
+
+          * `url`              — full bucket URL the tarball will be served at.
+          * `timestamp`        — ISO 8601 UTC time of this build.
+          * `sha256sum`        — hex SHA-256 of the tarball bytes.
+          * `chromium_version` — `MAJOR.MINOR.BUILD.PATCH` parsed from
+                                 `chrome/VERSION`.
+          * `chromium_commit`  — HEAD commit hash in the Chromium checkout.
+          * `script_sha256sum` — SHA-256 of this script's contents.
+
+        This function accepts `force_overwrite` for when we want to suspend
+        certain rules, but the normal and preferred use of it will enforce these
+        rules:
+
+          - The produced toolchain should be unique. If the archive has another
+            byte-identical toolchain already, a failure occurs.
+          - The resulting URL must be unique. If the archive already contains a
+            different toolchain at the same URL, a failure occurs.
+
+        With `force_overwrite=True` (passed as `--force-overwrite`),
+        both checks are bypassed: any entry at the same URL is
+        removed before the new one is appended, and any matching
+        `sha256sum` elsewhere in the index is tolerated — the index
+        may end up with duplicate hashes if the operator deliberately
+        publishes the same bytes twice.
+
+        Collision matrix:
+
+        +------------+---------------+--------------+---------------------+
+        | URL match? | sha256 match? | Default      | --force-overwrite   |
+        +============+===============+==============+=====================+
+        | yes        | yes           | RuntimeError | replace old entry   |
+        +------------+---------------+--------------+---------------------+
+        | yes        | no            | RuntimeError | replace old entry   |
+        +------------+---------------+--------------+---------------------+
+        | no         | yes           | RuntimeError | allow duplicate     |
+        +------------+---------------+--------------+---------------------+
+        | no         | no            | append       | append              |
+        +------------+---------------+--------------+---------------------+
+
+        Entries are appended in chronological order. The newest entry for any
+        tarball URL is always at the tail, so consumers can treat the last list
+        element as the latest build for the given toolchain stem.
+
+        NOTICE: This function relies on CI not running concurrent jobs for the
+        same platform, and violating that will result in race conditions when
+        updating the index.
+        """
+        index_name = self._index_name()
+        local_index = self._out_dir / index_name
+        archive_url = f'{TOOLCHAIN_BUCKET_URL}/{archive_path.name}'
+
+        if self._no_index_download:
+            if local_index.is_file():
+                entries = yaml.safe_load(local_index.read_bytes()) or []
+                logging.info(
+                    'Loaded existing local index from %s (%d entries)',
+                    local_index, len(entries))
             else:
-                platform_prefix = 'mac'
-        elif sys.platform == 'win32':
-            platform_prefix = 'win'
+                entries = []
+                logging.info('No existing local index at %s; starting fresh',
+                             local_index)
         else:
-            platform_prefix = 'linux-x64'
+            index_url = f'{TOOLCHAIN_BUCKET_URL}/{index_name}'
+            logging.info('Fetching %s', index_url)
+            try:
+                with urllib.request.urlopen(index_url) as response:
+                    entries = yaml.safe_load(response) or []
+                logging.info('Loaded existing index from %s (%d entries)',
+                             index_url, len(entries))
+            except urllib.error.HTTPError as e:
+                # Unfortunately cloudfront seems to return 403 for cases where
+                # it should have returned 404.
+                if e.code not in (403, 404):
+                    raise
+                entries = []
+                logging.info('No existing index at %s; starting fresh',
+                             index_url)
 
-        return (f'{platform_prefix}-'
-                f'{self.package_rust_module.RUST_TOOLCHAIN_PACKAGE_NAME}')
+        archive_sha256 = _sha256_file(archive_path)
+        sha_match = next(
+            (e for e in entries if e.get('sha256sum') == archive_sha256), None)
+        url_match = next((e for e in entries if e.get('url') == archive_url),
+                         None)
 
-    def _create_archive(self):
-        """Write the output .tar.xz archive to `self.out_dir`.
+        # Collision is a hard failure: a byte-identical entry already exists
+        # (sha256 match), or the target URL is already taken by different bytes
+        # (URL match).
+        if not force_overwrite:
+            if sha_match is not None:
+                raise RuntimeError(
+                    f'Refusing to publish: a toolchain with sha256 '
+                    f'{archive_sha256} is already in the index at '
+                    f'{sha_match.get("url")!r}.  The just-built tarball '
+                    f'is byte-identical; nothing new to publish.  Pass '
+                    f'--force-overwrite to publish anyway.')
+            if url_match is not None:
+                raise RuntimeError(
+                    f'Refusing to publish: an entry for {archive_url!r} '
+                    f'already exists in the index (sha256 '
+                    f'{url_match.get("sha256sum")!r}).  Pass '
+                    f'--force-overwrite to replace it.')
+
+        # With `--force-overwrite`, drop any prior entry at the same URL so the
+        # new one cleanly replaces it.
+        if force_overwrite and url_match is not None:
+            logging.info(
+                'Replacing existing index entry for %s '
+                '(--force-overwrite in effect)', archive_url)
+            entries = [e for e in entries if e.get('url') != archive_url]
+
+        entry = {
+            'url': archive_url,
+            'timestamp': datetime.now(timezone.utc).isoformat(),
+            'sha256sum': archive_sha256,
+            'chromium_version': self._chromium_version(),
+            'chromium_commit': self._chromium_commit(),
+        }
+        script_sha = self._script_sha256()
+        if script_sha is not None:
+            entry['script_sha256sum'] = script_sha
+        entries.append(entry)
+
+        local_index.write_text(yaml.safe_dump(entries,
+                                              sort_keys=False,
+                                              default_flow_style=False),
+                               encoding='utf-8',
+                               newline='')
+        logging.info('Wrote toolchain index to %s (%d entries)', local_index,
+                     len(entries))
+
+    def _create_archive(self) -> Path:
+        """Write the output .tar.xz archive to `self._out_dir`.
+
+        Returns the absolute path of the archive on disk.
 
         The archive (named via `_package_name()`) contains:
 
         * `rust-lld` — the LLD linker binary from
-          `RUST_HOST_LLVM_INSTALL_DIR/bin/lld[.exe]`.  Rust's toolchain
-          ships its own copy of LLD under this name so that `rustc` can
-          link without requiring a system linker.
+          `RUST_HOST_LLVM_INSTALL_DIR/bin/lld[.exe]`.  Rust's toolchain ships
+          its own copy of LLD under this name so that `rustc` can link without
+          requiring a system linker.
         * `wasm32-unknown-unknown/` — the stage-1 standard-library sysroot
           directory located at
-          `RUST_BUILD_DIR/<host-triple>/stage1/lib/rustlib/wasm32-unknown-unknown/`.
-          This directory contains the precompiled `core`, `alloc`, and
-          `std` libraries needed to compile Rust code for the bare-metal
-          WebAssembly target.
+          `RUST_BUILD_DIR/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/`.
+          This directory contains the precompiled `core`, `alloc`, and `std`
+          libraries needed to compile Rust code for the bare-metal WebAssembly
+          target.
         * `llvm-lib.exe` (Windows only) — the standalone MSVC-style
-          librarian from `RUST_HOST_LLVM_INSTALL_DIR/bin/llvm-lib.exe`.
-          Shipping this binary allows us to point AR straight at it,
-          matching the upstream `tools/rust/config.toml.template` pattern
+          librarian from `RUST_HOST_LLVM_INSTALL_DIR/bin/llvm-lib.exe`. Shipping
+          this binary allows us to point AR straight at it, matching the
+          upstream `tools/rust/config.toml.template` pattern
           (`ar = "$LLVM_BIN/llvm-lib.exe"`).
         """
-        target_triple = self.build_rust_module.RustTargetTriple()
-        stage1_output_path = (Path(self.build_rust_module.RUST_BUILD_DIR) /
+        target_triple = self._build_rust_module.RustTargetTriple()
+        stage1_output_path = (Path(self._build_rust_module.RUST_BUILD_DIR) /
                               target_triple / STAGE1_RUSTLIB)
-        output_archive = self.out_dir / self._package_name()
+        output_archive = self._out_dir / self._package_name()
 
         llvm_bin = Path(
-            self.build_rust_module.RUST_HOST_LLVM_INSTALL_DIR) / 'bin'
+            self._build_rust_module.RUST_HOST_LLVM_INSTALL_DIR) / 'bin'
 
         logging.info('Creating output archive at %s', output_archive)
         with tarfile.open(output_archive, 'w:xz') as tar:
@@ -427,6 +733,7 @@ class ToolchainBuilder:
                     arcname=WASM32_UNKNOWN_UNKNOWN)
             if sys.platform == 'win32':
                 tar.add(llvm_bin / LLVM_LIB, arcname=LLVM_LIB)
+        return output_archive
 
     def _bootstrap_depot_tools(self):
         """Ensure `depot_tools` is on PATH if no existing install is found.
@@ -438,7 +745,7 @@ class ToolchainBuilder:
             logging.debug('depot_tools already on PATH, skipping clone')
             return
 
-        depot_tools_path = self.chromium_src.parent / 'depot_tools'
+        depot_tools_path = self._chromium_src.parent / 'depot_tools'
         if (depot_tools_path / 'gclient').is_file():
             # If `gclient` is already present in the expected install path, we
             # can skip cloning `depot_tools` and just add it to `PATH`.
@@ -455,22 +762,22 @@ class ToolchainBuilder:
         _check_call('gclient')
 
     def _has_valid_chromium_path(self) -> bool:
-        """Return whether self.chromium_src points to a valid Chromium repo."""
+        """Return whether self._chromium_src points to a valid Chromium repo."""
         # We start by checking for the presence of `chrome/VERSION`, as this is
         # a quite unmistakable Chromium repo trait that indicates a proper
         # checkout.
-        if not (self.chromium_src / CHROME_VERSION_FILE).exists():
+        if not (self._chromium_src / CHROME_VERSION_FILE).exists():
             return False
 
         logging.info('Checking for valid Chromium repo at %s',
-                     self.chromium_src)
+                     self._chromium_src)
         try:
             _check_call('git',
                         'log',
                         '-1',
                         '--oneline',
                         str(CHROME_VERSION_FILE),
-                        cwd=self.chromium_src)
+                        cwd=self._chromium_src)
         except (subprocess.CalledProcessError, OSError):
             return False
 
@@ -496,9 +803,9 @@ class ToolchainBuilder:
                         '--no-tags',
                         'origin',
                         f'refs/tags/{ref}:refs/tags/{ref}',
-                        cwd=self.chromium_src)
+                        cwd=self._chromium_src)
         else:
-            _check_call('git', 'fetch', 'origin', ref, cwd=self.chromium_src)
+            _check_call('git', 'fetch', 'origin', ref, cwd=self._chromium_src)
 
         # We are doing a `git checkout --force` rather than just using
         # `gclient sync -r {ref}`, as there is a an gclient bug that lurks
@@ -512,18 +819,18 @@ class ToolchainBuilder:
                     'checkout',
                     '--force',
                     'FETCH_HEAD',
-                    cwd=self.chromium_src)
+                    cwd=self._chromium_src)
 
-        _check_call('gclient', 'sync', '--force', '-D', cwd=self.chromium_src)
+        _check_call('gclient', 'sync', '--force', '-D', cwd=self._chromium_src)
         _check_call('git',
                     'log',
                     '-1',
                     '--oneline',
                     str(CHROME_VERSION_FILE),
-                    cwd=self.chromium_src)
+                    cwd=self._chromium_src)
 
     def _clone_chromium(self):
-        """Clone a fresh Chromium checkout under `self.chromium_src.parent`."""
+        """Clone a fresh Chromium checkout under `self._chromium_src.parent`."""
         if sys.platform == 'win32':
             # Setting up global git user.name and user.email is required to
             # avoid issues when building the rust toolchain on Windows, as it
@@ -553,13 +860,17 @@ class ToolchainBuilder:
                 _check_call('git', 'config', '--global', 'core.fscache',
                             'true')
 
-        self.chromium_src.parent.mkdir(parents=True, exist_ok=True)
+        self._chromium_src.parent.mkdir(parents=True, exist_ok=True)
         _check_call('fetch',
                     '--nohooks',
                     'chromium',
-                    cwd=self.chromium_src.parent)
+                    cwd=self._chromium_src.parent)
 
-    def run(self, clone_chromium: bool = False, use_ref: str = None):
+    def run(self,
+            clone_chromium: bool = False,
+            use_ref: str = None,
+            clear: bool = False,
+            force_overwrite: bool = False):
         """Execute the full build-and-package pipeline.
 
         Coordinates the three phases in order:
@@ -577,6 +888,13 @@ class ToolchainBuilder:
                 first.
             clone_chromium: Whether the builder should operate in a mode that
                 allows cloning Chromium automatically, if necessary.
+            clear: If True, delete every entry under `self._out_dir` at the
+                start of the run so the build produces output into a
+                guaranteed-clean directory.
+            force_overwrite: If True, the publishing step bypasses both
+                index-collision checks: an entry at the same URL is
+                replaced rather than raising, and a matching `sha256sum`
+                elsewhere is tolerated.  See `_publish_archive_index`.
         Raises:
             RuntimeError: If --chromium-src but there is no valid Chromium
             repo at the path, and --clone-chromium is not provided.
@@ -592,23 +910,27 @@ class ToolchainBuilder:
             if clone_chromium:
                 self._bootstrap_depot_tools()
                 logging.info('Chromium src not found at %s, cloning...',
-                             self.chromium_src)
+                             self._chromium_src)
                 self._clone_chromium()
             else:
                 raise RuntimeError(
                     '--chromium-src must be an existing Chromium src '
-                    f'directory: {self.chromium_src}')
+                    f'directory: {self._chromium_src}')
         else:
             # We only try to bootstrap depot_tools when we have a Chromium
             # checkout (this case), or when we are trying to clone Chromium.
             self._bootstrap_depot_tools()
 
-        # Create the output directory.
-        self.out_dir.mkdir(parents=True, exist_ok=True)
+        if clear:
+            logging.info('Clearing contents of %s', self._out_dir)
+            shutil.rmtree(self._out_dir, ignore_errors=True)
 
-        # Validating that self.tools_rust is ready for use.
-        if not self.tools_rust.is_dir():
-            raise RuntimeError(f'{self.tools_rust} directory not found.')
+        # Create the output directory.
+        self._out_dir.mkdir(parents=True, exist_ok=True)
+
+        # Validating that self._tools_rust is ready for use.
+        if not self._tools_rust.is_dir():
+            raise RuntimeError(f'{self._tools_rust} directory not found.')
 
         if use_ref:
             self._checkout_chromium_ref(use_ref)
@@ -616,14 +938,14 @@ class ToolchainBuilder:
         # Only loading the rust libs now that the desired git ref checkout is
         # done, otherwise the runtime would already be loaded with whatever rust
         # version values were in disk.
-        tools_rust_str: str = str(self.tools_rust)
+        tools_rust_str: str = str(self._tools_rust)
         if tools_rust_str not in sys.path:
             sys.path.insert(0, tools_rust_str)
-        if not self.build_rust_module:
-            self.build_rust_module: ModuleType = importlib.import_module(
+        if not self._build_rust_module:
+            self._build_rust_module: ModuleType = importlib.import_module(
                 'build_rust')
-        if not self.package_rust_module:
-            self.package_rust_module: ModuleType = importlib.import_module(
+        if not self._package_rust_module:
+            self._package_rust_module: ModuleType = importlib.import_module(
                 'package_rust')
 
         # Build process
@@ -646,7 +968,12 @@ class ToolchainBuilder:
             self._prepare_run_xpy()
             self._run_xpy()
 
-        self._create_archive()
+        archive_path = self._create_archive()
+        self._publish_archive_index(archive_path,
+                                    force_overwrite=force_overwrite)
+
+        logging.info('Tarball download URL (once published): %s',
+                     f'{TOOLCHAIN_BUCKET_URL}/{archive_path.name}')
 
 
 def main():
@@ -666,6 +993,27 @@ def main():
         '--use-ref',
         help='Git reference (branch, tag, commit) to check out before building'
         ' the toolchain.')
+    parser.add_argument(
+        '--brave-subrevision',
+        required=True,
+        type=int,
+        help='Integer respin counter, used to publish a sibling distinct '
+        'archive.')
+    parser.add_argument(
+        '--no-index-download',
+        action='store_true',
+        help='Does not attempt to download the index from the bucket, but'
+        'rather attempts to retrieve it from the output directory.')
+    parser.add_argument(
+        '--clear',
+        action='store_true',
+        help='Makes sure the output directory is empty before building.')
+    parser.add_argument(
+        '--force-overwrite',
+        action='store_true',
+        help='Bypasses the uniqueness checks for the toolchain being published '
+        'and overwrites any entry on the index that collide with the toolchain '
+        'being built.')
     parser.add_argument(
         '--with-git-cache',
         nargs='?',
@@ -715,7 +1063,13 @@ def main():
     logging.info('Using GIT_CACHE_PATH=%s', os.environ.get('GIT_CACHE_PATH'))
 
     ToolchainBuilder(args.chromium_src,
-                     args.out_dir).run(args.clone_chromium, args.use_ref)
+                     args.out_dir,
+                     brave_subrevision=args.brave_subrevision,
+                     no_index_download=args.no_index_download).run(
+                         args.clone_chromium,
+                         args.use_ref,
+                         clear=args.clear,
+                         force_overwrite=args.force_overwrite)
     return 0
 
 
