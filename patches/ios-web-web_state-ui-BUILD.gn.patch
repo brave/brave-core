@@ -1,0 +1,12 @@
+diff --git a/ios/web/web_state/ui/BUILD.gn b/ios/web/web_state/ui/BUILD.gn
+index f6f73a7d9d4b2530f49b9a1526a945219d4a5aa9..e54110c3b38d5133ad107abc721d023ef61410a6 100644
+--- a/ios/web/web_state/ui/BUILD.gn
++++ b/ios/web/web_state/ui/BUILD.gn
+@@ -86,6 +86,7 @@ source_set("ui") {
+     "crw_wk_ui_handler.mm",
+     "crw_wk_ui_handler_delegate.h",
+   ]
++  import("//brave/ios/web/sources.gni") deps += brave_ios_web_web_state_ui_deps
+ }
+ 
+ source_set("web_controller_header") {

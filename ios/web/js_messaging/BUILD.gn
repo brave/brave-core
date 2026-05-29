@@ -42,10 +42,32 @@ source_set("randomized_message_handler_name") {
   ]
 }
 
+source_set("prompt_facade") {
+  visibility = [
+    ":unittests",
+    "//ios/web/web_state/ui",
+  ]
+  sources = [
+    "prompt_facade.h",
+    "prompt_facade.mm",
+  ]
+  deps = [
+    "//ios/web/js_messaging",
+    "//ios/web/js_messaging:java_script_content_world_header",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//url",
+  ]
+  public_deps = [ "//base" ]
+  assert_no_deps = [ "//brave/ios/browser" ]
+}
+
 source_set("unittests") {
   testonly = true
   sources = [
     "message_handler_token_inttest.mm",
+    "prompt_facade_unittest.mm",
     "randomized_message_handler_name_inttest.mm",
     "safe_builtins_javascript_test.mm",
   ]
@@ -53,11 +75,13 @@ source_set("unittests") {
     ":js_messaging",
     ":message_handler_token",
     ":message_handler_token_test_api",
+    ":prompt_facade",
     ":randomized_message_handler_name",
     ":randomized_message_handler_test_api",
     ":safe_builtins_js",
     "//base",
     "//base/test:test_support",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
     "//ios/web/public/js_messaging",
     "//ios/web/public/test:javascript_test",
     "//ios/web/public/test:test_fixture",

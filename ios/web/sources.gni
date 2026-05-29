@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# Additional deps for the //ios/web/web_state/ui target
+brave_ios_web_web_state_ui_deps =
+    [ "//brave/ios/web/js_messaging:prompt_facade" ]
+
 # This list is added to //ios/web/public/test:test_fixture
 # DO NOT add anything from `//brave/ios/browser` to this list.
 brave_ios_web_test_fixture_visibility = [ "//brave/ios/web/*" ]
