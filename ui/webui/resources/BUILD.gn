@@ -361,7 +361,7 @@ leo_icons_sources = [
   "notification.svg",
   "ollama.svg",
   "op-color.svg",
-  "openai-color.svg",
+  "openai.svg",
   "outside.svg",
   "pause-circle.svg",
   "pause-filled.svg",
