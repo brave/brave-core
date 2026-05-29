@@ -38,6 +38,10 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
     return tab_scroll_next_button_;
   }  // IN-TEST
 
+  TabStripControlButton* workspaces_button_for_testing() {
+    return workspaces_button_;
+  }  // IN-TEST
+
   bool IsRepeatingEventForTesting(TabStripControlButton* button);
 
   void Layout(PassKey) override;
