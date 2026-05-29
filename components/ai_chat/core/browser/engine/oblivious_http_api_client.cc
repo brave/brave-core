@@ -9,7 +9,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -17,6 +16,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/api_request_helper/utils.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -122,10 +122,8 @@ void ObliviousHttpAPIClient::InnerClient::OnCompleted(
       if (!body.empty()) {
         on_completed_called_ = true;
         is_non_streaming_body_decoding_ = true;
-        sequenced_task_runner_->PostTaskAndReplyWithResult(
-            FROM_HERE,
-            base::BindOnce(&base::JSONReader::ReadAndReturnValueWithError, body,
-                           base::JSON_PARSE_RFC),
+        api_request_helper::ParseJsonInWorkerTaskRunner(
+            body, sequenced_task_runner_.get(),
             base::BindOnce(&InnerClient::OnNonStreamingBodyParsed,
                            weak_ptr_factory_.GetWeakPtr()));
         return;
@@ -151,7 +149,7 @@ void ObliviousHttpAPIClient::InnerClient::OnSSEEvent(
 }
 
 void ObliviousHttpAPIClient::InnerClient::OnNonStreamingBodyParsed(
-    base::JSONReader::Result value) {
+    api_request_helper::ValueOrError value) {
   if (value.has_value()) {
     pending_parsed_body_ = std::move(*value);
   }

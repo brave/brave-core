@@ -89,6 +89,13 @@ TEST_F(SSEParserTest, ClearDropsPartialLine) {
   EXPECT_TRUE(results_[0].has_value());
 }
 
+TEST_F(SSEParserTest, NonDataLinesAreIgnored) {
+  parser_->Process("event: foo\n");
+  parser_->Process(": comment\n");
+  parser_->Process("id: 123\n");
+  EXPECT_TRUE(results_.empty());
+}
+
 TEST_F(SSEParserTest, MixedLineEndings) {
   Process("data: {\"a\":1}\r\ndata: {\"b\":2}\r");
   ASSERT_EQ(results_.size(), 2u);

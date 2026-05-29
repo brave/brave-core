@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -117,7 +116,7 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
 
    private:
     void OnSSEEvent(api_request_helper::ValueOrError result);
-    void OnNonStreamingBodyParsed(base::JSONReader::Result value);
+    void OnNonStreamingBodyParsed(api_request_helper::ValueOrError value);
     void MaybeCompleteRequest();
     void OnPipeDisconnected();
 
