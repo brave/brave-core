@@ -121,14 +121,14 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
             return true;
         }
 
-        if (!isYouTube(webContents)) {
+        if (!isBackgroundPlaybackHost(webContents)) {
             return false;
         }
         return isBackgroundVideo() || isYouTubePictureInPicture(webContents);
     }
 
     @VisibleForTesting
-    static boolean isYouTube(WebContents webContents) {
+    static boolean isBackgroundPlaybackHost(WebContents webContents) {
         if (webContents == null) return false;
         GURL pageUrl = webContents.getLastCommittedUrl();
         return pageUrl.isValid()

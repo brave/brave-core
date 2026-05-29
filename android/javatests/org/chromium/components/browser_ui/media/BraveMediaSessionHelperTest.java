@@ -79,14 +79,14 @@ public class BraveMediaSessionHelperTest {
     @SmallTest
     public void isYouTube_recognizesMobileHost() {
         mockUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
-        assertTrue(BraveMediaSessionHelper.isYouTube(mWebContents));
+        assertTrue(BraveMediaSessionHelper.isBackgroundPlaybackHost(mWebContents));
     }
 
     @Test
     @SmallTest
     public void isYouTube_rejectsThirdPartyHost() {
         mockUrl("https://www.example.com/watch");
-        assertFalse(BraveMediaSessionHelper.isYouTube(mWebContents));
+        assertFalse(BraveMediaSessionHelper.isBackgroundPlaybackHost(mWebContents));
     }
 
     @Test
