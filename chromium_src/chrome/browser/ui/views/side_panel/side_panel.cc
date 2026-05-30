@@ -7,6 +7,7 @@
 #include "build/buildflag.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
