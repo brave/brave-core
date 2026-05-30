@@ -105,10 +105,11 @@ TEST_F(BraveGeneratedSafeBrowsingPrefTest, GetPrefObjectReflectsBackingPrefs) {
 }
 
 TEST_F(BraveGeneratedSafeBrowsingPrefTest,
-       LimitedRejectedWhenSafeBrowsingEnforced) {
+       LimitedRejectedWhenDownloadProtectionEnforced) {
   auto pref = std::make_unique<BraveGeneratedSafeBrowsingPref>(profile());
 
-  prefs()->SetManagedPref(prefs::kSafeBrowsingEnabled,
+  // Download protection forced on by policy -> Limited can't disable it.
+  prefs()->SetManagedPref(kBraveSafeBrowsingDownloadProtectionEnabled,
                           std::make_unique<base::Value>(true));
 
   EXPECT_EQ(pref->SetPref(std::make_unique<base::Value>(
@@ -116,9 +117,16 @@ TEST_F(BraveGeneratedSafeBrowsingPrefTest,
                               .get()),
             settings_private::SetPrefResult::PREF_NOT_MODIFIABLE);
 
-  // Rejected write must leave the backing pref alone. GetBoolean (defaulted
-  // true) avoids depending on a prior user write.
-  EXPECT_TRUE(prefs()->GetBoolean(kBraveSafeBrowsingDownloadProtectionEnabled));
+  // The inverse: download protection is user-modifiable, but Safe Browsing
+  // itself is policy controlled -> Limited is still rejected.
+  prefs()->RemoveManagedPref(kBraveSafeBrowsingDownloadProtectionEnabled);
+  prefs()->SetManagedPref(prefs::kSafeBrowsingEnabled,
+                          std::make_unique<base::Value>(true));
+
+  EXPECT_EQ(pref->SetPref(std::make_unique<base::Value>(
+                              kBraveSafeBrowsingLimitedProtection)
+                              .get()),
+            settings_private::SetPrefResult::PREF_NOT_MODIFIABLE);
 }
 
 }  // namespace safe_browsing
