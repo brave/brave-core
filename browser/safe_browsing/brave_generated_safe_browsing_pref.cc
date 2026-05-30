@@ -26,7 +26,11 @@ BraveGeneratedSafeBrowsingPref::SetPref(const base::Value* value) {
       value->GetInt() == kBraveSafeBrowsingLimitedProtection) {
     const PrefService::Preference* enabled_pref =
         profile_->GetPrefs()->FindPreference(prefs::kSafeBrowsingEnabled);
-    if (!enabled_pref->IsUserModifiable()) {
+    const PrefService::Preference* download_protection_pref =
+        profile_->GetPrefs()->FindPreference(
+            kBraveSafeBrowsingDownloadProtectionEnabled);
+    if (!enabled_pref->IsUserModifiable() ||
+        !download_protection_pref->IsUserModifiable()) {
       return extensions::settings_private::SetPrefResult::PREF_NOT_MODIFIABLE;
     }
     profile_->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled, true);
