@@ -116,7 +116,7 @@ FullscreenNotificationObserver::FullscreenNotificationObserver(
     Browser* browser) {
   // Observe changes to fullscreen state.
   fullscreen_subscription_ =
-      browser->GetExclusiveAccessManager()
+      ExclusiveAccessManager::From(browser)
           ->fullscreen_controller()
           ->RegisterOnFullscreenStateChanged(base::BindRepeating(
               &FullscreenNotificationObserver::OnFullscreenStateChanged,

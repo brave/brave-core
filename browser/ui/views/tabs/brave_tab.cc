@@ -184,7 +184,7 @@ void BraveTab::MaybeStartObservingFullscreenChanges() {
 
   // Observe changes to fullscreen state.
   fullscreen_subscription_ =
-      browser->GetExclusiveAccessManager()
+      ExclusiveAccessManager::From(browser)
           ->fullscreen_controller()
           ->RegisterOnFullscreenStateChanged(base::BindRepeating(
               &BraveTab::OnFullscreenStateChanged, base::Unretained(this)));
