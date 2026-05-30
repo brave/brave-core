@@ -15,12 +15,14 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -2720,6 +2722,47 @@ public abstract class BraveActivity extends ChromeActivity
         if (mSearchWidgetPromoPanel != null && mSearchWidgetPromoPanel.isShowing()) {
             showWidgetPromoPanel();
         }
+    }
+
+    /**
+     * Overrides the default orientation request to respect the system rotation lock.
+     *
+     * <p>On Android, web content (e.g. YouTube's fullscreen player) can call the
+     * screen.orientation.lock() JavaScript API which eventually reaches this method and forces the
+     * device into landscape mode — even when the user has locked rotation in system quick settings.
+     * This does not happen on iOS because Safari ignores web orientation lock requests when the
+     * system lock is active.
+     *
+     * <p>This override mirrors the iOS behavior: if the user has locked rotation via the system
+     * setting (accelerometer_rotation == 0), any web-initiated landscape orientation request is
+     * silently ignored. The app's own legitimate portrait locks (e.g. onboarding screens, wallet)
+     * are unaffected because they use portrait or unspecified constants, not landscape ones.
+     */
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        if (isSystemRotationLocked() && isLandscapeOrientation(requestedOrientation)) {
+            // Silently ignore the landscape request — respect the user's rotation lock.
+            return;
+        }
+        super.setRequestedOrientation(requestedOrientation);
+    }
+
+    /** Returns true if the user has locked screen rotation in system quick settings. */
+    private boolean isSystemRotationLocked() {
+        return Settings.System.getInt(
+                        getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 1)
+                == 0;
+    }
+
+    /**
+     * Returns true if the given orientation constant would force the screen into landscape.
+     * Covers all landscape variants defined in {@link ActivityInfo}.
+     */
+    private boolean isLandscapeOrientation(int orientation) {
+        return orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                || orientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                || orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+                || orientation == ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE;
     }
 
     private void hideWidgetPromoPanel() {
