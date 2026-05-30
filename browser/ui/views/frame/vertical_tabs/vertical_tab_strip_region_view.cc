@@ -453,8 +453,7 @@ void BraveVerticalTabStripRegionView::ListenFullscreenChanges() {
   DCHECK(fullscreen_controller);
   // Observe changes to fullscreen state.
   fullscreen_subscription_ =
-      browser_view_->browser()
-          ->GetExclusiveAccessManager()
+      ExclusiveAccessManager::From(browser_view_->browser())
           ->fullscreen_controller()
           ->RegisterOnFullscreenStateChanged(base::BindRepeating(
               &BraveVerticalTabStripRegionView::OnFullscreenStateChanged,

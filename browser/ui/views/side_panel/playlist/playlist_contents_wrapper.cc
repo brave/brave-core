@@ -70,8 +70,7 @@ void PlaylistContentsWrapper::EnterFullscreenModeForTab(
 
   // Observe changes to fullscreen state.
   fullscreen_subscription_ =
-      browser_view_->browser()
-          ->GetExclusiveAccessManager()
+      ExclusiveAccessManager::From(browser_view_->browser())
           ->fullscreen_controller()
           ->RegisterOnFullscreenStateChanged(base::BindRepeating(
               &PlaylistContentsWrapper::OnFullscreenStateChanged,
