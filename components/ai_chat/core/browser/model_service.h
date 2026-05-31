@@ -126,7 +126,7 @@ class ModelService : public KeyedService {
       const std::string& model_key);
 
  private:
-  void OnEncryptorReady(os_crypt_async::Encryptor encryptor);
+  void OnEncryptorReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
   void InitModels();
   // Walks the custom-model prefs and updates the `api_key` on each
   // already-loaded entry in `models_`. Called from `OnEncryptorReady()` to
@@ -143,7 +143,7 @@ class ModelService : public KeyedService {
   std::vector<ai_chat::mojom::ModelPtr> models_;
   raw_ptr<PrefService> pref_service_;
   network::NetworkContextGetter network_context_getter_;
-  std::optional<os_crypt_async::Encryptor> encryptor_;
+  scoped_refptr<os_crypt_async::Encryptor> encryptor_;
   bool is_migrating_claude_instant_ = false;
 
   base::WeakPtrFactory<ModelService> weak_ptr_factory_{this};

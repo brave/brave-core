@@ -269,7 +269,7 @@ class AIChatService : public KeyedService,
 
   void MaybeInitStorage();
   // Called when the database encryptor is ready.
-  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor);
+  void OnOsCryptAsyncReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
   void LoadConversationsLazy(ConversationMapCallback callback);
   void OnLoadConversationsLazyData(
       std::vector<mojom::ConversationPtr> conversations);

@@ -100,8 +100,7 @@ class BraveSyncUserSettingsImplTest : public testing::Test {
 
     sync_service_crypto_ = std::make_unique<SyncServiceCrypto>(
         &sync_service_crypto_delegate_, &trusted_vault_client_);
-    sync_service_crypto_->SetEncryptor(
-        std::make_unique<os_crypt_async::Encryptor>(GetEncryptorForTest()));
+    sync_service_crypto_->SetEncryptor(GetEncryptorForTest());
 
     ON_CALL(delegate_, IsCustomPassphraseAllowed).WillByDefault(Return(true));
     ON_CALL(delegate_, GetSyncAccountStateForPrefs)

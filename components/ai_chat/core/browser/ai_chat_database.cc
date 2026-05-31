@@ -191,8 +191,9 @@ constexpr int kCompatibleDatabaseVersionNumber = 7;
 // Current version of the database. Increase if breaking changes are made.
 constexpr int kCurrentDatabaseVersion = 10;
 
-AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
-                               os_crypt_async::Encryptor encryptor)
+AIChatDatabase::AIChatDatabase(
+    const base::FilePath& db_file_path,
+    scoped_refptr<os_crypt_async::Encryptor> encryptor)
     : db_file_path_(db_file_path),
       db_(sql::DatabaseOptions().set_page_size(4096).set_cache_size(1000),
           sql::Database::Tag("AIChatDatabase")),
@@ -1603,7 +1604,7 @@ sql::Database& AIChatDatabase::GetDB() {
 std::string AIChatDatabase::DecryptColumnToString(sql::Statement& statement,
                                                   int index) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto decrypted_value = encryptor_.DecryptData(statement.ColumnBlob(index));
+  auto decrypted_value = encryptor_->DecryptData(statement.ColumnBlob(index));
   if (!decrypted_value) {
     DVLOG(0) << "Failed to decrypt value";
     return "";
@@ -1619,7 +1620,7 @@ std::optional<std::string> AIChatDatabase::DecryptOptionalColumnToString(
   if (statement.GetColumnType(index) != sql::ColumnType::kBlob) {
     return std::nullopt;
   }
-  auto decrypted_value = encryptor_.DecryptData(statement.ColumnBlob(index));
+  auto decrypted_value = encryptor_->DecryptData(statement.ColumnBlob(index));
   if (!decrypted_value) {
     DVLOG(0) << "Failed to decrypt value";
     return std::nullopt;
@@ -1633,7 +1634,8 @@ void AIChatDatabase::BindAndEncryptOptionalString(
     std::optional<std::string_view> value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (value.has_value() && !value.value().empty()) {
-    auto encrypted_value = encryptor_.EncryptString(std::string(value.value()));
+    auto encrypted_value =
+        encryptor_->EncryptString(std::string(value.value()));
     if (!encrypted_value) {
       DVLOG(0) << "Failed to encrypt value";
       statement.BindNull(index);
@@ -1649,7 +1651,7 @@ bool AIChatDatabase::BindAndEncryptString(sql::Statement& statement,
                                           int index,
                                           std::string_view value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto encrypted_value = encryptor_.EncryptString(std::string(value));
+  auto encrypted_value = encryptor_->EncryptString(std::string(value));
   if (!encrypted_value) {
     DVLOG(0) << "Failed to encrypt value";
     return false;

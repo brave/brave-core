@@ -66,10 +66,10 @@ class BraveSyncNetworkTimeHelperBrowserTest : public PlatformBrowserTest {
     // brave-core/pull/27499.
     // OSCryptAsync is already initialized by browser startup before profile
     // creation, so GetInstance fires synchronously here.
-    g_browser_process->os_crypt_async()->GetInstance(
-        base::BindLambdaForTesting([context](os_crypt_async::Encryptor e) {
+    g_browser_process->os_crypt_async()->GetInstance(base::BindLambdaForTesting(
+        [context](scoped_refptr<os_crypt_async::Encryptor> e) {
           std::string encrypted_seed;
-          if (e.EncryptString(kValidSyncCode, &encrypted_seed)) {
+          if (e->EncryptString(kValidSyncCode, &encrypted_seed)) {
             static_cast<Profile*>(context)->GetPrefs()->SetString(
                 brave_sync::Prefs::GetSeedPath(),
                 base::Base64Encode(encrypted_seed));

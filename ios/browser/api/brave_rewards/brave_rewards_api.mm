@@ -856,9 +856,9 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
              callback:(RewardsEngineClient::EncryptStringCallback)callback {
   GetApplicationContext()->GetOSCryptAsync()->GetInstance(base::BindOnce(
       [](std::string value, RewardsEngineClient::EncryptStringCallback callback,
-         os_crypt_async::Encryptor encryptor) {
+         scoped_refptr<os_crypt_async::Encryptor> encryptor) {
         std::string encrypted_value;
-        if (!encryptor.EncryptString(value, &encrypted_value)) {
+        if (!encryptor->EncryptString(value, &encrypted_value)) {
           std::move(callback).Run(std::nullopt);
           return;
         }
@@ -871,9 +871,9 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
              callback:(RewardsEngineClient::DecryptStringCallback)callback {
   GetApplicationContext()->GetOSCryptAsync()->GetInstance(base::BindOnce(
       [](std::string value, RewardsEngineClient::EncryptStringCallback callback,
-         os_crypt_async::Encryptor encryptor) {
+         scoped_refptr<os_crypt_async::Encryptor> encryptor) {
         std::string decrypted_value;
-        if (!encryptor.DecryptString(value, &decrypted_value)) {
+        if (!encryptor->DecryptString(value, &decrypted_value)) {
           std::move(callback).Run(std::nullopt);
           return;
         }
