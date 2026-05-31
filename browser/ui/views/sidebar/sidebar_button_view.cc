@@ -46,7 +46,7 @@ void SidebarButtonView::OnThemeChanged() {
   // Reset ink drop config as inkdrop has different config per themes.
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::Emphasis::kMaximum, {});
-  ConfigureInkDropForToolbar(this);
+  ConfigureInkDrop(this);
   views::InstallRoundRectHighlightPathGenerator(
       this, gfx::Insets::VH(0, kMargin), radii);
 }
