@@ -7,6 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_CONTROLLER_H_
 
 namespace page_actions {
+namespace chromium_impl {
+class PageActionView;
+}  // namespace chromium_impl
 class PageActionControllerImpl;
 }  // namespace page_actions
 

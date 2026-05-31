@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''
+Wrap PageActionView in a chromium_impl namespace. This shadows the upstream
+implementation of PageActionView and we'll have our own implementation of
+PageActionView in chromium_src/../page_action_view.h . Brave specific 
+implementation will be used to support UI customization for 
+PartitionedPageActionController.
+'''
+re_pattern = '(class PageActionView[\s\S]*?\n\};)'
+replace = '''namespace chromium_impl {
+\1
+}  // namespace chromium_impl'''
+
+[[substitution]]
+description='''
+Make void OnNewActiveController(PageActionController* controller) virtual
+so that we can override it in our own implementation of PageActionView.
+'''
+pattern = 'void OnNewActiveController(PageActionController* controller);'
+replace = 'virtual void OnNewActiveController(PageActionController* controller);'
+
+[[substitution]]
+description = '''
+Friend the brave page_actions::PageActionView so it can reach the
+private members it relies on, such as observation_ and other private methods.
+The lazy match anchors on the first `private:` inside PageActionView.
+'''
+re_pattern = '(class PageActionView.*?\bprivate:)'
+re_flags = ['DOTALL']
+replace = '''\1
+  friend class ::page_actions::PageActionView;'''

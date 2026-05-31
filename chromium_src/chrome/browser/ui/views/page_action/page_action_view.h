@@ -11,47 +11,84 @@
 #include "ui/views/view.h"
 #include "ui/views/widget/native_widget_delegate.h"
 
-// Add methods to override the IconLabelBubbleView methods.
-// Also add a friend class for testing.
-#define ShouldShowLabelAfterAnimation()                                     \
-  ShouldShowLabelAfterAnimation() const override;                           \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
-                           AlwaysShowsLabelEnsuresLabelWidth);              \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest, UseTonalColorsWhenExpanded); \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
-                           DefaultBackgroundColorIsTransparent);            \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
-                           OverrideBackgroundColorReturnsModelValue);       \
-  views::ProposedLayout CalculateProposedLayout(                            \
-      const views::SizeBounds& size_bounds) const override;                 \
-  gfx::Size GetSizeForLabelWidth(int label_width) const override;           \
-  bool ShouldShowLabel() const override;                                    \
-  SkColor GetBackgroundColor() const override;                              \
-  SkColor GetForegroundColor() const override;                              \
-  std::optional<int> GetOverrideHeight() const;                             \
-  void OnPageActionModelVisualRefresh(PageActionModelInterface* model);     \
-  bool ShouldAlwaysShowLabel()
+namespace page_actions {
+namespace chromium_impl {
+class PageActionView;
+}
+class PageActionView;
+}  // namespace page_actions
 
-// Make a OnPageActionModelChanged wrapper
-#define OnPageActionModelChanged(...)             \
-  OnPageActionModelChanged_Chromium(__VA_ARGS__); \
-  void OnPageActionModelChanged(__VA_ARGS__)
+// Allows both upstream and brave specific implementation to construct
+// PassKey<::page_actions::PageActionView>.
+template <>
+class base::PassKey<::page_actions::PageActionView> {
+  friend class ::page_actions::chromium_impl::PageActionView;
+  friend class ::page_actions::PageActionView;
+};
 
-// Make a GetMinimumSize wrapper
-#define GetMinimumSize()           \
-  GetMinimumSize_Chromium() const; \
-  gfx::Size GetMinimumSize()
+// Intentionally implicitly converts
+// PassKey<::page_actions::chromium_impl::PageActionView> to
+// PassKey<::page_actions::PageActionView>. This allows
+// chromium_impl::PageActionView creates PassKey<::page_action::PageActionView>.
+template <>
+class base::PassKey<::page_actions::chromium_impl::PageActionView> {
+ public:
+  // Intentionally implicit conversion to
+  // PassKey<::page_actions::PageActionView>.
+  // NOLINTNEXTLINE(google-explicit-constructor)
+  operator base::PassKey<::page_actions::PageActionView>() const {
+    return base::PassKey<::page_actions::PageActionView>();
+  }
 
-// Make a OnNewActiveController wrapper
-#define OnNewActiveController(...)             \
-  OnNewActiveController_Chromium(__VA_ARGS__); \
-  void OnNewActiveController(__VA_ARGS__)
+ private:
+  friend class ::page_actions::chromium_impl::PageActionView;
+};
 
 #include <chrome/browser/ui/views/page_action/page_action_view.h>  // IWYU pragma: export
 
-#undef OnNewActiveController
-#undef GetMinimumSize
-#undef OnPageActionModelChanged
-#undef ShouldShowLabelAfterAnimation
+// Add methods to override the IconLabelBubbleView methods.
+// Also add a friend class for testing.
+namespace page_actions {
+class PageActionView : public chromium_impl::PageActionView {
+  METADATA_HEADER(PageActionView, chromium_impl::PageActionView)
+
+ public:
+  PageActionView(actions::ActionItem* action_item,
+                 const PageActionViewParams& params,
+                 ui::ElementIdentifier element_identifier);
+  ~PageActionView() override;
+
+  // This callback is proxy of the
+  // chromium_impl::PageActionView::AddChipVisibilityChangedCallback. As the
+  // upstream's callback takes chromium_impl::PageActionView* as an argument, we
+  // need to convert it to PageActionView* by wrapping it in a lambda.
+  base::CallbackListSubscription AddChipVisibilityChangedCallback(
+      base::RepeatingCallback<void(PageActionView*)> callback);
+
+  // chromium_impl::PageActionView:
+  views::ProposedLayout CalculateProposedLayout(
+      const views::SizeBounds& size_bounds) const override;
+  gfx::Size GetSizeForLabelWidth(int label_width) const override;
+  bool ShouldShowLabel() const override;
+  SkColor GetBackgroundColor() const override;
+  SkColor GetForegroundColor() const override;
+  std::optional<int> GetOverrideHeight() const;
+  void OnPageActionModelVisualRefresh(PageActionModelInterface* model);
+  void OnPageActionModelChanged(const PageActionModelInterface& model) override;
+  gfx::Size GetMinimumSize() const override;
+  bool ShouldAlwaysShowLabel() const override;
+  void OnNewActiveController(PageActionController* controller) override;
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                           AlwaysShowsLabelEnsuresLabelWidth);
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest, UseTonalColorsWhenExpanded);
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                           DefaultBackgroundColorIsTransparent);
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                           OverrideBackgroundColorReturnsModelValue);
+};
+
+}  // namespace page_actions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_
