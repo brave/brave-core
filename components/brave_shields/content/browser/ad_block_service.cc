@@ -36,29 +36,11 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/features.h"
 
 namespace brave_shields {
-
-namespace {
-
-std::string GetTagFromPrefName(const std::string& pref_name) {
-  if (pref_name == prefs::kFBEmbedControlType) {
-    return brave_shields::kFacebookEmbeds;
-  }
-  if (pref_name == prefs::kTwitterEmbedControlType) {
-    return brave_shields::kTwitterEmbeds;
-  }
-  if (pref_name == prefs::kLinkedInEmbedControlType) {
-    return brave_shields::kLinkedInEmbeds;
-  }
-  return "";
-}
-
-}  // namespace
 
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
     OnResourcesLoadedCallback on_resources_loaded,
@@ -191,26 +173,6 @@ AdBlockService::AdBlockService(
   TRACE_EVENT("brave.adblock", "AdBlockService");
   // Initializes adblock-rust's domain resolution implementation
   adblock::set_domain_resolver();
-
-  pref_change_registrar_.reset(new PrefChangeRegistrar());
-  pref_change_registrar_->Init(local_state_);
-  pref_change_registrar_->Add(
-      prefs::kFBEmbedControlType,
-      base::BindRepeating(&AdBlockService::OnPreferenceChanged,
-                          base::Unretained(this), prefs::kFBEmbedControlType));
-  pref_change_registrar_->Add(
-      prefs::kTwitterEmbedControlType,
-      base::BindRepeating(&AdBlockService::OnPreferenceChanged,
-                          base::Unretained(this),
-                          prefs::kTwitterEmbedControlType));
-  pref_change_registrar_->Add(
-      prefs::kLinkedInEmbedControlType,
-      base::BindRepeating(&AdBlockService::OnPreferenceChanged,
-                          base::Unretained(this),
-                          prefs::kLinkedInEmbedControlType));
-  OnPreferenceChanged(prefs::kFBEmbedControlType);
-  OnPreferenceChanged(prefs::kTwitterEmbedControlType);
-  OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
 
   if (base::FeatureList::IsEnabled(
           features::kAdblockOverrideRegexDiscardPolicy)) {
@@ -400,23 +362,6 @@ void AdBlockService::AddObserver(Observer* observer) {
 
 void AdBlockService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
-}
-
-void AdBlockService::OnPreferenceChanged(const std::string& pref_name) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::string tag = GetTagFromPrefName(pref_name);
-  if (tag.length() == 0) {
-    return;
-  }
-  bool enabled = local_state_->GetBoolean(pref_name);
-  EnableTag(tag, enabled);
-}
-
-void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // Tags only need to be modified for the default engine.
-  engine_wrapper_.AsyncCall(&AdBlockEngineWrapper::EnableTag)
-      .WithArgs(tag, enabled);
 }
 
 void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {

@@ -28,11 +28,6 @@ inline constexpr char kReferrers[] = "referrers";
 inline constexpr char kCookies[] = "shieldsCookiesV3";
 inline constexpr char kBraveAutoShred[] = "braveAutoShred";
 
-// Prefs:
-inline constexpr char kFacebookEmbeds[] = "fb-embeds";
-inline constexpr char kTwitterEmbeds[] = "twitter-embeds";
-inline constexpr char kLinkedInEmbeds[] = "linked-in-embeds";
-
 inline constexpr auto kShieldsContentSettingsTypes =
     base::MakeFixedFlatSet<ContentSettingsType>({
         ContentSettingsType::BRAVE_ADS,
@@ -119,6 +114,13 @@ inline constexpr char kExperimentalListUuid[] =
 inline constexpr char kAdblockOnlySupplementalListUuid[] =
     "61C6046C-B040-4CE4-8C8E-F3E8F316AA72";
 
+inline constexpr char kFacebookEmbedsListUuid[] =
+    "A5E6EC21-F01F-4547-9F0A-1EE1C3F2AE8D";
+inline constexpr char kTwitterEmbedsListUuid[] =
+    "84960ADD-1CC1-419F-81FC-9F116F5205CC";
+inline constexpr char kLinkedInEmbedsListUuid[] =
+    "FB626316-6CC8-4447-884B-F5A37C29B0AE";
+
 inline constexpr char kAdBlockResourceComponentName[] =
     "Brave Ad Block Resources Library";
 inline constexpr char kAdBlockResourceComponentId[] =
@@ -159,6 +161,12 @@ inline constexpr auto kAdblockOnlyModeFilterListUUIDs =
 // The list of language codes that are supported by Ad Block Only mode.
 inline constexpr auto kAdblockOnlyModeSupportedLanguageCodes =
     base::MakeFixedFlatSet<std::string_view>({"en"});
+
+// The list of UUIDs of social media blocking filter lists.
+inline constexpr auto kAdblockSocialMediaBlockingFilterListUUIDs =
+    base::MakeFixedFlatSet<std::string_view>({kFacebookEmbedsListUuid,
+                                              kTwitterEmbedsListUuid,
+                                              kLinkedInEmbedsListUuid});
 
 }  // namespace brave_shields
 

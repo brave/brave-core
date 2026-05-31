@@ -41,8 +41,6 @@
 
 class PrefService;
 
-class PrefChangeRegistrar;
-
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
@@ -179,7 +177,6 @@ class AdBlockService {
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-  void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
   void ResetCosmeticFilter(std::string_view host);
   bool AreAnyBlockedElementsPresent(std::string_view host);
@@ -279,8 +276,6 @@ class AdBlockService {
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   base::ObserverList<Observer> observers_;
-
-  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   bool default_dat_loaded_for_testing_ = false;
   bool additional_dat_loaded_for_testing_ = false;
