@@ -1,11 +1,12 @@
 diff --git a/chrome/browser/ui/startup/startup_tab.h b/chrome/browser/ui/startup/startup_tab.h
-index 4d5b4d6775ff8afd9946a8acde07bb40b508692e..9973e60900dc1e65be3c4019a03478fe078b09f0 100644
+index 494d35877bec129310bef73cec9aebc722d135aa..0b9f50754fcc4db95d544d25126a794ee5c3a4a8 100644
 --- a/chrome/browser/ui/startup/startup_tab.h
 +++ b/chrome/browser/ui/startup/startup_tab.h
-@@ -26,6 +26,14 @@ struct StartupTab {
-   GURL url;
- 
-   Type type;
+@@ -31,6 +31,15 @@ struct StartupTab {
+   // True if this tab was launched from an untrusted external custom protocol
+   // (e.g., google-chrome://) that was stripped on startup.
+   bool is_untrusted_launch = false;
++
 +#if BUILDFLAG(ENABLE_CONTAINERS)
 +  containers::ContainerSpecifier container;
 +#endif
