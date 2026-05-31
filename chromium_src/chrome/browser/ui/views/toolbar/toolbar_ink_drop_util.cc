@@ -5,13 +5,13 @@
 
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 
-#define ConfigureInkDropForToolbar ConfigureInkDropForToolbar_UnUsed
+#define ConfigureInkDrop ConfigureInkDrop_UnUsed
 
 #include <chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.cc>
 
-#undef ConfigureInkDropForToolbar
+#undef ConfigureInkDrop
 
-void ConfigureInkDropForToolbar(
+void ConfigureInkDrop(
     views::Button* host,
     std::unique_ptr<views::HighlightPathGenerator> highlight_generator) {
   if (!highlight_generator) {

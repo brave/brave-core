@@ -183,7 +183,7 @@
 -TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible
 
 # This test is disabled as we have our own ink drop configs.
--ToolbarInkDropUtilTest.ConfigureInkDropForToolbarTest
+-ToolbarInkDropUtilTest.ConfigureInkDropTest
 
 # Prerender is disabled
 -PrerenderManagerBasicRequirementTest.*
