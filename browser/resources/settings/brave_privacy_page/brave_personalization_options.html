@@ -28,6 +28,18 @@
     </cr-button>
   </template>
 </settings-toggle-button>
+<div class="settings-box">
+  <div class="start" id="labelWrapper">
+    <div class="label">$i18n{historyRetentionLabel}</div>
+    <div class="secondary label" id="sub-label">
+      $i18n{historyRetentionSubLabel}
+    </div>
+  </div>
+  <settings-dropdown-menu id="historyRetention"
+      pref="{{prefs.brave.history.retention_days}}"
+      menu-options="[[historyRetentionOptions_]]">
+  </settings-dropdown-menu>
+</div>
 <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.de_amp.enabled}}"

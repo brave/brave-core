@@ -33,6 +33,7 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/history/core/common/pref_names.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -317,6 +318,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::kString;
+  (*s_brave_allowlist)[prefs::kBraveHistoryRetentionDays] =
+      settings_api::PrefType::kNumber;
   // Request OTR feature
   (*s_brave_allowlist)[request_otr::kRequestOTRActionOption] =
       settings_api::PrefType::kNumber;

@@ -12,4 +12,8 @@ HistoryCountResult HistoryBackend::GetKnownToSyncCount() {
   return {db_ && db_->GetKnownToSyncCount(&count), count};
 }
 
+void HistoryBackend::UpdateExpirationThreshold(base::TimeDelta threshold) {
+  expirer_.UpdateExpirationThreshold(threshold);
+}
+
 }  // namespace history

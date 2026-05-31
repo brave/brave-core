@@ -20,6 +20,7 @@ import {
 import { assert } from 'chrome://resources/js/assert.js'
 import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 
+import '../controls/settings_dropdown_menu.js'
 import '../privacy_page/do_not_track_toggle.js'
 
 const SettingsBravePersonalizationOptionsBase = WebUiListenerMixin(
@@ -61,6 +62,43 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       webRTCPolicy_: String,
+      historyRetentionOptions_: {
+        readOnly: true,
+        type: Array,
+        value: function () {
+          return [
+            { value: 1, name: loadTimeData.getString('historyRetentionOneDay') },
+            {
+              value: 7,
+              name: loadTimeData.getString('historyRetentionOneWeek'),
+            },
+            {
+              value: 30,
+              name: loadTimeData.getString('historyRetentionOneMonth'),
+            },
+            {
+              value: 90,
+              name: loadTimeData.getString('historyRetentionThreeMonths'),
+            },
+            {
+              value: 180,
+              name: loadTimeData.getString('historyRetentionSixMonths'),
+            },
+            {
+              value: 365,
+              name: loadTimeData.getString('historyRetentionOneYear'),
+            },
+            {
+              value: 365 * 5,
+              name: loadTimeData.getString('historyRetentionFiveYears'),
+            },
+            {
+              value: -1,
+              name: loadTimeData.getString('historyRetentionForever'),
+            },
+          ]
+        },
+      },
       isDebounceFeatureEnabled_: {
         readOnly: true,
         type: Boolean,
@@ -105,6 +143,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
 
   declare private webRTCPolicies_: Object[]
   declare private webRTCPolicy_: String
+  declare private historyRetentionOptions_: Object[]
   declare private isDebounceFeatureEnabled_: boolean
   declare private isRequestOTRFeatureEnabled_: boolean
   declare private requestOTRActions_: Object[]
