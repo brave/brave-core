@@ -7,6 +7,34 @@
 
 #include "net/http/transport_security_state.h"
 
+namespace net {
+
+namespace brave {
+
+// A helper class to defeat fingerprinting by scripts that relies on the
+// position of the Accept-Language header relative to the UA Agent.
+// See https://github.com/brave/brave-browser/issues/55271.
+class BraveAcceptLanguageHttpHeaderReposition {
+ public:
+  explicit BraveAcceptLanguageHttpHeaderReposition(
+      HttpRequestHeaders& headers) {
+    // We try and move the position of the Accept-Language header to the end.
+    auto modified_language_value =
+        headers.GetHeader(HttpRequestHeaders::kAcceptLanguage);
+    if (modified_language_value.has_value()) {
+      // We remove the header first from the underlying std::vector.
+      headers.RemoveHeader(HttpRequestHeaders::kAcceptLanguage);
+      // We now put the header back at the end.
+      headers.SetHeader(HttpRequestHeaders::kAcceptLanguage,
+                        modified_language_value.value());
+    }
+  }
+
+  ~BraveAcceptLanguageHttpHeaderReposition() = default;
+};
+}  // namespace brave
+}  // namespace net
+
 #define GetSSLUpgradeDecision(host, is_top_level_nav, net_log)                 \
   GetSSLUpgradeDecision(request->isolation_info().network_anonymization_key(), \
                         host, is_top_level_nav, net_log)
@@ -16,8 +44,12 @@
 #define AddHSTSHeader(host, value) \
   AddHSTSHeader(request_->isolation_info(), host, value)
 
+#define BRAVE_ACCEPT_LANGUAGE_HTTP_HEADER_REPOSITION \
+  brave::BraveAcceptLanguageHttpHeaderReposition(request_info_.extra_headers);
+
 #include <net/url_request/url_request_http_job.cc>
 
+#undef BRAVE_ACCEPT_LANGUAGE_HTTP_HEADER_REPOSITION
 #undef AddHSTSHeader
 #undef ShouldSSLErrorsBeFatal
 #undef GetSSLUpgradeDecision
