@@ -186,6 +186,37 @@ CHROME_VERSION_FILE = Path('chrome/VERSION')
 TOOLCHAIN_BUCKET_URL = (
     'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux')
 
+# Every platform a Rust/WASM toolchain is published for, mapped to the gclient
+# host condition `install_extra_deps.py` uses to select the matching
+# archive. Keyed by the prefix `_platform_prefix` emits. Single source of truth
+# for "what platforms exist", consumed by `rust_toolchain_extra_dep`.
+SUPPORTED_PLATFORM_CONDITIONS = {
+    'linux-x64': 'host_os == "linux"',
+    'mac-arm64': 'host_os == "mac" and host_cpu == "arm64"',
+    'mac': 'host_os == "mac" and host_cpu == "x64"',
+    'win': 'host_os == "win"',
+}
+
+# Chromium GCS `host_os` directory for each supported platform prefix. The Brave
+# WASM archive is an *overlay* on top of the upstream Chromium-built Rust
+# toolchain that gclient downloads as a `gcs` dep, so each published object
+# records the upstream archive it sits on top of (`overlayed_on`). This maps our
+# prefix to the directory that archive lives under in the clang bucket,
+# mirroring the `host_os` list in
+# `tools/clang/scripts/sync_deps.py:GetRustObjectNames`.
+PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS = {
+    'linux-x64': 'Linux_x64',
+    'mac-arm64': 'Mac_arm64',
+    'mac': 'Mac',
+    'win': 'Win',
+}
+
+# Install path + dep-level condition of the published Rust/WASM toolchain in
+# `install_extra_deps.py`'s `EXTRA_DEPS`. `rust_toolchain_extra_dep`
+# returns the entry keyed by this path.
+RUST_TOOLCHAIN_DEP_PATH = 'src/third_party/rust-toolchain'
+RUST_TOOLCHAIN_DEP_CONDITION = 'not rust_force_head_revision'
+
 if sys.platform == 'win32':
     # Path to Git's sh.exe on Windows, which is used by
     # `tools/rust/build_rust.py` to build the toolchain on Windows.`
@@ -236,6 +267,95 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: f.read(65536), b''):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _latest_index_object(index_url: str,
+                         expected_stem: str) -> tuple[str, str]:
+    """Download a platform's YAML index and return its latest archive.
+
+    The index lists builds in chronological order, so the last element is the
+    most recent archive for that platform + revision. Returns
+    `(object_name, sha256sum)`, where `object_name` is the archive's basename.
+
+    `expected_stem` is the `<platform>-<upstream-stem>` the archive name must
+    start with. A mismatch means the index was fetched from the wrong key or is
+    cross-contaminated with another platform's builds, and is treated as a hard
+    error rather than silently trusted.
+    """
+    try:
+        with urllib.request.urlopen(index_url) as response:
+            entries = yaml.safe_load(response) or []
+    except urllib.error.URLError as e:
+        raise RuntimeError(
+            f'Failed to fetch toolchain index {index_url}: {e}') from e
+    if not entries:
+        raise RuntimeError(f'Published toolchain index is empty: {index_url}')
+    latest = entries[-1]
+    if (not isinstance(latest, dict) or 'url' not in latest
+            or 'sha256sum' not in latest):
+        raise RuntimeError(
+            f'Malformed entry in toolchain index {index_url}: expected a '
+            f'mapping with "url" and "sha256sum", got {latest!r}')
+    object_name = latest['url'].rsplit('/', 1)[-1]
+    if not object_name.startswith(f'{expected_stem}-'):
+        raise RuntimeError(
+            f'Toolchain index {index_url} yielded {object_name!r}, which does '
+            f'not start with the expected {expected_stem!r} stem.')
+    return object_name, latest['sha256sum']
+
+
+def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
+    """Assemble the complete `EXTRA_DEPS` entry for the published toolchain.
+
+    This function composes a Python dictionary representing the full
+    `EXTRA_DEPS` value that should be used in `install_extra_deps.py` for
+    the current Chromium checkout.
+
+        {
+          'src/third_party/rust-toolchain': {
+            'bucket': '<bucket>/',
+            'condition': 'not rust_force_head_revision',
+            'objects': [
+              {'object_name': ..., 'sha256sum': ...,
+               'overlayed_on': ..., 'condition': ...},
+              ...
+            ],
+          },
+        }
+
+    This function is used by brockit to patch the value of `EXTRA_DEPS` in
+    `install_extra_deps.py`.
+
+    Args:
+        upstream_stem: The upstream toolchain package stem (i.e.
+            `package_rust.RUST_TOOLCHAIN_PACKAGE_NAME` without the `.tar.xz`
+            suffix).
+
+    Raises:
+        RuntimeError: if any platform's index is missing or empty.
+    """
+    objects = []
+    for platform_prefix, condition in SUPPORTED_PLATFORM_CONDITIONS.items():
+        stem = f'{platform_prefix}-{upstream_stem}'
+        index_url = f'{TOOLCHAIN_BUCKET_URL}/{stem}.yaml'
+        object_name, sha256sum = _latest_index_object(index_url, stem)
+        host_os = PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS[platform_prefix]
+        objects.append({
+            'object_name': object_name,
+            'sha256sum': sha256sum,
+            # Upstream Chromium-built Rust toolchain this archive overlays; see
+            # `sync_deps.GetRustObjectNames` for the matching naming scheme.
+            'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
+            'condition': condition,
+        })
+
+    return {
+        RUST_TOOLCHAIN_DEP_PATH: {
+            'bucket': f'{TOOLCHAIN_BUCKET_URL}/',
+            'condition': RUST_TOOLCHAIN_DEP_CONDITION,
+            'objects': objects,
+        }
+    }
 
 
 class ToolchainBuilder:
