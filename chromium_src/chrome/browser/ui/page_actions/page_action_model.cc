@@ -69,4 +69,17 @@ std::optional<int> PageActionModel::GetOverrideTriggerableEvent() const {
   return override_triggerable_event_flags_;
 }
 
+void PageActionModel::SetOverrideBorder(PageActionPassKey,
+                                        std::optional<gfx::Insets> border) {
+  if (override_border_ == border) {
+    return;
+  }
+  override_border_ = border;
+  NotifyChange(Property::kOverrideBorder);
+}
+
+std::optional<gfx::Insets> PageActionModel::GetOverrideBorder() const {
+  return override_border_;
+}
+
 }  // namespace page_actions
