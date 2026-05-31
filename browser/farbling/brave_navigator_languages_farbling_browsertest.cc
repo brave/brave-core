@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -13,15 +12,9 @@
 #include "base/path_service.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/test/bind.h"
-#include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -30,7 +23,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "components/permissions/permission_request.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
@@ -163,8 +155,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     prefs->Set(language::prefs::kSelectedLanguages,
                base::Value(accept_languages));
   }
-
-  void HandleHTTPRequest() {}
 
   void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
     if (request.relative_url.find("/reduce-language/") == std::string::npos) {
