@@ -20,8 +20,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler;
-import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler.VoiceResult;
+import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionIntentHandler;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -143,10 +142,11 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     }
 
     @Override
-    void onVoiceResults(@Nullable List<VoiceRecognitionHandler.VoiceResult> voiceResults) {
+    void onVoiceResults(@Nullable List<VoiceRecognitionIntentHandler.VoiceResult> results) {
         Tab tab = mActivityTabSupplier.get();
-        if (tab != null && voiceResults != null) {
-            VoiceResult topResult = (voiceResults.size() > 0) ? voiceResults.get(0) : null;
+        if (tab != null && results != null) {
+            VoiceRecognitionIntentHandler.VoiceResult topResult =
+                    (results.size() > 0) ? results.get(0) : null;
             if (topResult != null) {
                 String topResultQuery = topResult.getMatch();
                 // Check if the query starts with the start word for Leo.
@@ -162,12 +162,12 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
                     // Clear the voice results to prevent the query from being processed by Chromium
                     // since it's already handled by Leo.
-                    voiceResults.clear();
+                    results.clear();
                 }
             }
         }
 
-        super.onVoiceResults(voiceResults);
+        super.onVoiceResults(results);
     }
 
     // Prevents from clearing URL bar text and suggestions when
