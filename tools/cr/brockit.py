@@ -190,6 +190,26 @@ Pass `--culprit=<hash>` to provide a specific culprit for the toolchain update.
 If none is provided, `brockit` will trying to determine the culprit by looking
 for the last commit updating the toolchain in Chromium.
 
+### `brockit.py gen-rust-toolchain`
+This command triggers the Rust/WASM toolchain Jenkins pipelines (one per
+platform) for a given Chromium tag. It reads credentials from `~/.jenkins.json`
+and kicks off a parameterized build for each pipeline.
+
+```sh
+tools/cr/brockit.py gen-rust-toolchain 150.0.7850.1
+```
+
+The `tag` argument also accepts the same `@latest-*` labels (e.g. `@latest-tag`,
+etc).
+
+Pass `--watch` to show a live-updating table of each pipeline's stage and
+status until all finish. Pressing Ctrl+C stops watching, but the builds keep
+running.
+
+```sh
+tools/cr/brockit.py gen-rust-toolchain @latest-canary --watch
+```
+
 ### `brockit.py reassign`
 This command is used to change the authorship of a given commit in the branch.
 It generates an empty commit with the message `reassign! {original_subject}`
@@ -226,10 +246,16 @@ import pickle
 import platform
 import re
 import requests
+from rich.box import Box
+from rich.live import Live
 from rich.markdown import Markdown
 from rich.padding import Padding
+from rich.spinner import Spinner
+from rich.table import Table
+from rich.text import Text
 import subprocess
 import sys
+import time
 
 from git_status import GitStatus
 from patchfile import Patchfile
@@ -239,7 +265,8 @@ import rebase_v2
 from rebase_v2 import REASSIGN_COMMIT_MSG_PREFIX
 import repository
 from repository import Repository
-from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
+from terminal import (IncendiaryErrorHandler, Task as BaseTask, console,
+                      is_verbose, terminal)
 import versioning
 from versioning import Version
 from vpython_utils import VPYTHON3_PATH
@@ -278,6 +305,65 @@ CHROMIUM_MAC_SDK_GNI = 'build/config/mac/mac_sdk.gni'
 
 # Google dash link used to check the latest version for a given channel
 CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?channel={channel}&platform={platform}&num=1'
+
+# Configuration file holding the Jenkins credentials used to trigger toolchain
+# pipelines. See `GenRustToolchain` for the expected schema.
+JENKINS_CONFIG_FILE = Path.home() / '.jenkins.json'
+
+# The Jenkins jobs that build and publish the Rust/WASM toolchain, one per
+# platform. Each accepts a single `CHROMIUM_TAG` build parameter.
+RUST_TOOLCHAIN_JOBS = (
+    'brave-browser-rust-toolchain-aux-build-linux-x64',
+    'brave-browser-rust-toolchain-aux-build-macos-arm64',
+    'brave-browser-rust-toolchain-aux-build-macos-x64',
+    'brave-browser-rust-toolchain-aux-build-windows-x64',
+)
+
+# How often `gen-rust-toolchain --watch` polls Jenkins for pipeline progress.
+WATCH_POLL_INTERVAL_SECONDS = 8
+
+# Maps Pipeline Stage View (`wfapi`) statuses onto the canonical states the
+# watch table tracks. Statuses not listed (e.g. NOT_EXECUTED) leave the state
+# unchanged.
+_WFAPI_STATUS_TO_STATE = {
+    'IN_PROGRESS': 'RUNNING',
+    'PAUSED_PENDING_INPUT': 'RUNNING',
+    'SUCCESS': 'SUCCESS',
+    'FAILED': 'FAILURE',
+    'ABORTED': 'ABORTED',
+    'UNSTABLE': 'UNSTABLE',
+}
+
+# States meaning a pipeline has finished and no longer needs polling.
+_TERMINAL_WATCH_STATES = frozenset(
+    {'SUCCESS', 'FAILURE', 'ABORTED', 'UNSTABLE', 'CANCELLED'})
+
+# Minimalist box for the `--watch` table: column dividers plus a single
+# header rule, no outer frame (paired with `show_edge=False`). Each of the
+# eight lines is four chars -- left edge, cell fill, column divider, right
+# edge -- in the order Rich's `Box` expects (top, head, head-rule, mid, row,
+# foot-rule, foot, bottom). Edge/foot lines are placeholders never drawn once
+# the edge is hidden and the table has no footer.
+_WATCH_TABLE_BOX = Box('    \n'  # top
+                       '  │ \n'  # head
+                       ' ── \n'  # head rule
+                       '  │ \n'  # mid
+                       '  │ \n'  # row
+                       ' ── \n'  # foot rule
+                       '  │ \n'  # foot
+                       '    \n')  # bottom
+
+# Icon + rich style for each watch state, used to render the State column.
+_WATCH_STATE_STYLE = {
+    'QUEUED': ('⏳', 'dim'),
+    'RUNNING': ('🔧', 'cyan'),
+    'SUCCESS': ('✔️', 'green'),
+    'FAILURE': ('🚨', 'bold red'),
+    'ABORTED': ('🛑', 'yellow'),
+    'CANCELLED': ('🚫', 'yellow'),
+    'UNSTABLE': ('⚠️', 'yellow'),
+    'UNKNOWN': ('🤔', 'dim'),
+}
 
 # A decorator to be shown for messages that the user should address before
 # continuing.
@@ -575,42 +661,24 @@ class ActionNeededException(Exception):
         console.log(message)
 
 
-class Task:
-    """ Base class for all tasks in brockit.
+# Banners framing every Brockit task run, shared with `run_watching`.
+_BROCKIT_START_BANNER = '[italic]🚀 Brockit!'
+_BROCKIT_END_BANNER = '[bold]💥 Done!'
 
-    This class provides a common interface for other tasks to build upon. It
-    provides a run method that will execute the task, and a status_message
-    method that will return a string to be displayed while the task is running.
+
+class Task(BaseTask):
+    """Base class for all Brockit tasks.
+
+    Adds the Brockit banners around the generic `terminal.Task` run; the actual
+    behaviour (status spinner, `execute`/`status_message` contract) lives in the
+    base class. Subclasses provide `status_message`.
     """
 
-    def run(self, **kwargs) -> bool:
-        """Runs the task with a status message.
+    # Abstract base: concrete subclasses implement `status_message`.
+    # pylint: disable=abstract-method
 
-        This function will run the task inside the scope of a status message.
-
-        Args:
-            an open set of argument to be passed along to the derived class's
-            execute method.
-
-        Returns:
-            Return 1 if the task failed, 0 if the task succeeded. This is used
-            as the process' exit code.
-        """
-        console.log('[italic]🚀 Brockit!')
-        with terminal.with_status(self.status_message()):
-            # Calling `self.execute` triggers the linter, as there's no
-            # `execute` method in this class. The derived classes are expected
-            # to provide this method.
-            # pylint: disable=no-member
-            self.execute(**kwargs)
-        console.log('[bold]💥 Done!')
-
-    def status_message(self) -> str:
-        """Returns a status message for the task.
-
-        This function has to be implemented by the derived class.
-        """
-        raise NotImplementedError
+    start_banner = _BROCKIT_START_BANNER
+    end_banner = _BROCKIT_END_BANNER
 
 
 class Versioned(Task):
@@ -2396,6 +2464,441 @@ class UpdateXcodeToolchain(Task):
                                     })
 
 
+@dataclass
+class _WatchedJob:
+    """Mutable per-pipeline state tracked while `--watch` polls Jenkins."""
+
+    # The Jenkins job name.
+    job: str
+
+    # The transient queue-item URL from the trigger's `Location` header.
+    queue_url: str
+
+    # The build URL, resolved once an executor dequeues the job.
+    build_url: str | None = None
+
+    # Canonical state: QUEUED / RUNNING / SUCCESS / FAILURE / ABORTED /
+    # UNSTABLE / CANCELLED / UNKNOWN.
+    state: str = 'QUEUED'
+
+    # Human-readable current stage (or the queue reason while QUEUED).
+    stage: str = ''
+
+    # Pre-formatted elapsed build time (e.g. "12m04s"), as of the last poll.
+    # Used as-is for non-running rows; RUNNING rows tick forward from the two
+    # fields below instead (see `_ElapsedClock`).
+    elapsed: str = ''
+
+    # The raw server-reported build duration (ms) at the last poll, and the
+    # monotonic clock read at that same instant. Together they anchor a
+    # RUNNING row's locally-ticking elapsed counter. Both None until a build
+    # is resolved.
+    duration_millis: int | None = None
+    elapsed_anchor: float | None = None
+
+    # The pipeline's configured `display-name`, resolved once when watching
+    # starts. None until resolved, or when the pipeline sets no display name.
+    display_name: str | None = None
+
+    @property
+    def bot(self) -> str:
+        """Label for the table's Bot column.
+
+        The pipeline's configured `display-name` when it has one, otherwise
+        its Jenkins job name.
+        """
+        return self.display_name or self.job
+
+    @property
+    def is_terminal(self) -> bool:
+        """Whether the pipeline has finished and no longer needs polling."""
+        return self.state in _TERMINAL_WATCH_STATES
+
+    def link(self, base_url: str) -> str:
+        """The best link available: the build URL, else the job page."""
+        return self.build_url or f'{base_url}/job/{self.job}/'
+
+
+class _ElapsedClock:
+    """Renderable that advances a RUNNING job's elapsed time between polls.
+
+    Rich re-renders the `Live` tree on every refresh -- the same mechanism
+    that animates the RUNNING spinner -- so recomputing the value here lets
+    the counter tick smoothly at the Live refresh rate instead of jumping once
+    per poll. `base_millis` is the duration the server reported at the last
+    poll and `anchor` is the monotonic clock read at that same instant; the
+    rendered value is `base + (now - anchor)`. Every poll re-anchors both, so
+    the local ticking stays corrected by the authoritative server value and
+    settles on it once the build leaves RUNNING.
+    """
+
+    def __init__(self, base_millis: int, anchor: float) -> None:
+        self._base_millis = base_millis
+        self._anchor = anchor
+
+    def __rich__(self) -> Text:
+        elapsed_millis = (self._base_millis +
+                          (time.monotonic() - self._anchor) * 1000)
+        return Text(GenRustToolchain._format_duration(elapsed_millis),
+                    justify='right')
+
+
+class GenRustToolchain(Task):
+    """Triggers the Rust/WASM toolchain Jenkins pipelines for a Chromium tag.
+
+    There is one pipeline per platform (see `RUST_TOOLCHAIN_JOBS`), and each
+    takes a single `CHROMIUM_TAG` build parameter. This task resolves the
+    requested version (accepting the same labels as `lift --to`, e.g.
+    `@latest-canary`), reads the Jenkins credentials from `~/.jenkins.json`,
+    and kicks off a parameterized build for every pipeline.
+
+    The expected `~/.jenkins.json` schema is:
+
+        {
+          "url": "https://ci.brave.com",
+          "username": "<ldap-user>",
+          "token": "<jenkins-api-token>"
+        }
+    """
+
+    def status_message(self):
+        return "Triggering Rust toolchain builds..."
+
+    def run_watching(self, tag: str) -> None:
+        """Entry point for `--watch` that bypasses `Task.run`.
+
+        The watch table is a `rich.live.Live` display, and rich permits only
+        one live display at a time. `Task.run` wraps `execute` in the shared
+        status spinner -- itself a live display -- so the watch flow cannot go
+        through it. This mirrors `run`'s banner framing but drives `execute`
+        directly, without the spinner.
+        """
+        console.log(self.start_banner)
+        self.execute(tag=tag, watch=True)
+        console.log(self.end_banner)
+
+    @staticmethod
+    def _load_jenkins_config() -> tuple[str, str, str]:
+        """Reads the Jenkins base URL and credentials from `~/.jenkins.json`.
+
+        Returns:
+            A `(base_url, username, token)` tuple, with any trailing slash
+            stripped from the base URL.
+        """
+        if not JENKINS_CONFIG_FILE.is_file():
+            raise InvalidInputException(
+                f'Jenkins config not found at {JENKINS_CONFIG_FILE}. Create it '
+                'with [bold cyan]url[/], [bold cyan]username[/], and '
+                '[bold cyan]token[/] fields.')
+
+        try:
+            config = json.loads(
+                JENKINS_CONFIG_FILE.read_bytes().decode('utf-8'))
+        except json.JSONDecodeError as e:
+            raise InvalidInputException(
+                f'Failed to parse {JENKINS_CONFIG_FILE}: {e}') from e
+
+        missing = [
+            key for key in ('url', 'username', 'token') if not config.get(key)
+        ]
+        if missing:
+            raise InvalidInputException(
+                f'{JENKINS_CONFIG_FILE} is missing required field(s): '
+                f'{", ".join(missing)}.')
+
+        return config['url'].rstrip('/'), config['username'], config['token']
+
+    @staticmethod
+    def _get_crumb(session: requests.Session, base_url: str) -> dict[str, str]:
+        """Fetches a Jenkins CSRF crumb as a ready-to-merge header dict.
+
+        Returns an empty dict when the crumb issuer is unavailable. API-token
+        auth is usually crumb-exempt, so a missing issuer is treated as "no
+        crumb needed" rather than a hard failure.
+        """
+        try:
+            response = session.get(f'{base_url}/crumbIssuer/api/json',
+                                   timeout=15)
+            response.raise_for_status()
+            data = response.json()
+            return {data['crumbRequestField']: data['crumb']}
+        except (requests.RequestException, KeyError, ValueError):
+            return {}
+
+    def execute(self, tag: str, watch: bool = False):
+        # Resolve the version first so a bad tag/label fails before we touch
+        # any Jenkins state.
+        version = _fetch_chromium_tag(tag)
+
+        base_url, username, token = self._load_jenkins_config()
+
+        session = requests.Session()
+        session.auth = (username, token)
+        crumb = self._get_crumb(session, base_url)
+
+        terminal.log_task(
+            f'Triggering Rust toolchain pipelines for Chromium {version}:')
+
+        watched: list[_WatchedJob] = []
+        failures: list[str] = []
+        for job in RUST_TOOLCHAIN_JOBS:
+            try:
+                response = session.post(
+                    f'{base_url}/job/{job}/buildWithParameters',
+                    params={'CHROMIUM_TAG': str(version)},
+                    headers=crumb,
+                    timeout=30)
+                response.raise_for_status()
+            except requests.RequestException as e:
+                failures.append(job)
+                console.log(Padding(f'✘ {job}: {e}', (0, 4)))
+                continue
+
+            # Jenkins' 201 Location header points at the transient queue item,
+            # not the build: the build number isn't assigned until an executor
+            # picks the job up, and the queue URL only serves JSON.
+            queue_url = response.headers.get('Location', '')
+            watched.append(_WatchedJob(job=job, queue_url=queue_url))
+            if not watch:
+                # Link the job page, which always resolves and surfaces the
+                # queued/running build.
+                terminal.log_task(f'[bold]✔️ [/]{job} ➜ {base_url}/job/{job}/')
+
+        if failures:
+            raise BadOutcomeException(
+                'Failed to trigger the following Rust toolchain pipelines:\n%s'
+                % '\n'.join(f'    * {job}' for job in failures))
+
+        if watch:
+            self._watch(session, base_url, version, watched)
+
+    @staticmethod
+    def _get_json(session: requests.Session, url: str) -> dict | None:
+        """GETs `url` and returns the parsed JSON, or None on any failure."""
+        try:
+            response = session.get(url, timeout=15)
+            response.raise_for_status()
+            return response.json()
+        except (requests.RequestException, ValueError):
+            return None
+
+    def _resolve_display_name(self, session: requests.Session, base_url: str,
+                              job: _WatchedJob) -> None:
+        """Records a pipeline's `display-name` for the Bot column, if set.
+
+        Jenkins returns the job name as `displayName` when no display name is
+        configured, so a value equal to the job name is treated as "unset" and
+        left as None -- `_WatchedJob.bot` then falls back to the job name.
+        """
+        info = self._get_json(
+            session,
+            f'{base_url}/job/{job.job}/api/json?tree=displayName,name')
+        if info is None:
+            return
+        display_name = info.get('displayName')
+        if display_name and display_name != info.get('name'):
+            job.display_name = display_name
+
+    @staticmethod
+    def _format_duration(millis) -> str:
+        """Formats a Jenkins millisecond duration as e.g. "12m04s"."""
+        if not millis:
+            return ''
+        total_seconds = int(millis) // 1000
+        minutes, seconds = divmod(total_seconds, 60)
+        if minutes:
+            return f'{minutes}m{seconds:02d}s'
+        return f'{seconds}s'
+
+    def _poll_job(self, session: requests.Session, job: _WatchedJob) -> None:
+        """Refreshes one pipeline's state in place.
+
+        Resolves the queue item to a build the first time an executor picks it
+        up, then tracks the running build's stage and result via the Pipeline
+        Stage View API (falling back to the plain build API).
+        """
+        if job.is_terminal:
+            return
+
+        if job.build_url is None:
+            if not job.queue_url:
+                job.state = 'UNKNOWN'
+                job.stage = 'no queue item returned'
+                return
+            item = self._get_json(session, f'{job.queue_url}api/json')
+            if item is None:
+                return  # Transient; retry on the next poll.
+            if item.get('cancelled'):
+                job.state = 'CANCELLED'
+                job.stage = 'queue item cancelled'
+                return
+            executable = item.get('executable')
+            if not executable:
+                # Still queued; surface Jenkins' reason (e.g. "Waiting for
+                # next available executor").
+                job.state = 'QUEUED'
+                job.stage = (item.get('why') or 'waiting').strip()
+                return
+            job.build_url = executable.get('url') or ''
+            job.state = 'RUNNING'
+
+        self._refresh_build_state(session, job)
+
+    def _record_elapsed(self, job: _WatchedJob, millis) -> None:
+        """Anchors a job's elapsed time to the latest server-reported duration.
+
+        Stores the raw duration and a monotonic timestamp so a RUNNING row can
+        tick forward between polls (see `_ElapsedClock`), and keeps the
+        formatted string used to render every non-running row.
+        """
+        job.duration_millis = int(millis) if millis else None
+        job.elapsed_anchor = time.monotonic()
+        job.elapsed = self._format_duration(millis)
+
+    def _refresh_build_state(self, session: requests.Session,
+                             job: _WatchedJob) -> None:
+        """Updates state/stage/elapsed for a job that already has a build."""
+        describe = self._get_json(session, f'{job.build_url}wfapi/describe')
+        if describe is not None:
+            job.state = _WFAPI_STATUS_TO_STATE.get(describe.get('status', ''),
+                                                   job.state)
+            self._record_elapsed(job, describe.get('durationMillis'))
+            stages = describe.get('stages') or []
+            running = [s for s in stages if s.get('status') == 'IN_PROGRESS']
+            if running:
+                # The deepest reported in-progress stage is the most specific.
+                job.stage = running[-1].get('name', '')
+            elif job.is_terminal:
+                job.stage = '(done)'
+            elif stages:
+                job.stage = stages[-1].get('name', '')
+            return
+
+        # Fallback for jobs without the Stage View plugin: the plain build API
+        # gives building/result but no per-stage detail.
+        info = self._get_json(session, f'{job.build_url}api/json')
+        if info is None:
+            return
+        self._record_elapsed(job, info.get('duration'))
+        if info.get('building'):
+            job.state = 'RUNNING'
+            job.stage = 'building'
+        else:
+            job.state = info.get('result') or 'UNKNOWN'
+            job.stage = '(done)'
+
+    @staticmethod
+    def _state_cell(state: str) -> str | Spinner:
+        """Renders the State column.
+
+        RUNNING gets an animated throbber (the `Live` display drives the
+        animation); every other state is a static icon + label.
+        """
+        if state == 'RUNNING':
+            return Spinner('dots', text='RUNNING', style='cyan')
+        icon, style = _WATCH_STATE_STYLE.get(state, ('?', 'dim'))
+        return f'[{style}]{icon} {state}[/]'
+
+    @staticmethod
+    def _elapsed_cell(job: _WatchedJob) -> str | _ElapsedClock:
+        """Renders the Elapsed column.
+
+        A RUNNING build with a resolved duration ticks forward between polls
+        via `_ElapsedClock`; every other state shows the static,
+        server-accurate value captured at the last poll.
+        """
+        if (job.state == 'RUNNING' and job.duration_millis is not None
+                and job.elapsed_anchor is not None):
+            return _ElapsedClock(job.duration_millis, job.elapsed_anchor)
+        return job.elapsed or '—'
+
+    @staticmethod
+    def _link_cell(url: str) -> Text:
+        """Renders a URL as a styled, clickable hyperlink for the Build column.
+
+        Table cells skip the `ReprHighlighter` that `console.log`/`print` run
+        over their output, so a bare URL string renders as plain text. Wrapping
+        it in a `Text` with a `link` style emits the OSC 8 hyperlink escape
+        (clickable in capable terminals) and the blue underline mirrors the
+        look Rich gives auto-detected URLs elsewhere in brockit.
+        """
+        return Text(url, style=f'underline blue link {url}')
+
+    @staticmethod
+    def _dim_cell(renderable: str | Text, dim: bool) -> str | Text:
+        """Dims a non-state cell for finished, non-successful rows.
+
+        Returns the renderable untouched when `dim` is False. Otherwise wraps
+        it in Rich's `dim` style (preserving any existing style, such as the
+        Build column's hyperlink) so the whole row reads as muted -- except the
+        State cell, which the caller leaves coloured so the outcome stands out.
+        """
+        if not dim:
+            return renderable
+        text = renderable if isinstance(renderable, Text) else Text(
+            str(renderable))
+        text.stylize('dim')
+        return text
+
+    def _render_table(self, version: Version, base_url: str,
+                      jobs: list[_WatchedJob]) -> Table:
+        """Builds the per-pipeline progress table rendered in place by Live."""
+        table = Table(title=f'Rust toolchain · Chromium {version}',
+                      title_justify='left',
+                      box=_WATCH_TABLE_BOX,
+                      show_edge=False,
+                      expand=True)
+        table.add_column('Bot', no_wrap=True)
+        table.add_column('State', no_wrap=True)
+        table.add_column('Stage', no_wrap=True)
+        table.add_column('Elapsed', justify='right', no_wrap=True)
+        table.add_column('Build', overflow='fold')
+        for job in jobs:
+            # A job that has finished as anything other than SUCCESS is dimmed
+            # across the row, except its State cell, which keeps its colour so
+            # the failure still stands out.
+            dim = job.is_terminal and job.state != 'SUCCESS'
+            table.add_row(
+                self._dim_cell(job.bot, dim), self._state_cell(job.state),
+                self._dim_cell(job.stage or '—', dim),
+                self._dim_cell(self._elapsed_cell(job), dim),
+                self._dim_cell(self._link_cell(job.link(base_url)), dim))
+        return table
+
+    def _watch(self, session: requests.Session, base_url: str,
+               version: Version, jobs: list[_WatchedJob]) -> None:
+        """Polls the triggered pipelines, updating an in-place table until all
+        finish or the user interrupts with Ctrl+C (which detaches and leaves
+        the builds running).
+        """
+        terminal.log_task('Watching pipelines — press [bold cyan]Ctrl+C[/] to '
+                          'stop watching (builds keep running).')
+        # Resolve each pipeline's display name once up front so the Bot column
+        # shows it from the very first render.
+        for job in jobs:
+            self._resolve_display_name(session, base_url, job)
+        try:
+            # The throbber on RUNNING rows animates off the Live's own refresh
+            # (~12.5fps matches the `dots` spinner cadence); the data itself is
+            # only re-polled every WATCH_POLL_INTERVAL_SECONDS.
+            with Live(self._render_table(version, base_url, jobs),
+                      console=console,
+                      refresh_per_second=12.5) as live:
+                while True:
+                    for job in jobs:
+                        self._poll_job(session, job)
+                    live.update(self._render_table(version, base_url, jobs))
+                    if all(job.is_terminal for job in jobs):
+                        break
+                    time.sleep(WATCH_POLL_INTERVAL_SECONDS)
+        except KeyboardInterrupt:
+            # Detach cleanly: the builds keep running on CI.
+            console.log('[yellow]Stopped watching. Builds continue on CI:[/]')
+            for job in jobs:
+                console.log(Padding(f'{job.bot}: {job.link(base_url)}',
+                                    (0, 4)))
+
+
 def fetch_chromium_dash_version(channel: str) -> Version:
     """Fetches the highest latest version across all platforms for a channel.
 
@@ -2682,6 +3185,25 @@ def main():
         f'{CHROMIUM_MAC_SDK_GNI}.',
         dest='culprit')
 
+    gen_rust_parser = subparsers.add_parser(
+        'gen-rust-toolchain',
+        parents=[global_parser],
+        formatter_class=argparse.RawTextHelpFormatter,
+        help='Triggers the Rust/WASM toolchain Jenkins pipelines for a '
+        'Chromium tag. Requires credentials in ~/.jenkins.json.')
+    gen_rust_parser.add_argument(
+        'tag',
+        help=('The Chromium version to build the toolchain for (e.g.\n'
+              '150.0.7850.1), or one of the @latest-* labels accepted by\n'
+              '`lift --to` (e.g. @latest-canary, @latest-m150,\n'
+              '@latest-for-branch, @latest-tag).'))
+    gen_rust_parser.add_argument(
+        '--watch',
+        action='store_true',
+        help='After triggering, show a live-updating table of each '
+        "pipeline's\nstage and status until all finish. Press Ctrl+C to stop "
+        'watching;\nthe builds keep running.')
+
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')
     args = parser.parse_args()
@@ -2741,6 +3263,14 @@ def main():
             Reassign().run(change=args.change)
         if args.command == 'update-xcode-toolchain':
             UpdateXcodeToolchain().run(url=args.url, culprit=args.culprit)
+        if args.command == 'gen-rust-toolchain':
+            task = GenRustToolchain()
+            if args.watch:
+                # `--watch` provdes live updates, therefore it doesn't use the
+                # spinner provided by `Task.run`.
+                task.run_watching(tag=args.tag)
+            else:
+                task.run(tag=args.tag)
         if args.command == 'reference':
             console.print(Markdown(__doc__))
         if args.command == 'show':
