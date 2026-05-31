@@ -1570,7 +1570,8 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
                         TopInsetProvider.class,
-                        StartupMetricsTracker.class));
+                        StartupMetricsTracker.class,
+                        BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ntp/NewTabPageCoordinator",
@@ -1589,7 +1590,8 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         boolean.class,
                         Supplier.class,
-                        HomeSurfaceTracker.class));
+                        HomeSurfaceTracker.class,
+                        BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ntp/IncognitoNewTabPage",
