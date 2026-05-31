@@ -57,9 +57,8 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
 }
 
 void BraveSyncServiceImpl::OnOsCryptAsyncReady(
-    os_crypt_async::Encryptor encryptor) {
-  encryptor_ =
-      std::make_unique<os_crypt_async::Encryptor>(std::move(encryptor));
+    scoped_refptr<os_crypt_async::Encryptor> encryptor) {
+  encryptor_ = std::move(encryptor);
 
   brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService());
   brave_sync_prefs_change_registrar_.Add(
@@ -97,15 +96,14 @@ bool BraveSyncServiceImpl::has_encryptor() const {
   return encryptor_ != nullptr;
 }
 
-std::unique_ptr<os_crypt_async::Encryptor>
+scoped_refptr<os_crypt_async::Encryptor>
 BraveSyncServiceImpl::SetEncryptorForTesting(
-    os_crypt_async::Encryptor encryptor_for_tests) {
+    scoped_refptr<os_crypt_async::Encryptor> encryptor_for_tests) {
   CHECK_IS_TEST();
-  std::unique_ptr<os_crypt_async::Encryptor> old_encryptor =
+  scoped_refptr<os_crypt_async::Encryptor> old_encryptor =
       std::move(encryptor_);
 
-  encryptor_ = std::make_unique<os_crypt_async::Encryptor>(
-      std::move(encryptor_for_tests));
+  encryptor_ = std::move(encryptor_for_tests);
 
   return old_encryptor;
 }

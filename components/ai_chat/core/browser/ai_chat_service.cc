@@ -444,7 +444,8 @@ void AIChatService::MaybeInitStorage() {
   OnStateChanged();
 }
 
-void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor) {
+void AIChatService::OnOsCryptAsyncReady(
+    scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   CHECK(features::IsAIChatHistoryEnabled());
   // Pref might have changed since we started this process
   if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
