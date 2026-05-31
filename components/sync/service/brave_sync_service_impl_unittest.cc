@@ -303,8 +303,9 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   std::string wrong_seed = "123";
   std::string encrypted_wrong_seed;
   os_crypt_async_->GetInstance(base::BindLambdaForTesting(
-      [&wrong_seed, &encrypted_wrong_seed](os_crypt_async::Encryptor e) {
-        EXPECT_TRUE(e.EncryptString(wrong_seed, &encrypted_wrong_seed));
+      [&wrong_seed,
+       &encrypted_wrong_seed](scoped_refptr<os_crypt_async::Encryptor> e) {
+        EXPECT_TRUE(e->EncryptString(wrong_seed, &encrypted_wrong_seed));
       }));
 
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
@@ -473,12 +474,12 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
 
   // Valid encrypted data but for a different key (e.g. key rotation or data
   // from another machine) must fail decryption.
-  std::unique_ptr<os_crypt_async::Encryptor> original_encryptor =
+  scoped_refptr<os_crypt_async::Encryptor> original_encryptor =
       brave_sync_service_impl()->SetEncryptorForTesting(
           os_crypt_async::GetTestEncryptorForTesting());
   ASSERT_TRUE(brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode));
   brave_sync_service_impl()->SetEncryptorForTesting(
-      std::move(*original_encryptor));
+      std::move(original_encryptor));
 
   EXPECT_FALSE(brave_sync_service_impl()->GetSeed().has_value());
   EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),

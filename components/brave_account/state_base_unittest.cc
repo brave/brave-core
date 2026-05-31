@@ -61,8 +61,7 @@ class StateBaseTest : public testing::Test {
   void SetUp() override {
     prefs::RegisterPrefs(pref_service_.registry());
     account_state_prefs_ = std::make_unique<AccountStatePrefs>(pref_service_);
-    encryptor_ = std::make_unique<os_crypt_async::Encryptor>(
-        os_crypt_async::GetTestEncryptorForTesting());
+    encryptor_ = os_crypt_async::GetTestEncryptorForTesting();
     state_ = std::make_unique<TestState>(
         *account_state_prefs_, test_url_loader_factory_.GetSafeWeakWrapper(),
         *encryptor_, base::DoNothing());
@@ -72,7 +71,7 @@ class StateBaseTest : public testing::Test {
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<AccountStatePrefs> account_state_prefs_;
   network::TestURLLoaderFactory test_url_loader_factory_;
-  std::unique_ptr<os_crypt_async::Encryptor> encryptor_;
+  scoped_refptr<os_crypt_async::Encryptor> encryptor_;
   std::unique_ptr<TestState> state_;
 };
 

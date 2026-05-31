@@ -50,7 +50,7 @@ base::OneShotTimer* BraveAccountService::AuthValidateTimerForTesting() {
 }
 
 void BraveAccountService::FinishInitialization(
-    os_crypt_async::Encryptor encryptor) {
+    scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   encryptor_ = std::move(encryptor);
 
   EnsureState(account_state_prefs_.GetAccountState()->which());
