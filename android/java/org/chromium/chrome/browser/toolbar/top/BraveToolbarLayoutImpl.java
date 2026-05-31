@@ -123,6 +123,7 @@ import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.ViewUtils;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.interpolators.Interpolators;
 import org.chromium.ui.resources.dynamics.ViewResourceAdapter;
 import org.chromium.ui.util.ColorUtils;
@@ -1592,7 +1593,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Nullable SigninButtonCoordinator signinButtonCoordinator,
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
-            @Nullable Supplier<Integer> incognitoWindowCountSupplier) {
+            @Nullable Supplier<Integer> incognitoWindowCountSupplier,
+            WindowAndroid windowAndroid) {
         super.initialize(
                 toolbarDataProvider,
                 tabController,
@@ -1609,7 +1611,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 signinButtonCoordinator,
                 themeColorProvider,
                 incognitoStateProvider,
-                incognitoWindowCountSupplier);
+                incognitoWindowCountSupplier,
+                windowAndroid);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
                 isMenuButtonOnBottomControls() || isMenuOnBottomWithBottomAddressBar());
