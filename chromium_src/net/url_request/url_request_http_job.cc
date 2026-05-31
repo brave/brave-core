@@ -11,9 +11,10 @@ namespace net {
 
 namespace brave {
 
-// A helper class to defeat fingerprinting by scripts that relies on the
-// position of the Accept-Language header relative to the UA Agent.
-// See https://github.com/brave/brave-browser/issues/55271.
+// The Accept-Language header position is different when farbling is "off" vs
+// when farbling is "on". This class helps to keep the position same to remove
+// farbling detection by sites.
+// See https://github.com/brave/brave-browser/issues/55271 for more details.
 class BraveAcceptLanguageHttpHeaderReposition {
  public:
   explicit BraveAcceptLanguageHttpHeaderReposition(
@@ -22,9 +23,9 @@ class BraveAcceptLanguageHttpHeaderReposition {
     auto modified_language_value =
         headers.GetHeader(HttpRequestHeaders::kAcceptLanguage);
     if (modified_language_value.has_value()) {
-      // We remove the header first from the underlying std::vector.
+      // We remove the header first from the underlying vector.
       headers.RemoveHeader(HttpRequestHeaders::kAcceptLanguage);
-      // We now put the header back at the end.
+      // This will put the header at the end.
       headers.SetHeader(HttpRequestHeaders::kAcceptLanguage,
                         modified_language_value.value());
     }
