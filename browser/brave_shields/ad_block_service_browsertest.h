@@ -54,7 +54,7 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void UpdateAdBlockInstanceWithRules(const std::string& rules);
   void EnableDeveloperMode(bool enabled);
   void UpdateCustomAdBlockInstanceWithRules(const std::string& rules);
-  void AssertTagExists(const std::string& tag, bool expected_exists) const;
+  void AssertFilterListEnabled(const std::string& uuid, bool expected_enabled);
   void InitEmbeddedTestServer();
   base::FilePath GetTestDataDir();
   void NavigateToURL(const GURL& url);
@@ -65,6 +65,9 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void InstallDefaultAdBlockComponent();
   void InstallRegionalAdBlockComponent(const std::string& uuid,
                                        bool enable_list = true);
+  void InstallSocialMediaAdBlockComponent(const std::string& uuid);
+  void UpdateSocialMediaListWithRules(const std::string& uuid,
+                                      const std::string& rules);
   void SetSubscriptionIntervals();
   void ShieldsDown(const GURL& url);
   void DisableAggressiveMode();

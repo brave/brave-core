@@ -114,6 +114,73 @@ constexpr char kRegionalAdBlockComponentTest64PublicKey[] =
     "ieMF3JB9CZPr+qDKIap+RZUfsraV47QebRi/JA17nbDMlXOmK7mILfFU7Jhjx04F"
     "LwIDAQAB";
 
+struct SocialMediaFilterListMetadata {
+  const char* component_id;
+  const char* base64_public_key;
+};
+
+constexpr SocialMediaFilterListMetadata kFacebookEmbedsListMetadata = {
+    .component_id = "jmfhneobcdckobmonkfjkbknnjjnegoh",
+    .base64_public_key =
+        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0zuiHebZ7KOlcYxLb6eY"
+        "LJQ0vi5LA+IpPggyIL05wy8jK8BHWJmusm8mwGZotXSxA1Wr5z45Nsiw39kY+JuEx"
+        "ZqaQ1ysk2Gng+8qq36YcYo9HkmUPkJ5RO5xf/uVNK6Dh3B8tCuYGVph8NsTYS6wo"
+        "IgsST+qQysK1PeQDYzEisyhULZWL9ox5axJL3DJrsu+EKAGu1LcQpsSGF03V7HQP"
+        "VOeo/W0wBYNAah5YT/gdXykXpV7CO2SdFDhtiPuzzVlkACWnBYSsQr983H25WRMd"
+        "TexhMJiLrLOaBRnXia5XzQ/4XtKFuakEq5QqmVF0yo/FYcl3hoHPFIq8NGFGuCth"
+        "QIDAQAB",
+};
+
+constexpr SocialMediaFilterListMetadata kTwitterEmbedsListMetadata = {
+    .component_id = "dkpggglmbjhgjhachikgmohmecomjndo",
+    .base64_public_key =
+        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA12jyY9RXzkqxGRJc/VP"
+        "squb2MsRFv5fJPNQSuoPYAWzJ3PntVqLDgM9iVuHD7dx7qx84160CG9BXmExFtyW"
+        "0Qv/5Rqg6QOpqquxXvHu1LpWiFrU5uZzsW3c3q7PTn8iQ464uHitPVWEh18jT1Joh"
+        "/uAuGCzgr79eJ80VafzLZXEAjBV76F7GXV23BjThjhW8A0BXPffZK9oW4mhSX+bY"
+        "NMgh76J2/uIMd8btq65XiXp9JIjEGF6aukd1Uc+nYBvrbGCYs59xkzcQpVW2Wy3y/"
+        "NOc7LMCu0jerF1tK14tav9dDwcCIdJzNcQ+sd4msH7Fz8HlYjUKcvAreNM5fhCoQI"
+        "DAQAB",
+};
+
+constexpr SocialMediaFilterListMetadata kLinkedInEmbedsListMetadata = {
+    .component_id = "omagkbhjmgdelnpnlllbjolojcibnifj",
+    .base64_public_key =
+        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArjI+6jFmXNYpfhDrqUGb"
+        "LWYfAyXwPUFQXXeG4JRQ7nEcZuKF6tEe8moGGS8lDkxZhk/IOxtu243YW8zIgnbHN"
+        "47W9DknsB9djtQUfg3xT99iEOYCvfkh65EgLyVv3eagUvX8jLBpll/Wiumjxjo+r"
+        "Vdv90M46doS0xJpigjZn5jUVsCPKWaaRp2Gq43bSfPLQpR/0bMjU61C7lj0CXDEz"
+        "k1OUlpeskbFxbtkNnywcVmAfKowqogDistnMazMldJrK5c1gnfj1Cl4whrZ9MWOA"
+        "UTU32P4ET5ClE97BP27G/1IT9qexowT/JS5mVsReodp3wSVdyHoAIZ9cNtjkJ4xV"
+        "QIDAQAB",
+};
+
+const SocialMediaFilterListMetadata* GetSocialMediaFilterListMetadata(
+    const std::string& uuid) {
+  if (uuid == brave_shields::kFacebookEmbedsListUuid) {
+    return &kFacebookEmbedsListMetadata;
+  }
+  if (uuid == brave_shields::kTwitterEmbedsListUuid) {
+    return &kTwitterEmbedsListMetadata;
+  }
+  if (uuid == brave_shields::kLinkedInEmbedsListUuid) {
+    return &kLinkedInEmbedsListMetadata;
+  }
+  return nullptr;
+}
+
+brave_shields::FilterListCatalogEntry MakeSocialMediaCatalogEntry(
+    const std::string& uuid) {
+  const SocialMediaFilterListMetadata* metadata =
+      GetSocialMediaFilterListMetadata(uuid);
+  CHECK(metadata);
+  return brave_shields::FilterListCatalogEntry(uuid, {}, {}, {}, {}, {},
+                                               /*hidden=*/true, false,
+                                               /*first_party_protections=*/true,
+                                               0, {}, metadata->component_id,
+                                               metadata->base64_public_key);
+}
+
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
@@ -317,19 +384,10 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
   observer.WaitForAdditional();
 }
 
-void AdBlockServiceTest::AssertTagExists(const std::string& tag,
-                                         bool expected_exists) const {
-  base::test::TestFuture<bool> future;
-  g_brave_browser_process->ad_block_service()
-      ->AsyncCallAndReplyWithResult<bool>(
-          base::BindLambdaForTesting(
-              [tag](brave_shields::AdBlockEngineWrapper* wrapper) {
-                return wrapper->TagExists(tag);
-              }),
-
-          future.GetCallback());
-  ASSERT_TRUE(future.Wait());
-  ASSERT_EQ(future.Get(), expected_exists);
+void AdBlockServiceTest::AssertFilterListEnabled(const std::string& uuid,
+                                                 bool expected_enabled) {
+  ASSERT_EQ(component_service_manager()->IsFilterListEnabled(uuid),
+            expected_enabled);
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
@@ -400,6 +458,32 @@ void AdBlockServiceTest::InstallRegionalAdBlockComponent(
       kRegionalAdBlockComponentTest64PublicKey);
 
   InstallComponent(catalog_entry);
+}
+
+void AdBlockServiceTest::InstallSocialMediaAdBlockComponent(
+    const std::string& uuid) {
+  auto catalog_entry = MakeSocialMediaCatalogEntry(uuid);
+  InstallComponent(catalog_entry);
+}
+
+void AdBlockServiceTest::UpdateSocialMediaListWithRules(
+    const std::string& uuid,
+    const std::string& rules) {
+  auto component_path = MakeFileInTempDir("list.txt", rules);
+
+  brave_shields::AdBlockService* service =
+      g_brave_browser_process->ad_block_service();
+
+  auto& component_providers =
+      component_service_manager()->component_filters_providers();
+
+  auto provider_it = component_providers.find(uuid);
+  ASSERT_NE(provider_it, component_providers.end())
+      << "Social media list must be installed and enabled: " << uuid;
+  provider_it->second->OnComponentReady(component_path);
+
+  brave_shields::AdBlockServiceTestObserver observer(service);
+  observer.WaitForDefault();
 }
 
 void AdBlockServiceTest::SetSubscriptionIntervals() {
@@ -1403,32 +1487,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-// Tags for social buttons work
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
-  UpdateAdBlockInstanceWithRules(
-      base::StrCat({"||example.com^$tag=", brave_shields::kFacebookEmbeds}));
-  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
-  g_brave_browser_process->ad_block_service()->EnableTag(
-      brave_shields::kFacebookEmbeds, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  GURL resource_url =
-      embedded_test_server()->GetURL("example.com", "/logo.png");
-  NavigateToURL(tab_url);
-  content::WebContents* contents = web_contents();
-  ASSERT_EQ(true,
-            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
-                                                "addImage($1)",
-                                                resource_url.spec())));
-  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
-}
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       SocialMediaListDoesntBlocksWhenEnabled) {
+  UpdateAdBlockInstanceWithRules("||example.com");
 
-// Lack of tags for social buttons work
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
-  UpdateAdBlockInstanceWithRules("||example.com^$tag=sup");
+  InstallSocialMediaAdBlockComponent(brave_shields::kFacebookEmbedsListUuid);
+  UpdateSocialMediaListWithRules(brave_shields::kFacebookEmbedsListUuid,
+                                 "@@||example.com^");
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, true);
+
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
-  g_brave_browser_process->ad_block_service()->EnableTag(
-      brave_shields::kFacebookEmbeds, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   GURL resource_url =
       embedded_test_server()->GetURL("example.com", "/logo.png");
   NavigateToURL(tab_url);
@@ -1440,63 +1508,80 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Tags are preserved after resetting
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
-  g_brave_browser_process->ad_block_service()->EnableTag(
-      brave_shields::kFacebookEmbeds, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  UpdateAdBlockInstanceWithRules("");
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-}
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialMediaListBlocksWhenDisabled) {
+  UpdateAdBlockInstanceWithRules("||example.com");
 
-// Setting prefs sets the right tags
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
-  // Default tags exist on startup
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
-
-  // Toggling prefs once is reflected in the adblock client.
-  local_state()->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType,
-                            true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+  InstallSocialMediaAdBlockComponent(brave_shields::kFacebookEmbedsListUuid);
+  UpdateSocialMediaListWithRules(brave_shields::kFacebookEmbedsListUuid,
+                                 "@@||example.com^");
 
   local_state()->SetBoolean(brave_shields::prefs::kFBEmbedControlType, false);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, false);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  GURL resource_url =
+      embedded_test_server()->GetURL("example.com", "/logo.png");
+  NavigateToURL(tab_url);
+  content::WebContents* contents = web_contents();
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
+                                                "addImage($1)",
+                                                resource_url.spec())));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       ResetPreservesSocialMediaListEnablement) {
+  UpdateAdBlockInstanceWithRules("||example.com");
+  InstallSocialMediaAdBlockComponent(brave_shields::kFacebookEmbedsListUuid);
+  UpdateSocialMediaListWithRules(brave_shields::kFacebookEmbedsListUuid,
+                                 "@@||example.com^");
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, true);
+  UpdateAdBlockInstanceWithRules("");
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, true);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialMediaPrefsControlFilterLists) {
+  InstallSocialMediaAdBlockComponent(brave_shields::kFacebookEmbedsListUuid);
+  InstallSocialMediaAdBlockComponent(brave_shields::kTwitterEmbedsListUuid);
+  InstallSocialMediaAdBlockComponent(brave_shields::kLinkedInEmbedsListUuid);
+
+  // Default filter list states on startup.
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kTwitterEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kLinkedInEmbedsListUuid, false);
+
+  local_state()->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType,
+                            true);
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kTwitterEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kLinkedInEmbedsListUuid, true);
+
+  local_state()->SetBoolean(brave_shields::prefs::kFBEmbedControlType, false);
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, false);
+  AssertFilterListEnabled(brave_shields::kTwitterEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kLinkedInEmbedsListUuid, true);
 
   local_state()->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType,
                             false);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, false);
-  AssertTagExists(brave_shields::kTwitterEmbeds, false);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, false);
+  AssertFilterListEnabled(brave_shields::kTwitterEmbedsListUuid, false);
+  AssertFilterListEnabled(brave_shields::kLinkedInEmbedsListUuid, true);
 
-  // Toggling prefs back is reflected in the adblock client.
   local_state()->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType,
                             false);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, false);
-  AssertTagExists(brave_shields::kTwitterEmbeds, false);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, false);
+  AssertFilterListEnabled(brave_shields::kTwitterEmbedsListUuid, false);
+  AssertFilterListEnabled(brave_shields::kLinkedInEmbedsListUuid, false);
 
   local_state()->SetBoolean(brave_shields::prefs::kFBEmbedControlType, true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, false);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kTwitterEmbedsListUuid, false);
+  AssertFilterListEnabled(brave_shields::kLinkedInEmbedsListUuid, false);
 
   local_state()->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType,
                             true);
-  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
-  AssertTagExists(brave_shields::kFacebookEmbeds, true);
-  AssertTagExists(brave_shields::kTwitterEmbeds, true);
-  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+  AssertFilterListEnabled(brave_shields::kFacebookEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kTwitterEmbedsListUuid, true);
+  AssertFilterListEnabled(brave_shields::kLinkedInEmbedsListUuid, false);
 }
 
 // Load a page with a blocked image, and make sure it is collapsed.

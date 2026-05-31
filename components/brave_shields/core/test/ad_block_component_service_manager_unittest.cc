@@ -314,4 +314,53 @@ TEST_F(AdBlockComponentServiceManagerAdblockOnlyModeTest,
   EXPECT_TRUE(manager_->IsFilterListEnabled(kCookieListUuid));
 }
 
+class AdBlockComponentServiceManagerSocialMediaBlockingTest
+    : public testing::Test {
+ public:
+  void SetUp() override {
+    RegisterPrefsForAdBlockService(local_state_.registry());
+    list_p3a_ = std::make_unique<AdBlockListP3A>(&local_state_);
+    catalog_provider_ =
+        std::make_unique<AdBlockFilterListCatalogProvider>(nullptr);
+    manager_ = std::make_unique<AdBlockComponentServiceManager>(
+        &local_state_, /*filters_provider_manager=*/nullptr, "en-US",
+        /*cus=*/nullptr, catalog_provider_.get(), list_p3a_.get());
+    manager_->SetFilterListCatalog({MakeCatalogEntry(kFacebookEmbedsListUuid),
+                                    MakeCatalogEntry(kTwitterEmbedsListUuid),
+                                    MakeCatalogEntry(kLinkedInEmbedsListUuid)});
+  }
+
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  base::test::ScopedFeatureList feature_list_;
+  TestingPrefServiceSimple local_state_;
+  std::unique_ptr<AdBlockListP3A> list_p3a_;
+  std::unique_ptr<AdBlockFilterListCatalogProvider> catalog_provider_;
+  std::unique_ptr<AdBlockComponentServiceManager> manager_;
+};
+
+TEST_F(AdBlockComponentServiceManagerSocialMediaBlockingTest,
+       SocialMediaBlockingListsFollowLegacyPrefs) {
+  local_state_.SetBoolean(prefs::kFBEmbedControlType, true);
+  local_state_.SetBoolean(prefs::kTwitterEmbedControlType, true);
+  local_state_.SetBoolean(prefs::kLinkedInEmbedControlType, true);
+
+  EXPECT_TRUE(manager_->IsFilterListEnabled(kFacebookEmbedsListUuid));
+  EXPECT_TRUE(manager_->IsFilterListEnabled(kTwitterEmbedsListUuid));
+  EXPECT_TRUE(manager_->IsFilterListEnabled(kLinkedInEmbedsListUuid));
+}
+
+TEST_F(AdBlockComponentServiceManagerSocialMediaBlockingTest,
+       SocialMediaBlockingListsUseLegacyPrefsWhenABOMEnabled) {
+  feature_list_.InitAndEnableFeature(features::kAdblockOnlyMode);
+  local_state_.SetBoolean(prefs::kAdBlockOnlyModeEnabled, true);
+  local_state_.SetBoolean(prefs::kFBEmbedControlType, true);
+  local_state_.SetBoolean(prefs::kTwitterEmbedControlType, true);
+  local_state_.SetBoolean(prefs::kLinkedInEmbedControlType, true);
+
+  EXPECT_FALSE(manager_->IsFilterListEnabled(kFacebookEmbedsListUuid));
+  EXPECT_FALSE(manager_->IsFilterListEnabled(kTwitterEmbedsListUuid));
+  EXPECT_FALSE(manager_->IsFilterListEnabled(kLinkedInEmbedsListUuid));
+}
+
 }  // namespace brave_shields
