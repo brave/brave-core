@@ -89,7 +89,7 @@ bool IsAIChatDetailedPageContentExtractionEnabled() {
 }
 
 BASE_FEATURE(kAIChatGlobalSidePanelEverywhere,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAIChatGlobalSidePanelEverywhereEnabled() {
   return base::FeatureList::IsEnabled(

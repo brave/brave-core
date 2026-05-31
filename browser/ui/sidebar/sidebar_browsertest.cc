@@ -1660,17 +1660,26 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 
-class SidebarBrowserTestWithAIChat : public SidebarBrowserTest {
+// Fixture for the tab-scoped (non-global) AI Chat sidebar panel. The
+// TabSpecific tests below rely on the AI Chat sidebar item being a tab-specific
+// entry, which only happens when kAIChatGlobalSidePanelEverywhere is disabled —
+// with the global side panel feature on, AI Chat is registered as a global
+// entry.
+class SidebarBrowserTestWithTabSpecificAIChat : public SidebarBrowserTest {
  public:
-  SidebarBrowserTestWithAIChat() {
-    feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
+  SidebarBrowserTestWithTabSpecificAIChat() {
+    feature_list_.InitWithFeatures(
+        /*enabled_features=*/{ai_chat::features::kAIChat},
+        /*disabled_features=*/
+        {ai_chat::features::kAIChatGlobalSidePanelEverywhere});
   }
-  ~SidebarBrowserTestWithAIChat() override = default;
+  ~SidebarBrowserTestWithTabSpecificAIChat() override = default;
 
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithTabSpecificAIChat,
+                       TabSpecificPanel) {
   // Collect item indexes for test
   constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;
   constexpr auto kTabSpecificItemType = SidebarItem::BuiltInItemType::kChatUI;
@@ -1724,7 +1733,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   EXPECT_EQ(model()->active_index(), global_item_index);
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithTabSpecificAIChat,
                        TabSpecificPanelAndUnManagedPanel) {
   // Collect item indexes for test and remove global item.
   constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;
@@ -1798,7 +1807,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
             browser2_model->GetIndexOf(SidebarItem::BuiltInItemType::kChatUI));
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithTabSpecificAIChat,
                        TabSpecificPanelIdxChange) {
   // Collect item indexes for test
   constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;

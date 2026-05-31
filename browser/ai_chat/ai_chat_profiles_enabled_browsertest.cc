@@ -6,9 +6,11 @@
 #include <algorithm>
 
 #include "base/notreached.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -63,7 +65,13 @@ class AIChatProfilesEnabledTest
     : public InProcessBrowserTest,
       public ::testing::WithParamInterface<ProfileType> {
  public:
-  AIChatProfilesEnabledTest() = default;
+  AIChatProfilesEnabledTest() {
+    // Disable the global side panel feature so the AI Chat side panel entry
+    // is registered on the tab's SidePanelRegistry (the non-global path) for
+    // TabSidePanelRegistry below.
+    scoped_feature_list_.InitAndDisableFeature(
+        ai_chat::features::kAIChatGlobalSidePanelEverywhere);
+  }
   ~AIChatProfilesEnabledTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -101,6 +109,9 @@ class AIChatProfilesEnabledTest
 
  protected:
   raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidebarCheck) {
@@ -152,7 +163,10 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, ContextMenu) {
   }
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidePanelRegistry) {
+// Verifies the tab-scoped (non-global) SidePanelRegistry has the AI Chat entry.
+// The fixture disables kAIChatGlobalSidePanelEverywhere so the entry is
+// registered per-tab rather than as a browser-global entry.
+IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, TabSidePanelRegistry) {
   auto* registry = SidePanelRegistry::From(browser_->GetActiveTabInterface());
   ASSERT_TRUE(registry);
   auto* entry = registry->GetEntryForKey(

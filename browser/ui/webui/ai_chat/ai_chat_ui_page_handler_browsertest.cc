@@ -651,13 +651,31 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
       << "New conversation on chrome:// page should have no associated content";
 }
 
-// Subclass of AIChatUIPageHandlerBrowserTest that disables
-// kPageContextEnabledInitially, to verify content is not attached when the flag
-// is off. Inherits the HTTPS server and cert verifier setup.
-class AIChatUIPageHandlerPageContextDisabledBrowserTest
+// Subclass of AIChatUIPageHandlerBrowserTest that disables the global side
+// panel feature so the page handler uses the tab-associated (non-global) path
+// — i.e. conversations_are_content_associated_ is true and
+// BindRelatedConversation/NewConversation reuse the tab's content_id-bound
+// conversation via GetOrCreateConversationHandlerForContent.
+class AIChatUIPageHandlerTabPanelBrowserTest
     : public AIChatUIPageHandlerBrowserTest {
  public:
-  AIChatUIPageHandlerPageContextDisabledBrowserTest() {
+  AIChatUIPageHandlerTabPanelBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        ai_chat::features::kAIChatGlobalSidePanelEverywhere);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Subclass of AIChatUIPageHandlerTabPanelBrowserTest that additionally disables
+// kPageContextEnabledInitially, to verify content is not attached when the
+// flag is off (in the tab-scoped, non-global side panel path). Inherits the
+// HTTPS server and cert verifier setup.
+class AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest
+    : public AIChatUIPageHandlerTabPanelBrowserTest {
+ public:
+  AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest() {
     scoped_feature_list_.InitAndDisableFeature(
         ai_chat::features::kPageContextEnabledInitially);
   }
@@ -679,10 +697,10 @@ class AIChatUIPageHandlerPageContextDisabledBrowserTest
 
 // Regression test: when the page context menu fires Leo, the menu code calls
 // AIChatService::GetOrCreateConversationHandlerForContent(content_id, ...) and
-// SubmitSelectedText() *before* the side panel opens. The side panel must then
-// bind to that same conversation, otherwise the user sees an empty side panel
-// and the submitted message appears to have been dropped.
-IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
+// SubmitSelectedText() *before* the side panel opens. The tab-scoped side
+// panel must then bind to that same conversation, otherwise the user sees an
+// empty side panel and the submitted message appears to have been dropped.
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerTabPanelBrowserTest,
                        BindRelatedConversation_PicksUpExistingTabConversation) {
   OpenNewTab();
   auto* tab_contents = web_contents();
@@ -724,7 +742,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(
-    AIChatUIPageHandlerPageContextDisabledBrowserTest,
+    AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest,
     BindRelatedConversation_DoesNotAddContentWhenFlagDisabled) {
   // OpenNewTab navigates to an HTTPS URL, so CanAssociateContent would normally
   // pass — the flag check is the only thing preventing content from attaching.
@@ -757,7 +775,7 @@ IN_PROC_BROWSER_TEST_F(
 // MaybeAssociateContent, so this guards against any future change that might
 // add content unconditionally.
 IN_PROC_BROWSER_TEST_F(
-    AIChatUIPageHandlerPageContextDisabledBrowserTest,
+    AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest,
     BindRelatedConversation_CachedConversationStaysUnattachedWhenFlagDisabled) {
   OpenNewTab();
   auto* tab_contents = web_contents();
