@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("safe_browsing") {
+  visibility = [
+    "//brave/test:*",
+    "//chrome/browser",
+  ]
+
+  sources = [
+    "brave_generated_safe_browsing_pref.cc",
+    "brave_generated_safe_browsing_pref.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/safebrowsing",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/safe_browsing",
+    "//chrome/common/extensions/api",
+    "//components/prefs",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
+  ]
+}
