@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_H_
-#define BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_H_
+#ifndef BRAVE_BROWSER_PRINT_PREVIEW_EXTRACTION_PRINT_PREVIEW_EXTRACTOR_H_
+#define BRAVE_BROWSER_PRINT_PREVIEW_EXTRACTION_PRINT_PREVIEW_EXTRACTOR_H_
 
 #include <cstdint>
 #include <memory>
@@ -65,4 +65,4 @@ class PrintPreviewExtractor
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_H_
+#endif  // BRAVE_BROWSER_PRINT_PREVIEW_EXTRACTION_PRINT_PREVIEW_EXTRACTOR_H_

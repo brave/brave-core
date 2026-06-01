@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/print_preview_extractor.h"
+#include "brave/browser/print_preview_extraction/print_preview_extractor.h"
 
 #include <memory>
 #include <utility>
@@ -17,7 +17,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
-#include "brave/browser/ai_chat/print_preview_extractor_internal.h"
+#include "brave/browser/print_preview_extraction/print_preview_extractor_internal.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"

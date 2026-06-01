@@ -80,15 +80,9 @@
 #include "brave/browser/new_tab/background_color_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ai_chat/print_preview_extractor.h"
-#include "brave/browser/ai_chat/print_preview_extractor_internal.h"
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW) && BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/print_preview_extraction/print_preview_extractor_factory.h"
 #endif
-
-#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
-#endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/brave_drm_tab_helper.h"
@@ -161,31 +155,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     ai_chat::AIChatTabHelper::CreateForWebContents(
         web_contents,
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
-        std::make_unique<ai_chat::PrintPreviewExtractor>(
-            web_contents,
-            base::BindRepeating(
-                [](content::WebContents* web_contents, bool is_pdf,
-                   ai_chat::PrintPreviewExtractor::Extractor::ImageCallback&&
-                       callback)
-                    -> std::unique_ptr<
-                        ai_chat::PrintPreviewExtractor::Extractor> {
-                  return std::make_unique<
-                      ai_chat::PrintPreviewExtractorInternal>(
-                      web_contents,
-                      Profile::FromBrowserContext(
-                          web_contents->GetBrowserContext()),
-                      is_pdf, std::move(callback),
-                      base::BindRepeating(
-                          []() -> base::IDMap<
-                                   printing::mojom::PrintPreviewUI*>& {
-                            return printing::PrintPreviewUI::
-                                GetPrintPreviewUIIdMap();
-                          }),
-                      base::BindRepeating([]() -> base::flat_map<int, int>& {
-                        return printing::PrintPreviewUI::
-                            GetPrintPreviewUIRequestIdMap();
-                      }));
-                }))
+        ai_chat::CreateDefaultPrintPreviewExtractor(web_contents)
 #else
         nullptr
 #endif
