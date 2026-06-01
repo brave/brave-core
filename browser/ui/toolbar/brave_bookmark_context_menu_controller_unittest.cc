@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_merged_surface_service_factory.h"
@@ -179,6 +180,115 @@ TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   EXPECT_FALSE(controller.IsCommandIdChecked(IDC_BRAVE_BOOKMARK_BAR_ALWAYS));
   EXPECT_TRUE(controller.IsCommandIdChecked(IDC_BRAVE_BOOKMARK_BAR_NEVER));
   EXPECT_FALSE(controller.IsCommandIdChecked(IDC_BRAVE_BOOKMARK_BAR_NTP));
+}
+
+TEST_F(BraveBookmarkContextMenuControllerTest, OverrideBookmarkAlwaysShowMenu) {
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()},
+      /*can_paste=*/false);
+
+  // Old flat Chromium item should not exist
+  EXPECT_FALSE(controller.menu_model()
+                   ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_ALWAYS_SHOW)
+                   .has_value());
+
+  // Brave submenu must exist
+  auto submenu_index = controller.menu_model()->GetIndexOfCommandId(
+      IDC_BRAVE_BOOKMARK_BAR_SUBMENU);
+  ASSERT_TRUE(submenu_index.has_value());
+
+  ui::MenuModel* submenu =
+      controller.menu_model()->GetSubmenuModelAt(submenu_index.value());
+  ASSERT_TRUE(submenu);
+
+  // Verify structure and order
+  ASSERT_EQ(submenu->GetItemCount(), 3u);
+
+  EXPECT_EQ(submenu->GetCommandIdAt(0), IDC_BRAVE_BOOKMARK_BAR_ALWAYS);
+  EXPECT_EQ(submenu->GetCommandIdAt(1), IDC_BRAVE_BOOKMARK_BAR_NEVER);
+  EXPECT_EQ(submenu->GetCommandIdAt(2), IDC_BRAVE_BOOKMARK_BAR_NTP);
+}
+
+TEST_F(BraveBookmarkContextMenuControllerTest, AddShowAllBookmarksButtonMenu) {
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()},
+      /*can_paste=*/false);
+
+  auto prefs = std::make_unique<TestingPrefServiceSimple>();
+  brave::bookmarks::prefs::RegisterProfilePrefs(prefs->registry());
+  controller.SetPrefsForTesting(prefs.get());
+
+  // Command should exist in the model
+  auto index = controller.menu_model()->GetIndexOfCommandId(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY);
+  ASSERT_TRUE(index.has_value());
+
+  // Enabled state
+  EXPECT_TRUE(controller.IsCommandIdEnabled(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  // Visibility state
+  EXPECT_FALSE(controller.IsCommandIdVisible(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  // Checked state
+  EXPECT_TRUE(controller.IsCommandIdChecked(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  controller.SetPrefsForTesting(nullptr);
+}
+
+TEST_F(BraveBookmarkContextMenuControllerTest,
+       ShowAllBookmarksButtonMenuCheckedState) {
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()},
+      /*can_paste=*/false);
+
+  auto prefs = std::make_unique<TestingPrefServiceSimple>();
+  brave::bookmarks::prefs::RegisterProfilePrefs(prefs->registry());
+  controller.SetPrefsForTesting(prefs.get());
+
+  ASSERT_TRUE(controller.IsCommandIdChecked(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  prefs->SetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton, false);
+  EXPECT_FALSE(controller.IsCommandIdChecked(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  prefs->SetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton, true);
+  EXPECT_TRUE(controller.IsCommandIdChecked(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  controller.SetPrefsForTesting(nullptr);
+}
+
+TEST_F(BraveBookmarkContextMenuControllerTest,
+       ShowAllBookmarksButtonMenuVisibilityState) {
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()},
+      /*can_paste=*/false);
+
+  EXPECT_FALSE(controller.IsCommandIdVisible(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  std::u16string title = u"xyz";
+  GURL url("https://www.xyz.com");
+
+  const BookmarkNode* node =
+      model_->AddNewURL(model_->other_node(), 0, title, url);
+
+  EXPECT_TRUE(controller.IsCommandIdVisible(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  model_->Remove(node, bookmarks::metrics::BookmarkEditSource::kOther,
+                 FROM_HERE);
+
+  EXPECT_FALSE(controller.IsCommandIdVisible(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
