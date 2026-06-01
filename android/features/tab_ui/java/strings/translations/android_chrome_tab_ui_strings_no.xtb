@@ -122,6 +122,7 @@
 <translation id="5076161749301278626">Vil du se butikkanmeldelser?</translation>
 <translation id="5161254044473106830">Du må oppgi en tittel</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave lukker automatisk inaktive faner og fanegrupper etter <ph name="AUTO_DELETE_DELAY_ONE"/> måned. Du kan endre dette i innstillingene.}other{Brave lukker automatisk inaktive faner og fanegrupper etter <ph name="AUTO_DELETE_DELAY_MANY"/> måneder. Du kan endre dette i innstillingene.}}</translation>
+<translation id="5254233580564156835">Minnebruk: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Den siste fanen du brukte</translation>
 <translation id="5380159289133845234">Arkiver duplikatfaner</translation>
 <translation id="5446043142172831860">Fjern fanen og forlat gruppen</translation>
@@ -161,11 +162,13 @@
 <translation id="6589356853295569750">Merknad om endringer i delte fanegrupper er åpnet i full høyde</translation>
 <translation id="6590332670428149473">Åpne handlingsmenyen for den delte fanegruppen <ph name="TITLE_OF_GROUP"/> med fargen <ph name="COLOR_NAME"/>.</translation>
 <translation id="6615455863669487791">Vis meg</translation>
+<translation id="6686490380836145850">Lukk fanene til høyre</translation>
 <translation id="6694634756612002311">Administrer deling</translation>
 <translation id="6709297274997495821">Velg fane</translation>
 <translation id="6744956528665271406">Endre gruppefargen</translation>
 <translation id="6784585810034073638">{TAB_COUNT,plural, =1{Legg til i gruppen <ph name="TITLE_OF_GROUP"/> med <ph name="TAB_COUNT1"/> fane}other{Legg til i gruppen <ph name="TITLE_OF_GROUP"/> med <ph name="TAB_COUNT1"/> faner}}</translation>
 <translation id="6818926723028410516">Velg elementer</translation>
+<translation id="68541483639528434">Lukk andre faner</translation>
 <translation id="6856809498882026482">Skjul flervalgsmodus</translation>
 <translation id="6957436309971790274">Etter 21 dager med inaktivitet</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{Vis den delte fanegruppen <ph name="TITLE_OF_GROUP"/> med <ph name="TABS_COUNT_ONE"/> fane og fargen <ph name="COLOR_NAME"/>.}other{Vis den delte fanegruppen <ph name="TITLE_OF_GROUP"/> med <ph name="TABS_COUNT_MANY"/> faner og fargen <ph name="COLOR_NAME"/>.}}</translation>

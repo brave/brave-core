@@ -194,20 +194,12 @@
 <translation id="6587448235155023666">Els canvis s'aplicaran la propera vegada que reiniciïs Brave</translation>
 <translation id="8701563696941209024">REINICIA ARA</translation>
 <translation id="834487290629916192">MÉS TARD</translation>
-<translation id="4117451092682672487">La privacitat. Simplificada.</translation>
-<translation id="7909375417585209817">Si Brave és el teu navegador predeterminat, tots els enllaços en què cliquis s'obriran amb les proteccions de privacitat de Brave.</translation>
 <translation id="763369711159699222">Ajuda a millorar Brave</translation>
 <translation id="8025937231644975408">Feu-nos saber quines funcions us agraden més.</translation>
-<translation id="6718362830686703942">Envia informes de diagnòstic si es produeix un bloqueig o una congelació.</translation>
-<translation id="8616157231067364693">Compartiu la informació privada i anònima de productes sobre quines funcions fan servir els usuaris de Brave.</translation>
 <translation id="2888496576732880897">Ajuda al Cercador de Brave a créixer</translation>
 <translation id="7198716519700700181">Bloqueja les interrupcions mentre veus vídeos</translation>
 <translation id="7044431516245362795">Participa en el Web Discovery Project per ajudar a l'índex a créixer i millorar els resultats de cerca. <ph name="LEARN_MORE_START"/>Més informació.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Logotip de Brave</translation>
-<translation id="1389386068457132299">Fons de benvinguda</translation>
-<translation id="5101985748360228609">Decoració de fulla superior</translation>
-<translation id="5270920361877570459">Decoració de fulla inferior</translation>
-<translation id="4021716437419160885">Desplaça't cap avall</translation>
 <translation id="4767173360729868049">Il·lustració d'ajuda al Cercador de Brave</translation>
 <translation id="8241918461631453498">Il·lustració de bloqueig d'interrupcions</translation>
 <translation id="8213310572767907663">Il·lustració per millorar Brave</translation>
@@ -223,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> i altres anuncis i rastrejadors bloquejats</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anuncis i rastrejadors bloquejats</translation>
 <translation id="8281886186245836920">Omet</translation>
-<translation id="6165508094623778733">Saber més</translation>
 <translation id="986879628471635371">Resolució de problemes a bord</translation>
 <translation id="5806601733251372221">Escuts de Brave</translation>
 <translation id="8537217141725709400">Guanya <ph name="TOKEN"/>s</translation>
@@ -373,7 +364,7 @@ Segur que vols continuar?</translation>
 <translation id="944340256927461196">No deixa cap rastre al teu dispositiu</translation>
 <translation id="2063044449012253966">Els llocs que visitis en finestres d'incògnit no apareixeran al teu hostorial. Les cookies, les dades de forma i les dades del lloc desapareieran un cop es tanquin totes les finestres d'incògnit.</translation>
 <translation id="7395764193745523646">Visibilitat de navegació</translation>
-<translation id="8670344404057978375">Tingues en compte que, fins i tot si estàs en una finestra d'incògnit, la teva activitat en línia pot ser visible per al teu proveïdor d'internet, observadors de xarxa o la teva companyia (si utilitzes un aparell/xarxa de l'empresa).</translation>
+<translation id="8435098045013317895">Tingues en compte que, fins i tot si estàs en una finestra d'incògnit, la teva activitat en línia pot ser visible per al teu proveïdor d'internet, observadors de xarxa o la teva companyia (si utilitzes una màquina/xarxa de l'empresa).</translation>
 <translation id="1413177583895309156">El VPN de Brave xifra i protegeix tota la teva activitat en línia, fins i tot si aquesta té lloc fora del navegador de Brave.</translation>
 <translation id="3974348661685061050">Prova-ho gratis durant 7 dies</translation>
 <translation id="5789441016350810005">Anuncis de Brave enviats quan el navegador es queda en segon pla</translation>
@@ -514,6 +505,7 @@ Segur que vols continuar?</translation>
 <translation id="2718046830255553131">Les dades dels informes de privacitat han sigut esborrades.</translation>
 <translation id="8376263745431603066">Activa el "mode nocturn" (experimental)</translation>
 <translation id="1383876407941801731">Cerca</translation>
+<translation id="6165508094623778733">Saber més</translation>
 <translation id="13296465911709339">El text s'ha copiat al porta-retalls.</translation>
 <translation id="2735834606413553397">S'ha copiat l'adreça pública al porta-retalls.</translation>
 <translation id="2977461003134694205">Estadístiques de privacitat</translation>
@@ -974,23 +966,21 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="7659483790930268440">Índex de la taula de cerca d'adreces:</translation>
 <translation id="5494920125229734069">Selecciona-ho tot</translation>
 <translation id="2361906291514218784">IA Leo</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
 <translation id="944736176598169208">Recompenses</translation>
 <translation id="1199170151481311646">Analítica que preserva la privadesa</translation>
 <translation id="1706715315466634757">Correus electrònics alternatius</translation>
-<translation id="738840791756723657">IA</translation>
 <translation id="6709133671862442373">Notícies</translation>
 <translation id="5990642573624858459">Informes d'estadístiques</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Restablir valors predeterminats</translation>
-<translation id="4922034974043704366">Aquesta funció està activada perquè hi vas optar</translation>
 <translation id="2587535830241068901">Personalitza el teu navegador tot donant suport a Brave</translation>
-<translation id="7235314227387539944">Brave Origin és una versió de pagament del navegador per a usuaris que no necessiten totes les funcions que suporten Brave com a negoci, però que encara volen la privacitat que només Brave ofereix. Els usuaris de Brave Origin continuaran beneficiant-se de la nostra privacitat líder del sector, bloqueig de publicitat i velocitat (mitjançant Escuts), així com actualitzacions de programari regulars, pegats de Chromium i millores de seguretat i privacitat. Origin eliminarà la majoria de les altres funcions del navegador.</translation>
-<translation id="7941943775131052130">Tingueu en compte que una compra de Brave Origin també inclourà accés a Cercador de Brave Premium, ja que Origin eliminarà els anuncis de la pàgina de resultats del Cercador de Brave.</translation>
+<translation id="123297831435065577">Brave Origin és una versió de pagament del navegador per a usuaris que no necessiten totes les funcions que suporten Brave com a negoci, però que encara volen la privacitat que només Brave ofereix. Els usuaris d'Origin continuaran beneficiant-se de la nostra privacitat líder del sector, bloqueig de publicitat i velocitat (mitjançant Escuts), així com actualitzacions de programari regulars, pegats de Chromium i millores de seguretat i privacitat.</translation>
 <translation id="2573819149217596923">Canviar funcions de Brave</translation>
 <translation id="7415416427817229128">Habilitar o deshabilitar una funció de Brave requereix reiniciar el navegador per aplicar els canvis. Voleu reiniciar ara?</translation>
 <translation id="2256115617011615191">Reinicia ara</translation>
 <translation id="2160089182263405907">Desactivar funcions</translation>
-<translation id="3362364767724670721">Habilitar o inhabilitar una funció de Brave requereix que reinicieu el navegador per aplicar els canvis. Feu clic a <ph name="BEGIN_BOLD"/>Reiniciar ara<ph name="END_BOLD"/> una vegada que Origin hagi acabat d'actualitzar-se.</translation>
+<translation id="7530313002494358590">Habilitar o inhabilitar una funció de Brave requereix que reinicieu el navegador per aplicar els canvis. Feu clic a <ph name="BEGIN_BOLD"/>Reinicia ara<ph name="END_BOLD"/> una vegada que Brave Origin hagi acabat d'actualitzar-se.</translation>
 <translation id="1028940738207645746">Esteu segur que voleu reiniciar tota la configuració als valors per defecte?</translation>
 <translation id="5939518447894949180">Restableix</translation>
 <translation id="8554205386170195281">Compra</translation>
@@ -1121,9 +1111,9 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6261139507111008244">Dona suport a la nostra missió i al nostre treball de codi obert</translation>
 <translation id="6073373503121903099">IU de navegador minimalista centrada en Escuts de Brave</translation>
 <translation id="2267973897341040743">Manté el bloqueig d'anuncis bàsic, la privadesa i la velocitat</translation>
-<translation id="3339535734679532460">Compra única, sense cost d'subscripció adicional</translation>
-<translation id="2805615640226281689">Compra única</translation>
-<translation id="261433018299584676">Obtenir un codi de connexió</translation>
+<translation id="4059093523966730868">La compra única es pot activar diverses vegades en tots els vostres aparells</translation>
+<translation id="7006681677649762716">Compra única</translation>
+<translation id="8707617004598499947">Verifica la compra de Brave Origin</translation>
 <translation id="1943432128510653496">Desa les contrasenyes</translation>
 <translation id="2100273922101894616">Inici de sessió automàtic</translation>
 <translation id="363596933471559332">Inicia la sessió automàticament als llocs web amb les credencials emmagatzemades. Si la funció està desactivada, se us demana sempre que les verifiqueu per iniciar la sessió en un lloc web.</translation>
@@ -1186,12 +1176,14 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="7400418766976504921">URL</translation>
 <translation id="6410668567036790476">Afegeix motor de cerca</translation>
 <translation id="6289878295410648689">Escriu l'URL de cerca i substitueix la consulta per <ph name="SPECIAL_SYMBOL"/>.</translation>
-<translation id="8943582268084103903">Per exemple: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Si el lloc admet OpenSearch, es proporcionarà una opció per afegir automàticament mentre edites aquest camp.</translation>
+<translation id="1298325705808878139">Per exemple: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
 <translation id="8706939021136180678">L'URL no és vàlida.</translation>
-<translation id="6528099556282059181">El motor de cerca ja s'ha afegit.</translation>
+<translation id="5144960943371551167">El títol només pot contenir lletres, números i espais.</translation>
+<translation id="7361775378755455309">Ja existeix un cercador amb aquesta paraula clau.</translation>
 <translation id="463451857046640291">Ha fallat afegir el motor de cerca.</translation>
 <translation id="1229671956956864948">Ha fallat actualitzar el motor de cerca.</translation>
 <translation id="1462771969120037152">Ha fallat eliminar el motor de cerca. El motor de cerca que intentes eliminar pot estar establert com a predeterminat.</translation>
 <translation id="1079140196216383600">Eliminar motor de cerca personalitzat</translation>
 <translation id="525276572490219787">Esteu segur que voleu eliminar "<ph name="SEARCH_ENGINE_NAME"/>"? Aquesta acció no es pot desfer.</translation>
+<translation id="6406506848690869874">Sincronització</translation>
 </translationbundle>

@@ -122,6 +122,7 @@
 <translation id="5076161749301278626">هل تريد الاطّلاع على مراجعات المتجر؟</translation>
 <translation id="5161254044473106830">العنوان مطلوب</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{‏يغلق متصفّح Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد شهر واحد (<ph name="AUTO_DELETE_DELAY_ONE"/>) من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}zero{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> شهر من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}two{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد شهرين (<ph name="AUTO_DELETE_DELAY_MANY"/>) من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}few{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> أشهر من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}many{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> شهرًا من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}other{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> شهر من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}}</translation>
+<translation id="5254233580564156835">استخدام الذاكرة: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">علامة التبويب الأخيرة</translation>
 <translation id="5380159289133845234">أرشفة علامات التبويب المكرّرة</translation>
 <translation id="5446043142172831860">إزالة علامة التبويب ومغادرة المجموعة</translation>
@@ -161,11 +162,13 @@
 <translation id="6589356853295569750">إشعار بشأن التغييرات التي تمت على مجموعة علامات التبويب المشتركة يظهر عند فتح البطاقة السفلية بطول الشاشة</translation>
 <translation id="6590332670428149473">فتح قائمة الإجراءات لمجموعة علامات التبويب التي تمّت مشاركتها "<ph name="TITLE_OF_GROUP"/>" وتظهر بلون <ph name="COLOR_NAME"/></translation>
 <translation id="6615455863669487791">عرض</translation>
+<translation id="6686490380836145850">إغلاق علامات التبويب على اليمين</translation>
 <translation id="6694634756612002311">إدارة المشاركة</translation>
 <translation id="6709297274997495821">اختيار علامة تبويب</translation>
 <translation id="6744956528665271406">تعديل لون المجموعة</translation>
 <translation id="6784585810034073638">{TAB_COUNT,plural, =1{الإضافة إلى مجموعة باسم "<ph name="TITLE_OF_GROUP"/>" تتضمّن علامة تبويب واحدة (<ph name="TAB_COUNT1"/>)}zero{الإضافة إلى مجموعة باسم "<ph name="TITLE_OF_GROUP"/>" تتضمّن <ph name="TAB_COUNT1"/> علامة تبويب}two{الإضافة إلى مجموعة باسم "<ph name="TITLE_OF_GROUP"/>" تتضمّن علامتَي تبويب (<ph name="TAB_COUNT1"/>)}few{الإضافة إلى مجموعة باسم "<ph name="TITLE_OF_GROUP"/>" تتضمّن <ph name="TAB_COUNT1"/> علامات تبويب}many{الإضافة إلى مجموعة باسم "<ph name="TITLE_OF_GROUP"/>" تتضمّن <ph name="TAB_COUNT1"/> علامة تبويب}other{الإضافة إلى مجموعة باسم "<ph name="TITLE_OF_GROUP"/>" تتضمّن <ph name="TAB_COUNT1"/> علامة تبويب}}</translation>
 <translation id="6818926723028410516">اختيار عناصر</translation>
+<translation id="68541483639528434">إغلاق علامات التبويب الأخرى</translation>
 <translation id="6856809498882026482">إخفاء وضع التحديد المتعدد</translation>
 <translation id="6957436309971790274">بعد 21 يومًا من عدم النشاط</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{تم توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تمّت مشاركتها وتظهر بلون <ph name="COLOR_NAME"/> وتحتوي على علامة تبويب واحدة (<ph name="TABS_COUNT_ONE"/>).}zero{تم توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تمّت مشاركتها وتظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامة تبويب.}two{تم توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تمّت مشاركتها وتظهر بلون <ph name="COLOR_NAME"/> وتحتوي على علامتَي تبويب (<ph name="TABS_COUNT_MANY"/>).}few{تم توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تمّت مشاركتها وتظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامات تبويب.}many{تم توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تمّت مشاركتها وتظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامة تبويب.}other{تم توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تمّت مشاركتها وتظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامة تبويب.}}</translation>

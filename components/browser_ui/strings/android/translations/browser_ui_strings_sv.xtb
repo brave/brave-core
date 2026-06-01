@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Nedladdningen har pausats</translation>
 <translation id="1396327438254055134">Tillåt att webbplatsen använder V8-optimeraren.</translation>
 <translation id="1409338233051621926">Tryck på Appar och sedan på Standardappar</translation>
+<translation id="1414315029670184034">Tillåt inte att webbplatser använder kameran</translation>
 <translation id="1415402041810619267">Webbadressen har trunkerats</translation>
 <translation id="1741136041592162279">Tillåt att Brave delar dina senaste flikar med enheten så att du kan se dem i enhetens applista och sökresultat. Du kan aktivera eller inaktivera detta i Brave-inställningarna.</translation>
 <translation id="1420688843103859429">Navigera framåt och bakåt genom att svepa med två fingrar på styrplattan</translation>
@@ -80,7 +81,6 @@
 <translation id="1781533683087883868">Inaktivera länkar i läsläget</translation>
 <translation id="1785415724048343560">Rekommenderas för bästa upplevelse</translation>
 <translation id="1796588414813960292">Funktioner som kräver ljud slutar fungera</translation>
-<translation id="7401204338724669842">Brave-tips</translation>
 <translation id="6704867734300244173">När den är aktiverad körs Brave snabbare och funktioner som använder JavaScript bör fungera som de ska. När den är inaktiverad sänks prestandan men V8 blir mer motståndskraftig mot attacker.</translation>
 <translation id="1818308510395330587">Om du vill att <ph name="APP_NAME"/> ska använda AR måste du även aktivera kameran i <ph name="BEGIN_LINK"/>Android-inställningarna<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Ändra positionen för att anpassa surfupplevelsen</translation>
@@ -99,6 +99,7 @@
 <translation id="1985247341569771101">När detta är aktiverat kan webbplatser använda enhetens rörelsesensorer. När detta är inaktiverat får webbplatser kan inte använda rörelsesensorer.</translation>
 <translation id="1985716030964443178">Detta återställer alla webbplatser på listan till standardzoomen</translation>
 <translation id="1989112275319619282">Bläddra</translation>
+<translation id="1991370806334788445">Testa att tillåta tredjepartscookies, vilket innebär mindre skydd när du surfar men gör det mer troligt att webbplatsfunktionerna fungerar som förväntat.</translation>
 <translation id="1994173015038366702">Webbadress</translation>
 <translation id="1994558116414798016">Lexend-font</translation>
 <translation id="2004697686368036666">Vissa webbplatsers funktioner kanske inte fungerar</translation>
@@ -164,6 +165,7 @@
 <translation id="257931822824936280">Vyn har expanderats. Komprimera den genom att klicka.</translation>
 <translation id="2586657967955657006">Urklipp</translation>
 <translation id="2588271083332682494">Få mer ordning med flikgrupper</translation>
+<translation id="2592917252160773942">Webbplatser får begära åtkomst till kameran</translation>
 <translation id="2597457036804169544">Använd inte mörkt tema på webbplatser</translation>
 <translation id="2606760465469169465">Verifiera automatiskt</translation>
 <translation id="2621115761605608342">Tillåt JavaScript på en specifik webbplats.</translation>
@@ -237,6 +239,7 @@
 <translation id="3360338140203645771">Vill du radera sparade zoomnivåer?</translation>
 <translation id="3362437373201486687">Söker efter Bluetooth-enheter</translation>
 <translation id="3368138297038111198">Dela ett fönster</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{Visar 1 av {TOTAL_COUNT} objekt på grund av lågt minne}other{Visar # av {TOTAL_COUNT} objekt på grund av lågt minne}}</translation>
 <translation id="3386292677130313581">Fråga innan webbplatser tillåts att veta var du befinner dig (rekommenderas)</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="344449859752187052">Tredjepartscookies har blockerats</translation>
@@ -328,6 +331,7 @@
 <translation id="4290791284969893584">När du stänger en sida kanske åtgärder som du startat inte slutförs</translation>
 <translation id="429312253194641664">Media spelas upp på en webbplats</translation>
 <translation id="42981349822642051">Expandera</translation>
+<translation id="4310738531374808763">Anpassa din startsida</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Löper ut i morgon}other{Löper ut om # dagar}}</translation>
 <translation id="4338831206024587507">Alla webbplatser under <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Tillåt inte att webbplatser skickar aviseringar</translation>
@@ -357,6 +361,7 @@
 <translation id="4635969503923889910">Tillåt inte att webbplatser använder NFC-enheter</translation>
 <translation id="4644713492825682049">Radera och återställ</translation>
 <translation id="4645575059429386691">Hanteras av din förälder</translation>
+<translation id="4651224148644053314">Fler färger och alternativ</translation>
 <translation id="4652266463001779298">Tillåts inte</translation>
 <translation id="4655846733459137112">Tryck på Ja om du vill använda det här lösenordet nästa gång du loggar in</translation>
 <translation id="4663373278480897665">Kamera är tillåten</translation>
@@ -516,6 +521,7 @@
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> och <ph name="PERMISSION_2"/> blockeras</translation>
 <translation id="6270391203985052864">Webbplatser får be om tillåtelse att skicka aviseringar</translation>
 <translation id="6295158916970320988">Alla webbplatser</translation>
+<translation id="6305257382500066042">Testa nu</translation>
 <translation id="6320088164292336938">Vibration</translation>
 <translation id="6367753977865761591">Blockera tredjepartsinloggning på en viss webbplats.</translation>
 <translation id="6398765197997659313">Avsluta helskärmsläge</translation>
@@ -601,6 +607,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> har valts</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> och <ph name="PERMISSION_2"/> tillåts</translation>
 <translation id="7276071417425470385">När detta är aktiverat kan webbplatser be om att få använda VR-enheter. När detta är inaktiverat får webbplatser inte använda VR-enheter.</translation>
+<translation id="7279851812866769760">Dela kontakter</translation>
 <translation id="7282197670900591579">Citrongult tema</translation>
 <translation id="728412880473384942">Webbplatserna är snabbare men mindre säkra</translation>
 <translation id="5843014938239239453">Hantera i <ph name="BEGIN_LINK1"/>Android-inställningarna<ph name="END_LINK1"/>
@@ -650,7 +657,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="780301667611848630">Nej tack</translation>
 <translation id="7804248752222191302">En webbplats använder kameran</translation>
 <translation id="7805832099057502789">Arket på nedre delen av skärmen för utseende på sidan Ny flik har öppnats över hela skärmen</translation>
-<translation id="6720480757902085971">Tillhandahålls av Brave</translation>
 <translation id="7809029041571842593">Arket på nedre delen av skärmen för kort på sidan Ny flik har öppnats över halva skärmen</translation>
 <translation id="7815680994978050279">En farlig nedladdning blockerades</translation>
 <translation id="7835852323729233924">Spelar upp media</translation>
@@ -693,6 +699,7 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="823874716226307142">När detta är aktiverat kan webbplatser begära åtkomst till andra enheter i det lokala nätverket. När detta är inaktiverat får webbplatser inte komma åt andra enheter i det lokala nätverket.</translation>
 <translation id="8249310407154411074">Flytta högst upp</translation>
 <translation id="8261506727792406068">Radera</translation>
+<translation id="8273596202562472147">Fler alternativ för <ph name="SITE_NAME"/></translation>
 <translation id="8284326494547611709">Textning</translation>
 <translation id="8300705686683892304">Hanteras av app</translation>
 <translation id="8301363963630676147">Tillåts den här gången • Använder ungefärlig</translation>
@@ -738,7 +745,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="8676374126336081632">Radera inmatning</translation>
 <translation id="8681886425883659911">Annonser blockeras på webbplatser som är kända för att visa påträngande eller vilseledande annonser</translation>
 <translation id="868929229000858085">Sök bland kontakterna</translation>
-<translation id="8707904142362025782">Webbplatsen får begära åtkomst till kameran</translation>
 <translation id="8712637175834984815">Uppfattat</translation>
 <translation id="8715862698998036666">Dra uppifrån och svep från den vänstra eller högra kanten för att avsluta helskärmsläget.</translation>
 <translation id="8716050156658570300">Webbplatser får begära åtkomst till rörelse- och ljussensorer</translation>
@@ -788,6 +794,7 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="7359422048569205930">Tillåt att Brave visar dina senaste flikar i enhetens applista och sökresultat. Du kan inaktivera detta när som helst i Brave-inställningarna.</translation>
 <translation id="9162462602695099906">Den här sidan är farlig</translation>
 <translation id="9182556968660520230">Tillåt inte att webbplatser spelar upp skyddat innehåll</translation>
+<translation id="927148002081263046">Dela en kontakt</translation>
 <translation id="947156494302904893">Webbplatser du besöker kan verifiera att du är en riktig person och inte en bot</translation>
 <translation id="959682366969460160">Håll ordning</translation>
 <translation id="960590623979248167">Visa hyperlänkar</translation>

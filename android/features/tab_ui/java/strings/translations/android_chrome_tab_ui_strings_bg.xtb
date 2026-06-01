@@ -122,6 +122,7 @@
 <translation id="5076161749301278626">Искате ли да видите отзивите за магазина?</translation>
 <translation id="5161254044473106830">Изисква се заглавие</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave автоматично затваря неактивните раздели и групи раздели след <ph name="AUTO_DELETE_DELAY_ONE"/> месец. Можете да промените това от настройките.}other{Brave автоматично затваря неактивните раздели и групи раздели след <ph name="AUTO_DELETE_DELAY_MANY"/> месеца. Можете да промените това от настройките.}}</translation>
+<translation id="5254233580564156835">Използвана памет: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Последният ви раздел</translation>
 <translation id="5380159289133845234">Архивиране на дублиращите се раздели</translation>
 <translation id="5446043142172831860">Премахване на раздела и напускане на групата</translation>
@@ -161,11 +162,13 @@
 <translation id="6589356853295569750">Известието за промените в споделената група раздели е отворено на пълната височина</translation>
 <translation id="6590332670428149473">Отваряне на менюто с действия за споделената група раздели „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="COLOR_NAME"/> цвят</translation>
 <translation id="6615455863669487791">Покажете ми</translation>
+<translation id="6686490380836145850">Затваряне на разделите отдясно</translation>
 <translation id="6694634756612002311">Управление на споделянето</translation>
 <translation id="6709297274997495821">Избиране на раздел</translation>
 <translation id="6744956528665271406">Редактиране на цвета на групата</translation>
 <translation id="6784585810034073638">{TAB_COUNT,plural, =1{Добавяне към групата „<ph name="TITLE_OF_GROUP"/>“ с <ph name="TAB_COUNT1"/> раздел}other{Добавяне към групата „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="TAB_COUNT1"/> раздела}}</translation>
 <translation id="6818926723028410516">Избор на елементи</translation>
+<translation id="68541483639528434">Затваряне на другите раздели</translation>
 <translation id="6856809498882026482">Изход от режима за избор на няколко раздела</translation>
 <translation id="6957436309971790274">След 21 дни неактивност</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{Разгъване на споделената група раздели „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="COLOR_NAME"/> цвят, в която има <ph name="TABS_COUNT_ONE"/> раздел.}other{Разгъване на споделената група раздели „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="COLOR_NAME"/> цвят, в която има <ph name="TABS_COUNT_MANY"/> раздела.}}</translation>

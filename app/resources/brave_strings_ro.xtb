@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Instrumentele de siguranță din Brave</translation>
 <translation id="1902837727299679178">Brave dorește să șteargă datele din Managerul de parole. Introdu parola Windows pentru a permite acest lucru.</translation>
 <translation id="4449148723378534338">Examinează cele mai importante opțiuni de confidențialitate și de securitate din Brave</translation>
-<translation id="5229247933547820267">Pentru a întreba Modul AI despre filă fără să părăsești pagina, conectează-te la Brave. În plus, vei putea accesa parolele și multe altele pe toate dispozitivele.</translation>
 <translation id="1640672724030957280">Se descarcă…</translation>
 <translation id="1680687534629375545">Întreabă Căutarea de imagini despre această pagină</translation>
 <translation id="509363484780540563">Poți folosi Brave oricând dai clic pe linkuri în mesaje, documente și alte aplicații. Va fi fixat și în bara de activități.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Afișează întotdeauna Modul AI</translation>
 <translation id="2472891440303445472">Brave a blocat descărcarea, deoarece fișierul este înșelător și poate face modificări neașteptate pe dispozitiv</translation>
 <translation id="2054358978145431867">Vei vedea o solicitare de a încerca <ph name="FEATURE_NAME"/> data viitoare când deschizi Brave iOS.</translation>
+<translation id="4315579854608498851">Brave dezactivează optimizarea JavaScript când accesezi un site pentru prima dată.
+
+Dacă această pagină nu funcționează conform așteptărilor, încearcă să permiți optimizarea.</translation>
 <translation id="2726948994393234543">Parolele și alte date Brave pe care le-ai salvat în Contul Brave se vor elimina de pe acest dispozitiv. Pentru a le folosi din nou în Brave, conectează-te din nou.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organizația ta șterge automat datele de navigare când Brave nu este folosit timp de un minut. Aici pot fi incluse istoricul, completările automate și descărcările. Filele vor rămâne deschise.}few{Organizația ta șterge automat datele de navigare când Brave nu este folosit timp de # minute. Aici pot fi incluse istoricul, completările automate și descărcările. Filele vor rămâne deschise.}other{Organizația ta șterge automat datele de navigare când Brave nu este folosit timp de # de minute. Aici pot fi incluse istoricul, completările automate și descărcările. Filele vor rămâne deschise.}}</translation>
 <translation id="2126108037660393668">Fișierul descărcat nu a putut fi verificat.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personalizează noul profil Brave</translation>
+<translation id="2430807206104224491">Poți să conversezi în continuare prin chat cu Modul AI fără să schimbi filele. Pentru a începe, conectează-te la Brave. În plus, vei putea accesa parolele și multe altele pe toate dispozitivele.</translation>
 <translation id="4805865169608137960">Pentru a elimina Contul Brave din Brave, deconectează-te de la Brave din pagina Setări</translation>
 <translation id="1651639704310627074">Ulterior, Brave te poate întreba dacă vrei să folosești informațiile salvate pentru a completa automat formulare</translation>
 <translation id="2585240446624043880">Brave nu poate citi și scrie în directorul propriu de date:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Fiecare profil conține propriile informații Brave, cum ar fi marcaje, istoric, parole și altele</translation>
 <translation id="6756656512757374876">Află mai multe despre <ph name="BEGIN_LINK"/>cum îți păstrează Brave datele private<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Modificările acestei setări se vor aplica după ce Brave repornește.</translation>
+<translation id="3396870972301571614">Gestionează extensiile dând clic pe Extensii în meniul principal Brave.</translation>
 <translation id="2535436634051789953">Poți schimba pentru a vedea parolele din alt profil Brave</translation>
 <translation id="2312399718665761438">Pentru a corecta erorile de scriere, Brave trimite la Brave textul pe care îl introduci în câmpurile de text</translation>
 <translation id="3507835409099344374">Accesează setările pentru notificări Brave</translation>

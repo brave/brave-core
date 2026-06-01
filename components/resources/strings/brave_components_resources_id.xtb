@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">Cetak</translation>
 <translation id="2600847485413879104">BAT Imbalan</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">Mengunduh Komponen...</translation>
 <translation id="4894106830958548828">Saya paham</translation>
 <translation id="2729085694451916573">Rangkaian tes untuk <ph name="PART_ONE"/>pengganti<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Pelajari lebih lanjut<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">Pencarian dan konten halaman Anda diproses di perangkat ini. Tidak ada yang dikirim ke Brave atau dilihat oleh peninjau manusia. Ini adalah fitur eksperimental dan tidak selalu memberikan hasil yang tepat.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Aktifkan dukungan Unstoppable Domains di Brave?</translation>
 <translation id="5015092481905019948">Brave akan menggunakan <ph name="PROVIDER_NAME"/> untuk menyelesaikan <ph name="DOMAIN_LIST"/> nama domain yang berada di <ph name="DOMAIN_PROVIDER_NAME"/>. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkan ini, <ph name="PROVIDER_NAME"/> akan melihat bahwa seseorang mencoba mengunjungai domain ini namun hanya itu. Lihatlah <ph name="BEGIN_PROVIDER_TOU_LINK"/>syarat penggunaan<ph name="END_PROVIDER_TOU_LINK"/> dan <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>kebijakan privasi<ph name="END_PROVIDER_PRIVACY_LINK"/> <ph name="PROVIDER_NAME"/>.</translation>
@@ -749,7 +749,6 @@
 <translation id="1288078776976153868">jaringan</translation>
 <translation id="1148827340205946630">Pengguna menolak permintaan ini.</translation>
 <translation id="2403819048476450281">Parameternya tidak valid.</translation>
-<translation id="3849003816301348130">Alamat tujuan ada dalam daftar OFAC SDN.</translation>
 <translation id="3955144560853195652">Rantai <ph name="VALUE"/> belum ditambahkan</translation>
 <translation id="1875861420974447980">ID Rantai ini sedang digunakan saat ini</translation>
 <translation id="167698752210114155">Telah terjadi kesalahan internal</translation>
@@ -863,11 +862,12 @@
 <translation id="3751611888003301070">Rute</translation>
 <translation id="3799091982455573025">Tukar di <ph name="NETWORK_NAME"/> via <ph name="EXCHANGE_NAME"/></translation>
 <translation id="5136093123841570193">Hubungkan dari <ph name="FRIST_NETWORK_NAME"/> ke <ph name="SECOND_NETWORK_NAME"/></translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} langkah}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} langkah}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} langkah)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} langkah)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> via <ph name="PROVIDER_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> via</translation>
 <translation id="646023614746251785">Konfirmasi pertukaran</translation>
 <translation id="6264944956989873014">Konfirmasi jembatan</translation>
 <translation id="7067917728851842589">Konfirmasi pengiriman</translation>
@@ -948,6 +948,7 @@
 <translation id="1108298724135935307">Situs terkoneksi</translation>
 <translation id="5716350339763180836">Saldo</translation>
 <translation id="5538251867290702601">Grafik</translation>
+<translation id="8123016618655108594">Distribusi</translation>
 <translation id="352407037922720467">Tab NFT</translation>
 <translation id="163697698769819510">Cadangkan dompet Anda sekarang untuk melindungi aset Anda dan memastikan bahwa Anda tidak akan pernah kehilangan akses.</translation>
 <translation id="1018806299114415224">Cadangkan sekarang</translation>
@@ -1171,12 +1172,12 @@
 <translation id="4324239559624557455">Selama 24 jam</translation>
 <translation id="9139452553033760558">Selama 1 minggu</translation>
 <translation id="1658834457013045127">Selamanya</translation>
-<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> terkoneksi</translation>
-<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> terputus</translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> terkoneksi ke <ph name="DEVICE_NAME"/></translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> terputus</translation>
 <translation id="434328838837168401">Lihat instruksi</translation>
-<translation id="6739517232898494646">Hubungkan <ph name="DEVICE_NAME"/> Anda untuk melanjutkan</translation>
+<translation id="13670155462680755">Hubungkan <ph name="ACCOUNT_NAME"/> Anda untuk melanjutkan</translation>
 <translation id="6941881257520473899">Dompet perangkat keras memerlukan konfirmasi pada perangkat.</translation>
-<translation id="2288190100157580461">Dompet perangkat keras memerlukan Aplikasi <ph name="NETWORK"/> dibuka di <ph name="DEVICE_NAME"/></translation>
+<translation id="4108619287854657806">Dompet perangkat keras memerlukan Aplikasi <ph name="NETWORK"/> dibuka di <ph name="ACCOUNT_NAME"/></translation>
 <translation id="8687869982094542529">dikirim</translation>
 <translation id="5013754027092416509">diterima</translation>
 <translation id="5867988533873716616">Memblokir URL penjelajah tidak tersedia.</translation>
@@ -1361,6 +1362,7 @@
 <translation id="8491675129455635799">Kelompokkan aset berdasarkan</translation>
 <translation id="5331775401966766526">Pengaturan filter dan tampilan</translation>
 <translation id="5332541468425943610">Pengaturan tampilan NFT</translation>
+<translation id="1539149309756422999">Distribusi aset</translation>
 <translation id="886032538431162695">Urutkan aset</translation>
 <translation id="6080181976198929758">Urutkan berdasarkan nilai fiat atau nama</translation>
 <translation id="2563815561570398537">Sembunyikan saldo kecil</translation>
@@ -1604,6 +1606,9 @@
 <translation id="5882719778740918116">Hanya kirim token ke alamat ini di <ph name="VALUE"/></translation>
 <translation id="6885009592653876601">Beli, kirim, dan tukar 200+ aset kripto</translation>
 <translation id="8716223552348254401">Browser-asli, tidak ada ekstensi berisiko</translation>
+<translation id="1198271701881992799">Mari mulai</translation>
+<translation id="7904301836463577071">Beli kripto pertama Anda dengan kartu kredit atau kartu debit</translation>
+<translation id="3721561070667360112">Setor kripto dari dompet atau bursa lain</translation>
 <translation id="4559901986238865734">Dukungan multi-rantai &amp; NFT</translation>
 <translation id="296101411136980896">Klik untuk beralih</translation>
 <translation id="753655478253155745">Kedua belas</translation>
@@ -1751,6 +1756,7 @@
 <translation id="8549067157732633185">Token ini terverifikasi</translation>
 <translation id="2130170065617939165">Token ini terverifikasi pada daftar <ph name="NUMBER_OF_LISTS"/></translation>
 <translation id="1554316484739382186">Akun Belanja: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">Akun <ph name="PROVIDER"/></translation>
 <translation id="5360752485622434494">BAT Imbalan Brave pada <ph name="PROVIDER"/></translation>
@@ -2145,12 +2151,14 @@
 <translation id="6459036216700972269">Jangan Pisahkan Tab</translation>
 <translation id="4235382917338421035">Tukar Posisi Tab</translation>
 <translation id="4288085058450834672">Tampilkan Aplikasi</translation>
+<translation id="4750337523930607658">Aktifkan Mode Fokus</translation>
 <translation id="4144468798716165316">Perintah cepat</translation>
 <translation id="3617523374417810198">Tampilan terpisah baru</translation>
 <translation id="8571323456914890254">Buka dalam tampilan terpisah</translation>
 <translation id="5329136173514538969">Jangan pisahkan tab</translation>
 <translation id="7595612919377246359">Tukar posisi tab</translation>
 <translation id="2367972762794486313">Tampilkan aplikasi</translation>
+<translation id="3142853026316054951">Aktifkan mode fokus</translation>
 <translation id="3468387898712904997">Alias email baru</translation>
 <translation id="8591883849678260674">Lihat halaman asli</translation>
 <translation id="1969654232209826429">menit membaca</translation>
@@ -2198,6 +2206,7 @@
 <translation id="5923170497201832190">Gulirkan tab ke posisi terbawah</translation>
 <translation id="6219262425964000211">Lepaskan file di sini</translation>
 <translation id="4313763911013851687">Lepaskan file di sini untuk ditambahkan ke percakapan</translation>
+<translation id="8206915760129310348">Beberapa file tidak dapat dibaca dan tidak dilampirkan</translation>
 <translation id="4524675003624341892">Usulkan pertanyaan...</translation>
 <translation id="4567071417854988869">Ringkas video ini</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2208,7 +2217,9 @@
 <translation id="7932221068776853847">Putuskan koneksi untuk menghentikan pengiriman konten halaman ini ke Leo, dan mulai percakapan baru</translation>
 <translation id="8743383817154663379">Terjadi kesalahan saat memproses permintaan Anda. Coba lagi nanti.</translation>
 <translation id="2712650703044366764">Model ini punya titik akhir yang tidak valid. Cek konfigurasi dan coba lagi.</translation>
-<translation id="1167803637855350748">Terdapat masalah jaringan untuk terhubung dengan Leo, periksa kembali koneksi Anda dan coba lagi.</translation>
+<translation id="7092656392206649236">Terjadi kesalahan saat berkomunikasi dengan Leo. Coba lagi.</translation>
+<translation id="3552709750512842961">Kode status: <ph name="STATUS_CODE"/>, kode kesalahan: <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">Kode status: <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Anda telah mencapai batas tingkat premium. Silakan coba lagi dalam beberapa jam.</translation>
 <translation id="3683964919745779766">Anda telah mencapai batas tingkat untuk model ini atau kehabisan kredit. Coba lagi nanti.</translation>
 <translation id="7692501701960747469">Kunci API yang dikonfigurasi untuk model ini tidak valid. Periksa konfigurasi Anda dan coba lagi.</translation>
@@ -2491,7 +2502,9 @@
 <translation id="5663901348199429994">Alias Email Anda</translation>
 <translation id="9046133327037621173">Alias email baru</translation>
 <translation id="3768606658230902536">Buat alamat email acak yang dapat meneruskan pesan ke kotak masuk sementara tetap menjaga privasi email pribadi Anda.</translation>
-<translation id="6887156107256264506">Anda telah mencapai limit 5 alias email gratis. Klik "Kelola" untuk menggunakan kembali atau menghapus alias.</translation>
+<translation id="4452721050684632493">Batas alias tercapai</translation>
+<translation id="2912191433415590080">Anda telah menggunakan seluruh <ph name="MAX_ALIASES"/> alias email Anda. Hapus alias yang ada untuk membuat yang baru.</translation>
+<translation id="3847337908410945070">Alias Anda (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">Alias baru</translation>
 <translation id="8072910658503112482">Sarankan alias email lain</translation>
 <translation id="7710361355427562228">Membuat alias baru...</translation>
@@ -2534,6 +2547,8 @@
 <translation id="2991633563551889054">Sembunyikan kartu Bicara</translation>
 <translation id="5355776323718420036">Sembunyikan situs teratas</translation>
 <translation id="1689504141194856995">Sembunyikan kartu VPN</translation>
+<translation id="2919329118360099847">Brave akan digunakan sebagai mesin penelusuran di kolom alamat untuk jendela normal.</translation>
+<translation id="6792837540759934892">Setel Brave sebagai mesin penelusuran baku?</translation>
 <translation id="8262911270872215147">Kustomisasi Berita</translation>
 <translation id="3884037897537157986">Nonaktifkan Berita</translation>
 <translation id="7847477075635510673">Sembunyikan Berita</translation>
@@ -2672,7 +2687,7 @@
 <translation id="2273851479262317744">Tetapkan Brave sebagai peramban bawaan</translation>
 <translation id="5037676449506322593">Pilih Semua</translation>
 <translation id="5148943178722443958">Bantulah membuat Brave lebih baik.</translation>
-<translation id="479535542793009168">Stabilitas &amp; Diagnostik</translation>
+<translation id="8874748598814587364">Stabilitas</translation>
 <translation id="1097073572755862978">Kirimkan laporan diagnostik jika Anda mengalami kerusakan atau kebekuan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Bagikan wawasan produk secara privat dan anonim tentang fitur apa saja yang digunakan oleh pengguna Brave. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Pengaturan selesai</translation>
@@ -2801,6 +2816,10 @@ Mari kita buat Anda terhubung!</translation>
 <translation id="1602850501393095406">Tekan ↑ untuk menyoroti</translation>
 <translation id="8367705492654390392">Tanya apa saja</translation>
 <translation id="8525248723479742219">Putar Nanti</translation>
+<translation id="1751249301761991853">Personal</translation>
+<translation id="1122068467107743258">Pekerjaan</translation>
+<translation id="8372721116225477180">Sosial</translation>
+<translation id="1539343118617844331">Sekolah</translation>
 <translation id="2935698011275148880">Asal Berani</translation>
 <translation id="3983844925615091103">Selamat datang di Brave Origin. Untuk melanjutkan, harap beli atau pulihkan pembelian Brave Origin Anda.</translation>
 <translation id="4801175670604644729">Anda memerlukan pembelian Brave Origin yang aktif untuk menggunakan browser ini.</translation>
@@ -2816,4 +2835,60 @@ Mari kita buat Anda terhubung!</translation>
 <translation id="5816720995022674532">Origin gratis digunakan di perangkat Linux, tetapi masih <ph name="BEGIN_LINK"/>tersedia untuk dibeli<ph name="END_LINK"/> jika Anda ingin mendukung Brave sebagai bisnis. Pembelian juga akan membuka kemampuan untuk menggunakan Origin di perangkat Android, iOS, macOS, dan Windows.</translation>
 <translation id="3065220545261045367">Dukung Brave dengan membeli Origin</translation>
 <translation id="2069499076031488636">Lanjutkan dengan Origin gratis di Linux</translation>
+<translation id="5713644099811900409">Akun Brave</translation>
+<translation id="2906576968270573525">Masuk atau buat akun Brave</translation>
+<translation id="6972754398087986839">Memulai</translation>
+<translation id="5378207817582281342">Hampir selesai!</translation>
+<translation id="3750210661641549834">Untuk membuat akun Anda, harap verifikasi alamat email Anda.</translation>
+<translation id="4129813507847680661">Masukkan kode pendaftaran</translation>
+<translation id="1672793037892810340">Anda seharusnya telah menerima email berisi kode yang perlu Anda masukkan.</translation>
+<translation id="4821255729182569254">Kirim ulang email konfirmasi</translation>
+<translation id="5837679375142747484">Tidak melihat email terkait? Periksa folder spam atau <ph name="BEGIN_LINK"/>kirim ulang<ph name="END_LINK"/>.</translation>
+<translation id="1080588816740959885">Tidak melihat email terkait? Periksa folder spam atau kirim ulang.</translation>
+<translation id="1020730839570724178">Batalkan pendaftaran</translation>
+<translation id="4869737930995549965">Keluar</translation>
+<translation id="5538654494923870167">Mulai dengan akun Brave Anda</translation>
+<translation id="1544145635547515689">Buat akun Brave</translation>
+<translation id="3828644479849256404">Sudah memiliki akun? Masuk</translation>
+<translation id="6624553071240278643">Buat akun Anda</translation>
+<translation id="6505120968393722022">Anda tidak dapat menggunakan alamat @bravealias.com untuk membuat akun Brave. Silakan coba lagi dengan domain yang berbeda.</translation>
+<translation id="8248460961680233459">Buat kata sandi</translation>
+<translation id="4917385247580444890">Kuat</translation>
+<translation id="5486261815000869482">Konfirmasi kata sandi</translation>
+<translation id="7345706641791090287">Konfirmasi kata sandi Anda</translation>
+<translation id="7114054701490058191">Kata sandi tidak sesuai</translation>
+<translation id="1293857704520741614">Masuk ke akun Anda</translation>
+<translation id="118617366439356381">Lupa kata sandi Anda?</translation>
+<translation id="5183159033908953146">Konfirmasi email akun Brave Anda dan Anda akan menerima tautan untuk mengatur ulang kata sandi Anda. Tautan tersebut hanya akan berlaku selama 30 menit.</translation>
+<translation id="3997368361371298873">Peringatan: karena Anda tidak masuk ke device ini, mengatur ulang kata sandi Anda akan <ph name="BEGIN_BOLD"/>menghapus semua data Anda<ph name="END_BOLD"/> di server. Jika Anda memiliki device lain tempat Anda masuk, ubah kata sandi Anda dari device tersebut alih-alih mengatur ulang kata sandi Anda.</translation>
+<translation id="3674472551471103443">Atur ulang kata sandi Anda</translation>
+<translation id="2755539422340788311">Verifikasi email Anda</translation>
+<translation id="6641436078676327508">Anda seharusnya telah menerima email berisi kode singkat. Silakan masukkan di sini untuk melanjutkan.</translation>
+<translation id="7228810962389847249">Masukkan kode di sini</translation>
+<translation id="4683390091376980486">Konfirmasi kode</translation>
+<translation id="3970028678400797622">Kirim ulang kode email</translation>
+<translation id="2475982808118771221">Terjadi kesalahan</translation>
+<translation id="5430795854491041407">error</translation>
+<translation id="2232323423357029857">Browser mengalami kesalahan yang tidak terduga<ph name="ERROR_CODE"/>. Silakan mulai ulang browser dan coba lagi.</translation>
+<translation id="7167650060829320707">Kesalahan server internal (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). Silakan coba lagi nanti.</translation>
+<translation id="2387645930330673048">Akun ini sedang menunggu verifikasi email.</translation>
+<translation id="2199962270601714404">Tidak ditemukan akun untuk alamat email tersebut. Silakan coba lagi, atau buat akun baru.</translation>
+<translation id="8130611002720478693">Kata sandi salah. Silakan coba lagi.</translation>
+<translation id="7144067487084094749">Akun sudah ada untuk alamat email ini. Coba masuk alih-alih membuat akun.</translation>
+<translation id="5288951359968156008">Domain alamat email ini tidak didukung. Silakan gunakan alamat email yang berbeda.</translation>
+<translation id="7625678607509255072">Batas verifikasi email telah terlampaui. Silakan tunggu 30 menit sebelum mencoba lagi.</translation>
+<translation id="4582421696414628320">Verifikasi kedaluwarsa. Mulai proses pendaftaran lagi.</translation>
+<translation id="8439543211004394821">Terlalu banyak kode yang salah dimasukkan. Mulai proses pendaftaran lagi.</translation>
+<translation id="3229986152760633988">Kode salah, silakan coba lagi.</translation>
+<translation id="4178004989875422946">Akun Brave akan memungkinkan Anda mengakses layanan Brave dengan mudah.</translation>
+<translation id="8314772463905284467">Caps Lock aktif</translation>
+<translation id="7044608453949401443">Spasi tidak diizinkan di awal atau akhir kata sandi.</translation>
+<translation id="2939492377741553693">Email konfirmasi telah dikirim ulang.</translation>
+<translation id="2112559299194052697">Tidak dapat mengirim ulang</translation>
+<translation id="7932611814134267012">Terlalu banyak email verifikasi yang sudah dikirim. Silakan periksa folder spam Anda.</translation>
+<translation id="1364223093800750401">Email sudah diverifikasi.</translation>
+<translation id="3353844160742960162">Penyetelan Pengaturan Privasi</translation>
+<translation id="528205534230423181">Website ini menawarkan pengaturan privasi yang dapat disesuaikan secara otomatis oleh Brave untuk Anda. Berikut yang kami rekomendasikan:</translation>
+<translation id="1063227610401477317">Terapkan Perubahan</translation>
+<translation id="5539769255716491933">Laporkan Langkah yang Gagal</translation>
 </translationbundle>
