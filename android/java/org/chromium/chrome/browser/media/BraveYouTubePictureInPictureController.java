@@ -461,7 +461,9 @@ public class BraveYouTubePictureInPictureController {
     }
 
     private void maybeRestoreFullscreenUi(final int sessionId, final WebContents webContents) {
-        if (!isExitingForSession(sessionId, webContents) || mActivity.isInPictureInPictureMode()) {
+        if (!isExitingForSession(sessionId, webContents)
+                || mActivity.isActivityFinishingOrDestroyed()
+                || mActivity.isInPictureInPictureMode()) {
             return;
         }
 

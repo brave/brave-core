@@ -293,6 +293,7 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String OPEN_URL = "open_url";
     public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
+    private static final String TAG = "BraveActivity";
 
     private static final int DAYS_4 = 4;
     private static final int DAYS_7 = 7;
@@ -625,10 +626,14 @@ public abstract class BraveActivity extends ChromeActivity
                 // place.
                 PostTask.postDelayedTask(
                         TaskTraits.UI_BEST_EFFORT,
-                        (Runnable)
-                                () ->
-                                        setPictureInPictureParams(
-                                                new PictureInPictureParams.Builder().build()),
+                        () -> {
+                            try {
+                                setPictureInPictureParams(
+                                        new PictureInPictureParams.Builder().build());
+                            } catch (Exception e) {
+                                Log.e(TAG, "Error setting PiP params", e);
+                            }
+                        },
                         PIP_UPDATE_DELAY_MS);
             }
         } else {

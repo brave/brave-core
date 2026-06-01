@@ -277,4 +277,34 @@ public class BraveYouTubePictureInPictureControllerTest {
 
         verify(mBraveFullscreenHandler, times(1)).exitPersistentFullscreenModeForPictureInPicture();
     }
+
+    @Test
+    public void maybeRestoreFullscreenUi_activityFinishing_skipsRestore() {
+        // The fullscreen restore runs from delayed UI tasks (the renderer signal and the
+        // FULLSCREEN_EXIT_FALLBACK_MS safety timer), which can fire after the activity has
+        // started tearing down. When the activity is finishing/destroyed the restore must
+        // return before touching getFullscreenManager(), so it never operates on torn-down
+        // UI.
+        WebContents observableWebContents =
+                mock(
+                        WebContents.class,
+                        withSettings().extraInterfaces(WebContentsObserver.Observable.class));
+        when(mBraveActivity.isActivityFinishingOrDestroyed()).thenReturn(true);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onSessionRequested(observableWebContents);
+
+        controller.onExitPictureInPictureMode();
+
+        // Let the safety timer fire (the renderer signal never arrives in this scenario). Without
+        // the guard this delayed task would call getFullscreenManager() on the finishing activity.
+        ShadowLooper.idleMainLooper(
+                BraveYouTubePictureInPictureController.FULLSCREEN_EXIT_FALLBACK_MS,
+                TimeUnit.MILLISECONDS);
+
+        // Guard fired: the activity's fullscreen surface was never touched.
+        verify(mBraveActivity, never()).getFullscreenManager();
+        verify(mBraveFullscreenHandler, never()).exitPersistentFullscreenModeForPictureInPicture();
+    }
 }
