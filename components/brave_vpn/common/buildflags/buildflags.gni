@@ -27,3 +27,8 @@ declare_args() {
   # Wireguard is available only on Windows.
   enable_brave_vpn_wireguard = (is_mac || is_win) && enable_brave_vpn
 }
+
+# Enable bundling of the dependencies for VPN architecture 2.0 into the final
+# package distributed to the customers. This should be set to 'false' until
+# we are ready to release the agent/helper binaries to the public.
+enable_brave_vpn_v2_bundling = false

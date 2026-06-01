@@ -148,6 +148,12 @@ group("all") {
   }
 }
 
+if (enable_brave_vpn_v2) {
+  group("brave_vpn_data_deps") {
+    data_deps = [ "//brave/components/brave_vpn/app/v2/agent" ]
+  }
+}
+
 if (!is_ios) {
   group("child_dependencies") {
     deps = [
@@ -168,6 +174,10 @@ if (!is_ios) {
     ]
 
     data_deps = [ ":unpacked_resources" ]
+
+    if (enable_brave_vpn_v2) {
+      data_deps += [ ":brave_vpn_data_deps" ]
+    }
 
     if (!is_ios) {
       deps += [ ":packed_resources" ]
@@ -319,6 +329,12 @@ if (is_android) {
 if (is_mac) {
   group("framework_bundle_data") {
     deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
+
+    if (enable_brave_vpn_v2_bundling) {
+      deps += [
+        "//brave/components/brave_vpn/app/v2/agent:brave_vpn_agent_bundle_data",
+      ]
+    }
   }
 }
 
