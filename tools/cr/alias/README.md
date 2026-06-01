@@ -13,10 +13,10 @@ python3 tools/cr/alias/cmd.py setup-alias
 git cr install-hook
 ```
 
-* `setup-alias` writes a `cr` entry to `.git/config`. After this, `git cr`
-  works in this repository.
-* `install-hook` installs `commit-msg.py` as the repository's `commit-msg`
-  hook. This is necessary to use `git cr commit`
+- `setup-alias` writes a `cr` entry to `.git/config`. After this, `git cr` works
+  in this repository.
+- `install-hook` installs `commit-msg.py` as the repository's `commit-msg` hook.
+  This is necessary to use `git cr commit`
 
 Once installed, run `git cr` to see the available commands.
 
@@ -34,8 +34,8 @@ git cr commit --issue 12345 -m "Resolve crash on launch"
 git cr commit --culprit abc123,def456 -m "Adjust to upstream API change"
 ```
 
-[commit-msg hook behaviour](#commit-msg-hook-behaviour) section below for
-more details.
+[commit-msg hook behaviour](#commit-msg-hook-behaviour) section below for more
+details.
 
 ### `git cr mv`
 
@@ -49,27 +49,24 @@ npm run build -- --target=brave:all
 
 What it repairs after the rename:
 
-* C++ include guards in moved `.h` files (regenerated to match the new
-  path).
-* `#include <…>` shadow-include lines in moved `chromium_src/` files.
-* `#include` / `#import` directives across `brave-core` (both quoted and
-  angle-bracket forms, including `.mojom` files and their derived
-  `*.mojom.h`, `*.mojom-blink.h`, etc.).
-* `// path/to/file` style references inside C++ comments and `.gn`/`.gni`
-  files.
-* `BUILD.gn` / `.gni` source-list entries in the ancestor chain of the
-  moved file.
-* Quoted GN root references (`"//path/to/file"`) and relative GN
-  references in `.gn` / `.gni` files.
-* Plaster files (`rewrite/…/foo.h.yaml`, or the deprecated
-  `rewrite/…/foo.h.toml`) and their associated patch files in
-  `patches/`. The new plaster file is re-applied so `patches/` is
-  refreshed.
+- C++ include guards in moved `.h` files (regenerated to match the new path).
+- `#include <…>` shadow-include lines in moved `chromium_src/` files.
+- `#include` / `#import` directives across `brave-core` (both quoted and
+  angle-bracket forms, including `.mojom` files and their derived `*.mojom.h`,
+  `*.mojom-blink.h`, etc.).
+- `// path/to/file` style references inside C++ comments and `.gn`/`.gni` files.
+- `BUILD.gn` / `.gni` source-list entries in the ancestor chain of the moved
+  file.
+- Quoted GN root references (`"//path/to/file"`) and relative GN references in
+  `.gn` / `.gni` files.
+- Plaster files (`rewrite/…/foo.h.yaml`, or the deprecated
+  `rewrite/…/foo.h.toml`) and their associated patch files in `patches/`. The
+  new plaster file is re-applied so `patches/` is refreshed.
 
 ### `git cr follow-renames`
 
-This command has some similarities to `git-cr-mv`, however its main role is
-to correct move operations that occurred in upstream Chromium.
+This command has some similarities to `git-cr-mv`, however its main role is to
+correct move operations that occurred in upstream Chromium.
 
 ```sh
 # All renames between two Chromium version tags (typical version bump):
@@ -82,23 +79,23 @@ git cr follow-renames 4f093f4239eb2814f57bc97ee593d7acd717ac42
 This command does all the rewrites done by `git-cr-mv`, but it also does a few
 extra things:
 
-1. Move `chromium_src/<old>` to `chromium_src/<new>` and refresh its
-   include guard and shadow `#include` line.
+1. Move `chromium_src/<old>` to `chromium_src/<new>` and refresh its include
+   guard and shadow `#include` line.
 2. Move `rewrite/<old>.yaml` (or the deprecated `rewrite/<old>.toml`) to
-   `rewrite/<new>.yaml` (resp. `.toml`), delete the stale `patches/…`
-   patch file (and `.patchinfo`), then re-run plaster on the new
-   plaster file so a fresh patch is produced.
+   `rewrite/<new>.yaml` (resp. `.toml`), delete the stale `patches/…` patch file
+   (and `.patchinfo`), then re-run plaster on the new plaster file so a fresh
+   patch is produced.
 3. Update every `#include`, `#import`, `// comment`, `BUILD.gn`, and `.gni`
    reference across `brave-core` (same logic as `git cr mv`).
 4. For any patch that is **not** managed by plaster, rewrite the patch's
-   `--- a/old`, `+++ b/new`, and `diff --git` lines, rename the file, and
-   try `git apply --3way` against the Chromium tree so conflicts surface
+   `--- a/old`, `+++ b/new`, and `diff --git` lines, rename the file, and try
+   `git apply --3way` against the Chromium tree so conflicts surface
    immediately.
 
 ## Why the use of a git commit message hook
 
-Chromium rebases usually involve hundreds of fixes to Brave. These fixes are
-the result of the way Chromium evolves. Therefore, `cr` have to provide a
+Chromium rebases usually involve hundreds of fixes to Brave. These fixes are the
+result of the way Chromium evolves. Therefore, `cr` have to provide a
 significant amount of information regading the project history when introducing
 these fixes. This is vital when trying to understand when and why certain
 changes were introduced in the project.
@@ -130,20 +127,20 @@ documentation. A few examples that we use it for:
 ### Every commit on a `cr` is expected to have a `[crXXX]` tag
 
 The main covenience the hook provides, is the enforcement of `[cr149]` prefix
-when working on `cr` branches, which easily catches one's attention when
-looking on a blame. This branch tag is important for any commit that is not
-too obvious to be part of a `cr` branch without it.
+when working on `cr` branches, which easily catches one's attention when looking
+on a blame. This branch tag is important for any commit that is not too obvious
+to be part of a `cr` branch without it.
 
 ### Using commit tags to provide context
 
-We should always try to provide tags, as a way to group changes together.
-For examnple, when a change only matters on a single platform, an OS tag could
-(e.g. `[android]`, `[ios]`, etc) can provide important context when reviewing
-the change, and also make it easier similar changes.
+We should always try to provide tags, as a way to group changes together. For
+examnple, when a change only matters on a single platform, an OS tag could (e.g.
+`[android]`, `[ios]`, etc) can provide important context when reviewing the
+change, and also make it easier similar changes.
 
-This is strongly encouraged. A single grep then yields every fix that
-has touched the affected surface, and reviewers triaging a regression may be
-able to take advantage of such extra context.
+This is strongly encouraged. A single grep then yields every fix that has
+touched the affected surface, and reviewers triaging a regression may be able to
+take advantage of such extra context.
 
 Adding additional tags is very simple:
 
@@ -153,22 +150,20 @@ Adding additional tags is very simple:
 # [cr149][WIP] Guard against null TabStripModel
 ```
 
-
 ### Each change should reference at least one upstream culprit
 
 Rebase branch can grow to hundreds of changes. For reviewers, and future code
-archeologists, it is important that we provide the exact cause for introducing
-a change into the branch. The upstream changes driving our fixes are referred
-to as **culprits**, and the tooling provides ways to keep them in our history.
+archeologists, it is important that we provide the exact cause for introducing a
+change into the branch. The upstream changes driving our fixes are referred to
+as **culprits**, and the tooling provides ways to keep them in our history.
 
-`git cr commit --culprit <hash>` expands each hash into the commit message
-of the fix being done. This allows us to have a record, but also to use
+`git cr commit --culprit <hash>` expands each hash into the commit message of
+the fix being done. This allows us to have a record, but also to use
 `git log --grep` to find changes based on CL numbers or `crbug` issue numbers.
 
-
 Auto-generated upgrade messages (`Update from Chromium …`,
-`Update patches from Chromium …`, `Updated strings for Chromium …`) are
-left verbatim so they remain easy to grep.
+`Update patches from Chromium …`, `Updated strings for Chromium …`) are left
+verbatim so they remain easy to grep.
 
 We add culprits to commits using `git cr commit --culprit=[HASH,]`:
 
