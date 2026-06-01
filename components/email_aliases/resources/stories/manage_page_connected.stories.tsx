@@ -8,7 +8,10 @@ import { getLocale } from '$web-common/locale'
 import { StubEmailAliasesService, demoData } from './utils/stubs'
 import { ManagePageConnected } from '../email_aliases'
 import { SignInPage } from '../content/email_aliases_manage_page'
-import { EmailAliasesServiceObserverInterface } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import {
+  EmailAliasesServiceInterface,
+  EmailAliasesServiceObserverInterface,
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
 import {
   installMockAuthentication,
@@ -16,12 +19,9 @@ import {
 } from '../tests/mock_authentication'
 import '../content/strings'
 
-const loggedOutState = { loggedOut: {} } as AccountState
 const loggedInState = {
   loggedIn: { email: demoData.email },
 } as AccountState
-
-const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService()
 
 const stubEmailAliasesServiceAccountReadyInstance =
   new StubEmailAliasesService()
@@ -42,6 +42,28 @@ const bindListErrorObserver = (
 ) => {
   stubEmailAliasesServiceListErrorInstance.addObserver(observer)
   return () => {}
+}
+
+function ManagePageConnectedStory({
+  accountState,
+  emailAliasesService,
+  bindObserver,
+}: {
+  accountState: AccountState
+  emailAliasesService: EmailAliasesServiceInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+}) {
+  React.useEffect(() => {
+    installMockAuthentication(accountState)
+    return () => restoreMockAuthentication()
+  }, [accountState])
+
+  return (
+    <ManagePageConnected
+      emailAliasesService={emailAliasesService}
+      bindObserver={bindObserver}
+    />
+  )
 }
 
 export const SignInPageStory = () => {
