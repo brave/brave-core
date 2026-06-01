@@ -52,6 +52,12 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "BraveOriginPrefs";
 
+    /**
+     * Fragment argument: when true, show the restart snackbar on open (set by native when a
+     * purchase is first detected via credential refresh).
+     */
+    public static final String EXTRA_SHOW_RESTART_PROMPT = "show_restart_prompt";
+
     // Preference keys
     private static final String PREF_REWARDS_SWITCH = "rewards_switch";
     private static final String PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH =
@@ -75,6 +81,12 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
     /** Whether we are in the post-purchase "fetching credentials" state. */
     private boolean mIsFetchingCredentials;
+
+    /**
+     * Whether to show the restart snackbar on open. Set when the screen is opened by native after a
+     * credential-refresh purchase, where credentials are already present (no fetching spinner).
+     */
+    private boolean mShowRestartPrompt;
 
     /** References to the fetching/restart containers in the snackbar for toggling visibility. */
     @Nullable private View mFetchingContainer;
@@ -149,6 +161,11 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                     });
         }
 
+        Bundle args = getArguments();
+        if (args != null) {
+            mShowRestartPrompt = args.getBoolean(EXTRA_SHOW_RESTART_PROMPT, false);
+        }
+
         // Check if we are in the post-purchase state (credentials being fetched)
         if (BraveOriginSubscriptionPrefs.isFetchingCredentials(profile)) {
             mIsFetchingCredentials = true;
@@ -177,6 +194,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         super.onViewCreated(view, savedInstanceState);
         if (mIsFetchingCredentials) {
             showFetchingSnackbar();
+        } else if (mShowRestartPrompt) {
+            showRestartSnackbar();
         }
     }
 
