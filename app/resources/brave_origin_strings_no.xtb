@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Sikkerhetsverktøyene i Brave</translation>
 <translation id="1902837727299679178">Brave vil slette Passordlagring-dataene dine. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
 <translation id="4449148723378534338">Gjennomgå viktige personvern- og sikkerhetskontroller i Brave</translation>
-<translation id="5229247933547820267">For å spørre AI-modus om fanen din uten å forlate siden, logg på Brave. Du får også passordene dine med mer på alle enhetene dine.</translation>
 <translation id="1640672724030957280">Laster ned …</translation>
 <translation id="1680687534629375545">Spør Bildesøk om denne siden</translation>
 <translation id="509363484780540563">Du kan bruke Brave hver gang du klikker på linker i meldinger, dokumenter og andre apper. Den festes også til oppgavelinjen.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Vis alltid AI-modus</translation>
 <translation id="2472891440303445472">Brave har blokkert denne nedlastingen fordi filen er villedende og kan gjøre uventede endringer på enheten din</translation>
 <translation id="2054358978145431867">Du ser en forespørsel om å prøve <ph name="FEATURE_NAME"/> neste gang du åpner Brave iOS.</translation>
+<translation id="4315579854608498851">Brave slår av JavaScript-optimalisering når du besøker et nettsted for første gang.
+
+Hvis denne siden ikke fungerer som forventet, kan du prøve å tillate optimalisering.</translation>
 <translation id="2726948994393234543">Passordene dine og andre Brave-data du har lagret i Brave-kontoen din, blir fjernet fra denne enheten. For å bruke dem i Brave igjen, logg på igjen.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organisasjonen din sletter nettlesingsdata automatisk når Brave ikke har vært i bruk på 1 minutt. Dette kan omfatte loggen, autofyll og nedlastinger. Fanene dine forblir åpne.}other{Organisasjonen din sletter nettlesingsdata automatisk når Brave ikke har vært i bruk på # minutter. Dette kan omfatte loggen, autofyll og nedlastinger. Fanene dine forblir åpne.}}</translation>
 <translation id="2126108037660393668">Kunne ikke bekrefte den nedlastede filen.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Tilpass den nye Brave-profilen din</translation>
+<translation id="2430807206104224491">Du kan fortsette å chatte med AI-modus uten å bytte fane. Logg på Brave for å komme i gang. Du får også passordene dine med mer på alle enhetene dine.</translation>
 <translation id="4805865169608137960">For å fjerne Brave-kontoen din fra Brave, logg av Brave på Innstillinger-siden</translation>
 <translation id="1651639704310627074">Senere kan Brave spørre om du vil bruke lagret informasjon til å autofylle skjemaer</translation>
 <translation id="2585240446624043880">Brave kan ikke lese og skrive til egen datakatalog:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Hver profil har sin egen Brave-informasjon, som bokmerker, logg, passord med mer</translation>
 <translation id="6756656512757374876">Finn ut mer om <ph name="BEGIN_LINK"/>hvordan Brave holder dataene dine private<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Endringer i denne innstillingen tas i bruk når Brave startes på nytt.</translation>
+<translation id="3396870972301571614">Administrer utvidelsene dine ved å klikke på Utvidelser på hovedmenyen i Brave.</translation>
 <translation id="2535436634051789953">Du kan bytte til å se passord fra en annen Brave-profil</translation>
 <translation id="2312399718665761438">For å rette opp i skrivefeil sender Brave sender tekst du skriver i tekstfelt, til Brave</translation>
 <translation id="3507835409099344374">Gå til innstillinger for Brave-varsler</translation>

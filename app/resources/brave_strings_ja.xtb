@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Brave の安全性ツール</translation>
 <translation id="1902837727299679178">Brave がパスワード マネージャーのデータの削除をリクエストしています。続行するには、Windows のパスワードを入力してください。</translation>
 <translation id="4449148723378534338">Brave のプライバシーとセキュリティに関する重要な設定を確認します</translation>
-<translation id="5229247933547820267">ページを離れることなく、タブについて AI モードに質問するには、Brave にログインしてください。これにより、すべてのデバイスでパスワードなどの設定も使用できるようになります。</translation>
 <translation id="1640672724030957280">ダウンロードしています...</translation>
 <translation id="1680687534629375545">画像検索でこのページについて質問する</translation>
 <translation id="509363484780540563">メッセージ、ドキュメント、他のアプリのリンクをクリックしたときに、常に Brave で開くことができます。タスクバーにも固定されます。</translation>
@@ -95,6 +94,7 @@
 <translation id="2066690553719545730">AI モードを常に表示する</translation>
 <translation id="2472891440303445472">このダウンロードは Brave でブロックされました。ファイルが虚偽のもので、デバイスに予期しない変更を加える可能性があります</translation>
 <translation id="2054358978145431867">次回 Brave iOS を開いたときに、<ph name="FEATURE_NAME"/> を試すよう求めるメッセージが表示されます。</translation>
+<translation id="4315579854608498851">Brave では、サイトに初めてアクセスしたときに JavaScript の最適化が無効になります。このページが想定どおりに動作しない場合は、最適化を許可してみてください。</translation>
 <translation id="2726948994393234543">Brave アカウントに保存したパスワードなどの Brave データは、このデバイスから削除されます。Brave でこれらのデータを再度使用するには、もう一度ログインしてください。</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{1 分間使用しなかった場合、組織は Brave の閲覧データを自動的に削除します。これには、履歴、自動入力、ダウンロードが含まれます。タブは開いたままになります。}other{# 分間使用しなかった場合、組織は Brave の閲覧データを自動的に削除します。これには、履歴、自動入力、ダウンロードが含まれます。タブは開いたままになります。}}</translation>
 <translation id="2126108037660393668">ダウンロードしたファイルの検証で不合格でした。</translation>
@@ -208,6 +208,7 @@
 <translation id="3161522574479303604">すべての言語</translation>
 <translation id="3225882094369124157">パソコン上の別のプログラムにより、Brave の動作方法を変更する可能性のあるテーマが追加されました。<ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">新しい Brave プロフィールをカスタマイズ</translation>
+<translation id="2430807206104224491">タブを切り替えることなく、AI モードでチャットを続けることができます。開始するには、Brave にログインしてください。これにより、すべてのデバイスでパスワードなどの設定も使用できるようになります。</translation>
 <translation id="4805865169608137960">Brave から Brave アカウントを削除するには、[設定] ページで Brave からログアウトしてください</translation>
 <translation id="1651639704310627074">今後、Brave で保存した情報を使用してフォームに自動入力するかどうかを確認するメッセージが表示されます</translation>
 <translation id="2585240446624043880">Brave はこのデータ ディレクトリへの読み書きを実行できません:
@@ -492,6 +493,7 @@
 <translation id="8646609321956191980">Brave の情報（ブックマーク、履歴、パスワードなど）はプロフィールごとに分けて保持されます</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Brave でユーザーデータのプライバシーを保護する方法<ph name="END_LINK"/>についての詳細</translation>
 <translation id="3556601443414636547">この設定の変更内容は、Brave を再起動すると適用されます。</translation>
+<translation id="3396870972301571614">Brave メインメニューの [拡張機能] をクリックして拡張機能を管理できます。</translation>
 <translation id="2535436634051789953">別の Brave プロフィールに切り替えて、そのプロフィールのパスワードを表示できます</translation>
 <translation id="2312399718665761438">スペルミスを修正するために、テキスト欄に入力したテキストが Brave から Brave に送信されます</translation>
 <translation id="3507835409099344374">Brave の通知設定に移動</translation>

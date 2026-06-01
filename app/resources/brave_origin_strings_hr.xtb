@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Braveovi sigurnosni alati</translation>
 <translation id="1902837727299679178">Brave želi izbrisati vaše podatke Upravitelja zaporki. Upišite svoju zaporku za Windows da biste to dopustili.</translation>
 <translation id="4449148723378534338">Pregledajte ključne kontrole privatnosti i sigurnosti u Braveu</translation>
-<translation id="5229247933547820267">Da biste postavili pitanje AI načinu o svojoj kartici bez napuštanja stranice, prijavite se u Brave. Također ćete moći pristupati svojim zaporkama i drugim podacima na svim svojim uređajima.</translation>
 <translation id="1640672724030957280">Preuzimanje...</translation>
 <translation id="1680687534629375545">Postavite pitanja Brave pretraživanju slika o toj stranici</translation>
 <translation id="509363484780540563">Brave možete upotrebljavati svaki put kad kliknete veze u porukama, dokumentima i drugim aplikacijama. Prikvačit će se i na traku sa zadacima.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Uvijek prikaži AI način</translation>
 <translation id="2472891440303445472">Brave je blokirao ovo preuzimanje jer je ova datoteka obmanjujuća i može napraviti neočekivane promjene na vašem uređaju</translation>
 <translation id="2054358978145431867">Sljedeći put kad otvorite Brave iOS, prikazat će vam se upit da isprobate značajku <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Brave isključuje optimizaciju JavaScripta kad prvi put posjetite web-lokaciju.
+
+Ako ova stranica ne funkcionira ispravno, dopustite optimizaciju.</translation>
 <translation id="2726948994393234543">Vaše zaporke i drugi podaci iz Bravea koje ste spremili na Brave račun uklonit će se s ovog uređaja. Da biste ih ponovo upotrebljavali u Braveu, ponovo se prijavite.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Vaša organizacija automatski briše podatke o pregledavanju kada se Brave ne koristi jednu minutu. To može uključivati povijest, automatsko popunjavanje i preuzimanja. Kartice će ostati otvorene.}one{Vaša organizacija automatski briše podatke o pregledavanju kada se Brave ne koristi # minutu. To može uključivati povijest, automatsko popunjavanje i preuzimanja. Kartice će ostati otvorene.}few{Vaša organizacija automatski briše podatke o pregledavanju kada se Brave ne koristi # minute. To može uključivati povijest, automatsko popunjavanje i preuzimanja. Kartice će ostati otvorene.}other{Vaša organizacija automatski briše podatke o pregledavanju kada se Brave ne koristi # minuta. To može uključivati povijest, automatsko popunjavanje i preuzimanja. Kartice će ostati otvorene.}}</translation>
 <translation id="2126108037660393668">Preuzeta datoteka nije zadovoljila provjeru.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Prilagodba novog profila u Braveu</translation>
+<translation id="2430807206104224491">Možete nastaviti razgovarati u AI načinu bez prebacivanja kartica. Za početak se prijavite u Brave. Također ćete moći pristupati svojim zaporkama i drugim podacima na svim svojim uređajima.</translation>
 <translation id="4805865169608137960">Da biste uklonili svoj Brave račun iz Bravea, odjavite se iz Bravea na stranici Postavke</translation>
 <translation id="1651639704310627074">Brave vas poslije može pitati želite li upotrijebiti spremljene podatke za automatsko popunjavanje obrazaca</translation>
 <translation id="2585240446624043880">Brave ne može čitati iz svojeg podatkovnog direktorija niti u njega pisati:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Svaki profil ima vlastite podatke u Braveu kao što su oznake, povijest, zaporke i slično</translation>
 <translation id="6756656512757374876">Saznajte više o tome <ph name="BEGIN_LINK"/>kako Brave štiti privatnost vaših podataka<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Promjene ove postavke primijenit će se nakon ponovnog pokretanja Bravea.</translation>
+<translation id="3396870972301571614">Upravljajte svojim proširenjima tako da u glavnom izborniku Bravea kliknete Proširenja.</translation>
 <translation id="2535436634051789953">Možete se prebaciti da biste vidjeli zaporke s nekog drugog profila na Braveu</translation>
 <translation id="2312399718665761438">Brave Braveu šalje tekst koji utipkate u tekstualna polja kako bi ispravio pravopisne pogreške</translation>
 <translation id="3507835409099344374">Otvori postavke obavijesti za Brave</translation>

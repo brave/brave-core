@@ -194,20 +194,12 @@
 <translation id="6587448235155023666">Muutokset tulevat voimaan, kun käynnistät Braven uudelleen seuraavan kerran</translation>
 <translation id="8701563696941209024">KÄYNNISTÄ UUDELLEEN NYT</translation>
 <translation id="834487290629916192">MYÖHEMMIN</translation>
-<translation id="4117451092682672487">Yksinkertainen tietosuoja.</translation>
-<translation id="7909375417585209817">Kun Brave on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.</translation>
 <translation id="763369711159699222">Auta parantamaan Bravea</translation>
 <translation id="8025937231644975408">Kerro meille, mistä toiminnoista pidät eniten.</translation>
-<translation id="6718362830686703942">Lähetä diagnostiikkaraportteja, jos selain kaatuu tai jäätyy.</translation>
-<translation id="8616157231067364693">Jaa yksityisiä ja nimettömiä tuotetietoja siitä, mitä ominaisuuksia Braven käyttäjät käyttävät.</translation>
 <translation id="2888496576732880897">Auta Brave Searchia kasvamaan</translation>
 <translation id="7198716519700700181">Estä keskeytykset suoratoiston aikana</translation>
 <translation id="7044431516245362795">Auta kasvattamaan hakemistoa ja parantamaan hakutuloksia osallistumalla Web Discovery Projectiin. <ph name="LEARN_MORE_START"/>Lue lisää.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave-logo</translation>
-<translation id="1389386068457132299">Onboarding-tausta</translation>
-<translation id="5101985748360228609">Ylälehtikoristeilu</translation>
-<translation id="5270920361877570459">Alalehtikoristeilu</translation>
-<translation id="4021716437419160885">Vieritä alas</translation>
 <translation id="4767173360729868049">Auta Brave Searchia kasvamaan -kuvitus</translation>
 <translation id="8241918461631453498">Estä keskeytykset -kuvitus</translation>
 <translation id="8213310572767907663">Tee Bravesta parempi -kuvitus</translation>
@@ -223,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> ja muita mainoksia ja seurantavälineitä estetty</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> mainosta ja seurantavälinettä estetty</translation>
 <translation id="8281886186245836920">Ohita</translation>
-<translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="986879628471635371">Perehdytysprosessin vianetsintä</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Ansaitse <ph name="TOKEN"/>s</translation>
@@ -373,7 +364,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="944340256927461196">Älä jätä jälkiä laitteellesi</translation>
 <translation id="2063044449012253966">Sivustot, joilla vierailet yksityisissä ikkunoissa, eivät näy historiassasi. Evästeet, lomaketiedot ja sivuston tiedot häviävät, kun kaikki yksityiset ikkunat suljetaan.</translation>
 <translation id="7395764193745523646">Selauksen näkyvyys</translation>
-<translation id="8670344404057978375">Huomaa, että jopa yksityisissä ikkunoissa selaaminen voi silti näkyä Internet-palveluntarjoajallesi, verkon tarkkailijoille tai työnantajallesi (jos käytät työlaitetta tai -verkkoa).</translation>
+<translation id="8435098045013317895">Huomaa, että jopa yksityisissä ikkunoissa selaamisesi voi silti näkyä Internet-palveluntarjoajallesi, verkon tarkkailijoille tai työnantajallesi (jos käytät työkonetta tai -verkkoa).</translation>
 <translation id="1413177583895309156">Brave VPN salaa ja suojaa kaiken, mitä teet verkossa –myös Brave-selaimen ulkopuolella.</translation>
 <translation id="3974348661685061050">Kokeile ilmaiseksi 7 päivän ajan</translation>
 <translation id="5789441016350810005">Brave Ads lähetetty selaimen ollessa taustalla</translation>
@@ -514,6 +505,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2718046830255553131">Yksityisyysraporttitiedot on nollattu.</translation>
 <translation id="8376263745431603066">Ota yötila käyttöön (kokeellinen)</translation>
 <translation id="1383876407941801731">Hae</translation>
+<translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="13296465911709339">Tekstisi on kopioitu leikepöydälle.</translation>
 <translation id="2735834606413553397">Julkinen osoite on kopioitu leikepöydälle.</translation>
 <translation id="2977461003134694205">Yksityisyysstatistiikka</translation>
@@ -974,23 +966,21 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7659483790930268440">Osoitehakutaulukon indeksi:</translation>
 <translation id="5494920125229734069">Valitse kaikki</translation>
 <translation id="2361906291514218784">Leo-tekoäly</translation>
+<translation id="2935698011275148880">Rohkea alkuperä</translation>
 <translation id="944736176598169208">Palkinnot</translation>
 <translation id="1199170151481311646">Yksityisyyden suojaava analytiikka</translation>
 <translation id="1706715315466634757">Sähköpostin peitenimet</translation>
-<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">Uutiset</translation>
 <translation id="5990642573624858459">Tilastojen raportointi</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Nollaa oletusasetukset</translation>
-<translation id="4922034974043704366">Tämä ominaisuus on käytössä, koska olet valinnut sen.</translation>
 <translation id="2587535830241068901">Mukauta selaimesi ja tue silti Bravea</translation>
-<translation id="7235314227387539944">Brave Origin on maksettu selainversio käyttäjille, jotka eivät tarvitse kaikkia ominaisuuksia, jotka tukevat Bravea liiketoimintana, mutta haluavat silti yksityisyyden, jonka vain Brave tarjoaa. Origin-käyttäjät saavat edelleen hyötyä alan johtavasta yksityisyydestä, mainostenestosta ja nopeudesta (Brave-suojauksen kautta), sekä säännöllisistä ohjelmistopäivityksistä, Chromium-korjauksista ja turvallisuus- ja yksityisyysparannuksista. Origin poistaa useimmat muut ominaisuudet selaimesta.</translation>
-<translation id="7941943775131052130">Huomaa, että Brave Origin -osto sisältää myös pääsyn Brave-haussa (premium), koska Origin poistaa mainokset Brave-haun tulossivulta.</translation>
+<translation id="123297831435065577">Brave Origin on maksettu selainversio käyttäjille, jotka eivät tarvitse kaikkia ominaisuuksia, jotka tukevat Bravea liiketoimintana, mutta haluavat silti yksityisyyden, jonka vain Brave tarjoaa. Origin-käyttäjät saavat edelleen hyötyä alan johtavasta yksityisyydestä, mainostenestosta ja nopeudesta (Suojauksen kautta), sekä säännöllisistä ohjelmistopäivityksistä, Chromium-korjauksista ja turvallisuus- ja yksityisyysparannuksista.</translation>
 <translation id="2573819149217596923">Brave-ominaisuuksien muuttaminen</translation>
 <translation id="7415416427817229128">Brave-ominaisuuden ottaminen käyttöön tai poistaminen käytöstä vaatii selaimen uudelleenkäynnistyksen muutosten soveltamiseksi. Haluatko käynnistää uudelleen nyt?</translation>
 <translation id="2256115617011615191">Käynnistä uudelleen nyt</translation>
 <translation id="2160089182263405907">Ominaisuuksien poistaminen käytöstä</translation>
-<translation id="3362364767724670721">Brave-ominaisuuden käyttöön ottaminen tai poistaminen edellyttää selaimen uudelleenkäynnistystä muutosten soveltamiseksi. Napsauta <ph name="BEGIN_BOLD"/>Käynnistä uudelleen nyt<ph name="END_BOLD"/> sen jälkeen, kun Origin on päivittänyt.</translation>
+<translation id="7530313002494358590">Brave-ominaisuuden käyttöön ottaminen tai poistaminen edellyttää selaimen uudelleenkäynnistystä muutosten soveltamiseksi. Napsauta <ph name="BEGIN_BOLD"/>Käynnistä uudelleen nyt<ph name="END_BOLD"/> sen jälkeen, kun Brave Origin on päivittänyt.</translation>
 <translation id="1028940738207645746">Haluatko varmasti nollata kaikki asetukset oletuksiksi?</translation>
 <translation id="5939518447894949180">Tyhjennä</translation>
 <translation id="8554205386170195281">Osta</translation>
@@ -1121,9 +1111,9 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6261139507111008244">Tue missiotamme &amp; avoimen lähdekoodin työ</translation>
 <translation id="6073373503121903099">Minimaaalinen selaimen käyttöliittymä, joka keskittyy Brave-suojaukseen</translation>
 <translation id="2267973897341040743">Säilytä mainosten eston, yksityisyyden suojan ja &amp; nopeuden ydin.</translation>
-<translation id="3339535734679532460">Kertaosto, ei lisämaksuja</translation>
-<translation id="2805615640226281689">Kertaluonteinen osto</translation>
-<translation id="261433018299584676">Hanki kirjautumiskoodi</translation>
+<translation id="4059093523966730868">Kertaluonteinen osto voidaan aktivoida useita kertoja kaikilla laitteillasi</translation>
+<translation id="7006681677649762716">Kertaluonteinen osto</translation>
+<translation id="8707617004598499947">Vahvista Brave Origin -osto</translation>
 <translation id="1943432128510653496">Salasanojen tallentaminen</translation>
 <translation id="2100273922101894616">Automaattinen kirjautuminen</translation>
 <translation id="363596933471559332">Kirjaudu automaattisesti verkkosivustoille käyttämällä tallennettuja kirjautumistietoja. Jos tämä toiminto ei ole käytössä, sinua pyydetään vahvistamaan kirjautuminen aina, kun kirjaudut sivustolle.</translation>
@@ -1182,12 +1172,14 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7400418766976504921">URL-osoite</translation>
 <translation id="6410668567036790476">Lisää hakukone</translation>
 <translation id="6289878295410648689">Kirjoita haun URL-osoite ja korvaa kysely kohteella <ph name="SPECIAL_SYMBOL"/>.</translation>
-<translation id="8943582268084103903">Esimerkiksi: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Jos sivusto tukee OpenSearchia, vaihtoehto lisätään automaattisesti, kun muokkaat tätä kenttää.</translation>
+<translation id="1298325705808878139">Esimerkiksi: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
 <translation id="8706939021136180678">URL-osoite ei kelpaa.</translation>
-<translation id="6528099556282059181">Tämä hakukone on jo lisätty.</translation>
+<translation id="5144960943371551167">Otsikko voi sisältää vain kirjaimia, numeroita ja välilyöntejä.</translation>
+<translation id="7361775378755455309">Tällä avainsanalla on jo olemassa hakukone.</translation>
 <translation id="463451857046640291">Hakukoneen lisääminen epäonnistui.</translation>
 <translation id="1229671956956864948">Hakukoneen päivittäminen epäonnistui.</translation>
 <translation id="1462771969120037152">Hakukoneen poistaminen epäonnistui. Poistettava hakukone voi olla asetettu oletushakukoneeksi.</translation>
 <translation id="1079140196216383600">Poista mukautettu hakukone</translation>
 <translation id="525276572490219787">Haluatko varmasti poistaa "<ph name="SEARCH_ENGINE_NAME"/>"? Tätä toimenpidettä ei voi peruuttaa.</translation>
+<translation id="6406506848690869874">Synkronointi</translation>
 </translationbundle>

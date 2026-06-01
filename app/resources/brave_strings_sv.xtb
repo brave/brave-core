@@ -54,7 +54,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="6570689355868013775">Säkerhetsverktyg i Brave</translation>
 <translation id="1902837727299679178">Brave vill radera din data i Lösenordshantering. Skriv ditt Windows-lösenord om du vill tillåta detta.</translation>
 <translation id="4449148723378534338">Granska viktiga integritets- och säkerhetskontroller i Brave</translation>
-<translation id="5229247933547820267">Logga in i Brave om du vill fråga AI-läget om fliken utan att lämna sidan. Du får även dina lösenord med mera på alla dina enheter.</translation>
 <translation id="1640672724030957280">Hämtar ...</translation>
 <translation id="1680687534629375545">Fråga bildsökning om den här sidan</translation>
 <translation id="509363484780540563">Du kan använda Brave varje gång du klickar på länkar i meddelanden, dokument och andra appar. Det fästs även i aktivitetsfältet.</translation>
@@ -98,6 +97,9 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="2066690553719545730">Visa alltid AI-läget</translation>
 <translation id="2472891440303445472">Den här nedladdningen blockerades av Brave eftersom filen är bedräglig och kan göra oväntade ändringar på enheten</translation>
 <translation id="2054358978145431867">Du får en uppmaning om att testa <ph name="FEATURE_NAME"/> nästa gång du öppnar Brave för iOS.</translation>
+<translation id="4315579854608498851">Brave inaktiverar JavaScript-optimering när du besöker en webbplats för första gången.
+
+Om sidan inte fungerar som förväntat kan du testa att tillåta optimering.</translation>
 <translation id="2726948994393234543">Dina lösenord och annan Brave-data som du har sparat i Brave-kontot tas bort från den här enheten. Logga in på nytt om du vill använda dem igen i Brave.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organisationen raderar automatiskt webbinformation när Brave inte har använts på 1 minut. Detta kan innefatta historik, autofyll och nedladdningar. Flikarna förblir öppna.}other{Organisationen raderar automatiskt webbinformation när Brave inte har använts på # minuter. Detta kan innefatta historik, autofyll och nedladdningar. Flikarna förblir öppna.}}</translation>
 <translation id="2126108037660393668">Den nedladdade filen gick inte att verifiera.</translation>
@@ -213,6 +215,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Anpassa din nya Brave-profil</translation>
+<translation id="2430807206104224491">Du kan fortsätta chatta med AI-läget utan att byta flikar. Kom igång genom att logga in i Brave. Du får även dina lösenord med mera på alla dina enheter.</translation>
 <translation id="4805865169608137960">Du kan ta bort Brave-kontot från Brave genom att logga ut från Brave på sidan Inställningar</translation>
 <translation id="1651639704310627074">Senare kan Brave fråga om du vill använda sparade uppgifter för att fylla i formulär automatiskt</translation>
 <translation id="2585240446624043880">Brave kan inte läsa och skriva till datakatalogen:
@@ -501,6 +504,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8646609321956191980">I alla profiler sparas egen Brave-information som bokmärken, historik, lösenord och annat</translation>
 <translation id="6756656512757374876">Läs mer om <ph name="BEGIN_LINK"/>hur Brave skyddar din data<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Ändringar av den här inställningen tillämpas när Brave startas om.</translation>
+<translation id="3396870972301571614">Hantera dina tillägg genom att klicka på Tillägg i Braves huvudmeny.</translation>
 <translation id="2535436634051789953">Du kan byta för att se lösenord från en annan Brave-profil</translation>
 <translation id="2312399718665761438">Brave skickar det du skriver i textfält till Brave för att kontrollera stavningen</translation>
 <translation id="3507835409099344374">Öppna aviseringsinställningarna för Brave</translation>

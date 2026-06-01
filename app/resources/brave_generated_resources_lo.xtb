@@ -131,7 +131,7 @@
 <translation id="8184318863960255706">ຂໍ້ມູນເພີ່ມເຕີມ</translation>
 <translation id="780301667611848630">ບໍ່ເປັນຫຍັງ ຂອບໃຈ</translation>
 <translation id="1162706247109707219">ໂດຍການກົດ OK, ທ່າCommasຢ່າງມາດເຜີຊິຄຳຫມາມືມຕານຂັດຂ້ອງພາຍໃນສາງຕອນໃນຮູບເປັນ້ຮູບເປັນແລະພາຍນໍໄວ້ກວດ</translation>
-<translation id="2971591422768125177">ໂດຍການກົດ OK, ທ່ານຊະນົກລຸ່ມຕາຍກໍາມາດໂທວາໄດໄດໃນໂອໂຜຫມື່ນໄລ້ 15 ຫລືດັດຊື່ມາດເດຸ...ແລູາໄດເວກດັງບໍເດິດໃໝ່</translation>
+<translation id="2971591422768125177">ໂດຍການກົດ ຕົກລົງ, ທ່ານຮັບຮູ້ວ່າການຕິດຕັ້ງ Brave ຂອງທ່ານຈະບໍ່ໄດ້ຮັບການແກ້ໄຂດ້ານຄວາມປອດໄພທີ່ສຳຄັນຈົນກວ່າທ່ານຈະອັບເດດເປັນ macOS 13 ຫຼືໃໝ່ກວ່າ. ຄຳເຕືອນນີ້ຈະບໍ່ສະແດງອີກ.</translation>
 <translation id="6020553119523541665">ແທບນີ້ແມ່ນກຳລັງເຜຜູ້ອີກນາມ</translation>
 <translation id="4987392683074136770">ກາລັງກົດກັບແທບນີ້ຈະເວິ່ນໄປໂມ່ນສານການຕອນ</translation>
 <translation id="8355523213948477234">ບຸດເມນູການແບ່ງເວິໆ</translation>
@@ -177,7 +177,7 @@
 <translation id="3405021928725149239">ຜູ້ຈັດການບຸກມາກ</translation>
 <translation id="6284218950354553099">ສົ່ງ Ping ການໃຊ້ງານປະຈຳໄປຫາ Brave ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="694500751416448436">ການ Ping ສ່ວນຕົວນີ້ເຮັດໃຫ້ Brave ປະເມີນຈຳນວນຜູ້ໃຊ້ທີ່ໃຊ້ງານໄດ້</translation>
-<translation id="1872784258300710671">Brave ໃຊ້ການວິເຄາະຜະລິດຕະພັນທີ່ເປັນສ່ວນຕົວຢ່າງສົມບູນເພື່ອປະເມີນການໃຊ້ງານລວມຂອງບາງຟີເຈີີ</translation>
+<translation id="5047771074267454980">Brave ໃຊ້ການວິເຄາະຜະລິດຕະພັນທີ່ເປັນສ່ວນຕົວເພື່ອປະເມີນການໃຊ້ງານລວມຂອງບາງຟີເຈີ</translation>
 <translation id="8712637175834984815">ເຂົ້າໃຈແລ້ວ</translation>
 <translation id="4394049700291259645">ປິດໃຊ້</translation>
 <translation id="7142548388914389999">ອະນຸຍາດການວິເຄາະຜະລິດຕະພັນກ່ຽວກັບຄວາມເປັນສ່ວນຕົວ</translation>
@@ -192,23 +192,29 @@
 <translation id="191143826155037518">Brave ຖືກມີພ້ອມໃຫ້ທ່ານພາຍໃຕ້ <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) ແລະມີ <ph name="BEGIN_LINK_OSS"/>ໂປແກຼມເປີດເທົາ<ph name="END_LINK_OSS"/>ໃຕ້ພາບໃຫຍ່ຂອງໃບອະນຸຍາດອື່ນໆ ທ່ານສາມາດອ່ານ <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ຄູ່ມືການດາວໂຫລດແລະກໍ່ສ້າງດ້ວຍຕົນເອງ<ph name="END_LINK_BUILD_INSTRUCTIONS"/> ຊອດໂຄດສ້າງຕົ້ນສະບັບນີ້ <ph name="BEGIN_LINK_SOURCE_CODE"/>ທີ່ຖືກນຳໃຊ້ເພື່ອສ້າງສຳເນົານີ້<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">ບຸກມາກທຸກແຖບ...</translation>
 <translation id="3987546108749866209">ໃຊ້ແຖບແນວນອນ</translation>
+<translation id="8784551623584887013">ໂໝດໂຟກັສ</translation>
 <translation id="1904394285866191268">{NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}</translation>
 <translation id="5179127818058486126">{NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}</translation>
 <translation id="2289567621059034186">ແຖບໃຫມ່ທາງລຸ່ມ</translation>
 <translation id="3228962656492373217">ປິດແຖບທາງລຸ່ມ</translation>
 <translation id="8030501904366631501">ຄວາມທຸກແຖບມາຢູ່ໜ້າຕ່າງນີ້</translation>
 <translation id="253980346046488815">ປິດແຖບຊໍ້າກັນ</translation>
+<translation id="5140474419843357176">ບໍ່ມີຄອນເທນເນີ</translation>
 <translation id="8670218546624422041">ເປີດໃນເຕິນເອນເນອຍ</translation>
+<translation id="194205047181722473">ເປີດລິ້ງໃນຄອນເທນເນີ</translation>
 <translation id="8638526693050780542">ຈັດການເປີດເຕີນເອນເນອຍ</translation>
 <translation id="2336228925368920074">ບຸກມາກທຸກແຖບ...</translation>
 <translation id="2523967823495420116">ໃຊ້ແຖບແນວນອນ</translation>
+<translation id="5483718923712878759">ໂໝດໂຟກັສ</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}</translation>
 <translation id="2120478168904746065">{NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}</translation>
 <translation id="4405580203042711503">ແຖບໃຫມ່ທາງລຸ່ມ</translation>
 <translation id="5611474372949142946">ປິດແຖບທາງລຸ່ມ</translation>
 <translation id="573844928911967687">ຄວາມທຸກແຖບມາຢູ່ໜ້າຕ່າງນີ້</translation>
 <translation id="2703180365855369896">ປິດແຖບຊໍ້າກັນ</translation>
+<translation id="7678994190810851607">ບໍ່ມີຄອນເທນເນີ</translation>
 <translation id="1987871867023021397">ເປີດໃນເຕີນເອນເນອຍ</translation>
+<translation id="1185644444415356776">ເປີດລິ້ງໃນຄອນເທນເນີ</translation>
 <translation id="6745991613881384719">ຈັດການເປີດເອນເຕີນເນອຍໄດ້</translation>
 <translation id="3704707436873245822">ຄັດລອກຂໍ້ຄວາມຈາກຮູບ</translation>
 <translation id="5268098808165185458">ກຳລັງຄັດລອກຂໍ້ຄວາມຈາກຮູບ...</translation>
@@ -340,6 +346,7 @@
 <translation id="6724227215236550330">ລະຫັດຜ່ານທີ່ຖືກບັນທຶກໄວ້ຈະສະແດງຢູ່ບ່ອນນີ້. ຫາກຕ້ອງການນຳເຂົ້າລະຫັດຜ່ານໄປ <ph name="BRAND"/> ໃນອຸປະກອນນີ້, ໃຫ້ເລືອກ <ph name="BEGIN_LINK"/> ເລືອກຟາຍ CVS<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">ຫາກຕ້ອງການນຳເຂົ້າລະຫັດຜ່ານໄປ <ph name="BRAND"/> ໃນອຸປະກອນນີ້, ໃຫ້ເລືອກຟາຍ CVS</translation>
 <translation id="8570228839666486945">AI ໃນອຸປະກອນ</translation>
+<translation id="3456536577668402695">ການຄົ້ນຫາ ແລະ ເນື້ອຫາໜ້າເວັບຂອງທ່ານຖືກປະມວນຜົນຢູ່ໃນອຸປະກອນນີ້. ບໍ່ມີຫຍັງຖືກສົ່ງໄປຫາ Brave ຫຼື ຖືກເບິ່ງໂດຍຜູ້ກວດສອບທີ່ເປັນມະນຸດ.</translation>
 <translation id="9156965752763025780">ການປ່ຽນແປງຂອງທ່ານຈະມີຜົນໃນຄັ້ງຕໍ່ໄປທີ່ທ່ານເປີດໃຊ້ງານ Brave   ໃໝ່.</translation>
 <translation id="7179921470347911571">ເປີດໃໝ່ດຽວນີ້</translation>
 <translation id="1426410128494586442">ແມ່ນ</translation>
@@ -385,6 +392,7 @@
 <translation id="3367129510799209147">ໂໝດເຊື່ອມແທບ</translation>
 <translation id="8925055964134259461">ຂະໝອດແຖບຕັ້ງຕໍ່ແຕ່ຫນ້າຕ່າງໂດຍອັດຕະໂນມັດ</translation>
 <translation id="916373084491701212">ເອີໂອໂທນີ້ຄືການສະແດງເອີໂອໂພນໄອນໄຊຍ້າຍໃຊ້</translation>
+<translation id="1323764665799785118">ສະແດງປຸ່ມເລື່ອນຢູ່ໃນແຖບແທັບແນວນອນ</translation>
 <translation id="515949045075831661">ສະແດງຢູ່ດ້ານຂວາ</translation>
 <translation id="3725395376319291415">ສະແດງຢູ່ດ້ານຊ້າຍ</translation>
 <translation id="2113977810652731515">ກາດ</translation>
@@ -506,9 +514,7 @@
 <translation id="4088315951291671239">ບໍ່ແປຂໍ້ຄວາມນີ້ນີ້ຫາກທ່ານບໍ່ໄດ້ເຂົ້າໃຈມັນວ່າຫໍ່ມັນມີແນວເລກ. ນີ້ສາມາດສົ່ງກົດໂອນນີ້ຕໍ່ການໃຊ້ຮອກຂ້າມ.</translation>
 <translation id="3020183492814296499">ທາງລັງສັນຍານ</translation>
 <translation id="2935698011275148880">Brave ຕົ້ນກໍາເນີດ</translation>
-<translation id="2587535830241068901">ປັບແຕ່ງ browser ຂອງທ່ານໂດຍຍັງຄົງສະໜັບສະໜູນ Brave</translation>
-<translation id="553273341094971255">Brave ຕົ້ນກໍາເນີດຊ່ວຍໃຫ້ທ່ານປັບຕົວ Brave ໃຫ້ເໝາະກັບຄວາມຕ້ອງການຂອງທ່ານ ແລະລຶບໂຄສະນາໃນ app, ໂຄສະນາຖືອຍຫ້ອຍ, ແລະການວິເຄາະຄວາມເປັນສ່ວນຕົວໂດຍນິນາມທີ່ທ່ານອາດໄດ້ເປີດໃຊ້ລະຫວ່າງການຕິດຕັ້ງ.</translation>
-<translation id="534725333104202278">ສ່ວນເສີມ ຫຼື ຟີຈໍເກີ່ຍວທີ່ທ່ານເຄີຍເປີດໃຊ້ຫຼືນໍາໃຊ້ຈະຍັງຄົງຢູ່ ໃນຂະນະທີ່ສ່ວນທີ່ເຫຼືອຈະຖືກປິດໃຊ້ງານ. ສາມາດປັບຕົວ Brave ໃຫ້ເໝາະສົມຂຶ້ນໄດ້ໃນຂະນະທີ່ພວກເຮົາສົ່ງມອບຟີຈໍໃໝ່ເຂົ້າສູ່ browser. ຟີຈໍເຫຼົ່ານີ້ຈະປາກົດໂດຍງຽບໆ ແລະຖືກເຊື່ອງເຊິ່ງໄວ້ໂດຍຄ່າຕົ້ນຂອງພາແນລຄວບຄຸມ Brave Tົ້ນກໍາເນີດ.</translation>
+<translation id="3486906647205325617">ການປ່ຽນແປງບາງຢ່າງຈໍາເປັນຕ້ອງເລີ່ມຕົ້ນ ບຣາວເຊີ ໃໝ່ ເພື່ອໃຫ້ມີຜົນສົມບູນ.</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="944736176598169208">Rewards</translation>
 <translation id="2839742394543397416">ຂໍ້ມູນວິເຄາະ</translation>
@@ -516,12 +522,12 @@
 <translation id="6709133671862442373">ຂ່າວສານ</translation>
 <translation id="6297791103122079275">ສົນທະນາ</translation>
 <translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="4590997608186539865">Playlist</translation>
 <translation id="1199170151481311646">ຂໍ້ມູນວິເຄາະທີ່ປົກປ້ອງຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="5990642573624858459">ການລາຍງານສະຖິຕິ</translation>
 <translation id="2441719842399509963">ຕັ້ງຄ່າທັງຫມົດໃຫ້ເປັນຄ່າເລີ່ມຕົ້ນ</translation>
-<translation id="4530494379350999373">ໃບແກ້ນພື້ນທີ່</translation>
-<translation id="2964215604640804042">Brave Origin ແມ່ນ​ລາຍ​ຊື່​ຈ່າຍ​ຂອງ​ບ​ໄວ​ສໍາ​ລັບ​ຜູ້​ໃຊ້​ທີ່​ບໍ່​ຕ້ອງ​ການ​ຄຸ​ນ​ສົມ​ບັ​ດ​ທັ້ງ​ໝົດ​ທີ່​ສະ​ຫນັບ​ສະ​ຫນູນ Brave ເປັນ​ທຸ​ລະ​ກິດ, ແຕ່​ຍັງ​ຕ້ອງ​ການ​ຄວາ​ມ​ເປັນ​ສ່ວນ​ຕົວ​ທີ່ Brave ເທົ່າ​ນັ້ນ​ຖືກ​ສະ​ເໜີ. ຜູ້​ໃຊ້ Brave Origin ຈະ​ສືບ​ຕໍ່​ໄດ້​ຮັບ​ຜົນ​ປະ​ໂຫຍ​ດ​ຈາກ​ຄວາ​ມ​ເປັນ​ສ່ວນ​ຕົວ​ທີ່​ນໍາ​ອຸດ​ສະ​ຫະ​ກໍາ, adblock, ແລະ​ຄວາ​ມ​ໄວ (ຜ່ານ Brave Shields), ເຊັ່ນ​ດຽວ​ກັນ​ກັບ​ການ​ອັບ​ເດດ​ຊອບ​ແວ​ທີ່​ເປັນ​ປະ​ຈໍາ, Chromium patches, ແລະ​ການ​ປັບ​ປຸງ​ຄວາ​ມ​ປອ​ດ​ໄພ​ແລະ​ຄວາ​ມ​ເປັນ​ສ່ວນ​ຕົວ. ພວກ​ເຂົາ​ເຈົ້າ​ຍັງ​ຈະ​ປົດ​ລັອກ​ຕົວ​ເລືອກ​ເພື່ອ​ປິດ​ວາງ​ຄຸ​ນ​ສົມ​ບັ​ດ​ເຊັ່ນ AI, Rewards, Wallet, VPN, Web3 domains, ແລະ​ອື່ນໆ.</translation>
-<translation id="9130916892338379417">Brave Origin ແມ່ນ​ອາ​ທ​ສະ​ຫ​ຍາຍ​ໂດຍ​ການ​ຊື້​ຄັ້ງ​ດຽວ. ໃນ​ມືຖື (Android ແລະ iOS) ແລະ desktop, Origin ສາ​ມາດ​ເປັນ​ຊື້​ໄດ້​ເປັນ​ການ​ອັບ​ເກ​ເກດ​ໃຫ້​ກັບ​ລາຍ​ຊື່​ປະ​ຈໍາ​ປະ​ຈຸ​ບັນ​ຂອງ​ທ່ານ. ໃນ desktop, Origin ຍັງ​ທີ່ມີ​ໄດ້​ເປັນ​ແອັບ​ຜິດ​ສະ​ ໋ຣອກ, ສ້າງ​ຂຶ້ນ​ດ້ວຍ​ຕົວ​ເອງ. ຜູ້​ໃຊ້ Origin ຈະ​ເຫັນ​ແຜງ​ຄວບ​ຄຸມ​ໃໝ່​ໃນ​ເມ​ນູ​ການ​ຕັ້ງ​ຄ່າ. ລັກ​ສະ​ນະ​ທີ່​ມີ​ຢູ່—ຕະ​ຫຼາດ​ເປັນ​ອື່ນ​ໆ​ລັກ​ສະ​ນະ​ໃໝ່​ທີ່​ພວກ​ເຮົາ​ສົ່ງ​ສະ​ເໜີ​ໃນ​ອະ​ນາ​ຄົດ—​ຈະ​ປະ​ກົດ​ຂຶ້ນ​ທີ່​ນີ້, ແລະ​ເປັນ​ສະ​ຫ​ຖາ​ບ​ປິດ​ໄວ້​ຕາມ​ຄ່າ​ເລີ່ມ​ຕົ້ນ.</translation>
+<translation id="2587535830241068901">ປັບແຕ່ງ browser ຂອງທ່ານໂດຍຍັງຄົງສະໜັບສະໜູນ Brave</translation>
+<translation id="123297831435065577">Brave Origin ແມ່ນເວີຊັນແບບເສຍຄ່າຂອງ ບຣາວເຊີ ສຳລັບຜູ້ໃຊ້ທີ່ບໍ່ຕ້ອງການຄຸນສົມບັດທັງໝົດທີ່ສະໜັບສະໜຸນ Brave ເປັນທຸລະກິດ, ແຕ່ຍັງຕ້ອງການຄວາມເປັນສ່ວນຕົວທີ່ Brave ເທົ່ານັ້ນສະເໜີໃຫ້. ຜູ້ໃຊ້ Origin ຈະສືບຕໍ່ໄດ້ຮັບຜົນປະໂຫຍດຈາກຄວາມເປັນສ່ວນຕົວອັນດັບໜຶ່ງຂອງພວກເຮົາ, adblock, ແລະ ຄວາມໄວ (ຜ່ານ Shields), ພ້ອມທັງການອັບເດດຊອບແວເປັນປະຈໍາ, ແພັດ Chromium, ແລະ ການປັບປຸງຄວາມປອດໄພ ແລະ ຄວາມເປັນສ່ວນຕົວ.</translation>
 <translation id="7984508421152399880">ຊື້​ໃນ​ປະ​ຈຸ​ບັນ</translation>
 <translation id="5567412479632285879">Brave Rewards ໄດ້ຖືກປິດ</translation>
 <translation id="413570371620795359">ເປີດລາງວັນສະແດງເພື່ອເປີດໃຊ້ງານແລະເລີ່ມຕົ້ນ</translation>
@@ -565,6 +571,7 @@
 <translation id="5747552184818312860">ໝົດອາຍຸ</translation>
 <translation id="3858860766373142691">ຊື່</translation>
 <translation id="361106536627977100">ຂໍ້ມູນ Flash</translation>
+<translation id="4530494379350999373">ໃບແກ້ນພື້ນທີ່</translation>
 <translation id="8195027750202970175">ຂະໜາດໃນເດັດສະສາກ</translation>
 <translation id="9116465289595958864">ປ່ຽນແປງຄັ້ງສຸດທ້າຍ</translation>
 <translation id="4590324241397107707">ການຈັດເກັບຂໍ້ມູນຖານຂໍ້ມູນ</translation>

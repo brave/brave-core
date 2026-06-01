@@ -53,7 +53,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="6570689355868013775">Veiligheidstools van Brave</translation>
 <translation id="1902837727299679178">Brave wil je Wachtwoordmanager-gegevens verwijderen. Typ je Windows-wachtwoord om dit toe te staan.</translation>
 <translation id="4449148723378534338">Neem belangrijke privacy- en beveiligingsopties in Brave door</translation>
-<translation id="5229247933547820267">Als je AI-modus vragen wilt stellen over je tabblad zonder de pagina te verlaten, log je in bij Brave. Je kunt ook onder andere je wachtwoorden op al je apparaten gebruiken.</translation>
 <translation id="1640672724030957280">Bezig met downloaden...</translation>
 <translation id="1680687534629375545">Vragen over deze pagina stellen aan Zoeken met afbeelding</translation>
 <translation id="509363484780540563">Je kunt Brave gebruiken als je op links in berichten, documenten en andere apps klikt. Het wordt ook vastgezet op je taakbalk.</translation>
@@ -97,6 +96,9 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="2066690553719545730">AI-modus altijd tonen</translation>
 <translation id="2472891440303445472">Brave heeft deze download geblokkeerd, omdat het bestand misleidend is en onverwachte wijzigingen kan aanbrengen op je apparaat</translation>
 <translation id="2054358978145431867">De volgende keer dat je Brave iOS opent, zie je een prompt om <ph name="FEATURE_NAME"/> te proberen.</translation>
+<translation id="4315579854608498851">Brave zet JavaScript-optimalisatie uit als je een site voor het eerst bezoekt.
+
+Als deze pagina niet werkt zoals verwacht, kun je optimalisatie toestaan.</translation>
 <translation id="2726948994393234543">Je wachtwoorden en andere Brave-gegevens die je hebt opgeslagen in je Brave-account, worden verwijderd van dit apparaat. Log opnieuw in om ze weer te gebruiken in Brave.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Je organisatie verwijdert browsegegevens automatisch als Brave 1 minuut niet wordt gebruikt. Dit kunnen onder andere de geschiedenis, gegevens voor automatisch invullen en downloads zijn. Je tabbladen blijven geopend.}other{Je organisatie verwijdert browsegegevens automatisch als Brave # minuten niet wordt gebruikt. Dit kunnen onder andere de geschiedenis, gegevens voor automatisch invullen en downloads zijn. Je tabbladen blijven geopend.}}</translation>
 <translation id="2126108037660393668">De verificatie van het gedownloade bestand is mislukt.</translation>
@@ -212,6 +214,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Je nieuwe Brave-profiel aanpassen</translation>
+<translation id="2430807206104224491">Je kunt blijven chatten met de AI-modus zonder van tabblad te wisselen. Log in bij Brave om aan de slag te gaan. Je kunt ook onder andere je wachtwoorden op al je apparaten gebruiken.</translation>
 <translation id="4805865169608137960">Als je je Brave-account uit Brave wilt verwijderen, log je uit bij Brave via de pagina Instellingen</translation>
 <translation id="1651639704310627074">Brave kan je later vragen of je opgeslagen informatie wilt gebruiken om formulieren automatisch voor je in te vullen</translation>
 <translation id="2585240446624043880">Brave kan niet lezen van en schrijven naar de eigen gegevensdirectory :
@@ -500,6 +503,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="8646609321956191980">Elk profiel heeft eigen Brave-informatie, zoals bookmarks, geschiedenis en wachtwoorden</translation>
 <translation id="6756656512757374876">Meer informatie over <ph name="BEGIN_LINK"/>hoe Brave je gegevens privé houdt<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Wijzigingen in deze instelling worden toegepast zodra Brave opnieuw wordt gestart.</translation>
+<translation id="3396870972301571614">Je kunt je extensies beheren door in het hoofdmenu van Brave te klikken op Extensies.</translation>
 <translation id="2535436634051789953">Je kunt schakelen om wachtwoorden van een ander Brave-profiel te bekijken</translation>
 <translation id="2312399718665761438">Brave verzendt de tekst die je in tekstvelden typt naar Brave om spelfouten te corrigeren</translation>
 <translation id="3507835409099344374">Ga naar instellingen voor Brave-meldingen</translation>

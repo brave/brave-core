@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Ferramentas de segurança do Brave</translation>
 <translation id="1902837727299679178">O Brave quer excluir seus dados do Gerenciador de senhas. Digite sua senha do Windows para conceder essa permissão.</translation>
 <translation id="4449148723378534338">Revise os principais controles de privacidade e segurança no Brave</translation>
-<translation id="5229247933547820267">Para perguntar ao Modo IA sobre sua guia sem sair da página, faça login no Brave. Você também terá acesso a senhas e muito mais em todos os seus dispositivos.</translation>
 <translation id="1640672724030957280">Fazendo download...</translation>
 <translation id="1680687534629375545">Pergunte à pesquisa por imagens sobre esta página</translation>
 <translation id="509363484780540563">Você pode usar o Brave sempre que clicar em links contidos em mensagens, documentos e outros apps. Ele também será fixado na barra de tarefas.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Sempre mostrar o Modo IA</translation>
 <translation id="2472891440303445472">O Brave bloqueou o download porque o arquivo é enganoso e pode fazer mudanças inesperadas no seu dispositivo</translation>
 <translation id="2054358978145431867">Você verá uma mensagem para testar o recurso <ph name="FEATURE_NAME"/> na próxima vez que abrir o Brave para iOS.</translation>
+<translation id="4315579854608498851">O Brave desativa a otimização do JavaScript quando você acessa um site pela primeira vez.
+
+Se esta página não funcionar como o esperado, permita a otimização.</translation>
 <translation id="2726948994393234543">As senhas e outros dados do Brave salvos na sua Conta do Brave serão removidos deste dispositivo. Para os usar de novo no Brave, faça login outra vez.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{A organização exclui automaticamente os dados de navegação quando o Brave não é usado por 1 minuto. Isso pode incluir o histórico, o preenchimento automático e os downloads. Suas guias vão permanecer abertas.}one{A organização exclui automaticamente os dados de navegação quando o Brave não é usado por # minuto. Isso pode incluir o histórico, o preenchimento automático e os downloads. Suas guias vão permanecer abertas.}other{A organização exclui automaticamente os dados de navegação quando o Brave não é usado por # minutos. Isso pode incluir o histórico, o preenchimento automático e os downloads. Suas guias vão permanecer abertas.}}</translation>
 <translation id="2126108037660393668">Falha na verificação do arquivo baixado.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personalize seu novo perfil do Brave</translation>
+<translation id="2430807206104224491">Você pode continuar conversando com o Modo IA sem trocar de guia. Para começar, faça login no Brave. Você também terá acesso a senhas e muito mais em todos os seus dispositivos.</translation>
 <translation id="4805865169608137960">Para remover sua Conta do Brave do Brave, saia dela na página "Configurações"</translation>
 <translation id="1651639704310627074">Mais tarde, o Brave pode perguntar se você quer usar as informações salvas para preencher formulários automaticamente</translation>
 <translation id="2585240446624043880">O Brave não pode ler e gravar neste diretório de dados: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -497,6 +500,7 @@
 <translation id="8646609321956191980">Cada perfil armazena as próprias informações do Brave, como favoritos, histórico, senhas, entre outras</translation>
 <translation id="6756656512757374876">Saiba mais sobre <ph name="BEGIN_LINK"/>como o Brave mantém a privacidade dos seus dados<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">As mudanças nessa configuração serão aplicadas assim que o Brave for reiniciado.</translation>
+<translation id="3396870972301571614">Gerencie suas extensões clicando em Extensões no menu principal do Brave.</translation>
 <translation id="2535436634051789953">Mude para outro perfil do Brave para conferir as senhas dele</translation>
 <translation id="2312399718665761438">Para corrigir erros de ortografia, o Brave envia ao Brave o texto que você digita nos campos de texto</translation>
 <translation id="3507835409099344374">Acessar as configurações de notificação do Brave</translation>

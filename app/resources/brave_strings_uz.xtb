@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Brave xavfsizlik vositalari</translation>
 <translation id="1902837727299679178">Brave Parollar menejeri maʼlumotlarini oʻchirmoqchi. Ruxsat berish uchun Windows parolingizni kiriting.</translation>
 <translation id="4449148723378534338">Brave ichida asosiy maxfiylik va xavfsizlik boshqaruvini tekshiring</translation>
-<translation id="5229247933547820267">Sahifani tark etmasdan AI rejimida varaq haqida savol berish uchun Brave hisobiga kiring. Shuningdek, parollar va boshqa maʼlumotlardan barcha qurilmalarda foydalana olasiz.</translation>
 <translation id="1640672724030957280">Yuklab olinmoqda...</translation>
 <translation id="1680687534629375545">Rasmli qidiruv orqali bu sahifa haqida savol berish</translation>
 <translation id="509363484780540563">Xabarlar, hujjatlar va boshqa ilovalardagi havolalarni har doim Brave orqali ochishingiz mumkin. Uni vazifalar paneliga qadash ham mumkin.</translation>
@@ -95,6 +94,9 @@
 <translation id="2066690553719545730">AI rejimi doim chiqarilsin</translation>
 <translation id="2472891440303445472">Brave bu yuklamani blokladi, chunki fayl aldamchi va qurilmangizga kutilmagan oʻzgarishlar kiritishi mumkin</translation>
 <translation id="2054358978145431867">Keyingi safar Brave iOS ilovasini ochganingizda <ph name="FEATURE_NAME"/> sinash taklifi chiqadi.</translation>
+<translation id="4315579854608498851">Saytga birinchi marta kirganingizda Brave JavaScript optimallashni faolsizlantiradi.
+
+Bu sahifa kutilganidek ishlamasa, optimallashga ruxsat bering.</translation>
 <translation id="2726948994393234543">Parollar va boshqa Brave maʼlumotlaringiz Brave hisobiga saqlandi, ammo bu qurilmadan oʻchiriladi. Ularni Braveda yana ishlatish uchun hisobingizga kiring.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Brave 1 daqiqa ishlatilmasa, tashkilot avtomatik ravishda brauzerning ishlashi haqida axborotni tozalaydi. Bunga tarix, avtomatik kiritish va yuklanmalar kirishi mumkin. Varaqlar ochiq qoladi.}other{Brave # daqiqa ishlatilmasa, tashkilot avtomatik ravishda brauzerning ishlashi haqida axborotni tozalaydi. Bunga tarix, avtomatik kiritish va yuklanmalar kirishi mumkin. Varaqlar ochiq qoladi.}}</translation>
 <translation id="2126108037660393668">Yuklab olingan fayl tekshirilmadi.</translation>
@@ -210,6 +212,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Yangi Brave profilini moslash</translation>
+<translation id="2430807206104224491">Varaqlarni almashtirmasdan, AI rejimida suhbatni bemalol davom ettirishingiz mumkin. Ishni boshlash uchun Brave hisobingizga kiring. Shuningdek, parollar va boshqa maʼlumotlardan barcha qurilmalarda foydalana olasiz.</translation>
 <translation id="4805865169608137960">Bravedan Brave hisobini olib tashlash uchun Sozlamalar orqali hisobdan chiqing</translation>
 <translation id="1651639704310627074">Keyinroq Brave shakllarni toʻldirishda saqlangan axborotlarni avtomatik kiritishni taklif qilishi mumkin</translation>
 <translation id="2585240446624043880">Brave o‘z jildidan ma’lumotlarni o‘qib yoki yozib ololmadi: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -496,6 +499,7 @@
 <translation id="8646609321956191980">Har bir profilda bukmark, tarix va parol kabi Brave axboroti saqlanadi</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Brave maʼlumotlaringizni qanday xavfsiz saqlashi<ph name="END_LINK"/> haqida batafsil</translation>
 <translation id="3556601443414636547">Bu sozlamaga kiritilgan oʻzgarishlar Brave qayta ishga tushganda kuchga kiradi.</translation>
+<translation id="3396870972301571614">Brave asosiy menyusidagi Kengaytmalar tugmasini bosib, kengaytmalarni boshqaring.</translation>
 <translation id="2535436634051789953">Profilni almashtirib, boshqa Brave profili parollarini koʻrish mumkin</translation>
 <translation id="2312399718665761438">Imloni tekshirish uchun Brave siz kiritgan matnni Brave serverlariga yuboradi</translation>
 <translation id="3507835409099344374">Brave bildirishnomalar sozlamalarini ochish</translation>

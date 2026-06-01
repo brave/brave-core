@@ -151,7 +151,7 @@
 <translation id="4690906712010847708">不要将连接升级到 HTTPS（禁用）</translation>
 <translation id="693506469193748756">关闭此网站后遗忘我</translation>
 <translation id="6975864539539353406">关闭网站时清除 cookie 和其他网站数据</translation>
-<translation id="7740929262043547697">允许在无痕式窗口中进行元素拦截</translation>
+<translation id="7740929262043547697">允许在无痕窗口中进行元素拦截</translation>
 <translation id="1260864846935682371">在无痕式窗口中启用盾牌元素拦截功能。请注意，在无痕式窗口中被拦截的元素在非无痕式窗口中也会被拦截。</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
@@ -194,24 +194,16 @@
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
 <translation id="8701563696941209024">立即重新启动</translation>
 <translation id="834487290629916192">后来</translation>
-<translation id="4117451092682672487">轻松保护个人隐私。</translation>
-<translation id="7909375417585209817">只要将 Brave 作为默认设置，您轻击的每个链接都会在 Brave 的隐私保护下打开。</translation>
 <translation id="763369711159699222">帮助让 Brave 变得更好</translation>
 <translation id="8025937231644975408">与我们分享您最喜欢的功能。</translation>
-<translation id="6718362830686703942">如果遇到系统崩溃或冻结，请发送诊断报告。</translation>
-<translation id="8616157231067364693">分享与 Brave 用户正在使用哪些功能有关的私密、匿名的产品见解。</translation>
 <translation id="2888496576732880897">帮助 Brave 搜索不断进步</translation>
 <translation id="7198716519700700181">防止流媒体广告干扰</translation>
 <translation id="7044431516245362795">选择加入网络发现项目，帮助我们增加索引并优化搜索结果。<ph name="LEARN_MORE_START"/>了解更多。<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave 徽标</translation>
-<translation id="1389386068457132299">加载页面背景</translation>
-<translation id="5101985748360228609">顶部叶片装饰</translation>
-<translation id="5270920361877570459">底部叶片装饰</translation>
-<translation id="4021716437419160885">向下滚动</translation>
 <translation id="4767173360729868049">帮助 Brave 搜索插图</translation>
 <translation id="8241918461631453498">阻止中断插图</translation>
 <translation id="8213310572767907663">改进 Brave 插图</translation>
-<translation id="2427917529469438577">在您喜欢的流媒体网站上防止广告干扰</translation>
+<translation id="2427917529469438577">在您喜欢的流媒体网站上屏蔽烦人的广告干扰。</translation>
 <translation id="7818938154803162778">没问题，我愿意协助</translation>
 <translation id="5298784657468199167">发送崩溃报告</translation>
 <translation id="6188781052835527980">如果遇到系统崩溃或冻结，请发送匿名诊断报告。</translation>
@@ -223,7 +215,6 @@
 <translation id="7256200875155794202">已屏蔽<ph name="BIG_TECH"/> 和其他广告及跟踪器</translation>
 <translation id="3092683655478890840">已阻止 <ph name="TRACKER_COUNT"/> 个广告和跟踪器</translation>
 <translation id="8281886186245836920">跳过</translation>
-<translation id="6165508094623778733">了解详情</translation>
 <translation id="986879628471635371">对启动过程进行故障排除</translation>
 <translation id="5806601733251372221">Brave 屏蔽</translation>
 <translation id="8537217141725709400">赚取<ph name="TOKEN"/>s</translation>
@@ -373,7 +364,7 @@
 <translation id="944340256927461196">在设备上不留痕迹</translation>
 <translation id="2063044449012253966">您在无痕窗口中访问的网站不会出现在您的历史记录中。在关闭无痕窗口时，cookie、表单数据和网站数据会消失。</translation>
 <translation id="7395764193745523646">浏览可见性</translation>
-<translation id="8670344404057978375">请注意，即使在无痕窗口中，您的浏览活动仍可能被 ISP、网络观察员或您的雇主（如果您使用的是工作设备/网络）看到。</translation>
+<translation id="8435098045013317895">请注意——即使在无痕窗口中，您的浏览活动仍可能被 ISP、网络观察员或您的雇主（如果您使用的是工作机器/网络）看到。</translation>
 <translation id="1413177583895309156">Brave VPN 可加密并保护您在网络上所做的所有活动，甚至在 Brave 浏览器之外亦不例外。</translation>
 <translation id="3974348661685061050">免费试用 7 天</translation>
 <translation id="5789441016350810005">浏览器在后台运行时发送 Brave 广告</translation>
@@ -406,7 +397,7 @@
 <translation id="717952606991220586">哎呀，有些不对劲。请稍后再试。</translation>
 <translation id="987264212798334818">常规</translation>
 <translation id="1116694919640316211">关于</translation>
-<translation id="2370739752330685659">回头再说</translation>
+<translation id="2370739752330685659">稍后再说</translation>
 <translation id="3624048886326677117">拦截跟踪器和广告 （积极地）</translation>
 <translation id="7151914815476509258">拦截跟踪器和广告 （标准）</translation>
 <translation id="7384778069178817075">允许所有跟踪器和广告</translation>
@@ -449,8 +440,8 @@
 <translation id="9140049656798805345">立即销毁网站数据</translation>
 <translation id="6795622376590884449">自动销毁</translation>
 <translation id="7961015016161918242">一律不</translation>
-<translation id="1991004083507807299">网站标签已关闭</translation>
-<translation id="5827277414420724690">关闭应用程序</translation>
+<translation id="1991004083507807299">当网站标签页关闭时</translation>
+<translation id="5827277414420724690">关闭应用程序时</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
 <translation id="1653405824851871276">感谢您帮助我们改善 Brave。本报告仅包含我们修复网站所需的信息。<ph name="LEARN_MORE"/></translation>
@@ -517,6 +508,7 @@
 <translation id="2718046830255553131">隐私报告数据已清除。</translation>
 <translation id="8376263745431603066">启用“夜间模式”（实验性功能）</translation>
 <translation id="1383876407941801731">搜索</translation>
+<translation id="6165508094623778733">了解详情</translation>
 <translation id="13296465911709339">您的文本已复制到剪贴板。</translation>
 <translation id="2735834606413553397">公共地址已复制到剪贴板。</translation>
 <translation id="2977461003134694205">隐私统计数据</translation>
@@ -944,7 +936,7 @@
 <translation id="703185154752046151">添加到主屏幕的小部件</translation>
 <translation id="4635094429202343515">尝试 Brave 搜索小部件</translation>
 <translation id="4809681171446727314">从您的主屏幕访问私人、独立搜索的权利。</translation>
-<translation id="3280562213547448728">語音搜尋</translation>
+<translation id="3280562213547448728">语音搜索</translation>
 <translation id="3925312712530886302">打开无痕搜索</translation>
 <translation id="9214590551301647710">打开 Leo</translation>
 <translation id="7751715172931488388">添加小部件</translation>
@@ -977,23 +969,21 @@
 <translation id="7659483790930268440">地址查询表索引：</translation>
 <translation id="5494920125229734069">全选</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
 <translation id="944736176598169208">奖励</translation>
 <translation id="1199170151481311646">隐私保护分析</translation>
 <translation id="1706715315466634757">电子邮件别名</translation>
-<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">新闻</translation>
 <translation id="5990642573624858459">统计报告</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">重置为默认设置</translation>
-<translation id="4922034974043704366">该功能已启用，因为您选择了该功能</translation>
 <translation id="2587535830241068901">在支持 Brave 的同时定制您的浏览器</translation>
-<translation id="7235314227387539944">Brave Origin 是一款为不需要支持 Brave 作为业务的所有功能但仍想要只有 Brave 提供的隐私保护的用户提供的付费浏览器版本。Origin 用户将继续受益于我们行业领先的隐私、广告拦截和速度（通过 Brave 盾牌），以及定期的软件更新、Chromium 补丁和安全及隐私改进。Origin 将从浏览器中移除大多数其他功能。</translation>
-<translation id="7941943775131052130">请注意，Brave Origin 购买还将包括对 Brave 搜索高级版的访问权限，因为 Origin 将从 Brave 搜索结果页面中移除广告。</translation>
+<translation id="123297831435065577">Brave Origin 是 Brave 浏览器的一个付费版本，专为不需要 Brave 的商业附加功能，但仍希望享有 Brave 独家隐私保护的用户而设计。Origin 用户将继续受益于我们领先行业的隐私保护、广告拦截和极速体验（通过 Brave 盾牌），以及定期的软件更新、Chromium 补丁和安全及隐私优化。</translation>
 <translation id="2573819149217596923">更改 Brave 功能</translation>
 <translation id="7415416427817229128">启用或禁用 Brave 功能需要浏览器重新启动才能应用更改。您现在想要重新启动吗？</translation>
 <translation id="2256115617011615191">立即重启</translation>
 <translation id="2160089182263405907">禁用功能</translation>
-<translation id="3362364767724670721">启用或禁用 Brave 功能需要重新启动浏览器才能应用更改。请在 Origin 完成更新后点击<ph name="BEGIN_BOLD"/>立即重启<ph name="END_BOLD"/>。</translation>
+<translation id="7530313002494358590">启用或禁用 Brave 功能需要重新启动浏览器才能应用更改。请在 Brave Origin 完成更新后点击<ph name="BEGIN_BOLD"/>立即重启<ph name="END_BOLD"/>。</translation>
 <translation id="1028940738207645746">确定要将所有设置重置为默认值吗?</translation>
 <translation id="5939518447894949180">重置</translation>
 <translation id="8554205386170195281">购买</translation>
@@ -1127,9 +1117,9 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="6261139507111008244">支持我们的使命 &amp; 开源工作</translation>
 <translation id="6073373503121903099">以 Brave 盾牌为中心的极简浏览器用户界面</translation>
 <translation id="2267973897341040743">保持核心广告拦截、隐私、 &amp; 速度</translation>
-<translation id="3339535734679532460">一次性购买，无需额外订阅费用</translation>
-<translation id="2805615640226281689">一次性购买</translation>
-<translation id="261433018299584676">获取登录代码</translation>
+<translation id="4059093523966730868">一次性购买可在您的所有设备上多次激活</translation>
+<translation id="7006681677649762716">一次性购买</translation>
+<translation id="8707617004598499947">验证 Brave Origin 购买</translation>
 <translation id="1943432128510653496">保存密码</translation>
 <translation id="2100273922101894616">自动登录</translation>
 <translation id="363596933471559332">使用存储的凭据自动登录网站。当该功能处于停用状态时，您每次都要通过验证才能登录网站。</translation>
@@ -1188,11 +1178,14 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="7400418766976504921">网址</translation>
 <translation id="6410668567036790476">添加搜索引擎</translation>
 <translation id="6289878295410648689">编写搜索 URL，并将查询替换为<ph name="SPECIAL_SYMBOL"/>。</translation>
-<translation id="8943582268084103903">例如：https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>。如果站点支持 OpenSearch，则系统会在编辑此字段时会提供一个自动添加的选项。</translation>
+<translation id="1298325705808878139">例如：https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>。</translation>
 <translation id="8706939021136180678">URL 无效。</translation>
-<translation id="6528099556282059181">搜索引擎已添加。</translation>
+<translation id="5144960943371551167">标题只能包含字母、数字和空格。</translation>
+<translation id="7361775378755455309">已存在使用此关键字的搜索引擎。</translation>
 <translation id="463451857046640291">无法添加搜索引擎。</translation>
 <translation id="1229671956956864948">无法更新搜索引擎。</translation>
 <translation id="1462771969120037152">无法删除搜索引擎。您尝试删除的搜索引擎可能已设置为默认引擎。</translation>
 <translation id="1079140196216383600">删除自定义搜索引擎</translation>
+<translation id="525276572490219787">您确定要删除“<ph name="SEARCH_ENGINE_NAME"/>”吗？此操作无法撤销。</translation>
+<translation id="6406506848690869874">同步</translation>
 </translationbundle>
