@@ -116,7 +116,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable BraveAccountSectionController mAccountController;
-    private @Nullable Preference mVpnCalloutPreference;
+    private @Nullable VpnCalloutPreference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
     @Override
@@ -319,6 +319,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 && !BraveVpnPolicy.isDisabledByPolicy(getProfile())) {
             if (mVpnCalloutPreference == null) {
                 mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
+                // Dismissing the callout removes it from the screen, which changes the position of
+                // the remaining preferences within their containment groups. Notify so the rounded
+                // card styling gets recomputed; otherwise neighbors keep stale corner/margin
+                // styling computed for their old positions.
+                mVpnCalloutPreference.setOnDismissedCallback(this::notifyPreferencesUpdated);
             }
             if (mVpnCalloutPreference != null) {
                 mVpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
