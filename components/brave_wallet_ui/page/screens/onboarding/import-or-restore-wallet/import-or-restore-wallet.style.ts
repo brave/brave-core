@@ -21,8 +21,8 @@ export const CardButton = styled(WalletLink)`
   box-sizing: border-box;
   width: 376px;
   min-height: 88px;
-  background: ${(p) => p.theme.color.background02};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background: ${leo.color.container.background};
+  border: 1px solid ${leo.color.divider.subtle};
   border-radius: 8px;
 
   display: flex;
@@ -37,7 +37,7 @@ export const CardButton = styled(WalletLink)`
 
   &:hover {
     outline-style: solid;
-    outline-color: ${(p) => p.theme.palette.blurple300};
+    outline-color: ${leo.color.blurple[30]};
     outline-width: 2px;
   }
 `
@@ -49,13 +49,13 @@ export const CardButtonTextContainer = styled.div`
 
   & > p {
     letter-spacing: 0.02em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
     text-align: left;
     margin: 2px;
   }
 
   & > p:first-of-type {
-    color: ${(p) => p.theme.color.text01};
+    color: ${leo.color.text.primary};
   }
 `
 

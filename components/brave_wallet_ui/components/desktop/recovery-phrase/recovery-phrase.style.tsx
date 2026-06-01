@@ -66,8 +66,8 @@ export const RecoveryBubbleBadge = styled.p`
   position: absolute;
   top: -15px;
   left: -8px;
-  color: ${(p) => p.theme.palette.white};
-  background-color: ${(p) => p.theme.color.brandBat};
+  color: ${leo.color.white};
+  background-color: ${leo.color.primitive.brands.primaryFixed};
   width: 40px;
   border-radius: 4px;
   display: flex;
@@ -107,7 +107,7 @@ export const HiddenPhraseContainer = styled.div`
   & p {
     text-align: center;
     margin-top: 10px;
-    color: ${(p) => p.theme.color.background01};
+    color: ${leo.color.page.background};
   }
 `
 

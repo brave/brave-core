@@ -7,7 +7,6 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 import { WalletButton, Text, Column } from '../shared/style'
 import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
-import IThemeProps from 'brave-ui/theme/theme-interface'
 
 interface StyleProps {
   orb: string
@@ -21,7 +20,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
 `
 
 export const TopRow = styled.div`
@@ -92,8 +91,8 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
   margin-bottom: 14px;
   background-color: ${(p) =>
     p.warningType === 'danger'
-      ? p.theme.color.errorBackground
-      : p.theme.color.warningBackground};
+      ? leo.color.systemfeedback.errorBackground
+      : leo.color.systemfeedback.warningBackground};
   overflow-y: auto;
 `
 
@@ -109,12 +108,14 @@ export const WarningText = styled(Text)`
   text-align: left;
 `
 
-export const WarningBoxIcon = styled.div<{
-  color?: keyof IThemeProps['color']
-}>`
+export const WarningBoxIcon = styled.div<
+  Partial<Pick<StyleProps, 'warningType'>>
+>`
   mask-size: 100%;
   background-color: ${(p) =>
-    p?.color ? p.theme.color[p.color] : p.theme.color.errorIcon};
+    p.warningType === 'warning'
+      ? leo.color.systemfeedback.warningIcon
+      : leo.color.systemfeedback.errorIcon};
   -webkit-mask-image: url(${WarningTriangle});
   mask-image: url(${WarningTriangle});
 `
@@ -128,7 +129,7 @@ export const WarningIcon = styled(WarningBoxIcon)`
 export const LearnMoreButton = styled(WalletButton)`
   font: ${leo.font.small.regular};
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;

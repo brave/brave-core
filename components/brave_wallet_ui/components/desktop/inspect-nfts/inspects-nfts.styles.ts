@@ -49,7 +49,7 @@ export const TopRowButton = styled(WalletButton)`
   justify-content: center;
   cursor: pointer;
   background-color: transparent;
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
   outline: none;
   border: none;
 `
@@ -61,7 +61,7 @@ const TopRowIcon = styled.div`
   width: 18px;
   height: 18px;
   mask-repeat: none;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${leo.color.white};
 `
 
 export const CloseIcon = styled(TopRowIcon)`
@@ -87,7 +87,7 @@ export const MainContent = styled.section`
 
 export const NftCountHeading = styled.h1`
   font: ${leo.font.heading.display2};
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
   margin: 0 0 32px 0;
   padding: 0;
 `
@@ -109,7 +109,7 @@ export const InfoSubHeading = styled.h6`
   font: ${leo.font.small.semibold};
   margin: 0;
   padding: 0;
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   cursor: pointer;
 `
 

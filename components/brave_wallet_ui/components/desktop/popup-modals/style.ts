@@ -111,7 +111,7 @@ export const CloseIcon = styled(Icon).attrs({
 export const Divider = styled.div`
   display: flex;
   width: 100%;
-  border-bottom: 2px solid ${(p) => p.theme.color.divider01};
+  border-bottom: 2px solid ${leo.color.divider.subtle};
   padding-bottom: 6px;
 `
 

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import { Text } from '../../shared/style'
@@ -29,8 +30,7 @@ export const StyledButton = styled.button<Partial<StyleProps>>`
 `
 
 export const ButtonText = styled(Text)<Partial<StyleProps>>`
-  color: ${(p) =>
-    p.isSelected ? p.theme.palette.white : p.theme.color.text02};
+  color: ${(p) => (p.isSelected ? leo.color.white : leo.color.text.secondary)};
 `
 
 export const ButtonIcon = styled.div<Partial<StyleProps>>`

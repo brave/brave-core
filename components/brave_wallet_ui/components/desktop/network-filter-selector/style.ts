@@ -30,8 +30,7 @@ export const DropDownButton = styled(WalletButton)<{
     p.isV2 ? leo.color.container.highlight : 'transparent'};
   cursor: pointer;
   outline: none;
-  border: ${(p) =>
-    p.isV2 ? 'none' : `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => (p.isV2 ? 'none' : `1px solid ${leo.color.neutral[30]}`)};
   border-radius: ${(p) => (p.isV2 ? '8px' : '4px')};
   font-style: normal;
   font-size: ${(p) => (p.isV2 ? '14px' : '13px')};
@@ -39,7 +38,7 @@ export const DropDownButton = styled(WalletButton)<{
   letter-spacing: 0.01em;
   padding: ${(p) => (p.isV2 ? '10px 8px' : '8px 12px')};
   margin-bottom: ${(p) => (p.isV2 ? 0 : '8px')};
-  color: ${(p) => (p.isV2 ? leo.color.text.secondary : p.theme.color.text01)};
+  color: ${(p) => (p.isV2 ? leo.color.text.secondary : leo.color.text.primary)};
 `
 
 export const DropDownIcon = styled(CaratStrongDownIcon)<{
@@ -47,8 +46,7 @@ export const DropDownIcon = styled(CaratStrongDownIcon)<{
 }>`
   width: 18px;
   height: 18px;
-  color: ${(p) =>
-    p.isV2 ? leo.color.text.secondary : p.theme.color.interactive07};
+  color: ${(p) => (p.isV2 ? leo.color.text.secondary : leo.color.neutral[70])};
 `
 
 export const DropDown = styled.div<{
@@ -61,8 +59,8 @@ export const DropDown = styled.div<{
   justify-content: flex-start;
   width: 250px;
   padding: 5px;
-  background-color: ${(p) => p.theme.color.background02};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.container.background};
+  border: 1px solid ${leo.color.divider.subtle};
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
   right: ${(p) => (p.dropdownPosition === 'right' ? '0px' : 'unset')};
@@ -106,7 +104,7 @@ export const NetworkItemButton = styled(WalletButton)`
   box-sizing: border-box;
   border-radius: 6px;
   &:hover {
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${leo.color.divider.subtle};
   }
 `
 
@@ -126,7 +124,7 @@ export const SelectorLeftSide = styled(LeftSide)`
 export const BigCheckMark = styled.div`
   width: 14px;
   height: 14px;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${leo.color.text.primary};
   -webkit-mask-image: url(${CheckMark});
   mask-image: url(${CheckMark});
   margin-right: 8px;

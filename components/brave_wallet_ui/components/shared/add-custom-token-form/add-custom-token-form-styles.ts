@@ -32,7 +32,7 @@ export const AdvancedIcon = styled(CaratStrongDownIcon)<
 >`
   width: 18px;
   height: 18px;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${leo.color.neutral[70]};
   transform: ${(p) => (p.rotated ? 'rotate(180deg)' : 'rotate(0deg)')};
   margin-right: 10px;
 `
@@ -64,7 +64,7 @@ export const DividerRow = styled.div`
 export const SubDivider = styled.div`
   width: 100%;
   height: 2px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
 `
 
 export const DividerText = styled(Text)`

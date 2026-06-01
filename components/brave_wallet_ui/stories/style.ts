@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledExtensionWrapper = styled.div`
   display: flex;
@@ -55,7 +56,7 @@ export const LongWrapper = styled.div<{ padding?: string }>`
   padding: ${(p) => p?.padding ?? '0px 12px 0px 12px'};
   position: relative;
   box-sizing: border-box;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
 `
 
 export const ConnectWithSiteWrapper = styled.div`
@@ -63,7 +64,7 @@ export const ConnectWithSiteWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   width: 390px;
   height: 100%;
 `
@@ -86,7 +87,7 @@ export const DesktopComponentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   padding: 20px;
 `
 
@@ -105,7 +106,7 @@ export const DesktopComponentWrapperRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   width: 800px;
   padding: 20px;
 `

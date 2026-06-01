@@ -4,10 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { Icon } from '../../shared-swap.styles'
 
 export const Flash = styled(Icon)`
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   margin-left: 4px;
   margin-right: 16px;
 `

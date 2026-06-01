@@ -45,7 +45,7 @@ export const ContentWrapper = styled.div<{
   gap: 4px;
   border-radius: 4px;
   padding: 2px 4px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   background-color: ${(p) =>
     p.pinningStatus
       === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
@@ -104,7 +104,7 @@ export const ReasonsTooltipWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   z-index: 3;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   width: 246px;
   border-radius: 6px;
@@ -124,7 +124,7 @@ export const ArrowDown = styled.div`
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid ${(p) => p.theme.color.background01};
+  border-top: 8px solid ${leo.color.page.background};
   position: absolute;
   left: 56px;
   bottom: -8px;

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled, { keyframes } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export interface LoadingSkeletonStyleProps {
   width?: string | number
@@ -30,7 +31,7 @@ const loadingAnimation = keyframes`
 `
 
 export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
-  background-color: ${(p) => p.theme.color.panelBackgroundSecondary};
+  background-color: ${leo.color.page.background};
   width: ${(p) => (typeof p.width === 'number' ? `${p.width}px` : p.width)};
   height: ${(p) => (typeof p.height === 'number' ? `${p.height}px` : p.height)};
   border-radius: ${(p) => (p.circle ? '50%' : '0.25rem')};
@@ -42,9 +43,7 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
 
   @media (prefers-color-scheme: dark) {
     background-color: ${(p) =>
-      p.useLightTheme
-        ? p.theme.color.panelBackgroundSecondary
-        : p.theme.color.divider01};
+      p.useLightTheme ? leo.color.page.background : leo.color.divider.subtle};
   }
 
   &:after {

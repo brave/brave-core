@@ -23,7 +23,7 @@ export const NetworkFeeContainer = styled.div`
 
 export const NetworkFeeTitle = styled.div`
   font: ${leo.font.small.regular};
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `
 
 export const NetworkFeeValue = styled.div`
@@ -47,5 +47,5 @@ export const Settings = styled(WalletButton)`
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
   width: 14px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `

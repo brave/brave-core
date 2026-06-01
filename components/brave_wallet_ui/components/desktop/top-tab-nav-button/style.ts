@@ -2,8 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import { Text, WalletButton } from '../../shared/style'
@@ -30,7 +30,7 @@ export const ButtonText = styled(Text)<Partial<StyleProps>>`
   font: ${leo.font.components.buttonLarge};
   margin-bottom: 10px;
   background: ${(p) =>
-    p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
+    p.isSelected ? leo.color.text.primary : leo.color.text.secondary};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
@@ -42,5 +42,5 @@ export const TabLine = styled.div<Partial<StyleProps>>`
   background: ${(p) =>
     p.isSelected
       ? 'linear-gradient(178.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);'
-      : `${p.theme.color.divider01}`};
+      : `${leo.color.divider.subtle}`};
 `

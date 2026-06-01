@@ -24,7 +24,7 @@ export const CryptoBalance = styled.p`
   font: ${leo.font.heading.display1};
   margin: 0;
   padding: 0 16px 0 0;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const FiatBalance = styled.h6`
@@ -32,7 +32,7 @@ export const FiatBalance = styled.h6`
   margin: 0;
   padding-top: 20px;
   padding-bottom: 4px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
 `
 
 export const DetailColumn = styled.div`
@@ -46,14 +46,14 @@ export const TokenDetailLabel = styled.h6`
   font: ${leo.font.default.semibold};
   margin: 0;
   padding: 0;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const TokenDetailValue = styled.h6`
   font: ${leo.font.default.regular};
   margin: 8px 0 0 0;
   padding: 0;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const ContractAddress = styled(TokenDetailValue)`
@@ -64,7 +64,7 @@ export const HideTokenButton = styled(WalletButton)`
   font: ${leo.font.default.regular};
 
   background: none;
-  border: 1px solid ${(p) => p.theme.palette.blurple500};
+  border: 1px solid ${leo.color.blurple[50]};
   height: 40px;
   margin-top: 70px;
   border-radius: 100px;
@@ -73,6 +73,6 @@ export const HideTokenButton = styled(WalletButton)`
   align-self: center;
   justify-content: center;
   align-items: center;
-  color: ${(p) => p.theme.palette.blurple500};
+  color: ${leo.color.blurple[50]};
   cursor: pointer;
 `

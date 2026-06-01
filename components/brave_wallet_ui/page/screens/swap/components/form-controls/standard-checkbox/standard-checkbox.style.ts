@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import {
   StyledInput,
   Icon,
@@ -24,19 +25,17 @@ export const HiddenCheckBox = styled(StyledInput)`
 `
 
 export const StyledIcon = styled(Icon)`
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
 `
 
 export const StyledCheckbox = styled(StyledDiv)<{ isChecked: boolean }>`
   width: 20px;
   height: 20px;
   background: ${(p) =>
-    p.isChecked ? p.theme.color.interactive05 : p.theme.color.background01};
+    p.isChecked ? leo.color.button.background : leo.color.page.background};
   border-radius: 4px;
   box-shadow: ${(p) =>
-    p.isChecked
-      ? 'none'
-      : `inset 0px 0px 0px 1px ${p.theme.color.interactive08}`};
+    p.isChecked ? 'none' : `inset 0px 0px 0px 1px ${leo.color.neutral[30]}`};
 `
 
 export const Label = styled(StyledLabel)<{
@@ -50,5 +49,5 @@ export const Label = styled(StyledLabel)<{
   cursor: pointer;
   font-weight: ${(p) => (p.isBold ? 400 : 200)};
   font-size: ${(p) => (p.labelSize ? p.labelSize : '12px')};
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
 `

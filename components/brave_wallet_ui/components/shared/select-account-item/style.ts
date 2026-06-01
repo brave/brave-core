@@ -66,7 +66,7 @@ export const AccountCircle = styled.div<StyleProps>`
 export const BigCheckMark = styled.div`
   width: 14px;
   height: 14px;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${leo.color.text.primary};
   -webkit-mask-image: url(${CheckMark});
   mask-image: url(${CheckMark});
   margin-right: 8px;

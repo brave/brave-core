@@ -21,7 +21,7 @@ export const TokenSymbol = styled.h6`
   margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   display: flex;
   align-self: center;
 `
@@ -31,7 +31,7 @@ export const Instructions = styled.p`
   margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   text-align: center;
 `
 
@@ -46,8 +46,8 @@ export const ButtonRow = styled.div`
 export const OkButton = styled(WalletButton)`
   font: ${leo.font.default.regular};
 
-  background: ${(p) => p.theme.palette.blurple500};
-  border: 1px solid ${(p) => p.theme.palette.blurple500};
+  background: ${leo.color.blurple[50]};
+  border: 1px solid ${leo.color.blurple[50]};
   height: 40px;
   width: 125px;
   margin-top: 70px;
@@ -56,7 +56,7 @@ export const OkButton = styled(WalletButton)`
   align-self: center;
   justify-content: center;
   align-items: center;
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
   cursor: pointer;
 `
 
@@ -64,7 +64,7 @@ export const CancelButton = styled(WalletButton)`
   font: ${leo.font.default.regular};
 
   background: none;
-  border: 1px solid ${(p) => p.theme.palette.blurple500};
+  border: 1px solid ${leo.color.blurple[50]};
   height: 40px;
   width: 125px;
   margin-top: 70px;
@@ -73,7 +73,7 @@ export const CancelButton = styled(WalletButton)`
   align-self: center;
   justify-content: center;
   align-items: center;
-  color: ${(p) => p.theme.palette.blurple500};
+  color: ${leo.color.blurple[50]};
   cursor: pointer;
 `
 

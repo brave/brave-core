@@ -10,7 +10,7 @@ import { StyledButton } from '../../shared-swap.styles'
 export const Button = styled(StyledButton)`
   --background-color-hover: ${leo.color.purple[10]};
   @media (prefers-color-scheme: dark) {
-    --background-color-hover: ${(p) => p.theme.color.background02};
+    --background-color-hover: ${leo.color.container.background};
   }
   border-radius: 4px;
   justify-content: space-between;

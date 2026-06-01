@@ -276,7 +276,7 @@ export const ErrorMessage = styled.p`
   justify-content: flex-start;
   align-items: center;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   word-break: break-word;
   margin: 24px 0;
 `

@@ -825,7 +825,7 @@ export const Account = () => {
             >
               <EmptyTransactionsIcon />
               <Text
-                textColor='text01'
+                textColor='primary'
                 textSize='16px'
                 isBold={true}
               >
@@ -834,7 +834,7 @@ export const Account = () => {
               <VerticalSpace space='10px' />
               <Text
                 textSize='14px'
-                textColor='text03'
+                textColor='tertiary'
                 isBold={false}
               >
                 {getLocale('braveWalletNoTransactionsYetDescription')}

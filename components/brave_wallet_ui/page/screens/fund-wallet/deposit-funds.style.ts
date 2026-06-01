@@ -33,7 +33,7 @@ export const AddressText = styled(Text)`
 export const AddressTextLabel = styled(Text)`
   font: ${leo.font.components.buttonLarge};
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   word-break: break-all;
 `
 

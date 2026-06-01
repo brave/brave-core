@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import { StyledDiv } from '../../shared-swap.styles'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const Wrapper = styled(StyledDiv)`
   /* This RGBA value does not exist in the design system */
@@ -27,8 +28,8 @@ export const Modal = styled(StyledDiv)<{
 }>`
   background-color: ${(p) =>
     p.modalBackground === 'background02'
-      ? p.theme.color.background02
-      : p.theme.color.background01};
+      ? leo.color.container.background
+      : leo.color.page.background};
   border-radius: 22px;
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   box-sizing: border-box;

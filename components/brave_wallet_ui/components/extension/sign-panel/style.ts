@@ -20,7 +20,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   padding: 0px 16px;
 `
 
@@ -60,7 +60,7 @@ export const MessageBox = styled.div<{ height?: string; width?: string }>`
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   box-sizing: border-box;
   border-radius: 4px;
   width: ${(p) => (p.width ? p.width : '255px')};
@@ -107,6 +107,6 @@ export const HeaderTitle = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   margin: 4px 0 8px 0;
 `

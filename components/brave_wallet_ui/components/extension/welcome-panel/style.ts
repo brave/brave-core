@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import { Text } from '../../shared/style'
@@ -13,7 +14,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   padding: 24px;
 `
 

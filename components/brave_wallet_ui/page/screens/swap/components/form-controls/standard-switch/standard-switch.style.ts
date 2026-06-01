@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import { StyledInput, StyledDiv, StyledLabel } from '../../shared-swap.styles'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const Label = styled(StyledLabel)`
   display: flex;
@@ -17,12 +18,12 @@ export const Switch = styled(StyledDiv)`
   box-sizing: border-box;
   width: 48px;
   height: 24px;
-  background: ${(p) => p.theme.color.disabled};
+  background: ${leo.color.text.disabled};
   border-radius: 32px;
   padding: 2px;
   transition: 300ms all;
   @media (prefers-color-scheme: dark) {
-    background: ${(p) => p.theme.color.interactive08};
+    background: ${leo.color.neutral[30]};
   }
 
   &:before {
@@ -34,7 +35,7 @@ export const Switch = styled(StyledDiv)`
     border-radius: 35px;
     top: 50%;
     left: 4px;
-    background: ${(p) => p.theme.color.background01};
+    background: ${leo.color.page.background};
     transform: translate(0, -50%);
   }
 `
@@ -42,7 +43,7 @@ export const Switch = styled(StyledDiv)`
 export const Input = styled(StyledInput)`
   /* #e1e2f6 Does not exist in the design system */
   --checked-background: #e1e2f6;
-  --unchecked-background: ${(p) => p.theme.color.interactive05};
+  --unchecked-background: ${leo.color.button.background};
   @media (prefers-color-scheme: dark) {
     /* #7679B1 Does not exist in the design system */
     --checked-background: #7679b1;

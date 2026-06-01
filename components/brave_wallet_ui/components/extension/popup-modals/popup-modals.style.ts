@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import CloseIcon from '../../../assets/svg-icons/close.svg'
 
@@ -29,7 +30,7 @@ export const Modal = styled.div`
   align-items: center;
   min-width: 280px;
   max-width: 280px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   border-radius: 4px;
   box-shadow: 0 2px 28px rgba(0, 0, 0, 0.5);
 `
@@ -51,7 +52,7 @@ export const CloseButton = styled(WalletButton)`
   cursor: pointer;
   width: 16px;
   height: 16px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${leo.color.neutral[70]};
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});
   outline: none;

@@ -53,7 +53,7 @@ export const PlaceholderText = styled(Text)<{
 }>`
   font-size: ${(p) =>
     p.size === 'big' ? '16px' : p.size === 'tiny' ? '10px' : '12px'};
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
 `
 
 export const NFTPlaceholderWrapper = styled.div<{

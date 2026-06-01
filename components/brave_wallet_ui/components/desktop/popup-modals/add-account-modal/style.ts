@@ -48,7 +48,7 @@ export const DisclaimerWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: ${(p) => p.theme.color.warningBackground};
+  background-color: ${leo.color.systemfeedback.warningBackground};
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
@@ -64,7 +64,7 @@ export const InfoIcon = styled.div`
   width: 12px;
   height: 12px;
   margin-top: 4px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${leo.color.neutral[70]};
   -webkit-mask-image: url(${InfoLogo});
   mask-image: url(${InfoLogo});
 `

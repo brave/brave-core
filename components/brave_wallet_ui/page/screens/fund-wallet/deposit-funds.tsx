@@ -478,7 +478,6 @@ function AssetSelection() {
             <LoadingIcon
               opacity={1}
               size={'100px'}
-              color={'interactive05'}
             />
           </Column>
         )}
@@ -778,7 +777,6 @@ function DepositAccount() {
                 {address}
               </AddressText>
               <CopyButton
-                iconColor={'interactive05'}
                 onKeyPress={onCopyKeyPress}
                 onClick={copyAddressToClipboard}
               />

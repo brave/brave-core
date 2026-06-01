@@ -326,7 +326,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
           >
             <Text
               textSize='16px'
-              textColor='text03'
+              textColor='tertiary'
               isBold={true}
             >
               {hash === WalletRoutes.AvailableAssetsHash
@@ -382,7 +382,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                     <InfoIcon />
                     <Text
                       textSize='16px'
-                      textColor='text01'
+                      textColor='primary'
                       isBold={true}
                     >
                       {getLocale('braveWalletAssetNotFound')}
@@ -390,7 +390,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                     <VerticalSpace space='12px' />
                     <Text
                       textSize='14px'
-                      textColor='text03'
+                      textColor='tertiary'
                       isBold={false}
                     >
                       {getLocale('braveWalletDidntFindAssetInList')}

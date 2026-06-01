@@ -106,7 +106,7 @@ export const SwapAndSend = (props: Props) => {
           <Text
             isBold={false}
             textSize='14px'
-            textColor='text03'
+            textColor='tertiary'
           >
             {getLocale('braveSwapNoExtraFees')}
           </Text>

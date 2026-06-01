@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -17,5 +18,5 @@ export const Line = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  border-bottom: 2px solid ${(p) => p.theme.color.divider01};
+  border-bottom: 2px solid ${leo.color.divider.subtle};
 `
