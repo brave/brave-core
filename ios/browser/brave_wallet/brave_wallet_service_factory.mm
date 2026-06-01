@@ -9,6 +9,9 @@
 
 #include <memory>
 
+#include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
+#include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -16,48 +19,39 @@
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-@interface BraveWalletWebUILocalStorageCleaner : NSObject <WKNavigationDelegate>
-+ (void)clearForProfile:(ProfileIOS*)profile;
+@interface WalletWebViewRunnerDelegate : NSObject <WKNavigationDelegate> {
+  base::OnceClosure _onDone;
+}
+- (instancetype)initWithClosure:(base::OnceClosure)closure;
 @end
 
-@implementation BraveWalletWebUILocalStorageCleaner {
-  WKWebView* _webView;
-}
+@implementation WalletWebViewRunnerDelegate
 
-static BraveWalletWebUILocalStorageCleaner* currentCleaner;
-
-+ (void)clearForProfile:(ProfileIOS*)profile {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    WKWebViewConfiguration* config =
-        [web::WKWebViewConfigurationProvider::FromBrowserState(profile)
-                .GetWebViewConfiguration() copy];
-    WKWebView* webView = [[WKWebView alloc] initWithFrame:CGRectZero
-                                            configuration:config];
-    BraveWalletWebUILocalStorageCleaner* cleaner =
-        [[BraveWalletWebUILocalStorageCleaner alloc] init];
-    cleaner->_webView = webView;
-    webView.navigationDelegate = cleaner;
-    currentCleaner = cleaner;
-    [webView loadRequest:[NSURLRequest
-                             requestWithURL:
-                                 [NSURL URLWithString:@(kBraveUIWalletURL)]]];
-  });
+- (instancetype)initWithClosure:(base::OnceClosure)closure {
+  self = [super init];
+  if (self) {
+    _onDone = std::move(closure);
+  }
+  return self;
 }
 
 - (void)done {
-  _webView.navigationDelegate = nil;
-  _webView = nil;
-  currentCleaner = nil;
+  if (_onDone) {
+    std::move(_onDone).Run();
+  }
 }
 
 - (void)webView:(WKWebView*)webView
     didFinishNavigation:(WKNavigation*)navigation {
+  __weak WalletWebViewRunnerDelegate* weakSelf = self;
   [webView evaluateJavaScript:@"localStorage.clear()"
             completionHandler:^(id result, NSError* error) {
-              [self done];
+              [weakSelf done];
             }];
 }
 
@@ -81,16 +75,50 @@ static BraveWalletWebUILocalStorageCleaner* currentCleaner;
 
 namespace brave_wallet {
 
+class WalletWebViewRunner {
+ public:
+  WalletWebViewRunner() = default;
+
+  ~WalletWebViewRunner() = default;
+
+  void Clear(ProfileIOS* profile) {
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    WKWebViewConfiguration* config =
+        web::WKWebViewConfigurationProvider::FromBrowserState(profile)
+            .GetWebViewConfiguration();
+    web_view_ = [[WKWebView alloc] initWithFrame:CGRectZero
+                                   configuration:config];
+    delegate_ = [[WalletWebViewRunnerDelegate alloc]
+        initWithClosure:base::BindOnce(&WalletWebViewRunner::OnDone,
+                                       weak_factory_.GetWeakPtr())];
+    web_view_.navigationDelegate = delegate_;
+    [web_view_ loadRequest:[NSURLRequest
+                               requestWithURL:
+                                   [NSURL URLWithString:@(kBraveUIWalletURL)]]];
+  }
+
+ private:
+  void OnDone() {
+    web_view_ = nil;
+    delegate_ = nil;
+  }
+
+  WKWebView* web_view_ = nil;
+  WalletWebViewRunnerDelegate* delegate_ = nil;
+  base::WeakPtrFactory<WalletWebViewRunner> weak_factory_{this};
+};
+
 class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
  public:
   explicit BraveWalletServiceDelegateIos(ProfileIOS* profile)
-      : profile_(profile) {
+      : profile_(profile), cleaner_runner_(web::GetUIThreadTaskRunner({})) {
     wallet_base_directory_ = profile->GetStatePath();
     is_private_window_ = profile->IsOffTheRecord();
   }
 
   void ClearWalletUIStoragePartition() override {
-    [BraveWalletWebUILocalStorageCleaner clearForProfile:profile_];
+    cleaner_runner_.AsyncCall(&WalletWebViewRunner::Clear)
+        .WithArgs(profile_.get());
   }
 
   base::FilePath GetWalletBaseDirectory() override {
@@ -103,6 +131,7 @@ class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
   raw_ptr<ProfileIOS> profile_;
   base::FilePath wallet_base_directory_;
   bool is_private_window_ = false;
+  base::SequenceBound<WalletWebViewRunner> cleaner_runner_;
 };
 
 // static
