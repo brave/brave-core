@@ -16,15 +16,22 @@
 #include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
+#include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -35,6 +42,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -44,6 +52,7 @@
 #include "components/tabs/public/tab_group.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "ui/base/base_window.h"
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL));
@@ -52,6 +61,12 @@ static_assert(!BUILDFLAG(IS_ANDROID));
 namespace ai_chat {
 
 namespace {
+
+// Fallback timeout for tab removal operations. Tab closure can involve user
+// interaction via unload (beforeunload) handlers, so the WebContents may
+// outlive the close request. If all tabs are removed within the timeout we
+// report the post-close state; otherwise we report whatever tabs remain.
+constexpr base::TimeDelta kTabRemovalTimeout = base::Seconds(10);
 
 // Returns a sorted, de-duplicated list of indices that are valid for the
 // provided TabStripModel. Any indices outside of the current tab bounds are
@@ -319,6 +334,110 @@ int MoveResolvedTabsToStrip(const std::vector<ResolvedTab>& tabs_to_move,
   return static_cast<int>(moved_indices.size());
 }
 
+// Waits for a set of tabs to be destroyed after a close request, then runs
+// |on_done|. Tab closing is asynchronous: CloseWebContentsAt() initiates
+// closure but WebContents destruction can be delayed (e.g. by a beforeunload
+// handler), so reporting immediately would still list the tabs as present.
+// The callback runs once all tabs are gone or the fallback timeout fires,
+// whichever comes first. Self-owned: it deletes itself after completion.
+class TabsClosedWaiter {
+ public:
+  static void Run(std::vector<tabs::TabHandle> handles,
+                  base::OnceClosure on_done,
+                  base::TimeDelta fallback_timeout = kTabRemovalTimeout) {
+    (new TabsClosedWaiter(std::move(handles), std::move(on_done),
+                          fallback_timeout))
+        ->Start();
+  }
+
+ private:
+  // Observes a single WebContents and notifies the waiter when it is
+  // destroyed. The waiter never dereferences the WebContents, so observing
+  // through destruction is safe.
+  class TabObserver : public content::WebContentsObserver {
+   public:
+    TabObserver(TabsClosedWaiter& waiter, content::WebContents* web_contents)
+        : content::WebContentsObserver(web_contents), waiter_(waiter) {}
+
+    void WebContentsDestroyed() override { waiter_->CheckAndMaybeFinish(); }
+
+   private:
+    const raw_ref<TabsClosedWaiter> waiter_;
+  };
+
+  TabsClosedWaiter(std::vector<tabs::TabHandle> handles,
+                   base::OnceClosure on_done,
+                   base::TimeDelta timeout)
+      : handles_(std::move(handles)),
+        on_done_(std::move(on_done)),
+        timeout_(timeout) {}
+
+  void Start() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    if (handles_.empty()) {
+      ForceFinish();
+      return;
+    }
+    tab_observers_.reserve(handles_.size());
+    for (tabs::TabHandle handle : handles_) {
+      if (auto* tab = handle.Get()) {
+        tab_observers_.push_back(
+            std::make_unique<TabObserver>(*this, tab->GetContents()));
+      }
+    }
+
+    // Some tabs may already be gone (e.g. closed synchronously); check on the
+    // next task so the caller's callback is never invoked re-entrantly.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&TabsClosedWaiter::CheckAndMaybeFinish,
+                                  weak_factory_.GetWeakPtr()));
+    timer_.Start(FROM_HERE, timeout_,
+                 base::BindOnce(&TabsClosedWaiter::ForceFinish,
+                                weak_factory_.GetWeakPtr()));
+  }
+
+  void CheckAndMaybeFinish() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    // Keep waiting while any of the tabs is still alive.
+    if (std::ranges::any_of(handles_, [](tabs::TabHandle handle) {
+          return handle.Get() != nullptr;
+        })) {
+      return;
+    }
+    ForceFinish();
+  }
+
+  void ForceFinish() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    if (finished_) {
+      return;
+    }
+    finished_ = true;
+    timer_.Stop();
+
+    // Post the callback on the next task, matching the rest of the tool, so any
+    // resulting active-window change has settled before the tab list is read.
+    if (on_done_) {
+      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+          FROM_HERE, std::move(on_done_));
+    }
+
+    // Self-delete on the next task. Deferring (rather than clearing
+    // |tab_observers_| now) avoids destroying the TabObserver whose
+    // WebContentsDestroyed() callback is currently on the stack.
+    base::SequencedTaskRunner::GetCurrentDefault()->DeleteSoon(FROM_HERE, this);
+  }
+
+  std::vector<tabs::TabHandle> handles_;
+  std::vector<std::unique_ptr<TabObserver>> tab_observers_;
+  base::OnceClosure on_done_;
+  base::OneShotTimer timer_;
+  const base::TimeDelta timeout_;
+  bool finished_ = false;
+  SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<TabsClosedWaiter> weak_factory_{this};
+};
+
 }  // namespace
 
 TabManagementTool::TabManagementTool(Profile* profile) : profile_(profile) {}
@@ -503,6 +622,8 @@ void TabManagementTool::UseTool(const std::string& input_json,
     HandleMoveTabs(std::move(callback), dict);
   } else if (*action == "move_group") {
     HandleMoveGroup(std::move(callback), dict);
+  } else if (*action == "close") {
+    HandleCloseTabs(std::move(callback), dict);
   } else if (*action == "create_group") {
     HandleCreateGroup(std::move(callback), dict);
   } else if (*action == "update_group") {
@@ -952,6 +1073,55 @@ void TabManagementTool::HandleMoveGroup(UseToolCallback callback,
     PostTaskSendResultWithTabList(std::move(callback), std::move(result),
                                   tab_to_reactivate);
   }
+}
+
+void TabManagementTool::HandleCloseTabs(UseToolCallback callback,
+                                        const base::DictValue& params) {
+  const auto* tab_ids = params.FindList("tab_ids");
+
+  if (!tab_ids || tab_ids->empty()) {
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Missing or empty 'tab_ids' array for close operation"),
+        {});
+    return;
+  }
+
+  std::vector<ResolvedTab> tabs_to_close = ResolveTabs(
+      HandleIdsFromList(*tab_ids), profile_, /*require_grouped=*/false);
+
+  std::vector<tabs::TabHandle> handles_to_wait_for;
+  handles_to_wait_for.reserve(tabs_to_close.size());
+  // Track which handles we've already closed so a duplicated tab_id does not
+  // dereference a ResolvedTab whose WebContents an earlier close destroyed.
+  base::flat_set<int32_t> closed_handles;
+  for (const ResolvedTab& tab : tabs_to_close) {
+    tabs::TabHandle handle = tab.tab->GetHandle();
+    if (!closed_handles.insert(handle.raw_value()).second) {
+      continue;
+    }
+    // Re-query the index against the current strip: closing an earlier tab in
+    // the same strip shifts the indices captured at resolution time.
+    int index = tab.tab_strip->GetIndexOfWebContents(tab.contents);
+    if (index == TabStripModel::kNoTab) {
+      continue;
+    }
+    tab.tab_strip->CloseWebContentsAt(index, TabCloseTypes::CLOSE_USER_GESTURE);
+    handles_to_wait_for.push_back(handle);
+  }
+  const size_t closed_count = handles_to_wait_for.size();
+
+  base::DictValue result;
+  result.Set("message", "Successfully closed " +
+                            base::NumberToString(closed_count) + " tab(s)");
+
+  // Tab closure is asynchronous, so wait for the tabs to actually be destroyed
+  // (or time out) before reporting the resulting tab list.
+  TabsClosedWaiter::Run(
+      std::move(handles_to_wait_for),
+      base::BindOnce(&TabManagementTool::PostTaskSendResultWithTabList,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(result), std::nullopt));
 }
 
 void TabManagementTool::HandleCreateGroup(UseToolCallback callback,

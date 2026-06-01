@@ -46,6 +46,7 @@ class TabManagementTool : public Tool {
   void HandleListTabs(UseToolCallback callback);
   void HandleMoveTabs(UseToolCallback callback, const base::DictValue& params);
   void HandleMoveGroup(UseToolCallback callback, const base::DictValue& params);
+  void HandleCloseTabs(UseToolCallback callback, const base::DictValue& params);
   void HandleCreateGroup(UseToolCallback callback,
                          const base::DictValue& params);
   void HandleUpdateGroup(UseToolCallback callback,

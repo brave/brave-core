@@ -109,6 +109,17 @@ size_t GetBrowserCount() {
   return count;
 }
 
+size_t GetTabCount(Profile* profile) {
+  size_t count = 0;
+  for (BrowserWindowInterface* bwi : GetAllBrowserWindowInterfaces()) {
+    if (bwi->GetProfile() != profile) {
+      continue;
+    }
+    count += bwi->GetTabStripModel()->count();
+  }
+  return count;
+}
+
 // Build a minimal expected windows skeleton for the current profile state so
 // tests can compare. We should always also test actual browser state to verify
 // the response has waited for the state to catch up with the commands.
@@ -825,6 +836,42 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
     EXPECT_EQ(index_of(t3), i2 + 1);
     EXPECT_EQ(index_of(t1), i2 + 2);
   }
+}
+
+IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, CloseTabsAcrossWindows) {
+  TabManagementTool tool(profile());
+  tool.UserPermissionGranted("");
+
+  Browser* b1 = browser();
+  Browser* b2 = CreateBrowser(profile());
+
+  int t1 = AddTabAndGetHandle(b1, GURL("https://close1.test/"));
+  int t2 = AddTabAndGetHandle(b2, GURL("https://close2.test/"));
+  // A tab we keep open, to confirm only the requested tabs are closed.
+  int keep = AddTabAndGetHandle(b1, GURL("https://keep.test/"));
+
+  ASSERT_NE(GetSessionIdForTabId(t1), GetSessionIdForTabId(t2));
+  const size_t initial_tab_count = GetTabCount(profile());
+
+  std::string response = RunToolAndGetText(FROM_HERE, &tool,
+                                           absl::StrFormat(
+                                               R"JSON({
+      "action": "close",
+      "tab_ids": [%d, %d]
+    })JSON",
+                                               t1, t2));
+
+  base::DictValue response_dict = base::test::ParseJsonDict(response);
+  EXPECT_THAT(response_dict,
+              base::test::IsSupersetOfValue(base::test::ParseJson(
+                  R"JSON({"message":"Successfully closed 2 tab(s)"})JSON")));
+
+  // The waiter must not report until the tabs are actually destroyed.
+  EXPECT_FALSE(tabs::TabHandle(t1).Get());
+  EXPECT_FALSE(tabs::TabHandle(t2).Get());
+  EXPECT_TRUE(tabs::TabHandle(keep).Get());
+  EXPECT_EQ(GetTabCount(profile()), initial_tab_count - 2);
+  ExpectOutputMatchesWindowSkeleton(FROM_HERE, response, profile());
 }
 
 }  // namespace ai_chat
