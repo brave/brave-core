@@ -2204,7 +2204,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   // Verifies resize strip position, width, z-order, and panel insets for the
   // given border mode. Panel is on the right in LTR, so the content-facing
   // edge is left and the outer edge is right.
-  auto verify_state = [&](const base::Location& loc, bool rounded_corners) {
+  auto verify_state = [&](bool rounded_corners,
+                          const base::Location& loc = FROM_HERE) {
     SCOPED_TRACE(loc.ToString());
     if (rounded_corners) {
       EXPECT_EQ(0, side_panel->GetInsets().left())
@@ -2231,11 +2232,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*rounded_corners=*/true);
+  verify_state(true);
 
   prefs->SetBoolean(kWebViewRoundedCorners, false);
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*rounded_corners=*/false);
+  verify_state(false);
 
   // Switch to another panel that has brave panel header.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -2244,7 +2245,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*rounded_corners=*/false);
+  verify_state(false);
 
   // Switch to another panel that doesn't have brave panel header.
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
@@ -2253,7 +2254,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
   }));
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*rounded_corners=*/false);
+  verify_state(false);
 }
 
 // Verify that the panel border insets follow the sidebar's horizontal
@@ -2275,8 +2276,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 
   // When right-aligned the content-facing edge is the left and the outer edge
   // is the right; when left-aligned the two are mirrored.
-  auto verify_state = [&](const base::Location& loc, bool right_aligned,
-                          bool rounded_corners) {
+  auto verify_state = [&](bool right_aligned, bool rounded_corners,
+                          const base::Location& loc = FROM_HERE) {
     SCOPED_TRACE(loc.ToString());
     const gfx::Insets insets = side_panel->GetInsets();
     const int content_side = right_aligned ? insets.left() : insets.right();
@@ -2297,11 +2298,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   ASSERT_TRUE(side_panel->IsRightAligned());
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*right_aligned=*/true, /*rounded_corners=*/true);
+  verify_state(/*right_aligned=*/true, /*rounded_corners=*/true);
 
   prefs->SetBoolean(kWebViewRoundedCorners, false);
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*right_aligned=*/true, /*rounded_corners=*/false);
+  verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
 
   // Flip to left-aligned while visible. This drives
   // UpdateSideBarHorizontalAlignment() -> SidePanel::UpdateBorder().
@@ -2310,18 +2311,18 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*right_aligned=*/false, /*rounded_corners=*/true);
+  verify_state(/*right_aligned=*/false, /*rounded_corners=*/true);
 
   prefs->SetBoolean(kWebViewRoundedCorners, false);
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*right_aligned=*/false, /*rounded_corners=*/false);
+  verify_state(/*right_aligned=*/false, /*rounded_corners=*/false);
 
   // Flip back to right-aligned while visible to exercise the reverse
   // transition.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   ASSERT_TRUE(side_panel->IsRightAligned());
   RunScheduledLayouts();
-  verify_state(FROM_HERE, /*right_aligned=*/true, /*rounded_corners=*/false);
+  verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
 }
 
 // Regression test: the top container separator must remain visible when a side
