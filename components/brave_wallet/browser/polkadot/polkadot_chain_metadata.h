@@ -48,17 +48,10 @@ class PolkadotChainMetadata {
       uint16_t ss58_prefix,
       uint32_t spec_version,
       bool asset_tx_payment,
-      bool has_assets_pallet = false,
-      uint8_t assets_pallet_index = 0,
-      uint8_t assets_transfer_all_call_index = 0,
-      uint8_t assets_transfer_keep_alive_call_index = 0);
-
-  // Build metadata from a known relay/parachain name returned by system_chain.
-  // Returns std::nullopt for unknown names. The returned metadata has an
-  // unknown spec_version (set to 0); callers must populate spec_version from
-  // state_getRuntimeVersion before using it for version-sensitive operations.
-  static std::optional<PolkadotChainMetadata> FromChainName(
-      std::string_view chain_name);
+      bool has_assets_pallet,
+      uint8_t assets_pallet_index,
+      uint8_t assets_transfer_all_call_index,
+      uint8_t assets_transfer_keep_alive_call_index);
 
   // Obtain a reference to the underlying opaque type so that it can be passed
   // to Rust routines.

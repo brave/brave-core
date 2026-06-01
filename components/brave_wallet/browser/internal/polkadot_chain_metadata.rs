@@ -397,10 +397,10 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
     let transfer_all_call_index =
         get_call_index(&portable_registry, balances_pallet, "transferall")?;
 
+    let mut has_assets_pallet = false;
     let mut assets_pallet_index = 0;
     let mut assets_transfer_all_call_index = 0;
     let mut assets_transfer_keep_alive_call_index = 0;
-    let mut has_assets_pallet = false;
     if let Some(assets_pallet) = pallets.iter().find(|p| normalize_ident(&p.name) == "assets") {
         has_assets_pallet = true;
         assets_pallet_index = assets_pallet.index;

@@ -8,6 +8,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -15,12 +16,8 @@ namespace brave_wallet {
 namespace {
 
 std::vector<uint8_t> BytesForTest(std::string_view value) {
-  std::vector<uint8_t> bytes;
-  bytes.reserve(value.size());
-  for (char c : value) {
-    bytes.push_back(static_cast<uint8_t>(c));
-  }
-  return bytes;
+  auto bytes = base::as_byte_span(value);
+  return std::vector(bytes.begin(), bytes.end());
 }
 
 }  // namespace

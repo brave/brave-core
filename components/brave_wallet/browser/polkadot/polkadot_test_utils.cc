@@ -147,7 +147,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/42, kUnknownSpecVersion,
-        /*asset_tx_payment=*/false);
+        /*asset_tx_payment=*/false,
+        /*has_assets_pallet=*/false,
+        /*assets_pallet_index=*/0,
+        /*assets_transfer_all_call_index=*/0,
+        /*assets_transfer_keep_alive_call_index=*/0);
   }
 
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-kusama-json.json#L969
@@ -177,7 +181,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/0, kUnknownSpecVersion,
-        /*asset_tx_payment=*/false);
+        /*asset_tx_payment=*/false,
+        /*has_assets_pallet=*/false,
+        /*assets_pallet_index=*/0,
+        /*assets_transfer_all_call_index=*/0,
+        /*assets_transfer_keep_alive_call_index=*/0);
   }
 
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-polkadot-json.json#L969
