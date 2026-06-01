@@ -408,13 +408,13 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // match the farbling-off position.
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_default));
-  EXPECT_EQ(accept_language_position_, position_when_off);
+  EXPECT_EQ(accept_language_position_, position_when_off) << "farbling=default";
 
   // Farbling level: maximum. Accept-Language is farbled but its position must
   // match the farbling-off position.
   BlockFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_max));
-  EXPECT_EQ(accept_language_position_, position_when_off);
+  EXPECT_EQ(accept_language_position_, position_when_off) << "farbling=max";
 }
 
 // Tests results of farbling HTTP Accept-Language header
