@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/host_os_constants.gni")
+import("//brave/build/rust/rust_host_toolchain.gni")
 
 template("build_crate") {
   if (defined(invoker["crates"])) {
@@ -42,6 +43,7 @@ template("build_crate") {
       "//brave/tools/crates/Cargo.lock",
       "//brave/tools/crates/Cargo.toml",
     ]
+    inputs += rust_host_inputs
 
     outputs = executable_output_paths
 
@@ -55,9 +57,18 @@ template("build_crate") {
       "TMPDIR=" + rebase_path(cargo_target_dir),
       "TEMP=" + rebase_path(cargo_target_dir),
       "TMP=" + rebase_path(cargo_target_dir),
-      "PATH=" +
-          rebase_path("//third_party/rust-toolchain/bin", root_build_dir) +
+
+      # This `rebase_path` MUST stay absolute (new_base = ""). A relative
+      # entry like `../../third_party/rust-toolchain/bin` is resolved against the
+      # process's CWD, so it may not resolve correctly and could silently fall
+      # through to a local rustup proxy via `~/.cargo/bin`.
+      "PATH=" + rebase_path("//third_party/rust-toolchain/bin") +
           host_path_sep + getenv("PATH"),
+    ]
+
+    response_file_contents += rust_host_response_file_contents
+
+    response_file_contents += [
       rebase_path(cargo_exe),
       "build",
       "--quiet",
