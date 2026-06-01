@@ -8,8 +8,8 @@ import {
   Alias,
   AliasesUpdate,
   EmailAliasesServiceInterface,
-  EmailAliasesServiceObserverRemote,
   EmailAliasesServiceObserverInterface,
+  EmailAliasesServiceObserverRemote,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 export const demoData = {

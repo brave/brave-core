@@ -8,20 +8,8 @@ import { getLocale } from '$web-common/locale'
 import { StubEmailAliasesService, demoData } from './utils/stubs'
 import { ManagePageConnected } from '../email_aliases'
 import { SignInPage } from '../content/email_aliases_manage_page'
-import {
-  EmailAliasesServiceInterface,
-  EmailAliasesServiceObserverInterface,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
-import {
-  installMockAuthentication,
-  restoreMockAuthentication,
-} from '../tests/mock_authentication'
+import { EmailAliasesServiceObserverInterface } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import '../content/strings'
-
-const loggedInState = {
-  loggedIn: { email: demoData.email },
-} as AccountState
 
 const stubEmailAliasesServiceAccountReadyInstance =
   new StubEmailAliasesService()
@@ -44,36 +32,15 @@ const bindListErrorObserver = (
   return () => {}
 }
 
-function ManagePageConnectedStory({
-  accountState,
-  emailAliasesService,
-  bindObserver,
-}: {
-  accountState: AccountState
-  emailAliasesService: EmailAliasesServiceInterface
-  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
-}) {
-  React.useEffect(() => {
-    installMockAuthentication(accountState)
-    return () => restoreMockAuthentication()
-  }, [accountState])
-
-  return (
-    <ManagePageConnected
-      emailAliasesService={emailAliasesService}
-      bindObserver={bindObserver}
-    />
-  )
-}
-
 export const SignInPageStory = () => {
   return <SignInPage />
 }
 
 export const ManageAliasesPage = () => {
   return (
-    <ManagePageConnectedStory
-      accountState={loggedInState}
+    <ManagePageConnected
+      authEmail={demoData.email}
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
       emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
       bindObserver={bindAccountReadyObserver}
     />
@@ -82,8 +49,9 @@ export const ManageAliasesPage = () => {
 
 export const ManageAliasesPageListLoadError = () => {
   return (
-    <ManagePageConnectedStory
-      accountState={loggedInState}
+    <ManagePageConnected
+      authEmail={demoData.email}
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
       emailAliasesService={stubEmailAliasesServiceListErrorInstance}
       bindObserver={bindListErrorObserver}
     />

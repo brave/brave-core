@@ -4,18 +4,51 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { act, renderHook } from '@testing-library/react'
-import { useEmailAliases } from '../content/use_email_aliases'
+import {
+  getLoggedInEmail,
+  isAccountLoggedIn,
+  useEmailAliases,
+} from '../content/use_email_aliases'
+import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
 import {
   Alias,
   AliasesUpdate,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import {
-  installMockAuthentication,
-  makeLoggedInAccountState,
-  makeLoggedOutAccountState,
-  restoreMockAuthentication,
-} from './mock_authentication'
+
+const makeLoggedOutAccountState = (): AccountState =>
+  ({ loggedOut: {} }) as AccountState
+const makeLoggedInAccountState = (email: string): AccountState =>
+  ({ loggedIn: { email } }) as AccountState
+
+describe('isAccountLoggedIn', () => {
+  it('returns false when account state is undefined', () => {
+    expect(isAccountLoggedIn(undefined)).toBe(false)
+  })
+
+  it('returns false when logged out', () => {
+    expect(isAccountLoggedIn(makeLoggedOutAccountState())).toBe(false)
+  })
+
+  it('returns true when logged in', () => {
+    expect(isAccountLoggedIn(makeLoggedInAccountState('user@brave.com'))).toBe(
+      true,
+    )
+  })
+})
+
+describe('getLoggedInEmail', () => {
+  it('returns empty string when logged out', () => {
+    expect(getLoggedInEmail(undefined)).toBe('')
+    expect(getLoggedInEmail(makeLoggedOutAccountState())).toBe('')
+  })
+
+  it('returns the logged-in email', () => {
+    expect(getLoggedInEmail(makeLoggedInAccountState('user@brave.com'))).toBe(
+      'user@brave.com',
+    )
+  })
+})
 
 describe('useEmailAliases', () => {
   let lastObserver: EmailAliasesServiceObserverInterface | undefined
@@ -29,25 +62,18 @@ describe('useEmailAliases', () => {
 
   beforeEach(() => {
     lastObserver = undefined
-    installMockAuthentication(makeLoggedOutAccountState())
   })
 
-  afterEach(() => {
-    restoreMockAuthentication()
-  })
-
-  it('starts with empty aliases when logged out', () => {
+  it('starts with empty aliases', () => {
     const { result } = renderHook(() => useEmailAliases(bindObserver))
 
-    expect(result.current.accountState).toEqual(makeLoggedOutAccountState())
     expect(result.current.aliasesUpdate).toEqual({ aliases: [] })
   })
 
-  it('applies alias list when logged in', () => {
+  it('applies alias list updates', () => {
     const aliases: Alias[] = [
       { email: 'a@brave.com', note: 'n', domains: undefined },
     ]
-    installMockAuthentication(makeLoggedInAccountState('user@brave.com'))
     const { result } = renderHook(() => useEmailAliases(bindObserver))
     expect(lastObserver).toBeDefined()
 
@@ -58,8 +84,7 @@ describe('useEmailAliases', () => {
     expect(result.current.aliasesUpdate).toEqual({ aliases })
   })
 
-  it('applies error payload when logged in', () => {
-    installMockAuthentication(makeLoggedInAccountState('user@brave.com'))
+  it('applies error payload', () => {
     const { result } = renderHook(() => useEmailAliases(bindObserver))
 
     act(() => {
@@ -71,45 +96,9 @@ describe('useEmailAliases', () => {
     expect(result.current.aliasesUpdate).toEqual({ error: 'load failed' })
   })
 
-  it('ignores alias updates while logged out', () => {
-    const aliases: Alias[] = [
-      { email: 'a@brave.com', note: undefined, domains: undefined },
-    ]
-    const { result } = renderHook(() => useEmailAliases(bindObserver))
-
-    act(() => {
-      lastObserver!.onAliasesUpdated({ aliases } as AliasesUpdate)
-    })
-
-    expect(result.current.aliasesUpdate).toEqual({ aliases: [] })
-  })
-
-  it('resets aliases when account logs out', () => {
-    const aliases: Alias[] = [
-      { email: 'a@brave.com', note: undefined, domains: undefined },
-    ]
-    const mockAuth = installMockAuthentication(
-      makeLoggedInAccountState('user@brave.com'),
-    )
-    const { result } = renderHook(() => useEmailAliases(bindObserver))
-
-    act(() => {
-      lastObserver!.onAliasesUpdated({ aliases } as AliasesUpdate)
-    })
-    expect(result.current.aliasesUpdate).toEqual({ aliases })
-
-    act(() => {
-      mockAuth.setAccountState(makeLoggedOutAccountState())
-    })
-
-    expect(result.current.aliasesUpdate).toEqual({ aliases: [] })
-  })
-
   it('runs bindObserver cleanup on unmount', () => {
     const unbind = jest.fn()
-    const bindObserver = (_observer: EmailAliasesServiceObserverInterface) =>
-      unbind
-    const { unmount } = renderHook(() => useEmailAliases(bindObserver))
+    const { unmount } = renderHook(() => useEmailAliases((_observer) => unbind))
 
     unbind.mockClear()
     unmount()
