@@ -2075,6 +2075,7 @@ void BraveWalletService::OnWalletReset() {
 
 void BraveWalletService::SetDelegateForTesting(  // IN-TEST
     std::unique_ptr<BraveWalletServiceDelegate> delegate) {
+  keyring_service_->SetDelegate(nullptr);
   delegate_ = std::move(delegate);
   keyring_service_->SetDelegate(delegate_.get());
 }
