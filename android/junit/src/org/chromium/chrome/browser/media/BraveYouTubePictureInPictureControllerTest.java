@@ -228,6 +228,7 @@ public class BraveYouTubePictureInPictureControllerTest {
         verify(mBraveActivity, never()).getCurrentWebContents();
         verify(mWebContents, never()).exitFullscreen();
         // TODO - Uncomment once implemented in core.
+        // See https://github.com/brave/brave-core/pull/36087
         // verify(mNatives, never()).exitFullscreen(mWebContents);
     }
 
@@ -251,6 +252,7 @@ public class BraveYouTubePictureInPictureControllerTest {
 
         // The JS exit was driven via the JNI helper for the active session.
         // TODO - Uncomment once implemented in core.
+        // See https://github.com/brave/brave-core/pull/36087
         // verify(mNatives).exitFullscreen(observableWebContents);
 
         // Capture the observer the controller installed, then simulate the renderer
