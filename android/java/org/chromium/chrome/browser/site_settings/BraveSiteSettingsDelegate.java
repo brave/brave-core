@@ -5,14 +5,18 @@
 
 package org.chromium.chrome.browser.site_settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
+import org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragment;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.browser_ui.site_settings.BraveWalletSiteSettingsDelegate;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.url.GURL;
@@ -25,6 +29,21 @@ public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate
 
     public BraveSiteSettingsDelegate(Context context, Profile profile) {
         super(context, profile);
+    }
+
+    /**
+     * Launches the brave specific clear browsing data dialog from site settings.
+     *
+     * @param currentActivity The activity on which the fragment will be attached.
+     */
+    @Override
+    public void launchClearBrowsingDataDialog(Activity currentActivity) {
+        SettingsNavigationFactory.createSettingsNavigation()
+                .startSettings(
+                        currentActivity,
+                        BraveClearBrowsingDataFragment.class,
+                        ClearBrowsingDataFragment.createFragmentArgs(
+                                BraveSiteSettingsDelegate.class.getName()));
     }
 
     @Override
