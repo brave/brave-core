@@ -55,7 +55,6 @@
 <translation id="1902837727299679178">Brave 想刪除你的「密碼管理工具」資料。如果允許，請輸入 Windows 密碼。</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{管理員要求您重新啟動 Brave，以套用更新}=1{管理員要求您重新啟動 Brave，以套用更新。您的無痕式視窗不會重新開啟。}other{管理員要求您重新啟動 Brave，以套用更新。您的 # 個無痕式視窗不會重新開啟。}}</translation>
 <translation id="4449148723378534338">查看 Brave 中重要的私隱和安全控制項</translation>
-<translation id="5229247933547820267">如想問「AI 模式」有關分頁的問題而不離開頁面，請登入 Brave。你也可在你的所有裝置上取得密碼和其他資料。</translation>
 <translation id="1640672724030957280">正在下載…</translation>
 <translation id="1680687534629375545">問「圖片搜尋」關於此頁面的問題</translation>
 <translation id="509363484780540563">你可以隨時使用 Brave 開啟訊息、文件和其他應用程式中的連結，瀏覽器也會固定在工作列。</translation>
@@ -101,6 +100,9 @@
 <translation id="2066690553719545730">一律顯示 AI 模式</translation>
 <translation id="2472891440303445472">由於此檔案是欺詐檔案，可能會對裝置造成非預期的變更，因此 Brave 已禁止下載</translation>
 <translation id="2054358978145431867">下次開啟 iOS 版 Brave 時，系統會提示你試用「<ph name="FEATURE_NAME"/>」。</translation>
+<translation id="4315579854608498851">Brave 會在你首次瀏覽網站時關閉 JavaScript 優化功能。
+
+如果此頁面無法正常運作，請嘗試允許優化。</translation>
 <translation id="2726948994393234543">你儲存在 Brave 帳戶的密碼和其他 Brave 資料，將會從這部裝置移除。如要再次在 Brave 中使用這些資料，請重新登入。</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{根據機構規定，Brave 會在閒置 1 分鐘後自動刪除瀏覽資料，當中可能包括記錄、自動填入資料和下載檔案。這些分頁仍會保持開啟。}other{根據機構規定，Brave 會在閒置 # 分鐘後自動刪除瀏覽資料，當中可能包括記錄、自動填入資料和下載檔案。這些分頁仍會保持開啟。}}</translation>
 <translation id="2126108037660393668">已下載的檔案驗證失敗。</translation>
@@ -218,6 +220,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">自訂您的新 Brave 設定檔</translation>
+<translation id="2430807206104224491">無需切換分頁，也可繼續與「AI 模式」對話。如要開始使用，請登入 Brave。你也可在你的所有裝置上取得密碼和其他資料。</translation>
 <translation id="4805865169608137960">如要從 Brave 中移除 Brave 帳戶，請前往「設定」頁面登出 Brave</translation>
 <translation id="1651639704310627074">日後 Brave 可詢問你是否要使用已儲存的資料自動填入表格</translation>
 <translation id="2585240446624043880">Brave 無法讀取及寫入數據目錄：
@@ -510,6 +513,7 @@
 <translation id="8646609321956191980">每個設定檔都會保存本身專屬的 Brave 資料，例如書籤、記錄、密碼等</translation>
 <translation id="6756656512757374876">進一步瞭解 <ph name="BEGIN_LINK"/>Brave 如何確保你的資料保密<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">此設定變更會在 Brave 重新啟動後套用。</translation>
+<translation id="3396870972301571614">如要管理擴充功能，只需按一下 Brave 主選單中的 [擴充功能] 即可。</translation>
 <translation id="2535436634051789953">您可切換查看其他 Brave 個人檔案的密碼</translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將您在文字欄中輸入的文字傳送給 Brave</translation>
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>

@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Brave'un güvenlik araçları</translation>
 <translation id="1902837727299679178">Brave, Şifre Yöneticisi verilerinizi silmek istiyor. Buna izin vermek için Windows şifrenizi yazın.</translation>
 <translation id="4449148723378534338">Brave'daki önemli gizlilik ve güvenlik kontrollerini inceleyin</translation>
-<translation id="5229247933547820267">Sayfadan ayrılmadan AI Modu'na sekmenizle ilgili soru sormak için Brave'da oturum açın. Ayrıca, şifrelerinize ve diğer öğelerinize tüm cihazlarınızdan erişebilirsiniz.</translation>
 <translation id="1640672724030957280">İndiriliyor...</translation>
 <translation id="1680687534629375545">Görsel aramaya bu sayfa hakkında soru sorun</translation>
 <translation id="509363484780540563">Mesajlardaki, belgelerdeki ve diğer uygulamalardaki bağlantıları tıkladığınızda Brave'u kullanabilirsiniz. Ayrıca görev çubuğunuza sabitlenir.</translation>
@@ -95,6 +94,9 @@
 <translation id="2066690553719545730">AI Modu'nu Her Zaman Göster</translation>
 <translation id="2472891440303445472">Dosya yanıltıcı olduğu ve cihazınızda beklenmeyen değişiklikler yapabileceği için Brave bu indirme işlemini engelledi</translation>
 <translation id="2054358978145431867">Brave iOS'i bir sonraki açışınızda <ph name="FEATURE_NAME"/> özelliğini denemeniz için bir istem görürsünüz.</translation>
+<translation id="4315579854608498851">Brave, bir siteyi ilk kez ziyaret ettiğinizde JavaScript optimizasyonunu devre dışı bırakır.
+
+Bu sayfa beklendiği gibi çalışmıyorsa optimizasyona izin vermeyi deneyin.</translation>
 <translation id="2726948994393234543">Brave Hesabınıza kaydettiğiniz şifreler ve diğer Brave verileri bu cihazdan kaldırılır. Bu bilgileri Brave'da tekrar kullanmak için yeniden oturum açın.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Brave 1 dakika boyunca kullanılmadığında kuruluşunuz tarama verilerini otomatik olarak siler. Bu veriler geçmiş, otomatik doldurma ve indirilenleri içerebilir. Sekmeleriniz açık kalır.}other{Brave # dakika boyunca kullanılmadığında kuruluşunuz tarama verilerini otomatik olarak siler. Bu veriler geçmiş, otomatik doldurma ve indirilenleri içerebilir. Sekmeleriniz açık kalır.}}</translation>
 <translation id="2126108037660393668">İndirilen dosya doğrulanamadı.</translation>
@@ -210,6 +212,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Yeni Brave profilinizi özelleştirin</translation>
+<translation id="2430807206104224491">Sekme değiştirmeden AI Modu ile sohbet etmeye devam edebilirsiniz. Başlamak için Brave'da oturum açın. Ayrıca, şifrelerinize ve diğer öğelerinize tüm cihazlarınızdan erişebilirsiniz.</translation>
 <translation id="4805865169608137960">Brave Hesabınızı Brave'dan kaldırmak için Ayarlar sayfasında Brave oturumunu kapatın</translation>
 <translation id="1651639704310627074">Daha sonra Brave, formlarınızın otomatik olarak doldurulması için kayıtlı bilgileri kullanmak isteyip istemediğinizi sorabilir</translation>
 <translation id="2585240446624043880">Brave veri dizini üzerinde okuma ve yazma işlemi yapamıyor: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -496,6 +499,7 @@
 <translation id="8646609321956191980">Her profil; yer işaretleri, geçmiş, şifreler ve benzeri gibi kendi Brave bilgilerini içerir</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Brave'un verilerinizi nasıl gizli tuttuğu<ph name="END_LINK"/> hakkında daha fazla bilgi edinin</translation>
 <translation id="3556601443414636547">Bu ayarda yapılan değişiklikler, Brave yeniden başlatıldığında uygulanır.</translation>
+<translation id="3396870972301571614">Uzantılarınızı yönetmek için Brave ana menüsünden Uzantılar'ı tıklayın.</translation>
 <translation id="2535436634051789953">Başka bir Brave profilindeki şifreleri görmek için profil değiştirebilirsiniz</translation>
 <translation id="2312399718665761438">Yazım hatalarını düzeltmek için Brave, metin alanlarına yazdığınız metinleri Brave'a gönderir</translation>
 <translation id="3507835409099344374">Brave bildirim ayarlarına git</translation>

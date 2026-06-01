@@ -21,6 +21,7 @@
 <translation id="1036348656032585052">অফ কৰক</translation>
 <translation id="1036436692654972538">আপোনাৰ ডিভাইচত ছেভ কৰে</translation>
 <translation id="1036881361735705143">এনভেল’প C4</translation>
+<translation id="1038106730571050514">পৰামৰ্শসমূহ দেখুৱাওক</translation>
 <translation id="1038168778161626396">কেৱল সাংকেতিক</translation>
 <translation id="1038842779957582377">অজ্ঞাত নাম</translation>
 <translation id="1041998700806130099">কামৰ শ্বীটৰ বাৰ্তা</translation>
@@ -90,6 +91,7 @@
 <translation id="1149617035358809955">এইগৰাকী আপুনিয়েই বুলি সত্যাপন কৰক যাতে এইটোৱে আপোনাৰ পৰিশোধৰ তথ্য পূৰ কৰিব পাৰে</translation>
 <translation id="1150565364351027703">ছানগ্লাছ</translation>
 <translation id="1150979032973867961">এই ছার্ভাৰে নিজকে <ph name="DOMAIN"/> বুলি প্ৰমাণ কৰিব নোৱাৰিলে আৰু আপোনাৰ কম্পিউটাৰৰ অপাৰেটিং ছিষ্টেমে ইয়াৰ সুৰক্ষাৰ প্ৰমাণপত্ৰ বিশ্বাস নকৰে। এয়া কোনো ভুল কনফিগাৰেশ্বনৰ বাবে বা কোনো আক্ৰমণকাৰীয়ে আপোনাৰ সংযোগ অৱৰোধ কৰাৰ বাবে হ'ব পাৰে।</translation>
+<translation id="1115388613038124176">আপুনি Brave Walletত ছেভ হৈ থকা কাৰ্ডসমূহ স্বয়ংক্ৰিয়ভাৱে পূৰ কৰিব পাৰে</translation>
 <translation id="1151972924205500581">পাছৱৰ্ড প্ৰয়োজনীয়</translation>
 <translation id="1156303062776767266">আপুনি কোনো স্থানীয় বা শ্বেয়াৰ কৰা ফাইল চাই আছে</translation>
 <translation id="1158211211994409885"><ph name="HOST_NAME"/>এ অপ্ৰত্যাশিতভাৱে সংযোগ বন্ধ কৰিছে।</translation>
@@ -130,6 +132,7 @@
 <translation id="1202892408424955784">ট্ৰেক কৰা প্ৰ’ডাক্ট</translation>
 <translation id="1204184165594298176">{0,plural, =1{ফাইল প্ৰতিলিপি কৰাটো অৱৰোধ কৰা হৈছে}one{<ph name="FILE_COUNT"/> টা ফাইল প্ৰতিলিপি কৰাটো অৱৰোধ কৰা হৈছে}other{<ph name="FILE_COUNT"/> টা ফাইল প্ৰতিলিপি কৰাটো অৱৰোধ কৰা হৈছে}}</translation>
 <translation id="120509973613679868">ব্যৱসায়িক ভ্ৰমণ</translation>
+<translation id="1476484148752770616">আপুনি Brave Walletত ছেভ হৈ থকা কাৰ্ডসমূহ স্বয়ংক্ৰিয়ভাৱে পূৰ কৰিব পাৰে।</translation>
 <translation id="120587177308723209">ফেণ্টাছী স্প’ৰ্ট</translation>
 <translation id="1206967143813997005">প্ৰাৰম্ভিক স্বাক্ষৰটো বেয়া</translation>
 <translation id="1209206284964581585">এতিয়াৰ বাবে লুকুৱাওক</translation>
@@ -149,6 +152,7 @@
 <translation id="1228893227497259893">ভুল বস্তু চিনাক্তকাৰী</translation>
 <translation id="1230244617745022071"><ph name="SOURCE"/> (স্বয়ংক্ৰিয়ভাৱে চিনাক্ত কৰা)</translation>
 <translation id="1232569758102978740">শিৰোনামবিহীন</translation>
+<translation id="1234539281285007945"><ph name="FIELD_1"/>ৰ আৱশ্যক</translation>
 <translation id="1236081509407217141">VRৰ অনুমতি দিবনে?</translation>
 <translation id="1236689197410206751">AfterPay</translation>
 <translation id="1240347957665416060">আপোনাৰ ডিভাইচৰ নাম</translation>
@@ -386,6 +390,7 @@
 <translation id="1595731774593926493">ৰিড্ৰেছ নম্বৰ মচক</translation>
 <translation id="1597307423671074806">WebM ভিডিঅ’</translation>
 <translation id="6492710526857439641">Brave Tip লিংক, <ph name="IPH_LINK_FOCUSED_LINK_TEXT"/> খুলিবলৈ এণ্টাৰ টিপক</translation>
+<translation id="4637891589811401888">পঠিওৱা হৈছে। আপোনাৰ আনটো ডিভাইচত Brave খোলক।</translation>
 <translation id="1599199147673445968">নতুন কাৰ্ড? <ph name="BEGIN_LINK"/>কাৰ্ডৰ সবিশেষ দিয়ক<ph name="END_LINK"/></translation>
 <translation id="1601786938618212857">জিপ কৰক</translation>
 <translation id="1604192142734009334">ৰূপচৰ্চা আৰু সুস্থতা</translation>
@@ -468,9 +473,11 @@
 <translation id="1721424275792716183">* ক্ষেত্ৰটো আৱশ্যকীয়</translation>
 <translation id="1723636263173393300">এই নীতিটোত <ph name="MAX_ITEMS_LIMIT"/> টাতকৈ অধিক শ্বৰ্টকাট থাকিব নালাগে।</translation>
 <translation id="1725591448053514783">এনভেল’প আপুনি ৬</translation>
+<translation id="172754119609519423"><ph name="FIELD_1"/>, <ph name="FIELD_2"/> বা <ph name="FIELD_3"/>ৰ আৱশ্যক</translation>
 <translation id="1727613060316725209">প্ৰমাণপত্ৰখন মান্য</translation>
 <translation id="1728677426644403582">আপুনি কোনো ৱেব পৃষ্ঠাৰ উৎস চাই আছে</translation>
 <translation id="173080396488393970">এই ধৰণৰ কার্ড সমর্থন নকৰে</translation>
+<translation id="1731563515262205847">ML-DSA-65</translation>
 <translation id="1732445923934584865">ইয়াৰ সলনি ব্যক্তিগতভাৱে সোধক</translation>
 <translation id="1733064249834771892">ফ’ণ্ট</translation>
 <translation id="1733631169686303142">অডিঅ’ৰ সৰঞ্জাম</translation>
@@ -495,6 +502,7 @@
 <translation id="1756026472674246267">লিংকটো নতুন টেবত খোলক</translation>
 <translation id="1756555787993603971">আপুনি এতিয়া স্বয়ংক্ৰিয়ভাৱে পূৰ হোৱাৰ সুবিধাটোৰ জৰিয়তে অধিক সুৰক্ষিতভাৱে চেক আউট কৰিবলৈ ভাৰ্ছুৱেল কাৰ্ড ব্যৱহাৰ কৰিব পাৰে।</translation>
 <translation id="175656076281618225">যাদু</translation>
+<translation id="1757269861068472918">প্ৰতিটো থ্ৰেডত টেব শ্বেয়াৰ কৰিব নেকি?</translation>
 <translation id="1757773103848038814">Monospace ফ’ণ্ট</translation>
 <translation id="3727704638090640904">Braveৰ পাছৱৰ্ড সলনি কৰাৰ বুটাম, আপোনাৰ Brave একাউণ্টৰ পাছৱৰ্ডটো সলনি কৰিবলৈ সক্ৰিয় কৰক</translation>
 <translation id="1762779605905950734">পথৰ নাম</translation>
@@ -512,6 +520,7 @@
 <translation id="1803254472779303354">মাউছ লক কৰাৰ অনুমতি আছে</translation>
 <translation id="1803351196216024260">মাইক্ৰ’ফ’ন ব্যৱহাৰ কৰিবলৈ বিচাৰিব পাৰে</translation>
 <translation id="1804258830776932716">আপোনাৰ একাউণ্টটো ক্ষিপ্ৰভাৱে লিংক কৰি Pix সক্ষম কৰক</translation>
+<translation id="2342567518551476675">অন থাকিলে, Braveএ উন্নত সঁহাৰিৰ বাবে আপোনাৰ প্ৰাসংগিক টেবসমূহ স্বয়ংক্ৰিয়ভাৱে চিনাক্ত আৰু ব্যৱহাৰ কৰিব।</translation>
 <translation id="1806174020048213474">এই এপ্‌টোৱে ৱাই-ফাই ক্ৰিডেনশ্বিয়েলসমূহ ইনষ্টল কৰাৰ অনুমতি বিচাৰি অনুৰোধ জনাইছে। ছেটআপ কৰা পাছত, অংশগ্ৰহণ কৰা ৱাই-ফাই নেটৱৰ্কসমূহৰ সৈতে আপোনাৰ <ph name="DEVICE_TYPE"/> স্বয়ংক্ৰিয়ভাৱে সংযুক্ত হ’ব। এই ক্ৰিডেনশ্বিয়েলসমূহ আঁতৰাবলৈ এপ্‌টো আনইনষ্টল কৰক।</translation>
 <translation id="1807246157184219062">পাতল</translation>
 <translation id="1807528111851433570">আৰম্ভণিৰ শ্বীট</translation>
@@ -523,6 +532,7 @@
 <translation id="1812975699435941848">স্বাস্থ্য সম্পৰ্কীয় শিক্ষা আৰু চিকিৎসাৰ প্ৰশিক্ষণ</translation>
 <translation id="1816436748874040213">শ্বেয়াৰ কৰা টেবসমূহ স্ক্ৰল আৰু জুম কৰিবলৈ ক’ব পাৰে</translation>
 <translation id="1816707915923025275">আপোনাৰ ব্ৰাউজিঙৰ ইতিহাস সন্ধান কৰিবলৈ @history টাইপ কৰক</translation>
+<translation id="1816849970130491878">আপুনি আটাইবোৰ থ্ৰেডৰ বাবে টেব শ্বেয়াৰ কৰাটো স্বয়ংক্ৰিয়ভাৱে অন কৰি সময় ৰাহি কৰিব পাৰে।</translation>
 <translation id="8221062743840200789">ভূমিকা: Braveৰ পৰামৰ্শ। সাধ্য সুবিধাৰ লেবেল: <ph name="CHROME_TIP"/></translation>
 <translation id="1818522458013171885">অৱৰোধৰ পৰা আঁতৰাওক</translation>
 <translation id="1818585559878922121">তথ্যচিত্ৰমূলক চলচ্চিত্ৰ</translation>
@@ -619,6 +629,7 @@
 <translation id="1979156660928743046">মিডিয়াৰ তথ্য</translation>
 <translation id="8152900367508796729">আপোনাৰ সন্ধান, শ্ৰেষ্ঠ মিল আৰু সেইসমূহৰ পৃষ্ঠাত থকা সমল Braveলৈ পঠিওৱা হয়। এয়া মানৱ পৰ্যালোচকে AI উন্নত কৰিবলৈ ব্যৱহাৰ নকৰে। আপোনাৰ প্ৰতিষ্ঠানে এই ছেটিংসমূহ যিকোনো সময়তে সলনি কৰিব পাৰে।</translation>
 <translation id="1988881251331415125">যদি বানান ঠিকে আছে, <ph name="BEGIN_LINK"/>সংযোগ সম্পৰ্কীয় ডায়গন’ষ্টিক্স চলাই চাওক<ph name="END_LINK"/>।</translation>
+<translation id="1991370806334788445">তৃতীয় পক্ষৰ কুকিসমূহক অনুমতি দি চাওক, যাৰ ফলত ব্ৰাউজিং সুৰক্ষিত হ’ব কিন্তু ছাইটৰ সুবিধাসমূহে আশা কৰা কাম কৰাৰ সম্ভাৱনা অধিক থাকে।</translation>
 <translation id="1992331125980284532">JIS B3</translation>
 <translation id="1997484222658892567">আপোনাৰ স্থানীয় কম্পিউটাৰত <ph name="URL"/>এ স্থায়ীভাৱে বেছিকৈ ডেটা ষ্ট’ৰ কৰিব বিচাৰে</translation>
 <translation id="1997774360448418989">কাগজ (লাইটৱেইট)</translation>
@@ -733,6 +744,7 @@
 <translation id="21613918653299710">অনলাইন প্ৰতিচ্ছবিৰ গেলাৰী</translation>
 <translation id="2161656808144014275">পাঠ</translation>
 <translation id="2162435186600002085">মুখ্য হেডাৰৰ ল’গ’</translation>
+<translation id="2162535140284745414">AIৰ জৰিয়তে ব্ৰাউজ কৰাৰ নতুন উপায় বিচাৰি পোৱাত আপোনাক সহায় কৰিব পৰা ৰিয়েল-টাইমৰ পৰামৰ্শ লাভ কৰক।</translation>
 <translation id="2162620598375156287">এতিয়া <ph name="SOURCE_WEBSITE"/>ত <ph name="CURRENT_PRICE"/></translation>
 <translation id="2164510882479075877"><ph name="HOST_NAME"/> টাইপ কৰোঁতে ভুল হৈছে নেকি পৰীক্ষা কৰক।</translation>
 <translation id="2166049586286450108">প্ৰশাসকৰ সম্পূর্ণ এক্সেছ</translation>
@@ -835,7 +847,6 @@
 <translation id="2302571905116831849">লয়েল্টী কাৰ্ড স্বয়ংক্ৰিয়ভাৱে পূৰ কৰক</translation>
 <translation id="6702454076107580912">ইনক’গনিট’ ৱিণ্ড’ খোলাৰ বুটাম, ব্যক্তিগতভাৱে ব্ৰাউজ কৰিবৰ বাবে এখন নতুন ইনক’গনিট’ ৱিণ্ড’ খুলিবলৈ সক্ৰিয় কৰক</translation>
 <translation id="2303437270440428119">OpenDocument Spreadsheet</translation>
-<translation id="2305294852062272447">চালকৰ অনুজ্ঞাপত্ৰ ছেভ কৰিবনে?</translation>
 <translation id="2306124309679506798">এটা ইমাৰ্ছিভ অভিজ্ঞতাৰ অনুমতি দিবনে?</translation>
 <translation id="2310789833878085574">ছেভ কৰক আৰু স্বয়ংক্রিয়ভাৱে পূৰ কৰক</translation>
 <translation id="2312234273148520048">মছলা আৰু ড্ৰেছিং</translation>
@@ -971,6 +982,7 @@
 <translation id="2521385132275182522">তলৰ অংশৰ সোঁফালে ষ্টে'পল কৰক</translation>
 <translation id="2521736961081452453">ফ’ৰ্ম সৃষ্টি কৰক</translation>
 <translation id="2524461107774643265">অধিক তথ্য যোগ কৰক</translation>
+<translation id="5238917643845023930"><ph name="BEGIN_BOLD"/>এই বিকল্পসমূহ আগবঢ়াবলৈ চেকআউট পৃষ্ঠাৰ সমল Braveৰ সৈতে শ্বেয়াৰ কৰা হয়।<ph name="END_BOLD"/> পৰিশোধৰ আঁচনিসমূহ যোগ্যতাৰ অধীন। পাছত পৰিশোধ কৰাৰ বিকল্পসমূহ লুকুৱাবলৈ, <ph name="BEGIN_LINK"/>পৰিশোধৰ ছেটিঙ<ph name="END_LINK"/>লৈ যাওক।</translation>
 <translation id="2526062290525841862">এই এপ্‌টো চলাবলৈ পোনপটীয়াকৈ বিতৰণ কৰা ৱেব এপৰ বিকাশকৰ্তাৰ ম’ড পুনৰ সক্ষম কৰক</translation>
 <translation id="5151177152796946073">ছেভ হৈ থকা ঠিকনাসমূহ আপুনি সমগ্ৰ Brave প্ৰ’ডাক্টত ব্যৱহাৰ কৰিব পাৰে। এই ঠিকনাটো আপোনাৰ Brave একাউণ্ট <ph name="ACCOUNT"/>ত ছেভ কৰা হ’ব।</translation>
 <translation id="2527451058878391043">আপোনাৰ CVC আপোনাৰ কাৰ্ডৰ সন্মুখ ভাগত আছে। এইটো একেবাৰে ওপৰৰ সোঁফালে আপোনাৰ কাৰ্ডৰ নম্বৰটোৰ ওপৰত থকা ৪ টা অংকৰ ক’ড।</translation>
@@ -1116,7 +1128,6 @@
 <translation id="2740531572673183784">ঠিক আছে</translation>
 <translation id="2742128390261873684">ঘৰৰ সা-সৰঞ্জামৰ স্বয়ংক্ৰিয় নিয়ন্ত্ৰণ</translation>
 <translation id="2743512410823092182">DJৰ উৎস আৰু সৰঞ্জাম</translation>
-<translation id="2743934314332613923">চালকৰ অনুজ্ঞাপত্ৰ আপডে’ট কৰিবনে?</translation>
 <translation id="2757727729385895652">Google Driveত <ph name="COUNT"/> টা ফাইল আপল’ড কৰি থকা হৈছে</translation>
 <translation id="2759299890026163685">পুনৰ চেষ্টা কৰাৰ আগতে আপোনাৰ সুস্থিৰ ইণ্টাৰনেট সংযোগ থকাটো নিশ্চিত কৰক</translation>
 <translation id="2759825833388495838"><ph name="APP_NAME"/>ত আপোনাৰ পাছৱৰ্ডটো দিয়ক</translation>
@@ -1178,7 +1189,6 @@
 <translation id="2882949212241984732">দুবাৰ গে'ট ফ'ল্ড কৰক</translation>
 <translation id="2893773853358652045">চতুৰ্থ ৰোল</translation>
 <translation id="2894137550885451583">এয়া প্ৰ’ডাক্ট <ph name="PRODUCT"/>ৰ বাবে <ph name="CURRENCY"/>ৰ দাম</translation>
-<translation id="2894233157216554317">পাছপ’ৰ্ট আপডে’ট কৰিবনে?</translation>
 <translation id="2898398337339787921">Microsoft Excel</translation>
 <translation id="2900528713135656174">অনুষ্ঠান সৃষ্টি কৰক</translation>
 <translation id="2902312830803030883">অধিক কাৰ্য</translation>
@@ -1195,6 +1205,7 @@
 <translation id="2915496182262110498">ৰং কৰা</translation>
 <translation id="2916038427272391327">অন্য প্ৰ’গ্ৰেমসমূহ বন্ধ কৰক</translation>
 <translation id="2917630513638801879">সেউজ নীলা ১</translation>
+<translation id="2918484639460781603">ছেটিঙলৈ যাওক</translation>
 <translation id="2919185931486062599">চিকাৰ আৰু শ্বুটিং</translation>
 <translation id="2922350208395188000">ছাৰ্ভাৰৰ প্ৰমাণপত্ৰ পৰীক্ষা কৰিব নোৱাৰি।</translation>
 <translation id="2922792708490674">{0,plural, =1{ফাইল ডাউনল’ড কৰাটো অৱৰোধ কৰা হৈছে}one{<ph name="FILE_COUNT"/> টা ফাইল ডাউনল’ড কৰাটো অৱৰোধ কৰা হৈছে}other{<ph name="FILE_COUNT"/> টা ফাইল ডাউনল’ড কৰাটো অৱৰোধ কৰা হৈছে}}</translation>
@@ -1271,7 +1282,6 @@
 <translation id="3024663005179499861">নীতিৰ প্ৰকাৰটো ভুল</translation>
 <translation id="3027915437837548462">SVG প্ৰতিচ্ছবি</translation>
 <translation id="3030331669969285614">এই ফ্লেগসমূহে কোনো উল্লেখনীয় সালসলনি কৰাত বাধা দিয়ে অথবা সেয়া পূৰ্বাৱস্থালৈ নিয়ে আৰু সেইটো এক সীমিত সময়ৰ বাবেহে উপলব্ধ হ’ব।</translation>
-<translation id="3030542417256082866">বাহন ছেভ কৰিবনে?</translation>
 <translation id="5877261609750575671">আপোনাৰ ঘৰৰ ঠিকনাটোৱে সমগ্ৰ Brave সেৱাত আপোনাৰ কামসমূহ কৰাত আপোনাক সহায় কৰিব পাৰে, যেনে, অধিক প্ৰাসংগিক Search ফলাফল আৰু Brave Mapsত দিক্-নিৰ্দেশনা লাভ কৰা। আপুনি <ph name="BEGIN_LINK"/>আপোনাৰ Brave একাউণ্ট <ph name="ACCOUNT"/><ph name="END_LINK"/>ত নিজৰ ঠিকনা সম্পাদনা কৰিব বা মচিব পাৰে।</translation>
 <translation id="3033777742142108756">বৰ্তমান ম’শ্বন আৰু পোহৰৰ ছেন্সৰৰ অনুমতি দিয়া হৈছে</translation>
 <translation id="3034526003882782781">স্ক্ৰ’ল কৰা আৰু জুম কৰাৰ অনুমতি দিয়া আছে</translation>
@@ -1279,7 +1289,6 @@
 <translation id="3037177537145227281">মূল্য ট্ৰেক কৰি থকা হৈছে</translation>
 <translation id="3037605927509011580">আমি দুঃখিত!</translation>
 <translation id="3039406992698062762">পৰিয়ালৰ ভ্ৰমণ</translation>
-<translation id="3565088180637574018">আপোনাৰ Brave Walletৰ পাছসমূহ</translation>
 <translation id="3041176923638368519">কাৰ্ডৰ লাভালাভৰ চৰ্তাৱলী চাওক</translation>
 <translation id="3041584414879052436">এতিয়া ক্ৰয় কৰি পাছত পৰিশোধ কৰক জাৰিকৰ্তাৰ সূচী বন্ধ কৰা হৈছে।</translation>
 <translation id="3041612393474885105">প্ৰমাণপত্ৰৰ তথ্য</translation>
@@ -1404,6 +1413,7 @@
 <translation id="3220264767789936523">আনুষ্ঠানিক সাজ-পোছাক</translation>
 <translation id="3223287115535306850">এপ্ লঞ্চ কৰাটো ল'ড হোৱাৰ চিহ্ন</translation>
 <translation id="3223425961342298674">অৱস্থানৰ অনুমতি নাই</translation>
+<translation id="3225277284238802910"><ph name="FIELD_1"/> বা <ph name="FIELD_2"/>ৰ আৱশ্যক</translation>
 <translation id="3225319735946384299">ক’ড ছাইনিং</translation>
 <translation id="3225919329040284222">ছাৰ্ভাৰটোৱে এনে এখন প্ৰমাণপত্ৰ দিছে যিখন বিল্ট-ইন কৰি ৰখা প্ৰত্যাশা সৈতে মিলা নাই। এই প্ৰত্যাশাসমূহ আপোনাক সুৰক্ষিত ৰাখিবলৈ কিছুমান নিৰ্দিষ্ট, উচ্চ-সুৰক্ষা সম্পন্ন ৱেবছাইটত অন্তৰ্ভুক্ত কৰা হয়।</translation>
 <translation id="3226128629678568754">পৃষ্ঠাটো ল'ড হ'বলৈ প্ৰয়োজন হোৱা ডেটা পুনৰ দাখিল কৰিবলৈ 'পুনৰ ল'ড কৰক' বুটামটো টিপক।</translation>
@@ -1428,6 +1438,7 @@
 <translation id="3261488570342242926">ভাৰ্চুৱেল কাৰ্ডৰ বিষয়ে জানক</translation>
 <translation id="3262698603497362968">ক্ৰয়ৰ বিকল্প</translation>
 <translation id="3264315627780269177">এই টেবটো শ্বেয়াৰ কৰিব নোৱাৰি</translation>
+<translation id="4025268232566269954">যদি আপুনি পৰামৰ্শ অফ কৰে, তথাপিও আপোনাৰ টেবসমূহৰ পৃষ্ঠাৰ শিৰোনাম আৰু URLসমূহ Braveৰ অন্য সুবিধাসমূহৰ বাবে প্ৰক্ৰিয়াকৰণ কৰা হ’ব পাৰে। আপুনি আপোনাৰ ইয়াত এই ডেটাৰ ব্ৰাউজাৰৰ এক্সেছ পৰিচালনা কৰিব পাৰে</translation>
 <translation id="3266793032086590337">মান (সংঘাত)</translation>
 <translation id="3268451620468152448">খুলি ৰখা টেব</translation>
 <translation id="3270041629388773465">আপোনাৰ CVC ছেভ কৰা থাকিলে অধিক দ্ৰুতভাৱে চেক আউট কৰক</translation>
@@ -1559,6 +1570,7 @@
 <translation id="350069200438440499">ফাইলৰ নাম:</translation>
 <translation id="3501300228850242680">মেটেল (সংগীত)</translation>
 <translation id="350421688684366066">লেবেল (হাই-গ্লছ)</translation>
+<translation id="3507062913298382727">আইডি কাৰ্ড ছেভ কৰক</translation>
 <translation id="350763432931695541">পৰৱৰ্তী কেইখনমান পৃ্ষ্ঠাত পাঠ আহৰণ কৰি থকা হৈছে</translation>
 <translation id="3507869775212388416">আইনী সেৱাৰ চাকৰি</translation>
 <translation id="3507936815618196901">আপোনাৰ চৌপাশৰ এখন 3D মেপ সৃষ্টি কৰিবলৈ আৰু কেমেৰাৰ স্থান ট্ৰেক কৰিবলৈ বিচাৰিছে</translation>
@@ -1590,6 +1602,7 @@
 <translation id="3543935938072367282">স্বয়ংক্ৰিয়ভাৱে পূৰ হোৱাৰ সুবিধাৰ জৰিয়তে দ্ৰুতভাৱে চেক আউট কৰক</translation>
 <translation id="3547442767634383572">কৰ্মস্থানৰ প্ৰ’ফাইলৰ অৱলোকন</translation>
 <translation id="3547746132308051926">২০ x ২৪ ইঞ্চি</translation>
+<translation id="3547854697327105403">প্ৰতিটো থ্ৰেডত প্ৰাসংগিক টেব শ্বেয়াৰ কৰক</translation>
 <translation id="3549904448933807997">ব্ৰাউজাৰ আৰু প্ৰ’ফাইলৰ তথ্য (ব্যক্তিগত আৰু কৰ্মস্থানৰ প্ৰ’ফাইলকে ধৰি)</translation>
 <translation id="3552155506104542239">সকীয়নি: এই নীতিটো <ph name="POLICY_NAME"/>ৰ সৈতে বিবাদমান হৈছে আৰু Android এপত কোনো প্ৰভাৱ নপৰে। অন্যথা, এই নীতিটোৱে আশা কৰা ধৰণে কাম কৰি আছে।</translation>
 <translation id="3552297013052089404">Sans-serif ফ’ণ্ট</translation>
@@ -1597,7 +1610,6 @@
 <translation id="3558573058928565255">দিনত</translation>
 <translation id="3559897352860026926">আপোনাৰ প্ৰশাসকক তেওঁৰ <ph name="CLOUD_PROVIDER"/>ৰ কনফিগাৰেশ্বনৰ ছেটিং সত্যাপন কৰিবলৈ কওক।</translation>
 <translation id="3560824484345057728">জড়িত হৈ থকা ছাইটসমূহ চাওক</translation>
-<translation id="356359327498380603">বাহন আপডে’ট কৰিবনে?</translation>
 <translation id="3566021033012934673">আপোনাৰ ইণ্টাৰনেট সংযোগ ব্যক্তিগত নহয়</translation>
 <translation id="3566336457819493938">২১৫ x ৩১৫ মি.মি.</translation>
 <translation id="3566649245868131295">স্বাস্থ্য আৰু চিকিৎসা বিভাগৰ চাকৰি</translation>
@@ -1741,6 +1753,7 @@
 <translation id="3752543821772132562"><ph name="POLICY_NAME"/> ছেট কৰা হোৱা নাই বাবে উপেক্ষা কৰা হৈছে।</translation>
 <translation id="3754210790023674521">চিত্ৰৰ ভিতৰত চিত্ৰ ম’ডৰ পৰা বাহিৰ হওক</translation>
 <translation id="3754664361823138853">&amp;ইতিহাসৰ পৃষ্ঠা খোলক</translation>
+<translation id="3757511311058373406">স্বয়ংক্ৰিয় ব্ৰাউজৰ ফিল্টাৰ</translation>
 <translation id="3759461132968374835">আপোনাৰ শেহতীয়াকৈ ৰিপ’ৰ্ট কৰা কোনো ক্ৰেশ্ব নাই।  ক্ৰেশ্ব ৰিপ’ৰ্টিং অক্ষম কৰি ৰখাৰ সময়ত হোৱা ক্ৰেশ্ব ইয়াত দেখা পোৱা নাযাব।</translation>
 <translation id="3760561303380396507">CVCৰ পৰিৱৰ্তে Windows Hello ব্যৱহাৰ কৰিবনে?</translation>
 <translation id="3761171036307311438">কাৰ্ডত থকা নাম:</translation>
@@ -1891,7 +1904,6 @@
 <translation id="4014895360827978999">বণিক সেৱা আৰু পৰিশোধ প্ৰণালী</translation>
 <translation id="4018819349042761761">ৰাজহুৱা চাবি</translation>
 <translation id="4023431997072828269">যিহেতু এই ফৰ্মখন এটা অসুৰক্ষিত সংযোগ ব্যৱহাৰ কৰি দাখিল কৰি থকা হৈছে, আপোনাৰ তথ্য অন্য লোকে দেখা পাব।</translation>
-<translation id="4024673763872230929">আপোনাৰ তথ্য ছেভ কৰক আৰু ফৰ্মসমূহ অধিক ক্ষিপ্ৰতাৰে পূৰ কৰক। আপোনাৰ ডিভাইচত ছেভ কৰে।</translation>
 <translation id="4025325634010721551">নীতিসমূহ পুনৰ ল’ড কৰা হৈছে</translation>
 <translation id="4025338605225449265">মুদ্ৰা আৰু বিদেশী মুদ্ৰা বিনিময়</translation>
 <translation id="4025777154208238692">ওলোটা ক্ৰম</translation>
@@ -1951,12 +1963,14 @@
 <translation id="4098306082496067348">ভাৰ্ছুৱেল কাৰ্ডৰ সবিশেষ চেকআউটত যোগ দিবলৈ সেইটোত টিপক।</translation>
 <translation id="4099048595830172239">প্ৰশাসকৰ নীতিয়ে গোপনীয় সমল এটা দেখা পোৱা অৱস্থাত আপোনাৰ স্ক্ৰীনখন <ph name="APPLICATION_TITLE"/>ৰ সৈতে শ্বেয়াৰ কৰা টো চুপাৰিছ নকৰে:</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Braveত ফণ্টৰ আকাৰ আৰু টাইপফেচ কাষ্টমাইজ কৰিবলৈ প্ৰথমে টেব আৰু তাৰ পাছত এণ্টাৰ টিপক</translation>
+<translation id="4100421230355095925">ML-DSA-44</translation>
 <translation id="4101413244023615925">পাঠ আৰু গ্ৰাফিক</translation>
 <translation id="4101917550061398111">বাছনি কৰা বস্তুসমূহ মচক</translation>
 <translation id="4102567721634170493">স্থানীয় বাতৰি</translation>
 <translation id="4103249731201008433">ডিভাইচৰ ক্ৰমিক নম্বৰটো অমান্য</translation>
 <translation id="4103592298805904008">কাৰ্ডব’ৰ্ড (ছিংগল ৱাল)</translation>
 <translation id="4104702906064390950">IBANৰ তথ্য ছেভ কৰি থকা হৈছে</translation>
+<translation id="4106101218644797743">ছিংকৰ ছেটিং</translation>
 <translation id="4106887816571530227">এম্বেড কৰা সমলৰ অনুমতি নাই</translation>
 <translation id="4107047499377819067">VPNৰ পৃষ্ঠভূমিৰ সেৱা ইনষ্টল কৰাটো আৰম্ভ হৈছে, ইয়াৰ বাবে কেইমিনিটমান সময় লাগিব পাৰে।</translation>
 <translation id="4110642094637545339">Google Pay, AfterPayৰ ল'গ‘</translation>
@@ -1966,6 +1980,7 @@
 <translation id="4113354056388982663">Androidৰ কাৰ্যক্ষমতা সম্পৰ্কীয় গুৰুত্বপূৰ্ণ আপডে’ট</translation>
 <translation id="270198531912208609">আপোনাৰ Brave একাউণ্ট আৰু লগতে এই ডিভাইচটোত এই কাৰ্ডখন ছেভ কৰিব খোজেনে?</translation>
 <translation id="4114146879518089587">ছাইটলৈ অব্যাহত ৰাখক</translation>
+<translation id="4115378294792113321">মেজেণ্টা</translation>
 <translation id="4116663294526079822">এই ছাইটটোত সদায়েই অনুমতি দিয়ক</translation>
 <translation id="4116701314593212016">JIS B7</translation>
 <translation id="4116798170070772848">RA2</translation>
@@ -2091,7 +2106,6 @@
 <translation id="4282280603030594840">বাহনৰ শ্বপিং</translation>
 <translation id="4282346679996504092">এই প্ৰ’ডাক্টটোৰ বাবে সতৰ্কবাৰ্তা অফ কৰা হৈছে আৰু বুকমাৰ্কটো আঁতৰোৱা হৈছে</translation>
 <translation id="4284885181066817063"><ph name="DOMAIN"/>এ অৱৰোধ কৰিছে</translation>
-<translation id="4285498937028063278">আনপিন কৰক</translation>
 <translation id="4288101205645068104">বাহন মচক</translation>
 <translation id="4290920330097335010">কেতিয়াও অনুমতি নিদিব</translation>
 <translation id="4297502707443874121">পৃষ্ঠা <ph name="THUMBNAIL_PAGE"/>ৰ বাবে থাম্বনেইল</translation>
@@ -2118,6 +2132,7 @@
 <translation id="4318312030194671742">পেইণ্ট প্ৰিভিউ কম্প’জিটৰ সেৱা</translation>
 <translation id="4318566738941496689">আপোনাৰ ডিভাইচৰ নাম আৰু নেটৱৰ্ক ঠিকনা</translation>
 <translation id="4320119221194966055">ব্যক্তিগত ঋণ</translation>
+<translation id="432088302786119211">{COUNT,plural, =1{<ph name="DEVICE_NAME"/>ৰ পৰা লিংক লাভ কৰা হৈছে}one{<ph name="DEVICE_NAME"/>ৰ পৰা # টা লিংক লাভ কৰা হৈছে}other{<ph name="DEVICE_NAME"/>ৰ পৰা # টা লিংক লাভ কৰা হৈছে}}</translation>
 <translation id="4325600325087822253">ট্ৰে’ ১৭</translation>
 <translation id="4325863107915753736">প্ৰৱন্ধ বিচাৰি পোৱা নগ’ল</translation>
 <translation id="4326324639298822553">আপোনাৰ ম্যাদ উকলাৰ তাৰিখটো পৰীক্ষা কৰি আকৌ চেষ্টা কৰক</translation>
@@ -2174,9 +2189,9 @@
 <translation id="4415156962929755728">প্লাষ্টিক (হাই গ্লছ)</translation>
 <translation id="4415426530740016218">পিকআপ কৰাৰ ঠিকনা</translation>
 <translation id="4415748029120993980">SECG উপবৃত্তাকাৰ লেখ secp384r1 (aka NIST P-384)</translation>
+<translation id="4418150423720608641">ML-DSA-87</translation>
 <translation id="4419287616181386201">পাছৱৰ্ডসমূহ তেওঁৰ পৰিচালনাৰ ছেটিঙত মচিব পাৰি</translation>
 <translation id="4425750422187370446">ক্ৰীড়াবিদৰ পোছাক</translation>
-<translation id="443008484043213881">সঁজুলি</translation>
 <translation id="443121186588148776">ছিৰিয়েল প'ৰ্ট</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/>এ আপোনাৰ লগ ইনৰ প্ৰমাণপত্ৰ গ্ৰহণ কৰা নাই বা কোনো প্ৰমাণপত্ৰ দিয়া হোৱা নাই।</translation>
 <translation id="4432792777822557199">এতিয়াৰে পৰা <ph name="SOURCE_LANGUAGE"/> ভাষাৰ পৃষ্ঠাসমূহ <ph name="TARGET_LANGUAGE"/> ভাষালৈ অনুবাদ কৰা হ’ব।</translation>
@@ -2244,6 +2259,7 @@
 <translation id="4542971377163063093">ট্ৰে’ ৬</translation>
 <translation id="563788859854213593">পৰৱৰ্তী সময়ত দ্ৰুতভাৱে পৰিশোধ কৰিবলৈ, আপোনাৰ Brave একাউণ্টত নিজৰ কাৰ্ড, নাম আৰু বিলিঙৰ ঠিকনা ছেভ কৰক।</translation>
 <translation id="4546730006268514143">স্থানান্তৰণ কৰাৰ সময় উকলিছে</translation>
+<translation id="4547989603022124809">এই থ্ৰেডটোৰ বাবে টেব শ্বেয়াৰ কৰাটো অন কৰিব নেকি?</translation>
 <translation id="4548974025982531828">{NUM_DAYS,plural, =1{১ দিন পূৰ্বে সৃষ্টি কৰা হৈছে}one{{NUM_DAYS} দিন পূৰ্বে সৃষ্টি কৰা হৈছে}other{{NUM_DAYS} দিন পূৰ্বে সৃষ্টি কৰা হৈছে}}</translation>
 <translation id="455113658016510503">A9</translation>
 <translation id="4556069465387849460">পাছৱৰ্ড পূৰ কৰাৰ বাবে আপুনি আপোনাৰ স্ক্ৰীন লক ব্যৱহাৰ কৰি আছে</translation>
@@ -2286,6 +2302,7 @@
 <translation id="4640225694041297329">যোৱা ৭ দিনৰ পৰা ফলাফল দেখুৱাওক</translation>
 <translation id="1603927605650766014">এই টেবৰ গোটটোত যোগদান কৰিবলৈ, Brave আপডে’ট কৰক</translation>
 <translation id="464342062220857295">সন্ধানৰ সুবিধাসমূহ</translation>
+<translation id="4740546528718298274">Braveএ আপোনাৰ ডিভাইচত বা ক্লাউডত এটা ব্যক্তিগত স্পেচত পৃষ্ঠাৰ শিৰোনাম আৰু URL প্ৰক্ৰিয়াকৰণ কৰে</translation>
 <translation id="4644567637638438744">ফাইলসমূহ কেৱল তেতিয়াহে আপল'ড কৰিব পাৰি যদিহে আপুনি Microsoft OneDriveত ছাইন ইন হৈ আছে</translation>
 <translation id="4644670975240021822">তলমুখীয়াকৈ বিপৰীত ক্ৰম</translation>
 <translation id="4648262692072505866">হেশ্বৰ ফৰ্মেট SHA-256 হ’বই লাগিব।</translation>
@@ -2410,6 +2427,7 @@
 <translation id="6907401036011007312">টেবৰ গোট শ্বেয়াৰ কৰিবলৈ Brave আপডে’ট কৰক</translation>
 <translation id="483241715238664915">সকীয়নি অন কৰক</translation>
 <translation id="4832961164064927107">BBQ আৰু গ্ৰিলিং</translation>
+<translation id="1750361314954317776">আপোনাৰ প্ৰশ্নসমূহৰ অধিক উপযোগী উত্তৰ লাভ কৰাত আপোনাক সহায় কৰিবলৈ Braveএ ডিফ’ল্ট হিচাপে খোলা থকা প্ৰাসংগিক টেবসমূহ শ্বেয়াৰ কৰিব।</translation>
 <translation id="246176083348620700">আপোনাৰ Braveৰ ইতিহাস চাওক</translation>
 <translation id="484462545196658690">স্বয়ংক্ৰিয়</translation>
 <translation id="4844937814014739139">শ্বেয়াৰ কৰা টেবসমূহ স্ক্ৰ’ল কৰা আৰু জুম কৰা</translation>
@@ -2435,7 +2453,6 @@
 <translation id="4877422487531841831"><ph name="TEXT"/>ৰ সন্ধান</translation>
 <translation id="4877521229462766300">এম্বেড কৰা সমলৰ অনুমতি দিবনে?</translation>
 <translation id="4879491255372875719">স্বয়ংক্ৰিয় (ডিফ'ল্ট)</translation>
-<translation id="4880328155169081699">পৰিচয় পত্ৰ আপডে’ট কৰিবনে?</translation>
 <translation id="4880827082731008257">সন্ধানৰ ইতিহাস</translation>
 <translation id="4881695831933465202">খোলক</translation>
 <translation id="4881808915112408168">২৪ x ৩১.৫ ইঞ্চি</translation>
@@ -2515,6 +2532,7 @@
 <translation id="4995474875135717171">সংশোধন কৰাৰ সময়:</translation>
 <translation id="4995749490935861684"><ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Site Search আৰু আপোনাৰ ডিফ’ল্ট সন্ধান ইঞ্জিন পৰিচালনা কৰিবলৈ প্ৰথমে টেব আৰু তাৰ পাছত এণ্টাৰ টিপক</translation>
 <translation id="4998950033665438990">একক মুখাৱয়ব</translation>
+<translation id="2033688757301422080">Brave Searchৰ AI ম’ড</translation>
 <translation id="5001338033791319371">পূৰ্ণ স্ক্ৰীনৰ পৰা বাহিৰ হ’বলৈ আৰু ডাউনল’ড চাবলৈ, একেবাৰে ওপৰৰ পৰা টানি আনক আৰু উভতি যোৱাৰ বুটামটো স্পৰ্শ কৰক</translation>
 <translation id="5001526427543320409">তৃতীয় পক্ষৰ কুকি</translation>
 <translation id="3676215163710610678">যদি এইটো সক্ষম কৰা হয়, তেন্তে Braveএ ফর্মৰ ক্ষিপ্ৰতাৰে পুৰাবলৈ আপোনাৰ কার্ডৰ এটা প্ৰতিলিপি এই ডিভাইচত ষ্ট’ৰ কৰিব।</translation>
@@ -2531,6 +2549,7 @@
 <translation id="2013297594801702701">ছেভ হৈ থকা ঠিকনাসমূহ আপুনি সমগ্ৰ Brave প্ৰ’ডাক্টত ব্যৱহাৰ কৰিব পাৰে। এই ঠিকনাটো আপোনাৰ Brave একাউণ্ট <ph name="USER_EMAIL"/>ত ছেভ কৰা হ’ব।</translation>
 <translation id="5019819206251569004">ম’শ্বন আৰু পোহৰৰ ছেন্সৰ</translation>
 <translation id="5019952743397118625"><ph name="EXTENSION_DEVELOPER_MODE_SETTINGS_POLICY_NAME"/> নীতি ছেট কৰা হৈছে। <ph name="DEVELOPER_TOOLS_AVAILABILITY_POLICY_NAME"/>এ এক্সটেনশ্বন পৃষ্ঠাত বিকাশকৰ্তাৰ ম’ডৰ উপলব্ধতা নিয়ন্ত্ৰণ নকৰে।</translation>
+<translation id="6910167971652631325">যদি আপুনি কোনো পৰামৰ্শ বাছনি কৰে বা উপেক্ষা কৰে, Braveএ আপুনি কেৱল আপোনাৰ বাবে প্ৰাসংগিক হোৱা সমলহে দেখা পোৱাটো নিশ্চিত কৰিবলৈ নিজকে খাপ খুৱাই ল’ব</translation>
 <translation id="5021500396464456616">এই লিংকটো পঠিওৱা ব্যক্তিগৰাকীৰ সৈতে যোগাযোগ কৰক</translation>
 <translation id="6516968977334148048">Braveৰ জৰিয়তে মূল্য ট্ৰেক কৰক</translation>
 <translation id="5023310440958281426">আপোনাৰ প্ৰশাসকৰ নীতি পৰীক্ষা কৰক</translation>
@@ -2556,7 +2575,6 @@
 <translation id="5056587122125565772">প্ৰতিচ্ছবি সৃষ্টি কৰক</translation>
 <translation id="505757197798929356">খোলাৰ কাৰণ দিয়ক (আৱশ্যকীয়)</translation>
 <translation id="5058282932481719070">ছেটিঙত স্বয়ংক্রিয়ভাৱে পূৰ হোৱা বৰ্ধিত সুবিধাৰ বিষয়ে অধিক জানক</translation>
-<translation id="5060419232449737386">কেপশ্বনৰ ছেটিং</translation>
 <translation id="5061227663725596739">আপুনি <ph name="LOOKALIKE_DOMAIN"/>ৰ কথা বুজাব বিচাৰিছিল নেকি?</translation>
 <translation id="5066056036849835175">প্ৰিণ্ট কৰাৰ ইতিহাস</translation>
 <translation id="5068524481479508725">A10</translation>
@@ -2618,7 +2636,6 @@
 <translation id="5147633291963801297">ছাইডৰ পেনেলত মূল্য কমাৰ বিষয়ে তথ্য চাওক</translation>
 <translation id="5148809049217731050">ওপৰমুখীয়া</translation>
 <translation id="5148889558173091794">আপোনাৰ প্ৰশাসকে <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> অৱৰোধ কৰিছে কাৰণ ই এটা নীতি উলংঘন কৰিছে। <ph name="BEGIN_LEARN_MORE_LINK"/>এই সকীয়নিৰ বিষয়ে অধিক জানক<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="3780045618446958024">মোৰ Brave Searchৰ ইতিহাস</translation>
 <translation id="5153907427821264830"><ph name="STATUS"/> • <ph name="MESSAGE"/></translation>
 <translation id="5157504274688344097">সামূহিক বণিক আৰু ডিপার্টমেণ্টেল ষ্ট’ৰ</translation>
 <translation id="5158275234811857234">ক'ভাৰ</translation>
@@ -2637,10 +2654,10 @@
 <translation id="5180662470511508940">কীব’ৰ্ড লক কৰাৰ অনুমতি নাই</translation>
 <translation id="5187079891181379721">কৰ্পৰেট অনুষ্ঠান</translation>
 <translation id="5190072300954988691">কেমেৰা আৰু মাইক্ৰ’ফ’নৰ অনুমতি নাই</translation>
+<translation id="5190835502935405962">বুকমাৰ্কৰ বাৰ</translation>
 <translation id="5191315092027169558">আপোনাৰ প্ৰ’ফাইল <ph name="DOMAIN"/>এ পৰিচালনা কৰে</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/>এ একাধিক ফাইল ডাউনল'ড কৰিব খোজে</translation>
 <translation id="519528950056409240">Walletক ডেটা শ্বেয়াৰ কৰিবলৈ অনুমতি দিয়ক</translation>
-<translation id="5199121357983849992">আইডি কাৰ্ড ছেভ কৰিবনে?</translation>
 <translation id="5200063972779787617">একাউণ্টত ঠিকনা ছেভ কৰক</translation>
 <translation id="5201306358585911203">এই পৃষ্ঠাটোত অন্তর্ভুক্ত অন্য এটা পৃষ্ঠায়ে এয়া জনায়</translation>
 <translation id="5203716867500274632">আমাৰ প্ৰশাসকে আপোনাৰ সমগ্ৰ ChromeOS ডিভাইচত তলত দিয়া বস্তু আপোনাৰ পূৰ্বৱৰ্তী আৰু বৰ্তমানৰ ছেশ্বনসমূহ মাজত ছিংক কৰাটো সক্ষম কৰিছে:</translation>
@@ -2656,7 +2673,6 @@
 <translation id="5217759126664161410">প্ৰট’কলৰ ফৰ্মেট মান্য নহয়।</translation>
 <translation id="5221377878828867877">পাছৱৰ্ড পুনৰ ব্যৱহাৰ কৰাটো আপোনাৰ প্ৰতিষ্ঠানে নিৰীক্ষণ কৰে</translation>
 <translation id="5222812217790122047">ইমেইল বাধ্যতামূলক</translation>
-<translation id="5225215474235602477">পাছপ’ৰ্ট ছেভ কৰিবনে?</translation>
 <translation id="5228269245420405804">দূৰ-শিক্ষা</translation>
 <translation id="5229844812197559338"><ph name="SELECT_PROVIDER_TITLE"/>। <ph name="LOGO_DESCRIPTION"/></translation>
 <translation id="5230733896359313003">শ্বিপিঙৰ ঠিকনা</translation>
@@ -2685,6 +2701,7 @@
 <translation id="5255833070095767006">৩৫০ x ৪৬০ মি.মি.</translation>
 <translation id="5257739419779698609">{0,plural, =1{প্ৰশাসকৰ নীতিয়ে এই ফাইলটো <ph name="DESTINATION_NAME"/>লৈ প্ৰতিলিপি কৰাটো চুপাৰিছ নকৰে}one{প্ৰশাসকৰ নীতিয়ে এই ফাইলটো <ph name="DESTINATION_NAME"/>লৈ প্ৰতিলিপি কৰাটো চুপাৰিছ নকৰে}other{প্ৰশাসকৰ নীতিয়ে এই ফাইলটো <ph name="DESTINATION_NAME"/>লৈ প্ৰতিলিপি কৰাটো চুপাৰিছ নকৰে}}</translation>
 <translation id="5258473597674772367">“<ph name="GROUP_NAME"/>” টেবৰ গোটটো আৰু উপলব্ধ নহয়</translation>
+<translation id="5260842098960755113">থ্ৰেড বন্ধ কৰা হৈছে</translation>
 <translation id="5262342527470539728"><ph name="ACCOUNT"/>ৰ বাবে আপোনাৰ তথ্য <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/>ত ছেভ কৰা হয়</translation>
 <translation id="5263867360296733198">আপল’ড কৰাৰ আগতে পৰ্যালোচনাৰ প্ৰয়োজন</translation>
 <translation id="5266128565379329178">ওপৰৰ অংশত সংযুক্ত কৰক</translation>
@@ -2750,6 +2767,7 @@
 <translation id="5363148545938487338">Salesforce</translation>
 <translation id="5363309033720083897">আপোনাৰ প্ৰশাসকে অনুমতি দিয়া ক্ৰমিক পৰ্ট</translation>
 <translation id="5363532265530011914">মোজা আৰু হ’জেৰী</translation>
+<translation id="5370560471646081222">আপুনি ইয়াত যোগ দিয়া ছাইটসমূহ সঁহাৰিৰ বাবে উল্লেখ কৰা নহ’ব, আনকি টেবটো খোলা থাকিলেও।</translation>
 <translation id="5371425731340848620">কাৰ্ড আপডে’ট কৰক</translation>
 <translation id="537425196847960924"><ph name="USER_DISPLAY_NAME"/>এ এটা টেব সলনি কৰিছে</translation>
 <translation id="5374324662289354619">অভ্যন্তৰীণ ডিবাগিং পৃষ্ঠাসমূহ বৰ্তমান অক্ষম কৰা আছে।</translation>
@@ -2757,13 +2775,11 @@
 <translation id="5375686690914744327">SRA1</translation>
 <translation id="5377026284221673050">"আপোনাৰ ঘড়ী লেহেমীয়াকৈ চলি আছে" বা "আপোনাৰ ঘড়ী খৰকৈ চলি আছে " বা "&lt;span class="error-code"&gt;NET::ERR_CERT_DATE_INVALID&lt;/span&gt;"</translation>
 <translation id="5379618281582508161">আপোনাৰ আটাইবোৰ ডিভাইচত এই পাছৱৰ্ডটো লাভ কৰিবলৈ, এইগৰাকী আপুনি বুলি সত্যাপন কৰক</translation>
-<translation id="5380539543938195166">জ্ঞাত ভ্ৰমণকাৰীৰ নম্বৰটো আপডে’ট কৰিবনে?</translation>
 <translation id="5380953781541843508">ঊৰ্ধ্বক্ৰমত</translation>
 <translation id="5381318171304904246">অব্যাহত ৰাখিলে আপোনাক আপোনাৰ বেংকৰ ৱেবছাইটলৈ লৈ যোৱা হ’ব। আপুনি সত্যাপন কৰাৰ পাছত, আপোনাৰ ক্ৰয় সম্পূৰ্ণ কৰিবলৈ আপোনাক স্বয়ংক্ৰিয়ভাৱে উভতাই নিয়া হ’ব।</translation>
 <translation id="5381952079334035181"><ph name="MEMBER_FIRST_NAME"/>এ টেব “<ph name="WEBSITE_TITLE"/>” আপডে’ট কৰিছে</translation>
 <translation id="5383478552402031184">ফ্ল’ৰিং</translation>
 <translation id="5385857628869214740">ব্যংগ কৌতুক</translation>
-<translation id="5385966243497224160">অনা-HTTPS URL পূৰ্বদৰ্শন কৰিব নোৱাৰি</translation>
 <translation id="5386426401304769735">এই ছাইটটোৰ প্ৰমাণপত্ৰৰ চ্চেইনত SHA-1 ব্যৱহাৰ কৰি ছাইন কৰা এখন প্ৰমাণপত্ৰ আছে।</translation>
 <translation id="5391010642126249196">আপুনি চাইছে</translation>
 <translation id="5391306025131596142">&amp;ইতিহাসৰ পৃষ্ঠা খোলক</translation>
@@ -2907,6 +2923,7 @@
 <translation id="5573641252776268565">পাছপ’ৰ্টৰ তথ্য সম্পাদনা কৰা</translation>
 <translation id="5578606540385219379">সেৱা প্ৰদানকাৰী</translation>
 <translation id="5580958916614886209">আপোনাৰ ক্ৰেডিট কার্ডৰ ম্যাদ উকলাৰ মাহ পৰীক্ষা কৰি আকৌ চেষ্টা কৰক</translation>
+<translation id="5582453333200265572">আইডি কাৰ্ড আপডে’ট কৰক</translation>
 <translation id="5583442610070676234">তুলনাৰ তালিকা <ph name="COMPARE_SET_NAME"/>ৰ বাবে অধিক কাৰ্য</translation>
 <translation id="1279569289359558111">এই IBAN Brave Walletত ছেভ কৰিব পৰা নগ’ল। তাৰ পৰিৱৰ্তে সেইখন এই ডিভাইচটোৰ Braveত ছেভ কৰা হৈছে।</translation>
 <translation id="558420943003240152">পাছৱৰ্ড আৰু পাছকী পৰিচালনা কৰক…</translation>
@@ -2922,6 +2939,7 @@
 <translation id="5600044805561809264">আপুনি ব্ৰাউজ কৰোঁতে আপুনি শ্বেয়াৰ কৰি থকা টেবসমূহৰ বিষয়ে সহজে প্ৰশ্ন সুধিব পাৰে।</translation>
 <translation id="5603469469737324249"><ph name="ISSUER_1_NAME"/> বা <ph name="ISSUER_2_NAME"/></translation>
 <translation id="560412284261940334">পৰিচালক প্ৰযোজ্য নহয়</translation>
+<translation id="5604254791550001355">প্ৰ’ম্পট্‌ সম্পাদনা কৰক</translation>
 <translation id="560431066250575003">{HOURS,plural, =1{১ ঘণ্টা পূৰ্বে সক্ৰিয় হৈ আছিল}one{# ঘণ্টাৰ পূৰ্বে সক্ৰিয় হৈ আছিল}other{# ঘণ্টাৰ পূৰ্বে সক্ৰিয় হৈ আছিল}}</translation>
 <translation id="5605249000617390290">মূল্য ট্ৰেক কৰাৰ বিষয়ে অধিক জানক</translation>
 <translation id="5605670050355397069">লেজাৰ</translation>
@@ -3040,6 +3058,7 @@
 <translation id="5937482014241669139">আপোনাৰ Braveৰ ইতিহাস চাওক</translation>
 <translation id="5810442152076338065">আপোনাৰ <ph name="DOMAIN"/>ৰ সৈতে থকা সংযোগ কোনো অপ্ৰচলিত চাইফাৰ ছুট ব্যৱহাৰ কৰি এনক্ৰিপ্ট কৰা হৈছে।</translation>
 <translation id="5813119285467412249">যোগ কৰা কার্য &amp;ৰিডু কৰক</translation>
+<translation id="5813274153495000141">আপোনাৰ তথ্য ছেভ কৰক আৰু ফৰ্মসমূহ দ্ৰুততাৰে পূৰ কৰক। আপোনাৰ ডিভাইচত ছেভ কৰে।</translation>
 <translation id="5813753398265398978">পদাৰ্থ বিজ্ঞান</translation>
 <translation id="5817918615728894473">পেয়াৰ কৰক</translation>
 <translation id="5820625124144807242">আপোনাৰ অৰ্ডাৰটো পৰ্যালোচনা কৰাৰ পাছত আপুনি <ph name="BNPL_ISSUER_NAME"/>ত ছাইন ইন কৰিবই লাগিব বা সেইটোৰ সৈতে এটা একাউণ্ট সৃষ্টি কৰিব লাগিব। এই একাউণ্টটো স্বয়ংক্ৰিয়ভাৱে Google Payৰ সৈতে লিংক কৰা হ’ব।</translation>
@@ -3084,7 +3103,6 @@
 <translation id="5887400589839399685">কাৰ্ড ছেভ কৰা হ’ল</translation>
 <translation id="5887687176710214216">শেষবাৰ কালি চাইছিল</translation>
 <translation id="4104845878245066653">আপোনাৰ অন্য ডিভাইচসমূহৰ ইতিহাস পাবলৈ এইগৰাকী আপুনি বুলি সত্যাপন কৰক আৰু আপোনাৰ ইতিহাস আৰু টেব ছিংক কৰক। আপুনি যিকোনো সময়তে ছেটিঙত ছিংক কৰা বন্ধ কৰিব পাৰে। Braveএ আপোনাৰ ইতিহাসৰ ওপৰত ভিত্তি কৰি Search আৰু অন্য সেৱা ব্যক্তিগতকৰণ কৰিব পাৰে।</translation>
-<translation id="5890248301649767931">ৰিড্ৰেছ নম্বৰটো ছেভ কৰিবনে?</translation>
 <translation id="5895138241574237353">ৰিষ্টাৰ্ট কৰক</translation>
 <translation id="5895187275912066135">জাৰি কৰা তাৰিখ</translation>
 <translation id="3476147989326158506">Braveএ সংবেদনশীল তথ্য দেখুৱাবলৈ চেষ্টা কৰি আছে</translation>
@@ -3138,6 +3156,7 @@
 <translation id="5968400720580217226">AI ম’ড</translation>
 <translation id="5969199813874624822">ছেভ কৰক আৰু মূল্য ট্ৰেক কৰক</translation>
 <translation id="5969933937005244170">আপুনি খোলা থকা প্ৰাসংগিক টেবসমূহ কোনো থ্ৰেডত শ্বেয়াৰ কৰিলেহে সেইসমূহহে ব্যৱহাৰ কৰা হ’ব</translation>
+<translation id="5972020793760134803">টেবলৈ সলনি কৰক</translation>
 <translation id="5973514677932942122"><ph name="EXPIRATION_DATE"/> | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">ষষ্ঠ ৰোল</translation>
 <translation id="5975083100439434680">জুম আউট কৰক</translation>
@@ -3164,7 +3183,6 @@
 <translation id="6014801569448771146">আপোনাৰ পাছৱর্ডবোৰ পৰীক্ষা কৰক</translation>
 <translation id="6014851866995737824">"সক্ষম" অথবা "অক্ষম" সূচীখন নথকাৰ বাবে উপেক্ষা কৰা হৈছে।</translation>
 <translation id="6015796118275082299">বছৰ</translation>
-<translation id="6017028474478839719">পৰিচয় পত্ৰ ছেভ কৰিবনে?</translation>
 <translation id="6017514345406065928">সেউজীয়া ৰং</translation>
 <translation id="818107217016701700">Braveৰ ছেটিংসমূহত আপোনাৰ ব্ৰাউজিঙৰ ইতিহাস, কুকি, কেশ্ব আৰু অধিক বস্তু মচক</translation>
 <translation id="4738711932360196351">Brave Apps Script</translation>
@@ -3351,6 +3369,7 @@
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="6295618774959045776">চিভিচি:</translation>
 <translation id="629730747756840877">একাউণ্ট</translation>
+<translation id="6299098428775578517">পৰামৰ্শৰ ছেটিং</translation>
 <translation id="6300452962057769623">{0,plural, =0{আপোনাৰ ডিভাইচটো এতিয়াই ৰিষ্টাৰ্ট হ'ব}=1{আপোনাৰ ডিভাইচটো ১ ছেকেণ্ডত ৰিষ্টাৰ্ট হ'ব}one{আপোনাৰ ডিভাইচটো # ছেকেণ্ডত ৰিষ্টাৰ্ট হ'ব}other{আপোনাৰ ডিভাইচটো # ছেকেণ্ডত ৰিষ্টাৰ্ট হ'ব}}</translation>
 <translation id="6301104306974789820">মূল্য ট্ৰেকিঙৰ জাননী পাওক</translation>
 <translation id="6302546952464230349"><ph name="PERMISSION_NAME"/> অনুমতিৰ সবিশেষ দেখুৱাওক</translation>
@@ -3400,7 +3419,6 @@
 <translation id="6366710531182496394">বাওঁফালে দুবাৰ ষ্টে'পল কৰক</translation>
 <translation id="6367196786591004737">প্ৰৱিষ্টি মচক</translation>
 <translation id="6370022303958842211">ডিভাইচ এক্সেছৰ কাৰ্যসমূহ যেনে লগইন (ব্যৰ্থ লগইনৰ কাৰণসমূহকে ধৰি), লগআউট, লক কৰা আৰু আনলক কৰা</translation>
-<translation id="6372779601614872746">খোলা থকা প্ৰাসংগিক টেবসমূহ শ্বেয়াৰ কৰক</translation>
 <translation id="6374469231428023295">আকৌ চেষ্টা কৰক</translation>
 <translation id="6374865374745447009">ৱিণ্ড’ পৰিচালনা</translation>
 <translation id="6376881782310775282">এই এপ্লিকেশ্বনটোৰ বিকাশৰ ছাৰ্ভাৰটোৰ সৈতে সংযোগ কৰিব নোৱাৰি</translation>
@@ -3446,6 +3464,7 @@
 <translation id="6428450836711225518">আপোনাৰ ফ’ন নম্বৰটো সত্যাপন কৰক</translation>
 <translation id="6429267199680088961">A4 টেব</translation>
 <translation id="7772223497488184427">Braveৰ পাছৱৰ্ড সলনি কৰক</translation>
+<translation id="6431556523611594411">খুলি থোৱা টেবসমূহ শ্বেয়াৰ কৰক</translation>
 <translation id="6432297414176614592">বিজ্ঞাপনৰ বিষয়সমূহৰ বিষয়ে অধিক</translation>
 <translation id="6432831586648556868">বিক্ৰী আৰু মাৰ্কেটিং সম্পর্কীয় চাকৰি</translation>
 <translation id="6433490469411711332">সম্পর্কৰ তথ্য সম্পাদনা কৰক</translation>
@@ -3469,6 +3488,7 @@
 <translation id="6451458296329894277">ফৰ্ম পুনৰ দাখিল কৰিবলৈ নিশ্চিত কৰক</translation>
 <translation id="6452429044474066211">ডাইভিং আৰু পানীৰ তলত কৰা কাৰ্য</translation>
 <translation id="6452889436791091116">ISO ID-1</translation>
+<translation id="6453646205942063831">আপোনাক প্ৰাসংগিক পৰামৰ্শ দিবলৈ আপোনাৰ খোলা টেবসমূহৰ পৃষ্ঠাৰ শিৰোনাম আৰু URL ব্যৱহাৰ কৰা হয়</translation>
 <translation id="6455632609396391811">স্বাস্থ্য বীমা</translation>
 <translation id="6456955391422100996">বিজ্ঞাপন আঁতৰোৱা হ’ল।</translation>
 <translation id="6457206614190510200">কাষত ছেডেল কৰক</translation>
@@ -3510,7 +3530,6 @@
 <translation id="6518133107902771759">সত্যাপন কৰক</translation>
 <translation id="6519885440226079262">আপোনাৰ হাত ট্ৰেক কৰিবলৈ অনুমতি বিচাৰিব পাৰে</translation>
 <translation id="6520026037299163656">ৱেব এপ্‌ আৰু অনলাইন সঁজুলি</translation>
-<translation id="65203098586853226"><ph name="SOURCE"/>ৰ পৰা <ph name="TARGET"/>লৈ অনুবাদ কৰি থকা হৈছে</translation>
 <translation id="6520509611422418552"><ph name="MEMBER_FIRST_NAME"/>এ "<ph name="GROUP_NAME"/>" টেবৰ গোটত যোগদান কৰিছে</translation>
 <translation id="6521745193039995384">সক্ৰিয় নহয়</translation>
 <translation id="6522682797352430154">শাস্ত্ৰীয় সংগীত</translation>
@@ -3545,6 +3564,7 @@
 <translation id="6579858392010591435">বন্ধৰ দিন আৰু ঋতু অনুসৰি হোৱা অনুষ্ঠান</translation>
 <translation id="6581831440014388355">শৰীৰ আৰু মুখৰ অনাকাংক্ষিত চুলি আঁতৰোৱা</translation>
 <translation id="3157702622633401823">আপুনি চাবলৈ চেষ্টা কৰা ছাইটটোৰ আক্ৰমণকাৰীসকলে ক্ষতিকাৰক ছফ্টৱেৰ ইনষ্টল কৰিব পাৰে যিয়ে আপোনাৰ পাছৱৰ্ড, ফট’, বাৰ্তা বা ক্ৰেডিট কাৰ্ডৰ নম্বৰৰ দৰে তথ্য চুৰি কৰে বা মচি পেলায়। Braveএ পুনৰ সুৰক্ষা ব্যৱস্থা গ্ৰহণ কৰিবলৈ দৃঢ়ভাৱে চুপাৰিছ কৰে। <ph name="BEGIN_LEARN_MORE_LINK"/>এই সকীয়নিৰ বিষয়ে অধিক জানক<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2571911185264872034">Brave Walletত ষ্ট’ৰ কৰা আছে</translation>
 <translation id="6587893660316489419">এনভেল’প B5</translation>
 <translation id="6587923378399804057">আপুনি প্ৰতিলিপি কৰা লিংক</translation>
 <translation id="6591833882275308647">আপোনাৰ <ph name="DEVICE_TYPE"/> পৰিচালিত নহয়</translation>
@@ -3698,6 +3718,7 @@
 <translation id="6834757537110528125">এই ছাইটটোৱে সুৰক্ষিত সংযোগ সমৰ্থন নকৰে</translation>
 <translation id="6841864657731852591">গ্ৰেভিউৰ চিলিণ্ডাৰ</translation>
 <translation id="6842196666980060516">১৮৪ x ২৬০ মি.মি.</translation>
+<translation id="6844746916504777213">এই ছাইটসমূহ কেতিয়াও শ্বেয়াৰ নকৰিব</translation>
 <translation id="6844998850832008753">এই সময়ত হাতৰ ট্ৰেকিঙৰ অনুমতি দিয়া হৈছে</translation>
 <translation id="976643339176907534">সুৰক্ষা ছেটিং পৰিচালনা কৰাৰ বুটাম, Braveৰ ছেটিঙত আপোনাৰ সুৰক্ষিত ব্ৰাউজিং আৰু বহুতো সুবিধা পৰিচালনা কৰিবলৈ সক্ৰিয় কৰক</translation>
 <translation id="6850286078059909152">পাঠৰ ৰং</translation>
@@ -3729,6 +3750,7 @@
 <translation id="6893057134494550310">লেমিনে’ট কৰা ফইল</translation>
 <translation id="6893171174618024812">Braveত পৰিশোধৰ এপ্‌ অফ কৰিবলৈ, আপোনাৰ <ph name="BEGIN_LINK1"/>পৰিশোধৰ ছেটিঙ<ph name="END_LINK1"/>লৈ যাওক</translation>
 <translation id="6895330447102777224">আপোনাৰ কার্ড নিশ্চিত কৰা হৈছে</translation>
+<translation id="6895573608763679343"><ph name="SUGGESTION_TITLE"/>, <ph name="SUGGESTION_DESCRIPTION"/>, <ph name="GROUP_HEADER"/> গোটটোত <ph name="NUM_MATCHES_IN_GROUP"/> টাৰ ভিতৰত <ph name="MATCH_POSITION"/> নম্বৰটো।</translation>
 <translation id="6896758677409633944">প্ৰতিলিপি কৰক</translation>
 <translation id="6897140037006041989">ব্যৱহাৰকাৰীৰ এজেণ্ট</translation>
 <translation id="6898699227549475383">প্ৰতিষ্ঠান (O)</translation>
@@ -3768,6 +3790,7 @@
 <translation id="6950684638814147129">JSON মান পাৰ্ছ কৰি থাকোঁতে কিবা আসোঁৱাহ হ’ল: <ph name="ERROR"/></translation>
 <translation id="695140971690006676">সকলো ৰিছেট কৰক</translation>
 <translation id="6954049078461159956">হকী</translation>
+<translation id="6954269228996542693">ভাষাৰ পেকেজ ডাউনল’ড কৰি থকা হৈছে... <ph name="PERCENT"/>%</translation>
 <translation id="695582302419398462">কাৰ্ডব’ৰ্ড (ডাবল ৱাল)</translation>
 <translation id="6957153644870901611">অধিক ক্ষেত্ৰ পূৰ কৰিবলৈ স্বয়ংক্রিয়ভাৱে পূৰ হোৱা বৰ্ধিত সুবিধাটো অন কৰক</translation>
 <translation id="6957887021205513506">ছাৰ্ভাৰৰ প্ৰমাণপত্ৰখন নকল যেন লাগিছে।</translation>
@@ -3805,7 +3828,6 @@
 <translation id="7003322000677139268">বাহনৰ অংশ আৰু আনুষংগিক সামগ্ৰী</translation>
 <translation id="7004499039102548441">শেহতীয়া টেব</translation>
 <translation id="7004562620237466965">কেৱল সংকেতিক বাৰ্তাৰ অৰ্থ উলিয়াওক</translation>
-<translation id="9034916448420493087">আপোনাৰ তথ্যখিনি <ph name="ACCOUNT"/>ৰ বাবে <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/>ত ছেভ কৰা হয়। আপুনি ফৰ্মসমূহ দ্ৰুতভাৱে পূৰ কৰিবলৈ Braveৰ সমগ্ৰ প্ৰ’ডাক্টত এইটো ব্যৱহাৰ কৰিব পাৰে।</translation>
 <translation id="7006930604109697472">তথাপি পঠিয়াওক</translation>
 <translation id="7009364359744329733">এই মুহূৰ্তত এই কাৰ্ডখন উপলব্ধ নহয়। অনুগ্ৰহ কৰি পাছত পুনৰ চেষ্টা কৰক।</translation>
 <translation id="7010658264061801199">খাদ্য আৰু পানীয়</translation>
@@ -4016,7 +4038,6 @@
 <translation id="7353601530677266744">কামাণ্ড লাইন</translation>
 <translation id="7359588939039777303">বিজ্ঞাপন অৱৰোধ কৰা হ'ল।</translation>
 <translation id="7308957539693927108">Braveএ উপলব্ধ ৰেহাইসমূহ পালে চেকআউট কৰাৰ সময়ত দেখুৱাব</translation>
-<translation id="7362039113312920489">পৰ্যালোচনা আৰু পৰিচালনা কৰক</translation>
 <translation id="7362281996276843968">এই গোটটো ব্যক্তিগত</translation>
 <translation id="8794378783472961468">তথাপি, আপুনি অদৃশ্য নহয়। আপুনি ইনক’গনিট’ টেব ব্যৱহাৰ কৰিলেও আপোনাৰ নিয়োগকৰ্তা, ইণ্টাৰনেট সেৱা প্ৰদানকাৰী অথবা আপুনি চোৱা ৱেবছাইটে আপোনাৰ ব্ৰাউজিঙৰ তথ্য চাব পাৰে।</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Braveৰ ছেটিঙত ঠিকনা যোগ দিবলৈ আৰু পৰিচালনা কৰিবলৈ প্ৰথমে টেব আৰু তাৰ পাছত এণ্টাৰ টিপক</translation>
@@ -4097,19 +4118,18 @@
 <translation id="1548956355291859153">ছিংক পৰিচালনা কৰাৰ বুটাম, আপুনি Braveৰ ছেটিঙত কি তথ্য ছিংক কৰিব সেয়া পৰিচালনা কৰিবলৈ সক্ৰিয় কৰক</translation>
 <translation id="7451311239929941790">এই সমস্যাটোৰ বিষয়ে <ph name="BEGIN_LINK"/>অধিক জানক<ph name="END_LINK"/>।</translation>
 <translation id="745208957946308667">ডাইন’ছৰৰ গে’ম, খেলিবলৈ স্পেচ টিপক</translation>
+<translation id="74521886886364465"><ph name="SUGGESTION_TITLE"/>, <ph name="GROUP_HEADER"/> গোটটোত <ph name="NUM_MATCHES_IN_GROUP"/> টাৰ ভিতৰত <ph name="MATCH_POSITION"/> নম্বৰটো।</translation>
 <translation id="7453032093368223821">আন ডেটা পৰিচালনা কৰক</translation>
 <translation id="7454377933424667109">ক্লাউড একাউণ্ট</translation>
 <translation id="7455133967321480974">গ্ল’বেল ডিফ’ল্ট ব্যৱহাৰ কৰক (অৱৰোধ কৰক)</translation>
 <translation id="7455452752247248289">এণ্টাৰপ্ৰাইজৰ প্ৰযুক্তিবিদ্যা</translation>
 <translation id="745640750744109667">A0x3</translation>
 <translation id="7457071735008326060">কাৰ্গ’ ট্ৰাক আৰু ট্ৰেইলাৰ</translation>
-<translation id="7461924472993315131">পিন</translation>
 <translation id="7463068149674892185">এই কাৰ্যটোৰ চুপাৰিছ কৰা নহয়</translation>
 <translation id="746329643760972486">MacOS</translation>
 <translation id="746412105358554870">JavaScript অপ্টিমাইজেশ্বন আৰু সুৰক্ষা</translation>
 <translation id="7465036432780054056"><ph name="EMBEDDED_URL"/>এ আপুনি <ph name="TOP_LEVEL_URL"/> চোৱা বুলি জানিব</translation>
 <translation id="7465963048299965912">১০ x ১৩ ইঞ্চি</translation>
-<translation id="7467332121947433617">আইডি কাৰ্ড আপডে’ট কৰিবনে?</translation>
 <translation id="7469935732330206581">ফৰ্মখন সুৰক্ষিত নহয়</translation>
 <translation id="7470854469646445678">প্ৰতিলিপি কৰাৰ কাৰণ দিয়ক (আৱশ্যকীয়)</translation>
 <translation id="7471007961486718967">স্থানান্তৰণ কৰাৰ কাৰণ দিয়ক (আৱশ্যকীয়)</translation>
@@ -4355,11 +4375,13 @@
 <translation id="7819605256207059717">আপোনাৰ প্ৰতিষ্ঠানে অৱৰোধ কৰিছে</translation>
 <translation id="7822611063308883975">হেণ্ডহেল্ড গে’ম কনছ’ল</translation>
 <translation id="7825558994363763489">মাইক্ৰ’ৱেভ</translation>
+<translation id="7827688884439021871">AIৰ জৰিয়তে ব্ৰাউজ কৰাৰ নতুন উপায় বিচাৰি পোৱাত আপোনাক সহায় কৰিব পৰা ৰিয়েল-টাইমৰ পৰামৰ্শ লাভ কৰক</translation>
 <translation id="782886543891417279">আপুনি ব্যৱহাৰ কৰি থকা ৱাই-ফাইটোৰ(<ph name="WIFI_NAME"/>) বাবে আপুনি তাৰ লগ ইন কৰা পৃষ্ঠালৈ যাব লগা হ’ব পাৰে।</translation>
 <translation id="7831993212387676366">শ্বপিঙৰ সূচী কি?</translation>
 <translation id="7840103971441592723">স্ক্ৰীন কেপচাৰ কৰাটো আৰম্ভ কৰা হ’ল</translation>
 <translation id="784137052867620416">শ্বপিং ইনছাইট</translation>
 <translation id="7841633276323004751">পৰিশোধ প্ৰক্ৰিয়াকৰণ কৰিবলৈ উপলব্ধ পৰিশোধ পদ্ধতি বাছনি কৰিব লাগিব। কীব’ৰ্ড লুকুওৱা হৈছে।</translation>
+<translation id="6144294577598632959">Geminiএ এতিয়া আপোনাৰ Braveৰ সমগ্ৰ এপৰ পৰা আপোনাৰ ব্যক্তিগত তথ্য মনত ৰাখিব পাৰে আৰু আপুনি চাই থকা পৃষ্ঠাত সেয়া স্বয়ংক্ৰিয়ভাৱে পূৰ কৰিব পাৰে।</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{এটাও নহয়}=1{১টা এপ্ (<ph name="EXAMPLE_APP_1"/>)}=2{২টা এপ্ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}one{#টা এপ্ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{#টা এপ্ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="7846161022626028328">কিবা আসোঁৱাহ হৈছে। পুনৰ চেষ্টা কৰক।</translation>
 <translation id="784623644169604270">কোনো শেহতীয়া কাৰ্যকলাপ নাই</translation>
@@ -4519,6 +4541,7 @@
 <translation id="8091372947890762290">ছার্ভাৰত সক্ৰিয় কৰাৰ প্ৰক্ৰিয়া বিবেচনাধীন হৈ আছে</translation>
 <translation id="8092254339843485299">৬ x ৮ ইঞ্চি</translation>
 <translation id="8094917007353911263">আপুনি ব্যৱহাৰ কৰি থকা নেটৱর্কৰ বাবে আপুনি<ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> চাব লগা হ’ব পাৰে।</translation>
+<translation id="8095168258866348967">ভাষাৰ পেকেজ ইনষ্টল কৰি থকা হৈছে...</translation>
 <translation id="809543534949702122">সন্ধানৰ ইতিহাস</translation>
 <translation id="8098855213644561659">A3 অতিৰিক্ত</translation>
 <translation id="809898108652741896">A6</translation>
@@ -4560,7 +4583,6 @@
 <translation id="4351627595884993315">আপুনি ছাইন ইন কৰি থোৱাৰ বাবে Braveএ আপোনাৰ Brave একাউণ্টত আপোনাৰ কার্ডসমূহ ছেভ কৰাৰ সুবিধা দিছে। আপুনি ছেটিংসমূহ-ত এয়া সলনি কৰিব পাৰে।</translation>
 <translation id="8176440868214972690">এই ডিভাইচটোৰ প্ৰশাসকে এই ৱেবছাইটসমূহলৈ ছেটিং অথবা নীতিৰ দৰে কিছুমান তথ্য পঠিয়াইছে।</translation>
 <translation id="817820454357658398">নাৰীৰ স্বাস্থ্যবিধিৰ সামগ্ৰী</translation>
-<translation id="7788006888257606025"><ph name="BEGIN_BOLD"/>এই বিকল্পসমূহ আগবঢ়াবলৈ চেকআউট পৃষ্ঠাৰ সমল Braveৰ সৈতে শ্বেয়াৰ কৰা হয়।<ph name="END_BOLD"/> পৰিশোধৰ আঁচনিসমূহ যোগ্যতাৰ অধীন। পাছত পৰিশোধ কৰাৰ বিকল্পসমূহ লুকুৱাবলৈ, <ph name="BEGIN_LINK"/>পৰিশোধৰ ছেটিঙ<ph name="END_LINK"/>লৈ যাওক</translation>
 <translation id="818254048113802060">{0,plural, =1{সমলৰ বাবে <ph name="FILE_NAME"/> অৱৰোধ কৰা হৈছে}one{সমলৰ বাবে <ph name="FILE_COUNT"/> টা ফাইল অৱৰোধ কৰা হৈছে}other{সমলৰ বাবে <ph name="FILE_COUNT"/> টা ফাইল অৱৰোধ কৰা হৈছে}}</translation>
 <translation id="8183800802493617952">পৰিয়ালৰ উপযোগী গে’ম আৰু কাৰ্যকলাপ</translation>
 <translation id="8184538546369750125">গ্ল’বেল ডিফ’ল্ট ব্যৱহাৰ কৰক (অনুমতি দিয়ক)</translation>
@@ -4573,7 +4595,6 @@
 <translation id="8194956568907463262">শ্বুটাৰ গে’ম</translation>
 <translation id="8198379961710069585">ইতিহাস সন্ধান কৰাৰ বুটাম, ইতিহাস সন্ধান কৰিবলৈ সক্ৰিয় কৰক</translation>
 <translation id="8199437620497683918">অপ্টিকেল ডিস্ক (গ্লছযুক্ত)</translation>
-<translation id="8199730148066603000">অনা-HTTPS URL পূৰ্বদৰ্শন কৰাৰ অনুমতি নাই।</translation>
 <translation id="8200772114523450471">পুনৰ আৰম্ভ কৰক</translation>
 <translation id="8202097416529803614">অ’ৰ্ডাৰৰ সাৰাংশ</translation>
 <translation id="8202370299023114387">সংঘাত</translation>
@@ -4605,8 +4626,8 @@
 <translation id="8246482227229072868">আঙুঠি</translation>
 <translation id="8248406213705193919">কাৰ্ড সুৰক্ষিতভাৱে ছেভ কৰিবনে?</translation>
 <translation id="8249296373107784235">নিষ্ফল কৰক</translation>
-<translation id="824968735947741546"><ph name="SOURCE"/> (স্বয়ংক্ৰিয়ভাৱে চিনাক্ত কৰা) <ph name="TARGET"/>লৈ অনুবাদ কৰি থকা হৈছে</translation>
 <translation id="8996951854370742934">এই ঠিকনাটো বৰ্তমান এই ডিভাইচটোত ছেভ কৰা হয়। এইটো সমগ্ৰ Brave প্ৰ’ডাক্টসমূহত ব্যৱহাৰ কৰিবলৈ, ইয়াক আপোনাৰ Brave একাউণ্ট <ph name="ACCOUNT"/>ত ছেভ কৰক।</translation>
+<translation id="8250533425540303610"><ph name="LANGUAGE"/> ইনষ্টল কৰি থকা হৈছে...</translation>
 <translation id="8251493595871259082">কমকৈ টাইপ কৰি আপোনাৰ ঠিকনা পূৰ কৰক</translation>
 <translation id="8252991034201168845">সাধ্য সুবিধাৰ ছেটিঙৰ বুটামটো পৰিচালনা কৰক, ChromeOSৰ ছেটিঙত আপোনাৰ সাধ্য সুবিধাৰ সঁজুলি ব্যক্তিগতকৰণ কৰিবলৈ এণ্টাৰ টিপক</translation>
 <translation id="8253091569723639551">বিলিঙৰ ঠিকনা আৱশ্যক</translation>
@@ -4646,6 +4667,7 @@
 <translation id="8289355894181816810">আপুনি যদি ইয়াৰ অৰ্থ কি নাজানে তেন্তে আপোনাৰ নেটৱৰ্কৰ প্ৰশাসকৰ সৈতে যোগাযোগ কৰক।</translation>
 <translation id="8291367150570302588">আইডি কাৰ্ড</translation>
 <translation id="829335040383910391">ধ্বনি</translation>
+<translation id="8294425747071240447">AIৰ দ্বাৰা পৰিচালিত পৰামৰ্শ</translation>
 <translation id="8294431847097064396">উৎস</translation>
 <translation id="8297545700510100061">কুকিসমূহ আৰু ছাইটৰ অন্য ডেটা আপোনাক মনত ৰাখিবলৈ ব্যৱহাৰ কৰা হয়, উদাহৰণস্বৰূপে, আপোনাক ছাইন ইন কৰাবলৈ অথবা বিজ্ঞাপনসমূহ ব্যক্তিগতকৰণ কৰিবলৈ। আটাইবোৰ ছাইটৰ বাবে কুকি পৰিচালনা কৰিবলৈ <ph name="SETTINGS"/> চাওক।</translation>
 <translation id="8298115750975731693">আপুনি ব্যৱহাৰ কৰি থকা ৱাই-ফাই (<ph name="WIFI_NAME"/>)ৰ বাবে আপুনি <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>লৈ যাবলগীয়া হ'ব পাৰে।</translation>
@@ -4673,6 +4695,7 @@
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="8344776605855290140">ভাৰ্চুৱেল কাৰ্ডৰ পঞ্জীয়ন পূৰ্ণ উচ্চতাত খোলা হৈছে</translation>
 <translation id="834805203690963649">আপুনি ছাইটটোলৈ পঠিওৱা বা ছাইটটোৰ পৰা লাভ কৰা তথ্য আক্ৰমণকাৰীয়ে চাব আৰু সলনি কৰিব পাৰে।</translation>
+<translation id="8349305172487531364">বুকমাৰ্কৰ বাৰ</translation>
 <translation id="8350416046273606058">শ্বৰ্টকাটত স্পেচ থাকিব নোৱাৰে: "<ph name="SHORTCUT_NAME"/>"</translation>
 <translation id="8351131234907093545">টোকা সৃষ্টি কৰক</translation>
 <translation id="8352849934814541340">এই ডিভাইচটোৰ প্ৰশাসকে অতিৰিক্ত ফাংশ্বনৰ বাবে এপ্লিকেশ্বন ইনষ্টল কৰিছে। এপ্লিকেশ্বনসমূহে আপোনাৰ কিছুমান ডেটা এক্সেছ কৰিব পাৰে।</translation>
@@ -4761,6 +4784,7 @@
 <translation id="8488350697529856933">এইসমূহত প্ৰযোজ্য হয়</translation>
 <translation id="8490137692873530638">ষ্টেকাৰ ১০</translation>
 <translation id="8493948351860045254">ঠাই খালী কৰক</translation>
+<translation id="8495170825732897952">টেব সলনি নকৰাকৈ তথ্য মনত পেলাবলৈ আৰু পূৰ কৰিবলৈ যিকোনো ফৰ্মত @@ টাইপ কৰক</translation>
 <translation id="8498870489552322848"><ph name="APP_NAME"/>ত আপোনাৰ সংবেদনশীল তথ্য পূৰ কৰক</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> ল’ড হোৱাত বহুত বেছি সময় লাগিল৷</translation>
 <translation id="8502023382441452707">জন্মদিন আৰু নামকৰণৰ দিন</translation>
@@ -4914,6 +4938,7 @@
 <translation id="1796409354047419363">আপুনি আপোনাৰ <ph name="BEGIN_LINK"/>Brave একাউণ্ট<ph name="END_LINK"/> <ph name="ACCOUNT"/>ত আপোনাৰ নামটো সম্পাদনা কৰিব পাৰে</translation>
 <translation id="8759274551635299824">কার্ডখনৰ ম্যাদ উকলিল</translation>
 <translation id="87601671197631245">এই ছাইটটোৱে সুৰক্ষা সম্পৰ্কীয় এটা পুৰণি কনফিগাৰেশ্বন ব্যৱহাৰ কৰে, যিটোৱে আপোনাৰ তথ্য (উদাহৰণস্বৰূপে, পাছৱৰ্ড, বার্তা অথবা ক্ৰেডিট কাৰ্ডসমূহ) এই ছাইটটোলৈ পঠিওৱা হ’লে সেয়া ফাদিল কৰিব পাৰে।</translation>
+<translation id="8763676559028782284">{COUNT,plural, =1{<ph name="DEVICE_NAME"/>ৰ পৰা লিংক পঠিওৱা হৈছে}one{<ph name="DEVICE_NAME"/>ৰ পৰা # টা লিংক পঠিওৱা হৈছে}other{<ph name="DEVICE_NAME"/>ৰ পৰা # টা লিংক পঠিওৱা হৈছে}}</translation>
 <translation id="8763927697961133303">ইউএছবি ডিভাইচ</translation>
 <translation id="7736544743887840328">বৰ্তমান খোল খাই থকা আটাইবোৰ ইনক’গনিট’ ৱিণ্ড’ বন্ধ কৰক</translation>
 <translation id="8766943070169463815">সুৰক্ষিত পৰিশোধৰ ক্ৰিডেনশ্বিয়েলৰ বিশ্বাসযোগ্যতা প্ৰমাণীকৰণ বিষয়ক শ্বীটখন খোলা হৈছে</translation>
@@ -4927,7 +4952,6 @@
 <translation id="877348612833018844">{0,plural, =1{গোপনীয় ফাইলটো স্থানান্তৰ কৰিবনে?}one{গোপনীয় ফাইলসমূহ স্থানান্তৰ কৰিবনে?}other{গোপনীয় ফাইলসমূহ স্থানান্তৰ কৰিবনে?}}</translation>
 <translation id="8775347646940100151">কাগজ (লেটাৰহে’ড)</translation>
 <translation id="8775863327608679820">সময়ৰ লগে লগে পৰিশোধ কৰাৰ সুবিধা প্ৰদান কৰাৰ বাবে উপলব্ধ এতিয়া ক্ৰয় কৰি পাছত পৰিশোধ কৰক জাৰিকৰ্তা অৰ্ধ উচ্চতাত খোলা হৈছে।</translation>
-<translation id="8776941011841875705">জ্ঞাত ভ্ৰমণকাৰীৰ নম্বৰ ছেভ কৰিবনে?</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="514805123051954646">পৃষ্ঠা অনুবাদ কৰাৰ বুটাম, Brave Translateৰ জৰিয়তে এই পৃষ্ঠাখন অনুবাদ কৰিবলৈ সক্ৰিয় কৰক</translation>
 <translation id="8785658048882205566">মটৰ চাইকেল</translation>
@@ -5022,6 +5046,7 @@
 <translation id="893332455753468063">নাম যোগ কৰক</translation>
 <translation id="8938242527120341116">আপোনাৰ ডিভাইচৰ সমলৰ ফিল্টাৰসমূহে <ph name="BLOCKED_URL"/> অৱৰোধ কৰিছে</translation>
 <translation id="8942355029279167844">প্ৰ’ডাক্ট ব্যৱহাৰৰ অভিজ্ঞতা উন্নত কৰিবলৈ আপোনাৰ প্ৰশাসকে <ph name="APP_NAME"/>ক ডায়েগন’ষ্টিক্সৰ ডেটা সংগ্ৰহ কৰিবলৈ দিছে। অধিক তথ্যৰ বাবে <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/> চাওক।</translation>
+<translation id="8943282376843390568">নেমুৰঙী</translation>
 <translation id="8949410982325929394">ট’ন</translation>
 <translation id="8949493680961858543">A1x4</translation>
 <translation id="8952569554322479410">এটা ৱেবছাইটে এইমাত্ৰ আপোনাৰ <ph name="REQUEST_TYPE"/>ৰ এক্সেছ বিচাৰিছে। এই ১ মিনিটৰ সমীক্ষাটোত ভাগ লৈ ৱেবছাইটবোৰে কেনেদৰে এক্সেছ বিচাৰে সেয়া উন্নত কৰাত আমাক সহায় কৰক।</translation>
@@ -5069,7 +5094,6 @@
 <translation id="5979301400168151411">Brave Sites</translation>
 <translation id="8309858808266687860">Brave Enterprise Core ব্যৱহাৰ কৰি চাওক</translation>
 <translation id="9027531288681624875">পূৰ্ণ স্ক্ৰীনৰ পৰা বাহিৰ হ'বলৈ আৰু ডাউনল'ড চাবলৈ, |<ph name="ACCELERATOR"/>| টিপি হেঁচি ৰাখক</translation>
-<translation id="9031426777610376427">ৰিড্ৰেছ নম্বৰটো আপডে’ট কৰিবনে?</translation>
 <translation id="9035022520814077154">সুৰক্ষাজনিত আসোঁৱাহ</translation>
 <translation id="9035824888276246493">সুৰক্ষা ক'ড ছেভ কৰক</translation>
 <translation id="9036306139374661733">মাইক্ৰ’ফ’নৰ অনুমতি দিবনে?</translation>
@@ -5201,6 +5225,7 @@
 <translation id="9210825002219699214">বিমান যাত্ৰা</translation>
 <translation id="9213433120051936369">ৰূপ কাষ্টমাইজ কৰক</translation>
 <translation id="2206050430829841793">কোনো এপ্লিকেশ্বনে Braveক এই ছাইটৰ সৈতে সুৰক্ষিত ভাৱে সংযুক্ত হোৱাত বাধা প্ৰদান কৰি আছে।</translation>
+<translation id="9217513960785028513"><ph name="ENGINE_NAME"/>ক সোধক বা URL টাইপ কৰক</translation>
 <translation id="92178312226016010">আপুনি এই প্ৰ’ডাক্টটো ট্ৰেক কৰি আছে।</translation>
 <translation id="9218430445555521422">ডিফ'ল্ট হিচাপে ছেট কৰক</translation>
 <translation id="9219103736887031265">Images</translation>

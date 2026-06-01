@@ -54,7 +54,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="6570689355868013775">Brave's safety tools</translation>
 <translation id="1902837727299679178">Brave wants to delete your Password Manager data. Type in your Windows password to allow this.</translation>
 <translation id="4449148723378534338">Review key privacy and security controls in Brave</translation>
-<translation id="5229247933547820267">To ask AI Mode about your tab without leaving the page, sign in to Brave. You'll also get your passwords and more on all your devices.</translation>
 <translation id="1640672724030957280">Downloading ...</translation>
 <translation id="1680687534629375545">Ask image search about this page</translation>
 <translation id="509363484780540563">You can use Brave any time that you click links in messages, documents and other apps. It will also be pinned to your taskbar.</translation>
@@ -98,6 +97,9 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2066690553719545730">Always show AI Mode</translation>
 <translation id="2472891440303445472">Brave blocked this download because the file is deceptive and may make unexpected changes to your device</translation>
 <translation id="2054358978145431867">You'll see a prompt to try <ph name="FEATURE_NAME"/> next time you open Brave iOS.</translation>
+<translation id="4315579854608498851">Brave turns off JavaScript optimisation when you visit a site for the first time.
+
+If this page isn't working as expected, try allowing optimisation.</translation>
 <translation id="2726948994393234543">Your passwords and other Brave data that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Your organisation deletes browsing data automatically when Brave isn't used for one minute. This could include history, autofill and downloads. Your tabs will stay open.}other{Your organisation deletes browsing data automatically when Brave isn't used for # minutes. This could include history, autofill and downloads. Your tabs will stay open.}}</translation>
 <translation id="2126108037660393668">The downloaded file failed verification.</translation>
@@ -213,6 +215,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Customise your new Brave profile</translation>
+<translation id="2430807206104224491">You can keep chatting with AI Mode without switching tabs. To get started, sign in to Brave. You'll also get your passwords and more on all your devices.</translation>
 <translation id="4805865169608137960">To remove your Brave sync chain from Brave, sign out of Brave in the Settings page</translation>
 <translation id="1651639704310627074">Later, Brave can ask if you want to use saved info to autofill forms for you</translation>
 <translation id="2585240446624043880">Brave cannot read and write to its data directory:
@@ -501,6 +504,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8646609321956191980">Each profile holds its own Brave info, like bookmarks, history, passwords and more</translation>
 <translation id="6756656512757374876">Learn more about <ph name="BEGIN_LINK"/>how Brave keeps your data private<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Changes to this setting will be applied once Brave restarts.</translation>
+<translation id="3396870972301571614">Manage your extensions by clicking Extensions in the Brave main menu.</translation>
 <translation id="2535436634051789953">You can switch to see passwords from another Brave profile</translation>
 <translation id="2312399718665761438">To fix spelling errors, Brave sends the text that you type in text fields to Brave</translation>
 <translation id="3507835409099344374">Go to Brave notification settings</translation>

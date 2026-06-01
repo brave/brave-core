@@ -122,6 +122,7 @@
 <translation id="5076161749301278626">매장 리뷰를 확인하시겠습니까?</translation>
 <translation id="5161254044473106830">제목이 필요합니다.</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave에서는 <ph name="AUTO_DELETE_DELAY_ONE"/>개월이 지난 비활성 탭과 탭 그룹을 자동으로 닫습니다. 설정에서 변경할 수 있습니다.}other{Brave에서는 <ph name="AUTO_DELETE_DELAY_MANY"/>개월이 지난 비활성 탭과 탭 그룹을 자동으로 닫습니다. 설정에서 변경할 수 있습니다.}}</translation>
+<translation id="5254233580564156835">메모리 사용량: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">마지막 탭</translation>
 <translation id="5380159289133845234">중복 탭 보관처리</translation>
 <translation id="5446043142172831860">탭 삭제 및 그룹 나가기</translation>
@@ -161,11 +162,13 @@
 <translation id="6589356853295569750">공유 탭 그룹 변경사항의 알림이 전체 높이로 열림</translation>
 <translation id="6590332670428149473">공유 탭 그룹 <ph name="TITLE_OF_GROUP"/>(색상: <ph name="COLOR_NAME"/>)의 탭 그룹 작업 메뉴 열기</translation>
 <translation id="6615455863669487791">보기</translation>
+<translation id="6686490380836145850">우측 탭 닫기</translation>
 <translation id="6694634756612002311">공유 관리</translation>
 <translation id="6709297274997495821">탭을 선택합니다.</translation>
 <translation id="6744956528665271406">그룹 색상 수정</translation>
 <translation id="6784585810034073638">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT1"/>개의 탭이 있는 <ph name="TITLE_OF_GROUP"/> 그룹에 추가}other{<ph name="TAB_COUNT1"/>개의 탭이 있는 <ph name="TITLE_OF_GROUP"/> 그룹에 추가}}</translation>
 <translation id="6818926723028410516">항목 선택</translation>
+<translation id="68541483639528434">다른 탭 닫기</translation>
 <translation id="6856809498882026482">다중 선택 모드 숨기기</translation>
 <translation id="6957436309971790274">21일 동안 비활성 상태인 경우</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{<ph name="COLOR_NAME"/> 색상의 탭이 <ph name="TABS_COUNT_ONE"/>개 포함된 공유 <ph name="TITLE_OF_GROUP"/> 탭 그룹을 펼칩니다.}other{<ph name="COLOR_NAME"/> 색상의 탭이 <ph name="TABS_COUNT_MANY"/>개 포함된 공유 <ph name="TITLE_OF_GROUP"/> 탭 그룹을 펼칩니다.}}</translation>

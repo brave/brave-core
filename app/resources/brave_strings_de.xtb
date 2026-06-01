@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Sicherheitstools von Brave</translation>
 <translation id="1902837727299679178">Brave möchte deine Passwortmanager-Daten löschen. Gib dein Windows-Passwort ein, um dies zuzulassen.</translation>
 <translation id="4449148723378534338">Lerne die wichtigsten Datenschutz- und Sicherheitseinstellungen in Brave kennen</translation>
-<translation id="5229247933547820267">Wenn du im KI-Modus Fragen zu Inhalten auf deinem Tab stellen möchtest, ohne die Seite zu verlassen, melde dich in Brave an. Du kannst dann auch auf allen deinen Geräten auf deine Passwörter und weitere Daten zugreifen.</translation>
 <translation id="1640672724030957280">Download wird ausgeführt...</translation>
 <translation id="1680687534629375545">Bildersuche nach Infos zur Seite fragen</translation>
 <translation id="509363484780540563">Du kannst Brave immer verwenden, wenn du in Nachrichten, Dokumenten und Apps auf Links klickst. Brave wird auch an die Taskleiste angepinnt.</translation>
@@ -95,6 +94,9 @@
 <translation id="2066690553719545730">KI-Modus immer anzeigen</translation>
 <translation id="2472891440303445472">Brave hat diesen Download blockiert, weil dich die Datei täuschen soll und unerwartete Änderungen an deinem Gerät vornehmen könnte</translation>
 <translation id="2054358978145431867">Wenn du Brave unter iOS das nächste Mal öffnest, wirst du aufgefordert, die Funktion „<ph name="FEATURE_NAME"/>“ auszuprobieren.</translation>
+<translation id="4315579854608498851">Brave deaktiviert die JavaScript-Optimierung, wenn du eine Website zum ersten Mal besuchst.
+
+Wenn diese Seite nicht wie erwartet funktioniert, kannst du versuchen, die Optimierung zuzulassen.</translation>
 <translation id="2726948994393234543">Deine Passwörter und anderen in deinem Brave-Konto gespeicherten Brave-Daten werden von diesem Gerät entfernt. Wenn du sie in Zukunft in Brave verwenden möchtest, melde dich einfach wieder an.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Deine Organisation löscht Browserdaten automatisch, wenn Brave eine Minute lang nicht verwendet wird. Dazu können der Verlauf, Autofill-Daten und Downloads gehören. Deine Tabs bleiben dabei geöffnet.}other{Deine Organisation löscht Browserdaten automatisch, wenn Brave # Minuten lang nicht verwendet wird. Dazu können der Verlauf, Autofill-Daten und Downloads gehören. Deine Tabs bleiben dabei geöffnet.}}</translation>
 <translation id="2126108037660393668">Die heruntergeladene Datei konnte nicht verifiziert werden.</translation>
@@ -210,6 +212,7 @@ Diese Aktion wirkt sich nicht auf Lesezeichen, gespeicherte Passwörter und den 
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personalisiere dein neues Brave-Profil</translation>
+<translation id="2430807206104224491">Du kannst jetzt im KI-Modus weiterchatten, ohne den Tab zu wechseln. Melde dich in Brave an, um loszulegen. Du kannst dann auch auf allen deinen Geräten auf deine Passwörter und weitere Daten zugreifen.</translation>
 <translation id="4805865169608137960">Wenn du dein Brave-Konto von Brave entfernen möchtest, melde dich auf der Seite „Einstellungen“ von Brave ab</translation>
 <translation id="1651639704310627074">Später kann Brave dich fragen, ob du die gespeicherten Informationen verwenden möchtest, um Formulare automatisch auszufüllen</translation>
 <translation id="2585240446624043880">Brave kann im folgenden Datenverzeichnis weder lesen noch schreiben:
@@ -498,6 +501,7 @@ Diese Aktion wirkt sich nicht auf Lesezeichen, gespeicherte Passwörter und den 
 <translation id="8646609321956191980">In jedem Profil sind eigene Brave-Daten wie zum Beispiel Lesezeichen, Verlauf und Passwörter enthalten</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Weitere Informationen zum Datenschutz bei Brave<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Änderungen an dieser Einstellung werden nach dem Neustart von Brave übernommen.</translation>
+<translation id="3396870972301571614">Klicke zum Verwalten deiner Erweiterungen im Brave-Hauptmenü auf „Erweiterungen“.</translation>
 <translation id="2535436634051789953">Wenn du das Profil wechselst, kannst du dir Passwörter anderer Brave-Profile anzeigen lassen</translation>
 <translation id="2312399718665761438">Zur Behebung von Tippfehlern sendet Brave eingegebenen Text an Brave</translation>
 <translation id="3507835409099344374">Zu Brave-Benachrichtigungseinstellungen wechseln</translation>
