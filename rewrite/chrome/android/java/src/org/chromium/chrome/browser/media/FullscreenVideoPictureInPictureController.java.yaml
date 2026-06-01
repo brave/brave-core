@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      Let Brave handle YouTube PiP dismiss signals using upstream enum names
+    re_pattern:
+      '(\s+private void dismissActivityIfNeeded\(Activity activity,
+      @MetricsEndReason int reason\) \{\n)'
+    replace: |
+      \1        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                      .maybeHandleDismissActivityForYouTubePictureInPicture(
+                              activity,
+                              reason == MetricsEndReason.START,
+                              reason == MetricsEndReason.RESUME,
+                              reason == MetricsEndReason.LEFT_FULLSCREEN,
+                              reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
+                              reason == MetricsEndReason.NEW_TAB)) {
+                  return;
+              }
+  - description: Notify Brave that a YouTube PiP session is being attempted
+    re_pattern:
+      '(\s+if \(!allowed\) return;\n\n\s+final WebContents webContents =
+      getWebContents\(\);\n\s+assert webContents != null;\n)'
+    replace: |
+      \1        BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                      .onYouTubePictureInPictureAttempt(mActivity, webContents);
+  - description: Notify Brave when manual PiP entry returns false
+    re_pattern:
+      'if \(!mActivity\.enterPictureInPictureMode\(builder\.build\(\)\)\)
+      return;'
+    replace: |-
+      if (!mActivity.enterPictureInPictureMode(builder.build())) {
+                      BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                              .onYouTubePictureInPictureEnterFailed();
+                      return;
+                  }
+  - description: Notify Brave when manual PiP entry throws
+    re_pattern:
+      '(\s+Log\.e\(TAG, "Error entering PiP with bounds %s", bounds, e\);\n)'
+    replace: |
+      \1            BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                          .onYouTubePictureInPictureEnterFailed();
