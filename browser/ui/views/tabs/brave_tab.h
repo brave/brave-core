@@ -20,6 +20,8 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/containers_service_observer.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace views {
@@ -32,7 +34,6 @@ class TreeTabNode;
 
 namespace containers {
 class ContainersService;
-FORWARD_DECLARE_TEST(ContainersBrowserTest, SmallAccentIconViewVisibility);
 }  // namespace containers
 
 // Brave specific tab implementation that extends the base Tab class.
@@ -41,7 +42,8 @@ FORWARD_DECLARE_TEST(ContainersBrowserTest, SmallAccentIconViewVisibility);
 class BraveTab : public Tab
 #if BUILDFLAG(ENABLE_CONTAINERS)
     ,
-                 public containers::ContainersServiceObserver
+                 public containers::ContainersServiceObserver,
+                 public FullscreenObserver
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 {
   METADATA_HEADER(BraveTab, Tab)
@@ -91,6 +93,8 @@ class BraveTab : public Tab
   TabNestingInfo GetTabNestingInfo() const override;
   bool IsInCollapsedTreeTabNode() const override;
   void MaybeUpdateHoverStatus(const ui::MouseEvent& event) override;
+  void AddedToWidget() override;
+  void RemovedFromWidget() override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
@@ -112,6 +116,10 @@ class BraveTab : public Tab
 
   base::WeakPtr<BraveTab> GetWeakPtr();
 
+  views::View* small_accent_icon_view_for_test() const {
+    return small_accent_icon_view_;
+  }
+
  private:
   friend class BraveTabTest;
 
@@ -122,10 +130,19 @@ class BraveTab : public Tab
     SmallAccentIconView();
     ~SmallAccentIconView() override;
 
+    // Sets whether this view can paint to a composited layer. When allowed,
+    // painting to a layer ensures the icon is clipped by Tab::PaintChildren().
+    void SetCanPaintToLayer(bool can_paint_to_layer);
+
     // views::View:
     void OnPaint(gfx::Canvas* canvas) override;
     gfx::Size CalculatePreferredSize(
         const views::SizeBounds& available_size) const override;
+
+   private:
+    void RefreshLayer();
+
+    bool can_paint_to_layer_ = false;
   };
 
   FRIEND_TEST_ALL_PREFIXES(BraveTabTest, ShouldAlwaysHideTabCloseButton);
@@ -139,8 +156,6 @@ class BraveTab : public Tab
   FRIEND_TEST_ALL_PREFIXES(
       BraveTabTestWithTreeTab,
       TreeToggleButtonAlwaysVisibleWhenCollapsedAndHasDescendants);
-  FRIEND_TEST_ALL_PREFIXES(containers::ContainersBrowserTest,
-                           SmallAccentIconViewVisibility);
   FRIEND_TEST_ALL_PREFIXES(
       BraveTabTestWithTreeTab,
       TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref);
@@ -174,12 +189,22 @@ class BraveTab : public Tab
   // Lays out the small tab accent icon view (visibility and bounds).
   void LayoutSmallTabAccentIcon();
 
+  // Updates whether the small accent icon paints to a composited layer.
+  void UpdateSmallAccentIconLayer();
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Starts observing container list changes if not already observing.
   void MaybeObserveContainerChanges();
 
   // containers::ContainersServiceObserver:
   void OnContainersListChanged() override;
+
+  // FullscreenObserver:
+  void OnFullscreenStateChanged() override;
+
+  // Starts observing fullscreen changes if not already observing.
+  void MaybeStartObservingFullscreenChanges();
+  void StopObservingFullscreenChanges();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   // Test accessors to reveal base class members.
@@ -193,6 +218,8 @@ class BraveTab : public Tab
   base::ScopedObservation<containers::ContainersService,
                           containers::ContainersServiceObserver>
       containers_service_observation_{this};
+  base::ScopedObservation<FullscreenController, FullscreenObserver>
+      fullscreen_observation_{this};
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   base::WeakPtrFactory<BraveTab> weak_factory_{this};
