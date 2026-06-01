@@ -72,7 +72,6 @@ class AdBlockEngine {
   DATFileDataBuffer Serialize();
 
  protected:
-  void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
                            const adblock::BraveCoreResourceStorage& storage);
 
@@ -92,7 +91,6 @@ class AdBlockEngine {
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::PerfPredictorTabHelperTest;
 
-  std::set<std::string> tags_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
       GUARDED_BY_CONTEXT(sequence_checker_);
 

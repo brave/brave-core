@@ -477,10 +477,10 @@ void AdBlockServiceTest::UpdateSocialMediaListWithRules(
   auto& component_providers =
       component_service_manager()->component_filters_providers();
 
-  auto provider_it = component_providers.find(uuid);
-  ASSERT_NE(provider_it, component_providers.end())
-      << "Social media list must be installed and enabled: " << uuid;
-  provider_it->second->OnComponentReady(component_path);
+  auto* provider = base::FindOrNull(component_providers, uuid);
+  ASSERT_TRUE(provider) << "Social media list must be installed and enabled: "
+                        << uuid;
+  (*provider)->OnComponentReady(component_path);
 
   brave_shields::AdBlockServiceTestObserver observer(service);
   observer.WaitForDefault();

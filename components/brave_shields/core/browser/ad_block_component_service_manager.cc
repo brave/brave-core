@@ -91,7 +91,7 @@ std::string GetFilterListUuidFromPrefName(const std::string& pref_name) {
   if (pref_name == prefs::kLinkedInEmbedControlType) {
     return brave_shields::kLinkedInEmbedsListUuid;
   }
-  NOTREACHED();
+  return {};
 }
 
 }  // namespace
@@ -161,26 +161,18 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
 
-  local_state_change_registrar_.reset(new PrefChangeRegistrar());
+  local_state_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
   local_state_change_registrar_->Init(local_state_);
-  local_state_change_registrar_->Add(
-      prefs::kFBEmbedControlType,
-      base::BindRepeating(
-          &AdBlockComponentServiceManager::OnSocialMedialPreferenceChanged,
-          weak_factory_.GetWeakPtr()));
-  local_state_change_registrar_->Add(
-      prefs::kTwitterEmbedControlType,
-      base::BindRepeating(
-          &AdBlockComponentServiceManager::OnSocialMedialPreferenceChanged,
-          weak_factory_.GetWeakPtr()));
-  local_state_change_registrar_->Add(
-      prefs::kLinkedInEmbedControlType,
-      base::BindRepeating(
-          &AdBlockComponentServiceManager::OnSocialMedialPreferenceChanged,
-          weak_factory_.GetWeakPtr()));
-  OnSocialMedialPreferenceChanged(prefs::kFBEmbedControlType);
-  OnSocialMedialPreferenceChanged(prefs::kTwitterEmbedControlType);
-  OnSocialMedialPreferenceChanged(prefs::kLinkedInEmbedControlType);
+  for (const char* social_pref :
+       {prefs::kFBEmbedControlType, prefs::kTwitterEmbedControlType,
+        prefs::kLinkedInEmbedControlType}) {
+    local_state_change_registrar_->Add(
+        social_pref,
+        base::BindRepeating(
+            &AdBlockComponentServiceManager::OnSocialMediaPreferenceChanged,
+            weak_factory_.GetWeakPtr()));
+    OnSocialMediaPreferenceChanged(social_pref);
+  }
 
   if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_)) {
     local_state_change_registrar_->Add(
@@ -228,11 +220,15 @@ void AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged() {
   LoadComponentFiltersProviders();
 }
 
-void AdBlockComponentServiceManager::OnSocialMedialPreferenceChanged(
+void AdBlockComponentServiceManager::OnSocialMediaPreferenceChanged(
     const std::string& pref_name) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const std::string& uuid = GetFilterListUuidFromPrefName(pref_name);
+  if (uuid.empty()) {
+    return;
+  }
+
   const bool enabled = local_state_->GetBoolean(pref_name);
   if (IsFilterListAvailable(uuid)) {
     EnableFilterList(uuid, enabled);

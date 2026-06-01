@@ -231,11 +231,7 @@ class AdBlockComponentServiceManagerAdblockOnlyModeTest : public testing::Test {
  public:
   void SetUp() override {
     PrefRegistrySimple* registry = local_state_.registry();
-    registry->RegisterBooleanPref(prefs::kAdBlockOnlyModeEnabled, false);
-    registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
-    registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions,
-                                  false);
-    registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
+    RegisterPrefsForAdBlockService(registry);
   }
 
   void SetUpAdBlockComponentServiceManager() {

@@ -74,7 +74,7 @@ class AdBlockComponentServiceManager
  private:
   friend class ::AdBlockServiceTest;
   void OnAdBlockOnlyModePrefChanged();
-  void OnSocialMedialPreferenceChanged(const std::string& pref_name);
+  void OnSocialMediaPreferenceChanged(const std::string& pref_name);
 
   void StartRegionalServices();
   void LoadComponentFiltersProviders();
