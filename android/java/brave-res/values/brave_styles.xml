@@ -240,6 +240,29 @@
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
+    <!-- Toolbar for the Install VPN profile screen. Background and text follow
+         the page theme (light/dark) instead of the legacy purple. -->
+    <style name="BraveVpnProfileToolbar" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/onboarding_text_color</item>
+        <item name="android:background">@color/schemes_surface_container</item>
+        <item name="titleTextColor">@color/onboarding_text_color</item>
+        <item name="android:textColorPrimary">@color/onboarding_text_color</item>
+    </style>
+
+    <!-- Theme for the Install VPN profile activity. Colors the status and
+         navigation bars to match the page surface, following the upstream
+         settings pattern (theme-level statusBarColor/navigationBarColor with the
+         shared window_light_* bools for icon contrast). -->
+    <style
+        name="Theme.Brave.VpnProfile"
+        parent="Theme.Chromium.Activity"
+        tools:ignore="UnusedResources">
+        <item name="android:statusBarColor">@color/schemes_surface_container</item>
+        <item name="android:windowLightStatusBar">@bool/window_light_status_bar</item>
+        <item name="android:navigationBarColor">@color/schemes_surface_container</item>
+        <item name="android:windowLightNavigationBar">@bool/window_light_navigation_bar</item>
+    </style>
+
     <style name="VpnPaywallToolbar" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:background">@color/primitive_blurple_10</item>
