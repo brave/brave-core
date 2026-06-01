@@ -6,13 +6,11 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 
 #include <algorithm>
-#include <iterator>
 
 #include "base/base_paths.h"
 #include "base/check.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
-#include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -63,10 +61,6 @@ const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
   return req_body.FindList("params");
 }
 
-std::vector<uint8_t> StringToBytes(std::string_view value) {
-  return base::ToVector(base::as_byte_span(value));
-}
-
 }  // namespace
 
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
@@ -104,26 +98,26 @@ bool ReplaceNthOccurrence(std::vector<uint8_t>& bytes,
     return false;
   }
 
-  const auto needle_bytes = StringToBytes(needle);
-  const auto replacement_bytes = StringToBytes(replacement);
+  const auto needle_bytes = base::as_byte_span(needle);
+  const auto replacement_bytes = base::as_byte_span(replacement);
   auto it = bytes.begin();
   size_t num_found = 0;
 
   while (it != bytes.end()) {
-    auto match =
-        std::search(it, bytes.end(), needle_bytes.begin(), needle_bytes.end());
-    if (match == bytes.end()) {
+    auto match = std::ranges::search(it, bytes.end(), needle_bytes.begin(),
+                                     needle_bytes.end());
+    if (match.begin() == bytes.end()) {
       return false;
     }
 
     if (num_found == occurrence) {
-      auto pos = bytes.erase(match, std::next(match, needle_bytes.size()));
+      auto pos = bytes.erase(match.begin(), match.end());
       bytes.insert(pos, replacement_bytes.begin(), replacement_bytes.end());
       return true;
     }
 
     ++num_found;
-    it = std::next(match, needle_bytes.size());
+    it = match.end();
   }
 
   return false;

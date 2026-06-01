@@ -6,13 +6,6 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 
 namespace brave_wallet {
-namespace {
-
-// spec_version is unknown when constructing from chain name alone; callers
-// must update it from state_getRuntimeVersion before use.
-constexpr uint32_t kUnknownSpecVersion = 0;
-
-}  // namespace
 
 PolkadotChainMetadata::PolkadotChainMetadata() = default;
 

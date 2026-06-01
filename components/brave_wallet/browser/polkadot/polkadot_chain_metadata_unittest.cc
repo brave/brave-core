@@ -9,10 +9,7 @@
 #include <string_view>
 #include <vector>
 
-#include "base/base_paths.h"
 #include "base/containers/span.h"
-#include "base/path_service.h"
-#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,32 +17,6 @@
 namespace brave_wallet {
 
 namespace {
-
-constexpr char kResult[] = "result";
-
-std::vector<uint8_t> ReadMetadataFixture(const char* fixture_name) {
-  const auto fixture_path =
-      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
-          .AppendASCII("brave")
-          .AppendASCII("components")
-          .AppendASCII("test")
-          .AppendASCII("data")
-          .AppendASCII("brave_wallet")
-          .AppendASCII("polkadot")
-          .AppendASCII("chain_metadata")
-          .AppendASCII(fixture_name);
-  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
-
-  const std::string* metadata_hex = json.FindString(kResult);
-  EXPECT_TRUE(metadata_hex);
-  if (!metadata_hex || metadata_hex->empty()) {
-    return {};
-  }
-
-  std::vector<uint8_t> metadata_bytes;
-  EXPECT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
-  return metadata_bytes;
-}
 
 std::string ScaleEncodeString(std::string_view value) {
   auto bytes = base::as_byte_span(value);
@@ -125,7 +96,6 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
   EXPECT_NE(metadata_a, metadata_e);
 }
 
-
 TEST(PolkadotChainMetadataUnitTest, FromBytesInvalid) {
   // Invalid metadata magic/version payload.
   std::vector<uint8_t> invalid_magic;
@@ -175,24 +145,8 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
   // curl -sS -H 'Content-Type: application/json' \
   //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
   //   https://rpc.polkadot.io/
-  const auto fixture_path =
-      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
-          .AppendASCII("brave")
-          .AppendASCII("components")
-          .AppendASCII("test")
-          .AppendASCII("data")
-          .AppendASCII("brave_wallet")
-          .AppendASCII("polkadot")
-          .AppendASCII("chain_metadata")
-          .AppendASCII("state_getMetadata_polkadot.json");
-  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
-
-  const std::string* metadata_hex = json.FindString(kResult);
-  ASSERT_TRUE(metadata_hex);
-  ASSERT_FALSE(metadata_hex->empty());
-
-  std::vector<uint8_t> metadata_bytes;
-  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+  std::vector<uint8_t> metadata_bytes =
+      ReadMetadataFixture("state_getMetadata_polkadot.json");
 
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
@@ -224,24 +178,8 @@ TEST(PolkadotChainMetadataUnitTest,
   // curl -sS -H 'Content-Type: application/json' \
   //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
   //   https://polkadot-asset-hub-rpc.polkadot.io
-  const auto fixture_path =
-      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
-          .AppendASCII("brave")
-          .AppendASCII("components")
-          .AppendASCII("test")
-          .AppendASCII("data")
-          .AppendASCII("brave_wallet")
-          .AppendASCII("polkadot")
-          .AppendASCII("chain_metadata")
-          .AppendASCII("state_getMetadata_assethub_polkadot.json");
-  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
-
-  const std::string* metadata_hex = json.FindString(kResult);
-  ASSERT_TRUE(metadata_hex);
-  ASSERT_FALSE(metadata_hex->empty());
-
-  std::vector<uint8_t> metadata_bytes;
-  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+  std::vector<uint8_t> metadata_bytes =
+      ReadMetadataFixture("state_getMetadata_assethub_polkadot.json");
 
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
@@ -272,24 +210,8 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
   // curl -sS -H 'Content-Type: application/json' \
   //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
   //   https://westend-rpc.polkadot.io/
-  const auto fixture_path =
-      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
-          .AppendASCII("brave")
-          .AppendASCII("components")
-          .AppendASCII("test")
-          .AppendASCII("data")
-          .AppendASCII("brave_wallet")
-          .AppendASCII("polkadot")
-          .AppendASCII("chain_metadata")
-          .AppendASCII("state_getMetadata_westend.json");
-  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
-
-  const std::string* metadata_hex = json.FindString(kResult);
-  ASSERT_TRUE(metadata_hex);
-  ASSERT_FALSE(metadata_hex->empty());
-
-  std::vector<uint8_t> metadata_bytes;
-  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+  std::vector<uint8_t> metadata_bytes =
+      ReadMetadataFixture("state_getMetadata_westend.json");
 
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
@@ -321,24 +243,8 @@ TEST(PolkadotChainMetadataUnitTest,
   // curl -sS -H 'Content-Type: application/json' \
   //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
   //   https://westend-asset-hub-rpc.polkadot.io/
-  const auto fixture_path =
-      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
-          .AppendASCII("brave")
-          .AppendASCII("components")
-          .AppendASCII("test")
-          .AppendASCII("data")
-          .AppendASCII("brave_wallet")
-          .AppendASCII("polkadot")
-          .AppendASCII("chain_metadata")
-          .AppendASCII("state_getMetadata_assethub_westend.json");
-  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
-
-  const std::string* metadata_hex = json.FindString(kResult);
-  ASSERT_TRUE(metadata_hex);
-  ASSERT_FALSE(metadata_hex->empty());
-
-  std::vector<uint8_t> metadata_bytes;
-  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+  std::vector<uint8_t> metadata_bytes =
+      ReadMetadataFixture("state_getMetadata_assethub_westend.json");
 
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
