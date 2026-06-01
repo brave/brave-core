@@ -335,3 +335,48 @@ class Terminal:
 
 
 terminal = Terminal()
+
+
+class Task:
+    """Base class for a console task that runs under a status spinner.
+
+    A task encapsulates a unit of work and the message shown while it runs.
+    `run` drives the work inside a live status spinner (see
+    `Terminal.with_status`), optionally framed by a start and an end banner.
+
+    Subclasses implement:
+        * `execute(**kwargs)` -- the actual work; keyword arguments are
+          forwarded verbatim from `run`.
+        * `status_message()` -- the text shown in the spinner while running.
+
+    A subclass (or a whole tool) can set `start_banner` / `end_banner` to log
+    a line immediately before and after the work, e.g. to frame a command-line
+    run with a recognisable header and footer.
+    """
+
+    # Optional banner lines logged immediately before and after `execute`.
+    # Leave as None to run the task without any framing output.
+    start_banner: str | None = None
+    end_banner: str | None = None
+
+    def run(self, **kwargs) -> None:
+        """Runs the task inside a status spinner, framed by the banners.
+
+        Keyword arguments are forwarded verbatim to the subclass's `execute`.
+        """
+        if self.start_banner is not None:
+            console.log(self.start_banner)
+        with terminal.with_status(self.status_message()):
+            # `execute` is provided by subclasses; the base class deliberately
+            # does not define it.
+            # pylint: disable=no-member
+            self.execute(**kwargs)
+        if self.end_banner is not None:
+            console.log(self.end_banner)
+
+    def status_message(self) -> str:
+        """Returns the message shown in the status spinner while running.
+
+        Must be implemented by the derived class.
+        """
+        raise NotImplementedError
