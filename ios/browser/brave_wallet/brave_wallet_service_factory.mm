@@ -25,24 +25,24 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 @interface WalletWebViewRunnerDelegate : NSObject <WKNavigationDelegate> {
-  base::OnceClosure _onDone;
+  base::OnceClosure _completion;
 }
-- (instancetype)initWithClosure:(base::OnceClosure)closure;
+- (instancetype)initWithCompletion:(base::OnceClosure)closure;
 @end
 
 @implementation WalletWebViewRunnerDelegate
 
-- (instancetype)initWithClosure:(base::OnceClosure)closure {
+- (instancetype)initWithCompletion:(base::OnceClosure)closure {
   self = [super init];
   if (self) {
-    _onDone = std::move(closure);
+    _completion = std::move(closure);
   }
   return self;
 }
 
 - (void)done {
-  if (_onDone) {
-    std::move(_onDone).Run();
+  if (_completion) {
+    std::move(_completion).Run();
   }
 }
 
@@ -89,8 +89,8 @@ class WalletWebViewRunner {
     web_view_ = [[WKWebView alloc] initWithFrame:CGRectZero
                                    configuration:config];
     delegate_ = [[WalletWebViewRunnerDelegate alloc]
-        initWithClosure:base::BindOnce(&WalletWebViewRunner::OnDone,
-                                       weak_factory_.GetWeakPtr())];
+        initWithCompletion:base::BindOnce(&WalletWebViewRunner::OnDone,
+                                          weak_factory_.GetWeakPtr())];
     web_view_.navigationDelegate = delegate_;
     [web_view_ loadRequest:[NSURLRequest
                                requestWithURL:
