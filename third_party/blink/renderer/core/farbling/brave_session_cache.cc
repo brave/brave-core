@@ -272,6 +272,27 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
+blink::WebGLFarbledExtensionHandler*
+BraveSessionCache::GetWebGLFarbledExtensionHandler(
+    const blink::Vector<blink::String>& supported_extensions) {
+  auto level =
+      GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
+
+  if (!webgl_farbled_extension_handler_) {
+    webgl_farbled_extension_handler_ =
+        level == BraveFarblingLevel::OFF
+            ? blink::WebGLFarbledExtensionHandler::CreateOffHandler(
+                  supported_extensions)
+        : level == BraveFarblingLevel::BALANCED
+            ? blink::WebGLFarbledExtensionHandler::CreateBalancedHandler(
+                  supported_extensions,
+                  default_shields_settings_->farbling_token.low())
+            : blink::WebGLFarbledExtensionHandler::CreateMaximumHandler(
+                  supported_extensions);
+  }
+  return webgl_farbled_extension_handler_.get();
+}
+
 std::optional<blink::BraveAudioFarblingHelper>
 BraveSessionCache::GetAudioFarblingHelper() {
   const auto audio_farbling_level =
