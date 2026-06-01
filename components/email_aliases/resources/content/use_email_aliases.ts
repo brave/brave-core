@@ -14,10 +14,10 @@ import {
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-const emptyAliasesUpdate = (): AliasesUpdate => ({
+const emptyAliasesUpdate = {
   aliases: [],
   error: undefined,
-})
+}
 
 export function isAccountLoggedIn(
   accountState: AccountState | undefined,
@@ -34,33 +34,16 @@ export function getLoggedInEmail(
   return accountState!.loggedIn!.email
 }
 
-type AuthenticationWithTestSubscribe = {
-  subscribeAccountState?: (
-    listener: (state: AccountState) => void,
-  ) => () => void
-}
-
-function useBraveAccountState(): AccountState | undefined {
+export function useBraveAccountState() {
   const [accountState, setAccountState] = React.useState<
     AccountState | undefined
   >(undefined)
 
   React.useEffect(() => {
     const authentication = Authentication.getRemote()
-    const subscribeAccountState = (
-      authentication as AuthenticationWithTestSubscribe
-    ).subscribeAccountState
-    if (subscribeAccountState) {
-      return subscribeAccountState.call(authentication, setAccountState)
-    }
-
     const router = new AuthenticationObserverCallbackRouter()
     authentication.addObserver(router.$.bindNewPipeAndPassRemote())
-    const listenerId = router.onAccountStateChanged.addListener(
-      (state: AccountState) => {
-        setAccountState(state)
-      },
-    )
+    const listenerId = router.onAccountStateChanged.addListener(setAccountState)
     return () => {
       router.removeListener(listenerId)
     }
@@ -70,39 +53,23 @@ function useBraveAccountState(): AccountState | undefined {
 }
 
 /**
- * Subscribes to Brave Account state and EmailAliasesService observer callbacks.
- * Exposes account state and alias updates (`AliasesUpdate`: list payload or load
- * error). Pass a stable `bindObserver` from the host (e.g. one created when
- * the Mojo pipes are set up).
+ * Subscribes to EmailAliasesService observer callbacks and exposes alias
+ * updates (`AliasesUpdate`: list payload or load error). Pass a stable
+ * `bindObserver` from the host (e.g. one created when the Mojo pipes are set
+ * up). Callers should only mount this when the user is authenticated.
  */
 export function useEmailAliases(
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void,
 ) {
-  const accountState = useBraveAccountState()
-
   const [aliasesUpdate, setAliasesUpdate] =
-    React.useState<AliasesUpdate>(emptyAliasesUpdate())
-
-  const accountStateRef = React.useRef(accountState)
-  accountStateRef.current = accountState
+    React.useState<AliasesUpdate>(emptyAliasesUpdate)
 
   React.useEffect(() => {
     const observer: EmailAliasesServiceObserverInterface = {
-      onAliasesUpdated: (update: AliasesUpdate) => {
-        if (!isAccountLoggedIn(accountStateRef.current)) {
-          return
-        }
-        setAliasesUpdate(update)
-      },
+      onAliasesUpdated: setAliasesUpdate,
     }
     return bindObserver(observer)
-  }, [bindObserver])
+  }, [])
 
-  React.useEffect(() => {
-    if (!isAccountLoggedIn(accountState)) {
-      setAliasesUpdate(emptyAliasesUpdate())
-    }
-  }, [accountState])
-
-  return { accountState, aliasesUpdate }
+  return { aliasesUpdate }
 }
