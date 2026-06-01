@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/local_ai/core/pref_names.h",
+  "+brave/grit/brave_generated_resources.h",
+]

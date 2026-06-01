@@ -4,17 +4,22 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Override IsHistoryEmbeddingsEnabledForProfile() to bypass upstream's
-// OptimizationGuide pref checks that we don't use, and force
-// IsHistoryEmbeddingsSettingVisible() to false so the chrome://settings/ai
-// History Search entry (and, transitively, the AI settings page) is not
-// surfaced. The disclaimer IDS swap for this file is handled in
+// OptimizationGuide pref checks (we don't use OptimizationGuide for this) and
+// instead gate on a Brave-owned boolean pref toggled from the Leo settings
+// page. IsHistoryEmbeddingsSettingVisible() is forced to false so the
+// chrome://settings/ai History Search entry (and, transitively, the AI
+// settings page) is not surfaced; the toggle lives on the Leo page. The
+// disclaimer IDS swap for this file is handled in
 // brave/rewrite/chrome/browser/history_embeddings/history_embeddings_utils.cc.toml;
 // brave_generated_resources.h below supplies the IDS_BRAVE_* definitions
 // referenced after the swap.
 #include "base/feature_list.h"
 #include "base/feature_override.h"
+#include "brave/components/local_ai/core/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/prefs/pref_service.h"
 
 #define IsHistoryEmbeddingsEnabledForProfile \
   IsHistoryEmbeddingsEnabledForProfile_ChromiumImpl
@@ -33,7 +38,11 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
-  return IsHistoryEmbeddingsFeatureEnabled();
+  if (!IsHistoryEmbeddingsFeatureEnabled()) {
+    return false;
+  }
+  return profile->GetPrefs()->GetBoolean(
+      local_ai::prefs::kBraveHistoryEmbeddingsEnabled);
 }
 
 bool IsHistoryEmbeddingsSettingVisible(Profile* profile) {
