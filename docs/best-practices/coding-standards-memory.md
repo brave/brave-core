@@ -699,24 +699,28 @@ instead. See
 
 <a id="CSM-036"></a>
 
-## ✅ Use `raw_ref<T>` for Fields That Must Never Be Null; `raw_ptr<T>` Otherwise
+## ✅ Use `const raw_ref<T>` for Fields That Must Never Be Null; `raw_ptr<T>` Otherwise
 
-**`raw_ptr<T>` is the default for non-owning fields. Choose `raw_ref<T>` when
-the field must never be null — it communicates that the referenced object is
-expected to outlive the holder, and the holder cannot function without it. Both
+**Per the
+[Chromium C++ Style Guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md),
+class and struct fields should be written `const raw_ref<T>` or `raw_ptr<T>`
+rather than `T&` or `T*` whenever possible.** `raw_ptr<T>` is the default for
+non-owning fields. Choose `const raw_ref<T>` when the field must never be null —
+`const` prevents reseating (matching `T&` semantics), and `raw_ref<T>`
+communicates that the referenced object is expected to outlive the holder. Both
 types enforce that the pointee remains alive for as long as the field holds a
 reference to it: they detect use-after-free rather than silently operating on
 freed memory, and in doing so document the lifetime contract — whenever a field
 of either type holds a value, the expectation is that the memory it points to is
-alive.**
+alive.
 
 ```cpp
-// raw_ptr<T> - default for non-owning fields (can be null or reassigned)
+// raw_ptr<T> - replaces T* fields (can be null or reassigned)
 class TabFeatures {
   raw_ptr<content::WebContents> web_contents_;
 };
 
-// raw_ref<T> - for a mandatory dependency that must outlive the holder
+// const raw_ref<T> - replaces T& fields (mandatory, cannot be null or reseated)
 // Constructor takes a reference when the caller already holds one
 class BraveBrowserDelegate {
  public:
@@ -724,23 +728,23 @@ class BraveBrowserDelegate {
       : window_(window) {}
 
  private:
-  raw_ref<BrowserWindowInterface> window_;
+  const raw_ref<BrowserWindowInterface> window_;
 };
 
-// CHECK_DEREF - when a pointer-returning function result must be stored in a raw_ref
+// CHECK_DEREF - when a pointer-returning function result must be stored in a const raw_ref
 class MyService {
  public:
   explicit MyService(Profile& profile)
       : prefs_(CHECK_DEREF(profile.GetPrefs())) {}
 
  private:
-  raw_ref<PrefService> prefs_;
+  const raw_ref<PrefService> prefs_;
 };
 ```
 
 **Use `CHECK_DEREF` when a pointer-returning function result must be stored in a
-`raw_ref<T>` field.** It asserts non-null and converts to a reference, which is
-safer than `*ptr` (undefined behavior on null).
+`const raw_ref<T>` field.** It asserts non-null and converts to a reference,
+which is safer than `*ptr` (undefined behavior on null).
 
 **`RAW_PTR_EXCLUSION` (per-field) is acceptable only for:**
 
