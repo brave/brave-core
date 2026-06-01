@@ -1,0 +1,14 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue if needed.
+##
+
+# Heap-use-after-free in TrackRegistry::ResetForTesting (third_party/perfetto).
+# ResetForTesting clears the tracks_ map without holding the mutex while
+# UpdateTrack on a worker thread accesses it under the mutex. This is a real
+# race in upstream Perfetto code only detected under ASan.
+# Stable upstream (0.0% flake rate, 160K runs over 30 days per LUCI Analysis).
+# https://github.com/brave/brave-browser/issues/55579
+-TracingScenarioTest.SpuriousStop
