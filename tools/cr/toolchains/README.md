@@ -111,7 +111,7 @@ be extracted directly over it. Invoke with the target path, e.g.
 
 ### `build_xcode_toolchain.py`
 
-macOS-only. Builds a hermetic, reproducible Xcode toolchain archive from
+Builds a hermetic, reproducible Xcode toolchain archive from
 the local Xcode.app installation. The archive contains the subset of
 files listed in Chromium's `build/xcode_binaries.yaml` plus the on-demand
 Metal toolchain, with all archive metadata zeroed for reproducible builds.
@@ -127,7 +127,7 @@ curl -sL \
 The output filename encodes the Xcode and SDK versions and is consumed by
 `brockit update-xcode-toolchain` to pin Brave's
 `build/mac/download_hermetic_xcode.py`. Pass `--help` for the full list of
-options; see the script's module docstring for the archive filename format.
+options. See the script's module docstring for the archive filename format.
 
 ### `xcode_accept_license.py`
 
