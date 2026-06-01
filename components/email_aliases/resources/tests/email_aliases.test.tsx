@@ -22,7 +22,7 @@ import {
 } from './mock_authentication'
 
 // Mock the email aliases service
-class MockEmailAliasesService extends EmailAliasesServiceInterface {
+class MockEmailAliasesService implements EmailAliasesServiceInterface {
   private observer?: EmailAliasesServiceObserverInterface
 
   addObserver(observer: EmailAliasesServiceObserverInterface) {
