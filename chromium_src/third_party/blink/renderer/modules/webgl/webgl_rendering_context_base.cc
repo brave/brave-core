@@ -7,7 +7,7 @@
 
 #include <optional>
 
-#include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_extension_handler.h"
+#include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_farbled_extension_handler.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
@@ -135,9 +135,9 @@ WebGLRenderingContextBase::getSupportedExtensions() {
     return real_extensions;
   }
 
-  blink::WebGLExtensionHandler* handler =
+  blink::WebGLFarbledExtensionHandler* handler =
       brave::BraveSessionCache::From(*Host()->GetTopExecutionContext())
-          .GetWebGLExtensionHandler(real_extensions.value());
+          .GetWebGLFarbledExtensionHandler(real_extensions.value());
 
   return handler->GetSupportedExtensions();
 }
@@ -150,12 +150,13 @@ ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
     return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
   }
 
-  blink::WebGLExtensionHandler* handler =
+  blink::WebGLFarbledExtensionHandler* handler =
       brave::BraveSessionCache::From(*Host()->GetTopExecutionContext())
-          .GetWebGLExtensionHandler(real_extensions.value());
+          .GetWebGLFarbledExtensionHandler(real_extensions.value());
 
   // Chromium takes care of returning a null extension if |name| is not
-  // supported internally.
+  // supported internally via the upstream
+  // WebGLRenderingContextBase::EnableExtensionIfSupported returning nullptr
   const ScriptObject real_extension =
       getExtension_ChromiumImpl(script_state, name);
 
