@@ -4,14 +4,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [[substitution]]
-description = '''Override to show insecure icon on insecure download link.'
+description = '''Override to show insecure icon on insecure download link.
 
-This replacement adds a `UpdateIcon_BraveImpl` call at the end of the function.
+This replacement adds a `UpdateIcon_BraveImpl` call after the upstream image
+update so it runs even when UpdateIcon() returns early afterwards.
 '''
-re_pattern = '(DownloadToolbarUIController::UpdateIcon\(.*?\n)^\}'
-replace = '''\1  UpdateIcon_BraveImpl(browser_view_, action_item_);
-}'''
-re_flags = ['MULTILINE', 'DOTALL']
+re_pattern = '(badge_background_color\);)'
+replace = '''\1
+  UpdateIcon_BraveImpl(browser_view_, action_item_);'''
+re_flags = ['MULTILINE']
 
 [[substitution]]
 description = 'Override for the icon colour.'
