@@ -30,7 +30,7 @@ function ManagePageConnectedBody({
   emailAliasesService: EmailAliasesServiceInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
   metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
-}) => {
+}) {
   const { accountState, aliasesUpdate } = useEmailAliases(bindObserver)
   return (
     <ManagePage
@@ -45,13 +45,16 @@ function ManagePageConnectedBody({
 export const ManagePageConnected = ({
   emailAliasesService,
   bindObserver,
+  metrics,
 }: {
   emailAliasesService: EmailAliasesServiceInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+  metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
 }) => (
   <ManagePageConnectedBody
     emailAliasesService={emailAliasesService}
     bindObserver={bindObserver}
+    metrics={metrics}
   />
 )
 
