@@ -61,7 +61,7 @@
 <translation id="7658239707568436148">取消</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">使用 .onion 地址开启： <ph name="ADDRESS"/></translation>
-<translation id="4759098689276706664">強制貼上</translation>
+<translation id="4759098689276706664">强制粘贴</translation>
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
 <translation id="4703780849509456860">用 Tor 在私人窗口中打开链接</translation>
 <translation id="3488584642074079080">用 Tor 在 Brave 私人窗口中打开链接</translation>
@@ -130,7 +130,7 @@
 <translation id="8184318863960255706">更多信息</translation>
 <translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="1162706247109707219">通过单击“确定”，确认在更新到 Windows 10 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
-<translation id="2971591422768125177">通过单击“确定”，确认在更新到 macOS 10.15 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
+<translation id="2971591422768125177">点击“确定”即表示您确认，在更新到 macOS 13 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
 <translation id="6020553119523541665">该选项卡在另一个窗口中处于活动状态</translation>
 <translation id="4987392683074136770">点击该选项卡，其内容将显示在此窗口中</translation>
 <translation id="8355523213948477234">分割视图菜单按钮</translation>
@@ -176,7 +176,7 @@
 <translation id="3405021928725149239">书签管理器</translation>
 <translation id="6284218950354553099">自动向 Brave 发送每日使用 ping</translation>
 <translation id="694500751416448436">这种私人 ping 可以让 Brave 估算活跃用户数量</translation>
-<translation id="1872784258300710671">Brave 使用完全隐私的产品分析来估计某些功能的整体使用情况</translation>
+<translation id="5047771074267454980">Brave 使用完全隐私的产品分析来估计某些功能的整体使用情况</translation>
 <translation id="8712637175834984815">知道了</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
@@ -192,23 +192,29 @@
         您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS"/>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>源代码的说明<ph name="END_LINK_SOURCE_CODE"/>。</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="3987546108749866209">使用垂直标签</translation>
+<translation id="8784551623584887013">聚焦模式</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{将这个标签页静音}other{将这些标签页静音}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{将这个标签页取消静音}other{将这些标签页取消静音}}</translation>
 <translation id="2289567621059034186">在下方新增标签页</translation>
 <translation id="3228962656492373217">关闭以下标签页</translation>
 <translation id="8030501904366631501">将所有标签页引入此窗口</translation>
 <translation id="253980346046488815">关闭重复的标签页</translation>
+<translation id="5140474419843357176">无容器</translation>
 <translation id="8670218546624422041">在容器中打开</translation>
+<translation id="194205047181722473">在容器中打开链接</translation>
 <translation id="8638526693050780542">管理容器</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
 <translation id="2523967823495420116">使用垂直标签</translation>
+<translation id="5483718923712878759">聚焦模式</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{将这个标签页静音}other{将这些标签页静音}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{将这个标签页取消静音}other{将这些标签页取消静音}}</translation>
 <translation id="4405580203042711503">在下方新增标签页</translation>
 <translation id="5611474372949142946">关闭下列标签页</translation>
 <translation id="573844928911967687">将所有标签页带入此窗口</translation>
 <translation id="2703180365855369896">关闭重复的标签页</translation>
+<translation id="7678994190810851607">无容器</translation>
 <translation id="1987871867023021397">在容器中打开</translation>
+<translation id="1185644444415356776">在容器中打开链接</translation>
 <translation id="6745991613881384719">管理容器</translation>
 <translation id="3704707436873245822">从图像中复制文本</translation>
 <translation id="5268098808165185458">从图像中复制文本……</translation>
@@ -333,13 +339,14 @@
 <translation id="1035309871698658326">开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。</translation>
 <translation id="3435896845095436175">启用</translation>
 <translation id="9031526219709160683">Brave可以帮助你优化此网站的隐私设置。你想查看Brave的建议吗？</translation>
-<translation id="5739953050957336013">搜索建议</translation>
+<translation id="5739953050957336013">查阅建议</translation>
 <translation id="9082792303833649978">此设置由您的管理员或其他 Brave 策略管理。</translation>
 <translation id="1940221956626514677">自定义工具栏</translation>
 <translation id="6501807887341963552">主题和颜色</translation>
 <translation id="6724227215236550330">保存的密码会在此处显示。如要将密码导入到此设备上的 <ph name="BRAND"/>，请<ph name="BEGIN_LINK"/>选择 CSV 文件<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">如要将密码导入到此设备上的 <ph name="BRAND"/>，请选择 CSV 文件</translation>
 <translation id="8570228839666486945">设备端AI</translation>
+<translation id="3456536577668402695">您的搜索和页面内容在此设备上处理。不会发送任何内容给 Brave 或被人工审核员看到。</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="1426410128494586442">是</translation>
@@ -385,6 +392,7 @@
 <translation id="3367129510799209147">标签悬停模式</translation>
 <translation id="8925055964134259461">在每个窗口中独立展开垂直标签</translation>
 <translation id="916373084491701212">显示滚动条</translation>
+<translation id="1323764665799785118">在水平标签栏上显示滚动按钮</translation>
 <translation id="515949045075831661">在右侧显示</translation>
 <translation id="3725395376319291415">在左侧显示</translation>
 <translation id="2113977810652731515">卡片</translation>
@@ -506,9 +514,7 @@
 <translation id="4088315951291671239">请勿在此处粘贴您不理解或未经您审查的代码。这可能会让攻击者窃取你的身份信息或控制你的电脑。</translation>
 <translation id="3020183492814296499">快捷方式</translation>
 <translation id="2935698011275148880">Brave Origin</translation>
-<translation id="2587535830241068901">在支持 Brave 的同时定制您的浏览器</translation>
-<translation id="553273341094971255">Brave Origin 可以帮助您根据自己的喜好调整 Brave，并移除所有应用内促销活动、品牌广告，甚至是您在安装过程中启用的匿名分析功能。</translation>
-<translation id="534725333104202278">您以前启用或使用过的任何附加组件或功能都将保持可见并集成在浏览器中，而其他组件或功能将被禁用。当我们为浏览器提供新功能时，请继续调整 Brave。在Brave Origin控制面板中，这些功能将默认隐藏并静默显示。</translation>
+<translation id="3486906647205325617">某些更改需要重启浏览器才能完全生效。</translation>
 <translation id="1919345977826869612">广告</translation>
 <translation id="944736176598169208">奖励</translation>
 <translation id="2839742394543397416">分析</translation>
@@ -516,12 +522,12 @@
 <translation id="6709133671862442373">新闻</translation>
 <translation id="6297791103122079275">视频通话</translation>
 <translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="4590997608186539865">播放列表</translation>
 <translation id="1199170151481311646">隐私保护分析</translation>
 <translation id="5990642573624858459">统计报告</translation>
 <translation id="2441719842399509963">重置为默认值</translation>
-<translation id="4530494379350999373">来源</translation>
-<translation id="2964215604640804042">Brave Origin 是一款为不需要支持 Brave 作为业务的所有功能但仍想要只有 Brave 提供的隐私保护的用户提供的付费浏览器版本。Brave Origin 用户将继续受益于我们行业领先的隐私、广告拦截和速度（通过 Brave 盾牌），以及定期的软件更新、Chromium 补丁和安全及隐私改进。他们还将解锁禁用 AI、奖励、钱包、VPN、Web3 域名等功能的选项。</translation>
-<translation id="9130916892338379417">Brave Origin 可通过一次性购买获得。在移动设备（Android 和 iOS）和桌面上，Origin 可以作为现有发行版本的升级而购买。在桌面上，Origin 也可作为单独的独立应用程序获得。Origin 用户将在设置菜单中看到一个新的控制面板。现有功能以及我们将来推出的任何新功能都将出现在这里，并且默认处于关闭状态。</translation>
+<translation id="2587535830241068901">在支持 Brave 的同时定制您的浏览器</translation>
+<translation id="123297831435065577">Brave Origin 是一款为不需要支持 Brave 作为业务的所有功能但仍想要只有 Brave 提供的隐私保护的用户提供的付费浏览器版本。Origin 用户将继续受益于我们行业领先的隐私、广告拦截和速度（通过 Brave 盾牌），以及定期的软件更新、Chromium 补丁和安全及隐私改进。</translation>
 <translation id="7984508421152399880">立即购买</translation>
 <translation id="5567412479632285879">Brave 奖励已禁用</translation>
 <translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
@@ -565,6 +571,7 @@
 <translation id="5747552184818312860">到期时间</translation>
 <translation id="3858860766373142691">名称</translation>
 <translation id="361106536627977100">闪存数据</translation>
+<translation id="4530494379350999373">来源</translation>
 <translation id="8195027750202970175">占用的存储空间</translation>
 <translation id="9116465289595958864">上次修改时间</translation>
 <translation id="4590324241397107707">数据库存储</translation>

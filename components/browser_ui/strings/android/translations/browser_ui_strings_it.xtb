@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Download sospeso</translation>
 <translation id="1396327438254055134">Consenti al sito di utilizzare lo strumento di ottimizzazione V8.</translation>
 <translation id="1409338233051621926">Tocca App, poi App predefinite</translation>
+<translation id="1414315029670184034">Non consentire ai siti di usare la fotocamera</translation>
 <translation id="1415402041810619267">URL troncato</translation>
 <translation id="1741136041592162279">Consenti a Brave di condividere le schede recenti con il tuo dispositivo per visualizzarle nell'elenco di app e nei risultati di ricerca del dispositivo. Puoi attivare o disattivare questa funzionalità nelle impostazioni di Brave.</translation>
 <translation id="1420688843103859429">Vai avanti e indietro scorrendo con due dita sul touchpad</translation>
@@ -80,7 +81,6 @@
 <translation id="1781533683087883868">Disattiva i link della modalità Lettura</translation>
 <translation id="1785415724048343560">Consigliato per un'esperienza ottimale</translation>
 <translation id="1796588414813960292">Le funzionalità che richiedono l'audio non funzioneranno</translation>
-<translation id="7401204338724669842">Suggerimenti per Brave</translation>
 <translation id="6704867734300244173">Quando l'opzione è attivata, Brave funziona più velocemente e le funzionalità che utilizzano JavaScript dovrebbero avere il comportamento previsto. Se disattivata, le prestazioni vengono ridotte, ma V8 diventa più resistente agli attacchi.</translation>
 <translation id="1818308510395330587">Per consentire all'app <ph name="APP_NAME"/> di utilizzare la realtà aumentata, attiva la fotocamera anche nelle <ph name="BEGIN_LINK"/>Impostazioni Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Cambia la posizione per personalizzare la tua esperienza di navigazione</translation>
@@ -99,6 +99,7 @@
 <translation id="1985247341569771101">Quando l'opzione è attiva, i siti possono usare i sensori di movimento del dispositivo. Quando l'opzione non è attiva, i siti non possono utilizzare i sensori di movimento.</translation>
 <translation id="1985716030964443178">Questa operazione ripristinerà lo zoom predefinito per tutti i siti nell'elenco</translation>
 <translation id="1989112275319619282">Esplora</translation>
+<translation id="1991370806334788445">Prova a consentire i cookie di terze parti. In questo modo avrai meno protezione durante la navigazione, ma è più probabile che le funzionalità del sito operino come previsto.</translation>
 <translation id="1994173015038366702">URL sito</translation>
 <translation id="1994558116414798016">Carattere Lexend</translation>
 <translation id="2004697686368036666">Le funzionalità su alcuni siti potrebbero non essere disponibili</translation>
@@ -164,6 +165,7 @@
 <translation id="257931822824936280">Espanso. Fai clic per comprimere.</translation>
 <translation id="2586657967955657006">Appunti</translation>
 <translation id="2588271083332682494">Organizza con i gruppi di schede</translation>
+<translation id="2592917252160773942">I siti possono chiedere di utilizzare la videocamera</translation>
 <translation id="2597457036804169544">Non applicare il tema scuro ai siti</translation>
 <translation id="2606760465469169465">Verifica automatica</translation>
 <translation id="2621115761605608342">Consenti JavaScript per un sito specifico.</translation>
@@ -237,6 +239,7 @@
 <translation id="3360338140203645771">Elim. livel. zoom salv.?</translation>
 <translation id="3362437373201486687">Ricerca di dispositivi Bluetooth in corso…</translation>
 <translation id="3368138297038111198">Condivisione di una finestra in corso…</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{Visualizzazione di 1 elemento su {TOTAL_COUNT} a causa di memoria insufficiente}other{Visualizzazione di # elementi su {TOTAL_COUNT} a causa di memoria insufficiente}}</translation>
 <translation id="3386292677130313581">Chiedi conferma prima di consentire ai siti di conoscere la tua posizione (opzione consigliata)</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="344449859752187052">Cookie di terze parti bloccati</translation>
@@ -328,6 +331,7 @@
 <translation id="4290791284969893584">Dopo aver chiuso una pagina, le attività che hai avviato potrebbero non concludersi</translation>
 <translation id="429312253194641664">Un sito sta riproducendo contenuti multimediali</translation>
 <translation id="42981349822642051">Espandi</translation>
+<translation id="4310738531374808763">Personalizza la tua home page</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Scade domani}other{Scade tra # giorni}}</translation>
 <translation id="4338831206024587507">Tutti i siti in <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Non consentire ai siti di inviare notifiche</translation>
@@ -357,6 +361,7 @@
 <translation id="4635969503923889910">Non consentire ai siti di utilizzare i dispositivi NFC</translation>
 <translation id="4644713492825682049">Elimina e reimposta</translation>
 <translation id="4645575059429386691">Gestito da un genitore</translation>
+<translation id="4651224148644053314">Altri colori e opzioni</translation>
 <translation id="4652266463001779298">Autorizzazione non concessa</translation>
 <translation id="4655846733459137112">Tocca Sì per utilizzare facilmente questa password al prossimo accesso</translation>
 <translation id="4663373278480897665">Videocamera consentita</translation>
@@ -516,6 +521,7 @@
 <translation id="6262279340360821358">Autorizzazioni <ph name="PERMISSION_1"/> e <ph name="PERMISSION_2"/> bloccate</translation>
 <translation id="6270391203985052864">I siti possono chiedere di inviare notifiche</translation>
 <translation id="6295158916970320988">Tutti i siti</translation>
+<translation id="6305257382500066042">Prova ora</translation>
 <translation id="6320088164292336938">Vibrazione</translation>
 <translation id="6367753977865761591">Blocca l'accesso di terze parti per un sito specifico.</translation>
 <translation id="6398765197997659313">Esci da schermo intero</translation>
@@ -601,6 +607,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> elementi selezionati</translation>
 <translation id="7260727271532453612">Autorizzazioni <ph name="PERMISSION_1"/> e <ph name="PERMISSION_2"/> consentite</translation>
 <translation id="7276071417425470385">Quando l'opzione è attiva, i siti possono chiedere di usare i dispositivi per realtà virtuale. Quando l'opzione è disattivata, i siti non possono usare i dispositivi per realtà virtuale.</translation>
+<translation id="7279851812866769760">Condividi contatti</translation>
 <translation id="7282197670900591579">Tema cedro</translation>
 <translation id="728412880473384942">I siti sono più veloci, ma meno sicuri</translation>
 <translation id="5843014938239239453">Gestisci nelle <ph name="BEGIN_LINK1"/>Impostazioni Android<ph name="END_LINK1"/>
@@ -650,7 +657,6 @@ La protezione avanzata controlla queste impostazioni di Brave:</translation>
 <translation id="780301667611848630">No, grazie</translation>
 <translation id="7804248752222191302">Un sito sta utilizzando la fotocamera</translation>
 <translation id="7805832099057502789">Riquadro inferiore di Aspetto della pagina Nuova scheda aperto a schermo intero</translation>
-<translation id="6720480757902085971">Fornito da Brave</translation>
 <translation id="7809029041571842593">Riquadro inferiore di Contenuti nuove schede aperto nella parte inferiore dello schermo</translation>
 <translation id="7815680994978050279">Download pericoloso bloccato</translation>
 <translation id="7835852323729233924">Contenuti in riproduzione</translation>
@@ -693,6 +699,7 @@ La protezione avanzata controlla queste impostazioni di Brave:</translation>
 <translation id="823874716226307142">Quando l'opzione è attiva, i siti possono chiedere di accedere ad altri dispositivi connessi alla rete locale. Quando l'opzione è disattivata, i siti non possono accedere ad altri dispositivi connessi alla rete locale.</translation>
 <translation id="8249310407154411074">Sposta in alto</translation>
 <translation id="8261506727792406068">Elimina</translation>
+<translation id="8273596202562472147">Altre opzioni per <ph name="SITE_NAME"/></translation>
 <translation id="8284326494547611709">Sottotitoli codificati</translation>
 <translation id="8300705686683892304">Gestiti dall'app</translation>
 <translation id="8301363963630676147">Consentita questa volta • Approssimativa</translation>
@@ -738,7 +745,6 @@ La protezione avanzata controlla queste impostazioni di Brave:</translation>
 <translation id="8676374126336081632">Cancella testo inserito</translation>
 <translation id="8681886425883659911">Gli annunci vengono bloccati sui siti noti che mostrano annunci invasivi o fuorvianti</translation>
 <translation id="868929229000858085">Cerca nei contatti</translation>
-<translation id="8707904142362025782">Il sito può chiedere di utilizzare la videocamera</translation>
 <translation id="8712637175834984815">Ok</translation>
 <translation id="8715862698998036666">Trascina dall'alto e scorri dal bordo sinistro o destro per uscire dalla modalità a schermo intero.</translation>
 <translation id="8716050156658570300">I siti possono chiedere di usare i sensori di movimento e di luce</translation>
@@ -788,6 +794,7 @@ La protezione avanzata controlla queste impostazioni di Brave:</translation>
 <translation id="7359422048569205930">Consenti a Brave di mostrare le schede recenti nell'elenco di app e nei risultati di ricerca del dispositivo. Puoi disattivare questa funzionalità in qualsiasi momento nelle impostazioni di Brave.</translation>
 <translation id="9162462602695099906">Questa pagina è pericolosa</translation>
 <translation id="9182556968660520230">Non consentire ai siti di riprodurre contenuti protetti</translation>
+<translation id="927148002081263046">Condividi un contatto</translation>
 <translation id="947156494302904893">I siti che visiti possono verificare che sei una persona reale e non un bot</translation>
 <translation id="959682366969460160">Organizzazione</translation>
 <translation id="960590623979248167">Mostra link ipertestuali</translation>

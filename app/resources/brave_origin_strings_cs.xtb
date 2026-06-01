@@ -53,7 +53,6 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="6570689355868013775">Bezpečnostní nástroje prohlížeče Brave</translation>
 <translation id="1902837727299679178">Brave chce smazat vaše data Správce hesel. Tato akce vyžaduje zadání hesla systému Windows.</translation>
 <translation id="4449148723378534338">Zkontrolujte klíčové ovládací prvky ochrany soukromí a zabezpečení v prohlížeči Brave</translation>
-<translation id="5229247933547820267">Pokud se chcete režimu AI ptát ohledně karty bez opuštění stránky, přihlaste se do prohlížeče Brave. Na všech svých zařízeních budete mít k dispozici i svá hesla a další informace.</translation>
 <translation id="1640672724030957280">Stahování...</translation>
 <translation id="1680687534629375545">Zeptat se Vyhledávání obrázků na tuto stránku</translation>
 <translation id="509363484780540563">Prohlížeč Brave můžete použít pokaždé, když kliknete na odkazy ve zprávách, dokumentech a dalších aplikacích Bude také připnutý na hlavním panelu.</translation>
@@ -97,6 +96,9 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="2066690553719545730">Vždy zobrazovat režim AI</translation>
 <translation id="2472891440303445472">Prohlížeč Brave toto stahování zablokoval, protože soubor je klamavý a může ve vašem zařízení provést neočekávané změny</translation>
 <translation id="2054358978145431867">Až příště otevřete Brave pro iOS, zobrazí se výzva k vyzkoušení funkce <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Při první návštěvě webu vypíná Brave optimalizaci JavaScriptu.
+
+Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translation>
 <translation id="2726948994393234543">Vaše hesla a další data prohlížeče Brave, která jste si uložili do účtu Brave, budou z tohoto zařízení odstraněna. Pokud je budete chtít v prohlížeči Brave zase použít, znovu se přihlaste.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Když Brave 1 minutu nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}few{Když Brave # minuty nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}many{Když Brave # minuty nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}other{Když Brave # minut nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}}</translation>
 <translation id="2126108037660393668">Stažený soubor nelze ověřit.</translation>
@@ -212,6 +214,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Přizpůsobte si svůj nový profil Brave</translation>
+<translation id="2430807206104224491">S režimem AI můžete chatovat i bez přepínání karet. Začněte přihlášením do prohlížeče Brave. Na všech svých zařízeních budete mít také k dispozici svá hesla a další informace.</translation>
 <translation id="4805865169608137960">Pokud z prohlížeče Brave chcete odebrat svůj účet Brave, odhlaste se z prohlížeče Brave na stránce Nastavení</translation>
 <translation id="1651639704310627074">Později vám může Brave nabízet automatické vyplnění formulářů uloženými údaji</translation>
 <translation id="2585240446624043880">Brave nemůže číst ani zapisovat do svého datového adresáře:
@@ -500,6 +503,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="8646609321956191980">V každém profilu jsou uloženy soukromé údaje z Chromia, například záložky, historie, hesla a další</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Další informace o tom, jak prohlížeč Brave uchovává vaše data v soukromí<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Změny tohohle nastavení se projeví po restartování prohlížeče Brave.</translation>
+<translation id="3396870972301571614">Rozšíření můžete spravovat kliknutím na Rozšíření v hlavní nabídce prohlížeče Brave.</translation>
 <translation id="2535436634051789953">Přepnutím můžete zobrazit hesla z jiného profilu Brave</translation>
 <translation id="2312399718665761438">Text zadaný do textových polí odesílá Brave kvůli opravě pravopisných chyb do Googlu</translation>
 <translation id="3507835409099344374">Přejít na nastavení oznámení prohlížeče Brave</translation>

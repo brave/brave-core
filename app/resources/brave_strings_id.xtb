@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Alat keamanan Brave</translation>
 <translation id="1902837727299679178">Brave ingin menghapus data Pengelola Sandi Anda. Ketik sandi Windows Anda untuk mengizinkannya.</translation>
 <translation id="4449148723378534338">Meninjau kontrol privasi dan keamanan utama di Brave</translation>
-<translation id="5229247933547820267">Untuk bertanya kepada Mode AI tentang tab Anda tanpa keluar dari halaman, login ke Brave. Anda juga akan mendapatkan sandi dan info Anda yang lain di semua perangkat Anda.</translation>
 <translation id="1640672724030957280">Mengunduh...</translation>
 <translation id="1680687534629375545">Tanya Penelusuran Gambar info tentang halaman ini</translation>
 <translation id="509363484780540563">Anda dapat menggunakan Brave kapan saja dengan mengklik link di pesan, dokumen, dan aplikasi lainnya. Brave juga akan disematkan ke taskbar Anda.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Selalu Tampilkan Mode AI</translation>
 <translation id="2472891440303445472">Brave memblokir download ini karena file tersebut tidak jujur dan dapat menyebabkan perubahan tidak terduga di perangkat Anda</translation>
 <translation id="2054358978145431867">Anda akan melihat perintah untuk mencoba <ph name="FEATURE_NAME"/> saat berikutnya Anda membuka Brave iOS.</translation>
+<translation id="4315579854608498851">Brave menonaktifkan pengoptimalan JavaScript saat Anda membuka suatu situs untuk pertama kalinya.
+
+Jika halaman ini tidak berfungsi seperti yang diharapkan, coba izinkan pengoptimalan.</translation>
 <translation id="2726948994393234543">Sandi dan data Brave Anda lainnya yang disimpan di Akun Brave Anda akan dihapus dari perangkat ini. Untuk menggunakannya lagi di Brave, login kembali.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organisasi akan otomatis menghapus data penjelajahan jika Brave tidak digunakan selama 1 menit. Data ini dapat mencakup histori, isi otomatis, dan download. Tab Anda akan tetap terbuka.}other{Organisasi akan otomatis menghapus data penjelajahan jika Brave tidak digunakan selama # menit. Data ini dapat mencakup histori, isi otomatis, dan download. Tab Anda akan tetap terbuka.}}</translation>
 <translation id="2126108037660393668">Verifikasi file yang didownload gagal.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Sesuaikan profil Brave baru Anda</translation>
+<translation id="2430807206104224491">Anda dapat terus melakukan percakapan dengan Mode AI tanpa beralih tab. Untuk memulai, login ke Brave. Anda juga akan mendapatkan sandi dan info Anda yang lain di semua perangkat Anda.</translation>
 <translation id="4805865169608137960">Untuk menghapus Akun Brave Anda dari Brave, logout dari Brave di halaman Setelan</translation>
 <translation id="1651639704310627074">Nanti, Brave dapat menanyakan apakah Anda ingin menggunakan info tersimpan guna mengisi formulir secara otomatis untuk Anda</translation>
 <translation id="2585240446624043880">Brave tidak dapat membaca dan menulis ke direktori datanya:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Setiap profil memiliki info Brave tersendiri, seperti bookmark, histori, sandi, dan lainnya</translation>
 <translation id="6756656512757374876">Pelajari lebih lanjut <ph name="BEGIN_LINK"/>cara Brave menjaga privasi data Anda<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Perubahan pada setelan ini akan diterapkan setelah Brave dimulai ulang.</translation>
+<translation id="3396870972301571614">Kelola ekstensi Anda dengan mengklik Ekstensi di menu utama Brave.</translation>
 <translation id="2535436634051789953">Anda dapat beralih untuk melihat sandi dari profil Brave lainnya</translation>
 <translation id="2312399718665761438">Untuk memperbaiki kesalahan ejaan, Brave mengirimkan teks yang Anda ketik di kolom teks ke Brave</translation>
 <translation id="3507835409099344374">Buka setelan notifikasi Brave</translation>

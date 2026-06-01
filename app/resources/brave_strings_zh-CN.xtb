@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Brave 的安全工具</translation>
 <translation id="1902837727299679178">Brave 想要删除您的密码管理工具数据。请输入您的 Windows 密码以允许此操作。</translation>
 <translation id="4449148723378534338">检查 Brave 中重要的隐私控制设置和安全控件</translation>
-<translation id="5229247933547820267">如需在不离开网页的情况下向 AI 模式询问有关标签页的问题，请登录 Brave。登录后，您还可在自己的所有设备上同步保存的密码等信息。</translation>
 <translation id="1640672724030957280">正在下载...</translation>
 <translation id="1680687534629375545">向图片搜索功能询问此页面</translation>
 <translation id="509363484780540563">您可随时使用 Brave 打开您在消息、文档和其他应用内点击的链接。Brave 还将固定到任务栏。</translation>
@@ -95,6 +94,9 @@
 <translation id="2066690553719545730">始终显示 AI 模式</translation>
 <translation id="2472891440303445472">Brave 阻止了此项下载操作，因为该文件具有欺骗性，可能会意外更改您的设备</translation>
 <translation id="2054358978145431867">下次打开 Brave iOS 时，您会看到试用<ph name="FEATURE_NAME"/>的提示。</translation>
+<translation id="4315579854608498851">您在首次访问某个网站时，Brave 会关闭 JavaScript 优化功能。
+
+如果此网页无法按预期运行，请尝试允许优化。</translation>
 <translation id="2726948994393234543">系统将从此设备中移除您已保存在 Brave 账号中的密码和其他 Brave 数据。如需在 Brave 中重新使用这些数据，请重新登录。</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{您的组织会在 Brave 闲置 1 分钟后自动删除浏览数据。这些数据可能包括历史记录、自动填充数据和下载内容。您的标签页将会保持打开状态。}other{您的组织会在 Brave 闲置 # 分钟后自动删除浏览数据。这些数据可能包括历史记录、自动填充数据和下载内容。您的标签页将会保持打开状态。}}</translation>
 <translation id="2126108037660393668">所下载的文件未能顺利通过验证。</translation>
@@ -210,6 +212,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">自定义您的新 Brave 个人资料</translation>
+<translation id="2430807206104224491">无需切换标签页，即可继续在 AI 模式下对话。如需开始使用，请登录 Brave。登录后，您还可在自己的所有设备上同步保存的密码等信息。</translation>
 <translation id="4805865169608137960">若要从 Brave 中移除您的 Brave 账号，请在“设置”页面中退出 Brave</translation>
 <translation id="1651639704310627074">Brave 以后可以询问您是否要使用已保存的信息为您自动填写表单</translation>
 <translation id="2585240446624043880">Brave 无法读写其数据目录：
@@ -498,6 +501,7 @@
 <translation id="8646609321956191980">每份个人资料均包含自己的 Brave 信息，例如书签、历史记录、密码等等</translation>
 <translation id="6756656512757374876">详细了解 <ph name="BEGIN_LINK"/>Brave 如何确保您数据的私密性<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">对此设置的更改将在 Brave 重启后生效。</translation>
+<translation id="3396870972301571614">您可以点击 Brave 主菜单中的“扩展程序”来管理您的扩展程序。</translation>
 <translation id="2535436634051789953">您可切换到另一份 Brave 个人资料以查看其中的密码</translation>
 <translation id="2312399718665761438">为了修正拼写错误，Brave 会将您在文本字段中输入的文字发送给 Brave</translation>
 <translation id="3507835409099344374">转到 Brave 通知设置部分</translation>
@@ -748,7 +752,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="7535429826459677826">Google Chrome 开发者版</translation>
 <translation id="6283840329609797763">未指定的错误导致安装失败。请重新下载 Brave。</translation>
 <translation id="1743665722170667430">来自不明来源的扩展程序、应用程序和主题可能会损害您的设备。Brave 建议仅从<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>安装</translation>
-<translation id="5840822070878669614">打开 应用商店</translation>
+<translation id="5840822070878669614">打开应用商店</translation>
 <translation id="6184592406110188164">该扩展功能违反了网络商店政策，可能不安全。将其从 Brave 中删除，这样它就不能再查看和更改您访问的网站上的数据，包括您的个人信息。</translation>
 <translation id="1299765473362724475">警告:Brave不能阻止扩展记录您的浏览历史。要在私人模式禁用此扩展，取消选择此选项。</translation>
 <translation id="1448049584457347995">为了提高 Brave 的安全性，系统停用了一些未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中、可能是在您不知情的情况下添加的扩展程序。</translation>

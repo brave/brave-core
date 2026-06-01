@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">ಮುದ್ರಿಸು</translation>
 <translation id="2600847485413879104">ರಿವಾರ್ಡ್ಸ್ BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">ಜೆಮಿನಿ</translation>
 <translation id="6569877533335686968">ಅಪ್‌ಹೋಲ್ಡ್</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">ಕಾಂಪೊನೆಂಟ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="4894106830958548828">ನನಗೆ ಅರ್ಥವಾಯಿತು</translation>
 <translation id="2729085694451916573"><ph name="PART_ONE"/>ಪ್ಲೇಸ್ ಹೋಲ್ಡರ್‌ಗಳಿಗಾಗಿ<ph name="PART_ONE_END"/> ಸ್ಟ್ರಿಂಗ್ ಅನ್ನು ಪರೀಕ್ಷಿಸಿ. <ph name="PART_TWO"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">ನಿಮ್ಮ ಹುಡುಕಾಟಗಳು ಮತ್ತು ಪುಟದ ವಿಷಯಗಳನ್ನು ಈ ಸಾಧನದಲ್ಲಿ ಪ್ರೊಸೆಸ್ ಮಾಡಲಾಗುತ್ತದೆ. Brave ಗೆ ಏನನ್ನೂ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ ಅಥವಾ ಮಾನವ ಪರಿಶೀಲಕರು ನೋಡುವುದಿಲ್ಲ. ಇದು ಪ್ರಾಯೋಗಿಕ ವೈಶಿಷ್ಟ್ಯವಾಗಿದೆ ಮತ್ತು ಯಾವಾಗಲೂ ಸರಿಯಾಗಿ ಸಿಗುವುದಿಲ್ಲ.</translation>
 <translation id="7534079972563542000">ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗದ ಡೊಮೇನ್‍ಗಳು</translation>
 <translation id="4492298165410552103">Brave ನಲ್ಲಿ ನಿಲ್ಲಿಸಲಾಗದ ಡೊಮೇನ್‍ಗಳಿಗಾಗಿ ಬೆಂಬಲ ಸಕ್ರಿಯಗೊಳಿಸುವುದೇ?</translation>
 <translation id="5015092481905019948"><ph name="PROVIDER_NAME"/> ನಲ್ಲಿರುವ <ph name="DOMAIN_LIST"/> ಡೊಮೇನ್ ಹೆಸರುಗಳನ್ನು ಪರಿಹರಿಸಲು <ph name="DOMAIN_PROVIDER_NAME"/> ಅನ್ನು Brave ಬಳಸುತ್ತದೆ. ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು Brave ಮರೆಮಾಡುತ್ತದೆ. ಇದನ್ನು ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ಯಾರೋ ಒಬ್ಬರು ಈ ಡೊಮೇನ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದ್ದಾರೆ ಹೊರತು ಬೇರೇಯದಕ್ಕೆ ಅಲ್ಲ ಎಂಬುದನ್ನು <ph name="PROVIDER_NAME"/> ನೋಡುತ್ತದೆ. <ph name="PROVIDER_NAME"/>ನ <ph name="BEGIN_PROVIDER_TOU_LINK"/>ಬಳಕೆಯ ನಿಯಮಗಳು<ph name="END_PROVIDER_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_PROVIDER_PRIVACY_LINK"/> ನೋಡಿ.</translation>
@@ -749,7 +749,6 @@
 <translation id="1288078776976153868">ನೆಟ್‌ವರ್ಕ್</translation>
 <translation id="1148827340205946630">ಬಳಕೆದಾರರು ವಿನಂತಿಯನ್ನು ತಿರಸ್ಕರಿಸಿದ್ದಾರೆ.</translation>
 <translation id="2403819048476450281">ಅಮಾನ್ಯ ಪ್ಯಾರಾಮೀಟರ್‌ಗಳು.</translation>
-<translation id="3849003816301348130">ಗಮ್ಯಸ್ಥಾನದ ವಿಳಾಸವು, OFAC SDN ಪಟ್ಟಿಯಲ್ಲಿದೆ.</translation>
 <translation id="3955144560853195652"><ph name="VALUE"/> ಚೈನ್ ಅನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ</translation>
 <translation id="1875861420974447980">ಈ ಚೈನ್ ID ಅನ್ನು ಪ್ರಸ್ತುತ ಬಳಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="167698752210114155">ಒಂದು ಆಂತರಿಕ ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
@@ -863,11 +862,12 @@
 <translation id="3751611888003301070">ಮಾರ್ಗಗಳು</translation>
 <translation id="3799091982455573025">ಮೂಲಕ <ph name="NETWORK_NAME"/> ನಲ್ಲಿ ಸ್ವ್ಯಾಪ್ ಮಾಡಿ <ph name="EXCHANGE_NAME"/></translation>
 <translation id="5136093123841570193"><ph name="FRIST_NETWORK_NAME"/> ರಿಂದ <ph name="SECOND_NETWORK_NAME"/> ತನಕ ಬ್ರಿಡ್ಜ್ ಮಾಡಿ</translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ಹಂತ}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ಹಂತಗಳು}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} ಹಂತ)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} ಹಂತಗಳು)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> ಮೂಲಕ <ph name="PROVIDER_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> ಮೂಲಕ</translation>
 <translation id="646023614746251785">ಸ್ವಾಪ್ ಅನ್ನು ದೃಢೀಕರಿಸಿ</translation>
 <translation id="6264944956989873014">ಬ್ರಿಡ್ಜ್ ಅನ್ನು ದೃಢೀಕರಿಸಿ</translation>
 <translation id="7067917728851842589">ಕಳುಹಿಸುವುದನ್ನು ದೃಢೀಕರಿಸಿ</translation>
@@ -948,6 +948,7 @@
 <translation id="1108298724135935307">ಸಂಪರ್ಕಿತ ಸೈಟ್‌ಗಳು</translation>
 <translation id="5716350339763180836">ಬ್ಯಾಲೆನ್ಸ್‌ಗಳು</translation>
 <translation id="5538251867290702601">ಗ್ರಾಫ್</translation>
+<translation id="8123016618655108594">ವಿತರಣೆ</translation>
 <translation id="352407037922720467">NFT ಗಳ ಟ್ಯಾಬ್</translation>
 <translation id="163697698769819510">ನಿಮ್ಮ ಸ್ವತ್ತುಗಳನ್ನು ರಕ್ಷಿಸಲು ಈಗ ನಿಮ್ಮ ವಾಲೆಟ್‌ ಅನ್ನು ಬ್ಯಾಕ್ ಮಾಡಿ ಮತ್ತು ನೀವು ಎಂದಿಗೂ ಪ್ರವೇಶ ಕಳೆದುಕೊಳ್ಳುವುದಿಲ್ಲ ಎಂದು ಖಚಿತಪಡಿಸಿ.</translation>
 <translation id="1018806299114415224">ಈಗ ಬ್ಯಾಕಪ್‌ ಮಾಡಿ</translation>
@@ -1171,12 +1172,12 @@
 <translation id="4324239559624557455">24 ಗಂಟೆಗಳಿಗಾಗಿ</translation>
 <translation id="9139452553033760558">1 ವಾರಕ್ಕಾಗಿ</translation>
 <translation id="1658834457013045127">ಎಂದೆಂದಿಗೂ</translation>
-<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> ಸಂಪರ್ಕ ಸ್ಥಾಪಿತವಾದೆ</translation>
-<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> <ph name="DEVICE_NAME"/> ಗೆ ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="434328838837168401">ಸೂಚನೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ</translation>
-<translation id="6739517232898494646">ಮುಂದುವರಿಯಲು ನಿಮ್ಮ <ph name="DEVICE_NAME"/> ಅನ್ನು ಸಂಪರ್ಕಿಸಿ</translation>
+<translation id="13670155462680755">ಮುಂದುವರಿಯಲು ನಿಮ್ಮ <ph name="ACCOUNT_NAME"/> ಅನ್ನು ಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="6941881257520473899">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ಗೆ ಸಾಧನದಲ್ಲಿ ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ.</translation>
-<translation id="2288190100157580461">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ಗೆ <ph name="DEVICE_NAME"/>ನಲ್ಲಿ ತೆರೆದಿರುವ <ph name="NETWORK"/> ಆ್ಯಪ್ ಅಗತ್ಯವಿರುತ್ತದೆ</translation>
+<translation id="4108619287854657806">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ಗೆ <ph name="ACCOUNT_NAME"/>ನಲ್ಲಿ ತೆರೆದಿರುವ <ph name="NETWORK"/> ಆ್ಯಪ್ ಅಗತ್ಯವಿರುತ್ತದೆ</translation>
 <translation id="8687869982094542529">ಕಳುಹಿಸಲಾಗಿದೆ</translation>
 <translation id="5013754027092416509">ಸ್ವೀಕರಿಸಲಾಗಿದೆ</translation>
 <translation id="5867988533873716616">ನಿರ್ಬಂಧ ಎಕ್ಸ್‌ಪ್ಲೋರರ್ URL ಲಭ್ಯವಿಲ್ಲ.</translation>
@@ -1361,6 +1362,7 @@
 <translation id="8491675129455635799">ಸಮೂಹ ಸ್ವತ್ತುಗಳ ಮೂಲಕ</translation>
 <translation id="5331775401966766526">ಫಿಲ್ಟರ್‌ಗಳು ಮತ್ತು ಪ್ರದರ್ಶನ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="5332541468425943610">NFT ಡಿಸ್‌ಪ್ಲೇ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
+<translation id="1539149309756422999">ಆಸ್ತಿಗಳ ವಿತರಣೆ</translation>
 <translation id="886032538431162695">ಸ್ವತ್ತುಗಳನ್ನು ವಿಂಗಡಿಸಿ</translation>
 <translation id="6080181976198929758">ಫಿಯಟ್ ಮೌಲ್ಯ ಅಥವಾ ಹೆಸರಿನ ಮೂಲಕ ವಿಂಗಡಿಸಿ</translation>
 <translation id="2563815561570398537">ಸಣ್ಣ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
@@ -1604,6 +1606,9 @@
 <translation id="5882719778740918116"><ph name="VALUE"/> ನಲ್ಲಿ ಈ ವಿಳಾಸಕ್ಕೆ ಮಾತ್ರ ಟೋಕನ್‌ಗಳನ್ನು ಕಳುಹಿಸಿ</translation>
 <translation id="6885009592653876601">200+ ಕ್ರಿಪ್ಟೋ ಸ್ವತ್ತುಗಳನ್ನು ಖರೀದಿಸಿ, ಕಳುಹಿಸಿ ಮತ್ತು ವಿನಿಮಯ ಮಾಡಿಕೊಳ್ಳಿ</translation>
 <translation id="8716223552348254401">ಬ್ರೌಸರ್-ಸ್ಥಳೀಯ, ಯಾವುದೇ ಅಪಾಯಕಾರಿ ವಿಸ್ತರಣೆಗಳಿಲ್ಲ</translation>
+<translation id="1198271701881992799">ಪ್ರಾರಂಭಿಸೋಣ</translation>
+<translation id="7904301836463577071">ಕ್ರೆಡಿಟ್ ಅಥವಾ ಡೆಬಿಟ್ ಕಾರ್ಡ್‌ನೊಂದಿಗೆ ನಿಮ್ಮ ಮೊದಲ ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ</translation>
+<translation id="3721561070667360112">ಇನ್ನೊಂದು ವ್ಯಾಲೆಟ್ ಅಥವಾ ಎಕ್ಸ್‌ಚೇಂಜ್‌ನಿಂದ ಕ್ರಿಪ್ಟೋ ಠೇವಣಿ ಮಾಡಿ</translation>
 <translation id="4559901986238865734">ಮಲ್ಟಿ-ಚೈನ್ &amp; NFT ಬೆಂಬಲ</translation>
 <translation id="296101411136980896">ಬದಲಾಯಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="753655478253155745">ಹನ್ನೆರಡನೇ</translation>
@@ -1751,6 +1756,7 @@
 <translation id="8549067157732633185">ಈ ಟೋಕನ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
 <translation id="2130170065617939165">ಈ ಟೋಕನ್ ಅನ್ನು <ph name="NUMBER_OF_LISTS"/> ಪಟ್ಟಿಗಳಲ್ಲಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
 <translation id="1554316484739382186">ಸ್ಪೆಂಡರ್: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">ಜೆಮಿನಿ</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> ಖಾತೆ</translation>
 <translation id="5360752485622434494"><ph name="PROVIDER"/> ನಲ್ಲಿ Brave ರಿವಾರ್ಡ್ಸ್‌ನ BAT</translation>
@@ -2144,12 +2150,14 @@
 <translation id="6459036216700972269">ವಿಭಜಿಸದಿರುವ ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="4235382917338421035">ಟ್ಯಾಬ್ ಸ್ಥಾನಗಳನ್ನು ಸ್ವ್ಯಾಪ್ ಮಾಡಿ</translation>
 <translation id="4288085058450834672">ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
+<translation id="4750337523930607658">ಫೋಕಸ್ ಮೋಡ್ ಟಾಗಲ್ ಮಾಡಿ</translation>
 <translation id="4144468798716165316">ತ್ವರಿತ ಕಮ್ಯಾಂಡ್‌ಗಳು</translation>
 <translation id="3617523374417810198">ಹೊಸ ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆ</translation>
 <translation id="8571323456914890254">ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆಯಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="5329136173514538969">ವಿಭಜಿಸದಿರುವ ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="7595612919377246359">ಟ್ಯಾಬ್ ಸ್ಥಾನಗಳನ್ನು ಸ್ವ್ಯಾಪ್ ಮಾಡಿ</translation>
 <translation id="2367972762794486313">ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ತೋರಿಸು</translation>
+<translation id="3142853026316054951">ಫೋಕಸ್ ಮೋಡ್ ಟಾಗಲ್ ಮಾಡಿ</translation>
 <translation id="3468387898712904997">ಹೊಸ ಇಮೇಲ್ ಅಲಿಯಾಸ್</translation>
 <translation id="8591883849678260674">ಮೂಲವನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="1969654232209826429">ಕನಿಷ್ಠ. ಓದುವಿಕೆ</translation>
@@ -2197,6 +2205,7 @@
 <translation id="5923170497201832190">ಟ್ಯಾಬ್ ಅನ್ನು ಕೆಳಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
 <translation id="6219262425964000211">ಫೈಲ್ಸ್‌ ಇಲ್ಲಿ‌ ಬಿಡಿ</translation>
 <translation id="4313763911013851687">ಯಾವುದೇ ಫೈಲ್‌ಗಳನ್ನು ಸಂವಾದಕ್ಕೆ ಸೇರಿಸಲು ಅವನ್ನು ಇಲ್ಲಿ ಬಿಡಿ</translation>
+<translation id="8206915760129310348">ಕೆಲವು ಫೈಲ್‌ಗಳನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ ಮತ್ತು ಲಗತ್ತಿಸಲಾಗಿಲ್ಲ</translation>
 <translation id="4524675003624341892">ಪ್ರಶ್ನೆಗಳ ಸಲಹೆ ನೀಡಿ…</translation>
 <translation id="4567071417854988869">ಈ ವೀಡಿಯೋವನ್ನು ಸಾರಾಂಶಗೊಳಿಸಿ</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2207,7 +2216,9 @@
 <translation id="7932221068776853847">Leo ಗೆ ಈ ಪುಟ ವಿಷಯವನ್ನು ಕಳುಹಿಸುವದನ್ನು ನಿಲ್ಲಿಸಲು ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ ಮತ್ತು ಹೊಸ ಸಂಭಾಷಣೆಯನ್ನು ಆರಂಭಿಸಿ</translation>
 <translation id="8743383817154663379">ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಾಗ ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2712650703044366764">ಈ ಮಾದರಿಯು ಅಮಾನ್ಯವಾದ ಅಂತಿಮ ಬಿಂದುವನ್ನು ಹೊಂದಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="1167803637855350748">Leo ಗೆ ಸಂಪರ್ಕಿಸುವಲ್ಲಿ ನೆಟ್‌ವರ್ಕ್ ಸಮಸ್ಯೆ ಇತ್ತು, ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="7092656392206649236">Leo ನೊಂದಿಗೆ ಸಂವಹನ ನಡೆಸುವಾಗ ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="3552709750512842961">ಸ್ಥಿತಿ ಕೋಡ್: <ph name="STATUS_CODE"/>, ದೋಷ ಕೋಡ್: <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">ಸ್ಥಿತಿ ಕೋಡ್: <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">ನೀವು ಪ್ರೀಮಿಯಂ ದರ ಮಿತಿಯನ್ನು ತಲುಪಿದ್ದೀರಿ. ಕೆಲವು ಗಂಟೆಗಳಲ್ಲಿ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="3683964919745779766">ನೀವು ಈ ಮಾದರಿಯ ದರ ಮಿತಿಯನ್ನು ತಲುಪಿದ್ದೀರಿ ಅಥವಾ ಕ್ರೆಡಿಟ್‌ ಮಿತಿ ದಾಟಿದ್ದೀರಿ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="7692501701960747469">ಈ ಮಾದರಿಗಾಗಿ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾದ API ಕೀ ಅಮಾನ್ಯವಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಕಾನ್ಫಿಗರೇಶನ್ ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -2491,7 +2502,9 @@ Uttaravannu iṣṭ;</translation>
 <translation id="5663901348199429994">ನಿಮ್ಮ ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳು</translation>
 <translation id="9046133327037621173">ಹೊಸ ಇಮೇಲ್ ಅಲಿಯಾಸ್</translation>
 <translation id="3768606658230902536">ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಇಮೇಲ್ ಖಾಸಗಿಯಾಗಿ ಇಡಲು ಇನ್‌ಬಾಕ್ಸ್‌ಗೆ ಫಾರ್ವರ್ಡ್ ಮಾಡುವ ರ್ಯಾಂಡಮ್ ಇಮೇಲ್ ವಿಳಾಸ ಸೃಷ್ಟಿಸಿ.</translation>
-<translation id="6887156107256264506">ನೀವು 5 ಉಚಿತ ಇಮೇಲ್ ಅಲಿಯಾ‌ಸ್‌ಗಳ ಮಿತಿ ತಲುಪಿದ್ದೀರಿ. ಅಲಿಯಾಸ್ ಪುನಃ ಬಳಸಲು ಅಥವಾ ಅಳಿಸಲು "ಮ್ಯಾನೇಜ್" ಕ್ಲಿಕ್ ಮಾಡಿ.</translation>
+<translation id="4452721050684632493">ಅಲಿಯಾಸ್ ಮಿತಿ ತಲುಪಿದೆ</translation>
+<translation id="2912191433415590080">ನೀವು ನಿಮ್ಮ ಎಲ್ಲಾ <ph name="MAX_ALIASES"/> ಇಮೇಲ್ ಅಲಿಯಾಸ್‌ಗಳನ್ನು ಬಳಸಿದ್ದೀರಿ. ಹೊಸದನ್ನು ರಚಿಸಲು ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಅಲಿಯಾಸ್ ಅನ್ನು ಅಳಿಸಿ.</translation>
+<translation id="3847337908410945070">ನಿಮ್ಮ ಅಲಿಯಾಸ್‌ಗಳು (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">ಹೊಸ ಅಲಿಯಾಸ್</translation>
 <translation id="8072910658503112482">ಇ‌ನ್ನೂ ಒಂದು ಇಮೇಲ್ ಅಲಿಯಾಸ್ ಸೂಚಿಸಿ</translation>
 <translation id="7710361355427562228">ಹೊಸ ಅಲಿಯಾಸ್ ರಚಿಸಲಾಗುತ್ತಿದೆ...</translation>
@@ -2534,6 +2547,8 @@ Uttaravannu iṣṭ;</translation>
 <translation id="2991633563551889054">ಟಾಕ್ ಕಾರ್ಡ್ ಮರೆಮಾಡಿ</translation>
 <translation id="5355776323718420036">ಉನ್ನತ ಸೈಟ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
 <translation id="1689504141194856995">VPN ಕಾರ್ಡ್ ಮರೆಮಾಡಿ</translation>
+<translation id="2919329118360099847">ಸಾಮಾನ್ಯ ವಿಂಡೋಗಳಿಗೆ ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಅನ್ನು ಸರ್ಚ್ ಎಂಜಿನ್ ಆಗಿ ಬಳಸಲಾಗುತ್ತದೆ.</translation>
+<translation id="6792837540759934892">Brave ಅನ್ನು ಡೀಫಾಲ್ಟ್ ಸರ್ಚ್ ಎಂಜಿನ್ ಆಗಿ ಹೊಂದಿಸಬೇಕೇ?</translation>
 <translation id="8262911270872215147">ಸುದ್ದಿಯನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="3884037897537157986">ಸುದ್ದಿಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="7847477075635510673">ಸುದ್ದಿಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
@@ -2672,7 +2687,7 @@ Uttaravannu iṣṭ;</translation>
 <translation id="2273851479262317744">Brave ಅನ್ನು ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
 <translation id="5037676449506322593">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿ</translation>
 <translation id="5148943178722443958">Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ.</translation>
-<translation id="479535542793009168">ಸ್ಥಿರತೆ ಮತ್ತು ರೋಗನಿರ್ಣಯ</translation>
+<translation id="8874748598814587364">ಸ್ಥಿರತೆ</translation>
 <translation id="1097073572755862978">ನೀವು ಕ್ರ್ಯಾಶ್ ಅಥವಾ ಫ್ರೀಜ್ ಅನುಭವಿಸಿದರೆ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸಿ. <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Brave ನ ಬಳಕೆದಾರರು ಯಾವ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಬಳಸುತ್ತಿದ್ದಾರೆ ಎಂಬ ಕುರಿತು ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಮತ್ತು ಅನಾಮಧೇಯ ಉತ್ಪನ್ನ ಒಳನೋಟಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ. <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">ಸೆಟಪ್ ಪೂರ್ಣಗೊಂಡಿದೆ</translation>
@@ -2801,6 +2816,10 @@ Uttaravannu iṣṭ;</translation>
 <translation id="1602850501393095406">ಹೈಲೈಟ್ ಮಾಡಲು ↑ ಒತ್ತಿರಿ</translation>
 <translation id="8367705492654390392">ಏನಾದರೂ ಕೇಳಿ</translation>
 <translation id="8525248723479742219">ನಂತರ ಪ್ಲೇ ಮಾಡಿ</translation>
+<translation id="1751249301761991853">ವೈಯಕ್ತಿಕ</translation>
+<translation id="1122068467107743258">ಕೆಲಸ</translation>
+<translation id="8372721116225477180">ಸಾಮಾಜಿಕ</translation>
+<translation id="1539343118617844331">ಶಾಲೆ</translation>
 <translation id="2935698011275148880">Brave Origin</translation>
 <translation id="3983844925615091103">Brave Origin ಗೆ ಸ್ವಾಗತ. ಮುಂದುವರಿಯಲು, ದಯವಿ Brave Origin ಖರೀದಿಅನ್ನು ಖರೀದಿಅಥವಾ ಪುನಃಸ್ಥಾಪಿಸಿ.</translation>
 <translation id="4801175670604644729">ಈ ಬ್ರೌಸರ್‌ನ ಬಳಕೆಗೆ ನಿಮಗೆ ಸಕ್ರಿಯ Brave Origin ಖರೀದಿ ಅಗತ್ಯವಾಗಿದೆ.</translation>
@@ -2816,4 +2835,60 @@ Uttaravannu iṣṭ;</translation>
 <translation id="5816720995022674532">Origin ಕಾನೂನುಬಿ ಸ ನಿಲ್ದಾಣಗಳನ್ನು ಬಳಸಲಿ ಉಚಿತವಾಗಿರುತ್ತವೆ, ಆದರೆ Brave ಅನ್ನು ಒಂದು ವ್ಯವಹಾರವಾಗಿ ಬೆಂಬಲಿಸಲು ಬಯಸಿದರೆ ಇನ್ನೂ <ph name="BEGIN_LINK"/>ಖರೀದಿಗೆ ಲಭ್ಯವಾಗಿರುತ್ತವೆ<ph name="END_LINK"/>. ಖರೀದಿ ಮಾಡುವುದರ ಫಲಸ್ವರೂಪ, ನೀವು Android, iOS, macOS, ಮತ್ತು Windows ಸಾಧನಗಳಲ್ಲಿ Origin ಬಳಸುವ ಸಾಮರ್ಥ್ಯವನ್ನು ಅನ್‌ಲಾಕ್ ಕೊಡುತ್ತವೆ.</translation>
 <translation id="3065220545261045367">Origin ಅನ್ನು ಖರೀದಿ ಮಾಡುವುದರ ಮೂಲಕ Brave ಅನ್ನು ಬೆಂಬಲಿಸಿ</translation>
 <translation id="2069499076031488636">Linux ನಲ್ಲಿ Origin ಅನ್ನು ಉಚಿತವಾಗಿ ಮುಂದುವರಿಸಿ</translation>
+<translation id="5713644099811900409">ಬ್ರೇವ್ ಖಾತೆ</translation>
+<translation id="2906576968270573525">Brave ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಆಗಿ ಅಥವಾ ಅದನ್ನು ರಚಿಸಿ</translation>
+<translation id="6972754398087986839">ಪ್ರಾರಂಭಿಸಿ</translation>
+<translation id="5378207817582281342">ಬಹುತೇಕ ಮುಗಿಯಿತು!</translation>
+<translation id="3750210661641549834">ನಿಮ್ಮ ಖಾತೆ ರಚಿಸಲು, ದಯವಿಟ್ಟು ನಿಮ್ಮ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಪರಿಶೀಲಿಸಿ.</translation>
+<translation id="4129813507847680661">ನೋಂದಣಿ ಕೋಡ್ ನಮೂದಿಸಿ</translation>
+<translation id="1672793037892810340">ನೀವು ನಮೂದಿಸಬೇಕಾದ ಕೋಡ್ ಹೊಂದಿರುವ ಇಮೇಲ್ ಅನ್ನು ನೀವು ಸ್ವೀಕರಿಸಿರಬೇಕು.</translation>
+<translation id="4821255729182569254">ದೃಢೀಕರಣ ಇಮೇಲ್ ಮರುಕಳುಹಿಸಿ</translation>
+<translation id="5837679375142747484">ಇಮೇಲ್ ಕಾಣಿಸುತ್ತಿಲ್ಲವೇ? ನಿಮ್ಮ ಸ್ಪ್ಯಾಮ್ ಫೋಲ್ಡರ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಅಥವಾ ಅದನ್ನು <ph name="BEGIN_LINK"/>ಮರುಕಳುಹಿಸಿ<ph name="END_LINK"/>.</translation>
+<translation id="1080588816740959885">ಇಮೇಲ್ ಕಾಣಿಸುತ್ತಿಲ್ಲವೇ? ನಿಮ್ಮ ಸ್ಪ್ಯಾಮ್ ಫೋಲ್ಡರ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಅಥವಾ ಅದನ್ನು ಮರುಕಳುಹಿಸಿ.</translation>
+<translation id="1020730839570724178">ನೋಂದಣಿ ರದ್ದುಗೊಳಿಸಿ</translation>
+<translation id="4869737930995549965">ಲಾಗ್ ಔಟ್</translation>
+<translation id="5538654494923870167">ನಿಮ್ಮ Brave ಖಾತೆಯೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸಿ</translation>
+<translation id="1544145635547515689">Brave ಖಾತೆ ರಚಿಸಿ</translation>
+<translation id="3828644479849256404">ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೀರಾ? ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
+<translation id="6624553071240278643">ನಿಮ್ಮ ಖಾತೆಯನ್ನು ರಚಿಸಿ</translation>
+<translation id="6505120968393722022">Brave ಖಾತೆಗಳನ್ನು ರಚಿಸಲು ನೀವು @bravealias.com ವಿಳಾಸಗಳನ್ನು ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ಬೇರೆ ಡೊಮೇನ್‌ನೊಂದಿಗೆ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="8248460961680233459">ಪಾಸ್‌ವರ್ಡ್ ರಚಿಸಿ</translation>
+<translation id="4917385247580444890">ಪ್ರಬಲ</translation>
+<translation id="5486261815000869482">ಪಾಸ್‌ವರ್ಡ್ ದೃಢೀಕರಿಸಿ</translation>
+<translation id="7345706641791090287">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ದೃಢೀಕರಿಸಿ</translation>
+<translation id="7114054701490058191">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಹೊಂದಾಣಿಯಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="1293857704520741614">ನಿಮ್ಮ ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
+<translation id="118617366439356381">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರಾ?</translation>
+<translation id="5183159033908953146">ನಿಮ್ಮ Brave ಖಾತೆ ಇಮೇಲ್ ಅನ್ನು ದೃಢೀಕರಿಸಿ ಮತ್ತು ನಂತರ ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಲಿಂಕ್ ಸ್ವೀಕರಿಸುತ್ತೀರಿ. ಲಿಂಕ್ ಕೇವಲ 30 ನಿಮಿಷಗಳವರೆಗೆ ಮಾತ್ರ ಮಾನ್ಯವಾಗಿರುತ್ತದೆ.</translation>
+<translation id="3997368361371298873">ಎಚ್ಚರಿಕೆ: ನೀವು ಈ ಸಾಧನದಲ್ಲಿ ಲಾಗ್ ಇನ್ ಆಗಿಲ್ಲದ ಕಾರಣ, ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಮರುಹೊಂದಿಸುವುದರಿಂದ ಸರ್ವರ್‌ನಲ್ಲಿರುವ <ph name="BEGIN_BOLD"/>ನಿಮ್ಮ ಎಲ್ಲಾ ಡೇಟಾ ಅಳಿಸಲಾಗುವುದು<ph name="END_BOLD"/>. ನೀವು ಲಾಗ್ ಇನ್ ಆಗಿರುವ ಬೇರೆ ಸಾಧನವನ್ನು ಹೊಂದಿದ್ದರೆ, ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಮರುಹೊಂದಿಸುವ ಬದಲು ಆ ಸಾಧನದಿಂದ ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಬದಲಾಯಿಸಿ.</translation>
+<translation id="3674472551471103443">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="2755539422340788311">ನಿಮ್ಮ ಇಮೇಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ</translation>
+<translation id="6641436078676327508">ಸಣ್ಣ ಕೋಡ್ ಹೊಂದಿರುವ ಇಮೇಲ್ ಅನ್ನು ನೀವು ಸ್ವೀಕರಿಸಿರಬೇಕು. ಮುಂದುವರಿಸಲು ದಯವಿಟ್ಟು ಅದನ್ನು ಇಲ್ಲಿ ನಮೂದಿಸಿ.</translation>
+<translation id="7228810962389847249">ಕೋಡ್ ಅನ್ನು ಇಲ್ಲಿ ನಮೂದಿಸಿ</translation>
+<translation id="4683390091376980486">ಕೋಡ್ ದೃಢೀಕರಿಸಿ</translation>
+<translation id="3970028678400797622">ಇಮೇಲ್ ಕೋಡ್ ಮರುಕಳುಹಿಸಿ</translation>
+<translation id="2475982808118771221">ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
+<translation id="5430795854491041407">ದೋಷ</translation>
+<translation id="2232323423357029857">ಬ್ರೌಸರ್ ಅನಿರೀಕ್ಷಿತ ದೋಷವನ್ನು ಎದುರಿಸಿತು<ph name="ERROR_CODE"/>. ದಯವಿಟ್ಟು ಬ್ರೌಸರ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="7167650060829320707">ಆಂತರಿಕ ಸರ್ವರ್ ದೋಷ (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="2387645930330673048">ಈ ಖಾತೆಯು ಇಮೇಲ್ ಪರಿಶೀಲನೆಗಾಗಿ ಕಾಯುತ್ತಿದೆ.</translation>
+<translation id="2199962270601714404">ಆ ಇಮೇಲ್ ವಿಳಾಸಕ್ಕೆ ಯಾವುದೇ ಖಾತೆ ಸಿಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಅಥವಾ ಹೊಸ ಖಾತೆ ರಚಿಸಿ.</translation>
+<translation id="8130611002720478693">ತಪ್ಪಾದ ಪಾಸ್‌ವರ್ಡ್. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="7144067487084094749">ಈ ಇಮೇಲ್ ವಿಳಾಸಕ್ಕೆ ಈಗಾಗಲೇ ಖಾತೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ. ಖಾತೆ ರಚಿಸುವ ಬದಲು ಲಾಗ್ ಇನ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="5288951359968156008">ಈ ಇಮೇಲ್ ವಿಳಾಸದ ಡೊಮೇನ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಬೇರೆ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಬಳಸಿ.</translation>
+<translation id="7625678607509255072">ಇಮೇಲ್ ಪರಿಶೀಲನೆಯ ಮಿತಿ ಮೀರಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸುವ ಮೊದಲು ದಯವಿಟ್ಟು 30 ನಿಮಿಷಗಳ ಕಾಲ ಕಾಯಿರಿ.</translation>
+<translation id="4582421696414628320">ಪರಿಶೀಲನೆಯು ಅವಧಿ ಮೀರಿದೆ. ನೋಂದಣಿ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಿ.</translation>
+<translation id="8439543211004394821">ಹಲವು ತಪ್ಪಾದ ಕೋಡ್‌ಗಳನ್ನು ನಮೂದಿಸಲಾಗಿದೆ. ನೋಂದಣಿ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಿ.</translation>
+<translation id="3229986152760633988">ತಪ್ಪು ಕೋಡ್, ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="4178004989875422946">Brave ಖಾತೆಯು Brave ಸೇವೆಗಳನ್ನು ಸುಲಭವಾಗಿ ಪ್ರವೇಶಿಸಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ.</translation>
+<translation id="8314772463905284467">Caps Lock ಆನ್ ಆಗಿದೆ</translation>
+<translation id="7044608453949401443">ಪಾಸ್‌ವರ್ಡ್‌ನ ಪ್ರಾರಂಭದಲ್ಲಿ ಅಥವಾ ಕೊನೆಯಲ್ಲಿ ಸ್ಪೇಸ್‌ಗಳಿಗೆ ಅನುಮತಿ ಇಲ್ಲ.</translation>
+<translation id="2939492377741553693">ದೃಢೀಕರಣ ಇಮೇಲ್ ಅನ್ನು ಮರುಕಳುಹಿಸಲಾಗಿದೆ.</translation>
+<translation id="2112559299194052697">ಮರುಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
+<translation id="7932611814134267012">ಈಗಾಗಲೇ ಹಲವು ಪರಿಶೀಲನಾ ಇಮೇಲ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸ್ಪ್ಯಾಮ್ ಫೋಲ್ಡರ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ.</translation>
+<translation id="1364223093800750401">ಇಮೇಲ್ ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲಾಗಿದೆ.</translation>
+<translation id="3353844160742960162">ಗೌಪ್ಯತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಟ್ಯೂನಿಂಗ್</translation>
+<translation id="528205534230423181">ಈ ವೆಬ್‌ಸೈಟ್ Brave ನಿಮಗಾಗಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಹೊಂದಿಸಬಹುದಾದ ಗೌಪ್ಯತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನೀಡುತ್ತದೆ. ನಾವು ಶಿಫಾರಸು ಮಾಡುವುದು ಇಲ್ಲಿದೆ:</translation>
+<translation id="1063227610401477317">ಬದಲಾವಣೆಗಳನ್ನು ಅನ್ವಯಿಸಿ</translation>
+<translation id="5539769255716491933">ವಿಫಲವಾದ ಹಂತಗಳನ್ನು ವರದಿ ಮಾಡಿ</translation>
 </translationbundle>
