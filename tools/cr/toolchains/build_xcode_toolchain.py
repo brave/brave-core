@@ -841,11 +841,10 @@ class ToolchainBuilder:
         """Download the resolved `.xip` and expand it to *app_path*.
 
         Fetches the archive into `--out-dir`, verifies it against its expected
-        SHA-1 provided by `xcodereleases.com`, then expands it with
-        `xip --expand`, and finally the resulting `Xcode.app` is moved into
-        `app_path`. The expansion happens on the same volume as `app_path` so
-        the final move is an instantaneous rename rather than a multi-gigabyte
-        copy.
+        SHA-1 provided by `xcodereleases.com`, then expands the `xip` archive,
+        and finally the resulting `Xcode.app` is moved into `app_path`. The
+        expansion happens on the same volume as `app_path` so the final move is
+        an instantaneous rename rather than a multi-gigabyte copy.
         """
         assert self._xcode_release is not None
         self._out_dir.mkdir(parents=True, exist_ok=True)
@@ -859,9 +858,19 @@ class ToolchainBuilder:
             shutil.rmtree(expand_dir)
         expand_dir.mkdir(parents=True)
         try:
-            # `xip --expand` writes `Xcode.app` into the current directory; it
-            # has no output-path flag, hence the dedicated `cwd`.
-            _check_call('xip', '--expand', str(xip_path), cwd=expand_dir)
+            # `unxip` and `xip --expand` both write `Xcode.app` into the current
+            # directory and take no output-path flag, hence the dedicated `cwd`.
+            # `unxip` is dramatically faster, but is not installed by default,
+            # so prefer it when present and fall back to Apple's `xip`
+            # otherwise.
+            if shutil.which('unxip'):
+                _check_call('unxip', str(xip_path), cwd=expand_dir)
+            else:
+                logging.warning(
+                    '`unxip` not found on PATH; falling back to the slower '
+                    '`xip --expand`. Installing `unxip` (`brew install unxip`) '
+                    'is strongly preferred for much faster Xcode expansion.')
+                _check_call('xip', '--expand', str(xip_path), cwd=expand_dir)
             expanded_app = expand_dir / 'Xcode.app'
             if not expanded_app.exists():
                 raise RuntimeError(
@@ -923,8 +932,9 @@ class ToolchainBuilder:
         `xcodebuild -runFirstLaunch` so the freshly expanded Xcode finishes its
         one-time setup.
         """
-        _check_call('sudo', 'xcode-select', '-s', str(app_path))
-        _check_call('sudo', 'xcodebuild', '-runFirstLaunch')
+        _check_call('sudo', '/usr/bin/xcode-select', '-s', str(app_path))
+        _check_call('sudo', '/usr/bin/xcodebuild', '-license', 'accept')
+        _check_call('sudo', '/usr/bin/xcodebuild', '-runFirstLaunch')
 
         # This is to avoid issues caused by mixed usage of different Xcode
         # versions on one machine.
