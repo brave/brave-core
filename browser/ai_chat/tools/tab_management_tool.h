@@ -18,10 +18,6 @@ class Profile;
 class BrowserWindowInterface;
 class TabGroup;
 
-namespace tabs {
-class TabInterface;
-}
-
 namespace ai_chat {
 
 class TabManagementTool : public Tool {
@@ -49,8 +45,6 @@ class TabManagementTool : public Tool {
   // Action handlers
   void HandleListTabs(UseToolCallback callback);
   void HandleMoveTabs(UseToolCallback callback, const base::DictValue& params);
-  void HandleReorderTabs(UseToolCallback callback,
-                         const base::DictValue& params);
   void HandleCreateGroup(UseToolCallback callback,
                          const base::DictValue& params);
   void HandleUpdateGroup(UseToolCallback callback,
@@ -96,11 +90,6 @@ class TabManagementTool : public Tool {
       UseToolCallback callback,
       base::DictValue result,
       std::optional<tabs::TabHandle> active_moved_tab = std::nullopt);
-
-  // Helper functions for working with TabHandles
-  tabs::TabInterface* GetTabFromHandle(tabs::TabHandle handle);
-  std::vector<tabs::TabInterface*> GetTabsFromHandles(
-      const std::vector<int>& handles);
 
   // Conversation-level permission state
   bool user_has_granted_permission_ = false;

@@ -6,7 +6,6 @@
 #include "brave/browser/ai_chat/tools/tab_management_tool.h"
 
 #include <algorithm>
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -14,6 +13,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/adapters.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -23,7 +24,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -37,14 +37,12 @@
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/tab_groups/tab_group_color.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "components/tabs/public/tab_group.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "ui/base/base_window.h"
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL));
@@ -80,30 +78,28 @@ std::vector<int> MakeSortedUniqueValidIndices(const std::vector<int>& indices,
   return filtered_indices;
 }
 
-bool GetTabGroupColorId(const std::string_view group_color,
-                        tab_groups::TabGroupColorId& color_out) {
+std::optional<tab_groups::TabGroupColorId> GetTabGroupColorId(
+    std::string_view group_color) {
   if (group_color == "grey") {
-    color_out = tab_groups::TabGroupColorId::kGrey;
+    return tab_groups::TabGroupColorId::kGrey;
   } else if (group_color == "blue") {
-    color_out = tab_groups::TabGroupColorId::kBlue;
+    return tab_groups::TabGroupColorId::kBlue;
   } else if (group_color == "red") {
-    color_out = tab_groups::TabGroupColorId::kRed;
+    return tab_groups::TabGroupColorId::kRed;
   } else if (group_color == "yellow") {
-    color_out = tab_groups::TabGroupColorId::kYellow;
+    return tab_groups::TabGroupColorId::kYellow;
   } else if (group_color == "green") {
-    color_out = tab_groups::TabGroupColorId::kGreen;
+    return tab_groups::TabGroupColorId::kGreen;
   } else if (group_color == "pink") {
-    color_out = tab_groups::TabGroupColorId::kPink;
+    return tab_groups::TabGroupColorId::kPink;
   } else if (group_color == "purple") {
-    color_out = tab_groups::TabGroupColorId::kPurple;
+    return tab_groups::TabGroupColorId::kPurple;
   } else if (group_color == "cyan") {
-    color_out = tab_groups::TabGroupColorId::kCyan;
+    return tab_groups::TabGroupColorId::kCyan;
   } else if (group_color == "orange") {
-    color_out = tab_groups::TabGroupColorId::kOrange;
-  } else {
-    return false;
+    return tab_groups::TabGroupColorId::kOrange;
   }
-  return true;
+  return std::nullopt;
 }
 
 std::string GetTabGroupColorString(tab_groups::TabGroupColorId color) {
@@ -131,26 +127,107 @@ std::string GetTabGroupColorString(tab_groups::TabGroupColorId color) {
   }
 }
 
+// Returns a copy of |visual_data| with the optional |title| and |color|
+// overrides applied. A null override leaves that field unchanged, and an
+// unrecognized color string is ignored.
+tab_groups::TabGroupVisualData ApplyGroupVisualOverrides(
+    tab_groups::TabGroupVisualData visual_data,
+    const std::string* title,
+    const std::string* color) {
+  if (title) {
+    visual_data.SetTitle(base::UTF8ToUTF16(*title));
+  }
+  if (color) {
+    if (std::optional<tab_groups::TabGroupColorId> color_id =
+            GetTabGroupColorId(*color)) {
+      visual_data = tab_groups::TabGroupVisualData(
+          visual_data.title(), *color_id, visual_data.is_collapsed());
+    }
+  }
+  return visual_data;
+}
+
+// A tab resolved from a tab-handle ID, together with its current location.
+struct ResolvedTab {
+  raw_ptr<tabs::TabInterface> tab;
+  raw_ptr<content::WebContents> contents;
+  raw_ptr<TabStripModel> tab_strip;
+  int index;
+};
+
+// Returns the integer values of a list, skipping any non-integer entries.
+std::vector<int> HandleIdsFromList(const base::ListValue& list) {
+  std::vector<int> ids;
+  ids.reserve(list.size());
+  for (const auto& value : list) {
+    if (value.is_int()) {
+      ids.push_back(value.GetInt());
+    }
+  }
+  return ids;
+}
+
+// Resolves tab-handle IDs to their live tabs, in input order. A tab is skipped
+// when its handle is stale, it belongs to a different |profile|, it is not an
+// entry in a tab strip, or (when |require_grouped|) it is not in a tab group.
+std::vector<ResolvedTab> ResolveTabs(const std::vector<int>& tab_ids,
+                                     Profile* profile,
+                                     bool require_grouped) {
+  std::vector<ResolvedTab> resolved;
+  resolved.reserve(tab_ids.size());
+  for (int handle_id : tab_ids) {
+    auto* tab = tabs::TabHandle(handle_id).Get();
+    if (!tab) {
+      continue;
+    }
+    if (require_grouped && !tab->GetGroup().has_value()) {
+      continue;
+    }
+    content::WebContents* contents = tab->GetContents();
+    // Must belong to the same profile as the tool.
+    if (!contents || contents->GetBrowserContext() != profile) {
+      continue;
+    }
+    auto* browser_window = tab->GetBrowserWindowInterface();
+    if (!browser_window) {
+      continue;
+    }
+    TabStripModel* tab_strip = browser_window->GetTabStripModel();
+    int index = tab_strip->GetIndexOfWebContents(contents);
+    if (index == TabStripModel::kNoTab) {
+      continue;
+    }
+    resolved.push_back({tab, contents, tab_strip, index});
+  }
+  return resolved;
+}
+
+// Buckets the tabs identified by |tab_ids| into a map of source TabStripModel
+// to the indices of the matching tabs within it, applying the |profile| and
+// |require_grouped| filters of ResolveTabs(). If |first_strip_out| is non-null,
+// it receives the TabStripModel of the first valid tab in input order, which
+// callers use to choose a destination window.
+base::flat_map<TabStripModel*, std::vector<int>> ResolveTabIdsToStripIndices(
+    const base::ListValue& tab_ids,
+    Profile* profile,
+    bool require_grouped,
+    TabStripModel** first_strip_out) {
+  base::flat_map<TabStripModel*, std::vector<int>> by_strip;
+  for (const ResolvedTab& resolved :
+       ResolveTabs(HandleIdsFromList(tab_ids), profile, require_grouped)) {
+    if (first_strip_out && !*first_strip_out) {
+      *first_strip_out = resolved.tab_strip;
+    }
+    by_strip[resolved.tab_strip].push_back(resolved.index);
+  }
+  return by_strip;
+}
+
 }  // namespace
 
 TabManagementTool::TabManagementTool(Profile* profile) : profile_(profile) {}
 
 TabManagementTool::~TabManagementTool() = default;
-
-std::vector<tabs::TabInterface*> TabManagementTool::GetTabsFromHandles(
-    const std::vector<int>& handles) {
-  std::vector<tabs::TabInterface*> tabs;
-  tabs.reserve(handles.size());
-
-  for (int handle_id : handles) {
-    tabs::TabHandle handle = tabs::TabHandle(handle_id);
-    if (auto* tab = handle.Get()) {
-      tabs.push_back(tab);
-    }
-  }
-
-  return tabs;
-}
 
 std::string_view TabManagementTool::Name() const {
   return mojom::kTabManagementToolName;
@@ -164,7 +241,7 @@ std::string_view TabManagementTool::Description() const {
          "modifying their tabs. "
          "This tool can list all open tabs with their window, group, URL and "
          "title information, "
-         "move tabs or entire groups between windows or positions,"
+         "move tabs or entire groups between windows or positions, "
          "close tabs, "
          "and create or modify tab groups. Groups are per-window, so make any "
          "moves before grouping. Use window_id=-1 to move tabs/groups to a new "
@@ -217,7 +294,8 @@ std::optional<base::DictValue> TabManagementTool::InputProperties() const {
        {"group_id",
         StringProperty("Target group ID for update_group or move (for move "
                        "operation window ID will be inferred by the group "
-                       "windowand is mutually exclusive) or group to update")},
+                       "window and is mutually exclusive) or group to "
+                       "update")},
        {"index",
         IntegerProperty("Target index position (for move operations)")},
        {"group_title", StringProperty("Title for new or updated group")},
@@ -435,11 +513,12 @@ void TabManagementTool::PostTaskSendResultWithTabList(
   // then we can do it immediately as tab strip creation and movements
   // are immediately ready.
   if (active_moved_tab.has_value()) {
-    if (tabs::TabInterface* tab = active_moved_tab->Get();
-        BrowserWindowInterface* window = tab->GetBrowserWindowInterface()) {
-      window->GetWindow()->Activate();
-      window->GetTabStripModel()->ActivateTabAt(
-          window->GetTabStripModel()->GetIndexOfTab(tab));
+    if (tabs::TabInterface* tab = active_moved_tab->Get()) {
+      if (BrowserWindowInterface* window = tab->GetBrowserWindowInterface()) {
+        window->GetWindow()->Activate();
+        window->GetTabStripModel()->ActivateTabAt(
+            window->GetTabStripModel()->GetIndexOfTab(tab));
+      }
     }
   }
   // We do need to collect the result on the next task since any resulting
@@ -449,6 +528,7 @@ void TabManagementTool::PostTaskSendResultWithTabList(
                                 weak_ptr_factory_.GetWeakPtr(),
                                 std::move(callback), std::move(result)));
 }
+
 void TabManagementTool::HandleListTabs(UseToolCallback callback) {
   base::DictValue result = GenerateTabList();
 
@@ -497,19 +577,11 @@ void TabManagementTool::HandleMoveTabs(UseToolCallback callback,
   if (has_valid_group_id) {
     HandleMoveGroup(std::move(callback), *group_to_move, window_id, index);
   } else {
-    // Convert tab_ids to vector<int>
-    std::vector<int> tab_handles;
-    for (const auto& tab_id_value : *tab_ids) {
-      if (tab_id_value.is_int()) {
-        tab_handles.push_back(tab_id_value.GetInt());
-      }
-    }
-
     const auto* group_id_str = params.FindString("group_id");
     const auto add_to_end = params.FindBool("add_to_end").value_or(false);
 
-    HandleMoveIndividualTabs(std::move(callback), tab_handles, window_id, index,
-                             group_id_str, add_to_end);
+    HandleMoveIndividualTabs(std::move(callback), HandleIdsFromList(*tab_ids),
+                             window_id, index, group_id_str, add_to_end);
   }
 }
 
@@ -607,19 +679,16 @@ bool TabManagementTool::ValidateMoveTarget(
     return false;
   }
 
+  // Move targets may involve placing tabs into a group, so the destination
+  // must support tab groups. All normal desktop browser windows do.
   if (!tab_strip->SupportsTabGroups()) {
     *error = "Target window does not support tab groups";
     return false;
   }
 
-  // Index validation is optional - if not provided, tabs go to end
-  if (index.has_value()) {
-    int target_index = *index;
-    if (target_index < 0 || target_index > tab_strip->count()) {
-      // This is allowed - will be clamped later
-    }
-  }
-
+  // An out-of-range index is intentionally not an error: it is clamped to the
+  // valid range when the move is performed, and an absent index appends to the
+  // end of the tab strip.
   return true;
 }
 
@@ -691,7 +760,7 @@ void TabManagementTool::HandleMoveGroup(UseToolCallback callback,
     int target_index = index.value_or(target_tab_strip->count());
     target_index = std::min(target_index, target_tab_strip->count());
 
-    // See if we need to re-active the target window
+    // See if we need to re-activate the target window
     std::optional<tabs::TabHandle> tab_to_reactivate = std::nullopt;
     if (source_window->GetWindow()->IsActive()) {
       auto* active_tab = source_tab_strip->GetActiveTab();
@@ -741,9 +810,10 @@ void TabManagementTool::HandleMoveIndividualTabs(
   std::string error;
   BrowserWindowInterface* target_window = nullptr;
 
-  // Get tabs from handles
-  std::vector<tabs::TabInterface*> tabs = GetTabsFromHandles(tab_handles);
-  if (tabs.empty()) {
+  // Resolve the requested tabs in request order, restricted to this profile.
+  std::vector<ResolvedTab> tabs_to_move =
+      ResolveTabs(tab_handles, profile_, /*require_grouped=*/false);
+  if (tabs_to_move.empty()) {
     std::move(callback).Run(
         CreateContentBlocksForText("No valid tabs found to move"), {});
     return;
@@ -773,7 +843,7 @@ void TabManagementTool::HandleMoveIndividualTabs(
 
   // If no target specified, use the first tab's window
   if (!target_window) {
-    target_window = tabs[0]->GetBrowserWindowInterface();
+    target_window = tabs_to_move.front().tab->GetBrowserWindowInterface();
     if (!target_window) {
       std::move(callback).Run(
           CreateContentBlocksForText(
@@ -792,39 +862,16 @@ void TabManagementTool::HandleMoveIndividualTabs(
   int target_index = index.value_or(target_tab_strip->count());
   target_index = std::min(target_index, target_tab_strip->count());
 
-  // Collect tabs to move with their source tab strips
-  std::vector<std::pair<content::WebContents*, TabStripModel*>> tabs_to_move;
-  std::optional<tabs::TabHandle> active_moved_tab = std::nullopt;
-
-  for (auto* tab : tabs) {
-    content::WebContents* web_contents = tab->GetContents();
-    if (!web_contents) {
-      continue;
+  // Remember the active tab being moved out of its active window so activation
+  // can be restored after the move.
+  std::optional<tabs::TabHandle> active_moved_tab;
+  for (const ResolvedTab& moved : tabs_to_move) {
+    auto* source_window = moved.tab->GetBrowserWindowInterface();
+    if (source_window && source_window->GetWindow()->IsActive() &&
+        moved.tab_strip->GetActiveTab() == moved.tab) {
+      active_moved_tab = moved.tab->GetHandle();
+      break;
     }
-
-    if (auto* source_window = tab->GetBrowserWindowInterface()) {
-      if (source_window->GetProfile() != profile_) {
-        continue;
-      }
-      TabStripModel* source_tab_strip = source_window->GetTabStripModel();
-      if (!source_tab_strip) {
-        continue;
-      }
-      tabs_to_move.push_back({web_contents, source_tab_strip});
-      // Keep a reference to the active tab in the active window so that
-      // we can restore it after the move.
-      if (source_window->GetWindow()->IsActive() &&
-          source_tab_strip->GetActiveTab() &&
-          source_tab_strip->GetActiveTab()->GetHandle() == tab->GetHandle()) {
-        active_moved_tab = tab->GetHandle();
-      }
-    }
-  }
-
-  if (tabs_to_move.empty()) {
-    std::move(callback).Run(
-        CreateContentBlocksForText("No valid tabs found to move"), {});
-    return;
   }
 
   // Perform the moves
@@ -846,31 +893,38 @@ void TabManagementTool::HandleMoveIndividualTabs(
   current_target_index =
       std::clamp(current_target_index, min_target_index, max_target_index);
 
-  for (const auto& [web_contents, source_tab_strip] : tabs_to_move) {
-    int source_index = source_tab_strip->GetIndexOfWebContents(web_contents);
+  for (const ResolvedTab& moved : tabs_to_move) {
+    int source_index = moved.tab_strip->GetIndexOfWebContents(moved.contents);
 
     if (source_index == TabStripModel::kNoTab) {
       continue;
     }
 
-    if (source_tab_strip != target_tab_strip) {
+    int landed_index = TabStripModel::kNoTab;
+    if (moved.tab_strip != target_tab_strip) {
       // Cross-window move
       std::unique_ptr<tabs::TabModel> detached_tab =
-          source_tab_strip->DetachTabAtForInsertion(source_index);
-
-      if (detached_tab) {
-        int inserted_index = target_tab_strip->InsertDetachedTabAt(
-            current_target_index, std::move(detached_tab), ADD_NONE,
-            has_group ? std::make_optional(target_group->id()) : std::nullopt);
-        moved_indices.push_back(inserted_index);
+          moved.tab_strip->DetachTabAtForInsertion(source_index);
+      if (!detached_tab) {
+        continue;
       }
+      landed_index = target_tab_strip->InsertDetachedTabAt(
+          current_target_index, std::move(detached_tab), ADD_NONE,
+          has_group ? std::make_optional(target_group->id()) : std::nullopt);
     } else {
       // Same tab strip move
-      int new_index = target_tab_strip->MoveWebContentsAt(
+      landed_index = target_tab_strip->MoveWebContentsAt(
           source_index, current_target_index, false,
           has_group ? std::make_optional(target_group->id()) : std::nullopt);
-      moved_indices.push_back(new_index);
     }
+    moved_indices.push_back(landed_index);
+
+    // Advance the insertion point so the next tab lands immediately after this
+    // one, preserving the request order of the moved tabs. All moves run
+    // synchronously on the tab strip here, so reading back the landed index is
+    // safe with no timing concern.
+    current_target_index =
+        std::min(landed_index + 1, target_tab_strip->count());
   }
 
   // Add to existing group if specified
@@ -913,49 +967,26 @@ void TabManagementTool::HandleCreateGroup(UseToolCallback callback,
     return;
   }
 
-  // Find tabs and group them by browser using TabHandles
-  std::map<TabStripModel*, std::vector<int>> browser_tabs;
-  tabs::TabInterface* first_tab = nullptr;
+  // Find tabs and bucket them by browser using TabHandles. The window of the
+  // first valid tab in the request determines the target window for the new
+  // group.
   TabStripModel* target_tab_strip = nullptr;
+  base::flat_map<TabStripModel*, std::vector<int>> browser_tabs =
+      ResolveTabIdsToStripIndices(*tab_ids, profile_,
+                                  /*require_grouped=*/false, &target_tab_strip);
 
-  for (const auto& tab_id_value : *tab_ids) {
-    if (!tab_id_value.is_int()) {
-      continue;
-    }
-
-    int handle_id = tab_id_value.GetInt();
-    tabs::TabHandle handle = tabs::TabHandle(handle_id);
-
-    if (auto* tab = handle.Get()) {
-      content::WebContents* web_contents = tab->GetContents();
-      if (web_contents) {
-        // Must be the same profile
-        if (web_contents->GetBrowserContext() != profile_) {
-          continue;
-        }
-        // Get the browser window from the tab interface
-        if (auto* browser_window = tab->GetBrowserWindowInterface()) {
-          TabStripModel* tab_strip = browser_window->GetTabStripModel();
-          // Verify the tab is an entry in the tab strip
-          int index = tab_strip->GetIndexOfWebContents(web_contents);
-          if (index != TabStripModel::kNoTab) {
-            // We use the window from the first tab to determine the target
-            // window
-            // for the group.
-            if (!first_tab) {
-              first_tab = tab;
-              target_tab_strip = tab_strip;
-            }
-            browser_tabs[tab_strip].push_back(index);
-          }
-        }
-      }
-    }
-  }
-
-  if (!first_tab || !target_tab_strip || browser_tabs.empty()) {
+  if (!target_tab_strip || browser_tabs.empty()) {
     std::move(callback).Run(
         CreateContentBlocksForText("No valid tabs found to group"), {});
+    return;
+  }
+
+  // The target window's tab strip must support tab groups: AddToNewGroup()
+  // CHECKs SupportsTabGroups().
+  if (!target_tab_strip->SupportsTabGroups()) {
+    std::move(callback).Run(
+        CreateContentBlocksForText("Target window does not support tab groups"),
+        {});
     return;
   }
 
@@ -971,28 +1002,13 @@ void TabManagementTool::HandleCreateGroup(UseToolCallback callback,
     const TabGroup* group =
         target_tab_strip->group_model()->GetTabGroup(new_group_id);
     if (group) {
-      tab_groups::TabGroupVisualData visual_data = *group->visual_data();
-
-      if (group_title) {
-        visual_data = tab_groups::TabGroupVisualData(
-            base::UTF8ToUTF16(*group_title), visual_data.color(),
-            visual_data.is_collapsed());
-      }
-
-      if (group_color) {
-        tab_groups::TabGroupColorId color = visual_data.color();
-        if (GetTabGroupColorId(*group_color, color)) {
-          visual_data = tab_groups::TabGroupVisualData(
-              visual_data.title(), color, visual_data.is_collapsed());
-        }
-      }
-
-      target_tab_strip->ChangeTabGroupVisuals(new_group_id, visual_data);
+      target_tab_strip->ChangeTabGroupVisuals(
+          new_group_id, ApplyGroupVisualOverrides(*group->visual_data(),
+                                                  group_title, group_color));
     }
   }
 
   std::vector<std::unique_ptr<tabs::TabModel>> tabs_moved_models;
-  std::vector<tabs::TabHandle> tabs_moved;
 
   // Move all the tabs to the window with the new group, if there
   // are multiple browsers.
@@ -1011,9 +1027,7 @@ void TabManagementTool::HandleCreateGroup(UseToolCallback callback,
 
       // Reverse the indices to avoid index shifting
       for (int index : base::Reversed(valid_indices)) {
-        auto tab = tab_strip->DetachTabAtForInsertion(index);
-        tabs_moved.push_back(tab->GetHandle());
-        tabs_moved_models.push_back(std::move(tab));
+        tabs_moved_models.push_back(tab_strip->DetachTabAtForInsertion(index));
       }
     }
   }
@@ -1052,17 +1066,8 @@ void TabManagementTool::HandleUpdateGroup(UseToolCallback callback,
   TabGroup* group;
   if (BrowserWindowInterface* window =
           FindWindowWithGroup(*group_id_str, &group)) {
-    tab_groups::TabGroupVisualData visual_data = *group->visual_data();
-    if (group_title) {
-      visual_data.SetTitle(base::UTF8ToUTF16(*group_title));
-    }
-    if (group_color) {
-      tab_groups::TabGroupColorId color = visual_data.color();
-      if (GetTabGroupColorId(*group_color, color)) {
-        visual_data = tab_groups::TabGroupVisualData(
-            visual_data.title(), color, visual_data.is_collapsed());
-      }
-    }
+    tab_groups::TabGroupVisualData visual_data = ApplyGroupVisualOverrides(
+        *group->visual_data(), group_title, group_color);
     window->GetTabStripModel()->ChangeTabGroupVisuals(group->id(), visual_data);
     found = true;
   }
@@ -1090,39 +1095,10 @@ void TabManagementTool::HandleRemoveFromGroup(UseToolCallback callback,
     return;
   }
 
-  // Find tabs and group them by browser using TabHandles
-  std::map<TabStripModel*, std::vector<int>> browser_tabs;
-
-  for (const auto& tab_id_value : *tab_ids) {
-    if (!tab_id_value.is_int()) {
-      continue;
-    }
-
-    int handle_id = tab_id_value.GetInt();
-    tabs::TabHandle handle = tabs::TabHandle(handle_id);
-
-    if (auto* tab = handle.Get()) {
-      // Must be in a group
-      if (!tab->GetGroup().has_value()) {
-        continue;
-      }
-      content::WebContents* web_contents = tab->GetContents();
-      if (web_contents) {
-        // Must be the same profile
-        if (web_contents->GetBrowserContext() != profile_) {
-          continue;
-        }
-        // Get the browser window from the tab interface
-        if (auto* browser_window = tab->GetBrowserWindowInterface()) {
-          TabStripModel* tab_strip = browser_window->GetTabStripModel();
-          int index = tab_strip->GetIndexOfWebContents(web_contents);
-          if (index != TabStripModel::kNoTab) {
-            browser_tabs[tab_strip].push_back(index);
-          }
-        }
-      }
-    }
-  }
+  // Find the grouped tabs and bucket them by browser using TabHandles.
+  base::flat_map<TabStripModel*, std::vector<int>> browser_tabs =
+      ResolveTabIdsToStripIndices(*tab_ids, profile_, /*require_grouped=*/true,
+                                  /*first_strip_out=*/nullptr);
 
   if (browser_tabs.empty()) {
     std::move(callback).Run(

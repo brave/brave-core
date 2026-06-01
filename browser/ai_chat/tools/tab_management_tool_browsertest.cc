@@ -32,6 +32,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -758,6 +759,70 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
     EXPECT_NE(GetSessionIdForTabId(bnewb), bnew_session_id);
     EXPECT_NE(GetSessionIdForTabId(bnewc), bnew_session_id);
     ExpectOutputMatchesWindowSkeleton(FROM_HERE, response, profile());
+  }
+}
+
+// Moving multiple tabs in a single request must preserve the request order of
+// the tabs at the destination, both within a window and across windows.
+IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
+                       MoveMultipleTabsPreservesOrder) {
+  TabManagementTool tool(profile());
+  tool.UserPermissionGranted("");
+
+  Browser* b1 = browser();
+  TabStripModel* strip1 = b1->tab_strip_model();
+
+  int t1 = AddTabAndGetHandle(b1, GURL("https://order1.test/"));
+  int t2 = AddTabAndGetHandle(b1, GURL("https://order2.test/"));
+  int t3 = AddTabAndGetHandle(b1, GURL("https://order3.test/"));
+
+  auto index_of = [](int tab_id) {
+    auto* tab = tabs::TabHandle(tab_id).Get();
+    return tab->GetBrowserWindowInterface()
+        ->GetTabStripModel()
+        ->GetIndexOfWebContents(tab->GetContents());
+  };
+
+  // Same-window move: request order [t3, t1, t2]. They must land contiguously
+  // in that order rather than reversed.
+  {
+    RunToolAndGetText(FROM_HERE, &tool,
+                      absl::StrFormat(
+                          R"JSON({
+        "action": "move",
+        "tab_ids": [%d, %d, %d],
+        "index": %d
+      })JSON",
+                          t3, t1, t2, strip1->count() - 1));
+
+    int i3 = index_of(t3);
+    EXPECT_EQ(index_of(t1), i3 + 1);
+    EXPECT_EQ(index_of(t2), i3 + 2);
+  }
+
+  // Cross-window move: move the same tabs into a second window in request order
+  // [t2, t3, t1].
+  {
+    Browser* b2 = CreateBrowser(profile());
+    AddTabAndGetHandle(b2, GURL("https://other.test/"));
+    int target_window_id = b2->session_id().id();
+
+    RunToolAndGetText(FROM_HERE, &tool,
+                      absl::StrFormat(
+                          R"JSON({
+        "action": "move",
+        "tab_ids": [%d, %d, %d],
+        "window_id": %d
+      })JSON",
+                          t2, t3, t1, target_window_id));
+
+    ASSERT_EQ(GetSessionIdForTabId(t1).id(), target_window_id);
+    ASSERT_EQ(GetSessionIdForTabId(t2).id(), target_window_id);
+    ASSERT_EQ(GetSessionIdForTabId(t3).id(), target_window_id);
+
+    int i2 = index_of(t2);
+    EXPECT_EQ(index_of(t3), i2 + 1);
+    EXPECT_EQ(index_of(t1), i2 + 2);
   }
 }
 
