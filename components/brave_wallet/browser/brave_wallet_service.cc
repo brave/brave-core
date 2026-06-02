@@ -252,6 +252,7 @@ BraveWalletService::BraveWalletService(
       ipfs_service_(std::make_unique<BraveWalletIpfsService>(profile_prefs)),
       weak_ptr_factory_(this) {
   CHECK(delegate_);
+  keyring_service_->SetDelegate(delegate_.get());
 
   if (IsBitcoinEnabled()) {
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
@@ -2075,7 +2076,9 @@ void BraveWalletService::OnWalletReset() {
 
 void BraveWalletService::SetDelegateForTesting(  // IN-TEST
     std::unique_ptr<BraveWalletServiceDelegate> delegate) {
+  keyring_service_->SetDelegate(nullptr);
   delegate_ = std::move(delegate);
+  keyring_service_->SetDelegate(delegate_.get());
 }
 
 }  // namespace brave_wallet

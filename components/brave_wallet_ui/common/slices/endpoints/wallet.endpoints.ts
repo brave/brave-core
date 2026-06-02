@@ -583,6 +583,7 @@ async function createDefaultAccounts({
 }) {
   const networksRegistry = await cache.getNetworksRegistry()
   const accountsRegistry = await cache.getAccountsRegistry()
+  const { accounts: hiddenAccounts } = await keyringService.getHiddenAccounts()
 
   const visibleNetworks = getEntitiesListFromEntityState(
     networksRegistry,
@@ -606,7 +607,10 @@ async function createDefaultAccounts({
     }
   }
 
-  const accounts = getEntitiesListFromEntityState(accountsRegistry)
+  const accounts = [
+    ...getEntitiesListFromEntityState(accountsRegistry),
+    ...hiddenAccounts,
+  ]
   const addAccountArgs = networksWithUniqueKeyrings
     .filter(
       (net) =>

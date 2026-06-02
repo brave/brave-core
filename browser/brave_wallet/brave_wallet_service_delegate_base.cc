@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/permissions/permission_util.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/common/content_switches.h"
 
@@ -56,6 +57,21 @@ bool BraveWalletServiceDelegateBase::ResetPermission(
 
   return permissions::BraveWalletPermissionContext::ResetPermission(
       *type, context_, origin, account);
+}
+
+void BraveWalletServiceDelegateBase::ResetPermissionsForAccount(
+    mojom::CoinType coin,
+    const std::string& account) {
+  auto type = CoinTypeToPermissionType(coin);
+  if (!type) {
+    return;
+  }
+
+  const auto content_settings_type =
+      permissions::PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+          *type);
+  permissions::BraveWalletPermissionContext::ResetPermissionsForAccount(
+      context_, content_settings_type, account);
 }
 
 bool BraveWalletServiceDelegateBase::IsPermissionDenied(
