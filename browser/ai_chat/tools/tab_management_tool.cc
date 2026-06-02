@@ -178,6 +178,12 @@ std::vector<ResolvedTab> ResolveTabs(const std::vector<int>& tab_ids,
   for (int handle_id : tab_ids) {
     auto* tab = tabs::TabHandle(handle_id).Get();
     if (!tab) {
+      // A handle that resolves to no live tab usually means the model is
+      // operating on a stale tab list. Surface it for diagnostics; we still
+      // proceed with whatever tabs did resolve rather than failing the whole
+      // call, since tabs can legitimately close between list and action.
+      DVLOG(2) << "TabManagementTool: tab id " << handle_id
+               << " did not resolve to a live tab (stale or invalid handle)";
       continue;
     }
     if (require_grouped && !tab->GetGroup().has_value()) {
@@ -589,6 +595,8 @@ BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
     std::optional<int> window_id,
     std::string* error_out,
     bool* did_create_window_out) {
+  *did_create_window_out = false;
+
   if (!window_id.has_value()) {
     return nullptr;  // Use source window
   }
@@ -643,6 +651,7 @@ BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
 BrowserWindowInterface* TabManagementTool::FindWindowWithGroup(
     const std::string& group_id,
     TabGroup** group_out) {
+  *group_out = nullptr;
   for (BrowserWindowInterface* browser : GetAllBrowserWindowInterfaces()) {
     if (browser->GetProfile() != profile_ ||
         browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
@@ -667,6 +676,10 @@ bool TabManagementTool::ValidateMoveTarget(
     std::optional<int> index,
     std::string* error) const {
   CHECK(target_window) << "Don't call this function with a nullptr";
+  // All paths that produce a target window (FindOrCreateTargetWindow,
+  // FindWindowWithGroup, and a moved tab's own window) restrict to this
+  // profile, so a cross-profile target is a programming error.
+  CHECK_EQ(target_window->GetProfile(), profile_.get());
 
   TabStripModel* tab_strip = target_window->GetTabStripModel();
   if (!tab_strip) {
@@ -696,7 +709,7 @@ void TabManagementTool::HandleMoveGroup(UseToolCallback callback,
                                         const std::string& group_id,
                                         std::optional<int> window_id,
                                         std::optional<int> index) {
-  TabGroup* group;
+  TabGroup* group = nullptr;
   BrowserWindowInterface* source_window = FindWindowWithGroup(group_id, &group);
 
   if (!source_window || !group) {
@@ -1063,7 +1076,7 @@ void TabManagementTool::HandleUpdateGroup(UseToolCallback callback,
   bool found = false;
 
   // Find and update the group
-  TabGroup* group;
+  TabGroup* group = nullptr;
   if (BrowserWindowInterface* window =
           FindWindowWithGroup(*group_id_str, &group)) {
     tab_groups::TabGroupVisualData visual_data = ApplyGroupVisualOverrides(
