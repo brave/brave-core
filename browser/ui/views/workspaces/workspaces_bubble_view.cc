@@ -14,7 +14,6 @@
 #include "brave/browser/ui/views/workspaces/workspace_row_view.h"
 #include "brave/browser/workspaces/workspace_service.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
-#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/dialogs/browser_dialogs.h"
@@ -25,8 +24,6 @@
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/font.h"
 #include "ui/views/bubble/bubble_border.h"
-#include "ui/views/controls/button/image_button.h"
-#include "ui/views/controls/button/image_button_factory.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/separator.h"
@@ -67,7 +64,7 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
   workspaces_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
   workspaces_container->SetProperty(views::kMarginsKey, gfx::Insets(2));
-  if (workspaces.size() == 0) {
+  if (workspaces.empty()) {
     auto* empty_title =
         workspaces_container->AddChildView(std::make_unique<views::Label>(
             l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_EMPTY_TITLE)));
@@ -143,28 +140,22 @@ void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
     return;
   }
 
-  // The bubble closes once the modal confirmation appears; bind to the
-  // service's WeakPtr so the actual delete is independent of the bubble's
-  // lifetime.
-  auto on_confirm = base::BindOnce(
-      [](base::WeakPtr<WorkspaceService> service, const std::string& name) {
-        if (service) {
-          service->RemoveWorkspaceMetadata(name);
-        }
-      },
-      service->GetWeakPtr(), name);
-
+  // The bubble closes once the modal confirmation appears; binding the
+  // service's WeakPtr directly to the member function makes the delete
+  // independent of the bubble's lifetime and gets auto-cancellation for free.
   auto dialog =
       ui::DialogModel::Builder()
           .SetTitle(
               l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_TITLE))
           .AddParagraph(ui::DialogModelLabel(
               l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_BODY)))
-          .AddOkButton(std::move(on_confirm),
-                       ui::DialogModel::Button::Params()
-                           .SetLabel(l10n_util::GetStringUTF16(
-                               IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))
-                           .SetStyle(ui::ButtonStyle::kProminent))
+          .AddOkButton(
+              base::BindOnce(&WorkspaceService::RemoveWorkspaceMetadata,
+                             service->GetWeakPtr(), name),
+              ui::DialogModel::Button::Params()
+                  .SetLabel(l10n_util::GetStringUTF16(
+                      IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))
+                  .SetStyle(ui::ButtonStyle::kProminent))
           .AddCancelButton(base::DoNothing(),
                            ui::DialogModel::Button::Params().SetLabel(
                                l10n_util::GetStringUTF16(

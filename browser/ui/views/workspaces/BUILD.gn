@@ -13,16 +13,27 @@ source_set("workspaces") {
     "workspaces_bubble_view.h",
   ]
 
-  deps = [
+  # The save dialog is invoked only through the bubble view, so it stays
+  # private. The row view is referenced by browser tests, so it's part of
+  # the public surface.
+  public = [
+    "workspace_row_view.h",
+    "workspaces_bubble_view.h",
+  ]
+
+  public_deps = [
     "//base",
-    "//brave/app:brave_generated_resources_grit",
     "//brave/browser/workspaces",
+    "//ui/menus",
+    "//ui/views",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/dialogs:browser_dialogs",
     "//components/constrained_window",
     "//ui/base",
-    "//ui/menus",
-    "//ui/views",
   ]
 }
 

@@ -82,7 +82,6 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_pin_disable.icon",
     "leo_play_filled.icon",
     "leo_plus_add.icon",
-    "leo_plus_add_circle.icon",
     "leo_previous_outline.icon",
     "leo_print.icon",
     "leo_product_bat_outline.icon",

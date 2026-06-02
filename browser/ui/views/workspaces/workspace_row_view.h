@@ -41,15 +41,16 @@ class WorkspaceRowView : public views::View,
 
  private:
   void UpdateBackground();
+  void UpdateChildSelectionStyling();
   void ShowMoreMenu();
 
   bool hovered_ = false;
   bool selected_ = false;
 
   WorkspaceRowClickedCallback on_delete_;
-  raw_ptr<views::ImageButton> more_button_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> menu_model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
+  raw_ptr<views::ImageButton> more_button_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACE_ROW_VIEW_H_

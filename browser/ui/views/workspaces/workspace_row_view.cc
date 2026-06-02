@@ -70,6 +70,10 @@ class WorkspaceInfoButton : public views::Button {
   }
 
   void SetSelected(bool selected) {
+    if (selected_ == selected) {
+      return;
+    }
+    selected_ = selected;
     ui::ColorVariant color = selected
                                  ? ui::ColorVariant(SK_ColorWHITE)
                                  : ui::ColorVariant(ui::kColorLabelForeground);
@@ -78,6 +82,7 @@ class WorkspaceInfoButton : public views::Button {
   }
 
  private:
+  bool selected_ = false;
   raw_ptr<views::Label> name_label_;
   raw_ptr<views::Label> stats_label_;
 };
@@ -126,6 +131,7 @@ void WorkspaceRowView::SetSelected(bool selected) {
   }
   selected_ = selected;
   UpdateBackground();
+  UpdateChildSelectionStyling();
 }
 
 void WorkspaceRowView::OnMouseEntered(const ui::MouseEvent& event) {
@@ -150,6 +156,9 @@ void WorkspaceRowView::UpdateBackground() {
   } else {
     SetBackground(nullptr);
   }
+}
+
+void WorkspaceRowView::UpdateChildSelectionStyling() {
   for (views::View* child : children()) {
     if (auto* info_btn = views::AsViewClass<WorkspaceInfoButton>(child)) {
       info_btn->SetSelected(selected_);

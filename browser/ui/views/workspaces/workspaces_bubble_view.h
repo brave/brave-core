@@ -15,10 +15,18 @@
 
 class Browser;
 
+// Bubble that lists the saved workspaces ("spaces") for the active profile and
+// exposes actions to restore, delete, or save a new one. The bubble is the
+// primary entry point for the workspaces UI and is anchored to the workspaces
+// button in the tab strip. The widget is owned by the views framework.
 class WorkspacesBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(WorkspacesBubbleView, views::BubbleDialogDelegateView)
 
  public:
+  // Creates and shows the bubble anchored to |anchor_view|. |browser| supplies
+  // the profile used for service lookups and is the modal target for the save
+  // and delete confirmation dialogs; it must outlive this call. The resulting
+  // widget is owned by the views framework and not returned.
   static void Show(views::View* anchor_view, Browser* browser);
 
   WorkspacesBubbleView(views::View* anchor_view, Browser* browser);
