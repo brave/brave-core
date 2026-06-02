@@ -377,3 +377,27 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest, FarbleGetExtension) {
     EXPECT_EQ(actual_balanced_extensions_list, actual_extensions_list);
   }
 }
+
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
+                       GetExtensionWithInvalidName) {
+  std::string domain = "a.com";
+  GURL url = embedded_test_server()->GetURL(domain, "/getExtension.html");
+
+  // Farbling level: maximum
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ASSERT_TRUE(ExecJs(contents(), "getExtensionWithInvalidName()"));
+  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), "null");
+
+  // Farbling level: off
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ASSERT_TRUE(ExecJs(contents(), "getExtensionWithInvalidName()"));
+  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), "null");
+
+  // Farbling level: balanced (default)
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ASSERT_TRUE(ExecJs(contents(), "getExtensionWithInvalidName()"));
+  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), "null");
+}

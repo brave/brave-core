@@ -14,6 +14,11 @@
         ext_list = ext_list.concat(gl.getExtension(name) ? name : null);
       }
       document.title = ext_list.join(",");
+
+      function getExtensionWithInvalidName() {
+        document.title = gl.getExtension("INVALID_EXTENSION_NAME_666");
+      }
+
     </script>
   </body>
 </html>
