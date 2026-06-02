@@ -1360,7 +1360,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, SmallAccentIconViewVisibility) {
       tab_strip->tab_at(tab_strip_model->active_index()));
   ASSERT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
 
-  views::View* small_accent_view = tab_in_container->small_accent_icon_view_;
+  views::View* small_accent_view =
+      tab_in_container->small_accent_icon_view_for_test();
   ASSERT_TRUE(small_accent_view);
 
   // When the tab shows the large accent icon, the small accent icon view
@@ -1375,6 +1376,71 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, SmallAccentIconViewVisibility) {
   RunScheduledLayouts();
   EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
   EXPECT_TRUE(small_accent_view->GetVisible());
+}
+
+#if BUILDFLAG(IS_MAC)
+// On Mac CI, fullscreen mode is flaky and causes test failures.
+#define MAYBE_SmallAccentIconViewNotLayeredInFullscreen \
+  DISABLED_SmallAccentIconViewNotLayeredInFullscreen
+#else
+#define MAYBE_SmallAccentIconViewNotLayeredInFullscreen \
+  SmallAccentIconViewNotLayeredInFullscreen
+#endif
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       MAYBE_SmallAccentIconViewNotLayeredInFullscreen) {
+  auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto* tab_strip =
+      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+
+  const GURL url("https://a.test/simple.html");
+  auto container = containers::mojom::Container::New();
+  container->id = "accent-fullscreen-test-container";
+  container->name = "Accent Fullscreen Test Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  content::WebContents* contents_in_container =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(contents_in_container);
+  EXPECT_TRUE(content::WaitForLoadStop(contents_in_container));
+
+  auto* tab_in_container = views::AsViewClass<BraveTab>(
+      tab_strip->tab_at(tab_strip_model->active_index()));
+  ASSERT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
+
+  tab_strip_model->SetTabPinned(tab_strip_model->active_index(), true);
+  RunScheduledLayouts();
+
+  views::View* small_accent_view =
+      tab_in_container->small_accent_icon_view_for_test();
+  ASSERT_TRUE(small_accent_view);
+  EXPECT_TRUE(small_accent_view->GetVisible());
+  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(small_accent_view->layer());
+
+  chrome::ToggleFullscreenMode(browser());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return browser()->window()->IsFullscreen(); }));
+  RunScheduledLayouts();
+
+  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(small_accent_view->GetVisible());
+  EXPECT_FALSE(small_accent_view->layer());
+
+  chrome::ToggleFullscreenMode(browser());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !browser()->window()->IsFullscreen(); }));
+  RunScheduledLayouts();
+
+  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(small_accent_view->GetVisible());
+  EXPECT_TRUE(small_accent_view->layer());
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
