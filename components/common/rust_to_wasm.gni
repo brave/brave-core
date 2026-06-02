@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/host_os_constants.gni")
+import("//brave/tools/crates/cargo_env.gni")
 
 template("rust_to_wasm") {
   assert(defined(invoker.rust_packages),
@@ -45,8 +46,9 @@ template("rust_to_wasm") {
     # or via `cargo install`, which:
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
-    response_file_contents = [
-      "PATH=./" + host_path_sep + getenv("PATH"),
+    response_file_contents = [ "PATH=./" + host_path_sep + getenv("PATH") ]
+    response_file_contents += cargo_hermetic_env
+    response_file_contents += [
       rebase_path("$root_build_dir/wasm-pack$host_exe_suffix"),
       "--log-level",
       "warn",
@@ -65,6 +67,31 @@ template("rust_to_wasm") {
       "--quiet",
       "--config",
       rebase_path("//{{source_root_relative_dir}}/.cargo/config.toml"),
+
+      # Pin the wasm32 linker to the `rust-lld` shipped by our toolchain
+      # archive (see tools/cr/toolchain/build_rust_toolchain.py).  Without
+      # this, rustc only finds `rust-lld` if the archive's unpack step
+      # places it at the canonical sysroot `lib/rustlib/<host>/bin/`
+      # location.  Pinning explicitly keeps the wasm link step working
+      # regardless of unpack layout.
+      "--config",
+      "target.wasm32-unknown-unknown.linker=\"" +
+          rebase_path(
+              "//third_party/rust-toolchain/bin/rust-lld$host_exe_suffix") +
+          "\"",
+    ]
+
+    # Pin the host linker + rustflags for build scripts / proc-macros that
+    # cargo compiles for HOST during this wasm32 cross-compile.  Without
+    # these, rustc on the host side falls back to system `ld` via `xcrun`,
+    # which fails on builders that don't have the command-line developer
+    # tools fully populated (notably the iOS CI agents).  See cargo_env.gni
+    # for why env-var-set CARGO_TARGET_<HOST>_RUSTFLAGS doesn't reach host
+    # artifacts during cross-compile and why we route this through inline
+    # `--config` instead.
+    response_file_contents += cargo_host_config_args
+
+    response_file_contents += [
       "--target-dir",
       rebase_path(
           "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/target"),
