@@ -40,7 +40,7 @@ replace = 'RSYNC_FLAGS="--ignore-times --links $(if [[ ${EUID} -eq 0 ]]; then ec
 description = 'Cap versioned-dir rsync at 10 minutes, capture status'
 re_pattern = '''if ! rsync (.*? "\$\{update_versioned_dir\}/" .*?); then'''
 re_flags = ['DOTALL']
-replace = '''if ! perl -e 'alarm shift; exec @ARGV' 600 rsync \1; then
+replace = '''if ! perl -e 'alarm shift; exec @ARGV' "${RSYNC_TIMEOUT:-600}" rsync \1; then
       local rsync_status=${PIPESTATUS[0]}
       # The assignment we just made set PIPESTATUS[0] to 0. Restore it. The
       # leading `!` keeps `set -e` from terminating the script.

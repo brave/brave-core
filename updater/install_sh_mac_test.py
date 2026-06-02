@@ -14,6 +14,7 @@ from stat import S_IXUSR
 from subprocess import run, DEVNULL, Popen, PIPE, STDOUT
 from tempfile import TemporaryDirectory
 from threading import Thread
+from time import sleep
 
 import plistlib
 import re
@@ -200,6 +201,18 @@ class InstallShPatchTest(unittest.TestCase):
                                      },
                                      expected_exit_code=expected_exit_code)
 
+    def test_rsync_timeout(self):
+        def rsync(_):
+            sleep(2)
+            return 0, ""
+
+        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        self._make_app(app_dir, CURRENT_VERSION)
+        self._run_install_sh(app_dir,
+                             commands={'rsync': rsync},
+                             expected_exit_code=80,
+                             env={"RSYNC_TIMEOUT": "1"})
+
     def _prepare_dmg_dir(self):
         dmg_dir = join(self.temp_dir.name, "dmg")
         mkdir(dmg_dir)
@@ -265,15 +278,17 @@ class InstallShPatchTest(unittest.TestCase):
                         installed_app_dir,
                         is_root=False,
                         commands=None,
-                        expected_exit_code=0):
+                        expected_exit_code=0,
+                        env=None):
         commands = commands or {}
+        env = env.copy() if env is not None else {}
         for name in commands:
             wrapper_path = join(self.bin_dir, name)
             with open(wrapper_path, "w") as f:
                 f.write(COMMAND_WRAPPER)
             chmod(wrapper_path, stat(wrapper_path).st_mode | S_IXUSR)
         prompt_r, prompt_w = pipe()
-        env = {"PROMPT_FD": str(prompt_w)}
+        env["PROMPT_FD"] = str(prompt_w)
         if is_root:
             env["EUID"] = "0"
         proc = Popen([
@@ -304,14 +319,21 @@ class InstallShPatchTest(unittest.TestCase):
                 for line in prompts:
                     name, *args = shlex.split(line)
                     exit_code, stderr = commands[name](args)
-                    proc.stdin.write(f"{exit_code}\n{stderr}\n")
-                    proc.stdin.flush()
+                    try:
+                        proc.stdin.write(f"{exit_code}\n{stderr}\n")
+                        proc.stdin.flush()
+                    except BrokenPipeError:
+                        break
             proc.wait(timeout=30)
         finally:
             # Reap the subprocess if wait() timed out or the loop raised.
             if proc.poll() is None:
                 proc.kill()
                 proc.wait()
+            try:
+                proc.stdin.close()
+            except BrokenPipeError:
+                pass
             drain_thread.join(timeout=5)
         output = "".join(output_lines)
         self.assertEqual(
