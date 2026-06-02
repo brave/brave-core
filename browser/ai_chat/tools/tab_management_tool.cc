@@ -58,24 +58,26 @@ namespace {
 std::vector<int> MakeSortedUniqueValidIndices(const std::vector<int>& indices,
                                               const TabStripModel* tab_strip) {
   CHECK(tab_strip);
-  std::vector<int> filtered_indices;
   const int tab_count = tab_strip->count();
-  filtered_indices.reserve(indices.size());
+
+  // The incoming values are positions within |tab_strip|, so they are bounded
+  // by [0, tab_count). Marking the valid ones in a bitmap keyed on the index
+  // and then reading them back in order filters, de-duplicates, and sorts in a
+  // single linear pass, with no comparison sort.
+  std::vector<bool> is_valid_index(tab_count, false);
   for (int index : indices) {
     if (index >= 0 && index < tab_count) {
-      filtered_indices.push_back(index);
+      is_valid_index[index] = true;
     }
   }
 
-  if (filtered_indices.empty()) {
-    return filtered_indices;
+  std::vector<int> result;
+  for (int i = 0; i < tab_count; ++i) {
+    if (is_valid_index[i]) {
+      result.push_back(i);
+    }
   }
-
-  std::sort(filtered_indices.begin(), filtered_indices.end());
-  filtered_indices.erase(
-      std::unique(filtered_indices.begin(), filtered_indices.end()),
-      filtered_indices.end());
-  return filtered_indices;
+  return result;
 }
 
 std::optional<tab_groups::TabGroupColorId> GetTabGroupColorId(
