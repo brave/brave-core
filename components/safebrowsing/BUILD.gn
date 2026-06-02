@@ -16,6 +16,6 @@ buildflag_header("buildflags") {
 }
 
 source_set("safebrowsing") {
-  sources = [ "constants.h" ]
+  public = [ "constants.h" ]
   public_deps = [ ":buildflags" ]
 }
