@@ -18,7 +18,9 @@ source_set("workspaces") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/workspaces",
     "//brave/components/vector_icons",
+    "//chrome/browser/ui/dialogs:browser_dialogs",
     "//components/constrained_window",
+    "//ui/base",
     "//ui/menus",
     "//ui/views",
   ]

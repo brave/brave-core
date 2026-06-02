@@ -280,6 +280,15 @@
         <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
           Delete Space
         </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_TITLE" desc="Title of the confirmation dialog shown before deleting a workspace">
+          Delete Space
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_BODY" desc="Body text of the confirmation dialog shown before deleting a workspace, warning the user of the consequences">
+          Are you sure you want to delete this Space? Deleting it will also close all groups and open tabs within it. This action cannot be undone.
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON" desc="Button label that confirms deletion in the workspace delete confirmation dialog">
+          Delete
+        </message>
         <message name="IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON" desc="Button in the workspaces bubble that opens workspaces settings">
           Settings
         </message>
@@ -317,6 +326,15 @@
         </message>
         <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
           Delete Space
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_TITLE" desc="Title of the confirmation dialog shown before deleting a workspace">
+          Delete space
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_BODY" desc="Body text of the confirmation dialog shown before deleting a workspace, warning the user of the consequences">
+          Are you sure you want to delete this Space? Deleting it will also close all groups and open tabs within it. This action cannot be undone.
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON" desc="Button label that confirms deletion in the workspace delete confirmation dialog">
+          Delete
         </message>
         <message name="IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON" desc="Button in the workspaces bubble that opens workspaces settings">
           Settings
