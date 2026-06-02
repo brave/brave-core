@@ -175,10 +175,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleAdapterInfo) {
   const std::string actual_off =
       EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
 
-  if (actual_off == "no-gpu" || actual_off == "no-adapter") {
-    GTEST_SKIP() << "WebGPU adapter not available in this environment";
-  }
-
   // Farbling level: maximum (BlockFingerprinting → BraveFarblingLevel::MAXIMUM)
   // All three adapter info fields must be empty regardless of the feature flag.
   BlockFingerprinting(domain);
@@ -216,11 +212,6 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleDeviceAdapterInfo) {
   const std::string actual_off =
       EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
 
-  if (actual_off == "no-gpu" || actual_off == "no-adapter" ||
-      actual_off == "no-device") {
-    GTEST_SKIP() << "WebGPU device not available in this environment";
-  }
-
   // Farbling level: maximum (BlockFingerprinting → BraveFarblingLevel::MAXIMUM)
   // All three adapter info fields must be empty regardless of the feature flag.
   BlockFingerprinting(domain);
@@ -257,9 +248,6 @@ IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
   const std::string actual_off =
       EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
 
-  if (actual_off == "no-gpu" || actual_off == "no-adapter") {
-    GTEST_SKIP() << "WebGPU adapter not available in this environment";
-  }
   // Developer features expose real values, so the baseline must not be empty.
   ASSERT_NE(actual_off, kEmptyAdapterInfo);
 
@@ -285,10 +273,6 @@ IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
   const std::string actual_off =
       EvalJs(contents(), kGPUAdapterInfoScript).ExtractString();
 
-  if (actual_off == "no-gpu" || actual_off == "no-adapter" ||
-      actual_off == "no-device") {
-    GTEST_SKIP() << "WebGPU device not available in this environment";
-  }
   // Developer features expose real values, so the baseline must not be empty.
   ASSERT_NE(actual_off, kEmptyAdapterInfo);
 
