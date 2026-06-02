@@ -5,6 +5,9 @@
 
 #include "chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h"
 
+#include "base/callback_list.h"
+#include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service_factory.h"
 #include "chrome/browser/download/download_item_model.h"
@@ -52,7 +55,7 @@ class FakeDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
   void AddItem(download::DownloadItem* item) { items_.push_back(item); }
 
  private:
-  std::vector<download::DownloadItem*> items_;
+  std::vector<raw_ptr<download::DownloadItem, VectorExperimental>> items_;
 };
 
 std::unique_ptr<KeyedService> BuildFakeService(
@@ -105,20 +108,21 @@ class DownloadToolbarInsecureIconTest : public InProcessBrowserTest {
 // Covers: no insecure download, WARN status, and BLOCK status.
 IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
   auto* ctrl = controller();
-  ASSERT_NE(nullptr, ctrl);
+  ASSERT_NE(nullptr, ctrl) << "controller should be available";
   ctrl->Show();
 
   auto* btn = download_button();
-  ASSERT_NE(nullptr, btn);
+  ASSERT_NE(nullptr, btn) << "download button should be present after Show()";
 
   NiceMock<download::MockDownloadItem> item;
 
   // No insecure downloads — colour override must be absent.
   ctrl->UpdateDownloadIcon(
       {.new_active = DownloadDisplay::IconActive::kActive});
-  EXPECT_FALSE(btn->HasIconEnabledColorsOverride());
+  EXPECT_FALSE(btn->HasIconEnabledColorsOverride()) << "state: no items";
   EXPECT_TRUE(!btn->HasVectorIcons() ||
-              &btn->GetVectorIcon() != &vector_icons::kNotSecureWarningIcon);
+              &btn->GetVectorIcon() != &vector_icons::kNotSecureWarningIcon)
+      << "state: no items; HasVectorIcons=" << btn->HasVectorIcons();
 
   // WARN status: warning colour override and warning vector icon must be set.
   ON_CALL(item, GetInsecureDownloadStatus())
@@ -127,8 +131,9 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
   fake_service()->AddItem(&item);
   ctrl->UpdateDownloadIcon(
       {.new_state = DownloadDisplay::IconState::kProgress});
-  EXPECT_TRUE(btn->HasIconEnabledColorsOverride());
-  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningIcon);
+  EXPECT_TRUE(btn->HasIconEnabledColorsOverride()) << "state: WARN";
+  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningIcon)
+      << "state: WARN";
 
   // BLOCK status is treated the same way.
   ON_CALL(item, GetInsecureDownloadStatus())
@@ -136,6 +141,7 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
           Return(download::DownloadItem::InsecureDownloadStatus::BLOCK));
   ctrl->UpdateDownloadIcon(
       {.new_state = DownloadDisplay::IconState::kComplete});
-  EXPECT_TRUE(btn->HasIconEnabledColorsOverride());
-  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningIcon);
+  EXPECT_TRUE(btn->HasIconEnabledColorsOverride()) << "state: BLOCK";
+  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningIcon)
+      << "state: BLOCK";
 }
