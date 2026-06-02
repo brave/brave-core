@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspace_row_view.h"
 #include "brave/browser/workspaces/workspace_service.h"
@@ -16,8 +17,11 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/dialogs/browser_dialogs.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/dialog_model.h"
+#include "ui/base/models/dialog_model_field.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/font.h"
 #include "ui/views/bubble/bubble_border.h"
@@ -133,10 +137,41 @@ void WorkspacesBubbleView::OnWorkspaceSelected(const std::string& name) {
 }
 
 void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
-  if (auto* service =
-          WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
-    service->RemoveWorkspaceMetadata(name);
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
+  if (!service) {
+    GetWidget()->Close();
+    return;
   }
+
+  // The bubble closes once the modal confirmation appears; bind to the
+  // service's WeakPtr so the actual delete is independent of the bubble's
+  // lifetime.
+  auto on_confirm = base::BindOnce(
+      [](base::WeakPtr<WorkspaceService> service, const std::string& name) {
+        if (service) {
+          service->RemoveWorkspaceMetadata(name);
+        }
+      },
+      service->GetWeakPtr(), name);
+
+  auto dialog =
+      ui::DialogModel::Builder()
+          .SetTitle(
+              l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_TITLE))
+          .AddParagraph(ui::DialogModelLabel(
+              l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_BODY)))
+          .AddOkButton(std::move(on_confirm),
+                       ui::DialogModel::Button::Params()
+                           .SetLabel(l10n_util::GetStringUTF16(
+                               IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))
+                           .SetStyle(ui::ButtonStyle::kProminent))
+          .AddCancelButton(base::DoNothing(),
+                           ui::DialogModel::Button::Params().SetLabel(
+                               l10n_util::GetStringUTF16(
+                                   IDS_WORKSPACE_DIALOG_CANCEL_BUTTON)))
+          .Build();
+
+  chrome::ShowBrowserModal(browser_, std::move(dialog));
   GetWidget()->Close();
 }
 
