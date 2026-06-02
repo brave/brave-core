@@ -53,13 +53,6 @@ class TabManagementTool : public Tool {
   void HandleRemoveFromGroup(UseToolCallback callback,
                              const base::DictValue& params);
 
-  void HandleMoveIndividualTabs(UseToolCallback callback,
-                                const std::vector<int>& tab_handles,
-                                std::optional<int> window_id,
-                                std::optional<int> index,
-                                const std::string* destination_group_id,
-                                bool add_to_end);
-
   // Helper to take window param and validate then find or create a window
   BrowserWindowInterface* FindOrCreateTargetWindow(std::optional<int> window_id,
                                                    std::string* error_out,

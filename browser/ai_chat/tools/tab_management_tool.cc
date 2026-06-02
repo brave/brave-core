@@ -231,6 +231,96 @@ base::flat_map<TabStripModel*, std::vector<int>> ResolveTabIdsToStripIndices(
   return by_strip;
 }
 
+// Returns the handle of the tab among |tabs_to_move| that is currently the
+// active tab of an active window, if any. Moving such a tab can change which
+// window and tab are active, so the caller restores activation afterward.
+std::optional<tabs::TabHandle> FindActiveTabToRestore(
+    const std::vector<ResolvedTab>& tabs_to_move) {
+  for (const ResolvedTab& moved : tabs_to_move) {
+    auto* source_window = moved.tab->GetBrowserWindowInterface();
+    if (source_window && source_window->GetWindow()->IsActive() &&
+        moved.tab_strip->GetActiveTab() == moved.tab) {
+      return moved.tab->GetHandle();
+    }
+  }
+  return std::nullopt;
+}
+
+// Moves |tabs_to_move| into |target_tab_strip| starting at |index|, in request
+// order so they land contiguously in that order. The insertion point is clamped
+// to a valid position; when |target_group| is non-null it is clamped within the
+// group's range and the moved tabs are added to that group. Returns the number
+// of tabs actually moved.
+int MoveResolvedTabsToStrip(const std::vector<ResolvedTab>& tabs_to_move,
+                            TabStripModel* target_tab_strip,
+                            TabGroup* target_group,
+                            std::optional<int> index,
+                            bool add_to_end) {
+  const bool has_group = target_group != nullptr;
+
+  // Without a group the insertion point can be anywhere in the strip; with a
+  // group it is constrained to the group's current range.
+  int min_target_index = 0;
+  int max_target_index = target_tab_strip->count();
+  if (has_group) {
+    gfx::Range group_indexes = target_group->ListTabs();
+    min_target_index = group_indexes.start();
+    max_target_index = group_indexes.end();
+  }
+  int current_target_index =
+      std::clamp(index.value_or(target_tab_strip->count()), min_target_index,
+                 max_target_index);
+
+  const std::optional<tab_groups::TabGroupId> group_id =
+      has_group ? std::make_optional(target_group->id()) : std::nullopt;
+
+  std::vector<int> moved_indices;
+  for (const ResolvedTab& moved : tabs_to_move) {
+    int source_index = moved.tab_strip->GetIndexOfWebContents(moved.contents);
+    if (source_index == TabStripModel::kNoTab) {
+      continue;
+    }
+
+    int landed_index = TabStripModel::kNoTab;
+    if (moved.tab_strip != target_tab_strip) {
+      // Cross-window move: detach from the source strip, insert into target.
+      std::unique_ptr<tabs::TabModel> detached_tab =
+          moved.tab_strip->DetachTabAtForInsertion(source_index);
+      if (!detached_tab) {
+        continue;
+      }
+      landed_index = target_tab_strip->InsertDetachedTabAt(
+          current_target_index, std::move(detached_tab), ADD_NONE, group_id);
+    } else {
+      // Same-strip move.
+      landed_index = target_tab_strip->MoveWebContentsAt(
+          source_index, current_target_index, false, group_id);
+    }
+    moved_indices.push_back(landed_index);
+
+    // Advance the insertion point so the next tab lands immediately after this
+    // one, preserving the request order of the moved tabs. All moves run
+    // synchronously on the tab strip here, so reading back the landed index is
+    // safe with no timing concern.
+    current_target_index =
+        std::min(landed_index + 1, target_tab_strip->count());
+  }
+
+  // Ensure the moved tabs are members of the destination group. Cross-window
+  // inserts above already join the group, but same-strip moves and |add_to_end|
+  // ordering still need this pass.
+  if (has_group && !moved_indices.empty()) {
+    std::vector<int> valid_indices =
+        MakeSortedUniqueValidIndices(moved_indices, target_tab_strip);
+    if (!valid_indices.empty()) {
+      target_tab_strip->AddToExistingGroup(valid_indices, target_group->id(),
+                                           add_to_end);
+    }
+  }
+
+  return static_cast<int>(moved_indices.size());
+}
+
 }  // namespace
 
 TabManagementTool::TabManagementTool(Profile* profile) : profile_(profile) {}
@@ -566,10 +656,88 @@ void TabManagementTool::HandleMoveTabs(UseToolCallback callback,
   const auto window_id = params.FindInt("window_id");
   const auto index = params.FindInt("index");
   const auto* destination_group_id = params.FindString("destination_group_id");
-  const auto add_to_end = params.FindBool("add_to_end").value_or(false);
+  const bool add_to_end = params.FindBool("add_to_end").value_or(false);
 
-  HandleMoveIndividualTabs(std::move(callback), HandleIdsFromList(*tab_ids),
-                           window_id, index, destination_group_id, add_to_end);
+  const bool has_destination_group =
+      destination_group_id && !destination_group_id->empty();
+  if (has_destination_group && window_id.has_value()) {
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Cannot provide both 'destination_group_id' and 'window_id' in the "
+            "same request. 'destination_group_id' implies the target window "
+            "(the group's window); to move tabs to a plain window use "
+            "'window_id' instead."),
+        {});
+    return;
+  }
+
+  // Resolve the requested tabs in request order, restricted to this profile.
+  std::vector<ResolvedTab> tabs_to_move = ResolveTabs(
+      HandleIdsFromList(*tab_ids), profile_, /*require_grouped=*/false);
+  if (tabs_to_move.empty()) {
+    std::move(callback).Run(
+        CreateContentBlocksForText("No valid tabs found to move"), {});
+    return;
+  }
+
+  // Resolve the destination window, and group if any. In priority order the
+  // destination is: an explicit window_id, the window owning
+  // destination_group_id, or the first moved tab's current window. window_id
+  // and destination_group_id are mutually exclusive (checked above).
+  std::string error;
+  bool did_create_window = false;
+  BrowserWindowInterface* target_window = nullptr;
+  TabGroup* target_group = nullptr;
+  if (window_id.has_value()) {
+    target_window =
+        FindOrCreateTargetWindow(window_id, &error, &did_create_window);
+    if (!error.empty()) {
+      std::move(callback).Run(CreateContentBlocksForText(error), {});
+      return;
+    }
+  } else if (has_destination_group) {
+    target_window = FindWindowWithGroup(*destination_group_id, &target_group);
+    if (!target_window) {
+      std::move(callback).Run(
+          CreateContentBlocksForText("Group not found with ID: " +
+                                     *destination_group_id),
+          {});
+      return;
+    }
+  } else {
+    target_window = tabs_to_move.front().tab->GetBrowserWindowInterface();
+    if (!target_window) {
+      std::move(callback).Run(
+          CreateContentBlocksForText(
+              "Could not determine target window for tab move"),
+          {});
+      return;
+    }
+  }
+
+  if (!ValidateMoveTarget(target_window, index, &error)) {
+    std::move(callback).Run(CreateContentBlocksForText(error), {});
+    return;
+  }
+
+  // Moving the active tab out of its window can change activation, so remember
+  // it and let PostTaskSendResultWithTabList restore it afterward.
+  std::optional<tabs::TabHandle> active_moved_tab =
+      FindActiveTabToRestore(tabs_to_move);
+
+  const int moved_count =
+      MoveResolvedTabsToStrip(tabs_to_move, target_window->GetTabStripModel(),
+                              target_group, index, add_to_end);
+
+  base::DictValue result;
+  result.Set("message", "Successfully moved " +
+                            base::NumberToString(moved_count) + " tab(s)");
+  if (did_create_window) {
+    result.Set("new_window_id", target_window->GetSessionID().id());
+  }
+
+  PostTaskSendResultWithTabList(std::move(callback), std::move(result),
+                                active_moved_tab);
 }
 
 BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
@@ -791,172 +959,6 @@ void TabManagementTool::HandleMoveGroup(UseToolCallback callback,
     PostTaskSendResultWithTabList(std::move(callback), std::move(result),
                                   tab_to_reactivate);
   }
-}
-
-void TabManagementTool::HandleMoveIndividualTabs(
-    UseToolCallback callback,
-    const std::vector<int>& tab_handles,
-    std::optional<int> window_id,
-    std::optional<int> index,
-    const std::string* destination_group_id,
-    bool add_to_end) {
-  if (destination_group_id && !destination_group_id->empty() &&
-      window_id.has_value()) {
-    std::move(callback).Run(
-        CreateContentBlocksForText(
-            "Cannot provide both 'destination_group_id' and 'window_id' in the "
-            "same request. 'destination_group_id' implies the target window "
-            "(the group's window); to move tabs to a plain window use "
-            "'window_id' instead."),
-        {});
-    return;
-  }
-
-  std::string error;
-  BrowserWindowInterface* target_window = nullptr;
-
-  // Resolve the requested tabs in request order, restricted to this profile.
-  std::vector<ResolvedTab> tabs_to_move =
-      ResolveTabs(tab_handles, profile_, /*require_grouped=*/false);
-  if (tabs_to_move.empty()) {
-    std::move(callback).Run(
-        CreateContentBlocksForText("No valid tabs found to move"), {});
-    return;
-  }
-
-  bool did_create_window = false;
-  if (window_id.has_value()) {
-    target_window =
-        FindOrCreateTargetWindow(window_id, &error, &did_create_window);
-    if (!error.empty()) {
-      std::move(callback).Run(CreateContentBlocksForText(error), {});
-      return;
-    }
-  }
-
-  // Parse target group if specified
-  TabGroup* target_group = nullptr;
-  if (destination_group_id && !destination_group_id->empty()) {
-    target_window = FindWindowWithGroup(*destination_group_id, &target_group);
-    if (!target_window) {
-      std::move(callback).Run(
-          CreateContentBlocksForText("Group not found with ID: " +
-                                     *destination_group_id),
-          {});
-      return;
-    }
-  }
-
-  // If no target specified, use the first tab's window
-  if (!target_window) {
-    target_window = tabs_to_move.front().tab->GetBrowserWindowInterface();
-    if (!target_window) {
-      std::move(callback).Run(
-          CreateContentBlocksForText(
-              "Could not determine target window for tab move"),
-          {});
-      return;
-    }
-  }
-
-  if (!ValidateMoveTarget(target_window, index, &error)) {
-    std::move(callback).Run(CreateContentBlocksForText(error), {});
-    return;
-  }
-
-  TabStripModel* target_tab_strip = target_window->GetTabStripModel();
-  int target_index = index.value_or(target_tab_strip->count());
-  target_index = std::min(target_index, target_tab_strip->count());
-
-  // Remember the active tab being moved out of its active window so activation
-  // can be restored after the move.
-  std::optional<tabs::TabHandle> active_moved_tab;
-  for (const ResolvedTab& moved : tabs_to_move) {
-    auto* source_window = moved.tab->GetBrowserWindowInterface();
-    if (source_window && source_window->GetWindow()->IsActive() &&
-        moved.tab_strip->GetActiveTab() == moved.tab) {
-      active_moved_tab = moved.tab->GetHandle();
-      break;
-    }
-  }
-
-  // Perform the moves
-  std::vector<int> moved_indices;
-  int current_target_index = target_index;
-
-  // Clamp the target index to a valid location
-  int min_target_index = 0;
-  int max_target_index = target_tab_strip->count();
-
-  const bool has_group = target_group != nullptr;
-
-  if (has_group) {
-    gfx::Range group_indexes = target_group->ListTabs();
-    min_target_index = group_indexes.start();
-    max_target_index = group_indexes.end();
-  }
-
-  current_target_index =
-      std::clamp(current_target_index, min_target_index, max_target_index);
-
-  for (const ResolvedTab& moved : tabs_to_move) {
-    int source_index = moved.tab_strip->GetIndexOfWebContents(moved.contents);
-
-    if (source_index == TabStripModel::kNoTab) {
-      continue;
-    }
-
-    int landed_index = TabStripModel::kNoTab;
-    if (moved.tab_strip != target_tab_strip) {
-      // Cross-window move
-      std::unique_ptr<tabs::TabModel> detached_tab =
-          moved.tab_strip->DetachTabAtForInsertion(source_index);
-      if (!detached_tab) {
-        continue;
-      }
-      landed_index = target_tab_strip->InsertDetachedTabAt(
-          current_target_index, std::move(detached_tab), ADD_NONE,
-          has_group ? std::make_optional(target_group->id()) : std::nullopt);
-    } else {
-      // Same tab strip move
-      landed_index = target_tab_strip->MoveWebContentsAt(
-          source_index, current_target_index, false,
-          has_group ? std::make_optional(target_group->id()) : std::nullopt);
-    }
-    moved_indices.push_back(landed_index);
-
-    // Advance the insertion point so the next tab lands immediately after this
-    // one, preserving the request order of the moved tabs. All moves run
-    // synchronously on the tab strip here, so reading back the landed index is
-    // safe with no timing concern.
-    current_target_index =
-        std::min(landed_index + 1, target_tab_strip->count());
-  }
-
-  // Add to existing group if specified
-  if (has_group && !moved_indices.empty()) {
-    std::vector<int> valid_indices =
-        MakeSortedUniqueValidIndices(moved_indices, target_tab_strip);
-    if (!valid_indices.empty()) {
-      target_tab_strip->AddToExistingGroup(valid_indices, target_group->id(),
-                                           add_to_end);
-    }
-  }
-
-  const int moved_count = static_cast<int>(moved_indices.size());
-  const int new_window_id = (window_id.has_value() && *window_id == -1)
-                                ? target_window->GetSessionID().id()
-                                : 0;
-
-  base::DictValue result;
-  result.Set("message", "Successfully moved " +
-                            base::NumberToString(moved_count) + " tab(s)");
-  if (new_window_id != 0) {
-    result.Set("new_window_id", new_window_id);
-  }
-
-  PostTaskSendResultWithTabList(std::move(callback), std::move(result),
-                                active_moved_tab);
 }
 
 void TabManagementTool::HandleCreateGroup(UseToolCallback callback,
