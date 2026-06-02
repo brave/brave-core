@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..7b824a9d84124af98006793f359b039806468e39 100644
+index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..7728247d6995f7039bfa3022d819566b60f6e169 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 @@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
@@ -31,21 +31,16 @@ index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..7b824a9d84124af98006793f359b0398
      @Override
      public void exitPersistentFullscreenMode() {
          // Return to the original starting position and bounds if the fullscreen was opening on
-@@ -729,7 +744,12 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -729,7 +744,7 @@ public abstract class FullscreenHtmlApiHandlerBase
          showSystemBars(contentView);
          if (DEBUG_LOGS) logExitFullscreen(contentView);
          resetExitFullscreenLayoutChangeListener(contentView);
 -        if (webContents != null && !webContents.isDestroyed()) webContents.exitFullscreen();
-+        BraveFullscreenHtmlApiHandlerBase self = BraveFullscreenHtmlApiHandlerBase.class.cast(this);
-+        if (!self.mSkipWebContentsExitFullscreenForPip
-+                && webContents != null
-+                && !webContents.isDestroyed()) {
-+            webContents.exitFullscreen();
-+        }
++        if (!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip && webContents != null && !webContents.isDestroyed()) webContents.exitFullscreen();
  
          // Often - when edge to edge is enabled, or when we are in multi window
          //  mode, or on automotive devices that never hide system bars - onLayoutChange doesn't
-@@ -885,6 +905,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -885,6 +900,10 @@ public abstract class FullscreenHtmlApiHandlerBase
      @Override
      public void onActivityStateChange(Activity activity, int newState) {
          if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {
