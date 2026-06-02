@@ -9,6 +9,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -162,10 +163,18 @@ INSTANTIATE_TEST_SUITE_P(
                         : "WebGLBalancedFingerprintingProtection_Disabled";
     });
 
+// Windows x64 doesn't have the WebGPU adapter support.
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86_64)
+#define NON_WIN_X64_TEST(test) DISABLED_##test
+#else
+#define NON_WIN_X64_TEST(test) test
+#endif
+
 // Tests that navigator.gpu.requestAdapter() → adapter.info fields (vendor,
 // architecture, device) are emptied under BALANCED (feature on) and MAXIMUM
 // farbling, and are returned as-is under OFF and BALANCED (feature off).
-IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleAdapterInfo) {
+IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest,
+                       NON_WIN_X64_TEST(FarbleAdapterInfo)) {
   const std::string domain = "a.com";
   const GURL url = https_server_.GetURL(domain, "/adapter-info.html");
 
@@ -202,7 +211,8 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleAdapterInfo) {
 // (vendor, architecture, device) are emptied under BALANCED (feature on) and
 // MAXIMUM farbling, and are returned as-is under OFF and BALANCED (feature
 // off).
-IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleDeviceAdapterInfo) {
+IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest,
+                       NON_WIN_X64_TEST(FarbleDeviceAdapterInfo)) {
   const std::string domain = "a.com";
   const GURL url = https_server_.GetURL(domain, "/device-adapter-info.html");
 
@@ -238,7 +248,7 @@ IN_PROC_BROWSER_TEST_P(BraveWebGPUAdapterInfoTest, FarbleDeviceAdapterInfo) {
 // Tests that adapter.info fields (vendor, architecture, device) are NOT
 // scrubbed under MAXIMUM farbling when WebGPU developer features are enabled.
 IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
-                       AdapterInfoNotScrubbed) {
+                       NON_WIN_X64_TEST(AdapterInfoNotScrubbed)) {
   const std::string domain = "a.com";
   const GURL url = https_server_.GetURL(domain, "/adapter-info.html");
 
@@ -263,7 +273,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
 // Tests that device.adapterInfo fields (vendor, architecture, device) are NOT
 // scrubbed under MAXIMUM farbling when WebGPU developer features are enabled.
 IN_PROC_BROWSER_TEST_F(BraveWebGPUDeveloperFeaturesTest,
-                       DeviceAdapterInfoNotScrubbed) {
+                       NON_WIN_X64_TEST(DeviceAdapterInfoNotScrubbed)) {
   const std::string domain = "a.com";
   const GURL url = https_server_.GetURL(domain, "/device-adapter-info.html");
 
