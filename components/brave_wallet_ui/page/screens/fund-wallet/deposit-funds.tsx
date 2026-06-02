@@ -49,6 +49,7 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import {
+  useGetPolkadotAddressForNetworkQuery,
   useGetNetworkQuery,
   useGetQrCodeImageQuery,
   useGetVisibleNetworksQuery,
@@ -538,12 +539,27 @@ function DepositAccount() {
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
   const { receiveAddress, isFetchingAddress } = useReceiveAddressQuery(
-    selectedAccount?.accountId,
+    selectedAccount?.accountId.coin === BraveWallet.CoinType.DOT
+      ? undefined
+      : selectedAccount?.accountId,
   )
   const [selectedZCashAddressOption, setSelectedZCashAddressOption] =
     React.useState<string>('shielded')
 
   // queries
+  const isPolkadotAccount =
+    selectedAccount?.accountId.coin === BraveWallet.CoinType.DOT
+  const {
+    currentData: polkadotAddress,
+    isFetching: isFetchingPolkadotAddress,
+  } = useGetPolkadotAddressForNetworkQuery(
+    isPolkadotAccount && selectedAccount && selectedAssetNetwork
+      ? {
+          accountId: selectedAccount.accountId,
+          chainId: selectedAssetNetwork.chainId,
+        }
+      : skipToken,
+  )
   const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
     isZCashShieldedTransactionsEnabled
       && selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC
@@ -589,6 +605,10 @@ function DepositAccount() {
   }, [selectedAsset])
 
   const address = React.useMemo(() => {
+    if (isPolkadotAccount) {
+      return polkadotAddress ?? ''
+    }
+
     if (
       isZCashShieldedTransactionsEnabled
       && selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC
@@ -605,12 +625,18 @@ function DepositAccount() {
     }
     return receiveAddress
   }, [
+    isPolkadotAccount,
+    polkadotAddress,
     isZCashShieldedTransactionsEnabled,
     selectedAccount,
     receiveAddress,
     zcashAccountInfo,
     selectedZCashAddressOption,
   ])
+
+  const isFetchingDisplayAddress = isPolkadotAccount
+    ? isFetchingPolkadotAddress
+    : isFetchingAddress
 
   const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
     address || skipToken,
@@ -767,7 +793,7 @@ function DepositAccount() {
           {':'}
         </AddressTextLabel>
 
-        {address && !isFetchingAddress ? (
+        {address && !isFetchingDisplayAddress ? (
           <>
             <Row gap={'12px'}>
               <AddressText
@@ -793,7 +819,7 @@ function DepositAccount() {
 
         <Row>
           <QRCodeContainer>
-            {isLoadingQrCode || !address || isFetchingAddress ? (
+            {isLoadingQrCode || !address || isFetchingDisplayAddress ? (
               <LoadingRing />
             ) : (
               <QRCodeImage src={qrCode} />
