@@ -4,18 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
+#include <vector>
 
 #include "base/path_service.h"
-#include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,7 +23,6 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "components/permissions/permission_request.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
@@ -40,6 +38,30 @@ using content::TitleWatcher;
 
 namespace {
 constexpr char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
+
+// Returns the zero-based index of `header_name` among the request headers in a
+// raw header block (as exposed via
+// `net::test_server::HttpRequest::all_headers`). The block starts with the
+// request line (e.g. "GET / HTTP/1.1"), which is ignored, followed by one
+// header per line. Returns std::nullopt if the header is not present.
+std::optional<size_t> GetHeaderPosition(const std::string& all_headers,
+                                        std::string_view header_name) {
+  std::vector<std::string> lines = base::SplitString(
+      all_headers, "\r\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  // Skip the request line at index 0; headers start at index 1.
+  for (size_t i = 1; i < lines.size(); ++i) {
+    size_t colon_pos = lines[i].find(':');
+    if (colon_pos == std::string::npos) {
+      continue;
+    }
+    std::string_view name = base::TrimWhitespaceASCII(
+        std::string_view(lines[i]).substr(0, colon_pos), base::TRIM_ALL);
+    if (base::EqualsCaseInsensitiveASCII(name, header_name)) {
+      return i - 1;
+    }
+  }
+  return std::nullopt;
+}
 }  // namespace
 
 class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
@@ -93,6 +115,13 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_;
 
+  // When true, the request monitor records the position of the Accept-Language
+  // header from the main document request into `accept_language_position_`.
+  bool capture_accept_language_position_ = false;
+  // Position of the Accept-Language header in the most recently observed main
+  // document request (see `capture_accept_language_position_`).
+  std::optional<size_t> accept_language_position_;
+
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
@@ -143,6 +172,16 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     size_t port_pos = host.find(':');
     std::string domain =
         (port_pos != std::string::npos) ? host.substr(0, port_pos) : host;
+
+    // Capture the position of the Accept-Language header within the main
+    // document request so the test can assert it does not vary with the
+    // farbling state. See https://github.com/brave/brave-browser/issues/55271.
+    if (capture_accept_language_position_ &&
+        request.relative_url.find("page-with-subresources.html") !=
+            std::string::npos) {
+      accept_language_position_ =
+          GetHeaderPosition(request.all_headers, "accept-language");
+    }
 
     auto expected_it = expected_http_accept_language_by_domain_.find(domain);
     if (expected_it == expected_http_accept_language_by_domain_.end()) {
@@ -336,6 +375,46 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_x));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_y));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
+}
+
+// Tests that the position of the HTTP Accept-Language header within the request
+// does not change with the farbling level. Otherwise the header's position
+// would leak whether farbling is enabled.
+// See https://github.com/brave/brave-browser/issues/55271.
+IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
+                       FarbleHTTPAcceptLanguageHeaderPosition) {
+  capture_accept_language_position_ = true;
+  std::string domain = "b.test";
+  // Each navigation uses a unique query string so the request is not served
+  // from cache. Otherwise repeated navigations to the same URL would trigger a
+  // conditional revalidation that adds cache-related headers (Cache-Control,
+  // If-None-Match) and shifts the Accept-Language position independently of the
+  // farbling state.
+  GURL url_off = https_server_.GetURL(
+      domain, "/reduce-language/page-with-subresources.html?off");
+  GURL url_default = https_server_.GetURL(
+      domain, "/reduce-language/page-with-subresources.html?default");
+  GURL url_max = https_server_.GetURL(
+      domain, "/reduce-language/page-with-subresources.html?max");
+  SetAcceptLanguages("la,es,en");
+
+  // Farbling level: off. This is the baseline position to compare against.
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_off));
+  std::optional<size_t> position_when_off = accept_language_position_;
+  ASSERT_TRUE(position_when_off.has_value());
+
+  // Farbling level: default. Accept-Language is farbled but its position must
+  // match the farbling-off position.
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_default));
+  EXPECT_EQ(accept_language_position_, position_when_off) << "farbling=default";
+
+  // Farbling level: maximum. Accept-Language is farbled but its position must
+  // match the farbling-off position.
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_max));
+  EXPECT_EQ(accept_language_position_, position_when_off) << "farbling=max";
 }
 
 // Tests results of farbling HTTP Accept-Language header
