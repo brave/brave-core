@@ -130,7 +130,14 @@ RegisterPolymerTemplateModifications({
       templateContent.getElementById('sidePanelPosition')
     if (!sidePanelPosition) {
       console.error(`[Settings] Couldn't find sidePanelPosition`)
-    } else if (sidePanelPosition.parentNode) {
+    } else {
+      const listFrame = sidePanelPosition.closest('.list-frame')
+      if (!listFrame) {
+        console.error(`[Settings] Couldn't find sidePanelPosition container`)
+      } else {
+        listFrame.setAttribute('hidden', 'true')
+        listFrame.previousElementSibling?.setAttribute('hidden', 'true')
+      }
       sidePanelPosition.parentNode.setAttribute('hidden', 'true')
     }
 
