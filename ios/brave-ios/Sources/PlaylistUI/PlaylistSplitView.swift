@@ -58,12 +58,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
     //
     // This is not actually an inverse of whether or not the bottom drawer is visible, since
     // on iPhone in landscape, we show neither sidebar or drawer.
-    // iPhone landscape uses a regular horizontal size class but should force fullscreen
-    // (see MediaContentView), not the iPad sidebar layout.
-    if UIDevice.current.userInterfaceIdiom == .pad,
-      horizontalSizeClass == .regular,
-      interfaceOrientation.isLandscape
-    {
+    if horizontalSizeClass == .regular && interfaceOrientation.isLandscape {
       return .sidebar
     }
     // Whether or not the sidebar is rendered inside of a bottom sheet
