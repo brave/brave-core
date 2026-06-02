@@ -95,6 +95,7 @@ const iconMap: { [key: string]: string } = {
     'cr:file-download': 'download',
     'cr:search': 'search',
     'cr:print': 'print',
+    'cr:add': 'plus-add',
     'settings:download': 'download',
     'settings:performance': 'cpu-chip',
     'tab-search:auto-tab-groups': 'product-brave-leo',  // tab organization
