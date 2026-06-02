@@ -13,3 +13,7 @@
 .icon-folder-open {
   --cr-icon-image: url(//resources/brave-icons/folder.svg);
 }
+
+.icon-edit {
+  --cr-icon-image: url(//resources/brave-icons/edit-pencil.svg);
+}
