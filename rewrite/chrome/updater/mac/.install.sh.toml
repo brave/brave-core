@@ -42,8 +42,9 @@ re_pattern = '''if ! rsync (.*? "\$\{update_versioned_dir\}/" .*?); then'''
 re_flags = ['DOTALL']
 replace = '''if ! perl -e 'alarm shift; exec @ARGV' 600 rsync \1; then
       local rsync_status=${PIPESTATUS[0]}
-      # The assignment we just made set PIPESTATUS[0] to 0. Restore it.
-      (exit "${rsync_status}")'''
+      # The assignment we just made set PIPESTATUS[0] to 0. Restore it. The
+      # leading `!` keeps `set -e` from terminating the script.
+      ! (exit "${rsync_status}")'''
 
 [[substitution]]
 description = '''Try various fixes for exit code 12 failures.
