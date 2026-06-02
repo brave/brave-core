@@ -9,6 +9,7 @@
 
 namespace net {
 
+namespace {
 // The Accept-Language header position is different when farbling is "off" vs
 // when farbling is "on". This class helps to keep the position same to remove
 // farbling detection by sites.
@@ -31,6 +32,7 @@ class BraveAcceptLanguageHttpHeaderReposition {
 
   ~BraveAcceptLanguageHttpHeaderReposition() = default;
 };
+}  // namespace
 }  // namespace net
 
 #define GetSSLUpgradeDecision(host, is_top_level_nav, net_log)                 \
