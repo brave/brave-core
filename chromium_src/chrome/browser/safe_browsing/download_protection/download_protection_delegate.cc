@@ -8,7 +8,7 @@
 #include "build/build_config.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/components/constants/pref_names.h"
+#include "brave/components/safebrowsing/constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/safe_browsing/download_protection/download_protection_delegate_desktop.h"
 #include "components/download/public/common/download_item.h"

@@ -245,6 +245,7 @@ brave_chrome_browser_deps = [
   "//brave/components/query_filter/common",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
+  "//brave/components/safebrowsing",
   "//brave/components/serp_metrics",
   "//brave/components/serp_metrics:features",
   "//brave/components/serp_metrics:prefs",

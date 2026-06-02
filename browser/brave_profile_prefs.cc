@@ -50,6 +50,7 @@
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/query_filter/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/safebrowsing/constants.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -406,8 +407,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       registry);
   // autofill
   registry->RegisterBooleanPref(kBraveAutofillPrivateWindows, true);
-  registry->RegisterBooleanPref(kBraveSafeBrowsingDownloadProtectionEnabled,
-                                true);
+  registry->RegisterBooleanPref(
+      safe_browsing::kBraveSafeBrowsingDownloadProtectionEnabled, true);
   // appearance
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
   registry->RegisterBooleanPref(kShowSidePanelButton, true);
