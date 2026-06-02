@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Bravei ohutustööriistad</translation>
 <translation id="1902837727299679178">Brave soovib kustutada teie Paroolihalduri andmed. Selle lubamiseks sisestage oma Windowsi parool.</translation>
 <translation id="4449148723378534338">Vaadake üle Bravei peamised privaatsus- ja turvaseaded</translation>
-<translation id="5229247933547820267">AI-režiimilt vahelehe kohta küsimiseks ilma lehelt lahkumata logige Bravei sisse. Lisaks saate kõigis oma seadmetes oma paroole ja muud kasutada.</translation>
 <translation id="1640672724030957280">Allalaadimine ...</translation>
 <translation id="1680687534629375545">Küsige pildiotsingult selle lehe kohta</translation>
 <translation id="509363484780540563">Saate kasutada Bravei sõnumites, dokumentides ja teistes rakendustes olevatel linkidel klõpsates. See kinnitatakse ka teie tegumiribale.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Kuva alati AI-režiim</translation>
 <translation id="2472891440303445472">Brave blokeeris selle allalaadimise, kuna fail on petlik ja võib teie seadmes ootamatuid muudatusi teha</translation>
 <translation id="2054358978145431867">Näete järgmisel korral Bravei iOS-i avamisel viipa, et proovida funktsiooni <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Brave lülitab JavaScripti optimeerimise välja, kui külastate saiti esimest korda.
+
+Kui see leht ei tööta ootuspäraselt, proovige lubada optimeerimine.</translation>
 <translation id="2726948994393234543">Teie paroolid ja muud Bravei andmed, mille olete oma Brave'i kontole salvestanud, eemaldatakse sellest seadmest. Selleks et neid Braveis uuesti kasutada, logige taas sisse.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Teie organisatsioon kustutab sirvimisandmed automaatselt, kui Bravei ei kasutata 1 minuti jooksul. Need võivad hõlmata ajalugu, automaattäidet ja allalaadimisi. Teie vahelehed jäävad avatuks.}other{Teie organisatsioon kustutab sirvimisandmed automaatselt, kui Bravei ei kasutata # minuti jooksul. Need võivad hõlmata ajalugu, automaattäidet ja allalaadimisi. Teie vahelehed jäävad avatuks.}}</translation>
 <translation id="2126108037660393668">Allalaaditud faili kinnitamine ebaõnnestus.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Kohandage oma uut Bravei profiili</translation>
+<translation id="2430807206104224491">Saate AI-režiimis vestlemist jätkata vahelehti vahetamata. Alustamiseks logige Braveis sisse. Lisaks saate kõigis oma seadmetes oma paroole ja muud kasutada.</translation>
 <translation id="4805865169608137960">Brave'i konto Braveist eemaldamiseks logige lehel Seaded Braveist välja</translation>
 <translation id="1651639704310627074">Hiljem võib Brave teilt küsida, kas soovite salvestatud teavet vormide automaattäitmiseks kasutada</translation>
 <translation id="2585240446624043880">Brave ei saa andmekataloogi lugeda ega sellesse kirjutada:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Igal profiilil on oma Bravei teave, nagu järjehoidjad, ajalugu, paroolid ja muu</translation>
 <translation id="6756656512757374876">Vaadake lisateavet, <ph name="BEGIN_LINK"/>kuidas Brave teie andmeid privaatsena hoiab<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Selle seade muudatused rakendatakse Brave taaskäivitamisel.</translation>
+<translation id="3396870972301571614">Laienduste haldamiseks klõpsake Bravei peamenüüs valikul Laiendused.</translation>
 <translation id="2535436634051789953">Saate lülituda, et näha paroole teiselt Bravei profiililt</translation>
 <translation id="2312399718665761438">Õigekirjavigade parandamiseks saadab Brave teie tekstiväljadel sisestatud teksti Brave'ile</translation>
 <translation id="3507835409099344374">Ava Bravei märguandeseaded</translation>

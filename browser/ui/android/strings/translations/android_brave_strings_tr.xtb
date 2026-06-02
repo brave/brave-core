@@ -194,20 +194,12 @@
 <translation id="6587448235155023666">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
 <translation id="8701563696941209024">ŞİMDİ YENİDEN BAŞLAT</translation>
 <translation id="834487290629916192">DAHA SONRA</translation>
-<translation id="4117451092682672487">Gizlilik Basit Hale Geldi.</translation>
-<translation id="7909375417585209817">Brave'i varsayılan olarak ayarladıktan sonra, dokunduğunuz her bağlantı Brave’in gizlilik korumalarıyla açılır.</translation>
 <translation id="763369711159699222">Brave'i daha iyi hale getirmeye yardım edin</translation>
 <translation id="8025937231644975408">En çok hangi özellikleri sevdiğinizi bizi söyleyin.</translation>
-<translation id="6718362830686703942">Kilitlenme veya çökme yaşarsanız tanı raporu gönderin.</translation>
-<translation id="8616157231067364693">Brave kullanıcılarının hangi özellikleri kullandıklarına dair gizli ve anonim ürün içgörülerini paylaşın.</translation>
 <translation id="2888496576732880897">Brave Arama'nın büyümesine yardımcı olun</translation>
 <translation id="7198716519700700181">İzlerken kesintileri engelle</translation>
 <translation id="7044431516245362795">Dizinin büyümesine ve arama sonuçlarının iyileştirilmesine yardımcı olmak için Web Keşif Projesi'ne katılın. <ph name="LEARN_MORE_START"/>Daha fazla bilgi edinin.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave logosu</translation>
-<translation id="1389386068457132299">Onboarding arka planı</translation>
-<translation id="5101985748360228609">Üst yaprak dekorasyonu</translation>
-<translation id="5270920361877570459">Alt yaprak dekorasyonu</translation>
-<translation id="4021716437419160885">Aşağı kaydır</translation>
 <translation id="4767173360729868049">Brave Arama'yı yardımcı olun görseli</translation>
 <translation id="8241918461631453498">Kesintileri engelle görseli</translation>
 <translation id="8213310572767907663">Brave'i daha iyi hale getir görseli</translation>
@@ -223,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> ve diğer reklam &amp; izleyiciler engellendi</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklam &amp; izleyicisi engellendi</translation>
 <translation id="8281886186245836920">Atla</translation>
-<translation id="6165508094623778733">Daha fazla bilgi edinin</translation>
 <translation id="986879628471635371">Ekleme sorunlarının giderilmesi</translation>
 <translation id="5806601733251372221">Brave Kalkanları</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/> Kazanın</translation>
@@ -374,7 +365,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="944340256927461196">Cihazınızda iz bırakmayın</translation>
 <translation id="2063044449012253966">Gizli pencerelerde ziyaret ettiğiniz siteler geçmişinizde görünmez. Çerezler, form verileri ve site verileri, tüm gizli pencereler kapatıldığında silinir.</translation>
 <translation id="7395764193745523646">Gezinme görünürlüğü</translation>
-<translation id="8670344404057978375">Gizli pencerelerde bile, tarama etkinliğinizin İSS'niz, ağ gözlemcileri veya işvereniniz (bir iş cihazı/ağ kullanıyorsanız) tarafından görülebileceğini unutmayın.</translation>
+<translation id="8435098045013317895">Unutmayın ki tarama etkinliğiniz, gizli pencerelerde bile İSS'niz, ağ gözlemcileri veya işvereniniz (bir iş cihazı/ağ kullanıyorsanız) tarafından görülebilir.</translation>
 <translation id="1413177583895309156">Brave VPN, Brave tarayıcısının dışında bile, çevrimiçi yaptığınız her şeyi şifreler ve korur.</translation>
 <translation id="3974348661685061050">7 gün ücretsiz deneyin</translation>
 <translation id="5789441016350810005">Brave Ads, tarayıcı arka plandayken gönderildi</translation>
@@ -515,6 +506,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2718046830255553131">Gizlilik raporları verileri silindi.</translation>
 <translation id="8376263745431603066">"Gece Modu"nu etkinleştir (Deneysel)</translation>
 <translation id="1383876407941801731">Ara</translation>
+<translation id="6165508094623778733">Daha fazla bilgi edinin</translation>
 <translation id="13296465911709339">Metnin panoya kopyalandı.</translation>
 <translation id="2735834606413553397">Halka açık adres panoya kopyalandı.</translation>
 <translation id="2977461003134694205">Gizlilik İstatistikleri</translation>
@@ -975,23 +967,21 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7659483790930268440">Adres Araması Tablo Dizini:</translation>
 <translation id="5494920125229734069">Tümünü seç</translation>
 <translation id="2361906291514218784">Leo YZ</translation>
+<translation id="2935698011275148880">Cesur Köken</translation>
 <translation id="944736176598169208">Ödüller</translation>
 <translation id="1199170151481311646">Gizliliği koruyan analitik</translation>
 <translation id="1706715315466634757">E-posta takma adları</translation>
-<translation id="738840791756723657">Yapay Zeka</translation>
 <translation id="6709133671862442373">Haberler</translation>
 <translation id="5990642573624858459">İstatistik raporlama</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Varsayılanlara sıfırla</translation>
-<translation id="4922034974043704366">Bu özellik etkinleştirildi çünkü siz bu özelliği seçtiniz</translation>
 <translation id="2587535830241068901">Brave'i desteklemeye devam ederken tarayıcınızı özelleştirin</translation>
-<translation id="7235314227387539944">Brave Origin, tarayıcının ücretli bir sürümüdür ve Brave'i bir işletme olarak desteklemek için gereken tüm özelliklere ihtiyaç duymayan, ancak yalnızca Brave'in sunduğu gizliliği isteyen kullanıcılara yöneliktir. Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleme ve hız (Kalkanlar aracılığıyla) avantajlarından, düzenli yazılım güncellemelerinden, Chromium yamalarından ve güvenlik ile gizlilik iyileştirmelerinden yararlanmaya devam edecektir. Origin, tarayıcıdan diğer birçok özelliği kaldıracaktır.</translation>
-<translation id="7941943775131052130">Brave Origin satın alımının ayrıca Brave Arama Premium'a erişim de sağlayacağını unutmayın, çünkü Origin, Brave Arama sonuçları sayfasından reklamları kaldıracaktır.</translation>
+<translation id="123297831435065577">Brave Origin, tarayıcının ücretli bir sürümüdür ve Brave'i bir işletme olarak desteklemek için gereken tüm özelliklere ihtiyaç duymayan, ancak yalnızca Brave'in sunduğu gizliliği isteyen kullanıcılara yöneliktir. Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleme ve hız (Kalkanlar aracılığıyla) avantajlarından, düzenli yazılım güncellemelerinden, Chromium yamalarından ve güvenlik ile gizlilik iyileştirmelerinden yararlanmaya devam edecektir.</translation>
 <translation id="2573819149217596923">Brave özellikleri değiştiriliyor</translation>
 <translation id="7415416427817229128">Brave özelliğini etkinleştirmek veya devre dışı bırakmak, değişiklikleri uygulamak için tarayıcının yeniden başlatılmasını gerektirir. Şimdi yeniden başlatmak ister misiniz?</translation>
 <translation id="2256115617011615191">Şimdi yeniden başlat</translation>
 <translation id="2160089182263405907">Özellikler devre dışı bırakılıyor</translation>
-<translation id="3362364767724670721">Brave özelliğini etkinleştirmek veya devre dışı bırakmak değişiklikleri uygulamak için tarayıcının yeniden başlatılmasını gerektirir. Lütfen Origin güncelleştirmeyi bitirdikten sonra <ph name="BEGIN_BOLD"/>Şimdi yeniden başlat<ph name="END_BOLD"/> seçeneğine dokunun.</translation>
+<translation id="7530313002494358590">Brave özelliğini etkinleştirmek veya devre dışı bırakmak değişiklikleri uygulamak için tarayıcının yeniden başlatılmasını gerektirir. Lütfen Brave Origin güncelleştirmeyi bitirdikten sonra <ph name="BEGIN_BOLD"/>Şimdi yeniden başlat<ph name="END_BOLD"/> seçeneğine dokunun.</translation>
 <translation id="1028940738207645746">Tüm ayarları varsayılana sıfırlamak istediğinizden emin misiniz?</translation>
 <translation id="5939518447894949180">Sıfırla</translation>
 <translation id="8554205386170195281">Satın al</translation>
@@ -1122,9 +1112,9 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6261139507111008244">Misyonumuzu destekleyin &amp; açık kaynak çalışmaları</translation>
 <translation id="6073373503121903099">Brave Kalkanlar merkezli minimalist tarayıcı kullanıcı arayüzü</translation>
 <translation id="2267973897341040743">Temel adblock, gizlilik, &amp; hızını koruyun</translation>
-<translation id="3339535734679532460">Tek seferlik satın alma, ek abonelik maliyeti yok</translation>
-<translation id="2805615640226281689">Tek Seferlik Satın Alma</translation>
-<translation id="261433018299584676">Giriş kodu al</translation>
+<translation id="4059093523966730868">Tek seferlik satın alma, tüm cihazlarınızda birden fazla kez etkinleştirilebilir</translation>
+<translation id="7006681677649762716">Tek seferlik satın alma</translation>
+<translation id="8707617004598499947">Brave Origin satın almayı doğrula</translation>
 <translation id="1943432128510653496">Şifreleri kaydet</translation>
 <translation id="2100273922101894616">Otomatik Oturum Aç</translation>
 <translation id="363596933471559332">Depolanmış kimlik bilgileriyle web sitelerinde otomatik olarak oturum açın. Bu özellik kapatıldığında, bir web sitesinde oturum açmadan önce her defasında doğrulama yapmanız istenir.</translation>
@@ -1187,12 +1177,14 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7400418766976504921">URL</translation>
 <translation id="6410668567036790476">Arama Motoru Ekle</translation>
 <translation id="6289878295410648689">Arama URL'sini yazın ve sorguyu <ph name="SPECIAL_SYMBOL"/> ile değiştirin.</translation>
-<translation id="8943582268084103903">Örneğin: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Site OpenSearch'i destekliyorsa, bu alan düzenlenirken otomatik olarak ekleme seçeneği sağlanır.</translation>
+<translation id="1298325705808878139">Örneğin: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
 <translation id="8706939021136180678">URL geçersiz.</translation>
-<translation id="6528099556282059181">Arama motoru zaten ekli.</translation>
+<translation id="5144960943371551167">Başlık yalnızca harf, rakam ve boşluk içerebilir.</translation>
+<translation id="7361775378755455309">Bu anahtar kelimeye sahip bir arama motoru zaten var.</translation>
 <translation id="463451857046640291">Arama motoru eklenemedi.</translation>
 <translation id="1229671956956864948">Arama motoru güncellenemedi.</translation>
 <translation id="1462771969120037152">Arama motoru silinemedi. Silmeye çalıştığınız arama motoru varsayılan olarak ayarlanmış olabilir.</translation>
 <translation id="1079140196216383600">Özel arama motorunu sil</translation>
 <translation id="525276572490219787"><ph name="SEARCH_ENGINE_NAME"/>'ü silmek istediğinizden emin misiniz? Bu eylem geri alınamaz.</translation>
+<translation id="6406506848690869874">Sync</translation>
 </translationbundle>

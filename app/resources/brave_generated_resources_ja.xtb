@@ -131,7 +131,7 @@
 <translation id="8184318863960255706">詳細</translation>
 <translation id="780301667611848630">いいえ</translation>
 <translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
-<translation id="2971591422768125177">OKをクリックすることで、お客様はmacOS 10.15以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
+<translation id="2971591422768125177">OKをクリックすることで、お客様はmacOS 13以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
 <translation id="6020553119523541665">このタブは別のウィンドウで有効になっています</translation>
 <translation id="4987392683074136770">このタブをクリックすると、コンテンツがこのウィンドウに表示されます</translation>
 <translation id="8355523213948477234">「スプリットビュー」メニューボタン</translation>
@@ -177,7 +177,7 @@
 <translation id="3405021928725149239">ブックマークマネージャー</translation>
 <translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
 <translation id="694500751416448436">このプライベートなPingにより、Braveはアクティブユーザーを推定することができます。</translation>
-<translation id="1872784258300710671">Braveは完全に匿名の製品分析を使い、特定の機能が全体でどの程度使われているか予測します</translation>
+<translation id="5047771074267454980">Braveは完全に匿名の製品分析を使い、特定の機能が全体でどの程度使われているか予測します</translation>
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
@@ -193,23 +193,29 @@
 <ph name="BEGIN_LINK_SOURCE_CODE"/>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE"/>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS"/>をお読みください。</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
 <translation id="3987546108749866209">垂直タブを使用</translation>
+<translation id="8784551623584887013">フォーカスモード</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{タブをミュート}other{タブをミュート}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{タブのミュートを解除}other{タブのミュートを解除}}</translation>
 <translation id="2289567621059034186">以下の新しいタブ</translation>
 <translation id="3228962656492373217">以下のタブを閉じる</translation>
 <translation id="8030501904366631501">すべてのタブをこのウィンドウに移動</translation>
 <translation id="253980346046488815">重複するタブを閉じる</translation>
+<translation id="5140474419843357176">コンテナなし</translation>
 <translation id="8670218546624422041">コンテナで開く</translation>
+<translation id="194205047181722473">リンクをコンテナで開く</translation>
 <translation id="8638526693050780542">コンテナの管理</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="2523967823495420116">垂直タブを使用</translation>
+<translation id="5483718923712878759">フォーカスモード</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{タブをミュート}other{タブをミュート}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{タブのミュートを解除}other{タブのミュートを解除}}</translation>
 <translation id="4405580203042711503">以下の新しいタブ</translation>
 <translation id="5611474372949142946">以下のタブを閉じる</translation>
 <translation id="573844928911967687">すべてのタブをこのウィンドウに移動</translation>
 <translation id="2703180365855369896">重複するタブを閉じる</translation>
+<translation id="7678994190810851607">コンテナなし</translation>
 <translation id="1987871867023021397">コンテナで開く</translation>
+<translation id="1185644444415356776">リンクをコンテナで開く</translation>
 <translation id="6745991613881384719">コンテナの管理</translation>
 <translation id="3704707436873245822">画像からテキストをコピー</translation>
 <translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
@@ -329,7 +335,7 @@
 <translation id="2079545284768500474">取り消す</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/>の新しいウィンドウが作成されました。</translation>
 <translation id="7985042437720138349">この機能は、開いているタブに関するデータをBraveのブラウザAIアシスタント、Leoに送信します。</translation>
-<translation id="6165508094623778733">詳しく知る</translation>
+<translation id="6165508094623778733">詳しく見る</translation>
 <translation id="7557539689487606886">プレミアムプランへ</translation>
 <translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
@@ -341,6 +347,7 @@
 <translation id="6724227215236550330">保存されたパスワードはここに表示されます。このデバイスの <ph name="BRAND"/> にパスワードをインポートするには、 <ph name="BEGIN_LINK"/> CSV ファイルを選択してください<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">このデバイスでパスワードを <ph name="BRAND"/> にインポートするには、CSVファイルを選択してください</translation>
 <translation id="8570228839666486945">デバイス上のAI</translation>
+<translation id="3456536577668402695">検索内容とページコンテンツはこのデバイス上で処理されます。Braveに送信されることも、人間のレビュアーによって閲覧されることもありません。</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -386,6 +393,7 @@
 <translation id="3367129510799209147">タブホバーモード</translation>
 <translation id="8925055964134259461">垂直タブをウィンドウごとに独立して自動展開</translation>
 <translation id="916373084491701212">スクロールバーを表示</translation>
+<translation id="1323764665799785118">水平タブストリップにスクロールボタンを表示する</translation>
 <translation id="515949045075831661">右側に表示</translation>
 <translation id="3725395376319291415">左側に表示</translation>
 <translation id="2113977810652731515">カード</translation>
@@ -408,7 +416,7 @@
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="4144468798716165316">クイックコマンド</translation>
 <translation id="7310387888625228830">Leo AI アシスタント</translation>
-<translation id="5222974844674487962">Braveニュースボタンを表示する</translation>
+<translation id="5222974844674487962">Brave Newsボタンを表示する</translation>
 <translation id="2085436423511121572">Leo AIボタンを表示</translation>
 <translation id="6156323911414505561">ブックマーク バーを表示する</translation>
 <translation id="4054323497808446566">ブックマーク バーをすべてのページに表示</translation>
@@ -507,9 +515,7 @@
 <translation id="4088315951291671239">理解していない、あるいは自分で確認していないコードをここに貼り付けないでください。攻撃者にあなたのIDが盗まれたり、あなたのコンピューターが乗っ取られたりする可能性が生じます。</translation>
 <translation id="3020183492814296499">ショートカット</translation>
 <translation id="2935698011275148880">ブレイブ・オリジン</translation>
-<translation id="2587535830241068901">ブレイブをサポートしながらブラウザをカスタマイズ</translation>
-<translation id="553273341094971255">ブレイブオリジンでは、アプリ内のプロモーションやブランド広告、インストール時に有効にしていた匿名アナリティクスをすべて削除し、お好みに合わせてブレイブを調整することができます。</translation>
-<translation id="534725333104202278">以前有効にしていた、または使用していたアドオンや機能は表示されたまま統合されますが、それ以外は無効になります。ブラウザに新機能を追加するには、Braveを調整してください。これらの機能はBrave Originではデフォルトで非表示となり、コントロールパネルのみに表示されます。</translation>
+<translation id="3486906647205325617">一部の変更を完全に反映するには、ブラウザの再起動が必要です。</translation>
 <translation id="1919345977826869612">広告</translation>
 <translation id="944736176598169208">リワード</translation>
 <translation id="2839742394543397416">アナリティクス</translation>
@@ -517,12 +523,12 @@
 <translation id="6709133671862442373">ニュース</translation>
 <translation id="6297791103122079275">Talk</translation>
 <translation id="1458638489455808030">ウェイバック・マシン</translation>
+<translation id="4590997608186539865">Playlist</translation>
 <translation id="1199170151481311646">プライバシー保護分析</translation>
 <translation id="5990642573624858459">統計報告</translation>
 <translation id="2441719842399509963">デフォルトにリセット</translation>
-<translation id="4530494379350999373">Origin</translation>
-<translation id="2964215604640804042">Brave Originは、Braveのビジネスをサポートするすべての機能が必要ないが、Braveのみが提供するプライバシーが必要なユーザー向けの有料版ブラウザです。Brave Originユーザーは、業界トップクラスのプライバシー、広告ブロック、速度(Brave Shields経由)に加えて、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティおよびプライバシーの改善の恩恵を受け続けます。また、AI、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションのロックも解除できます。</translation>
-<translation id="9130916892338379417">Brave Originは1回限りの購入で利用できます。モバイル(AndroidおよびiOS)およびデスクトップでは、Originを既存のリリース版へのアップグレードとして購入できます。デスクトップでは、Originは別のスタンドアロンアプリとしても利用できます。Originユーザーは、設定メニューに新しいコントロールパネルが表示されます。既存の機能と将来提供される新機能は、ここに表示され、デフォルトではオフに切り替わります。</translation>
+<translation id="2587535830241068901">ブレイブをサポートしながらブラウザをカスタマイズ</translation>
+<translation id="123297831435065577">Brave Originは、Braveのビジネスをサポートするすべての機能が必要ないが、Braveのみが提供するプライバシーが必要なユーザー向けの有料版ブラウザです。Originユーザーは、業界トップクラスのプライバシー、広告ブロック、速度(Shields経由)に加えて、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティおよびプライバシーの改善の恩恵を受け続けます。</translation>
 <translation id="7984508421152399880">今すぐ購入</translation>
 <translation id="5567412479632285879">Brave Rewardsは無効です</translation>
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
@@ -566,6 +572,7 @@
 <translation id="5747552184818312860">有効期限</translation>
 <translation id="3858860766373142691">名前</translation>
 <translation id="361106536627977100">Flash データ</translation>
+<translation id="4530494379350999373">Origin</translation>
 <translation id="8195027750202970175">ディスク上のサイズ</translation>
 <translation id="9116465289595958864">最終更新</translation>
 <translation id="4590324241397107707">データベース ストレージ</translation>

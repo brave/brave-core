@@ -122,6 +122,7 @@
 <translation id="5076161749301278626">Lihat ulasan gedung?</translation>
 <translation id="5161254044473106830">Tajuk diperlukan</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave akan menutup tab dan kumpulan tab yang tidak aktif secara automatik selepas <ph name="AUTO_DELETE_DELAY_ONE"/> bulan. Pilihan ini boleh ditukar dalam tetapan.}other{Brave akan menutup tab dan kumpulan tab yang tidak aktif secara automatik selepas <ph name="AUTO_DELETE_DELAY_MANY"/> bulan. Pilihan ini boleh ditukar dalam tetapan.}}</translation>
+<translation id="5254233580564156835">Penggunaan memori: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Tab terakhir anda</translation>
 <translation id="5380159289133845234">Arkibkan tab pendua</translation>
 <translation id="5446043142172831860">Alih keluar tab dan tinggalkan kumpulan</translation>
@@ -161,11 +162,13 @@
 <translation id="6589356853295569750">Notis tentang perubahan Kumpulan Tab Kongsi yang dibuka pada ketinggian penuh</translation>
 <translation id="6590332670428149473">Buka menu tindakan kumpulan tab untuk kumpulan tab dikongsi <ph name="TITLE_OF_GROUP"/>, warna <ph name="COLOR_NAME"/>.</translation>
 <translation id="6615455863669487791">Tunjukkan kepada saya</translation>
+<translation id="6686490380836145850">Tutup tab di sebelah kanan</translation>
 <translation id="6694634756612002311">Urus perkongsian</translation>
 <translation id="6709297274997495821">Pilih tab</translation>
 <translation id="6744956528665271406">Edit warna kumpulan</translation>
 <translation id="6784585810034073638">{TAB_COUNT,plural, =1{Tambahkan pada kumpulan bernama <ph name="TITLE_OF_GROUP"/> dengan <ph name="TAB_COUNT1"/> tab}other{Tambahkan pada kumpulan bernama <ph name="TITLE_OF_GROUP"/> dengan <ph name="TAB_COUNT1"/> tab}}</translation>
 <translation id="6818926723028410516">Pilih item</translation>
+<translation id="68541483639528434">Tutup tab lain</translation>
 <translation id="6856809498882026482">Sembunyikan mod berbilang pilihan</translation>
 <translation id="6957436309971790274">Selepas tidak aktif selama 21 hari</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{Kembangkan kumpulan tab <ph name="TITLE_OF_GROUP"/> yang dikongsi dengan <ph name="TABS_COUNT_ONE"/> tab, warna <ph name="COLOR_NAME"/>.}other{Kembangkan kumpulan tab <ph name="TITLE_OF_GROUP"/> yang dikongsi dengan <ph name="TABS_COUNT_MANY"/> tab, warna <ph name="COLOR_NAME"/>.}}</translation>

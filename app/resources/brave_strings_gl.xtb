@@ -54,7 +54,6 @@
 <translation id="6570689355868013775">Ferramentas de seguranza de Brave</translation>
 <translation id="1902837727299679178">Brave quere eliminar os datos do xestor de contrasinais. Escribe o teu contrasinal de Windows para permitir esta acción.</translation>
 <translation id="4449148723378534338">Revisa os controis clave de privacidade e seguranza en Brave</translation>
-<translation id="5229247933547820267">Para preguntar co modo IA sobre a pestana sen saír da páxina, inicia sesión en Brave. Tamén terás acceso aos teus contrasinais e moito máis en todos os teus dispositivos.</translation>
 <translation id="1640672724030957280">Descargando…</translation>
 <translation id="1680687534629375545">Pregúntalle á busca de imaxes acerca desta páxina</translation>
 <translation id="509363484780540563">Podes usar Brave cando fagas clic nas ligazóns de mensaxes, documentos e outras aplicacións. Tamén se fixará na barra de tarefas.</translation>
@@ -98,6 +97,9 @@
 <translation id="2066690553719545730">Mostrar sempre modo IA</translation>
 <translation id="2472891440303445472">Brave bloqueou esta descarga porque o ficheiro é enganoso e pode producir cambios inesperados no teu dispositivo</translation>
 <translation id="2054358978145431867">A próxima vez que abras Brave en iOS, verás unha solicitude para probar <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Cando visitas un sitio por primeira vez, Brave desactiva a optimización de JavaScript.
+
+Proba a permitila se esta páxina non funciona como debería.</translation>
 <translation id="2726948994393234543">Os teus contrasinais e outros datos de Brave que gardases na túa Conta de Brave quitaranse deste dispositivo. Para usalos de novo en Brave, volve iniciar sesión.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{A túa organización eliminará os datos de navegación automaticamente cando Brave leve 1 minuto sen usarse. Entre esa información, poderían incluírse o historial, os datos da función de autocompletar e as descargas. As pestanas permanecerán abertas.}other{A túa organización eliminará os datos de navegación automaticamente cando Brave leve # minutos sen usarse. Entre esa información, poderían incluírse o historial, os datos da función de autocompletar e as descargas. As pestanas permanecerán abertas.}}</translation>
 <translation id="2126108037660393668">Produciuse un erro ao verificar o ficheiro descargado.</translation>
@@ -213,6 +215,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personaliza o teu novo perfil de Brave</translation>
+<translation id="2430807206104224491">Podes seguir chateando co modo IA sen cambiar de pestana. Para comezar, inicia sesión en Brave. Tamén terás acceso aos teus contrasinais e moito máis en todos os teus dispositivos.</translation>
 <translation id="4805865169608137960">Para quitar a túa Conta de Brave de Brave, vai á páxina de configuración e pecha a sesión en Brave</translation>
 <translation id="1651639704310627074">Máis adiante Brave pode preguntarche se queres usar a información gardada para autocompletar formularios por ti</translation>
 <translation id="2585240446624043880">Brave non pode ler e escribir no seu directorio de datos:
@@ -501,6 +504,7 @@
 <translation id="8646609321956191980">En cada perfil gárdase a información de Brave que lle corresponde (por exemplo, os marcadores, o historial ou os contrasinais)</translation>
 <translation id="6756656512757374876">Máis información sobre <ph name="BEGIN_LINK"/>como protexe Brave a privacidade dos teus datos<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Os cambios nesta opción de configuración aplicaranse cando se reinicie Brave.</translation>
+<translation id="3396870972301571614">No menú principal de Brave, fai clic en Extensións para xestionalas.</translation>
 <translation id="2535436634051789953">Podes cambiar de perfil para ver os contrasinais doutro perfil de Brave</translation>
 <translation id="2312399718665761438">Para solucionar os erros ortográficos, Brave envía a Brave o texto que escribes nos campos de texto</translation>
 <translation id="3507835409099344374">Ir á configuración de notificacións de Brave</translation>

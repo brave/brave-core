@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Strumenti per la sicurezza di Brave</translation>
 <translation id="1902837727299679178">Brave vuole eliminare i tuoi dati del Gestore delle password. Digita la tua password di Windows per consentire l'operazione.</translation>
 <translation id="4449148723378534338">Esamina i controlli per la privacy e la sicurezza più importanti in Brave</translation>
-<translation id="5229247933547820267">Per chiedere in AI Mode informazioni sulla tua scheda senza uscire dalla pagina, accedi a Brave. Potrai anche usare le password e altri dati su tutti i tuoi dispositivi.</translation>
 <translation id="1640672724030957280">Download in corso...</translation>
 <translation id="1680687534629375545">Chiedi alla Ricerca immagini informazioni su questa pagina</translation>
 <translation id="509363484780540563">Puoi usare Brave ogni volta che fai clic sui link in messaggi, documenti e altre app. Verrà anche fissato sulla barra delle app.</translation>
@@ -95,6 +94,9 @@
 <translation id="2066690553719545730">Mostra sempre AI Mode</translation>
 <translation id="2472891440303445472">Brave ha bloccato questo download perché il file è ingannevole e potrebbe apportare modifiche impreviste al tuo dispositivo</translation>
 <translation id="2054358978145431867">La prossima volta che aprirai Brave su iOS, ti verrà chiesto di provare <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Brave disattiva l'ottimizzazione di JavaScript quando visiti un sito per la prima volta.
+
+Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione.</translation>
 <translation id="2726948994393234543">Le tue password e altri dati di Brave salvati nel tuo Account Brave verranno rimossi da questo dispositivo. Per usarli di nuovo in Brave, accedi nuovamente.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{La tua organizzazione elimina automaticamente i dati di navigazione quando Brave non viene utilizzato per 1 minuto. Potrebbero essere inclusi cronologia, compilazione automatica e download. Le schede rimarranno aperte.}other{La tua organizzazione elimina automaticamente i dati di navigazione quando Brave non viene utilizzato per # minuti. Potrebbero essere inclusi cronologia, compilazione automatica e download. Le schede rimarranno aperte.}}</translation>
 <translation id="2126108037660393668">Il file scaricato non ha superato la verifica.</translation>
@@ -210,6 +212,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personalizza il tuo nuovo profilo Brave</translation>
+<translation id="2430807206104224491">Puoi continuare a chattare con AI Mode senza cambiare schede. Per iniziare, accedi a Brave. Potrai anche usare le password e altri dati su tutti i tuoi dispositivi.</translation>
 <translation id="4805865169608137960">Per rimuovere il tuo Account Brave da Brave, esci da Brave nella pagina Impostazioni</translation>
 <translation id="1651639704310627074">In un secondo momento, Brave può chiederti se vuoi usare le informazioni salvate per compilare automaticamente i moduli per te</translation>
 <translation id="2585240446624043880">Brave non è in grado di leggere e scrivere nella directory dei dati:
@@ -498,6 +501,7 @@
 <translation id="8646609321956191980">Ogni profilo dispone delle proprie informazioni di Brave, come preferiti, cronologia, password e altro</translation>
 <translation id="6756656512757374876">Scopri di più su <ph name="BEGIN_LINK"/>come Brave mantiene privati i tuoi dati<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Le modifiche a questa impostazione verranno applicate al riavvio di Brave.</translation>
+<translation id="3396870972301571614">Gestisci le tue estensioni facendo clic su Estensioni nel menu principale di Brave.</translation>
 <translation id="2535436634051789953">Puoi cambiare per vedere le password di un altro profilo Brave</translation>
 <translation id="2312399718665761438">Per correggere gli errori ortografici, Brave invia a Brave il testo digitato nei campi di testo</translation>
 <translation id="3507835409099344374">Vai alle impostazioni di notifica di Brave</translation>

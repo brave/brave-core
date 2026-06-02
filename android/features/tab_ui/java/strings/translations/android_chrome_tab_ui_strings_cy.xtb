@@ -124,6 +124,7 @@
 <translation id="5076161749301278626">Gweld adolygiadau'r siop?</translation>
 <translation id="5161254044473106830">Mae teitl yn ofynnol</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Mae Brave yn cau tabiau a grwpiau tabiau anweithredol yn awtomatig ar ôl <ph name="AUTO_DELETE_DELAY_ONE"/> mis. Gallwch chi newid hyn yn y gosodiadau.}zero{Mae Brave yn cau tabiau a grwpiau tabiau anweithredol yn awtomatig ar ôl <ph name="AUTO_DELETE_DELAY_MANY"/> misoedd. Gallwch chi newid hyn yn y gosodiadau.}two{Mae Brave yn cau tabiau a grwpiau tabiau anweithredol yn awtomatig ar ôl <ph name="AUTO_DELETE_DELAY_MANY"/> fis. Gallwch chi newid hyn yn y gosodiadau.}few{Mae Brave yn cau tabiau a grwpiau tabiau anweithredol yn awtomatig ar ôl <ph name="AUTO_DELETE_DELAY_MANY"/> mis. Gallwch chi newid hyn yn y gosodiadau.}many{Mae Brave yn cau tabiau a grwpiau tabiau anweithredol yn awtomatig ar ôl <ph name="AUTO_DELETE_DELAY_MANY"/> mis. Gallwch chi newid hyn yn y gosodiadau.}other{Mae Brave yn cau tabiau a grwpiau tabiau anweithredol yn awtomatig ar ôl <ph name="AUTO_DELETE_DELAY_MANY"/> mis. Gallwch chi newid hyn yn y gosodiadau.}}</translation>
+<translation id="5254233580564156835">Defnydd cof: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Eich tab diwethaf</translation>
 <translation id="5380159289133845234">Archifo tabiau dyblyg</translation>
 <translation id="5446043142172831860">Tynnu'r tab a gadael y grŵp</translation>
@@ -163,11 +164,13 @@
 <translation id="6589356853295569750">Hysbysiad am newidiadau Grŵp Tabiau a Rennir wedi'i agor ar uchder llawn</translation>
 <translation id="6590332670428149473">Agorwch ddewislen gweithredu grŵp tab ar gyfer grŵp tabiau a rennir <ph name="TITLE_OF_GROUP"/>, lliw <ph name="COLOR_NAME"/>.</translation>
 <translation id="6615455863669487791">Dangos i fi</translation>
+<translation id="6686490380836145850">Cau tabiau i'r dde</translation>
 <translation id="6694634756612002311">Rheoli rhannu</translation>
 <translation id="6709297274997495821">Dewis tab</translation>
 <translation id="6744956528665271406">Golygu lliw grŵp</translation>
 <translation id="6784585810034073638">{TAB_COUNT,plural, =1{Ychwanegu at grŵp o'r enw <ph name="TITLE_OF_GROUP"/> gydag <ph name="TAB_COUNT1"/> tab}zero{Ychwanegu at grŵp o'r enw <ph name="TITLE_OF_GROUP"/> gyda <ph name="TAB_COUNT1"/> tab}two{Ychwanegu at grŵp o'r enw <ph name="TITLE_OF_GROUP"/> gyda <ph name="TAB_COUNT1"/> dab}few{Ychwanegu at grŵp o'r enw <ph name="TITLE_OF_GROUP"/> gyda <ph name="TAB_COUNT1"/> thab}many{Ychwanegu at grŵp o'r enw <ph name="TITLE_OF_GROUP"/> gyda <ph name="TAB_COUNT1"/> thab}other{Ychwanegu at grŵp o'r enw <ph name="TITLE_OF_GROUP"/> gyda <ph name="TAB_COUNT1"/> tab}}</translation>
 <translation id="6818926723028410516">Dewis eitemau</translation>
+<translation id="68541483639528434">Cau tabiau eraill</translation>
 <translation id="6856809498882026482">Cuddio'r modd dewis mwy nag un</translation>
 <translation id="6957436309971790274">Ar ôl 21 diwrnod yn anweithredol</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{Ehangu grŵp tabiau <ph name="TITLE_OF_GROUP"/> a rennir gydag <ph name="TABS_COUNT_ONE"/> tab, lliw <ph name="COLOR_NAME"/>.}zero{Ehangu grŵp tabiau <ph name="TITLE_OF_GROUP"/> a rennir gyda <ph name="TABS_COUNT_MANY"/> tab, lliw <ph name="COLOR_NAME"/>.}two{Ehangu grŵp tabiau <ph name="TITLE_OF_GROUP"/> a rennir gyda <ph name="TABS_COUNT_MANY"/> dab, lliw <ph name="COLOR_NAME"/>.}few{Ehangu grŵp tabiau <ph name="TITLE_OF_GROUP"/> a rennir gyda <ph name="TABS_COUNT_MANY"/> thab, lliw <ph name="COLOR_NAME"/>.}many{Ehangu grŵp tabiau <ph name="TITLE_OF_GROUP"/> a rennir gyda <ph name="TABS_COUNT_MANY"/> thab, lliw <ph name="COLOR_NAME"/>.}other{Ehangu grŵp tabiau <ph name="TITLE_OF_GROUP"/> a rennir gyda <ph name="TABS_COUNT_MANY"/> tab, lliw <ph name="COLOR_NAME"/>.}}</translation>

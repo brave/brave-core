@@ -53,7 +53,6 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="6570689355868013775">Veglat e sigurisë të Brave</translation>
 <translation id="1902837727299679178">Brave dëshiron të fshijë të dhënat e tua të "Menaxherit të fjalëkalimeve". Shkruaj fjalëkalimin tënd të Windows për ta lejuar këtë.</translation>
 <translation id="4449148723378534338">Shqyrto kontrollet kryesore të sigurisë dhe privatësisë në Brave</translation>
-<translation id="5229247933547820267">Për t'i kërkuar "Modalitetit të IA-së" për skedën tënde pa u larguar nga faqja, identifikohu në Brave. Do të marrësh gjithashtu fjalëkalimet dhe më shumë në të gjitha pajisjet e tua.</translation>
 <translation id="1640672724030957280">Po shkarkohet...</translation>
 <translation id="1680687534629375545">Pyet "Kërkimin e imazheve" për këtë faqe</translation>
 <translation id="509363484780540563">Mund të përdorësh Brave sa herë që klikon te lidhjet në mesazhe, dokumente dhe aplikacione të tjera. Ai do të gozhdohet gjithashtu te shiriti i detyrave.</translation>
@@ -97,6 +96,9 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="2066690553719545730">Shfaq gjithmonë "Modalitetin e IA-së"</translation>
 <translation id="2472891440303445472">Brave e bllokoi këtë shkarkim sepse skedari është mashtrues dhe mund të bëjë ndryshime të papritura në pajisjen tënde</translation>
 <translation id="2054358978145431867">Do të shikosh një kërkesë për të provuar <ph name="FEATURE_NAME"/> herën tjetër kur të hapësh Brave për iOS.</translation>
+<translation id="4315579854608498851">Brave e çaktivizon optimizimin e JavaScript kur viziton një sajt për herë të parë.
+
+Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</translation>
 <translation id="2726948994393234543">Fjalëkalimet e tua dhe të dhënat e tjera të Brave që ke ruajtur në "Llogarinë tënde të Brave" do të hiqen nga kjo pajisje. Për t'i përdorur përsëri në Brave, identifikohu përsëri.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organizata jote i fshin automatikisht të dhënat e shfletimit kur Brave nuk përdoret për 1 minutë. Kjo mund të përfshijë historikun, plotësimin automatik dhe shkarkimet. Skedat e tua do të qëndrojnë të hapura.}other{Organizata jote i fshin automatikisht të dhënat e shfletimit kur Brave nuk përdoret për # minuta. Kjo mund të përfshijë historikun, plotësimin automatik dhe shkarkimet. Skedat e tua do të qëndrojnë të hapura.}}</translation>
 <translation id="2126108037660393668">Skedari i shkarkuar nuk u verifikua.</translation>
@@ -212,6 +214,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personalizo profilin tënd të ri të Brave</translation>
+<translation id="2430807206104224491">Mund të vazhdosh të bisedosh me "Modalitetin e IA-së" pa ndërruar skedat. Për të filluar, identifikohu në Brave. Do të marrësh gjithashtu fjalëkalimet dhe më shumë në të gjitha pajisjet e tua.</translation>
 <translation id="4805865169608137960">Për ta hequr "Llogarinë tënde të Brave" nga Brave, dil nga llogaria në Brave te faqja e "Cilësimeve"</translation>
 <translation id="1651639704310627074">Më vonë, Brave mund të të pyesë nëse dëshiron të përdorësh informacionet e ruajtura për të plotësuar automatikisht formularët për ty</translation>
 <translation id="2585240446624043880">Brave nuk mund të lexojë dhe shkruajë në direktorinë e tij të të dhënave:
@@ -500,6 +503,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="8646609321956191980">Secili profil duhet të zotërojë informacionin e vet të Brave, si: faqeshënuesit, historikun, fjalëkalimet etj.</translation>
 <translation id="6756656512757374876">Mëso më shumë se <ph name="BEGIN_LINK"/>si Brave i mban private të dhënat e tua<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Ndryshimet në këtë cilësim do të zbatohen pasi Brave të riniset.</translation>
+<translation id="3396870972301571614">Menaxho shtesat e tua duke klikuar te "Shtesat" në menynë kryesore të Brave.</translation>
 <translation id="2535436634051789953">Mund ta ndërrosh për të parë fjalëkalimet nga një profil tjetër i Brave</translation>
 <translation id="2312399718665761438">Për të korrigjuar gabimet drejtshkrimore, Brave e dërgon te Brave tekstin që ti shkruan në fushat e tekstit</translation>
 <translation id="3507835409099344374">Shko te "Cilësimet e njoftimeve" të Brave</translation>

@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Ferramentas de segurança do Brave</translation>
 <translation id="1902837727299679178">O Brave quer eliminar os seus dados do Gestor de Palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
 <translation id="4449148723378534338">Reveja os principais controlos de privacidade e segurança no Brave</translation>
-<translation id="5229247933547820267">Para perguntar ao Modo IA sobre o seu separador sem sair da página, inicie sessão no Brave. Também tem acesso às suas palavras-passe e muito mais em todos os seus dispositivos.</translation>
 <translation id="1640672724030957280">A transferir...</translation>
 <translation id="1680687534629375545">Pergunte à pesquisa de imagens acerca desta página</translation>
 <translation id="509363484780540563">Pode usar o Brave sempre que clicar em links de mensagens, documentos e outras apps. Também vai ser afixado à barra de tarefas.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Mostrar sempre o Modo IA</translation>
 <translation id="2472891440303445472">O Brave bloqueou esta transferência porque o ficheiro é fraudulento e pode fazer alterações inesperadas ao seu dispositivo</translation>
 <translation id="2054358978145431867">É apresentada uma indicação para experimentar o <ph name="FEATURE_NAME"/> da próxima vez que abrir o Brave no iOS.</translation>
+<translation id="4315579854608498851">O Brave desativa a otimização do JavaScript quando visita um site pela primeira vez.
+
+Se esta página não estiver a funcionar conforme esperado, experimente permitir a otimização.</translation>
 <translation id="2726948994393234543">As suas palavras-passe e outros dados do Brave que guardou na sua Conta Brave vão ser removidos deste dispositivo. Para os usar novamente no Brave, volte a iniciar sessão.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{A sua organização elimina automaticamente os dados de navegação quando o Brave não é usado durante 1 minuto. Estas informações podem incluir o histórico, o preenchimento automático e as transferências. Os separadores permanecem abertos.}other{A sua organização elimina automaticamente os dados de navegação quando o Brave não é usado durante # minutos. Estas informações podem incluir o histórico, o preenchimento automático e as transferências. Os separadores permanecem abertos.}}</translation>
 <translation id="2126108037660393668">O ficheiro transferido falhou na validação.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personalize o seu novo perfil do Brave</translation>
+<translation id="2430807206104224491">Pode continuar a conversar com o Modo IA sem mudar de separador. Para começar, inicie sessão no Brave. Também terá acesso às suas palavras-passe e muito mais em todos os seus dispositivos.</translation>
 <translation id="4805865169608137960">Para remover a sua Conta Brave do Brave, termine sessão no Brave na página Definições</translation>
 <translation id="1651639704310627074">Mais tarde, o Brave pode perguntar-lhe se quer usar as informações guardadas para preencher automaticamente formulários</translation>
 <translation id="2585240446624043880">O Brave não consegue ler e escrever no respetivo diretório de dados:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Cada perfil possui as suas próprias informações do Brave, como marcadores, histórico, palavras-passe e muito mais.</translation>
 <translation id="6756656512757374876">Saiba <ph name="BEGIN_LINK"/>como o Brave mantém os seus dados privados<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">As alterações a esta definição vão ser aplicadas assim que o Brave for reiniciado.</translation>
+<translation id="3396870972301571614">Faça a gestão das suas extensões clicando em Extensões no menu principal do Brave.</translation>
 <translation id="2535436634051789953">Pode mudar para ver as palavras-passe de outro perfil do Brave</translation>
 <translation id="2312399718665761438">Para corrigir erros ortográficos, o Brave envia o texto que introduzir nos campos de texto para a Brave.</translation>
 <translation id="3507835409099344374">Aceder às definições de notificação do Brave</translation>

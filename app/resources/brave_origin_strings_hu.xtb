@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">A Brave biztonsági eszközei</translation>
 <translation id="1902837727299679178">A Brave törölni szeretné a Jelszókezelőhöz tartozó adatait. Az engedélyezéshez adja meg Windows-jelszavát.</translation>
 <translation id="4449148723378534338">A legfontosabb adatvédelmi és biztonsági beállítások áttekintése a Braveban</translation>
-<translation id="5229247933547820267">Ha az oldal elhagyása nélkül szeretne kérdezni az AI-módtól az adott lapról, jelentkezzen be a Braveba. Egyebek mellett a jelszavaihoz is hozzáférhet bármely eszközén.</translation>
 <translation id="1640672724030957280">Letöltés...</translation>
 <translation id="1680687534629375545">Kérdés feltevése a Képkeresőnek erről az oldalról</translation>
 <translation id="509363484780540563">Mostantól bármikor használhatja a Braveot, amikor üzenetekben, dokumentumokban és más alkalmazásokban található linkekre kattint. A tálcára is ki lesz tűzve.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Mindig látszódjon az AI-mód</translation>
 <translation id="2472891440303445472">A Brave letiltotta ezt a letöltést, mert a fájl megtévesztő, és váratlan módosításokat végezhet az eszközön</translation>
 <translation id="2054358978145431867">A Brave iOS következő megnyitásakor megjelenik egy üzenet, amely a(z) <ph name="FEATURE_NAME"/> funkció kipróbálását javasolja.</translation>
+<translation id="4315579854608498851">A Brave kikapcsolja a JavaScript-optimalizálást, amikor Ön először keres fel egy webhelyet.
+
+Ha ez az oldal nem a várt módon működik, próbálkozzon az optimalizálás engedélyezésével.</translation>
 <translation id="2726948994393234543">A Brave-fiókjába mentett jelszavai és egyéb Brave-adatai el lesznek távolítva erről az eszközről. Ha újra használni szeretné őket a Braveban, jelentkezzen be újra.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Szervezete automatikusan törli a böngészési adatokat, ha a Brave 1 percig nincs használatban. A böngészési adatok közé tartozhatnak az előzmények, az automatikus kitöltés adatai és a letöltések. A lapok nyitva maradnak.}other{Szervezete automatikusan törli a böngészési adatokat, ha a Brave # percig nincs használatban. A böngészési adatok közé tartozhatnak az előzmények, az automatikus kitöltés adatai és a letöltések. A lapok nyitva maradnak.}}</translation>
 <translation id="2126108037660393668">A letöltött fájl az ellenőrzés során hibásnak bizonyult.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Szabja személyre az új Brave-profilját</translation>
+<translation id="2430807206104224491">Lapváltás nélkül cseveghet az AI-móddal. A kezdéshez jelentkezzen be a Braveba. Egyebek mellett a jelszavaihoz is hozzáférhet bármely eszközén.</translation>
 <translation id="4805865169608137960">Ha el szeretné távolítani Brave-fiókját a Braveból, jelentkezzen ki a Braveból a Beállítások oldalon</translation>
 <translation id="1651639704310627074">A Brave később rákérdezhet, hogy szeretné-e a mentett adatokat űrlapok automatikus kitöltéséhez használni</translation>
 <translation id="2585240446624043880">A Brave nem tudja olvasni és írni az adatkönyvtárát:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Minden profil saját Brave-adatokat (például könyvjelzőket, előzményeket, jelszavakat és egyebeket) tárol.</translation>
 <translation id="6756656512757374876">További információ arról, <ph name="BEGIN_LINK"/>hogyan gondoskodik az Ön adatainak védelméről a Brave<ph name="END_LINK"/>.</translation>
 <translation id="3556601443414636547">A beállítás módosításai a Brave újraindítása után lépnek érvénybe.</translation>
+<translation id="3396870972301571614">Bővítményeit a Brave főmenüjének Bővítmények elemére kattintva kezelheti.</translation>
 <translation id="2535436634051789953">Átválthat másik Brave-profilra, ha meg szeretné nézni annak jelszavait</translation>
 <translation id="2312399718665761438">A nyelvtani hibák javítása érdekében a Brave elküldi a szövegmezőkbe gépelt szöveget a Brave-nak</translation>
 <translation id="3507835409099344374">A Brave értesítési beállításainak megnyitása</translation>

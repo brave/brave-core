@@ -54,7 +54,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="6570689355868013775">Zana usalama za Brave</translation>
 <translation id="1902837727299679178">Brave ingependa kufuta data yako ya Kidhibiti cha Manenosiri. Weka nenosiri lako la Windows ili uruhusu hatua hii.</translation>
 <translation id="4449148723378534338">Kagua vidhibiti muhimu vya faragha na usalama katika Brave</translation>
-<translation id="5229247933547820267">Ili uulize Modi ya AI kuhusu kichupo chako bila kuondoka kwenye ukurasa, ingia katika akaunti kwenye Brave. Pia utapata manenosiri yako na zaidi kwenye vifaa vyako vyote.</translation>
 <translation id="1640672724030957280">Inapakua...</translation>
 <translation id="1680687534629375545">Uliza kipengele cha Kutafuta kwa Picha kuhusu ukurasa huu</translation>
 <translation id="509363484780540563">Unaweza kutumia Brave wakati wowote unapobofya viungo kwenye ujumbe, hati na programu nyingine. Pia itabandikwa kwenye upauzana wako.</translation>
@@ -98,6 +97,9 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="2066690553719545730">Onyesha Modi ya AI Kila Wakati</translation>
 <translation id="2472891440303445472">Brave imezuia upakuaji huu kwa sababu faili inapotosha na huenda ikafanya mabadiliko yasiyotarajiwa kwenye kifaa chako</translation>
 <translation id="2054358978145431867">Utaona kidokezo cha kujaribu <ph name="FEATURE_NAME"/> utakapofungua Brave kwenye kifaa cha iOS tena.</translation>
+<translation id="4315579854608498851">Brave huzima uboreshaji wa JavaScript wakati unatembelea tovuti kwa mara ya kwanza.
+
+Jaribu kuruhusu uboreshaji ikiwa ukurasa huu haufanyi kazi inavyotarajiwa.</translation>
 <translation id="2726948994393234543">Manenosiri na data yako nyingine ya Brave uliyohifadhi kwenye Akaunti yako ya Brave itaondolewa kwenye kifaa hiki. Ili uzitumie tena kwenye Brave, ingia tena katika akaunti.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Shirika lako hufuta kiotomatiki data ya kuvinjari Brave isipotumika kwa dakika 1. Data hii inaweza kujumuisha historia, maelezo yaliyojazwa kiotomatiki na vipakuliwa. Vichupo vyako havitafungwa.}other{Shirika lako hufuta kiotomatiki data ya kuvinjari Brave isipotumika kwa dakika #. Data hii inaweza kujumuisha historia, maelezo yaliyojazwa kiotomatiki na vipakuliwa. Vichupo vyako havitafungwa.}}</translation>
 <translation id="2126108037660393668">Faili iliyopakuliwa imeshindwa kuthibitishwa.</translation>
@@ -213,6 +215,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Weka wasifu wako mpya wa Brave uwe upendavyo</translation>
+<translation id="2430807206104224491">Unaweza kuendelea kupiga gumzo na Modi ya AI bila kubadilisha vichupo. Ili uanze, ingia katika akaunti ya Brave. Pia utapata manenosiri yako na zaidi kwenye vifaa vyako vyote.</translation>
 <translation id="4805865169608137960">Ili uondoe Akaunti yako ya Brave kwenye Brave, ondoka kwenye Brave katika ukurasa wa Mipangilio</translation>
 <translation id="1651639704310627074">Baadaye, Brave inaweza kukuuliza ikiwa ungependa kutumia taarifa ulizohifadhi ili ijaze fomu kiotomatiki kwa niaba yako</translation>
 <translation id="2585240446624043880">Brave haiwezi kusoma na kuandika kwenye saraka yake ya data:
@@ -501,6 +504,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="8646609321956191980">Kila wasifu una maelezo yake ya Brave kama vile alamisho, historia, manenosiri na mengine</translation>
 <translation id="6756656512757374876">Pata maelezo zaidi kuhusu <ph name="BEGIN_LINK"/>jinsi Brave inavyoweka data yako kuwa ya faragha<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Mabadiliko kwenye mipangilio hii yataanza kutekelezwa baada ya Brave kuzima kisha kuwaka.</translation>
+<translation id="3396870972301571614">Dhibiti viendelezi vyako kwa kubofya Viendelezi kwenye menyu kuu ya Brave.</translation>
 <translation id="2535436634051789953">Unaweza kubadilisha ili uone manenosiri kwenye wasifu mwingine wa Brave</translation>
 <translation id="2312399718665761438">Ili kurekebisha makosa ya tahajia, Brave hutuma maandishi unayoandika kwenye sehemu za maandishi kwa Brave</translation>
 <translation id="3507835409099344374">Nenda kwenye mipangilio ya arifa ya Brave</translation>

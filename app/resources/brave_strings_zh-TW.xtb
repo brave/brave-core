@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Brave 安全工具</translation>
 <translation id="1902837727299679178">Brave 要刪除密碼管理工具資料。如果允許，請輸入 Windows 密碼。</translation>
 <translation id="4449148723378534338">查看 Brave 中最重要的隱私權和安全性控制項</translation>
-<translation id="5229247933547820267">登入 Brave 後，不必離開頁面就能用 AI 模式查詢分頁，並在所有裝置上同步密碼與其他資料。</translation>
 <translation id="1640672724030957280">下載中…</translation>
 <translation id="1680687534629375545">向「圖片搜尋」詢問這個頁面的相關問題</translation>
 <translation id="509363484780540563">在訊息、文件和其他應用程式中點選連結後，都會使用 Brave 開啟。Brave 也會釘選到工作列。</translation>
@@ -95,6 +94,7 @@
 <translation id="2066690553719545730">一律顯示 AI 模式</translation>
 <translation id="2472891440303445472">這是詐騙檔案，可能會對裝置造成非預期的變更，因此 Brave 已禁止下載</translation>
 <translation id="2054358978145431867">下次開啟 iOS 版 Brave 時，系統會提示你試用「<ph name="FEATURE_NAME"/>」。</translation>
+<translation id="4315579854608498851">首次造訪某個網站時，Brave 會關閉 JavaScript 最佳化功能。如果網頁無法正常運作，建議允許最佳化。</translation>
 <translation id="2726948994393234543">Brave 帳戶中儲存的密碼和其他 Brave 資料將從這部裝置上移除。如要在 Brave 中再次使用這些資料，請重新登入。</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{貴機構會在 Brave 閒置 1 分鐘後自動刪除瀏覽資料，當中可能包含歷史記錄、自動填入的資料和下載內容。這些分頁仍會保持開啟。}other{貴機構會在 Brave 閒置 # 分鐘後自動刪除瀏覽資料，當中可能包含歷史記錄、自動填入的資料和下載內容。這些分頁仍會保持開啟。}}</translation>
 <translation id="2126108037660393668">下載的檔案驗證失敗。</translation>
@@ -210,6 +210,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">自訂新的 Brave 設定檔</translation>
+<translation id="2430807206104224491">你可以繼續與 AI 模式對話，不必切換分頁。登入 Brave 即可使用，密碼和其他資料也會同步到所有裝置。</translation>
 <translation id="4805865169608137960">如要從 Brave 中移除 Brave 帳戶，請前往「設定」頁面登出 Brave</translation>
 <translation id="1651639704310627074">Brave 稍後會詢問你，是否要使用已儲存的資訊自動填寫表單</translation>
 <translation id="2585240446624043880">Brave 無法讀取及寫入資料目錄：
@@ -498,6 +499,7 @@
 <translation id="8646609321956191980">每個設定檔都有獨立專屬的 Brave 資訊，例如書籤、歷史記錄和密碼等等</translation>
 <translation id="6756656512757374876">進一步瞭解 <ph name="BEGIN_LINK"/>Brave 如何保護你的資料隱私<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">系統會在 Brave 重新啟動後套用這項設定的變更。</translation>
+<translation id="3396870972301571614">如要管理擴充功能，請點選 Brave 主選單中的「擴充功能」。</translation>
 <translation id="2535436634051789953">你可以切換查看其他 Brave 設定檔的密碼</translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將你在文字欄位輸入的文字傳送給 Brave</translation>
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>

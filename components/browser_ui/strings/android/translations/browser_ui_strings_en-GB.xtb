@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Download paused</translation>
 <translation id="1396327438254055134">Allow site to use V8 optimiser.</translation>
 <translation id="1409338233051621926">Tap Apps, then tap Default apps</translation>
+<translation id="1414315029670184034">Don't allow sites to use your camera</translation>
 <translation id="1415402041810619267">URL truncated</translation>
 <translation id="1741136041592162279">Let Brave share your recent tabs with your device to see them in your device's app list and search results. You can turn this on or off in Brave settings.</translation>
 <translation id="1420688843103859429">Navigate back and forth by swiping with two fingers on the touchpad</translation>
@@ -80,7 +81,6 @@
 <translation id="1781533683087883868">Turn Reading mode links off</translation>
 <translation id="1785415724048343560">Recommended for best experience</translation>
 <translation id="1796588414813960292">Features that need sound won't work</translation>
-<translation id="7401204338724669842">Brave tips</translation>
 <translation id="6704867734300244173">When on, Brave runs faster and features that use JavaScript should work as designed. When off, this reduces performance but makes V8 more resistant to attacks.</translation>
 <translation id="1818308510395330587">To let <ph name="APP_NAME"/> use AR, also turn on camera in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Switch the position to customise your browsing experience</translation>
@@ -99,6 +99,7 @@
 <translation id="1985247341569771101">When on, sites can use your device's motion sensors. When off, sites can't use motion sensors.</translation>
 <translation id="1985716030964443178">This will reset all the sites in your list to the default zoom</translation>
 <translation id="1989112275319619282">Browse</translation>
+<translation id="1991370806334788445">Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.</translation>
 <translation id="1994173015038366702">Site URL</translation>
 <translation id="1994558116414798016">Font Lexend</translation>
 <translation id="2004697686368036666">Features on some sites may not work</translation>
@@ -164,6 +165,7 @@
 <translation id="257931822824936280">Expanded – click to collapse.</translation>
 <translation id="2586657967955657006">Clipboard</translation>
 <translation id="2588271083332682494">Tidy up with tab groups</translation>
+<translation id="2592917252160773942">Sites can ask for your camera</translation>
 <translation id="2597457036804169544">Don’t apply Dark theme to sites</translation>
 <translation id="2606760465469169465">Auto-verify</translation>
 <translation id="2621115761605608342">Allow JavaScript for a specific site.</translation>
@@ -237,6 +239,7 @@
 <translation id="3360338140203645771">Delete saved zoom levels?</translation>
 <translation id="3362437373201486687">Scanning for Bluetooth devices</translation>
 <translation id="3368138297038111198">Sharing a window</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{Showing 1 of {TOTAL_COUNT} items due to low memory}other{Showing # of {TOTAL_COUNT} items due to low memory}}</translation>
 <translation id="3386292677130313581">Ask before allowing sites to know your location (recommended)</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="344449859752187052">Third-party cookies blocked</translation>
@@ -285,6 +288,7 @@
 <translation id="1799795508209440035">Brave will block cookies again today</translation>
 <translation id="385051799172605136">Back</translation>
 <translation id="3859306556332390985">Seek forward</translation>
+<translation id="9046306654872718870">Make Brave your own with custom colours and images for your homepage</translation>
 <translation id="389521680295183045">Sites can ask to know when you're actively using your device</translation>
 <translation id="3895926599014793903">Force enable zoom</translation>
 <translation id="3903738175795615004">Drag from top or press Esc key to exit full screen.</translation>
@@ -328,6 +332,7 @@
 <translation id="4290791284969893584">After closing a page, tasks that you started might not finish</translation>
 <translation id="429312253194641664">A site is playing media</translation>
 <translation id="42981349822642051">Expand</translation>
+<translation id="4310738531374808763">Customise your homepage</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Expires tomorrow}other{Expires in # days}}</translation>
 <translation id="4338831206024587507">All sites under <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Don't allow sites to send notifications</translation>
@@ -357,6 +362,7 @@
 <translation id="4635969503923889910">Don't allow sites to use NFC devices</translation>
 <translation id="4644713492825682049">Delete and reset</translation>
 <translation id="4645575059429386691">Managed by your parent</translation>
+<translation id="4651224148644053314">More colours and options</translation>
 <translation id="4652266463001779298">Not allowed</translation>
 <translation id="4655846733459137112">Tap Yes to easily use this password the next time that you sign in</translation>
 <translation id="4663373278480897665">Camera allowed</translation>
@@ -516,6 +522,7 @@
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> and <ph name="PERMISSION_2"/> blocked</translation>
 <translation id="6270391203985052864">Sites can ask to send notifications</translation>
 <translation id="6295158916970320988">All sites</translation>
+<translation id="6305257382500066042">Try it now</translation>
 <translation id="6320088164292336938">Vibrate</translation>
 <translation id="6367753977865761591">Block third-party sign-in for a specific site.</translation>
 <translation id="6398765197997659313">Exit full screen</translation>
@@ -601,6 +608,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> selected</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> and <ph name="PERMISSION_2"/> allowed</translation>
 <translation id="7276071417425470385">When on, sites can ask to use virtual reality devices. When off, sites can't use virtual reality devices.</translation>
+<translation id="7279851812866769760">Share contacts</translation>
 <translation id="7282197670900591579">Citron theme</translation>
 <translation id="728412880473384942">Sites are faster but less secure</translation>
 <translation id="5843014938239239453">Manage in <ph name="BEGIN_LINK1"/>Android settings<ph name="END_LINK1"/>
@@ -650,7 +658,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="780301667611848630">No, thanks</translation>
 <translation id="7804248752222191302">A site is using your camera</translation>
 <translation id="7805832099057502789">New tab page appearance bottom sheet opened at full height</translation>
-<translation id="6720480757902085971">Provided by Brave</translation>
 <translation id="7809029041571842593">New tab page cards bottom sheet opened at half height</translation>
 <translation id="7815680994978050279">Dangerous download blocked</translation>
 <translation id="7835852323729233924">Playing media</translation>
@@ -693,6 +700,7 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="823874716226307142">When on, sites can ask to access other devices on your local network. When off, sites can't access other devices on your local network.</translation>
 <translation id="8249310407154411074">Move to top</translation>
 <translation id="8261506727792406068">Delete</translation>
+<translation id="8273596202562472147">More options for <ph name="SITE_NAME"/></translation>
 <translation id="8284326494547611709">Captions</translation>
 <translation id="8300705686683892304">Managed by app</translation>
 <translation id="8301363963630676147">Allowed this time • Using approximate</translation>
@@ -738,7 +746,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="8676374126336081632">Clear input</translation>
 <translation id="8681886425883659911">Ads are blocked on sites known to show intrusive or misleading ads</translation>
 <translation id="868929229000858085">Search your contacts</translation>
-<translation id="8707904142362025782">Site can ask for your camera</translation>
 <translation id="8712637175834984815">Got it</translation>
 <translation id="8715862698998036666">Drag from the top and swipe from the left or right edge to exit full screen.</translation>
 <translation id="8716050156658570300">Sites can ask to use motion and light sensors</translation>
@@ -788,6 +795,7 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="7359422048569205930">Let Brave show your recent tabs in your device's app list and search results. You can turn this off at any time in Brave settings.</translation>
 <translation id="9162462602695099906">This page is dangerous</translation>
 <translation id="9182556968660520230">Don't allow sites to play protected content</translation>
+<translation id="927148002081263046">Share a contact</translation>
 <translation id="947156494302904893">Sites that you visit can verify that you're a real person and not a bot</translation>
 <translation id="959682366969460160">Get organised</translation>
 <translation id="960590623979248167">Show hyperlinks</translation>
