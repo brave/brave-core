@@ -166,12 +166,14 @@ class BrowserNavigationHelper {
         bvc.presentActivityViewController(
           url,
           tab: url.isFileURL ? nil : bvc.tabManager.selectedTab,
-          sourceView: bvc.view,
-          sourceRect: bvc.view.convert(
-            bvc.topToolbar.menuButton.frame,
-            from: bvc.topToolbar.menuButton.superview
-          ),
-          arrowDirection: [.up]
+          source: .init(
+            view: bvc.view,
+            rect: bvc.view.convert(
+              bvc.topToolbar.menuButton.frame,
+              from: bvc.topToolbar.menuButton.superview
+            ),
+            arrowDirection: [.up]
+          )
         )
       }
 

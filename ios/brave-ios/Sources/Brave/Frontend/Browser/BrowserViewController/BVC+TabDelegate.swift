@@ -143,12 +143,14 @@ extension BrowserViewController: TabDelegate {
           // - Add custom "Save to file" functionality (needs investigation).
           self.presentActivityViewController(
             url,
-            sourceView: self.view,
-            sourceRect: self.view.convert(
-              self.topToolbar.shareButton.frame,
-              from: self.topToolbar.shareButton.superview
-            ),
-            arrowDirection: .any
+            source: .init(
+              view: self.view,
+              rect: self.view.convert(
+                self.topToolbar.shareButton.frame,
+                from: self.topToolbar.shareButton.superview
+              ),
+              arrowDirection: .any
+            )
           )
         }
         shareAction.accessibilityLabel = "linkContextMenu.share"

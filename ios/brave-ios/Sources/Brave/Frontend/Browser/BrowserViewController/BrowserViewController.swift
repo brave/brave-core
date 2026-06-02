@@ -2699,23 +2699,27 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
         dismiss(animated: true) {
           self.presentActivityViewController(
             url,
-            sourceView: self.view,
-            sourceRect: self.view.convert(
-              self.topToolbar.shareButton.frame,
-              from: self.topToolbar.shareButton.superview
-            ),
-            arrowDirection: [.up]
+            source: .init(
+              view: self.view,
+              rect: self.view.convert(
+                self.topToolbar.shareButton.frame,
+                from: self.topToolbar.shareButton.superview
+              ),
+              arrowDirection: [.up]
+            )
           )
         }
       } else {
         presentActivityViewController(
           url,
-          sourceView: view,
-          sourceRect: view.convert(
-            topToolbar.shareButton.frame,
-            from: topToolbar.shareButton.superview
-          ),
-          arrowDirection: [.up]
+          source: .init(
+            view: self.view,
+            rect: self.view.convert(
+              self.topToolbar.shareButton.frame,
+              from: self.topToolbar.shareButton.superview
+            ),
+            arrowDirection: [.up]
+          )
         )
       }
     }
