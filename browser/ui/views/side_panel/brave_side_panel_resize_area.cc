@@ -13,41 +13,28 @@ namespace views {
 
 BraveSidePanelResizeArea::~BraveSidePanelResizeArea() = default;
 
-gfx::Rect BraveSidePanelResizeArea::GetNoBorderResizeBounds(
+gfx::Rect BraveSidePanelResizeArea::GetResizeStripBounds(
     bool panel_on_right,
     const gfx::Rect& panel_bounds) const {
   if (panel_on_right) {
-    // Panel is on the right → resize strip sits at the left (inner) edge.
-    return gfx::Rect(panel_bounds.x(), panel_bounds.y(),
-                     kNoBorderResizeAreaWidth, panel_bounds.height());
+    // Panel is on the right → strip sits at the left (content-facing) edge.
+    return gfx::Rect(panel_bounds.x(), panel_bounds.y(), kResizeStripWidth,
+                     panel_bounds.height());
   }
-  // Panel is on the left → resize strip sits at the right (inner) edge.
-  return gfx::Rect(panel_bounds.right() - kNoBorderResizeAreaWidth,
-                   panel_bounds.y(), kNoBorderResizeAreaWidth,
-                   panel_bounds.height());
+  // Panel is on the left → strip sits at the right (content-facing) edge.
+  return gfx::Rect(panel_bounds.right() - kResizeStripWidth, panel_bounds.y(),
+                   kResizeStripWidth, panel_bounds.height());
 }
 
 void BraveSidePanelResizeArea::Layout(PassKey) {
-  // Upstream puts resize area over the left or right border.
-  // If it doesn't have left or right border, we should put over the contents.
-  // Check only horizontal insets — top insets may be non-zero when a panel
-  // header is present, so IsEmpty() would incorrectly treat a header-only inset
-  // as a side border.
-  if (side_panel_->GetInsets().width() != 0) {
-    // Parent has a border: resize area sits in the border gap between the
-    // panel edge and the content area. Delegate entirely to upstream.
-    LayoutSuperclass<SidePanelResizeArea>(this);
-    return;
-  }
-
-  // No border: content fills the full panel. Position this view as a
-  // narrow strip at the inner edge of the panel so it overlaps the content
-  // and can capture mouse events.
+  // Upstream puts resize strip over the padding but we don't have enough
+  // padding for it. Put resize strip over the local bound at the fixed
+  // position.
   const bool panel_on_right =
       (side_panel_->IsRightAligned() && !base::i18n::IsRTL()) ||
       (!side_panel_->IsRightAligned() && base::i18n::IsRTL());
   SetBoundsRect(
-      GetNoBorderResizeBounds(panel_on_right, side_panel_->GetLocalBounds()));
+      GetResizeStripBounds(panel_on_right, side_panel_->GetLocalBounds()));
 }
 
 BEGIN_METADATA(BraveSidePanelResizeArea)
