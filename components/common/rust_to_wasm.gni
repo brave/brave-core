@@ -45,8 +45,18 @@ template("rust_to_wasm") {
     # or via `cargo install`, which:
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
-    response_file_contents = [
-      "PATH=./" + host_path_sep + getenv("PATH"),
+    response_file_contents = [ "PATH=./" + host_path_sep + getenv("PATH") ]
+
+    # Diagnostics only: on mac, cargo build scripts (cc crate) shell out to a
+    # bare `xcrun`, which resolves the *system* Xcode via `xcode-select -p`
+    # rather than the hermetic toolchain. Have gn_run_rsp.py print what the
+    # cargo subprocess actually sees so hermetic-vs-system escapes are visible
+    # in build logs. See brave/build/mac/download_hermetic_xcode.py.
+    if (host_os == "mac") {
+      response_file_contents += [ "BRAVE_DIAGNOSE_XCODE=1" ]
+    }
+
+    response_file_contents += [
       rebase_path("$root_build_dir/wasm-pack$host_exe_suffix"),
       "--log-level",
       "warn",

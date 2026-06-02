@@ -58,6 +58,55 @@ def LoadPList(path: Path) -> dict:
     return plistlib.loads(path.read_bytes())
 
 
+def _RunCmd(args: list) -> str:
+    """Runs |args| and returns stripped stdout, or an error marker."""
+    try:
+        return subprocess.run(args,
+                              capture_output=True,
+                              text=True,
+                              check=False).stdout.strip()
+    except (OSError, subprocess.SubprocessError) as e:
+        return f'(error: {e})'
+
+
+def PrintSystemXcodeDiagnostics() -> None:
+    """Prints the *active* system Xcode that a bare `xcrun` would resolve.
+
+    The hermetic toolchain is only used when DEVELOPER_DIR points at it. Tools
+    that shell out to a bare `xcrun` (e.g. cargo build scripts via the cc crate
+    during the wasm build) resolve `xcode-select -p` instead, so the system
+    Xcode's version/license state is what actually matters for those. Surface it
+    here to diagnose hermetic-vs-system mismatches that only manifest in CI.
+    """
+    if sys.platform != 'darwin':
+        return
+    developer_dir = _RunCmd(['xcode-select', '-p'])
+    print(f"  DEVELOPER_DIR env:           "
+          f"{os.environ.get('DEVELOPER_DIR', '(unset)')}")
+    print(f"  active xcode-select -p:      {developer_dir or '(unknown)'}")
+    print(f"  xcrun --show-sdk-path:       "
+          f"{_RunCmd(['xcrun', '--sdk', 'macosx', '--show-sdk-path'])}")
+    print(f"  xcrun --show-sdk-version:    "
+          f"{_RunCmd(['xcrun', '--sdk', 'macosx', '--show-sdk-version'])}")
+    # The active Xcode's *own* recorded identity, to compare against what the
+    # system plist claims has been licensed. A bare `xcrun` validates the
+    # recorded license against *these* values, not the hermetic ones.
+    if developer_dir:
+        # .../Contents/Developer -> .../Contents
+        contents = Path(developer_dir).parent
+        active_version_plist = contents / 'version.plist'
+        active_license_plist = contents / 'Resources/LicenseInfo.plist'
+        active_version = (LoadPList(active_version_plist).get(
+            'CFBundleShortVersionString', '(missing)')
+                          if active_version_plist.exists() else
+                          '(version.plist not present)')
+        active_license = (LoadPList(active_license_plist).get(
+            'licenseID', '(missing)') if active_license_plist.exists() else
+                          '(LicenseInfo.plist not present)')
+        print(f"  active Xcode version:        {active_version}")
+        print(f"  active Xcode licenseID:      {active_license}")
+
+
 def PlatformMeetsHermeticXcodeRequirements() -> bool:
     if sys.platform == 'darwin':
         needed = MAC_MINIMUM_OS_VERSION
@@ -119,6 +168,7 @@ def InstallXcodeBinaries() -> int:
         sys_version = sys_license = '(plist not present)'
     print(f"  system recorded version:     {sys_version}")
     print(f"  system recorded licenseID:   {sys_license}")
+    PrintSystemXcodeDiagnostics()
 
     if sys.platform != 'darwin':
         return 0
@@ -174,6 +224,25 @@ def InstallXcodeBinaries() -> int:
     subprocess.check_call(args)
     args = ['sudo', 'plutil', '-convert', 'xml1', current_license_path]
     subprocess.check_call(args)
+
+    # Confirm the write actually persisted. `defaults`/cfprefsd caching can mean
+    # the on-disk file and what tools observe via cfprefsd diverge, which is a
+    # prime suspect for "license accepted but xcrun still complains". Print both
+    # the direct file read (plistlib) and the cfprefsd-backed `defaults read`.
+    print('Re-reading system license plist after acceptance:')
+    plist = str(current_license_path)
+    version_key = 'IDEXcodeVersionForAgreedToGMLicense'
+    license_key = 'IDELastGMLicenseAgreedTo'
+    if current_license_path.exists():
+        post = LoadPList(current_license_path)
+        print(f"  file {version_key}: "
+              f"{post.get(version_key, '(missing)')}")
+        print(f"  file {license_key}: "
+              f"{post.get(license_key, '(missing)')}")
+    print(f"  defaults read {version_key}: "
+          f"{_RunCmd(['defaults', 'read', plist, version_key])}")
+    print(f"  defaults read {license_key}: "
+          f"{_RunCmd(['defaults', 'read', plist, license_key])}")
 
     return 0
 
