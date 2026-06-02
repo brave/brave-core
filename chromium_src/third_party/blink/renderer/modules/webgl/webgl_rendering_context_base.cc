@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/no_destructor.h"
 #include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_farbled_extension_handler.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/features.h"
@@ -66,6 +67,15 @@ blink::ScriptValue GetWebGLDebugInfoValue(
     default:
       return original_script_value;
   }
+}
+
+// A helper method to cache the list of supported webgl extensions so as to make
+// the underlying upstream call to get the list of supported extensions only
+// once.
+std::optional<blink::Vector<blink::String>>& GetRealExtensionsCached() {
+  static base::NoDestructor<std::optional<blink::Vector<blink::String>>>
+      real_extensions;
+  return *real_extensions;
 }
 
 }  // namespace
@@ -129,8 +139,11 @@ namespace blink {
 // extension is WebGLDebugRendererInfo.
 std::optional<Vector<String>>
 WebGLRenderingContextBase::getSupportedExtensions() {
-  std::optional<Vector<String>> real_extensions =
-      getSupportedExtensions_ChromiumImpl();
+  std::optional<Vector<String>>& real_extensions = GetRealExtensionsCached();
+  if (!real_extensions) {
+    real_extensions = getSupportedExtensions_ChromiumImpl();
+  }
+
   if (real_extensions == std::nullopt) {
     return real_extensions;
   }
@@ -144,8 +157,11 @@ WebGLRenderingContextBase::getSupportedExtensions() {
 
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
-  std::optional<Vector<String>> real_extensions =
-      getSupportedExtensions_ChromiumImpl();
+  std::optional<Vector<String>>& real_extensions = GetRealExtensionsCached();
+  if (!real_extensions) {
+    real_extensions = getSupportedExtensions_ChromiumImpl();
+  }
+
   if (real_extensions == std::nullopt) {
     return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
   }
