@@ -98,6 +98,7 @@ const iconMap: { [key: string]: string } = {
     'cr:add': 'plus-add',
     'settings:download': 'download',
     'settings:performance': 'cpu-chip',
+    'bookmarks:bookmarks-bar': 'window',
     'tab-search:auto-tab-groups': 'product-brave-leo',  // tab organization
 }
 
