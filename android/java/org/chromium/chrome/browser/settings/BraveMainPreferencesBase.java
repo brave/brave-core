@@ -9,6 +9,7 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -176,6 +177,14 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             OnboardingPrefManager.getInstance()
                     .setNotificationPermissionEnablingDialogShownFromSetting(true);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Fold/unfold triggers a configuration change without activity recreation.
+        // Refresh containment styling after the layout pass completes.
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::notifyPreferencesUpdated);
     }
 
     @Override
