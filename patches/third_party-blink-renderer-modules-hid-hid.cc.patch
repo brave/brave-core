@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/hid/hid.cc b/third_party/blink/renderer/modules/hid/hid.cc
+index 414af298253821cfeb5e5ab7a13a4fd5294b6e48..e5fa853bfc6921462fdc4fc078d21a1656a15f91 100644
+--- a/third_party/blink/renderer/modules/hid/hid.cc
++++ b/third_party/blink/renderer/modules/hid/hid.cc
+@@ -229,7 +229,7 @@ ScriptPromise<IDLSequence<HIDDevice>> HID::requestDevice(
+     return ScriptPromise<IDLSequence<HIDDevice>>();
+   }
+ 
+-  if (!LocalFrame::HasTransientUserActivation(window->GetFrame())) {
++  if (!LocalFrame::HasTransientUserActivation(window->GetFrame()) && BRAVE_REQUIRE_TRANSIENT_ACTIVATION_FOR_HID_REQUEST_DEVICE(window->GetFrame())) {
+     exception_state.ThrowSecurityError(
+         "Must be handling a user gesture to show a permission request.");
+     return ScriptPromise<IDLSequence<HIDDevice>>();
