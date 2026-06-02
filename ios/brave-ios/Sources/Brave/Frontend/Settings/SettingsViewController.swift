@@ -446,7 +446,27 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           ),
         ]
       )
-    case .loggedOut where braveAccountState.loggedOut!.verification != nil:
+    case .loggedOut:
+      guard let verification = braveAccountState.loggedOut!.verification else {
+        return Static.Section(
+          header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
+          rows: [
+            Row(
+              text: L10nUtils.string(
+                messageId: .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL
+              ),
+              selection: { [unowned self] in
+                openBraveAccountDialog()
+              },
+              image: UIImage(sharedNamed: "brave.logo"),
+              accessory: .disclosureIndicator,
+              cellClass: BraveAccountIconCell.self
+            )
+          ]
+        )
+      }
+
+      // logged out with verification
       return Static.Section(
         header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
         rows: [
@@ -489,7 +509,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               )
               braveAccountAuthentication.resendVerificationEmail(
                 intent: BraveAccount.VerificationIntent(
-                  loggedOutIntent: braveAccountState.loggedOut!.verification!.intent
+                  loggedOutIntent: verification.intent
                 )
               ) { [weak self] _, failure in
                 guard let self else { return }
@@ -522,7 +542,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             selection: {
               braveAccountAuthentication.cancelVerification(
                 intent: BraveAccount.VerificationIntent(
-                  loggedOutIntent: braveAccountState.loggedOut!.verification!.intent
+                  loggedOutIntent: verification.intent
                 )
               )
             },
@@ -533,23 +553,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           ),
         ],
         uuid: braveAccountSectionUUID.uuidString
-      )
-    case .loggedOut:
-      return Static.Section(
-        header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
-        rows: [
-          Row(
-            text: L10nUtils.string(
-              messageId: .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL
-            ),
-            selection: { [unowned self] in
-              openBraveAccountDialog()
-            },
-            image: UIImage(sharedNamed: "brave.logo"),
-            accessory: .disclosureIndicator,
-            cellClass: BraveAccountIconCell.self
-          )
-        ]
       )
     case .null:
       assertionFailure("Unexpected .null BraveAccount state!")
