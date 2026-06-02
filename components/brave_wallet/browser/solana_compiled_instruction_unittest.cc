@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "brave/components/brave_wallet/common/solana_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -23,19 +22,37 @@ TEST(SolanaCompiledInstructionUnitTest, SerializeDeserialize) {
                                          2, 1, 2};
 
   std::vector<uint8_t> bytes;
-  compiled_ins.Serialize(&bytes);
+  ASSERT_TRUE(compiled_ins.Serialize(bytes));
   EXPECT_EQ(bytes, expected_bytes);
 
-  size_t bytes_index = 0;
+  base::SpanReader<const uint8_t> reader(bytes);
   auto deserialized_compiled_ins =
-      SolanaCompiledInstruction::Deserialize(bytes, &bytes_index);
+      SolanaCompiledInstruction::Deserialize(reader);
   ASSERT_TRUE(deserialized_compiled_ins);
   EXPECT_EQ(deserialized_compiled_ins, compiled_ins);
-  EXPECT_EQ(bytes_index, bytes.size());
+  EXPECT_EQ(reader.remaining(), 0u);
+}
 
-  bytes.clear();
-  deserialized_compiled_ins->Serialize(&bytes);
-  EXPECT_EQ(bytes, expected_bytes);
+TEST(SolanaCompiledInstructionUnitTest, SerializeAccountIndexesSizeOverflow) {
+  // account_indexes size must fit into a uint8_t. A size larger than UINT8_MAX
+  // should cause serialization to fail.
+  SolanaCompiledInstruction compiled_ins(1, {}, {});
+  compiled_ins.SetAccountIndexesForTesting(
+      std::vector<uint8_t>(static_cast<size_t>(UINT8_MAX) + 1, 0));
+
+  std::vector<uint8_t> bytes;
+  EXPECT_FALSE(compiled_ins.Serialize(bytes));
+}
+
+TEST(SolanaCompiledInstructionUnitTest, SerializeDataSizeOverflow) {
+  // data size must fit into a uint16_t. A size larger than UINT16_MAX should
+  // cause serialization to fail.
+  SolanaCompiledInstruction compiled_ins(
+      1, {0, 1, 2},
+      std::vector<uint8_t>(static_cast<size_t>(UINT16_MAX) + 1, 0));
+
+  std::vector<uint8_t> bytes;
+  EXPECT_FALSE(compiled_ins.Serialize(bytes));
 }
 
 }  // namespace brave_wallet

@@ -8,43 +8,52 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/encoding_utils.h"
 
 namespace brave_wallet {
 
-void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16) {
-  DCHECK(compact_u16);
+void ExtendWithEmptySignatures(std::vector<uint8_t>& bytes,
+                               base::StrictNumeric<uint8_t> signatures_count) {
+  bytes.insert(bytes.end(),
+               static_cast<uint8_t>(signatures_count) * kSolanaSignatureSize,
+               0u);
+}
 
-  uint16_t rem_val = u16;
+absl::InlinedVector<uint8_t, 3> CompactU16Encode(
+    base::StrictNumeric<uint16_t> u16) {
+  absl::InlinedVector<uint8_t, 3> compact_u16;
+  uint16_t u16_val = u16;
   while (true) {
-    uint8_t elem = rem_val & 0x7f;
-    rem_val >>= 7;
-    if (rem_val == 0) {
-      compact_u16->push_back(elem);
-      break;
-    } else {
-      elem |= 0x80;
-      compact_u16->push_back(elem);
+    uint8_t elem = u16_val & 0x7f;
+    u16_val >>= 7;
+    if (u16_val == 0) {
+      compact_u16.push_back(elem);
+      return compact_u16;
     }
+
+    compact_u16.push_back(elem | 0x80);
   }
 }
 
-std::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
-    const std::vector<uint8_t>& bytes,
-    size_t start_index) {
+std::optional<uint16_t> CompactU16Decode(
+    base::SpanReader<const uint8_t>& reader) {
   uint32_t val = 0;
-  for (size_t i = 0; i + start_index < bytes.size(); ++i) {
+  for (size_t i = 0; i < 3; ++i) {
     if (i == 3) {  // TooLong error.
       return std::nullopt;
     }
-    uint32_t elem = bytes[i + start_index];
+    uint8_t elem = 0;
+    if (!reader.ReadU8LittleEndian(elem)) {
+      return std::nullopt;
+    }
     uint32_t elem_val = elem & 0x7f;
-    uint32_t elem_done = (elem & 0x80) == 0;
+    bool elem_done = (elem & 0x80) == 0;
 
     if (i == 2 && !elem_done) {  // ByteThreeContinues error.
       return std::nullopt;
@@ -55,7 +64,7 @@ std::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
       return std::nullopt;
     }
 
-    val |= (elem_val) << (i * 7);
+    val |= elem_val << (i * 7);
 
     // Overflow error.
     if (val > UINT16_MAX) {
@@ -63,16 +72,11 @@ std::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
     }
 
     if (elem_done) {
-      return std::tuple<uint16_t, size_t>(val, i + 1);
+      return val;
     }
   }
 
   return std::nullopt;
-}
-
-bool IsBase58EncodedSolanaPubkey(const std::string& key) {
-  std::vector<uint8_t> bytes;
-  return Base58Decode(key, &bytes, kSolanaPubkeySize);
 }
 
 bool Uint8ArrayDecode(std::string_view str,
@@ -100,25 +104,18 @@ bool Uint8ArrayDecode(std::string_view str,
 }
 
 std::optional<std::vector<uint8_t>> CompactArrayDecode(
-    const std::vector<uint8_t>& bytes,
-    size_t* bytes_index) {
-  DCHECK(bytes_index);
-
+    base::SpanReader<const uint8_t>& reader) {
   // Decode length.
-  auto ret = CompactU16Decode(bytes, *bytes_index);
-  if (!ret) {
+  auto length = CompactU16Decode(reader);
+  if (!length) {
     return std::nullopt;
   }
 
-  const uint16_t array_length = std::get<0>(*ret);
-  *bytes_index +=
-      std::get<1>(*ret) /* array_length for encoded length */ + array_length;
-  if (*bytes_index > bytes.size()) {
+  auto data = reader.Read(*length);
+  if (!data) {
     return std::nullopt;
   }
-
-  return std::vector<uint8_t>(bytes.begin() + *bytes_index - array_length,
-                              bytes.begin() + *bytes_index);
+  return base::ToVector(*data);
 }
 
 std::optional<uint8_t> GetUint8FromStringDict(const base::DictValue& dict,
