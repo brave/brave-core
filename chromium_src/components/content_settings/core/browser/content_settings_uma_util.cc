@@ -46,6 +46,7 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, brave_value(15)},             \
   {ContentSettingsType::BRAVE_AUTO_SHRED, brave_value(16)},               \
   /* Begin webcompat items */                                                \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU, brave_value(49)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, brave_value(50)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, brave_value(51)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, brave_value(52)}, \
