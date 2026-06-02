@@ -7,14 +7,17 @@
 
 #include <algorithm>
 #include <utility>
-#include <vector>
 
 #include "base/base64.h"
 #include "base/byte_count.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/rand_util.h"
+#include "base/strings/escape.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -29,24 +32,32 @@
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
+#include "components/input/native_web_keyboard_event.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/restore_type.h"
+#include "content/public/browser/render_widget_host.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "net/base/url_util.h"
 #include "net/cookies/site_for_cookies.h"
 #include "services/network/public/cpp/header_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/blink/public/common/input/web_input_event.h"
 #include "third_party/blink/public/common/navigation/navigation_policy.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "ui/events/keycodes/dom/dom_code.h"
+#include "ui/events/keycodes/dom/dom_key.h"
+#include "ui/events/keycodes/dom/keycode_converter.h"
+#include "ui/events/keycodes/keyboard_code_conversion.h"
+#include "ui/events/keycodes/keyboard_codes.h"
 #include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -83,7 +94,15 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
     )");
 
 constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
-constexpr base::TimeDelta kTimeout = base::Seconds(5);
+constexpr base::TimeDelta kTimeout = base::Seconds(20);
+
+// Randomized delay before typing begins, after the origin page has loaded.
+constexpr base::TimeDelta kMinInitialInputDelay = base::Seconds(2);
+constexpr base::TimeDelta kMaxInitialInputDelay = base::Seconds(5);
+
+// Randomized delay between each typed character.
+constexpr base::TimeDelta kMinCharInputDelay = base::Milliseconds(400);
+constexpr base::TimeDelta kMaxCharInputDelay = base::Milliseconds(1000);
 
 class BackupResultsWebContentsObserver
     : public content::WebContentsObserver,
@@ -104,7 +123,8 @@ class BackupResultsWebContentsObserver
         !backup_results_service_) {
       return;
     }
-    backup_results_service_->HandleWebContentsDidFinishLoad(web_contents());
+    backup_results_service_->HandleWebContentsDidFinishLoad(web_contents(),
+                                                            validated_url);
   }
 
  private:
@@ -202,8 +222,6 @@ void BackupResultsServiceImpl::FetchBackupResults(
     web_preferences.supports_multiple_windows = false;
     web_contents->SetWebPreferences(web_preferences);
 
-    SeedNavigationHistory(*web_contents, url);
-
     if (features::IsBackupResultsFullRenderEnabled()) {
       BackupResultsWebContentsObserver::CreateForWebContents(
           web_contents.get(), weak_ptr_factory_.GetWeakPtr());
@@ -212,11 +230,17 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
   auto request = pending_requests_.emplace(pending_requests_.end(),
                                            std::move(web_contents), headers,
-                                           otr_profile, std::move(callback));
+                                           otr_profile, url, std::move(callback));
 
   if (should_render) {
-    auto load_url_params = content::NavigationController::LoadURLParams(url);
-    load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;
+    // Navigate to the origin root (e.g. https://www.google.com/) derived from
+    // the target URL. Once it loads, the search query is typed into the page
+    // and submitted, rather than navigating directly to the results URL.
+    GURL origin_url = GetOriginUrl(url);
+    const GURL& navigate_url = origin_url.is_valid() ? origin_url : url;
+    auto load_url_params =
+        content::NavigationController::LoadURLParams(navigate_url);
+    load_url_params.transition_type = ui::PAGE_TRANSITION_TYPED;
     // Disallow all downloads
     for (size_t i = 0;
          i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
@@ -248,11 +272,13 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
     std::unique_ptr<content::WebContents> web_contents,
     std::optional<net::HttpRequestHeaders> headers,
     Profile* otr_profile,
+    const GURL& target_url,
     BackupResultsCallback callback)
     : headers(std::move(headers)),
       callback(std::move(callback)),
       web_contents(std::move(web_contents)),
-      otr_profile(otr_profile) {}
+      otr_profile(otr_profile),
+      target_url(target_url) {}
 
 BackupResultsServiceImpl::PendingRequest::~PendingRequest() = default;
 
@@ -304,11 +330,26 @@ void BackupResultsServiceImpl::HandleWebContentsDidFinishNavigation(
 }
 
 void BackupResultsServiceImpl::HandleWebContentsDidFinishLoad(
-    const content::WebContents* web_contents) {
+    const content::WebContents* web_contents,
+    const GURL& url) {
   auto pending_request = FindPendingRequest(web_contents);
   if (pending_request == pending_requests_.end()) {
     return;
   }
+
+  LOG(ERROR) << "BackupResults: DidFinishLoad url=" << url
+             << " typing_started=" << pending_request->typing_started
+             << " requests_loaded=" << pending_request->requests_loaded;
+
+  // The first load is the origin page (e.g. https://www.google.com/). When it
+  // finishes, begin simulating the user typing the search query.
+  if (!pending_request->typing_started &&
+      url == GetOriginUrl(pending_request->target_url)) {
+    pending_request->typing_started = true;
+    StartInputSimulation(pending_request);
+    return;
+  }
+
   pending_request->requests_loaded++;
   if (pending_request->requests_loaded ==
       static_cast<size_t>(
@@ -373,34 +414,150 @@ void BackupResultsServiceImpl::MaybeApplyUserAgentOverride(
       content::NavigationController::UA_OVERRIDE_TRUE;
 }
 
-void BackupResultsServiceImpl::SeedNavigationHistory(
-    content::WebContents& web_contents,
-    const GURL& target_url) {
+GURL BackupResultsServiceImpl::GetOriginUrl(const GURL& target_url) {
   if (!target_url.SchemeIsHTTPOrHTTPS()) {
-    return;
+    return GURL();
   }
   GURL::Replacements replacements;
   replacements.SetPathStr("/");
   replacements.ClearQuery();
   replacements.ClearRef();
-  GURL origin_root = target_url.ReplaceComponents(replacements);
-  if (!origin_root.is_valid() || origin_root == target_url) {
+  return target_url.ReplaceComponents(replacements);
+}
+
+void BackupResultsServiceImpl::StartInputSimulation(
+    PendingRequestList::iterator pending_request) {
+  // Extract the search query from the target URL's "q" parameter, replacing
+  // '+' with spaces.
+  std::string query;
+  if (net::GetValueForKeyInQuery(pending_request->target_url, "q", &query)) {
+    std::ranges::replace(query, '+', ' ');
+  }
+  pending_request->query = base::UTF8ToUTF16(query);
+  pending_request->query_char_index = 0;
+
+  // Ensure the web contents (and its autofocused search input) is focused so
+  // that forwarded keystrokes are routed to it.
+  if (pending_request->web_contents) {
+    pending_request->web_contents->Focus();
+    if (auto* view = pending_request->web_contents->GetRenderWidgetHostView()) {
+      view->Focus();
+    }
+  }
+
+  pending_request->input_timer.Start(
+      FROM_HERE,
+      base::RandTimeDelta(kMinInitialInputDelay, kMaxInitialInputDelay),
+      base::BindOnce(&BackupResultsServiceImpl::TypeNextCharacter,
+                     base::Unretained(this), pending_request));
+}
+
+void BackupResultsServiceImpl::TypeNextCharacter(
+    PendingRequestList::iterator pending_request) {
+  if (!pending_request->web_contents) {
     return;
   }
 
-  std::unique_ptr<content::NavigationEntry> entry =
-      content::NavigationController::CreateNavigationEntry(
-          origin_root, content::Referrer(),
-          /*initiator_origin=*/std::nullopt,
-          /*initiator_base_url=*/std::nullopt, ui::PAGE_TRANSITION_TYPED,
-          /*is_renderer_initiated=*/false,
-          /*extra_headers=*/std::string(), web_contents.GetBrowserContext(),
-          /*blob_url_loader_factory=*/nullptr);
+  if (pending_request->query_char_index >= pending_request->query.size()) {
+    PressEnter(*pending_request->web_contents);
+    return;
+  }
 
-  std::vector<std::unique_ptr<content::NavigationEntry>> entries;
-  entries.push_back(std::move(entry));
-  web_contents.GetController().Restore(
-      /*selected_navigation=*/0, content::RestoreType::kRestored, &entries);
+  ForwardCharacter(*pending_request->web_contents,
+                   pending_request->query[pending_request->query_char_index++]);
+
+  pending_request->input_timer.Start(
+      FROM_HERE, base::RandTimeDelta(kMinCharInputDelay, kMaxCharInputDelay),
+      base::BindOnce(&BackupResultsServiceImpl::TypeNextCharacter,
+                     base::Unretained(this), pending_request));
+}
+
+void BackupResultsServiceImpl::ForwardCharacter(
+    content::WebContents& web_contents,
+    char16_t character) {
+  auto* view = web_contents.GetRenderWidgetHostView();
+  if (!view) {
+    return;
+  }
+  auto* widget_host = view->GetRenderWidgetHost();
+  if (!widget_host) {
+    return;
+  }
+
+  ui::DomKey dom_key = ui::DomKey::FromCharacter(character);
+  ui::DomCode dom_code = ui::UsLayoutDomKeyToDomCode(dom_key);
+  ui::KeyboardCode key_code = ui::DomCodeToUsLayoutKeyboardCode(dom_code);
+
+  auto build_event = [&](blink::WebInputEvent::Type type, int modifiers) {
+    input::NativeWebKeyboardEvent event(type, modifiers,
+                                        base::TimeTicks::Now());
+    event.dom_key = dom_key;
+    event.dom_code = static_cast<int>(dom_code);
+    event.native_key_code =
+        ui::KeycodeConverter::DomCodeToNativeKeycode(dom_code);
+    event.windows_key_code = key_code;
+    event.is_system_key = false;
+    if (type == blink::WebInputEvent::Type::kChar ||
+        type == blink::WebInputEvent::Type::kRawKeyDown) {
+      event.text[0] = character;
+      event.unmodified_text[0] = character;
+    }
+    LOG(ERROR) << "BackupResults: forwarding keyboard event type="
+               << static_cast<int>(type) << " character='"
+               << static_cast<int>(character)
+               << "' windows_key_code=" << key_code
+               << " modifiers=" << modifiers;
+    return event;
+  };
+
+  int modifiers = 0;
+  if (character != ui::DomCodeToUsLayoutCharacter(dom_code, ui::EF_NONE)) {
+    modifiers |= blink::WebInputEvent::kShiftKey;
+  }
+
+  widget_host->ForwardKeyboardEvent(
+      build_event(blink::WebInputEvent::Type::kRawKeyDown, modifiers));
+  widget_host->ForwardKeyboardEvent(
+      build_event(blink::WebInputEvent::Type::kChar, modifiers));
+  widget_host->ForwardKeyboardEvent(
+      build_event(blink::WebInputEvent::Type::kKeyUp, modifiers));
+}
+
+void BackupResultsServiceImpl::PressEnter(content::WebContents& web_contents) {
+  auto* view = web_contents.GetRenderWidgetHostView();
+  if (!view) {
+    return;
+  }
+  auto* widget_host = view->GetRenderWidgetHost();
+  if (!widget_host) {
+    return;
+  }
+
+  auto build_event = [&](blink::WebInputEvent::Type type) {
+    input::NativeWebKeyboardEvent event(type, blink::WebInputEvent::kNoModifiers,
+                                        base::TimeTicks::Now());
+    event.dom_key = ui::DomKey::ENTER;
+    event.dom_code = static_cast<int>(ui::DomCode::ENTER);
+    event.native_key_code =
+        ui::KeycodeConverter::DomCodeToNativeKeycode(ui::DomCode::ENTER);
+    event.windows_key_code = ui::VKEY_RETURN;
+    event.is_system_key = false;
+    if (type == blink::WebInputEvent::Type::kChar ||
+        type == blink::WebInputEvent::Type::kRawKeyDown) {
+      event.text[0] = ui::VKEY_RETURN;
+      event.unmodified_text[0] = ui::VKEY_RETURN;
+    }
+    LOG(ERROR) << "BackupResults: forwarding Enter keyboard event type="
+               << static_cast<int>(type);
+    return event;
+  };
+
+  widget_host->ForwardKeyboardEvent(
+      build_event(blink::WebInputEvent::Type::kRawKeyDown));
+  widget_host->ForwardKeyboardEvent(
+      build_event(blink::WebInputEvent::Type::kChar));
+  widget_host->ForwardKeyboardEvent(
+      build_event(blink::WebInputEvent::Type::kKeyUp));
 }
 
 void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(

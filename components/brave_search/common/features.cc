@@ -23,10 +23,10 @@ const base::FeatureParam<int> kBraveSearchDefaultAPITotalLimit{
 
 BASE_FEATURE(kBackupResultsFullRender,
              "BraveSearchBackupResultsFullRender",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<int> kBackupResultsFullRenderMaxRequests{
-    &kBackupResultsFullRender, "MaxRequests", 2};
+    &kBackupResultsFullRender, "MaxRequests", 3};
 
 bool IsBackupResultsFullRenderEnabled() {
   return base::FeatureList::IsEnabled(kBackupResultsFullRender);
