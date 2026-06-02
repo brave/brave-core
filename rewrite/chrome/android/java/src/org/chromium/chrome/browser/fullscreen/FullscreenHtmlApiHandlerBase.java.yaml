@@ -19,50 +19,39 @@ substitutions:
                               }
       \2                        mFullscreenManagerDelegate.onExitFullscreen(null);
 
-  - description: Add a PiP-specific persistent fullscreen exit path
+  - description:
+      Add a PiP-specific persistent fullscreen exit entry point,
+      exitPersistentFullscreenModeForPictureInPicture, that tears down the
+      browser fullscreen UI while preserving the WebContents (DOM) fullscreen
+      state. It sets mSkipWebContentsExitFullscreenForPip on the Brave
+      superclass for the duration of a single synchronous
+      exitPersistentFullscreenMode() call and clears it in a finally block so
+      the flag never leaks beyond that call.
     re_pattern:
       '(@Override\n\s+public void exitPersistentFullscreenMode\(\)\s+\{\n)'
     replace: |-
-      \1        exitPersistentFullscreenMode(true);
+      public void exitPersistentFullscreenModeForPictureInPicture() {
+              BraveFullscreenHtmlApiHandlerBase self = BraveFullscreenHtmlApiHandlerBase.class.cast(this);
+              self.mSkipWebContentsExitFullscreenForPip = true;
+              try {
+                  exitPersistentFullscreenMode();
+              } finally {
+                  self.mSkipWebContentsExitFullscreenForPip = false;
+              }
           }
 
-          public void exitPersistentFullscreenModeForPictureInPicture() {
-              exitPersistentFullscreenMode(false);
-          }
-
-          private void exitPersistentFullscreenMode(boolean exitWebContentsFullscreen) {
-      \2        returnFromTargetScreenIfNeeded();
+          \1
 
   - description:
-      Thread the WebContents fullscreen exit flag into fullscreen teardown
+      Skip the WebContents (DOM) fullscreen exit for the Brave-managed PiP path,
+      gated on the flag set by exitPersistentFullscreenModeForPictureInPicture
     re_pattern:
-      '(private void exitPersistentFullscreenMode\(boolean
-      exitWebContentsFullscreen\)[\s\S]+?assumeNonNull\(mContentViewInFullscreen\);\n\s+)exitFullscreen\(\s*mWebContentsInFullscreen,\s*mContentViewInFullscreen\);'
+      '(private void exitFullscreen\(WebContents webContents, View contentView\)\s+\{[\s\S]+?resetExitFullscreenLayoutChangeListener\(contentView\);\n\s+)if \(webContents != null && !webContents\.isDestroyed\(\)\) webContents\.exitFullscreen\(\);'
     replace: |-
-      \1exitFullscreen(
-                              mWebContentsInFullscreen,
-                              mContentViewInFullscreen,
-                              exitWebContentsFullscreen);
-
-  - description:
-      Allow fullscreen teardown to decide whether WebContents fullscreen should
-      exit
-    re_pattern:
-      'private void exitFullscreen\(WebContents webContents, View
-      contentView\)\s+\{'
-    replace: |-
-      private void exitFullscreen(
-                  WebContents webContents, View contentView, boolean exitWebContentsFullscreen) {
-
-  - description: Skip WebContents fullscreen exit for the Brave-managed PiP path
-    re_pattern:
-      '(private void exitFullscreen\(\s*WebContents webContents,\s*View
-      contentView,\s*boolean
-      exitWebContentsFullscreen\)\s+\{[\s\S]+?resetExitFullscreenLayoutChangeListener\(contentView\);\n\s+)if\s+\(webContents
-      != null && !webContents\.isDestroyed\(\)\)
-      webContents\.exitFullscreen\(\);'
-    replace: |-
-      \1if (exitWebContentsFullscreen && webContents != null && !webContents.isDestroyed()) {
+      \1BraveFullscreenHtmlApiHandlerBase self = BraveFullscreenHtmlApiHandlerBase.class.cast(this);
+              if (!self.mSkipWebContentsExitFullscreenForPip
+                      && webContents != null
+                      && !webContents.isDestroyed()) {
                   webContents.exitFullscreen();
               }
 
