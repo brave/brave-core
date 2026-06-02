@@ -546,13 +546,11 @@ if (enable_web_discovery_native) {
 if (enable_brave_vpn) {
   brave_chrome_browser_deps += [
     "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/browser:v1_utils",
+    "//brave/components/brave_vpn/browser/connection",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
   ]
-  if (enable_brave_vpn_v1) {
-    brave_chrome_browser_deps +=
-        [ "//brave/components/brave_vpn/browser/connection" ]
-  }
 }
 
 if (enable_brave_vpn_v2) {
