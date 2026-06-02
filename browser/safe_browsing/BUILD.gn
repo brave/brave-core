@@ -5,7 +5,7 @@
 
 source_set("safe_browsing") {
   visibility = [
-    "//brave/test:*",
+    ":unit_tests",
     "//chrome/browser",
   ]
 
@@ -24,5 +24,24 @@ source_set("safe_browsing") {
     "//chrome/common/extensions/api",
     "//components/prefs",
     "//components/safe_browsing/core/common:safe_browsing_prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "generated_safe_browsing_pref_brave_unittest.cc" ]
+
+  deps = [
+    ":safe_browsing",
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/safebrowsing",
+    "//chrome/common/extensions/api",
+    "//chrome/test:test_support",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
   ]
 }
