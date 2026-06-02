@@ -38,6 +38,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
@@ -87,6 +88,20 @@ namespace {
 
 constexpr char kPasswordBrave[] = "brave";
 constexpr char kPasswordBrave123[] = "brave123";
+
+class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
+ public:
+  MockBraveWalletServiceDelegate() = default;
+  ~MockBraveWalletServiceDelegate() override = default;
+
+  MOCK_METHOD(void,
+              ResetPermissionsForAccount,
+              (mojom::CoinType coin, const std::string& account),
+              (override));
+  MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
+  bool IsPrivateWindow() override { return false; }
+  bool IsAutolockEnabled() override { return false; }
+};
 
 struct ImportData {
   const char* network;
@@ -3084,6 +3099,8 @@ TEST_F(KeyringServiceUnitTest, SetAccountName_HardwareAccounts) {
 }
 
 TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletAccountHidingFeature};
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
   ASSERT_TRUE(CreateWallet(&service, "brave"));
@@ -3262,9 +3279,90 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
   }
 }
 
-TEST_F(KeyringServiceUnitTest, HiddenAccounts_AccountSelection) {
+TEST_F(KeyringServiceUnitTest, AddHiddenAccountResetsAccountPermissions) {
   base::test::ScopedFeatureList feature_list{
-      features::kBraveWalletCardanoFeature};
+      features::kBraveWalletAccountHidingFeature};
+  testing::StrictMock<MockBraveWalletServiceDelegate> delegate;
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetDelegate(&delegate);
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto account = AddAccount(&service, mojom::CoinType::ETH,
+                            mojom::KeyringId::kDefault, "Account 2");
+  ASSERT_TRUE(account);
+
+  EXPECT_CALL(delegate,
+              ResetPermissionsForAccount(
+                  mojom::CoinType::ETH,
+                  GetAccountPermissionIdentifier(account->account_id)));
+  EXPECT_TRUE(AddHiddenAccount(&service, account->account_id.Clone()));
+}
+
+TEST_F(KeyringServiceUnitTest, RemoveImportedAccountResetsAccountPermissions) {
+  testing::StrictMock<MockBraveWalletServiceDelegate> delegate;
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetDelegate(&delegate);
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto account = ImportEthereumAccount(
+      &service, "Imported account",
+      GenerateEthImportPayload("7d7dc5f71eb29dc58f8b07c4f962d01d12ca6a8f95fdb"
+                               "0720fbc72d4c6f6cdd7"));
+  ASSERT_TRUE(account);
+
+  EXPECT_CALL(delegate,
+              ResetPermissionsForAccount(
+                  mojom::CoinType::ETH,
+                  GetAccountPermissionIdentifier(account->account_id)));
+  EXPECT_TRUE(RemoveAccount(&service, account->account_id, kPasswordBrave));
+}
+
+TEST_F(KeyringServiceUnitTest, RemoveHardwareAccountResetsAccountPermissions) {
+  testing::StrictMock<MockBraveWalletServiceDelegate> delegate;
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetDelegate(&delegate);
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
+  new_accounts.push_back(mojom::HardwareWalletAccount::New(
+      "0x111", "m/44'/60'/1'/0/0", "Ledger 1", mojom::HardwareVendor::kLedger,
+      "device1", mojom::KeyringId::kDefault));
+  auto accounts = service.AddHardwareAccountsSync(std::move(new_accounts));
+  ASSERT_EQ(accounts.size(), 1u);
+
+  EXPECT_CALL(delegate,
+              ResetPermissionsForAccount(
+                  mojom::CoinType::ETH,
+                  GetAccountPermissionIdentifier(accounts[0]->account_id)));
+  EXPECT_TRUE(RemoveAccount(&service, accounts[0]->account_id, ""));
+}
+
+TEST_F(KeyringServiceUnitTest, HiddenAccountsFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(
+      features::kBraveWalletAccountHidingFeature);
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto account = AddAccount(&service, mojom::CoinType::ETH,
+                            mojom::KeyringId::kDefault, "Account 2");
+  ASSERT_TRUE(account);
+
+  EXPECT_FALSE(service.CanHideAccount(*account->account_id));
+  EXPECT_FALSE(AddHiddenAccount(&service, account->account_id.Clone()));
+  EXPECT_TRUE(GetHiddenAccounts(&service).empty());
+
+  std::vector<mojom::AccountIdPtr> account_ids_to_restore;
+  account_ids_to_restore.push_back(account->account_id.Clone());
+  EXPECT_FALSE(
+      RemoveHiddenAccounts(&service, std::move(account_ids_to_restore)));
+}
+
+TEST_F(KeyringServiceUnitTest, HiddenAccounts_AccountSelection) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeatures({features::kBraveWalletAccountHidingFeature,
+                                 features::kBraveWalletCardanoFeature},
+                                {});
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));

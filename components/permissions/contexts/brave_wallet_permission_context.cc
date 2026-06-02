@@ -73,6 +73,39 @@ void AggregatePermissionResults(
   std::move(callback).Run(std::move(allowed_accounts));
 }
 
+std::optional<RequestType> GetWalletRequestType(
+    ContentSettingsType content_settings_type) {
+  switch (content_settings_type) {
+    case ContentSettingsType::BRAVE_ETHEREUM:
+      return RequestType::kBraveEthereum;
+    case ContentSettingsType::BRAVE_SOLANA:
+      return RequestType::kBraveSolana;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return RequestType::kBraveCardano;
+    default:
+      return std::nullopt;
+  }
+}
+
+bool IsWalletPermissionForAccount(const ContentSettingsPattern& pattern,
+                                  RequestType request_type,
+                                  const std::string& account) {
+  if (!pattern.MatchesSingleOrigin()) {
+    return false;
+  }
+
+  const GURL representative_url = pattern.ToRepresentativeUrl();
+  if (!representative_url.is_valid()) {
+    return false;
+  }
+
+  std::string stored_account;
+  return brave_wallet::ParseRequestingOriginFromSubRequest(
+             request_type, url::Origin::Create(representative_url), nullptr,
+             &stored_account) &&
+         base::EqualsCaseInsensitiveASCII(stored_account, account);
+}
+
 }  // namespace
 
 BraveWalletPermissionContext::BraveWalletPermissionContext(
@@ -417,6 +450,26 @@ bool BraveWalletPermissionContext::ResetWebSitePermission(
 
   delegate->ResetPermission(permission, url, url);
   return true;
+}
+
+// static
+void BraveWalletPermissionContext::ResetPermissionsForAccount(
+    content::BrowserContext* context,
+    ContentSettingsType content_settings_type,
+    const std::string& account) {
+  auto request_type = GetWalletRequestType(content_settings_type);
+  if (!request_type || account.empty()) {
+    return;
+  }
+
+  HostContentSettingsMap* map =
+      PermissionsClient::Get()->GetSettingsMap(context);
+  map->ClearSettingsForOneTypeWithPredicate(
+      content_settings_type, [request_type = *request_type, &account](
+                                 const ContentSettingPatternSource& setting) {
+        return IsWalletPermissionForAccount(setting.primary_pattern,
+                                            request_type, account);
+      });
 }
 
 void BraveWalletPermissionContext::ResetAllPermissions(
