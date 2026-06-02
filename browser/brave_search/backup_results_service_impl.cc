@@ -83,19 +83,26 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
     )");
 
 constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
-constexpr base::TimeDelta kTimeout = base::Seconds(5);
+// Delay between the seeded origin root navigation committing and the target
+// navigation starting.
+constexpr base::TimeDelta kSeedToTargetDelay = base::Seconds(5);
+// Total request timeout. Includes kSeedToTargetDelay so the seeding step does
+// not eat into the time available for the target navigation.
+constexpr base::TimeDelta kTimeout = base::Seconds(10);
 
 class BackupResultsWebContentsObserver
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BackupResultsWebContentsObserver> {
  public:
-  void DidFinishNavigation(content::NavigationHandle* controller) override {
-    const auto* response_headers = controller->GetResponseHeaders();
-    if (!response_headers || !backup_results_service_) {
+  void DidFinishNavigation(content::NavigationHandle* handle) override {
+    if (!backup_results_service_ || !handle->IsInPrimaryMainFrame() ||
+        !handle->HasCommitted()) {
       return;
     }
+    const auto* response_headers = handle->GetResponseHeaders();
     backup_results_service_->HandleWebContentsDidFinishNavigation(
-        web_contents(), response_headers->response_code());
+        web_contents(), handle->GetURL(),
+        response_headers ? response_headers->response_code() : -1);
   }
 
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -104,7 +111,8 @@ class BackupResultsWebContentsObserver
         !backup_results_service_) {
       return;
     }
-    backup_results_service_->HandleWebContentsDidFinishLoad(web_contents());
+    backup_results_service_->HandleWebContentsDidFinishLoad(web_contents(),
+                                                            validated_url);
   }
 
  private:
@@ -202,12 +210,11 @@ void BackupResultsServiceImpl::FetchBackupResults(
     web_preferences.supports_multiple_windows = false;
     web_contents->SetWebPreferences(web_preferences);
 
-    SeedNavigationHistory(*web_contents, url);
-
-    if (features::IsBackupResultsFullRenderEnabled()) {
-      BackupResultsWebContentsObserver::CreateForWebContents(
-          web_contents.get(), weak_ptr_factory_.GetWeakPtr());
-    }
+    // The observer is always needed when rendering: it both chains the target
+    // URL load after the seeded origin root navigation commits, and (when full
+    // render is enabled) extracts content once loads finish.
+    BackupResultsWebContentsObserver::CreateForWebContents(
+        web_contents.get(), weak_ptr_factory_.GetWeakPtr());
   }
 
   auto request = pending_requests_.emplace(pending_requests_.end(),
@@ -215,32 +222,51 @@ void BackupResultsServiceImpl::FetchBackupResults(
                                            otr_profile, std::move(callback));
 
   if (should_render) {
-    auto load_url_params = content::NavigationController::LoadURLParams(url);
-    load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;
-    // Disallow all downloads
-    for (size_t i = 0;
-         i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
-         i++) {
-      blink::NavigationDownloadType type =
-          static_cast<blink::NavigationDownloadType>(i);
-      load_url_params.download_policy.SetDisallowed(type);
-    }
-    auto extra_headers = GetExtraHeaders(request->headers);
-    if (!extra_headers.IsEmpty()) {
-      load_url_params.extra_headers = extra_headers.ToString();
-    }
-    MaybeApplyUserAgentOverride(*request->web_contents, load_url_params);
-    if (!request->web_contents->GetController().LoadURLWithParams(
-            load_url_params)) {
-      CleanupAndDispatchResult(request, std::nullopt);
-      return;
-    }
+    // Seed a same-origin origin root entry and navigate to it first so that it
+    // commits before the target URL. This causes the target URL's
+    // `navigation.activation.from` to reference the origin root rather than
+    // being null. The target URL load is deferred until the origin root
+    // navigation commits (see HandleWebContentsDidFinishNavigation).
+    request->target_url = url;
     request->timeout_timer.Start(
         FROM_HERE, kTimeout,
         base::BindOnce(&BackupResultsServiceImpl::CleanupAndDispatchResult,
                        base::Unretained(this), request, std::nullopt));
+    GURL seed_url = SeedNavigationHistory(*request->web_contents, url);
+    if (seed_url.is_valid()) {
+      request->seed_url = seed_url;
+    } else {
+      // No seeding possible (e.g. the target URL is already an origin root);
+      // load the target URL directly.
+      LoadTargetURL(request);
+    }
   } else {
     MakeSimpleURLLoaderRequest(request, url);
+  }
+}
+
+void BackupResultsServiceImpl::LoadTargetURL(
+    PendingRequestList::iterator pending_request) {
+  CHECK(pending_request->web_contents);
+  auto load_url_params = content::NavigationController::LoadURLParams(
+      pending_request->target_url);
+  load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;
+  // Disallow all downloads
+  for (size_t i = 0;
+       i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
+       i++) {
+    blink::NavigationDownloadType type =
+        static_cast<blink::NavigationDownloadType>(i);
+    load_url_params.download_policy.SetDisallowed(type);
+  }
+  auto extra_headers = GetExtraHeaders(pending_request->headers);
+  if (!extra_headers.IsEmpty()) {
+    load_url_params.extra_headers = extra_headers.ToString();
+  }
+  MaybeApplyUserAgentOverride(*pending_request->web_contents, load_url_params);
+  if (!pending_request->web_contents->GetController().LoadURLWithParams(
+          load_url_params)) {
+    CleanupAndDispatchResult(pending_request, std::nullopt);
   }
 }
 
@@ -271,6 +297,14 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
   if (pending_request == pending_requests_.end()) {
     return false;
   }
+  // Always allow the seeded origin root navigation through. It is an internal
+  // same-origin navigation used solely to populate `navigation.activation.from`
+  // for the target URL, and must not be subject to the allow-list or counted
+  // against the render request budget.
+  if (pending_request->seed_url.is_valid() &&
+      url == pending_request->seed_url) {
+    return true;
+  }
   if (!IsBackupResultURLAllowed(url)) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE,
@@ -295,18 +329,41 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
 
 void BackupResultsServiceImpl::HandleWebContentsDidFinishNavigation(
     const content::WebContents* web_contents,
+    const GURL& url,
     int response_code) {
   auto pending_request = FindPendingRequest(web_contents);
   if (pending_request == pending_requests_.end()) {
     return;
   }
+
+  // If this is the seeded origin root navigation committing, schedule the
+  // deferred target URL load after a short delay. The origin root is now the
+  // last committed same-origin entry, so the target navigation will expose it
+  // as `navigation.activation.from`.
+  if (pending_request->seed_url.is_valid() &&
+      !pending_request->target_load_started &&
+      url == pending_request->seed_url) {
+    pending_request->target_load_started = true;
+    pending_request->seed_to_target_timer.Start(
+        FROM_HERE, kSeedToTargetDelay,
+        base::BindOnce(&BackupResultsServiceImpl::LoadTargetURL,
+                       base::Unretained(this), pending_request));
+    return;
+  }
+
   pending_request->last_response_code = response_code;
 }
 
 void BackupResultsServiceImpl::HandleWebContentsDidFinishLoad(
-    const content::WebContents* web_contents) {
+    const content::WebContents* web_contents,
+    const GURL& url) {
   auto pending_request = FindPendingRequest(web_contents);
   if (pending_request == pending_requests_.end()) {
+    return;
+  }
+  // Ignore the load of the seeded origin root navigation; only the target
+  // URL's loads should count toward the render request budget.
+  if (pending_request->seed_url.is_valid() && url == pending_request->seed_url) {
     return;
   }
   pending_request->requests_loaded++;
@@ -373,11 +430,11 @@ void BackupResultsServiceImpl::MaybeApplyUserAgentOverride(
       content::NavigationController::UA_OVERRIDE_TRUE;
 }
 
-void BackupResultsServiceImpl::SeedNavigationHistory(
+GURL BackupResultsServiceImpl::SeedNavigationHistory(
     content::WebContents& web_contents,
     const GURL& target_url) {
   if (!target_url.SchemeIsHTTPOrHTTPS()) {
-    return;
+    return GURL();
   }
   GURL::Replacements replacements;
   replacements.SetPathStr("/");
@@ -385,7 +442,7 @@ void BackupResultsServiceImpl::SeedNavigationHistory(
   replacements.ClearRef();
   GURL origin_root = target_url.ReplaceComponents(replacements);
   if (!origin_root.is_valid() || origin_root == target_url) {
-    return;
+    return GURL();
   }
 
   std::unique_ptr<content::NavigationEntry> entry =
@@ -399,8 +456,15 @@ void BackupResultsServiceImpl::SeedNavigationHistory(
 
   std::vector<std::unique_ptr<content::NavigationEntry>> entries;
   entries.push_back(std::move(entry));
-  web_contents.GetController().Restore(
+  auto& controller = web_contents.GetController();
+  controller.Restore(
       /*selected_navigation=*/0, content::RestoreType::kRestored, &entries);
+  // Restore() marks the controller as needing a reload. Trigger it now so the
+  // origin root entry actually commits before the target URL is loaded; this
+  // makes it the last committed (same-origin) entry, which the Navigation API
+  // exposes as `navigation.activation.from` when the target URL commits.
+  controller.LoadIfNecessary();
+  return origin_root;
 }
 
 void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(

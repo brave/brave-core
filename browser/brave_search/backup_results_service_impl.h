@@ -60,8 +60,10 @@ class BackupResultsServiceImpl : public BackupResultsService,
                                      const GURL& url) override;
   void HandleWebContentsDidFinishNavigation(
       const content::WebContents* web_contents,
+      const GURL& url,
       int response_code);
-  void HandleWebContentsDidFinishLoad(const content::WebContents* web_contents);
+  void HandleWebContentsDidFinishLoad(const content::WebContents* web_contents,
+                                      const GURL& url);
 
   base::WeakPtr<BackupResultsService> GetWeakPtr() override;
 
@@ -84,6 +86,16 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
     std::unique_ptr<content::WebContents> web_contents;
 
+    // The target URL whose load is deferred until the seeded origin root
+    // navigation commits. Invalid/empty if no seeding is in progress.
+    GURL target_url;
+    // The seeded origin root URL (scheme://host/) navigated to before the
+    // target URL. Invalid/empty if no seeding is in progress.
+    GURL seed_url;
+    // Whether the deferred target URL load has been scheduled (after the seeded
+    // origin root navigation committed).
+    bool target_load_started = false;
+
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
     std::unique_ptr<network::SimpleURLLoader> simple_url_loader;
@@ -92,6 +104,9 @@ class BackupResultsServiceImpl : public BackupResultsService,
     size_t requests_loaded = 0;
     int last_response_code = -1;
     base::OneShotTimer timeout_timer;
+    // Delays the target URL load after the seeded origin root navigation
+    // commits.
+    base::OneShotTimer seed_to_target_timer;
   };
   using PendingRequestList = std::list<PendingRequest>;
 
@@ -114,8 +129,17 @@ class BackupResultsServiceImpl : public BackupResultsService,
       content::WebContents& web_contents,
       content::NavigationController::LoadURLParams& load_url_params);
 
-  void SeedNavigationHistory(content::WebContents& web_contents,
+  // Seeds a same-origin "origin root" entry (scheme://host/) and navigates to
+  // it so it commits before the target URL is loaded. This ensures the
+  // Navigation API exposes the origin root as `navigation.activation.from`
+  // when the target URL commits. Returns the seeded origin root URL if a seed
+  // navigation was started, or an empty/invalid GURL otherwise.
+  GURL SeedNavigationHistory(content::WebContents& web_contents,
                              const GURL& target_url);
+
+  // Issues the deferred load of the target URL once the seeded origin root
+  // navigation has committed.
+  void LoadTargetURL(PendingRequestList::iterator pending_request);
 
   net::HttpRequestHeaders GetExtraHeaders(
       const std::optional<net::HttpRequestHeaders>& request_headers);
