@@ -242,26 +242,26 @@ std::string_view TabManagementTool::Name() const {
 }
 
 std::string_view TabManagementTool::Description() const {
-  return "Manage browser tabs - list, move, close tabs and manage tab "
-         "groups. Only use this tool when the user explicitly requests tab "
+  return "Manage browser tabs - list and move tabs, move groups, close tabs "
+         "and manage tab groups. Only use this tool when the user explicitly "
+         "requests tab "
          "organization, grouping, moving, or closing tabs. Do not use this "
          "tool proactively or when the user's request can be answered without "
          "modifying their tabs. "
          "This tool can list all open tabs with their window, group, URL and "
          "title information, "
-         "move tabs or entire groups between windows or positions, "
+         "move individual tabs (move_tabs) or an entire group (move_group) "
+         "between windows or positions, "
          "close tabs, "
          "and create or modify tab groups. Groups are per-window, so make any "
          "moves before grouping. Use window_id=-1 to move tabs/groups to a new "
          "window. "
-         "Use move_group_id to move an entire group at once (cannot be "
-         "combined with tab_ids in the same request). "
+         "Use move_tabs to move individual tabs and move_group to move an "
+         "entire group at once. "
          "When moving tabs, the active tab state is preserved - if you move "
          "the active tab, "
          "it remains active in its new location. "
          "After each operation, the updated tab list is returned. "
-         "To move both individual tabs and groups, make separate move "
-         "requests. "
          "If possible and you know the operations and IDs ahead of time, "
          "try to make multiple parallel requests to use this tool without "
          "waiting for the answer. Every time this tool needs to be used, if "
@@ -277,8 +277,9 @@ std::optional<base::DictValue> TabManagementTool::InputProperties() const {
   return CreateInputProperties(
       {{"action", StringProperty("The action to perform",
                                  std::vector<std::string>{
-                                     "list", "move", "close", "create_group",
-                                     "update_group", "remove_from_group"})},
+                                     "list", "move_tabs", "move_group", "close",
+                                     "create_group", "update_group",
+                                     "remove_from_group"})},
        {"plan",
         StringProperty("Human readable plan of what the assistant intends to "
                        "do with the list of tabs and with the tab management "
@@ -286,34 +287,35 @@ std::optional<base::DictValue> TabManagementTool::InputProperties() const {
                        "list operation in a conversation and allows the user "
                        "to approve or deny the tab management operations.")},
        {"tab_ids",
-        ArrayProperty("List of tab IDs to operate on (for move, "
-                      "close, create_group, remove_from_group). Cannot be used "
-                      "with move_group_id.",
+        ArrayProperty("List of tab IDs to operate on (for move_tabs, "
+                      "close, create_group, remove_from_group).",
                       IntegerProperty("Tab ID"))},
-       {"move_group_id",
-        StringProperty("Group ID to move entirely (for move operation). "
-                       "Mutually exclusive with tab_ids - use separate "
-                       "requests to move both individual tabs and groups.")},
        {"window_id",
         IntegerProperty(
-            "Target window ID (for move operation). Use -1 to create a new "
-            "window. If group_id is provided, this will be inferred from that "
-            "group's window and window_id should not be provided.")},
+            "Destination window ID (for move_tabs and move_group). Use -1 to "
+            "create a new window. For move_tabs this is mutually exclusive "
+            "with "
+            "destination_group_id.")},
        {"group_id",
-        StringProperty("Target group ID for update_group or move (for move "
-                       "operation window ID will be inferred by the group "
-                       "window and is mutually exclusive) or group to "
-                       "update")},
+        StringProperty("The existing group to act on: the group to move "
+                       "(move_group) or the group to update (update_group).")},
+       {"destination_group_id",
+        StringProperty(
+            "Destination group to move tabs into (for move_tabs). Mutually "
+            "exclusive with window_id; the target window is inferred from this "
+            "group's window.")},
        {"index",
-        IntegerProperty("Target index position (for move operations)")},
+        IntegerProperty(
+            "Destination index position (for move_tabs and move_group).")},
        {"group_title", StringProperty("Title for new or updated group")},
        {"group_color",
         StringProperty(
             "Color for new or updated group",
             std::vector<std::string>{"grey", "blue", "red", "yellow", "green",
                                      "pink", "purple", "cyan", "orange"})},
-       {"add_to_end", BooleanProperty("Add tabs to end of group instead of "
-                                      "beginning (for move to group)")}});
+       {"add_to_end",
+        BooleanProperty("Add tabs to the end of the destination group instead "
+                        "of the beginning (for move_tabs into a group).")}});
 }
 
 std::optional<std::vector<std::string>> TabManagementTool::RequiredProperties()
@@ -400,17 +402,19 @@ void TabManagementTool::UseTool(const std::string& input_json,
   if (!action) {
     std::move(callback).Run(
         CreateContentBlocksForText(
-            "Missing required 'action' field. Must be one of: list, move, "
-            "close, "
-            "create_group, update_group, remove_from_group"),
+            "Missing required 'action' field. Must be one of: list, move_tabs, "
+            "move_group, close, create_group, update_group, "
+            "remove_from_group"),
         {});
     return;
   }
 
   if (*action == "list") {
     HandleListTabs(std::move(callback));
-  } else if (*action == "move") {
+  } else if (*action == "move_tabs") {
     HandleMoveTabs(std::move(callback), dict);
+  } else if (*action == "move_group") {
+    HandleMoveGroup(std::move(callback), dict);
   } else if (*action == "create_group") {
     HandleCreateGroup(std::move(callback), dict);
   } else if (*action == "update_group") {
@@ -420,8 +424,8 @@ void TabManagementTool::UseTool(const std::string& input_json,
   } else {
     std::move(callback).Run(
         CreateContentBlocksForText(
-            "Invalid action. Must be one of: list, move, close, "
-            "create_group, update_group, remove_from_group"),
+            "Invalid action. Must be one of: list, move_tabs, move_group, "
+            "close, create_group, update_group, remove_from_group"),
         {});
   }
 }
@@ -551,47 +555,21 @@ void TabManagementTool::HandleListTabs(UseToolCallback callback) {
 void TabManagementTool::HandleMoveTabs(UseToolCallback callback,
                                        const base::DictValue& params) {
   const auto* tab_ids = params.FindList("tab_ids");
-  const auto* group_to_move = params.FindString("move_group_id");
-
-  // Check for mutual exclusivity first - if both fields are present, reject
-  // regardless of content
-  if (tab_ids && group_to_move) {
+  if (!tab_ids || tab_ids->empty()) {
     std::move(callback).Run(
         CreateContentBlocksForText(
-            "Cannot provide both 'tab_ids' and 'move_group_id' in the same "
-            "request. "
-            "Use separate requests to move individual tabs and groups."),
+            "Missing or empty 'tab_ids' array for move_tabs operation"),
         {});
     return;
   }
 
-  // Either tab_ids or move_group_id must be provided with valid content
-  bool has_valid_tab_ids = tab_ids && !tab_ids->empty();
-  bool has_valid_group_id = group_to_move && !group_to_move->empty();
-
-  if (!has_valid_tab_ids && !has_valid_group_id) {
-    std::move(callback).Run(
-        CreateContentBlocksForText(
-            "Missing 'tab_ids' array or 'move_group_id' for move operation. "
-            "Provide either specific tab IDs or a group ID to move."),
-        {});
-    return;
-  }
-
-  // Extract common parameters
   const auto window_id = params.FindInt("window_id");
   const auto index = params.FindInt("index");
+  const auto* destination_group_id = params.FindString("destination_group_id");
+  const auto add_to_end = params.FindBool("add_to_end").value_or(false);
 
-  // Dispatch to specialized handlers
-  if (has_valid_group_id) {
-    HandleMoveGroup(std::move(callback), *group_to_move, window_id, index);
-  } else {
-    const auto* group_id_str = params.FindString("group_id");
-    const auto add_to_end = params.FindBool("add_to_end").value_or(false);
-
-    HandleMoveIndividualTabs(std::move(callback), HandleIdsFromList(*tab_ids),
-                             window_id, index, group_id_str, add_to_end);
-  }
+  HandleMoveIndividualTabs(std::move(callback), HandleIdsFromList(*tab_ids),
+                           window_id, index, destination_group_id, add_to_end);
 }
 
 BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
@@ -709,15 +687,26 @@ bool TabManagementTool::ValidateMoveTarget(
 }
 
 void TabManagementTool::HandleMoveGroup(UseToolCallback callback,
-                                        const std::string& group_id,
-                                        std::optional<int> window_id,
-                                        std::optional<int> index) {
+                                        const base::DictValue& params) {
+  const auto* group_id = params.FindString("group_id");
+  if (!group_id || group_id->empty()) {
+    std::move(callback).Run(CreateContentBlocksForText(
+                                "Missing 'group_id' for move_group operation"),
+                            {});
+    return;
+  }
+
+  const auto window_id = params.FindInt("window_id");
+  const auto index = params.FindInt("index");
+
   TabGroup* group = nullptr;
-  BrowserWindowInterface* source_window = FindWindowWithGroup(group_id, &group);
+  BrowserWindowInterface* source_window =
+      FindWindowWithGroup(*group_id, &group);
 
   if (!source_window || !group) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Group not found with ID: " + group_id), {});
+        CreateContentBlocksForText("Group not found with ID: " + *group_id),
+        {});
     return;
   }
 
@@ -809,16 +798,16 @@ void TabManagementTool::HandleMoveIndividualTabs(
     const std::vector<int>& tab_handles,
     std::optional<int> window_id,
     std::optional<int> index,
-    const std::string* group_id,
+    const std::string* destination_group_id,
     bool add_to_end) {
-  if (group_id && !group_id->empty() && window_id.has_value()) {
+  if (destination_group_id && !destination_group_id->empty() &&
+      window_id.has_value()) {
     std::move(callback).Run(
         CreateContentBlocksForText(
-            "Cannot provide both a target 'group_id' and 'window_id' in the "
-            "same "
-            "request. 'group_id' implies a target window that the group is in, "
-            "or "
-            "use separate requests to move individual tabs and groups."),
+            "Cannot provide both 'destination_group_id' and 'window_id' in the "
+            "same request. 'destination_group_id' implies the target window "
+            "(the group's window); to move tabs to a plain window use "
+            "'window_id' instead."),
         {});
     return;
   }
@@ -847,11 +836,12 @@ void TabManagementTool::HandleMoveIndividualTabs(
 
   // Parse target group if specified
   TabGroup* target_group = nullptr;
-  if (group_id && !group_id->empty()) {
-    target_window = FindWindowWithGroup(*group_id, &target_group);
+  if (destination_group_id && !destination_group_id->empty()) {
+    target_window = FindWindowWithGroup(*destination_group_id, &target_group);
     if (!target_window) {
       std::move(callback).Run(
-          CreateContentBlocksForText("Group not found with ID: " + *group_id),
+          CreateContentBlocksForText("Group not found with ID: " +
+                                     *destination_group_id),
           {});
       return;
     }

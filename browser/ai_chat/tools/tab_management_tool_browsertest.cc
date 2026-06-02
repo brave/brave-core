@@ -305,7 +305,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // Test moving a tab that doesn't exist
   std::string response_nonexistent_tab = RunToolAndGetText(FROM_HERE, &tool,
                                                            R"JSON({
-        "action": "move",
+        "action": "move_tabs",
         "tab_ids": [99999, 88888],
         "window_id": -1
       })JSON");
@@ -315,8 +315,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // Test moving an entire group that doesn't exist
   std::string response_move_bad_group = RunToolAndGetText(FROM_HERE, &tool,
                                                           R"JSON({
-        "action": "move",
-        "move_group_id": "totally-bogus-group-id",
+        "action": "move_group",
+        "group_id": "totally-bogus-group-id",
         "window_id": -1
       })JSON");
   EXPECT_THAT(response_move_bad_group, testing::HasSubstr("Group not found"));
@@ -325,7 +325,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   std::string response_invalid_window = RunToolAndGetText(FROM_HERE, &tool,
                                                           absl::StrFormat(
                                                               R"JSON({
-        "action": "move",
+        "action": "move_tabs",
         "tab_ids": [%d],
         "window_id": 999999
       })JSON",
@@ -334,20 +334,21 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
               testing::HasSubstr("Target window not found"));
 
   // Invalid window_id (negative but not -1)
-  EXPECT_THAT(
-      RunToolAndGetText(
-          FROM_HERE, &tool,
-          absl::StrFormat(R"({"action":"move","tab_ids":[%d],"window_id":-5})",
-                          b_handle)),
-      testing::HasSubstr("Invalid window ID"));
-
-  // Very large window_id
   EXPECT_THAT(RunToolAndGetText(
                   FROM_HERE, &tool,
                   absl::StrFormat(
-                      R"({"action":"move","tab_ids":[%d],"window_id":999999})",
+                      R"({"action":"move_tabs","tab_ids":[%d],"window_id":-5})",
                       b_handle)),
-              testing::HasSubstr("Target window not found"));
+              testing::HasSubstr("Invalid window ID"));
+
+  // Very large window_id
+  EXPECT_THAT(
+      RunToolAndGetText(
+          FROM_HERE, &tool,
+          absl::StrFormat(
+              R"({"action":"move_tabs","tab_ids":[%d],"window_id":999999})",
+              b_handle)),
+      testing::HasSubstr("Target window not found"));
 
   // Group creation, management and movement
 
@@ -451,9 +452,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
         RunToolAndGetText(FROM_HERE, &tool,
                           absl::StrFormat(
                               R"JSON({
-          "action": "move",
+          "action": "move_tabs",
           "tab_ids": [%d],
-          "group_id": "%s"
+          "destination_group_id": "%s"
         })JSON",
                               tab_to_move, group_id.value().ToString()));
 
@@ -484,9 +485,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
         RunToolAndGetText(FROM_HERE, &tool,
                           absl::StrFormat(
                               R"JSON({
-        "action": "move",
+        "action": "move_tabs",
         "tab_ids": [%d],
-        "group_id": "%s"
+        "destination_group_id": "%s"
       })JSON",
                               tab_to_move, group_id.value().ToString()));
 
@@ -520,8 +521,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
     std::string response = RunToolAndGetText(FROM_HERE, &tool,
                                              absl::StrFormat(
                                                  R"JSON({
-        "action": "move",
-        "move_group_id": "%s",
+        "action": "move_group",
+        "group_id": "%s",
         "window_id": -1
       })JSON",
                                                  group->id().ToString()));
@@ -575,8 +576,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
         RunToolAndGetText(FROM_HERE, &tool,
                           absl::StrFormat(
                               R"JSON({
-        "action": "move",
-        "move_group_id": "%s",
+        "action": "move_group",
+        "group_id": "%s",
         "index": %d
       })JSON",
                               group_id.ToString(),
@@ -594,8 +595,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
         RunToolAndGetText(FROM_HERE, &tool,
                           absl::StrFormat(
                               R"JSON({
-        "action": "move",
-        "move_group_id": "%s",
+        "action": "move_group",
+        "group_id": "%s",
         "index": %d
       })JSON",
                               group_id.ToString(),
@@ -675,7 +676,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
         FROM_HERE, &tool,
         absl::StrFormat(
             R"JSON({
-          "action": "move",
+          "action": "move_tabs",
           "tab_ids": [%d, %d, %d, %d]
         })JSON",
             tab_from_b1, another_tab_b1, tab_from_b2, another_tab_b2));
@@ -715,7 +716,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
     std::string response = RunToolAndGetText(FROM_HERE, &tool,
                                              absl::StrFormat(
                                                  R"JSON({
-        "action": "move",
+        "action": "move_tabs",
         "tab_ids": [%d, %d, %d],
         "window_id": -1
       })JSON",
@@ -748,8 +749,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
     std::string response = RunToolAndGetText(FROM_HERE, &tool,
                                              absl::StrFormat(
                                                  R"JSON({
-        "action": "move",
-        "move_group_id": "%s",
+        "action": "move_group",
+        "group_id": "%s",
         "window_id": -1
       })JSON",
                                                  group_id.ToString()));
@@ -789,7 +790,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
     RunToolAndGetText(FROM_HERE, &tool,
                       absl::StrFormat(
                           R"JSON({
-        "action": "move",
+        "action": "move_tabs",
         "tab_ids": [%d, %d, %d],
         "index": %d
       })JSON",
@@ -810,7 +811,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
     RunToolAndGetText(FROM_HERE, &tool,
                       absl::StrFormat(
                           R"JSON({
-        "action": "move",
+        "action": "move_tabs",
         "tab_ids": [%d, %d, %d],
         "window_id": %d
       })JSON",

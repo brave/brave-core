@@ -144,9 +144,15 @@ TEST_F(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
               testing::HasSubstr("Invalid action. Must be one of"));
 
   // Per-action validation
-  // move without tab_ids or move_group_id
-  EXPECT_THAT(RunTool(&tool, R"({"action":"move"})"),
-              testing::HasSubstr("Missing 'tab_ids' array or 'move_group_id'"));
+  // move_tabs without tab_ids
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_tabs"})"),
+      testing::HasSubstr("Missing or empty 'tab_ids' array for move_tabs"));
+
+  // move_group without group_id
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_group"})"),
+      testing::HasSubstr("Missing 'group_id' for move_group operation"));
 
   // create_group without tab_ids
   EXPECT_THAT(
@@ -176,75 +182,57 @@ TEST_F(TabManagementToolUnitTest, MoveParameterValidationAndMutualExclusivity) {
   // Grant permission once
   tool.UserPermissionGranted("");
 
-  // Empty tab_ids array should be treated as missing
-  EXPECT_THAT(RunTool(&tool, R"({"action":"move","tab_ids":[]})"),
-              testing::HasSubstr("Missing 'tab_ids' array or 'move_group_id'"));
-
-  // Empty move_group_id should be treated as missing
-  EXPECT_THAT(RunTool(&tool, R"({"action":"move","move_group_id":""})"),
-              testing::HasSubstr("Missing 'tab_ids' array or 'move_group_id'"));
-
-  // move with BOTH tab_ids and move_group_id (mutual exclusivity)
+  // move_tabs: empty tab_ids array should be treated as missing
   EXPECT_THAT(
-      RunTool(
-          &tool,
-          R"({"action":"move","tab_ids":[1,2],"move_group_id":"group-abc"})"),
-      testing::HasSubstr("Cannot provide both 'tab_ids' and 'move_group_id'"));
+      RunTool(&tool, R"({"action":"move_tabs","tab_ids":[]})"),
+      testing::HasSubstr("Missing or empty 'tab_ids' array for move_tabs"));
 
-  // Both provided but one is empty - strict validation rejects both fields
-  // being present
-  EXPECT_THAT(
-      RunTool(&tool, R"({"action":"move","tab_ids":[1],"move_group_id":""})"),
-      testing::HasSubstr("Cannot provide both 'tab_ids' and 'move_group_id'"));
-
-  // Test with non-existent tab handles (fails during tab validation)
-  EXPECT_THAT(RunTool(&tool, R"({"action":"move","tab_ids":[99999]})"),
+  // move_tabs: non-existent tab handles fail during tab validation
+  EXPECT_THAT(RunTool(&tool, R"({"action":"move_tabs","tab_ids":[99999]})"),
               testing::HasSubstr("No valid tabs found to move"));
 
-  // Test all mutual exclusivity validation cases
-  EXPECT_THAT(
-      RunTool(&tool, R"({"action":"move","tab_ids":[1],"move_group_id":""})"),
-      testing::HasSubstr("Cannot provide both"));  // Strict validation rejects
-                                                   // both fields present
-
+  // move_tabs: a destination group and a window are mutually exclusive
   EXPECT_THAT(
       RunTool(&tool,
-              R"({"action":"move","tab_ids":[],"move_group_id":"group1"})"),
-      testing::HasSubstr("Cannot provide both"));  // Strict validation rejects
-                                                   // both fields present
+              R"({
+                "action": "move_tabs",
+                "tab_ids": [1],
+                "destination_group_id": "g",
+                "window_id": -1
+              })"),
+      testing::HasSubstr(
+          "Cannot provide both 'destination_group_id' and 'window_id'"));
 
-  EXPECT_THAT(RunTool(&tool,
-                      R"({
-  "action":"move","tab_ids":[1,2,3],"move_group_id":"group1","window_id":-1}
-          )"),
-              testing::HasSubstr("Cannot provide both"));
-
-  EXPECT_THAT(RunTool(&tool,
-                      R"(
-              {"action":"move","tab_ids":[1],"move_group_id":"group1","index":0}
-                      )"),
-              testing::HasSubstr("Cannot provide both"));
-
-  EXPECT_THAT(RunTool(&tool,
-                      R"(
-        {"action":"move","tab_ids":[1],"group_id":"target-group","window_id":-1}
-          )"),
-              testing::HasSubstr(
-                  "Cannot provide both a target 'group_id' and 'window_id'"));
-
-  // Error responses for nonexistent resources - these don't require actual
-  // browser
+  // The mutual-exclusivity check happens before tab validation, so it is
+  // reported even with otherwise-invalid tab ids and an index.
   EXPECT_THAT(
       RunTool(&tool,
-              R"({"action":"move","move_group_id":"nonexistent-group"})"),
+              R"({
+                "action": "move_tabs",
+                "tab_ids": [1],
+                "destination_group_id": "g",
+                "index": 0,
+                "window_id": -1
+              })"),
+      testing::HasSubstr(
+          "Cannot provide both 'destination_group_id' and 'window_id'"));
+
+  // move_group: a non-existent group is reported as not found
+  EXPECT_THAT(
+      RunTool(&tool,
+              R"({"action":"move_group","group_id":"nonexistent-group"})"),
       testing::HasSubstr("Group not found"));
 
-  // Test window_id = -1 (which means "create new window") - new window creation
-  // deferred until after tab validation
+  // move_group: missing group_id is rejected
   EXPECT_THAT(
-      RunTool(&tool, R"({"action":"move","tab_ids":[1],"window_id":-1})"),
-      testing::HasSubstr("No valid tabs found"));  // Tab validation happens
-                                                   // before new window creation
+      RunTool(&tool, R"({"action":"move_group"})"),
+      testing::HasSubstr("Missing 'group_id' for move_group operation"));
+
+  // move_tabs with window_id = -1 (create new window): window creation is
+  // deferred until after tab validation, so invalid tabs are reported first.
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_tabs","tab_ids":[1],"window_id":-1})"),
+      testing::HasSubstr("No valid tabs found"));
 
   // Test update group with nonexistent group
   EXPECT_THAT(RunTool(&tool,
