@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_DELEGATE_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_DELEGATE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -21,6 +22,8 @@ class BraveAdaptiveCaptchaService;
 }  // namespace brave_adaptive_captcha
 
 namespace brave_ads {
+
+class NotificationHelper;
 
 // Browser-layer, platform-specific implementation of AdsService::Delegate.
 class AdsServiceDelegate final : public AdsService::Delegate {
@@ -61,6 +64,7 @@ class AdsServiceDelegate final : public AdsService::Delegate {
   const raw_ref<PrefService> local_state_;
   const raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
       adaptive_captcha_service_;  // Not owned.
+  std::unique_ptr<NotificationHelper> notification_helper_;
 };
 
 }  // namespace brave_ads

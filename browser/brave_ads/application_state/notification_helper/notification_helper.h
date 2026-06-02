@@ -12,21 +12,18 @@
 
 class Profile;
 
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
 namespace brave_ads {
 
 class NotificationHelperImpl;
 
 class NotificationHelper final {
  public:
+  NotificationHelper();
+
   NotificationHelper(const NotificationHelper&) = delete;
   NotificationHelper& operator=(const NotificationHelper&) = delete;
 
-  static NotificationHelper* GetInstance();
+  ~NotificationHelper();
 
   void MaybeInitForProfile(Profile* profile);
 
@@ -38,12 +35,6 @@ class NotificationHelper final {
   bool DoesSupportSystemNotifications() const;
 
  private:
-  friend base::NoDestructor<NotificationHelper>;
-
-  NotificationHelper();
-
-  ~NotificationHelper();
-
   void OnSystemNotificationPlatformBridgeReady(bool success);
 
   bool is_initialized_ = false;

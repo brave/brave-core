@@ -44,7 +44,8 @@ AdsServiceDelegate::AdsServiceDelegate(
         adaptive_captcha_service)
     : profile_(profile),
       local_state_(local_state),
-      adaptive_captcha_service_(adaptive_captcha_service) {}
+      adaptive_captcha_service_(adaptive_captcha_service),
+      notification_helper_(std::make_unique<NotificationHelper>()) {}
 
 AdsServiceDelegate::~AdsServiceDelegate() {}
 
@@ -70,25 +71,25 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 }
 
 void AdsServiceDelegate::MaybeInitNotificationHelper() {
-  NotificationHelper::GetInstance()->MaybeInitForProfile(&*profile_);
+  notification_helper_->MaybeInitForProfile(&*profile_);
 }
 
 bool AdsServiceDelegate::
     CanShowSystemNotificationsWhileBrowserIsBackgrounded() {
-  return NotificationHelper::GetInstance()
+  return notification_helper_
       ->CanShowSystemNotificationsWhileBrowserIsBackgrounded();
 }
 
 bool AdsServiceDelegate::DoesSupportSystemNotifications() {
-  return NotificationHelper::GetInstance()->DoesSupportSystemNotifications();
+  return notification_helper_->DoesSupportSystemNotifications();
 }
 
 bool AdsServiceDelegate::CanShowNotifications() {
-  return NotificationHelper::GetInstance()->CanShowNotifications();
+  return notification_helper_->CanShowNotifications();
 }
 
 bool AdsServiceDelegate::ShowOnboardingNotification() {
-  return NotificationHelper::GetInstance()->ShowOnboardingNotification();
+  return notification_helper_->ShowOnboardingNotification();
 }
 
 void AdsServiceDelegate::ShowScheduledCaptcha(const std::string& payment_id,
