@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { RegisterPolymerPrototypeModification, RegisterStyleOverride } from '//resources/brave/polymer_overriding.js'
+import { RegisterPolymerPrototypeModification, RegisterStyleOverride, RegisterPolymerTemplateModifications } from '//resources/brave/polymer_overriding.js'
 import { PowerBookmarksService } from './power_bookmarks_service.js';
 import type { BookmarksTreeNode } from './bookmarks.mojom-webui.js';
 
@@ -28,6 +28,16 @@ RegisterStyleOverride('power-bookmarks-list', html`<style>
     border-radius: var(--leo-radius-s);
   }
 </style>`)
+
+RegisterPolymerTemplateModifications({
+  'power-bookmarks-list': template => {
+    // Change the icon of the add current tab button to the Brave one (without an outline).
+    const buttonIcon = template.querySelector('#addCurrentTabButton [slot=prefix-icon]')
+    if (!buttonIcon) throw new Error('buttonIcon not found')
+
+    buttonIcon.setAttribute('icon', 'plus-add')
+  }
+})
 
 const originalSortBookmarks = PowerBookmarksService.prototype.sortBookmarks
 PowerBookmarksService.prototype.sortBookmarks = function (
