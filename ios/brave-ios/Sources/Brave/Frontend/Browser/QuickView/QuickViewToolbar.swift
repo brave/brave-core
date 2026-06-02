@@ -43,6 +43,10 @@ class QuickViewToolbarModel {
     self.secondaryTopButton = secondaryTopButton
     self.onActionButton = onActionButton
   }
+
+  func updateShieldingState(_ isEnabled: Bool) {
+    isShieldDisabled = !isEnabled
+  }
 }
 
 extension QuickViewToolbarModel: TabObserver {
@@ -83,6 +87,8 @@ extension QuickViewToolbarModel: TabObserver {
 
 struct QuickViewToolbarView: View {
   let viewModel: QuickViewToolbarModel
+  /// An invisible `UIView` background lives in SwiftUI for UIKit API to reference later
+  var shieldBackgroundView: InvisibleUIView = .init()
 
   var body: some View {
     VStack(spacing: 0) {
@@ -170,6 +176,7 @@ struct QuickViewToolbarView: View {
   private var topRow: some View {
     HStack(alignment: .top, spacing: 8) {
       shieldButton
+        .background(shieldBackgroundView)
 
       VStack(spacing: 12) {
         addressView
