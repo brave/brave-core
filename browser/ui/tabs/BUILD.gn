@@ -157,6 +157,7 @@ if (!is_android) {
     deps = [
       "//base",
       "//brave/browser/sessions",
+      "//brave/browser/ui/tabs:tab_strip",
       "//brave/components/tabs",
       "//chrome/browser/sessions",
       "//chrome/browser/ui/tabs:features",

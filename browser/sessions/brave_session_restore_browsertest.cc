@@ -16,9 +16,11 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
+#include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -29,6 +31,11 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/session_types.h"
+#include "components/sessions/core/tab_restore_service.h"
+#include "components/sessions/core/tab_restore_types.h"
+#include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -203,6 +210,22 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
 
   BraveTabStripModel* brave_tab_strip_model() {
     return static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+  }
+
+  // Returns the tree node id string for the tab at |index|, or an empty string
+  // if the tab is not inside a tree node. Mirrors the GetTreeTabNodeCollection
+  // helper used by TreeTabSessionObserver.
+  std::string GetTreeNodeIdForTab(int index) {
+    const tabs::TabInterface* tab =
+        brave_tab_strip_model()->GetTabAtIndex(index);
+    const tabs::TabCollection* parent = tab->GetParentCollection();
+    if (parent && parent->type() == tabs::TabCollection::Type::TREE_NODE) {
+      return static_cast<const tabs::TreeTabNodeTabCollection*>(parent)
+          ->node()
+          .id()
+          .ToString();
+    }
+    return std::string();
   }
 
   SessionService* session_service() {
@@ -456,4 +479,115 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
         EXPECT_TRUE(parent_id && parent_id->empty())
             << "surviving tab is the root; its parent ID should be empty";
       }));
+}
+
+// Verifies that closing a tab that lives inside a tree node captures the tab's
+// tree position (node id, parent id, collapsed state) into the
+// TabRestoreService entry via BrowserLiveTabContext::GetExtraDataForTab, so
+// that "restore closed tab" can return the tab to its tree position.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       ClosedTreeChildTabCapturesTreePositionForRestore) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Build A (root at 0) -> B (child of A at 1). Navigate B so it has a
+  // committed entry; tabs with no navigation are skipped by TabRestoreService.
+  auto* tab_a = browser()->tab_strip_model()->GetTabAtIndex(0);
+  {
+    auto tab_b = std::make_unique<tabs::TabModel>(
+        content::WebContents::Create(
+            content::WebContents::CreateParams(browser()->profile())),
+        browser()->tab_strip_model());
+    tab_b->set_opener(tab_a);
+    brave_tab_strip_model()->AddTab(
+        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  content::WebContents* web_contents_b =
+      browser()->tab_strip_model()->GetWebContentsAt(1);
+  ASSERT_TRUE(web_contents_b);
+  ASSERT_TRUE(content::NavigateToURL(web_contents_b, GURL("about:blank")));
+
+  // Capture the live node ids before closing: B is the tab being closed and A
+  // is its parent.
+  const std::string node_b_id = GetTreeNodeIdForTab(1);
+  const std::string node_a_id = GetTreeNodeIdForTab(0);
+  ASSERT_FALSE(node_b_id.empty());
+  ASSERT_FALSE(node_a_id.empty());
+
+  sessions::TabRestoreService* tab_restore_service =
+      TabRestoreServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(tab_restore_service);
+
+  // Close B. This synchronously creates a TAB restore entry whose extra_data is
+  // populated by BrowserLiveTabContext::GetExtraDataForTab().
+  browser()->tab_strip_model()->CloseWebContentsAt(
+      1, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+
+  ASSERT_GE(tab_restore_service->entries().size(), 1u);
+  const sessions::tab_restore::Entry* entry =
+      tab_restore_service->entries().front().get();
+  ASSERT_EQ(sessions::tab_restore::Type::TAB, entry->type);
+  const auto* restored_tab =
+      static_cast<const sessions::tab_restore::Tab*>(entry);
+
+  // The closed tab should carry its own node id...
+  const auto* node_id =
+      base::FindOrNull(restored_tab->extra_data, kBraveTreeNodeIdKey);
+  ASSERT_TRUE(node_id);
+  EXPECT_EQ(*node_id, node_b_id);
+
+  // ...its parent's node id (A)...
+  const auto* parent_id =
+      base::FindOrNull(restored_tab->extra_data, kBraveTreeParentNodeIdKey);
+  ASSERT_TRUE(parent_id);
+  EXPECT_EQ(*parent_id, node_a_id);
+
+  // ...and the collapsed state, expressed as "0" or "1".
+  const auto* collapsed =
+      base::FindOrNull(restored_tab->extra_data, kBraveTreeNodeCollapsedKey);
+  ASSERT_TRUE(collapsed);
+  EXPECT_TRUE(*collapsed == "0" || *collapsed == "1");
+}
+
+// Verifies that closing a tab while the tree tab feature is enabled but the
+// current window is not displaying tabs as a tree (tree_model() is null) does
+// not write any tree extra_data to the TabRestoreService entry.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       ClosedTabWithoutTreeModelHasNoTreeExtraData) {
+  // Disable the tree tabs pref so BraveTabStripModel::tree_model() is null even
+  // though the kBraveTreeTab feature is enabled.
+  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled,
+                                               false);
+  ASSERT_FALSE(brave_tab_strip_model()->tree_model());
+
+  // Open a second tab and navigate it so it is recorded by TabRestoreService.
+  auto tab_b = std::make_unique<tabs::TabModel>(
+      content::WebContents::Create(
+          content::WebContents::CreateParams(browser()->profile())),
+      browser()->tab_strip_model());
+  brave_tab_strip_model()->AddTab(std::move(tab_b), -1,
+                                  ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  content::WebContents* web_contents_b =
+      browser()->tab_strip_model()->GetWebContentsAt(1);
+  ASSERT_TRUE(web_contents_b);
+  ASSERT_TRUE(content::NavigateToURL(web_contents_b, GURL("about:blank")));
+
+  sessions::TabRestoreService* tab_restore_service =
+      TabRestoreServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(tab_restore_service);
+
+  browser()->tab_strip_model()->CloseWebContentsAt(
+      1, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+
+  ASSERT_GE(tab_restore_service->entries().size(), 1u);
+  const sessions::tab_restore::Entry* entry =
+      tab_restore_service->entries().front().get();
+  ASSERT_EQ(sessions::tab_restore::Type::TAB, entry->type);
+  const auto* restored_tab =
+      static_cast<const sessions::tab_restore::Tab*>(entry);
+
+  EXPECT_FALSE(base::FindOrNull(restored_tab->extra_data, kBraveTreeNodeIdKey));
+  EXPECT_FALSE(
+      base::FindOrNull(restored_tab->extra_data, kBraveTreeParentNodeIdKey));
+  EXPECT_FALSE(
+      base::FindOrNull(restored_tab->extra_data, kBraveTreeNodeCollapsedKey));
 }

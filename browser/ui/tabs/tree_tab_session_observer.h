@@ -33,6 +33,14 @@ class TreeTabSessionObserver : public TabStripModelObserver {
   TreeTabSessionObserver& operator=(const TreeTabSessionObserver&) = delete;
   ~TreeTabSessionObserver() override;
 
+  // Called from BrowserLiveTabContext::GetExtraDataForTab to record the
+  // tree-tab position of the tab being closed. Writes kBraveTreeNodeIdKey and
+  // kBraveTreeParentNodeIdKey, and kBraveTreeNodeCollapsedKey into
+  // |extra_data|.
+  void MaybePopulateTreeTabExtraData(
+      int index,
+      std::map<std::string, std::string>* extra_data);
+
  private:
   // TabStripModelObserver:
   void OnTreeTabChanged(const TreeTabChange& change) override;

@@ -82,6 +82,12 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return brave_non_client_hit_test_helper_.get();
   }
 
+  // Can be null when the browser isn't a normal browser or when the tree tab
+  // feature is disabled.
+  TreeTabSessionObserver* GetTreeTabSessionObserver() {
+    return tree_tab_session_observer_.get();
+  }
+
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
