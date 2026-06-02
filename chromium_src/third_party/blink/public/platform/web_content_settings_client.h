@@ -42,6 +42,9 @@ class GURL;
                                      const blink::WebURL& script_url) {     \
     return enabled_per_settings;                                            \
   }                                                                         \
+  virtual bool RequireTransientActivationForHidRequestDevice() {            \
+    return true;                                                            \
+  }                                                                         \
   virtual bool AllowStorageAccessSync
 
 #include <third_party/blink/public/platform/web_content_settings_client.h>  // IWYU pragma: export

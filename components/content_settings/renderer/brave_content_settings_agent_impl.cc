@@ -20,7 +20,9 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "content/public/common/url_constants.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -32,6 +34,10 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
 
 namespace content_settings {
 namespace {
@@ -144,6 +150,26 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
     return false;
   }
   return shields_settings_->reduce_language;
+}
+
+bool BraveContentSettingsAgentImpl::
+    RequireTransientActivationForHidRequestDevice() {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Calls to `navigator.hid.requestDevice()` from
+  // chrome-untrusted://ledger-bridge subframe dont't require transient user
+  // activation.
+  if (render_frame() && render_frame()->GetWebFrame() &&
+      !render_frame()->IsMainFrame()) {
+    auto origin = render_frame()->GetWebFrame()->GetSecurityOrigin();
+    if (origin.Protocol() == content::kChromeUIUntrustedScheme &&
+        (origin.Host() == kUntrustedLedgerHost)) {
+      return false;
+    }
+  }
+#endif
+
+  return ContentSettingsAgentImpl::
+      RequireTransientActivationForHidRequestDevice();
 }
 
 bool BraveContentSettingsAgentImpl::IsJsBlockingEnforced() const {
