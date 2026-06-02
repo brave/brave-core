@@ -5,12 +5,13 @@
 
 #include "brave/browser/brave_origin/brave_origin_navigation.h"
 
-#include "base/notimplemented.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/brave_origin/android/brave_origin_settings_launcher_helper.h"
+#else
 #include "chrome/browser/ui/chrome_pages.h"
 #endif
 
@@ -25,7 +26,7 @@ void BraveOriginNavigationDelegate::OpenOriginSettings() {
 #if !BUILDFLAG(IS_ANDROID)
   chrome::ShowSettingsSubPageForProfile(&*profile_, "origin");
 #else
-  NOTIMPLEMENTED();
+  OpenOriginSettingsForRestart(&*profile_);
 #endif
 }
 
