@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/insets.h"
@@ -24,7 +25,6 @@ namespace {
 
 constexpr int kHeaderInteriorMargin = 16;
 constexpr int kHeaderButtonSize = 20;
-constexpr int kHeaderHeight = 60;
 constexpr int kSeparatorHorizontalSpacing = 12;
 
 }  // namespace
@@ -33,7 +33,7 @@ BraveSidePanelHeader::BraveSidePanelHeader(std::unique_ptr<Delegate> delegate)
     : delegate_(std::move(delegate)) {
   CHECK(delegate_);
 
-  SetBackground(views::CreateSolidBackground(nala::kColorPageBackground));
+  UpdateHeader();
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kHorizontal)
       .SetInteriorMargin(gfx::Insets(kHeaderInteriorMargin))
@@ -59,18 +59,28 @@ BraveSidePanelHeader::BraveSidePanelHeader(std::unique_ptr<Delegate> delegate)
   }
 
   AddChildView(delegate_->CreateCloseButton());
+
+  // Safe: `delegate_` is owned by this view and destroyed before `this`, so
+  // the callback cannot outlive `this`.
+  delegate_->SetUpdateHeaderCallback(base::BindRepeating(
+      &BraveSidePanelHeader::UpdateHeader, base::Unretained(this)));
 }
 
 BraveSidePanelHeader::~BraveSidePanelHeader() = default;
+
+void BraveSidePanelHeader::UpdateHeader() {
+  SetBackground(views::CreateRoundedRectBackground(
+      nala::kColorPageBackground, delegate_->GetTopRadius(), 0, 0));
+}
 
 void BraveSidePanelHeader::Layout(PassKey) {
   LayoutSuperclass<views::View>(this);
 
   // Need to set bounds as parent view(SidePanel) uses FillLayout.
   const gfx::Rect contents_bounds = parent()->GetContentsBounds();
-  SetBoundsRect(gfx::Rect(contents_bounds.x(),
-                          contents_bounds.y() - kHeaderHeight,
-                          contents_bounds.width(), kHeaderHeight));
+  SetBoundsRect(gfx::Rect(
+      contents_bounds.x(), contents_bounds.y() - GetPreferredSize().height(),
+      contents_bounds.width(), GetPreferredSize().height()));
 }
 
 BEGIN_METADATA(BraveSidePanelHeader)

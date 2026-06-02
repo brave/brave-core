@@ -36,5 +36,10 @@ int BraveLayoutProvider::GetDistanceMetric(int metric) const {
     return 8;
   }
 
+  if (metric == DISTANCE_SIDE_PANEL_CONTENT_RADIUS) {
+    return LayoutProvider::GetCornerRadiusMetric(
+        views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+  }
+
   return ChromeLayoutProvider::GetDistanceMetric(metric);
 }
