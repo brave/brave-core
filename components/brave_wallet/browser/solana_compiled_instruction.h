@@ -11,6 +11,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/containers/span_reader.h"
 
 namespace brave_wallet {
 
@@ -22,8 +23,8 @@ class SolanaMessageAddressTableLookup;
 class SolanaCompiledInstruction {
  public:
   SolanaCompiledInstruction(uint8_t program_id_index,
-                            const std::vector<uint8_t>& account_indexes,
-                            const std::vector<uint8_t>& data);
+                            std::vector<uint8_t> account_indexes,
+                            std::vector<uint8_t> data);
   SolanaCompiledInstruction(const SolanaCompiledInstruction&) = delete;
   SolanaCompiledInstruction(SolanaCompiledInstruction&&);
   SolanaCompiledInstruction& operator=(const SolanaCompiledInstruction&) =
@@ -31,12 +32,11 @@ class SolanaCompiledInstruction {
   SolanaCompiledInstruction& operator=(SolanaCompiledInstruction&&);
   ~SolanaCompiledInstruction();
 
-  bool operator==(const SolanaCompiledInstruction& ins) const;
+  bool operator==(const SolanaCompiledInstruction& ins) const = default;
 
-  void Serialize(std::vector<uint8_t>* bytes) const;
+  [[nodiscard]] bool Serialize(std::vector<uint8_t>& bytes) const;
   static std::optional<SolanaCompiledInstruction> Deserialize(
-      const std::vector<uint8_t>& bytes,
-      size_t* bytes_index);
+      base::SpanReader<const uint8_t>& reader);
 
   static std::optional<SolanaCompiledInstruction> FromInstruction(
       const SolanaInstruction& instruction,

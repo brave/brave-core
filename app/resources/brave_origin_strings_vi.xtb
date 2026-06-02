@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Công cụ đảm bảo an toàn của Brave</translation>
 <translation id="1902837727299679178">Brave muốn xoá dữ liệu của bạn trong Trình quản lý mật khẩu. Nhập mật khẩu Windows của bạn để cho phép việc này.</translation>
 <translation id="4449148723378534338">Xem các chế độ kiểm soát quan trọng đối với quyền riêng tư và tính bảo mật trong Brave</translation>
-<translation id="5229247933547820267">Để hỏi Chế độ AI về thẻ của bạn mà không cần rời khỏi trang, hãy đăng nhập vào Brave. Bạn cũng có thể truy cập mật khẩu và nhiều dữ liệu khác trên mọi thiết bị của mình.</translation>
 <translation id="1640672724030957280">Đang tải xuống...</translation>
 <translation id="1680687534629375545">Hỏi tính năng Tìm kiếm hình ảnh về trang này</translation>
 <translation id="509363484780540563">Bạn có thể sử dụng Brave mỗi khi bạn nhấp vào đường liên kết trong thư/tin nhắn, tài liệu và các ứng dụng khác. Brave cũng sẽ được ghim vào thanh tác vụ.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Luôn hiện Chế độ AI</translation>
 <translation id="2472891440303445472">Brave đã chặn tệp tải xuống này vì tệp này chứa nội dung lừa đảo và có thể thực hiện các thay đổi không mong muốn đối với thiết bị của bạn</translation>
 <translation id="2054358978145431867">Lần tới, khi mở Brave iOS, bạn sẽ thấy lời nhắc dùng thử <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Brave sẽ tắt tính năng tối ưu hoá JavaScript khi bạn truy cập vào một trang web lần đầu tiên.
+
+Nếu trang này không hoạt động như mong đợi, hãy thử cho phép tính năng tối ưu hoá.</translation>
 <translation id="2726948994393234543">Mật khẩu và các dữ liệu khác trên Brave mà bạn đã lưu trong Tài khoản Brave của mình sẽ bị xoá khỏi thiết bị này. Để tiếp tục sử dụng các dữ liệu đó trong Brave, hãy đăng nhập lại.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Tổ chức của bạn sẽ tự động xoá dữ liệu duyệt web sau 1 phút bạn không dùng đến Brave. Dữ liệu này có thể bao gồm nhật ký, nội dung tự động điền và tệp đã tải xuống. Các thẻ sẽ vẫn mở.}other{Tổ chức của bạn sẽ tự động xoá dữ liệu duyệt web sau # phút bạn không dùng đến Brave. Dữ liệu này có thể bao gồm nhật ký, nội dung tự động điền và tệp đã tải xuống. Các thẻ sẽ vẫn mở.}}</translation>
 <translation id="2126108037660393668">Không xác minh được tệp tải xuống.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Tùy chỉnh hồ sơ mới của bạn trên Brave</translation>
+<translation id="2430807206104224491">Bạn có thể tiếp tục trò chuyện với Chế độ AI mà không cần chuyển đổi giữa các thẻ. Để bắt đầu, hãy đăng nhập vào Brave. Bạn cũng có thể sử dụng mật khẩu và nhiều dữ liệu khác trên mọi thiết bị của mình.</translation>
 <translation id="4805865169608137960">Để xoá Tài khoản Brave của bạn khỏi Brave, hãy vào trang Cài đặt rồi đăng xuất khỏi Brave</translation>
 <translation id="1651639704310627074">Sau đó, Brave có thể hỏi xem bạn có muốn sử dụng thông tin đã lưu để tự động điền vào biểu mẫu hay không</translation>
 <translation id="2585240446624043880">Brave không thể đọc và ghi vào thư mục dữ liệu:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Mỗi hồ sơ đều có thông tin riêng trên Brave, chẳng hạn như dấu trang, các trang web đã truy cập, mật khẩu và nhiều thông tin khác</translation>
 <translation id="6756656512757374876">Tìm hiểu thêm về <ph name="BEGIN_LINK"/>cách Brave bảo mật dữ liệu của bạn<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Các thay đổi đối với chế độ cài đặt này sẽ được áp dụng sau khi Brave khởi động lại.</translation>
+<translation id="3396870972301571614">Quản lý các tiện ích bằng cách nhấp vào phần Tiện ích trong trình đơn chính của Brave.</translation>
 <translation id="2535436634051789953">Bạn có thể chuyển để xem mật khẩu trong một hồ sơ Brave khác</translation>
 <translation id="2312399718665761438">Để sửa lỗi chính tả, Brave sẽ gửi cho Brave nội dung bạn nhập vào các trường văn bản</translation>
 <translation id="3507835409099344374">Chuyển đến phần cài đặt thông báo của Brave</translation>

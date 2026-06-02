@@ -3,21 +3,46 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+declare global {
+  interface Window {
+    webkit: any;
+  }
+}
+
 class SafeBuiltins {
   readonly $Object: typeof Object = this.secureCopy(Object);
   readonly $Function: typeof Function = this.secureCopy(Function);
   readonly $Array: typeof Array = this.secureCopy(Array);
   readonly $ = function(value: any): any { return value; }
 
+  // Sends a message to a script message handler in the browser
+  readonly sendWebKitMessage: (handlerName: string, message: object|string) => void;
+
+  // Sends a message to a script message handler in the browser and returns a
+  // Promise that resolves when the browser replies
+  readonly sendWebKitMessageWithReply: (handlerName: string, message: object|string) => Promise<any>;
+
   constructor() {
-    // Freeze all the safe builtins
-    for (const value of [this.$Object, this.$Function, this.$Array, this.$]) {
+    // Setup private refs to capture in safe builtin functions
+    const webkitMessageHandlers = window.webkit.messageHandlers;
+
+    this.sendWebKitMessage = (handlerName, message) => {
+      webkitMessageHandlers[handlerName].postMessage(message);
+    }
+
+    this.sendWebKitMessageWithReply = (handlerName, message) => {
+      return webkitMessageHandlers[handlerName].postMessage(message);
+    }
+
+    // Freeze all the safe builtins and any function we export
+    for (const value of [this.$Object, this.$Function, this.$Array, this.$,
+      this.sendWebKitMessage, this.sendWebKitMessageWithReply]) {
       this.deepFreeze(value);
     }
   }
 
   // Freeze an object and its prototype
-  deepFreeze(value: any) {
+  private deepFreeze(value: any) {
     if (!value) {
       return;
     }

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 
+#include <stdint.h>
+
 #include <string>
 #include <vector>
 
@@ -30,19 +32,45 @@ TEST(SolanaMessageAddressTableLookupUnitTest, SerializeDeserialize) {
       254, 148, 183, 39, 51, 192, 2,   1,  2,   2,   3,   4};
 
   std::vector<uint8_t> bytes;
-  lookup.Serialize(&bytes);
+  ASSERT_TRUE(lookup.Serialize(bytes));
   EXPECT_EQ(bytes, expected_bytes);
 
-  size_t bytes_index = 0;
+  base::SpanReader<const uint8_t> reader(bytes);
   auto deserialized_lookup =
-      SolanaMessageAddressTableLookup::Deserialize(bytes, &bytes_index);
+      SolanaMessageAddressTableLookup::Deserialize(reader);
   ASSERT_TRUE(deserialized_lookup);
   EXPECT_EQ(deserialized_lookup, lookup);
-  EXPECT_EQ(bytes_index, bytes.size());
+  EXPECT_EQ(reader.remaining(), 0u);
 
   bytes.clear();
-  deserialized_lookup->Serialize(&bytes);
+  ASSERT_TRUE(deserialized_lookup->Serialize(bytes));
   EXPECT_EQ(bytes, expected_bytes);
+}
+
+TEST(SolanaMessageAddressTableLookupUnitTest,
+     SerializeWriteIndexesSizeOverflow) {
+  // write_indexes size must fit into a uint8_t. A size larger than UINT8_MAX
+  // should cause serialization to fail.
+  SolanaMessageAddressTableLookup lookup(
+      *SolanaAddress::FromBase58(
+          "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"),
+      std::vector<uint8_t>(static_cast<size_t>(UINT8_MAX) + 1, 0), {3, 4});
+
+  std::vector<uint8_t> bytes;
+  EXPECT_FALSE(lookup.Serialize(bytes));
+}
+
+TEST(SolanaMessageAddressTableLookupUnitTest,
+     SerializeReadIndexesSizeOverflow) {
+  // read_indexes size must fit into a uint8_t. A size larger than UINT8_MAX
+  // should cause serialization to fail.
+  SolanaMessageAddressTableLookup lookup(
+      *SolanaAddress::FromBase58(
+          "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"),
+      {1, 2}, std::vector<uint8_t>(static_cast<size_t>(UINT8_MAX) + 1, 0));
+
+  std::vector<uint8_t> bytes;
+  EXPECT_FALSE(lookup.Serialize(bytes));
 }
 
 TEST(SolanaMessageAddressTableLookupUnitTest, FromToValue) {

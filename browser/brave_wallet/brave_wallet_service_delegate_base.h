@@ -44,6 +44,8 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
   bool ResetPermission(mojom::CoinType coin,
                        const url::Origin& origin,
                        const std::string& account) override;
+  void ResetPermissionsForAccount(mojom::CoinType coin,
+                                  const std::string& account) override;
   bool IsPermissionDenied(mojom::CoinType coin,
                           const url::Origin& origin) override;
   void ResetAllPermissions() override;

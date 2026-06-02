@@ -764,6 +764,10 @@ ensure that new logic, branches, and edge cases have corresponding tests. This
 applies to all PRs, not just bug fixes. Don't be overly strict — use judgment —
 but flag obvious gaps where meaningful test coverage is missing.
 
+**Exception:** Don't require a dedicated test when the change is trivial UI with
+no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
+an existing untested pattern in the surrounding code.
+
 **If code is difficult to test, suggest refactors that improve testability**
 rather than accepting untested code. Common refactors include extracting logic
 into pure functions, adding dependency injection, or separating I/O from

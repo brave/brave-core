@@ -1,0 +1,2077 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.shields;
+
+import static org.chromium.build.NullUtil.assumeNonNull;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Outline;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.InputDevice;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.Surface;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
+import org.chromium.build.annotations.Initializer;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
+import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
+import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabFavicon;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
+import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.url_formatter.UrlFormatter;
+import org.chromium.components.version_info.BraveVersionConstants;
+import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.ui.base.ViewUtils;
+import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
+import org.chromium.webcompat_reporter.mojom.ReportInfo;
+import org.chromium.webcompat_reporter.mojom.WebcompatCategoryItem;
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * Handler for the unified Shields panel. Displays shields controls, advanced options, and
+ * sub-panels for detailed settings (HTTPS, trackers, cookies, shred, report).
+ */
+@NullMarked
+public class BraveUnifiedPanelHandler {
+    private static final String TAG = "BraveUnifiedPanel";
+    private static final String BROKEN_SITE_REPORT_URL =
+            "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
+
+    private static final int MAX_BLOCKED_URLS = 50;
+
+    private static final int POPUP_MARGIN_DP = 16;
+    private static final int POPUP_MAX_WIDTH_DP = 400;
+    private static final float LANDSCAPE_WIDTH_FRACTION = 0.50f;
+    private static final int ICON_OVERLAP_MARGIN_DP = -8;
+    private static final int FAVICON_ELEVATION_DP = 1;
+    private static final int PANEL_OVERLAP_OFFSET_DP = 7;
+    private static final int SITE_FAVICON_CONTAINER_SIZE_DP = 32;
+    private static final int SITE_FAVICON_SIZE_DP = 20;
+    // The Leo ic_disable_outline icon draws its circle between viewport coordinates 2–22 inside a
+    // 24dp canvas, so the visible circle occupies 20/24 of the view's size.
+    private static final float BLOCKED_OVERLAY_CIRCLE_RATIO = 20f / 24f;
+    private static final int BLOCKED_OVERLAY_SIZE_DP = 26;
+
+    // Nala primitive_*_50 colours used as deterministic placeholder backgrounds for blocked-tracker
+    // favicons. The colour is chosen by hashing the display domain so the same origin always maps
+    // to the same colour across reloads.
+    private static final int[] PLACEHOLDER_FAVICON_COLORS = {
+        R.color.primitive_primary_50,
+        R.color.primitive_secondary_50,
+        R.color.primitive_tertiary_50,
+        R.color.primitive_red_50,
+        R.color.primitive_orange_50,
+        R.color.primitive_yellow_50,
+        R.color.primitive_green_50,
+        R.color.primitive_teal_50,
+        R.color.primitive_blue_50,
+        R.color.primitive_blurple_50,
+        R.color.primitive_purple_50,
+        R.color.primitive_pink_50,
+    };
+
+    private static class BlockersInfo {
+        public int mAdsBlocked;
+        public int mTrackersBlocked;
+        public int mScriptsBlocked;
+        public int mFingerprintsBlocked;
+        public final ArrayList<String> mBlockedUrls = new ArrayList<>();
+    }
+
+    private final Map<Integer, BlockersInfo> mTabsStat =
+            Collections.synchronizedMap(new HashMap<>());
+
+    private @Nullable Context mContext;
+    private @Nullable PopupWindow mPopupWindow;
+    private @Nullable View mPopupView;
+    private @Nullable View mAnchorView;
+    private @Nullable View mHardwareButtonMenuAnchor;
+    private @Nullable GURL mUrl;
+    private View mMainPanelContainer;
+    private View mHttpsPanelContainer;
+    private View mTrackersPanelContainer;
+    private View mCookiesPanelContainer;
+    private View mShredPanelContainer;
+    private View mReportBrokenSitePanelContainer;
+
+    // Shields content elements
+    private ImageView mShieldIconUnified;
+    private TextView mSiteTextUnified;
+    private TextView mShieldsStatusText;
+    private SwitchCompat mShieldsToggleSwitch;
+    private TextView mBlockCountNumber;
+    private TextView mBlockCountText;
+    private LinearLayout mBlockedItemsContainer;
+    private @Nullable FaviconHelper mFaviconHelper;
+    private LinearLayout mAdvancedOptionsButton;
+    private @Nullable LinearLayout mAdvancedOptionsContent;
+    private @Nullable ImageView mAdvancedOptionsArrow;
+    private @Nullable TextView mResetShieldsButton;
+    private @Nullable View mResetShieldsDivider;
+    private boolean mIsAdvancedOptionsExpanded;
+
+    // Advanced options switches (no Forget Me in new design)
+    private SwitchCompat mBlockScriptsSwitch;
+    private SwitchCompat mFingerprintingSwitch;
+
+    // Observer for notifying toolbar of shields changes (icon update, page reload)
+    private @Nullable BraveShieldsMenuObserver mMenuObserver;
+
+    // Report broken site section
+    private LinearLayout mReportBrokenSiteSection;
+    private @Nullable TextView mReportBrokenSiteButton;
+    private @Nullable View mShieldsWarningSection;
+
+    // Report broken site panel
+    private @Nullable AutoCompleteTextView mReportCategoryDropdown;
+    private @Nullable TextInputEditText mReportDetailsInput;
+    private @Nullable TextInputEditText mReportContactInput;
+    private @Nullable CheckBox mReportScreenshotCheckbox;
+    private @Nullable TextView mViewScreenshotLink;
+    private byte @Nullable [] mReportScreenshotBytes;
+    private @Nullable String mSelectedReportCategory;
+    private @Nullable WebcompatReporterHandler mWebcompatReporterHandler;
+
+    // Current state
+    private @Nullable Profile mProfile;
+    private @Nullable Tab mCurrentTab;
+
+    private static @Nullable Context scanForActivity(@Nullable Context cont) {
+        if (cont == null) {
+            return null;
+        } else if (cont instanceof Activity) {
+            return cont;
+        } else if (cont instanceof ContextWrapper) {
+            return scanForActivity(((ContextWrapper) cont).getBaseContext());
+        }
+        return cont;
+    }
+
+    /**
+     * Creates a new panel handler. The provided context is unwrapped to find the hosting Activity;
+     * if no Activity is found, the handler will be inert (show() becomes a no-op).
+     *
+     * @param context an Activity context or a ContextWrapper that wraps one.
+     */
+    public BraveUnifiedPanelHandler(Context context) {
+        Context contextCandidate = scanForActivity(context);
+        mHardwareButtonMenuAnchor = null;
+        mContext =
+                (contextCandidate != null && (contextCandidate instanceof Activity))
+                        ? contextCandidate
+                        : null;
+
+        if (mContext != null) {
+            mHardwareButtonMenuAnchor = ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+        }
+    }
+
+    /**
+     * Adds/replaces the observer. This only supports a single observer at a time. If one was
+     * already registered, calling this will act as a replacement.
+     *
+     * @param menuObserver an instance of a BraveShieldsMenuObserver
+     */
+    public void addObserver(BraveShieldsMenuObserver menuObserver) {
+        mMenuObserver = menuObserver;
+    }
+
+    private void ensureInitializedForCustomTabs() {
+        if (mHardwareButtonMenuAnchor == null && mContext == null) {
+            mContext = BraveActivity.getCustomTabActivity();
+            if (mContext != null) {
+                mHardwareButtonMenuAnchor =
+                        ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+            }
+        }
+    }
+
+    /**
+     * Displays the unified Shields panel anchored to the given view for the specified tab. Reads
+     * current shield settings from the tab's profile and populates the UI accordingly.
+     *
+     * @param anchorView the toolbar view to anchor the popup to, or null to use the fallback.
+     * @param tab the current browser tab whose shields state is displayed and modified.
+     */
+    public void show(@Nullable View anchorView, @Nullable Tab tab) {
+        ensureInitializedForCustomTabs();
+        if (mHardwareButtonMenuAnchor == null || mContext == null) {
+            return;
+        }
+
+        if (tab == null || tab.getUrl() == null || tab.getWebContents() == null) {
+            return;
+        }
+
+        mCurrentTab = tab;
+        mUrl = tab.getUrl();
+        mProfile = Profile.fromWebContents(tab.getWebContents());
+        if (mProfile == null) {
+            return;
+        }
+
+        mPopupWindow = showPopupMenu(anchorView);
+        if (mPopupWindow != null) {
+            updateValues();
+        }
+    }
+
+    private void updateValues() {
+        if (mContext == null || mUrl == null) {
+            return;
+        }
+
+        String siteName = UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(mUrl);
+        mSiteTextUnified.setText(siteName);
+
+        boolean isShieldsUp =
+                BraveShieldsContentSettings.getShields(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
+        applyToggleState(isShieldsUp);
+        mShieldsStatusText.setText(
+                isShieldsUp
+                        ? mContext.getString(R.string.shields_up_status)
+                        : mContext.getString(R.string.shields_down_status));
+
+        updateShieldsSectionVisibility(isShieldsUp);
+
+        Bitmap favicon = mCurrentTab != null ? TabFavicon.getBitmap(mCurrentTab) : null;
+        if (favicon == null && mUrl != null) {
+            FaviconHelper.DefaultFaviconHelper helper = new FaviconHelper.DefaultFaviconHelper();
+            favicon =
+                    helper.getDefaultFaviconBitmap(
+                            mContext,
+                            mUrl,
+                            /* useDarkIcon= */ true,
+                            /* useIncognitoNtpIcon= */ false);
+        }
+        if (favicon != null) {
+            mShieldIconUnified.setImageBitmap(favicon);
+        }
+
+        mBlockCountText.setText(R.string.trackers_blocked_text);
+        if (mCurrentTab != null) {
+            int tabId = mCurrentTab.getId();
+            int totalBlocked = getTotalBlockedCount(tabId);
+            mBlockCountNumber.setText(String.valueOf(totalBlocked));
+            displayBlockedItemFavicons(tabId);
+        } else {
+            mBlockCountNumber.setText("0");
+            if (mBlockedItemsContainer != null) {
+                mBlockedItemsContainer.removeAllViews();
+            }
+        }
+
+        updateAdvancedOptionsSwitches(isShieldsUp);
+    }
+
+    private @Nullable PopupWindow showPopupMenu(@Nullable View anchorView) {
+        assert (mContext != null);
+        assert (mHardwareButtonMenuAnchor != null);
+
+        int rotation = ((Activity) mContext).getWindowManager().getDefaultDisplay().getRotation();
+        int displayHeight = mContext.getResources().getDisplayMetrics().heightPixels;
+        int widthHeight = mContext.getResources().getDisplayMetrics().widthPixels;
+
+        if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+            displayHeight = Math.max(displayHeight, widthHeight);
+        } else if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+            displayHeight = Math.min(displayHeight, widthHeight);
+        }
+
+        if (anchorView == null) {
+            Rect rect = new Rect();
+            ((Activity) mContext).getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+            int statusBarHeight = rect.top;
+            mHardwareButtonMenuAnchor.setY((displayHeight - statusBarHeight));
+            anchorView = mHardwareButtonMenuAnchor;
+        }
+
+        LayoutInflater inflater =
+                (LayoutInflater)
+                        anchorView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (inflater == null) {
+            return null;
+        }
+
+        try {
+            mPopupView = inflater.inflate(R.layout.brave_unified_panel_layout, null);
+            setupViews();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to inflate panel layout", e);
+            return null;
+        }
+
+        float density = mContext.getResources().getDisplayMetrics().density;
+        int marginPx = (int) (POPUP_MARGIN_DP * density);
+        int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
+        int maxWidthPx = (int) (POPUP_MAX_WIDTH_DP * density);
+        // The root FrameLayout is padded by app_menu_shadow_length on each side so children align
+        // with the visible panel edge. Widen the popup by 2× that amount so the visible panel
+        // still reaches the intended width.
+        int shadowPx =
+                mContext.getResources().getDimensionPixelSize(R.dimen.app_menu_shadow_length);
+
+        int width;
+        if (ConfigurationUtils.isLandscape(mContext)) {
+            width =
+                    Math.min((int) (screenWidth * LANDSCAPE_WIDTH_FRACTION), maxWidthPx)
+                            + 2 * shadowPx;
+        } else {
+            width = Math.min(screenWidth - (marginPx * 2), maxWidthPx) + 2 * shadowPx;
+        }
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        PopupWindow popupWindow = new PopupWindow(mPopupView, width, height, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mPopupView.setClipToOutline(true);
+
+        mAnchorView = anchorView;
+        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+            popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndBottom);
+        } else {
+            popupWindow.setAnimationStyle(R.style.AnchoredPopupAnimEndTop);
+        }
+
+        try {
+            int[] anchorLocation = new int[2];
+            mAnchorView.getLocationOnScreen(anchorLocation);
+            if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+                // Mirror the top-toolbar rule: end the panel 7 dp above the toolbar top so
+                // its bottom edge lands in the browser-chrome space adjacent to the URL bar,
+                // which a web page cannot render into.
+                int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
+                int anchorTop = anchorLocation[1];
+                int yOffset = screenHeight - anchorTop - (int) (PANEL_OVERLAP_OFFSET_DP * density);
+
+                popupWindow.showAtLocation(
+                        mAnchorView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, yOffset);
+            } else {
+                // Position the panel 7 dp above the bottom of the toolbar (anchorView is the
+                // full toolbar FrameLayout). Starting in the browser-chrome space just below
+                // the URL bar is a spoofing deterrent: a web page cannot render into that
+                // gap. On phones the panel width is screenWidth - 2 * marginPx; on tablets
+                // it is capped at POPUP_MAX_WIDTH_DP, right-aligned under the Shields icon.
+                int yOffset =
+                        anchorLocation[1]
+                                + mAnchorView.getHeight()
+                                - (int) (PANEL_OVERLAP_OFFSET_DP * density);
+                popupWindow.showAtLocation(
+                        mAnchorView, Gravity.TOP | Gravity.END, marginPx, yOffset);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to show popup window", e);
+            return null;
+        }
+
+        return popupWindow;
+    }
+
+    @Initializer
+    private void setupViews() {
+        View popupView = assumeNonNull(mPopupView);
+        Context context = assumeNonNull(mContext);
+
+        mMainPanelContainer = popupView.findViewById(R.id.main_panel_container);
+        mHttpsPanelContainer = popupView.findViewById(R.id.https_panel_container);
+        mTrackersPanelContainer = popupView.findViewById(R.id.trackers_panel_container);
+        mCookiesPanelContainer = popupView.findViewById(R.id.cookies_panel_container);
+        mShredPanelContainer = popupView.findViewById(R.id.shred_panel_container);
+        mReportBrokenSitePanelContainer =
+                popupView.findViewById(R.id.report_broken_site_panel_container);
+
+        // Shields content elements
+        mShieldIconUnified = popupView.findViewById(R.id.shield_icon_unified);
+        float mainFaviconOffset =
+                (ViewUtils.dpToPx(context, SITE_FAVICON_CONTAINER_SIZE_DP)
+                                - ViewUtils.dpToPx(context, SITE_FAVICON_SIZE_DP))
+                        / 2f;
+        mShieldIconUnified.setTranslationX(mainFaviconOffset);
+        mShieldIconUnified.setTranslationY(mainFaviconOffset);
+        mSiteTextUnified = assumeNonNull(popupView.findViewById(R.id.site_text_unified));
+        mShieldsStatusText = popupView.findViewById(R.id.shields_status_text);
+        mShieldsToggleSwitch = popupView.findViewById(R.id.shields_toggle_switch);
+        mBlockCountNumber = popupView.findViewById(R.id.block_count_number);
+        mBlockCountText = popupView.findViewById(R.id.block_count_text);
+        mBlockedItemsContainer = popupView.findViewById(R.id.blocked_items_container);
+
+        if (mFaviconHelper == null) {
+            mFaviconHelper = new FaviconHelper();
+        }
+        mAdvancedOptionsButton =
+                assumeNonNull(popupView.findViewById(R.id.advanced_options_button));
+        mAdvancedOptionsContent = popupView.findViewById(R.id.advanced_options_content);
+        mAdvancedOptionsArrow = popupView.findViewById(R.id.advanced_options_arrow);
+
+        // Advanced options switches
+        mBlockScriptsSwitch = popupView.findViewById(R.id.scripts_toggle);
+        mFingerprintingSwitch = popupView.findViewById(R.id.fingerprinting_toggle);
+
+        // Report broken site section
+        mReportBrokenSiteSection = popupView.findViewById(R.id.report_broken_site_section);
+        mReportBrokenSiteButton = popupView.findViewById(R.id.report_broken_site_button);
+        mShieldsWarningSection = popupView.findViewById(R.id.shields_warning_section);
+
+        // Set up shields toggle — SwitchCompat toggles its own checked state on click, so
+        // isChecked() already reflects the new state inside the click listener.
+        mShieldsToggleSwitch.setOnClickListener(
+                v -> {
+                    boolean newState = mShieldsToggleSwitch.isChecked();
+                    onShieldsToggleChanged(newState);
+                });
+
+        // Set up advanced options switches
+        if (mBlockScriptsSwitch != null) {
+            mBlockScriptsSwitch.setOnClickListener(
+                    v -> onBlockScriptsChanged(mBlockScriptsSwitch.isChecked()));
+        }
+        if (mFingerprintingSwitch != null) {
+            mFingerprintingSwitch.setOnClickListener(
+                    v -> onFingerprintingChanged(mFingerprintingSwitch.isChecked()));
+        }
+
+        if (mReportBrokenSiteButton != null) {
+            mReportBrokenSiteButton.setOnClickListener(v -> showReportBrokenSitePanel());
+        }
+
+        mAdvancedOptionsButton.setOnClickListener(v -> toggleAdvancedOptions());
+
+        mIsAdvancedOptionsExpanded = false;
+        if (mAdvancedOptionsContent != null) {
+            mAdvancedOptionsContent.setVisibility(View.GONE);
+        }
+        if (mAdvancedOptionsArrow != null) {
+            mAdvancedOptionsArrow.setRotation(0f);
+        }
+
+        setupAdvancedOptionsListeners();
+    }
+
+    private void setupAdvancedOptionsListeners() {
+        if (mAdvancedOptionsContent == null) return;
+
+        View httpsUpgradeItem = mAdvancedOptionsContent.findViewById(R.id.https_upgrade_item);
+        if (httpsUpgradeItem != null) {
+            httpsUpgradeItem.setOnClickListener(v -> showHttpsUpgradePanel());
+        }
+
+        View trackersItem = mAdvancedOptionsContent.findViewById(R.id.trackers_item);
+        if (trackersItem != null) {
+            trackersItem.setOnClickListener(v -> showTrackersAdsPanel());
+        }
+
+        View cookiesItem = mAdvancedOptionsContent.findViewById(R.id.cookies_item);
+        if (cookiesItem != null) {
+            cookiesItem.setOnClickListener(v -> showCookiesPanel());
+        }
+
+        View shredDataItem = mAdvancedOptionsContent.findViewById(R.id.shred_data_item);
+        if (shredDataItem != null) {
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+                shredDataItem.setOnClickListener(v -> showShredPanel());
+            } else {
+                shredDataItem.setVisibility(View.GONE);
+            }
+        }
+
+        View blockElementItem = mAdvancedOptionsContent.findViewById(R.id.block_element_item);
+        if (blockElementItem != null) {
+            boolean isPrivateWindow = mCurrentTab != null && mCurrentTab.isIncognito();
+            boolean isFeatureEnabled =
+                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER);
+
+            if (!isPrivateWindow && isFeatureEnabled) {
+                blockElementItem.setVisibility(View.VISIBLE);
+                blockElementItem.setOnClickListener(
+                        v -> {
+                            if (mCurrentTab != null) {
+                                BraveCosmeticFiltersUtils.launchContentPickerForWebContent(
+                                        mCurrentTab);
+                                hide();
+                            }
+                        });
+            } else {
+                blockElementItem.setVisibility(View.GONE);
+            }
+        }
+
+        mResetShieldsButton =
+                (TextView) mAdvancedOptionsContent.findViewById(R.id.reset_shields_button);
+        mResetShieldsDivider = mAdvancedOptionsContent.findViewById(R.id.reset_shields_divider);
+        if (mResetShieldsButton != null) {
+            mResetShieldsButton.setOnClickListener(v -> resetSiteToShieldsDefaults());
+        }
+        updateResetButtonState();
+
+        View globalSettingsItem = mAdvancedOptionsContent.findViewById(R.id.global_settings_item);
+        if (globalSettingsItem != null) {
+            globalSettingsItem.setOnClickListener(v -> openGlobalShieldsSettings());
+        }
+    }
+
+    private void resetSiteToShieldsDefaults() {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.resetSiteToDefaults(mProfile, mUrl.getSpec());
+        updateValues();
+        updateResetButtonState();
+
+        if (mContext != null) {
+            Toast.makeText(
+                            mContext,
+                            mContext.getString(R.string.reset_shields_defaults_confirmation),
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    private void updateResetButtonState() {
+        if (mResetShieldsButton == null || mUrl == null || mProfile == null) {
+            return;
+        }
+        boolean matchesDefaults =
+                BraveShieldsContentSettings.siteMatchesDefaults(mProfile, mUrl.getSpec());
+        int visibility = matchesDefaults ? View.GONE : View.VISIBLE;
+        mResetShieldsButton.setVisibility(visibility);
+        if (mResetShieldsDivider != null) mResetShieldsDivider.setVisibility(visibility);
+    }
+
+    private void openGlobalShieldsSettings() {
+        if (mContext == null) {
+            return;
+        }
+
+        hide();
+
+        SettingsNavigation navigation = SettingsNavigationFactory.createSettingsNavigation();
+        navigation.startSettings(mContext, BravePrivacySettings.class, null);
+    }
+
+    private void updateAdvancedOptionsSwitches(boolean shieldsEnabled) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        if (mBlockScriptsSwitch != null) {
+            if (shieldsEnabled) {
+                boolean scriptsBlocked =
+                        BraveShieldsContentSettings.getShields(
+                                mProfile,
+                                mUrl.getSpec(),
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS);
+                mBlockScriptsSwitch.setEnabled(true);
+                mBlockScriptsSwitch.setChecked(scriptsBlocked);
+            } else {
+                mBlockScriptsSwitch.setEnabled(false);
+                mBlockScriptsSwitch.setChecked(false);
+            }
+        }
+
+        if (mFingerprintingSwitch != null) {
+            if (shieldsEnabled) {
+                String fingerprintingValue =
+                        BraveShieldsContentSettings.getShieldsValue(
+                                mProfile,
+                                mUrl.getSpec(),
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+                boolean fingerprintingEnabled =
+                        !fingerprintingValue.equals(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                mFingerprintingSwitch.setEnabled(true);
+                mFingerprintingSwitch.setChecked(fingerprintingEnabled);
+            } else {
+                mFingerprintingSwitch.setEnabled(false);
+                mFingerprintingSwitch.setChecked(false);
+            }
+        }
+    }
+
+    private void applyToggleState(boolean isOn) {
+        mShieldsToggleSwitch.setChecked(isOn);
+    }
+
+    private void onShieldsToggleChanged(boolean isChecked) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShields(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS,
+                isChecked,
+                true);
+
+        if (mContext != null) {
+            mShieldsStatusText.setText(
+                    isChecked
+                            ? mContext.getString(R.string.shields_up_status)
+                            : mContext.getString(R.string.shields_down_status));
+        }
+        updateShieldsSectionVisibility(isChecked);
+        updateAdvancedOptionsSwitches(isChecked);
+        updateResetButtonState();
+
+        if (mMenuObserver != null) {
+            mMenuObserver.onMenuTopShieldsChanged(isChecked, true);
+        }
+    }
+
+    private void updateShieldsSectionVisibility(boolean shieldsEnabled) {
+        if (shieldsEnabled) {
+            if (mAdvancedOptionsButton != null) {
+                mAdvancedOptionsButton.setVisibility(View.VISIBLE);
+            }
+            if (mReportBrokenSiteSection != null) {
+                mReportBrokenSiteSection.setVisibility(View.GONE);
+            }
+            if (mShieldsWarningSection != null) {
+                mShieldsWarningSection.setVisibility(View.VISIBLE);
+            }
+            mShieldIconUnified.setColorFilter(null);
+        } else {
+            if (mAdvancedOptionsButton != null) {
+                mAdvancedOptionsButton.setVisibility(View.GONE);
+            }
+            if (mAdvancedOptionsContent != null) {
+                mAdvancedOptionsContent.setVisibility(View.GONE);
+                mIsAdvancedOptionsExpanded = false;
+                mAdvancedOptionsButton.setActivated(false);
+                if (mAdvancedOptionsArrow != null) {
+                    mAdvancedOptionsArrow.setRotation(0f);
+                }
+            }
+            if (mReportBrokenSiteSection != null) {
+                mReportBrokenSiteSection.setVisibility(View.VISIBLE);
+            }
+            if (mShieldsWarningSection != null) {
+                mShieldsWarningSection.setVisibility(View.GONE);
+            }
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0f);
+            mShieldIconUnified.setColorFilter(new ColorMatrixColorFilter(matrix));
+        }
+    }
+
+    private void showReportBrokenSitePanel() {
+        if (mMainPanelContainer == null || mReportBrokenSitePanelContainer == null) {
+            return;
+        }
+
+        setupReportBrokenSitePanel();
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mReportBrokenSitePanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupReportBrokenSitePanel() {
+        if (mReportBrokenSitePanelContainer == null || mContext == null) {
+            return;
+        }
+
+        View panel;
+        if (mReportBrokenSitePanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mReportBrokenSitePanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                panel = scrollView.getChildAt(0);
+            } else {
+                return;
+            }
+        } else {
+            panel = mReportBrokenSitePanelContainer;
+        }
+
+        ImageView backButton = panel.findViewById(R.id.report_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        TextView siteDomainText = panel.findViewById(R.id.report_site_domain);
+        if (siteDomainText != null && mUrl != null) {
+            siteDomainText.setText(
+                    UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(mUrl));
+        }
+
+        ImageView siteFavicon = panel.findViewById(R.id.report_site_favicon);
+        if (siteFavicon != null && mCurrentTab != null) {
+            Bitmap tabFavicon = TabFavicon.getBitmap(mCurrentTab);
+            if (tabFavicon == null && mUrl != null) {
+                FaviconHelper.DefaultFaviconHelper helper =
+                        new FaviconHelper.DefaultFaviconHelper();
+                tabFavicon =
+                        helper.getDefaultFaviconBitmap(
+                                mContext,
+                                mUrl,
+                                /* useDarkIcon= */ true,
+                                /* useIncognitoNtpIcon= */ false);
+            }
+            if (tabFavicon != null) {
+                siteFavicon.setImageBitmap(tabFavicon);
+            }
+        }
+
+        TextView descLearnMore = panel.findViewById(R.id.report_description_learn_more);
+        if (descLearnMore != null && mContext != null) {
+            String descText = mContext.getString(R.string.report_broken_site_panel_desc2);
+            String learnMoreText = mContext.getString(R.string.learn_more);
+            String fullText = descText + " " + learnMoreText + ".";
+            SpannableString spannable = new SpannableString(fullText);
+            int learnMoreStart = descText.length() + 1;
+            int learnMoreEnd = learnMoreStart + learnMoreText.length();
+            spannable.setSpan(
+                    new ForegroundColorSpan(
+                            MaterialColors.getColor(mContext, R.attr.colorPrimary, 0)),
+                    learnMoreStart,
+                    learnMoreEnd,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(
+                    new ClickableSpan() {
+                        @Override
+                        public void onClick(View widget) {
+                            if (mCurrentTab != null) {
+                                mCurrentTab.loadUrl(new LoadUrlParams(BROKEN_SITE_REPORT_URL));
+                                hide();
+                            }
+                        }
+
+                        @Override
+                        public void updateDrawState(TextPaint ds) {
+                            super.updateDrawState(ds);
+                            if (mContext != null) {
+                                ds.setColor(
+                                        MaterialColors.getColor(mContext, R.attr.colorPrimary, 0));
+                                ds.setUnderlineText(false);
+                            }
+                        }
+                    },
+                    learnMoreStart,
+                    learnMoreEnd,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            descLearnMore.setText(spannable);
+            descLearnMore.setHighlightColor(
+                    MaterialColors.getColor(mContext, R.attr.colorPrimary, 0));
+            descLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+
+        mReportCategoryDropdown = panel.findViewById(R.id.report_category_dropdown);
+        mSelectedReportCategory = null;
+
+        mReportDetailsInput = panel.findViewById(R.id.report_details_input);
+        mReportContactInput = panel.findViewById(R.id.report_contact_input);
+
+        TextInputLayout categoryLayout = panel.findViewById(R.id.report_category_layout);
+        TextInputLayout detailsLayout = panel.findViewById(R.id.report_details_layout);
+        TextInputLayout contactLayout = panel.findViewById(R.id.report_contact_layout);
+        if (categoryLayout != null) categoryLayout.setExpandedHintEnabled(false);
+        if (detailsLayout != null) detailsLayout.setExpandedHintEnabled(false);
+        if (contactLayout != null) contactLayout.setExpandedHintEnabled(false);
+
+        mReportScreenshotCheckbox = panel.findViewById(R.id.report_screenshot_checkbox);
+        mViewScreenshotLink = panel.findViewById(R.id.report_view_screenshot_link);
+        if (mViewScreenshotLink != null) {
+            mViewScreenshotLink.setOnClickListener(v -> showScreenshotPreview());
+        }
+        LinearLayout screenshotRow = panel.findViewById(R.id.report_screenshot_row);
+        if (screenshotRow != null && mReportScreenshotCheckbox != null) {
+            CheckBox checkbox = mReportScreenshotCheckbox;
+            screenshotRow.setOnClickListener(
+                    v -> {
+                        checkbox.setChecked(!checkbox.isChecked());
+                        handleScreenshotCheckboxChanged(checkbox.isChecked());
+                    });
+        }
+
+        if (mWebcompatReporterHandler == null && mProfile != null) {
+            mWebcompatReporterHandler =
+                    WebcompatReporterServiceFactory.getInstance()
+                            .getWebcompatReporterHandler(mProfile, null);
+        }
+
+        if (mWebcompatReporterHandler != null && mReportContactInput != null) {
+            final TextInputEditText contactInput = mReportContactInput;
+            mWebcompatReporterHandler.getBrowserParams(
+                    (contactInfo, contactInfoSaveFlag, components) -> {
+                        Activity activity = (Activity) mContext;
+                        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+                            return;
+                        }
+                        if (contactInfo != null && !contactInfo.isEmpty()) {
+                            contactInput.setText(contactInfo);
+                        }
+                    });
+        }
+
+        if (mWebcompatReporterHandler != null
+                && mReportCategoryDropdown != null
+                && mContext != null) {
+            final AutoCompleteTextView dropdown = mReportCategoryDropdown;
+            var mContext = this.mContext;
+            mWebcompatReporterHandler.getWebcompatCategories(
+                    (categories) -> {
+                        Activity activity = (Activity) mContext;
+                        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+                            return;
+                        }
+                        if (categories == null || categories.length == 0) {
+                            return;
+                        }
+                        List<String> displayNames = new ArrayList<>();
+                        List<String> categoryValues = new ArrayList<>();
+                        for (WebcompatCategoryItem cat : categories) {
+                            displayNames.add(cat.localizedTitle);
+                            categoryValues.add(cat.value);
+                        }
+                        ArrayAdapter<String> adapter =
+                                new ArrayAdapter<>(
+                                        mContext,
+                                        android.R.layout.simple_dropdown_item_1line,
+                                        displayNames);
+                        dropdown.setAdapter(adapter);
+                        dropdown.setOnItemClickListener(
+                                (parent, view, position, id) -> {
+                                    if (position >= 0 && position < categoryValues.size()) {
+                                        mSelectedReportCategory = categoryValues.get(position);
+                                    }
+                                });
+                    });
+        }
+
+        View cancelButton = panel.findViewById(R.id.report_cancel_button);
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        View submitButton = panel.findViewById(R.id.report_submit_button);
+        if (submitButton != null) {
+            submitButton.setOnClickListener(v -> submitBrokenSiteReport());
+        }
+    }
+
+    private void handleScreenshotCheckboxChanged(boolean isChecked) {
+        if (!isChecked) {
+            mReportScreenshotBytes = null;
+            if (mViewScreenshotLink != null) {
+                mViewScreenshotLink.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        if (mContext == null) {
+            return;
+        }
+
+        mReportScreenshotBytes = null;
+        if (mViewScreenshotLink != null) {
+            mViewScreenshotLink.setVisibility(View.GONE);
+        }
+        BraveShieldsScreenshotUtil screenshotUtil =
+                new BraveShieldsScreenshotUtil(
+                        mContext,
+                        (byte[] pngBytes) -> {
+                            if (pngBytes != null && pngBytes.length > 0) {
+                                mReportScreenshotBytes = pngBytes;
+                            }
+                            if (mReportScreenshotCheckbox != null) {
+                                mReportScreenshotCheckbox.setEnabled(true);
+                            }
+                            if (mViewScreenshotLink != null && mReportScreenshotBytes != null) {
+                                mViewScreenshotLink.setVisibility(View.VISIBLE);
+                            }
+                        });
+        if (mReportScreenshotCheckbox != null) {
+            mReportScreenshotCheckbox.setEnabled(false);
+        }
+        screenshotUtil.capture();
+    }
+
+    private void showScreenshotPreview() {
+        if (mReportScreenshotBytes == null || mReportScreenshotBytes.length == 0) {
+            return;
+        }
+        if (mContext == null) {
+            return;
+        }
+
+        Bitmap bitmap =
+                BitmapFactory.decodeByteArray(
+                        mReportScreenshotBytes, 0, mReportScreenshotBytes.length);
+        if (bitmap == null) {
+            return;
+        }
+
+        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+        int width = (int) (dm.widthPixels * 0.9f);
+        int height = (int) (dm.heightPixels * 0.7f);
+
+        ZoomableImageView imageView = new ZoomableImageView(mContext);
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
+        imageView.fitBitmap(bitmap);
+
+        new AlertDialog.Builder(mContext)
+                .setView(imageView)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+    }
+
+    private void submitBrokenSiteReport() {
+        if (mWebcompatReporterHandler == null || mUrl == null) {
+            return;
+        }
+
+        ReportInfo reportInfo = new ReportInfo();
+        reportInfo.channel = BraveVersionConstants.CHANNEL;
+        reportInfo.braveVersion = BraveVersionConstants.VERSION;
+        reportInfo.reportUrl =
+                Uri.parse(mUrl.getSpec())
+                        .buildUpon()
+                        .clearQuery()
+                        .fragment(null)
+                        .build()
+                        .toString();
+
+        if (mSelectedReportCategory != null) {
+            reportInfo.category = mSelectedReportCategory;
+        }
+        if (mReportDetailsInput != null && mReportDetailsInput.getText() != null) {
+            reportInfo.details = mReportDetailsInput.getText().toString();
+        }
+        if (mReportContactInput != null && mReportContactInput.getText() != null) {
+            reportInfo.contact = mReportContactInput.getText().toString();
+        }
+
+        if (mReportScreenshotCheckbox != null
+                && mReportScreenshotCheckbox.isChecked()
+                && mReportScreenshotBytes != null
+                && mReportScreenshotBytes.length > 0) {
+            reportInfo.screenshotPng = mReportScreenshotBytes;
+        }
+
+        mWebcompatReporterHandler.submitWebcompatReport(reportInfo);
+
+        if (mContext != null) {
+            Toast.makeText(
+                            mContext,
+                            mContext.getString(R.string.report_broken_site_panel_submitted),
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+        showMainPanel();
+    }
+
+    private void onBlockScriptsChanged(boolean isChecked) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShields(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS,
+                isChecked,
+                false);
+        updateResetButtonState();
+
+        if (mMenuObserver != null) {
+            mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+        }
+    }
+
+    private void onFingerprintingChanged(boolean isChecked) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                isChecked
+                        ? BraveShieldsContentSettings.DEFAULT
+                        : BraveShieldsContentSettings.ALLOW_RESOURCE,
+                false);
+        updateResetButtonState();
+
+        if (mMenuObserver != null) {
+            mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+        }
+    }
+
+    private void toggleAdvancedOptions() {
+        if (mAdvancedOptionsContent == null || mAdvancedOptionsArrow == null) return;
+
+        mIsAdvancedOptionsExpanded = !mIsAdvancedOptionsExpanded;
+        mAdvancedOptionsButton.setActivated(mIsAdvancedOptionsExpanded);
+
+        if (mIsAdvancedOptionsExpanded) {
+            mAdvancedOptionsContent.setVisibility(View.VISIBLE);
+            mAdvancedOptionsArrow.setRotation(180f);
+        } else {
+            mAdvancedOptionsContent.setVisibility(View.GONE);
+            mAdvancedOptionsArrow.setRotation(0f);
+        }
+    }
+
+    public boolean isShowing() {
+        return mPopupWindow != null && mPopupWindow.isShowing();
+    }
+
+    public void hide() {
+        if (mPopupWindow != null && mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+        releaseResources();
+    }
+
+    public void destroy() {
+        hide();
+    }
+
+    private void releaseResources() {
+        if (mFaviconHelper != null) {
+            mFaviconHelper.destroy();
+            mFaviconHelper = null;
+        }
+        if (mWebcompatReporterHandler != null) {
+            mWebcompatReporterHandler.close();
+            mWebcompatReporterHandler = null;
+        }
+    }
+
+    public void addStat(int tabId, @Nullable String blockType, @Nullable String subResource) {
+        if (blockType == null) return;
+        if (!mTabsStat.containsKey(tabId)) {
+            mTabsStat.put(tabId, new BlockersInfo());
+        }
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        if (blockersInfo == null) return;
+        if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
+            blockersInfo.mAdsBlocked++;
+            if (subResource != null
+                    && !subResource.isEmpty()
+                    && blockersInfo.mBlockedUrls.size() < MAX_BLOCKED_URLS) {
+                blockersInfo.mBlockedUrls.add(subResource);
+            }
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
+            blockersInfo.mTrackersBlocked++;
+            if (subResource != null
+                    && !subResource.isEmpty()
+                    && blockersInfo.mBlockedUrls.size() < MAX_BLOCKED_URLS) {
+                blockersInfo.mBlockedUrls.add(subResource);
+            }
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+            blockersInfo.mScriptsBlocked++;
+        } else if (blockType.equals(
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            blockersInfo.mFingerprintsBlocked++;
+        }
+
+        if (isShowing()
+                && mCurrentTab != null
+                && mCurrentTab.getId() == tabId
+                && mBlockCountNumber != null) {
+            int totalBlocked = getTotalBlockedCount(tabId);
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () -> {
+                        if (isShowing() && mBlockCountNumber != null) {
+                            mBlockCountNumber.setText(String.valueOf(totalBlocked));
+                        }
+                    });
+        }
+    }
+
+    public void removeStat(int tabId) {
+        mTabsStat.remove(tabId);
+    }
+
+    public void clearBraveShieldsCount(int tabId) {
+        mTabsStat.put(tabId, new BlockersInfo());
+    }
+
+    public int getAdsBlockedCount(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        return info != null ? info.mAdsBlocked : 0;
+    }
+
+    public int getTrackersBlockedCount(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        return info != null ? info.mTrackersBlocked : 0;
+    }
+
+    public int getTotalBlockedCount(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        if (info == null) return 0;
+        return info.mAdsBlocked
+                + info.mTrackersBlocked
+                + info.mScriptsBlocked
+                + info.mFingerprintsBlocked;
+    }
+
+    public ArrayList<String> getBlockedUrls(int tabId) {
+        BlockersInfo info = mTabsStat.get(tabId);
+        return info != null ? info.mBlockedUrls : new ArrayList<>();
+    }
+
+    private void showMainPanel() {
+        if (mMainPanelContainer == null) {
+            return;
+        }
+
+        mHttpsPanelContainer.setVisibility(View.GONE);
+        mTrackersPanelContainer.setVisibility(View.GONE);
+        mCookiesPanelContainer.setVisibility(View.GONE);
+        if (mShredPanelContainer != null) {
+            mShredPanelContainer.setVisibility(View.GONE);
+        }
+        if (mReportBrokenSitePanelContainer != null) {
+            mReportBrokenSitePanelContainer.setVisibility(View.GONE);
+        }
+        mMainPanelContainer.setVisibility(View.VISIBLE);
+
+        if (mIsAdvancedOptionsExpanded
+                && mAdvancedOptionsContent != null
+                && mAdvancedOptionsArrow != null) {
+            mAdvancedOptionsContent.setVisibility(View.VISIBLE);
+            mAdvancedOptionsArrow.setRotation(180f);
+        }
+
+        updateResetButtonState();
+    }
+
+    private void showHttpsUpgradePanel() {
+        if (mMainPanelContainer == null || mHttpsPanelContainer == null) {
+            return;
+        }
+
+        if (mHttpsPanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mHttpsPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View httpsPanel = scrollView.getChildAt(0);
+                setupHttpsUpgradePanel(httpsPanel);
+            }
+        }
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mHttpsPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupHttpsUpgradePanel(View panel) {
+        if (mUrl == null || mProfile == null) return;
+
+        ImageView backButton = panel.findViewById(R.id.https_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        AppCompatRadioButton strictRadio = panel.findViewById(R.id.https_strict_radio);
+        AppCompatRadioButton defaultRadio = panel.findViewById(R.id.https_default_radio);
+        AppCompatRadioButton disabledRadio = panel.findViewById(R.id.https_disabled_radio);
+
+        if (strictRadio == null || defaultRadio == null || disabledRadio == null) {
+            return;
+        }
+
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
+
+        strictRadio.setChecked(false);
+        defaultRadio.setChecked(false);
+        disabledRadio.setChecked(false);
+
+        if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+            strictRadio.setChecked(true);
+        } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+            disabledRadio.setChecked(true);
+        } else {
+            // Both "default" (no per-site override) and "block_third_party" (standard mode)
+            // correspond to the standard "upgrade when possible" option.
+            defaultRadio.setChecked(true);
+        }
+
+        View strictOption = panel.findViewById(R.id.https_strict_option);
+        View defaultOption = panel.findViewById(R.id.https_default_option);
+        View disabledOption = panel.findViewById(R.id.https_disabled_option);
+
+        if (strictOption != null) {
+            strictOption.setOnClickListener(
+                    v -> {
+                        strictRadio.setChecked(true);
+                        defaultRadio.setChecked(false);
+                        disabledRadio.setChecked(false);
+                        setHttpsUpgradeSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (defaultOption != null) {
+            defaultOption.setOnClickListener(
+                    v -> {
+                        defaultRadio.setChecked(true);
+                        strictRadio.setChecked(false);
+                        disabledRadio.setChecked(false);
+                        setHttpsUpgradeSetting(
+                                BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                    });
+        }
+
+        if (disabledOption != null) {
+            disabledOption.setOnClickListener(
+                    v -> {
+                        disabledRadio.setChecked(true);
+                        strictRadio.setChecked(false);
+                        defaultRadio.setChecked(false);
+                        setHttpsUpgradeSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setHttpsUpgradeSetting(String value) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE,
+                value,
+                false);
+    }
+
+    private void showTrackersAdsPanel() {
+        if (mMainPanelContainer == null || mTrackersPanelContainer == null) {
+            return;
+        }
+
+        if (mTrackersPanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mTrackersPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View trackersPanel = scrollView.getChildAt(0);
+                setupTrackersAdsPanel(trackersPanel);
+            }
+        }
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mTrackersPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupTrackersAdsPanel(View panel) {
+        if (mUrl == null || mProfile == null) return;
+
+        ImageView backButton = panel.findViewById(R.id.trackers_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        AppCompatRadioButton aggressiveRadio = panel.findViewById(R.id.trackers_aggressive_radio);
+        AppCompatRadioButton standardRadio = panel.findViewById(R.id.trackers_standard_radio);
+        AppCompatRadioButton allowRadio = panel.findViewById(R.id.trackers_allow_radio);
+
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+
+        if (aggressiveRadio != null && standardRadio != null && allowRadio != null) {
+            aggressiveRadio.setChecked(false);
+            standardRadio.setChecked(false);
+            allowRadio.setChecked(false);
+
+            if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                aggressiveRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.DEFAULT)
+                    || currentSetting.equals(
+                            BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                standardRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                allowRadio.setChecked(true);
+            } else {
+                standardRadio.setChecked(true);
+            }
+        }
+
+        View aggressiveOption = panel.findViewById(R.id.trackers_aggressive_option);
+        View standardOption = panel.findViewById(R.id.trackers_standard_option);
+        View allowOption = panel.findViewById(R.id.trackers_allow_option);
+
+        if (aggressiveOption != null && aggressiveRadio != null) {
+            aggressiveOption.setOnClickListener(
+                    v -> {
+                        aggressiveRadio.setChecked(true);
+                        standardRadio.setChecked(false);
+                        allowRadio.setChecked(false);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (standardOption != null && standardRadio != null) {
+            standardOption.setOnClickListener(
+                    v -> {
+                        standardRadio.setChecked(true);
+                        aggressiveRadio.setChecked(false);
+                        allowRadio.setChecked(false);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.DEFAULT);
+                    });
+        }
+
+        if (allowOption != null && allowRadio != null) {
+            allowOption.setOnClickListener(
+                    v -> {
+                        allowRadio.setChecked(true);
+                        aggressiveRadio.setChecked(false);
+                        standardRadio.setChecked(false);
+                        setTrackersAdsSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setTrackersAdsSetting(String value) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
+                value,
+                false);
+
+        if (mMenuObserver != null) {
+            mMenuObserver.onMenuTopShieldsChanged(
+                    !value.equals(BraveShieldsContentSettings.ALLOW_RESOURCE), false);
+        }
+    }
+
+    private void showCookiesPanel() {
+        if (mMainPanelContainer == null || mCookiesPanelContainer == null) {
+            return;
+        }
+
+        if (mCookiesPanelContainer instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) mCookiesPanelContainer;
+            if (scrollView.getChildCount() > 0) {
+                View cookiesPanel = scrollView.getChildAt(0);
+                setupCookiesPanel(cookiesPanel);
+            }
+        }
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mCookiesPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupCookiesPanel(View panel) {
+        if (mUrl == null || mProfile == null) return;
+
+        ImageView backButton = panel.findViewById(R.id.cookies_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        AppCompatRadioButton blockAllRadio = panel.findViewById(R.id.cookies_block_all_radio);
+        AppCompatRadioButton blockThirdPartyRadio =
+                panel.findViewById(R.id.cookies_block_third_party_radio);
+        AppCompatRadioButton allowRadio = panel.findViewById(R.id.cookies_allow_radio);
+
+        String currentSetting =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
+
+        if (blockAllRadio != null && blockThirdPartyRadio != null && allowRadio != null) {
+            blockAllRadio.setChecked(false);
+            blockThirdPartyRadio.setChecked(false);
+            allowRadio.setChecked(false);
+
+            if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+                blockAllRadio.setChecked(true);
+            } else if (currentSetting.equals(
+                    BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+                blockThirdPartyRadio.setChecked(true);
+            } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                allowRadio.setChecked(true);
+            } else {
+                blockThirdPartyRadio.setChecked(true);
+            }
+        }
+
+        View blockAllOption = panel.findViewById(R.id.cookies_block_all_option);
+        View blockThirdPartyOption = panel.findViewById(R.id.cookies_block_third_party_option);
+        View allowOption = panel.findViewById(R.id.cookies_allow_option);
+
+        if (blockAllOption != null && blockAllRadio != null) {
+            blockAllOption.setOnClickListener(
+                    v -> {
+                        blockAllRadio.setChecked(true);
+                        blockThirdPartyRadio.setChecked(false);
+                        allowRadio.setChecked(false);
+                        setCookiesSetting(BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    });
+        }
+
+        if (blockThirdPartyOption != null && blockThirdPartyRadio != null) {
+            blockThirdPartyOption.setOnClickListener(
+                    v -> {
+                        blockThirdPartyRadio.setChecked(true);
+                        blockAllRadio.setChecked(false);
+                        allowRadio.setChecked(false);
+                        setCookiesSetting(BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                    });
+        }
+
+        if (allowOption != null && allowRadio != null) {
+            allowOption.setOnClickListener(
+                    v -> {
+                        allowRadio.setChecked(true);
+                        blockAllRadio.setChecked(false);
+                        blockThirdPartyRadio.setChecked(false);
+                        setCookiesSetting(BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    });
+        }
+    }
+
+    private void setCookiesSetting(String value) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES,
+                value,
+                false);
+
+        if (mMenuObserver != null) {
+            mMenuObserver.onMenuTopShieldsChanged(
+                    !value.equals(BraveShieldsContentSettings.ALLOW_RESOURCE), false);
+        }
+    }
+
+    private void showShredPanel() {
+        if (mMainPanelContainer == null || mShredPanelContainer == null || mContext == null) {
+            return;
+        }
+
+        setupShredPanel();
+
+        mMainPanelContainer.setVisibility(View.GONE);
+        mShredPanelContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupShredPanel() {
+        if (mShredPanelContainer == null) {
+            return;
+        }
+
+        View backButton = mShredPanelContainer.findViewById(R.id.shred_back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> showMainPanel());
+        }
+
+        TextView siteLabel = mShredPanelContainer.findViewById(R.id.shred_site_label);
+        if (siteLabel != null && mUrl != null) {
+            String siteName =
+                    UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(mUrl);
+            siteLabel.setText(siteName.toUpperCase(Locale.ROOT));
+        }
+
+        updateShredModeDisplay();
+
+        View autoShredItem = mShredPanelContainer.findViewById(R.id.auto_shred_item);
+        if (autoShredItem != null) {
+            autoShredItem.setOnClickListener(v -> showAutoShredModeDialog());
+        }
+
+        View shredNowItem = mShredPanelContainer.findViewById(R.id.shred_now_item);
+        if (shredNowItem != null) {
+            shredNowItem.setOnClickListener(v -> onShredNowClicked());
+        }
+    }
+
+    private void onShredNowClicked() {
+        if (mContext == null || mCurrentTab == null || mUrl == null) {
+            return;
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.brave_shred_data_confirmation, null);
+
+        TextView confirmationTextView =
+                view.findViewById(R.id.brave_shred_data_confirmation_dialog);
+        if (confirmationTextView != null) {
+            confirmationTextView.setText(
+                    mContext.getString(
+                            R.string.brave_shred_data_confirmation, mUrl.getOrigin().getSpec()));
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        var mContext = this.mContext;
+        builder.setTitle(R.string.brave_shred_data_dialog_title)
+                .setView(view)
+                .setPositiveButton(
+                        R.string.brave_shred_data_dialog_ok_button_text,
+                        (dialog, which) -> {
+                            FirstPartyStorageCleanerAnimationFragment.show(mContext);
+                            if (mCurrentTab != null) {
+                                BraveFirstPartyStorageCleanerUtils.cleanupTLDFirstPartyStorage(
+                                        mCurrentTab);
+                            }
+                            if (mPopupWindow != null) {
+                                mPopupWindow.dismiss();
+                            }
+                        })
+                .setNegativeButton(R.string.brave_cancel, null);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void updateShredModeDisplay() {
+        TextView autoShredValue = mShredPanelContainer.findViewById(R.id.auto_shred_value);
+        if (autoShredValue == null || mUrl == null || mProfile == null) {
+            return;
+        }
+
+        String currentMode =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA);
+
+        int stringResId;
+        if (BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED.equals(currentMode)) {
+            stringResId = R.string.shred_option_site_tabs_closed;
+        } else if (BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT.equals(currentMode)) {
+            stringResId = R.string.shred_option_app_exit;
+        } else {
+            stringResId = R.string.brave_shields_auto_shred_never_mode_text;
+        }
+
+        autoShredValue.setText(stringResId);
+    }
+
+    private void showAutoShredModeDialog() {
+        if (mContext == null || mUrl == null || mProfile == null) {
+            return;
+        }
+
+        String currentMode =
+                BraveShieldsContentSettings.getShieldsValue(
+                        mProfile,
+                        mUrl.getSpec(),
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA);
+
+        int selectedIndex = 0;
+        if (BraveShieldsContentSettings.AUTO_SHRED_MODE_LAST_TAB_CLOSED.equals(currentMode)) {
+            selectedIndex = 1;
+        } else if (BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT.equals(currentMode)) {
+            selectedIndex = 2;
+        }
+
+        String[] options = {
+            mContext.getString(R.string.brave_shields_auto_shred_never_mode_text),
+            mContext.getString(R.string.shred_option_site_tabs_closed),
+            mContext.getString(R.string.shred_option_app_exit)
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(R.string.shred_auto_shred)
+                .setSingleChoiceItems(
+                        options,
+                        selectedIndex,
+                        (dialog, which) -> {
+                            setAutoShredMode(which);
+                            dialog.dismiss();
+                        })
+                .setNegativeButton(android.R.string.cancel, null);
+
+        builder.create().show();
+    }
+
+    private void setAutoShredMode(int mode) {
+        if (mUrl == null || mProfile == null) {
+            return;
+        }
+
+        BraveShieldsContentSettings.setShieldsValue(
+                mProfile,
+                mUrl.getSpec(),
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_SHRED_SITE_DATA,
+                String.valueOf(mode),
+                false);
+        updateShredModeDisplay();
+    }
+
+    private static final int MAX_BLOCKED_ICONS = 3;
+    private static final int MAX_FAVICON_ATTEMPTS = 20;
+
+    private int mPendingFaviconLoads;
+    private int mFaviconIconSize;
+    private final List<Bitmap> mFaviconSuccessBitmaps = new ArrayList<>();
+    private final List<GURL> mFaviconFailedOrigins = new ArrayList<>();
+
+    private void displayBlockedItemFavicons(int tabId) {
+        if (mBlockedItemsContainer == null
+                || mProfile == null
+                || mContext == null
+                || mFaviconHelper == null) {
+            return;
+        }
+
+        mBlockedItemsContainer.removeAllViews();
+        mFaviconSuccessBitmaps.clear();
+        mFaviconFailedOrigins.clear();
+
+        ArrayList<String> blockedUrls = getBlockedUrls(tabId);
+        if (blockedUrls == null || blockedUrls.isEmpty()) {
+            return;
+        }
+
+        Set<String> uniqueDomains = new HashSet<>();
+        List<GURL> originsToTry = new ArrayList<>();
+
+        for (String url : blockedUrls) {
+            if (url == null || url.isEmpty()) continue;
+
+            GURL gurl = new GURL(url);
+            if (!gurl.isValid()) continue;
+
+            String domain = gurl.getHost();
+            if (!domain.isEmpty() && uniqueDomains.add(domain)) {
+                originsToTry.add(gurl.getOrigin());
+                if (originsToTry.size() >= MAX_FAVICON_ATTEMPTS) break;
+            }
+        }
+
+        if (originsToTry.isEmpty()) return;
+
+        mFaviconIconSize = ViewUtils.dpToPx(mContext, 24);
+        mPendingFaviconLoads = originsToTry.size();
+
+        for (GURL origin : originsToTry) {
+            loadBlockedItemFavicon(origin);
+        }
+    }
+
+    private void onFaviconResult(GURL origin, @Nullable Bitmap bitmap) {
+        if (bitmap != null) {
+            mFaviconSuccessBitmaps.add(bitmap);
+        } else {
+            mFaviconFailedOrigins.add(origin);
+        }
+
+        mPendingFaviconLoads--;
+        if (mPendingFaviconLoads <= 0) {
+            populateBlockedItemsContainer();
+        }
+    }
+
+    private void populateBlockedItemsContainer() {
+        if (mBlockedItemsContainer == null || mContext == null) return;
+
+        mBlockedItemsContainer.removeAllViews();
+        int count = 0;
+
+        for (int i = 0; i < mFaviconSuccessBitmaps.size() && count < MAX_BLOCKED_ICONS; i++) {
+            addFaviconToContainer(mFaviconSuccessBitmaps.get(i), mFaviconIconSize);
+            count++;
+        }
+
+        for (int i = 0; i < mFaviconFailedOrigins.size() && count < MAX_BLOCKED_ICONS; i++) {
+            addDefaultIconToContainer(mFaviconFailedOrigins.get(i), mFaviconIconSize);
+            count++;
+        }
+    }
+
+    private void loadBlockedItemFavicon(GURL origin) {
+        if (mFaviconHelper == null
+                || mProfile == null
+                || mBlockedItemsContainer == null
+                || mContext == null) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        mFaviconHelper.getLocalFaviconImageForURL(
+                mProfile,
+                origin,
+                mFaviconIconSize,
+                /* fallbackToHost= */ false,
+                (bitmap, iconUrl) -> {
+                    if (mBlockedItemsContainer == null || mContext == null) return;
+                    PostTask.postTask(
+                            TaskTraits.UI_DEFAULT,
+                            () -> {
+                                if (bitmap != null) {
+                                    onFaviconResult(origin, bitmap);
+                                } else {
+                                    tryRegistrableDomainFavicon(origin);
+                                }
+                            });
+                });
+    }
+
+    private void tryRegistrableDomainFavicon(GURL origin) {
+        if (mFaviconHelper == null || mProfile == null) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        String registrableDomain =
+                UrlUtilities.getDomainAndRegistry(
+                        origin.getSpec(), /* includePrivateRegistries= */ false);
+        if (registrableDomain == null
+                || registrableDomain.isEmpty()
+                || registrableDomain.equals(origin.getHost())) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        GURL registrableOrigin = new GURL(origin.getScheme() + "://" + registrableDomain);
+        if (!registrableOrigin.isValid()) {
+            onFaviconResult(origin, null);
+            return;
+        }
+
+        mFaviconHelper.getLocalFaviconImageForURL(
+                mProfile,
+                registrableOrigin,
+                mFaviconIconSize,
+                /* fallbackToHost= */ false,
+                (bitmap, iconUrl) -> {
+                    if (mBlockedItemsContainer == null || mContext == null) return;
+                    PostTask.postTask(TaskTraits.UI_DEFAULT, () -> onFaviconResult(origin, bitmap));
+                });
+    }
+
+    private void addDefaultIconToContainer(GURL origin, int iconSize) {
+        if (mBlockedItemsContainer == null || mContext == null) return;
+
+        FrameLayout container = createBlockedItemContainer(iconSize);
+        if (container == null) return;
+
+        int faviconSize =
+                Math.round(
+                        ViewUtils.dpToPx(mContext, BLOCKED_OVERLAY_SIZE_DP)
+                                * BLOCKED_OVERLAY_CIRCLE_RATIO);
+        float faviconOffset = (iconSize - faviconSize) / 2f;
+        TextView textView = new TextView(mContext);
+        textView.setLayoutParams(new FrameLayout.LayoutParams(faviconSize, faviconSize));
+        textView.setTranslationX(faviconOffset);
+        textView.setTranslationY(faviconOffset);
+        textView.setIncludeFontPadding(false);
+
+        String displayDomain =
+                UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(origin);
+        String letter =
+                displayDomain.isEmpty()
+                        ? "?"
+                        : displayDomain.substring(0, 1).toUpperCase(Locale.ROOT);
+
+        textView.setText(letter);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextAppearance(R.style.TextAppearance_BraveBlockedItemIcon);
+
+        // Pick a colour deterministically from the Nala primitive_*_50 palette by hashing the
+        // display domain so the same origin always gets the same colour.
+        int colorIndex = Math.floorMod(displayDomain.hashCode(), PLACEHOLDER_FAVICON_COLORS.length);
+        int bgColor = ContextCompat.getColor(mContext, PLACEHOLDER_FAVICON_COLORS[colorIndex]);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.OVAL);
+        bg.setColor(bgColor);
+        textView.setBackground(bg);
+
+        container.addView(textView);
+        addBlockOverlay(container, iconSize);
+        mBlockedItemsContainer.addView(container);
+    }
+
+    private void addFaviconToContainer(Bitmap favicon, int iconSize) {
+        if (mBlockedItemsContainer == null || mContext == null || favicon == null) {
+            return;
+        }
+
+        FrameLayout container = createBlockedItemContainer(iconSize);
+        if (container == null) return;
+
+        int faviconSize =
+                Math.round(
+                        ViewUtils.dpToPx(mContext, BLOCKED_OVERLAY_SIZE_DP)
+                                * BLOCKED_OVERLAY_CIRCLE_RATIO);
+        float faviconOffset = (iconSize - faviconSize) / 2f;
+        ImageView imageView = new ImageView(mContext);
+        imageView.setLayoutParams(new FrameLayout.LayoutParams(faviconSize, faviconSize));
+        imageView.setTranslationX(faviconOffset);
+        imageView.setTranslationY(faviconOffset);
+        imageView.setImageBitmap(favicon);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setOutlineProvider(
+                new ViewOutlineProvider() {
+                    @Override
+                    public void getOutline(View view, Outline outline) {
+                        outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                    }
+                });
+        imageView.setClipToOutline(true);
+
+        container.addView(imageView);
+        addBlockOverlay(container, iconSize);
+        mBlockedItemsContainer.addView(container);
+    }
+
+    private @Nullable FrameLayout createBlockedItemContainer(int iconSize) {
+        if (mContext == null) return null;
+
+        FrameLayout frame = new FrameLayout(mContext);
+        int childCount = mBlockedItemsContainer.getChildCount();
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(iconSize, iconSize);
+        if (childCount > 0) {
+            params.setMarginStart(ViewUtils.dpToPx(mContext, ICON_OVERLAP_MARGIN_DP));
+        }
+        frame.setLayoutParams(params);
+
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.OVAL);
+        bg.setColor(MaterialColors.getColor(mContext, R.attr.colorSurfaceContainer, 0));
+        frame.setBackground(bg);
+
+        frame.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
+        frame.setClipToOutline(true);
+        frame.setElevation(ViewUtils.dpToPx(mContext, FAVICON_ELEVATION_DP));
+        frame.setTranslationZ(MAX_BLOCKED_ICONS - childCount);
+
+        return frame;
+    }
+
+    private void addBlockOverlay(FrameLayout container, int iconSize) {
+        if (mContext == null) return;
+
+        int overlaySize = ViewUtils.dpToPx(mContext, BLOCKED_OVERLAY_SIZE_DP);
+        float overlayOffset = (iconSize - overlaySize) / 2f;
+        ImageView overlay = new ImageView(mContext);
+        overlay.setLayoutParams(new FrameLayout.LayoutParams(overlaySize, overlaySize));
+        overlay.setTranslationX(overlayOffset);
+        overlay.setTranslationY(overlayOffset);
+        overlay.setImageResource(R.drawable.ic_disable_outline);
+        overlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        container.addView(overlay);
+    }
+
+    // Suppress this warning to avoid a catch-22: If we override onClick, it complains it's
+    // redundant.
+    // If we don't override it, it complains that's not implemented.
+    @SuppressWarnings("ClickableViewAccessibility")
+    private static final class ZoomableImageView extends AppCompatImageView {
+        private static final float MAX_SCALE = 5f;
+
+        private final Matrix mMatrix = new Matrix();
+        private final Matrix mSavedMatrix = new Matrix();
+        private final PointF mStartPoint = new PointF();
+        private final float[] mMatrixValues = new float[9];
+        private final ScaleGestureDetector mScaleDetector;
+        private float mMinScale = 1f;
+        private boolean mDragging;
+
+        ZoomableImageView(Context context) {
+            super(context);
+            setScaleType(ScaleType.MATRIX);
+            mScaleDetector =
+                    new ScaleGestureDetector(
+                            context,
+                            new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                                @Override
+                                public boolean onScale(ScaleGestureDetector detector) {
+                                    mMatrix.getValues(mMatrixValues);
+                                    float current = mMatrixValues[Matrix.MSCALE_X];
+                                    float next =
+                                            Math.max(
+                                                    mMinScale,
+                                                    Math.min(
+                                                            current * detector.getScaleFactor(),
+                                                            MAX_SCALE));
+                                    float ratio = next / current;
+                                    mMatrix.postScale(
+                                            ratio,
+                                            ratio,
+                                            detector.getFocusX(),
+                                            detector.getFocusY());
+                                    clampMatrix();
+                                    setImageMatrix(mMatrix);
+                                    return true;
+                                }
+                            });
+        }
+
+        void fitBitmap(Bitmap bitmap) {
+            setImageBitmap(bitmap);
+            post(
+                    () -> {
+                        if (getWidth() == 0 || getHeight() == 0) return;
+                        float sx = (float) getWidth() / bitmap.getWidth();
+                        float sy = (float) getHeight() / bitmap.getHeight();
+                        mMinScale = Math.min(sx, sy);
+                        float dx = (getWidth() - bitmap.getWidth() * mMinScale) / 2f;
+                        float dy = (getHeight() - bitmap.getHeight() * mMinScale) / 2f;
+                        mMatrix.setScale(mMinScale, mMinScale);
+                        mMatrix.postTranslate(dx, dy);
+                        setImageMatrix(mMatrix);
+                    });
+        }
+
+        @Override
+        public boolean onGenericMotionEvent(MotionEvent event) {
+            if ((event.getSource() & InputDevice.SOURCE_CLASS_POINTER) != 0
+                    && event.getAction() == MotionEvent.ACTION_SCROLL) {
+                float scroll = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
+                float factor = scroll > 0 ? 1.1f : (1f / 1.1f);
+                mMatrix.getValues(mMatrixValues);
+                float current = mMatrixValues[Matrix.MSCALE_X];
+                float next = Math.max(mMinScale, Math.min(current * factor, MAX_SCALE));
+                float ratio = next / current;
+                mMatrix.postScale(ratio, ratio, event.getX(), event.getY());
+                clampMatrix();
+                setImageMatrix(mMatrix);
+                return true;
+            }
+            return super.onGenericMotionEvent(event);
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            mScaleDetector.onTouchEvent(event);
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    mSavedMatrix.set(mMatrix);
+                    mStartPoint.set(event.getX(), event.getY());
+                    mDragging = true;
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    mSavedMatrix.set(mMatrix);
+                    mDragging = false;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (mDragging && !mScaleDetector.isInProgress()) {
+                        mMatrix.set(mSavedMatrix);
+                        mMatrix.postTranslate(
+                                event.getX() - mStartPoint.x, event.getY() - mStartPoint.y);
+                        clampMatrix();
+                        setImageMatrix(mMatrix);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (!mScaleDetector.isInProgress()) performClick();
+                    mDragging = false;
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    mDragging = false;
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+
+        private void clampMatrix() {
+            if (getDrawable() == null) return;
+            mMatrix.getValues(mMatrixValues);
+            float scale = mMatrixValues[Matrix.MSCALE_X];
+            float bmpW = getDrawable().getIntrinsicWidth() * scale;
+            float bmpH = getDrawable().getIntrinsicHeight() * scale;
+            float dx = mMatrixValues[Matrix.MTRANS_X];
+            float dy = mMatrixValues[Matrix.MTRANS_Y];
+            dx =
+                    bmpW < getWidth()
+                            ? (getWidth() - bmpW) / 2f
+                            : Math.min(0f, Math.max(dx, getWidth() - bmpW));
+            dy =
+                    bmpH < getHeight()
+                            ? (getHeight() - bmpH) / 2f
+                            : Math.min(0f, Math.max(dy, getHeight() - bmpH));
+            mMatrix.setScale(scale, scale);
+            mMatrix.postTranslate(dx, dy);
+        }
+    }
+}

@@ -269,13 +269,22 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_Streaming_BadStatusCode) {
   EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
 }
 
+TEST_F(ObliviousHttpAPIClientUnitTest,
+       PerformRequest_InnerUnauthorized_ReturnsConnectionIssue) {
+  PerformRequest();
+  CompleteWithInnerResponse(net::HTTP_UNAUTHORIZED, "");
+  run_loop_->Run();
+  ASSERT_FALSE(result_.has_value());
+  EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
+}
+
 TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_BadOuterResponseCode) {
   const struct {
     int response_code;
     mojom::APIError expected_error;
   } kCases[] = {
       {net::HTTP_INTERNAL_SERVER_ERROR, mojom::APIError::ConnectionIssue},
-      {net::HTTP_UNAUTHORIZED, mojom::APIError::InvalidAPIKey},
+      {net::HTTP_UNAUTHORIZED, mojom::APIError::ConnectionIssue},
       {net::HTTP_TOO_MANY_REQUESTS, mojom::APIError::RateLimitReached},
   };
 

@@ -38,11 +38,15 @@ struct ShieldsPanelView: View {
     url: URL,
     tab: some TabState,
     domain: Domain,
+    isAdvancedControlsEnabled: Bool,
     callback: @escaping (Action) -> Void
   ) {
     self.url = url
     self.tab = tab
-    self.viewModel = ShieldsSettingsViewModel(tab: tab)
+    self.viewModel = ShieldsSettingsViewModel(
+      tab: tab,
+      isAdvancedControlsEnabled: isAdvancedControlsEnabled
+    )
     self.actionCallback = callback
     self.displayHost =
       "\u{200E}\(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url.strippingBlobURLAuth.absoluteString))"
@@ -65,13 +69,16 @@ struct ShieldsPanelView: View {
             .foregroundStyle(Color(.secondaryBraveLabel))
             .multilineTextAlignment(.leading)
             .padding(.horizontal)
-          DisclosureGroup(isExpanded: $advancedShieldsExpanded) {
-            advancedShieldsSection
-          } label: {
-            Text(Strings.Shields.advancedControls)
-              .foregroundStyle(Color(.braveLabel))
-              .frame(maxWidth: .infinity, alignment: .leading)
-          }.disclosureGroupStyle(ShieldsPanelDisclosureStyle())
+            .padding(.bottom, viewModel.advancedControlsEnabled ? nil : 16)
+          if viewModel.advancedControlsEnabled {
+            DisclosureGroup(isExpanded: $advancedShieldsExpanded) {
+              advancedShieldsSection
+            } label: {
+              Text(Strings.Shields.advancedControls)
+                .foregroundStyle(Color(.braveLabel))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }.disclosureGroupStyle(ShieldsPanelDisclosureStyle())
+          }
         } else {
           shieldsOffFooterView
         }
@@ -362,12 +369,14 @@ class ShieldsPanelViewController: UIHostingController<ShieldsPanelView>, Popover
     url: URL,
     tab: some TabState,
     domain: Domain,
+    isAdvancedControlsEnabled: Bool = true,
     callback: @escaping (ShieldsPanelView.Action) -> Void
   ) {
     let shieldsPanelView = ShieldsPanelView(
       url: url,
       tab: tab,
       domain: domain,
+      isAdvancedControlsEnabled: isAdvancedControlsEnabled,
       callback: callback
     )
     self.shieldsPanelView = shieldsPanelView

@@ -54,7 +54,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="6570689355868013775">„Brave“ saugos įrankiai</translation>
 <translation id="1902837727299679178">„Brave“ nori ištrinti jūsų Slaptažodžių tvarkyklės duomenis. Įveskite „Windows“ slaptažodį, kad tai leistumėte.</translation>
 <translation id="4449148723378534338">Peržiūrėkite pagrindinius privatumo ir saugos valdiklius naršyklėje „Brave“</translation>
-<translation id="5229247933547820267">Jei norite paklausti DI režimo apie skirtuką neišeidami iš puslapio, prisijunkite prie „Brave“. Be to, slaptažodžius ir kitas funkcijas pasieksite visuose įrenginiuose.</translation>
 <translation id="1640672724030957280">Atsisiunčiama...</translation>
 <translation id="1680687534629375545">Klausti vaizdų paieškos apie šį puslapį</translation>
 <translation id="509363484780540563">Galite naudoti „Brave“ bet kada spustelėję nuorodas pranešimuose, dokumentuose ir kitose programose. Ji taip pat bus prisegta prie užduočių juostos.</translation>
@@ -98,6 +97,9 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="2066690553719545730">Visada rodyti DI režimą</translation>
 <translation id="2472891440303445472">„Brave“ užblokavo šį atsisiuntimą, nes failas yra klaidinantis ir gali atlikti nenumatytų pakeitimų įrenginyje</translation>
 <translation id="2054358978145431867">Kitą kartą atidarius „Brave iOS“ bus pateiktas raginimas išbandyti „<ph name="FEATURE_NAME"/>“.</translation>
+<translation id="4315579854608498851">„Brave“ išjungia „JavaScript“ optimizavimą, kai pirmą kartą apsilankote svetainėje.
+
+Jei šis puslapis neveikia taip, kaip tikimasi, pabandykite leisti naudoti optimizavimą.</translation>
 <translation id="2726948994393234543">Slaptažodžiai ir kiti „Brave“ duomenys, kuriuos išsaugojote „Brave“ paskyroje, bus pašalinti iš šio įrenginio. Jei norite juos vėl naudoti „Brave“, vėl prisijunkite.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama vieną minutę. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Skirtukai liks atidaryti.}one{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutę. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Skirtukai liks atidaryti.}few{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutes. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Skirtukai liks atidaryti.}many{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minutės. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Skirtukai liks atidaryti.}other{Jūsų organizacija automatiškai ištrina naršymo duomenis, kai „Brave“ nenaudojama # minučių. Tai gali būti istorija, automatinis pildymas ir atsisiuntimai. Skirtukai liks atidaryti.}}</translation>
 <translation id="2126108037660393668">Nepavyko patvirtinti atsisiųsto failo.</translation>
@@ -213,6 +215,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Tinkinkite naująjį „Brave“ profilį</translation>
+<translation id="2430807206104224491">Galite toliau kalbėti naudodami DI režimą neperjungdami skirtukų. Jei norite pradėti, prisijunkite prie „Brave“. Be to, slaptažodžius ir kitas funkcijas pasieksite visuose įrenginiuose.</translation>
 <translation id="4805865169608137960">Jei norite pašalinti „Brave“ paskyrą iš „Brave“, atsijunkite nuo „Brave“ puslapyje „Nustatymai“</translation>
 <translation id="1651639704310627074">Vėliau „Brave“ gali paklausti, ar norite naudoti išsaugotą informaciją automatiškai užpildydami formas</translation>
 <translation id="2585240446624043880">„Brave“ negali skaityti ir rašyti į duomenų katalogą:
@@ -501,6 +504,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="8646609321956191980">Kiekviename profilyje saugoma atskira „Brave“ informacija, pvz., žymės, istorija, slaptažodžiai ir kt.</translation>
 <translation id="6756656512757374876">Sužinokite daugiau, <ph name="BEGIN_LINK"/>kaip „Brave“ užtikrina jūsų duomenų privatumą<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Šio nustatymo pakeitimai bus pritaikyti iš naujo paleidus „Brave“.</translation>
+<translation id="3396870972301571614">Tvarkykite plėtinius „Brave“ pagrindiniame meniu spustelėję „Plėtiniai“.</translation>
 <translation id="2535436634051789953">Galite perjungti, kad matytumėte slaptažodžius iš kito „Brave“ profilio</translation>
 <translation id="2312399718665761438">Kad ištaisytų rašybos klaidas, „Brave“ siunčia „Brave“ tekstą, kurį įvedate teksto laukuose</translation>
 <translation id="3507835409099344374">Eiti į „Brave“ pranešimų nustatymus</translation>

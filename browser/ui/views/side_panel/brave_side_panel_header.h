@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/functional/callback_forward.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
@@ -31,6 +32,13 @@ class BraveSidePanelHeader : public views::View {
     // Return nullptr when the entry has no launch action (e.g. reading list).
     virtual std::unique_ptr<views::ImageButton> CreateLaunchButton() = 0;
     virtual std::unique_ptr<views::ImageButton> CreateCloseButton() = 0;
+
+    // Top corner radius for the header's rounded background.
+    virtual int GetTopRadius() const = 0;
+
+    // Registers a callback the delegate invokes when something that affects
+    // the header (currently: the rounded-corners pref) changes.
+    virtual void SetUpdateHeaderCallback(base::RepeatingClosure callback) = 0;
   };
 
   explicit BraveSidePanelHeader(std::unique_ptr<Delegate> delegate);
@@ -42,6 +50,8 @@ class BraveSidePanelHeader : public views::View {
   void Layout(PassKey) override;
 
  private:
+  void UpdateHeader();
+
   std::unique_ptr<Delegate> delegate_;
 };
 

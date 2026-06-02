@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">அச்சிடுக</translation>
 <translation id="2600847485413879104">Rewards BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">கூடமைப்பைப் பதிவிறக்குகிறது...</translation>
 <translation id="4894106830958548828">எனக்கு புரிகிறது</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">உங்கள் தேடல்கள் மற்றும் பக்க உள்ளடக்கங்கள் இந்த சாதனத்தில் செயலாக்கப்படுகின்றன. எதுவும் Brave-க்கு அனுப்பப்படவில்லை அல்லது மனித மதிப்பாய்வாளர்களால் பார்க்கப்படவில்லை. இது ஒரு பரிசோதனை அம்சம் மற்றும் எப்போதும் சரியாக இருக்காது.</translation>
 <translation id="7534079972563542000">நிறுத்த முடியாத இணையவாசல்கள்</translation>
 <translation id="4492298165410552103">Brave-இல் Unstoppable Domains-ஐ ஆதரிக்கவா?</translation>
 <translation id="5015092481905019948">Brave மூலம் <ph name="PROVIDER_NAME"/> பயன்படுத்தி <ph name="DOMAIN_LIST"/> இல் உள்ள களப்பெயர்களை தீர்மானிக்கிறது<ph name="DOMAIN_PROVIDER_NAME"/>. Brave உங்கள் IP முகவரியை மறைத்து விடுகிறது. இது இயலுமைப்படுத்தப்பட்டால், <ph name="PROVIDER_NAME"/> யாரோ ஒன்று இந்த களப்பெயர்களை பார்வையிட முயல்கிறார்கள் என்பதைத்தவிர வேறொன்றையும் அறியாது. மேலதிக விவரங்களுக்கு <ph name="PROVIDER_NAME"/> களத்தின் <ph name="BEGIN_PROVIDER_TOU_LINK"/>பயன்பாட்டு நிபந்தனைகள்<ph name="END_PROVIDER_TOU_LINK"/> மற்றும் <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>தனியுரிமைக் கொள்கை<ph name="END_PROVIDER_PRIVACY_LINK"/> களைப் பார்க்கவும்.</translation>
@@ -738,7 +738,6 @@
 <translation id="1288078776976153868">நெட்வொர்க்</translation>
 <translation id="1148827340205946630">பயனர் கோரிக்கையை நிராகரித்தார்.</translation>
 <translation id="2403819048476450281">தவறான அளவுருக்கள்.</translation>
-<translation id="3849003816301348130">இலக்கு முகவரி OFAC SDN பட்டியலில் உள்ளது.</translation>
 <translation id="3955144560853195652">தொடரமைப்பு <ph name="VALUE"/> சேர்க்கப்படவில்லை</translation>
 <translation id="1875861420974447980">இந்த தொடரமைப்பு ஐடிஐ தற்போது பயன்படுத்தப்படுகிறது</translation>
 <translation id="167698752210114155">உள்ளகப் பிழை ஏற்பட்டது</translation>
@@ -852,11 +851,12 @@
 <translation id="3751611888003301070">பாதைகள்</translation>
 <translation id="3799091982455573025"><ph name="NETWORK_NAME"/> மூலம் <ph name="EXCHANGE_NAME"/> பரிமாற்றம் (-)</translation>
 <translation id="5136093123841570193"><ph name="FRIST_NETWORK_NAME"/> இருந்து <ph name="SECOND_NETWORK_NAME"/> வரையிலான பாலம்</translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} படிமுறை}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} படிமுறைகள்}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} படிமுறை)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} படிமுறைகள்)}
     }</translation>
 <translation id="8621264173374071200"><ph name="PROVIDER_NAME"/> மூலம் <ph name="EXCHANGE_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> வழியாக</translation>
 <translation id="646023614746251785">மாற்றத்தை உறுதிசெய்</translation>
 <translation id="6264944956989873014">பிரிட்ஜை உறுதிசெய்</translation>
 <translation id="7067917728851842589">அனுப்புவதை உறுதிசெய்</translation>
@@ -937,6 +937,7 @@
 <translation id="1108298724135935307">இணைக்கப்பட்ட இணையதளங்கள்</translation>
 <translation id="5716350339763180836">இருப்புவிவரம்</translation>
 <translation id="5538251867290702601">கிராஃப்</translation>
+<translation id="8123016618655108594">விநியோகம்</translation>
 <translation id="352407037922720467">NFTs தாவலை காட்டவும்</translation>
 <translation id="163697698769819510">உங்கள் சொத்துக்களைப் பாதுகாக்கும் விதமாகவும், அணுகலை இழக்கவிடாமல் இருக்கவும், இப்போது உங்கள் பணப்பையை நகலெடுக்கவும்.</translation>
 <translation id="1018806299114415224">இப்போது நகலெடு</translation>
@@ -1160,12 +1161,12 @@
 <translation id="4324239559624557455">24 மணிநேரத்திற்கு</translation>
 <translation id="9139452553033760558">1 வாரத்திற்கு</translation>
 <translation id="1658834457013045127">எப்பொழுதும்</translation>
-<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> இணைக்கப்பட்டுள்ளது</translation>
-<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> துண்டிக்கப்பட்டது</translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> ஆனது <ph name="DEVICE_NAME"/>-உடன் இணைக்கப்பட்டுள்ளது</translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> துண்டிக்கப்பட்டது</translation>
 <translation id="434328838837168401">அறிவுறுத்தல்களைக் காண்பிக்கவும்</translation>
-<translation id="6739517232898494646">தொடரவதற்கு உங்கள் <ph name="DEVICE_NAME"/> ஐ இணைக்கவும்</translation>
+<translation id="13670155462680755">தொடரவதற்கு உங்கள் <ph name="ACCOUNT_NAME"/> ஐ இணைக்கவும்</translation>
 <translation id="6941881257520473899">திட்டம்: சாதனம் தொடர்பான உறுதிப்படுத்தல் தேவை.</translation>
-<translation id="2288190100157580461"><ph name="NETWORK"/> செயலியை <ph name="DEVICE_NAME"/> இல் திறக்க சிறிய கருவி தேவை.</translation>
+<translation id="4108619287854657806"><ph name="ACCOUNT_NAME"/>-இல் <ph name="NETWORK"/> ஆப் திறக்கப்பட வேண்டும் என hardware wallet கோருகிறது</translation>
 <translation id="8687869982094542529">அனுப்பப்பட்டது</translation>
 <translation id="5013754027092416509">பெறப்பட்டது</translation>
 <translation id="5867988533873716616">தொகுதியை ஆராயும் URL கிடைக்கவில்லை.</translation>
@@ -1350,6 +1351,7 @@
 <translation id="8491675129455635799">சொத்துக்களை குழுவாக்கவும்</translation>
 <translation id="5331775401966766526">வடிகட்டிகள் மற்றும் காட்சி அமைப்புகள்</translation>
 <translation id="5332541468425943610">NFT காட்சி அமைப்புகள்</translation>
+<translation id="1539149309756422999">சொத்து விநியோகம்</translation>
 <translation id="886032538431162695">சொத்துக்களை வரிசைப்படுத்துக</translation>
 <translation id="6080181976198929758">உடன் மதிப்பு அல்லது பெயரால் வரிசைப்படுத்தவும்</translation>
 <translation id="2563815561570398537">சிறிய இருப்புகளை மறைக்கவும்</translation>
@@ -1593,6 +1595,9 @@
 <translation id="5882719778740918116">இந்த முகவரியில் <ph name="VALUE"/> இல் மட்டும் டோகன்களை அனுப்புதல்</translation>
 <translation id="6885009592653876601">200+ கிரிப்டோ சொத்துக்களை வாங்க, அனுப்பு, மற்றும் மாற்று</translation>
 <translation id="8716223552348254401">உலாவியில் உட்பொடியாக, அபாயகரமான நீட்சிகள் இல்லை</translation>
+<translation id="1198271701881992799">தொடங்குவோம்</translation>
+<translation id="7904301836463577071">கிரெடிட் அல்லது டெபிட் கார்டு மூலம் உங்கள் முதல் crypto-ஐ வாங்கவும்</translation>
+<translation id="3721561070667360112">மற்றொரு wallet அல்லது பரிமாற்றத்திலிருந்து crypto-ஐ டெபாசிட் செய்யவும்</translation>
 <translation id="4559901986238865734">மடக்கப்பட்ட சங்கிலி மற்றும் NFT ஆதரவு</translation>
 <translation id="296101411136980896">மாற்ற கிளிக் செய்க</translation>
 <translation id="753655478253155745">பன்னிரண்டாவது</translation>
@@ -1740,6 +1745,7 @@
 <translation id="8549067157732633185">இந்த டோக்கன் சரிபார்க்கப்பட்டது</translation>
 <translation id="2130170065617939165">இந்த டோக்கன் <ph name="NUMBER_OF_LISTS"/> பட்டியல்களில் சரிபார்க்கப்பட்டுள்ளது</translation>
 <translation id="1554316484739382186">வழங்குபவர்: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> கணக்கு</translation>
 <translation id="5360752485622434494">Brave வெகுமதிகள் BAT on <ph name="PROVIDER"/></translation>
@@ -2134,12 +2140,14 @@
 <translation id="6459036216700972269">சிக்கப்பட்ட தாவல்களை திருத்து</translation>
 <translation id="4235382917338421035">தாவல் இடங்களை மாற்று</translation>
 <translation id="4288085058450834672">பயன்பாடுகளை காண்பி</translation>
+<translation id="4750337523930607658">கவன முறையை மாற்று</translation>
 <translation id="4144468798716165316">விரைவுக் கட்டளைகள்</translation>
 <translation id="3617523374417810198">புதிய சிக்கப்பட்ட பார்வை</translation>
 <translation id="8571323456914890254">சிக்கப்பட்ட பார்வையில் திறக்கவும்</translation>
 <translation id="5329136173514538969">சிக்கப்பட்ட தாவல்களை திருத்து</translation>
 <translation id="7595612919377246359">தாவல் இடங்களை மாற்று</translation>
 <translation id="2367972762794486313">பயன்பாடுகளைக் காட்டு</translation>
+<translation id="3142853026316054951">கவன முறையை மாற்று</translation>
 <translation id="3468387898712904997">புதிய மின்னஞ்சல் புனைப்பெயர்</translation>
 <translation id="8591883849678260674">அசலைக் காண்பி</translation>
 <translation id="1969654232209826429">நிமி. வாசிப்பு</translation>
@@ -2187,6 +2195,7 @@
 <translation id="5923170497201832190">தாவலை கீழே செல்லவும்</translation>
 <translation id="6219262425964000211">கோப்புகளை இங்கேத் தள்ளுங்கள்</translation>
 <translation id="4313763911013851687">உரையாடலுக்குக் கோப்புகளைச் சேர்க்க அவற்றைப் இங்கேத் தள்ளுங்கள்</translation>
+<translation id="8206915760129310348">சில கோப்புகளைப் படிக்க முடியவில்லை, அவை இணைக்கப்படவில்லை</translation>
 <translation id="4524675003624341892">கேள்விகளைப் பரிந்துரைக்கவும்…</translation>
 <translation id="4567071417854988869">இந்த வீடியோவை தொகுப்பதாகக் கூறவும்</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2197,7 +2206,9 @@
 <translation id="7932221068776853847">இந்தப் பக்க உள்ளடக்கத்தை லியோவுக்கு அனுப்புவதை நிறுத்த மற்றும் புதிய உரையாடலை தொடங்க துண்டிக்கவும்</translation>
 <translation id="8743383817154663379">உங்கள் கோரிக்கையை செயல்படுத்தும் போது ஏதோ தவறாகிவிட்டது. பிறகு மீண்டும் முயற்சிக்கவும்.</translation>
 <translation id="2712650703044366764">இந்த மாட்டிற்கு விதிவிலக்கான தூய்மையான முடிவு உள்ளது. தயவுசெய்து உங்கள் அமைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.</translation>
-<translation id="1167803637855350748">லியோவுடன் இணைக்கும் நெட்வொர்க் தொடரில் சிக்கல் ஏற்பாடுள்ளது, உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சி செய்யவும்.</translation>
+<translation id="7092656392206649236">லியோ-வுடன் தொடர்பு கொள்ளும்போது ஏதோ தவறாகிவிட்டது. மீண்டும் முயற்சிக்கவும்.</translation>
+<translation id="3552709750512842961">நிலைக் குறியீடு: <ph name="STATUS_CODE"/>, பிழைக் குறியீடு: <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">நிலைக் குறியீடு: <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">நீங்கள் பிரீமியம் வரம்பை அடைந்துள்ளார். மேலும் சில மணி நேரங்களில் மீண்டும் முயற்சி செய்யவும்.</translation>
 <translation id="3683964919745779766">இந்த மாடலுக்கு நீங்கள் உச்ச வரம்பைச் சென்றடைந்துவிட்டீர்கள் அல்லது உங்களிடம் குறைபாடுகள் இல்லை. தாமதியமாக மீண்டும் முயற்சிக்கவும்.</translation>
 <translation id="7692501701960747469">இந்த மாடலுக்கு வடிவமைக்கப்பட்ட API திறவுகோல் தவறானது. உங்கள் அமைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.</translation>
@@ -2480,7 +2491,9 @@
 <translation id="5663901348199429994">உங்கள் மின்னஞ்சல் புனைப்பெயர்கள்</translation>
 <translation id="9046133327037621173">புதிய மின்னஞ்சல் புனைப்பெயர்</translation>
 <translation id="3768606658230902536">உங்கள் தனிப்பட்ட மின்னஞ்சலை இரகசியமாக வைத்திருக்கும்போது உங்கள் இன்பாக்ஸுக்கு முன்னனுப்புவதற்காக ஒரு தற்போக்கான மின்னஞ்சல் முகவரியை உருவாக்கவும்.</translation>
-<translation id="6887156107256264506">நீங்கள் 5 இலவச மின்னஞ்சல் புனைப்பெயர்களுக்கான வரம்பை அடைந்துவிட்டீர்கள். ஒரு புனைப்பெயரை மீண்டும் பயன்படுத்துவதற்கு அல்லது நீக்குவதற்கு "நிர்வகிக்கவும்" என்பதைக் கிளிக் செய்யவும்.</translation>
+<translation id="4452721050684632493">மாற்றுப்பெயர் வரம்பு அடைந்துவிட்டது</translation>
+<translation id="2912191433415590080">உங்கள் மின்னஞ்சல் மாற்றுப்பெயர்களில் <ph name="MAX_ALIASES"/> அனைத்தையும் பயன்படுத்திவிட்டீர்கள். புதியதை உருவாக்க, இருக்கும் மாற்றுப்பெயரை நீக்கவும்.</translation>
+<translation id="3847337908410945070">உங்கள் மாற்றுப்பெயர்கள் (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">புதிய புனைப்பெயர்</translation>
 <translation id="8072910658503112482">மற்றொரு மின்னஞ்சல் புனைப்பெயரைப் பரிந்துரைக்கவும்</translation>
 <translation id="7710361355427562228">புதிய புனைப்பெயரை உருவாக்குகிறது...</translation>
@@ -2523,6 +2536,8 @@
 <translation id="2991633563551889054">டாக் கார்டை மறை</translation>
 <translation id="5355776323718420036">மேல் தளங்களை மறை</translation>
 <translation id="1689504141194856995">VPN கார்டை மறை</translation>
+<translation id="2919329118360099847">சாதாரண சாளரங்களுக்கு முகவரிப் பட்டியில் உள்ள தேடல் இன்ஜினாக Brave பயன்படுத்தப்படும்.</translation>
+<translation id="6792837540759934892">Brave-ஐ இயல்புத் தேடல் இன்ஜினாக அமைக்கவா?</translation>
 <translation id="8262911270872215147">செய்திகளை தனிப்பயனாக்கு</translation>
 <translation id="3884037897537157986">செய்திகளை முடக்கு</translation>
 <translation id="7847477075635510673">செய்திகளை மறை</translation>
@@ -2658,7 +2673,7 @@
 <translation id="2273851479262317744">இயல்புநிலை உலாவியாக பிரேவை அமை</translation>
 <translation id="5037676449506322593">எல்லாவற்றையும் தேர்ந்தெடு</translation>
 <translation id="5148943178722443958">Brave-ஐச் சிறப்பானதாக்குவதற்கு உதவவும்.</translation>
-<translation id="479535542793009168">ஸ்திதிশீலতை மற்றும் நோயறிதல்</translation>
+<translation id="8874748598814587364">நிலைத்தன்மை</translation>
 <translation id="1097073572755862978">நீங்கள் ஒரு செயலிழப்பு அல்லது முடக்கத்தை அனுபவித்தால், பழுதறிதல் அறிக்கைகளை அனுப்பவும். <ph name="LINK_BEFORE"/>மேலும் அறிய.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Brave பயனர்களால் என்ன அம்சங்கள் பயன்படுத்தப்படுகின்றன என்பதைப் பற்றிய தனிப்பட்ட மற்றும் அநாமதேய தயாரிப்பு உள்நோக்குகளைப் பகிரவும். <ph name="LINK_BEFORE"/>மேலும் அறிய.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">அமைப்புகள் அனைத்தும் முடிந்தது</translation>
@@ -2776,6 +2791,10 @@
 <translation id="1602850501393095406">மீட்டுக ↑ சுட்டிக்காட்ட</translation>
 <translation id="8367705492654390392">ஏதேனும் கேளுங்கள்</translation>
 <translation id="8525248723479742219">பிறகு விளையாடவும்</translation>
+<translation id="1751249301761991853">தனிப்பட்ட</translation>
+<translation id="1122068467107743258">வேலை</translation>
+<translation id="8372721116225477180">சமூகம்</translation>
+<translation id="1539343118617844331">பள்ளி</translation>
 <translation id="2935698011275148880">Brave Origin</translation>
 <translation id="3983844925615091103">Brave Origin க்கு வரவேற்கிறோம். தொடரவதற்கு, தயவுசெய்து Brave Origin ক্রয় வாங்குக அல்லது மீட்டெடுக்கவும்.</translation>
 <translation id="4801175670604644729">இந்த ब्राउज़र ব්‍යবহار করার জন্য আপনাকে সক্রিয় Brave Origin ক্রয় প্রয়োজন।</translation>
@@ -2791,4 +2810,60 @@
 <translation id="5816720995022674532">Origin Linux डिवाइस पर मुफ़्त में उपयोग के लिए उपलब्ध है, लेकिन Brave के व्यवसाय का समर्थन करना चाहते हैं तो <ph name="BEGIN_LINK"/>खरीद के लिए उपलब्ध<ph name="END_LINK"/> है। खरीदारी Origin को Android, iOS, macOS और Windows डिवाइसों पर भी उपयोग करने की क्षमता को अनलॉक कर देगी।</translation>
 <translation id="3065220545261045367">Origin खरीदकर Brave का समर्थन करें</translation>
 <translation id="2069499076031488636">Linux पर Origin को मुफ़्त में आगे बढ़ें</translation>
+<translation id="5713644099811900409">Brave கணக்கு</translation>
+<translation id="2906576968270573525">Brave கணக்கில் உள்நுழையவும் அல்லது உருவாக்கவும்</translation>
+<translation id="6972754398087986839">தொடங்குக</translation>
+<translation id="5378207817582281342">கிட்டத்தட்ட அங்கே!</translation>
+<translation id="3750210661641549834">உங்கள் கணக்கை உருவாக்க, உங்கள் மின்னஞ்சல் முகவரியை சரிபார்க்கவும்.</translation>
+<translation id="4129813507847680661">பதிவு குறியீட்டை உள்ளிடவும்</translation>
+<translation id="1672793037892810340">நீங்கள் உள்ளிட வேண்டிய குறியீட்டுடன் கூடிய மின்னஞ்சலைப் பெற்றிருக்க வேண்டும்.</translation>
+<translation id="4821255729182569254">உறுதிப்படுத்தல் மின்னஞ்சலை மீண்டும் அனுப்பு</translation>
+<translation id="5837679375142747484">மின்னஞ்சலைப் பார்க்க முடியவில்லையா? உங்கள் ஸ்பாம் கோப்புறையைச் சோதிக்கவும் அல்லது <ph name="BEGIN_LINK"/>மீண்டும் அனுப்பு<ph name="END_LINK"/>.</translation>
+<translation id="1080588816740959885">மின்னஞ்சலைப் பார்க்க முடியவில்லையா? உங்கள் ஸ்பாம் கோப்புறையைச் சோதிக்கவும் அல்லது மீண்டும் அனுப்பவும்.</translation>
+<translation id="1020730839570724178">பதிவைரத்துசெய்</translation>
+<translation id="4869737930995549965">வெளியேறு</translation>
+<translation id="5538654494923870167">உங்கள் Brave கணக்கைப் பயன்படுத்தி தொடங்குக</translation>
+<translation id="1544145635547515689">Brave கணக்கை உருவாக்கு</translation>
+<translation id="3828644479849256404">ஏற்கனவே கணக்கு உள்ளதா? உள்நுழைக</translation>
+<translation id="6624553071240278643">உங்கள் கணக்கை உருவாக்கவும்</translation>
+<translation id="6505120968393722022">Brave கணக்குகளை உருவாக்க @bravealias.com முகவரிகளைப் பயன்படுத்த முடியாது. வேறு டொமைனுடன் மீண்டும் முயற்சிக்கவும்.</translation>
+<translation id="8248460961680233459">ஒரு கடவுச்சொல்லை உருவாக்கவும்</translation>
+<translation id="4917385247580444890">வலிமையானது</translation>
+<translation id="5486261815000869482">கடவுச்சொல்லை உறுதிப்படுத்தவும்</translation>
+<translation id="7345706641791090287">கடவுச்சொல்லை உறுதிப்படுத்தவும்</translation>
+<translation id="7114054701490058191">கடவுச்சொற்கள் பொருந்தவில்லை</translation>
+<translation id="1293857704520741614">உங்கள் கணக்கில் உள்நுழைக</translation>
+<translation id="118617366439356381">கடவுச்சொல்லை மறந்துவிட்டீர்களா?</translation>
+<translation id="5183159033908953146">உங்கள் Brave கணக்கின் மின்னஞ்சலை உறுதிப்படுத்தவும், பின்னர் உங்கள் கடவுச்சொல்லை மீட்டமைக்கும் இணைப்பைப் பெறுவீர்கள். இந்த இணைப்பு 30 நிமிடங்களுக்கு மட்டுமே செல்லுபடியாகும்.</translation>
+<translation id="3997368361371298873">எச்சரிக்கை: நீங்கள் இந்த சாதனத்தில் உள்நுழையவில்லை என்பதால், கடவுச்சொல்லை மீட்டமைப்பது சர்வரில் உள்ள <ph name="BEGIN_BOLD"/>உங்கள் எல்லா தரவையும் நீக்கிவிடும்<ph name="END_BOLD"/>. நீங்கள் உள்நுழைந்துள்ள மற்றொரு சாதனம் இருந்தால், கடவுச்சொல்லை மீட்டமைப்பதற்கு பதிலாக அந்த சாதனத்திலிருந்து உங்கள் கடவுச்சொல்லை மாற்றவும்.</translation>
+<translation id="3674472551471103443">உங்கள் கடவுச்சொல்லை மீட்டமைக்கவும்</translation>
+<translation id="2755539422340788311">உங்கள் மின்னஞ்சலை சரிபார்க்கவும்</translation>
+<translation id="6641436078676327508">குறுகிய குறியீட்டுடன் கூடிய மின்னஞ்சலை நீங்கள் பெற்றிருக்க வேண்டும். தொடர அதை இங்கே உள்ளிடவும்.</translation>
+<translation id="7228810962389847249">இங்கே குறியீட்டை உள்ளிடவும்</translation>
+<translation id="4683390091376980486">குறியீட்டை உறுதிப்படுத்தவும்</translation>
+<translation id="3970028678400797622">மின்னஞ்சல் குறியீட்டை மீண்டும் அனுப்பு</translation>
+<translation id="2475982808118771221">பிழை ஏற்பட்டது</translation>
+<translation id="5430795854491041407">பிழை</translation>
+<translation id="2232323423357029857">உலாவியில் எதிர்பாராத பிழை ஏற்பட்டது<ph name="ERROR_CODE"/>. உலாவியை மறுதொடக்கம் செய்து மீண்டும் முயற்சிக்கவும்.</translation>
+<translation id="7167650060829320707">உள் சர்வர் பிழை (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). பிறகு மீண்டும் முயற்சிக்கவும்.</translation>
+<translation id="2387645930330673048">இந்தக் கணக்கு மின்னஞ்சல் சரிபார்ப்புக்காகக் காத்திருக்கிறது.</translation>
+<translation id="2199962270601714404">அந்த மின்னஞ்சல் முகவரிக்கான கணக்கு எதுவும் கிடைக்கவில்லை. மீண்டும் முயற்சிக்கவும் அல்லது புதிய கணக்கை உருவாக்கவும்.</translation>
+<translation id="8130611002720478693">தவறான கடவுச்சொல். மீண்டும் முயற்சிக்கவும்.</translation>
+<translation id="7144067487084094749">இந்த மின்னஞ்சல் முகவரிக்கான கணக்கு ஏற்கனவே உள்ளது. கணக்கை உருவாக்குவதற்குப் பதிலாக உள்நுழைய முயற்சிக்கவும்.</translation>
+<translation id="5288951359968156008">இந்த மின்னஞ்சல் முகவரியின் டொமைன் ஆதரிக்கப்படவில்லை. வேறு மின்னஞ்சல் முகவரியைப் பயன்படுத்தவும்.</translation>
+<translation id="7625678607509255072">மின்னஞ்சல் சரிபார்ப்பு வரம்பு மீறப்பட்டது. மீண்டும் முயற்சிப்பதற்கு முன் 30 நிமிடங்கள் காத்திருக்கவும்.</translation>
+<translation id="4582421696414628320">சரிபார்ப்பு காலாவதியானது. பதிவு செயல்முறையை மீண்டும் தொடங்கவும்.</translation>
+<translation id="8439543211004394821">அதிக தவறான குறியீடுகள் உள்ளிடப்பட்டன. பதிவு செயல்முறையை மீண்டும் தொடங்கவும்.</translation>
+<translation id="3229986152760633988">தவறான குறியீடு, மீண்டும் முயற்சிக்கவும்.</translation>
+<translation id="4178004989875422946">Brave கணக்கு Brave சேவைகளை எளிதாக அணுக உங்களுக்கு உதவும்.</translation>
+<translation id="8314772463905284467">கேப்ஸ்லாக் இயக்கப்பட்டுள்ளது</translation>
+<translation id="7044608453949401443">கடவுச்சொல்லின் தொடக்கத்திலோ முடிவிலோ இடைவெளிகள் அனுமதிக்கப்படவில்லை.</translation>
+<translation id="2939492377741553693">உறுதிப்படுத்தல் மின்னஞ்சல் மீண்டும் அனுப்பப்பட்டது.</translation>
+<translation id="2112559299194052697">மீண்டும் அனுப்ப முடியவில்லை</translation>
+<translation id="7932611814134267012">ஏற்கனவே பல சரிபார்ப்பு மின்னஞ்சல்கள் அனுப்பப்பட்டுள்ளன. உங்கள் ஸ்பாம் கோப்புறையைச் சோதிக்கவும்.</translation>
+<translation id="1364223093800750401">மின்னஞ்சல் ஏற்கனவே சரிபார்க்கப்பட்டுள்ளது.</translation>
+<translation id="3353844160742960162">தனியுரிமை அமைப்புகள் சரிசெய்தல்</translation>
+<translation id="528205534230423181">இந்த இணையதளம் Brave தானாக உங்களுக்காகச் சரிசெய்யக்கூடிய தனியுரிமை அமைப்புகளை வழங்குகிறது. நாங்கள் பரிந்துரைப்பது இதோ:</translation>
+<translation id="1063227610401477317">மாற்றங்களை நடைமுறைப்படுத்தவும்</translation>
+<translation id="5539769255716491933">தோல்வியடைந்த படிநிலைகளைப் புகாரளி</translation>
 </translationbundle>

@@ -8,10 +8,12 @@
 
 #include <memory>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_header.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "url/gurl.h"
 
 class BrowserWindowInterface;
@@ -35,13 +37,18 @@ class BraveSidePanelHeaderController : public BraveSidePanelHeader::Delegate {
   std::unique_ptr<views::Label> CreatePanelTitle() override;
   std::unique_ptr<views::ImageButton> CreateLaunchButton() override;
   std::unique_ptr<views::ImageButton> CreateCloseButton() override;
+  int GetTopRadius() const override;
+  void SetUpdateHeaderCallback(base::RepeatingClosure callback) override;
 
  private:
   void OnLaunchButtonPressed(const GURL& url);
   void OnCloseButtonPressed();
+  void OnWebViewRoundedCornersPrefChanged();
 
   const raw_ref<BrowserWindowInterface> browser_window_;
   base::WeakPtr<SidePanelEntry> entry_;
+  PrefChangeRegistrar pref_change_registrar_;
+  base::RepeatingClosure update_header_callback_;
   base::WeakPtrFactory<BraveSidePanelHeaderController> weak_factory_{this};
 };
 

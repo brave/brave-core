@@ -17,7 +17,8 @@ import WebKit
 class QuickViewController: UIViewController {
   private let url: URL
   private var currentTab: (any TabState)?
-  private let profile: any Profile
+  private var profileController: BraveProfileController
+  private var profile: any Profile { profileController.profile }
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -26,17 +27,15 @@ class QuickViewController: UIViewController {
 
   init(
     url: URL,
-    profile: any Profile,
+    profileController: BraveProfileController,
     onOpenInNewTab: ((URLRequest) -> Void)?
   ) {
     self.url = url
     self.toolbarViewModel = QuickViewToolbarModel(url: url)
-    self.profile = profile
+    self.profileController = profileController
     self.onOpenInNewTab = onOpenInNewTab
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
-
-    updateViewModel()
   }
 
   @available(*, unavailable)
@@ -54,42 +53,25 @@ class QuickViewController: UIViewController {
     let tab = TabStateFactory.create(
       with: .init(profile: profile, initialConfiguration: initialConfiguration)
     )
-    tab.createWebView()
     tab.addObserver(toolbarViewModel)
+    tab.addObserver(self)
+    tab.createWebView()
     tab.delegate = self
-    let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
-      tab: tab,
-      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
-    )
-    tab.braveShieldsHelper = braveShieldsTabHelper
-    tab.addPolicyDecider(braveShieldsTabHelper)
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
     tab.isVisible = true
     self.currentTab = tab
 
-    guard let currentTab = currentTab else {
-      return
-    }
-
-    // Add rule lists for this page
-    Task(priority: .userInitiated) {
-      let isBraveShieldsEnabled = braveShieldsTabHelper.isBraveShieldsEnabled(for: url)
-      let shieldLevel = braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: true)
-      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
-        isBraveShieldsEnabled: isBraveShieldsEnabled,
-        shieldLevel: shieldLevel
-      )
-      for ruleList in ruleLists {
-        currentTab.configuration?.userContentController.add(ruleList)
-      }
-    }
+    updateViewModel()
 
     setupUI()
 
-    currentTab.loadRequest(URLRequest(url: url))
+    currentTab?.loadRequest(URLRequest(url: url))
   }
 
   private func updateViewModel() {
+    // update shield button status
+    refreshShieldStatus(url: currentTab?.visibleURL ?? url)
+    // update action buttons
     toolbarViewModel.onActionButton = { [weak self] button in
       switch button {
       case .close:
@@ -100,13 +82,13 @@ class QuickViewController: UIViewController {
       case .forward:
         guard let currentTab = self?.currentTab else { return }
         currentTab.goForward()
-      case .shield, .refresh, .playlist, .readerMode,
+      case .shield:
+        self?.presentBraveShieldsView()
+      case .refresh, .playlist, .readerMode,
         .translate, .share, .openTab:
         break
       }
     }
-    // TODO: https://github.com/brave/brave-browser/issues/53567
-    toolbarViewModel.secondaryTopButton = .playlist
   }
 
   private func setupUI() {
@@ -133,6 +115,120 @@ class QuickViewController: UIViewController {
       $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
     }
   }
+
+  private func presentBraveShieldsView() {
+    guard let tab = currentTab, var url = tab.visibleURL else { return }
+    if let internalURL = InternalURL(url) {
+      guard let originalURL = internalURL.url.strippedInternalURL else { return }
+      url = originalURL
+    }
+    if !url.isWebPage(includeDataURIs: false) {
+      return
+    }
+
+    weak var weakPopover: PopoverController?
+    let popover = PopoverController(
+      contentController: PopoverNavigationController(
+        rootViewController: ShieldsPanelViewController(
+          url: url,
+          tab: tab,
+          domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
+          isAdvancedControlsEnabled: false
+        ) { [weak self] action in
+          guard let self else { return }
+          switch action {
+          case .navigate(let target, _):
+            switch target {
+            case .reportBrokenSite:
+              weakPopover?.dismiss(animated: true) {
+                self.showSubmitReportView(for: url)
+              }
+            case .shareStats:
+              weakPopover?.dismiss(animated: true) {
+                let activityController =
+                  ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
+                    isPrivateBrowsing: tab.isPrivate
+                  )
+                self.present(activityController, animated: true, completion: nil)
+              }
+            case .globalShields:  // not available in quickview mode
+              break
+            }
+          case .changedShieldSettings:
+            self.changedShieldSettings()
+          case .shredSiteData:  // not available in quickview mode
+            break
+          }
+        }
+      ),
+      contentSizeBehavior: .preferredContentSize
+    )
+    weakPopover = popover
+    popover.present(
+      from: toolbarHostingController.rootView.shieldBackgroundView.uiView,
+      on: self
+    )
+  }
+
+  private func showSubmitReportView(for url: URL) {
+    guard let currentTab else { return }
+    // Strip fragments and query params from url
+    var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+    components?.fragment = nil
+    components?.queryItems = nil
+    guard let cleanedURL = components?.url else { return }
+
+    let viewController = UIHostingController(
+      rootView: SubmitReportView(
+        url: cleanedURL,
+        isPrivateBrowsing: profile.isOffTheRecord,
+        tab: currentTab
+      )
+    )
+
+    viewController.modalPresentationStyle = .popover
+
+    if let popover = viewController.popoverPresentationController {
+      popover.sourceView = toolbarHostingController.rootView.shieldBackgroundView.uiView
+      popover.sourceRect = toolbarHostingController.rootView.shieldBackgroundView.uiView.bounds
+
+      let sheet = popover.adaptiveSheetPresentationController
+      sheet.largestUndimmedDetentIdentifier = .medium
+      sheet.prefersEdgeAttachedInCompactHeight = true
+      sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+      sheet.detents = [.medium(), .large()]
+      sheet.prefersGrabberVisible = true
+    }
+    present(viewController, animated: true)
+  }
+
+  private func changedShieldSettings() {
+    let currentDomain = currentTab?.visibleURL?.baseDomain
+    let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
+      .compactMap({ $0.browserViewController })
+
+    // Update shield status, reload the this tab, reset selectors cache for all
+    // browser in regular tabs, since same domain can be visited in regular tabs
+    browsers.forEach { browser in
+      browser.topToolbar.refreshShieldsStatus()
+      browser.tabManager.allTabs.forEach {
+        if $0.visibleURL?.baseDomain == currentDomain {
+          $0.reload()
+          $0.contentBlocker?.resetSelectorsCache()
+        }
+      }
+    }
+
+    // Update shield status, reload the this tab, reset selectors cache in quickview mode
+    refreshShieldStatus(url: currentTab?.visibleURL ?? url)
+    currentTab?.reload()
+    currentTab?.contentBlocker?.resetSelectorsCache()
+  }
+
+  private func refreshShieldStatus(url: URL) {
+    let isShieldsEnabled = currentTab?.braveShieldsHelper?.isBraveShieldsEnabled(for: url) ?? false
+    toolbarViewModel.updateShieldingState(isShieldsEnabled)
+  }
 }
 
 // MARK: - TabDelegate
@@ -147,5 +243,25 @@ extension QuickViewController: TabDelegate {
       self?.onOpenInNewTab?(request)
     }
     return nil
+  }
+}
+
+// MARK: - TabObserver
+extension QuickViewController: TabObserver {
+  func tabDidCreateWebView(_ tab: some TabState) {
+    if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
+      tab: tab,
+      profileController: profileController
+    ) {
+      tab.detachedPrivacyHelper = detachedTabPrivacyHelper
+    }
+  }
+
+  func tabDidUpdateURL(_ tab: some TabState) {
+    refreshShieldStatus(url: tab.visibleURL ?? url)
+  }
+
+  func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
   }
 }

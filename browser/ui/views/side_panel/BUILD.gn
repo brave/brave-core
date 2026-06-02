@@ -45,11 +45,38 @@ source_set("side_panel_impl") {
       "//brave/app:brave_generated_resources_grit_grit",
       "//brave/components/vector_icons",
       "//chrome/app:generated_resources",
+      "//chrome/browser/profiles:profile",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/color:mixers",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/common",
+      "//components/prefs",
       "//ui/base",
+      "//ui/views",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = []
+  deps = []
+
+  if (enable_sidebar_v2) {
+    sources += [ "brave_side_panel_header_controller_unittest.cc" ]
+
+    deps += [
+      ":side_panel",
+      ":side_panel_impl",
+      "//base/test:test_support",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui/browser_window/test:test_support",
+      "//chrome/browser/ui/side_panel",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/test:test_support",
+      "//components/prefs",
+      "//testing/gmock",
+      "//testing/gtest",
       "//ui/views",
     ]
   }

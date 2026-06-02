@@ -184,6 +184,7 @@ leo_icons_sources = [
   "browser-home.svg",
   "browser-ntp-widget.svg",
   "btc-color.svg",
+  "bug.svg",
   "calendar-check.svg",
   "camera.svg",
   "caps-lock.svg",

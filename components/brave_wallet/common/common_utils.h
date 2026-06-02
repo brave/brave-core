@@ -32,6 +32,7 @@ bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
+bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
 #if BUILDFLAG(IS_IOS)
 bool IsWalletWebUIEnabled();

@@ -12,7 +12,8 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   <settings-toggle-button
     class="cr-row first"
     pref="{{prefs.brave.playlist.enabled}}"
-    label="$i18n{bravePlaylistEnablePlaylistLabel}">
+    label="$i18n{bravePlaylistEnablePlaylistLabel}"
+    hidden="[[isPlaylistManaged_(prefs.brave.playlist.enabled)]]">
   </settings-toggle-button>
   <template
     is="dom-if"

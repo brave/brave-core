@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">Yazdır</translation>
 <translation id="2600847485413879104">Ödüller BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Onayla</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">Bileşen İndiriliyor...</translation>
 <translation id="4894106830958548828">Anladım</translation>
 <translation id="2729085694451916573"><ph name="PART_ONE"/>Yer tutucular<ph name="PART_ONE_END"/> için test satırları.<ph name="PART_TWO"/>Daha fazla bilgi edinin<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">Aramalarınız ve sayfa içerikleriniz bu cihazda işlenir. Brave'e hiçbir şey gönderilmez ve insan denetçiler tarafından görülmez. Bu deneysel bir özelliktir ve her zaman doğru sonuç vermeyebilir.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave'de Unstoppable Domains desteği etkinleştirilsin mi?</translation>
 <translation id="5015092481905019948">Brave, <ph name="DOMAIN_PROVIDER_NAME"/> kaynağında bulunan <ph name="DOMAIN_LIST"/> alan adlarını çözmek için <ph name="PROVIDER_NAME"/> hizmetini kullanacaktır. Brave, IP adresinizi gizler. Bunu etkinleştirirseniz <ph name="PROVIDER_NAME"/> birilerinin bu alanları ziyaret etmeye çalıştığını görür ancak başka bir şey görmez. <ph name="PROVIDER_NAME"/> hizmetinin <ph name="BEGIN_PROVIDER_TOU_LINK"/>kullanım şartlarına<ph name="END_PROVIDER_TOU_LINK"/> ve <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>gizlilik politikasına<ph name="END_PROVIDER_PRIVACY_LINK"/> göz atın.</translation>
@@ -749,7 +749,6 @@
 <translation id="1288078776976153868">ağ</translation>
 <translation id="1148827340205946630">Kullanıcı isteği reddetti.</translation>
 <translation id="2403819048476450281">Geçersiz parametreler.</translation>
-<translation id="3849003816301348130">Hedef adresi, OFAC SDN listesinde bulunuyor.</translation>
 <translation id="3955144560853195652">Zincir <ph name="VALUE"/> eklenmemiş</translation>
 <translation id="1875861420974447980">Bu Zincir Kimliği şu anda kullanılıyor</translation>
 <translation id="167698752210114155">Dahili bir hata oluştu</translation>
@@ -863,11 +862,12 @@
 <translation id="3751611888003301070">Yönlendirmeler</translation>
 <translation id="3799091982455573025"><ph name="EXCHANGE_NAME"/> aracılığıyla <ph name="NETWORK_NAME"/> üzerinde takas edin</translation>
 <translation id="5136093123841570193"><ph name="FRIST_NETWORK_NAME"/> ağından <ph name="SECOND_NETWORK_NAME"/> ağına köprü</translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} adım}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} adım}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} adım)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} adım)}
     }</translation>
 <translation id="8621264173374071200"><ph name="PROVIDER_NAME"/> üzerinden <ph name="EXCHANGE_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> aracılığıyla</translation>
 <translation id="646023614746251785">Takas işlemini onaylayın</translation>
 <translation id="6264944956989873014">Köprüyü onaylayın</translation>
 <translation id="7067917728851842589">Gönderimi onaylayın</translation>
@@ -948,6 +948,7 @@
 <translation id="1108298724135935307">Bağlı siteler</translation>
 <translation id="5716350339763180836">Bakiyeler</translation>
 <translation id="5538251867290702601">Grafik</translation>
+<translation id="8123016618655108594">Dağılım</translation>
 <translation id="352407037922720467">NFT sekmesi</translation>
 <translation id="163697698769819510">Varlıklarınızı korumak ve erişimi asla kaybetmediğinizden emin olmak için cüzdanınızı hemen yedekleyin.</translation>
 <translation id="1018806299114415224">Şimdi yedekleyin</translation>
@@ -1171,12 +1172,12 @@
 <translation id="4324239559624557455">24 saat için</translation>
 <translation id="9139452553033760558">1 hafta için</translation>
 <translation id="1658834457013045127">Sonsuza dek</translation>
-<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> bağlandı</translation>
-<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> bağlantısı kesildi</translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/>, <ph name="DEVICE_NAME"/> cihazına bağlandı</translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> bağlantısı kesildi</translation>
 <translation id="434328838837168401">Talimatları görüntüle</translation>
-<translation id="6739517232898494646">Devam etmek için <ph name="DEVICE_NAME"/> bağlayın</translation>
+<translation id="13670155462680755">Devam etmek için <ph name="ACCOUNT_NAME"/> bağlayın</translation>
 <translation id="6941881257520473899">Donanım cüzdanı cihazda doğrulama gerektirir.</translation>
-<translation id="2288190100157580461">Donanım cüzdanı, <ph name="DEVICE_NAME"/> üzerinden <ph name="NETWORK"/> Uygulamasının açılmasını gerektiriyor</translation>
+<translation id="4108619287854657806">Donanım cüzdanı, <ph name="ACCOUNT_NAME"/> üzerinden <ph name="NETWORK"/> Uygulamasının açılmasını gerektiriyor</translation>
 <translation id="8687869982094542529">gönderildi</translation>
 <translation id="5013754027092416509">alındı</translation>
 <translation id="5867988533873716616">Blok gezgini URL'si mevcut değil.</translation>
@@ -1361,6 +1362,7 @@
 <translation id="8491675129455635799">Varlıkları şuna göre grupla:</translation>
 <translation id="5331775401966766526">Filtreler ve görüntü ayarları</translation>
 <translation id="5332541468425943610">NFT görünüm ayarları</translation>
+<translation id="1539149309756422999">Varlık dağılımı</translation>
 <translation id="886032538431162695">Varlıkları sırala</translation>
 <translation id="6080181976198929758">İtibari değer veya ada göre sırala</translation>
 <translation id="2563815561570398537">Küçük bakiyeleri gizle</translation>
@@ -1604,6 +1606,9 @@
 <translation id="5882719778740918116">Yalnızca <ph name="VALUE"/> üzerinden bu adrese belirteçler gönderin</translation>
 <translation id="6885009592653876601">200'den fazla kripto varlığı satın alın, gönderin ve takas edin</translation>
 <translation id="8716223552348254401">Tarayıcıya özgü, riskli uzantılar yok</translation>
+<translation id="1198271701881992799">Hadi başlayalım</translation>
+<translation id="7904301836463577071">Kredi veya banka kartıyla ilk kriptonuzu satın alın</translation>
+<translation id="3721561070667360112">Başka bir cüzdandan veya borsadan kripto yatırın</translation>
 <translation id="4559901986238865734">Çok zincirli &amp; NFT desteği</translation>
 <translation id="296101411136980896">Geçiş yapmak için tıklayın</translation>
 <translation id="753655478253155745">On ikinci</translation>
@@ -1751,6 +1756,7 @@
 <translation id="8549067157732633185">Bu token doğrulanmıştır</translation>
 <translation id="2130170065617939165">Bu token, <ph name="NUMBER_OF_LISTS"/> listede doğrulanmıştır</translation>
 <translation id="1554316484739382186">Harcayan: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> hesabı</translation>
 <translation id="5360752485622434494"><ph name="PROVIDER"/> üzerinde bulunan Brave Ödülleri BAT'ı</translation>
@@ -2145,12 +2151,14 @@
 <translation id="6459036216700972269">Sekmelerin Ayrılmasını Kaldır</translation>
 <translation id="4235382917338421035">Sekme Konumlarını Değiştir</translation>
 <translation id="4288085058450834672">Uygulamaları Göster</translation>
+<translation id="4750337523930607658">Odak Modunu Aç/Kapat</translation>
 <translation id="4144468798716165316">Hızlı komutlar</translation>
 <translation id="3617523374417810198">Yeni ayrık görünüm</translation>
 <translation id="8571323456914890254">Ayrık görünümde aç</translation>
 <translation id="5329136173514538969">Sekmelerin ayrılmasını kaldır</translation>
 <translation id="7595612919377246359">Sekme konumlarını değiştir</translation>
 <translation id="2367972762794486313">Uygulamaları göster</translation>
+<translation id="3142853026316054951">Odak modunu aç/kapat</translation>
 <translation id="3468387898712904997">Yeni e-posta takma adı</translation>
 <translation id="8591883849678260674">Orijinal sayfayı görüntüleyin</translation>
 <translation id="1969654232209826429">dk. okundu</translation>
@@ -2198,6 +2206,7 @@
 <translation id="5923170497201832190">En aşağıya kaydır</translation>
 <translation id="6219262425964000211">Dosyaları buraya sürükleyin</translation>
 <translation id="4313763911013851687">Konuşmaya eklemek istediğiniz dosyaları buraya sürükleyin</translation>
+<translation id="8206915760129310348">Bazı dosyalar okunamadı ve eklenmedi</translation>
 <translation id="4524675003624341892">Soru önerin...</translation>
 <translation id="4567071417854988869">Bu videoyu özetle</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2208,7 +2217,9 @@
 <translation id="7932221068776853847">Bu sayfanın içeriğini Leo'ya göndermeyi durdurmak için bağlantıyı kesin ve yeni bir konuşma başlatın</translation>
 <translation id="8743383817154663379">İsteğiniz işlenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="2712650703044366764">Bu modelin geçersiz bir uç noktası var. Lütfen yapılandırmanızı kontrol edin ve tekrar deneyin.</translation>
-<translation id="1167803637855350748">Leo'ya bağlanırken bir ağ sorunu yaşandı, bağlantınızı kontrol edip tekrar deneyin.</translation>
+<translation id="7092656392206649236">Leo ile iletişim sırasında bir şeyler ters gitti. Lütfen yeniden deneyin.</translation>
+<translation id="3552709750512842961">Durum kodu: <ph name="STATUS_CODE"/>, hata kodu: <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">Durum kodu: <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Premium hızı limitine ulaştınız. Lütfen birkaç saat içinde tekrar deneyin.</translation>
 <translation id="3683964919745779766">Bu model için limite ulaştınız veya krediniz bitti. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="7692501701960747469">Bu model için yapılandırılan API anahtarı geçersiz. Lütfen yapılandırmanızı kontrol edin ve tekrar deneyin.</translation>
@@ -2491,7 +2502,9 @@
 <translation id="5663901348199429994">E-posta takma adlarınız</translation>
 <translation id="9046133327037621173">Yeni e-posta takma adı</translation>
 <translation id="3768606658230902536">Gelen kutunuza yönlendiren ve kişisel e-postanızı gizli tutan rastgele bir e-posta adresi oluşturun.</translation>
-<translation id="6887156107256264506">Ücretsiz 5 e-posta takma adı sınırına ulaştınız. Bir takma adı yeniden kullanmak veya silmek için "Yönet "e tıklayın.</translation>
+<translation id="4452721050684632493">Takma ad limitine ulaşıldı</translation>
+<translation id="2912191433415590080"><ph name="MAX_ALIASES"/> e-posta takma adınızın tamamını kullandınız. Yeni bir tane oluşturmak için mevcut bir takma adı silin.</translation>
+<translation id="3847337908410945070">Takma adlarınız (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">Yeni takma ad</translation>
 <translation id="8072910658503112482">Başka bir e-posta takma adı önerin</translation>
 <translation id="7710361355427562228">Yeni takma ad oluşturuluyor...</translation>
@@ -2534,6 +2547,8 @@
 <translation id="2991633563551889054">Sohbet kartını gizle</translation>
 <translation id="5355776323718420036">En iyi siteleri gizle</translation>
 <translation id="1689504141194856995">VPN kartını gizle</translation>
+<translation id="2919329118360099847">Brave, normal pencerelerde adres çubuğundaki arama motoru olarak kullanılacaktır.</translation>
+<translation id="6792837540759934892">Brave'i varsayılan arama motoru olarak ayarla?</translation>
 <translation id="8262911270872215147">Haberleri Özelleştir</translation>
 <translation id="3884037897537157986">Haberleri Devre Dışı Bırak</translation>
 <translation id="7847477075635510673">Haberleri Gizle</translation>
@@ -2672,7 +2687,7 @@
 <translation id="2273851479262317744">Brave'i varsayılan tarayıcı olarak ayarlayın</translation>
 <translation id="5037676449506322593">Tümünü seç</translation>
 <translation id="5148943178722443958">Brave'i daha iyi hale getirmeye yardım edin.</translation>
-<translation id="479535542793009168">Kararlılık ve Tanılama</translation>
+<translation id="8874748598814587364">Kararlılık</translation>
 <translation id="1097073572755862978">Kilitlenme veya çökme yaşarsanız tanı raporu gönderin. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Brave kullanıcılarının hangi özellikleri kullandığıyla ilgili gizli ve anonim ürün içgörüleri paylaşın. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Kurulum tamamlandı</translation>
@@ -2801,6 +2816,10 @@ Hadi sizi bağlayalım!</translation>
 <translation id="1602850501393095406">Vurgulamak için ↑ düğmesine basın</translation>
 <translation id="8367705492654390392">Bir şey sorun</translation>
 <translation id="8525248723479742219">Daha Sonra Oynat</translation>
+<translation id="1751249301761991853">Kişisel</translation>
+<translation id="1122068467107743258">İş</translation>
+<translation id="8372721116225477180">Sosyal</translation>
+<translation id="1539343118617844331">Okul</translation>
 <translation id="2935698011275148880">Cesur Köken</translation>
 <translation id="3983844925615091103">Brave Origin'e hoş geldiniz. Devam etmek için lütfen Brave Origin satın alın veya geri yükleyin.</translation>
 <translation id="4801175670604644729">Bu tarayıcıyı kullanmak için etkin bir Brave Origin satın alımına ihtiyacınız var.</translation>
@@ -2816,4 +2835,60 @@ Hadi sizi bağlayalım!</translation>
 <translation id="5816720995022674532">Origin, Linux cihazlarda kullanımı ücretsizdir, ancak Brave'i bir işletme olarak desteklemek istiyorsanız <ph name="BEGIN_LINK"/>satın almak için mevcuttur<ph name="END_LINK"/>. Satın almak, Android, iOS, macOS ve Windows cihazlarda Origin'i kullanabilme özelliğinin kilidini açacaktır.</translation>
 <translation id="3065220545261045367">Origin satın alarak Brave'i destekleyin</translation>
 <translation id="2069499076031488636">Linux'ta Origin'i ücretsiz olarak kullanmaya devam edin</translation>
+<translation id="5713644099811900409">Brave Hesabı</translation>
+<translation id="2906576968270573525">Giriş yapın veya bir Brave hesabı oluşturun</translation>
+<translation id="6972754398087986839">Başlayın</translation>
+<translation id="5378207817582281342">Neredeyse orada!</translation>
+<translation id="3750210661641549834">Hesabınızı oluşturmak için lütfen e-posta adresinizi doğrulayın.</translation>
+<translation id="4129813507847680661">Kayıt kodunu girin</translation>
+<translation id="1672793037892810340">Girmeniz gereken bir kod içeren bir e-posta almış olmalısınız.</translation>
+<translation id="4821255729182569254">Onay e-postasını yeniden gönder</translation>
+<translation id="5837679375142747484">E-posta görünmüyor mu? Spam klasörünüzü kontrol edin veya <ph name="BEGIN_LINK"/>yeniden gönderin<ph name="END_LINK"/>.</translation>
+<translation id="1080588816740959885">E-posta görünmüyor mu? Spam klasörünüzü kontrol edin veya yeniden gönderin.</translation>
+<translation id="1020730839570724178">Kaydı iptal et</translation>
+<translation id="4869737930995549965">Oturumu kapat</translation>
+<translation id="5538654494923870167">Brave hesabınızla başlayın</translation>
+<translation id="1544145635547515689">Brave hesabı oluştur</translation>
+<translation id="3828644479849256404">Zaten bir hesabınız var mı? Giriş yapın</translation>
+<translation id="6624553071240278643">Hesabınızı oluşturun</translation>
+<translation id="6505120968393722022">Brave hesabı oluşturmak için @bravealias.com adreslerini kullanamazsınız. Lütfen farklı bir alan adıyla tekrar deneyin.</translation>
+<translation id="8248460961680233459">Bir şifre oluşturun</translation>
+<translation id="4917385247580444890">Güçlü</translation>
+<translation id="5486261815000869482">Parolayı doğrulayın</translation>
+<translation id="7345706641791090287">Parolanızı doğrulayın</translation>
+<translation id="7114054701490058191">Parolalar eşleşmiyor</translation>
+<translation id="1293857704520741614">Hesabınıza giriş yapın</translation>
+<translation id="118617366439356381">Parolanızı mı unuttunuz?</translation>
+<translation id="5183159033908953146">Brave hesabınızın e-posta adresini doğrulayın, ardından parolanızı sıfırlamak için bir bağlantı alacaksınız. Bağlantı yalnızca 30 dakika boyunca geçerli olacaktır.</translation>
+<translation id="3997368361371298873">Uyarı: Bu cihazda oturum açmadığınız için parolanızı sıfırlamak sunucudaki <ph name="BEGIN_BOLD"/>tüm verilerinizi silecektir<ph name="END_BOLD"/>. Oturum açtığınız başka bir cihazınız varsa, parolanızı sıfırlamak yerine o cihazdan parolanızı değiştirin.</translation>
+<translation id="3674472551471103443">Parolanızı sıfırlayın</translation>
+<translation id="2755539422340788311">E-postanızı doğrulayın</translation>
+<translation id="6641436078676327508">Kısa bir kod içeren bir e-posta almış olmalısınız. Devam etmek için lütfen buraya girin.</translation>
+<translation id="7228810962389847249">Kodu buraya girin</translation>
+<translation id="4683390091376980486">Kodu doğrula</translation>
+<translation id="3970028678400797622">E-posta kodunu yeniden gönder</translation>
+<translation id="2475982808118771221">Bir hata oluştu</translation>
+<translation id="5430795854491041407">hata</translation>
+<translation id="2232323423357029857">Tarayıcı beklenmeyen bir hatayla karşılaştı<ph name="ERROR_CODE"/>. Lütfen tarayıcıyı yeniden başlatın ve tekrar deneyin.</translation>
+<translation id="7167650060829320707">Dahili sunucu hatası (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). Lütfen daha sonra tekrar deneyin.</translation>
+<translation id="2387645930330673048">Bu hesap e-posta doğrulamasını bekliyor.</translation>
+<translation id="2199962270601714404">Bu e-posta adresine ait bir hesap bulunamadı. Lütfen tekrar deneyin veya yeni bir hesap oluşturun.</translation>
+<translation id="8130611002720478693">Yanlış parola. Lütfen tekrar deneyin.</translation>
+<translation id="7144067487084094749">Bu e-posta adresi için zaten bir hesap mevcut. Hesap oluşturmak yerine giriş yapmayı deneyin.</translation>
+<translation id="5288951359968156008">Bu e-posta adresinin alan adı desteklenmiyor. Lütfen farklı bir e-posta adresi kullanın.</translation>
+<translation id="7625678607509255072">E-posta doğrulama limiti aşıldı. Tekrar denemeden önce lütfen 30 dakika bekleyin.</translation>
+<translation id="4582421696414628320">Doğrulamanın süresi doldu. Kayıt sürecine yeniden başlayın.</translation>
+<translation id="8439543211004394821">Çok fazla yanlış kod girildi. Kayıt sürecine yeniden başlayın.</translation>
+<translation id="3229986152760633988">Yanlış kod, lütfen tekrar deneyin.</translation>
+<translation id="4178004989875422946">Bir Brave hesabı, Brave hizmetlerine kolayca erişmenizi sağlayacaktır.</translation>
+<translation id="8314772463905284467">Caps Lock açık</translation>
+<translation id="7044608453949401443">Parolanın başında veya sonunda boşluk olmasına izin verilmez.</translation>
+<translation id="2939492377741553693">Doğrulama e-postası yeniden gönderildi.</translation>
+<translation id="2112559299194052697">Yeniden gönderilemedi</translation>
+<translation id="7932611814134267012">Çok fazla doğrulama e-postası gönderildi. Lütfen spam klasörünüzü kontrol edin.</translation>
+<translation id="1364223093800750401">E-posta zaten doğrulandı.</translation>
+<translation id="3353844160742960162">Gizlilik Ayarları İnce Ayarı</translation>
+<translation id="528205534230423181">Bu web sitesi, Brave'in sizin için otomatik olarak ayarlayabileceği gizlilik ayarları sunuyor. İşte önerilerimiz:</translation>
+<translation id="1063227610401477317">Değişiklikleri Uygula</translation>
+<translation id="5539769255716491933">Başarısız Adımları Bildir</translation>
 </translationbundle>

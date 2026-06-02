@@ -170,6 +170,7 @@ export const WalletPageWrapper = (props: Props) => {
             <CTAButton
               buttonText={getLocale('braveWalletReportAnIssueButtonText')}
               url='https://community.brave.app/tags/c/wallet/131/bug'
+              iconName='bug'
             />
           </FeatureRequestButtonWrapper>
         )}

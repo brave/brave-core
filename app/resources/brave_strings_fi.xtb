@@ -52,7 +52,6 @@
 <translation id="6570689355868013775">Bravein turvallisuustyökalut</translation>
 <translation id="1902837727299679178">Brave haluaa poistaa Salasanat-datasi. Salli tämä kirjoittamalla Windows-salasanasi.</translation>
 <translation id="4449148723378534338">Tarkista Bravein tärkeimmät yksityisyys‑ ja turvallisuusasetukset</translation>
-<translation id="5229247933547820267">Jos haluat kysyä tekoälytilalta välilehdestä poistumatta sivulta, kirjaudu sisään Braveiin. Voit myös käyttää salasanojasi ja muita tietoja kaikilla laitteillasi.</translation>
 <translation id="1640672724030957280">Ladataan...</translation>
 <translation id="1680687534629375545">Kysy tästä sivusta kuvahausta</translation>
 <translation id="509363484780540563">Voit käyttää Braveia aina, kun klikkaat linkkejä viesteissä, dokumenteissa ja muissa sovelluksissa. Se myös kiinnitetään tehtäväpalkkiin.</translation>
@@ -96,6 +95,9 @@
 <translation id="2066690553719545730">Näytä aina tekoälytila</translation>
 <translation id="2472891440303445472">Brave on estänyt tämän latauksen, koska tiedosto on harhaanjohtava ja se voi tehdä odottamattomia muutoksia laitteellesi</translation>
 <translation id="2054358978145431867">Näet kehotteen kokeilla ominaisuutta (<ph name="FEATURE_NAME"/>) seuraavan kerran, kun avaat Bravein iOS:llä.</translation>
+<translation id="4315579854608498851">Brave laittaa JavaScript-optimoinnin pois päältä, kun vierailet sivustolla ensimmäistä kertaa.
+
+Jos tämä sivu ei toimi odotetulla tavalla, kokeile sallia optimointi.</translation>
 <translation id="2726948994393234543">Salasanat ja muu Brave-data tallennetaan Brave-tilillesi ja poistetaan tältä laitteelta. Jos haluat käyttää niitä uudelleen Braveissa, kirjaudu takaisin sisään.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organisaatiosi poistaa selausdatan automaattisesti, kun Braveia ei ole käytetty 1 minuuttiin. Tämä voi sisältää historian, automaattisen täytön ja lataukset. Välilehdet pysyvät auki.}other{Organisaatiosi poistaa selausdatan automaattisesti, kun Braveia ei ole käytetty # minuuttiin. Tämä voi sisältää historian, automaattisen täytön ja lataukset. Välilehdet pysyvät auki.}}</translation>
 <translation id="2126108037660393668">Ladattua tiedostoa ei voitu vahvistaa.</translation>
@@ -211,6 +213,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Muokkaa uusi Brave-profiili näköiseksesi</translation>
+<translation id="2430807206104224491">Voit jatkaa keskustelua tekoälytilassa vaihtamatta välilehteä. Aloita kirjautumalla Braveiin. Voit myös käyttää salasanojasi ja muita tietoja kaikilla laitteillasi.</translation>
 <translation id="4805865169608137960">Jos haluat poistaa Brave-tilisi Braveista, kirjaudu ulos Braveista Asetukset-sivun kautta</translation>
 <translation id="1651639704310627074">Brave voi kysyä myöhemmin, haluatko käyttää tallennettuja tietoja lomakkeiden automaattiseen täyttöön</translation>
 <translation id="2585240446624043880">Brave ei voi lukea tietohakemistoaan ja kirjoittaa siihen:
@@ -499,6 +502,7 @@
 <translation id="8646609321956191980">Jokainen profiili sisältää omat Brave-tietonsa, esim. kirjanmerkit, historian ja salasanat</translation>
 <translation id="6756656512757374876">Lue lisää siitä, <ph name="BEGIN_LINK"/>miten Brave pitää datasi yksityisenä<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Asetukseen tehdyt muutokset tulevat voimaan, kun Brave käynnistetään uudelleen.</translation>
+<translation id="3396870972301571614">Hallinnoi laajennuksia valitsemalla Bravein päävalikosta Laajennukset.</translation>
 <translation id="2535436634051789953">Voit vaihtaa profiilia nähdäksesi toisen Brave-profiilin salasanat</translation>
 <translation id="2312399718665761438">Brave lähettää kenttiin kirjoittamasi tekstin Bravelle oikeinkirjoitusvirheiden korjaamiseksi.</translation>
 <translation id="3507835409099344374">Siirry Bravein ilmoitusasetuksiin</translation>

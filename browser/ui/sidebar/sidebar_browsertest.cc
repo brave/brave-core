@@ -58,6 +58,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -2179,10 +2180,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2BraveHeaderTest) {
 }
 
 // Verify that the resize area is positioned correctly for both border states.
-// With border: the resize area sits inside the border inset strip (its width
-// equals the border inset and it starts at x=0).
-// Without border: the resize area is a narrow kNoBorderResizeAreaWidth strip
-// placed at the inner edge facing the web content.
+// In both cases the strip starts at the panel's outer edge with width
+// kResizeStripWidth. Border state only affects z-order: without rounded
+// corners the strip is reordered to the top so it wins the hit-test over
+// the overlapping content edge.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        SidebarV2ResizeAreaPositionMatchesBorderState) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
@@ -2200,48 +2201,43 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   auto* resize_area = side_panel->resize_area_for_testing();
   ASSERT_TRUE(resize_area);
 
-  // --- Border case (rounded corners ON) ---
-  prefs->SetBoolean(kWebViewRoundedCorners, true);
-  RunScheduledLayouts();
-  EXPECT_GT(side_panel->GetInsets().width(), 0)
-      << "panel should have left/right insets";
-
-  // In the bordered case the resize strip sits in the gap between the panel
-  // edge and the content, at the left edge (panel is on the right in LTR).
-  // Check resize area and panel's screen bounds.origin().
-  EXPECT_EQ(resize_area->GetBoundsInScreen().origin(),
-            side_panel->GetBoundsInScreen().origin())
-      << "Bordered resize area right edge should align with content origin";
-  EXPECT_EQ(resize_area->width(), side_panel->GetInsets().left())
-      << "Bordered resize area width should match the left border inset";
-  EXPECT_EQ(side_panel->GetIndexOf(resize_area),
-            side_panel->children().size() - 1)
-      << "resize area should be the top-most view";
-
-  // --- No-border case (rounded corners OFF) ---
-  prefs->SetBoolean(kWebViewRoundedCorners, false);
-  RunScheduledLayouts();
-  EXPECT_EQ(0, side_panel->GetInsets().width());
-
-  // Shared assertions for the no-border state after a panel switch.
-  auto verify_no_border_state = [&](const base::Location& loc) {
+  // Verifies resize strip position, width, z-order, and panel insets for the
+  // given border mode. Panel is on the right in LTR, so the content-facing
+  // edge is left and the outer edge is right.
+  auto verify_state = [&](bool rounded_corners,
+                          const base::Location& loc = FROM_HERE) {
     SCOPED_TRACE(loc.ToString());
-    EXPECT_EQ(0, side_panel->GetInsets().width())
-        << "Border insets' width should stay empty after switching panels "
-           "(border OFF)";
+    if (rounded_corners) {
+      EXPECT_EQ(0, side_panel->GetInsets().left())
+          << "rounded: no content-side inset (content view owns its margin)";
+      EXPECT_EQ(kRoundedCornersContentsViewMargin,
+                side_panel->GetInsets().right())
+          << "rounded: outer-side gap for visual separation from window chrome";
+    } else {
+      EXPECT_EQ(1, side_panel->GetInsets().left())
+          << "plain: 1px separator on the content-facing side";
+      EXPECT_EQ(0, side_panel->GetInsets().right())
+          << "plain: no outer-side inset";
+    }
     EXPECT_EQ(resize_area->GetBoundsInScreen().origin(),
               side_panel->GetBoundsInScreen().origin())
-        << "No-border resize area should be placed at the inner edge of "
-           "content";
+        << "resize strip should sit at the panel's outer edge";
     EXPECT_EQ(resize_area->width(),
-              views::BraveSidePanelResizeArea::kNoBorderResizeAreaWidth)
-        << "No-border resize area width should equal kNoBorderResizeAreaWidth";
+              views::BraveSidePanelResizeArea::kResizeStripWidth)
+        << "resize strip width should equal kResizeStripWidth";
     EXPECT_EQ(side_panel->GetIndexOf(resize_area),
               side_panel->children().size() - 1)
-        << "resize area should be the top-most view";
+        << "resize strip should be the top-most child view";
   };
 
-  // --- Panel-switch: border OFF must survive switching panels ---
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  verify_state(true);
+
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  verify_state(false);
+
   // Switch to another panel that has brave panel header.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   ASSERT_TRUE(base::test::RunUntil([&]() {
@@ -2249,7 +2245,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
   RunScheduledLayouts();
-  verify_no_border_state(FROM_HERE);
+  verify_state(false);
 
   // Switch to another panel that doesn't have brave panel header.
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
@@ -2258,7 +2254,75 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
   }));
   RunScheduledLayouts();
-  verify_no_border_state(FROM_HERE);
+  verify_state(false);
+}
+
+// Verify that the panel border insets follow the sidebar's horizontal
+// alignment. Flipping kSidePanelHorizontalAlignment runs through
+// BraveBrowserView::UpdateSideBarHorizontalAlignment(), which calls
+// SidePanel::UpdateBorder(). The content-facing edge owns the separator/margin
+// and the outer edge owns the rounded-corner gap, so left alignment is the
+// mirror image of the default right alignment.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       SidebarV2BorderInsetsFollowAlignment) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* side_panel = browser_view->side_panel();
+  side_panel->DisableAnimationsForTesting();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
+
+  // When right-aligned the content-facing edge is the left and the outer edge
+  // is the right; when left-aligned the two are mirrored.
+  auto verify_state = [&](bool right_aligned, bool rounded_corners,
+                          const base::Location& loc = FROM_HERE) {
+    SCOPED_TRACE(loc.ToString());
+    const gfx::Insets insets = side_panel->GetInsets();
+    const int content_side = right_aligned ? insets.left() : insets.right();
+    const int outer_side = right_aligned ? insets.right() : insets.left();
+    if (rounded_corners) {
+      EXPECT_EQ(0, content_side)
+          << "rounded: no content-side inset (content view owns its margin)";
+      EXPECT_EQ(kRoundedCornersContentsViewMargin, outer_side)
+          << "rounded: outer-side gap for visual separation from window chrome";
+    } else {
+      EXPECT_EQ(1, content_side)
+          << "plain: 1px separator on the content-facing side";
+      EXPECT_EQ(0, outer_side) << "plain: no outer-side inset";
+    }
+  };
+
+  // Default: right-aligned.
+  ASSERT_TRUE(side_panel->IsRightAligned());
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  verify_state(/*right_aligned=*/true, /*rounded_corners=*/true);
+
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
+
+  // Flip to left-aligned while visible. This drives
+  // UpdateSideBarHorizontalAlignment() -> SidePanel::UpdateBorder().
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  ASSERT_FALSE(side_panel->IsRightAligned());
+
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  verify_state(/*right_aligned=*/false, /*rounded_corners=*/true);
+
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  verify_state(/*right_aligned=*/false, /*rounded_corners=*/false);
+
+  // Flip back to right-aligned while visible to exercise the reverse
+  // transition.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  ASSERT_TRUE(side_panel->IsRightAligned());
+  RunScheduledLayouts();
+  verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
 }
 
 // Regression test: the top container separator must remain visible when a side

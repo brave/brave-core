@@ -68,7 +68,7 @@ class SolanaTransaction {
   SolanaTransaction(const SolanaTransaction&) = delete;
   SolanaTransaction& operator=(const SolanaTransaction&) = delete;
   ~SolanaTransaction();
-  bool operator==(const SolanaTransaction&) const;
+  bool operator==(const SolanaTransaction&) const = default;
 
   // Serialize the message and sign it with the selected account.
   std::optional<std::vector<uint8_t>> GetSignedTransactionBytes(

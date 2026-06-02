@@ -194,20 +194,12 @@
 <translation id="6587448235155023666">Modificările dvs. vor intra în vigoare la următoarea pornire a Brave</translation>
 <translation id="8701563696941209024">RELANSEAZĂ ACUM</translation>
 <translation id="834487290629916192">MAI TÂRZIU</translation>
-<translation id="4117451092682672487">E simplu să vă păstrați confidențialitatea.</translation>
-<translation id="7909375417585209817">Atunci când Brave este setat ca browser implicit, orice link pe care îl accesați va fi deschis cu setările de confidențialitate ale Brave.</translation>
 <translation id="763369711159699222">Ajută-ne să îmbunătățim Brave</translation>
 <translation id="8025937231644975408">Spune-ne ce funcționalități apreciezi cel mai mult.</translation>
-<translation id="6718362830686703942">Transmiteți rapoarte de diagnostic în caz că întâmpinați erori sau blocaje.</translation>
-<translation id="8616157231067364693">Trimiteți în mod confidențial și anonim informații privind funcțiile care sunt folosite de către utilizatorii Brave.</translation>
 <translation id="2888496576732880897">Ajută Brave Search să crească</translation>
 <translation id="7198716519700700181">Blochează întreruperile când faci streaming</translation>
 <translation id="7044431516245362795">Participă la Web Discovery Project pentru a contribui la creșterea indexului și la îmbunătățirea rezultatelor căutărilor. <ph name="LEARN_MORE_START"/>Află mai multe.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Logo Brave</translation>
-<translation id="1389386068457132299">Fundal onboarding</translation>
-<translation id="5101985748360228609">Decorație frunze sus</translation>
-<translation id="5270920361877570459">Decorație frunze jos</translation>
-<translation id="4021716437419160885">Derulați în jos</translation>
 <translation id="4767173360729868049">Ilustrație ajutor Brave Search</translation>
 <translation id="8241918461631453498">Ilustrație blocare întreruperi</translation>
 <translation id="8213310572767907663">Ilustrație îmbunătățire Brave</translation>
@@ -223,7 +215,6 @@
 <translation id="7256200875155794202">Anunțurile <ph name="BIG_TECH"/>, alături de alte anunțuri și monitoare de activitate au fost blocate</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reclame &amp; monitoare de activitate blocate</translation>
 <translation id="8281886186245836920">Omite</translation>
-<translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="986879628471635371">Depanarea procesului de înscriere</translation>
 <translation id="5806601733251372221">Scuturi Brave</translation>
 <translation id="8537217141725709400">Câștigați <ph name="TOKEN"/></translation>
@@ -373,7 +364,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="944340256927461196">Nu lăsați nicio urmă pe dispozitivul dvs.</translation>
 <translation id="2063044449012253966">Site-urile pe care le vizitați în ferestre private nu vor apărea în istoricul dvs. Modulele cookie, datele din formulare și datele site-ului dispar odată ce toate ferestrele private sunt închise.</translation>
 <translation id="7395764193745523646">Vizibilitatea navigării</translation>
-<translation id="8670344404057978375">Rețineți că chiar și în ferestre private activitatea ta de navigare poate fi vizibilă pentru ISP, observatorii de rețea sau pentru angajatorul tău (dacă utilizezi un dispozitiv/rețea de lucru).</translation>
+<translation id="8435098045013317895">Reține că chiar și în ferestre private activitatea ta de navigare poate fi vizibilă pentru ISP, observatorii de rețea sau pentru angajatorul tău (dacă utilizezi un dispozitiv/rețea de lucru).</translation>
 <translation id="1413177583895309156">Brave VPN criptează și protejează tot ceea ce faceți online, chiar și în afara browserului Brave.</translation>
 <translation id="3974348661685061050">Încercați gratuit timp de 7 zile</translation>
 <translation id="5789441016350810005">Brave Ads trimise atunci când browser-ul este în fundal</translation>
@@ -517,6 +508,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2718046830255553131">Datele rapoartelor de confidențialitate au fost șterse.</translation>
 <translation id="8376263745431603066">Activează "modul nocturn" (experimental)</translation>
 <translation id="1383876407941801731">Caută</translation>
+<translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="13296465911709339">Textul dumneavoastră a fost copiat în clipboard.</translation>
 <translation id="2735834606413553397">Adresa publică a fost copiată în clipboard.</translation>
 <translation id="2977461003134694205">Statistici confidențialitate</translation>
@@ -977,23 +969,21 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7659483790930268440">Indexul tabelului de căutare a adreselor:</translation>
 <translation id="5494920125229734069">Selectează-le pe toate</translation>
 <translation id="2361906291514218784">Leo IA</translation>
+<translation id="2935698011275148880">Origine curajoasă</translation>
 <translation id="944736176598169208">Recompense</translation>
 <translation id="1199170151481311646">Analizele care păstrează confidențialitatea</translation>
 <translation id="1706715315466634757">Aliasuri de e-mail</translation>
-<translation id="738840791756723657">IA</translation>
 <translation id="6709133671862442373">Știri</translation>
 <translation id="5990642573624858459">Raportarea statisticilor</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Resetare la valorile implicite</translation>
-<translation id="4922034974043704366">Această caracteristică este activată deoarece ați optat pentru ea</translation>
 <translation id="2587535830241068901">Personalizați-vă browserul în timp ce susțineți Brave</translation>
-<translation id="7235314227387539944">Brave Origin este o versiune plătită a browserului pentru utilizatorii care nu au nevoie de toate funcțiile care susțin Brave ca business, dar care doresc totuși confidențialitatea pe care doar Brave o oferă. Utilizatorii Origin vor continua să beneficieze de confidențialitate de top din industrie, blocare de reclame și viteză (prin Shields), precum și actualizări regulate ale software-ului, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate. Origin va elimina majoritatea celorlalte funcții din browser.</translation>
-<translation id="7941943775131052130">Rețineți că o achiziție Brave Origin va include, de asemenea, acces la Brave Search Premium, deoarece Origin va elimina reclamele din pagina de rezultate Brave Search.</translation>
+<translation id="123297831435065577">Brave Origin este o versiune plătită a browserului pentru utilizatorii care nu au nevoie de toate funcțiile care susțin Brave ca business, dar care doresc totuși confidențialitatea pe care doar Brave o oferă. Utilizatorii Origin vor continua să beneficieze de confidențialitate de top din industrie, blocare de reclame și viteză (prin Shields), precum și actualizări regulate ale software-ului, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate.</translation>
 <translation id="2573819149217596923">Modificarea funcțiilor Brave</translation>
 <translation id="7415416427817229128">Activarea sau dezactivarea unei funcții Brave necesită redeschiderea browserului pentru a aplica modificările. Doriți să redeschideți acum?</translation>
 <translation id="2256115617011615191">Redeschideți acum</translation>
 <translation id="2160089182263405907">Dezactivarea caracteristicilor</translation>
-<translation id="3362364767724670721">Activarea sau dezactivarea unei caracteristici Brave necesită o repornire a browserului pentru a aplica modificările. Te rog să dai tap pe <ph name="BEGIN_BOLD"/>Repornire acum<ph name="END_BOLD"/> după ce Origin a terminat actualizarea.</translation>
+<translation id="7530313002494358590">Activarea sau dezactivarea unei caracteristici Brave necesită o repornire a browserului pentru a aplica modificările. Te rog să dai tap pe <ph name="BEGIN_BOLD"/>Repornire acum<ph name="END_BOLD"/> după ce Brave Origin a terminat actualizarea.</translation>
 <translation id="1028940738207645746">Ești sigur(ă) că vrei să resetezi toate setările la implicit?</translation>
 <translation id="5939518447894949180">Resetează</translation>
 <translation id="8554205386170195281">Achiziție</translation>
@@ -1124,9 +1114,9 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6261139507111008244">Sprijiniți-ne misiunea &amp; muncă open-source</translation>
 <translation id="6073373503121903099">IU minimalist a browserului centrat pe Brave Shields</translation>
 <translation id="2267973897341040743">Mențineți adblock-ul de bază, confidențialitatea, viteza &amp;</translation>
-<translation id="3339535734679532460">Achiziție unică, fără costuri suplimentare de abonament</translation>
-<translation id="2805615640226281689">Achiziție unică</translation>
-<translation id="261433018299584676">Obțineți un cod de conectare</translation>
+<translation id="4059093523966730868">Achiziția unică poate fi activată de mai multe ori pe toate dispozitivele tale</translation>
+<translation id="7006681677649762716">Achiziție unică</translation>
+<translation id="8707617004598499947">Verifică achiziția Brave Origin</translation>
 <translation id="1943432128510653496">Parole salvate</translation>
 <translation id="2100273922101894616">Conectare automată</translation>
 <translation id="363596933471559332">Te conectezi automat la site-uri folosind datele de conectare stocate. Când funcția este dezactivată, ți se va solicita verificarea de fiecare dată înainte de a te conecta la un site.</translation>
@@ -1185,12 +1175,14 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7400418766976504921">Adresă URL</translation>
 <translation id="6410668567036790476">Adaugă motor de căutare</translation>
 <translation id="6289878295410648689">Scrie URL-ul de căutare și înlocuiește interogarea cu <ph name="SPECIAL_SYMBOL"/>.</translation>
-<translation id="8943582268084103903">De exemplu: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Dacă site-ul suportă OpenSearch, va fi furnizată o opțiune de adăugare automată atunci când editezi acest câmp.</translation>
+<translation id="1298325705808878139">De exemplu: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
 <translation id="8706939021136180678">URL-ul nu este valid.</translation>
-<translation id="6528099556282059181">Motorul de căutare este adăugat deja.</translation>
+<translation id="5144960943371551167">Titlul poate conține doar litere, cifre și spații.</translation>
+<translation id="7361775378755455309">Există deja un motor de căutare cu acest cuvânt cheie.</translation>
 <translation id="463451857046640291">Eroare la adăugarea motorului de căutare.</translation>
 <translation id="1229671956956864948">Eroare la actualizarea motorului de căutare.</translation>
 <translation id="1462771969120037152">Eroare la ștergerea motorului de căutare. Motorul de căutare pe care încerci să-l ștergi poate fi setat ca cel implicit.</translation>
 <translation id="1079140196216383600">Șterge motor de căutare personalizat</translation>
 <translation id="525276572490219787">Ești sigur(ă) că vrei să ștergi „<ph name="SEARCH_ENGINE_NAME"/>"? Această acțiune nu poate fi anulată.</translation>
+<translation id="6406506848690869874">Sincronizare</translation>
 </translationbundle>

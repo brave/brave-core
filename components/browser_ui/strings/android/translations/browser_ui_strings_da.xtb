@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Download er sat på pause</translation>
 <translation id="1396327438254055134">Tillad, at websitet anvender V8-optimering.</translation>
 <translation id="1409338233051621926">Tryk på Apps og derefter på Standardapps</translation>
+<translation id="1414315029670184034">Tillad ikke, at websites anvender dit kamera</translation>
 <translation id="1415402041810619267">Webadressen er forkortet</translation>
 <translation id="1741136041592162279">Få Brave til at dele dine seneste faner med din enhed for at se dem på din enheds appliste og i søgeresultaterne. Du kan slå dette til eller fra i Brave-indstillingerne.</translation>
 <translation id="1420688843103859429">Naviger frem og tilbage ved at stryge med to fingre på touchpladen</translation>
@@ -80,7 +81,6 @@
 <translation id="1781533683087883868">Deaktiver links i Læsetilstand</translation>
 <translation id="1785415724048343560">Anbefales for at få den bedste oplevelse</translation>
 <translation id="1796588414813960292">Funktioner, der skal bruge lyd, fungerer ikke</translation>
-<translation id="7401204338724669842">Tips til Brave</translation>
 <translation id="6704867734300244173">Når denne indstilling er aktiveret, kører Brave hurtigere, og funktioner, der anvender JavaScript, bør fungere som forventet. Når denne indstilling er deaktiveret, reducerer den ydeevnen, men gør V8 mere modstandsdygtig over for angreb.</translation>
 <translation id="1818308510395330587">Aktivér også kameraet i <ph name="BEGIN_LINK"/>Android-indstillingerne<ph name="END_LINK"/> for at give <ph name="APP_NAME"/> tilladelse til at bruge AR.</translation>
 <translation id="1822318649925991542">Skift placering for at tilpasse din browseroplevelse</translation>
@@ -99,6 +99,7 @@
 <translation id="1985247341569771101">Når dette er slået til, kan websites anvende din enheds bevægelsessensorer. Når dette er slået fra, kan websites ikke anvende bevægelsessensorer.</translation>
 <translation id="1985716030964443178">Dette nulstiller alle websites på din liste til standardzoom</translation>
 <translation id="1989112275319619282">Gennemse</translation>
+<translation id="1991370806334788445">Prøv at tillade tredjepartscookies, hvilket vil betyde mindre browserbeskyttelse, men større sandsynlighed for, at websitefunktionerne fungerer som forventet.</translation>
 <translation id="1994173015038366702">Webadresse</translation>
 <translation id="1994558116414798016">Skrifttypen Lexend</translation>
 <translation id="2004697686368036666">Funktionerne på visse websites virker muligvis ikke</translation>
@@ -164,6 +165,7 @@
 <translation id="257931822824936280">Udvidet – klik for at skjule.</translation>
 <translation id="2586657967955657006">Udklipsholder</translation>
 <translation id="2588271083332682494">Hold orden med fanegrupper</translation>
+<translation id="2592917252160773942">Websites kan anmode om adgang til dit kamera</translation>
 <translation id="2597457036804169544">Anvend ikke Mørkt tema på websites</translation>
 <translation id="2606760465469169465">Automatisk verificering</translation>
 <translation id="2621115761605608342">Tillad JavaScript for et bestemt website.</translation>
@@ -237,6 +239,7 @@
 <translation id="3360338140203645771">Vil du slette de gemte zoomniveauer?</translation>
 <translation id="3362437373201486687">Søger efter Bluetooth-enheder</translation>
 <translation id="3368138297038111198">Deler et vindue</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{1 af {TOTAL_COUNT} element vises på grund af begrænset hukommelse}one{# af {TOTAL_COUNT} element vises på grund af begrænset hukommelse}other{# af {TOTAL_COUNT} elementer vises på grund af begrænset hukommelse}}</translation>
 <translation id="3386292677130313581">Spørg, om websites må få adgang til din lokation (anbefales)</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="344449859752187052">Tredjepartscookies er blokeret</translation>
@@ -328,6 +331,7 @@
 <translation id="4290791284969893584">Når du har lukket en side, kan de handlinger, du har påbegyndt, muligvis ikke gennemføres</translation>
 <translation id="429312253194641664">Et website afspiller medier</translation>
 <translation id="42981349822642051">Udvid</translation>
+<translation id="4310738531374808763">Tilpas din startside</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Udløber i morgen}one{Udløber om # dag}other{Udløber om # dage}}</translation>
 <translation id="4338831206024587507">Alle websites på <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Tillad ikke, at websites sender notifikationer</translation>
@@ -357,6 +361,7 @@
 <translation id="4635969503923889910">Tillad ikke, at websites anvender NFC-enheder</translation>
 <translation id="4644713492825682049">Slet og gendan</translation>
 <translation id="4645575059429386691">Administreret af en af dine forældre</translation>
+<translation id="4651224148644053314">Flere farver og valgmuligheder</translation>
 <translation id="4652266463001779298">Ikke tilladt</translation>
 <translation id="4655846733459137112">Tryk på Ja for nemt at bruge denne adgangskode, næste gang du logger ind</translation>
 <translation id="4663373278480897665">Der er givet adgang til kameraet</translation>
@@ -516,6 +521,7 @@
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> og <ph name="PERMISSION_2"/> blev blokeret</translation>
 <translation id="6270391203985052864">Websites kan spørge dig, om de må sende dig notifikationer</translation>
 <translation id="6295158916970320988">Alle websites</translation>
+<translation id="6305257382500066042">Prøv den nu</translation>
 <translation id="6320088164292336938">Vibrer</translation>
 <translation id="6367753977865761591">Bloker tredjepartslogin for et bestemt website.</translation>
 <translation id="6398765197997659313">Afslut fuld skærm</translation>
@@ -601,6 +607,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> er markeret</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> og <ph name="PERMISSION_2"/> blev tilladt</translation>
 <translation id="7276071417425470385">Når dette er slået til, kan websites anmode om tilladelse til at bruge virtual reality-enheder. Når dette er slået fra, kan websites ikke bruge virtual reality-enheder.</translation>
+<translation id="7279851812866769760">Del kontakter</translation>
 <translation id="7282197670900591579">Citrongult tema</translation>
 <translation id="728412880473384942">Websites er hurtigere, men mindre sikre</translation>
 <translation id="5843014938239239453">Administrer i <ph name="BEGIN_LINK1"/>Android-indstillingerne<ph name="END_LINK1"/>
@@ -650,7 +657,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="780301667611848630">Nej tak</translation>
 <translation id="7804248752222191302">Et website anvender dit kamera</translation>
 <translation id="7805832099057502789">Feltet i bunden, der viser udseendet af siden Ny fane, er åbnet i fuld højde</translation>
-<translation id="6720480757902085971">Leveret af Brave</translation>
 <translation id="7809029041571842593">Feltet i bunden, der viser kort på siden Ny fane, er åbnet i halv højde</translation>
 <translation id="7815680994978050279">En farlig download blev blokeret</translation>
 <translation id="7835852323729233924">Afspilning af medier</translation>
@@ -693,6 +699,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="823874716226307142">Når funktionen er aktiveret, kan websites anmode om adgang til andre enheder på dit lokale netværk. Når funktionen er deaktiveret, kan websites ikke tilgå andre enheder på dit lokale netværk.</translation>
 <translation id="8249310407154411074">Flyt til toppen</translation>
 <translation id="8261506727792406068">Slet</translation>
+<translation id="8273596202562472147">Flere valgmuligheder for <ph name="SITE_NAME"/></translation>
 <translation id="8284326494547611709">Undertekster</translation>
 <translation id="8300705686683892304">Administreres af en app</translation>
 <translation id="8301363963630676147">Tilladt denne gang • Bruger omtrentlig</translation>
@@ -738,7 +745,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="8676374126336081632">Ryd indtastning</translation>
 <translation id="8681886425883659911">Annoncer blokeres på websites, som er kendt for at vise påtrængende eller vildledende annoncer</translation>
 <translation id="868929229000858085">Søg blandt dine kontakter</translation>
-<translation id="8707904142362025782">Websitet kan anmode om adgang til dit kamera</translation>
 <translation id="8712637175834984815">Forstået</translation>
 <translation id="8715862698998036666">Træk fra toppen af skærmen, og stryg fra venstre eller højre kant for at afslutte fuld skærm.</translation>
 <translation id="8716050156658570300">Websites kan anmode om tilladelse til at bruge bevægelses- og lyssensorer</translation>
@@ -788,6 +794,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="7359422048569205930">Få Brave til at vise dine seneste faner på din enheds appliste og i søgeresultaterne. Du kan til enhver tid deaktivere dette i Brave-indstillingerne.</translation>
 <translation id="9162462602695099906">Denne side er farlig</translation>
 <translation id="9182556968660520230">Tillad ikke, at websites afspiller beskyttet indhold</translation>
+<translation id="927148002081263046">Del en kontakt</translation>
 <translation id="947156494302904893">Websites, du besøger, kan verificere, at du er en rigtig person og ikke en bot</translation>
 <translation id="959682366969460160">Bliv velorganiseret</translation>
 <translation id="960590623979248167">Vis hyperlinks</translation>
