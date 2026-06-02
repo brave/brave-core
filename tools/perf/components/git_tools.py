@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 import logging
 import os
+import re
 import shutil
 import json
 
@@ -14,6 +15,7 @@ import components.path_util as path_util
 from components.perf_test_utils import GetProcessOutput
 
 GH_BRAVE_CORE_GIT_URL = 'git@github.com:brave/brave-core.git'
+GH_BRAVE_CORE_GIT_DEFAULT_BRANCH = 'master'
 GH_BRAVE_VARIATIONS_GIT_URL = 'git@github.com:brave/brave-variations.git'
 GH_BRAVE_PERF_TEAM = 'brave/perf-team'
 
@@ -109,24 +111,6 @@ def EnsureRepositoryUpdated(url: str, branch: str, directory: str) -> None:
   GetProcessOutput(['git', 'checkout', 'FETCH_HEAD'], directory, check=True)
 
 
-def EnsureRevision(revision: str, cwd=path_util.GetBraveDir()) -> None:
-  args = ['git', 'show', f'{revision}', '-q']
-  ok, _ = GetProcessOutput(args, cwd)
-  if ok:
-    return
-  logging.debug('Try to fetch %s', revision)
-  ok, _ = GetProcessOutput(['git', 'fetch', 'origin', f'{revision}:{revision}'],
-                           cwd)
-  if ok:
-    return
-
-  if cwd == path_util.GetBraveDir():
-    ok, _ = GetProcessOutput(
-        ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, f'{revision}:{revision}'], cwd)
-    if ok:
-      return
-
-  raise RuntimeError(f'Can\'t fetch revision {revision}')
 
 
 def GetCommitDate(revision: str, cwd=path_util.GetBraveDir()) -> str:
@@ -149,11 +133,23 @@ def GetRevisionFromDate(date: str, branch: str,
   return output.rstrip()
 
 
-def GetGitHash(revision: str, cwd=path_util.GetBraveDir()) -> str:
-  _, git_hash_output = GetProcessOutput(
-      ['git', 'rev-list', '-n', '1', revision], cwd, check=True)
-  return git_hash_output.rstrip()
+def _IsGitHash(revision: str) -> bool:
+  return bool(re.fullmatch(r'[0-9a-f]{7,40}', revision, re.IGNORECASE))
 
+
+def FetchRevision(revision: str, cwd=path_util.GetBraveDir()) -> str:
+  if _IsGitHash(revision):
+    fetch_ref = GH_BRAVE_CORE_GIT_DEFAULT_BRANCH
+  else:
+    fetch_ref = revision
+  logging.debug('Fetch revision %s (fetch: %s) from %s', revision, fetch_ref,
+                GH_BRAVE_CORE_GIT_URL)
+  GetProcessOutput(['git', 'fetch', GH_BRAVE_CORE_GIT_URL, fetch_ref],
+                   cwd,
+                   check=True)
+  _, git_hash_output = GetProcessOutput(
+      ['git', 'rev-list', '-n', '1', 'FETCH_HEAD'], cwd, check=True)
+  return git_hash_output.rstrip()
 
 def GetRevisionNumber(revision: str, cwd=path_util.GetBraveDir()) -> str:
   """Returns the number of "primary" commits from the begging to `revision`.

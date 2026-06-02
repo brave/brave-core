@@ -44,8 +44,7 @@ class BraveVersion:
       revision = version_str
       self._is_tag = False
 
-    git_tools.EnsureRevision(revision)
-    git_hash = git_tools.GetGitHash(revision)
+    git_hash = git_tools.FetchRevision(revision)
     self._git_hash = git_hash
 
     content = git_tools.GetFileAtRevision('package.json', git_hash)
