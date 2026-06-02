@@ -7,7 +7,6 @@
 
 #include "base/values.h"
 #include "brave/browser/safe_browsing/brave_generated_safe_browsing_pref.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/safebrowsing/constants.h"
 #include "chrome/browser/extensions/api/settings_private/generated_pref_test_base.h"
 #include "chrome/common/extensions/api/settings_private.h"

@@ -16,7 +16,6 @@ source_set("safe_browsing") {
 
   deps = [
     "//base",
-    "//brave/components/constants",
     "//brave/components/safebrowsing",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
@@ -35,7 +34,6 @@ source_set("unit_tests") {
   deps = [
     ":safe_browsing",
     "//base",
-    "//brave/components/constants",
     "//brave/components/safebrowsing",
     "//chrome/common/extensions/api",
     "//chrome/test:test_support",

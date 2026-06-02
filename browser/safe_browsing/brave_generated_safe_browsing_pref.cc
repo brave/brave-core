@@ -6,7 +6,6 @@
 #include "brave/browser/safe_browsing/brave_generated_safe_browsing_pref.h"
 
 #include "base/values.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/safebrowsing/constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"

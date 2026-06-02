@@ -8,6 +8,9 @@
 
 namespace safe_browsing {
 
+inline constexpr char kBraveSafeBrowsingDownloadProtectionEnabled[] =
+    "brave.safebrowsing.download_protection_enabled";
+
 // Sentinel value used by Brave's "Limited protection" Safe Browsing mode.
 // Picked above upstream's SafeBrowsingState range (0/1/2) so upstream's
 // out-of-range validation keeps rejecting unknown values and future Chromium
