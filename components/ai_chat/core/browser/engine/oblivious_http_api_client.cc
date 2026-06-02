@@ -360,9 +360,18 @@ void ObliviousHttpAPIClient::OnInnerResponse(
   }
 
   const bool success = inner_response_code >= 200 && inner_response_code < 300;
+  const int response_code =
+      is_outer_response_code_bad ? outer_response_code : inner_response_code;
+
+  if (response_code == net::HTTP_UNAUTHORIZED) {
+    // Do this to avoid showing the BYOM API key error in the UI
+    std::move(request.completed_callback)
+        .Run(base::unexpected(mojom::APIError::ConnectionIssue));
+    return;
+  }
+
   OAIAPIClient::HandleCompletion(
-      std::move(request.completed_callback), success,
-      is_outer_response_code_bad ? outer_response_code : inner_response_code,
+      std::move(request.completed_callback), success, response_code,
       /*model_key=*/GetModelKey(request.model_name),
       /*is_near_verified=*/true, std::move(parsed_body));
 }
