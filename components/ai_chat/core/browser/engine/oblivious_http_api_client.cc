@@ -9,8 +9,10 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -32,6 +34,9 @@ namespace ai_chat {
 namespace {
 
 constexpr char kOHTTPRelayPathFormat[] = "v1/models/%s/relay";
+constexpr char kNEARToolResultKey[] = "nearai_tool_result";
+constexpr char kNEAROutputKey[] = "output";
+constexpr char kNEARToolCallIdKey[] = "tool_call_id";
 
 constexpr base::TimeDelta kRequestTimeout = base::Minutes(5);
 
@@ -222,6 +227,15 @@ void ObliviousHttpAPIClient::PerformRequest(
 
   const bool is_streaming_enabled = IsStreamingEnabled(data_received_callback);
 
+  if (features::kNEARModelsEncryptionSearch.Get() && is_streaming_enabled) {
+    if (!oai_tool_definitions.has_value()) {
+      oai_tool_definitions = base::ListValue();
+    }
+    base::DictValue web_context_search_tool;
+    web_context_search_tool.Set("type", mojom::kWebContextSearchToolName);
+    oai_tool_definitions->Append(std::move(web_context_search_tool));
+  }
+
   std::string request_body = CreateJSONRequestBody(
       SerializeOAIMessages(std::move(messages)), is_streaming_enabled,
       leo_opts.name, std::move(oai_tool_definitions), stop_sequences);
@@ -381,6 +395,42 @@ void ObliviousHttpAPIClient::OnChunkParsed(
     GenerationDataCallback data_received_callback,
     std::string model_name,
     base::Value value) {
+  if (!value.is_dict()) {
+    return;
+  }
+
+  const base::DictValue& response_dict = value.GetDict();
+  const base::DictValue* content_container =
+      GetOAIContentContainer(response_dict);
+  if (content_container) {
+    const base::DictValue* nearai_tool_result =
+        content_container->FindDict(kNEARToolResultKey);
+    if (nearai_tool_result) {
+      const std::string* output =
+          nearai_tool_result->FindString(kNEAROutputKey);
+      const std::string* tool_call_id =
+          nearai_tool_result->FindString(kNEARToolCallIdKey);
+      if (!output || !tool_call_id) {
+        return;
+      }
+      std::vector<mojom::ContentBlockPtr> output_blocks;
+      output_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New(*output)));
+      auto tool_use_event = mojom::ToolUseEvent::New(
+          /*tool_name=*/"", *tool_call_id, /*arguments_json=*/"",
+          /*output=*/std::move(output_blocks),
+          /*artifacts=*/std::nullopt,
+          /*permission_challenge=*/nullptr,
+          /*is_server_result=*/true);
+      auto event = mojom::ConversationEntryEvent::NewToolUseEvent(
+          std::move(tool_use_event));
+      data_received_callback.Run(EngineConsumer::GenerationResultData(
+          std::move(event), GetModelKey(model_name),
+          /*is_near_verified=*/true));
+      return;
+    }
+  }
+
   OnQueryDataReceived(std::move(data_received_callback),
                       GetModelKey(model_name), /*is_near_verified=*/true,
                       base::ok(std::move(value)));
