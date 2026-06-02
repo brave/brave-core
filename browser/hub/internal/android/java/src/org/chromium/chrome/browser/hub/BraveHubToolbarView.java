@@ -29,6 +29,7 @@ public class BraveHubToolbarView extends HubToolbarView {
     private Button mActionButton;
     private Button mShredButton;
     private FrameLayout mMenuButton;
+    private boolean mIsShredButtonVisible = true;
 
     public BraveHubToolbarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -59,6 +60,13 @@ public class BraveHubToolbarView extends HubToolbarView {
         super.setPaneSwitcherIndex(index);
 
         // Update visibility of action and menu buttons based on the switching panes.
+        updateButtonsVisibility();
+    }
+
+    @Override
+    void updateIncognitoElements(boolean isIncognito) {
+        super.updateIncognitoElements(isIncognito);
+        mIsShredButtonVisible = !isIncognito;
         updateButtonsVisibility();
     }
 
@@ -105,7 +113,7 @@ public class BraveHubToolbarView extends HubToolbarView {
         }
 
         final boolean shouldShowShredButton =
-                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED) && mIsShredButtonVisible;
         mShredButton.setVisibility(shouldShowShredButton ? View.VISIBLE : View.INVISIBLE);
     }
 }
