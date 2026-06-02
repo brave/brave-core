@@ -21,9 +21,7 @@ substitutions:
 
   - description: Add a PiP-specific persistent fullscreen exit path
     re_pattern:
-      '(@Override\n\s+public void
-      exitPersistentFullscreenMode\(\)\s+\{\n)([\s\S]*?\n)
-      +returnFromTargetScreenIfNeeded\(\);'
+      '(@Override\n\s+public void exitPersistentFullscreenMode\(\)\s+\{\n)'
     replace: |-
       \1        exitPersistentFullscreenMode(true);
           }
