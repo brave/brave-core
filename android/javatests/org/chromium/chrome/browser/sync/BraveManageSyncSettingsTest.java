@@ -76,6 +76,25 @@ public class BraveManageSyncSettingsTest {
         Assert.assertTrue("Reading list toggle should be visible", prefReadingList.isVisible());
     }
 
+    @Test
+    @SmallTest
+    @Feature({"Sync"})
+    public void syncAddressesWithCustomPassphraseDoesNotShowWarningDialog() {
+        setupMockSyncService();
+        when(mSyncService.isUsingExplicitPassphrase()).thenReturn(true);
+        BraveManageSyncSettings fragment = startManageSyncPreferences();
+
+        ChromeSwitchPreference addressesToggle =
+                fragment.findPreference(ManageSyncSettings.PREF_ACCOUNT_SECTION_ADDRESSES_TOGGLE);
+        Assert.assertNotNull("Addresses toggle should exist", addressesToggle);
+
+        // Upstream shows a warning dialog and returns false when enabling addresses sync
+        // with a custom passphrase. Brave suppresses this dialog and returns true.
+        Assert.assertTrue(
+                "Addresses warning dialog should be suppressed",
+                fragment.onPreferenceChange(addressesToggle, true));
+    }
+
     void syncPasswordsOverridden(Boolean isChromeOS, Boolean handlerShouldBeOverridden) {
         setupMockSyncService();
 

@@ -1,8 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index c6328dbceb0af518411fd05aa9c97b4280f161eb..d5d1213d8c1ea29d6b4c8421ec13129a501c6233 100644
+index c6328dbceb0af518411fd05aa9c97b4280f161eb..fba4af36657b466b541c90f855cb1eec5366f934 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -451,6 +451,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -262,6 +262,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+ 
+     @Override
+     public boolean onPreferenceChange(Preference preference, Object newValue) {
++        if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
+         if (mSyncService.isUsingExplicitPassphrase()
+                 && preference
+                         .getKey()
+@@ -451,6 +452,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       */
      private void updateSyncPreferences() {
          String signedInAccountName =
