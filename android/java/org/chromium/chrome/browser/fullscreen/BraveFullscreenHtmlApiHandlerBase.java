@@ -40,8 +40,8 @@ public abstract class BraveFullscreenHtmlApiHandlerBase {
     /**
      * Restores browser fullscreen UI state for a Brave-managed Picture-in-Picture return without
      * asking the WebContents to exit fullscreen synchronously. The real implementation is injected
-     * into upstream via Plaster; this empty body is the fallback used when bytecode rewriting is not
-     * applied and provides the symbol callers compile against.
+     * into upstream via Plaster; this empty body is the fallback used when bytecode rewriting is
+     * not applied and provides the symbol callers compile against.
      */
     public void exitPersistentFullscreenModeForPictureInPicture() {}
 

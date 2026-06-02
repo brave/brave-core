@@ -38,31 +38,35 @@ substitutions:
                   self.mSkipWebContentsExitFullscreenForPip = false;
               }
           }
-
           \1
 
   - description:
       Skip the WebContents (DOM) fullscreen exit for the Brave-managed PiP path
       by prepending the mSkipWebContentsExitFullscreenForPip flag (set by
-      exitPersistentFullscreenModeForPictureInPicture) to the existing guard. The
-      pattern only locates the if statement that calls webContents.exitFullscreen()
-      and inserts at the start of its condition, so it does not depend on what the
-      rest of that condition checks.
+      exitPersistentFullscreenModeForPictureInPicture) to the existing guard.
+      The pattern only locates the if statement that calls
+      webContents.exitFullscreen() and inserts at the start of its condition, so
+      it does not depend on what the rest of that condition checks.
     re_pattern:
-      '(private void exitFullscreen\(WebContents webContents, View contentView\)[\s\S]+?\n\s+if \()([^\n]*?\) webContents\.exitFullscreen\(\);)'
+      '(private void exitFullscreen\(WebContents webContents, View
+      contentView\)[\s\S]+?\n\s+if \()([^\n]*?\)
+      webContents\.exitFullscreen\(\);)'
     replace:
-      '\1!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip && \2'
+      '\1!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip
+      && \2'
 
   - description:
-      Insert an early return at the top of the ActivityState.STOPPED
-      branch of onActivityStateChange so the fullscreen teardown
+      Insert an early return at the top of the ActivityState.STOPPED branch of
+      onActivityStateChange so the fullscreen teardown
       (mFullscreenManagerDelegate.onExitFullscreen(null)) is skipped while a
       Brave-managed YouTube Picture-in-Picture session is active. This keeps the
       browser and DOM fullscreen state intact across transient activity stops
       (e.g. screen-off or PiP window occlusion) so there is no flicker when the
       user returns. The DESTROYED branch is intentionally left untouched.
     re_pattern:
-      '(public void onActivityStateChange\(Activity activity, int newState\)\s+\{\n\s+if \(newState == ActivityState\.STOPPED && mExitFullscreenOnStop\)\s+\{)'
+      '(public void onActivityStateChange\(Activity activity, int
+      newState\)\s+\{\n\s+if \(newState == ActivityState\.STOPPED &&
+      mExitFullscreenOnStop\)\s+\{)'
     replace: |-
       \1
                   if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this)
