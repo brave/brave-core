@@ -116,6 +116,12 @@ TEST_F(BraveGeneratedSafeBrowsingPrefTest,
                               .get()),
             settings_private::SetPrefResult::PREF_NOT_MODIFIABLE);
 
+  // The rejected write must not touch any backing pref.
+  EXPECT_FALSE(prefs()->GetUserPref(prefs::kSafeBrowsingEnabled));
+  EXPECT_FALSE(prefs()->GetUserPref(prefs::kSafeBrowsingEnhanced));
+  EXPECT_FALSE(
+      prefs()->GetUserPref(kBraveSafeBrowsingDownloadProtectionEnabled));
+
   // The inverse: download protection is user-modifiable, but Safe Browsing
   // itself is policy controlled -> Limited is still rejected.
   prefs()->RemoveManagedPref(kBraveSafeBrowsingDownloadProtectionEnabled);
@@ -126,6 +132,12 @@ TEST_F(BraveGeneratedSafeBrowsingPrefTest,
                               kBraveSafeBrowsingLimitedProtection)
                               .get()),
             settings_private::SetPrefResult::PREF_NOT_MODIFIABLE);
+
+  // The rejected write must not touch any backing pref.
+  EXPECT_FALSE(prefs()->GetUserPref(prefs::kSafeBrowsingEnabled));
+  EXPECT_FALSE(prefs()->GetUserPref(prefs::kSafeBrowsingEnhanced));
+  EXPECT_FALSE(
+      prefs()->GetUserPref(kBraveSafeBrowsingDownloadProtectionEnabled));
 }
 
 }  // namespace safe_browsing
