@@ -9,14 +9,14 @@ substitutions:
       preserve the state while Brave-managed YouTube PiP is active when a tab is
       hidden
     re_pattern:
-      '(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{\n)([\s\S]*?\n) +mFullscreenManagerDelegate\.onExitFullscreen\(null\);'
+      '(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{)'
     replace: |-
-      \1                        if (BraveFullscreenHtmlApiHandlerBase.class.cast(
+      \1
+                              if (BraveFullscreenHtmlApiHandlerBase.class.cast(
                                               FullscreenHtmlApiHandlerBase.this)
                                       .maybeSkipExitFullscreenOnTabHidden(mActivity, reason)) {
                                   return;
                               }
-      \2                        mFullscreenManagerDelegate.onExitFullscreen(null);
 
   - description:
       Add a PiP-specific persistent fullscreen exit entry point,
@@ -55,16 +55,18 @@ substitutions:
               }
 
   - description:
-      Preserve fullscreen state while Brave-managed YouTube PiP is active when
-      the activity stops
+      Insert an early return at the top of the ActivityState.STOPPED
+      branch of onActivityStateChange so the fullscreen teardown
+      (mFullscreenManagerDelegate.onExitFullscreen(null)) is skipped while a
+      Brave-managed YouTube Picture-in-Picture session is active. This keeps the
+      browser and DOM fullscreen state intact across transient activity stops
+      (e.g. screen-off or PiP window occlusion) so there is no flicker when the
+      user returns. The DESTROYED branch is intentionally left untouched.
     re_pattern:
-      '(public void onActivityStateChange\(Activity activity, int
-      newState\)\s+\{\n\s+if\s+\(newState == ActivityState\.STOPPED &&
-      mExitFullscreenOnStop\)\s+\{\n)([\s\S]*?\n)
-      +mFullscreenManagerDelegate\.onExitFullscreen\(null\);(\n\s+\} else if
-      \(newState == ActivityState\.DESTROYED\))'
+      '(public void onActivityStateChange\(Activity activity, int newState\)\s+\{\n\s+if \(newState == ActivityState\.STOPPED && mExitFullscreenOnStop\)\s+\{)'
     replace: |-
-      \1            if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
+      \1
+                  if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this)
+                              .shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
                       return;
                   }
-      \2            mFullscreenManagerDelegate.onExitFullscreen(null);\3

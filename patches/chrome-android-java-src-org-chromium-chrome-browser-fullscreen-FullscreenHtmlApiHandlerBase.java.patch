@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..62a6c42633d5e05bd43e55572ade6153e25f48db 100644
+index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..7b824a9d84124af98006793f359b039806468e39 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 @@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
@@ -45,11 +45,12 @@ index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..62a6c42633d5e05bd43e55572ade6153
  
          // Often - when edge to edge is enabled, or when we are in multi window
          //  mode, or on automotive devices that never hide system bars - onLayoutChange doesn't
-@@ -885,6 +905,9 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -885,6 +905,10 @@ public abstract class FullscreenHtmlApiHandlerBase
      @Override
      public void onActivityStateChange(Activity activity, int newState) {
          if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {
-+            if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
++            if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this)
++                        .shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
 +                return;
 +            }
              // Exit fullscreen in onStop to ensure the system UI flags are set
