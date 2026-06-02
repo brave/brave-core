@@ -3,6 +3,30 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "download_toolbar_ui_controller_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser",
+    "//chrome/browser/download",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/download",
+    "//chrome/browser/ui/views/download",
+    "//chrome/test:test_support",
+    "//components/download/public/common:test_support",
+    "//components/keyed_service/content",
+    "//components/vector_icons",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
