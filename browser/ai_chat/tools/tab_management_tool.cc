@@ -354,9 +354,10 @@ void TabManagementTool::UserPermissionGranted(const std::string& tool_use_id) {
 
 void TabManagementTool::UseTool(const std::string& input_json,
                                 UseToolCallback callback) {
-  // TODO: keep sidebar open to a AI Chat conversation if it's open in the
-  // active window so that user can follow along. Or open in a full page if
-  // we're going to remove the active window with the active conversation.
+  // TODO (https://github.com/brave/brave-browser/issues/56024): keep sidebar
+  // open to a AI Chat conversation if it's open in the active window so that
+  // user can follow along. Or open in a full page if we're going to remove the
+  // active window with the active conversation.
   auto input = base::JSONReader::ReadDict(input_json,
                                           base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
