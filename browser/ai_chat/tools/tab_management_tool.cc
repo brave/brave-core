@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/containers/adapters.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
@@ -55,7 +56,7 @@ namespace {
 // Returns a sorted, de-duplicated list of indices that are valid for the
 // provided TabStripModel. Any indices outside of the current tab bounds are
 // dropped.
-std::vector<int> MakeSortedUniqueValidIndices(const std::vector<int>& indices,
+std::vector<int> MakeSortedUniqueValidIndices(base::span<const int> indices,
                                               const TabStripModel* tab_strip) {
   CHECK(tab_strip);
   const int tab_count = tab_strip->count();
@@ -82,24 +83,21 @@ std::vector<int> MakeSortedUniqueValidIndices(const std::vector<int>& indices,
 
 std::optional<tab_groups::TabGroupColorId> GetTabGroupColorId(
     std::string_view group_color) {
-  if (group_color == "grey") {
-    return tab_groups::TabGroupColorId::kGrey;
-  } else if (group_color == "blue") {
-    return tab_groups::TabGroupColorId::kBlue;
-  } else if (group_color == "red") {
-    return tab_groups::TabGroupColorId::kRed;
-  } else if (group_color == "yellow") {
-    return tab_groups::TabGroupColorId::kYellow;
-  } else if (group_color == "green") {
-    return tab_groups::TabGroupColorId::kGreen;
-  } else if (group_color == "pink") {
-    return tab_groups::TabGroupColorId::kPink;
-  } else if (group_color == "purple") {
-    return tab_groups::TabGroupColorId::kPurple;
-  } else if (group_color == "cyan") {
-    return tab_groups::TabGroupColorId::kCyan;
-  } else if (group_color == "orange") {
-    return tab_groups::TabGroupColorId::kOrange;
+  static constexpr auto kColorNameToId =
+      base::MakeFixedFlatMap<std::string_view, tab_groups::TabGroupColorId>(
+          {{"grey", tab_groups::TabGroupColorId::kGrey},
+           {"blue", tab_groups::TabGroupColorId::kBlue},
+           {"red", tab_groups::TabGroupColorId::kRed},
+           {"yellow", tab_groups::TabGroupColorId::kYellow},
+           {"green", tab_groups::TabGroupColorId::kGreen},
+           {"pink", tab_groups::TabGroupColorId::kPink},
+           {"purple", tab_groups::TabGroupColorId::kPurple},
+           {"cyan", tab_groups::TabGroupColorId::kCyan},
+           {"orange", tab_groups::TabGroupColorId::kOrange}});
+
+  const auto it = kColorNameToId.find(group_color);
+  if (it != kColorNameToId.end()) {
+    return it->second;
   }
   return std::nullopt;
 }
@@ -633,13 +631,7 @@ void TabManagementTool::PostTaskSendResultWithTabList(
 }
 
 void TabManagementTool::HandleListTabs(UseToolCallback callback) {
-  base::DictValue result = GenerateTabList();
-
-  std::string json_output;
-  base::JSONWriter::WriteWithOptions(
-      result, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json_output);
-
-  std::move(callback).Run(CreateContentBlocksForText(json_output), {});
+  PostTaskSendResultWithTabList(std::move(callback), base::DictValue());
 }
 
 void TabManagementTool::HandleMoveTabs(UseToolCallback callback,
@@ -918,8 +910,9 @@ void TabManagementTool::HandleMoveGroup(UseToolCallback callback,
     // Don't move if already at target position
     if (target_index == start_index) {
       // Group is already at target position, just return success immediately
-      std::move(callback).Run(
-          CreateContentBlocksForText("Group already at target position"), {});
+      base::DictValue result;
+      result.Set("message", "Group already at target position");
+      PostTaskSendResultWithTabList(std::move(callback), std::move(result));
       return;
     }
 
