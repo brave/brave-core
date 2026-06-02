@@ -27,8 +27,13 @@ class BraveGeneratedSafeBrowsingPref : public GeneratedSafeBrowsingPref {
   explicit BraveGeneratedSafeBrowsingPref(Profile* profile);
   ~BraveGeneratedSafeBrowsingPref() override;
 
+  // Accepts Brave's Limited-protection value in addition to the upstream
+  // levels. Returns PREF_NOT_MODIFIABLE if the underlying prefs are managed.
   extensions::settings_private::SetPrefResult SetPref(
       const base::Value* value) override;
+
+  // May return Brave's Limited-protection value in addition to the upstream
+  // levels.
   extensions::api::settings_private::PrefObject GetPrefObject() const override;
 
  private:
