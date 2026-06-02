@@ -10,6 +10,8 @@ source_set("safe_browsing") {
   ]
 
   sources = [
+    "brave_download_protection_delegate_desktop.cc",
+    "brave_download_protection_delegate_desktop.h",
     "brave_generated_safe_browsing_pref.cc",
     "brave_generated_safe_browsing_pref.h",
   ]
@@ -21,15 +23,20 @@ source_set("safe_browsing") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/safe_browsing",
     "//chrome/common/extensions/api",
+    "//components/download/public/common:public",
     "//components/prefs",
     "//components/safe_browsing/core/common:safe_browsing_prefs",
+    "//content/public/browser",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "generated_safe_browsing_pref_brave_unittest.cc" ]
+  sources = [
+    "brave_download_protection_delegate_desktop_unittest.cc",
+    "generated_safe_browsing_pref_brave_unittest.cc",
+  ]
 
   deps = [
     ":safe_browsing",
@@ -37,9 +44,12 @@ source_set("unit_tests") {
     "//brave/components/safebrowsing",
     "//chrome/common/extensions/api",
     "//chrome/test:test_support",
+    "//components/download/public/common:public",
+    "//components/download/public/common:test_support",
     "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
