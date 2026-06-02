@@ -1,5 +1,5 @@
 diff --git a/chrome/updater/mac/.install.sh b/chrome/updater/mac/.install.sh
-index 3b1874d09fca0cf88e361927dfea7c4273790030..c98a50dab0f753aff3a604b43d1659b9eb78abd0 100755
+index 3b1874d09fca0cf88e361927dfea7c4273790030..72a2975416499af62487410f98c0afa0d0a32c6d 100755
 --- a/chrome/updater/mac/.install.sh
 +++ b/chrome/updater/mac/.install.sh
 @@ -322,7 +322,7 @@ main() {
@@ -20,11 +20,27 @@ index 3b1874d09fca0cf88e361927dfea7c4273790030..c98a50dab0f753aff3a604b43d1659b9
    note "update_app = ${update_app}"
  
    # Make sure that it's an absolute path.
-@@ -463,7 +463,52 @@ main() {
+@@ -455,15 +455,67 @@ main() {
+   # directory unusable even for an instant.
+   if [[ -n "${update_versioned_dir}" ]]; then
+     note "rsyncing versioned directory"
+-    if ! rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
++    if ! perl -e 'alarm shift; exec @ARGV' 600 rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
+                                               "${new_versioned_dir}"; then
++      local rsync_status=${PIPESTATUS[0]}
++      # The assignment we just made set PIPESTATUS[0] to 0. Restore it.
++      (exit "${rsync_status}")
+       err "rsync of versioned directory failed, status ${PIPESTATUS[0]}"
+ 
+       # If the rsync of a new-layout versioned directory failed, remove it.
        # The incomplete version would break code signature validation.
        note "cleaning up new_versioned_dir"
        rm -rf "${new_versioned_dir}"
 -      exit 12
++      if [[ ${rsync_status} -eq 142 ]]; then
++      # rsync timed out.
++        exit 80
++      fi
 +      # Try various remedies; Report in exit code what would have worked.
 +      local mkdir_stderr
 +      if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
