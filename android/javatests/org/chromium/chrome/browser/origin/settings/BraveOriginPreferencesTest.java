@@ -7,8 +7,11 @@ package org.chromium.chrome.browser.origin.settings;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
 
 import androidx.test.filters.SmallTest;
 
@@ -18,8 +21,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.DoNotBatch;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BraveOriginPreferences;
+import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -125,6 +131,37 @@ public class BraveOriginPreferencesTest {
         assertFalse(
                 "PREF_WEB_DISCOVERY_PROJECT_SWITCH should be off by default",
                 webDiscoveryProjectSwitch.isChecked());
+    }
+
+    // Test that launching with EXTRA_SHOW_RESTART_PROMPT shows the restart snackbar (the
+    // credential-refresh path, where credentials are already present so there is no spinner).
+    @Test
+    @SmallTest
+    public void testRestartPromptArgShowsRestartSnackbar() {
+        Bundle args = new Bundle();
+        args.putBoolean(BraveOriginPreferences.EXTRA_SHOW_RESTART_PROMPT, true);
+        SettingsActivity activity = mSettingsActivityTestRule.startSettingsActivity(args);
+        mBraveOriginPreferences = mSettingsActivityTestRule.getFragment();
+        Assert.assertNotNull("SettingsActivity failed to launch.", mBraveOriginPreferences);
+
+        // The snackbar is shown asynchronously from onViewCreated; poll for its
+        // "Restart now" action button to appear.
+        CriteriaHelper.pollUiThread(
+                () -> {
+                    View action =
+                            activity.getWindow().getDecorView().findViewById(R.id.snackbar_action);
+                    return action != null && action.getVisibility() == View.VISIBLE;
+                },
+                "Restart snackbar should be shown when EXTRA_SHOW_RESTART_PROMPT is set",
+                5000L,
+                100L);
+
+        // The "fetching credentials" spinner state must not be shown on this path.
+        View fetching =
+                activity.getWindow().getDecorView().findViewById(R.id.snackbar_fetching_container);
+        assertTrue(
+                "Fetching spinner should not be shown",
+                fetching == null || fetching.getVisibility() != View.VISIBLE);
     }
 
     private void startSettings() {
