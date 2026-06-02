@@ -81,6 +81,48 @@ export * from './fancy-chromium.js'
 See [this PR](https://github.com/brave/brave-core/pull/29598/files) for a real
 example.
 
+## Lit Properties
+
+Similarly to the above, adding a new property to a Lit component isn't
+straightforward. The easiest way requires patching out the
+`customElements.define` call in the upstream component and replacing the
+component:
+
+```ts
+import { FancyElement as FancyElementChromium } from './fancy-chromium.js'
+
+declare module './fancy-chromium.js' {
+  // Note: This one is still `FancyElement` to get declaration merging to work.
+  // This is required so that the `getHtml` function gets the correct `this` type.
+  interface FancyElement {
+    isBraveAndFancy: boolean
+  }
+}
+
+// Override the upstream element
+class FancyElement extends FancyElementChromium {
+  static override get properties() {
+    return {
+      ...super.properties,
+      // Make sure we mark the property as reactive
+      isBraveAndFancy: { type: Boolean },
+    }
+  }
+
+  // Note: Even though the accessor isn't overriding something from
+  // upstream we need to mark it as overriding because in our
+  // declaration merge we've said that this property exists there.
+  override accessor isBraveAndFancy: boolean = true
+}
+
+export { FancyElement }
+export * from './fancy-chromium.js'
+
+// Define the element as our element. Note: You'll need to patch this
+// line out of the upstream file.
+customElements.define(FancyElement.is, FancyElement)
+```
+
 ## Lit Mangling
 
 Unfortunately, the above strategies don't work for modifying Lit HTML. To modify
