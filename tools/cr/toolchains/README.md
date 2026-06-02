@@ -78,7 +78,7 @@ This control is important for cases where there are changes on our end for how
 the toolchain should be generated, and a new distinct archive is necessary for
 a toolchain already in use.
 
-### `download_published_dep.py`
+### `install_extra_deps.py`
 
 Client-side counterpart to the builders above: a gclient hook that installs
 archives published in buckets in our infra It downloads the archive, verifies
@@ -107,7 +107,7 @@ EXTRA_DEPS = {
 
 The archive must lay its members out relative to the destination root so it can
 be extracted directly over it. Invoke with the target path, e.g.
-`download_published_dep.py src/path/to/install/dir`.
+`install_extra_deps.py src/path/to/install/dir`.
 
 ### `build_xcode_toolchain.py`
 
