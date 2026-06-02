@@ -5,12 +5,11 @@
 
 substitutions:
   - description:
-      Preserve fullscreen state while Brave-managed YouTube PiP is active when a
-      tab is hidden
+      Check at the top of the method if exiting fullscreen should be skipped to
+      preserve the state while Brave-managed YouTube PiP is active when a tab is
+      hidden
     re_pattern:
-      '(public void onHidden\(Tab tab, @TabHidingType int
-      reason\)\s+\{\n)([\s\S]*?\n)
-      +mFullscreenManagerDelegate\.onExitFullscreen\(null\);'
+      '(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{\n)([\s\S]*?\n) +mFullscreenManagerDelegate\.onExitFullscreen\(null\);'
     replace: |-
       \1                        if (BraveFullscreenHtmlApiHandlerBase.class.cast(
                                               FullscreenHtmlApiHandlerBase.this)
