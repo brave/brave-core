@@ -8,9 +8,11 @@
 #include <string>
 
 #include "base/functional/bind.h"
-#include "base/run_loop.h"
+#include "base/location.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/workspaces/workspace_row_view.h"
@@ -98,10 +100,13 @@ class WorkspacesBubbleBrowserTest : public InProcessBrowserTest {
   }
 
   // Clicks the workspaces button and returns the resulting bubble view, or
-  // nullptr if no bubble was shown.
-  WorkspacesBubbleView* OpenBubble() {
-    base::RunLoop run_loop;
-    WorkspacesBubbleView* bubble = nullptr;
+  // nullptr if no bubble was shown. |location| is the caller's source location
+  // so failures in this helper point at the test that called it.
+  WorkspacesBubbleView* OpenBubble(
+      const base::Location& location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+
+    base::test::TestFuture<WorkspacesBubbleView*> bubble_future;
     views::AnyWidgetObserver observer(views::test::AnyWidgetTestPasskey{});
     observer.set_shown_callback(
         base::BindLambdaForTesting([&](views::Widget* widget) {
@@ -113,21 +118,17 @@ class WorkspacesBubbleBrowserTest : public InProcessBrowserTest {
           }
           if (auto* b = views::AsViewClass<WorkspacesBubbleView>(
                   delegate->GetContentsView())) {
-            bubble = b;
-            run_loop.Quit();
+            bubble_future.SetValue(b);
           }
         }));
 
     auto* button = GetWorkspacesButton();
-    EXPECT_TRUE(button);
+    EXPECT_TRUE(button) << "Workspaces button not found in the tab strip";
     if (!button) {
       return nullptr;
     }
     ClickButton(button);
-    if (!bubble) {
-      run_loop.Run();
-    }
-    return bubble;
+    return bubble_future.Take();
   }
 
  private:
@@ -143,12 +144,6 @@ class WorkspacesFeatureDisabledBrowserTest : public InProcessBrowserTest {
  private:
   base::test::ScopedFeatureList feature_list_;
 };
-
-// The workspaces button is created in the horizontal tab strip when the
-// feature is enabled.
-IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, ButtonExistsWhenEnabled) {
-  EXPECT_TRUE(GetWorkspacesButton());
-}
 
 // No workspaces button is created when the feature is disabled.
 IN_PROC_BROWSER_TEST_F(WorkspacesFeatureDisabledBrowserTest,
@@ -173,10 +168,14 @@ IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, EmptyStateLabelShown) {
 
   const std::u16string expected =
       l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_EMPTY_TITLE);
-  EXPECT_TRUE(AnyDescendantMatches(bubble, [&](views::View* v) {
-    auto* label = views::AsViewClass<views::Label>(v);
-    return label && label->GetText() == expected;
-  }));
+  EXPECT_TRUE(
+      AnyDescendantMatches(bubble,
+                           [&](views::View* v) {
+                             auto* label = views::AsViewClass<views::Label>(v);
+                             return label && label->GetText() == expected;
+                           }))
+      << "Expected empty-state label '" << base::UTF16ToUTF8(expected)
+      << "' not found among bubble descendants";
 }
 
 // The bubble renders one WorkspaceRowView per saved workspace.
@@ -189,5 +188,6 @@ IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, OneRowPerWorkspace) {
   auto* bubble = OpenBubble();
   ASSERT_TRUE(bubble);
 
-  EXPECT_EQ(CountDescendants<WorkspaceRowView>(bubble), 2);
+  EXPECT_EQ(CountDescendants<WorkspaceRowView>(bubble), 2)
+      << "Bubble should render one WorkspaceRowView per saved workspace";
 }

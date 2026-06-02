@@ -39,7 +39,7 @@ class SaveWorkspaceDialog : public views::DialogDelegateView {
   void OnAccept();
 
   raw_ptr<Browser> browser_;
-  raw_ptr<views::Textfield> name_field_ = nullptr;
+  raw_ptr<views::Textfield> name_field_;
   base::WeakPtrFactory<SaveWorkspaceDialog> weak_factory_{this};
 };
 
