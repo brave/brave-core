@@ -336,6 +336,14 @@ class BraveBrowserViewWithRoundedCornersTest
 // Test 1: Rounded corners behavior with side panel toggled
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersWithSidePanelTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(https://github.com/brave/brave-browser/issues/55995): Re-enable on
+  // macOS 26.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
