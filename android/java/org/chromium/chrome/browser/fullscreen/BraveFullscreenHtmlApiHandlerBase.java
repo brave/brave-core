@@ -16,7 +16,7 @@ import org.chromium.chrome.browser.tab.TabHidingType;
  *
  * <p>The hooks below are called from upstream FullscreenHtmlApiHandlerBase via Plaster
  * substitutions; if the names or signatures change, update the corresponding entries in {@code
- * rewrite/chrome/android/.../FullscreenHtmlApiHandlerBase.java.toml}.
+ * rewrite/chrome/android/.../FullscreenHtmlApiHandlerBase.java.yaml}.
  */
 public abstract class BraveFullscreenHtmlApiHandlerBase {
     /**

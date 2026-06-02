@@ -18,6 +18,7 @@ substitutions:
                                   return;
                               }
       \2                        mFullscreenManagerDelegate.onExitFullscreen(null);
+
   - description: Add a PiP-specific persistent fullscreen exit path
     re_pattern:
       '(@Override\n\s+public void
@@ -33,6 +34,7 @@ substitutions:
 
           private void exitPersistentFullscreenMode(boolean exitWebContentsFullscreen) {
       \2        returnFromTargetScreenIfNeeded();
+
   - description:
       Thread the WebContents fullscreen exit flag into fullscreen teardown
     re_pattern:
@@ -43,6 +45,7 @@ substitutions:
                               mWebContentsInFullscreen,
                               mContentViewInFullscreen,
                               exitWebContentsFullscreen);
+
   - description:
       Allow fullscreen teardown to decide whether WebContents fullscreen should
       exit
@@ -52,6 +55,7 @@ substitutions:
     replace: |-
       private void exitFullscreen(
                   WebContents webContents, View contentView, boolean exitWebContentsFullscreen) {
+
   - description: Skip WebContents fullscreen exit for the Brave-managed PiP path
     re_pattern:
       '(private void exitFullscreen\(\s*WebContents webContents,\s*View
@@ -63,6 +67,7 @@ substitutions:
       \1if (exitWebContentsFullscreen && webContents != null && !webContents.isDestroyed()) {
                   webContents.exitFullscreen();
               }
+
   - description:
       Preserve fullscreen state while Brave-managed YouTube PiP is active when
       the activity stops

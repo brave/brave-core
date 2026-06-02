@@ -20,6 +20,7 @@ substitutions:
                               reason == MetricsEndReason.NEW_TAB)) {
                   return;
               }
+
   - description: Notify Brave that a YouTube PiP session is being attempted
     re_pattern:
       '(\s+if \(!allowed\) return;\n\n\s+final WebContents webContents =
@@ -27,6 +28,7 @@ substitutions:
     replace: |
       \1        BraveFullscreenVideoPictureInPictureController.class.cast(this)
                       .onYouTubePictureInPictureAttempt(mActivity, webContents);
+
   - description: Notify Brave when manual PiP entry returns false
     re_pattern:
       'if \(!mActivity\.enterPictureInPictureMode\(builder\.build\(\)\)\)
@@ -37,6 +39,7 @@ substitutions:
                               .onYouTubePictureInPictureEnterFailed();
                       return;
                   }
+
   - description: Notify Brave when manual PiP entry throws
     re_pattern:
       '(\s+Log\.e\(TAG, "Error entering PiP with bounds %s", bounds, e\);\n)'
