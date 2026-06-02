@@ -3,20 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
+#include <algorithm>
 #include <optional>
 #include <vector>
 
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/thread_test_helper.h"
-#include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -42,6 +38,24 @@ enum class TestFarblingLevel {
   BALANCED = 1,
   MAXIMUM = 2,
 };
+
+// Can't rely on GetFakeSupportedExtensionsForTesting since it uses
+// blink::String and we can't seem to construct them in the context of
+// brave_browser_tests without hitting this DCHECK
+// https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/wtf/allocator/partitions.h;l=72.
+// This is a heuristic which allows us to compare it's one of the fake names as
+// they always ends with these suffixes.
+bool IsFakeExtensionName(std::string_view name) {
+  return std::ranges::any_of(
+      std::vector{
+          "ompressor",
+          "ampler",
+          "lender",
+      },
+      [&name](const auto& farbled_endings) {
+        return name.ends_with(farbled_endings);
+      });
+}
 
 }  // namespace
 
@@ -163,57 +177,6 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetSupportedExtensions) {
-  std::string domain = "a.com";
-  GURL url =
-      embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
-  const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
-  // Farbling level: maximum
-  // WebGL getSupportedExtensions returns abbreviated list
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
-            kSupportedExtensionsMax);
-
-  // Farbling level: off
-  // WebGL getSupportedExtensions is real
-  AllowFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  std::string actual = EvalJs(contents(), kTitleScript).ExtractString();
-  EXPECT_NE(actual, kSupportedExtensionsMax);
-
-  // Farbling level: balanced (default)
-  // WebGL getSupportedExtensions is real
-  SetFingerprintingDefault(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), actual);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetExtension) {
-  std::string domain = "a.com";
-  GURL url = embedded_test_server()->GetURL(domain, "/getExtension.html");
-  const std::string kExpectedExtensionListMax = "WEBGL_debug_renderer_info";
-  // Farbling level: maximum
-  // WebGL getExtension returns null for most names
-  BlockFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
-            kExpectedExtensionListMax);
-
-  // Farbling level: off
-  // WebGL getExtension returns real objects
-  AllowFingerprinting(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  std::string actual = EvalJs(contents(), kTitleScript).ExtractString();
-  EXPECT_NE(actual, kExpectedExtensionListMax);
-
-  // Farbling level: balanced (default)
-  // WebGL getExtension returns real objects
-  SetFingerprintingDefault(domain);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), actual);
-}
-
 IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetAttachedShaders) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getAttachedShaders.html");
@@ -226,10 +189,11 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetAttachedShaders) {
             "[object WebGLShader]");
 }
 
-class BraveWebGLGetParameterTest : public BraveWebGLFarblingBrowserTest,
-                                   public testing::WithParamInterface<bool> {
+class BraveWebGLExtensionFarblingTest
+    : public BraveWebGLFarblingBrowserTest,
+      public testing::WithParamInterface<bool> {
  public:
-  BraveWebGLGetParameterTest() {
+  BraveWebGLExtensionFarblingTest() {
     if (GetParam()) {
       get_parameter_feature_list_.InitWithFeatures(
           {blink::features::kWebGLBalancedFingerprintingProtection}, {});
@@ -266,14 +230,14 @@ class BraveWebGLGetParameterTest : public BraveWebGLFarblingBrowserTest,
 
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
-    BraveWebGLGetParameterTest,
+    BraveWebGLExtensionFarblingTest,
     testing::Bool(),
     [](const testing::TestParamInfo<bool>& info) {
       return info.param ? "WebGLBalancedFingerprintingProtection_Enabled"
                         : "WebGLBalancedFingerprintingProtection_Disabled";
     });
 
-IN_PROC_BROWSER_TEST_P(BraveWebGLGetParameterTest,
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
                        FarbleVendorAndRendererDebugInfoWebGL) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
@@ -316,4 +280,100 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLGetParameterTest,
   EXPECT_EQ(expected_value_balanced, actual_value_balanced);
   // Check never the same as "maximum" state.
   EXPECT_NE(actual_value_balanced, actual_value_maximum);
+}
+
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
+                       FarbleGetSupportedExtensions) {
+  std::string domain = "a.com";
+  GURL url =
+      embedded_test_server()->GetURL(domain, "/getSupportedExtensions.html");
+  const std::string kSupportedExtensionsMax = "WEBGL_debug_renderer_info";
+  // Farbling level: maximum
+  // WebGL getSupportedExtensions returns abbreviated list
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
+            kSupportedExtensionsMax);
+
+  // Farbling level: off
+  // WebGL getSupportedExtensions is real
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  std::string actual_value_off =
+      EvalJs(contents(), kTitleScript).ExtractString();
+  EXPECT_NE(actual_value_off, kSupportedExtensionsMax);
+
+  auto actual_extensions_list = base::SplitString(
+      actual_value_off, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  // We sort this to compute a set difference later.
+  std::sort(actual_extensions_list.begin(), actual_extensions_list.end());
+  EXPECT_FALSE(actual_extensions_list.empty());
+
+  // Farbling level: balanced (default)
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  const auto actual_balanced_value =
+      EvalJs(contents(), kTitleScript).ExtractString();
+  auto actual_balanced_extensions_list = base::SplitString(
+      actual_balanced_value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::sort(actual_balanced_extensions_list.begin(),
+            actual_balanced_extensions_list.end());
+  std::vector<std::string> diff;
+  std::ranges::set_difference(actual_balanced_extensions_list,
+                              actual_extensions_list, std::back_inserter(diff));
+
+  if (GetParam()) {
+    // This should contain one of the farbled values.
+    ASSERT_EQ(diff.size(), 1u);
+    EXPECT_TRUE(IsFakeExtensionName(diff[0]));
+  } else {
+    // WebGL getSupportedExtensions is real when flag is off.
+    EXPECT_EQ(actual_balanced_extensions_list, actual_extensions_list);
+  }
+}
+
+IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest, FarbleGetExtension) {
+  std::string domain = "a.com";
+  GURL url = embedded_test_server()->GetURL(domain, "/getExtension.html");
+  const std::string kExpectedExtensionListMax = "WEBGL_debug_renderer_info";
+  // Farbling level: maximum
+  // WebGL getExtension returns null for most names
+  BlockFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
+            kExpectedExtensionListMax);
+
+  // Farbling level: off
+  // WebGL getExtension returns real objects
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  std::string actual_value = EvalJs(contents(), kTitleScript).ExtractString();
+  EXPECT_NE(actual_value, kExpectedExtensionListMax);
+
+  auto actual_extensions_list = base::SplitString(
+      actual_value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  // We sort this to compute a set difference later.
+  std::sort(actual_extensions_list.begin(), actual_extensions_list.end());
+  EXPECT_FALSE(actual_extensions_list.empty());
+
+  // Farbling level: balanced (default)
+  // WebGL getExtension returns real objects
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  const auto actual_balanced_value =
+      EvalJs(contents(), kTitleScript).ExtractString();
+  auto actual_balanced_extensions_list = base::SplitString(
+      actual_balanced_value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::sort(actual_balanced_extensions_list.begin(),
+            actual_balanced_extensions_list.end());
+  std::vector<std::string> diff;
+  std::ranges::set_difference(actual_balanced_extensions_list,
+                              actual_extensions_list, std::back_inserter(diff));
+  if (GetParam()) {
+    // This should contain one of the farbled values.
+    ASSERT_EQ(diff.size(), 1u);
+    EXPECT_TRUE(IsFakeExtensionName(diff[0]));
+  } else {
+    EXPECT_EQ(actual_balanced_extensions_list, actual_extensions_list);
+  }
 }
