@@ -957,12 +957,14 @@ extension BrowserViewController: TopToolbarDelegate {
       activities = makeShareActivities(
         for: url,
         tab: tab,
-        sourceView: view,
-        sourceRect: self.view.convert(
-          self.topToolbar.menuButton.frame,
-          from: self.topToolbar.menuButton.superview
-        ),
-        arrowDirection: .up
+        source: .init(
+          view: view,
+          rect: view.convert(
+            topToolbar.menuButton.frame,
+            from: topToolbar.menuButton.superview
+          ),
+          arrowDirection: .up
+        )
       )
     }
 
