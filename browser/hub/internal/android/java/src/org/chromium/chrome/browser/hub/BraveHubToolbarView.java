@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 
+import org.chromium.base.Log;
 /**
  * Brave's extension for {@link HubToolbarView}. Here we control what elements should be visible in
  * tab switcher mode when bottom toolbar is visible.
@@ -33,6 +34,7 @@ public class BraveHubToolbarView extends HubToolbarView {
 
     public BraveHubToolbarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        Log.i("SHRED", "[SHRED] BraveHubToolbarView");
     }
 
     @Override
@@ -65,6 +67,7 @@ public class BraveHubToolbarView extends HubToolbarView {
 
     @Override
     void updateIncognitoElements(boolean isIncognito) {
+        Log.i("SHRED", "[SHRED] updateIncognitoElements: isIncognito=" + isIncognito);
         super.updateIncognitoElements(isIncognito);
         mIsShredButtonVisible = !isIncognito;
         updateButtonsVisibility();
@@ -114,6 +117,9 @@ public class BraveHubToolbarView extends HubToolbarView {
 
         final boolean shouldShowShredButton =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED) && mIsShredButtonVisible;
+        Log.i("SHRED", "[SHRED] updateButtonsVisibility: feature=" + ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)
+                + ", mIsShredButtonVisible=" + mIsShredButtonVisible
+                + ", shouldShowShredButton=" + shouldShowShredButton);
         mShredButton.setVisibility(shouldShowShredButton ? View.VISIBLE : View.INVISIBLE);
     }
 }
