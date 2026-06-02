@@ -202,6 +202,7 @@ class InstallShPatchTest(unittest.TestCase):
                                      expected_exit_code=expected_exit_code)
 
     def test_rsync_timeout(self):
+
         def rsync(_):
             sleep(2)
             return 0, ""
