@@ -21,22 +21,21 @@ namespace {
 constexpr char kScriptName[] = "brave_talk_launcher";
 constexpr char kScriptHandlerName[] = "BraveTalkLauncherMessageHandler";
 constexpr char kMessageURLKey[] = "url";
-constexpr auto kAllowedUrlHosts = base::MakeFixedFlatSet<std::string_view>({
-    "talk.brave.com",
-    "talk.bravesoftware.com",
-    "talk.brave.software",
-});
 
 }  // namespace
 
 BraveTalkLauncherJavaScriptFeature::BraveTalkLauncherJavaScriptFeature()
-    : JavaScriptFeature(web::ContentWorld::kIsolatedWorld,
-                        {FeatureScript::CreateWithFilename(
-                            kScriptName,
-                            FeatureScript::InjectionTime::kDocumentStart,
-                            FeatureScript::TargetFrames::kMainFrame,
-                            FeatureScript::ReinjectionBehavior::
-                                kReinjectOnDocumentRecreation)}) {}
+    : JavaScriptFeature(
+          web::ContentWorld::kIsolatedWorld,
+          {FeatureScript::CreateWithFilename(
+              kScriptName,
+              FeatureScript::InjectionTime::kDocumentStart,
+              FeatureScript::TargetFrames::kMainFrame,
+              FeatureScript::ReinjectionBehavior::kReinjectOnDocumentRecreation,
+              FeatureScript::PlaceholderReplacementsCallback(),
+              web::OriginFilter::kBraveTalk)},
+          /*dependent_feature=*/{},
+          web::OriginFilter::kBraveTalk) {}
 
 BraveTalkLauncherJavaScriptFeature::~BraveTalkLauncherJavaScriptFeature() =
     default;
@@ -58,8 +57,7 @@ void BraveTalkLauncherJavaScriptFeature::ScriptMessageReceived(
     const web::ScriptMessage& message) {
   GURL request_url = message.request_url().value_or(GURL());
 
-  if (!message.is_main_frame() || !request_url.is_valid() ||
-      !kAllowedUrlHosts.contains(request_url.host())) {
+  if (!message.is_main_frame() || !request_url.is_valid()) {
     return;
   }
 
