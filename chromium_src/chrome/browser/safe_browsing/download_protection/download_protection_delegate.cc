@@ -69,4 +69,4 @@ class BraveDownloadProtectionDelegateDesktop
 
 #if !BUILDFLAG(IS_ANDROID)
 #undef DownloadProtectionDelegateDesktop
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
