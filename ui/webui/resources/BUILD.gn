@@ -182,6 +182,7 @@ leo_icons_sources = [
   "browser-add.svg",
   "browser-extensions.svg",
   "browser-home.svg",
+  "browser-back.svg",
   "browser-ntp-widget.svg",
   "btc-color.svg",
   "bug.svg",

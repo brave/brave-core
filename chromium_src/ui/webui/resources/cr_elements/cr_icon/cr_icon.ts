@@ -98,6 +98,7 @@ const iconMap: { [key: string]: string } = {
     'cr:add': 'plus-add',
     'cr:expand-more': 'carat-down',
     'cr:chevron-right': 'carat-right',
+    'cr:arrow-back': 'browser-back',
     'settings:download': 'download',
     'settings:performance': 'cpu-chip',
     'bookmarks:bookmarks-bar': 'window',
