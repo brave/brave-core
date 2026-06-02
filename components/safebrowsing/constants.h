@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SAFEBROWSING_CONSTANTS_H_
 #define BRAVE_COMPONENTS_SAFEBROWSING_CONSTANTS_H_
 
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+
 namespace safe_browsing {
 
 inline constexpr char kBraveSafeBrowsingDownloadProtectionEnabled[] =
@@ -16,6 +18,12 @@ inline constexpr char kBraveSafeBrowsingDownloadProtectionEnabled[] =
 // out-of-range validation keeps rejecting unknown values and future Chromium
 // additions don't collide.
 inline constexpr int kBraveSafeBrowsingLimitedProtection = 10;
+
+static_assert(
+    static_cast<int>(SafeBrowsingState::kMaxValue) <
+        kBraveSafeBrowsingLimitedProtection,
+    "Upstream added new SafeBrowsingState values — update "
+    "kBraveSafeBrowsingLimitedProtection");
 
 }  // namespace safe_browsing
 
