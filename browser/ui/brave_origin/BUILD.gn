@@ -16,4 +16,15 @@ source_set("brave_origin") {
   # chrome/browser/ui/chrome_pages.h is provided transitively through the
   # //chrome/browser/ui -> //brave/browser/ui dependency chain. Adding
   # //chrome/browser/ui directly would create a dependency cycle.
+
+  if (is_android) {
+    sources += [
+      "android/brave_origin_settings_launcher_helper.cc",
+      "android/brave_origin_settings_launcher_helper.h",
+    ]
+    deps += [
+      "//brave/browser/ui/brave_origin/android:jni_headers",
+      "//components/prefs",
+    ]
+  }
 }
