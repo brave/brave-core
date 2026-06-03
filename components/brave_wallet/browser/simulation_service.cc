@@ -13,6 +13,7 @@
 #include "base/types/optional_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/simulation_request_helper.h"
@@ -20,7 +21,6 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -118,10 +118,11 @@ bool HasMessageScanSupportInternal(const std::string& chain_id,
   return false;
 }
 
-const base::flat_map<std::string, std::string> GetHeaders() {
-  return {{kBlowfishAPIVersionHeader, kBlowfishAPIVersion},
-          {net::HttpRequestHeaders::kContentType, "application/json"},
-          {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
+base::flat_map<std::string, std::string> GetHeaders() {
+  return AddBraveServicesKeyHeaders({
+      {kBlowfishAPIVersionHeader, kBlowfishAPIVersion},
+      {net::HttpRequestHeaders::kContentType, "application/json"},
+  });
 }
 
 }  // namespace

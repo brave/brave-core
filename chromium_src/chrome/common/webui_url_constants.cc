@@ -4,14 +4,27 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/constants/webui_url_constants.h"
-#include "chrome/common/webui_url_constants.h"
 
-#define kChromeUIAttributionInternalsHost                                     \
-  kChromeUIAttributionInternalsHost, kAdblockHost, kAdblockInternalsHost,     \
-      kRewardsPageHost, kRewardsInternalsHost, kWelcomeHost, kWalletPageHost, \
-      kTorInternalsHost, kSkusInternalsHost, kAdsInternalsHost,               \
-      kNewTabTakeoverHost
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "chrome/common/webui_url_constants.h"
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
+#define BRAVE_WALLET_WEBUI_HOSTS kWalletPageHost,
+#else
+#define BRAVE_WALLET_WEBUI_HOSTS
+#endif
+
+#define kChromeUIAttributionInternalsHost                                 \
+  kChromeUIAttributionInternalsHost, kAdblockHost, kAdblockInternalsHost, \
+      kRewardsPageHost, kRewardsInternalsHost, kWelcomeHost,              \
+      BRAVE_WALLET_WEBUI_HOSTS kTorInternalsHost, kSkusInternalsHost,     \
+      kAdsInternalsHost, kNewTabTakeoverHost
 
 #include <chrome/common/webui_url_constants.cc>
 
 #undef kChromeUIAttributionInternalsHost
+#undef BRAVE_WALLET_WEBUI_HOSTS

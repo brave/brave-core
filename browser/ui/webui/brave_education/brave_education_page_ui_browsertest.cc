@@ -23,6 +23,10 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
+
 namespace brave_education {
 
 class BraveEducationPageUIBrowserTest : public InProcessBrowserTest {

@@ -9,6 +9,7 @@
 
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -24,6 +25,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/sidebar/browser/constants.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #endif
 
 namespace brave {

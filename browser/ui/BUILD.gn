@@ -489,6 +489,10 @@ source_set("ui") {
       ]
     }
 
+    if (enable_brave_wallet) {
+      deps += [ "//brave/components/brave_wallet/common:common_constants" ]
+    }
+
     if (is_win) {
       deps += [ "//brave/components/windows_recall" ]
     }

@@ -23,7 +23,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_wallet {

@@ -61,7 +61,6 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -993,9 +992,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
           }
 
           if (IsEndpointUsingBraveWalletProxy(request.url)) {
-            header_value =
-                request.headers.GetHeader("x-brave-key").value_or("");
-            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+            EXPECT_EQ(MakeBraveServicesKeyHeaders().at("x-brave-key"),
+                      request.headers.GetHeader("x-brave-key"));
           } else {
             EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
           }
@@ -1012,8 +1010,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
           EXPECT_EQ(request.url, expected_url);
 
           if (IsEndpointUsingBraveWalletProxy(request.url)) {
-            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY),
-                      request.headers.GetHeader("x-brave-key").value_or(""));
+            EXPECT_EQ(MakeBraveServicesKeyHeaders().at("x-brave-key"),
+                      request.headers.GetHeader("x-brave-key"));
           } else {
             EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
           }
@@ -1202,7 +1200,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
   }
-
 
   void TestEthGetLogs(const std::string& chain_id,
                       const std::string& from_block,

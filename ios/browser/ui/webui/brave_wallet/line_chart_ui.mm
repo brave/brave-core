@@ -8,7 +8,7 @@
 #include <string>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/line_chart_display/resources/grit/line_chart_display_generated_map.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"

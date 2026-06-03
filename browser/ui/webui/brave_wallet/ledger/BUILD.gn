@@ -14,9 +14,9 @@ source_set("ledger") {
     "ledger_ui.h",
   ]
   deps = [
+    "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
-    "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//content/public/browser",
     "//ui/webui",

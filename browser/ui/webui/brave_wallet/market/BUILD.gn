@@ -14,9 +14,9 @@ source_set("market") {
   ]
   deps = [
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/market:market_display_generated",
-    "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//chrome/browser/profiles",
     "//content/public/browser",

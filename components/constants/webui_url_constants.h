@@ -33,38 +33,13 @@ inline constexpr char kBraveNewTabJS[] = "brave_new_tab.js";
 inline constexpr char kBraveNewsInternalsHost[] = "news-internals";
 inline constexpr char kBraveUIAdblockURL[] = "chrome://adblock/";
 inline constexpr char kBraveUIWebcompatReporterURL[] = "chrome://webcompat/";
-inline constexpr char kBraveUIWalletURL[] = "chrome://wallet/";
-inline constexpr char kBraveUIWalletOnboardingURL[] =
-    "brave://wallet/crypto/onboarding";
-inline constexpr char kBraveUIWalletAccountCreationURL[] =
-    "brave://wallet/crypto/accounts/add-account/create/";
-inline constexpr char kBraveUIWalletPanelURL[] =
-    "chrome://wallet-panel.top-chrome/";
-inline constexpr char kWalletPanelHost[] = "wallet-panel.top-chrome";
 inline constexpr char kVPNPanelURL[] =
     "chrome-untrusted://vpn-panel.top-chrome/";
 inline constexpr char kVPNPanelHost[] = "vpn-panel.top-chrome";
-inline constexpr char kBraveUIWalletPageURL[] = "chrome://wallet/";
-inline constexpr char kWalletPageHost[] = "wallet";
 inline constexpr char kExtensionSettingsURL[] = "brave://settings/extensions";
-inline constexpr char kWalletSettingsURL[] = "brave://settings/wallet";
 inline constexpr char kBraveSyncPath[] = "braveSync";
 inline constexpr char kBraveSyncSetupPath[] = "braveSync/setup";
 inline constexpr char kTorInternalsHost[] = "tor-internals";
-inline constexpr char kUntrustedLedgerHost[] = "ledger-bridge";
-inline constexpr char kUntrustedLedgerURL[] =
-    "chrome-untrusted://ledger-bridge/";
-inline constexpr char kUntrustedNftHost[] = "nft-display";
-inline constexpr char kUntrustedNftURL[] = "chrome-untrusted://nft-display/";
-inline constexpr char kUntrustedLineChartHost[] = "line-chart-display";
-inline constexpr char kUntrustedLineChartURL[] =
-    "chrome-untrusted://line-chart-display/";
-inline constexpr char kUntrustedMarketHost[] = "market-display";
-inline constexpr char kUntrustedMarketURL[] =
-    "chrome-untrusted://market-display/";
-inline constexpr char kUntrustedTrezorHost[] = "trezor-bridge";
-inline constexpr char kUntrustedTrezorURL[] =
-    "chrome-untrusted://trezor-bridge/";
 inline constexpr char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";
 inline constexpr char kShieldsPanelHost[] = "brave-shields.top-chrome";
 inline constexpr char kCookieListOptInHost[] = "cookie-list-opt-in.top-chrome";

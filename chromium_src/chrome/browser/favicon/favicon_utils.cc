@@ -5,9 +5,14 @@
 
 #include "chrome/browser/favicon/favicon_utils.h"
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/common/url_constants.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
 
 // Allow brave internal pages to break out of favicon themeing
 #define ShouldThemifyFaviconForEntry ShouldThemifyFaviconForEntry_ChromiumImpl
@@ -21,7 +26,9 @@ bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {
   // Don't theme for certain brave favicons which are full color
   if (virtual_url.SchemeIs(content::kChromeUIScheme) &&
       (virtual_url.host() == kRewardsPageHost ||
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
        virtual_url.host() == kWalletPageHost ||
+#endif
        virtual_url.host() == kAIChatUIHost ||
        virtual_url.host() == chrome::kChromeUINewTabHost)) {
     return false;

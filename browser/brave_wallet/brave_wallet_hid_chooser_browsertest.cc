@@ -10,7 +10,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "chrome/browser/hid/hid_chooser_context.h"
 #include "chrome/browser/hid/hid_chooser_context_factory.h"
 #include "chrome/browser/profiles/profile.h"

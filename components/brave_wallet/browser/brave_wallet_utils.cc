@@ -32,8 +32,8 @@
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/version_info/version_info.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -219,10 +219,14 @@ bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
          url.DomainIs("wallet.brave.software");
 }
 
+base::flat_map<std::string, std::string> AddBraveServicesKeyHeaders(
+    base::flat_map<std::string, std::string> headers) {
+  headers.insert({kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)});
+  return headers;
+}
+
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
-  return {
-      {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)},
-  };
+  return AddBraveServicesKeyHeaders({});
 }
 
 bool EncodeString(std::string_view input, std::string* output) {

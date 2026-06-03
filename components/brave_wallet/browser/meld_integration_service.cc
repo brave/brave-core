@@ -14,7 +14,6 @@
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
-#include "base/environment.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
@@ -27,7 +26,6 @@
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/json/json_helper.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

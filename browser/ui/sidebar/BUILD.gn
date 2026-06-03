@@ -74,6 +74,10 @@ source_set("sidebar_impl") {
     "//components/user_prefs",
     "//ui/base",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common:common_constants" ]
+  }
 }
 
 source_set("browser_tests") {
@@ -127,6 +131,10 @@ source_set("browser_tests") {
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/core/common" ]
   }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common:common_constants" ]
+  }
 }
 
 source_set("unit_tests") {
@@ -155,5 +163,9 @@ source_set("unit_tests") {
 
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/core/common" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common:common_constants" ]
   }
 }

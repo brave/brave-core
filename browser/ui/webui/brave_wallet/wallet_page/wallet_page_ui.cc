@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/command_line.h"
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
@@ -21,8 +20,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
