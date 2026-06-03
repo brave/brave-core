@@ -701,6 +701,20 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         post(mToolbarSnapshotCaptureRunnable);
     }
 
+    /** Updates the rewards layout visibility, keeping the tablet toolbar layout in sync. */
+    private void setRewardsLayoutVisibility(int visibility) {
+        if (mRewardsLayout == null || mRewardsLayout.getVisibility() == visibility) {
+            return;
+        }
+        mRewardsLayout.setVisibility(visibility);
+        // Tablet only: re-request layout on the rewards view so its row re-measures and the
+        // location bar reclaims the freed width, then refresh the toolbar snapshot.
+        if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarTablet.class)) {
+            post(mRewardsLayout::requestLayout);
+            invalidateToolbarSnapshotOnTablet();
+        }
+    }
+
     private void requestToolbarSnapshotCapture() {
         final ToolbarControlContainer toolbarControlContainer =
                 getRootView().findViewById(R.id.control_container);
@@ -1380,7 +1394,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         if (mRewardsLayout == null) return;
         if (isIncognito()) {
-            mRewardsLayout.setVisibility(View.GONE);
+            setRewardsLayoutVisibility(View.GONE);
             updateShieldsLayoutBackground(true);
         } else if (isNativeLibraryReady()
                 && mBraveRewardsNativeWorker != null
@@ -1390,10 +1404,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Profile profile = Profile.fromWebContents(tab.getWebContents());
             boolean isDisabled = BraveRewardsPolicy.isDisabledByPolicy(profile);
             if (!isDisabled) {
-                mRewardsLayout.setVisibility(View.VISIBLE);
+                setRewardsLayoutVisibility(View.VISIBLE);
                 updateShieldsLayoutBackground(false);
             } else {
-                mRewardsLayout.setVisibility(View.GONE);
+                setRewardsLayoutVisibility(View.GONE);
                 updateShieldsLayoutBackground(true);
             }
         }
@@ -1793,7 +1807,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && !BraveRewardsPolicy.isDisabledByPolicy(profile)
                         && mBraveRewardsNativeWorker != null
                         && mBraveRewardsNativeWorker.isSupported();
-        mRewardsLayout.setVisibility(shouldShowRewards ? View.VISIBLE : View.GONE);
+        setRewardsLayoutVisibility(shouldShowRewards ? View.VISIBLE : View.GONE);
         // Update the shields layout background to match the rewards layout visibility.
         updateShieldsLayoutBackground(!shouldShowRewards);
     }
@@ -1837,8 +1851,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         boolean isDisabled = BraveRewardsPolicy.isDisabledByPolicy(profile);
         // Only show if policy allows (not disabled)
-        if (!isDisabled && mRewardsLayout != null) {
-            mRewardsLayout.setVisibility(View.VISIBLE);
+        if (!isDisabled) {
+            setRewardsLayoutVisibility(View.VISIBLE);
         }
         // If policy disables rewards, keep it hidden (default is GONE)
 
