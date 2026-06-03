@@ -23,6 +23,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/constants",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/keyed_service",
     "//components/keyed_service/core",
@@ -32,6 +33,7 @@ source_set("brave_wallet") {
     "//ios/web/public",
     "//ios/web/public/thread",
     "//ios/web/public/webui",
+    "//ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
   ]
