@@ -22,7 +22,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
       type="email"
       @input=${this.onInput}
     >
-      <div class="label ${this.severity}">
+      <div class="label ${this.severity()}">
         $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
       </div>
       <div
