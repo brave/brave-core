@@ -228,9 +228,9 @@ void BackupResultsServiceImpl::FetchBackupResults(
     }
   }
 
-  auto request = pending_requests_.emplace(pending_requests_.end(),
-                                           std::move(web_contents), headers,
-                                           otr_profile, url, std::move(callback));
+  auto request = pending_requests_.emplace(
+      pending_requests_.end(), std::move(web_contents), headers, otr_profile,
+      url, std::move(callback));
 
   if (should_render) {
     // Navigate to the origin root (e.g. https://www.google.com/) derived from
@@ -534,8 +534,8 @@ void BackupResultsServiceImpl::PressEnter(content::WebContents& web_contents) {
   }
 
   auto build_event = [&](blink::WebInputEvent::Type type) {
-    input::NativeWebKeyboardEvent event(type, blink::WebInputEvent::kNoModifiers,
-                                        base::TimeTicks::Now());
+    input::NativeWebKeyboardEvent event(
+        type, blink::WebInputEvent::kNoModifiers, base::TimeTicks::Now());
     event.dom_key = ui::DomKey::ENTER;
     event.dom_code = static_cast<int>(ui::DomCode::ENTER);
     event.native_key_code =

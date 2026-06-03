@@ -143,8 +143,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   // Forwards a single character keystroke (RawKeyDown + Char + KeyUp) to the
   // web contents.
-  void ForwardCharacter(content::WebContents& web_contents,
-                        char16_t character);
+  void ForwardCharacter(content::WebContents& web_contents, char16_t character);
 
   // Forwards an Enter key press to the web contents.
   void PressEnter(content::WebContents& web_contents);

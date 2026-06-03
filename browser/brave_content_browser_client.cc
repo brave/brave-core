@@ -1069,6 +1069,22 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
         translate::switches::kBraveTranslateUseGoogleEndpoint,
     };
     command_line->CopySwitchesFrom(browser_command_line, kSwitchNames);
+
+    // The search backup results service renders pages in an offscreen
+    // WebContents that is never attached to a native view. Such a WebContents
+    // never produces compositor frames, so its renderer never reaches first
+    // contentful paint and keeps deferring commits, which causes synthetic
+    // input events to be suppressed. Allow pre-commit input for these renderers
+    // so the simulated input is dispatched instead of being dropped.
+    if (content::RenderProcessHost* process =
+            content::RenderProcessHost::FromID(child_process_id)) {
+      Profile* profile =
+          Profile::FromBrowserContext(process->GetBrowserContext());
+      if (profile && profile->IsOffTheRecord() &&
+          profile->GetOTRProfileID().IsSearchBackupResults()) {
+        command_line->AppendSwitch(blink::switches::kAllowPreCommitInput);
+      }
+    }
   }
 }
 
