@@ -854,13 +854,11 @@ if (enable_extensions) {
       [ "//brave/browser/extensions:brave_prefs_util_impl" ]
 }
 
-if (enable_ai_chat && enable_print_preview) {
+if (enable_print_preview) {
   brave_chrome_browser_deps += [
-    "//brave/browser/ai_chat:print_preview_extractor",
-    "//brave/browser/ai_chat:print_preview_extractor_internal",
+    "//brave/browser/screenshot",  # brave_tab_helpers.cc uses screenshot
+    "//brave/browser/screenshot:screenshot_internal",
   ]
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/ai_chat:print_preview_extractor_internal" ]
 }
 
 # https://github.com/brave/brave-browser/issues/41464

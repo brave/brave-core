@@ -24,7 +24,6 @@
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
-#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -70,6 +69,10 @@ void ExtractTextFromAIPageContentNode(
   for (const auto& child : node.children_nodes) {
     ExtractTextFromAIPageContentNode(*child, out);
   }
+}
+
+bool IsPdf(content::WebContents* web_contents) {
+  return web_contents->GetContentsMimeType() == "application/pdf";
 }
 
 }  // namespace

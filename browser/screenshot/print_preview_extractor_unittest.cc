@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/print_preview_extractor.h"
+#include "brave/browser/screenshot/print_preview_extractor.h"
 
 #include <memory>
 #include <utility>
@@ -17,8 +17,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
-#include "brave/browser/ai_chat/print_preview_extractor_internal.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/browser/screenshot/print_preview_extractor_internal.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
@@ -30,6 +29,7 @@
 #include "content/public/test/web_contents_tester.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/scoped_interface_endpoint_handle.h"
 #include "printing/buildflags/buildflags.h"
 #include "printing/print_job_constants.h"
@@ -39,8 +39,6 @@
 #include "ui/gfx/image/image_unittest_util.h"
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
-
-namespace ai_chat {
 
 namespace {
 
@@ -163,7 +161,7 @@ class MockPreviewPageImageExtractor : public PreviewPageImageExtractor {
 
   void StartExtract(
       base::ReadOnlySharedMemoryRegion pdf_region,
-      PrintPreviewExtractor::Extractor::ImageCallback callback,
+      PrintPreviewExtractor::CaptureImagesCallback callback,
       std::optional<bool> pdf_use_skia_renderer_enabled) override {
     // verify the correct memory region is passed
     EXPECT_EQ(pdf_region.Map().GetMemoryAsSpan<const uint8_t>(),
@@ -251,11 +249,11 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     pp_extractor_ = std::make_unique<PrintPreviewExtractor>(
         web_contents(),
         base::BindRepeating([](content::WebContents* web_contents, bool is_pdf,
-                               ai_chat::PrintPreviewExtractor::Extractor::
-                                   ImageCallback&& callback)
+                               PrintPreviewExtractor::CaptureImagesCallback&&
+                                   callback)
                                 -> std::unique_ptr<
-                                    ai_chat::PrintPreviewExtractor::Extractor> {
-          return std::make_unique<ai_chat::PrintPreviewExtractorInternal>(
+                                    PrintPreviewExtractor::Extractor> {
+          return std::make_unique<PrintPreviewExtractorInternal>(
               web_contents,
               Profile::FromBrowserContext(web_contents->GetBrowserContext()),
               is_pdf, std::move(callback),
@@ -680,5 +678,3 @@ TEST_F(PreviewPageImageExtractorTest, CaptureImages) {
   // Test with even more pages
   RunCaptureImageTest(25);
 }
-
-}  // namespace ai_chat

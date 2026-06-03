@@ -386,6 +386,10 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (enable_print_preview) {
+    deps += [ "//brave/browser/screenshot:unit_tests" ]
+  }
+
   if (enable_brave_ads) {
     deps += [
       "//brave/browser/brave_ads",

@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/services/printing/public",
+  "+brave/components/text_recognition/common",
+]

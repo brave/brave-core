@@ -1,0 +1,82 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//printing/buildflags/buildflags.gni")
+
+assert(enable_print_preview)
+
+static_library("screenshot") {
+  sources = [
+    "pdf_utils.cc",
+    "pdf_utils.h",
+    "print_preview_extractor.cc",
+    "print_preview_extractor.h",
+    "print_preview_extractor_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/profiles",
+    "//components/printing/common",
+    "//components/printing/common:mojo_interfaces",
+    "//content/public/browser",
+    "//printing/buildflags",
+    "//printing/mojom",
+  ]
+}
+
+static_library("screenshot_internal") {
+  visibility = [
+    "//brave/browser/screenshot",
+    "//brave/browser/screenshot:unit_tests",
+    "//chrome/browser",
+  ]
+  sources = [
+    "print_preview_extractor_factory.cc",  # uses extractor internal
+    "print_preview_extractor_internal.cc",
+    "print_preview_extractor_internal.h",
+  ]
+  deps = [
+    ":screenshot",
+    "//brave/components/text_recognition/common/buildflags",
+    "//chrome/browser/pdf",
+    "//chrome/browser/pdf:pdf_pref_names",
+    "//chrome/browser/printing",
+    "//chrome/browser/profiles",
+    "//chrome/common:constants",
+    "//chrome/services/printing/public/mojom",
+    "//components/pdf/browser",
+    "//components/prefs",
+    "//components/printing/browser",
+    "//components/printing/common:mojo_interfaces",
+    "//components/services/print_compositor/public/mojom",
+    "//pdf:buildflags",
+    "//pdf:features",
+  ]
+
+  if (is_mac) {
+    # Transitively pulls in //chrome/browser/permissions/system, whose
+    # system_media_capture_permissions_mac.mm references AVCaptureDevice.
+    frameworks = [ "AVFoundation.framework" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "print_preview_extractor_unittest.cc" ]
+  deps = [
+    ":screenshot",
+    ":screenshot_internal",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/text_recognition/common/buildflags",
+    "//chrome/services/printing/public/mojom",
+    "//chrome/test:test_support",
+    "//components/printing/browser",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

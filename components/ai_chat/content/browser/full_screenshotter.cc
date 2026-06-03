@@ -15,7 +15,6 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "components/paint_preview/browser/compositor_utils.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
@@ -52,7 +51,7 @@ void FullScreenshotter::CaptureScreenshots(
         base::unexpected("The given web contents is no longer valid"));
     return;
   }
-  if (IsPdf(web_contents)) {
+  if (web_contents->GetContentsMimeType() == "application/pdf") {
     std::move(callback).Run(base::unexpected("Do not support pdf capturing"));
     return;
   }
