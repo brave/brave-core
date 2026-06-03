@@ -71,6 +71,7 @@
   {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \

@@ -30,6 +30,7 @@
       ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT,               \
       ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,                    \
       ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2,                   \
+      ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU,                   \
       ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,         \
       ContentSettingsType::BRAVE_WEBCOMPAT_ALL, ContentSettingsType::MIDI
 

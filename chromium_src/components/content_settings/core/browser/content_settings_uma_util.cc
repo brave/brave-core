@@ -63,11 +63,12 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, brave_value(64)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, brave_value(65)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, brave_value(66)}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, brave_value(67)}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, brave_value(68)}, \
-  {ContentSettingsType::BRAVE_SHIELDS_METADATA, brave_value(69)},  \
-  {ContentSettingsType::BRAVE_CARDANO, brave_value(70)},  \
-  {ContentSettingsType::BRAVE_PSST, brave_value(71)},
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU, brave_value(67)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, brave_value(68)}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, brave_value(69)}, \
+  {ContentSettingsType::BRAVE_SHIELDS_METADATA, brave_value(70)},  \
+  {ContentSettingsType::BRAVE_CARDANO, brave_value(71)},  \
+  {ContentSettingsType::BRAVE_PSST, brave_value(72)},
 // clang-format on
 
 #define kDefaultProvider       \

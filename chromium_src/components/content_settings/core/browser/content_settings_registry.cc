@@ -46,6 +46,7 @@ constexpr auto kSettingsNames =
         {BRAVE_WEBCOMPAT_USER_AGENT, "brave-webcompat-user-agent"},
         {BRAVE_WEBCOMPAT_WEBGL, "brave-webcompat-webgl"},
         {BRAVE_WEBCOMPAT_WEBGL2, "brave-webcompat-webgl2"},
+        {BRAVE_WEBCOMPAT_WEBGPU, "brave-webcompat-webgpu"},
         {BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, "brave-webcompat-web-sockets-pool"},
     });
 }  // namespace

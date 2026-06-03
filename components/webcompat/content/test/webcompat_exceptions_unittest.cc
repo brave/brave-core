@@ -59,6 +59,7 @@ constexpr TestCase kTestCases[] = {
     {"user-agent", BRAVE_WEBCOMPAT_USER_AGENT},
     {"webgl", BRAVE_WEBCOMPAT_WEBGL},
     {"webgl2", BRAVE_WEBCOMPAT_WEBGL2},
+    {"webgpu", BRAVE_WEBCOMPAT_WEBGPU},
     {"websockets-pool", BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL},
 };
 

@@ -63,15 +63,15 @@ constexpr auto kWebcompatNamesToType =
         {"user-agent", BRAVE_WEBCOMPAT_USER_AGENT},
         {"webgl", BRAVE_WEBCOMPAT_WEBGL},
         {"webgl2", BRAVE_WEBCOMPAT_WEBGL2},
+        {"webgpu", BRAVE_WEBCOMPAT_WEBGPU},
         {"websockets-pool", BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL},
     });
 
 WebcompatExceptionsService* singleton = nullptr;
 
-bool AddRule(
-  const ContentSettingsPattern& pattern,
-  const std::string& exception_string,
-  PatternsByWebcompatTypeMap& patterns_by_webcompat_type) {
+bool AddRule(const ContentSettingsPattern& pattern,
+             const std::string& exception_string,
+             PatternsByWebcompatTypeMap& patterns_by_webcompat_type) {
   const auto* webcompat_type_ptr =
       base::FindOrNull(kWebcompatNamesToType, exception_string);
   if (webcompat_type_ptr) {
@@ -94,7 +94,8 @@ void AddRules(const base::ListValue& include_strings,
       const auto pattern =
           ContentSettingsPattern::FromString(include_string.GetString());
       for (const base::Value& exception : exceptions->GetList()) {
-        const bool success = AddRule(pattern, exception.GetString(), patterns_by_webcompat_type);
+        const bool success =
+            AddRule(pattern, exception.GetString(), patterns_by_webcompat_type);
         if (!success) {
           DLOG(ERROR) << "Unrecognized webcompat exception "
                       << exception.GetString();
@@ -107,10 +108,8 @@ void AddRules(const base::ListValue& include_strings,
   }
 }
 
-void ParseJsonRules(
-  const std::string& contents,
-  PatternsByWebcompatTypeMap& patterns_by_webcompat_type
-) {
+void ParseJsonRules(const std::string& contents,
+                    PatternsByWebcompatTypeMap& patterns_by_webcompat_type) {
   if (contents.empty()) {
     // We don't have the file yet.
     return;
@@ -175,8 +174,8 @@ void WebcompatExceptionsService::LoadWebcompatExceptions(
                      weak_factory_.GetWeakPtr()));
 }
 
-std::vector<ContentSettingsPattern>
-WebcompatExceptionsService::GetPatterns(ContentSettingsType webcompat_type) {
+std::vector<ContentSettingsPattern> WebcompatExceptionsService::GetPatterns(
+    ContentSettingsType webcompat_type) {
   base::AutoLock lock(lock_);
   const auto it = patterns_by_webcompat_type_.find(webcompat_type);
   return it == patterns_by_webcompat_type_.end() ? kEmptyPatternVector
@@ -184,7 +183,7 @@ WebcompatExceptionsService::GetPatterns(ContentSettingsType webcompat_type) {
 }
 
 void WebcompatExceptionsService::SetRules(
-  PatternsByWebcompatTypeMap patterns_by_webcompat_type) {
+    PatternsByWebcompatTypeMap patterns_by_webcompat_type) {
   base::AutoLock lock(lock_);
   patterns_by_webcompat_type_ = std::move(patterns_by_webcompat_type);
 }
