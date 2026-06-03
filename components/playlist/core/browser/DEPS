@@ -1,3 +1,5 @@
 include_rules = [
+  "+brave/components/brave_component_updater/browser",
   "+components/prefs",
+  "+net",
 ]
