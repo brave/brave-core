@@ -48,15 +48,23 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
     uint8_t transfer_all_call_index,
     uint16_t ss58_prefix,
     uint32_t spec_version,
-    bool asset_tx_payment) {
+    bool asset_tx_payment,
+    bool has_assets_pallet,
+    uint8_t assets_pallet_index,
+    uint8_t assets_transfer_all_call_index,
+    uint8_t assets_transfer_keep_alive_call_index) {
   PolkadotChainMetadata metadata;
-
   metadata->system_pallet_index = system_pallet_index;
   metadata->balances_pallet_index = balances_pallet_index;
   metadata->transaction_payment_pallet_index = transaction_payment_pallet_index;
   metadata->transfer_allow_death_call_index = transfer_allow_death_call_index;
   metadata->transfer_keep_alive_call_index = transfer_keep_alive_call_index;
   metadata->transfer_all_call_index = transfer_all_call_index;
+  metadata->assets_pallet_index = assets_pallet_index;
+  metadata->assets_transfer_all_call_index = assets_transfer_all_call_index;
+  metadata->assets_transfer_keep_alive_call_index =
+      assets_transfer_keep_alive_call_index;
+  metadata->has_assets_pallet = has_assets_pallet;
   metadata->ss58_prefix = ss58_prefix;
   metadata->spec_version = spec_version;
   metadata->asset_tx_payment = asset_tx_payment;

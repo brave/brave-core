@@ -47,7 +47,11 @@ class PolkadotChainMetadata {
       uint8_t transfer_all_call_index,
       uint16_t ss58_prefix,
       uint32_t spec_version,
-      bool asset_tx_payment);
+      bool asset_tx_payment,
+      bool has_assets_pallet,
+      uint8_t assets_pallet_index,
+      uint8_t assets_transfer_all_call_index,
+      uint8_t assets_transfer_keep_alive_call_index);
 
   // Obtain a reference to the underlying opaque type so that it can be passed
   // to Rust routines.

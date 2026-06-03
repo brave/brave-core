@@ -771,6 +771,7 @@ source_set("unit_tests") {
     "polkadot/polkadot_keyring_unittest.cc",
     "polkadot/polkadot_metadata_provider_unittest.cc",
     "polkadot/polkadot_substrate_rpc_unittest.cc",
+    "polkadot/polkadot_test_utils_unittest.cc",
     "polkadot/polkadot_transaction_status_task_unittest.cc",
     "polkadot/polkadot_transaction_unittest.cc",
     "polkadot/polkadot_tx_manager_unittest.cc",

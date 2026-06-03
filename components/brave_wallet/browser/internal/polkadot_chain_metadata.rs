@@ -196,10 +196,9 @@ fn parse_pallet(input: &mut &[u8], has_pallet_docs: bool) -> Result<PalletInfo, 
     let name: String = decode_scale(input)?;
 
     // storage: Option<PalletStorageMetadata>
-    let _storage = decode_option(input, |input| {
+    decode_option(input, |input| {
         let _: String = decode_scale(input)?; // prefix
-        let _ = decode_vec(input, parse_storage_entry)?;
-        Ok(())
+        decode_vec(input, parse_storage_entry)
     })?;
 
     // calls: Option<PalletCallMetadata { ty: u32 }>
@@ -356,6 +355,8 @@ fn parse_extrinsic_metadata(input: &mut &[u8], version: u8) -> Result<bool, Erro
 ///   - `transfer_allow_death` call index
 ///   - `System.SS58Prefix`
 ///   - `System.Version.spec_version`
+///   - `Assets` pallet index and transfer call indexes when the pallet is
+///     present
 ///   - whether `ChargeAssetTxPayment` is a signed extension
 ///
 /// References:
@@ -396,6 +397,19 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
     let transfer_all_call_index =
         get_call_index(&portable_registry, balances_pallet, "transferall")?;
 
+    let mut has_assets_pallet = false;
+    let mut assets_pallet_index = 0;
+    let mut assets_transfer_all_call_index = 0;
+    let mut assets_transfer_keep_alive_call_index = 0;
+    if let Some(assets_pallet) = pallets.iter().find(|p| normalize_ident(&p.name) == "assets") {
+        has_assets_pallet = true;
+        assets_pallet_index = assets_pallet.index;
+        assets_transfer_all_call_index =
+            get_call_index(&portable_registry, assets_pallet, "transferall")?;
+        assets_transfer_keep_alive_call_index =
+            get_call_index(&portable_registry, assets_pallet, "transferkeepalive")?;
+    }
+
     let system_pallet = pallets
         .iter()
         .find(|p| normalize_ident(&p.name) == "system")
@@ -430,6 +444,10 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         transfer_allow_death_call_index,
         transfer_keep_alive_call_index,
         transfer_all_call_index,
+        assets_pallet_index,
+        assets_transfer_all_call_index,
+        assets_transfer_keep_alive_call_index,
+        has_assets_pallet,
         ss58_prefix,
         spec_version,
         asset_tx_payment,

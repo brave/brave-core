@@ -55,6 +55,10 @@ mod ffi {
         pub transfer_allow_death_call_index: u8,
         pub transfer_keep_alive_call_index: u8,
         pub transfer_all_call_index: u8,
+        pub assets_pallet_index: u8,
+        pub assets_transfer_all_call_index: u8,
+        pub assets_transfer_keep_alive_call_index: u8,
+        pub has_assets_pallet: bool,
         pub ss58_prefix: u16,
         pub spec_version: u32,
         pub asset_tx_payment: bool,
@@ -62,6 +66,7 @@ mod ffi {
 
     extern "Rust" {
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
+        fn scale_encode_string(value: &[u8]) -> Vec<u8>;
 
         type CxxPolkadotDecodeUnsignedTransferResult;
         type CxxPolkadotChainMetadataResult;
@@ -519,6 +524,10 @@ fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
 
 fn compact_scale_encode_u32(x: u32) -> Vec<u8> {
     Compact(x).encode()
+}
+
+fn scale_encode_string(value: &[u8]) -> Vec<u8> {
+    value.encode()
 }
 
 fn was_extrinsic_successful(

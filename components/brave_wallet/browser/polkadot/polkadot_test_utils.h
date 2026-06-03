@@ -7,8 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TEST_UTILS_H_
 
 #include <array>
+#include <cstddef>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"
@@ -24,6 +26,19 @@ namespace brave_wallet {
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req);
 std::string ReadMetadataFixtureJson(std::string_view file_name);
 std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name);
+
+// Replaces the zero-based nth occurrence of `needle` in `bytes` with
+// `replacement`. Returns false if `needle` is empty or if the requested
+// occurrence is not found.
+//
+// Examples:
+//   ReplaceNthOccurrence("a b a b", "a", "x", 0) -> "x b a b"
+//   ReplaceNthOccurrence("a b a b", "a", "x", 1) -> "a b x b"
+//   ReplaceNthOccurrence("a b", "z", "x", 0) -> false
+bool ReplaceNthOccurrence(std::vector<uint8_t>& bytes,
+                          std::string_view needle,
+                          std::string_view replacement,
+                          size_t occurrence);
 
 struct PolkadotMockRpc {
  public:

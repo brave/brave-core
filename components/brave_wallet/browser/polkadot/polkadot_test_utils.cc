@@ -5,8 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 
+#include <algorithm>
+
 #include "base/base_paths.h"
+#include "base/check.h"
 #include "base/containers/map_util.h"
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -85,6 +89,40 @@ std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name) {
   return metadata_bytes;
 }
 
+bool ReplaceNthOccurrence(std::vector<uint8_t>& bytes,
+                          std::string_view needle,
+                          std::string_view replacement,
+                          size_t occurrence) {
+  DCHECK(!needle.empty());
+  if (needle.empty()) {
+    return false;
+  }
+
+  const auto needle_bytes = base::as_byte_span(needle);
+  const auto replacement_bytes = base::as_byte_span(replacement);
+  auto it = bytes.begin();
+  size_t num_found = 0;
+
+  while (it != bytes.end()) {
+    auto match = std::ranges::search(it, bytes.end(), needle_bytes.begin(),
+                                     needle_bytes.end());
+    if (match.begin() == bytes.end()) {
+      return false;
+    }
+
+    if (num_found == occurrence) {
+      auto pos = bytes.erase(match.begin(), match.end());
+      bytes.insert(pos, replacement_bytes.begin(), replacement_bytes.end());
+      return true;
+    }
+
+    ++num_found;
+    it = match.end();
+  }
+
+  return false;
+}
+
 std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
     std::string_view chain_name) {
   // spec_version is unknown when constructing from chain name alone; callers
@@ -103,7 +141,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/42, kUnknownSpecVersion,
-        /*asset_tx_payment=*/false);
+        /*asset_tx_payment=*/false,
+        /*has_assets_pallet=*/false,
+        /*assets_pallet_index=*/0,
+        /*assets_transfer_all_call_index=*/0,
+        /*assets_transfer_keep_alive_call_index=*/0);
   }
 
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-kusama-json.json#L969
@@ -116,7 +158,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/42, kUnknownSpecVersion,
-        /*asset_tx_payment=*/true);
+        /*asset_tx_payment=*/true,
+        /*has_assets_pallet=*/true,
+        /*assets_pallet_index=*/50,
+        /*assets_transfer_all_call_index=*/32,
+        /*assets_transfer_keep_alive_call_index=*/9);
   }
 
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
@@ -129,7 +175,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/0, kUnknownSpecVersion,
-        /*asset_tx_payment=*/false);
+        /*asset_tx_payment=*/false,
+        /*has_assets_pallet=*/false,
+        /*assets_pallet_index=*/0,
+        /*assets_transfer_all_call_index=*/0,
+        /*assets_transfer_keep_alive_call_index=*/0);
   }
 
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-polkadot-json.json#L969
@@ -142,7 +192,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/0, kUnknownSpecVersion,
-        /*asset_tx_payment=*/true);
+        /*asset_tx_payment=*/true,
+        /*has_assets_pallet=*/true,
+        /*assets_pallet_index=*/50,
+        /*assets_transfer_all_call_index=*/32,
+        /*assets_transfer_keep_alive_call_index=*/9);
   }
 
   return std::nullopt;
