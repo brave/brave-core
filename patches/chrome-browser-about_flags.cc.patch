@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 501812236b5a7255a92abbbfea622a5327afba1e..dea9414c8ca59aa42217fd4791ed085a591816ee 100644
+index fd099d62f801b5f8a4b3aaca68b2435ce72f2be9..862e2209c5ba770a92f0326f2bf6a72c2440d32d 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -4730,6 +4730,7 @@ const FeatureEntry::FeatureVariation kGestureUserEducationVariations[] = {
