@@ -28,3 +28,14 @@ export function sendTokenizedWebKitMessageWithReply(
     message: message
   })
 }
+
+// Posts `message` to the browser via `window.prompt` with an embedded token for
+// validation and waits for the reply synchronously. If the message isnt valid
+// JSON or the response cannot be parsed as JSON then this returns null
+export function sendTokenizedWebKitMessageSynchronously(
+  handlerName: string, message: object|string): any|null {
+  return gSafeBuiltins.sendWebKitMessageSynchronously(handlerName, {
+    token: messageHandlerToken,
+    message: message
+  })
+}

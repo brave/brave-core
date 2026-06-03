@@ -22,9 +22,16 @@ class SafeBuiltins {
   // Promise that resolves when the browser replies
   readonly sendWebKitMessageWithReply: (handlerName: string, message: object|string) => Promise<any>;
 
+  // Send a message expecting synchronously by using window.prompt and returns
+  // the reply from the browser.
+  readonly sendWebKitMessageSynchronously: (handlerName: string, message: object|string) => any|null;
+
   constructor() {
     // Setup private refs to capture in safe builtin functions
     const webkitMessageHandlers = window.webkit.messageHandlers;
+    const windowPrompt = window.prompt.bind(window);
+    const jsonStringify = JSON.stringify.bind(JSON);
+    const jsonParse = JSON.parse.bind(JSON);
 
     this.sendWebKitMessage = (handlerName, message) => {
       webkitMessageHandlers[handlerName].postMessage(message);
@@ -32,6 +39,21 @@ class SafeBuiltins {
 
     this.sendWebKitMessageWithReply = (handlerName, message) => {
       return webkitMessageHandlers[handlerName].postMessage(message);
+    }
+
+    this.sendWebKitMessageSynchronously = (handlerName, message) => {
+      const response = windowPrompt(jsonStringify({
+        handler: handlerName,
+        message: message
+      }));
+      if (!response) {
+        return null;
+      }
+      try {
+        return jsonParse(response)
+      } catch {
+        return null;
+      }
     }
 
     // Freeze all the safe builtins and any function we export
