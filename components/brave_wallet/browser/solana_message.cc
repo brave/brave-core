@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_message.h"
 
 #include <algorithm>
+#include <bit>
 #include <optional>
 #include <utility>
 
@@ -26,6 +27,7 @@ namespace brave_wallet {
 namespace {
 
 constexpr uint8_t kV0MessagePrefix = 0x80;
+constexpr uint8_t kV1MessagePrefix = 0x81;
 constexpr uint8_t kVersionPrefixMask = 0x7f;
 constexpr char kVersion[] = "version";
 constexpr char kRecentBlockhash[] = "recent_blockhash";
@@ -487,6 +489,99 @@ std::optional<SolanaMessage> SolanaMessage::Deserialize(
   return SolanaMessage(*version, recent_blockhash, 0, fee_payer,
                        *message_header, std::move(accounts),
                        std::move(instructions), std::move(*addr_table_lookups));
+}
+
+// static
+bool SolanaMessage::DeserializeAsV1(base::span<const uint8_t> bytes) {
+  if (bytes.empty()) {
+    return false;
+  }
+
+  base::SpanReader<const uint8_t> reader(bytes);
+
+  // VersionByte (u8).
+  uint8_t version_byte = 0;
+  if (!reader.ReadU8LittleEndian(version_byte) ||
+      version_byte != kV1MessagePrefix) {
+    return false;
+  }
+
+  // LegacyHeader (u8, u8, u8).
+  uint8_t num_required_signatures = 0;
+  uint8_t num_readonly_signed_accounts = 0;
+  uint8_t num_readonly_unsigned_accounts = 0;
+  if (!reader.ReadU8LittleEndian(num_required_signatures) ||
+      !reader.ReadU8LittleEndian(num_readonly_signed_accounts) ||
+      !reader.ReadU8LittleEndian(num_readonly_unsigned_accounts)) {
+    return false;
+  }
+
+  // TransactionConfigMask (u32).
+  uint32_t transaction_config_mask = 0;
+  if (!reader.ReadU32LittleEndian(transaction_config_mask)) {
+    return false;
+  }
+
+  // LifetimeSpecifier [u8; 32].
+  if (!reader.Skip(kSolanaHashSize)) {
+    return false;
+  }
+
+  // NumInstructions (u8).
+  // NumAddresses (u8)
+  uint8_t num_instructions = 0;
+  uint8_t num_addresses = 0;
+  if (!reader.ReadU8LittleEndian(num_instructions) ||
+      !reader.ReadU8LittleEndian(num_addresses)) {
+    return false;
+  }
+
+  // Addresses [[u8; 32]].
+  for (uint8_t i = 0; i < num_addresses; ++i) {
+    auto address = SolanaAddress::ReadFrom(reader);
+    if (!address) {
+      return false;
+    }
+  }
+
+  // ConfigValues [[u8; 4]].
+  size_t config_values_byte_size =
+      static_cast<size_t>(std::popcount(transaction_config_mask)) * 4u;
+  if (!reader.Skip(config_values_byte_size)) {
+    return false;
+  }
+
+  // InstructionHeaders [(u8, u8, u16)].
+  struct V1InstructionHeader {
+    uint8_t program_account_index = 0;
+    uint8_t num_instruction_accounts = 0;
+    uint16_t num_instruction_data_bytes = 0;
+  };
+  std::vector<V1InstructionHeader> instruction_headers;
+  instruction_headers.reserve(num_instructions);
+  for (uint8_t i = 0; i < num_instructions; ++i) {
+    V1InstructionHeader instruction_header;
+    if (!reader.ReadU8LittleEndian(instruction_header.program_account_index) ||
+        !reader.ReadU8LittleEndian(
+            instruction_header.num_instruction_accounts) ||
+        !reader.ReadU16LittleEndian(
+            instruction_header.num_instruction_data_bytes)) {
+      return false;
+    }
+    instruction_headers.push_back(instruction_header);
+  }
+
+  // InstructionPayloads.
+  for (const auto& instruction_header : instruction_headers) {
+    if (!reader.Skip(instruction_header.num_instruction_accounts)) {
+      return false;
+    }
+    if (!reader.Skip(instruction_header.num_instruction_data_bytes)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {

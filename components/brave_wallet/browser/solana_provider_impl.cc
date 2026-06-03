@@ -644,7 +644,14 @@ void SolanaProviderImpl::SignMessage(
                             base::DictValue());
     return;
   }
+
   // Prevent transaction payload from being signed
+  if (SolanaMessage::DeserializeAsV1(blob_msg)) {
+    std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
+                            base::DictValue());
+    return;
+  }
   if (SolanaMessage::Deserialize(blob_msg)) {
     std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
                             l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
