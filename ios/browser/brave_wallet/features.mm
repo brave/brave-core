@@ -11,7 +11,6 @@ namespace brave_wallet {
 namespace features {
 
 BASE_FEATURE(kBraveWalletCardanoDAppSupportIOS,
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
+             base::FEATURE_ENABLED_BY_DEFAULT);
 }
 }  // namespace brave_wallet
