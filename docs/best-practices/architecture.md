@@ -1395,6 +1395,13 @@ etc.). Non-UI components such as tab helpers, services, or background logic
 should be covered by unit tests or browser tests appropriate to the code — a CUJ
 test is not required when there is no user-visible interaction to validate.
 
+**Exception:** This rule targets native (Views) UI that `InteractiveBrowserTest`
+can drive. Don't require a CUJ test for WebUI pages such as `brave://settings`
+or `chrome://history`, where `InteractiveBrowserTest`-style testing is not
+available, nor for trivial UI with no meaningful logic to test (e.g. a toggle
+wired to a pref), nor for changes that follow an existing untested pattern in
+the surrounding code.
+
 ```cpp
 // ✅ CORRECT - CUJ test: validates user-visible behavior end-to-end
 IN_PROC_BROWSER_TEST_F(MyFeatureInteractiveTest, UserCanToggleFeature) {
