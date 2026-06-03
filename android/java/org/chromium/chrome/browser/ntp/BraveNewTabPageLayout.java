@@ -751,6 +751,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mPreferenceListener = null;
 
         mRecyclerView.clearOnScrollListeners();
+        maybeResetSponsoredRichMediaBackground();
         super.onDetachedFromWindow();
     }
 

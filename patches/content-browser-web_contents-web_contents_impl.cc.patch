@@ -19,3 +19,12 @@ index 66e57cf1ce4f9b692110675b68e88f27ae26c547..47f8345e0da7747ef0e0a19815f3e9b3
      if (!is_guest) {
        WebContentsView* new_view = new_contents_impl->view_.get();
  
+@@ -8691,6 +8692,8 @@ void WebContentsImpl::SetIsOverlayContent(bool is_overlay_content) {
+ void WebContentsImpl::OnFirstVisuallyNonEmptyPaint(PageImpl& page) {
+   OPTIONAL_TRACE_EVENT1(
+       "content", "WebContentsImpl::OnFirstVisuallyNonEmptyPaint", "page", page);
++  LOG(ERROR) << "SponsoredRichMedia: WCI::OnFirstVisuallyNonEmptyPaint"
++             << " is_primary=" << page.IsPrimary();
+   if (!page.IsPrimary()) {
+     return;
+   }

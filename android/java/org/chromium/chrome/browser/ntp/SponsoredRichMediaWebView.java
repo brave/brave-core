@@ -205,6 +205,9 @@ public class SponsoredRichMediaWebView {
                         Log.i(TAG, "didStopLoading url=%s.", url);
                         if (mIframeStarted) {
                             // All content loaded; arm fallback in case FNVEP never fires.
+                            // Cancel the absolute timeout first so the grace period always
+                            // wins regardless of how long loading took.
+                            mHandler.removeCallbacks(mFirstPaintTimeout);
                             mHandler.removeCallbacks(mAcceptAsRendered);
                             mHandler.postDelayed(mAcceptAsRendered, POST_LOAD_GRACE_PERIOD_MS);
                         }
