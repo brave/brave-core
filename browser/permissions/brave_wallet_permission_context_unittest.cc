@@ -200,6 +200,59 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetAllPermissions) {
   }
 }
 
+TEST_F(BraveWalletPermissionContextUnitTest, ResetPermissionsForAccount) {
+  url::Origin first_origin =
+      url::Origin::Create(GURL("https://www.brave.com/"));
+  url::Origin second_origin =
+      url::Origin::Create(GURL("https://wallet.brave.com/"));
+  const struct {
+    const char* address;
+    const char* other_address;
+    blink::PermissionType permission;
+    ContentSettingsType content_settings_type;
+  } cases[] = {
+      {"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
+       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       blink::PermissionType::BRAVE_ETHEREUM,
+       ContentSettingsType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       "4Nd1m9JqEDez3tJ6aLzHgk8aG9Qr6X6Pz5jV9uZk1B2C",
+       blink::PermissionType::BRAVE_SOLANA, ContentSettingsType::BRAVE_SOLANA},
+      {"1815_0_0_0", "1815_1_0_0", blink::PermissionType::BRAVE_CARDANO,
+       ContentSettingsType::BRAVE_CARDANO}};
+
+  for (auto entry : cases) {
+    SCOPED_TRACE(entry.address);
+
+    ASSERT_TRUE(BraveWalletPermissionContext::AddPermission(
+        entry.permission, browser_context(), first_origin, entry.address));
+    ASSERT_TRUE(BraveWalletPermissionContext::AddPermission(
+        entry.permission, browser_context(), second_origin, entry.address));
+    ASSERT_TRUE(BraveWalletPermissionContext::AddPermission(
+        entry.permission, browser_context(), first_origin,
+        entry.other_address));
+
+    BraveWalletPermissionContext::ResetPermissionsForAccount(
+        browser_context(), entry.content_settings_type, entry.address);
+
+    bool has_permission;
+    ASSERT_TRUE(BraveWalletPermissionContext::HasPermission(
+        entry.permission, browser_context(), first_origin, entry.address,
+        &has_permission));
+    EXPECT_FALSE(has_permission);
+    ASSERT_TRUE(BraveWalletPermissionContext::HasPermission(
+        entry.permission, browser_context(), second_origin, entry.address,
+        &has_permission));
+    EXPECT_FALSE(has_permission);
+    ASSERT_TRUE(BraveWalletPermissionContext::HasPermission(
+        entry.permission, browser_context(), first_origin, entry.other_address,
+        &has_permission));
+    EXPECT_TRUE(has_permission);
+
+    BraveWalletPermissionContext::ResetAllPermissions(browser_context());
+  }
+}
+
 TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
   url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
   const struct {

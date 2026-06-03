@@ -38,6 +38,7 @@ import {
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   useAddAccountMutation,
+  useGetHiddenAccountsQuery,
   useGetVisibleNetworksQuery,
 } from '../../../../common/slices/api.slice'
 
@@ -76,6 +77,7 @@ export const CreateAccountModal = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
   // mutations
@@ -110,8 +112,9 @@ export const CreateAccountModal = () => {
   }, [accountTypeName, createAccountOptions])
 
   const suggestedAccountName = React.useMemo(() => {
+    const allAccounts = [...accounts, ...hiddenAccounts]
     const accountTypeLength =
-      accounts.filter(
+      allAccounts.filter(
         (account) => account.accountId.coin === selectedAccountType?.coin,
       ).length + 1
     return `${
@@ -120,7 +123,7 @@ export const CreateAccountModal = () => {
       //
       accountTypeLength
     }`
-  }, [accounts, selectedAccountType])
+  }, [accounts, hiddenAccounts, selectedAccountType])
 
   const targetKeyringId = React.useMemo(() => {
     if (!selectedAccountType) {

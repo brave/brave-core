@@ -57,6 +57,12 @@ bool BraveWalletServiceDelegate::ResetPermission(mojom::CoinType coin,
   return false;
 }
 
+void BraveWalletServiceDelegate::ResetPermissionsForAccount(
+    mojom::CoinType coin,
+    const std::string& account) {
+  NOTIMPLEMENTED();
+}
+
 bool BraveWalletServiceDelegate::IsPermissionDenied(mojom::CoinType coin,
                                                     const url::Origin& origin) {
   NOTIMPLEMENTED();

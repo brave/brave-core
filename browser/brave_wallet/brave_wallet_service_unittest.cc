@@ -2872,8 +2872,9 @@ TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
   SetupWallet();
   auto delegate =
       std::make_unique<testing::NiceMock<MockBraveWalletServiceDelegate>>();
-  auto* delegate_ptr = delegate.get();
   service_->SetDelegateForTesting(std::move(delegate));
+  auto* delegate_ptr = static_cast<MockBraveWalletServiceDelegate*>(
+      service_->GetDelegateForTesting());
   auto account = GetAccountUtils().EnsureEthAccount(0);
   ASSERT_TRUE(account);
 
