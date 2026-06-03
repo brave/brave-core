@@ -6,12 +6,12 @@
 #include "brave/ios/browser/playlist/playlist_exclusions_factory.h"
 
 #include "brave/components/playlist/core/browser/playlist_exclusion.h"
-#include "brave/ios/browser/playlist/playlist_exclusions_impl.h"
+#include "brave/ios/browser/playlist/playlist_exclusions_bridge_impl.h"
 
 @implementation PlaylistExclusionsFactory
 
 + (id<PlaylistExclusionsBridge>)sharedPlaylistExclusions {
-  return [[PlaylistExclusionsImpl alloc]
+  return [[PlaylistExclusionsBridgeImpl alloc]
       initWithPlaylistExclusions:*playlist::PlaylistExclusions::GetInstance()];
 }
 

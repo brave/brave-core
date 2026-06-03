@@ -5,11 +5,11 @@
 
 source_set("playlist") {
   sources = [
-    "playlist_exclusions.h",
+    "playlist_exclusions_bridge.h",
+    "playlist_exclusions_bridge_impl.h",
+    "playlist_exclusions_bridge_impl.mm",
     "playlist_exclusions_factory.h",
     "playlist_exclusions_factory.mm",
-    "playlist_exclusions_impl.h",
-    "playlist_exclusions_impl.mm",
     "playlist_pref_names_bridge.h",
     "playlist_pref_names_bridge.mm",
   ]
