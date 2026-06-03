@@ -444,6 +444,7 @@ void BraveTab::UpdateSmallAccentIconLayer() {
   const views::Widget* widget = GetWidget();
   small_accent_icon_view_->SetCanPaintToLayer(widget &&
                                               !widget->IsFullscreen());
+  small_accent_icon_view_->SchedulePaint();
 }
 
 void BraveTab::LayoutSmallTabAccentIcon() {
@@ -574,13 +575,7 @@ bool BraveTab::ShouldShowLargeAccentIcon() const {
     return width() >= tabs::kVerticalTabMinWidth + kTabAccentIconAreaWidth;
   }
 
-  if (IsActive()) {
-    return width() >= tab_style()->GetMinimumActiveWidth(split().has_value()) +
-                          kTabAccentIconAreaWidth;
-  }
-
-  return width() >= tab_style()->GetPinnedWidth(split().has_value()) +
-                        kTabAccentIconAreaWidth;
+  return width() >= tab_style()->GetStandardWidth(split().has_value()) * 0.5;
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {
