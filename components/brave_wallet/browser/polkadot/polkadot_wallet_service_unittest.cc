@@ -2134,15 +2134,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_WestendAssetHub) {
           keyring_service_->GetPolkadotPubKey(recipient->account_id).value()),
       base::HexEncodeLower(recipient_pubkey));
 
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
-
-  const std::string westend_asset_hub_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotTestnetAssetHub, mojom::CoinType::DOT)
-          ->rpc_endpoints.front()
-          .spec();
 
   static constexpr char kExpectedExtrinsic[] =
       "4d0284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b"
@@ -2151,148 +2147,12 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_WestendAssetHub) {
       "8c753981b88cb502040000000a0300ae70948d0c015b6c2b1ac46b8931ad630"
       "1f2c648f3f0adf71d08a68fe745561e0b00409452a303";
 
-  base::flat_map<base::DictValue, std::string_view> req_res_pairs;
-  req_res_pairs.emplace(base::test::ParseJsonDict(R"({
-        "id":1,
-        "jsonrpc":"2.0",
-        "method":"state_queryStorageAt",
-        "params":[[
-          "0x26AA394EEA5630E07C48AE0C9558CEF7B99D880EC681799C0CF30E8886371DA96F72E0A390DB2406281323AC697D46F10E161E17289C260A07020CC2A23192E882D5BEE006B1390DEED844B881B7E71E"
-        ]]
-      })"),
-                        R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":[{
-          "block":"0xa3a6ef09932ad0a6086e0900431d09a9488e3e905e277cf7bb5a8ed8bfa90470",
-          "changes":[[
-            "0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da96f72e0a390db2406281323ac697d46f10e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e",
-            "0x010000000000000001000000000000002549373a460700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080"
-          ]]
-        }]
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":[]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "parentHash":"0xa3a6ef09932ad0a6086e0900431d09a9488e3e905e277cf7bb5a8ed8bfa90470",
-          "number":"0xe812ec",
-          "stateRoot":"0x660fd3729bf44973d4a0d8e7fe8c7641e5ee75f06e07938328f40f3360404e95",
-          "extrinsicsRoot":"0x6683b881be64726d41b7046208424987636461d6c2d27fafd1ef27305c208ecf",
-          "digest":{"logs":[
-            "0x06434d4c53100101010c",
-            "0x06434d4c530c020001",
-            "0x066175726120be576b0400000000",
-            "0x045250535290bef1467f9f2659ebdc4b394b1eb32dd468706c031b74dc1377221d782b00ea6296b87007",
-            "0x056175726101017642ed848bf7839d8d522c3f13808bb24365679e13674cb75ff820757d5b57126af41c54d7afa758c09820c0879d44e039366ee6132d2f35bcc6f01d7e2d4986"
-          ]}
-        }
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getFinalizedHead","params":[]})"),
-      R"({"jsonrpc":"2.0","id":1,"result":"0xd5c74ee2e5347f396b637f3b25bfed717ceb533798fa5c470c626b09245dc4ca"})");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getBlockHash","params":["00000000"]})"),
-      R"({"jsonrpc":"2.0","id":1,"result":"0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9"})");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["a3a6ef09932ad0a6086e0900431d09a9488e3e905e277cf7bb5a8ed8bfa90470"]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "parentHash":"0xcf7164032bad56873d6753e8c7c3a99232699204e680d793ab3172cdf64c2bb3",
-          "number":"0xe812eb",
-          "stateRoot":"0x605dec0661e9d051dee09953449cbbb60f0b2476cb867b1a6b869d6aad2eb3eb",
-          "extrinsicsRoot":"0xb8bdaf98b502f3d36120a24d3cdcf60af96e6ac1c10f7a9d36bce3e272ac6722",
-          "digest":{"logs":[
-            "0x06434d4c53100100010c",
-            "0x06434d4c530c020001",
-            "0x066175726120be576b0400000000",
-            "0x045250535290bef1467f9f2659ebdc4b394b1eb32dd468706c031b74dc1377221d782b00ea6296b87007",
-            "0x05617572610101f23a5412e25899a1820896ddf2b2889162911bafe77933758267624cf137c334d1adb71555a9d6ee2086f6d02901b269d9228853b3bc2e53b643313534474187"
-          ]}
-        }
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["d5c74ee2e5347f396b637f3b25bfed717ceb533798fa5c470c626b09245dc4ca"]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "parentHash":"0xcd5d0b2d2ebb6c07e930e57d13aa86c145bc03545508283e403e3e8c230b7416",
-          "number":"0xe812dc",
-          "stateRoot":"0x4b6049a34903b556c6289baa3d087bd5907972c89d12bc83fa82e347a0761f59",
-          "extrinsicsRoot":"0xf5bfd271857b1b5053f4945d151aec4a5361c8d6fb7c731e3c1e590b4979837a",
-          "digest":{"logs":[
-            "0x06434d4c53100100010c",
-            "0x06434d4c530c020001",
-            "0x066175726120bd576b0400000000",
-            "0x0452505352900580d4ec4ea12acf8aba8911ec5e81d96715aa74ecb955253a89386c7e770f4182b87007",
-            "0x0561757261010154e8737cf43c00597d6771589b3d0577f4f16ab4dc983ee0deb5c99e4be04751ebc8d7ae4d81924e2eaeb993ec21dc7d9222cf837e5e93c28a707f29a3371b88"
-          ]}
-        }
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":["cf7164032bad56873d6753e8c7c3a99232699204e680d793ab3172cdf64c2bb3"]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "specName":"westmint",
-          "implName":"westmint",
-          "authoringVersion":1,
-          "specVersion":1022006,
-          "implVersion":0,
-          "apis":[["0x40fe3ad401f8959a",6]],
-          "transactionVersion":16,
-          "systemVersion":1,
-          "stateVersion":1
-        }
-      })");
-
-  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-      [&, self = this](const network::ResourceRequest& req) {
-        self->url_loader_factory_.ClearResponses();
-        EXPECT_EQ(req.url.spec(), westend_asset_hub_url);
-
-        auto req_json = RequestBodyToJsonDict(req);
-        if (const auto* method = req_json.FindString("method");
-            method && *method == "state_getMetadata") {
-          self->url_loader_factory_.AddResponse(
-              req.url.spec(), ReadMetadataFixtureJson(
-                                  "state_getMetadata_assethub_westend.json"));
-          return;
-        }
-
-        if (const auto* method = req_json.FindString("method");
-            method && *method == "author_submitExtrinsic") {
-          const auto* params = req_json.FindList("params");
-          ASSERT_TRUE(params);
-          ASSERT_EQ(params->size(), 1u);
-          EXPECT_EQ((*params)[0].GetString(), kExpectedExtrinsic);
-          self->url_loader_factory_.AddResponse(req.url.spec(), R"({
-            "jsonrpc":"2.0",
-            "id":1,
-            "result":"0xcc92467cebaee29feb3a8eba5ec1314f903cd69e6b0ab93832900737251f42db"
-          })");
-          return;
-        }
-
-        auto pos = req_res_pairs.find(req_json);
-        if (pos != req_res_pairs.end()) {
-          self->url_loader_factory_.AddResponse(req.url.spec(), pos->second);
-        } else {
-          NOTREACHED() << req_json;
-        }
-      }));
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
+  polkadot_mock_rpc->SetSubmittedExtrinsicHash(
+      "0xcc92467cebaee29feb3a8eba5ec1314f903cd69e6b0ab93832900737251f42db");
+  polkadot_mock_rpc->AddWestendAssetHubReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
 
   base::test::TestFuture<base::expected<
       std::pair<std::string, PolkadotExtrinsicMetadata>, std::string>>
@@ -2345,15 +2205,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PolkadotAssetHub) {
           keyring_service_->GetPolkadotPubKey(recipient->account_id).value()),
       base::HexEncodeLower(recipient_pubkey));
 
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
-
-  const std::string polkadot_asset_hub_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotMainnetAssetHub, mojom::CoinType::DOT)
-          ->rpc_endpoints.front()
-          .spec();
 
   static constexpr char kExpectedExtrinsic[] =
       "490284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b"
@@ -2362,145 +2218,12 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PolkadotAssetHub) {
       "4045b96256845501040000000a0300ae70948d0c015b6c2b1ac46b8931ad630"
       "1f2c648f3f0adf71d08a68fe745561e0700e40b5402";
 
-  base::flat_map<base::DictValue, std::string_view> req_res_pairs;
-  req_res_pairs.emplace(base::test::ParseJsonDict(R"({
-        "id":1,
-        "jsonrpc":"2.0",
-        "method":"state_queryStorageAt",
-        "params":[[
-          "0x26AA394EEA5630E07C48AE0C9558CEF7B99D880EC681799C0CF30E8886371DA96F72E0A390DB2406281323AC697D46F10E161E17289C260A07020CC2A23192E882D5BEE006B1390DEED844B881B7E71E"
-        ]]
-      })"),
-                        R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":[{
-          "block":"0xe89e79113fca59edd36bc3cc84fbb4e73516575fc396c94495350c42773c83e3",
-          "changes":[[
-            "0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da96f72e0a390db2406281323ac697d46f10e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e",
-            "0x01000000000000000100000000000000bdd98fa7040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080"
-          ]]
-        }]
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":[]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "parentHash":"0xe89e79113fca59edd36bc3cc84fbb4e73516575fc396c94495350c42773c83e3",
-          "number":"0xf56f96",
-          "stateRoot":"0xdfdef333dc49f9083ea3bc8f075476d4a72c5f34596c10ef81cd83026e1153e9",
-          "extrinsicsRoot":"0x4005234663e7885ea59d6e1a21f41e6a55e7c363098778c8d966d6d9f4e876c3",
-          "digest":{"logs":[
-            "0x06434d4c53100101010c",
-            "0x06617572612028b1d60800000000",
-            "0x0452505352900552a633f21315079c06500c78a0b198c2fec6b776d2e5a89fb31629b83a1e75522f7907",
-            "0x05617572610101e3ff2ff746c0fe5ae99e7c66d05a99b6ebe79b5316e1796ac21f2a276b9672fc7348e77fbf6b8cf63368cc0ca0c5b593490c5af31361b61262244bb42393820e"
-          ]}
-        }
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getFinalizedHead","params":[]})"),
-      R"({"jsonrpc":"2.0","id":1,"result":"0x64fc8fc096c5ae976c484d4cf1d0ab0ab45ba7386185db73c2a25852135da861"})");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getBlockHash","params":["00000000"]})"),
-      R"({"jsonrpc":"2.0","id":1,"result":"0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f"})");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["e89e79113fca59edd36bc3cc84fbb4e73516575fc396c94495350c42773c83e3"]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "parentHash":"0x910f058dca1089e202af72fa36a1f218b9807aefb2804845deec476c7df76101",
-          "number":"0xf56f95",
-          "stateRoot":"0x627c70115ad17fe48b12203e5c4f64741da2c4066b9229af893af4c1ce5866fb",
-          "extrinsicsRoot":"0xa6da7aaaf9f88a7d405c2305fbfd33948cbe3d46f919f1abfaba10818e795689",
-          "digest":{"logs":[
-            "0x06434d4c53100100010c",
-            "0x06617572612028b1d60800000000",
-            "0x0452505352900552a633f21315079c06500c78a0b198c2fec6b776d2e5a89fb31629b83a1e75522f7907",
-            "0x05617572610101698bb38428085853a155742448491abb966497763e77f51717165da2430a895ffeca232bbb72449adaa77a0dbc53a56dd27a8f03ee8f76abc9042493c5627707"
-          ]}
-        }
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["64fc8fc096c5ae976c484d4cf1d0ab0ab45ba7386185db73c2a25852135da861"]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "parentHash":"0xa4b930e78d719ecd8b1fe7188d252a64125be73be8caf8bf79a905f039890164",
-          "number":"0xf56f87",
-          "stateRoot":"0x2f7207c00e4bb61a780f8826f2acdbc71a542be73b894cf5cb05ac100477b075",
-          "extrinsicsRoot":"0xf33f960ece73152b37f52adbd4fad63242ed640d6644325348b174d4a1346e86",
-          "digest":{"logs":[
-            "0x06434d4c53100101010c",
-            "0x06617572612025b1d60800000000",
-            "0x04525053529013b127db899f033548408932652dcabd2739e46499b041a96feeb89b0f918a173e2f7907",
-            "0x05617572610101cb41ac1516773fda2511bec42139b7a23287e8d7699eb2bfb63d870831fe143ad03bf2744fed53fcfa992ecd9a32d21d0399864f76fd9f0e22d8103500b93201"
-          ]}
-        }
-      })");
-  req_res_pairs.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":["910f058dca1089e202af72fa36a1f218b9807aefb2804845deec476c7df76101"]})"),
-      R"({
-        "jsonrpc":"2.0",
-        "id":1,
-        "result":{
-          "specName":"statemint",
-          "implName":"statemint",
-          "authoringVersion":1,
-          "specVersion":2002001,
-          "implVersion":0,
-          "apis":[["0xbc9d89904f5b923f",1]],
-          "transactionVersion":15,
-          "systemVersion":1,
-          "stateVersion":1
-        }
-      })");
-
-  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-      [&, self = this](const network::ResourceRequest& req) {
-        self->url_loader_factory_.ClearResponses();
-        EXPECT_EQ(req.url.spec(), polkadot_asset_hub_url);
-
-        auto req_json = RequestBodyToJsonDict(req);
-        if (const auto* method = req_json.FindString("method");
-            method && *method == "state_getMetadata") {
-          self->url_loader_factory_.AddResponse(
-              req.url.spec(), ReadMetadataFixtureJson(
-                                  "state_getMetadata_assethub_polkadot.json"));
-          return;
-        }
-
-        if (const auto* method = req_json.FindString("method");
-            method && *method == "author_submitExtrinsic") {
-          const auto* params = req_json.FindList("params");
-          ASSERT_TRUE(params);
-          ASSERT_EQ(params->size(), 1u);
-          EXPECT_EQ((*params)[0].GetString(), kExpectedExtrinsic);
-          self->url_loader_factory_.AddResponse(req.url.spec(), R"({
-            "jsonrpc":"2.0",
-            "id":1,
-            "result":"0x32cf17114363bc9b26256104cab96d19a1052b4407452e05709fb6876d64daff"
-          })");
-          return;
-        }
-
-        auto pos = req_res_pairs.find(req_json);
-        if (pos != req_res_pairs.end()) {
-          self->url_loader_factory_.AddResponse(req.url.spec(), pos->second);
-        } else {
-          NOTREACHED() << req_json;
-        }
-      }));
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
+  polkadot_mock_rpc->SetSubmittedExtrinsicHash(
+      "0x32cf17114363bc9b26256104cab96d19a1052b4407452e05709fb6876d64daff");
+  polkadot_mock_rpc->AddPolkadotAssetHubReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
 
   base::test::TestFuture<base::expected<
       std::pair<std::string, PolkadotExtrinsicMetadata>, std::string>>
