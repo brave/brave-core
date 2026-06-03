@@ -6,6 +6,10 @@
 import { gSafeBuiltins }
   from "//brave/ios/web/js_messaging/resources/safe_builtins.js";
 
+// The message handler name to use with sendWebKitMessage when your JavaScript
+// feature supports randomized message handler names.
+export const messageHandlerName: string = 'gCrWebPlaceholderMessageHandlerName';
+
 // A token to be used for validating communication with the browser
 const messageHandlerToken: string = 'gCrWebPlaceholderMessageHandlerToken';
 
