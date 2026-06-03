@@ -102,9 +102,6 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
 
 JSSolanaProvider::~JSSolanaProvider() = default;
 
-void JSSolanaProvider::OnDestruct() {
-}
-
 // static
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
                                content::RenderFrame* render_frame) {
@@ -239,13 +236,25 @@ void JSSolanaProvider::DisconnectEvent() {
   FireEvent(kDisconnectEvent, std::vector<v8::Local<v8::Value>>());
 }
 
+void JSSolanaProvider::Cleanup() {
+  // No longer need that provider object. Reset mojo connection, clean bound v8
+  // references, stop tracking the render frame.
+
+  receiver_.reset();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  Dispose();
+}
+
+void JSSolanaProvider::OnDestruct() {
+  Cleanup();
+}
+
 void JSSolanaProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
                                                 int32_t world_id) {
   if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
     return;
   }
-  // Close mojo connection from browser to renderer
-  receiver_.reset();
+  Cleanup();
 }
 
 bool JSSolanaProvider::EnsureConnected() {
@@ -325,10 +334,9 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->Connect(
       std::move(arg),
-      // We don't need weak ptr for mojo bindings when owning mojo::Remote
-      base::BindOnce(&JSSolanaProvider::OnConnect, base::Unretained(this),
-                     std::move(global_context), std::move(promise_resolver),
-                     isolate));
+      base::BindOnce(&JSSolanaProvider::OnConnect,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -403,7 +411,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
   solana_provider_->SignAndSendTransaction(
       std::move(param), std::move(send_options),
       base::BindOnce(&JSSolanaProvider::OnSignAndSendTransaction,
-                     base::Unretained(this), std::move(global_context),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
@@ -451,9 +459,9 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignMessage(
       blob_msg->GetBlob(), display_str,
-      base::BindOnce(&JSSolanaProvider::OnSignMessage, base::Unretained(this),
-                     std::move(global_context), std::move(promise_resolver),
-                     isolate));
+      base::BindOnce(&JSSolanaProvider::OnSignMessage,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -499,9 +507,9 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->Request(
       std::move(arg_dict),
-      base::BindOnce(&JSSolanaProvider::OnRequest, base::Unretained(this),
-                     std::move(global_context), std::move(promise_resolver),
-                     isolate, *method));
+      base::BindOnce(&JSSolanaProvider::OnRequest,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     std::move(promise_resolver), isolate, *method));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -539,7 +547,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
   solana_provider_->SignTransaction(
       std::move(param),
       base::BindOnce(&JSSolanaProvider::OnSignTransaction,
-                     base::Unretained(this), std::move(global_context),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
@@ -587,7 +595,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
   solana_provider_->SignAllTransactions(
       std::move(params),
       base::BindOnce(&JSSolanaProvider::OnSignAllTransactions,
-                     base::Unretained(this), std::move(global_context),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();

@@ -59,6 +59,11 @@ class JSCardanoProvider final : public gin::Wrappable<JSCardanoProvider>,
   std::string GetIcon();
   std::string GetApiVersion();
 
+  void Cleanup();
+
+  // content::RenderFrameObserver
+  void WillReleaseScriptContext(v8::Local<v8::Context> context,
+                                int32_t world_id) override;
   void OnDestruct() override;
 
   mojo::Remote<mojom::CardanoProvider> cardano_provider_;

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -47,6 +48,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   void DisconnectEvent() override;
 
  private:
+  void Cleanup();
+
   // RenderFrameObserver implementation.
   void OnDestruct() override;
   void WillReleaseScriptContext(v8::Local<v8::Context>,
@@ -187,6 +190,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
   mojo::Receiver<mojom::SolanaEventsListener> receiver_{this};
+  base::WeakPtrFactory<JSSolanaProvider> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
