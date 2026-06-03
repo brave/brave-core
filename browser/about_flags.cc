@@ -445,14 +445,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(tabs::kBraveHorizontalTabsUpdate),              \
       },                                                                     \
       {                                                                      \
-          "brave-compact-horizontal-tabs",                                   \
-          "Compact horizontal tabs design",                                  \
-          "Reduces the height of the horizontal tab strip and toolbar "      \
-          "(including the URL bar)",                                         \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(tabs::kBraveCompactHorizontalTabs),             \
-      },                                                                     \
-      {                                                                      \
           "brave-vertical-tab-scroll-bar",                                   \
           "Show scroll bar on vertical tab strip",                           \
           "Shows scroll bar on vertical tab strip when it overflows",        \

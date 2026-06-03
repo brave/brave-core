@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
+#include "components/prefs/pref_member.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -250,6 +251,7 @@ class BraveBrowserView : public BrowserView,
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
+  void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
@@ -306,6 +308,7 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<ViewShadow> contents_shadow_;
 
   PrefChangeRegistrar pref_change_registrar_;
+  BooleanPrefMember compact_horizontal_tabs_;
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>
       accelerators_observation_{this};

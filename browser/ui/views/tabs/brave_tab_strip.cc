@@ -28,6 +28,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -90,6 +91,10 @@ BraveTabStrip::BraveTabStrip(
             &BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged,
             base::Unretained(this)));
   }
+  compact_horizontal_tabs_.Init(
+      brave_tabs::kCompactHorizontalTabs, g_browser_process->local_state(),
+      base::BindRepeating(&BraveTabStrip::OnCompactModePrefChanged,
+                          base::Unretained(this)));
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -370,6 +375,11 @@ void BraveTabStrip::OnTabMinWidthModePrefChanged() {
 
 void BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged() {
   InvalidateTabContainerLayout();
+}
+
+void BraveTabStrip::OnCompactModePrefChanged() {
+  InvalidateTabContainerLayout();
+  PreferredSizeChanged();
 }
 
 brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {

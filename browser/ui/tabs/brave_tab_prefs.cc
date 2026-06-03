@@ -57,6 +57,10 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
   }
 }
 
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kCompactHorizontalTabs, false);
+}
+
 bool AreTooltipsEnabled(PrefService* prefs) {
   return prefs->GetInteger(kTabHoverMode) == TabHoverMode::TOOLTIP;
 }
