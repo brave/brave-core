@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shields_content_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Shield Status Card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/shields_card_background">
+
+        <!-- Site info row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="24dp">
+
+            <!-- Favicon container -->
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/site_favicon_bg">
+
+                <ImageView
+                    android:id="@+id/shield_icon_unified"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/brave_shields_onboarding_title"/>
+
+            </FrameLayout>
+
+            <!-- Site name and status -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/site_text_unified"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="20sp"
+                    android:lineHeight="26sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="example.com"/>
+
+                <TextView
+                    android:id="@+id/shields_status_text"
+                    style="@style/LargeRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurface"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Shields up for this site"/>
+
+            </LinearLayout>
+
+            <!-- Toggle Switch — scaled up to match the original 65×40dp footprint.
+                 layout_marginEnd compensates for the right-side overflow from scaleX. -->
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/shields_toggle_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="7dp"
+                android:scaleX="1.25"
+                android:scaleY="1.25"
+                android:contentDescription="@string/brave_shields_onboarding_title"/>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorSurfaceContainer"/>
+
+        <!-- Block counter -->
+        <LinearLayout
+            android:id="@+id/block_counter_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:baselineAligned="false"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:id="@+id/blocked_items_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginEnd="8dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/block_count_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:lineHeight="26sp"
+                android:includeFontPadding="false"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginEnd="8dp"
+                tools:text="42"/>
+
+            <TextView
+                android:id="@+id/block_count_text"
+                style="@style/DefaultRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Trackers, ads, and more blocked"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Report broken site section (shields off) -->
+    <LinearLayout
+        android:id="@+id/report_broken_site_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/advanced_options_bg"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/LargeRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/report_broken_site_prompt"
+            android:textColor="?attr/colorOnSurface"/>
+
+        <TextView
+            android:id="@+id/report_broken_site_button"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:minWidth="80dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            android:text="@string/report_broken_site_button"
+            android:textSize="14sp"
+            android:textColor="?attr/colorOnPrimary"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.006"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/report_submit_button_bg"/>
+
+    </LinearLayout>
+
+    <!-- Advanced Options Container -->
+    <LinearLayout
+        android:id="@+id/advanced_options_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/advanced_options_bg"
+        android:clipToOutline="true">
+
+        <!-- Advanced Options Header (clickable to expand/collapse) -->
+        <LinearLayout
+            android:id="@+id/advanced_options_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+            <TextView
+                android:id="@+id/advanced_options_text"
+                style="@style/LargeRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/advanced_controls"
+                android:duplicateParentState="true"
+                android:textColor="?attr/colorPrimary"/>
+
+            <ImageView
+                android:id="@+id/advanced_options_arrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_small_down"
+                android:duplicateParentState="true"
+                app:tint="@color/advanced_options_toggle_color"
+                android:contentDescription="@null"/>
+
+        </LinearLayout>
+
+        <!-- Advanced Options Content (Initially hidden) -->
+        <LinearLayout
+            android:id="@+id/advanced_options_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Divider after header -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 1. Upgrade connections to HTTPS (navigation) -->
+            <LinearLayout
+                android:id="@+id/https_upgrade_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/https_upgrade_title"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_small_right"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 2. Block scripts (toggle) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/brave_shields_blocks_scripts_switch"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/scripts_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:contentDescription="@string/brave_shields_blocks_scripts_switch"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 3. Shred site's data (navigation) -->
+            <LinearLayout
+                android:id="@+id/shred_data_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/shred_site_data"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_small_right"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 4. Block trackers & ads (navigation) -->
+            <LinearLayout
+                android:id="@+id/trackers_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/block_trackers_ads_title"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_small_right"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 5. Block cookies (navigation) -->
+            <LinearLayout
+                android:id="@+id/cookies_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/block_cookies"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_small_right"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 6. Block fingerprinting (toggle) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/block_fingerprinting"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/fingerprinting_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:contentDescription="@string/block_fingerprinting"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 7. Block element (action with launch icon) -->
+            <LinearLayout
+                android:id="@+id/block_element_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/brave_shields_block_element_text"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_launch"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/reset_shields_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 8. Reset to defaults button -->
+            <TextView
+                android:id="@+id/reset_shields_button"
+                style="@style/LargeRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reset_shields_defaults"
+                android:textColor="@color/systemfeedback_warning_text"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 9. Shields global settings -->
+            <LinearLayout
+                android:id="@+id/global_settings_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/brave_shields_global_settings_title"
+                    android:textColor="?attr/colorPrimary"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_launch"
+                    app:tint="?attr/colorPrimary"
+                    android:contentDescription="@null"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Warning text -->
+    <LinearLayout
+        android:id="@+id/shields_warning_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="8dp">
+
+        <TextView
+            android:id="@+id/shields_warning_text_line1"
+            style="@style/SmallRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/site_broken_text"
+            android:textColor="?attr/colorOutline"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/shields_warning_text_line2"
+            style="@style/SmallRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/shields_warning_line2"
+            android:textColor="?attr/colorOutline"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>
