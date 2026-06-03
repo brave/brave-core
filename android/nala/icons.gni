@@ -31,6 +31,21 @@ nala_icon_overrides = [
     source = "ic_brave_icon_monochrome.xml"
     dest = "chrome_product_vd_24.xml"
   },
+  {
+    # Override Chromium's copy icon (omnibox suggestions, share sheet, etc.).
+    source = "ic_copy.xml"
+    dest = "ic_content_copy.xml"
+  },
+  {
+    # Override Chromium's edit icon (omnibox suggestions, bookmarks, etc.).
+    source = "ic_edit_pencil.xml"
+    dest = "ic_edit_24dp.xml"
+  },
+  {
+    # Override Chromium's microphone icon (omnibox voice search, widgets, etc.).
+    source = "ic_microphone.xml"
+    dest = "ic_mic_white_24dp.xml"
+  },
 ]
 
 # Please keep this list sorted alphabetically.
