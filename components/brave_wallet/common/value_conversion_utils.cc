@@ -14,12 +14,14 @@
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/net/base/url_util.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -100,9 +102,6 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
     chain.coin = mojom::CoinType::ETH;
   }
 
-  chain.supported_keyrings =
-      GetSupportedKeyringsForNetwork(chain.coin, chain.chain_id);
-
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
@@ -145,6 +144,30 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
   } else {
     chain.active_rpc_endpoint_index =
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
+  }
+
+  auto* supported_keyrings_value = params_dict->Find("supportedKeyrings");
+
+  if (supported_keyrings_value) {
+    const auto* supported_keyrings_list_value =
+        params_dict->FindList("supportedKeyrings");
+    if (!supported_keyrings_list_value) {
+      return nullptr;
+    }
+    for (const auto& entry : *supported_keyrings_list_value) {
+      if (!entry.is_int()) {
+        return nullptr;
+      }
+      if (!mojom::IsKnownEnumValue(
+              static_cast<mojom::KeyringId>(entry.GetInt()))) {
+        return nullptr;
+      }
+      chain.supported_keyrings.push_back(
+          static_cast<mojom::KeyringId>(entry.GetInt()));
+    }
+  } else {
+    chain.supported_keyrings =
+        GetSupportedKeyringsForKnownNetwork(chain.coin, chain.chain_id);
   }
 
   return chain.Clone();
@@ -238,6 +261,11 @@ base::DictValue NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   currency.Set("symbol", chain.symbol);
   currency.Set("decimals", chain.decimals);
   dict.Set("nativeCurrency", std::move(currency));
+  base::ListValue keyringIdsValue;
+  for (const auto& keyring : chain.supported_keyrings) {
+    keyringIdsValue.Append(static_cast<int>(keyring));
+  }
+  dict.Set("supportedKeyrings", std::move(keyringIdsValue));
   return dict;
 }
 

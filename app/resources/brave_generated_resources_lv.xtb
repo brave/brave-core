@@ -130,16 +130,12 @@
 <translation id="8184318863960255706">Plašāka informācija</translation>
 <translation id="780301667611848630">Nē, paldies</translation>
 <translation id="1162706247109707219">Nospiežot OK, jūs piekrītat, ka jūsu Brave instalētā versija NESAŅEMS svarīgus drošības labojumus, līdz nebūsiet pārgājis uz Windows 10 vai jaunāku operētājsistēmu. Šis brīdinājums NETIKS rādīts atkārtoti.</translation>
-<translation id="9164786361657554526">Nospiežot OK, jūs piekrītat, ka jūsu Brave instalētā versija NESAŅEMS svarīgus drošības labojumus, līdz nebūsiet pārgājis uz macOS 10.15 vai jaunāku operētājsistēmu. Šis brīdinājums NETIKS rādīts atkārtoti.</translation>
+<translation id="2971591422768125177">Nospiežot OK, jūs piekrītat, ka jūsu Brave instalētā versija NESAŅEMS svarīgus drošības labojumus, līdz nebūsiet pārgājis uz macOS 13 vai jaunāku operētājsistēmu. Šis brīdinājums NETIKS rādīts atkārtoti.</translation>
 <translation id="6020553119523541665">Šī cilne ir aktīva citā logā</translation>
 <translation id="4987392683074136770">Noklikšķinot uz šīs cilnes, tās saturs tiks pārnests uz šo logu</translation>
 <translation id="8355523213948477234">Dalītā skata izvēlnes spoga</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
 <translation id="6665472986740899785">Brave Ad paziņojums</translation>
-<translation id="5582087890067572966">🎉 Jūs tagad pelnāt!</translation>
-<translation id="4364336119478610380">Jūs pelnāt vienmēr, kad jūsu ekrānā parādās šāds paziņojums. Jums nav jānoklikšķina, lai pelnītu.</translation>
-<translation id="5893017172751072752">Jūs pelnāt, kad parādās Brave reklāmu paziņojums</translation>
-<translation id="3447730462826640312">Jums nav jānoklikšķina, lai pelnītu, bet noklikšķiniet, ja jūs interesē!</translation>
 <translation id="5253166205743627564">Paldies, ka atbalstāt Brave meklēšanu, klikšķinot uz privātumu cienošām reklāmām. Atšķirībā no lielajiem tehnoloģiju uzņēmumiem mēs vērtējam reklāmu veiktspēju, saglabājot jūsu anonomitāti.</translation>
 <translation id="8748471354357836070">Uzzināt vairāk/izvēles atteikties</translation>
 <translation id="5927196110206824867">Sponsorētie fona attēli veicina Brave apņemšanos izveidot neatkarīgu, uz lietotāju orientētu tīmekli. Atšķirībā no lielajiem tehnoloģiju uzņēmumiem mēs reklāmas snieguma datus mērām anonimizēti, lai saglabātu jūsu konfidencialitāti.</translation>
@@ -180,7 +176,7 @@
 <translation id="3405021928725149239">Grāmatzīmju pārvaldnieks</translation>
 <translation id="6284218950354553099">Automātiski nosūtīt dienas lietošanas ehotestu Brave</translation>
 <translation id="694500751416448436">Šis privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus</translation>
-<translation id="1872784258300710671">Brave izmanto pilnīgi privātu produktu analīzi, lai novērtētu konkrētu funkciju vispārējo lietojumu.</translation>
+<translation id="5047771074267454980">Brave izmanto pilnīgi privātu produktu analīzi, lai novērtētu konkrētu funkciju vispārējo lietojumu</translation>
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="4394049700291259645">Atspējot</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
@@ -196,23 +192,29 @@
         Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS"/> konkrēto<ph name="BEGIN_LINK_SOURCE_CODE"/>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="3987546108749866209">Lietot cilnes vertikāli</translation>
+<translation id="8784551623584887013">Fokusa režīms</translation>
 <translation id="1904394285866191268">{NUM_TABS, plural, =1 {Izslēgt cilnes skaņu} other {Izslēgt cilņu skaņu}}</translation>
 <translation id="5179127818058486126">{NUM_TABS, plural, =1 {Ieslēgt cilnes skaņu} other {Ieslēgt cilņu skaņu}}</translation>
 <translation id="2289567621059034186">Jauna cilne apakšā</translation>
 <translation id="3228962656492373217">Aizvērt cilnes apakšā</translation>
 <translation id="8030501904366631501">Salikt visas cilnes šajā logā</translation>
 <translation id="253980346046488815">Aizvērt dublētās cilnes</translation>
+<translation id="5140474419843357176">Bez konteinera</translation>
 <translation id="8670218546624422041">Atvērt konteinerī</translation>
+<translation id="194205047181722473">Atvērt saiti konteinerī</translation>
 <translation id="8638526693050780542">Pārvaldīt konteinerus</translation>
 <translation id="2336228925368920074">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="2523967823495420116">Lietot cilnes vertikāli</translation>
+<translation id="5483718923712878759">Fokusa Režīms</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Izslēgt cilnes skaņu} other {Izslēgt cilņu skaņu}}</translation>
 <translation id="2120478168904746065">{NUM_TABS, plural, =1 {Ieslēgt cilnes skaņu} other {Ieslēgt cilņu skaņu}}</translation>
 <translation id="4405580203042711503">Jauna cilne apakšā</translation>
 <translation id="5611474372949142946">Aizvērt cilnes apakšā</translation>
 <translation id="573844928911967687">Salikt Visas cilnes šajā logā</translation>
 <translation id="2703180365855369896">Aizvērt dublētās cilnes</translation>
+<translation id="7678994190810851607">Bez Konteinera</translation>
 <translation id="1987871867023021397">Atvērt Konteinerī</translation>
+<translation id="1185644444415356776">Atvērt Saiti Konteinerī</translation>
 <translation id="6745991613881384719">Pārvaldīt Konteinerus</translation>
 <translation id="3704707436873245822">Kopēt tekstu no attēla</translation>
 <translation id="5268098808165185458">Kopē tekstu no attēla...</translation>
@@ -336,12 +338,15 @@
 <translation id="7557539689487606886">Pāriet uz Premium</translation>
 <translation id="1035309871698658326">Atverot parastas cilnes, to nosaukumi un izcelsme tiks automātiski nosūtīti Leo to klasifikācijai.</translation>
 <translation id="3435896845095436175">Iespējot</translation>
+<translation id="9031526219709160683">Brave var jums palīdzēt optimizēt šīs vietnes privātuma iestatījumus. Vai vēlaties pārskatīt Brave ieteikumus?</translation>
+<translation id="5739953050957336013">Pārskatīt ieteikumus</translation>
 <translation id="9082792303833649978">Šo iestatījumu pārvalda jūsu administrators vai cita Brave politika.</translation>
 <translation id="1940221956626514677">Pielāgot rīkjoslu</translation>
 <translation id="6501807887341963552">Dizains un krāsas</translation>
 <translation id="6724227215236550330">Šeit tiks rādītas saglabātās paroles. Lai importētu paroles uz <ph name="BRAND"/> šajā ierīcē, <ph name="BEGIN_LINK"/> atlasiet CSV failu<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Lai importētu paroles uz <ph name="BRAND"/> šajā ierīcē, atlasiet CSV failu</translation>
 <translation id="8570228839666486945">Uz ierīces AI</translation>
+<translation id="3456536577668402695">Jūsu meklējumi un lapu saturs tiek apstrādāti šajā ierīcē. Nekas netiek nosūtīts Brave vai redzēts cilvēkiem pārskatītājiem.</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="1426410128494586442">Jā</translation>
@@ -387,11 +392,18 @@
 <translation id="3367129510799209147">Tabulācijas kursora režīms</translation>
 <translation id="8925055964134259461">Izvērst vertikālās cilnes atsevišķi katrā logā</translation>
 <translation id="916373084491701212">Parādīt ritjoslu</translation>
+<translation id="1323764665799785118">Rādīt ritināšanas pogas horizontālajā ciļņu joslā</translation>
 <translation id="515949045075831661">Parādīt labajā pusē</translation>
 <translation id="3725395376319291415">Parādīt kreisajā pusē</translation>
 <translation id="2113977810652731515">Karte</translation>
 <translation id="4096343215397759358">Karte ar priekšskatījumu</translation>
 <translation id="5297085818601043899">Rīka padoms</translation>
+<translation id="1033676453210290920">Minimālais cilnes platums</translation>
+<translation id="562967218762447012">Minimāls (Noklusējums)</translation>
+<translation id="574392208103952083">Vidēja</translation>
+<translation id="4209092469652827314">Liels</translation>
+<translation id="2658845370685508484">Pilns platums</translation>
+<translation id="1215972473274650670">Izmantot ritināmu cilnes joslu</translation>
 <translation id="5219886318310413094">Rādīt piespraustās cilnes visos logos</translation>
 <translation id="2396127686705429331">Parādīt grāmatzīmju pogu</translation>
 <translation id="443318149139185498">Izmantot kontūrlīnijas logotipu galvenajā izvēlnes pogā</translation>
@@ -502,9 +514,7 @@
 <translation id="4088315951291671239">Neielīmējiet šeit programmēšanas kodu, ko nesaprotat vai neesat pārbaudījuši. Šādi rīkojoties, sniegsiet uzbrucējiem iespēju nozagt jūsu identitāti vai iegūt kontroli pār jūsu datoru.</translation>
 <translation id="3020183492814296499">Saīsnes</translation>
 <translation id="2935698011275148880">Drosmīga izcelsme</translation>
-<translation id="2587535830241068901">Pielāgojiet savu pārlūkprogrammu, vienlaikus atbalstot Brave</translation>
-<translation id="553273341094971255">Brave Origin palīdz jums pielāgot Brave pēc savām vēlmēm un noņem visus aplikācijā pieejamos reklāmas piedāvājumus, zīmola reklāmas un pat mūsu anonīmo analīzi, ko, iespējams, esat iespējojis instalēšanas laikā.</translation>
-<translation id="534725333104202278">Visi iepriekš iespējotie vai izmantotie papildinājumi vai funkcijas paliks redzami un integrēti, bet pārējie tiks atspējoti. Turpiniet pielāgot Brave, jo pārlūkprogrammā tiek ieviestas jaunas funkcijas. Pēc noklusējuma tās tiks rādītas klusi un slēptas Brave Origin vadības panelī.</translation>
+<translation id="3486906647205325617">Dažu izmaiņu pilnīgai stāšanās spēkā nepieciešams pārstartēt pārlūku.</translation>
 <translation id="1919345977826869612">Reklāmas</translation>
 <translation id="944736176598169208">Atlīdzības</translation>
 <translation id="2839742394543397416">Analītika</translation>
@@ -512,12 +522,12 @@
 <translation id="6709133671862442373">Ziņas</translation>
 <translation id="6297791103122079275">Runāt</translation>
 <translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="4590997608186539865">Atskaņošanas saraksts</translation>
 <translation id="1199170151481311646">Privātuma saglabāšanas analītika</translation>
 <translation id="5990642573624858459">Statistikas ziņošana</translation>
 <translation id="2441719842399509963">Atiestatīt noklusējuma iestatījumus</translation>
-<translation id="4530494379350999373">Avots</translation>
-<translation id="2964215604640804042">Brave Origin ir apmaksāta pārlūka versija lietotājiem, kuriem nav nepieciešami visi Brave biznesa modeļa atbalstošie līdzekļi, taču joprojām vēlas privātumu, ko piedāvā tikai Brave. Brave Origin lietotāji turpinās gūt labumu no mūsu nozarē vadošās privātuma aizsardzības, reklāmu bloķēšanas un ātruma (izmantojot Brave vairogi), kā arī regulāru programmatūras atjauninājumu, Chromium labojumu un drošības un privātuma uzlabojumu. Viņi arī atbloķēs iespēju atspējot tādus līdzekļus kā AI, Rewards, Wallet, VPN, Web3 domēni un daudz ko citu.</translation>
-<translation id="9130916892338379417">Brave Origin ir pieejams vienreizējas apmaksas ceļā. Mobilajās ierīcēs (Android un iOS) un darbstacijā Origin var iegādāties kā jūsu esošās izlaides versijas jauninājums. Darbstacijā Origin ir pieejams arī kā atsevišķa, patstāvīga lietotne. Origin lietotāji redzēs jaunu vadības paneli Settings izvēlnē. Esošie līdzekļi — kā arī visi jaunie līdzekļi, ko mēs nākotnē izlaižam — varētu parādīties šeit un pēc noklusējuma būtu izslēgti.</translation>
+<translation id="2587535830241068901">Pielāgojiet savu pārlūkprogrammu, vienlaikus atbalstot Brave</translation>
+<translation id="123297831435065577">Brave Origin ir maksas pārlūka versija lietotājiem, kuriem nav nepieciešami visi Brave biznesa modeli atbalstošie līdzekļi, taču joprojām vēlas privātumu, ko piedāvā tikai Brave. Origin lietotāji turpinās gūt labumu no mūsu nozarē vadošās privātuma aizsardzības, reklāmu bloķēšanas un ātruma (izmantojot Vairogi), kā arī regulāru programmatūras atjauninājumu, Chromium labojumu un drošības un privātuma uzlabojumu.</translation>
 <translation id="7984508421152399880">Pirkt tūlīt</translation>
 <translation id="5567412479632285879">Brave balvas ir atspējotas</translation>
 <translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
@@ -561,6 +571,7 @@
 <translation id="5747552184818312860">Termiņš</translation>
 <translation id="3858860766373142691">Nosaukums</translation>
 <translation id="361106536627977100">Flash dati</translation>
+<translation id="4530494379350999373">Avots</translation>
 <translation id="8195027750202970175">Lielums diskā</translation>
 <translation id="9116465289595958864">Pēdējoreiz pārveidots</translation>
 <translation id="4590324241397107707">Datu bāzes krātuve</translation>
@@ -819,6 +830,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6374563306438145841">API atslēga</translation>
 <translation id="3295756655687327124">Vizuālās apstrādes atbalsts</translation>
 <translation id="1415432774589088566">Ja šis modelis izmanto attēlus kā ievades datus, piemēram, modelis "llama 3.2b vision"</translation>
+<translation id="5718897035062884425">Rīka atbalsts</translation>
+<translation id="2120046556683363911">Ja šis modelis atbalsta funkciju izsaukšanu / rīka lietošanu</translation>
 <translation id="8008271349880309090">Modeļa nosaukums, kāds tiks parādīts modeļa atlases izvēlnē</translation>
 <translation id="1355326130503900056">Modeļa nosaukums, kādam tam jāparādās pieprasījumā apkalpojošai struktūrai, piemēram, phi-3 (ņemiet vērā, ka šis nosaukums precīzi neatbilst tam, ko sagaida apkalpojošā struktūra, integrācija nedarbosies)</translation>
 <translation id="3213787232304349732">URL vietrādis, kurā apkalpojošā struktūra uzklausa pieprasījumus. Ja neesat pārliecināti, pārbaudiet apkalpojošās struktūras dokumentāciju. Piemēram, Ollama gadījumā tā vienmēr ir: http://localhost:11434/v1/chat/completions</translation>

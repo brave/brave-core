@@ -5,6 +5,7 @@
 
 source_set("cpp") {
   visibility = [
+    ":unit_tests",
     "//brave/components/brave_wallet/browser:*",
     "//chrome/utility:*",
   ]
@@ -26,4 +27,18 @@ source_set("cpp") {
   if (!is_ios) {
     deps += [ "//brave/components/services/brave_wallet/content" ]
   }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_wallet_utils_service_unittest.cc" ]
+
+  deps = [
+    ":cpp",
+    "//base/test:test_support",
+    "//brave/components/services/brave_wallet/public/cpp/utils",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//brave/components/services/brave_wallet/public/proto:zcash_proto",
+    "//testing/gtest",
+  ]
 }

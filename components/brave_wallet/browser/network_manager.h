@@ -42,6 +42,7 @@ class NetworkManager {
                                        mojom::CoinType coin);
   mojom::NetworkInfoPtr GetChain(std::string_view chain_id,
                                  mojom::CoinType coin);
+  bool IsPolkadotChain(std::string_view chain_id);
   bool KnownChainExists(std::string_view chain_id, mojom::CoinType coin);
   bool CustomChainExists(std::string_view custom_chain_id,
                          mojom::CoinType coin);

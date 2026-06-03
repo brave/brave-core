@@ -4690,15 +4690,15 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+        "Brave will rely on your configured Ethereum Mainnet RPC service which is Chainstack by default to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these .eth domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment:
-        "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+        "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Chainstack's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
     public static let ensDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.ensDomainInterstitialPageButtonProceed",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Proceed using Infura server",
+      value: "Proceed using Chainstack server",
       comment:
         "Title on the button that users can click to enable Brave to resolve the ENS domain they entered."
     )
@@ -4737,14 +4737,30 @@ extension Strings {
       comment:
         "Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one."
     )
+    public static let udDomainInterstitialPageIntro = NSLocalizedString(
+      "wallet.udDomainInterstitialPageIntro",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Brave will be the configured Ethereum RPC service which defaults to Chainstack to resolve:",
+      comment:
+        "The intro displayed below `udDomainInterstitialPageTitle`."
+    )
     public static let udDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.udDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will be using Infura to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+        "domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment:
-        "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+        "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+    )
+    public static let udDomainInterstitialPageMore = NSLocalizedString(
+      "wallet.udDomainInterstitialPageMore",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "+ more",
+      comment:
+        "The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve."
     )
     public static let activityPageTitle = NSLocalizedString(
       "wallet.activityPageTitle",
@@ -5974,6 +5990,55 @@ extension Strings {
       value: "Address",
       comment:
         "The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index."
+    )
+    public static let onboardingNetworkSelectionTitle = NSLocalizedString(
+      "wallet.onboardingNetworkSelectionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Supported Networks",
+      comment: "The title of the view during wallet onboarding that allows user to select which networks they want to see."
+    )
+    public static let onboardingNetworkSelectionDescription = NSLocalizedString(
+      "wallet.onboardingNetworkSelectionDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Choose which blockchains to use in your wallet.",
+      comment: "The description of the view during wallet onboarding that allows user to select which networks they want to see."
+    )
+    public static let showTestnets = NSLocalizedString(
+      "wallet.showTestnets",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Show Testnets",
+      comment: "The title beside the toggle in onboarding network selection screen that shows test networks."
+    )
+    public static let featured = NSLocalizedString(
+      "wallet.featured",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Featured",
+      comment: "The title above the featured networks in onboarding network selection screen."
+    )
+    public static let popular = NSLocalizedString(
+      "wallet.popular",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Popular",
+      comment: "The title above the popular networks in onboarding network selection screen."
+    )
+    public static let testnets = NSLocalizedString(
+      "wallet.testnets",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Testnets",
+      comment: "The title above the testnets in onboarding network selection screen."
+    )
+    public static let onboardingNetworkSelectionContinue = NSLocalizedString(
+      "wallet.onboardingNetworkSelectionContinue",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Continue with %lld Networks",
+      comment: "The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example \"Continue with 8 Networks\")"
     )
   }
 }

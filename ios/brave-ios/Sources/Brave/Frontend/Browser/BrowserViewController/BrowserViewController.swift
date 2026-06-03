@@ -300,15 +300,10 @@ public class BrowserViewController: UIViewController {
     feedDataSource.historyAPI = profileController.historyAPI
     backgroundDataSource = .init(
       service: profileController.backgroundImagesService,
-      rewards: rewards,
+      rewards: BraveRewards.isSupported(prefService: profileController.profile.prefs)
+        ? rewards : nil,
       privateBrowsingManager: privateBrowsingManager
     )
-
-    // Add default favorites
-    if !Preferences.NewTabPage.preloadedFavoritiesInitialized.value {
-      FavoritesHelper.addDefaultFavorites()
-      Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true
-    }
 
     // Initialize TabManager
     self.tabManager = TabManager(
@@ -465,7 +460,6 @@ public class BrowserViewController: UIViewController {
     // Observe some user preferences
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     Preferences.General.tabBarVisibility.observe(from: self)
-    Preferences.General.mediaAutoBackgrounding.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
     Preferences.Shields.allShields.forEach { $0.observe(from: self) }
     Preferences.Privacy.blockAllCookies.observe(from: self)
@@ -484,6 +478,15 @@ public class BrowserViewController: UIViewController {
     }
     prefsChangeRegistrar.addObserver(forPath: kManagedBraveVPNDisabledPrefName) { [weak self] _ in
       self?.disconnectVPNIfDisabledByPolicy()
+    }
+    prefsChangeRegistrar.addObserver(forPath: kMediaBackgroundingEnabled) { [weak self] _ in
+      guard let self else { return }
+      tabManager.selectedTab?.browserData?.setScripts(scripts: [
+        .mediaBackgroundPlay: profileController.profile.prefs.boolean(
+          forPath: kMediaBackgroundingEnabled
+        )
+      ])
+      tabManager.reloadSelectedTab()
     }
 
     disconnectVPNIfDisabledByPolicy()
@@ -557,6 +560,14 @@ public class BrowserViewController: UIViewController {
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       BraveWebView.didResetConfiguration = { profile, configuration in
         configuration.prepareBraveConfiguration()
+      }
+    }
+
+    Task { @MainActor in
+      if let originService = BraveOriginServiceFactory.get(profile: profileController.profile),
+        await originService.checkPurchaseState()
+      {
+        topToolbar.updateViewsForOverlayModeAndToolbarChanges()
       }
     }
   }
@@ -941,8 +952,10 @@ public class BrowserViewController: UIViewController {
     if profileController.profile.prefs.isBraveVPNAvailable {
       Task.delayed(bySeconds: 1.0) { @MainActor in
         // Refresh Skus VPN Credentials before loading VPN state
-        await BraveSkusManager(isPrivateMode: self.privateBrowsingManager.isPrivateBrowsing)?
-          .refreshVPNCredentials()
+        let skusService = Skus.SkusServiceFactory.get(
+          privateMode: self.privateBrowsingManager.isPrivateBrowsing
+        )
+        await skusService?.refreshVPNCredentials()
 
         self.vpnProductInfo.load()
         if let customCredential = Preferences.VPN.skusCredential.value,
@@ -1044,6 +1057,11 @@ public class BrowserViewController: UIViewController {
   public static let defaultBrowserNotificationId = "defaultBrowserNotification"
 
   private func scheduleDefaultBrowserNotification() {
+    if BraveOriginServiceFactory.get(profile: profileController.profile)?.isPurchased() == true {
+      Self.cancelScheduleDefaultBrowserNotification()
+      return
+    }
+
     let center = UNUserNotificationCenter.current()
 
     center.requestAuthorization(options: [.provisional, .alert, .sound, .badge]) { granted, error in
@@ -1096,7 +1114,7 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  private func cancelScheduleDefaultBrowserNotification() {
+  static func cancelScheduleDefaultBrowserNotification() {
     let center = UNUserNotificationCenter.current()
     center.removePendingNotificationRequests(withIdentifiers: [Self.defaultBrowserNotificationId])
 
@@ -1609,7 +1627,8 @@ public class BrowserViewController: UIViewController {
 
     func shouldShowTabBar() -> Bool {
       let isKeyboardActive =
-        tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
+        (tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
+          || tabManager.selectedTab?.isFindNavigatorVisible == true)
         && keyboardState?.isLocal == true
       if isUsingBottomBar, topToolbar.inOverlayMode || isKeyboardActive {
         return false
@@ -1820,8 +1839,9 @@ public class BrowserViewController: UIViewController {
 
     updateRewardsButtonState()
 
+    let playlistItem = tab.playlistItem
     DispatchQueue.main.async {
-      if let item = tab.playlistItem {
+      if let item = playlistItem {
         if PlaylistItem.itemExists(uuid: item.tagId)
           || PlaylistItem.itemExists(pageSrc: item.pageSrc)
         {
@@ -2323,6 +2343,10 @@ extension BrowserViewController: SettingsDelegate {
     self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
+  func settingsDidCompleteOriginPurchase() {
+    handleOriginPurchaseCompleted()
+  }
+
   // QA Stuff
   func settingsCreateFakeTabs() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=\($0)")! }
@@ -2351,31 +2375,6 @@ extension BrowserViewController: SettingsDelegate {
         title: "QA-History - BraveSearch - \(index)",
         dateAdded: dateAdded
       )
-    }
-  }
-
-  func settingsPresentQuickView() {
-    guard let currentTab = tabManager.selectedTab else {
-      let alert = UIAlertController(
-        title: "No Tab Available",
-        message: "Please open a tab first.",
-        preferredStyle: .alert
-      )
-      alert.addAction(UIAlertAction(title: "OK", style: .default))
-      present(alert, animated: true)
-      return
-    }
-
-    // TODO: Load actual ref link https://github.com/brave/brave-browser/issues/53569
-    let testURL = URL(string: "https://search.brave.com/ask?q=brave")!
-
-    let quickViewController = QuickViewController(
-      url: testURL,
-      for: currentTab
-    )
-
-    present(quickViewController, animated: true) {
-      Logger.module.debug("QuickView presented from Settings: \(testURL)")
     }
   }
 }
@@ -2442,45 +2441,6 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 }
 
 extension BrowserViewController: TabMiscDelegate {
-  func showRequestRewardsPanel(_ tab: some TabState) {
-    let vc = BraveTalkRewardsOptInViewController()
-
-    // Edge case: user disabled Rewards button and wants to access free Brave Talk
-    // We re-enable the button again. It can be disabled in settings later.
-    Preferences.Rewards.hideRewardsIcon.value = false
-
-    let popover = PopoverController(
-      contentController: vc,
-      contentSizeBehavior: .preferredContentSize
-    )
-    popover.addsConvenientDismissalMargins = false
-    popover.present(from: topToolbar.rewardsButton, on: self)
-
-    vc.rewardsEnabledHandler = { [weak self] in
-      guard let self = self else { return }
-
-      self.rewards.isEnabled = true
-
-      let vc2 = BraveTalkOptInSuccessViewController()
-      let popover2 = PopoverController(
-        contentController: vc2,
-        contentSizeBehavior: .preferredContentSize
-      )
-      popover2.present(from: self.topToolbar.rewardsButton, on: self)
-    }
-
-    vc.linkTapped = { [unowned self] request in
-      self.tabManager
-        .addTabAndSelect(request, isPrivate: privateBrowsingManager.isPrivateBrowsing)
-    }
-  }
-
-  func stopMediaPlayback(_ tab: some TabState) {
-    tabManager.allTabs.forEach({
-      PlaylistScriptHandler.stopPlayback(tab: $0)
-    })
-  }
-
   func showWalletNotification(_ tab: some TabState, origin: URLOrigin) {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
@@ -2551,7 +2511,6 @@ extension BrowserViewController: TabMiscDelegate {
       let cryptoStore = self.walletStore?.cryptoStore
         ?? CryptoStore.from(
           ipfsApi: profileController.ipfsAPI,
-          walletP3A: profileController.braveWalletAPI.walletP3A(),
           privateMode: privateMode
         )
     else {
@@ -2655,6 +2614,10 @@ extension BrowserViewController: SearchViewControllerDelegate {
 
   func searchViewControllerAllowFindInPage() -> Bool {
     return tabManager.selectedTab?.visibleURL?.isNewTabURL != true
+  }
+
+  func searchViewControllerHasPendingWidgetSearchAttribution(_: SearchViewController) -> Bool {
+    tabManager.selectedTab?.widgetSearchTabHelper != nil
   }
 
   @objc private func dismissQuickSearchEngines() {
@@ -2955,11 +2918,6 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Rewards.hideRewardsIcon.key,
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()
-    case Preferences.General.mediaAutoBackgrounding.key:
-      tabManager.selectedTab?.browserData?.setScripts(scripts: [
-        .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value
-      ])
-      tabManager.reloadSelectedTab()
     case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab
       updatePlaylistURLBar(
@@ -2971,7 +2929,11 @@ extension BrowserViewController: PreferencesObserver {
       PrivacyReportsManager.scheduleProcessingBlockedRequests(
         isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
       )
-      PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+      if BraveOriginServiceFactory.get(profile: profileController.profile)?.isPurchased() == true {
+        PrivacyReportsManager.cancelNotification()
+      } else {
+        PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+      }
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
     case Preferences.Wallet.defaultEthWallet.key:
@@ -2983,7 +2945,6 @@ extension BrowserViewController: PreferencesObserver {
       let privateMode = privateBrowsingManager.isPrivateBrowsing
       if let cryptoStore = CryptoStore.from(
         ipfsApi: profileController.ipfsAPI,
-        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       ) {
         cryptoStore.rejectAllPendingWebpageRequests()
@@ -2998,7 +2959,6 @@ extension BrowserViewController: PreferencesObserver {
       let privateMode = privateBrowsingManager.isPrivateBrowsing
       if let cryptoStore = CryptoStore.from(
         ipfsApi: profileController.ipfsAPI,
-        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       ) {
         cryptoStore.rejectAllPendingWebpageRequests()
@@ -3059,7 +3019,7 @@ extension BrowserViewController {
         // Remove pending notification if default browser is set brave
         // Recognized by external link is open
         if !Preferences.DefaultBrowserIntro.defaultBrowserNotificationIsCanceled.value {
-          cancelScheduleDefaultBrowserNotification()
+          Self.cancelScheduleDefaultBrowserNotification()
         }
       }
     }
@@ -3091,9 +3051,11 @@ extension BrowserViewController {
       }
     }
 
+    let hasPendingWidgetSearch = tabManager.selectedTab?.widgetSearchTabHelper != nil
     if let searchURL = engine?.searchURLForQuery(
       text,
-      isBraveSearchPromotion: isBraveSearchPromotion
+      isBraveSearchPromotion: isBraveSearchPromotion,
+      isWidgetSearchAttribution: hasPendingWidgetSearch
     ) {
       // We couldn't find a matching search keyword, so do a search query.
       finishEditingAndSubmit(searchURL)
@@ -3184,9 +3146,12 @@ extension BrowserViewController {
       return
     }
 
+    let isOriginPurchased =
+      BraveOriginServiceFactory.get(profile: profileController.profile)?.isPurchased() == true
     let host = UIHostingController(
       rootView: PrivacyReportsManager.prepareView(
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+        isOriginPurchased: isOriginPurchased
       )
     )
 

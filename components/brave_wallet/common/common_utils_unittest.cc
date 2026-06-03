@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/common_utils.h"
 
+#include <stddef.h>
+
 #include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -391,16 +393,16 @@ TEST(CommonUtils, IsPolkadotImportKeyring) {
   }
 }
 
-TEST(CommonUtils, IsPolkadotNetwork) {
-  EXPECT_TRUE(IsPolkadotNetwork(mojom::kPolkadotMainnet));
-  EXPECT_TRUE(IsPolkadotNetwork(mojom::kPolkadotTestnet));
+TEST(CommonUtils, IsPolkadotRelayNetwork) {
+  EXPECT_TRUE(IsPolkadotRelayNetwork(mojom::kPolkadotMainnet));
+  EXPECT_TRUE(IsPolkadotRelayNetwork(mojom::kPolkadotTestnet));
 
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kMainnetChainId));
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kFilecoinMainnet));
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kSolanaMainnet));
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kBitcoinMainnet));
-  EXPECT_FALSE(IsPolkadotNetwork(""));
-  EXPECT_FALSE(IsPolkadotNetwork("abc"));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kMainnetChainId));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kFilecoinMainnet));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kSolanaMainnet));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kBitcoinMainnet));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(""));
+  EXPECT_FALSE(IsPolkadotRelayNetwork("abc"));
 }
 
 TEST(CommonUtils, GetNetworkForPolkadotKeyring) {
@@ -565,83 +567,87 @@ TEST(CommonUtils, GetEnabledKeyrings) {
   static_assert(AllKeyringsTested<14>());
 }
 
-TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                             mojom::kMainnetChainId),
+TEST(CommonUtils, GetPolkadotKeyrings) {
+  EXPECT_THAT(GetPolkadotKeyrings(),
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
+                                mojom::KeyringId::kPolkadotTestnet,
+                                mojom::KeyringId::kPolkadotImport,
+                                mojom::KeyringId::kPolkadotImportTestnet}));
+}
+
+TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ETH,
+                                                  mojom::kMainnetChainId),
               ElementsAreArray({mojom::KeyringId::kDefault}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                             mojom::kPolygonMainnetChainId),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(
+                  mojom::CoinType::ETH, mojom::kPolygonMainnetChainId),
               ElementsAreArray({mojom::KeyringId::kDefault}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                             "any chain id allowed"),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ETH,
+                                                  "any chain id allowed"),
               ElementsAreArray({mojom::KeyringId::kDefault}));
 
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::SOL,
-                                             mojom::kSolanaMainnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::SOL,
+                                                  mojom::kSolanaMainnet),
               ElementsAreArray({mojom::KeyringId::kSolana}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::SOL,
-                                             mojom::kSolanaTestnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::SOL,
+                                                  mojom::kSolanaTestnet),
               ElementsAreArray({mojom::KeyringId::kSolana}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::SOL,
-                                             "any chain id allowed"),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::SOL,
+                                                  "any chain id allowed"),
               ElementsAreArray({mojom::KeyringId::kSolana}));
 
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::FIL,
-                                             mojom::kFilecoinMainnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::FIL,
+                                                  mojom::kFilecoinMainnet),
               ElementsAreArray({mojom::KeyringId::kFilecoin}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::FIL,
-                                             mojom::kFilecoinTestnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::FIL,
+                                                  mojom::kFilecoinTestnet),
               ElementsAreArray({mojom::KeyringId::kFilecoinTestnet}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::FIL,
-                                             "any non mainnet chain"),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::FIL,
+                                                  "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kFilecoinTestnet}));
 
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::BTC,
-                                             mojom::kBitcoinMainnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::BTC,
+                                                  mojom::kBitcoinMainnet),
               ElementsAreArray({mojom::KeyringId::kBitcoin84,
                                 mojom::KeyringId::kBitcoinImport,
                                 mojom::KeyringId::kBitcoinHardware}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::BTC,
-                                             mojom::kBitcoinTestnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::BTC,
+                                                  mojom::kBitcoinTestnet),
               ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
                                 mojom::KeyringId::kBitcoinImportTestnet,
                                 mojom::KeyringId::kBitcoinHardwareTestnet}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::BTC,
-                                             "any non mainnet chain"),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::BTC,
+                                                  "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
                                 mojom::KeyringId::kBitcoinImportTestnet,
                                 mojom::KeyringId::kBitcoinHardwareTestnet}));
 
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ZEC,
-                                             mojom::kZCashMainnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ZEC,
+                                                  mojom::kZCashMainnet),
               ElementsAreArray({mojom::KeyringId::kZCashMainnet}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ZEC,
-                                             mojom::kZCashTestnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ZEC,
+                                                  mojom::kZCashTestnet),
               ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ZEC,
-                                             "any non mainnet chain"),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ZEC,
+                                                  "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ADA,
-                                             mojom::kCardanoMainnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ADA,
+                                                  mojom::kCardanoMainnet),
               ElementsAreArray({mojom::KeyringId::kCardanoMainnet}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ADA,
-                                             mojom::kCardanoTestnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ADA,
+                                                  mojom::kCardanoTestnet),
               ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ADA,
-                                             "any non mainnet chain"),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::ADA,
+                                                  "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
-                                             mojom::kPolkadotMainnet),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::DOT,
+                                                  mojom::kPolkadotMainnet),
               ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
                                 mojom::KeyringId::kPolkadotImport}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
-                                             mojom::kPolkadotTestnet),
-              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
-                                mojom::KeyringId::kPolkadotImportTestnet}));
-  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::DOT,
-                                             "any non mainnet chain"),
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::DOT,
+                                                  mojom::kPolkadotTestnet),
               ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
                                 mojom::KeyringId::kPolkadotImportTestnet}));
 

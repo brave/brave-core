@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { AliasList, ListIntroduction } from '../content/email_aliases_list'
+import { AliasList } from '../content/email_aliases_list'
 import {
   Alias,
   EmailAliasesServiceInterface,
@@ -96,11 +96,16 @@ describe('AliasList', () => {
   })
 
   it('disables create button when max aliases reached', () => {
-    const mockOnCreateClicked = jest.fn()
+    const maxAliases: Alias[] = Array.from({ length: MAX_ALIASES }, (_, i) => ({
+      email: `alias${i}@brave.com`,
+      note: `Note ${i}`,
+      domains: ['brave.com'],
+    }))
     render(
-      <ListIntroduction
-        aliasesCount={MAX_ALIASES}
-        onCreateClicked={mockOnCreateClicked}
+      <AliasList
+        aliases={maxAliases}
+        authEmail={mockAuthEmail}
+        emailAliasesService={mockEmailAliasesService}
       />,
     )
 
@@ -111,22 +116,20 @@ describe('AliasList', () => {
     expect(createButton).toHaveAttribute('isdisabled', 'true')
   })
 
-  it('fires callback when create button is clicked', async () => {
-    const mockOnCreateClicked = jest.fn()
-
-    render(
-      <ListIntroduction
-        aliasesCount={mockAliases.length}
-        onCreateClicked={mockOnCreateClicked}
-      />,
-    )
+  it('opens dialog when create button is clicked', async () => {
+    renderAliasList()
 
     const createButton = screen.getByText(
       S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL,
     )
-    clickLeoButton(createButton)
+    await act(async () => {
+      clickLeoButton(createButton)
+    })
 
-    expect(mockOnCreateClicked).toHaveBeenCalled()
+    // Check title and description
+    expect(
+      screen.getByText(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE),
+    ).toBeInTheDocument()
   })
 
   it('shows Edit Alias Modal when edit button is clicked', async () => {

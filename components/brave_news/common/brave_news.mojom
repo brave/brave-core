@@ -19,9 +19,7 @@ enum CardType {
   HEADLINE_PAIRED,
   CATEGORY_GROUP,
   PUBLISHER_GROUP,
-  DEALS,
-  DISPLAY_AD,
-  PROMOTED_ARTICLE
+  DEALS
 };
 
 enum ClusterType {
@@ -50,11 +48,6 @@ struct Article {
   bool is_discover;
 };
 
-struct PromotedArticle {
-  FeedItemMetadata data;
-  string creative_instance_id;
-};
-
 struct Deal {
   FeedItemMetadata data;
   string offers_category;
@@ -62,7 +55,6 @@ struct Deal {
 
 union FeedItem {
   Article article;
-  PromotedArticle promoted_article;
   Deal deal;
 };
 
@@ -182,14 +174,9 @@ struct Cluster {
   array<ArticleElements> articles;
 };
 
-// Placeholder FeedV2 Ad - the actual ad is fetched dynamically when the item
-// comes into the viewport.
-struct FeedV2Ad {};
-
 union FeedItemV2 {
   Article article;
   HeroArticle hero;
-  FeedV2Ad advert;
   Discover discover;
   Cluster cluster;
 };
@@ -223,17 +210,6 @@ struct FeedV2 {
 
   // If |error| is set items will be empty.
   FeedV2Error? error;
-};
-
-struct DisplayAd {
-  string uuid;
-  string creative_instance_id;
-  string dimensions;
-  string title;
-  string description;
-  Image image;
-  url.mojom.Url target_url;
-  string? cta_text;
 };
 
 struct FeedSearchResultItem {
@@ -327,7 +303,6 @@ interface BraveNewsController {
   SetConfiguration(Configuration configuration) => ();
   AddConfigurationListener(pending_remote<ConfigurationListener> listener);
 
-  GetDisplayAd() => (DisplayAd? ad);
   // Lets the browser know when a user begins viewing or scrolling
   // through Brave News, for statistics gathering purposes.
   OnInteractionSessionStarted();
@@ -335,9 +310,4 @@ interface BraveNewsController {
   OnNewCardsViewed(uint16 card_views);
   OnCardVisited(uint32 depth);
   OnSidebarFilterUsage();
-
-  OnPromotedItemView(string item_id, string creative_instance_id);
-  OnPromotedItemVisit(string item_id, string creative_instance_id);
-  OnDisplayAdVisit(string item_id, string creative_instance_id);
-  OnDisplayAdView(string item_id, string creative_instance_id);
 };

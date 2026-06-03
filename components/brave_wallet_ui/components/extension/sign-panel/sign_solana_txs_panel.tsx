@@ -39,7 +39,6 @@ import {
   AccountCircle,
   AccountNameText,
   TopRow,
-  NetworkText,
   PanelTitle,
   MessageBox,
   SignPanelButtonRow,
@@ -49,7 +48,6 @@ import {
 import {
   TabRow,
   WarningBox,
-  WarningTitle,
   WarningText,
   LearnMoreButton,
   URLText,
@@ -58,7 +56,7 @@ import {
 
 import { DetailColumn } from '../transaction-box/style'
 import { Tooltip } from '../../shared/tooltip/index'
-import { Column } from '../../shared/style'
+import { Column, Text } from '../../shared/style'
 
 interface Props {
   selectedRequest: BraveWallet.SignSolTransactionsRequest
@@ -117,7 +115,13 @@ export const SignSolanaTxsPanel = ({
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText> {network.chainName} </NetworkText>
+        <Text
+          textColor='tertiary'
+          variant='small.regular'
+        >
+          {' '}
+          {network.chainName}{' '}
+        </Text>
         <TransactionQueueSteps
           queueNextTransaction={queueNextSignTransaction}
           transactionQueueNumber={queueNumber}
@@ -125,7 +129,10 @@ export const SignSolanaTxsPanel = ({
         />
       </TopRow>
       <AccountCircle orb={orb} />
-      <URLText>
+      <URLText
+        textColor='secondary'
+        variant='xSmall.regular'
+      >
         <CreateSiteOrigin
           originSpec={selectedRequest.originInfo.originSpec}
           eTldPlusOne={selectedRequest.originInfo.eTldPlusOne}
@@ -135,18 +142,36 @@ export const SignSolanaTxsPanel = ({
         text={signingAccount.address || ''}
         isAddress
       >
-        <AccountNameText>{signingAccount?.name ?? ''}</AccountNameText>
+        <AccountNameText
+          textColor='secondary'
+          variant='default.semibold'
+        >
+          {signingAccount?.name ?? ''}
+        </AccountNameText>
       </Tooltip>
-      <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
+      <PanelTitle
+        textColor='primary'
+        variant='large.semibold'
+      >
+        {getLocale('braveWalletSignTransactionTitle')}
+      </PanelTitle>
       {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
           <WarningTitleRow>
             <WarningIcon />
-            <WarningTitle warningType='danger'>
+            <Text
+              textColor='error'
+              variant='small.semibold'
+            >
               {getLocale('braveWalletSignWarningTitle')}
-            </WarningTitle>
+            </Text>
           </WarningTitleRow>
-          <WarningText>{getLocale('braveWalletSignWarning')}</WarningText>
+          <WarningText
+            textColor='error'
+            variant='small.regular'
+          >
+            {getLocale('braveWalletSignWarning')}
+          </WarningText>
           <LearnMoreButton onClick={onClickLearnMore}>
             {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
           </LearnMoreButton>

@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_types.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
@@ -36,7 +36,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
-#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
 namespace brave_ads::test {
 
@@ -53,9 +52,7 @@ constexpr std::string_view kYouCantTravelBackInTime =
 
 TestBase::TestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-      tab_helper_(ads_client_notifier_),
-      scoped_current_language_code_(kDefaultLanguageCode),
-      scoped_current_country_code_(kDefaultCountryCode) {
+      tab_helper_(ads_client_notifier_) {
   SimulateProfile();
 }
 
@@ -262,8 +259,7 @@ void TestBase::SetUpEnvironment() {
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kWindows);
 
   SetUpBuildChannel(BuildChannelType::kRelease);
 

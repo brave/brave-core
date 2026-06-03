@@ -6,8 +6,8 @@
 #include "components/sync_device_info/device_info_sync_bridge.h"
 
 #include "base/logging.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "components/sync/base/deletion_origin.h"
+#include "components/sync_device_info/device_info_proto_enum_util.h"
 
 #define BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS \
   specifics->mutable_brave_fields()->set_is_self_delete_supported(true);
@@ -44,7 +44,17 @@ namespace {
 
 constexpr int kFailedAttemtpsToAckDeviceDelete = 5;
 
-std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
+SelfDeleteSupport SpecificsToSelfDeleteSupport(
+    const DeviceInfoSpecifics& specifics) {
+  if (specifics.has_brave_fields() &&
+      specifics.brave_fields().has_is_self_delete_supported() &&
+      specifics.brave_fields().is_self_delete_supported()) {
+    return SelfDeleteSupport::kSupported;
+  }
+  return SelfDeleteSupport::kNotSupported;
+}
+
+std::unique_ptr<DeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {
   DataTypeSet data_types;
   for (const int field_number :
@@ -58,10 +68,10 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
   }
   // The code is duplicated from SpecificsToModel by intent to avoid use of
   // extra patch
-  return std::make_unique<BraveDeviceInfo>(
+  return std::make_unique<DeviceInfo>(
       specifics.cache_guid(), specifics.client_name(),
       specifics.chrome_version(), specifics.sync_user_agent(),
-      specifics.device_type(),
+      ToDeviceInfoDeviceType(specifics.device_type()),
       DeriveOsFromDeviceType(specifics.device_type(), specifics.manufacturer()),
       DeriveFormFactorFromDeviceType(specifics.device_type()),
       specifics.signin_scoped_device_id(), specifics.manufacturer(),
@@ -69,15 +79,16 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       ProtoTimeToTime(specifics.last_updated_timestamp()),
       GetPulseIntervalFromSpecifics(specifics),
       specifics.feature_fields().send_tab_to_self_receiving_enabled(),
-      specifics.feature_fields().send_tab_to_self_receiving_type(),
+      ToDeviceInfoSendTabReceivingType(
+          specifics.feature_fields().send_tab_to_self_receiving_type()),
       SpecificsToSharingInfo(specifics),
       SpecificsToPhoneAsASecurityKeyInfo(specifics),
       specifics.invalidation_fields().instance_id_token(), data_types,
       SpecificsToAutoSignOutLastSigninTimestamp(specifics),
       specifics.feature_fields().desktop_to_ios_promo_receiving_enabled(),
-      specifics.has_brave_fields() &&
-          specifics.brave_fields().has_is_self_delete_supported() &&
-          specifics.brave_fields().is_self_delete_supported());
+      SpecificsToDesktopToIOSPromoReceivingTypes(specifics),
+      SpecificsToGlicExperimentalTriggeringState(specifics),
+      SpecificsToSelfDeleteSupport(specifics));
 }
 
 }  // namespace
@@ -118,11 +129,11 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
   }
 }
 
-std::vector<std::unique_ptr<BraveDeviceInfo>>
+std::vector<std::unique_ptr<DeviceInfo>>
 DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT0("sync", "DeviceInfoSyncBridge::GetAllBraveDeviceInfo");
-  std::vector<std::unique_ptr<BraveDeviceInfo>> list;
+  std::vector<std::unique_ptr<DeviceInfo>> list;
   for (const auto& data : all_data_) {
     list.push_back(BraveSpecificsToModel(data.second.specifics()));
   }
@@ -154,7 +165,7 @@ void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
 // translation unit, and the clang plugin wont allow the definition in the
 // header. This function has to provide a dead definition, otherwise there are
 // certain types of breakages that require patching upstream code.
-std::vector<std::unique_ptr<BraveDeviceInfo>>
+std::vector<std::unique_ptr<DeviceInfo>>
 DeviceInfoTracker::GetAllBraveDeviceInfo() const {
   NOTREACHED() << "This function must be overriden";
 }

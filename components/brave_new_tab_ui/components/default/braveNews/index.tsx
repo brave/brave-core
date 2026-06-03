@@ -24,11 +24,6 @@ if (defaultState.featureFlagBraveNewsFeedV2Enabled) {
 
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
 export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
-export type OnPromotedItemViewed = (args: TodayActions.PromotedItemViewedPayload) => any
-export type OnVisitDisplayAd = (args: TodayActions.VisitDisplayAdPayload) => any
-export type OnViewedDisplayAd = (args: TodayActions.DisplayAdViewedPayload) => any
-export type GetDisplayAdContent = BraveNews.BraveNewsControllerRemote['getDisplayAd']
-
 export type Props = {
   isFetching: boolean
   hasInteracted: boolean
@@ -37,19 +32,14 @@ export type Props = {
   feed?: BraveNews.Feed
   publishers?: BraveNews.Publishers
   articleToScrollTo?: BraveNews.FeedItemMetadata
-  displayAdToScrollTo?: number
   displayedPageCount: number
   onReadFeedItem: OnReadFeedItem
-  onPromotedItemViewed: OnPromotedItemViewed
-  onVisitDisplayAd: OnVisitDisplayAd
-  onViewedDisplayAd: OnViewedDisplayAd
   onFeedItemViewedCountChanged: (feedItemsViewed: number) => any
   onSetPublisherPref: OnSetPublisherPref
   onAnotherPageNeeded: () => any
   onCustomizeBraveNews: () => any
   onRefresh: () => any
   onCheckForUpdate: () => any
-  getDisplayAd: GetDisplayAdContent
 }
 
 type PossibleInteractionObserver = IntersectionObserver | undefined

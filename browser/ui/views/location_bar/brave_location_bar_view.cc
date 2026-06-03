@@ -19,10 +19,10 @@
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/browser/ui/views/location_bar/brave_shields_page_info_controller.h"
-#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -43,6 +43,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/compositor/layer.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
@@ -50,6 +51,10 @@
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_utils.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
@@ -116,7 +121,7 @@ void BraveLocationBarView::Init() {
     focus_ring->SetPathGenerator(
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
-    if (const auto color_id = GetFocusRingColor(profile())) {
+    if (const auto color_id = GetFocusRingColor(GetProfile())) {
       focus_ring->SetColorId(color_id.value());
     }
   }
@@ -136,7 +141,7 @@ void BraveLocationBarView::Init() {
       std::make_unique<OnionLocationView>(browser_->profile(), this, this));
 #endif
 
-  if (PromotionButtonController::PromotionEnabled(profile()->GetPrefs())) {
+  if (PromotionButtonController::PromotionEnabled(GetProfile()->GetPrefs())) {
     promotion_button_ = AddChildView(std::make_unique<PromotionButtonView>());
     promotion_controller_ = std::make_unique<PromotionButtonController>(
         promotion_button_, omnibox_view_, browser());
@@ -149,7 +154,7 @@ void BraveLocationBarView::Init() {
 
   // brave action buttons
   brave_actions_ = AddChildView(
-      std::make_unique<BraveActionsContainer>(browser_, profile()));
+      std::make_unique<BraveActionsContainer>(browser_, GetProfile()));
   brave_actions_->Init();
   // Call Update again to cause a Layout
   Update(nullptr);
@@ -160,6 +165,7 @@ void BraveLocationBarView::Init() {
   }
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void BraveLocationBarView::ShowPlaylistBubble(
     playlist::PlaylistBubblesController::BubbleType type) {
   if (auto* playlist_action_icon_view = GetPlaylistActionIconView()) {
@@ -176,6 +182,7 @@ PlaylistActionIconView* BraveLocationBarView::GetPlaylistActionIconView() {
 
   return views::AsViewClass<PlaylistActionIconView>(playlist_action_icon_view);
 }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 void BraveLocationBarView::Update(content::WebContents* contents) {
   // base Init calls update before our Init is run, so our children
@@ -432,7 +439,8 @@ void BraveLocationBarView::SetupShadow() {
       .blur_radius = radius,
       .shadow_color = color_provider->GetColor(kColorLocationBarHoveredShadow)};
 
-  shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
+  shadow_ =
+      std::make_unique<ViewShadow>(this, gfx::RoundedCornersF(radius), shadow);
 }
 
 int BraveLocationBarView::GetBorderRadius() const {

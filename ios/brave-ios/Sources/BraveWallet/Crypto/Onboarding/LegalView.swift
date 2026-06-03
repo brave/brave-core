@@ -14,8 +14,7 @@ struct LegalView: View {
 
   @State private var isResponsibilityCheckboxChecked: Bool = false
   @State private var isTermsCheckboxChecked: Bool = false
-  @State private var isShowingCreateNewWallet: Bool = false
-  @State private var isShowingRestoreExistedWallet: Bool = false
+  @State private var isShowingNetworkSelection: Bool = false
 
   private var isContinueDisabled: Bool {
     !isResponsibilityCheckboxChecked || !isTermsCheckboxChecked
@@ -36,7 +35,7 @@ struct LegalView: View {
         .fixedSize(horizontal: false, vertical: true)
         .padding(.bottom, 20)
         HStack(alignment: .top, spacing: 8) {
-          LegalCheckbox(isChecked: $isResponsibilityCheckboxChecked)
+          WalletCheckbox(isChecked: $isResponsibilityCheckboxChecked)
             .font(.title2)
           Text(Strings.Wallet.legalUserResponsibility)
             .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
@@ -47,7 +46,7 @@ struct LegalView: View {
             }
         }
         HStack(spacing: 8) {
-          LegalCheckbox(isChecked: $isTermsCheckboxChecked)
+          WalletCheckbox(isChecked: $isTermsCheckboxChecked)
             .font(.title2)
           Text(
             LocalizedStringKey(
@@ -66,11 +65,7 @@ struct LegalView: View {
           }
         }
         Button {
-          if setupOption == .new {
-            isShowingCreateNewWallet = true
-          } else {
-            isShowingRestoreExistedWallet = true
-          }
+          isShowingNetworkSelection = true
         } label: {
           Text(Strings.Wallet.continueButtonTitle)
             .frame(maxWidth: .infinity)
@@ -83,24 +78,12 @@ struct LegalView: View {
     .padding()
     .background(
       NavigationLink(
-        destination: CreateWalletView(
+        destination: OnboardingNetworkSelectionView(
           keyringStore: keyringStore,
           setupOption: setupOption,
           dismissAction: dismissAction
         ),
-        isActive: $isShowingCreateNewWallet,
-        label: {
-          EmptyView()
-        }
-      )
-    )
-    .background(
-      NavigationLink(
-        destination: RestoreWalletView(
-          keyringStore: keyringStore,
-          dismissAction: dismissAction
-        ),
-        isActive: $isShowingRestoreExistedWallet,
+        isActive: $isShowingNetworkSelection,
         label: {
           EmptyView()
         }
@@ -112,20 +95,6 @@ struct LegalView: View {
       backButtonTitle: Strings.Wallet.web3DomainInterstitialPageTAndU.capitalizeFirstLetter,
       backButtonDisplayMode: .generic
     )
-  }
-}
-
-struct LegalCheckbox: View {
-  @Binding var isChecked: Bool
-
-  var body: some View {
-    Button {
-      isChecked.toggle()
-    } label: {
-      Image(braveSystemName: isChecked ? "leo.checkbox.checked" : "leo.checkbox.unchecked")
-        .renderingMode(.template)
-        .foregroundColor(Color(isChecked ? .braveBlurpleTint : .braveDisabled))
-    }
   }
 }
 

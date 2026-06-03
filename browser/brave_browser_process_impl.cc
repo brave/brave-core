@@ -14,9 +14,10 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
-#include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -28,7 +29,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -60,6 +60,10 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
+#include "brave/browser/brave_stats/brave_stats_updater.h"
+#endif
+
 #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
 #include "chrome/browser/extensions/chrome_extensions_browser_client.h"
@@ -79,6 +83,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
@@ -103,8 +108,8 @@
 #include "brave/components/request_otr/common/features.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/brave_vpn/vpn_utils.h"
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+#include "brave/browser/brave_vpn/vpn_connection_manager_utils.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
 
@@ -146,22 +151,11 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_browser_process = this;
   g_brave_browser_process = this;
 
-  // early initialize referrals
-  brave_referrals_service();
-
   // Disabled on mobile platforms, see for instance issues/6176
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   p3a_service();
   histogram_braveizer_ = p3a::HistogramsBraveizer::Create();
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  // initialize ads stats helper
-  ads_brave_stats_helper();
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-
-  // early initialize brave stats
-  brave_stats_updater();
 
   // early initialize misc metrics
   process_misc_metrics();
@@ -221,6 +215,21 @@ void BraveBrowserProcessImpl::Init() {
   // Lazy initialization of AdBlockOnlyModePolicyManager
   brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Init(
       local_state());
+
+  // Initialize BraveOriginPolicyManager here so its managed prefs are merged
+  // into local state before any profile's policy connector polls
+  // `BraveProfilePolicyProvider::IsInitializationComplete`. Without this,
+  // profile pref-store init can deadlock waiting for the gate while the gate
+  // is waiting for `BuildServiceInstanceForBrowserContext` (gated on profile
+  // build) to run `Init` -- manifests as "stuck on profile selection."
+  auto* origin_policy_manager =
+      brave_origin::BraveOriginPolicyManager::GetInstance();
+  if (!origin_policy_manager->IsInitialized()) {
+    origin_policy_manager->Init(
+        brave_origin::BraveOriginServiceFactory::GetBrowserPolicyDefinitions(),
+        brave_origin::BraveOriginServiceFactory::GetProfilePolicyDefinitions(),
+        local_state());
+  }
 }
 
 void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
@@ -238,7 +247,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_stats_helper_.reset();
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   brave_stats_updater_.reset();
+#endif
   brave_referrals_service_.reset();
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
@@ -249,10 +260,21 @@ void BraveBrowserProcessImpl::StartTearDown() {
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   ai_chat_agent_profile_manager_.reset();
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Reset WalletDataFilesInstaller to prevent dangling pointer to
+  // CrxUpdateService. WalletDataFilesInstaller instance is a static
+  // base::NoDestructor<> and makes use of
+  // component_updater::ComponentUpdateService::Observer, so it needs to be
+  // reset before the CrxUpdateService is destroyed.
+  brave_wallet::WalletDataFilesInstaller::GetInstance().Reset();
+#endif
   // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
   brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Shutdown();
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
+#if BUILDFLAG(ENABLE_TOR)
+  TorProfileManager::GetInstance().Shutdown();
+#endif
   BrowserProcessImpl::StartTearDown();
 }
 
@@ -472,6 +494,7 @@ BraveBrowserProcessImpl::brave_referrals_service() {
   return brave_referrals_service_.get();
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_) {
     brave_stats_updater_ = std::make_unique<brave_stats::BraveStatsUpdater>(
@@ -479,6 +502,7 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   }
   return brave_stats_updater_.get();
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 brave_ads::BraveStatsHelper* BraveBrowserProcessImpl::ads_brave_stats_helper() {
@@ -523,7 +547,7 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 brave_vpn::BraveVPNConnectionManager*
 BraveBrowserProcessImpl::brave_vpn_connection_manager() {
   if (brave_vpn_connection_manager_) {

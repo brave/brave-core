@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/path_service.h"
-#include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -46,6 +48,12 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
  public:
   PerfPredictorTabHelperTest() = default;
 
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    ad_block_test_helper_ =
+        std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     InitEmbeddedTestServer();
@@ -67,6 +75,11 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
 
   void TearDown() override { InProcessBrowserTest::TearDown(); }
 
+  void TearDownOnMainThread() override {
+    ad_block_test_helper_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void InitEmbeddedTestServer() {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -83,14 +96,7 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
 
     filters_provider_->RegisterAsSourceProvider(ad_block_service);
 
-    WaitForAdBlockServiceThreads();
-  }
-
-  void WaitForAdBlockServiceThreads() {
-    scoped_refptr<base::ThreadTestHelper> tr_helper(
-        new base::ThreadTestHelper(g_brave_browser_process->ad_block_service()
-                                       ->GetTaskRunnerForTesting()));
-    ASSERT_TRUE(tr_helper->Run());
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   }
 
   void PostRunTestOnMainThread() override {
@@ -98,6 +104,8 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
     InProcessBrowserTest::PostRunTestOnMainThread();
   }
 
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
+      ad_block_test_helper_;
   std::unique_ptr<TestFiltersProvider> filters_provider_;
 };
 

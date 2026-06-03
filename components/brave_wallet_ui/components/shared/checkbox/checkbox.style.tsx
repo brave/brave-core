@@ -5,6 +5,8 @@
 
 import styled, { css, CSSProperties } from 'styled-components'
 
+import { walletFontFamily } from '../../../utils/font.utils'
+
 interface StyleProps {
   selected?: boolean
   size: 'big' | 'small'
@@ -51,7 +53,7 @@ export const StyledLabel = styled('label')<
   }
 >`
   ${getLabelProps};
-  font-family: ${(p) => p.theme.fontFamily.body};
+  font-family: ${walletFontFamily};
   display: flex;
   align-items: ${(p) => p?.alignItems ?? 'center'};
   justify-content: ${(p) => p?.justifyContent ?? 'center'};

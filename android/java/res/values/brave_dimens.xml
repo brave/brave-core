@@ -53,14 +53,11 @@
     <dimen name="small_semibold">12sp</dimen>
     <dimen name="monospace_small">12sp</dimen>
     <dimen name="brave_toolbar_edge_padding_ntp">8dp</dimen>
-    <dimen name="new_tab_page_incognito_title_text_size">28sp</dimen>
-    <dimen name="new_tab_page_incognito_logo_size">42sp</dimen>
-    <dimen name="new_tab_page_incognito_icon_size">32sp</dimen>
+    <dimen name="new_tab_page_incognito_logo_size">42dp</dimen>
+    <dimen name="new_tab_page_incognito_icon_size">32dp</dimen>
+    <dimen name="new_tab_page_incognito_icon_inner_size">20dp</dimen>
 
     <!-- Brave News cards-->
-    <dimen name="brave_news_ad_title_textsize">17sp</dimen>
-    <dimen name="brave_news_ad_desc_textsize">12sp</dimen>
-    <dimen name="brave_news_ad_button_textsize">13sp</dimen>
     <dimen name="brave_news_more_offers_tablet_textsize">17sp</dimen>
     <dimen name="brave_news_more_offers_phone_textsize">13sp</dimen>
     <dimen name="brave_news_deals_top_textsize">17sp</dimen>
@@ -76,10 +73,6 @@
     <dimen name="brave_news_headline_desc_phone_textsize">11sp</dimen>
     <dimen name="brave_news_headline_publisher_tablet_textsize">16sp</dimen>
     <dimen name="brave_news_headline_publisher_phone_textsize">12sp</dimen>
-    <dimen name="brave_news_promoted_article_title_textsize">17sp</dimen>
-    <dimen name="brave_news_promoted_article_desc_textsize">11sp</dimen>
-    <dimen name="brave_news_promoted_article_promoted_textsize">12sp</dimen>
-    <dimen name="brave_news_promoted_article_publisher_textsize">12sp</dimen>
     <dimen name="brave_news_headline_paired_title_tablet_textsize">17sp</dimen>
     <dimen name="brave_news_headline_paired_title_phone_textsize">13sp</dimen>
     <dimen name="brave_news_headline_paired_desc_tablet_textsize">15sp</dimen>
@@ -103,6 +96,14 @@
     <!-- Override of chromium's toolbar hairline height -->
     <dimen name="toolbar_hairline_height">0dp</dimen>
 
-    <!-- Override of chromium's Search engine logo -->
+    <!-- Override of chromium's Search engine logo. The half-size is the icon
+         outline corner radius and must match composed_size / 2 to render as a
+         perfect circle (upstream uses 24dp/12dp on phones). -->
     <dimen name="omnibox_search_engine_logo_composed_size">20dp</dimen>
+    <dimen name="omnibox_search_engine_logo_composed_half_size">10dp</dimen>
+
+    <!-- Disable the upstream 56dp wide StatusView. Upstream centers the search engine
+         icon in this wider container on regular NTP and when the URL bar is focused,
+         which leaves a ~14dp gap before the leading lion icon in Brave's omnibox. -->
+    <dimen name="status_view_width_wide">0dp</dimen>
 </resources>

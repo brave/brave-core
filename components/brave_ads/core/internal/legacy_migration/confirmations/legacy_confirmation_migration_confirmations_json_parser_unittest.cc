@@ -56,9 +56,9 @@ TEST_F(BraveAdsLegacyConfirmationMigrationConfirmationsJsonParserTest,
                   "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                   mojom::ConfirmationType::kViewedImpression,
                   mojom::AdType::kNotificationAd,
-                  /*created_at*/ ::testing::_,
+                  /*created_at=*/::testing::_,
                   /*reward*/ std::nullopt,
-                  /*user_data*/ ::testing::_))));
+                  /*user_data=*/::testing::_))));
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationConfirmationsJsonParserTest,

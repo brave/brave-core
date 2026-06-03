@@ -55,30 +55,8 @@ handler.on<Actions.ReadFeedItemPayload>(
   Actions.readFeedItem.getType(),
   async (store, payload) => {
     const state = store.getState() as ApplicationState
-    if (payload.isPromoted) {
-      const promotedArticle = payload.item.promotedArticle
-      if (!promotedArticle) {
-        console.error(
-          'Brave News: readFeedItem payload with invalid promoted article',
-          payload
-        )
-        return
-      }
-      if (!payload.promotedUUID) {
-        console.error(
-          'Brave News: invalid promotedUUID for readFeedItem',
-          payload
-        )
-        return
-      }
-      getBraveNewsController().onPromotedItemVisit(
-        payload.promotedUUID,
-        promotedArticle.creativeInstanceId
-      )
-    }
     const data =
       payload.item.article?.data ||
-      payload.item.promotedArticle?.data ||
       payload.item.deal?.data
     if (!data) {
       console.error(
@@ -101,23 +79,6 @@ handler.on<Actions.ReadFeedItemPayload>(
     } else {
       window.open(data.url.url, '_blank', 'noreferrer')
     }
-  }
-)
-
-handler.on<Actions.PromotedItemViewedPayload>(
-  Actions.promotedItemViewed.getType(),
-  async (store, payload) => {
-    if (!payload.item.promotedArticle) {
-      console.error(
-        'Brave News: promotedItemViewed invalid promoted article',
-        payload
-      )
-      return
-    }
-    getBraveNewsController().onPromotedItemView(
-      payload.uuid,
-      payload.item.promotedArticle.creativeInstanceId
-    )
   }
 )
 
@@ -186,44 +147,5 @@ handler.on(Actions.resetTodayPrefsToDefault.getType(), async function (store) {
 handler.on(Actions.anotherPageNeeded.getType(), async function (store) {
   store.dispatch(Actions.checkForUpdate())
 })
-
-handler.on<Actions.VisitDisplayAdPayload>(
-  Actions.visitDisplayAd.getType(),
-  async function (store, payload) {
-    const state = store.getState() as ApplicationState
-    const todayPageIndex = state.today.currentPageIndex
-    getBraveNewsController().onDisplayAdVisit(
-      payload.ad.uuid,
-      payload.ad.creativeInstanceId
-    )
-    const destinationUrl = payload.ad.targetUrl.url
-    if (!payload.openInNewTab) {
-      // Remember display ad location so we can scroll to it on "back" navigation
-      // We remember position and not ad ID since it can be a different ad on
-      // a new page load.
-      // TODO(petemill): Type this history.state data and put in an API module
-      // (see `reducers/today`).
-      storeInHistoryState({
-        todayAdPosition: todayPageIndex,
-        todayPageIndex,
-        todayCardsVisited: state.today.cardsVisited
-      })
-      // visit article url
-      window.location.href = destinationUrl
-    } else {
-      window.open(destinationUrl, '_blank', 'noreferrer')
-    }
-  }
-)
-
-handler.on<Actions.DisplayAdViewedPayload>(
-  Actions.displayAdViewed.getType(),
-  async (store, item) => {
-    getBraveNewsController().onDisplayAdView(
-      item.ad.uuid,
-      item.ad.creativeInstanceId
-    )
-  }
-)
 
 export default handler.middleware

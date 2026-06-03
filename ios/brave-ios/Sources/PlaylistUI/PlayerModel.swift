@@ -40,6 +40,7 @@ public final class PlayerModel: ObservableObject {
     setupPlayerNotifications()
     setupPictureInPictureKeyPathObservation()
     setupRemoteCommandCenterHandlers()
+    setupPlaylistManagerObservation()
 
     Task { @MainActor in
       updateSystemPlayer()
@@ -148,6 +149,16 @@ public final class PlayerModel: ObservableObject {
 
   func play() {
     if isPlaying {
+      return
+    }
+    // Recover from an empty player when a selection still exists.
+    // This happens when a previous prepare left `currentItem == nil` (e.g. cache was missing and resolution failed)
+    // and the user has since made the asset available by tapping "Save offline data".
+    if player.currentItem == nil {
+      Task { @MainActor in
+        guard selectedItemID != nil, !isLoadingStreamingURL else { return }
+        await prepareToPlaySelectedItem(initialOffset: nil, playImmediately: true)
+      }
       return
     }
     if case .seconds(let duration) = duration, currentTime == duration {
@@ -814,6 +825,39 @@ public final class PlayerModel: ObservableObject {
       .init { _ = willResignActive },
       .init { _ = willTerminate },
     ])
+  }
+
+  /// Reacts to download lifecycle events from `PlaylistManager` so the player stays consistent with what's actually on disk.
+  ///
+  /// Specifically, when the user taps "Save offline data" for the currently selected item, the player may already be holding a stale `AVPlayerItem`
+  /// from an earlier prepare — typically a streaming URL that was resolved because the item's `cachedData` bookmark survived an
+  /// eviction of the actual file. In that state, `play()`'s smart recovery doesn't fire (it only triggers when `currentItem == nil`),
+  /// so a tap on play just runs `seek+play` against the stale asset and the user sees nothing happen. Replacing `currentItem`
+  /// with one backed by the freshly downloaded file unblocks the next play tap deterministically.
+  ///
+  /// Note: The player is not interrupted if it is actively playing a different content
+  private func setupPlaylistManagerObservation() {
+    PlaylistManager.shared.downloadStateChanged
+      .sink { [weak self] event in
+        guard let self, event.state == .downloaded else { return }
+        Task { @MainActor in
+          // Skip when an initial prepare is still in flight: it would race ours and could
+          // overwrite the local `AVPlayerItem` we install with a streaming one once it
+          // finishes resolving. The user can tap play once the original prepare settles.
+          guard event.id == self.selectedItem?.uuid,
+            !self.isPlaying,
+            !self.isLoadingStreamingURL
+          else { return }
+          // Resume from where the user paused (if anywhere) rather than from the persisted
+          // `lastPlayedOffset`, which may be stale until the next background/persist trigger.
+          let resumeOffset = self.currentTime
+          await self.prepareToPlaySelectedItem(
+            initialOffset: resumeOffset > 0 ? resumeOffset : nil,
+            playImmediately: false
+          )
+        }
+      }
+      .store(in: &cancellables)
   }
 
   /// Sets up KVO observations for AVPlayer properties which trigger the `objectWillChange` publisher

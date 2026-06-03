@@ -21,6 +21,10 @@ const AliasItemRow = styled(Row)`
   padding: ${spacing.l} ${spacing['2Xl']};
   border-top: ${color.divider.subtle} 1px solid;
   justify-content: space-between;
+
+  &:first-child {
+    border-top: transparent;
+  }
 `
 
 const AliasAnnotation = styled.div`
@@ -66,15 +70,18 @@ const AliasMenuItem = ({
 const CopyToast = ({
   text,
   tabIndex,
+  onCopy,
   children,
 }: {
   text: string
   tabIndex?: number
+  onCopy?: () => void
   children: React.ReactNode
 }) => {
   const [copied, setCopied] = React.useState<boolean>(false)
   const copy = () => {
     navigator.clipboard.writeText(text)
+    onCopy?.()
     setCopied(true)
     setTimeout(() => setCopied(false), 1000)
   }
@@ -101,16 +108,21 @@ const CopyToast = ({
 
 export const AliasItem = ({
   alias,
+  onCopy,
   onEdit,
   onDelete,
 }: {
   alias: Alias
+  onCopy: () => void
   onEdit: () => void
   onDelete: () => void
 }) => (
   <AliasItemRow>
     <Col>
-      <CopyToast text={alias.email}>
+      <CopyToast
+        text={alias.email}
+        onCopy={onCopy}
+      >
         <EmailContainer
           title={getLocale(S.SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS)}
         >
@@ -132,6 +144,7 @@ export const AliasItem = ({
       <CopyToast
         text={alias.email}
         tabIndex={0}
+        onCopy={onCopy}
       >
         <Button
           fab

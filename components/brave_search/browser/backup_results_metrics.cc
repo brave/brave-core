@@ -34,6 +34,10 @@ BackupResultsMetrics::~BackupResultsMetrics() = default;
 void BackupResultsMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(prefs::kBackupResultsLastQueryTime, {});
   registry->RegisterListPref(prefs::kBackupResultsFailuresStorage);
+  registry->RegisterIntegerPref(prefs::kBackupResultsDailyRequestCount, 0);
+  registry->RegisterTimePref(prefs::kBackupResultsDailyRequestWindowStart, {});
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastViewWidth, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastViewHeight, 0);
 }
 
 void BackupResultsMetrics::RecordQuery(bool is_failure) {

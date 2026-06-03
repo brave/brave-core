@@ -7,11 +7,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/test/confirmation_type_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/test/creative_notification_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_database_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/history/test/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_constants.h"
@@ -46,7 +46,7 @@ class BraveAdsRemindersTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    ads_observer_mock_ = test::MockAdsObserver();
+    ads_observer_mock_ = test::SetUpAdsObserverMock();
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
@@ -57,8 +57,8 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -79,8 +79,8 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  fake_platform_helper_.SetPlatformType(PlatformType::kIOS);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kIOS);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -101,8 +101,8 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kWindows);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -124,8 +124,8 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  fake_platform_helper_.SetPlatformType(PlatformType::kMacOS);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kMacOS);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
@@ -147,8 +147,8 @@ TEST_F(BraveAdsRemindersTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
 
-  fake_platform_helper_.SetPlatformType(PlatformType::kLinux);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kLinux);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
 
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,

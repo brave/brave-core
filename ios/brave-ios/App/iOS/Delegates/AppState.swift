@@ -202,6 +202,7 @@ public class AppState {
 
   private func setupCustomSchemeHandlers() {
     let responders: [(String, InternalSchemeResponse)] = [
+      (LegacyNTPHandler.path, LegacyNTPHandler()),
       (ReaderModeHandler.path, ReaderModeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),

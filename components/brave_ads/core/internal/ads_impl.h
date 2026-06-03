@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/ads_initializer.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -105,37 +106,14 @@ class AdsImpl final : public Ads {
                                    ResultCallback callback) override;
 
  private:
-  void CreateOrOpenDatabase(mojom::WalletInfoPtr mojom_wallet,
-                            ResultCallback callback);
-  void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
-                                    ResultCallback callback,
-                                    bool success);
-
-  void FailedToInitialize(ResultCallback callback);
-  void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
-                               ResultCallback callback);
-
-  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
-  // from using JSON state to a more efficient data approach.
-  void MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                  ResultCallback callback,
-                                  bool success);
-  void LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                               ResultCallback callback,
-                               bool success);
-  void MigrateConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                        ResultCallback callback,
-                                        bool success);
-  void LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                     ResultCallback callback,
-                                     bool success);
-
-  bool is_initialized_ = false;
+  void InitializeCallback(ResultCallback callback, bool success);
 
   // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
   // `GlobalState`.
   GlobalState global_state_;
 
+  bool is_initialized_ = false;
+  AdsInitializer ads_initializer_;
   OnceClosureTaskQueue task_queue_;
 
   // Handles database maintenance tasks, such as purging.

@@ -14,12 +14,9 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/functional/callback_helpers.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -37,8 +34,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -248,11 +244,11 @@ class EthTxManagerUnitTest : public testing::Test {
     keyring_service_ = std::make_unique<KeyringService>(
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    auto tx_storage = CreateTxStorageForTest(temp_dir_.GetPath());
+    tx_storage_ptr_ = tx_storage.get();
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, GetPrefs(), temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        *keyring_service_, GetPrefs(), std::move(tx_storage));
 
     GetAccountUtils().CreateWallet(kMnemonicAbandonAbandon,
                                    kTestWalletPassword);
@@ -262,6 +258,8 @@ class EthTxManagerUnitTest : public testing::Test {
         "0f0000000000000000000000000000000000000000000000003fffffffffffffff",
         &data_));
   }
+
+  void TearDown() override { tx_storage_ptr_ = nullptr; }
 
   AccountUtils GetAccountUtils() {
     return AccountUtils(keyring_service_.get());
@@ -453,6 +451,7 @@ class EthTxManagerUnitTest : public testing::Test {
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
+  raw_ptr<TxStorage> tx_storage_ptr_ = nullptr;
   std::vector<uint8_t> data_;
 };
 
@@ -602,6 +601,67 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
 
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
+}
+
+TEST_F(EthTxManagerUnitTest, RestrictedFromAddress) {
+  const auto from_account = from();
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(from_account->address)});
+
+  // AddUnapprovedEvmTransaction should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedEvmTransaction(
+        mojom::NewEvmTransactionParams::New(
+            mojom::kMainnetChainId, from(),
+            "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x0", "0x0974",
+            std::vector<uint8_t>(), nullptr),
+        unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, error] = unapproved_future.Take();
+
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  // AddUnapprovedEvmDappTransaction (TxData) should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedEvmDappTransaction(
+        mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
+                           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x0",
+                           std::vector<uint8_t>()),
+        from(), GetOrigin(), false, unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, error] = unapproved_future.Take();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  // AddUnapprovedEvmDappTransaction (TxData1559) should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedEvmDappTransaction(
+        mojom::TxData1559::New(
+            mojom::TxData::New("0x1", "", "", "0x0974",
+                               "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                               "0x0", std::vector<uint8_t>()),
+            "0x1", "0x1"),
+        from(), GetOrigin(), false, unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, error] = unapproved_future.Take();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
@@ -2257,9 +2317,8 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
   run_loop->Run();
 
   // Address on the restricted list should fail.
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
-      {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_erc721_restricted({"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
   run_loop = std::make_unique<base::RunLoop>();
   eth_tx_manager()->MakeERC721TransferFromData(
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
@@ -2272,16 +2331,17 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 
 TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
   // Invalid if to_address is on restricted list
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
-      {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
-  TestMakeERC1155TransferFromDataTxType(
-      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
-      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
-      mojom::TransactionType::Other);
+  {
+    BlockchainRegistry::ScopedRestrictedAddressesForTesting
+        scoped_erc1155_restricted(
+            {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
+    TestMakeERC1155TransferFromDataTxType(
+        "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
+        "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+        mojom::TransactionType::Other);
+  }
 
   // Valid
-  registry->UpdateRestrictedAddressesList({});
   TestMakeERC1155TransferFromDataTxType(
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",
@@ -2338,7 +2398,7 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   auto tx = EthTransaction::FromTxData(tx_data, false);
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
-  EXPECT_EQ(tx_service_->GetDelegateForTesting()->GetTxs().size(), 1u);
+  EXPECT_EQ(tx_storage_ptr_->GetTxs().size(), 1u);
 
   tx_service_->Reset();
 
@@ -2346,16 +2406,11 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   EXPECT_FALSE(
       eth_tx_manager()->block_tracker().IsRunning(mojom::kLocalhostChainId));
   // cache should be empty
-  EXPECT_TRUE(tx_service_->GetDelegateForTesting()->GetTxs().empty());
+  EXPECT_TRUE(tx_storage_ptr_->GetTxs().empty());
   // db should be empty
-  base::RunLoop run_loop;
-  static_cast<TxStorageDelegateImpl*>(tx_service_->GetDelegateForTesting())
-      ->store_->Get("transactions", base::BindLambdaForTesting(
-                                        [&](std::optional<base::Value> value) {
-                                          EXPECT_FALSE(value);
-                                          run_loop.Quit();
-                                        }));
-  run_loop.Run();
+  base::test::TestFuture<std::optional<base::Value>> get_future;
+  tx_storage_ptr_->store_->Get("transactions", get_future.GetCallback());
+  EXPECT_FALSE(get_future.Take().has_value());
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {

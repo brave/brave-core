@@ -142,13 +142,6 @@ bool BravePrivacySandboxSettings::IsSharedStorageSelectURLAllowed(
   return false;
 }
 
-bool BravePrivacySandboxSettings::IsFencedStorageReadAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& accessing_origin,
-    content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
 bool BravePrivacySandboxSettings::IsPrivateAggregationAllowed(
     const url::Origin& top_frame_origin,
     const url::Origin& reporting_origin,

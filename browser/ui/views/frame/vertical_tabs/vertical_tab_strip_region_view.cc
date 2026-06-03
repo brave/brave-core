@@ -23,6 +23,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
@@ -48,6 +49,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/cursor/cursor.h"
+#include "ui/base/hit_test.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/compositor.h"
@@ -67,6 +69,7 @@
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/window/hit_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "ui/views/win/hwnd_util.h"
@@ -267,6 +270,13 @@ class ResettableResizeArea : public views::ResizeArea {
 BEGIN_METADATA(ResettableResizeArea)
 END_METADATA
 
+TabStripPlacementCoordinator* GetPlacementCoordinator(
+    BrowserView* browser_view) {
+  CHECK(browser_view);
+  return BraveBrowserView::From(browser_view)
+      ->tab_strip_placement_coordinator();
+}
+
 }  // namespace
 
 BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
@@ -288,6 +298,11 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   region_view_container_ = AddChildView(std::make_unique<views::View>());
   region_view_container_->SetLayoutManager(
       std::make_unique<views::FillLayout>());
+
+  auto* placement_coordinator = GetPlacementCoordinator(browser_view);
+  CHECK(placement_coordinator);
+  placement_coordinator->SetPlacement(TabStripPlacementKind::kVerticalTabStrip,
+                                      region_view_container_.get());
 
   separator_ = AddChildView(std::make_unique<views::View>());
   separator_->SetBackground(
@@ -373,7 +388,10 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
-  UpdateLayout(true);
+  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+    coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
+  }
+  UpdateLayout();
 }
 
 void BraveVerticalTabStripRegionView::ToggleState() {
@@ -670,7 +688,7 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
 }
 
 void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
-  UpdateLayout(/* in_destruction= */ false);
+  UpdateLayout();
 
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_) &&
       state_ == State::kFloating) {
@@ -686,33 +704,22 @@ void BraveVerticalTabStripRegionView::OnBrowserPanelsMoved() {
   PreferredSizeChanged();
 }
 
-void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_) && !in_destruction) {
-    if (!Contains(original_region_view_)) {
-      original_parent_of_region_view_ = original_region_view_->parent();
-      tab_strip_region_view_original_index_ =
-          original_parent_of_region_view_->GetIndexOf(original_region_view_);
-      original_parent_of_region_view_->RemoveChildView(original_region_view_);
-      region_view_container_->AddChildView(original_region_view_.get());
-
-      // Resize area can be overlapped with tabs.
-      // To make it grabbable, it should be top-most view.
-      ReorderChildView(resize_area_, children().size() - 1);
-    }
-
-    static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
-        ->SetOrientation(views::LayoutOrientation::kVertical);
-  } else {
-    if (Contains(original_region_view_)) {
-      region_view_container_->RemoveChildView(original_region_view_.get());
-      CHECK(tab_strip_region_view_original_index_.has_value());
-      original_parent_of_region_view_->AddChildViewAt(
-          original_region_view_.get(), *tab_strip_region_view_original_index_);
-    }
-
-    static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
-        ->SetOrientation(views::LayoutOrientation::kHorizontal);
+void BraveVerticalTabStripRegionView::UpdateLayout() {
+  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+    coordinator->UpdatePlacement();
   }
+
+  bool vertical_tabs = tabs::utils::ShouldShowBraveVerticalTabs(browser_);
+  auto layout_orientation = vertical_tabs
+                                ? views::LayoutOrientation::kVertical
+                                : views::LayoutOrientation::kHorizontal;
+
+  if (vertical_tabs) {
+    ReorderChildView(resize_area_, children().size() - 1);
+  }
+
+  static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
+      ->SetOrientation(layout_orientation);
 
   UpdateNewTabButtonVisibility();
 

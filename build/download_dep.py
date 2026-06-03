@@ -17,9 +17,7 @@ def main():
     args = parse_args()
     dep_url = DEPS_PACKAGES_URL + '/' + args.dep_path
     dest_dir = wspath(args.dest_dir)
-    if dep_url != get_url(dest_dir):
-        deps.DownloadAndUnpack(dep_url, dest_dir, args.path_prefix)
-        set_url(dest_dir, dep_url)
+    deps.DownloadIfChanged(dep_url, dest_dir, args.path_prefix)
 
 
 def parse_args():
@@ -28,19 +26,6 @@ def parse_args():
     parser.add_argument('dest_dir')
     parser.add_argument('path_prefix', nargs='?', default=None)
     return parser.parse_args()
-
-
-def get_url(dest_dir):
-    try:
-        with open(join(dest_dir, '.url')) as f:
-            return f.read()
-    except FileNotFoundError:
-        return None
-
-
-def set_url(dest_dir, value):
-    with open(join(dest_dir, '.url'), 'w') as f:
-        f.write(value)
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@ namespace containers {
 // the same on all devices even if the device is not Synced yet.
 //
 // DO NOT CHANGE THESE IDs, only deprecate and add new ones if necessary.
-constexpr auto kDefaultContainerIds = std::to_array({
+inline constexpr auto kDefaultContainerIds = std::to_array({
     "0053d88e-7b26-4bfa-9175-783e1bfcba97",
     "2c2777a1-80b3-4b26-b629-ae1aefd9f272",
     "cfc3ee90-a163-4bd0-99ff-f0a472dda804",

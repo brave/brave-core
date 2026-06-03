@@ -201,9 +201,4 @@ void ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange(
   manager_->NotifyConnectionStateChanged(connection_state_);
 }
 
-void ConnectionAPIImpl::SetConnectionStateForTesting(
-    mojom::ConnectionState state) {
-  UpdateAndNotifyConnectionStateChange(state);
-}
-
 }  // namespace brave_vpn

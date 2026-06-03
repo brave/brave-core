@@ -98,6 +98,7 @@ export const SiteTitle = styled.span`
   font-size: 14px;
   font-weight: 500;
   overflow: hidden;
+  unicode-bidi: isolate;
   direction: rtl;
   text-overflow: ellipsis;
   white-space: nowrap;

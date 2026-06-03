@@ -38,11 +38,10 @@ import {
 import {
   Button,
   ButtonIcon,
-  ButtonText,
   ButtonWrapper,
   MoreMenuWrapper,
 } from './buy-send-swap-deposit-nav.style'
-import { Row } from '../../../../../shared/style'
+import { Row, Text } from '../../../../../shared/style'
 
 export const BuySendSwapDepositNav = () => {
   // state
@@ -77,14 +76,24 @@ export const BuySendSwapDepositNav = () => {
           <Button onClick={() => onClick(option)}>
             <ButtonIcon name={option.icon} />
           </Button>
-          <ButtonText>{getLocale(option.name)}</ButtonText>
+          <Text
+            textColor='primary'
+            variant='small.semibold'
+          >
+            {getLocale(option.name)}
+          </Text>
         </ButtonWrapper>
       ))}
       <MoreMenuWrapper ref={moreMenuRef}>
         <Button onClick={() => setShowMoreMenu(true)}>
           <ButtonIcon name='more-horizontal' />
         </Button>
-        <ButtonText>{getLocale('braveWalletButtonMore')}</ButtonText>
+        <Text
+          textColor='primary'
+          variant='small.semibold'
+        >
+          {getLocale('braveWalletButtonMore')}
+        </Text>
         {showMoreMenu && <PortfolioAccountMenu onClick={onClick} />}
       </MoreMenuWrapper>
     </Row>

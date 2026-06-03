@@ -8,7 +8,6 @@ import BraveShared
 import Data
 import Favicon
 import Foundation
-import Playlist
 import Shared
 import Web
 import WebKit
@@ -105,10 +104,16 @@ class CacheClearable: Clearable {
 class HistoryClearable: Clearable {
   let historyAPI: BraveHistoryAPI
   let httpsUpgradeService: HttpsUpgradeService?
+  private let serpMetrics: (any SerpMetrics)?
 
-  init(historyAPI: BraveHistoryAPI, httpsUpgradeService: HttpsUpgradeService?) {
+  init(
+    historyAPI: BraveHistoryAPI,
+    httpsUpgradeService: HttpsUpgradeService?,
+    serpMetrics: (any SerpMetrics)?
+  ) {
     self.historyAPI = historyAPI
     self.httpsUpgradeService = httpsUpgradeService
+    self.serpMetrics = serpMetrics
   }
 
   var label: String {
@@ -119,6 +124,7 @@ class HistoryClearable: Clearable {
     return await withCheckedContinuation { continuation in
       self.historyAPI.deleteAll {
         self.httpsUpgradeService?.clearAllowlist(fromStart: .distantPast, end: .distantFuture)
+        self.serpMetrics?.clearHistory()
         NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
         continuation.resume()
       }
@@ -206,50 +212,6 @@ class BraveNewsClearable: Clearable {
 
   func clear() async throws {
     await feedDataSource.clearCachedFiles()
-  }
-}
-
-class PlayListCacheClearable: Clearable {
-
-  init() {}
-
-  var label: String {
-    return Strings.PlayList.playlistOfflineDataToggleOption
-  }
-
-  func clear() async throws {
-    await PlaylistManager.shared.deleteAllItems(cacheOnly: true)
-
-    // Backup in case there is folder corruption, so we delete the cache anyway
-    if let playlistDirectory = await PlaylistDownloadManager.playlistDirectory {
-      do {
-        try await AsyncFileManager.default.removeItem(at: playlistDirectory)
-      } catch {
-        Logger.module.error("Error Deleting Playlist directory: \(error.localizedDescription)")
-      }
-    }
-  }
-}
-
-class PlayListDataClearable: Clearable {
-
-  init() {}
-
-  var label: String {
-    return Strings.PlayList.playlistMediaAndOfflineDataToggleOption
-  }
-
-  func clear() async throws {
-    await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
-
-    // Backup in case there is folder corruption, so we delete the cache anyway
-    if let playlistDirectory = await PlaylistDownloadManager.playlistDirectory {
-      do {
-        try await AsyncFileManager.default.removeItem(at: playlistDirectory)
-      } catch {
-        Logger.module.error("Error Deleting Playlist directory: \(error.localizedDescription)")
-      }
-    }
   }
 }
 

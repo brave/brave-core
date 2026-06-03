@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">ダウンロードを一時停止しました</translation>
 <translation id="1396327438254055134">V8 オプティマイザーの使用を許可するサイトを指定します。</translation>
 <translation id="1409338233051621926">[アプリ]、[デフォルトのアプリ] をタップします</translation>
+<translation id="1414315029670184034">サイトにカメラの使用を許可しない</translation>
 <translation id="1415402041810619267">URL の短縮バージョンです</translation>
 <translation id="1741136041592162279">Brave で最近使ったタブをデバイスと共有して、デバイスのアプリリストと検索結果に表示できます。この機能は Brave の設定でオンまたはオフにできます。</translation>
 <translation id="1420688843103859429">タッチパッドを 2 本の指でスワイプして前後に移動します</translation>
@@ -64,6 +65,7 @@
 <translation id="1644574205037202324">履歴</translation>
 <translation id="1652197001188145583">オンにすると、サイトは NFC デバイスの使用を要求できます。オフにすると、サイトは NFC デバイスを使用できません。</translation>
 <translation id="1660204651932907780">音声の再生をサイトに許可する（推奨）</translation>
+<translation id="1676590040242013349">[常に安全な接続を使用する] がオンになります。</translation>
 <translation id="1677097821151855053">Cookie と他のサイトデータは、ログインや広告のパーソナライズなどでユーザーを覚えておくために使用されます。すべてのサイトの Cookie を管理するには、<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>をご覧ください。</translation>
 <translation id="1679305402657584804">サイトが NFC デバイスの使用を要求できるようにする</translation>
 <translation id="1686785653877010442">多くのサイトは、最新情報やチャット メッセージなどを知らせる目的で通知を送信します。</translation>
@@ -79,7 +81,6 @@
 <translation id="1781533683087883868">リーディング モードのリンクをオフにする</translation>
 <translation id="1785415724048343560">利便性が向上します（推奨）</translation>
 <translation id="1796588414813960292">音を使用する機能は動作しなくなります</translation>
-<translation id="7401204338724669842">Brave のおすすめの使い方</translation>
 <translation id="6704867734300244173">オンにすると、Brave の動作が速くなり、JavaScript を使用する機能が設計どおりに動作します。オフにすると、パフォーマンスは低下しますが、攻撃に対する V8 の耐性が強化されます。</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/> に AR の使用を許可するには、<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でもカメラをオンにしてください。</translation>
 <translation id="1822318649925991542">位置を変更してブラウジング環境をカスタマイズ</translation>
@@ -98,6 +99,7 @@
 <translation id="1985247341569771101">オンにすると、サイトはデバイスのモーション センサーを使用できます。オフにすると、サイトはモーション センサーを使用できません。</translation>
 <translation id="1985716030964443178">リストのすべてのサイトがデフォルトのズームにリセットされます</translation>
 <translation id="1989112275319619282">閲覧</translation>
+<translation id="1991370806334788445">サードパーティ Cookie を許可してみてください。ブラウジング保護の強度は低下しますが、サイトの機能が想定どおりに動作する可能性が高くなります。</translation>
 <translation id="1994173015038366702">サイトの URL</translation>
 <translation id="1994558116414798016">フォントを Lexend に設定</translation>
 <translation id="2004697686368036666">一部のサイトで機能を使用できなくなる可能性があります</translation>
@@ -125,7 +127,6 @@
 <translation id="2228071138934252756"><ph name="APP_NAME"/> にカメラへのアクセスを許可するには、<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でもカメラをオンにしてください。</translation>
 <translation id="2231160360698766265">保護されたコンテンツの再生をサイトに許可する</translation>
 <translation id="2235344399760031203">サードパーティの Cookie がブロックされています</translation>
-<translation id="2238944249568001759">最後のタブに基づく検索キーワードの候補</translation>
 <translation id="2241587408274973373">新しいタブページのカード</translation>
 <translation id="2241634353105152135">一回限り</translation>
 <translation id="2253414712144136228"><ph name="NAME_OF_LIST_ITEM"/>　を削除</translation>
@@ -164,13 +165,9 @@
 <translation id="257931822824936280">展開されています - クリックすると折りたたまれます。</translation>
 <translation id="2586657967955657006">クリップボード</translation>
 <translation id="2588271083332682494">タブグループで整理整頓</translation>
+<translation id="2592917252160773942">サイトがカメラの使用を要求できるようにする</translation>
 <translation id="2597457036804169544">ダークモードをサイトに適用しません</translation>
 <translation id="2606760465469169465">自動確認</translation>
-<translation id="7615153661410655750"><ph name="BEGIN_LINK1"/>Android の設定<ph name="END_LINK1"/>で管理
-
-高度な保護機能では、次の Brave の設定を制御します。
-• [常に安全な接続を使用する] がオンになります。
-• [JavaScript オプティマイザー] がオフになります。<ph name="BEGIN_LINK2"/>サイトの例外を管理する<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">特定のサイトに対して JavaScript を許可します。</translation>
 <translation id="2626708220538466178">デフォルトのブラウザのボトムシートが閉じられました</translation>
 <translation id="2653659639078652383">送信</translation>
@@ -214,7 +211,6 @@
 <translation id="3069226013421428034">特定のサイトのサードパーティのログインを許可します。</translation>
 <translation id="310297983047869047">前のスライド</translation>
 <translation id="3108122610701115301">デフォルトに設定</translation>
-<translation id="3109724472072898302">折りたたみ表示中</translation>
 <translation id="310979712355504754">すべて削除</translation>
 <translation id="311394601889664316">サイトにデバイス上のファイルやフォルダの編集を許可しない</translation>
 <translation id="3114012059975132928">動画プレーヤー</translation>
@@ -243,6 +239,7 @@
 <translation id="3360338140203645771">保存したズームレベルを削除しますか？</translation>
 <translation id="3362437373201486687">Bluetooth デバイスをスキャンしています</translation>
 <translation id="3368138297038111198">ウィンドウを共有しています</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{メモリ不足のため、{TOTAL_COUNT} 個中 1 個のアイテムを表示しています}other{メモリ不足のため、{TOTAL_COUNT} 個中 # 個のアイテムを表示しています}}</translation>
 <translation id="3386292677130313581">サイトに現在地の認識を許可する前に確認する（推奨）</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="344449859752187052">サードパーティ Cookie がブロックされています</translation>
@@ -260,7 +257,6 @@
 <translation id="3602290021589620013">プレビュー</translation>
 <translation id="3611658447322220736">最近閉じたサイトがデータの送受信を完了できるようにする</translation>
 <translation id="3619294456800709762">サイトはピクチャー イン ピクチャーを自動的に開始できる</translation>
-<translation id="3628308229821498208">提案された検索</translation>
 <translation id="3632460243282703117">許可</translation>
 <translation id="363748948745453283">おおよその位置情報を使用しています</translation>
 <translation id="3641456520301071208">サイトが位置情報を要求できるようにする</translation>
@@ -292,6 +288,7 @@
 <translation id="1799795508209440035">今日、Brave で Cookie を再びブロックします</translation>
 <translation id="385051799172605136">戻る</translation>
 <translation id="3859306556332390985">前方にシーク再生</translation>
+<translation id="9046306654872718870">ホームページの色や画像をカスタマイズして Brave を自分仕様にすることができます</translation>
 <translation id="389521680295183045">サイトがデバイスのアクティブ状態の検出を要求できるようにする</translation>
 <translation id="3895926599014793903">強制的にズームを有効にする</translation>
 <translation id="3903738175795615004">全画面表示を終了するには、上からドラッグするか、Esc キーを押します。</translation>
@@ -335,6 +332,7 @@
 <translation id="4290791284969893584">ページを閉じると、開始したタスクが完了できなくなります</translation>
 <translation id="429312253194641664">サイトでメディアが再生されています</translation>
 <translation id="42981349822642051">展開</translation>
+<translation id="4310738531374808763">ホームページをカスタマイズ</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{明日で期限切れ}other{あと # 日で期限切れ}}</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> のすべてのサイト</translation>
 <translation id="4340799661701629185">サイトに通知の送信を許可しない</translation>
@@ -364,6 +362,7 @@
 <translation id="4635969503923889910">サイトに NFC デバイスの使用を許可しない</translation>
 <translation id="4644713492825682049">削除してリセット</translation>
 <translation id="4645575059429386691">保護者により管理されています</translation>
+<translation id="4651224148644053314">その他の色とオプション</translation>
 <translation id="4652266463001779298">ブロック</translation>
 <translation id="4655846733459137112">[はい] をタップすると、次回ログイン時にこのパスワードを簡単に使用できます</translation>
 <translation id="4663373278480897665">カメラを使用できます</translation>
@@ -441,7 +440,6 @@
 <translation id="5515432237048785579">Discover フィードのボトムシートが画面全体に表示されています</translation>
 <translation id="5516455585884385570">通知設定を開く</translation>
 <translation id="5527111080432883924">サイトがクリップボードのテキストや画像を読み取る前に確認する（推奨）</translation>
-<translation id="5553374991681107062">最新</translation>
 <translation id="674221630984410403">Brave の V8 エンジンでサイトを高速化しない（攻撃に対する Brave の耐性は若干強化されます）</translation>
 <translation id="5556459405103347317">再読み込み</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> をブロックしました</translation>
@@ -521,10 +519,10 @@
 <translation id="6231752747840485235">「<ph name="APP_NAME"/>」をアンインストールしますか？</translation>
 <translation id="4789073065838177382">[ブラウザアプリ] &gt; [Brave] をタップします</translation>
 <translation id="6260830281887654268">新しいタブページの外観テーマ コレクションのボトムシートが画面の下半分に表示されています</translation>
-<translation id="6262191102408817757">最後のタブに基づく</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>をブロック</translation>
 <translation id="6270391203985052864">通知を送信するかどうかの確認をサイトに許可する</translation>
 <translation id="6295158916970320988">すべてのサイト</translation>
+<translation id="6305257382500066042">今すぐ試す</translation>
 <translation id="6320088164292336938">バイブレーション</translation>
 <translation id="6367753977865761591">特定のサイトのサードパーティのログインをブロックします。</translation>
 <translation id="6398765197997659313">全画面表示を終了</translation>
@@ -579,6 +577,7 @@
 <translation id="6912998170423641340">サイトによるクリップボードのテキストや画像の読み取りをブロックする</translation>
 <translation id="6945221475159498467">選択</translation>
 <translation id="6950072572526089586">アクセスしたサイトで、想定どおりに機能するよう（サイトへのログイン状態を保持する、ショッピング カートに商品を保存するなど）、行った操作に関する情報が保存されることがあります。多くの場合、こうした情報はデバイスに一時的に保存されます。</translation>
+<translation id="6964291282260073066">[WebGPU] がオフになります。</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">ローズのテーマ</translation>
 <translation id="6980861169612950611">次のサイトデータを削除しますか？<ph name="SITE_NAME"/></translation>
@@ -601,7 +600,6 @@
 <translation id="7180611975245234373">更新</translation>
 <translation id="7188508872042490670">デバイス上のサイトデータ</translation>
 <translation id="7201549776650881587">この操作を行うと、<ph name="ORIGIN"/> とそのドメインの全サイトまたはホーム画面の同アプリにより保存されたデータと Cookie がすべて削除されます</translation>
-<translation id="7203150201908454328">展開表示中</translation>
 <translation id="7213166370492037743">サイトにローカル ネットワーク上のデバイスへの接続を許可しない</translation>
 <translation id="7219254577985949841">サイトデータを削除しますか？</translation>
 <translation id="723171743924126238">画像を選択</translation>
@@ -610,8 +608,12 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> 件選択されています</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>を許可</translation>
 <translation id="7276071417425470385">オンにすると、サイトはバーチャル リアリティ デバイスの使用を要求できます。オフにすると、サイトはバーチャル リアリティ デバイスを使用できません。</translation>
+<translation id="7279851812866769760">連絡先を共有する</translation>
 <translation id="7282197670900591579">シトロンのテーマ</translation>
 <translation id="728412880473384942">サイトは速くなりますが、安全性は低下します</translation>
+<translation id="5843014938239239453"><ph name="BEGIN_LINK1"/>Android の設定<ph name="END_LINK1"/>で管理します
+
+高度な保護機能では、次の Brave の設定を制御します。</translation>
 <translation id="7366415735885268578">サイトの追加</translation>
 <translation id="7368695150573390554">オフライン データがすべて削除されます</translation>
 <translation id="7369678931043226462">[新しいタブページをカスタマイズ] のボトムシートが画面の下半分に表示されています</translation>
@@ -656,7 +658,6 @@
 <translation id="780301667611848630">利用しない</translation>
 <translation id="7804248752222191302">サイトでカメラが使用されています</translation>
 <translation id="7805832099057502789">新しいタブページの外観のボトムシートが画面全体に表示されています</translation>
-<translation id="6720480757902085971">Brave から提供</translation>
 <translation id="7809029041571842593">新しいタブページのカードのボトムシートが画面の下半分に表示されています</translation>
 <translation id="7815680994978050279">危険なダウンロードがブロックされました</translation>
 <translation id="7835852323729233924">再生中のメディア</translation>
@@ -675,7 +676,6 @@
 <translation id="8007176423574883786">このデバイスに対して無効</translation>
 <translation id="802154636333426148">ダウンロード エラー</translation>
 <translation id="8033047164036749181">このサイトの通知を許可</translation>
-<translation id="8042586301629853791">並べ替え:</translation>
 <translation id="8051193500142930381">カメラを必要とする機能は動作しなくなります</translation>
 <translation id="2495032782748793764">Brave のデフォルト</translation>
 <translation id="8067883171444229417">動画を再生します</translation>
@@ -700,6 +700,7 @@
 <translation id="823874716226307142">オンにすると、サイトはローカル ネットワーク上の他のデバイスへのアクセスを要求できます。オフにすると、サイトはローカル ネットワーク上の他のデバイスにアクセスできません。</translation>
 <translation id="8249310407154411074">一番上に移動</translation>
 <translation id="8261506727792406068">削除</translation>
+<translation id="8273596202562472147">「<ph name="SITE_NAME"/>」に関するその他のオプション</translation>
 <translation id="8284326494547611709">字幕</translation>
 <translation id="8300705686683892304">アプリによる管理</translation>
 <translation id="8301363963630676147">一時的に許可 • おおよその位置情報を使用</translation>
@@ -723,6 +724,7 @@
 <translation id="8471525937465764768">ドキュメントの印刷やストレージ デバイスへの保存のため、サイトが USB デバイスに接続する場合があります。</translation>
 <translation id="8473055640493819707">「<ph name="APP_NAME"/>」は最新ではありません。アプリを再インストールしてください。</translation>
 <translation id="847433688444405067">複数のデバイスでブラウジング</translation>
+<translation id="8484556725636319115">[JavaScript オプティマイザー] がオフになります。<ph name="BEGIN_LINK2"/>サイトの例外を管理する<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">オフラインでの利用</translation>
 <translation id="848952951823693243">常にモバイル版サイトを表示する</translation>
 <translation id="8492822722330266509">サイトがポップアップを送信したりリダイレクトを使用したりできるようにする</translation>
@@ -744,7 +746,6 @@
 <translation id="8676374126336081632">入力内容を消去</translation>
 <translation id="8681886425883659911">煩わしい広告や誤解を招く広告が表示されることがわかっているサイトで広告がブロックされます</translation>
 <translation id="868929229000858085">連絡先を検索</translation>
-<translation id="8707904142362025782">サイトがカメラへのアクセスを要求できるようにする</translation>
 <translation id="8712637175834984815">理解しました</translation>
 <translation id="8715862698998036666">全画面表示を終了するには、上からドラッグして、左端または右端からスワイプします。</translation>
 <translation id="8716050156658570300">サイトがモーション センサーと光センサーの使用を要求できるようにする</translation>
@@ -794,6 +795,7 @@
 <translation id="7359422048569205930">Brave で最近使ったタブをデバイスのアプリリストと検索結果に表示できます。この機能は Brave の設定でいつでもオフにできます。</translation>
 <translation id="9162462602695099906">このページは危険です</translation>
 <translation id="9182556968660520230">サイトに保護されたコンテンツの再生を許可しない</translation>
+<translation id="927148002081263046">連絡先を共有する</translation>
 <translation id="947156494302904893">アクセスしたサイトは、あなたが bot ではなく実在のユーザーであることを確認できます</translation>
 <translation id="959682366969460160">タブを整理</translation>
 <translation id="960590623979248167">ハイパーリンクを表示</translation>

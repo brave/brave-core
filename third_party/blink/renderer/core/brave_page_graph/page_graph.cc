@@ -853,7 +853,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
       blink::Vector<String> cookie_structure = value.SplitSkippingEmpty('=');
       String cookie_key = *(cookie_structure.begin());
       String cookie_value =
-          value.Substring(cookie_key.length() + 1, value.length());
+          value.DeprecatedSubstring(cookie_key.length() + 1, value.length());
       RegisterStorageWrite(execution_context, cookie_key,
                            base::Value(cookie_value.Utf8()),
                            brave_page_graph::StorageLocation::kCookie);
@@ -936,7 +936,7 @@ void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
           .script_code =
               blink::DecodeUrlEscapeSequences(
                   url.GetString(), blink::DecodeUrlMode::kUtf8OrIsomorphic)
-                  .Substring(kJavascriptSchemeLength),
+                  .DeprecatedSubstring(kJavascriptSchemeLength),
           .parent_script_id = GetExecutingScriptId(execution_context),
       });
 }
@@ -1179,7 +1179,7 @@ String PageGraph::ToGraphML() const {
   // SAFETY: unfortunately xmlDocDumpMemoryEnc is a C api that
   // manages the buffer internally, so we have to rely on it for the
   // pointer/size pair.
-  auto graphml_string = String::FromUTF8(base::as_bytes(UNSAFE_BUFFERS(
+  auto graphml_string = String::FromUtf8(base::as_bytes(UNSAFE_BUFFERS(
       base::span(xml_string, base::checked_cast<size_t>(size)))));
   DCHECK(!graphml_string.empty());
 

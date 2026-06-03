@@ -19,6 +19,7 @@ export const StyledWrapper = styled.div`
 `
 
 export const DropDownButton = styled(WalletButton)`
+  font: ${leo.font.default.regular};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,11 +29,6 @@ export const DropDownButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   border-radius: 8px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
   padding: 10px 8px 10px 16px;
   margin-bottom: 8px;
   color: ${leo.color.text.primary};
@@ -70,6 +66,7 @@ export const DropDown = styled.div`
 `
 
 export const PermissionButton = styled(WalletButton)`
+  font: ${leo.font.default.regular};
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -80,11 +77,6 @@ export const PermissionButton = styled(WalletButton)`
   border: none;
   background: none;
   padding: 8px 8px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
   color: ${leo.color.text.primary};
   margin-bottom: 8px;
   &:last-child {

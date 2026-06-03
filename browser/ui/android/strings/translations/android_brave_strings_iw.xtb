@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">חוסם את הכניסה, התפריט, ההערות ופרטי הסרטון ב-youtube.com.</translation>
 <translation id="8531835121131500698">חסום YouTube Shorts</translation>
 <translation id="2167271714269158912">חוסם Shorts מדף הבית, דף המגמות ותוצאות החיפוש ב-youtube.com.</translation>
+<translation id="2564435705466025309">חסום סרטוני YouTube שתורגמו באופן אוטומטי</translation>
+<translation id="3603500459037204525">חוסם סרטוני וידאו שתורגמו באופן אוטומטי מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
+<translation id="4067265130987656010">חסום תמונות ממוזערות של YouTube</translation>
+<translation id="3034711349887440574">חוסם תמונות ממוזערות מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
+<translation id="8741919213635379855">חסום משחקים ניתנים לשיחק ב-YouTube</translation>
+<translation id="2216551241986578034">חוסם משחקים ניתנים לשיחק מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
+<translation id="9038505474874975130">חסום סרטוני YouTube שמיועדים לחברים בלבד</translation>
+<translation id="3084239516382196983">חוסם סרטוני וידאו שמיועדים לחברים בלבד מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
 <translation id="7498695072878479744">אפשר לחצני כניסה של Google באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
@@ -186,20 +194,12 @@
 <translation id="6587448235155023666">השינויים שלך ייכנסו לתוקף בפעם הבאה שתפעיל/י מחדש את Brave</translation>
 <translation id="8701563696941209024">הפעל שנית עכשיו</translation>
 <translation id="834487290629916192">אחר כך</translation>
-<translation id="4117451092682672487">פרטיות. בפשטות.</translation>
-<translation id="7909375417585209817">עם Brave כברירת מחדל, כל קישור שאתם מקישים עליו נפתח עם הגנות הפרטיות של Brave.</translation>
 <translation id="763369711159699222">עזרו לנו להפוך את Brave לטוב יותר</translation>
 <translation id="8025937231644975408">נשמח לשמוע מאילו פיצ׳רים הכי נהנית.</translation>
-<translation id="6718362830686703942">שלחו דוחות אבחון, במידה וחוויתם קריסה או הקפאה.</translation>
-<translation id="8616157231067364693">שתפו תובנות בנוגע למוצרים באופן פרטי ואנונימי בכל מה שקשור לתכונות שבהן משתמשי Brave עושים שימוש.</translation>
 <translation id="2888496576732880897">לסייע לחיפוש Brave לצמוח</translation>
 <translation id="7198716519700700181">לחסום הפרעות במהלך הסטרימינג</translation>
 <translation id="7044431516245362795">אפשר להצטרף לפרויקט Web Discovery כדי לעזור להגדיל את האינדקס ולשפר את תוצאות החיפוש. <ph name="LEARN_MORE_START"/>למידע נוסף<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">לוגו Brave</translation>
-<translation id="1389386068457132299">תמונת רקע של הכנסה לשימוש</translation>
-<translation id="5101985748360228609">קישוט עלה עליון</translation>
-<translation id="5270920361877570459">קישוט עלה תחתון</translation>
-<translation id="4021716437419160885">גלול מטה</translation>
 <translation id="4767173360729868049">איור של עזרה לחיפוש Brave</translation>
 <translation id="8241918461631453498">איור של חסימת הפרעות</translation>
 <translation id="8213310572767907663">איור של שיפור Brave</translation>
@@ -215,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> ועוד עוקבי מודעות נחסמו</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; רכיבי מעקב נחסמו</translation>
 <translation id="8281886186245836920">דלג</translation>
-<translation id="6165508094623778733">לימדו עוד</translation>
 <translation id="986879628471635371">פתרון תקלות מובנה</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">הרווח/י <ph name="TOKEN"/>s</translation>
@@ -366,7 +365,7 @@
 <translation id="944340256927461196">בלי להשאיר עקבות במכשיר שלך</translation>
 <translation id="2063044449012253966">אתרים שביקרת בהם בחלונות פרטיים לא יופיעו בהיסטוריה שלך. קובצי cookie, נתוני טפסים, ונתוני אתרים נעלמים ברגע שכל החלונות הפרטיים נסגרו.</translation>
 <translation id="7395764193745523646">גלישה גלויה</translation>
-<translation id="8670344404057978375">לתשומך לבך: אפילו בחלונות פרטיים, פעילות הגלישה שלך עדיין עשויה להיות גלויה לספק האינטרנט שלך, לצופים ברשת, או למעסיק שלך (אם השתמשת במכשיר או רשת מטעם העבודה).</translation>
+<translation id="8435098045013317895">לתשומך לבך — אפילו בחלונות פרטיים — פעילות הגלישה שלך עדיין עשויה להיות גלויה לספק האינטרנט שלך, לצופים ברשת, או למעסיק שלך (אם השתמשת במכשיר או רשת מטעם העבודה).</translation>
 <translation id="1413177583895309156">Brave VPN מצפין ומגן על כל מה שעשית ברשת, אפילו מחוץ לדפדפן Brave.</translation>
 <translation id="3974348661685061050">לנסות חינם למשך 7 ימים</translation>
 <translation id="5789441016350810005">Brave Ads נשלחות כאשר הדפדפן נמצא ברקע</translation>
@@ -510,6 +509,7 @@
 <translation id="2718046830255553131">נתוני דוחות הפרטיות נמחקו.</translation>
 <translation id="8376263745431603066">אפשר "מצב לילה" (ניסיוני)</translation>
 <translation id="1383876407941801731">חיפוש</translation>
+<translation id="6165508094623778733">לימדו עוד</translation>
 <translation id="13296465911709339">הטקסט שלך הועתק ללוח.</translation>
 <translation id="2735834606413553397">הכתובת הציבורית הועתקה ללוח.</translation>
 <translation id="2977461003134694205">סטטיסטיקות פרטיות</translation>
@@ -970,23 +970,24 @@
 <translation id="7659483790930268440">אינדקס טבלת חיפוש כתובות:</translation>
 <translation id="5494920125229734069">בחר הכל</translation>
 <translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
+<translation id="2935698011275148880">מקור אמיץ</translation>
 <translation id="944736176598169208">פרסים</translation>
-<translation id="4272190451231642425">שלח דוחות קריסה באופן אוטומטי</translation>
 <translation id="1199170151481311646">ניתוח נתונים תוך שמירה על פרטיות</translation>
 <translation id="1706715315466634757">כינויים לדוא"ל</translation>
 <translation id="6709133671862442373">חדשות</translation>
 <translation id="5990642573624858459">דיווח סטטיסטי</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">אפס להגדרות ברירת מחדל</translation>
-<translation id="4922034974043704366">תכונה זו מופעלת מכיוון שבחרת בה.</translation>
 <translation id="2587535830241068901">התאם אישית את הדפדפן שלך תוך המשך תמיכה ב-Brave</translation>
-<translation id="7235314227387539944">Brave Origin היא גרסה בתשלום של הדפדפן למשתמשים שלא זקוקים לכל התכונות התומכות ב-Brave כעסק, אך עדיין רוצים את הפרטיות שרק Brave מציעה. משתמשי Origin ימשיכו ליהנות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות שלנו (דרך מגיני Brave), כמו גם עדכוני תוכנה רגילים, תיקוני Chromium ושיפורי אבטחה ופרטיות. Origin יסיר את רוב התכונות האחרות מהדפדפן.</translation>
-<translation id="7941943775131052130">שימו לב שרכישה של Brave Origin תכלול גם גישה לחיפוש Brave פרימיום, מכיוון ש-Origin יסיר מודעות מדף התוצאות של חיפוש Brave.</translation>
+<translation id="123297831435065577">Brave Origin היא גרסה בתשלום של הדפדפן למשתמשים שלא זקוקים לכל התכונות התומכות ב-Brave כעסק, אך עדיין רוצים את הפרטיות שרק Brave מציעה. משתמשי Origin ימשיכו ליהנות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות שלנו (דרך המגינים), כמו גם עדכוני תוכנה רגילים, תיקוני Chromium ושיפורי אבטחה ופרטיות.</translation>
 <translation id="2573819149217596923">שינוי תכונות Brave</translation>
 <translation id="7415416427817229128">הפעלה או השבתה של תכונה ב-Brave דורשת הפעלה מחדש של הדפדפן כדי להחיל שינויים. האם תרצה להפעיל מחדש כעת?</translation>
 <translation id="2256115617011615191">הפעל מחדש כעת</translation>
+<translation id="2160089182263405907">השבתת תכונות</translation>
+<translation id="7530313002494358590">הפעלה או השבתה של תכונת Brave דורשת הפעלה מחדש של הדפדפן כדי להחיל שינויים. אנא לחץ על <ph name="BEGIN_BOLD"/>הפעל מחדש כעת<ph name="END_BOLD"/> כאשר Brave Origin סיים את העדכון.</translation>
+<translation id="1028940738207645746">האם אתה בטוח שברצונך לאפס את כל ההגדרות לברירת המחדל?</translation>
+<translation id="5939518447894949180">אפס</translation>
 <translation id="8554205386170195281">קנייה</translation>
-<translation id="7071521146534760487">נהל חשבון</translation>
 <translation id="8613144770663526433">היכנס עם Brave Wallet</translation>
 <translation id="3696514931437952995">אתה נכנס לחשבון<ph name="ORIGIN"/>.ארנק אמיץ ישתף את כתובת הארנק שלך<ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">ראה פרטים</translation>
@@ -1021,7 +1022,6 @@
 <translation id="1309636029062006520">צור רשימות השמעה של האודיו והסרטונים המועדפים עליך, והפעל בכל זמן ובכל מקום.</translation>
 <translation id="7899390017499980820">כפתור הוסף לרשימת השמעה</translation>
 <translation id="6901152954398668317">הצג או הסתר כפתור "הוסף לרשימת השמעה" לגישה מהירה להוספה או הסרה של מדיה.</translation>
-<translation id="5939518447894949180">אפס</translation>
 <translation id="8199028711686989861">הסר את כל הסרטונים מרשימת ההשמעה, כולל אחסון במצב לא מקוון.</translation>
 <translation id="4590997608186539865">רשימת השמעה</translation>
 <translation id="7525067979554623046">צור</translation>
@@ -1115,9 +1115,9 @@
 <translation id="6261139507111008244">תמכו במשימה שלנו &amp; עבודה בקוד פתוח</translation>
 <translation id="6073373503121903099">ממשק דפדפן מינימליסטי שממוקד על מגיני Brave</translation>
 <translation id="2267973897341040743">שמירה על חסימת פרסומות, פרטיות, &amp; מהירות</translation>
-<translation id="3339535734679532460">רכישה חד-פעמית, ללא עלות הירשמות נוספת</translation>
-<translation id="2805615640226281689">רכישה חד-פעמית</translation>
-<translation id="261433018299584676">קבל קוד כניסה</translation>
+<translation id="4059093523966730868">רכישה חד-פעמית ניתנת להפעלה מספר פעמים בכל המכשירים שלך</translation>
+<translation id="7006681677649762716">רכישה חד-פעמית</translation>
+<translation id="8707617004598499947">אמת רכישת Brave Origin</translation>
 <translation id="1943432128510653496">שמירת סיסמאות</translation>
 <translation id="2100273922101894616">כניסה אוטומטית</translation>
 <translation id="363596933471559332">כניסה אוטומטית לאתרים באמצעות פרטי כניסה מאוחסנים. כשתכונה זו כבויה, יהיה עליך לבצע אימות לפני כל כניסה לאתר.</translation>
@@ -1168,4 +1168,22 @@
 <translation id="1724977129262658800">יש לבטל את הנעילה כדי לערוך את הסיסמה</translation>
 <translation id="5780792035410621042">כדי להעתיק סיסמאות, תחילה יש להגדיר נעילת מסך במכשיר</translation>
 <translation id="7986497153528221272">כדי להציג סיסמאות, תחילה יש להגדיר נעילת מסך במכשיר</translation>
+<translation id="4882237634123415792">מנועי חיפוש מותאמים אישית</translation>
+<translation id="8364431224461158026">הוספת מנוע חיפוש מותאם אישית</translation>
+<translation id="7307935603426295341">ערוך מנוע חיפוש מותאם אישית</translation>
+<translation id="4002066346123236978">כותרת</translation>
+<translation id="3653110185270660915">הזן את שם מנוע החיפוש</translation>
+<translation id="7400418766976504921">כתובת אתר</translation>
+<translation id="6410668567036790476">הוספת מנוע חיפוש</translation>
+<translation id="6289878295410648689">יש לכתוב את כתובת ה-URL לחיפוש ולהחליף את השאילתה ב-<ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="1298325705808878139">לדוגמה: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8706939021136180678">כתובת ה-URL אינה תקינה.</translation>
+<translation id="5144960943371551167">הכותרת יכולה להכיל רק אותיות, מספרים ורווחים.</translation>
+<translation id="7361775378755455309">מנוע חיפוש עם מילת מפתח זו כבר קיים.</translation>
+<translation id="463451857046640291">הוספת מנוע החיפוש נכשלה.</translation>
+<translation id="1229671956956864948">עדכון מנוע החיפוש נכשל.</translation>
+<translation id="1462771969120037152">מחיקת מנוע החיפוש נכשלה. ייתכן שמנוע החיפוש שאתה מנסה למחוק מוגדר כברירת המחדל.</translation>
+<translation id="1079140196216383600">מחק מנוע חיפוש מותאם אישית</translation>
+<translation id="525276572490219787">האם אתה בטוח שברצונך למחוק את "<ph name="SEARCH_ENGINE_NAME"/>"? פעולה זו אינה ניתנת לביטול.</translation>
+<translation id="6406506848690869874">סנכרון</translation>
 </translationbundle>

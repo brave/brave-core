@@ -14,7 +14,6 @@
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
@@ -24,9 +23,9 @@
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/api_request_helper/utils.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -38,29 +37,10 @@ namespace {
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
-void ParseJsonInWorkerTaskRunner(
-    std::string json,
-    base::SequencedTaskRunner* task_runner,
-    data_decoder::DataDecoder::ValueParseCallback callback) {
-  task_runner->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](std::string json) {
-            return base::JSONReader::ReadAndReturnValueWithError(
-                json, base::JSON_PARSE_RFC);
-          },
-          std::move(json)),
-      base::BindOnce(
-          [](data_decoder::DataDecoder::ValueParseCallback callback,
-             base::JSONReader::Result result) {
-            if (!result.has_value()) {
-              std::move(callback).Run(base::unexpected(result.error().message));
-            } else {
-              std::move(callback).Run(std::move(*result));
-            }
-          },
-          std::move(callback)));
+bool IsSuccessCode(int response_code) {
+  return response_code >= 200 && response_code <= 299;
 }
+
 
 scoped_refptr<base::SequencedTaskRunner> MakeDecoderTaskRunner() {
   return base::ThreadPool::CreateSequencedTaskRunner(
@@ -137,7 +117,7 @@ bool APIRequestResult::operator==(const APIRequestResult& other) const {
 }
 
 bool APIRequestResult::Is2XXResponseCode() const {
-  return response_code_ >= 200 && response_code_ <= 299;
+  return IsSuccessCode(response_code_);
 }
 
 bool APIRequestResult::IsResponseCodeValid() const {
@@ -338,6 +318,9 @@ APIRequestHelper::URLLoaderHandler::URLLoaderHandler(
     APIRequestHelper* api_request_helper,
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : api_request_helper_(api_request_helper),
+      sse_parser_(task_runner,
+                  base::BindRepeating(&URLLoaderHandler::OnSSEValueReceived,
+                                      base::Unretained(this))),
       task_runner_(std::move(task_runner)) {}
 APIRequestHelper::URLLoaderHandler::~URLLoaderHandler() = default;
 
@@ -352,6 +335,12 @@ void APIRequestHelper::URLLoaderHandler::RegisterURLLoader(
         if (handler) {
           if (response_head.mime_type == "text/event-stream") {
             handler->is_sse_ = true;
+          }
+          if (response_head.headers) {
+            const auto code = response_head.headers->response_code();
+            handler->is_response_fail_and_json_ =
+                !IsSuccessCode(code) &&
+                response_head.mime_type == "application/json";
           }
           if (handler->response_started_callback_) {
             std::move(handler->response_started_callback_)
@@ -390,11 +379,15 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     base::OnceClosure resume) {
   DVLOG(2) << "[[" << __func__ << "]]" << " Chunk received";
   if (is_sse_) {
-    ParseSSE(string_piece);
+    sse_parser_.Process(string_piece);
   } else {
     DVLOG(4) << "Chunk content: \n" << string_piece;
     TRACE_EVENT0("brave", "APIRequestHelper_OnDataReceivedNoSSE");
     ScopedPerfTracker tracker("Brave.APIRequestHelper.OnDataReceivedNoSSE");
+    if (MaybeAppendToErrorBodyBuffer(string_piece)) {
+      std::move(resume).Run();
+      return;
+    }
     data_received_callback_.Run(base::Value(string_piece));
   }
   // Get next chunk
@@ -414,8 +407,12 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
   // Drop any partial line that didn't end with a newline. Per the SSE spec,
   // events are terminated with a blank line, so well-formed streams should
   // always end on a line boundary.
-  sse_line_buffer_.clear();
+  sse_parser_.Clear();
   request_is_finished_ = true;
+
+  if (MaybeParseErrorBody()) {
+    return;
+  }
 
   // Delete now or when decoding operations are complete
   MaybeSendResult();
@@ -423,7 +420,7 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
 
 void APIRequestHelper::URLLoaderHandler::OnRetry(
     base::OnceClosure start_retry) {
-  sse_line_buffer_.clear();
+  sse_parser_.Clear();
   std::move(start_retry).Run();
   // We assume that a consumer of APIRequestHelper doesn't
   // care about discarding partial responses received so far
@@ -441,7 +438,7 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
   DCHECK(result_callback_);
   // This shouldn't be called on a request with multiple decoding operations,
   // otherwise we need to modify this to use data_chunk_parsed_callback_.
-  DCHECK_EQ(current_decoding_operation_count_, 0);
+  DCHECK(!sse_parser_.IsDecoding());
   APIRequestResult result = ToAPIRequestResult(std::move(url_loader_));
 
   if (!response_body) {
@@ -497,89 +494,56 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
   std::move(result_callback_).Run(std::move(result));
 }
 
+bool APIRequestHelper::URLLoaderHandler::MaybeAppendToErrorBodyBuffer(
+    std::string_view string_piece) {
+  if (!is_response_fail_and_json_.value_or(false)) {
+    return false;
+  }
+  error_body_buffer_.append(string_piece);
+  return true;
+}
+
+bool APIRequestHelper::URLLoaderHandler::MaybeParseErrorBody() {
+  if (error_body_buffer_.empty()) {
+    return false;
+  }
+  ParseJsonImpl(
+      std::move(error_body_buffer_),
+      base::BindOnce(&APIRequestHelper::URLLoaderHandler::OnParseErrorBody,
+                     GetWeakPtr()));
+  return true;
+}
+
+void APIRequestHelper::URLLoaderHandler::OnParseErrorBody(
+    ValueOrError result_value) {
+  if (result_value.has_value() && result_value->is_dict()) {
+    error_value_ = std::move(*result_value);
+  }
+  MaybeSendResult();
+}
+
+void APIRequestHelper::URLLoaderHandler::OnSSEValueReceived(
+    ValueOrError result) {
+  DCHECK(data_received_callback_);
+  data_received_callback_.Run(std::move(result));
+  MaybeSendResult();
+}
+
 void APIRequestHelper::URLLoaderHandler::MaybeSendResult() {
-  // Verify that counting hasn't gone wrong - it should never be less than 0.
-  DCHECK_LE(0, current_decoding_operation_count_);
   // Don't allow completion if decoding is still in progress so that
   // we don't delete the reference to |data_decoder_| which would cancel the
   // operations.
   // Response must be complete to know that decoding is definitely complete
   // since streaming responses may get more reponse chunks which need decoding.
-  const bool decoding_is_complete = (current_decoding_operation_count_ == 0);
+  const bool decoding_is_complete = !sse_parser_.IsDecoding();
 
   if (request_is_finished_ && decoding_is_complete) {
-    std::move(result_callback_).Run(ToAPIRequestResult(std::move(url_loader_)));
-  } else if (decoding_is_complete) {
-    VLOG(3) << "Did not run URLLoaderHandler completion handler, still have "
-            << current_decoding_operation_count_
-            << " decoding operations in progress, waiting for them to"
-            << " complete...";
+    auto result = ToAPIRequestResult(std::move(url_loader_));
+    result.value_body_ = std::move(error_value_);
+    std::move(result_callback_).Run(std::move(result));
   }
 }
 
-void APIRequestHelper::URLLoaderHandler::ParseSSE(
-    std::string_view string_piece) {
-  // New chunks should only be received before the request is completed
-  DCHECK(!request_is_finished_);
-
-  // Scan the incoming chunk for line endings (\r or \n) and process each
-  // complete line. Bytes after the last line ending are kept in
-  // |sse_line_buffer_| until the next chunk completes the line, to handle
-  // lines split across chunks.
-  size_t pos;
-  while ((pos = string_piece.find_first_of("\r\n")) != std::string_view::npos) {
-    auto line = string_piece.substr(0, pos);
-    if (!sse_line_buffer_.empty()) {
-      sse_line_buffer_.append(line);
-      line = sse_line_buffer_;
-    }
-    ProcessSSELine(line);
-    sse_line_buffer_.clear();
-    string_piece.remove_prefix(pos + 1);
-  }
-  if (!string_piece.empty()) {
-    sse_line_buffer_.append(string_piece);
-  }
-}
-
-void APIRequestHelper::URLLoaderHandler::ProcessSSELine(std::string_view line) {
-  // Skip SSE events that don't look like JSON — could be a string or [DONE]
-  // message.
-  // TODO(@nullhook): Parse both JSON and string values. The below currently
-  // only identifies JSON values.
-  if (line.empty()) {
-    return;
-  }
-  static constexpr char kDataPrefix[] = "data: {";
-  DVLOG(3) << "Received chunk: " << line;
-  if (!line.starts_with(kDataPrefix)) {
-    VLOG(1) << "Data did not start with SSE prefix";
-    return;
-  }
-
-  auto json = line.substr(strlen(kDataPrefix) - 1);
-  current_decoding_operation_count_++;
-
-  auto on_json_parsed = [](base::WeakPtr<URLLoaderHandler> handler,
-                           ValueOrError result) {
-    DVLOG(2) << "Chunk parsed";
-    if (!handler) {
-      return;
-    }
-    TRACE_EVENT0("brave", "APIRequestHelper_ParseSSECallback");
-    ScopedPerfTracker tracker("Brave.APIRequestHelper.ParseSSECallback");
-    handler->current_decoding_operation_count_--;
-    DCHECK(handler->data_received_callback_);
-    handler->data_received_callback_.Run(std::move(result));
-    // Parsing is potentially the last operation for |URLLoaderHandler|.
-    handler->MaybeSendResult();
-  };
-
-  DVLOG(2) << "Going to call ParseJsonImpl";
-  ParseJsonImpl(std::string(json),
-                base::BindOnce(std::move(on_json_parsed),
-                               weak_ptr_factory_.GetWeakPtr()));
-}
 
 void APIRequestHelper::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {

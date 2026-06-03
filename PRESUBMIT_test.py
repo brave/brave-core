@@ -92,5 +92,65 @@ class CheckTypeScriptSuppressionsHaveReasonsTest(unittest.TestCase):
         self.assertEqual(0, len(errors))
 
 
+class CheckJson5ParseErrorsTest(unittest.TestCase):
+
+    def testAcceptsJson5WithCommentsAndTrailingCommas(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile('brave/build/mappings.json5', [
+                '// libc++ private headers -> public facades',
+                '{',
+                '  "include": [',
+                '    [ "<__algorithm/sort.h>", "private",',
+                '      "<algorithm>", "public" ],  /* trailing comma OK */',
+                '  ],',
+                '}',
+            ]),
+        ]
+
+        errors = PRESUBMIT.CheckJson5ParseErrors(input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+    def testReportsInvalidJson5(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile('brave/build/broken.json5', [
+                '{',
+                '  "key": "value"',
+                '  "missing_comma": true',
+                '}',
+            ]),
+        ]
+
+        errors = PRESUBMIT.CheckJson5ParseErrors(input_api, MockOutputApi())
+
+        self.assertEqual(1, len(errors))
+        self.assertIn('brave/build/broken.json5 could not be parsed',
+                      errors[0].message)
+
+    def testIgnoresNonJson5Files(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile('brave/build/mappings.json',
+                             ['{ "not-json5": true,, }']),
+            MockAffectedFile('brave/foo.ts', ['const x = 1;']),
+        ]
+
+        errors = PRESUBMIT.CheckJson5ParseErrors(input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+    def testIgnoresDeletedFiles(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile('brave/build/deleted.json5', [], action='D'),
+        ]
+
+        errors = PRESUBMIT.CheckJson5ParseErrors(input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+
 if __name__ == '__main__':
     unittest.main()

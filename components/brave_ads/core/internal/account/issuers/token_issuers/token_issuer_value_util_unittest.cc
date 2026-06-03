@@ -52,43 +52,29 @@ constexpr std::string_view kTokenIssuersAsJson = R"JSON(
 
 class BraveAdsTokenIssuerValueUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersToValue) {
+TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersToList) {
   // Arrange
   const TokenIssuerList token_issuers = test::BuildTokenIssuers();
 
-  // Act
-  const base::ListValue list = TokenIssuersToValue(token_issuers);
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonList(kTokenIssuersAsJson), list);
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonList(kTokenIssuersAsJson),
+            TokenIssuersToList(token_issuers));
 }
 
-TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersToValue) {
-  // Act
-  const base::ListValue list = TokenIssuersToValue({});
-
-  // Assert
-  EXPECT_THAT(list, ::testing::IsEmpty());
+TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersToList) {
+  EXPECT_THAT(TokenIssuersToList({}), ::testing::IsEmpty());
 }
 
-TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersFromValue) {
+TEST_F(BraveAdsTokenIssuerValueUtilTest, MaybeBuildTokenIssuersFromList) {
   // Arrange
   const base::ListValue list = base::test::ParseJsonList(kTokenIssuersAsJson);
 
-  // Act
-  std::optional<TokenIssuerList> token_issuers = TokenIssuersFromValue(list);
-
-  // Assert
-  EXPECT_EQ(test::BuildTokenIssuers(), token_issuers);
+  // Act & Assert
+  EXPECT_EQ(test::BuildTokenIssuers(), MaybeBuildTokenIssuersFromList(list));
 }
 
-TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersFromValue) {
-  // Act
-  const std::optional<TokenIssuerList> token_issuers =
-      TokenIssuersFromValue({});
-
-  // Assert
-  EXPECT_THAT(*token_issuers, ::testing::IsEmpty());
+TEST_F(BraveAdsTokenIssuerValueUtilTest, NoTokenIssuersFromEmptyList) {
+  EXPECT_THAT(*MaybeBuildTokenIssuersFromList({}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

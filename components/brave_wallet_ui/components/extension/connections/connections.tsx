@@ -118,7 +118,7 @@ export const Connections = () => {
             coin={BraveWallet.CoinType.SOL}
             selectedAccountId={dappsAccounts?.solAccountId}
           />
-          {isCardanoDappSupportEnabled && (
+          {isCardanoDappSupportEnabled && dappsAccounts?.adaAccountId && (
             <ConnectionSection
               coin={BraveWallet.CoinType.ADA}
               selectedAccountId={dappsAccounts?.adaAccountId}

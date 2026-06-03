@@ -5,12 +5,6 @@
 
 #include "brave/utility/importer/chrome_importer.h"
 
-#if BUILDFLAG(IS_WIN)
-#include <windows.h>
-
-#include <wincrypt.h>
-#endif
-
 #include <memory>
 #include <optional>
 #include <string>
@@ -26,14 +20,12 @@
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "build/build_config.h"
 #include "chrome/common/importer/importer_bridge.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
 #include "components/user_data_importer/common/imported_bookmark_entry.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "components/user_data_importer/common/importer_url_row.h"
 #include "components/user_data_importer/content/favicon_reencode.h"
-#include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -42,109 +34,18 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "chrome/grit/branded_strings.h"
-#include "components/os_crypt/sync/key_storage_config_linux.h"
 #endif  // BUILDFLAG(IS_LINUX)
-
-#if BUILDFLAG(IS_WIN)
-#include "base/base64.h"
-#endif
 
 using base::Time;
 
 namespace {
 
-// Most of below code is copied from os_crypt_win.cc
-#if BUILDFLAG(IS_WIN)
-// Contains base64 random key encrypted with DPAPI.
-constexpr char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
-
-// Key prefix for a key encrypted with DPAPI.
-constexpr char kDPAPIKeyPrefix[] = "DPAPI";
-
-bool DecryptStringWithDPAPI(const std::string& ciphertext,
-                            std::string* plaintext) {
-  DATA_BLOB input;
-  input.pbData =
-      const_cast<BYTE*>(reinterpret_cast<const BYTE*>(ciphertext.data()));
-  input.cbData = static_cast<DWORD>(ciphertext.length());
-
-  DATA_BLOB output;
-  BOOL result = CryptUnprotectData(&input, nullptr, nullptr, nullptr, nullptr,
-                                   0, &output);
-  if (!result) {
-    PLOG(ERROR) << "Failed to decrypt";
-    return false;
-  }
-
-  plaintext->assign(reinterpret_cast<char*>(output.pbData), output.cbData);
-  LocalFree(output.pbData);
-  return true;
-}
-
-// Return false if encryption key setting is failed.
-// Fetch chrome's raw encryption key and use it to get chrome's password data.
-bool SetEncryptionKeyForPasswordImporting(
-    const base::FilePath& local_state_path) {
-  std::string local_state_content;
-  base::ReadFileToString(local_state_path, &local_state_content);
-  std::optional<base::DictValue> local_state = base::JSONReader::ReadDict(
-      local_state_content, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  if (!local_state) {
-    return false;
-  }
-
-  if (auto* base64_encrypted_key =
-          local_state->FindStringByDottedPath(kOsCryptEncryptedKeyPrefName)) {
-    std::string encrypted_key_with_header;
-
-    base::Base64Decode(*base64_encrypted_key, &encrypted_key_with_header);
-
-    if (!encrypted_key_with_header.starts_with(kDPAPIKeyPrefix)) {
-      return false;
-    }
-    std::string encrypted_key =
-        encrypted_key_with_header.substr(sizeof(kDPAPIKeyPrefix) - 1);
-    std::string key;
-    // This DPAPI decryption can fail if the user's password has been reset
-    // by an Administrator.
-    if (DecryptStringWithDPAPI(encrypted_key, &key)) {
-      OSCrypt::SetRawEncryptionKey(key);
-      return true;
-    }
-  }
-  return false;
-}
-#endif
-
-bool SetEncryptionKey(const base::FilePath& source_path) {
-#if BUILDFLAG(IS_LINUX)
-  // Set up crypt config.
-  std::unique_ptr<os_crypt::Config> config(new os_crypt::Config());
-  config->product_name = l10n_util::GetStringUTF8(IDS_PRODUCT_NAME);
-  config->should_use_preference = false;
-  config->user_data_path = source_path;
-  OSCrypt::SetConfig(std::move(config));
-  return true;
-#elif BUILDFLAG(IS_WIN)
-  base::FilePath local_state_path = source_path.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
-  if (!base::PathExists(local_state_path))
-    return false;
-  if (!SetEncryptionKeyForPasswordImporting(local_state_path))
-    return false;
-  return true;
-#else
-  return true;
-#endif
-}
-
-std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
-  std::u16string credit_card_number;
-  std::string encrypted_number = s->ColumnBlobAsString(column_index);
-  if (!encrypted_number.empty()) {
-    OSCrypt::DecryptString16(encrypted_number, &credit_card_number);
-  }
-  return credit_card_number;
+// Converts time expressed in microseconds since the Windows epoch (01-01-1601)
+// to time expressed in seconds since the Unix epoch (01-01-1970).
+double chromeTimeToDouble(int64_t time) {
+  // Divide by 1'000'000.0 to convert to seconds,
+  // then adjust by the number of seconds between the epochs.
+  return time / 1'000'000.0 - 11644473600.0;
 }
 
 }  // namespace
@@ -173,22 +74,6 @@ void ChromeImporter::StartImport(
     bridge_->NotifyItemStarted(user_data_importer::FAVORITES);
     ImportBookmarks();
     bridge_->NotifyItemEnded(user_data_importer::FAVORITES);
-  }
-
-#if BUILDFLAG(IS_WIN)
-  auto source_path =
-      source_profile.importer_type == user_data_importer::TYPE_OPERA
-          ? source_path_
-          : source_path_.DirName();
-#else
-  auto source_path = source_path_;
-#endif
-  const bool set_encryption_key = SetEncryptionKey(source_path);
-  if ((items & user_data_importer::PAYMENTS) && !cancelled() &&
-      set_encryption_key) {
-    bridge_->NotifyItemStarted(user_data_importer::PAYMENTS);
-    ImportPayments();
-    bridge_->NotifyItemEnded(user_data_importer::PAYMENTS);
   }
 
   bridge_->NotifyEnded();
@@ -411,43 +296,5 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         bookmarks->push_back(entry);
       }
     }
-  }
-}
-
-double ChromeImporter::chromeTimeToDouble(int64_t time) {
-  return ((time * 10 - 0x19DB1DED53E8000) / 10000) / 1000;
-}
-
-void ChromeImporter::ImportPayments() {
-  const base::FilePath payments_path = source_path_.Append(kWebDataFilename);
-
-  if (!base::PathExists(payments_path))
-    return;
-
-  ScopedCopyFile copy_payments_file(payments_path);
-  if (!copy_payments_file.copy_success())
-    return;
-
-  sql::Database db(sql::Database::Tag("Payments"));
-  if (!db.Open(copy_payments_file.copied_file_path())) {
-    return;
-  }
-
-  const char query[] =
-      "SELECT name_on_card, expiration_month, expiration_year, "
-      "card_number_encrypted, origin "
-      "FROM credit_cards;";
-  sql::Statement s(db.GetUniqueStatement(query));
-  auto* brave_bridge =
-      static_cast<BraveExternalProcessImporterBridge*>(bridge_.get());
-  while (s.Step()) {
-    const std::u16string card_number = DecryptedCardFromColumn(&s, 3);
-    // Empty means decryption is failed. Or chrome's data is invalid.
-    // Skip it.
-    if (card_number.empty())
-      continue;
-    brave_bridge->SetCreditCard(s.ColumnString16(0), s.ColumnString16(1),
-                                s.ColumnString16(2), card_number,
-                                s.ColumnString(4));
   }
 }

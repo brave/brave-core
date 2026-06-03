@@ -48,10 +48,15 @@ class AdBlockEngineWrapper {
       bool previously_matched_exception,
       bool previously_matched_important);
 
-  void OnResourcesLoaded(
-      bool is_default_engine,
-      std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-      AdblockResourceStorageBox storage);
+  bool Load(bool is_default_engine,
+            std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+            AdblockResourceStorageBox storage);
+
+  bool LoadDAT(bool is_default_engine,
+               DATFileDataBuffer dat,
+               AdblockResourceStorageBox storage);
+
+  DATFileDataBuffer Serialize(bool is_default_engine);
 
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
@@ -75,12 +80,14 @@ class AdBlockEngineWrapper {
 
   AdBlockEngine& default_engine_for_testing() {
     CHECK_IS_TEST();
-    return *TS_UNCHECKED_READ(default_engine_);
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return *default_engine_.get();
   }
 
   AdBlockEngine& additional_filters_engine_for_testing() {
     CHECK_IS_TEST();
-    return *TS_UNCHECKED_READ(additional_filters_engine_);
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return *additional_filters_engine_.get();
   }
 
   static void StripProceduralFilters(base::DictValue& resources);

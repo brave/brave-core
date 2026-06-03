@@ -26,9 +26,9 @@ include_polymer = !is_android && !is_ios
 
 group("grdp") {
   public_deps = [
+    ":external_js_bundles",
     ":fonts_grdp",
     ":icons_grdp",
-    ":leo_bundle",
     ":static_grdp",
     "//brave/components/brave_account/resources/opaque_ke",
   ]
@@ -90,18 +90,28 @@ if (include_polymer) {
   ]
 }
 
-transpile_web_ui("leo_bundle") {
+transpile_web_ui("external_js_bundles") {
   generate_grdp = true
   resource_path_prefix = "brave"
+  no_externals = true
 
-  imports_from = [ "//brave/ui/webui/resources/leo/" ]
+  imports_from = [
+    "//brave/ui/webui/resources/leo/",
+    "//brave/ui/webui/resources/react/",
+  ]
 
-  entry_points = [ [
-        "leo",
-        rebase_path("leo/initialize_bundle.ts"),
-      ] ]
+  entry_points = [
+    [
+      "leo",
+      rebase_path("leo/initialize_bundle.ts"),
+    ],
+    [
+      "react",
+      rebase_path("react/initialize_bundle.ts"),
+    ],
+  ]
 
-  resource_name = "leo"
+  resource_name = "external_js"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
@@ -134,7 +144,7 @@ leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
 # These are icons included in Leo. Add them on an as-needed basis, because there
 # are a **LOT** of icons in Leo. You can check if there's an icon  which suits
 # your needs here: https://leo.bravesoftware.com/?path=/story/icon--all-icons
-leo_icons = [
+leo_icons_sources = [
   "accessibility.svg",
   "activity.svg",
   "anthropic-color.svg",
@@ -152,6 +162,7 @@ leo_icons = [
   "arrow-up-and-down.svg",
   "arrow-up.svg",
   "attachment.svg",
+  "aurora-color.svg",
   "autoplay-off.svg",
   "autoplay-on.svg",
   "backward.svg",
@@ -165,7 +176,6 @@ leo_icons = [
   "brave-icon-monochrome.svg",
   "brave-icon-outline.svg",
   "brave-icon-release-color.svg",
-  "brave-icon-search-color.svg",
   "brave-icon-search.svg",
   "brave-search-big-color.svg",
   "broom.svg",
@@ -174,6 +184,7 @@ leo_icons = [
   "browser-home.svg",
   "browser-ntp-widget.svg",
   "btc-color.svg",
+  "bug.svg",
   "calendar-check.svg",
   "camera.svg",
   "caps-lock.svg",
@@ -191,24 +202,28 @@ leo_icons = [
   "checkbox-checked.svg",
   "checkbox-unchecked.svg",
   "clock.svg",
+  "close-circle-filled.svg",
+  "close-circle.svg",
   "close.svg",
   "cloud-download.svg",
   "cloud-off.svg",
   "code-off.svg",
   "code.svg",
+  "coinbase-color.svg",
   "coins-alt1.svg",
   "coins.svg",
+  "container-banking.svg",
+  "container-events.svg",
+  "container-messaging.svg",
+  "container-on.svg",
   "container-personal.svg",
-  "container-work.svg",
+  "container-private.svg",
+  "container-school.svg",
   "container-shopping.svg",
   "container-social.svg",
-  "container-events.svg",
-  "container-banking.svg",
   "container-star.svg",
   "container-travel.svg",
-  "container-school.svg",
-  "container-private.svg",
-  "container-messaging.svg",
+  "container-work.svg",
   "content-big.svg",
   "contract.svg",
   "cookie-off.svg",
@@ -235,6 +250,7 @@ leo_icons = [
   "edit-pencil.svg",
   "email-shield.svg",
   "erase.svg",
+  "eth-color.svg",
   "ethereum-off.svg",
   "ethereum-on.svg",
   "expand.svg",
@@ -245,6 +261,7 @@ leo_icons = [
   "file-text.svg",
   "file-upload.svg",
   "file.svg",
+  "filecoin-color.svg",
   "files-many.svg",
   "filter-settings.svg",
   "filter.svg",
@@ -271,6 +288,7 @@ leo_icons = [
   "idea.svg",
   "image-off.svg",
   "image.svg",
+  "import-arrow.svg",
   "info-filled.svg",
   "info-outline.svg",
   "junk-false.svg",
@@ -281,8 +299,8 @@ leo_icons = [
   "kimi-color.svg",
   "launch-off.svg",
   "launch.svg",
-  "leo-cursor.svg",
   "leo-cursor-filled.svg",
+  "leo-cursor.svg",
   "link-broken.svg",
   "link-normal.svg",
   "list-bullet-default.svg",
@@ -298,12 +316,14 @@ leo_icons = [
   "loop-1-toggle-on.svg",
   "loop-all-toggle-on.svg",
   "loop-all.svg",
+  "matic-color.svg",
   "media-visualizer-off.svg",
   "media-visualizer.svg",
   "message-bubble-comments.svg",
   "message-bubble-temporary.svg",
   "message-bubble-text.svg",
   "meta-color.svg",
+  "metamask-color.svg",
   "microphone-off.svg",
   "microphone.svg",
   "minus.svg",
@@ -340,12 +360,14 @@ leo_icons = [
   "nft.svg",
   "notification-off.svg",
   "notification.svg",
-  "openai-color.svg",
-  "outside.svg",
   "ollama.svg",
+  "op-color.svg",
+  "openai.svg",
+  "outside.svg",
   "pause-circle.svg",
   "pause-filled.svg",
   "percent.svg",
+  "phantom-color.svg",
   "picture-in-picture.svg",
   "pie-chart-2.svg",
   "play-circle.svg",
@@ -356,7 +378,6 @@ leo_icons = [
   "previous-outline.svg",
   "print.svg",
   "product-bat-color.svg",
-  "social-leo-favicon-fullheight-color.svg",
   "product-bat-outline.svg",
   "product-bookmarks.svg",
   "product-brave-leo.svg",
@@ -375,8 +396,8 @@ leo_icons = [
   "product-vpn.svg",
   "protocol-handler-off.svg",
   "protocol-handler.svg",
-  "qr-code.svg",
   "qr-code-alternative.svg",
+  "qr-code.svg",
   "qwant-color.svg",
   "qwen-color.svg",
   "radio-checked.svg",
@@ -393,32 +414,34 @@ leo_icons = [
   "search-news.svg",
   "search-zoom-in.svg",
   "search.svg",
-  "send.svg",
   "send-filled.svg",
+  "send.svg",
   "settings.svg",
   "share-macos.svg",
   "shield-disable.svg",
-  "shield-done.svg",
   "shield-done-filled.svg",
+  "shield-done.svg",
   "shield-star.svg",
   "shuffle-off.svg",
   "shuffle-on.svg",
   "shuffle-toggle-on.svg",
-  "sidepanel-open.svg",
   "sidenav-collapse.svg",
   "sidenav-expand.svg",
+  "sidepanel-open.svg",
+  "slash.svg",
+  "smart-proxy-routing.svg",
   "smartphone-desktop-off.svg",
   "smartphone-desktop.svg",
   "smartphone-hand.svg",
-  "smart-proxy-routing.svg",
   "social-brave-release-favicon-fullheight-color.svg",
-  "social-dribbble.svg",
-  "social-github.svg",
-  "social-reddit.svg",
-  "social-twitch.svg",
-  "social-vimeo.svg",
-  "social-x.svg",
-  "social-youtube.svg",
+  "social-github-color.svg",
+  "social-leo-favicon-fullheight-color.svg",
+  "social-reddit-color.svg",
+  "social-twitch-color.svg",
+  "social-vimeo-color.svg",
+  "social-x-color.svg",
+  "social-youtube-color.svg",
+  "sol-color.svg",
   "solana-off.svg",
   "solana-on.svg",
   "sort-asc.svg",
@@ -428,14 +451,16 @@ leo_icons = [
   "stack.svg",
   "star-outline.svg",
   "startpage-color.svg",
+  "stop-circle.svg",
   "support.svg",
   "swap-horizontal.svg",
   "swap-vertical.svg",
-  "themes.svg",
   "theme-darker.svg",
+  "themes.svg",
   "thumb-down.svg",
   "thumb-up.svg",
   "trash.svg",
+  "trezor-color.svg",
   "tune.svg",
   "uphold-color.svg",
   "upload.svg",
@@ -454,49 +479,35 @@ leo_icons = [
   "virtual-reality.svg",
   "volume-off.svg",
   "volume-on.svg",
+  "wallet-ledger.svg",
   "warning-circle-filled.svg",
   "warning-circle-outline.svg",
   "warning-triangle-filled.svg",
   "warning-triangle-outline.svg",
-  "web3.svg",
   "web3-blockexplorer.svg",
   "web3-bridge.svg",
+  "web3.svg",
   "widget-generic.svg",
-  "window-bookmark.svg",
   "window-404.svg",
+  "window-bookmark.svg",
   "window-content.svg",
   "window-edit.svg",
   "window-tab-close.svg",
   "window-tab-new.svg",
+  "window-tab.svg",
+  "window-tabs-vertical-expanded.svg",
+  "window-tabs.svg",
   "window.svg",
   "windows-open.svg",
-  "zai-color.svg",
-  "import-arrow.svg",
-  "metamask-color.svg",
-  "phantom-color.svg",
-  "coinbase-color.svg",
-  "trezor-color.svg",
-  "wallet-ledger.svg",
-  "close-circle.svg",
-  "close-circle-filled.svg",
-  "eth-color.svg",
-  "matic-color.svg",
-  "op-color.svg",
-  "aurora-color.svg",
-  "sol-color.svg",
-  "filecoin-color.svg",
-  "slash.svg",
   "xmark-color.svg",
   "yahoo-color.svg",
   "yandex-color.svg",
-  "window-tab.svg",
-  "window-tabs.svg",
-  "window-tabs-vertical-expanded.svg",
-  "stop-circle.svg",
+  "zai-color.svg",
 ]
 
 if (enable_brave_vpn_panel) {
-  leo_icons += [
+  leo_icons_sources += [
+    "country-ae.svg",
     "country-al.svg",
     "country-ar.svg",
     "country-at.svg",
@@ -532,6 +543,7 @@ if (enable_brave_vpn_panel) {
     "country-lu.svg",
     "country-mx.svg",
     "country-my.svg",
+    "country-ng.svg",
     "country-nl.svg",
     "country-no.svg",
     "country-nz.svg",
@@ -541,8 +553,10 @@ if (enable_brave_vpn_panel) {
     "country-pt.svg",
     "country-py.svg",
     "country-ro.svg",
+    "country-rs.svg",
     "country-se.svg",
     "country-sg.svg",
+    "country-sk.svg",
     "country-th.svg",
     "country-tr.svg",
     "country-ua.svg",
@@ -554,7 +568,7 @@ if (enable_brave_vpn_panel) {
 }
 
 if (enable_speedreader) {
-  leo_icons += [
+  leo_icons_sources += [
     "characters.svg",
     "forward-outline.svg",
     "headphones.svg",
@@ -578,7 +592,7 @@ generate_grd("icons_grdp") {
   resource_path_prefix = "brave-icons"
   out_grd = "$brave_resources_extra_grdps_path/brave_icons_resources.grdp"
 
-  input_files = leo_icons
+  input_files = leo_icons_sources
   input_files_base_dir =
       rebase_path("$brave_resources_extra_grdps_path/icons/", root_build_dir)
 
@@ -622,6 +636,6 @@ copy("fonts_copy") {
 }
 
 copy("icons_copy") {
-  sources = rebase_path(leo_icons, ".", leo_icons_base_path)
+  sources = rebase_path(leo_icons_sources, ".", leo_icons_base_path)
   outputs = [ "$brave_resources_extra_grdps_path/icons/{{source_file_part}}" ]
 }

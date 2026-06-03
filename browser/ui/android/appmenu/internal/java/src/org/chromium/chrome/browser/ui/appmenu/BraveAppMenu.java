@@ -27,7 +27,7 @@ public class BraveAppMenu extends BraveAppMenuDummySuper {
     BraveAppMenu(
             AppMenuVisibilityDelegate visibilityDelegate,
             Resources res,
-            HierarchicalMenuController hierarchicalMenuController,
+            HierarchicalMenuController<AppMenu.AppMenuPopup> hierarchicalMenuController,
             boolean disableVerticalScrollbar) {
         super(visibilityDelegate, res, hierarchicalMenuController, disableVerticalScrollbar);
 

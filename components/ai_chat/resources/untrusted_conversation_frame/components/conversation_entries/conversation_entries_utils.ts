@@ -3,6 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import { unified } from 'unified'
+import { visit } from 'unist-util-visit'
+
 import * as Mojom from '../../../common/mojom'
 
 const NON_TASK_TOOL_NAMES = [
@@ -12,7 +17,7 @@ const NON_TASK_TOOL_NAMES = [
 
 // How many task tools need to occur within a group for the group
 // to be considered a task.
-const TASK_TOOL_COUNT = 2
+const TASK_TOOL_COUNT = 1
 
 /**
  * Groups consecutive assistant entries for the purposes of combining tool use
@@ -47,23 +52,18 @@ export function groupConversationEntries(
 }
 
 /**
- * A task is when there are multiple entries within a group and there
- * are at least 2 task tool use events and 1 completion event.
- * @param group Group of assistant conversation entries from groupConversationEntries
+ * A task is an assistant response group with at least {@link TASK_TOOL_COUNT}
+ * task tool use events.
+ * @param group Group of assistant conversation entries from
+ *   groupConversationEntries
  * @returns true if the group is a task
  */
 export function isAssistantGroupTask(group: Mojom.ConversationTurn[]) {
-  // Must have at least 1 tool use and a response to the tool use (2 group entries)
-  if (group.length <= 1) {
-    return false
-  }
-
-  // Must have at least 2 task tool uses within the group of responses
+  // Must have at least TASK_TOOL_COUNT task tool uses within the group of
+  // responses.
   let taskToolCount = 0
-  // Must have at least 1 completion event
-  let hasCompletion = false
   for (const entry of group) {
-    // Sanity check: shouldn't have any non-assistant entries
+    // Sanity check: only assistant entries should be in the group.
     if (entry.characterType !== Mojom.CharacterType.ASSISTANT) {
       console.error(
         'isAssistantGroupTask: non-assistant entry found in group',
@@ -73,18 +73,13 @@ export function isAssistantGroupTask(group: Mojom.ConversationTurn[]) {
     }
     if (entry.events) {
       for (const event of entry.events) {
-        if (event.completionEvent) {
-          hasCompletion = true
-        }
         if (
           !!event.toolUseEvent
           && !NON_TASK_TOOL_NAMES.includes(event.toolUseEvent.toolName)
         ) {
-          taskToolCount++
-        }
-        // Optimization: stop iterating events if we have what we need
-        if (hasCompletion && taskToolCount >= TASK_TOOL_COUNT) {
-          return true
+          if (++taskToolCount >= TASK_TOOL_COUNT) {
+            return true
+          }
         }
       }
     }
@@ -169,16 +164,47 @@ export const removeReasoning = (text: string) => {
   return text
 }
 
+// Applies `transform` to every part of `text` that lies outside a markdown
+// fenced code block or inline code span. Code regions pass through unchanged,
+// so bracket-number syntax inside `arr[1]` etc. is preserved.
+const applyOutsideCodeBlocks = (
+  text: string,
+  transform: (segment: string) => string,
+): string => {
+  const tree = unified().use(remarkParse).use(remarkGfm).parse(text)
+  const ranges: Array<[number, number]> = []
+  visit(tree, (node) => {
+    if (node.type !== 'code' && node.type !== 'inlineCode') return
+    const start = node.position?.start.offset
+    const end = node.position?.end.offset
+    if (start !== undefined && end !== undefined) {
+      ranges.push([start, end])
+    }
+  })
+  if (ranges.length === 0) return transform(text)
+
+  let result = ''
+  let cursor = 0
+  for (const [start, end] of ranges) {
+    result += transform(text.slice(cursor, start))
+    result += text.slice(start, end)
+    cursor = end
+  }
+  result += transform(text.slice(cursor))
+  return result
+}
+
 export const removeCitationsWithMissingLinks = (
   text: string,
   citationLinks: string[],
-) => {
-  return text.replace(/\[(\d+)\]/g, (match, citationNumber) => {
-    // Convert to 0-based index
-    const index = parseInt(citationNumber) - 1
-    return index >= 0 && index < citationLinks.length ? match : ''
-  })
-}
+) =>
+  applyOutsideCodeBlocks(text, (segment) =>
+    segment.replace(/\[(\d+)\]/g, (match, citationNumber) => {
+      // Convert to 0-based index
+      const index = parseInt(citationNumber) - 1
+      return index >= 0 && index < citationLinks.length ? match : ''
+    }),
+  )
 
 /**
  * Normalizes citation spacing so markdown parses each citation as its own link.
@@ -186,10 +212,39 @@ export const removeCitationsWithMissingLinks = (
  *   as one link with text "2" and ref [3]).
  * - Adds space before a citation when it runs onto the previous word:
  *   "Japan[2]" → "Japan [2]".
+ * Code blocks and inline code are left untouched so that array indexing like
+ * `arr[1]` is not mangled into `arr [1]`.
  */
-export const normalizeCitationSpacing = (text: string): string => {
-  const withSeparatedCitations = text.replace(/\]\s*\[/g, '] [')
-  return withSeparatedCitations.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+export const normalizeCitationSpacing = (text: string): string =>
+  applyOutsideCodeBlocks(text, (segment) => {
+    const withSeparatedCitations = segment.replace(/\]\s*\[/g, '] [')
+    return withSeparatedCitations.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+  })
+
+/**
+ * Replaces citation numbers `[1]`, `[2]`, etc. with URLs from `allowedLinks`,
+ * skipping matches that fall inside fenced code blocks or inline code spans —
+ * where `[N]` is typically array indexing rather than a citation.
+ */
+export const replaceCitationsWithUrlsExcludingCode = (
+  text: string,
+  allowedLinks: string[],
+): string => {
+  if (allowedLinks.length === 0) {
+    return text
+  }
+  return applyOutsideCodeBlocks(text, (segment) =>
+    segment.replace(/\[(\d+)\]/g, (match, citationNumber, offset) => {
+      const index = parseInt(citationNumber) - 1
+      if (index >= 0 && index < allowedLinks.length) {
+        const url = allowedLinks[index]
+        const charBefore = offset > 0 ? segment[offset - 1] : ''
+        const needsSpace = charBefore && !/\s/.test(charBefore)
+        return needsSpace ? ` ${url}` : url
+      }
+      return match
+    }),
+  )
 }
 
 /**

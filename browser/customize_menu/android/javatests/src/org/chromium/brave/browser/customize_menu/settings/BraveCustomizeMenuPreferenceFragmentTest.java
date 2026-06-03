@@ -67,7 +67,9 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
     public void testOnCreate_SetsPageTitle() {
         FragmentScenario<BraveCustomizeMenuPreferenceFragment> scenario =
                 FragmentScenario.launchInContainer(
-                        BraveCustomizeMenuPreferenceFragment.class, mTestBundle);
+                        BraveCustomizeMenuPreferenceFragment.class,
+                        mTestBundle,
+                        R.style.Theme_Chromium_Settings);
 
         scenario.onFragment(
                 fragment -> {

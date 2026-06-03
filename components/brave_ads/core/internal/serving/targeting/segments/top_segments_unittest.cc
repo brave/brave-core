@@ -8,7 +8,7 @@
 #include <cstddef>
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -36,12 +36,9 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopChildSegments) {
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopChildSegments) {
-  // Act
-  const SegmentList top_segments = GetTopSegments(
-      /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
-
-  // Assert
-  EXPECT_THAT(top_segments, ::testing::IsEmpty());
+  EXPECT_THAT(GetTopSegments(/*segments=*/{}, kSegmentsMaxCount,
+                             /*parent_only=*/false),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
@@ -59,12 +56,9 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopParentSegments) {
-  // Act
-  const SegmentList top_segments = GetTopSegments(
-      /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
-
-  // Assert
-  EXPECT_THAT(top_segments, ::testing::IsEmpty());
+  EXPECT_THAT(GetTopSegments(/*segments=*/{}, kSegmentsMaxCount,
+                             /*parent_only=*/false),
+              ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

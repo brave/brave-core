@@ -35,6 +35,7 @@
 #include "brave/brave_domains/urls.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
 #include "brave/components/brave_rewards/content/logging.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service.h"
@@ -56,7 +57,7 @@
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/os_crypt/sync/os_crypt.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/service_process_host.h"
@@ -207,6 +208,9 @@ RewardsServiceImpl::RewardsServiceImpl(
     PrefService* prefs,
     const base::FilePath& profile_path,
     favicon::FaviconService* favicon_service,
+    os_crypt_async::OSCryptAsync* os_crypt,
+    std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+        policy_initialization_waiter,
     RequestImageCallback request_image_callback,
     CancelImageRequestCallback cancel_image_request_callback,
     content::StoragePartition* storage_partition
@@ -217,6 +221,7 @@ RewardsServiceImpl::RewardsServiceImpl(
     )
     : prefs_(prefs),
       favicon_service_(favicon_service),
+      os_crypt_(os_crypt),
       request_image_callback_(request_image_callback),
       cancel_image_request_callback_(cancel_image_request_callback),
       storage_partition_(storage_partition),
@@ -237,7 +242,10 @@ RewardsServiceImpl::RewardsServiceImpl(
       rewards_database_(file_task_runner_),
       creator_prefix_store_(file_task_runner_),
       notification_service_(new RewardsNotificationServiceImpl(prefs)),
+      policy_initialization_waiter_(std::move(policy_initialization_waiter)),
       conversion_monitor_(prefs) {
+  CHECK(policy_initialization_waiter_);
+
   ready_ = std::make_unique<base::OneShotEvent>();
 
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature)) {
@@ -269,8 +277,13 @@ bool RewardsServiceImpl::IsInitialized() {
 
 void RewardsServiceImpl::Init() {
   AddObserver(notification_service_.get());
-  CheckPreferences();
   InitPrefChangeRegistrar();
+
+  // Defer the boot-time engine-start gate until the policy bundle has been
+  // merged into the managed pref store, so that `BraveRewardsDisabled` (which
+  // writes `prefs::kDisabledByPolicy`) is visible when the gate evaluates.
+  policy_initialization_waiter_->Wait(
+      base::BindOnce(&RewardsServiceImpl::CheckPreferences, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -325,6 +338,13 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 }
 
 void RewardsServiceImpl::CheckPreferences() {
+  // Re-check support after `policy_initialization_waiter_` fires; managed
+  // `prefs::kDisabledByPolicy` may not have been visible when the factory ran
+  // its `IsSupported` gate.
+  if (!IsSupported(prefs_)) {
+    return;
+  }
+
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
     // If the user has enabled Ads, but the "enabled" pref is missing, set the
@@ -1134,8 +1154,10 @@ void RewardsServiceImpl::NotifyPublisherPageVisit(uint64_t tab_id,
 
   auto publisher_domain = GetPublisherDomainFromURL(parsed_url);
   if (!publisher_domain) {
-    mojom::PublisherInfoPtr info;
-    OnPanelPublisherInfo(mojom::Result::NOT_FOUND, std::move(info), tab_id);
+    DeferCallback(FROM_HERE,
+                  base::BindOnce(&RewardsServiceImpl::OnPanelPublisherInfo,
+                                 AsWeakPtr(), mojom::Result::NOT_FOUND,
+                                 mojom::PublisherInfoPtr(), tab_id));
     return;
   }
 
@@ -2012,22 +2034,36 @@ void RewardsServiceImpl::GetEventLogs(GetEventLogsCallback callback) {
 
 void RewardsServiceImpl::EncryptString(const std::string& value,
                                        EncryptStringCallback callback) {
-  std::string encrypted;
-  if (OSCrypt::EncryptString(value, &encrypted)) {
-    return std::move(callback).Run(std::move(encrypted));
-  }
+  auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
+                           std::string value, EncryptStringCallback callback,
+                           os_crypt_async::Encryptor encryptor) {
+    if (!self) {
+      return;
+    }
+    std::optional<std::string> encrypted;
+    if (auto result = encryptor.EncryptString(value)) {
+      encrypted = std::string(base::as_string_view(result.value()));
+    }
+    std::move(callback).Run(std::move(encrypted));
+  };
 
-  std::move(callback).Run(std::nullopt);
+  os_crypt_->GetInstance(
+      base::BindOnce(with_encryptor, AsWeakPtr(), value, std::move(callback)));
 }
 
 void RewardsServiceImpl::DecryptString(const std::string& value,
                                        DecryptStringCallback callback) {
-  std::string decrypted;
-  if (OSCrypt::DecryptString(value, &decrypted)) {
-    return std::move(callback).Run(std::move(decrypted));
-  }
+  auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
+                           std::string value, DecryptStringCallback callback,
+                           os_crypt_async::Encryptor encryptor) {
+    if (!self) {
+      return;
+    }
+    std::move(callback).Run(encryptor.DecryptData(base::as_byte_span(value)));
+  };
 
-  std::move(callback).Run(std::nullopt);
+  os_crypt_->GetInstance(
+      base::BindOnce(with_encryptor, AsWeakPtr(), value, std::move(callback)));
 }
 
 void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {

@@ -29,12 +29,10 @@ bool DoesRequireResource() {
 }  // namespace
 
 PurchaseIntentResource::PurchaseIntentResource() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-PurchaseIntentResource::~PurchaseIntentResource() {
-  GetAdsClient().RemoveObserver(this);
-}
+PurchaseIntentResource::~PurchaseIntentResource() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 

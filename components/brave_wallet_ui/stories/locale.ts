@@ -402,6 +402,8 @@ provideStrings({
   braveWalletConnectedHardwareWallets: 'Connected hardware wallets',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
+  braveWalletAccountsHide: 'Hide account',
+  braveWalletAccountsRestore: 'Restore',
   braveWalletAccountBalance: 'Account balance',
   braveWalletViewAddressOn: 'View address on:',
   braveWalletNetworkExplorer: '$1 Explorer',
@@ -443,10 +445,10 @@ provideStrings({
   braveWalletFilExportPrivateKeyFormatDescription:
     'NOTE: Private key is provided as a hex-encoded JSON that contains private '
     + 'key and protocol information. $1Learn more$1.',
-  braveWalletTestnetAccounts: 'Testnet accounts',
   braveWalletPolkadotImportJsonDescription:
     'Import using a JSON file exported from Polkadot.js or compatible wallets. '
     + 'Enter the password used to encrypt the export.',
+  braveWalletLookingForTestnetAccounts: 'Looking for Testnet accounts?',
 
   // Import Account
   braveWalletImportAccountDisclaimer:
@@ -460,6 +462,11 @@ provideStrings({
   braveWalletImportAccountUploadPlaceholder: 'No file chosen',
   braveWalletImportAccountError: 'Failed to import account, please try again.',
   braveWalletImportAccount: 'Import account',
+  braveWalletImportAccountPrivateKeyDescription:
+    'Copy private key for the account you want to import from another wallet.',
+  braveWalletImportAccountJsonFileDescription:
+    'Export private key from another wallet to a JSON file and upload here.',
+  braveWalletUploadJsonFile: 'Upload JSON file',
 
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',
@@ -715,6 +722,10 @@ provideStrings({
   braveWalletAccountName: 'Account name',
   braveWalletMinimumAmount: 'Minimum amount: $1',
   braveWalletMaximumAmount: 'Maximum amount: $1',
+  braveWalletAccountCreatedSuccessfully: 'Account created successfully',
+  braveWalletAccountImportedSuccessfully: 'Account imported successfully',
+  braveWalletHardwareWalletAccountConnectedSuccessfully:
+    'Hardware wallet account connected successfully',
 
   // Deposit Funds Screen
   braveWalletDepositFundsTitle: 'Deposit crypto',
@@ -1414,8 +1425,8 @@ provideStrings({
     + 'by using the button below',
   braveWalletAssetNotFound: 'Asset not found',
 
-  // Request feature button
-  braveWalletRequestFeatureButtonText: 'Request feature',
+  // Report an issue button
+  braveWalletReportAnIssueButtonText: 'Report an issue',
 
   // Warnings
   braveWalletNonAsciiCharactersInMessageWarning:

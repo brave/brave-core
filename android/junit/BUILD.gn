@@ -33,8 +33,11 @@ if (is_android) {
     ]
 
     deps = [
+      "//brave/browser/android/preferences:pref_names_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/glic/android:java",
       "//chrome/browser/tab_group_suggestion:toolbar_java",
+      "//chrome/browser/ui/android/toolbar:adaptive_features_java",
       "//chrome/browser/ui/messages/android:java",
       "//components/browser_ui/accessibility/android:page_zoom_utils_java",
     ]
@@ -50,7 +53,10 @@ if (is_android) {
     deps = [
       "//brave/browser/ui/android/toolbar:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/glic:public_java",
+      "//chrome/browser/glic/android:jni_headers_java",
       "//chrome/browser/settings:java",
+      "//chrome/browser/ui/android/toolbar:adaptive_features_java",
     ]
   }
 
@@ -85,6 +91,13 @@ if (is_android) {
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.brave_origin") {
+    sources = [ "src/org/chromium/chrome/browser/brave_origin/BraveOriginDeepLinkHandlerTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser") {
     sources =
         [ "src/org/chromium/chrome/browser/BraveIntentHandlerUnitTest.java" ]
@@ -106,8 +119,8 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java" ]
 
     deps = [
-      "//brave/third_party/android_deps:com_google_android_play_review_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//third_party/android_deps:com_google_android_play_review_java",
     ]
   }
 
@@ -140,6 +153,12 @@ if (is_android) {
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ui") {
+    sources = [ "src/org/chromium/chrome/browser/ui/system/BraveStatusBarColorControllerUnitTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.autofill") {
     sources = [
@@ -158,5 +177,37 @@ if (is_android) {
       "//brave/browser/custom_search_engines/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.quick_search_engines") {
+    resources_package = "org.chromium.brave.browser.quick_search_engines"
+    sources = [ "src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtilTest.java" ]
+
+    deps = [
+      "//brave/browser/quick_search_engines/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/regional_capabilities/android:java",
+      "//chrome/browser/search_engines/android:java",
+      "//components/omnibox/common:features_java",
+      "//components/regional_capabilities/android:java",
+      "//components/search_engines/android:java",
+    ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.preferences.website") {
+    sources = [ "src/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsResetTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.shields") {
+    sources = [
+      "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelFaviconPriorityTest.java",
+      "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelHandlerStatTest.java",
+    ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 }

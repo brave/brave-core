@@ -29,6 +29,8 @@ export const StyledWrapper = styled.div`
 export const ContentWrapper = styled.div<{
   pinningStatus: BraveWallet.TokenPinStatusCode
 }>`
+  font: ${leo.font.small.regular};
+
   --success-background: ${leo.color.systemfeedback.successBackground};
   --uploading-background: ${leo.color.systemfeedback.warningBackground};
   --failed-background: ${leo.color.systemfeedback.errorBackground};
@@ -43,12 +45,7 @@ export const ContentWrapper = styled.div<{
   gap: 4px;
   border-radius: 4px;
   padding: 2px 4px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   background-color: ${(p) =>
     p.pinningStatus
       === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
@@ -89,28 +86,15 @@ export const CheckIcon = styled(StatusIcon)`
 `
 
 export const ReportButton = styled(WalletButton)`
+  font: ${leo.font.small.semibold};
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
   border: none;
   color: #4c54d2;
   outline: none;
   border: none;
   background: transparent;
-`
-
-export const Text = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
 `
 
 export const ReasonsTooltipWrapper = styled.div`
@@ -120,7 +104,7 @@ export const ReasonsTooltipWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   z-index: 3;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   width: 246px;
   border-radius: 6px;
@@ -135,39 +119,12 @@ export const TooltipContent = styled.div`
   height: 100%;
 `
 
-export const TooltipHeading = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-`
-
-export const TooltipList = styled.ul`
-  list-style-position: inside;
-  margin: 8px 0 0 0;
-  padding: 0;
-
-  li {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    padding: 0;
-    margin: 0;
-    color: ${(p) => p.theme.color.text01};
-  }
-`
-
 export const ArrowDown = styled.div`
   width: 0;
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid ${(p) => p.theme.color.background01};
+  border-top: 8px solid ${leo.color.page.background};
   position: absolute;
   left: 56px;
   bottom: -8px;

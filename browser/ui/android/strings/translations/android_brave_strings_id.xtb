@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blokir elemen daftar masuk, menu, komentar, dan info video di youtube.com.</translation>
 <translation id="8531835121131500698">Blokir YouTube Shorts</translation>
 <translation id="2167271714269158912">Blokir Shorts dari beranda, laman trendi, dan hasil penelusuran pada youtube.com.</translation>
+<translation id="2564435705466025309">Blokir video YouTube yang didubbing otomatis</translation>
+<translation id="3603500459037204525">Memblokir video yang didubbing otomatis agar tidak muncul di halaman beranda &amp; hasil penelusuran youtube.com.</translation>
+<translation id="4067265130987656010">Blokir gambar miniatur YouTube</translation>
+<translation id="3034711349887440574">Memblokir gambar miniatur agar tidak muncul di halaman beranda &amp; hasil penelusuran youtube.com.</translation>
+<translation id="8741919213635379855">Blokir YouTube Playables</translation>
+<translation id="2216551241986578034">Memblokir Playables agar tidak muncul di halaman beranda &amp; hasil penelusuran youtube.com.</translation>
+<translation id="9038505474874975130">Blokir video YouTube khusus anggota</translation>
+<translation id="3084239516382196983">Memblokir video khusus anggota agar tidak muncul di halaman beranda &amp; hasil penelusuran youtube.com.</translation>
 <translation id="6052725679982758334">Pemblokiran Media Sosial</translation>
 <translation id="7498695072878479744">Izinkan tombol login Google di situs pihak ketiga</translation>
 <translation id="863171915776379000">Izinkan tombol masuk Facebook dan kiriman tersemat</translation>
@@ -186,20 +194,12 @@
 <translation id="6587448235155023666">Semua perubahan akan berlaku begitu Anda meluncurkan ulang Brave</translation>
 <translation id="8701563696941209024">LUNCURKAN ULANG SEKARANG</translation>
 <translation id="834487290629916192">NANTI SAJA</translation>
-<translation id="4117451092682672487">Privasi. Dapatkan dengan mudah.</translation>
-<translation id="7909375417585209817">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.</translation>
 <translation id="763369711159699222">Bantulah membuat Brave lebih baik</translation>
 <translation id="8025937231644975408">Beri tahu kami fitur mana yang paling Anda sukai.</translation>
-<translation id="6718362830686703942">Kirimkan laporan diagnostik jika Anda mengalami kerusakan atau kebekuan.</translation>
-<translation id="8616157231067364693">Bagikanlah wawasan produk secara privat dan anonim tentang fitur-fitur yang digunakan pengguna Brave.</translation>
 <translation id="2888496576732880897">Bantu Brave Penelusuran berkembang</translation>
 <translation id="7198716519700700181">Blokir gangguan saat Anda streaming</translation>
 <translation id="7044431516245362795">Ikut serta dalam Web Discovery Project buat bantu mengembangkan indeks dan menyempurnakan hasil pencarian. <ph name="LEARN_MORE_START"/>Pelajari selengkapnya.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Logo Brave</translation>
-<translation id="1389386068457132299">Latar belakang onboarding</translation>
-<translation id="5101985748360228609">Dekorasi daun atas</translation>
-<translation id="5270920361877570459">Dekorasi daun bawah</translation>
-<translation id="4021716437419160885">Gulir ke bawah</translation>
 <translation id="4767173360729868049">Ilustrasi Bantu Brave Penelusuran berkembang</translation>
 <translation id="8241918461631453498">Ilustrasi blokir gangguan</translation>
 <translation id="8213310572767907663">Ilustrasi jadikan Brave lebih baik</translation>
@@ -215,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> serta iklan &amp; pelacak lain telah diblokir</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; pelacak telah diblokir</translation>
 <translation id="8281886186245836920">Lewati</translation>
-<translation id="6165508094623778733">Pelajari lebih lanjut</translation>
 <translation id="986879628471635371">Pengenalan Penyelesaian Masalah</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Dapatkan <ph name="TOKEN"/></translation>
@@ -365,7 +364,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="944340256927461196">Tidak meninggalkan jejak pada perangkat Anda</translation>
 <translation id="2063044449012253966">Situs yang Anda kunjungi di jendela pribadi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan hilang setelah semua jendela pribadi ditutup.</translation>
 <translation id="7395764193745523646">Visibilitas penelusuran</translation>
-<translation id="8670344404057978375">Ingat, meskipun di jendela pribadi, aktivitas penelusuran Anda mungkin masih dapat dilihat oleh ISP, pengamat jaringan, atau atasan Anda (jika Anda menggunakan perangkat/jaringan di tempat kerja).</translation>
+<translation id="8435098045013317895">Ingat, meskipun di jendela pribadi, aktivitas penelusuran Anda mungkin masih dapat dilihat oleh ISP, pengamat jaringan, atau atasan Anda (jika Anda menggunakan perangkat/jaringan di tempat kerja).</translation>
 <translation id="1413177583895309156">Brave VPN mengenkripsi dan melindungi apa pun yang Anda lakukan secara daring, bahkan di luar browser Brave.</translation>
 <translation id="3974348661685061050">Coba gratis selama 7 hari</translation>
 <translation id="5789441016350810005">Iklan Brave dikirim ketika peramban sedang di latar belakang</translation>
@@ -506,6 +505,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2718046830255553131">Data pelaporan privasi telah dikosongkan.</translation>
 <translation id="8376263745431603066">Aktifkan "Modus Malam" (Percobaan)</translation>
 <translation id="1383876407941801731">Cari</translation>
+<translation id="6165508094623778733">Pelajari lebih lanjut</translation>
 <translation id="13296465911709339">Teks Anda telah disalin ke clipboard.</translation>
 <translation id="2735834606413553397">Alamat publik telah disalin ke papan klip.</translation>
 <translation id="2977461003134694205">Status Privasi</translation>
@@ -966,23 +966,24 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7659483790930268440">Indeks Tabel Pencarian Alamat:</translation>
 <translation id="5494920125229734069">Pilih semua</translation>
 <translation id="2361906291514218784">AI Leo</translation>
+<translation id="2935698011275148880">Asal Berani</translation>
 <translation id="944736176598169208">Imbalan</translation>
-<translation id="4272190451231642425">Mengirim laporan kerusakan secara otomatis</translation>
 <translation id="1199170151481311646">Analisis yang menjaga privasi</translation>
 <translation id="1706715315466634757">Nama alias email</translation>
 <translation id="6709133671862442373">Berita</translation>
 <translation id="5990642573624858459">Pelaporan statistik</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Mengatur ulang ke pengaturan default</translation>
-<translation id="4922034974043704366">Fitur ini diaktifkan karena Anda memilihnya</translation>
 <translation id="2587535830241068901">Sesuaikan browser Anda dengan tetap mendukung Brave</translation>
-<translation id="7235314227387539944">Brave Origin adalah versi berbayar dari browser untuk pengguna yang tidak memerlukan semua fitur yang mendukung Brave sebagai bisnis, tetapi masih menginginkan privasi yang hanya Brave tawarkan. Pengguna Origin akan terus mendapatkan keuntungan dari privasi terdepan industri kami, adblock, dan kecepatan (melalui Brave Perisai), serta pembaruan perangkat lunak rutin, patch Chromium, dan peningkatan keamanan dan privasi. Origin akan menghapus sebagian besar fitur lainnya dari browser.</translation>
-<translation id="7941943775131052130">Perhatikan bahwa pembelian Brave Origin juga akan mencakup akses ke Brave Penelusuran Premium, karena Origin akan menghapus iklan dari halaman hasil Brave Penelusuran.</translation>
+<translation id="123297831435065577">Brave Origin adalah versi berbayar dari browser untuk pengguna yang tidak memerlukan semua fitur yang mendukung Brave sebagai bisnis, tetapi masih menginginkan privasi yang hanya Brave tawarkan. Pengguna Origin akan terus mendapatkan keuntungan dari privasi terdepan industri kami, adblock, dan kecepatan (melalui Perisai), serta pembaruan perangkat lunak rutin, patch Chromium, dan peningkatan keamanan dan privasi.</translation>
 <translation id="2573819149217596923">Mengubah fitur Brave</translation>
 <translation id="7415416427817229128">Mengaktifkan atau menonaktifkan fitur Brave memerlukan browser untuk memulai ulang guna menerapkan perubahan. Apakah Anda ingin memulai ulang sekarang?</translation>
 <translation id="2256115617011615191">Mulai ulang sekarang</translation>
+<translation id="2160089182263405907">Menonaktifkan fitur</translation>
+<translation id="7530313002494358590">Mengaktifkan atau menonaktifkan fitur Brave memerlukan restart browser untuk menerapkan perubahan. Harap ketuk <ph name="BEGIN_BOLD"/>Mulai ulang sekarang<ph name="END_BOLD"/> setelah Brave Origin selesai diperbarui.</translation>
+<translation id="1028940738207645746">Apakah Anda yakin ingin mengatur ulang semua pengaturan ke default?</translation>
+<translation id="5939518447894949180">Setel ulang</translation>
 <translation id="8554205386170195281">Beli</translation>
-<translation id="7071521146534760487">Kelola akun</translation>
 <translation id="8613144770663526433">Masuk dengan Dompet Brave</translation>
 <translation id="3696514931437952995">Anda masuk ke <ph name="ORIGIN"/>. Dompet Brave akan membagikan alamat dompet Anda dengan <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Lihat detail</translation>
@@ -1017,7 +1018,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1309636029062006520">Buat daftar putar dari audio dan video favorit Anda, serta putar kapan saja, di mana saja.</translation>
 <translation id="7899390017499980820">Tambahkan ke tombol Daftar Putar</translation>
 <translation id="6901152954398668317">Tampilkan atau sembunyikan tombol "Tambahkan ke Daftar Putar" untuk akses cepat guna menambahkan atau menghapus media.</translation>
-<translation id="5939518447894949180">Setel ulang</translation>
 <translation id="8199028711686989861">Hapus semua video dari Daftar Putar, termasuk penyimpanan mode luring.</translation>
 <translation id="4590997608186539865">Daftar Putar</translation>
 <translation id="7525067979554623046">Buka</translation>
@@ -1111,9 +1111,9 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6261139507111008244">Dukung misi kami &amp; karya sumber terbuka</translation>
 <translation id="6073373503121903099">UI browser minimalis yang berpusat pada Brave Perisai</translation>
 <translation id="2267973897341040743">Pertahankan kecepatan adblock inti, privasi, &amp;</translation>
-<translation id="3339535734679532460">Pembelian satu kali, tidak ada biaya langganan tambahan</translation>
-<translation id="2805615640226281689">Pembelian Sekali Jadi</translation>
-<translation id="261433018299584676">Dapatkan kode login</translation>
+<translation id="4059093523966730868">Pembelian sekali jadi dapat diaktifkan beberapa kali di semua perangkat Anda</translation>
+<translation id="7006681677649762716">Pembelian sekali jadi</translation>
+<translation id="8707617004598499947">Verifikasi pembelian Brave Origin</translation>
 <translation id="1943432128510653496">Simpan sandi</translation>
 <translation id="2100273922101894616">Login Otomatis</translation>
 <translation id="363596933471559332">Otomatis login ke situs web menggunakan kredensial yang tersimpan. Saat fitur dinonaktifkan, Anda akan dimintai verifikasi setiap kali hendak login ke situs web.</translation>
@@ -1168,4 +1168,22 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1724977129262658800">Buka kunci untuk mengedit sandi Anda</translation>
 <translation id="5780792035410621042">Untuk menyalin sandi, setel kunci layar di perangkat terlebih dahulu</translation>
 <translation id="7986497153528221272">Untuk melihat sandi, setel kunci layar di perangkat terlebih dahulu</translation>
+<translation id="4882237634123415792">Mesin penelusuran ubahsuaian</translation>
+<translation id="8364431224461158026">Tambahkan mesin penelusuran kustom</translation>
+<translation id="7307935603426295341">Edit mesin penelusuran ubahsuaian</translation>
+<translation id="4002066346123236978">Judul</translation>
+<translation id="3653110185270660915">Masukkan nama mesin penelusuran</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Tambah Mesin Pencari</translation>
+<translation id="6289878295410648689">Tuliskan url penelusuran dan ubah kuerinya dengan <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="1298325705808878139">Contoh: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8706939021136180678">URL tidak valid.</translation>
+<translation id="5144960943371551167">Judul hanya boleh berisi huruf, angka, dan spasi.</translation>
+<translation id="7361775378755455309">Mesin penelusuran dengan kata kunci ini sudah ada.</translation>
+<translation id="463451857046640291">Gagal menambahkan mesin penelusuran.</translation>
+<translation id="1229671956956864948">Gagal memperbarui mesin penelusuran.</translation>
+<translation id="1462771969120037152">Gagal menghapus mesin penelusuran. Mesin penelusuran yang ingin Anda hapus mungkin diatur sebagai mesin default.</translation>
+<translation id="1079140196216383600">Hapus mesin penelusuran ubahsuaian</translation>
+<translation id="525276572490219787">Apakah Anda yakin ingin menghapus "<ph name="SEARCH_ENGINE_NAME"/>"? Tindakan ini tidak dapat dibatalkan.</translation>
+<translation id="6406506848690869874">Sync</translation>
 </translationbundle>

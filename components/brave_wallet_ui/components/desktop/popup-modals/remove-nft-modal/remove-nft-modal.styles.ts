@@ -21,26 +21,20 @@ export const StyledWrapper = styled.div`
 `
 
 export const Header = styled.div`
+  font: ${leo.font.heading.h2};
+
   color: ${leo.color.text.primary};
   text-align: center;
-  font-family: Poppins;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 32px;
   text-align: left;
   width: 100%;
   padding-bottom: 16px;
 `
 
 export const Description = styled.div`
+  font: ${leo.font.default.regular};
+
   color: ${leo.color.text.secondary};
   text-align: center;
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
   padding-bottom: 24px;
 `
 

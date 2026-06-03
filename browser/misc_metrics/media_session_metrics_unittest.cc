@@ -205,8 +205,8 @@ TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
   // Advance remaining time to trigger report.
   task_environment_.FastForwardBy(base::Days(4));
 
-  // 1 day playing / 1 day active = 100% → bucket 5. Attribute: "68-100".
-  histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 5, 1);
+  // 1 day playing / 1 day active = 100% → bucket 6. Attribute: "68-100".
+  histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 6, 1);
   EXPECT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
             "68-100");
 }

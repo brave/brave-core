@@ -18,11 +18,9 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_grpc_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
-#include "components/prefs/pref_service.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
@@ -139,7 +137,7 @@ class ZCashRpc {
       GetCompactBlocksCallback callback,
       std::optional<std::vector<zcash::mojom::CompactBlockPtr>> compact_blocks);
 
-  mojo::AssociatedRemote<zcash::mojom::ZCashDecoder>& GetDecoder();
+  mojo::Remote<zcash::mojom::ZCashDecoder>& GetDecoder();
 
   GURL GetNetworkURL(const std::string& chain_id);
 
@@ -148,7 +146,7 @@ class ZCashRpc {
   raw_ptr<NetworkManager> network_manager_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_ = nullptr;
 
-  mojo::AssociatedRemote<zcash::mojom::ZCashDecoder> zcash_decoder_;
+  mojo::Remote<zcash::mojom::ZCashDecoder> zcash_decoder_;
 
   base::WeakPtrFactory<ZCashRpc> weak_ptr_factory_{this};
 };

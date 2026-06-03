@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -31,6 +30,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace {

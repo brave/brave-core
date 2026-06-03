@@ -11,13 +11,17 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/types/pass_key.h"
-#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
+#endif
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
@@ -106,9 +110,11 @@ class BraveLocationBarView : public LocationBarView {
     return brave_actions_;
   }
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   void ShowPlaylistBubble(
       playlist::PlaylistBubblesController::BubbleType type =
           playlist::PlaylistBubblesController::BubbleType::kInfer);
+#endif
 
   void set_ignore_layout(base::PassKey<BraveToolbarView::LayoutGuard>,
                          bool ignore) {
@@ -133,7 +139,9 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   PlaylistActionIconView* GetPlaylistActionIconView();
+#endif
   void SetupShadow();
 
   // Prevent layout with invalid rect.

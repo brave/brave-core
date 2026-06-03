@@ -1,10 +1,10 @@
-# 🩹 Plaster and semantical patching
+# 🩹 _Plaster_ and semantical patching
 
-Plaster is an experimental tool being introduced in Brave to allow us to apply
-changes to upstream sources files, by relying on regex transformations for to
-search for patterns and apply substitutions.
+_Plaster_ is an experimental tool being introduced in Brave to allow us to apply
+changes to upstream sources files, by relying on regex transformations to search
+for patterns and apply substitutions.
 
-## Why 🩹 Plaster
+## Why 🩹 _Plaster_
 
 The two traditional approaches to introduce changes to Chromium have been `git`
 patches (i.e. `patches/`), and language overrides (i.e. `chromium_src/`). The
@@ -14,77 +14,102 @@ language overrides, although more flexible than patches, they tend to be
 invisible in the source code target, hard to interpret, and lead to many cases
 of unintended replacements.
 
-Using regexes, Plaster avoids the brittleness of patch files, while providing
+Using regexes, _Plaster_ avoids the brittleness of patch files, while providing
 matching mechanisms that are more flexible than the methods currently employed
 for macro replacement. This also means a language-agnostic way to approach
-source changes semantically, and in place. Plaster changes can be both seen in
-place, as well as audit as patch files.
+source changes semantically, and in place. _Plaster_ changes can be both seen in
+place, as well as audited as patch files.
 
 ## How does it work
 
-Plaster files are placed under `rewrite/`, using a `.toml` extension, and they
-are supposed to match the path for the file being plastered.
+_Plaster_ files are placed under `rewrite/`, using a `.yaml` extension, and they
+are supposed to match the path for the file being plastered. A deprecated
+`.toml` form is also accepted while existing plasters are being migrated — see
+[Legacy TOML format (deprecated)](#legacy-toml-format-deprecated) at the end of
+this document.
 
 > [!WARNING]
+>
 > At the moment, only plaster files to sources in Chromium's `src` repo are
 > supported.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
 
-For example, imagine you want to add changes to
-`chrome/browser/autocomplete/autocomplete_classifier_factory.cc`. You would
-care about the following files.
+For example, imagine you want to append Brave-specific entries to the upstream
+`RequestType` enum in `components/permissions/request_type.h`. You would care
+about the following files.
 
- * **Plaster file:** `brave/rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml`
- * **Source file:** `chrome/browser/autocomplete/autocomplete_classifier_factory.cc`
- * **Patch file** `brave/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch`
+- **Plaster file:** `brave/rewrite/components/permissions/request_type.h.yaml`
+- **Source file:** `components/permissions/request_type.h`
+- **Patch file:** `brave/patches/components-permissions-request_type.h.patch`
 
 ### Creating a plaster file
 
-A plaster file is a `toml` file used to list regexes operations to be applied
-in the corresponding source, based on its path. The following is plaster file
-to apply a few changes to
-`chrome/browser/autocomplete/autocomplete_classifier_factory.cc`.
+A plaster file is a YAML file that lists regex operations to be applied to the
+corresponding source, based on its path. The following plaster appends
+Brave-specific values to the upstream `RequestType` enum.
 
 Creating the source file with `vscode`:
+
 ```sh
-code rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml
+code rewrite/components/permissions/request_type.h.yaml
 ```
 
-This file below has two substitutions to be applied on its source: The first
-adds a header to the list of headers in the source. The second one replaces all
-occurrences of `ChromeAutocompleteSchemeClassifier` with
-`BraveAutocompleteSchemeClassifier`.
+We can use a regex that anchors on the enum's outer braces and on the existing
+`kMaxValue = <something>` line, and then inserts the Brave entries plus a new
+`kMaxValue` just before the closing `}`:
 
-```toml
-# Copyright (c) 2025 The Brave Authors. All rights reserved.
+```yaml
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-[[substitution]]
-description = 'Adding header for BraveAutocompleteSchemeClassifier'
-re_pattern = '(#include "[\s\S]*)'
-replace = '#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"\n\1'
+substitutions:
+  - description: |
+      Append Brave-specific entries to `RequestType`
 
-[[substitution]]
-description = 'Patching in BraveAutocompleteSchemeClassifier'
-pattern = 'ChromeAutocompleteSchemeClassifier'
-replace = 'BraveAutocompleteSchemeClassifier'
-
-The basic format for a `[[substitution]]` entry is as follow:
-
-```toml
-[[substition]]
-description = ''
-# One of either pattern or re_pattern must be specified
-pattern = ''  # non-regex pattern (string will be escaped)
-re_pattern = ''  # regex pattern
-replace = ''
-re_flags = []  # These are traditional python regex flags.
-count = 1  # use 0 to ignore the match count and replace all
+      This plaster is generic enough to guarantee that our entries are always last,
+      and that they also become the new kMaxValue.
+    re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        kWidevine,
+        kBraveEthereum,
+        kBraveSolana,
+        kBraveOpenAIChat,
+        kBraveGoogleSignInPermission,
+        kBraveCardano,
+        kBraveMinValue = kWidevine,
+        kBraveMaxValue = kBraveCardano,
+        kMaxValue = kBraveCardano
 ```
+
+_Plaster_ substitutions are listed under `substitutions:`. _Plaster_ loads the
+contents of a source from `git`, as the source of truth, not from whatever is on
+disk, and then it applies each substitution cumulatively to the contents of the
+target source, updating the upstream source at the end.
+
+Each entry has the following format:
+
+```yaml
+substitutions:
+  - description: ''
+    # One of either pattern or re_pattern must be specified.
+    pattern: '' # non-regex pattern (string will be escaped)
+    re_pattern: '' # regex pattern
+    replace: ''
+    re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
+    count: 1 # 1 is the default; 0 means no count, not advised.
+```
+
+Use YAML's `|` / `|-` block scalars when you need multi-line `replace` or
+`description` values — `|` keeps a trailing newline, `|-` strips it.
+Single-quoted YAML strings preserve backslashes literally, which is useful for
+regex patterns (`'\s'` stays as the two characters `\s`, not interpreted by
+YAML).
 
 To apply this plaster file, just run `plaster.py`:
 
@@ -92,42 +117,40 @@ To apply this plaster file, just run `plaster.py`:
 tools/cr/plaster.py apply
 ```
 
-Running `plaster.py` will cause the substitutions to be applied in
-`chrome/browser/autocomplete/autocomplete_classifier_factory.cc`, but it will
-cause the creation/update of the corresponding patch file for this source. For
-exmample, it may produce a diff file like this:
+Running `plaster.py` will cause the substitution to be applied in
+`components/permissions/request_type.h`, and trigger the creation or update of
+the corresponding patch file for this source. For example, it may produce a diff
+file like this:
 
-```
-diff --git a/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch b/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch
+```patch
+diff --git a/patches/components-permissions-request_type.h.patch b/patches/components-permissions-request_type.h.patch
 new file mode 100644
-index 00000000000..63703e6940b
+index 00000000000..bec88027991
 --- /dev/null
-+++ b/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch
-@@ -0,0 +1,21 @@
-+diff --git a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-+index db73283fbc4f5146bb42e2a8abfcdfa4567ab252..f241c6c5f0611dcbcad3e468a7595be75324a8ba 100644
-+--- a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-++++ b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-+@@ -16,6 +16,7 @@
-+ #include "components/omnibox/browser/autocomplete_classifier.h"
-+ #include "components/omnibox/browser/autocomplete_controller.h"
-+ #include "extensions/buildflags/buildflags.h"
-++#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
-+
-+ #if BUILDFLAG(ENABLE_EXTENSIONS)
-+ #include "extensions/browser/extension_system_provider.h"
-+@@ -43,7 +44,7 @@ std::unique_ptr<KeyedService> AutocompleteClassifierFactory::BuildInstanceFor(
-+       std::make_unique<AutocompleteController>(
-+           std::make_unique<ChromeAutocompleteProviderClient>(profile),
-+           AutocompleteClassifier::DefaultOmniboxProviders()),
-+-      std::make_unique<ChromeAutocompleteSchemeClassifier>(profile));
-++      std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
-+ }
-+
-+ AutocompleteClassifierFactory::AutocompleteClassifierFactory()
++++ b/patches/components-permissions-request_type.h.patch
+@@ -0,0 +1,20 @@
++diff --git a/components/permissions/request_type.h b/components/permissions/request_type.h
++--- a/components/permissions/request_type.h
+++++ b/components/permissions/request_type.h
++@@ -... @@ enum class RequestType {
++   ...,
++   kStorageAccess,
++   kWindowManagement,
++-  kMaxValue = kWindowManagement,
+++  kWidevine,
+++  kBraveEthereum,
+++  kBraveSolana,
+++  kBraveOpenAIChat,
+++  kBraveGoogleSignInPermission,
+++  kBraveCardano,
+++  kBraveMinValue = kWidevine,
+++  kBraveMaxValue = kBraveCardano,
+++  kMaxValue = kBraveCardano,
++ };
 ```
 
-The produced patch is supposed to be committed in the repository as usual.
+So at the end, you get a regular patch, and everything works as usual with how
+our Brave machinery handles patch files.
 
 ### Checking if files are up-to-date
 
@@ -142,4 +165,27 @@ This is the equivalent of a dry run of `plaster.py apply`.
 
 ### Best practices
 
-See https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md
+See
+https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md
+
+### Legacy TOML format (deprecated)
+
+> [!IMPORTANT]
+>
+> The `.toml` form is **deprecated** and kept only so existing plasters keep
+> working until they are migrated. New plasters must use `.yaml` while the
+> existing `.toml` ones are migrated. Migration progress is tracked in
+> [brave/brave-browser#55738](https://github.com/brave/brave-browser/issues/55738).
+
+Pre-existing plasters under `rewrite/` use a `.toml` file with the same fields
+as their YAML counterparts, written as TOML array-of-tables:
+
+```toml
+[[substitution]]
+description = ''
+re_pattern = ''
+pattern = ''
+replace = ''
+re_flags = []
+count = 1
+```

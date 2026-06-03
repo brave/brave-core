@@ -1,0 +1,16 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Override icon color and replace icon for insecure downloads.
+
+This replacement adds a `UpdateIcon_BraveImpl` call after the upstream image
+update to apply Brave's icon color and replace the icon when an insecure file
+is downloaded.
+'''
+re_pattern = '(badge_background_color\);)'
+replace = '''\1
+  UpdateIcon_BraveImpl(browser_view_, *new_icon, state_, active_, action_item_);'''
+re_flags = ['MULTILINE']

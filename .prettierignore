@@ -11,7 +11,6 @@
 /chromium_src/components/
 /chromium_src/third_party/
 /chromium_src/ui/
-/docs
 /ios
 /resources
 /test
@@ -20,6 +19,7 @@
 # Ignore external dependencies:
 /tools/crates/vendor/
 /third_party/
+/third_party/boringtun/vendor/
 /third_party/wasm/vendor/
 
 # Ignore github .yml files:
@@ -28,10 +28,10 @@
 # Ignore some markdown files:
 .github/PULL_REQUEST_TEMPLATE.md
 CONTRIBUTING.md
-README.md
 browser/ui/commander/fuzzy_finder.md
 browser/ui/views/brave_ads/overview.md
 components/ai_chat/core/browser/tools/tools.md
+browser/brave_vpn/win/brave_vpn_wireguard_service/README.md
 
 # Ignored top-level files:
 .clang-tidy

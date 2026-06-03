@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_SIDE_PANEL_SIDE_PANEL_UI_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_SIDE_PANEL_SIDE_PANEL_UI_H_
 
-#define Toggle  \
-  Toggle() = 0; \
+#define Toggle \
+  Toggle() {}  \
   virtual void Toggle
 
 #include <chrome/browser/ui/side_panel/side_panel_ui.h>  // IWYU pragma: export

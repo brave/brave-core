@@ -17,17 +17,21 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeControllerFactory;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.edge_to_edge.EdgeToEdgePadAdjuster;
@@ -52,7 +56,9 @@ public class BraveHubManagerImpl extends HubManagerImpl {
             BackPressManager backPressManager,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
             SnackbarManager snackbarManager,
-            MonotonicObservableSupplier<Tab> tabSupplier,
+            BottomSheetController bottomSheetController,
+            @Nullable BottomBarHostManager bottomBarHostManager,
+            NullableObservableSupplier<Tab> tabSupplier,
             MenuButtonCoordinator menuButtonCoordinator,
             HubShowPaneHelper hubShowPaneHelper,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
@@ -66,6 +72,8 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 backPressManager,
                 menuOrKeyboardActionController,
                 snackbarManager,
+                bottomSheetController,
+                bottomBarHostManager,
                 tabSupplier,
                 menuButtonCoordinator,
                 hubShowPaneHelper,

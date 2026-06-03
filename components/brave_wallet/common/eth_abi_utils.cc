@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <limits>
 #include <optional>
+#include <ostream>
+#include <string_view>
 
 #include "base/check.h"
 #include "base/check_op.h"

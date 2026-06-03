@@ -223,7 +223,10 @@ export const MarketGrid = ({
           </FixedSizeList>
         )}
       </GridContainer>
-      <CoinGeckoText>
+      <CoinGeckoText
+        textColor='secondary'
+        variant='xSmall.regular'
+      >
         {getLocale('braveWalletPoweredByCoinGecko')}
       </CoinGeckoText>
     </StyledWrapper>

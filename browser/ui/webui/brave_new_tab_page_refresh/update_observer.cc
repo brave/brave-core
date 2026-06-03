@@ -16,7 +16,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
+#include "chrome/browser/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)

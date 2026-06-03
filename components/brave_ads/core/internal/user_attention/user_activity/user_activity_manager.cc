@@ -38,25 +38,22 @@ void LogEvent(UserActivityEventType event_type) {
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           kUserActivityTimeWindow.Get());
 
-  BLOG(6, "Triggered event: " << base::HexEncode(&event_type, sizeof(int8_t))
-                              << " (" << GetUserActivityScore(triggers, events)
-                              << ":" << kUserActivityThreshold.Get() << ":"
-                              << kUserActivityTimeWindow.Get() << ")");
+  BLOG(6, "Triggered event: "
+              << base::HexEncode(base::byte_span_from_ref(event_type)) << " ("
+              << GetUserActivityScore(triggers, events) << ":"
+              << kUserActivityThreshold.Get() << ":"
+              << kUserActivityTimeWindow.Get() << ")");
 }
 
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  GetAdsClient().AddObserver(this);
-  BrowserManager::GetInstance().AddObserver(this);
-  TabManager::GetInstance().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
+  browser_manager_observation_.Observe(&BrowserManager::GetInstance());
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-UserActivityManager::~UserActivityManager() {
-  GetAdsClient().RemoveObserver(this);
-  BrowserManager::GetInstance().RemoveObserver(this);
-  TabManager::GetInstance().RemoveObserver(this);
-}
+UserActivityManager::~UserActivityManager() = default;
 
 // static
 UserActivityManager& UserActivityManager::GetInstance() {

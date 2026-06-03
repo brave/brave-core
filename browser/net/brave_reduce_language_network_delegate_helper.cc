@@ -12,12 +12,14 @@
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/feature_list.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -26,6 +28,13 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
+#endif
 
 using brave_shields::ControlType;
 
@@ -47,12 +56,12 @@ static constexpr auto kFarbleAcceptLanguageExceptions =
             "ulta.com",
             "www.ulta.com",
         });
-}  // namespace
 
 std::string FarbleAcceptLanguageHeader(
     const GURL& origin_url,
     Profile* profile,
-    HostContentSettingsMap* content_settings) {
+    HostContentSettingsMap* content_settings,
+    base::span<const uint8_t> additional_entropy) {
   std::string languages = profile->GetPrefs()
                               ->GetValue(language::prefs::kAcceptLanguages)
                               .GetString();
@@ -70,13 +79,15 @@ std::string FarbleAcceptLanguageHeader(
   auto* brave_farbling_service =
       BraveFarblingServiceFactory::GetForProfile(profile);
   if (brave_farbling_service &&
-      brave_farbling_service->MakePseudoRandomGeneratorForURL(origin_url,
-                                                              &prng)) {
+      brave_farbling_service->MakePseudoRandomGeneratorForURL(
+          origin_url, additional_entropy, &prng)) {
     accept_language_string += kFakeQValues[prng() % kFakeQValues.size()];
   }
 
   return accept_language_string;
 }
+
+}  // namespace
 
 template <template <typename> class T>
 int OnBeforeStartTransaction_ReduceLanguageWork(
@@ -99,6 +110,20 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
                                              profile->GetPrefs())) {
     return net::OK;
   }
+  std::string additional_entropy;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    if (content::RenderFrameHost* rfh =
+            content::RenderFrameHost::FromFrameToken(
+                ctx->render_frame_token())) {
+      if (content::WebContents* web_contents =
+              content::WebContents::FromRenderFrameHost(rfh)) {
+        additional_entropy =
+            containers::GetContainerIdForWebContents(web_contents);
+      }
+    }
+  }
+#endif
   std::string_view origin_host = origin_url.host();
   if (kFarbleAcceptLanguageExceptions.contains(origin_host)) {
     return net::OK;
@@ -129,7 +154,8 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
       // If fingerprint blocking is default, compute Accept-Language header
       // based on user preferences and some randomization.
       accept_language_string =
-          FarbleAcceptLanguageHeader(origin_url, profile, content_settings);
+          FarbleAcceptLanguageHeader(origin_url, profile, content_settings,
+                                     base::as_byte_span(additional_entropy));
       break;
     }
     default:

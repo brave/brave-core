@@ -22,15 +22,17 @@
 namespace brave_shields {
 
 AdBlockSubscriptionDownloadClient::AdBlockSubscriptionDownloadClient(
-    AdBlockSubscriptionServiceManager* subscription_manager)
-    : subscription_manager_(subscription_manager) {}
+    SubscriptionServiceManagerGetter subscription_manager_getter)
+    : subscription_manager_getter_(std::move(subscription_manager_getter)) {}
 
 AdBlockSubscriptionDownloadClient::~AdBlockSubscriptionDownloadClient() =
     default;
 
 AdBlockSubscriptionDownloadManager*
 AdBlockSubscriptionDownloadClient::GetAdBlockSubscriptionDownloadManager() {
-  return subscription_manager_->download_manager();
+  auto* subscription_manager = subscription_manager_getter_.Run();
+  return subscription_manager ? subscription_manager->download_manager()
+                              : nullptr;
 }
 
 void AdBlockSubscriptionDownloadClient::OnServiceInitialized(

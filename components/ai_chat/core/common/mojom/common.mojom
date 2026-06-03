@@ -38,6 +38,12 @@ enum APIError {
   ServiceOverloaded
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/55518): Add APIError to this struct
+struct APIErrorDetails {
+  int32 status_code;
+  string error_type;
+};
+
 enum SuggestionGenerationStatus {
   None,
   CanGenerate,
@@ -53,7 +59,9 @@ enum CharacterType {
 enum ConversationCapability {
   CHAT,
   CONTENT_AGENT,
-  DEEP_RESEARCH
+  DEEP_RESEARCH,
+  FILES,
+  SUMMARY
 };
 
 // Which action the user was taking for the entry. This can be used
@@ -180,6 +188,13 @@ struct TextContentBlock {
   string text;
 };
 
+// Content block for text extracted from an uploaded file (PDF or text file).
+// Server side handles this type specially to better support large file content
+// without hitting context limits.
+struct FileExtractedTextContentBlock {
+  string text;
+};
+
 struct PageExcerptContentBlock {
   string text;
 };
@@ -287,6 +302,7 @@ union ContentBlock {
   ImageContentBlock image_content_block;
   TextContentBlock text_content_block;
   FileContentBlock file_content_block;
+  FileExtractedTextContentBlock file_extracted_text_content_block;
 
   // Brave customized content blocks
   PageExcerptContentBlock page_excerpt_content_block;
@@ -662,6 +678,8 @@ struct Model {
   bool is_suggested_model;
   // Is a Near model
   bool is_near_model;
+  // Whether this model supports private inference (OHTTP-routed requests).
+  bool supports_private_inference = false;
 };
 
 // State required to show the conversations entries UI block
@@ -697,6 +715,7 @@ struct ConversationEntriesState {
   SuggestionGenerationStatus suggestion_status;
   // Current API error state
   APIError current_error;
+  APIErrorDetails? current_error_details;
   // Whether this is a temporary (non-persisted) conversation
   bool is_temporary = false;
 };

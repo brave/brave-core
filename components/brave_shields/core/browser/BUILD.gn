@@ -13,6 +13,8 @@ static_library("browser") {
     "ad_block_component_service_manager.h",
     "ad_block_custom_resource_provider.cc",
     "ad_block_custom_resource_provider.h",
+    "ad_block_dat_cache_manager.cc",
+    "ad_block_dat_cache_manager.h",
     "ad_block_default_resource_provider.cc",
     "ad_block_default_resource_provider.h",
     "ad_block_filter_list_catalog_provider.cc",
@@ -87,5 +89,17 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//testing/gtest",
     "//url",
+  ]
+}
+
+static_library("test_support") {
+  testonly = true
+  sources = [
+    "brave_shields_test_utils.cc",
+    "brave_shields_test_utils.h",
+  ]
+  deps = [
+    ":browser",
+    "//base",
   ]
 }

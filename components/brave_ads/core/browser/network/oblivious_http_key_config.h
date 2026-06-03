@@ -35,12 +35,15 @@ namespace brave_ads {
 // remote endpoint, caching, expiration management, automatic periodic
 // refreshes, and retry logic with exponential backoff. Upon browser startup,
 // any missing or expired key config is fetched immediately.
-class ObliviousHttpKeyConfig {
+class ObliviousHttpKeyConfig final {
  public:
   ObliviousHttpKeyConfig(
       PrefService& local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       GURL key_config_url);
+
+  ObliviousHttpKeyConfig(const ObliviousHttpKeyConfig&) = delete;
+  ObliviousHttpKeyConfig& operator=(const ObliviousHttpKeyConfig&) = delete;
 
   ~ObliviousHttpKeyConfig();
 
@@ -51,8 +54,9 @@ class ObliviousHttpKeyConfig {
   // fetched.
   std::optional<std::string> Get() const;
 
-  // Clears the cached key config and immediately starts a new fetch. Called
-  // during key rotation to obtain the updated config.
+  // Clears the cached key config so requests fail fast rather than reaching
+  // the relay with an invalid config, then starts a new fetch. Any in-flight
+  // fetch is cancelled to prevent a stale response from overwriting the config.
   void Refetch();
 
  private:

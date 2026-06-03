@@ -10,7 +10,15 @@
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
 // V2: upstream's SidePanel uses SidePanelResizeArea directly.
+
+#define UpdateHandleVisibility(...)    \
+  UpdateHandleVisibility(__VA_ARGS__); \
+  friend class BraveSidePanelResizeArea
+
 #include <chrome/browser/ui/views/side_panel/side_panel_resize_area.h>  // IWYU pragma: export
+
+#undef UpdateHandleVisibility
+
 #else
 // V1: excluded — Brave uses SidePanelResizeWidget instead.
 #endif

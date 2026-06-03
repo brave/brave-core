@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import { SortOrder } from '../../../constants/types'
 import styled from 'styled-components'
 
@@ -30,9 +31,8 @@ export const StyledTBody = styled.tbody`
 export const StyledNoContent = styled('div')<{}>`
   text-align: center;
   padding: 30px 0;
-  color: ${(p) => p.theme.color.text03};
-  font-size: 14px;
-  font-family: Poppins;
+  color: ${leo.color.text.tertiary};
+  font: ${leo.font.default.regular};
 `
 
 export const StyledTable = styled('table')`
@@ -50,23 +50,23 @@ export const StyledTHead = styled('thead')``
 
 export const StyledTH = styled('th')<Partial<StyleProps>>`
   text-align: left;
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 18px;
+  font: ${leo.font.small.semibold};
   letter-spacing: 0.01em;
-  border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
+  border-bottom: 2px solid ${leo.color.text.disabled};
   color: ${(p) =>
-    p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
+    p.sortOrder !== undefined
+      ? leo.color.text.secondary
+      : leo.color.text.tertiary};
   padding: 10px 0 10px 0px;
   cursor: ${(p) => (p.sortable ? 'pointer' : 'default')};
   position: ${(p) => (p.stickyHeaders ? 'sticky' : 'relative')};
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   top: ${(p) => (p.stickyHeaders ? 0 : 'inherit')};
   z-index: 2;
 
   &:hover {
-    color: ${(p) => (p.sortable ? p.theme.color.text02 : p.theme.color.text03)};
+    color: ${(p) =>
+      p.sortable ? leo.color.text.secondary : leo.color.text.tertiary};
   }
 
   &:last-child {
@@ -81,13 +81,8 @@ export const StyledTR = styled('tr')`
 export const StyledTD = styled('td')`
   vertical-align: middle;
   letter-spacing: 0.01em;
-  font-family: Poppins;
-  font-size: 14px;
-  font-weight: 400;
-  color: ${(p) => p.theme.color.text01};
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
+  color: ${leo.color.text.primary};
   padding: 0 0 16px 10px;
   pointer-events: auto;
 

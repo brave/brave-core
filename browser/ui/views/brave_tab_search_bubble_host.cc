@@ -18,10 +18,9 @@ void BraveTabSearchBubbleHost::SetBubbleArrow(
 }
 
 bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
-    bool triggered_by_keyboard_shortcut,
-    tab_search::mojom::TabSearchSection section) {
-  bool result = TabSearchBubbleHost::ShowTabSearchBubble(
-      triggered_by_keyboard_shortcut, section);
+    bool triggered_by_keyboard_shortcut) {
+  bool result =
+      TabSearchBubbleHost::ShowTabSearchBubble(triggered_by_keyboard_shortcut);
   if (!arrow_ || !result) {
     return result;
   }

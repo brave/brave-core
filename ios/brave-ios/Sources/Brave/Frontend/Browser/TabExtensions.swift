@@ -109,27 +109,12 @@ extension TabState {
     }
   }
 
-  func stopMediaPlayback() {
-    data.browserData?.miscDelegate?.stopMediaPlayback(self)
-  }
-
   var containsWebPage: Bool {
     if let url = visibleURL {
       return url.isWebPage()
     }
 
     return false
-  }
-}
-
-// MARK: - Brave SKU
-extension TabState {
-  func injectLocalStorageItem(key: String, value: String) {
-    self.evaluateJavaScript(
-      functionName: "localStorage.setItem",
-      args: [key, value],
-      contentWorld: BraveSkusScriptHandler.scriptSandbox
-    )
   }
 }
 

@@ -37,6 +37,7 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'rewards_grant_staging_endpoint',
   'safebrowsing_api_endpoint',
   'service_key_aichat',
+  'service_key_search',
   'service_key_stt',
   'sparkle_dsa_private_key_file',
   'sparkle_eddsa_private_key',
@@ -183,10 +184,6 @@ export function getBuildArgs(config: Config) {
     args.last_chrome_installer = config.last_chrome_installer
   }
 
-  if (process.platform === 'darwin') {
-    args.allow_runtime_configurable_key_storage = true
-  }
-
   if (
     config.isDebug()
     && !config.isComponentBuild()
@@ -234,6 +231,8 @@ export function getBuildArgs(config: Config) {
   // unless use_debug_fission is set. However, they don't set it when a
   // cc_wrapper is used. Since we use cc_wrapper we need to set it manually.
   if (config.targetOS === 'linux' && config.isReleaseBuild()) {
+    // use_debug_fission requires symbol_level >= 1
+    args.symbol_level = 1
     args.use_debug_fission = true
   }
 
@@ -345,7 +344,7 @@ export function getBuildArgs(config: Config) {
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
 
-    if (!args.is_official_build) {
+    if (!config.isBraveReleaseBuild()) {
       // When building locally iOS needs dSYMs in order for Xcode to map source
       // files correctly since we are using a framework build
       args.enable_dsyms = true

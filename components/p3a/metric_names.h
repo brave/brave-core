@@ -71,7 +71,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.IsDefault", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kGeneralPlatform, MetricAttribute::kYoi, MetricAttribute::kSubregion, MetricAttribute::kVersion, MetricAttribute::kWoi},
     }},
-    {"Brave.Core.MediaSessionUsage", MetricConfig{.ephemeral = true, .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi}}},
+    {"Brave.Core.MediaSessionUsage.2", MetricConfig{.ephemeral = true, .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi}}},
     {"Brave.Core.NumberOfExtensions", {}},
     {"Brave.Core.PagesLoaded.NonRewards", {}},
     {"Brave.Core.PagesLoaded.Rewards", {}},
@@ -90,6 +90,9 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.DNS.AutoSecureRequests.Quad9.2", MetricConfig{.ephemeral = true}},
     {"Brave.DNS.AutoSecureRequests.Wikimedia.2", MetricConfig{.ephemeral = true}},
     {"Brave.DNS.SecureSetting", {}},
+    {"Brave.EmailAliases.ClipboardCopyCount", MetricConfig{.ephemeral = true}},
+    {"Brave.EmailAliases.NotesCount", MetricConfig{.ephemeral = true}},
+    {"Brave.EmailAliases.SettingsPageMethod", MetricConfig{.ephemeral = true}},
     {"Brave.Extensions.AdBlock", {}},
     {"Brave.Extensions.SelectManifestV2", {}},
     {"Brave.IOS.IsLikelyDefault", MetricConfig{
@@ -140,13 +143,15 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Search.WidgetDefault", {}},
     {"Brave.Search.WidgetUsage", MetricConfig{.ephemeral = true}},
     {"Brave.Shields.AdBlockSetting", {}},
+    {"Brave.Shields.AutoShredSettings", {}},
     {"Brave.Shields.DevModeEnabled", {}},
     {"Brave.Shields.DomainAdsSettingsAboveGlobal", {}},
     {"Brave.Shields.DomainAdsSettingsBelowGlobal", {}},
     {"Brave.Shields.FilterLists.2", {}},
     {"Brave.Shields.FingerprintBlockSetting", {}},
+    {"Brave.Shields.ManualShred", {}},
     {"Brave.Shields.UpgradeHTTPSGlobal", {}},
-    {"Brave.Shields.UpgradeHTTPSPerSite", {}},
+    {"Brave.Shields.UpgradeHTTPSPerSite.2", {}},
     {"Brave.Shields.UsageStatus", {}},
     {"Brave.Sidebar.Enabled", {}},
     {"Brave.Sync.JoinType", MetricConfig{.ephemeral = true}},
@@ -171,20 +176,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.VerticalTabs.GroupTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.OpenTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.PinnedTabs", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.ActiveBtcAccounts", {}},
-    {"Brave.Wallet.ActiveEthAccounts", {}},
-    {"Brave.Wallet.ActiveSolAccounts", {}},
-    {"Brave.Wallet.ActiveZecAccounts", {}},
-    {"Brave.Wallet.ActiveAdaAccounts", {}},
-    {"Brave.Wallet.BtcTransactionSent", {}},
-    {"Brave.Wallet.EthTransactionSent", {}},
-    {"Brave.Wallet.NFTCount", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.NewUserReturning", {}},
-    {"Brave.Wallet.OnboardingConversion.3", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.SolTransactionSent", {}},
-    {"Brave.Wallet.ZecTransactionSent", {}},
-    {"Brave.Wallet.AdaTransactionSent", {}},
-    {"Brave.Wallet.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 
@@ -213,7 +204,6 @@ inline constexpr auto kCollectedSlowHistograms =
     {"Brave.Today.DirectFeedsTotal.3", MetricConfig{.ephemeral = true}},
     {"Brave.Today.PublisherCount.2", MetricConfig{.ephemeral = true}},
     {"Brave.Today.UsageMonthly", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.UsageMonthly", MetricConfig{.ephemeral = true}},
 });
 
 inline constexpr auto kCollectedExpressHistograms =
@@ -343,7 +333,6 @@ inline constexpr auto kCollectedExpressHistograms =
       .record_activation_date = true
     }},
     {"Brave.Uptime.BrowserOpenTime.2", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.UsageDaily", MetricConfig{.ephemeral = true}},
     {"Brave.Welcome.InteractionStatus.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kSubregion, MetricAttribute::kVersion},
     }},

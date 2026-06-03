@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -19,6 +20,10 @@ class SearchEngineTracker;
 namespace ai_chat {
 class AIChatMetrics;
 }  // namespace ai_chat
+
+namespace email_aliases {
+class EmailAliasesMetrics;
+}  // namespace email_aliases
 
 namespace misc_metrics {
 class BraveSearchMetrics;
@@ -62,6 +67,9 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
   raw_ptr<misc_metrics::BraveSearchMetrics> brave_search_metrics_ = nullptr;
   raw_ptr<misc_metrics::NavigationSourceMetrics> navigation_source_metrics_ =
       nullptr;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  raw_ptr<email_aliases::EmailAliasesMetrics> email_aliases_metrics_ = nullptr;
+#endif
   BraveAutocompleteSchemeClassifier scheme_classifier_;
   WeeklyStorage search_storage_;
   PrefChangeRegistrar pref_change_registrar_;

@@ -64,9 +64,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
 
   EXPECT_CALL(ads_service_mock_, GetInternals)
       .WillOnce([](GetInternalsCallback callback) {
-        base::DictValue dict;
-        dict.Set("foo", "bar");
-        std::move(callback).Run(std::move(dict));
+        std::move(callback).Run(base::DictValue().Set("foo", "bar"));
       });
 
   base::test::TestFuture<std::string> test_future;

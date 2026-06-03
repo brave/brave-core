@@ -9,15 +9,13 @@
 
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_run_loop_timeout.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -27,8 +25,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
@@ -36,16 +33,13 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_controller_factory.h"
-#include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 
@@ -161,7 +155,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
       content::WebUI* web_ui,
       const GURL& url) override {
     if (url.host() == kWalletPageHost) {
-      return std::make_unique<AndroidWalletPageUI>(web_ui, url);
+      return std::make_unique<WalletPageUI>(web_ui);
     }
 
     return nullptr;

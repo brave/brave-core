@@ -16,6 +16,7 @@ namespace translate {
 
 class TranslateLanguageList : public TranslateLanguageList_ChromiumImpl {
  public:
+  using TranslateLanguageList_ChromiumImpl::TranslateLanguageList_ChromiumImpl;
   void SetResourceRequestsAllowed(bool allowed) override;
 };
 

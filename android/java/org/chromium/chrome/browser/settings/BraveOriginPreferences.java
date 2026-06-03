@@ -52,6 +52,12 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "BraveOriginPrefs";
 
+    /**
+     * Fragment argument: when true, show the restart snackbar on open (set by native when a
+     * purchase is first detected via credential refresh).
+     */
+    public static final String EXTRA_SHOW_RESTART_PROMPT = "show_restart_prompt";
+
     // Preference keys
     private static final String PREF_REWARDS_SWITCH = "rewards_switch";
     private static final String PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH =
@@ -75,6 +81,12 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
     /** Whether we are in the post-purchase "fetching credentials" state. */
     private boolean mIsFetchingCredentials;
+
+    /**
+     * Whether to show the restart snackbar on open. Set when the screen is opened by native after a
+     * credential-refresh purchase, where credentials are already present (no fetching spinner).
+     */
+    private boolean mShowRestartPrompt;
 
     /** References to the fetching/restart containers in the snackbar for toggling visibility. */
     @Nullable private View mFetchingContainer;
@@ -149,6 +161,11 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                     });
         }
 
+        Bundle args = getArguments();
+        if (args != null) {
+            mShowRestartPrompt = args.getBoolean(EXTRA_SHOW_RESTART_PROMPT, false);
+        }
+
         // Check if we are in the post-purchase state (credentials being fetched)
         if (BraveOriginSubscriptionPrefs.isFetchingCredentials(profile)) {
             mIsFetchingCredentials = true;
@@ -177,6 +194,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         super.onViewCreated(view, savedInstanceState);
         if (mIsFetchingCredentials) {
             showFetchingSnackbar();
+        } else if (mShowRestartPrompt) {
+            showRestartSnackbar();
         }
     }
 
@@ -188,7 +207,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         String key = preference.getKey();
         boolean isEnabled = (Boolean) newValue;
 
-        updateToggleDescription(preference, isEnabled);
         String policyKey = getPolicyKeyForPreference(key);
         if (policyKey == null || mBraveOriginSettingsHandler == null) {
             return false;
@@ -389,7 +407,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             return;
         }
         preference.setOnPreferenceChangeListener(this);
-        updateToggleDescription(preference, preference.isChecked());
 
         // Initialize from policy service if available
         String policyKey = getPolicyKeyForPreference(key);
@@ -407,7 +424,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                                         ? !value
                                         : value;
                         preference.setChecked(checkedValue);
-                        updateToggleDescription(preference, checkedValue);
                     }
                 });
     }
@@ -485,7 +501,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 continue;
             }
             pref.setChecked(false);
-            updateToggleDescription(pref, false);
             anyChanged = true;
 
             String policyKey = getPolicyKeyForPreference(key);
@@ -504,22 +519,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         if (anyChanged) {
             showRestartSnackbar();
-        }
-    }
-
-    /**
-     * Updates the description of a toggle preference based on its enabled state. Shows "This
-     * feature is enabled because you opted into it" when enabled, removes the description when
-     * disabled.
-     *
-     * @param preference The preference to update
-     * @param isEnabled Whether the toggle is enabled
-     */
-    private void updateToggleDescription(Preference preference, boolean isEnabled) {
-        if (isEnabled) {
-            preference.setSummary(R.string.origin_toggle_enabled_description);
-        } else {
-            preference.setSummary(null);
         }
     }
 

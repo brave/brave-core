@@ -15,6 +15,7 @@ import {
   checkIfTokenNeedsNetworkIcon,
   searchNftCollectionsAndGetTotalNftsFound,
   getTokenCollectionName,
+  dedupeAssetsByIdKey,
   getAssetIdKey,
   isTokenWatchOnly,
   getDoesCoinSupportSwap,
@@ -217,5 +218,40 @@ describe('getDoesCoinSupportBridge', () => {
   it('returns false for coins that do not support bridge', () => {
     expect(getDoesCoinSupportBridge(BraveWallet.CoinType.FIL)).toBe(false)
     expect(getDoesCoinSupportBridge(BraveWallet.CoinType.DOT)).toBe(false)
+  })
+})
+
+describe('dedupeAssetsByIdKey', () => {
+  it('returns an empty array when given no assets', () => {
+    expect(dedupeAssetsByIdKey([])).toEqual([])
+  })
+
+  it('returns all assets when there are no duplicates', () => {
+    const assets = [ethToken, batToken]
+    expect(dedupeAssetsByIdKey(assets)).toEqual(assets)
+  })
+
+  it('removes duplicate assets with the same asset id key', () => {
+    const duplicateBat = { ...batToken, name: 'Duplicate BAT' }
+    const assets = [ethToken, batToken, duplicateBat]
+
+    expect(dedupeAssetsByIdKey(assets)).toEqual([ethToken, batToken])
+    expect(getAssetIdKey(batToken)).toBe(getAssetIdKey(duplicateBat))
+  })
+
+  it('keeps the first occurrence when duplicates differ only by casing', () => {
+    const duplicateBat = {
+      ...batToken,
+      contractAddress: batToken.contractAddress.toUpperCase(),
+    }
+    const assets = [batToken, duplicateBat]
+
+    expect(dedupeAssetsByIdKey(assets)).toEqual([batToken])
+  })
+
+  it('keeps assets with different asset id keys', () => {
+    const assets = [nftTokenOne, nftTokenTwo, ethToken, batToken]
+
+    expect(dedupeAssetsByIdKey(assets)).toEqual(assets)
   })
 })

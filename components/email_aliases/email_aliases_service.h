@@ -15,6 +15,7 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_auth.h"
 #include "brave/components/email_aliases/email_aliases_endpoints.h"
+#include "brave/components/email_aliases/email_aliases_metrics.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -82,6 +83,8 @@ class EmailAliasesService : public KeyedService,
 
   EmailAliasesAuth* GetAuth();
 
+  EmailAliasesMetrics& metrics() { return metrics_; }
+
  private:
   using TokenResult =
       base::expected<brave_account::mojom::GetServiceTokenResultPtr,
@@ -133,6 +136,8 @@ class EmailAliasesService : public KeyedService,
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   const raw_ref<PrefService> pref_service_;
+
+  EmailAliasesMetrics metrics_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

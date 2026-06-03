@@ -66,6 +66,8 @@ class AdBlockCustomResourceProvider
   void LoadResources(
       base::OnceCallback<void(AdblockResourceStorageBox)>) override;
 
+  void OverrideResourcesForTesting(AdblockResourceStorageBox storage);
+
  private:
   // AdBlockResourceProvider::Observer:
   void OnResourcesLoaded(AdblockResourceStorageBox) override;

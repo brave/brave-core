@@ -131,16 +131,12 @@
 <translation id="8184318863960255706">更多資訊</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="1162706247109707219">按一下「確定」，即表示您瞭解在更新到 Windows 10 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
-<translation id="9164786361657554526">按一下「確定」，即表示您瞭解在更新到 macOS 10.15 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
+<translation id="2971591422768125177">按一下「確定」，即表示您瞭解在更新到 macOS 13 以上版本之前，您安裝的 Brave 將不會收到重大安全性更新。此警告不會再次顯示。</translation>
 <translation id="6020553119523541665">此分頁在另一個視窗中使用中</translation>
 <translation id="4987392683074136770">點擊此分頁會將其內容帶到此窗口</translation>
 <translation id="8355523213948477234">分割畫面功能表按鈕</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="6665472986740899785">Brave 通知廣告</translation>
-<translation id="5582087890067572966">🎉 您已開始賺取收益！</translation>
-<translation id="4364336119478610380">畫面上顯示這類通知時，就表示您已開始賺取收益。您不需要特地點選，也能開始賺取收益。</translation>
-<translation id="5893017172751072752">出現 Brave Ads 通知表示您已開始賺取收益</translation>
-<translation id="3447730462826640312">您不需要特地點選，也能開始賺取收益，但如果您想深入瞭解，記得點選入內查看！</translation>
 <translation id="5253166205743627564">感謝您點擊私人廣告來支持 Brave Search。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
 <translation id="8748471354357836070">瞭解更多 / 退出選擇</translation>
 <translation id="5927196110206824867">贊助商背景圖片支援 Brave 建立一個獨立、使用者優先網路的使命。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
@@ -181,7 +177,7 @@
 <translation id="3405021928725149239">書籤管理器</translation>
 <translation id="6284218950354553099">自動傳送每日使用 ping 到 Brave</translation>
 <translation id="694500751416448436">這種私人的 ping 讓 Brave 可以估計活躍使用者。</translation>
-<translation id="1872784258300710671">Brave 使用完全私密的產品分析來評估特定功能的整體使用量</translation>
+<translation id="5047771074267454980">Brave 使用保護隱私的產品分析來評估特定功能的整體使用量</translation>
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="7142548388914389999">允許保護私隱的產品分析 (P3A)</translation>
@@ -197,23 +193,29 @@
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
 <translation id="3987546108749866209">使用垂直分頁</translation>
+<translation id="8784551623584887013">焦點模式</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{關閉分頁音訊}other{關閉多個分頁的音訊}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{開啟分頁音訊}other{開啟多個分頁的音訊}}</translation>
 <translation id="2289567621059034186">在下方新增分頁</translation>
 <translation id="3228962656492373217">關閉下方的分頁</translation>
 <translation id="8030501904366631501">將所有分頁整合至此視窗</translation>
 <translation id="253980346046488815">關閉重複的分頁</translation>
+<translation id="5140474419843357176">無容器</translation>
 <translation id="8670218546624422041">在容器中開啟</translation>
+<translation id="194205047181722473">在容器中開啟連結</translation>
 <translation id="8638526693050780542">管理容器</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="2523967823495420116">使用垂直分頁</translation>
+<translation id="5483718923712878759">焦點模式</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{關閉分頁音訊}other{關閉多個分頁的音訊}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{開啟分頁音訊}other{開啟多個分頁的音訊}}</translation>
 <translation id="4405580203042711503">在下方新增分頁</translation>
 <translation id="5611474372949142946">關閉下方分頁</translation>
 <translation id="573844928911967687">將所有分頁整合至此視窗</translation>
 <translation id="2703180365855369896">關閉重複的分頁</translation>
+<translation id="7678994190810851607">無容器</translation>
 <translation id="1987871867023021397">在容器中開啟</translation>
+<translation id="1185644444415356776">在容器中開啟連結</translation>
 <translation id="6745991613881384719">管理容器</translation>
 <translation id="3704707436873245822">從圖片複製文字</translation>
 <translation id="5268098808165185458">正在從圖片複製文字…</translation>
@@ -337,12 +339,15 @@
 <translation id="7557539689487606886">訂閱 Premium</translation>
 <translation id="1035309871698658326">開啟時，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo，以便將它們分類。</translation>
 <translation id="3435896845095436175">啟用</translation>
+<translation id="9031526219709160683">Brave 可以幫助您優化此網站的隱私設定。您想要檢閱 Brave 的建議嗎?</translation>
+<translation id="5739953050957336013">檢閱建議</translation>
 <translation id="9082792303833649978">此設定由您的管理員或其他 Brave 政策所管理。</translation>
 <translation id="1940221956626514677">自訂工具列</translation>
 <translation id="6501807887341963552">主題與顏色</translation>
 <translation id="6724227215236550330">已儲存的密碼將顯示於此處。若要將密碼匯入本裝置上的 <ph name="BRAND"/>，<ph name="BEGIN_LINK"/> 請點選 CSV 檔案<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">若要將密碼匯入本裝置上的 <ph name="BRAND"/>，請選擇 CSV 檔案</translation>
 <translation id="8570228839666486945">裝置內AI</translation>
+<translation id="3456536577668402695">您的搜尋和頁面內容會在此裝置上處理。不會傳送至 Brave 或被人工審查員看到。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -388,11 +393,18 @@
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
 <translation id="8925055964134259461">依視窗個別展開垂直分頁</translation>
 <translation id="916373084491701212">顯示捲軸</translation>
+<translation id="1323764665799785118">在水平標籤列上顯示捲動按鈕</translation>
 <translation id="515949045075831661">顯示於右側</translation>
 <translation id="3725395376319291415">顯示於左側</translation>
 <translation id="2113977810652731515">信用卡</translation>
 <translation id="4096343215397759358">顯示預覽的圖卡</translation>
 <translation id="5297085818601043899">工具提示</translation>
+<translation id="1033676453210290920">最小標籤寬度</translation>
+<translation id="562967218762447012">最小 (預設)</translation>
+<translation id="574392208103952083">中等</translation>
+<translation id="4209092469652827314">大</translation>
+<translation id="2658845370685508484">全寬</translation>
+<translation id="1215972473274650670">使用可捲動標籤列</translation>
 <translation id="5219886318310413094">在所有視窗中顯示已釘選的分頁</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="443318149139185498">在主菜單按鈕上使用輪廓標誌</translation>
@@ -503,22 +515,20 @@
 <translation id="4088315951291671239">請勿在此貼上您不瞭解或未親自檢視的程式碼。這可能會讓攻擊者竊取您的身分或控制您的電腦。</translation>
 <translation id="3020183492814296499">捷徑</translation>
 <translation id="2935698011275148880">Brave Origin</translation>
-<translation id="2587535830241068901">自訂您的瀏覽器，同時仍支援 Brave</translation>
-<translation id="553273341094971255">Brave Origin 可幫助您調整 Brave 使其符合您的喜好，並移除所有應用程式內的促銷優惠、品牌廣告，甚至是您在安裝時可能啟用的匿名分析。</translation>
-<translation id="534725333104202278">您之前啟用或使用過的任何附加元件或功能將維持可見與整合，而其他附加元件或功能則會停用。當我們在瀏覽器中提供新功能時，請繼續調整Brave。在Brave Origin控制面板中，這些功能預設會隱藏並靜默顯示。</translation>
+<translation id="3486906647205325617">部分變更需要重新啟動瀏覽器才能完全生效。</translation>
 <translation id="1919345977826869612">廣告</translation>
 <translation id="944736176598169208">獎勵</translation>
 <translation id="2839742394543397416">分析</translation>
 <translation id="1799030480311994998">功能</translation>
-<translation id="6709133671862442373">新聞內容</translation>
-<translation id="6297791103122079275">Talk</translation>
+<translation id="6709133671862442373">新聞</translation>
+<translation id="6297791103122079275">通話</translation>
 <translation id="1458638489455808030">回溯機</translation>
+<translation id="4590997608186539865">播放清單</translation>
 <translation id="1199170151481311646">隱私權保護分析</translation>
 <translation id="5990642573624858459">統計報告</translation>
 <translation id="2441719842399509963">重設為預設值</translation>
-<translation id="4530494379350999373">來源</translation>
-<translation id="2964215604640804042">Brave Origin 是瀏覽器的付費版本，適合不需要支持 Brave 業務所有功能，但仍想要只有 Brave 提供的隱私保護的用戶。Brave Origin 用戶將繼續受益於我們業界領先的隱私保護、廣告攔截和速度（透過 Brave 盾牌），以及定期軟件更新、Chromium 補丁和安全與隱私改進。他們還將解鎖禁用 AI、獎勵、錢包、VPN、Web3 域名等功能的選項。</translation>
-<translation id="9130916892338379417">Brave Origin 可通過一次性購買取得。在行動裝置（Android 和 iOS）和桌面上，Origin 可作為現有版本的升級而購買。在桌面上，Origin 也可作為單獨的獨立應用程式購買。Origin 用戶將在設定選單中看到新的控制面板。現有功能以及我們未來推出的任何新功能都將出現在此處，並且預設為關閉。</translation>
+<translation id="2587535830241068901">自訂您的瀏覽器，同時仍支援 Brave</translation>
+<translation id="123297831435065577">Brave Origin 是專為那些不需要支援 Brave 營運的所有功能，但仍希望享有 Brave 獨有隱私保護的使用者所設計的付費版瀏覽器。Origin 使用者將持續享有我們業界領先的隱私保護、廣告攔截及速度優勢（透過盾牌技術實現），同時也能獲得定期的軟體更新、Chromium 修補程式，以及安全與隱私功能的改進。</translation>
 <translation id="7984508421152399880">立即購買</translation>
 <translation id="5567412479632285879">Brave 獎勵已停用</translation>
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
@@ -562,6 +572,7 @@
 <translation id="5747552184818312860">有效期限</translation>
 <translation id="3858860766373142691">名稱</translation>
 <translation id="361106536627977100">Flash 資料</translation>
+<translation id="4530494379350999373">來源</translation>
 <translation id="8195027750202970175">佔磁碟容量</translation>
 <translation id="9116465289595958864">上次修改時間</translation>
 <translation id="4590324241397107707">資料庫儲存空間</translation>
@@ -797,7 +808,7 @@
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>
 <translation id="5226020406479918122">標籤頁焦點模式</translation>
 <translation id="3705539672403311123">在「標籤頁搜尋」頁啟用標籤頁組織。開啟後，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo 進行分類。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
-<translation id="9049433973274198706">標籤焦點的預設模式</translation>
+<translation id="9049433973274198706">標籤頁焦點的預設模式</translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="5781842473834867765">儲存我的對話紀錄</translation>
 <translation id="1082960401708055995">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>
@@ -821,6 +832,8 @@
 <translation id="6374563306438145841">API 金鑰</translation>
 <translation id="3295756655687327124">視覺支援</translation>
 <translation id="1415432774589088566">如果此模型以影像作為輸入，例如 llama 3.2b vision</translation>
+<translation id="5718897035062884425">工具支援</translation>
+<translation id="2120046556683363911">如果此模型支援函式呼叫/工具使用</translation>
 <translation id="8008271349880309090">模型名稱，這會顯示於選取模型選單</translation>
 <translation id="1355326130503900056">模型名稱，這應顯示於傳給服務架構 (如 phi-3) 的要求 (請注意，如果此名稱與服務架構預期的名稱不符，就無法整合)</translation>
 <translation id="3213787232304349732">您的服務架構會以此 URL 聆聽要求。如果您不確定，請查閱服務架構的說明文件。例如，對 Ollama 而言，這個 URL 永遠是 http://localhost:11434/v1/chat/completions</translation>

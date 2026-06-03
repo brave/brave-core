@@ -22,6 +22,7 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -47,11 +48,6 @@ group("ui_public_dependencies") {
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
   ]
-}
-
-group("browser_navigator_params_headers_public_dependencies") {
-  visibility = [ "//chrome/browser/ui:browser_navigator_params_headers" ]
-  public_deps = [ "//brave/components/containers/buildflags" ]
 }
 
 source_set("ui") {
@@ -94,9 +90,10 @@ source_set("ui") {
     "//chrome/browser/contextual_search",
     "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
-    "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui:tab_search_feature",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/navigator",
+    "//chrome/browser/ui/select_file_policy",
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/browser/ui/toolbar",
@@ -132,21 +129,43 @@ source_set("ui") {
   ]
 
   if (enable_brave_wallet) {
-    sources += [
-      "webui/brave_wallet/line_chart/line_chart_ui.cc",
-      "webui/brave_wallet/line_chart/line_chart_ui.h",
-      "webui/brave_wallet/market/market_ui.cc",
-      "webui/brave_wallet/market/market_ui.h",
-      "webui/brave_wallet/nft/nft_ui.cc",
-      "webui/brave_wallet/nft/nft_ui.h",
-    ]
     deps += [
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/browser:pref_names",
-      "//brave/components/brave_wallet/browser:utils",
-      "//brave/components/brave_wallet/common",
-      "//brave/components/brave_wallet/common:mojom",
+      "//brave/browser/ui/webui/brave_wallet/line_chart",
+      "//brave/browser/ui/webui/brave_wallet/market",
+      "//brave/browser/ui/webui/brave_wallet/nft",
+      "//brave/browser/ui/webui/brave_wallet/wallet_page",
       "//brave/components/decentralized_dns/core",
+    ]
+
+    if (!is_android) {
+      sources += [
+        "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
+        "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
+        "views/toolbar/wallet_button.cc",
+        "views/toolbar/wallet_button.h",
+        "views/toolbar/wallet_button_notification_source.cc",
+        "views/toolbar/wallet_button_notification_source.h",
+        "wallet_bubble_manager_delegate_impl.cc",
+        "wallet_bubble_manager_delegate_impl.h",
+        "webui/settings/brave_wallet_handler.cc",
+        "webui/settings/brave_wallet_handler.h",
+      ]
+
+      deps += [
+        "//brave/browser/brave_wallet",
+        "//brave/browser/brave_wallet:tab_helper",
+        "//brave/browser/ui/brave_wallet",
+        "//brave/browser/ui/webui/brave_wallet/ledger",
+        "//brave/browser/ui/webui/brave_wallet/trezor",
+        "//brave/browser/ui/webui/brave_wallet/wallet_panel",
+      ]
+    }
+  }
+
+  if (enable_playlist) {
+    deps += [
+      "//brave/components/playlist/core/browser",
+      "//brave/components/playlist/core/common",
     ]
   }
 
@@ -154,6 +173,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_rewards",
       "//chrome/browser:flags",
+      "//chrome/browser/lifetime",
     ]
 
     sources += [
@@ -264,8 +284,6 @@ source_set("ui") {
       "brave_browser_window.h",
       "brave_file_select_utils.cc",
       "brave_file_select_utils.h",
-      "brave_icon_with_badge_image_source.cc",
-      "brave_icon_with_badge_image_source.h",
       "brave_pages.cc",
       "brave_pages.h",
       "brave_tab_strip_model_delegate.cc",
@@ -291,6 +309,7 @@ source_set("ui") {
       "tabs/brave_tab_color_mixer.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
+      "tabs/shared_pinned_tab_dummy_view.cc",
       "tabs/shared_pinned_tab_dummy_view.h",
       "tabs/shared_pinned_tab_service.cc",
       "tabs/shared_pinned_tab_service.h",
@@ -377,28 +396,25 @@ source_set("ui") {
       ]
     }
 
-    if (enable_brave_wallet) {
-      sources += [
-        "webui/settings/brave_wallet_handler.cc",
-        "webui/settings/brave_wallet_handler.h",
-      ]
-    }
-
     deps += [
       "//base",
       "//brave/browser/brave_account",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
+      "//brave/browser/sessions",
       "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/webui/brave_welcome_page",
       "//brave/browser/ui/webui/settings/brave_account",
+      "//brave/browser/workspaces",
       "//brave/common",
       "//brave/components/brave_account",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
+      "//brave/components/brave_education",
+      "//brave/components/brave_education:buildflags",
       "//brave/components/brave_wayback_machine/buildflags",
       "//brave/components/constants",
       "//brave/components/email_aliases/buildflags",
@@ -413,7 +429,10 @@ source_set("ui") {
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/contextual_search",
       "//chrome/browser/favicon",
+      "//chrome/browser/first_run",
       "//chrome/browser/importer",
+      "//chrome/browser/metrics",
+      "//chrome/browser/new_tab_page",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
       "//chrome/browser/send_tab_to_self",
@@ -423,6 +442,7 @@ source_set("ui") {
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/content_settings",
       "//chrome/browser/ui/extensions",
+      "//chrome/browser/ui/frame",
       "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/profiles",
@@ -448,11 +468,11 @@ source_set("ui") {
       "//components/pref_registry",
       "//components/prefs",
       "//components/regional_capabilities",
-      "//components/sessions",
       "//components/user_prefs",
       "//content/public/browser",
       "//content/public/common",
       "//extensions/buildflags",
+      "//extensions/common:extension_features",
       "//skia",
       "//third_party/abseil-cpp:absl",
       "//ui/actions:actions_headers",
@@ -467,6 +487,10 @@ source_set("ui") {
         "//brave/components/request_otr/common",
         "//brave/components/request_otr/common/buildflags",
       ]
+    }
+
+    if (enable_brave_wallet) {
+      deps += [ "//brave/components/brave_wallet/common:common_constants" ]
     }
 
     if (is_win) {
@@ -681,10 +705,11 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/ui/darker_theme",
+      "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/side_panel",
       "//brave/browser/ui/sidebar/buildflags",
       "//brave/browser/ui/views:layout_provider",
-      "//brave/browser/ui/views/frame",
+      "//brave/browser/ui/views/frame:frame_impl",
       "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/page_action",
       "//brave/browser/ui/views/tabs/accent_color",
@@ -692,6 +717,7 @@ source_set("ui") {
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
       "//chrome/browser/glic",
+      "//chrome/browser/metrics",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
@@ -702,6 +728,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/interaction",
+      "//chrome/browser/ui/views/tabs/shared",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
@@ -721,10 +748,11 @@ source_set("ui") {
           "webui/settings/brave_vpn/brave_vpn_handler.h",
         ]
 
-        deps += [
-          "//brave/browser/brave_vpn/win:wireguard_utils",
-          "//chrome/browser:flags",
-        ]
+        deps += [ "//chrome/browser:flags" ]
+
+        if (enable_brave_vpn_v1) {
+          deps += [ "//brave/browser/brave_vpn/win:wireguard_utils" ]
+        }
       }
       sources += [ "brave_vpn/brave_vpn_controller.cc" ]
     }
@@ -768,6 +796,8 @@ source_set("ui") {
         "views/frame/brave_browser_native_widget_mac.h",
         "views/frame/brave_browser_native_widget_mac.mm",
       ]
+
+      deps += [ "//chrome/browser/ui/cocoa" ]
     }
   }
 
@@ -880,8 +910,7 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
-    "//brave/components/playlist/core/common",
-    "//brave/components/query_filter",
+    "//brave/components/query_filter/browser",
     "//brave/components/resources:scaled_resources",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",
@@ -924,7 +953,6 @@ source_set("ui") {
     "//components/qr_code_generator:bitmap_generator",
     "//components/resources:components_resources_grit",
     "//components/search_engines",
-    "//components/sessions",
     "//components/strings:components_strings",
     "//components/tab_groups",
     "//components/update_client",
@@ -947,33 +975,31 @@ source_set("ui") {
     "//url",
   ]
 
+  if (enable_psst) {
+    deps += [
+      "//brave/components/psst/browser/core",
+      "//brave/components/psst/buildflags",
+      "//brave/components/psst/common",
+      "//brave/components/psst/resources",
+      "//brave/components/psst/resources:psst_dialog_generated_resources",
+    ]
+  }
+
   if (enable_brave_vpn) {
     deps += [
       "//brave/browser/brave_vpn",
       "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/browser/connection:api",
       "//brave/components/brave_vpn/common",
     ]
+  }
+  if (enable_brave_vpn_v1) {
+    deps += [ "//brave/components/brave_vpn/browser/connection:api" ]
     if (is_win) {
       deps += [
         "//brave/components/brave_vpn/common/win",
         "//brave/components/brave_vpn/common/wireguard",
       ]
     }
-  }
-
-  if (enable_brave_wallet) {
-    deps += [
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/browser:constants",
-      "//brave/components/brave_wallet/browser:pref_names",
-      "//brave/components/brave_wallet/browser:utils",
-      "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
-      "//brave/components/brave_wallet_ui/market:market_display_generated",
-      "//brave/components/brave_wallet_ui/nft:nft_display_generated",
-      "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
-      "//brave/components/decentralized_dns/core",
-    ]
   }
 
   if (enable_brave_rewards) {
@@ -1194,21 +1220,12 @@ source_set("ui") {
         "//brave/components/speedreader/resources/panel:generated_resources",
       ]
     }
-
-    if (enable_brave_wallet) {
-      deps += [
-        "//brave/browser/brave_wallet",
-        "//brave/components/brave_wallet/common",
-      ]
-    }
   }
 
   if (enable_extensions && toolkit_views) {
     sources += [
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
-      "views/brave_actions/brave_shields_action_view.cc",
-      "views/brave_actions/brave_shields_action_view.h",
       "views/brave_help_bubble/brave_help_bubble_delegate_view.cc",
       "views/brave_help_bubble/brave_help_bubble_delegate_view.h",
       "views/brave_help_bubble/brave_help_bubble_host_view.cc",
@@ -1222,6 +1239,8 @@ source_set("ui") {
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
     ]
+
+    deps += [ "//brave/browser/ui/views/brave_actions" ]
 
     if (enable_brave_rewards) {
       sources += [
@@ -1270,10 +1289,6 @@ source_set("ui") {
       "//extensions/common:common_constants",
       "//ui/base/dragdrop:types",
     ]
-
-    if (enable_brave_wallet) {
-      deps += [ "//brave/components/decentralized_dns/content" ]
-    }
   }
 
   if (enable_custom_background) {
@@ -1354,73 +1369,13 @@ source_set("ui") {
       deps += [ "//brave/components/brave_vpn/common" ]
     }
 
+    if (enable_email_aliases) {
+      deps += [ "//brave/components/email_aliases:features" ]
+    }
+
     if (enable_tor) {
       deps += [ "//brave/components/tor:pref_names" ]
     }
-
-    if (enable_brave_wallet) {
-      sources += [
-        "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
-        "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
-        "views/toolbar/wallet_button.cc",
-        "views/toolbar/wallet_button.h",
-        "views/toolbar/wallet_button_notification_source.cc",
-        "views/toolbar/wallet_button_notification_source.h",
-        "wallet_bubble_manager_delegate_impl.cc",
-        "wallet_bubble_manager_delegate_impl.h",
-        "webui/brave_wallet/ledger/ledger_ui.cc",
-        "webui/brave_wallet/ledger/ledger_ui.h",
-        "webui/brave_wallet/page_handler/wallet_page_handler.cc",
-        "webui/brave_wallet/page_handler/wallet_page_handler.h",
-        "webui/brave_wallet/panel_handler/wallet_panel_handler.cc",
-        "webui/brave_wallet/panel_handler/wallet_panel_handler.h",
-        "webui/brave_wallet/trezor/trezor_ui.cc",
-        "webui/brave_wallet/trezor/trezor_ui.h",
-        "webui/brave_wallet/wallet_common_ui.cc",
-        "webui/brave_wallet/wallet_common_ui.h",
-        "webui/brave_wallet/wallet_page_ui.cc",
-        "webui/brave_wallet/wallet_page_ui.h",
-        "webui/brave_wallet/wallet_panel_ui.cc",
-        "webui/brave_wallet/wallet_panel_ui.h",
-      ]
-      deps += [
-        "//brave/browser/brave_wallet:tab_helper",
-        "//brave/browser/ui/brave_wallet",
-        "//brave/components/brave_wallet/browser:permission_utils",
-        "//brave/components/brave_wallet/browser:wallet_handler",
-        "//brave/components/brave_wallet/common",
-        "//brave/components/brave_wallet/common:mojom",
-        "//brave/components/brave_wallet/common/buildflags",
-        "//brave/components/brave_wallet_ui:resources",
-        "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
-        "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
-        "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
-      ]
-    }
-  }
-  if (is_android && enable_brave_wallet) {
-    sources += [
-      "webui/brave_wallet/android/android_wallet_page_handler.cc",
-      "webui/brave_wallet/android/android_wallet_page_handler.h",
-      "webui/brave_wallet/android/android_wallet_page_ui.cc",
-      "webui/brave_wallet/android/android_wallet_page_ui.h",
-      "webui/brave_wallet/page_handler/wallet_page_handler.cc",
-      "webui/brave_wallet/page_handler/wallet_page_handler.h",
-      "webui/brave_wallet/wallet_common_ui.cc",
-      "webui/brave_wallet/wallet_common_ui.h",
-    ]
-    deps += [
-      "//brave/browser/brave_wallet",
-      "//brave/components/brave_wallet/browser:hd_keyring",
-      "//brave/components/brave_wallet/browser:wallet_handler",
-      "//brave/components/brave_wallet/common",
-      "//brave/components/brave_wallet/common:mojom",
-      "//brave/components/brave_wallet_ui:resources",
-      "//brave/components/brave_wallet_ui/page/screens/android-buy/android:brave_wallet_fund_wallet_page_generated",
-      "//brave/components/brave_wallet_ui/page/screens/fund-wallet/android:brave_wallet_deposit_page_generated",
-      "//brave/components/brave_wallet_ui/page/screens/send/android:brave_wallet_send_page_generated",
-      "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
-    ]
   }
 
   if (enable_playlist_webui) {
@@ -1478,6 +1433,8 @@ source_set("ui") {
     deps += [
       "//brave/browser/containers",
       "//brave/browser/ui/containers",
+      "//brave/browser/ui/tabs:tabs_public",
+      "//brave/browser/ui/views/page_action",
       "//brave/components/containers/content/browser",
       "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common",
@@ -1540,14 +1497,18 @@ source_set("unit_tests") {
       deps += [
         "//base",
         "//brave/components/brave_vpn/browser",
-        "//brave/components/brave_vpn/browser/connection:api",
-        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
         "//brave/components/skus/browser",
         "//chrome/browser/prefs",
         "//chrome/browser/themes",
         "//chrome/test:test_support",
         "//skia",
         "//third_party/abseil-cpp:absl",
+      ]
+    }
+    if (enable_brave_vpn_v1) {
+      deps += [
+        "//brave/components/brave_vpn/browser/connection:api",
+        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
       ]
     }
   }

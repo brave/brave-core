@@ -35,6 +35,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
   registry->RegisterBooleanPref(kVerticalTabsOnRight, false);
   registry->RegisterBooleanPref(kVerticalTabsShowScrollbar, false);
+  registry->RegisterBooleanPref(kShowHorizontalTabScrollButtons, false);
 
   registry->RegisterBooleanPref(kSharedPinnedTab, false);
 

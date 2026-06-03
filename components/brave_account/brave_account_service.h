@@ -7,29 +7,20 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 
 #include <optional>
-#include <string>
+#include <variant>
+#include <vector>
 
-#include "base/functional/callback_forward.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/time/time.h"
-#include "base/timer/timer.h"
-#include "brave/components/brave_account/endpoint_client/request_handle.h"
-#include "brave/components/brave_account/endpoints/auth_validate.h"
-#include "brave/components/brave_account/endpoints/login_finalize.h"
-#include "brave/components/brave_account/endpoints/login_init.h"
-#include "brave/components/brave_account/endpoints/password_finalize.h"
-#include "brave/components/brave_account/endpoints/password_init.h"
-#include "brave/components/brave_account/endpoints/service_token.h"
-#include "brave/components/brave_account/endpoints/verify_complete.h"
-#include "brave/components/brave_account/endpoints/verify_resend.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
+#include "brave/components/brave_account/logged_in_state.h"
+#include "brave/components/brave_account/logged_out_state.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/state_base.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_member.h"
+#include "components/os_crypt/async/common/encryptor.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
@@ -38,16 +29,43 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+namespace os_crypt_async {
+class OSCryptAsync;
+}  // namespace os_crypt_async
+
 namespace brave_account {
 
-class BraveAccountService : public KeyedService, public mojom::Authentication {
+// BraveAccountService has no non-Mojom callers. Its only public entrypoint is
+// `BindInterface()`, and this should remain the case. Receiver binding is
+// deferred until `FinishInitialization()` installs the encryptor, and any
+// service-initiated work that can reach encryption is also started only after
+// that point.
+//
+// State-scoped Mojom receivers and network requests:
+//
+// `state_` is a `std::variant<>` whose active alternative is the current
+// account state: `LoggedOutState` or `LoggedInState`. Each state inherits
+// `mojom::Authentication` via `StateBase` and owns both its in-flight
+// network requests *and* the Mojom receivers currently bound to it. When
+// `OnAccountStateChanged()` observes a pref change that crosses variant
+// alternatives, the service calls `TakeReceivers()` on the outgoing state,
+// replaces `state_` (the outgoing state's destructor cancels its in-flight
+// network requests), then re-binds the receivers onto the incoming state.
+// In-flight Mojom messages on the pipe survive the migration and are delivered
+// to the new state, where wrong-state ones land in `StateBase`'s default
+// response.
+//
+// `AddObserver()` is the one Mojom method that is not state-scoped, since an
+// observer's subscription must span state transitions. `StateBase` forwards
+// it back to the service via an `AddObserverCallback` injected at state
+// construction; `observers_` and `OnAccountStateChanged()` notifications live
+// on the service.
+class BraveAccountService : public KeyedService {
  public:
-  using OSCryptCallback =
-      base::RepeatingCallback<bool(const std::string&, std::string*)>;
-
   BraveAccountService(
       PrefService* pref_service,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      os_crypt_async::OSCryptAsync* os_crypt_async);
 
   BraveAccountService(const BraveAccountService&) = delete;
   BraveAccountService& operator=(const BraveAccountService&) = delete;
@@ -57,111 +75,25 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   void BindInterface(
       mojo::PendingReceiver<mojom::Authentication> pending_receiver);
 
+  base::OneShotTimer* AuthValidateTimerForTesting();
+
  private:
-  template <typename TestCase>
-  friend class BraveAccountServiceTest;
+  void FinishInitialization(os_crypt_async::Encryptor encryptor);
 
-  // Provides dependency injection for testing.
-  BraveAccountService(
-      PrefService* pref_service,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      OSCryptCallback encrypt_callback,
-      OSCryptCallback decrypt_callback);
+  void AddObserver(mojo::PendingRemote<mojom::AuthenticationObserver> observer);
 
-  void AddObserver(
-      mojo::PendingRemote<mojom::AuthenticationObserver> observer) override;
+  void OnAccountStateChanged();
 
-  void RegisterInitialize(std::optional<mojom::Service> initiating_service,
-                          const std::string& email,
-                          const std::string& blinded_message,
-                          RegisterInitializeCallback callback) override;
+  void EnsureState(mojom::AccountState::Tag which);
 
-  void RegisterFinalize(const std::string& encrypted_verification_token,
-                        const std::string& serialized_record,
-                        RegisterFinalizeCallback callback) override;
+  StateBase& ActiveState();
 
-  void RegisterVerify(const std::string& code,
-                      RegisterVerifyCallback callback) override;
-
-  void ResendConfirmationEmail(
-      ResendConfirmationEmailCallback callback) override;
-
-  void CancelRegistration() override;
-
-  void LoginInitialize(std::optional<mojom::Service> initiating_service,
-                       const std::string& email,
-                       const std::string& serialized_ke1,
-                       LoginInitializeCallback callback) override;
-
-  void LoginFinalize(const std::string& encrypted_login_token,
-                     const std::string& client_mac,
-                     LoginFinalizeCallback callback) override;
-
-  void LogOut() override;
-
-  void GetServiceToken(mojom::Service service,
-                       GetServiceTokenCallback callback) override;
-
-  void OnRegisterInitialize(RegisterInitializeCallback callback,
-                            endpoints::PasswordInit::Response response);
-
-  void OnRegisterFinalize(RegisterFinalizeCallback callback,
-                          const std::string& encrypted_verification_token,
-                          endpoints::PasswordFinalize::Response response);
-
-  void OnRegisterVerify(RegisterVerifyCallback callback,
-                        endpoints::VerifyComplete::Response response);
-
-  void OnResendConfirmationEmail(ResendConfirmationEmailCallback callback,
-                                 endpoints::VerifyResend::Response response);
-
-  void OnVerificationTokenChanged();
-
-  void OnLoginInitialize(LoginInitializeCallback callback,
-                         endpoints::LoginInit::Response response);
-
-  void OnLoginFinalize(LoginFinalizeCallback callback,
-                       endpoints::LoginFinalize::Response response);
-
-  void OnAuthenticationTokenChanged();
-
-  void ScheduleAuthValidate(
-      base::TimeDelta delay = base::Seconds(0),
-      endpoint_client::RequestHandle current_auth_validate_request = {});
-
-  void AuthValidate(
-      endpoint_client::RequestHandle current_auth_validate_request);
-
-  void OnAuthValidate(endpoints::AuthValidate::Response response);
-
-  void OnEmailAddressChanged();
-
-  void NotifyObservers();
-
-  mojom::AccountStatePtr GetAccountState() const;
-
-  void OnGetServiceToken(
-      const std::string& expected_encrypted_authentication_token,
-      const std::string& service_name,
-      GetServiceTokenCallback callback,
-      endpoints::ServiceToken::Response response);
-
-  std::string GetCachedServiceToken(const std::string& service_name) const;
-
-  std::string Encrypt(const std::string& plain_text) const;
-
-  std::string Decrypt(const std::string& base64) const;
-
-  const raw_ptr<PrefService> pref_service_;
+  AccountStatePrefs account_state_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  OSCryptCallback encrypt_callback_;
-  OSCryptCallback decrypt_callback_;
-  mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
+  std::optional<os_crypt_async::Encryptor> encryptor_;
+  std::vector<mojo::PendingReceiver<mojom::Authentication>> pending_receivers_;
   mojo::RemoteSet<mojom::AuthenticationObserver> observers_;
-  StringPrefMember pref_verification_token_;
-  StringPrefMember pref_authentication_token_;
-  StringPrefMember pref_email_address_;
-  base::OneShotTimer auth_validate_timer_;
+  std::variant<std::monostate, LoggedOutState, LoggedInState> state_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };
 

@@ -5,11 +5,14 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_native_widget_mac.h"
 
+#include <algorithm>
+
 #include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -46,6 +49,15 @@ void BraveBrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
 
   BrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
                                                        titlebar_height);
+
+  // Compact: shrink the titlebar height AppKit sees so NSThemeFrame's
+  // auto-centred traffic lights shift up toward the shorter tab strip +
+  // toolbar row (AppKit moves the lights by half the delta).
+  if (*override_titlebar_height && tabs::UseCompactHorizontalTabs()) {
+    constexpr float kCompactTitlebarShrinkDip = 8.0f;
+    *titlebar_height =
+        std::max(0.0f, *titlebar_height - kCompactTitlebarShrinkDip);
+  }
 }
 
 void BraveBrowserNativeWidgetMac::ValidateUserInterfaceItem(

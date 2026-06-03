@@ -6,8 +6,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:drawable="@drawable/ic_midnight_purple_circle"
+        android:width="@dimen/new_tab_page_incognito_icon_size"
+        android:height="@dimen/new_tab_page_incognito_icon_size"
         android:gravity="center"/>
     <item
         android:drawable="@drawable/ic_product_vpn"
+        android:width="@dimen/new_tab_page_incognito_icon_inner_size"
+        android:height="@dimen/new_tab_page_incognito_icon_inner_size"
         android:gravity="center"/>
 </layer-list>

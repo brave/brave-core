@@ -31,14 +31,9 @@ export const AddressText = styled(Text)`
 `
 
 export const AddressTextLabel = styled(Text)`
-  font-weight: 600;
-  font-size: 15px;
-  line-height: 20px;
-  letter-spacing: 0.04em;
-  font-family: 'Poppins';
-  font-style: normal;
+  font: ${leo.font.components.buttonLarge};
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   word-break: break-all;
 `
 

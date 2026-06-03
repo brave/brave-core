@@ -118,9 +118,6 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::ChildSrc,
       absl::StrFormat("child-src %s;", kAIChatUntrustedConversationUIURL));
 
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
-
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(
                     profile_, chrome::FaviconUrlFormat::kFavicon2));

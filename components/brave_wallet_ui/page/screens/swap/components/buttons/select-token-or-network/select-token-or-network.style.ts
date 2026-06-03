@@ -22,13 +22,13 @@ export const Button = styled(StyledButton)<SelectTokenButtonStyleProps>`
   }
 
   @media (prefers-color-scheme: dark) {
-    --background-color-hover-primary: ${(p) => p.theme.color.background01};
-    --background-color-hover-secondary: ${(p) => p.theme.color.background02};
+    --background-color-hover-primary: ${leo.color.page.background};
+    --background-color-hover-secondary: ${leo.color.container.background};
   }
 
   /* Styles */
   background-color: ${(p) =>
-    p.hasBackground ? p.theme.color.background01 : 'transparent'};
+    p.hasBackground ? leo.color.page.background : 'transparent'};
   border-radius: 100px;
   box-shadow: ${(p) =>
     p.hasShadow ? '0px 0px 10px rgba(0, 0, 0, 0.05)' : 'none'};
@@ -54,11 +54,11 @@ export const Button = styled(StyledButton)<SelectTokenButtonStyleProps>`
 `
 
 export const ButtonIcon = styled(Icon)`
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const FuelTank = styled(Icon)`
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   margin-right: 6px;
 `
 
@@ -73,7 +73,7 @@ export const GasBubble = styled(Row)`
 `
 
 export const NotSupportedText = styled(Text)`
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
 `
 
 export interface SelectTokenButtonStyleProps {

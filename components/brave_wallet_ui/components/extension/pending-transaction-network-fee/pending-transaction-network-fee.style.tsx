@@ -22,12 +22,8 @@ export const NetworkFeeContainer = styled.div`
 `
 
 export const NetworkFeeTitle = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.regular};
+  color: ${leo.color.text.tertiary};
 `
 
 export const NetworkFeeValue = styled.div`
@@ -51,5 +47,5 @@ export const Settings = styled(WalletButton)`
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
   width: 14px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `

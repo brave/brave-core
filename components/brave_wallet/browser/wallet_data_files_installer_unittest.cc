@@ -117,7 +117,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
   void TearDown() override {
-    installer().ResetForTesting();
+    installer().Reset();
     registry()->ResetForTesting();
   }
 

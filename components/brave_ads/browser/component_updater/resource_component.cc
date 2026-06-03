@@ -5,16 +5,23 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 
+#include <ostream>
 #include <string_view>
+#include <utility>
 
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 
 namespace brave_ads {
@@ -64,15 +71,23 @@ void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void ResourceComponent::RegisterComponentForCountryCode(
+void ResourceComponent::RegisterCountryComponent(
     const std::string& country_code) {
   country_resource_component_registrar_.RegisterResourceComponent(country_code);
 }
 
-void ResourceComponent::RegisterComponentForLanguageCode(
+void ResourceComponent::UnregisterCountryComponent() {
+  country_resource_component_registrar_.UnregisterResourceComponent();
+}
+
+void ResourceComponent::RegisterLanguageComponent(
     const std::string& language_code) {
   language_resource_component_registrar_.RegisterResourceComponent(
       language_code);
+}
+
+void ResourceComponent::UnregisterLanguageComponent() {
+  language_resource_component_registrar_.UnregisterResourceComponent();
 }
 
 std::optional<base::FilePath> ResourceComponent::MaybeGetPath(
@@ -120,8 +135,6 @@ void ResourceComponent::OnResourceComponentUnregistered(
 void ResourceComponent::LoadManifestCallback(const std::string& component_id,
                                              const base::FilePath& install_dir,
                                              const std::string& json) {
-  VLOG(8) << "Manifest JSON: " << json;
-
   std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!dict) {
@@ -148,8 +161,6 @@ void ResourceComponent::LoadResourceCallback(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& json) {
-  VLOG(8) << "Resource JSON: " << json;
-
   std::optional<base::DictValue> root =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!root) {

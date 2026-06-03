@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include <algorithm>
+
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
@@ -19,12 +22,14 @@
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/views/chrome_views_test_base.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/tabs/public/mock_tab_interface.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
+#include "ui/gfx/favicon_size.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -52,19 +57,6 @@ class MockTabSlotController : public FakeTabSlotController {
               GetTreeTabNode,
               (const tree_tab::TreeTabNodeId& id),
               (const, override));
-};
-
-class MockTabInterfaceWithWeakPtr : public tabs::MockTabInterface {
- public:
-  using tabs::MockTabInterface::MockTabInterface;
-  ~MockTabInterfaceWithWeakPtr() override = default;
-
-  base::WeakPtr<tabs::TabInterface> GetWeakPtr() override {
-    return weak_ptr_factory_.GetWeakPtr();
-  }
-
- private:
-  base::WeakPtrFactory<MockTabInterfaceWithWeakPtr> weak_ptr_factory_{this};
 };
 
 class BraveTabTest : public ChromeViewsTestBase {
@@ -107,7 +99,7 @@ class BraveTabTest : public ChromeViewsTestBase {
     if (is_pinned) {
       tabs::TabData data;
       data.pinned = true;
-      tab_ptr->SetData(std::move(data));
+      tab_ptr->SetDataForTesting(std::move(data));
     }
 
     for (int width = kMaxWidth; width > kMinWidth; width -= kStep) {
@@ -184,6 +176,47 @@ TEST_F(BraveTabTest, TabStyleTest) {
             tab_style->GetStandardWidth(/*is_split*/ false));
   EXPECT_EQ(tab_style->GetMinimumActiveWidth(/*is_split*/ true),
             tab_style->GetMinimumActiveWidth(/*is_split*/ false));
+}
+
+// https://github.com/brave/brave-browser/issues/54972 — pinned tab width must
+// stay consistent with painting: the classic tab path insets the shape by
+// GetBottomCornerRadius() on each side, so the layout width must leave a usable
+// content region (including a favicon) after that inset.
+
+// With kBraveHorizontalTabsUpdate off, GetPinnedWidth() and GetContentsInsets()
+// follow Chromium: pinned width is kTabPinnedContentWidth plus the horizontal
+// content insets (see TabStyle::GetPinnedWidth() in tab_style.cc).
+TEST_F(BraveTabTest, PinnedTabWidthDelegatesUpstreamWhenHorizontalUpdateOff) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(tabs::kBraveHorizontalTabsUpdate);
+
+  const auto* tab_style = TabStyle::Get();
+
+  constexpr int kTabPinnedContentWidth = 24;
+  const auto insets = tab_style->GetContentsInsets();
+  const int expected_unsplit =
+      kTabPinnedContentWidth + insets.left() + insets.right();
+  EXPECT_EQ(expected_unsplit, tab_style->GetPinnedWidth(/*is_split=*/false));
+
+  EXPECT_EQ(expected_unsplit - tab_style->GetTabOverlap() / 2,
+            tab_style->GetPinnedWidth(/*is_split=*/true));
+
+  EXPECT_GE(tab_style->GetPinnedWidth(/*is_split=*/false) -
+                2 * tab_style->GetBottomCornerRadius(),
+            gfx::kFaviconSize);
+}
+
+// With kBraveHorizontalTabsUpdate on, Brave uses its horizontal tab layout for
+// pinned width (see BraveTabStyle::GetPinnedWidth in tab_style.cc).
+TEST_F(BraveTabTest, PinnedTabWidthMatchesBraveLayoutWhenHorizontalUpdateOn) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(tabs::kBraveHorizontalTabsUpdate);
+
+  const auto* tab_style = TabStyle::Get();
+  const int expected =
+      tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
+  EXPECT_EQ(expected, tab_style->GetPinnedWidth(/*is_split=*/false));
+  EXPECT_EQ(expected, tab_style->GetPinnedWidth(/*is_split=*/true));
 }
 
 TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
@@ -308,7 +341,7 @@ TEST_F(BraveTabTest,
   // showing_icon_ = true for this pinned tab.
   tabs::TabData data;
   data.pinned = true;
-  tab_ptr->SetData(std::move(data));
+  tab_ptr->SetDataForTesting(std::move(data));
 
   // Compute the exact boundary used by Tab::ShouldRenderAsNormalTab():
   //   width >= pinned_tab_width + kPinnedTabExtraWidthToRenderAsNormal
@@ -416,9 +449,17 @@ class BraveTabTestWithTreeTab : public BraveTabTest {
 TEST_F(BraveTabTestWithTreeTab, TreeToggleButtonVisibleInsteadOfCloseButton) {
   testing::NiceMock<MockTabSlotController> tab_slot_controller;
   auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+
+  // Create a dummy SplitTabCollection with a new ID and default visual data
+  split_tabs::SplitTabId dummy_id = split_tabs::SplitTabId::GenerateNew();
+  split_tabs::SplitTabVisualData dummy_visual_data;
+  auto split_collection =
+      std::make_unique<tabs::SplitTabCollection>(dummy_id, dummy_visual_data);
+
   tabs::TreeTabNodeTabCollection collection(
-      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
-      base::DoNothing(), base::DoNothing());
+      node_id, std::move(split_collection), base::DoNothing(),
+      base::DoNothing());
+
   ASSERT_EQ(collection.node().height(), 0);
 
   // When tree tab has descendants, the tree toggle button should be visible.
@@ -456,9 +497,16 @@ TEST_F(BraveTabTestWithTreeTab,
        TreeToggleButtonAlwaysVisibleWhenCollapsedAndHasDescendants) {
   testing::NiceMock<MockTabSlotController> tab_slot_controller;
   auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+
+  // Create a dummy SplitTabCollection with a new ID and default visual data
+  split_tabs::SplitTabId dummy_id = split_tabs::SplitTabId::GenerateNew();
+  split_tabs::SplitTabVisualData dummy_visual_data;
+  auto split_collection =
+      std::make_unique<tabs::SplitTabCollection>(dummy_id, dummy_visual_data);
+
   tabs::TreeTabNodeTabCollection collection(
-      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
-      base::DoNothing(), base::DoNothing());
+      node_id, std::move(split_collection), base::DoNothing(),
+      base::DoNothing());
   ASSERT_EQ(collection.node().height(), 0);
 
   // When tree tab has descendants, the tree toggle button should be visible.
@@ -501,9 +549,16 @@ TEST_F(BraveTabTestWithTreeTab,
        TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref) {
   testing::NiceMock<MockTabSlotController> tab_slot_controller;
   auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
+
+  // Create a dummy SplitTabCollection with a new ID and default visual data
+  split_tabs::SplitTabId dummy_id = split_tabs::SplitTabId::GenerateNew();
+  split_tabs::SplitTabVisualData dummy_visual_data;
+  auto split_collection =
+      std::make_unique<tabs::SplitTabCollection>(dummy_id, dummy_visual_data);
+
   tabs::TreeTabNodeTabCollection collection(
-      node_id, std::make_unique<MockTabInterfaceWithWeakPtr>(),
-      base::DoNothing(), base::DoNothing());
+      node_id, std::move(split_collection), base::DoNothing(),
+      base::DoNothing());
   collection.node().set_height_for_test(100);
   collection.node().set_collapsed(false);
 
@@ -552,6 +607,28 @@ TEST_F(BraveTabTest, GetTabSizeInfoFullMinWidthModeUsesStandardWidth) {
   const TabSizeInfo info = tab.GetTabSizeInfo();
   EXPECT_EQ(info.min_active_width, std_w);
   EXPECT_EQ(info.min_inactive_width, std_w);
+}
+
+// When TabSlotController::IsHorizontalScrollingEnabled() is true, inactive tab
+// minimum width is at least tab_style()->GetMinimumActiveWidth(false) (wider
+// inactive tabs in scrollable strip). When false, the boost is not applied.
+TEST_F(BraveTabTest,
+       GetTabSizeInfo_MinInactiveBoostedWhenHorizontalScrollingEnabled) {
+  FakeTabSlotController controller;
+  BraveTab tab(tabs::TabHandle(1), &controller);
+  tab.SetBoundsRect({0, 0, 240, 40});
+  views::test::RunScheduledLayout(&tab);
+
+  const int style_min_active = tab.tab_style()->GetMinimumActiveWidth(false);
+  ASSERT_GT(style_min_active, 0);
+
+  controller.set_horizontal_scrolling_enabled(false);
+  const int min_inactive_off = tab.GetTabSizeInfo().min_inactive_width;
+
+  controller.set_horizontal_scrolling_enabled(true);
+  const int min_inactive_on = tab.GetTabSizeInfo().min_inactive_width;
+
+  EXPECT_EQ(min_inactive_on, (std::max)(min_inactive_off, style_min_active));
 }
 
 // BraveTab::GetAnchorPosition() must return LEFT_TOP in vertical tab mode so

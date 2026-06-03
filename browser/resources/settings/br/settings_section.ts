@@ -15,6 +15,7 @@ RegisterStyleOverride(
       }
 
       #header .title {
+        margin-top: calc(var(--cr-section-vertical-margin) - var(--leo-spacing-xl)) !important;
         font-size: var(--leo-typography-heading-h4-font-size) !important;
         font-weight: 600 !important;
         padding-top: var(--leo-spacing-xl) !important;
@@ -22,6 +23,11 @@ RegisterStyleOverride(
         margin-bottom: 0 !important;
         letter-spacing: 0 !important;
       }
+
+      #card {
+        margin-bottom: var(--leo-spacing-xl);
+      }
+
       :host(:not(.expanded)) #card {
         box-shadow: var(--leo-effect-elevation-01) !important;
         background-color: var(--leo-color-container-background) !important;

@@ -218,13 +218,6 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(ai_chat::features::kRichSearchWidgets),        \
       },                                                                    \
       {                                                                     \
-          "brave-ai-chat-conversation-api-v2",                              \
-          "Brave AI Chat Conversation API V2",                              \
-          "Enables Conversation API V2 for AI Chat",                        \
-          flags_ui::kOsIos,                                                 \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationAPIV2),  \
-      },                                                                    \
-      {                                                                     \
           "brave-ai-chat-user-choice-tool",                                 \
           "Brave AI Chat User Choice Tool",                                 \
           "AI can offer a multiple choice question to the user during a "   \

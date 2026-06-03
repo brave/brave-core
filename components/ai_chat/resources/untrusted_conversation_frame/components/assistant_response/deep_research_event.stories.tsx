@@ -239,6 +239,6 @@ export const ResearchComplete = {
 }
 
 export default {
-  title: 'Chat/DeepResearchEvent',
+  title: 'AI Chat/DeepResearchEvent',
   component: DeepResearchEvent,
 } as Meta<typeof DeepResearchEvent>

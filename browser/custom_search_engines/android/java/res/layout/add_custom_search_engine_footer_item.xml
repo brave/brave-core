@@ -8,8 +8,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="48dp"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:paddingHorizontal="16dp"
+    android:paddingVertical="16dp"
     android:gravity="center_vertical"
     android:background="?attr/selectableItemBackground">
 
@@ -17,7 +18,6 @@
         android:id="@+id/add_custom_search_engine_footer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="14dp"
         android:text="@string/add_custom_search_engine"
         style="@style/AddCustomSearchEngineItemTitle"/>
 

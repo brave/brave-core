@@ -45,6 +45,7 @@ def main():
                              depfile_sourcename=grd_path,
                              webpack_aliases=args.webpack_alias,
                              output_module=args.output_module,
+                             no_externals=args.no_externals,
                              extra_modules=args.extra_modules,
                              public_asset_path=args.public_asset_path,
                              sync_wasm=args.sync_wasm,
@@ -67,6 +68,7 @@ def parse_args():
                         action='append',
                         help='Entry points',
                         required=True)
+    parser.add_argument('--no_externals', action='store_true')
     parser.add_argument('--output_path', nargs=1)
     parser.add_argument('--root_gen_dir', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
@@ -121,6 +123,9 @@ def transpile_web_uis(options):
 
     if options['public_asset_path'] is not None:
         args.append("--env=output_public_path=" + options['public_asset_path'])
+
+    if options['no_externals']:
+        args.append("--env=no_externals")
 
     # web pack aliases
     if options['webpack_aliases']:

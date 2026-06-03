@@ -21,10 +21,10 @@ import {
 
 import {
   WarningBox,
-  WarningTitle,
   LearnMoreButton,
   WarningIcon,
 } from '../../shared-panel-styles'
+import { Text } from '../../../shared/style'
 
 interface Props {
   data?: BraveWallet.EthSignTypedData
@@ -43,10 +43,13 @@ export function EthSignTypedData(props: Props) {
         || hasUnicode(data?.domainJson ?? '')) && (
         <WarningBox warningType='warning'>
           <WarningTitleRow>
-            <WarningIcon color={'warningIcon'} />
-            <WarningTitle warningType='warning'>
+            <WarningIcon warningType='warning' />
+            <Text
+              textColor='error'
+              variant='small.semibold'
+            >
               {getLocale('braveWalletNonAsciiCharactersInMessageWarning')}
-            </WarningTitle>
+            </Text>
           </WarningTitleRow>
           <LearnMoreButton onClick={() => setRenderUnicode((prev) => !prev)}>
             {renderUnicode
@@ -61,19 +64,31 @@ export function EthSignTypedData(props: Props) {
           height={height ?? '180px'}
           width={width}
         >
-          <MessageHeader>
+          <MessageHeader
+            textColor='secondary'
+            variant='small.semibold'
+          >
             {getLocale('braveWalletSignTransactionEIP712MessageDomain')}:
           </MessageHeader>
-          <MessageText>
+          <MessageText
+            textColor='secondary'
+            variant='small.regular'
+          >
             {!renderUnicode && hasUnicode(data.domainJson)
               ? unicodeEscape(data.domainJson)
               : data.domainJson}
           </MessageText>
 
-          <MessageHeader>
+          <MessageHeader
+            textColor='secondary'
+            variant='small.semibold'
+          >
             {getLocale('braveWalletSignTransactionMessageTitle')}:
           </MessageHeader>
-          <MessageText>
+          <MessageText
+            textColor='secondary'
+            variant='small.regular'
+          >
             {!renderUnicode && hasUnicode(data.messageJson)
               ? unicodeEscape(data.messageJson)
               : data.messageJson}

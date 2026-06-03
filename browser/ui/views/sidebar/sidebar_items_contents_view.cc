@@ -32,7 +32,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -597,8 +597,10 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
       return get_image_model(kLeoReadingListIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kHistory:
       return get_image_model(kLeoHistoryIcon, state);
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case sidebar::SidebarItem::BuiltInItemType::kPlaylist:
       return get_image_model(kLeoProductPlaylistIcon, state);
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case sidebar::SidebarItem::BuiltInItemType::kChatUI:
       return get_image_model(kLeoProductBraveLeoIcon, state);

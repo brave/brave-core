@@ -74,7 +74,7 @@ export const _AssistantTask = {
 }
 
 export default {
-  title: 'Chat/Chat',
+  title: 'AI Chat/Assistant Task',
   component: AssistantTask,
   argTypes: {
     ...InferControlsFromArgs(args),

@@ -155,10 +155,10 @@
     <message name="IDS_OMNIBOX_EMPTY_HINT_WITH_DSE_NAME" desc="The text displayed in the omnibox when it is empty. Includes Default Search Engine name." formatter_data="android_java">
       Search <ph name="ENGINE_NAME">$1<ex>Yahoo</ex></ph> or type URL
     </message>
+    <message name="IDS_OMNIBOX_EMPTY_ASK_HINT_WITH_DSE_NAME" desc="Alternative text displayed in the omnibox when it is empty, prompting the user to ask. Includes Default Search Engine name." formatter_data="android_java">
+      Ask <ph name="ENGINE_NAME">$1<ex>Yahoo</ex></ph> or type URL
+    </message>
     <if expr="is_android or enable_vr">
-      <message name="IDS_OMNIBOX_EMPTY_HINT_WITH_DSE_NAME_FOR_AI_MODE" desc="The text displayed in the omnibox when it is empty. Includes Default Search Engine name." formatter_data="android_java">
-        Ask <ph name="ENGINE_NAME">$1<ex>Yahoo</ex></ph> anything
-      </message>
       <message name="IDS_OMNIBOX_NAVATTACH_GALLERY" desc="The text displayed in the omnibox attachments popup. When clicked - opens image gallery." formatter_data="android_java">
         Gallery
       </message>
@@ -180,13 +180,7 @@
       <message name="IDS_OMNIBOX_EMPTY_HINT_FOR_IMAGE_GENERATION" desc="The text displayed in the omnibox when it is empty and image generation is selected." formatter_data="android_java">
         Describe your image
       </message>
-      <message name="IDS_FUSEBOX_TOOLS_HEADER" desc="The text in attachments popup to indicate following buttons are all tools." formatter_data="android_java">
-        Tools
-      </message>
-      <message name="IDS_FUSEBOX_MODELS_HEADER" desc="The text in attachments popup to indicate following buttons are all models." formatter_data="android_java">
-        Gemini 3 models
-      </message>
-      <message name="IDS_FUSEBOX_MODEL_PRO" desc="The text in attachments popup for the button to switch the active model to pro." formatter_data="android_java">
+      <message name="IDS_FUSEBOX_MODEL_PRO" desc="The text in attachments popup for the button to switch the active model to pro.">
         Pro
       </message>
     </if>
@@ -343,6 +337,13 @@
     </else>
   </if>
 
+  <!-- Accessibility for Grouped Omnibox Suggestions -->
+  <message name="IDS_ACC_OMNIBOX_SUGGESTION_IN_GROUP" desc="Accessibility text for an omnibox suggestion that may be in a specific group, with the group's header text, along with its list position. Speaks the suggestion title, followed by its position within the group and the group's header." formatter_data="android_java">
+    <ph name="SUGGESTION_TITLE">$1<ex>Brave</ex></ph>, <ph name="MATCH_POSITION">$2<ex>2</ex></ph> of <ph name="NUM_MATCHES_IN_GROUP">$3<ex>5</ex></ph> in the group <ph name="GROUP_HEADER">$4<ex>Trending Searches</ex></ph>.
+  </message>
+  <message name="IDS_ACC_OMNIBOX_SUGGESTION_IN_GROUP_WITH_DESCRIPTION" desc="Accessibility text for an omnibox suggestion that may be in a specific group, with the group's header text, along with its list position. Speaks the suggestion title and description, followed by its position within the group and the group's header." formatter_data="android_java">
+    <ph name="SUGGESTION_TITLE">$1<ex>Brave</ex></ph>, <ph name="SUGGESTION_DESCRIPTION">$2<ex>Search result</ex></ph>, <ph name="MATCH_POSITION">$3<ex>2</ex></ph> of <ph name="NUM_MATCHES_IN_GROUP">$4<ex>5</ex></ph> in the group <ph name="GROUP_HEADER">$5<ex>Trending Searches</ex></ph>.
+  </message>
 
   <!-- History Clusters Actions. -->
   <message name="IDS_OMNIBOX_HISTORY_CLUSTERS_SEARCH_HINT" desc="The button text for the History Clusters omnibox suggestion in sentence case. Clicking this button takes users to a view of their browsing history related to the suggestion.">
@@ -410,9 +411,6 @@
   </message>
 
   <!-- Fusebox -->
-  <message name="IDS_AI_MODE_ENTRYPOINT_HINT" desc="Label for the Omnibox entrypoint that encourages the user to toggle AIMode on" formatter_data="android_java">
-    Try AI Mode
-  </message>
   <message name="IDS_ACC_SEND_BUTTON_SEARCH_OR_NAVIGATE" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the search/open URL context" formatter_data="android_java">
     Submit
   </message>
@@ -463,10 +461,10 @@
     Search for clipboard image
   </message>
   <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_TEXT" desc="Text for screenreaders describing text from a clipboard.">
-    Search for clipboard text, <ph name="TEXT">$2<ex>Paris, france</ex></ph>
+    Search for clipboard text, <ph name="TEXT">$1<ex>Paris, france</ex></ph>
   </message>
   <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_URL" desc="Text for screenreaders describing a URL from a clipboard.">
-    Search for clipboard URL, <ph name="SHORT_URL">$2<ex>www.chromium.org</ex></ph>
+    Search for clipboard URL, <ph name="SHORT_URL">$1<ex>www.chromium.org</ex></ph>
   </message>
   <message name="IDS_ACC_SEARCH_ICON" desc="Text for screenreaders describing a search icon image.">
     Search icon
@@ -683,7 +681,7 @@
   <message name="IDS_OMNIBOX_PAGE_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user has selected the @page starter pack match without further text input." translateable="false">
     Enter a question
   </message>
-  <message name="IDS_OMNIBOX_AI_MODE_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user has selected the AI Mode starter pack without further text input.">
+  <message name="IDS_OMNIBOX_AI_MODE_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user has selected the AI Mode starter pack without further text input." formatter_data="android_java">
     Ask anything
   </message>
 

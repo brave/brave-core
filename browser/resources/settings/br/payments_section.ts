@@ -13,5 +13,12 @@ RegisterPolymerTemplateModifications({
     } else {
       manageLink.setAttribute('hidden', 'true')
     }
+    const cardBenefitsToggle =
+      templateContent.querySelector('#cardBenefitsToggle')
+    if (!cardBenefitsToggle) {
+      console.error(`[Settings] Couldn't find cardBenefitsToggle`)
+    } else {
+      cardBenefitsToggle.setAttribute('hidden', 'true')
+    }
   }
 })

@@ -20,7 +20,9 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/ios/browser/policy/brave_simple_policy_map_ios.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -48,6 +50,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace brave_origin {
@@ -139,6 +145,20 @@ constexpr auto kBraveOriginProfileMetadata =
              true,
              /*user_settable=*/false)},
 #endif
+
+        // Playlist preferences
+        {playlist::kPlaylistEnabledPref,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/false)},
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+        // Email Aliases preferences
+        {email_aliases::prefs::kEmailAliasesEnabled,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/false)},
+#endif
     });
 
 }  // namespace
@@ -162,20 +182,21 @@ BraveOriginServiceFactory::BraveOriginServiceFactory()
                                     ServiceCreation::kCreateWithProfile,
                                     TestingCreation::kNoServiceForTests) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
+  auto* policy_manager = BraveOriginPolicyManager::GetInstance();
+  policy_manager->SetExpectedToBeInitialized();
+  auto* application_context = GetApplicationContext();
+  // ApplicationContext may not be set up in unit tests yet
+  if (!policy_manager->IsInitialized() && application_context) {
+    policy_manager->Init(GetBrowserPolicyDefinitions(),
+                         GetProfilePolicyDefinitions(),
+                         application_context->GetLocalState());
+  }
 }
 
 BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
-  // Lazy initialization of BraveOriginPolicyManager
-  auto* policy_manager = BraveOriginPolicyManager::GetInstance();
-  if (!policy_manager->IsInitialized()) {
-    policy_manager->Init(GetBrowserPolicyDefinitions(),
-                         GetProfilePolicyDefinitions(),
-                         GetApplicationContext()->GetLocalState());
-  }
-
   auto skus_service_getter =
       base::BindRepeating(&skus::SkusServiceFactory::GetForProfile, profile);
 

@@ -6,26 +6,35 @@
 import * as Mojom from '../../../common/mojom'
 import {
   extractAllowedLinksFromTurn,
-  replaceCitationsWithUrls,
+  inlineSearchRegex,
 } from '../../../common/conversation_history_utils'
-
-// Note: This regex is used to strip out inline searches, as they're not useful
-// for the user.
-const inlineSearchRegex = /^::search\[.+?\]{type=\w+?}$/gm
+import { replaceCitationsWithUrlsExcludingCode } from './conversation_entries_utils'
 
 // Possibly expose an event handler for copying the entry's text to clipboard,
 // if the entry is simple enough for the text to be extracted
 export default function useConversationEventClipboardCopyHandler(
-  entry: Mojom.ConversationTurn,
+  group: Mojom.ConversationTurn[],
 ) {
   return () => {
+    const entry = group[0]
     if (entry.characterType === Mojom.CharacterType.ASSISTANT) {
-      const event = entry.events?.findLast((event) => event.completionEvent)
-      if (!event?.completionEvent) return
-      let text = event.completionEvent.completion
-      // Replace citations with URLs
-      const allowedLinks = extractAllowedLinksFromTurn(entry.events)
-      text = replaceCitationsWithUrls(text, allowedLinks)
+      // Collect completion text from all turns in the group (e.g. tool use
+      // turns split the completion across multiple entries) and from all
+      // completion events within each turn (an inline-search event between
+      // streaming chunks splits the completion stream into multiple events).
+      const allEvents = group.flatMap((turn) => turn.events ?? [])
+      const completionTexts = group.map((turn) =>
+        (turn.events ?? [])
+          .filter((e) => e.completionEvent)
+          .map((e) => e.completionEvent!.completion)
+          .join(''),
+      )
+      let text = completionTexts.filter(Boolean).join('\n\n') || entry.text
+      if (!text) return
+      // Replace citations with URLs, skipping matches inside code blocks where
+      // `[N]` is typically array indexing rather than a citation.
+      const allowedLinks = extractAllowedLinksFromTurn(allEvents)
+      text = replaceCitationsWithUrlsExcludingCode(text, allowedLinks)
       text = text.replaceAll(inlineSearchRegex, '')
       navigator.clipboard.writeText(text)
     } else {

@@ -1,8 +1,8 @@
 diff --git a/third_party/inspector_protocol/pdl.py b/third_party/inspector_protocol/pdl.py
-index 5b53291fd5b33e4260c70f252335cec69e07f95e..f879f89a4a3ffb1f61c15c7c2f38214411b5449a 100644
+index eb8f2474531569c1cc78fa32dfb9600818201833..04fba8c320215d7428a4fca2c98d73d72b4c3cee 100644
 --- a/third_party/inspector_protocol/pdl.py
 +++ b/third_party/inspector_protocol/pdl.py
-@@ -194,3 +194,4 @@ def loads(data, file_name, map_binary_to_string=False, source_set=None):
+@@ -195,3 +195,4 @@ def loads(data, file_name, map_binary_to_string=False, source_set=None):
    if file_name.endswith(".pdl"):
      return parse(data, file_name, map_binary_to_string, source_set)
    return json.loads(data)

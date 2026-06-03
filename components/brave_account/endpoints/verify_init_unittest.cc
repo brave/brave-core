@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_account/endpoints/verify_init.h"
 
+#include <optional>
+
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
@@ -34,7 +36,6 @@ const VerifyInitTestCase* Success() {
              body.verification_token = "eyJhbGciOiJFUz";
              return body;
            }()}});
-
   return kSuccess.get();
 }
 

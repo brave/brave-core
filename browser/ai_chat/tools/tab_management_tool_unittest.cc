@@ -12,6 +12,8 @@
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "chrome/test/base/testing_profile.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -52,8 +54,14 @@ mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& json) {
 
 }  // namespace
 
-TEST(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
-  TabManagementTool tool;
+class TabManagementToolUnitTest : public testing::Test {
+ protected:
+  content::BrowserTaskEnvironment task_environment_;  // For DataDecoder tasks
+  TestingProfile profile_;
+};
+
+TEST_F(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
+  TabManagementTool tool(&profile_);
 
   auto valid_tool_event = CreateToolUseEvent(kValidInputListWithPlan);
 
@@ -84,8 +92,8 @@ TEST(TabManagementToolUnitTest, RequiresUserInteractionBeforeHandling) {
   EXPECT_FALSE((std::get<bool>(result)));
 }
 
-TEST(TabManagementToolUnitTest, UseTool_Permissions) {
-  TabManagementTool tool;
+TEST_F(TabManagementToolUnitTest, UseTool_Permissions) {
+  TabManagementTool tool(&profile_);
 
   // Not providing a plan should provide the reason during UseTool so that
   // the error is reported to the AI who is given another chance to provide a
@@ -114,8 +122,8 @@ TEST(TabManagementToolUnitTest, UseTool_Permissions) {
               testing::HasSubstr("Missing required 'action' field"));
 }
 
-TEST(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
-  TabManagementTool tool;
+TEST_F(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
+  TabManagementTool tool(&profile_);
 
   // Grant permission once.
   tool.UserPermissionGranted("");
@@ -130,6 +138,115 @@ TEST(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
   // Missing action
   EXPECT_THAT(RunTool(&tool, "{}"),
               testing::HasSubstr("Missing required 'action' field"));
+
+  // Invalid action
+  EXPECT_THAT(RunTool(&tool, R"({"action":"bogus"})"),
+              testing::HasSubstr("Invalid action. Must be one of"));
+
+  // Per-action validation
+  // move_tabs without tab_ids
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_tabs"})"),
+      testing::HasSubstr("Missing or empty 'tab_ids' array for move_tabs"));
+
+  // move_group without group_id
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_group"})"),
+      testing::HasSubstr("Missing 'group_id' for move_group operation"));
+
+  // close without tab_ids
+  EXPECT_THAT(RunTool(&tool, R"({"action":"close"})"),
+              testing::HasSubstr(
+                  "Missing or empty 'tab_ids' array for close operation"));
+
+  // create_group without tab_ids
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"create_group"})"),
+      testing::HasSubstr(
+          "Missing or empty 'tab_ids' array for create_group operation"));
+
+  // update_group without group_id
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"update_group"})"),
+      testing::HasSubstr("Missing 'group_id' for update_group operation"));
+
+  // remove_from_group without tab_ids
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"remove_from_group"})"),
+      testing::HasSubstr(
+          "Missing or empty 'tab_ids' array for remove_from_group operation"));
+}
+
+// Additional unit tests focusing on validation logic that can be tested without
+// a browser. The browser-dependent tests have been consolidated in the browser
+// test suite to reduce test execution time. This unit test focuses on parameter
+// validation, mutual exclusivity, and error handling.
+TEST_F(TabManagementToolUnitTest, MoveParameterValidationAndMutualExclusivity) {
+  TabManagementTool tool(&profile_);
+
+  // Grant permission once
+  tool.UserPermissionGranted("");
+
+  // move_tabs: empty tab_ids array should be treated as missing
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_tabs","tab_ids":[]})"),
+      testing::HasSubstr("Missing or empty 'tab_ids' array for move_tabs"));
+
+  // move_tabs: non-existent tab handles fail during tab validation
+  EXPECT_THAT(RunTool(&tool, R"({"action":"move_tabs","tab_ids":[99999]})"),
+              testing::HasSubstr("No valid tabs found to move"));
+
+  // move_tabs: a destination group and a window are mutually exclusive
+  EXPECT_THAT(
+      RunTool(&tool,
+              R"({
+                "action": "move_tabs",
+                "tab_ids": [1],
+                "destination_group_id": "g",
+                "window_id": -1
+              })"),
+      testing::HasSubstr(
+          "Cannot provide both 'destination_group_id' and 'window_id'"));
+
+  // The mutual-exclusivity check happens before tab validation, so it is
+  // reported even with otherwise-invalid tab ids and an index.
+  EXPECT_THAT(
+      RunTool(&tool,
+              R"({
+                "action": "move_tabs",
+                "tab_ids": [1],
+                "destination_group_id": "g",
+                "index": 0,
+                "window_id": -1
+              })"),
+      testing::HasSubstr(
+          "Cannot provide both 'destination_group_id' and 'window_id'"));
+
+  // move_group: a non-existent group is reported as not found
+  EXPECT_THAT(
+      RunTool(&tool,
+              R"({"action":"move_group","group_id":"nonexistent-group"})"),
+      testing::HasSubstr("Group not found"));
+
+  // move_group: missing group_id is rejected
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_group"})"),
+      testing::HasSubstr("Missing 'group_id' for move_group operation"));
+
+  // move_tabs with window_id = -1 (create new window): window creation is
+  // deferred until after tab validation, so invalid tabs are reported first.
+  EXPECT_THAT(
+      RunTool(&tool, R"({"action":"move_tabs","tab_ids":[1],"window_id":-1})"),
+      testing::HasSubstr("No valid tabs found"));
+
+  // Test update group with nonexistent group
+  EXPECT_THAT(RunTool(&tool,
+                      R"({
+                          "action":"update_group",
+                          "group_id":"nonexistent-group",
+                          "group_title":"Test"
+                          })"),
+              testing::HasSubstr("Group not found"));
 }
 
 }  // namespace ai_chat

@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Προσθήκη σελιδοδείκτη";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Προσθήκη";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Προσθήκη στα αγαπημένα";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Νέος φάκελος";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Προσθήκη στο Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Προσθήκη στα αγαπημένα";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Αυτόματη συμπλήρωση";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Λογαριασμοί";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Αυτό θα αφαιρέσει τους αποθηκευμένους κωδικούς πρόσβασης για %@ από την αλυσίδα συγχρονισμού και τη συσκευή σας.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Είσαι σίγουρος/η;";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Διαγραφή";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Αποθηκεύτηκε";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Δημιουργήστε, αποθηκεύστε και διαχειριστείτε τους κωδικούς πρόσβασής σας για εύκολη σύνδεση σε ιστότοπους και εφαρμογές.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Δεν έγινε ποτέ αποθήκευση";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Προσφορά αποθήκευσης κωδικών πρόσβασης";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Αναζήτηση ιστότοπων";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Διαχείριση κωδικών πρόσβασης";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Άγνωστη";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Αυτόματη συμπλήρωση";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Αυτόματη ανακατεύθυνση σελίδων AMP";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Ιδιωτικές καρτέλες";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Εάν το πρόγραμμα περιήγησης ήταν σε ιδιωτική λειτουργία όταν έκλεισε για τελευταία φορά, θα ανοίξει σε ιδιωτική λειτουργία κατά την επανεκκίνηση.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Απομνημόνευση λειτουργίας περιήγησης";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Γραμμή εργαλείων περιήγησης";

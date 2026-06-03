@@ -159,8 +159,6 @@ std::optional<std::string> EncodeTransactionParams(
 }  // namespace jupiter
 
 
-// namespace gate3 currently only supports Near Intents provider
-//
 // Docs: https://gate3.bsg.brave.com/docs (requires internal Brave VPN)
 namespace gate3 {
 
@@ -188,6 +186,8 @@ std::optional<std::string> EncodeCoinType(mojom::CoinType coin) {
 
 std::optional<std::string> EncodeProvider(mojom::SwapProvider provider) {
   switch (provider) {
+    case mojom::SwapProvider::kAuto:
+      return "AUTO";
     case mojom::SwapProvider::kJupiter:
       return "JUPITER";
     case mojom::SwapProvider::kSquid:
@@ -196,6 +196,8 @@ std::optional<std::string> EncodeProvider(mojom::SwapProvider provider) {
       return "NEAR_INTENTS";
     case mojom::SwapProvider::kLiFi:
       return "LIFI";
+    case mojom::SwapProvider::kZeroEx:
+      return "ZERO_EX";
 
     default:
       return std::nullopt;

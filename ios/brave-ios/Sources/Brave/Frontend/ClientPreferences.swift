@@ -78,16 +78,6 @@ extension Preferences {
       key: "general.show-bookmark-toolbar-shortcut",
       default: nil
     )
-    /// Controls whether or not media should continue playing in the background
-    static let mediaAutoBackgrounding = Option<Bool>(
-      key: "general.media-auto-backgrounding",
-      default: false
-    )
-    /// Controls whether or not youtube videos should play with the highest quality by default
-    static let youtubeHighQuality = Option<String>(
-      key: "general.youtube-high-quality",
-      default: YoutubeHighQualityPreference.off.rawValue
-    )
     /// Controls whether or not to show the last visited bookmarks folder
     static let showLastVisitedBookmarksFolder = Option<Bool>(
       key: "general.bookmarks-show-last-visited-bookmarks-folder",
@@ -316,10 +306,6 @@ extension Preferences {
     /// The goal is to show the claim grant notification only once per app session if still available.
     static let attemptToShowClaimRewardsNotification =
       Option<Bool>(key: "newtabpage.show-grant-notification", default: true)
-
-    /// Whether preloaded favorites have been initialized. Uses custom favorites in case of super referral or default ones instead.
-    static let preloadedFavoritiesInitialized =
-      Option<Bool>(key: "newtabpage.favorites-initialized", default: false)
 
     /// Custom theme used in app. Nil if default theme is used.
     static let selectedCustomTheme =

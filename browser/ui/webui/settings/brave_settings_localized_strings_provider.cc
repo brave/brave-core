@@ -28,7 +28,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -73,6 +73,10 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 namespace settings {
@@ -198,6 +202,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_WAYBACK_MACHINE_TOGGLE_TITLE},
       {"braveOriginSpeedReaderToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE},
+      {"braveOriginPlaylistToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_PLAYLIST_TOGGLE_TITLE},
+      {"braveEmailAliasesToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE},
       {"braveOriginWebDiscoveryProjectToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE},
       {"braveOriginP3AToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE},
@@ -208,6 +216,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveOriginVpnToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_VPN_TOGGLE_TITLE},
       {"braveOriginWalletToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_WALLET_TOGGLE_TITLE},
+      {"braveOriginCrossProfileSubLabel",
+       IDS_SETTINGS_BRAVE_ORIGIN_CROSS_PROFILE_SUB_LABEL},
       {"braveOriginResetToDefaultsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_RESET_TO_DEFAULTS_TITLE},
       {"braveOriginRestartNotice", IDS_SETTINGS_BRAVE_ORIGIN_RESTART_NOTICE},
@@ -297,6 +307,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_EXPANDED_STATE_PER_WINDOW},
       {"appearanceSettingsTabsVerticalTabShowScrollbar",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR},
+      {"appearanceSettingsTabsHorizontalScrollButtons",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HORIZONTAL_SCROLL_BUTTONS},
       {"appearanceSettingsTabsVerticalTabOnRight",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT},
       {"appearanceSettingsTabsVerticalTabOnLeft",
@@ -458,6 +470,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"webRTCPolicySubLabel", IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
       {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
       {"pushMessagingLabel", IDS_SETTINGS_PUSH_MESSAGING},
+      {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
+      {"historyRetentionSubLabel", IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL},
+      {"historyRetentionOneDay", IDS_SETTINGS_HISTORY_RETENTION_ONE_DAY},
+      {"historyRetentionOneWeek", IDS_SETTINGS_HISTORY_RETENTION_ONE_WEEK},
+      {"historyRetentionOneMonth", IDS_SETTINGS_HISTORY_RETENTION_ONE_MONTH},
+      {"historyRetentionThreeMonths",
+       IDS_SETTINGS_HISTORY_RETENTION_THREE_MONTHS},
+      {"historyRetentionSixMonths", IDS_SETTINGS_HISTORY_RETENTION_SIX_MONTHS},
+      {"historyRetentionOneYear", IDS_SETTINGS_HISTORY_RETENTION_ONE_YEAR},
+      {"historyRetentionFiveYears", IDS_SETTINGS_HISTORY_RETENTION_FIVE_YEARS},
+      {"historyRetentionForever", IDS_SETTINGS_HISTORY_RETENTION_FOREVER},
       {"defaultPublicAndPrivateInterfaces",
        IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES},
       {"defaultPublicInterfaceOnly",
@@ -616,6 +639,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveLeoModelSubtitle-chat-qwen", IDS_CHAT_UI_CHAT_QWEN_SUBTITLE},
       {"braveLeoModelSubtitle-chat-near-glm-5",
        IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-near-glm-5-1",
+       IDS_CHAT_UI_CHAT_NEAR_GLM_5_1_SUBTITLE},
       {"braveLeoModelSubtitle-chat-glm-4-7-flash",
        IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE},
       {"braveLeoModelSubtitle-chat-llama-4-maverick",
@@ -1122,6 +1147,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC,
                              kTabOrganizationLearnMoreURL));
+
+  html_source->AddString(
+      "braveLeoAssistantTabOrganizationModelDesc",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_DESC,
+          kTabOrganizationLearnMoreURL));
 
   html_source->AddString("braveLeoAssistantTabOrganizationLearnMoreURL",
                          kTabOrganizationLearnMoreURL);

@@ -25,7 +25,6 @@
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -47,7 +46,15 @@ namespace policy {
 class AIChatPolicyTest : public InProcessBrowserTest,
                          public ::testing::WithParamInterface<bool> {
  public:
-  AIChatPolicyTest() = default;
+  AIChatPolicyTest() {
+    // Disable the global side panel feature so the AI Chat side panel entry
+    // is registered on the tab's SidePanelRegistry (the non-global path) for
+    // TabSidePanelRegistry below.
+    feature_list_.InitWithFeatures(
+        /*enabled_features=*/{ai_chat::features::kAIChat},
+        /*disabled_features=*/
+        {ai_chat::features::kAIChatGlobalSidePanelEverywhere});
+  }
   ~AIChatPolicyTest() override = default;
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -85,7 +92,7 @@ class AIChatPolicyTest : public InProcessBrowserTest,
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_{ai_chat::features::kAIChat};
+  base::test::ScopedFeatureList feature_list_;
 
  private:
   MockConfigurationPolicyProvider provider_;
@@ -169,11 +176,12 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, ContextMenu) {
   }
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SidePanelRegistry) {
-  auto* registry = browser()
-                       ->GetActiveTabInterface()
-                       ->GetTabFeatures()
-                       ->side_panel_registry();
+// Verifies the tab-scoped (non-global) SidePanelRegistry has the AI Chat entry.
+// The fixture disables kAIChatGlobalSidePanelEverywhere so the entry is
+// registered per-tab rather than as a browser-global entry.
+IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, TabSidePanelRegistry) {
+  auto* registry = SidePanelRegistry::From(browser()->GetActiveTabInterface());
+  ASSERT_TRUE(registry);
   auto* entry = registry->GetEntryForKey(
       SidePanelEntry::Key(SidePanelEntry::Id::kChatUI));
   if (IsAIChatEnabledTest()) {

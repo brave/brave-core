@@ -811,6 +811,9 @@
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "Hatayı Görüntüle";
 
+/* The title above the featured networks in onboarding network selection screen. */
+"wallet.featured" = "Öne Çıkan";
+
 /* A description of an Filecoin account, displayed in Accounts tab. */
 "wallet.filAccountDescription" = "Filecoin";
 
@@ -899,7 +902,7 @@
 "wallet.highToLowSortOption" = "Yüksekten Düşüğe";
 
 /* A title above a text field that is used to enter a password */
-"wallet.importAccountOriginPasswordTitle" = "Kaynak Şifresi";
+"wallet.importAccountOriginPasswordTitle" = "Origin Şifresi";
 
 /* A placeholder on a text box for entering the users private key/json data to import accounts */
 "wallet.importAccountPlaceholder" = "Özel anahtar dizisi dosyasını veya JSON'u girin, yapıştırın veya içeri aktarın.";
@@ -1204,6 +1207,15 @@
 /* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
 "wallet.onboardingCompletedButtonTitle" = "Portföyüme git";
 
+/* The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example "Continue with 8 Networks") */
+"wallet.onboardingNetworkSelectionContinue" = "%lld Ağ ile Devam Et";
+
+/* The description of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionDescription" = "Cüzdanınızda hangi blok zincirlerini kullanacağınızı seçin.";
+
+/* The title of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionTitle" = "Desteklenen Ağlar";
+
 /* The subtitle of the last step of creating a new wallet. */
 "wallet.onbordingCompletedSubTitle" = "Brave Cüzdanınız kullanıma hazır.";
 
@@ -1248,6 +1260,9 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "GAS başına bahşiş limiti (Gwei)";
+
+/* The title above the popular networks in onboarding network selection screen. */
+"wallet.popular" = "Popüler";
 
 /* The title of the empty state in Portfolio when no assets are shown. */
 "wallet.portfolioEmptyStateDescription" = "Başlamak için token yatırın veya satın alın. Eğer içe aktarılmış bir hesaptaki tokenleri göremiyorsanız filtreleri ve görüntüleme ayarlarını kontrol edin. Bilinmeyen tokenlerin, özel varlıklar olarak eklenmesi gerekebilir.";
@@ -1585,6 +1600,9 @@
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Özel Anahtarı Göster";
 
+/* The title beside the toggle in onboarding network selection screen that shows test networks. */
+"wallet.showTestnets" = "Testnet'leri Göster";
+
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Sıfır Bakiyeleri Göster";
 
@@ -1605,6 +1623,12 @@
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "İmza İsteniyor";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
+"wallet.signCardanoTxRequestDetailsAddressLabel" = "Adres";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
+"wallet.signCardanoTxRequestDetailsTokenLabel" = "Token";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "İşlem imzalandı, dapps tarafından ağa gönderilecek ve onay bekliyor.";
@@ -1926,6 +1950,9 @@
 
 /* The title of the view shown over a dapps website that requests the user change the current network. */
 "wallet.switchNetworkTitle" = "Ağ Değiştir";
+
+/* The title above the testnets in onboarding network selection screen. */
+"wallet.testnets" = "Testnet'ler";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Bugün";

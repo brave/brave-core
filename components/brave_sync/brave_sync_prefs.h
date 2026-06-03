@@ -7,11 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "build/build_config.h"
+#include "components/os_crypt/async/common/encryptor.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -35,11 +37,6 @@ class Prefs {
 
   static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 
-  static std::string GetSeedPath();
-
-  std::string GetSeed(bool* failed_to_decrypt) const;
-  bool SetSeed(const std::string& seed);
-
   bool IsSyncAccountDeletedNoticePending() const;
   void SetSyncAccountDeletedNoticePending(bool is_pending);
 
@@ -50,12 +47,15 @@ class Prefs {
   void AddLeaveChainDetail(const char* file, int line, const char* func);
   std::string GetLeaveChainDetails() const;
   void ClearLeaveChainDetails();
-  static size_t GetLeaveChainDetailsMaxLenForTests();
-  static std::string GetLeaveChainDetailsPathForTests();
-  void SetAddLeaveChainDetailBehaviourForTests(
+  static size_t GetLeaveChainDetailsMaxLenForTesting();
+  static std::string GetLeaveChainDetailsPathForTesting();
+  void SetAddLeaveChainDetailBehaviourForTesting(
       AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour);
-
   void Clear();
+
+  static std::string GetSeedPath();
+  std::string GetEncryptedSeed() const;
+  void SetEncryptedSeed(const std::string& encrypted_seed);
 
  private:
   const raw_ref<PrefService> pref_service_;

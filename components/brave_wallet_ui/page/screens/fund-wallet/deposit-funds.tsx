@@ -23,6 +23,7 @@ import {
 import { getLocale } from '../../../../common/locale'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
+  dedupeAssetsByIdKey,
   getAssetIdKey,
   sortNativeAndAndBatAssetsToTop,
   tokenNameToNftCollectionName,
@@ -48,6 +49,7 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import {
+  useGetPolkadotAddressForNetworkQuery,
   useGetNetworkQuery,
   useGetQrCodeImageQuery,
   useGetVisibleNetworksQuery,
@@ -162,6 +164,7 @@ export const DepositFundsScreen = () => {
               <PageTitleHeader
                 title={getLocale('braveWalletDepositCryptoButton')}
                 onBack={history.goBack}
+                showBackButton={true}
               />
             )
           }
@@ -329,10 +332,12 @@ function AssetSelection() {
     const sortedFungibleAssets = sortNativeAndAndBatAssetsToTop(
       tokensList,
     ).filter((token) => token.contractAddress && !token.tokenId)
-    return mainnetNetworkAssetsList.concat(
-      sortedFungibleAssets,
-      testnetAssetsList,
-      nftCollectionAssets,
+    return dedupeAssetsByIdKey(
+      mainnetNetworkAssetsList.concat(
+        sortedFungibleAssets,
+        testnetAssetsList,
+        nftCollectionAssets,
+      ),
     )
   }, [
     mainnetNetworkAssetsList,
@@ -474,7 +479,6 @@ function AssetSelection() {
             <LoadingIcon
               opacity={1}
               size={'100px'}
-              color={'interactive05'}
             />
           </Column>
         )}
@@ -535,12 +539,27 @@ function DepositAccount() {
     BraveWallet.AccountInfo | undefined
   >(accountsForSelectedAssetCoinType[0])
   const { receiveAddress, isFetchingAddress } = useReceiveAddressQuery(
-    selectedAccount?.accountId,
+    selectedAccount?.accountId.coin === BraveWallet.CoinType.DOT
+      ? undefined
+      : selectedAccount?.accountId,
   )
   const [selectedZCashAddressOption, setSelectedZCashAddressOption] =
     React.useState<string>('shielded')
 
   // queries
+  const isPolkadotAccount =
+    selectedAccount?.accountId.coin === BraveWallet.CoinType.DOT
+  const {
+    currentData: polkadotAddress,
+    isFetching: isFetchingPolkadotAddress,
+  } = useGetPolkadotAddressForNetworkQuery(
+    isPolkadotAccount && selectedAccount && selectedAssetNetwork
+      ? {
+          accountId: selectedAccount.accountId,
+          chainId: selectedAssetNetwork.chainId,
+        }
+      : skipToken,
+  )
   const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
     isZCashShieldedTransactionsEnabled
       && selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC
@@ -586,6 +605,10 @@ function DepositAccount() {
   }, [selectedAsset])
 
   const address = React.useMemo(() => {
+    if (isPolkadotAccount) {
+      return polkadotAddress ?? ''
+    }
+
     if (
       isZCashShieldedTransactionsEnabled
       && selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC
@@ -602,12 +625,18 @@ function DepositAccount() {
     }
     return receiveAddress
   }, [
+    isPolkadotAccount,
+    polkadotAddress,
     isZCashShieldedTransactionsEnabled,
     selectedAccount,
     receiveAddress,
     zcashAccountInfo,
     selectedZCashAddressOption,
   ])
+
+  const isFetchingDisplayAddress = isPolkadotAccount
+    ? isFetchingPolkadotAddress
+    : isFetchingAddress
 
   const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
     address || skipToken,
@@ -764,7 +793,7 @@ function DepositAccount() {
           {':'}
         </AddressTextLabel>
 
-        {address && !isFetchingAddress ? (
+        {address && !isFetchingDisplayAddress ? (
           <>
             <Row gap={'12px'}>
               <AddressText
@@ -774,7 +803,6 @@ function DepositAccount() {
                 {address}
               </AddressText>
               <CopyButton
-                iconColor={'interactive05'}
                 onKeyPress={onCopyKeyPress}
                 onClick={copyAddressToClipboard}
               />
@@ -791,7 +819,7 @@ function DepositAccount() {
 
         <Row>
           <QRCodeContainer>
-            {isLoadingQrCode || !address || isFetchingAddress ? (
+            {isLoadingQrCode || !address || isFetchingDisplayAddress ? (
               <LoadingRing />
             ) : (
               <QRCodeImage src={qrCode} />

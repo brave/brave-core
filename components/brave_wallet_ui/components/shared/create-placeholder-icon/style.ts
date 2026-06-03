@@ -6,6 +6,9 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
+// Shared Styles
+import { Text } from '../style'
+
 export type AssetIconSizes = 'extra-big' | 'big' | 'medium' | 'small' | 'tiny'
 
 const sizeNameToPixels = (size: AssetIconSizes) => {
@@ -45,15 +48,12 @@ export const IconWrapper = styled.div<{
   background: ${(p) => (p.panelBackground ? p.panelBackground : 'none')};
 `
 
-export const PlaceholderText = styled.span<{
+export const PlaceholderText = styled(Text)<{
   size: AssetIconSizes
 }>`
-  font-family: Poppins;
   font-size: ${(p) =>
     p.size === 'big' ? '16px' : p.size === 'tiny' ? '10px' : '12px'};
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
 `
 
 export const NFTPlaceholderWrapper = styled.div<{

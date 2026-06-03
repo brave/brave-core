@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 import { WalletButton } from '../style'
@@ -9,6 +10,7 @@ import { WalletButton } from '../style'
 // Will use brave-ui button comp in the future!
 // Currently is missing "tiny" variant
 export const StyledWrapper = styled(WalletButton)`
+  font: ${leo.font.small.semibold};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,13 +18,9 @@ export const StyledWrapper = styled(WalletButton)`
   outline: none;
   background: none;
   padding: 3px 14px;
-  font-family: Poppins;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive07};
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  color: ${leo.color.neutral[70]};
+  border: 1px solid ${leo.color.neutral[30]};
   border-radius: 48px;
 `
 
@@ -30,5 +28,5 @@ export const BackIcon = styled(CaratStrongLeftIcon)`
   width: auto;
   height: 14px;
   margin-right: 8px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `

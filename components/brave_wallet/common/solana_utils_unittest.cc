@@ -5,18 +5,35 @@
 
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
+#include <cstdint>
 #include <map>
-#include <tuple>
 #include <vector>
 
+#include "base/containers/span_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/gtest_util.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+TEST(SolanaUtilsUnitTest, ExtendWithEmptySignatures) {
+  std::vector<uint8_t> bytes;
+  ExtendWithEmptySignatures(bytes, uint8_t{0u});
+  EXPECT_TRUE(bytes.empty());
+  ExtendWithEmptySignatures(bytes, uint8_t{1u});
+  EXPECT_EQ(bytes, std::vector<uint8_t>(64, 0));
+  ExtendWithEmptySignatures(bytes, uint8_t{3u});
+  EXPECT_EQ(bytes, std::vector<uint8_t>(256, 0));
+
+  bytes = {1, 2, 3};
+  ExtendWithEmptySignatures(bytes, uint8_t{2u});
+  EXPECT_EQ(base::span(bytes).first(3u), std::vector<uint8_t>({1, 2, 3}));
+  EXPECT_EQ(base::span(bytes).subspan(3u), std::vector<uint8_t>(128, 0));
+}
 
 TEST(SolanaUtilsUnitTest, CompactU16Encode) {
   std::map<uint16_t, std::vector<uint8_t>> input_output_map = {
@@ -25,40 +42,40 @@ TEST(SolanaUtilsUnitTest, CompactU16Encode) {
       {0x80, {0x80, 0x01}},
       {0xff, {0xff, 0x01}},
       {0x100, {0x80, 0x02}},
+      {0x3fff, {0xff, 0x7f}},
+      {0x4000, {0x80, 0x80, 0x01}},
       {0x7fff, {0xff, 0xff, 0x01}},
       {0xffff, {0xff, 0xff, 0x03}}};
   for (const auto& kv : input_output_map) {
-    std::vector<uint8_t> out;
-    CompactU16Encode(kv.first, &out);
-    EXPECT_EQ(out, kv.second);
+    EXPECT_THAT(CompactU16Encode(kv.first),
+                testing::ElementsAreArray(kv.second));
   }
-
-  EXPECT_DCHECK_DEATH(CompactU16Encode(0x0, nullptr));
 }
 
 // Test cases are from
 // https://github.com/solana-labs/solana/blob/79df1954eb5e8d951d2dd2b5ea094475d18551db/sdk/program/src/short_vec.rs#L312
 TEST(SolanaUtilsUnitTest, CompactU16Decode) {
-  std::map<std::tuple<uint16_t, size_t>, std::vector<uint8_t>> valid_map = {
-      {std::tuple<uint16_t, size_t>(0x0000, 1), {0x00}},
-      {std::tuple<uint16_t, size_t>(0x007f, 1), {0x7f}},
-      {std::tuple<uint16_t, size_t>(0x0080, 2), {0x80, 0x01}},
-      {std::tuple<uint16_t, size_t>(0x00ff, 2), {0xff, 0x01}},
-      {std::tuple<uint16_t, size_t>(0x0100, 2), {0x80, 0x02}},
-      {std::tuple<uint16_t, size_t>(0x07ff, 2), {0xff, 0x0f}},
-      {std::tuple<uint16_t, size_t>(0x3fff, 2), {0xff, 0x7f}},
-      {std::tuple<uint16_t, size_t>(0x4000, 3), {0x80, 0x80, 0x01}},
-      {std::tuple<uint16_t, size_t>(0xffff, 3), {0xff, 0xff, 0x03}}};
+  struct TestCase {
+    uint16_t expected_value = 0;
+    std::vector<uint8_t> payload;
+  };
 
-  for (const auto& kv : valid_map) {
-    auto out = CompactU16Decode(kv.second, 0);
-    EXPECT_EQ(*out, kv.first);
+  std::vector<TestCase> valid_cases = {{0x0000, {0x00}},
+                                       {0x007f, {0x7f}},
+                                       {0x0080, {0x80, 0x01}},
+                                       {0x00ff, {0xff, 0x01}},
+                                       {0x0100, {0x80, 0x02}},
+                                       {0x07ff, {0xff, 0x0f}},
+                                       {0x3fff, {0xff, 0x7f}},
+                                       {0x4000, {0x80, 0x80, 0x01}},
+                                       {0xffff, {0xff, 0xff, 0x03}}};
+
+  for (const auto& kv : valid_cases) {
+    base::SpanReader<const uint8_t> reader(kv.payload);
+    auto out = CompactU16Decode(reader);
+    EXPECT_EQ(*out, kv.expected_value);
+    EXPECT_EQ(reader.remaining(), 0u);
   }
-
-  // Test start_index != 0 and extra data (not part of this u16) in the byte
-  // array.
-  std::tuple<uint16_t, size_t> expect_out = std::make_tuple(0x00ff, 2);
-  EXPECT_EQ(*CompactU16Decode({0x00, 0xff, 0x01, 0x80}, 1), expect_out);
 
   std::vector<std::vector<uint8_t>> invalid_cases = {{0x80, 0x00},
                                                      {0x80, 0x80, 0x00},
@@ -79,7 +96,8 @@ TEST(SolanaUtilsUnitTest, CompactU16Decode) {
                                                      {0x80, 0x80, 0x06}};
 
   for (size_t i = 0; i < invalid_cases.size(); ++i) {
-    EXPECT_FALSE(CompactU16Decode(invalid_cases[i], 0)) << i;
+    base::SpanReader<const uint8_t> reader(invalid_cases[i]);
+    EXPECT_FALSE(CompactU16Decode(reader)) << i;
   }
 }
 
@@ -123,23 +141,6 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
   EXPECT_TRUE(Base58Decode(two_bytes_encoded, &bytes, 3, false));
 
   EXPECT_DCHECK_DEATH(Base58Decode(program, nullptr, kSolanaPubkeySize));
-}
-
-TEST(SolanaUtilsUnitTest, IsBase58EncodedSolanaPubkey) {
-  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(
-      "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"));
-  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(mojom::kSolanaSystemProgramId));
-  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(
-      Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize, 0))));
-
-  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(""));
-  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(
-      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8"));
-  // Incorrect sizes.
-  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(
-      Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize + 1, 0))));
-  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(
-      Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize - 1, 0))));
 }
 
 TEST(SolanaUtilsUnitTest, Uint8ArrayDecode) {
@@ -193,14 +194,15 @@ TEST(SolanaUtilsUnitTest, Uint8ArrayDecode) {
 
 TEST(SolanaUtilsUnitTest, CompactArrayDecode) {
   std::vector<uint8_t> bytes = {0, 1, 2, 5, 4, 6, 7, 8};
-  size_t start_index = 2;
-  auto ret_bytes = CompactArrayDecode(bytes, &start_index);
+  base::SpanReader<const uint8_t> reader(base::span(bytes).subspan(2u));
+  auto ret_bytes = CompactArrayDecode(reader);
   ASSERT_TRUE(ret_bytes);
   EXPECT_EQ(*ret_bytes, std::vector<uint8_t>({5, 4}));
-  EXPECT_EQ(start_index, 5u);
+  EXPECT_EQ(reader.remaining(), 3u);
 
   // Test out-of-bound, array length is 6 but only two bytes {7, 8} left.
-  EXPECT_FALSE(CompactArrayDecode(bytes, &start_index));
+  base::SpanReader<const uint8_t> reader2(base::span(bytes).subspan(5u));
+  EXPECT_FALSE(CompactArrayDecode(reader2));
 }
 
 TEST(SolanaUtilsUnitTest, GetUint8FromStringDict) {

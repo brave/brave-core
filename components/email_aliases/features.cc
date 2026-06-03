@@ -5,12 +5,20 @@
 
 #include "brave/components/email_aliases/features.h"
 
+#include "brave/components/email_aliases/pref_names.h"
+#include "components/prefs/pref_service.h"
+
 namespace email_aliases::features {
 
 BASE_FEATURE(kEmailAliases, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsEmailAliasesEnabled() {
   return base::FeatureList::IsEnabled(kEmailAliases);
+}
+
+bool IsEmailAliasesEnabledForProfile(const PrefService& pref_service) {
+  return IsEmailAliasesEnabled() &&
+         pref_service.GetBoolean(prefs::kEmailAliasesEnabled);
 }
 
 }  // namespace email_aliases::features

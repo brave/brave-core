@@ -6,15 +6,14 @@
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 
 #include <memory>
-#include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "base/version_info/version_info.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
+#include "brave/components/brave_ads/core/browser/virtual_pref/test/virtual_pref_provider_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -26,15 +25,6 @@
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-class VirtualPrefProviderDelegateMock : public VirtualPrefProvider::Delegate {
- public:
-  MOCK_METHOD(std::string_view, GetChannel, (), (const));
-
-  MOCK_METHOD(std::string, GetDefaultSearchEngineName, (), (const));
-
-  MOCK_METHOD(base::DictValue, GetSerpMetrics, (), (const));
-};
 
 class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
  public:
@@ -60,6 +50,8 @@ class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
   base::DictValue GetVirtualPrefs() const { return provider_->GetPrefs(); }
 
  protected:
+  test::FakeLocale fake_locale_;
+
   TestingPrefServiceSimple prefs_;
   TestingPrefServiceSimple local_state_;
 
@@ -95,7 +87,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, BrowserVersion) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleLanguage) {
   // Arrange
-  const test::ScopedCurrentLanguageCode scoped_current_language_code{"en"};
+  fake_locale_.SetLanguageCode("en");
 
   // Act
   const base::DictValue virtual_prefs = GetVirtualPrefs();
@@ -109,7 +101,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleLanguage) {
 
 TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleRegion) {
   // Arrange
-  const test::ScopedCurrentCountryCode scoped_current_country_code{"KY"};
+  fake_locale_.SetCountryCode("KY");
 
   // Act
   const base::DictValue virtual_prefs = GetVirtualPrefs();

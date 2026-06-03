@@ -13,10 +13,10 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -73,12 +74,11 @@ class FilTxManagerUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        *keyring_service_, &prefs_,
+        CreateTxStorageForTest(temp_dir_.GetPath()));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
-    GetAccountUtils().EnsureFilTestAccount(0);
+    ASSERT_TRUE(GetAccountUtils().EnsureFilTestAccount(0));
   }
 
   AccountUtils GetAccountUtils() {
@@ -86,7 +86,9 @@ class FilTxManagerUnitTest : public testing::Test {
   }
 
   mojom::AccountIdPtr FilTestAcc(size_t index) {
-    return GetAccountUtils().EnsureFilTestAccount(index)->account_id->Clone();
+    auto account = GetAccountUtils().EnsureFilTestAccount(index);
+    CHECK(account);
+    return account->account_id->Clone();
   }
 
   void SetInterceptor(const GURL& expected_url,
@@ -609,6 +611,30 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
         run_loop.Quit();
       }));
   run_loop.Run();
+}
+
+TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
+  const auto from_account = FilTestAcc(0);
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(from_account->address)});
+
+  auto fil_tx_data = mojom::FilTxData::New(
+      "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
+      "" /* gas_limit */, "" /* max_fee */,
+      "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "");
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  tx_service_->AddUnapprovedFilecoinTransaction(
+      std::move(fil_tx_data), mojom::kLocalhostChainId, from_account->Clone(),
+      nullptr, unapproved_future.GetCallback());
+
+  const auto& [success, tx_meta_id, err_str] = unapproved_future.Take();
+
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, WalletInternalErrorMessage());
 }
 
 }  //  namespace brave_wallet

@@ -114,7 +114,6 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.move_to_other_window_menu_id, R.drawable.ic_open_in_browser);
         MENU_ICON_MAP.put(R.id.manage_all_windows_menu_id, R.drawable.ic_select_window);
         MENU_ICON_MAP.put(R.id.open_history_menu_id, R.drawable.brave_menu_history);
-        MENU_ICON_MAP.put(R.id.tinker_tank_menu_id, R.drawable.ic_add_box_rounded_corner);
         MENU_ICON_MAP.put(R.id.downloads_menu_id, R.drawable.brave_menu_downloads);
         MENU_ICON_MAP.put(R.id.all_bookmarks_menu_id, R.drawable.brave_menu_bookmarks);
         MENU_ICON_MAP.put(R.id.recent_tabs_menu_id, R.drawable.brave_menu_recent_tabs);
@@ -136,7 +135,6 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.enable_price_tracking_menu_id, R.drawable.price_tracking_disabled);
         MENU_ICON_MAP.put(
                 R.id.disable_price_tracking_menu_id, R.drawable.price_tracking_enabled_filled);
-        MENU_ICON_MAP.put(R.id.ai_web_menu_id, R.drawable.summarize_auto);
         MENU_ICON_MAP.put(R.id.find_in_page_id, R.drawable.ic_find_in_page);
         MENU_ICON_MAP.put(R.id.translate_id, R.drawable.ic_translate);
         MENU_ICON_MAP.put(R.id.readaloud_menu_id, R.drawable.ic_play_circle);

@@ -36,8 +36,11 @@ import {
   useGetEthAddressChecksumQuery,
   useGetFVMAddressQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
+  useGetPolkadotAddressesForNetworkQuery,
   useGetZCashAccountInfoQuery,
   useGetZCashTransactionTypeQuery,
+  useLazyGetPolkadotAddressForNetworkQuery,
+  useValidatePolkadotAddressQuery,
 } from '../../../../../common/slices/api.slice'
 
 // Utils
@@ -130,6 +133,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     const [enableEnsOffchainLookup] = useEnableEnsOffchainLookupMutation()
     const [generateReceiveAddress, { isLoading: isGeneratingAddress }] =
       useGenerateReceiveAddressMutation()
+    const [getPolkadotAddressForNetwork] =
+      useLazyGetPolkadotAddressForNetworkQuery()
 
     // State
     const [searchValue, setSearchValue] = React.useState<string>(
@@ -212,17 +217,46 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       )
     }, [accounts, selectedNetwork, fromAccountId, selectedAsset])
 
-    const filteredAccounts = React.useMemo(() => {
-      return accountsByNetwork.filter(
-        (account) =>
-          account.accountId.address
-            .toLocaleLowerCase()
-            .startsWith(searchValue.toLocaleLowerCase())
-          || account.name
-            .toLowerCase()
-            .startsWith(searchValue.toLocaleLowerCase()),
+    const isDotSend =
+      fromAccountId?.coin === BraveWallet.CoinType.DOT && !!selectedNetwork
+
+    const polkadotAccountIds = React.useMemo(
+      () =>
+        isDotSend
+          ? accountsByNetwork
+              .filter((a) => a.accountId.coin === BraveWallet.CoinType.DOT)
+              .map((a) => a.accountId)
+          : [],
+      [accountsByNetwork, isDotSend],
+    )
+
+    // We build a map that keys an account's uniqueKey to the chain-correct
+    // version of an account's address for the purposes of display/search. This
+    // is because each network in Polkadot can use a custom ss58 prefix and we
+    // need this to be reflected in the UI.
+    const { data: polkadotAddressesByUniqueKey = {} } =
+      useGetPolkadotAddressesForNetworkQuery(
+        isDotSend && polkadotAccountIds.length > 0
+          ? {
+              accountIds: polkadotAccountIds,
+              chainId: selectedNetwork.chainId,
+            }
+          : skipToken,
       )
-    }, [accountsByNetwork, searchValue])
+
+    const filteredAccounts = React.useMemo(() => {
+      const lowerSearch = searchValue.toLocaleLowerCase()
+      return accountsByNetwork.filter((account) => {
+        const polkadotAddress =
+          polkadotAddressesByUniqueKey[account.accountId.uniqueKey]
+        return (
+          account.accountId.address.toLocaleLowerCase().startsWith(lowerSearch)
+          || account.name.toLowerCase().startsWith(lowerSearch)
+          || (polkadotAddress
+            && polkadotAddress.toLocaleLowerCase().startsWith(lowerSearch))
+        )
+      })
+    }, [accountsByNetwork, searchValue, polkadotAddressesByUniqueKey])
 
     const evmAddressesForFVMTranslation = React.useMemo(
       () =>
@@ -284,6 +318,21 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         : skipToken,
     )
 
+    const {
+      data: getPolkadotAddressValidationResult = BraveWallet
+        .PolkadotValidationStatus.kNoError,
+    } = useValidatePolkadotAddressQuery(
+      fromAccountId
+        && selectedNetwork
+        && fromAccountId.coin === BraveWallet.CoinType.DOT
+        && trimmedSearchValue
+        ? {
+            chainId: selectedNetwork.chainId,
+            address: trimmedSearchValue,
+          }
+        : skipToken,
+    )
+
     const addressMessageId: AddressMessageInfoIds | undefined =
       React.useMemo(() => {
         return processAddressOrUrl({
@@ -294,6 +343,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           coinType: fromAccountId?.coin ?? BraveWallet.CoinType.ETH,
           token: selectedAsset,
           zcashAddressError: getZCashTransactionTypeResult.error,
+          polkadotAddressError: getPolkadotAddressValidationResult,
           fullTokenList,
           hasNameServiceError,
           isValidExtension: searchValueHasValidExtension,
@@ -317,6 +367,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         resolvedDomainAddress,
         showEnsOffchainWarning,
         isOffChainEnsWarningDismissed,
+        getPolkadotAddressValidationResult,
       ])
 
     const addressMessageInformation = React.useMemo(() => {
@@ -362,6 +413,15 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
             account.accountId,
           ).unwrap()
           setToAddressOrUrl(generatedAddress)
+        } else if (
+          account.accountId.coin === BraveWallet.CoinType.DOT
+          && selectedNetwork
+        ) {
+          const address = await getPolkadotAddressForNetwork({
+            accountId: account.accountId,
+            chainId: selectedNetwork.chainId,
+          }).unwrap()
+          setToAddressOrUrl(address)
         } else {
           setToAddressOrUrl(account.address)
         }
@@ -371,6 +431,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       [
         setToAddressOrUrl,
         generateReceiveAddress,
+        getPolkadotAddressForNetwork,
+        selectedNetwork,
         onClose,
         setResolvedDomainAddress,
       ],
@@ -501,6 +563,11 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                       accountAlias={
                         fevmTranslatedAddresses?.[account.accountId.address]
                       }
+                      addressOverride={
+                        polkadotAddressesByUniqueKey[
+                          account.accountId.uniqueKey
+                        ]
+                      }
                     />
                   ))}
                 </>
@@ -584,6 +651,7 @@ interface AccountsListProps {
   selectedAsset?: BraveWallet.BlockchainToken
   fromAccountId?: BraveWallet.AccountId
   accountAlias?: string
+  addressOverride?: string
 }
 
 export const AccountGroupItem = (props: AccountsListProps) => {
@@ -593,6 +661,7 @@ export const AccountGroupItem = (props: AccountsListProps) => {
     selectedAsset,
     fromAccountId,
     accountAlias,
+    addressOverride,
   } = props
 
   // Selectors
@@ -630,7 +699,7 @@ export const AccountGroupItem = (props: AccountsListProps) => {
           account.accountId.coin === BraveWallet.CoinType.ZEC
           && zcashAccountInfo
             ? zcashAccountInfo.nextTransparentReceiveAddress.addressString
-            : undefined
+            : addressOverride
         }
         accountAlias={accountAlias}
       />
@@ -777,6 +846,27 @@ const processZCashAddress = (
   return AddressMessageInfoIds.invalidAddressError
 }
 
+const processPolkadotAddress = (
+  polkadotAddressError: BraveWallet.PolkadotValidationStatus,
+) => {
+  if (polkadotAddressError === BraveWallet.PolkadotValidationStatus.kNoError) {
+    return undefined
+  }
+  if (
+    polkadotAddressError === BraveWallet.PolkadotValidationStatus.kInvalidPrefix
+  ) {
+    return AddressMessageInfoIds.polkadotInvalidPrefixError
+  }
+  if (
+    polkadotAddressError
+    === BraveWallet.PolkadotValidationStatus.kInvalidAddressFormat
+  ) {
+    return AddressMessageInfoIds.invalidAddressError
+  }
+
+  return AddressMessageInfoIds.invalidAddressError
+}
+
 const processFilecoinAddress = (addressOrUrl: string, checksum: string) => {
   const valueToLowerCase = addressOrUrl.toLowerCase()
 
@@ -856,6 +946,7 @@ function processAddressOrUrl({
   isBase58,
   coinType,
   zcashAddressError,
+  polkadotAddressError,
   token,
   fullTokenList,
   isValidExtension,
@@ -872,6 +963,7 @@ function processAddressOrUrl({
   ethAddressChecksum: string
   isBase58: boolean
   zcashAddressError: BraveWallet.ZCashAddressError
+  polkadotAddressError: BraveWallet.PolkadotValidationStatus
   fullTokenList: BraveWallet.BlockchainToken[]
   isValidExtension: boolean
   resolvedDomainAddress: string | undefined
@@ -933,6 +1025,9 @@ function processAddressOrUrl({
         addressOrUrl,
         token?.chainId === BraveWallet.CARDANO_TESTNET,
       )
+    }
+    case BraveWallet.CoinType.DOT: {
+      return processPolkadotAddress(polkadotAddressError)
     }
     default: {
       console.log(`Unknown coin ${coinType}`)

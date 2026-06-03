@@ -151,7 +151,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
     }
   }
 
-  function isElementVisible(e) {
+  function isElementVisible(page, e) {
     if (!!(e.offsetWidth && e.offsetHeight && e.getClientRects().length)) {
       return true;
     }
@@ -187,7 +187,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
           var targets = page.document.elementsFromPoint(localX - offsetX, localY - offsetY).filter((e) => {
             return isVideoNode(e) || isAudioNode(e);
           }).filter((e) => {
-            return isElementVisible(e);
+            return isElementVisible(page, e);
           });
 
 
@@ -237,8 +237,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
     }
 
     function observePage() {
-      let useObservers = false;
-
       Object.defineProperty(HTMLMediaElement.prototype, '$<tagUUID>', {
         enumerable: false,
         configurable: false,
@@ -246,104 +244,46 @@ window.__firefox__.includeOnce("Playlist", function($) {
         value: null
       });
 
-      if (useObservers) {
-        let observeNode = function(node) {
-          function processNode(node) {
-            // Observe video or audio elements
-            let isVideoElement = isVideoNode(node);
-            let isAudioElement = isAudioNode(node);
-            if (isVideoElement || isAudioElement) {
-              let type = isVideoElement ? 'video' : 'audio';
-              node.observer = new MutationObserver(function (mutations) {
-                notifyNode(node, type, true, false);
-              });
+      var descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'src');
+      if (descriptor) {
+        Object.defineProperty(HTMLMediaElement.prototype, 'src', {
+          enumerable: descriptor.enumerable,
+          configurable: descriptor.configurable,
+          get: function() {
+            return descriptor.get.call(this);
+          },
+          set: function(value) {
+            descriptor.set.call(this, value);
 
-              node.observer.observe(node, { attributes: true, attributeFilter: ["src"] });
-              node.addEventListener('loadedmetadata', function() {
-                notifyNode(node, type, true, false);
-              });
-
-              notifyNode(node, type, true, false);
+            if (this instanceof HTMLVideoElement) {
+              notifyNode(this, 'video', true, false);
+            } else if (this instanceof HTMLAudioElement) {
+              notifyNode(this, 'audio', true, false);
+              setTimeout(() => checkPageForVideos(false), 100);
             }
           }
-
-          for (const child of node.childNodes) {
-            processNode(child);
-          }
-
-          processNode(node);
-        };
-
-        // Observe elements added to a Node
-        let documentObserver = new MutationObserver(function (mutations) {
-          mutations.forEach(function (mutation) {
-            mutation.addedNodes.forEach(function (node) {
-              observeNode(node);
-            });
-          });
         });
-
-        documentObserver.observe(document, { subtree: true, childList: true });
-      } else {
-        Object.defineProperty(HTMLMediaElement.prototype, '$<tagUUID>', {
-          enumerable: false,
-          configurable: false,
-          writable: true,
-          value: null
-        });
-
-        var descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'src');
-        if (descriptor) {
-          Object.defineProperty(HTMLMediaElement.prototype, 'src', {
-            enumerable: descriptor.enumerable,
-            configurable: descriptor.configurable,
-            get: function() {
-              return descriptor.get.call(this);
-            },
-            set: function(value) {
-              descriptor.set.call(this, value);
-              
-              if (this instanceof HTMLVideoElement) {
-                notifyNode(this, 'video', true, false);
-              } else if (this instanceof HTMLAudioElement) {
-                notifyNode(this, 'audio', true, false);
-                setTimeout(() => checkPageForVideos(false), 100);
-              }
-            }
-          });
-        }
-
-        var setVideoAttribute = HTMLVideoElement.prototype.setAttribute;
-        HTMLVideoElement.prototype.setAttribute = function(key, value) {
-          setVideoAttribute.call(this, key, value);
-          if (key.toLowerCase() == 'src') {
-            notifyNode(this, 'video', true, false);
-          }
-        };
-
-        var setAudioAttribute = HTMLAudioElement.prototype.setAttribute;
-        HTMLAudioElement.prototype.setAttribute = function(key, value) {
-          setAudioAttribute.call(this, key, value);
-          if (key.toLowerCase() == 'src') {
-            notifyNode(this, 'audio', true, false);
-            
-            // Instead of using an interval and polling,
-            // we can check the page after a short period when an audio source has been setup.
-            setTimeout(() => checkPageForVideos(false), 100);
-          }
-        };
       }
 
-      /*var documentCreateElement = document.createElement;
-      document.createElement = function (tag) {
-          if (tag === 'audio' || tag === 'video') {
-              var node = documentCreateElement.call(this, tag);
-              observeNode(node);
-              notifyNode(node, tag, true, false);
-              return node;
-          }
-          return documentCreateElement.call(this, tag);
-      };*/
+      var setVideoAttribute = HTMLVideoElement.prototype.setAttribute;
+      HTMLVideoElement.prototype.setAttribute = function(key, value) {
+        setVideoAttribute.call(this, key, value);
+        if (key.toLowerCase() == 'src') {
+          notifyNode(this, 'video', true, false);
+        }
+      };
+
+      var setAudioAttribute = HTMLAudioElement.prototype.setAttribute;
+      HTMLAudioElement.prototype.setAttribute = function(key, value) {
+        setAudioAttribute.call(this, key, value);
+        if (key.toLowerCase() == 'src') {
+          notifyNode(this, 'audio', true, false);
+
+          // Instead of using an interval and polling,
+          // we can check the page after a short period when an audio source has been setup.
+          setTimeout(() => checkPageForVideos(false), 100);
+        }
+      };
 
       function checkPageForVideos(ignoreSource) {
         function fetchMedia() {
@@ -361,16 +301,10 @@ window.__firefox__.includeOnce("Playlist", function($) {
           }
 
           videos.forEach(function(node) {
-            if (useObservers) {
-              observeNode(node);
-            }
             notifyNode(node, 'video', true, ignoreSource);
           });
 
           audios.forEach(function(node) {
-            if (useObservers) {
-              observeNode(node);
-            }
             notifyNode(node, 'audio', true, ignoreSource);
           });
         }
@@ -405,22 +339,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
         }
       });
 
-      if (useObservers) {
-        // Needed for pages like Bichute and Soundcloud and Youtube that do NOT reload the page
-        // They instead alter the history or document and update the href that way
-        window.addEventListener("load", () => {
-          let lastLocation = document.location.href;
-          const body = document.querySelector("body");
-          const observer = new MutationObserver(mutations => {
-            if (lastLocation !== document.location.href) {
-              lastLocation = document.location.href;
-              checkPageForVideos(false);
-            }
-          });
-          observer.observe(body, { childList: true, subtree: true });
-        });
-      }
-
       checkPageForVideos(false);
     }
 
@@ -452,28 +370,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
 
           return 0.0;
         }
-      });
-
-      Object.defineProperty(window.__firefox__, '$<stopMediaPlayback>', {
-          enumerable: false,
-          configurable: false,
-          writable: false,
-          value:
-          function(token) {
-            if (token != SECURITY_TOKEN) {
-              return;
-            }
-
-            for (element of getAllVideoElements()) {
-              element.pause();
-            }
-
-            for (element of getAllAudioElements()) {
-              element.pause();
-            }
-
-            return 0.0;
-          }
       });
   }
 

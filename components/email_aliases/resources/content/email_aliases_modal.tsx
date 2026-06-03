@@ -110,7 +110,7 @@ const ButtonRow = styled(Row)<{ bubble?: boolean; limitReached?: boolean }>`
   & leo-button {
     flex-grow: 0;
   }
-  & span {
+  & {
     display: flex;
     flex-direction: row;
     gap: ${spacing.m};
@@ -400,7 +400,7 @@ export const EmailAliasModal = ({
                 type: EmailAliasModalResultType.ShouldManageAliases,
               })
             }}
-            kind={limitReached ? 'filled' : 'plain'}
+            kind={limitReached ? 'filled' : 'plain-faint'}
           >
             {getLocale(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON)}
           </ManageButton>

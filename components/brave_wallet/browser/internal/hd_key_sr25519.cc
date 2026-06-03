@@ -34,6 +34,10 @@ HDKeySr25519& HDKeySr25519::operator=(HDKeySr25519&& rhs) noexcept {
 
 HDKeySr25519::~HDKeySr25519() = default;
 
+HDKeySr25519 HDKeySr25519::Clone() const {
+  return HDKeySr25519(keypair_->clone());
+}
+
 // static
 HDKeySr25519 HDKeySr25519::GenerateFromSeed(
     base::span<const uint8_t, kSr25519SeedSize> seed) {
@@ -94,9 +98,14 @@ HDKeySr25519 HDKeySr25519::DeriveHard(
       keypair_->derive_hard(base::SpanToRustSlice(derive_junction)));
 }
 
-void HDKeySr25519::UseMockRngForTesting() {
+HDKeySr25519 HDKeySr25519::DeriveHard(uint32_t account_index) const {
+  CHECK(IsBoxNonNull(keypair_));
+  return HDKeySr25519(keypair_->derive_hard_from_account_index(account_index));
+}
+
+void HDKeySr25519::SetMockRndSeedForTesting(uint64_t seed) {
   CHECK_IS_TEST();
-  keypair_->use_mock_rng_for_testing();  // IN-TEST
+  keypair_->set_mock_rnd_seed_for_testing(seed);  // IN-TEST
 }
 
 }  // namespace brave_wallet

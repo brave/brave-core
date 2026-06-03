@@ -1,0 +1,14 @@
+Name: ring
+Short Name: ring
+URL: https://github.com/briansmith/ring
+Version: 0.17.14
+License: Apache-2.0 AND ISC
+License File: LICENSE-combined-brave-attribution
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/ring.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

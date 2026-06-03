@@ -4,8 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Label from '@brave/leo/react/label'
-import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
@@ -14,6 +12,10 @@ import {
   AttachmentPageItem,
   AttachmentUploadItems,
 } from '../../../page/components/attachment_item'
+import {
+  Content,
+  stringifyContent,
+} from '../../../page/components/input_box/editable_content'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
@@ -36,38 +38,131 @@ import {
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
+import ProgressBubble, {
+  ProgressBubbleContextProvider,
+} from '../progress_bubble/progress_bubble'
 
-// Function to highlight skill shortcuts in text
-const maybeHighlightSkillText = (text: string, skill?: Mojom.SkillEntry) => {
-  if (!skill) return text
+const escape = (text: string): string => (RegExp as any).escape(text)
 
-  const shortcutPattern = `/${skill.shortcut}`
-  const index = text.indexOf(shortcutPattern)
+type RichSegment =
+  | { type: 'text'; value: string }
+  | { type: 'skill'; id: string; text: string }
+  | { type: 'attachment'; content: Mojom.AssociatedContent }
 
-  if (index === -1) return text
+const parseRichSegments = (
+  text: string,
+  skill: Mojom.SkillEntry | undefined | null,
+  associatedContent: Mojom.AssociatedContent[],
+): RichSegment[] => {
+  const replacements: string[] = []
+
+  // Skills can only be at the beginning of the text
+  if (skill) {
+    replacements.push(`^${escape(`/${skill.shortcut}`)}`)
+  }
+
+  replacements.push(
+    ...associatedContent.map((c) => escape(`[mention(${c.title})]`)),
+  )
+
+  if (!replacements.length) return [{ type: 'text', value: text }]
+
+  const regex = new RegExp(replacements.map((r) => `(${r})`).join('|'), 'g')
+
+  const segments: RichSegment[] = []
+  let lastIndex = 0
+  for (const match of text.matchAll(regex)) {
+    if (match.index > lastIndex) {
+      segments.push({
+        type: 'text',
+        value: text.substring(lastIndex, match.index),
+      })
+    }
+    lastIndex = match.index + match[0].length
+
+    const content = associatedContent.find(
+      (c) => match[0] === `[mention(${c.title})]`,
+    )
+    if (content) {
+      segments.push({ type: 'attachment', content })
+    } else {
+      segments.push({ type: 'skill', id: skill!.shortcut, text: match[0] })
+    }
+  }
+  if (lastIndex < text.length) {
+    segments.push({ type: 'text', value: text.substring(lastIndex) })
+  }
+
+  return segments
+}
+
+export const highlightRichText = (
+  text: string,
+  skill: Mojom.SkillEntry | undefined,
+  associatedContent: Mojom.AssociatedContent[],
+) => {
+  const segments = parseRichSegments(text, skill, associatedContent)
+
+  if (segments.every((s) => s.type === 'text')) return text
 
   return (
-    <span>
-      {text.substring(0, index)}
-      <Label
-        className={styles.skillLabel}
-        color='primary'
-        mode='default'
-      >
-        {shortcutPattern}
-      </Label>
-      {text.substring(index + shortcutPattern.length)}
-    </span>
+    <>
+      {segments.map((seg, i) => {
+        if (seg.type === 'text') return seg.value
+        return (
+          <span
+            key={i}
+            className={styles.richLabel}
+            title={seg.type === 'attachment' ? seg.content.url.url : undefined}
+          >
+            {seg.type === 'attachment' && (
+              <img
+                src={`chrome-untrusted://favicon2?size=64&pageUrl=${encodeURIComponent(seg.content.url.url)}`}
+              />
+            )}
+            <span className={styles.richLabelTitle}>
+              {seg.type === 'attachment' ? seg.content.title : seg.text}
+            </span>
+          </span>
+        )
+      })}
+    </>
   )
 }
 
+// Build editable Content, rendering skill and attachment mentions as highlighted nodes
+const makeEditContent = (
+  text: string,
+  skill?: Mojom.SkillEntry | null,
+  associatedContent: Mojom.AssociatedContent[] = [],
+): Content =>
+  parseRichSegments(text, skill, associatedContent).map((seg) => {
+    if (seg.type === 'text') return seg.value
+    if (seg.type === 'skill') {
+      return { type: 'skill' as const, id: seg.id, text: seg.text }
+    }
+    return {
+      type: 'attachment' as const,
+      id: seg.content.contentId.toString(),
+      text: seg.content.title,
+      url: seg.content.url.url,
+    }
+  })
+
+/**
+ * Returns the conversation history as an array of pairs, each pair containing
+ * a human turn group followed by its associated assistant response group, so
+ * responses are treated as a single entity when they span multiple tool-use
+ * loops. For example:
+ *
+ *   [[[human], [assistant, ...assistant]], [[human], [assistant, ...assistant]]]
+ *
+ * Consecutive assistant entries are kept together in the same parent element
+ * for semantic and style purposes — the back-and-forth between tool calls is
+ * an implementation detail the user shouldn't have to see.
+ */
 function usePairedConversationGroups() {
   const conversationContext = useUntrustedConversationContext()
-  // Render events from consecutive assistant entries in the same parent element for both
-  // semantic and style purposes. The user should see them as a single entry since
-  // the back and forth could be considered an implementation detail when
-  // conceptually it's more like a continuation of a response without human interaction
-  // in-between.
   const groupedEntries = React.useMemo<Mojom.ConversationTurn[][]>(
     () => groupConversationEntries(conversationContext.conversationHistory),
     [conversationContext.conversationHistory],
@@ -106,11 +201,7 @@ function usePairedConversationGroups() {
   return pairedEntries
 }
 
-function scrollEntryPairToTop(el: HTMLDivElement | null) {
-  el?.scrollIntoView({ block: 'start', behavior: 'smooth' })
-}
-
-function ConversationEntries() {
+function ConversationEntries(props: { scrollToBottom: () => void }) {
   const conversationContext = useUntrustedConversationContext()
 
   const [hoverMenuButtonId, setHoverMenuButtonId] = React.useState<number>()
@@ -134,15 +225,24 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
-  const handleEditSubmit = (index: number, text: string) => {
+  const handleEditSubmit = (index: number, content: Content) => {
     const entryUuid = conversationContext.conversationHistory[index]?.uuid
     if (!entryUuid) return
-    conversationContext.conversationHandler?.modifyConversation(entryUuid, text)
+    const text = stringifyContent(content)
+    const skillNode = content.find(
+      (c): c is Extract<Content[number], { type: string }> =>
+        typeof c !== 'string' && c.type === 'skill',
+    )
+    conversationContext.conversationHandler?.modifyConversation(
+      entryUuid,
+      text,
+      skillNode?.id ?? null,
+    )
     setEditInputId(undefined)
   }
 
   function renderEntryGroup(
-    isLastGroup: boolean,
+    isActiveGroup: boolean,
     group: Mojom.ConversationTurn[],
     entryNumber: number,
   ) {
@@ -154,10 +254,9 @@ function ConversationEntries() {
     const isAIAssistant =
       firstEntryEdit.characterType === Mojom.CharacterType.ASSISTANT
     const isEntryInProgressButGroup =
-      isLastGroup && isAIAssistant && conversationContext.isGenerating
+      isActiveGroup && isAIAssistant && conversationContext.isGenerating
     const isHuman = firstEntryEdit.characterType === Mojom.CharacterType.HUMAN
-    const isGeneratingResponse =
-      isHuman && isLastGroup && conversationContext.isGenerating
+
     const showLongPageContentInfo =
       entryNumber === 1
       && isAIAssistant
@@ -194,8 +293,7 @@ function ConversationEntries() {
       [styles.turnAI]: isAIAssistant,
     })
 
-    const handleCopyText =
-      useConversationEventClipboardCopyHandler(firstEntryEdit)
+    const handleCopyText = useConversationEventClipboardCopyHandler(group)
 
     const tabAttachments =
       conversationContext.associatedContent?.filter((c) =>
@@ -204,12 +302,12 @@ function ConversationEntries() {
     const hasAttachments =
       !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
-    const groupIsTask = isAssistantGroupTask(group)
+    const groupIsTask = isAIAssistant && isAssistantGroupTask(group)
 
     // Omit artifacts until generation is complete so we show
     // the artifacts and the final response text at the same time.
     const shouldOmitToolArtifacts =
-      isLastGroup && conversationContext.isGenerating
+      isActiveGroup && conversationContext.isGenerating
     const toolArtifacts = !shouldOmitToolArtifacts
       ? getToolArtifacts(group)
       : null
@@ -227,7 +325,7 @@ function ConversationEntries() {
             {groupIsTask && (
               <AssistantTask
                 assistantEntries={group}
-                isActiveTask={isLastGroup}
+                isActiveTask={isActiveGroup}
                 isLeoModel={conversationContext.isLeoModel}
               />
             )}
@@ -235,8 +333,8 @@ function ConversationEntries() {
               && group.map((entry, i) => {
                 const isEntryInProgress =
                   isEntryInProgressButGroup && i === group.length - 1
-                const isLastEntryInLastGroup =
-                  isLastGroup && i === group.length - 1
+                const isActiveEntryInActiveGroup =
+                  isActiveGroup && i === group.length - 1
                 const currentEntryEdit = entry.edits?.at(-1) ?? entry
                 const allowedLinksForEntry: string[] =
                   currentEntryEdit.events?.flatMap(
@@ -266,7 +364,9 @@ function ConversationEntries() {
                           events={
                             currentEntryEdit.events?.filter(Boolean) ?? []
                           }
-                          isEntryInteractivityAllowed={isLastEntryInLastGroup}
+                          isEntryInteractivityAllowed={
+                            isActiveEntryInActiveGroup
+                          }
                           isEntryInProgress={isEntryInProgress}
                           allowedLinks={allowedLinksForEntry}
                           isLeoModel={conversationContext.isLeoModel}
@@ -303,9 +403,10 @@ function ConversationEntries() {
                           />
                           <div className={styles.humanMessageBubble}>
                             <div className={styles.humanTextRow}>
-                              {maybeHighlightSkillText(
+                              {highlightRichText(
                                 currentEntryEdit.text,
                                 currentEntryEdit.skill,
+                                conversationContext.associatedContent ?? [],
                               )}
                               {!!entry.edits?.length && (
                                 <div className={styles.editLabel}>
@@ -337,8 +438,14 @@ function ConversationEntries() {
 
                     {showEditInput && (
                       <EditInput
-                        text={firstEntryEdit.text}
-                        onSubmit={(text) => handleEditSubmit(entryNumber, text)}
+                        content={makeEditContent(
+                          firstEntryEdit.text,
+                          firstEntryEdit.skill,
+                          tabAttachments,
+                        )}
+                        onSubmit={(content) =>
+                          handleEditSubmit(entryNumber, content)
+                        }
                         onCancel={() => setEditInputId(undefined)}
                         isSubmitDisabled={
                           !conversationContext.canSubmitUserEntries
@@ -426,11 +533,6 @@ function ConversationEntries() {
                 )}
             </>
           )}
-          {isGeneratingResponse && (
-            <div className={styles.loading}>
-              <ProgressRing />
-            </div>
-          )}
         </div>
       </div>
     )
@@ -446,19 +548,28 @@ function ConversationEntries() {
           className={styles.entryPair}
           ref={
             pairIndex === entryPairs.length - 1 && hasGenerated.current
-              ? scrollEntryPairToTop
+              ? props.scrollToBottom
               : undefined
           }
         >
-          {pair.map((group, groupIndex) =>
-            renderEntryGroup(
-              pairIndex === entryPairs.length - 1
-                && groupIndex === pair.length - 1,
-              group,
-              // Note, we need to keep track of the entry number across pairs and groups.
-              entryNumber++,
-            ),
-          )}
+          <ProgressBubbleContextProvider>
+            {pair.map((group, groupIndex) => (
+              <React.Fragment key={groupIndex}>
+                {renderEntryGroup(
+                  pairIndex === entryPairs.length - 1,
+                  group,
+                  // Note, we need to keep track of the entry number across pairs and groups.
+                  entryNumber++,
+                )}
+                {groupIndex === 0 && (
+                  <ProgressBubble
+                    responseGroup={pair[1]}
+                    isLastGroup={pairIndex === entryPairs.length - 1}
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </ProgressBubbleContextProvider>
         </div>
       ))}
     </div>

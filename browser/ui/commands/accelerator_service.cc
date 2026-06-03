@@ -18,7 +18,7 @@
 #include "brave/app/command_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -28,6 +28,8 @@
 #include "brave/components/commands/common/commands.mojom-forward.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -40,6 +42,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
@@ -61,12 +67,20 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace commands {
@@ -447,11 +461,25 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
 #endif
     case IDC_SHOW_BRAVE_REWARDS:
     case IDC_OFFERS_AND_REWARDS_FOR_PAGE:
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       return pref_service_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy);
-#if BUILDFLAG(ENABLE_AI_CHAT)
+#else
+      return true;  // Rewards not compiled in, always disabled
+#endif
     case IDC_TOGGLE_AI_CHAT:
     case IDC_OPEN_FULL_PAGE_CHAT:
+#if BUILDFLAG(ENABLE_AI_CHAT)
       return !pref_service_->GetBoolean(ai_chat::prefs::kEnabledByPolicy);
+#else
+      return true;  // AI Chat not compiled in, always disabled
+#endif
+    case IDC_NEW_EMAIL_ALIAS:
+    case IDC_SHOW_EMAIL_ALIASES:
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+      return !email_aliases::features::IsEmailAliasesEnabledForProfile(
+          *pref_service_);
+#else
+      return true;  // Email Aliases not compiled in, always disabled
 #endif
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
     case IDC_NEW_TOR_CONNECTION_FOR_SITE:
@@ -472,6 +500,12 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
       return !pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
 #else
       return true;  // Wayback Machine not compiled in, always disabled
+#endif
+    case IDC_SHOW_PLAYLIST_BUBBLE:
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      return !pref_service_->GetBoolean(playlist::kPlaylistEnabledPref);
+#else
+      return true;  // Playlist not compiled in, always disabled
 #endif
     default:
       return false;  // Unknown command - Not subject to policy filtering

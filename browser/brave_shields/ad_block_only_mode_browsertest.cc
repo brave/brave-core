@@ -15,7 +15,7 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/global_privacy_control/pref_names.h"
-#include "brave/components/query_filter/pref_names.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

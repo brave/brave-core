@@ -15,10 +15,12 @@
 #include <variant>
 #include <vector>
 
+#include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
@@ -30,6 +32,7 @@
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/bind_post_task.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/uuid.h"
@@ -68,6 +71,18 @@ using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
+
+bool HasUploadedImageOrScreenshot(
+    const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files) {
+  if (!uploaded_files || uploaded_files->empty()) {
+    return false;
+  }
+  return std::ranges::any_of(
+      *uploaded_files, [](const mojom::UploadedFilePtr& file) {
+        return file->type == mojom::UploadedFileType::kImage ||
+               file->type == mojom::UploadedFileType::kScreenshot;
+      });
+}
 
 }  // namespace
 
@@ -397,8 +412,11 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 #if BUILDFLAG(IS_IOS)
       std::move(suggestions), suggestion_generation_status_,
 #endif
-      associated_content_manager_->GetAssociatedContent(), current_error_,
-      metadata_->temporary, tool_use_task_state_);
+      associated_content_manager_->GetAssociatedContent(),
+      current_error_.api_error,
+      current_error_.details ? current_error_.details->Clone() : nullptr,
+      metadata_->temporary, tool_use_task_state_,
+      base::ToVector(conversation_capabilities_));
 
   std::move(callback).Run(std::move(state));
 }
@@ -542,7 +560,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       << "than a single human conversation turn at a time.";
 
   // Auto-switch to vision model if needed
-  MaybeSwitchToVisionModel(uploaded_files);
+  MaybeSwitchModelForSubmission(uploaded_files);
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
@@ -590,6 +608,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
   // Submitting a new human entry takes precedence over any pending tool
   // requests, so if we have a previous assistant entry, cancel any pending tool
   // requests.
+  // TODO(https://github.com/brave/brave-browser/issues/55283): Keep these or
+  // otherwise store some state so that we know when previous tool uses were
+  // interrupted by the user.
   if (!chat_history_.empty()) {
     auto& last_entry = chat_history_.back();
     if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
@@ -621,10 +642,10 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
-  // Give tools a chance to reset their state for the next loop
-  InitToolsForNewGenerationLoop();
-  // Get any content and perform the response generation
-  PerformAssistantGenerationWithPossibleContent();
+  // Give tools a chance to reset their state for the next loop, then generate.
+  InitToolsForNewGenerationLoop(base::BindOnce(
+      &ConversationHandler::PerformAssistantGenerationWithPossibleContent,
+      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ConversationHandler::SubmitHumanConversationEntryWithAction(
@@ -639,7 +660,8 @@ void ConversationHandler::SubmitHumanConversationEntryWithAction(
 
 void ConversationHandler::SubmitHumanConversationEntryWithSkill(
     const std::string& input,
-    const std::string& skill_id) {
+    const std::string& skill_id,
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -647,15 +669,15 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
   // Get Skill from prefs and convert to SkillEntry object
   auto skill = prefs::GetSkillFromPrefs(*prefs_, skill_id);
 
+  std::optional<std::string> skill_model;
+  if (skill && skill->model && !skill->model->empty()) {
+    skill_model = *skill->model;
+  }
+  MaybeSwitchModelForSubmission(uploaded_files, skill_model);
+
   mojom::SkillEntryPtr skill_entry = nullptr;
 
   if (skill) {
-    // Switch model if specified and different from current model
-    if (skill->model && !skill->model->empty() &&
-        *skill->model != GetCurrentModel().key) {
-      ChangeModel(*skill->model);
-    }
-
     // Create Skill entry
     skill_entry = mojom::SkillEntry::New(skill->shortcut, skill->prompt);
 
@@ -667,14 +689,16 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_files */, std::move(skill_entry), false,
+      std::move(uploaded_files), std::move(skill_entry), false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
 
-void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
-                                             const std::string& new_text) {
+void ConversationHandler::ModifyConversation(
+    const std::string& entry_uuid,
+    const std::string& new_text,
+    const std::optional<std::string>& skill_shortcut) {
   CHECK(!entry_uuid.empty()) << "Entry UUID is empty";
   auto turn_it = std::ranges::find_if(
       chat_history_,
@@ -748,6 +772,13 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
     return;
   }
 
+  // Preserve the skill if the shortcut matches the original turn's skill.
+  mojom::SkillEntryPtr skill_entry = nullptr;
+  if (skill_shortcut.has_value() && turn->skill &&
+      turn->skill->shortcut == *skill_shortcut) {
+    skill_entry = turn->skill->Clone();
+  }
+
   // turn->selected_text and turn->events are actually std::nullopt for
   // editable human turns in our current implementation, just use std::nullopt
   // here directly to be more explicit and avoid confusion.
@@ -756,7 +787,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
       turn->action_type, sanitized_input, std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */, std::nullopt,
-      nullptr /* skill */, false, turn->model_key,
+      std::move(skill_entry), false, turn->model_key,
       nullptr /* near_verification_status */);
   if (!turn->edits) {
     turn->edits.emplace();
@@ -969,6 +1000,8 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
     return;
   }
 
+  StopTask();
+
   is_request_in_progress_ = false;
   engine_->ClearAllQueries();
   OnAPIRequestInProgressChanged();
@@ -1092,8 +1125,14 @@ void ConversationHandler::RespondToToolUseRequest(
 
   OnToolUseEventOutput(chat_history_.back().get(), tool_use);
 
-  // Run next tool, or perform generation with all the tools outputs
-  MaybeRespondToNextToolUseRequest();
+  // Run next tool, or perform generation with all the completed tools outputs.
+  // Run as Task to catch any reentrant issues.
+  base::BindPostTaskToCurrentDefault(
+      base::BindOnce(
+          base::IgnoreResult(
+              &ConversationHandler::MaybeRespondToNextToolUseRequest),
+          weak_ptr_factory_.GetWeakPtr()))
+      .Run();
 }
 
 void ConversationHandler::ProcessPermissionChallenge(
@@ -1176,15 +1215,20 @@ void ConversationHandler::AddToConversationHistory(
   OnConversationEntryAdded(chat_history_.back());
 }
 
-void ConversationHandler::InitToolsForNewGenerationLoop() {
-  // We can reset any already-created tools that don't want state to
-  // survive between loops (i.e. when a new user message is received).
-  for (auto& tool_provider : tool_providers_) {
-    tool_provider->OnNewGenerationLoop();
-  }
+void ConversationHandler::InitToolsForNewGenerationLoop(
+    base::OnceClosure on_updated) {
   // Remove state from any previous task
   tool_use_task_state_ = mojom::TaskState::kNone;
   OnToolUseTaskStateChanged();
+
+  // We can reset any already-created tools that don't want state to
+  // survive between loops (i.e. when a new user message is received).
+  // Wait for all providers to finish before continuing.
+  auto barrier =
+      base::BarrierClosure(tool_providers_.size(), std::move(on_updated));
+  for (auto& tool_provider : tool_providers_) {
+    tool_provider->UpdateToolsForNewGenerationLoop(barrier);
+  }
 }
 
 void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
@@ -1241,13 +1285,15 @@ void ConversationHandler::PerformPostToolAssistantGeneration() {
   PerformAssistantGenerationWithPossibleContent();
 }
 
-void ConversationHandler::SetAPIError(const mojom::APIError& error) {
-  current_error_ = error;
+void ConversationHandler::SetAPIError(EngineConsumer::Error error) {
+  current_error_ = std::move(error);
 
   OnStateForConversationEntriesChanged();
 
   for (auto& client : conversation_ui_handlers_) {
-    client->OnAPIResponseError(error);
+    client->OnAPIResponseError(
+        current_error_.api_error,
+        current_error_.details ? current_error_.details->Clone() : nullptr);
   }
 }
 
@@ -1359,6 +1405,22 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         OnToolUseEventOutput(entry.get(), existing_tool_use_event);
         return;
       }
+
+      // Drop tool_use events whose id collides with an existing tool_use
+      // event in this turn. ToolUseEvents in the engine APIs are keyed on 'id'
+      // (and in this class via GetToolUseEventForLastResponse). Internally, a
+      // duplicate id would route both completions to the same event, leave the
+      // second event's output unset, and cause MaybeRespondToNextToolUseRequest
+      // to execute the same pending tool indefinitely. And engine APIs will
+      // reject a request with duplicate tool use IDs.
+      if (!tool_use_event->id.empty()) {
+        for (const auto& existing : *entry->events) {
+          if (existing->is_tool_use_event() &&
+              existing->get_tool_use_event()->id == tool_use_event->id) {
+            return;
+          }
+        }
+      }
     }
 
     if (event->is_conversation_title_event()) {
@@ -1411,7 +1473,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     // generate all of them  and remove random ones until we have the required
     // number and then shuffle the result.
     while (suggestions_.size() > kDefaultSuggestionsCount) {
-      auto remove_at = base::RandInt(0, suggestions_.size() - 1);
+      auto remove_at = base::RandIntInclusive(0, suggestions_.size() - 1);
       suggestions_.erase(suggestions_.begin() + remove_at);
     }
     base::RandomShuffle(suggestions_.begin(), suggestions_.end());
@@ -1616,7 +1678,7 @@ void ConversationHandler::OnEngineCompletionComplete(
     EngineConsumer::GenerationResult result) {
   // Handle failure
   if (!result.has_value()) {
-    if (result.error() != mojom::APIError::None) {
+    if (result.error().api_error != mojom::APIError::None) {
       DVLOG(2) << __func__ << ": With error";
       SetAPIError(std::move(result.error()));
     } else {
@@ -1996,7 +2058,9 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->suggestion_status = suggestion_generation_status_;
 
   // API error
-  entries_state->current_error = current_error_;
+  entries_state->current_error = current_error_.api_error;
+  entries_state->current_error_details =
+      current_error_.details ? current_error_.details->Clone() : nullptr;
 
   // Temporary chat flag
   entries_state->is_temporary = metadata_->temporary;
@@ -2157,13 +2221,6 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       has_pending_tool_use_request = true;
       has_only_completed_tool_use_events = false;
 
-      // Initialize the task state for this tool loop if not already set.
-      // PauseTask() may have already set it to kPaused before we get here.
-      if (tool_use_task_state_ == mojom::TaskState::kNone) {
-        tool_use_task_state_ = mojom::TaskState::kRunning;
-        OnToolUseTaskStateChanged();
-      }
-
       // Now check if we're allowed to execute tools.
       if (tool_use_task_state_ == mojom::TaskState::kPaused ||
           tool_use_task_state_ == mojom::TaskState::kStopped) {
@@ -2243,9 +2300,17 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
 
       // No user interaction needed - execute tool
 
-      // At this point task state should be kRunning (not paused, stopped, or
-      // none) since we initialized it earlier and checked for pause/stop above.
-      CHECK_EQ(tool_use_task_state_, mojom::TaskState::kRunning);
+      // Initialize the task state for this tool loop if not already set. We do
+      // this after checking for user interaction so that a tool requiring
+      // only user-interaction won't trigger a Task pause/stop UI. If we want
+      // the tool state to reset whenever there is a tool use that requires
+      // user interaction we should set it in the permission-challenge and
+      // user-output branches before they `break` (to kNone, or a new
+      // kWaitingForUser).
+      if (tool_use_task_state_ == mojom::TaskState::kNone) {
+        tool_use_task_state_ = mojom::TaskState::kRunning;
+        OnToolUseTaskStateChanged();
+      }
 
       is_tool_use_in_progress_ = true;
       OnAPIRequestInProgressChanged();
@@ -2289,7 +2354,7 @@ bool ConversationHandler::should_send_page_contents() const {
 }
 
 mojom::APIError ConversationHandler::current_error() const {
-  return current_error_;
+  return current_error_.api_error;
 }
 
 void ConversationHandler::SetTemporary(bool temporary) {
@@ -2307,23 +2372,32 @@ bool ConversationHandler::IsTemporaryChat() const {
   return metadata_->temporary;
 }
 
-void ConversationHandler::MaybeSwitchToVisionModel(
-    const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files) {
-  if (uploaded_files && !uploaded_files->empty() &&
-      std::ranges::any_of(
-          uploaded_files.value(), [](const mojom::UploadedFilePtr& file) {
-            return file->type == mojom::UploadedFileType::kImage ||
-                   file->type == mojom::UploadedFileType::kScreenshot;
-          })) {
-    auto* current_model =
-        model_service_->GetModel(metadata_->model_key.value_or("").empty()
-                                     ? model_service_->GetDefaultModelKey()
-                                     : metadata_->model_key.value());
-    if (!current_model->vision_support) {
-      ChangeModel(ai_chat_service_->IsPremiumStatus()
-                      ? features::kAIModelsPremiumVisionDefaultKey.Get()
-                      : features::kAIModelsVisionDefaultKey.Get());
-    }
+std::string ConversationHandler::GetVisionCapableModelKey(
+    const std::string& model_key) const {
+  const auto* model = model_service_->GetModel(model_key);
+  if (model && model->vision_support) {
+    return model_key;
+  }
+  return ai_chat_service_->IsPremiumStatus()
+             ? features::kAIModelsPremiumVisionDefaultKey.Get()
+             : features::kAIModelsVisionDefaultKey.Get();
+}
+
+void ConversationHandler::MaybeSwitchModelForSubmission(
+    const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
+    const std::optional<std::string>& intended_model_key) {
+  const std::string current_model_key =
+      metadata_->model_key.value_or("").empty()
+          ? model_service_->GetDefaultModelKey()
+          : metadata_->model_key.value();
+  std::string target = (intended_model_key && !intended_model_key->empty())
+                           ? *intended_model_key
+                           : current_model_key;
+  if (HasUploadedImageOrScreenshot(uploaded_files)) {
+    target = GetVisionCapableModelKey(target);
+  }
+  if (target != current_model_key) {
+    ChangeModel(target);
   }
 }
 
@@ -2357,7 +2431,7 @@ void ConversationHandler::OnAutoScreenshotsTaken(
     }
 
     // Auto-switch to vision model if needed
-    MaybeSwitchToVisionModel(screenshots);
+    MaybeSwitchModelForSubmission(screenshots);
 
     // Update the last conversation turn with the uploaded files
     if (!chat_history_.empty() &&

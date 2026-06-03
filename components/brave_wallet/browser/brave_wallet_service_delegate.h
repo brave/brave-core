@@ -64,6 +64,8 @@ class BraveWalletServiceDelegate {
   virtual bool ResetPermission(mojom::CoinType coin,
                                const url::Origin& origin,
                                const std::string& account);
+  virtual void ResetPermissionsForAccount(mojom::CoinType coin,
+                                          const std::string& account);
   virtual bool IsPermissionDenied(mojom::CoinType coin,
                                   const url::Origin& origin);
   virtual void ResetAllPermissions() {}
@@ -81,6 +83,15 @@ class BraveWalletServiceDelegate {
   virtual base::FilePath GetWalletBaseDirectory() = 0;
 
   virtual bool IsPrivateWindow() = 0;
+
+  virtual void DisplayTxNotification(mojom::TransactionStatus status,
+                                     const std::string& account_name,
+                                     const std::string& tx_id,
+                                     const GURL& tx_url);
+
+  // Must return true in production. Might return false in tests to disable
+  // autolock functionality.
+  virtual bool IsAutolockEnabled() = 0;
 
   static std::unique_ptr<BraveWalletServiceDelegate> Create(
       content::BrowserContext* browser_context);

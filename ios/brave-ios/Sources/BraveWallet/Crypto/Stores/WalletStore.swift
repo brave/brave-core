@@ -73,7 +73,6 @@ public class WalletStore {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     meldIntegrationService: BraveWalletMeldIntegrationService,
@@ -82,8 +81,7 @@ public class WalletStore {
     self.keyringStore = .init(
       keyringService: keyringService,
       walletService: walletService,
-      rpcService: rpcService,
-      walletP3A: walletP3A
+      rpcService: rpcService
     )
     self.setUp(
       keyringService: keyringService,
@@ -96,7 +94,6 @@ public class WalletStore {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
-      walletP3A: walletP3A,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       meldIntegrationService: meldIntegrationService,
@@ -125,7 +122,6 @@ public class WalletStore {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     meldIntegrationService: BraveWalletMeldIntegrationService,
@@ -152,7 +148,6 @@ public class WalletStore {
             ethTxManagerProxy: ethTxManagerProxy,
             solTxManagerProxy: solTxManagerProxy,
             ipfsApi: ipfsApi,
-            walletP3A: walletP3A,
             bitcoinWalletService: bitcoinWalletService,
             zcashWalletService: zcashWalletService,
             meldIntegrationService: meldIntegrationService,

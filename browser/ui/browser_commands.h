@@ -16,14 +16,20 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+namespace actions {
+class ActionItem;
+}
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #endif
 
 class Browser;
+class BrowserWindowInterface;
 class Profile;
 
 namespace brave {
@@ -34,14 +40,13 @@ void CleanAndCopySelectedURL(Browser* browser);
 #if BUILDFLAG(ENABLE_TOR)
 void NewOffTheRecordWindowTor(Browser* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
-void NewTorConnectionForSite(Browser*);
+void NewTorConnectionForSite(BrowserWindowInterface*);
 #endif
 
 void ToggleAIChat(Browser* browser);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowWalletBubble(Browser* browser);
-void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
 #endif
 
@@ -51,7 +56,7 @@ void ToggleBraveVPNButton(Browser* browser);
 void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 // Copies an url sanitized by URLSanitizerService.
-void CopySanitizedURL(Browser* browser, const GURL& url);
+void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url);
 // Copies an url cleared through:
 // - Debouncer (potentially debouncing many levels)
 // - Query filter
@@ -66,6 +71,8 @@ void ToggleVerticalTabStripExpanded(Browser* browser);
 void ToggleActiveTabAudioMute(Browser* browser);
 void ToggleSidebarPosition(Browser* browser);
 void ToggleSidebar(Browser* browser);
+
+void ToggleFocusMode(BrowserWindowInterface* browser);
 
 void ToggleShieldsEnabled(Browser* browser);
 void ToggleJavascriptEnabled(Browser* browser);
@@ -155,24 +162,36 @@ void ForcePasteInBrowser(Browser* browser);
 void ForcePasteInWebContents(content::WebContents* contents);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-// Creates a new tab with the given tab's URL in the specified container.
-void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
-                           const tabs::TabHandle& tab,
-                           const containers::mojom::ContainerPtr& container);
+// Creates new tabs with the given tabs' URLs in the specified container.
+void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
+                            const std::vector<tabs::TabHandle>& tabs,
+                            const containers::mojom::ContainerPtr& container);
 // Creates a new tab with the specified URL in the given container.
 void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
-                        const containers::mojom::ContainerPtr& container);
+                        const containers::mojom::ContainerPtr& container,
+                        bool is_link = true);
 
-// Creates a new tab with the given tab's URL without a container.
-void OpenTabUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                                const tabs::TabHandle& tab);
+// Creates new tabs with the given tabs' URLs without a container.
+void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
+                                 const std::vector<tabs::TabHandle>& tabs);
 void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                             const GURL& url);
+                             const GURL& url,
+                             bool is_link = true);
+
+// Creates a new temporary container and opens the given tabs' URLs in it.
+void CreateTemporaryContainerAndOpenTabUrls(
+    BrowserWindowInterface* browser_window,
+    const std::vector<tabs::TabHandle>& tabs);
+// Opens |url| in a new tab in a freshly created temporary container.
+void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* browser_window,
+                                        const GURL& url,
+                                        bool is_link = true);
 
 // Opens the container menu on the page action view if the active tab is in a
 // container.
-void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser);
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
+                                       ::actions::ActionItem* item);
 #endif
 
 }  // namespace brave

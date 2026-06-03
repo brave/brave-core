@@ -19,6 +19,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.ui.UiUtils;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private TextView mProfileTitle;
@@ -34,7 +35,9 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
+        actionBar.setHomeAsUpIndicator(
+                UiUtils.getTintedDrawable(
+                        this, R.drawable.ic_close, R.color.onboarding_text_color));
         actionBar.setTitle(getResources().getString(R.string.install_vpn));
 
         mProfileTitle = findViewById(R.id.brave_vpn_profile_title);
@@ -90,6 +93,11 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
+    }
+
+    @Override
+    protected boolean shouldApplyLandscapeWindowSizing() {
+        return false;
     }
 
     @Override

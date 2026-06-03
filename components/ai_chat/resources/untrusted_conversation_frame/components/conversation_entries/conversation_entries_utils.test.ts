@@ -11,6 +11,7 @@ import {
   normalizeCitationSpacing,
   groupConversationEntries,
   isAssistantGroupTask,
+  replaceCitationsWithUrlsExcludingCode,
 } from './conversation_entries_utils'
 import {
   createConversationTurnWithDefaults,
@@ -186,6 +187,19 @@ describe('removeCitationsWithMissingLinks', () => {
       'Citation [1] and [2] thats it.',
     )
   })
+
+  it('preserves bracket-number syntax inside fenced code blocks', () => {
+    const input = 'Cite [3].\n```js\nconst x = arr[3]\n```'
+    expect(removeCitationsWithMissingLinks(input, [])).toBe(
+      'Cite .\n```js\nconst x = arr[3]\n```',
+    )
+  })
+
+  it('preserves bracket-number syntax inside inline code', () => {
+    expect(removeCitationsWithMissingLinks('Use `arr[5]` and [5].', [])).toBe(
+      'Use `arr[5]` and .',
+    )
+  })
 })
 
 describe('normalizeCitationSpacing', () => {
@@ -214,15 +228,101 @@ describe('normalizeCitationSpacing', () => {
   it('should handle mixed consecutive citations and word boundary', () => {
     expect(normalizeCitationSpacing('Japan[2][3].')).toBe('Japan [2] [3].')
   })
+
+  it('does not insert a space inside fenced code blocks', () => {
+    const input = 'See Japan[1].\n```js\nconst x = arr[1]\n```'
+    expect(normalizeCitationSpacing(input)).toBe(
+      'See Japan [1].\n```js\nconst x = arr[1]\n```',
+    )
+  })
+
+  it('does not insert a space inside inline code', () => {
+    expect(normalizeCitationSpacing('Use `arr[1]` then Japan[1].')).toBe(
+      'Use `arr[1]` then Japan [1].',
+    )
+  })
 })
 
-describe('isGroupTask', () => {
-  it('should return true for multiple events with a completion and 2 task tools split across entries', () => {
+describe('replaceCitationsWithUrlsExcludingCode', () => {
+  const links = ['https://example.com/a', 'https://example.com/b']
+
+  it('replaces citations in plain prose', () => {
+    expect(
+      replaceCitationsWithUrlsExcludingCode('See [1] and [2].', links),
+    ).toBe('See https://example.com/a and https://example.com/b.')
+  })
+
+  it('returns text unchanged when allowedLinks is empty', () => {
+    expect(replaceCitationsWithUrlsExcludingCode('See [1].', [])).toBe(
+      'See [1].',
+    )
+  })
+
+  it('preserves bracket-number syntax inside fenced code blocks', () => {
+    const input = 'Use it like:\n```js\nconst x = arr[1]\n```\nSee [1].'
+    expect(replaceCitationsWithUrlsExcludingCode(input, links)).toBe(
+      'Use it like:\n```js\nconst x = arr[1]\n```\nSee https://example.com/a.',
+    )
+  })
+
+  it('preserves bracket-number syntax inside inline code', () => {
+    const input = 'Access via `arr[1]` — see [2].'
+    expect(replaceCitationsWithUrlsExcludingCode(input, links)).toBe(
+      'Access via `arr[1]` — see https://example.com/b.',
+    )
+  })
+
+  it('handles multiple citations across mixed code and prose', () => {
+    const input =
+      'Intro [1].\n```\narr[2] = arr[1] + 1\n```\nMore prose [2] then '
+      + '`obj[1]` and finally [1].'
+    expect(replaceCitationsWithUrlsExcludingCode(input, links)).toBe(
+      'Intro https://example.com/a.\n```\narr[2] = arr[1] + 1\n```\n'
+        + 'More prose https://example.com/b then `obj[1]` and finally '
+        + 'https://example.com/a.',
+    )
+  })
+
+  it('keeps citation when link is missing for that index', () => {
+    expect(replaceCitationsWithUrlsExcludingCode('See [3].', links)).toBe(
+      'See [3].',
+    )
+  })
+
+  it('adds a space before the URL when citation runs onto a word', () => {
+    expect(replaceCitationsWithUrlsExcludingCode('Japan[1].', links)).toBe(
+      'Japan https://example.com/a.',
+    )
+  })
+})
+
+describe('isAssistantGroupTask', () => {
+  it('should return true for a single-entry group containing at least one task tool', () => {
     const group: Mojom.ConversationTurn[] = [
       createConversationTurnWithDefaults({
         characterType: Mojom.CharacterType.ASSISTANT,
         events: [
           getCompletionEvent('Running tasks...'),
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('should return true even when the group has no completion event', () => {
+    // A task is identified purely by the presence of task tool uses;
+    // a completion event is not required.
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
           getToolUseEvent({
             toolName: 'a-task-tool1',
             id: '1',
@@ -247,7 +347,29 @@ describe('isGroupTask', () => {
     expect(isAssistantGroupTask(group)).toBe(true)
   })
 
-  it('should return true for multiple events with 2 task tools in 1 entry and a completion in the other', () => {
+  it('should return true with only 1 task tool use event spanning multiple entries', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('should return true when a task tool is mixed with a non-task tool', () => {
     const group: Mojom.ConversationTurn[] = [
       createConversationTurnWithDefaults({
         characterType: Mojom.CharacterType.ASSISTANT,
@@ -259,9 +381,9 @@ describe('isGroupTask', () => {
             output: undefined,
           }),
           getToolUseEvent({
-            toolName: 'a-task-tool2',
-            id: '1',
-            argumentsJson: 'tool input',
+            toolName: Mojom.USER_CHOICE_TOOL_NAME,
+            id: '2',
+            argumentsJson: ' input',
             output: undefined,
           }),
         ],
@@ -307,66 +429,23 @@ describe('isGroupTask', () => {
     expect(isAssistantGroupTask(group)).toBe(false)
   })
 
-  it('should return false for single entry group', () => {
-    const group: Mojom.ConversationTurn[] = [
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getCompletionEvent('Running tasks...'),
-          getToolUseEvent({
-            toolName: 'a-task-tool1',
-            id: '1',
-            argumentsJson: ' input',
-            output: undefined,
-          }),
-          getToolUseEvent({
-            toolName: 'a-task-tool2',
-            id: '1',
-            argumentsJson: 'tool input',
-            output: undefined,
-          }),
-        ],
-      }),
-    ]
-
-    expect(isAssistantGroupTask(group)).toBe(false)
-  })
-
   it('should return false for empty group', () => {
     const group: Mojom.ConversationTurn[] = []
     expect(isAssistantGroupTask(group)).toBe(false)
   })
 
-  it('should return false when group has no completion event', () => {
+  it('should return false when group has no tool uses (completion-only)', () => {
     const group: Mojom.ConversationTurn[] = [
       createConversationTurnWithDefaults({
         characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getToolUseEvent({
-            toolName: 'a-task-tool1',
-            id: '1',
-            argumentsJson: ' input',
-            output: undefined,
-          }),
-        ],
-      }),
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getToolUseEvent({
-            toolName: 'a-task-tool2',
-            id: '1',
-            argumentsJson: 'tool input',
-            output: undefined,
-          }),
-        ],
+        events: [getCompletionEvent('Just an answer.')],
       }),
     ]
 
     expect(isAssistantGroupTask(group)).toBe(false)
   })
 
-  it('should return false when group has no valid tool use events', () => {
+  it('should return false when group has only non-task tool use events', () => {
     const group: Mojom.ConversationTurn[] = [
       createConversationTurnWithDefaults({
         characterType: Mojom.CharacterType.ASSISTANT,
@@ -390,56 +469,6 @@ describe('isGroupTask', () => {
             output: undefined,
           }),
         ],
-      }),
-    ]
-
-    expect(isAssistantGroupTask(group)).toBe(false)
-  })
-
-  it('should return false with only 1 task tool use event - no others', () => {
-    const group: Mojom.ConversationTurn[] = [
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getToolUseEvent({
-            toolName: 'a-task-tool1',
-            id: '1',
-            argumentsJson: ' input',
-            output: undefined,
-          }),
-        ],
-      }),
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [getCompletionEvent('task completed')],
-      }),
-    ]
-
-    expect(isAssistantGroupTask(group)).toBe(false)
-  })
-
-  it('should return false with only 1 task tool use event mixed with non-task tool', () => {
-    const group: Mojom.ConversationTurn[] = [
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getToolUseEvent({
-            toolName: 'a-task-tool1',
-            id: '1',
-            argumentsJson: ' input',
-            output: undefined,
-          }),
-          getToolUseEvent({
-            toolName: Mojom.USER_CHOICE_TOOL_NAME,
-            id: '1',
-            argumentsJson: ' input',
-            output: undefined,
-          }),
-        ],
-      }),
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [getCompletionEvent('task completed')],
       }),
     ]
 

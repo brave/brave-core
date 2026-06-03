@@ -15,8 +15,9 @@ class BraveAdsUserIdleDetectionTest : public test::TestBase {};
 TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(::testing::AnyNumber());
-  EXPECT_CALL(ads_client_mock_, Log(::testing::_, ::testing::_, ::testing::_,
-                                    "User is active after 10 s"));
+  EXPECT_CALL(ads_client_mock_,
+              Log(/*file=*/::testing::_, /*line=*/::testing::_,
+                  /*verbose_level=*/::testing::_, "User is active after 10 s"));
   ads_client_notifier_.NotifyUserDidBecomeActive(
       /*idle_time=*/base::Seconds(10),
       /*screen_was_locked=*/false);
@@ -37,10 +38,12 @@ TEST_F(BraveAdsUserIdleDetectionTest,
        RewardsUserDidBecomeActiveWhileScreenWasLocked) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(::testing::AnyNumber());
-  EXPECT_CALL(ads_client_mock_, Log(::testing::_, ::testing::_, ::testing::_,
-                                    "User is active after 10 s"));
   EXPECT_CALL(ads_client_mock_,
-              Log(::testing::_, ::testing::_, ::testing::_,
+              Log(/*file=*/::testing::_, /*line=*/::testing::_,
+                  /*verbose_level=*/::testing::_, "User is active after 10 s"));
+  EXPECT_CALL(ads_client_mock_,
+              Log(/*file=*/::testing::_, /*line=*/::testing::_,
+                  /*verbose_level=*/::testing::_,
                   "Screen was locked before the user become active"));
   ads_client_notifier_.NotifyUserDidBecomeActive(
       /*idle_time=*/base::Seconds(10),

@@ -14,7 +14,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/grit/generated_resources.h"
-#include "ui/base/models/image_model.h"
 
 #if BUILDFLAG(IS_MAC)
 #include "ui/gfx/image/image_skia.h"
@@ -24,13 +23,27 @@ namespace containers {
 
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          const ContainersService& service)
-    : ContainersMenuModel(
-          delegate,
-          GetContainerModels(service, delegate.GetScaleFactor())) {}
+    : ui::SimpleMenuModel(this),
+      delegate_(delegate),
+      current_container_ids_(delegate_->GetCurrentContainerIds()),
+      items_(GetContainerModels(service,
+                                current_container_ids_,
+                                delegate_->GetScaleFactor())) {
+  BuildMenuItems();
+}
 
 ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                                          std::vector<ContainerModel> items)
-    : ui::SimpleMenuModel(this), delegate_(delegate), items_(std::move(items)) {
+    : ui::SimpleMenuModel(this),
+      delegate_(delegate),
+      current_container_ids_(delegate_->GetCurrentContainerIds()),
+      items_(std::move(items)) {
+  BuildMenuItems();
+}
+
+ContainersMenuModel::~ContainersMenuModel() = default;
+
+void ContainersMenuModel::BuildMenuItems() {
   // Trim the items to fit within the command ID range.
   const auto max_items = static_cast<size_t>(IDC_OPEN_IN_CONTAINER_END -
                                              IDC_OPEN_IN_CONTAINER_START);
@@ -67,19 +80,23 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
   // 3. Add a separator.
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  // 4. Add an item to open settings page.
+  // 4. Add an item to create a new temporary container.
+  AddItemWithStringId(IDC_NEW_TEMPORARY_CONTAINER,
+                      IDS_CXMENU_NEW_TEMPORARY_CONTAINER);
+  // 5. Add an item to open settings page.
   AddItemWithStringId(IDC_OPEN_CONTAINERS_SETTING,
                       IDS_CXMENU_OPEN_CONTAINERS_SETTINGS);
-
-  current_container_ids_ = delegate_->GetCurrentContainerIds();
 }
-
-ContainersMenuModel::~ContainersMenuModel() = default;
 
 void ContainersMenuModel::ExecuteCommand(int command_id, int event_flags) {
   if (command_id == IDC_OPEN_IN_CONTAINER_START) {
     // "No container" is selected.
     delegate_->OnNoContainerSelected();
+    return;
+  }
+
+  if (command_id == IDC_NEW_TEMPORARY_CONTAINER) {
+    delegate_->OnNewTemporaryContainerSelected();
     return;
   }
 

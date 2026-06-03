@@ -11,12 +11,10 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_state_manager.h"
@@ -26,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -33,7 +32,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "url/origin.h"
 
 using base::test::RunOnceClosure;
 using testing::_;
@@ -83,8 +81,7 @@ class CardanoTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr,
         cardano_wallet_service_.get(), nullptr, *keyring_service_, &prefs_,
-        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        CreateTxStorageForTest(temp_dir_.GetPath()));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
 

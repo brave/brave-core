@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
 import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
@@ -11,7 +14,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 7px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   border-radius: 8px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
@@ -34,17 +37,8 @@ export const PopupButton = styled(WalletButton)`
   margin: 0px;
   background-color: transparent;
   &:hover {
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${leo.color.divider.subtle};
   }
-`
-
-export const PopupButtonText = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
 `
 
 export const ClickAwayContainer = styled.div`

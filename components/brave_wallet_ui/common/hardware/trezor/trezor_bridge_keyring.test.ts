@@ -80,11 +80,8 @@ const createTrezorTransport = (responses: {
   signedPayload?: SignTransactionResponse
   signMessagePayload?: SignMessageResponse
 }) => {
-  let hardwareTransport = createTransport(
-    kTrezorBridgeUrl,
-    new TrezorBridgeTransport(kTrezorBridgeUrl),
-  )
-  hardwareTransport.contentWindow = {
+  let hardwareTransport: any
+  const contentWindow = {
     postMessage: (message: any, command: any) => {
       expect(command).toStrictEqual(kTrezorBridgeUrl)
       if (message.command === TrezorCommand.Unlock) {
@@ -131,9 +128,14 @@ const createTrezorTransport = (responses: {
       }
     },
   }
-  hardwareTransport.createBridge = async () => {
-    return hardwareTransport
-  }
+  const bridge = {
+    contentWindow: contentWindow,
+  } as unknown as HTMLIFrameElement
+
+  hardwareTransport = createTransport(
+    kTrezorBridgeUrl,
+    new TrezorBridgeTransport(kTrezorBridgeUrl, bridge),
+  )
 
   return hardwareTransport
 }
@@ -169,6 +171,12 @@ const handlerResponse = async (handler: TrezorCommandHandler): Promise => {
       }
     }
   })
+}
+
+const createKeyringWithoutReadyBridge = () => {
+  return new TrezorBridgeKeyring(
+    new TrezorBridgeTransport(kTrezorBridgeUrl, {} as HTMLIFrameElement),
+  )
 }
 
 test('Wait for responses', () => {
@@ -233,7 +241,7 @@ test('Wait for responses', () => {
 })
 
 test('isUnlocked', () => {
-  const hardwareKeyring = new TrezorBridgeKeyring()
+  const hardwareKeyring = createKeyringWithoutReadyBridge()
   expect(hardwareKeyring.isUnlocked()).toStrictEqual(false)
   hardwareKeyring.unlocked = true
   expect(hardwareKeyring.isUnlocked()).toStrictEqual(true)
@@ -246,14 +254,10 @@ const createTrezorKeyringWithTransport = (responses: {
   signedPayload?: SignTransactionResponse
   signMessagePayload?: SignMessageResponse
 }) => {
-  const hardwareKeyring = new TrezorBridgeKeyring()
   const transport = createTrezorTransport(responses)
-  hardwareKeyring.sendTrezorCommand = async (
-    command: TrezorFrameCommand,
-    listener: Function,
-  ) => {
-    return transport.sendCommandToTrezorFrame(command, listener)
-  }
+  const hardwareKeyring = new TrezorBridgeKeyring(
+    transport as TrezorBridgeTransport,
+  )
   return hardwareKeyring
 }
 
@@ -265,47 +269,38 @@ test('Unlock device success', () => {
 })
 
 test('Bridge not ready', () => {
-  const hardwareKeyring = new TrezorBridgeKeyring()
   let hardwareTransport = createTransport(
     kTrezorBridgeUrl,
-    new TrezorBridgeTransport(kTrezorBridgeUrl),
+    new TrezorBridgeTransport(kTrezorBridgeUrl, {} as HTMLIFrameElement),
   )
-  // Mock createBridge to add a DOM element (so hasBridgeCreated returns true)
-  // without using a real iframe. Real iframes in jsdom can fire onload
-  // asynchronously, causing the pending createBridge promise to resolve during
-  // a later test and interfere with its execution.
-  const frameId = (hardwareTransport as any).frameId
-  hardwareTransport.createBridge = () => {
-    const el = document.createElement('div')
-    el.id = frameId
-    document.body.appendChild(el)
-    return new Promise(() => {}) // never resolves
-  }
+  const hardwareKeyring = new TrezorBridgeKeyring(
+    hardwareTransport as TrezorBridgeTransport,
+  )
   hardwareKeyring.sendTrezorCommand = (
     command: TrezorFrameCommand,
     listener: Function,
   ) => {
     return hardwareTransport.sendCommandToTrezorFrame(command, listener)
   }
-  hardwareKeyring.sendTrezorCommand('command1', () => {}).then()
   const result = hardwareKeyring.sendTrezorCommand('command1', () => {})
   return expect(result).resolves.toStrictEqual(TrezorErrorsCodes.BridgeNotReady)
 })
 
-test('Device is busy', () => {
-  const hardwareKeyring = new TrezorBridgeKeyring()
+test('Device is busy', async () => {
+  const bridge = {
+    contentWindow: {
+      postMessage: () => {
+        // This is intentional
+      },
+    },
+  } as unknown as HTMLIFrameElement
   let hardwareTransport = createTransport(
     kTrezorBridgeUrl,
-    new TrezorBridgeTransport(kTrezorBridgeUrl),
+    new TrezorBridgeTransport(kTrezorBridgeUrl, bridge),
   )
-  hardwareTransport.contentWindow = {
-    postMessage: () => {
-      // This is intentional
-    },
-  }
-  hardwareTransport.createBridge = async () => {
-    return hardwareTransport
-  }
+  const hardwareKeyring = new TrezorBridgeKeyring(
+    hardwareTransport as TrezorBridgeTransport,
+  )
   hardwareKeyring.sendTrezorCommand = (
     command: TrezorFrameCommand,
     listener: Function,
@@ -313,8 +308,9 @@ test('Device is busy', () => {
     return hardwareTransport.sendCommandToTrezorFrame(command, listener)
   }
   hardwareKeyring.sendTrezorCommand('command1', () => {}).then()
+  await Promise.resolve()
   const result = hardwareKeyring.sendTrezorCommand('command1', () => {})
-  return expect(result).resolves.toStrictEqual(
+  await expect(result).resolves.toStrictEqual(
     TrezorErrorsCodes.CommandInProgress,
   )
 })

@@ -17,25 +17,15 @@ namespace brave_ads {
 inline constexpr char kDefaultLanguageCode[] = "en";
 inline constexpr char kDefaultCountryCode[] = "US";
 
-// Retrieves the current language code. The result of the first call is cached
-// in a static variable. If the language code is changed, the application must
-// be restarted to ensure the new value is applied.
-const std::string& CurrentLanguageCode();
+// Retrieves the current language code. The result of the first call is cached.
+// If the language code is changed, the application must be restarted to ensure
+// the new value is applied.
+std::string CurrentLanguageCode();
 
-// For testing purposes only. Allows you to set a new value for the current
-// language code. The new value will be used in subsequent `CurrentLanguageCode`
-// calls.
-std::string& MutableCurrentLanguageCodeForTesting();
-
-// Retrieves the current country code. The result of the first call is cached in
-// a static variable. If the country code is changed, the application must be
-// restarted to ensure the new value is applied.
-const std::string& CurrentCountryCode();
-
-// For testing purposes only. Allows you to set a new value for the current
-// country code. The new value will be used in subsequent `CurrentCountryCode`
-// calls.
-std::string& MutableCurrentCountryCodeForTesting();
+// Retrieves the current country code. The result of the first call is cached.
+// If the country code is changed, the application must be restarted to ensure
+// the new value is applied.
+std::string CurrentCountryCode();
 
 }  // namespace brave_ads
 

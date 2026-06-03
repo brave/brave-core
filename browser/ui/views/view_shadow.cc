@@ -5,14 +5,22 @@
 
 #include "brave/browser/ui/views/view_shadow.h"
 
+#include <array>
 #include <map>
 #include <memory>
 #include <tuple>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkRRect.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/paint_recorder.h"
+#include "ui/gfx/canvas.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/rect_f.h"
+#include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/scoped_canvas.h"
 #include "ui/gfx/skia_paint_util.h"
 #include "ui/views/view.h"
 
@@ -44,11 +52,11 @@ const gfx::ShadowValues& GetCachedShadowValues(
 }  // namespace
 
 ViewShadow::ViewShadow(views::View* view,
-                       int corner_radius,
+                       const gfx::RoundedCornersF& corner_radii,
                        const ShadowParameters& params)
     : layer_owner_(std::make_unique<ui::Layer>()),
       view_(view),
-      corner_radius_(corner_radius),
+      corner_radii_(corner_radii),
       shadow_values_(GetCachedShadowValues(params)) {
   DCHECK(view_);
   if (!view_->layer()) {
@@ -69,6 +77,14 @@ ViewShadow::~ViewShadow() {
   if (view_) {
     OnViewIsDeleting(view_);
   }
+}
+
+void ViewShadow::SetCornerRadii(const gfx::RoundedCornersF& corner_radii) {
+  if (corner_radii_ == corner_radii) {
+    return;
+  }
+  corner_radii_ = corner_radii;
+  shadow_layer()->SchedulePaint(gfx::Rect(shadow_layer()->size()));
 }
 
 void ViewShadow::SetInsets(const gfx::Insets& insets) {
@@ -116,11 +132,29 @@ void ViewShadow::OnPaintLayer(const ui::PaintContext& context) {
   flags.setColor(SK_ColorTRANSPARENT);
   flags.setLooper(gfx::CreateShadowDrawLooper(*shadow_values_));
 
-  // The looper will draw around the specified rect, so inset the rectangle by
-  // the shadow blur region.
   gfx::Rect shadow_bounds(shadow_layer()->size());
   shadow_bounds.Inset(gfx::ShadowValue::GetBlurRegion(*shadow_values_));
-  recorder.canvas()->DrawRoundRect(shadow_bounds, corner_radius_, flags);
+
+  gfx::Canvas* canvas = recorder.canvas();
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  const float scale = canvas->UndoDeviceScaleFactor();
+
+  const gfx::Rect scaled_bounds =
+      gfx::ScaleToEnclosedRect(shadow_bounds, scale);
+  gfx::RectF rect_f(scaled_bounds);
+
+  const std::array<SkVector, 4> scaled_radii = {
+      {{corner_radii_.upper_left() * scale, corner_radii_.upper_left() * scale},
+       {corner_radii_.upper_right() * scale,
+        corner_radii_.upper_right() * scale},
+       {corner_radii_.lower_right() * scale,
+        corner_radii_.lower_right() * scale},
+       {corner_radii_.lower_left() * scale,
+        corner_radii_.lower_left() * scale}}};
+
+  const SkPath path = SkPath::RRect(
+      SkRRect::MakeRectRadii(gfx::RectFToSkRect(rect_f), scaled_radii.data()));
+  canvas->DrawPath(path, flags);
 }
 
 void ViewShadow::OnDeviceScaleFactorChanged(float old_device_scale_factor,

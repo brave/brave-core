@@ -31,14 +31,12 @@
 namespace brave_ads {
 
 Account::Account() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 
   InitializeConfirmations();
 }
 
-Account::~Account() {
-  GetAdsClient().RemoveObserver(this);
-}
+Account::~Account() = default;
 
 void Account::AddObserver(AccountObserver* const observer) {
   CHECK(observer);
@@ -256,7 +254,7 @@ void Account::OnNotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
     const std::string& recovery_seed_base64) {
   std::optional<WalletInfo> wallet =
-      CreateWalletFromRecoverySeed(payment_id, recovery_seed_base64);
+      MaybeBuildWalletFromRecoverySeed(payment_id, recovery_seed_base64);
   if (!wallet) {
     BLOG(0, "Failed to initialize wallet");
     return NotifyFailedToInitializeWallet();

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index d8294ffa72da32a99a06214271dd1352619cdf2b..f14458392441e82067d543e670a8cf1bb32457cc 100644
+index fa8bdb024fbee40394168f510310b6cca8c260f7..a8b8a6ee13d5447d8e81a60086296e2aec99c4f0 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -146,6 +146,7 @@ source_set("configs") {
+@@ -156,6 +156,7 @@ source_set("configs") {
    if (is_mac) {
      deps += [ "//chrome/browser/ui/webui/unexportable_keys_internals" ]
    }

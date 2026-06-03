@@ -9,16 +9,10 @@
 #include <optional>
 
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/renderer/js_cardano_provider.h"
-#include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
-#include "brave/components/brave_wallet/renderer/js_solana_provider.h"
-#include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer_p3a_util.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "third_party/blink/public/web/web_navigation_type.h"
 #include "url/gurl.h"
-#include "v8/include/v8.h"
 
 namespace brave_wallet {
 
@@ -38,8 +32,6 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
       std::optional<blink::WebNavigationType> navigation_type) override;
   void DidClearWindowObject() override;
 
-  void DidFinishLoad() override;
-
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
@@ -49,8 +41,6 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
 
   GURL url_;
   GetDynamicParamsCallback get_dynamic_params_callback_;
-
-  BraveWalletRenderFrameObserverP3AUtil p3a_util_;
 };
 
 }  // namespace brave_wallet

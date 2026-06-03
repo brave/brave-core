@@ -10,6 +10,8 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
     static String sIntentHandlerClassName = "org/chromium/chrome/browser/IntentHandler";
     static String sBraveIntentHandlerClassName = "org/chromium/chrome/browser/BraveIntentHandler";
+    static String sBraveIntentHandlerInternalClassName =
+            "org/chromium/chrome/browser/BraveIntentHandlerInternal";
 
     public BraveIntentHandlerClassAdapter(ClassVisitor visitor) {
         super(visitor);
@@ -27,5 +29,13 @@ public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
 
         changeMethodOwner(
                 sIntentHandlerClassName, "extractUrlFromIntent", sBraveIntentHandlerClassName);
+
+        makePublicMethod(sIntentHandlerClassName, "intentHasUnsafeUrl");
+        changeMethodOwner(
+                sIntentHandlerClassName, "intentHasUnsafeUrl", sBraveIntentHandlerClassName);
+        changeMethodOwner(
+                sBraveIntentHandlerInternalClassName,
+                "intentHasUnsafeUrl",
+                sIntentHandlerClassName);
     }
 }

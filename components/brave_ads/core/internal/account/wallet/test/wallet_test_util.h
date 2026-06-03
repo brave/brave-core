@@ -16,6 +16,7 @@ namespace test {
 
 WalletInfo Wallet();
 mojom::WalletInfoPtr MojomWallet();
+mojom::WalletInfoPtr InvalidMojomWallet();
 
 }  // namespace test
 

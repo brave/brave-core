@@ -8,6 +8,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -20,6 +21,8 @@ namespace brave_stats {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kStatsReportingEnabled, true);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
+  registry->RegisterTimePref(serp_metrics::prefs::kLastReportedAt,
+                             base::Time());
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

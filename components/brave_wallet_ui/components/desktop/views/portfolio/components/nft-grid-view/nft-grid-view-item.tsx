@@ -191,12 +191,24 @@ export const NFTGridViewItem = ({
           justifyContent='space-between'
           margin='8px 0 0 0'
         >
-          <NFTText>{token.name}</NFTText>
+          <NFTText
+            textColor='primary'
+            variant='default.semibold'
+          >
+            {token.name}
+          </NFTText>
           <MoreButton onClick={onToggleShowMore}>
             <MoreIcon />
           </MoreButton>
         </Row>
-        {token.symbol !== '' && <NFTSymbol>{token.symbol}</NFTSymbol>}
+        {token.symbol !== '' && (
+          <NFTSymbol
+            textColor='secondary'
+            variant='small.regular'
+          >
+            {token.symbol}
+          </NFTSymbol>
+        )}
       </NFTWrapper>
       {showEditModal && (
         <AddOrEditNftModal

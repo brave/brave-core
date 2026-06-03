@@ -523,29 +523,23 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, SnsRedirectWork) {
   auto brave_request_info = this->MakeRequest(url);
 
   // No redirect for failed requests.
-  OnBeforeURLRequest_SnsRedirectWork(
-      base::DoNothing(), brave_request_info, {},
-      brave_wallet::mojom::SolanaProviderError::kInternalError, "todo");
+  OnBeforeURLRequest_SnsRedirectWork(base::DoNothing(), brave_request_info,
+                                     std::nullopt);
   EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
-  OnBeforeURLRequest_SnsRedirectWork(
-      base::DoNothing(), brave_request_info, {},
-      brave_wallet::mojom::SolanaProviderError::kSuccess, "");
+  OnBeforeURLRequest_SnsRedirectWork(base::DoNothing(), brave_request_info,
+                                     GURL());
   EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // No redirect for invalid url.
-  OnBeforeURLRequest_SnsRedirectWork(
-      base::DoNothing(), brave_request_info, GURL("invalid"),
-      brave_wallet::mojom::SolanaProviderError::kSuccess, "");
+  OnBeforeURLRequest_SnsRedirectWork(base::DoNothing(), brave_request_info,
+                                     GURL("invalid"));
   EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // Redirect for valid url.
-  OnBeforeURLRequest_SnsRedirectWork(
-      base::DoNothing(), brave_request_info, GURL("https://brave.com"),
-      brave_wallet::mojom::SolanaProviderError::kSuccess, "");
+  OnBeforeURLRequest_SnsRedirectWork(base::DoNothing(), brave_request_info,
+                                     GURL("https://brave.com"));
   EXPECT_EQ(brave_request_info->new_url_spec(), GURL("https://brave.com"));
-
-  EXPECT_FALSE(brave_request_info->pending_error().has_value());
 }
 
 // Test that decentralized DNS is disabled when BraveWalletDisabled policy is

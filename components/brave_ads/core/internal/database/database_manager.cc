@@ -229,6 +229,8 @@ void DatabaseManager::MigrateFromVersionCallback(int from_version,
   const int to_version = database::kVersionNumber;
 
   if (!success) {
+    // Upload a non-fatal crash report so migration failures are visible in
+    // Backtrace without crashing the browser.
     SCOPED_CRASH_KEY_NUMBER("BraveAds", "from_sqlite_schema_version",
                             from_version);
     SCOPED_CRASH_KEY_NUMBER("BraveAds", "to_sqlite_schema_version", to_version);

@@ -316,8 +316,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog, ::testing::FieldsAre(
-                            test::kCatalogId, /*version*/ 9,
-                            /*ping*/ base::Milliseconds(7'200'000),
+                            test::kCatalogId, /*version=*/9,
+                            /*ping=*/base::Milliseconds(7'200'000),
                             CatalogCampaignList{BuildCatalogCampaign1()}));
 }
 
@@ -335,8 +335,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog, ::testing::FieldsAre(
-                            test::kCatalogId, /*version*/ 9,
-                            /*ping*/ base::Milliseconds(7'200'000),
+                            test::kCatalogId, /*version=*/9,
+                            /*ping=*/base::Milliseconds(7'200'000),
                             CatalogCampaignList{BuildCatalogCampaign1(),
                                                 BuildCatalogCampaign2()}));
 }
@@ -355,9 +355,9 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog,
-              ::testing::FieldsAre(test::kCatalogId, /*version*/ 9,
-                                   /*ping*/ base::Milliseconds(7'200'000),
-                                   /*campaigns*/ ::testing::IsEmpty()));
+              ::testing::FieldsAre(test::kCatalogId, /*version=*/9,
+                                   /*ping=*/base::Milliseconds(7'200'000),
+                                   /*campaigns=*/::testing::IsEmpty()));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, DoNotReadMalformedCatalog) {

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
 
 // styles
 import { WalletButton } from '../../shared/style'
@@ -42,17 +42,14 @@ export const TopRow = styled.div`
 `
 
 export const TopRowButton = styled(WalletButton)`
+  font: ${leo.font.components.tableheader};
+
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
   background-color: transparent;
-  color: ${(p) => p.theme.palette.white};
+  color: ${leo.color.white};
   outline: none;
   border: none;
 `
@@ -64,7 +61,7 @@ const TopRowIcon = styled.div`
   width: 18px;
   height: 18px;
   mask-repeat: none;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${leo.color.white};
 `
 
 export const CloseIcon = styled(TopRowIcon)`
@@ -89,12 +86,8 @@ export const MainContent = styled.section`
 `
 
 export const NftCountHeading = styled.h1`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 40px;
-  line-height: 60px;
-  color: ${(p) => p.theme.palette.white};
+  font: ${leo.font.heading.display2};
+  color: ${leo.color.white};
   margin: 0 0 32px 0;
   padding: 0;
 `
@@ -113,14 +106,10 @@ export const PinNftsButton = styled(ActionButton).attrs({
 `
 
 export const InfoSubHeading = styled.h6`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${leo.font.small.semibold};
   margin: 0;
   padding: 0;
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   cursor: pointer;
 `
 

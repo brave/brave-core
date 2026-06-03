@@ -6,16 +6,21 @@
 #include "brave/components/containers/core/browser/containers_service.h"
 
 #include <utility>
+#include <variant>
 
 #include "base/check.h"
 #include "base/check_deref.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/types/to_address.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "components/prefs/pref_service.h"
 
 namespace containers {
 
@@ -64,6 +69,12 @@ void ContainersService::MarkContainerUsed(std::string_view container_id) {
   SetLocallyUsedContainerToPrefs(container, *prefs_);
 }
 
+mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer() {
+  auto container = CreateTemporaryContainer();
+  SetLocallyUsedContainerToPrefs(container, *prefs_);
+  return container;
+}
+
 mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
     std::string_view id) const {
   if (auto container = GetContainerFromPrefs(*prefs_, id)) {
@@ -75,8 +86,32 @@ mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
   return nullptr;
 }
 
+mojom::ContainerPtr ContainersService::GetRuntimeContainerByName(
+    std::string_view name) const {
+  for (auto& container : GetContainersFromPrefs(*prefs_)) {
+    if (container->name == name) {
+      return std::move(container);
+    }
+  }
+  for (auto& container : GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    if (container->name == name) {
+      return std::move(container);
+    }
+  }
+  return nullptr;
+}
+
 std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
   return GetContainersFromPrefs(*prefs_);
+}
+
+std::vector<std::string> ContainersService::GetUsedContainerIds() const {
+  return base::ToVector(GetLocallyUsedContainersFromPrefs(*prefs_),
+                        [](const auto& c) { return c->id; });
+}
+
+bool ContainersService::ShouldShowContainerControls() const {
+  return prefs_->GetBoolean(prefs::kContainersEnabled);
 }
 
 void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
@@ -99,6 +134,28 @@ void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {
       // removed with a separate cleanup logic later.
     }
   }
+}
+
+std::optional<std::string>
+ContainersService::GetContainerIdFromContainerSpecifier(
+    const ContainerSpecifier& container_specifier) const {
+  if (auto* container_id = std::get_if<ContainerId>(&container_specifier)) {
+    if (auto runtime_container =
+            GetRuntimeContainerById(container_id->value())) {
+      return runtime_container->id;
+    }
+    LOG(WARNING) << "Container with id " << container_id->value()
+                 << " not found";
+  } else if (auto* container_name =
+                 std::get_if<ContainerName>(&container_specifier)) {
+    if (auto runtime_container =
+            GetRuntimeContainerByName(container_name->value())) {
+      return runtime_container->id;
+    }
+    LOG(WARNING) << "Container with name " << container_name->value()
+                 << " not found";
+  }
+  return std::nullopt;
 }
 
 void ContainersService::ScheduleOrphanedContainersCleanup() {

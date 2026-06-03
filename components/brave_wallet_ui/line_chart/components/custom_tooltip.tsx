@@ -11,11 +11,8 @@ import Amount from '../../utils/amount'
 import { formatTimelineDate } from '../../utils/datetime-utils'
 
 // styles
-import {
-  TooltipWrapper,
-  ChartBalance,
-  ChartDate,
-} from './custom_tooltip.styles'
+import { TooltipWrapper } from './custom_tooltip.styles'
+import { Text } from '../../page/screens/send/shared.styles'
 
 type Props = Pick<
   TooltipContentProps<number, number>,
@@ -54,9 +51,19 @@ export function CustomTooltip({
       }
       labelPosition={labelPosition}
     >
-      <ChartBalance>{hidePortfolioBalances ? '******' : balance}</ChartBalance>
+      <Text
+        textColor='primary'
+        variant='default.semibold'
+      >
+        {hidePortfolioBalances ? '******' : balance}
+      </Text>
       {label && (
-        <ChartDate>{formatTimelineDate(new Date(label as number))}</ChartDate>
+        <Text
+          textColor='secondary'
+          variant='small.regular'
+        >
+          {formatTimelineDate(new Date(label as number))}
+        </Text>
       )}
     </TooltipWrapper>
   )

@@ -32,9 +32,6 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace ai_chat {
-namespace mojom {
-class CustomModelOptions;
-}  // namespace mojom
 
 // Performs remote request to the OAI format APIs.
 class OAIAPIClient {
@@ -51,8 +48,9 @@ class OAIAPIClient {
   OAIAPIClient& operator=(const OAIAPIClient&) = delete;
   virtual ~OAIAPIClient();
 
+  // |model_options| must hold a CustomModelOptions variant.
   virtual void PerformRequest(
-      const mojom::CustomModelOptions& model_options,
+      const mojom::ModelOptions& model_options,
       std::vector<OAIMessage> messages,
       std::optional<base::ListValue> oai_tool_definitions,
       GenerationDataCallback data_received_callback,
@@ -60,11 +58,41 @@ class OAIAPIClient {
       const std::optional<std::vector<std::string>>& stop_sequences =
           std::nullopt);
 
-  void ClearAllQueries();
+  virtual void ClearAllQueries();
 
   static base::ListValue SerializeOAIMessages(std::vector<OAIMessage> messages);
 
  protected:
+  // Builds a JSON request body for the OAI chat completions API.
+  static std::string CreateJSONRequestBody(
+      base::ListValue messages,
+      bool is_sse_enabled,
+      const std::string& model_request_name,
+      std::optional<base::ListValue> oai_tool_definitions,
+      const std::optional<std::vector<std::string>>& stop_sequences);
+
+  // Maps an HTTP response code to an APIError using the same conventions as
+  // OAI / Anthropic.
+  static mojom::APIError MapResponseCodeToError(int response_code);
+
+  // Parses and dispatches a single SSE chunk value. Handles both completion
+  // text and tool calls. Safe to call with a null/non-dict value.
+  static void OnQueryDataReceived(
+      GenerationDataCallback callback,
+      std::optional<std::string> model_key,
+      std::optional<bool> is_near_verified,
+      base::expected<base::Value, std::string> result);
+
+  // Dispatches the final completion callback. If |success| is false,
+  // |response_code| is mapped to an error. Otherwise |value| is the parsed
+  // JSON body, or nullopt if parsing failed or the body was empty.
+  static void HandleCompletion(GenerationCompletedCallback callback,
+                               bool success,
+                               int response_code,
+                               std::optional<std::string> model_key,
+                               std::optional<bool> is_near_verified,
+                               std::optional<base::Value> value);
+
   void SetAPIRequestHelperForTesting(
       std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
     api_request_helper_ = std::move(api_helper);
@@ -76,8 +104,6 @@ class OAIAPIClient {
  private:
   void OnQueryCompleted(GenerationCompletedCallback callback,
                         api_request_helper::APIRequestResult result);
-  void OnQueryDataReceived(GenerationDataCallback callback,
-                           base::expected<base::Value, std::string> result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 

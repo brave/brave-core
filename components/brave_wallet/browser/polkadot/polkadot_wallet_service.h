@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
+#include <array>
+
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
@@ -57,6 +59,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   // Invalidates all the weak ptrs in use by this service.
   void Reset();
 
+  NetworkManager& GetNetworkManager();
   PolkadotSubstrateRpc* GetPolkadotRpc();
 
   // Get the name of the chain currently pointed to by the current network
@@ -74,6 +77,11 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void GetAccountBalance(mojom::AccountIdPtr account,
                          const std::string& chain_id,
                          GetAccountBalanceCallback callback) override;
+
+  void ValidateAddressForTransaction(
+      const std::string& chain_id,
+      const std::string& address,
+      ValidateAddressForTransactionCallback callback) override;
 
   // Get the chain metadata associated with the provided chain_id. Metadata is
   // required for encoding and decoding extrinsics as chains have their own
@@ -99,6 +107,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       SignAndSendTransactionCallback callback);
+
+  bool IsPolkadotChain(std::string_view chain_id);
 
   using GetFeeEstimateCallback =
       base::OnceCallback<void(base::expected<uint128_t, std::string>)>;
@@ -144,6 +154,15 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
 
   void OnEstimatedFee(GetFeeEstimateCallback callback,
                       base::expected<uint128_t, std::string> partial_fee);
+  void OnGetChainMetadataForAddress(
+      std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
+      GetAddressCallback callback,
+      base::expected<PolkadotChainMetadata, std::string> metadata);
+
+  void OnGetChainMetadataForValidateAddress(
+      const std::string& address,
+      ValidateAddressForTransactionCallback callback,
+      base::expected<PolkadotChainMetadata, std::string> metadata);
 
   const raw_ref<KeyringService> keyring_service_;
   const raw_ref<NetworkManager> network_manager_;

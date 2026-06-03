@@ -19,7 +19,7 @@
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "chrome/browser/password_manager/profile_password_store_factory.h"
+#include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"

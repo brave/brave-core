@@ -1,0 +1,138 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as Mojom from '../../../common/mojom'
+import {
+  getCompletionEvent,
+  getToolUseEvent,
+} from '../../../common/test_data_utils'
+import { createTextContentBlock } from '../../../common/content_block'
+
+const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
+  {
+    uuid: 'user-1',
+    text: 'Remember that I work as a software engineer.',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+    nearVerificationStatus: undefined,
+  },
+  {
+    uuid: 'assistant-1',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001100000') },
+    events: [
+      getToolUseEvent({
+        id: 'memory-1',
+        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+        argumentsJson: '{"memory": "works as a software engineer"}',
+        output: [createTextContentBlock('')],
+      }),
+      getCompletionEvent("I'll remember that you work as a software engineer."),
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+    nearVerificationStatus: undefined,
+  },
+  {
+    uuid: 'user-2',
+    text: 'Remember I like cats.',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001200000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+    nearVerificationStatus: undefined,
+  },
+  {
+    uuid: 'assistant-2',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001300000') },
+    events: [
+      getToolUseEvent({
+        id: 'memory-2',
+        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+        argumentsJson: '{"memory": "Likes cats"}',
+        output: [createTextContentBlock('')],
+      }),
+      getCompletionEvent("I've noted you like cats."),
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+    nearVerificationStatus: undefined,
+  },
+  {
+    uuid: 'user-3',
+    text: 'Remember my favorite hobby is hiking.',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001400000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+    nearVerificationStatus: undefined,
+  },
+  {
+    uuid: 'assistant-3',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001500000') },
+    events: [
+      getToolUseEvent({
+        id: 'memory-3',
+        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+        argumentsJson: '{"memory": "favorite hobby is hiking"}',
+        output: [createTextContentBlock('Memory storage failed')],
+      }),
+      getCompletionEvent(
+        'I encountered an error while trying to store that information.',
+      ),
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+    nearVerificationStatus: undefined,
+  },
+]
+
+export default MEMORY_HISTORY

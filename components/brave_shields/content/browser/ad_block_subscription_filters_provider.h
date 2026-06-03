@@ -19,8 +19,6 @@
 
 using brave_component_updater::DATFileDataBuffer;
 
-class PrefService;
-
 namespace adblock {
 struct FilterListMetadata;
 }  // namespace adblock
@@ -30,7 +28,6 @@ namespace brave_shields {
 class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
  public:
   AdBlockSubscriptionFiltersProvider(
-      PrefService* local_state,
       AdBlockFiltersProviderManager* manager,
       base::FilePath list_file,
       base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
@@ -56,7 +53,6 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
- private:
   base::FilePath list_file_;
 
   base::RepeatingCallback<void(const adblock::FilterListMetadata&)>

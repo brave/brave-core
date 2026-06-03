@@ -33,7 +33,10 @@ source_set("brave_browser_command") {
   ]
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/browser/brave_wallet" ]
+    deps += [
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/common:common_constants",
+    ]
   }
 
   if (enable_ai_chat) {

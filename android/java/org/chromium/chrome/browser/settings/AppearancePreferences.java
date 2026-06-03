@@ -52,18 +52,17 @@ import java.util.Map;
 
 public class AppearancePreferences extends AppearanceSettingsFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION =
-            "hide_brave_rewards_icon_migration";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
-    public static final String PREF_ADS_SWITCH = "ads_switch";
-    public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
-    public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
-    public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
-    public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
-    public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
-    private static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
+    /* package */ static final String PREF_ADS_SWITCH = "ads_switch";
+    /* package */ static final String PREF_BRAVE_NIGHT_MODE_ENABLED =
+            "brave_night_mode_enabled_key";
+    /* package */ static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
+    /* package */ static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
+    /* package */ static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
+    /* package */ static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED =
+            "show_undo_when_tabs_closed";
+    /* package */ static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -97,10 +96,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
 
-        // Correct the order of the preferences.
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 0);
-        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 1);
-        setPreferenceOrder(PREF_ADDRESS_BAR, 2);
+        applyOrdering();
     }
 
     private void removePreferenceIfPresent(String key) {
@@ -283,15 +279,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
             if (!(boolean) newValue) {
-                if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE)
-                        > 1) {
+                if (MultiWindowUtils.getInstanceCount(PersistedInstanceType.ACTIVE) > 1) {
                     BraveMultiWindowDialogFragment dialogFragment =
                             BraveMultiWindowDialogFragment.newInstance();
                     BraveMultiWindowDialogFragment.DismissListener dismissListener =
                             new BraveMultiWindowDialogFragment.DismissListener() {
                                 @Override
                                 public void onDismiss() {
-                                    if (MultiWindowUtils.getInstanceCountWithFallback(
+                                    if (MultiWindowUtils.getInstanceCount(
                                                     PersistedInstanceType.ACTIVE)
                                             == 1) {
                                         if (preference instanceof ChromeSwitchPreference) {
@@ -359,6 +354,25 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (preference != null) {
             preference.setSummary("");
         }
+    }
+
+    // Both XMLs (upstream and brave) independently assign sequential order values starting from 0,
+    // causing collisions. Setting all preferences to explicit unique values prevents alphabetical
+    // tie-breaking, which would otherwise produce language-dependent ordering.
+    private void applyOrdering() {
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 0);
+        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 1);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 2);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 3);
+        setPreferenceOrder(PREF_ADDRESS_BAR, 4);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 5);
+        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 6);
+        setPreferenceOrder(PREF_ADS_SWITCH, 7);
+        setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 8);
+        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 9);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 10);
+        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 11);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 12);
     }
 
     private void setPreferenceOrder(String key, int order) {

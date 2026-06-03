@@ -7,9 +7,13 @@
 
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/test/creative_set_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -146,6 +150,29 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   EXPECT_TRUE(success);
   EXPECT_THAT(creative_set_conversions,
               ::testing::ElementsAre(creative_set_conversion_2));
+}
+
+TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
+       GetActiveDoesNotReturnDuplicatesWhenMultipleAdEventsMatch) {
+  // Arrange
+  test::BuildAndSaveCreativeSetConversion(
+      test::kCreativeSetId, /*url_pattern=*/"https://www.brave.com/*",
+      /*observation_window=*/base::Days(3));
+
+  const AdInfo ad =
+      test::BuildAd(mojom::AdType::kNotificationAd, /*use_random_uuids=*/false);
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kViewedImpression,
+                       /*count=*/3);
+
+  // Act
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  database_table_.GetActive(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+
+  // Assert
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(1));
 }
 
 }  // namespace brave_ads

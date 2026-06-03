@@ -11,7 +11,11 @@ import shlex
 
 import override_utils
 
-from brave_chromium_utils import get_webui_overridden_but_referenced_files
+from brave_chromium_utils import get_webui_overridden_but_referenced_files, sys_path
+
+with sys_path('//brave/tools/typescript'):
+    import tsc_timeout_retry
+
 
 def is_gen_brave_dir(out_dir):
     GEN_BRAVE = 'gen/brave'
@@ -58,12 +62,14 @@ def main(original_function, argv):
             #
             # "error TS5055: Cannot write file '...' because it would overwrite
             # input file."
-            if args.root_dir != args.out_dir and is_gen_brave_dir(args.out_dir):
+            if args.root_dir != args.out_dir and is_gen_brave_dir(
+                    args.out_dir):
                 to_check = os.path.join(args.out_dir, pathname + '.d.ts')
                 if os.path.exists(to_check):
                     os.remove(to_check)
 
-    original_function(argv)
+    with tsc_timeout_retry.patch_subprocess_with_timeout_retry():
+        original_function(argv)
 
     manifest_path = os.path.join(args.gen_dir,
                                  f'{args.output_suffix}_manifest.json')

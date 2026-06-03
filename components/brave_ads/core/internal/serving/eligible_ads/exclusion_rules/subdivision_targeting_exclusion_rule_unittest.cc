@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
 
@@ -104,13 +103,11 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
   void SetUp() override {
     test::TestBase::SetUp();
 
-    scoped_current_country_code_ =
-        std::make_unique<test::ScopedCurrentCountryCode>(
-            GetParam().country_code);
+    fake_locale_.SetCountryCode(GetParam().country_code);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     subdivision_ = std::make_unique<Subdivision>();
-    subdivision_->AddObserver(&*subdivision_targeting_);
+    subdivision_->AddObserver(subdivision_targeting_.get());
     exclusion_rule_ = std::make_unique<SubdivisionTargetingExclusionRule>(
         *subdivision_targeting_);
   }
@@ -148,8 +145,6 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
                GetParam().country_code, GetParam().subdivision_code)}}}};
     test::MockUrlResponses(ads_client_mock_, url_responses);
   }
-
-  std::unique_ptr<test::ScopedCurrentCountryCode> scoped_current_country_code_;
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<Subdivision> subdivision_;

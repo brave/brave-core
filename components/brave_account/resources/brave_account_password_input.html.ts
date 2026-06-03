@@ -7,9 +7,9 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_password_icons.js'
 import './brave_account_password_strength_meter.js'
+import { freezeWhen } from './brave_account_common.js'
 import {
   BraveAccountPasswordInputElement,
-  freezeWhen,
   MAX_PASSWORD_LENGTH,
 } from './brave_account_password_input.js'
 
@@ -26,7 +26,7 @@ export function getHtml(this: BraveAccountPasswordInputElement) {
       @toggle-visibility=${this.onToggleVisibility}
     >
       <div class="label-container">
-        <div class="label ${this.shouldStyleAsError ? 'error' : ''}">
+        <div class="label ${this.shouldStyleAsError() ? 'error' : ''}">
           ${this.label}
         </div>
         <slot name="label-extra"></slot>
@@ -38,7 +38,7 @@ export function getHtml(this: BraveAccountPasswordInputElement) {
       >
       </brave-account-password-icons>
       <div
-        class="dropdown ${this.shouldShowDropdown ? 'visible' : ''}"
+        class="dropdown ${this.shouldShowDropdown() ? 'visible' : ''}"
         slot="errors"
       >
         <!-- Note: .dropdown-content is included in each branch (rather than
@@ -52,7 +52,7 @@ export function getHtml(this: BraveAccountPasswordInputElement) {
         ${freezeWhen(
           this.password.length === 0,
           this.config.mode === 'confirmation'
-            ? this.password === this.confirmPassword
+            ? this.password === this.confirmPassword()
               ? html`
                   <div class="dropdown-content">
                     <leo-icon name="check-circle-filled"></leo-icon>
@@ -69,7 +69,7 @@ export function getHtml(this: BraveAccountPasswordInputElement) {
                     </div>
                   </div>
                 `
-            : this.config.mode === 'strength' && this.isValid
+            : this.config.mode === 'strength' && this.isValid()
               ? html`<div class="dropdown-content">
                   <brave-account-password-strength-meter
                     password=${this.password}

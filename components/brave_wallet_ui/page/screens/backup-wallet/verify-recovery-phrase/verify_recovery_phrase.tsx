@@ -9,15 +9,10 @@ import { useHistory, useLocation } from 'react-router'
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
-import * as leo from '@brave/leo/tokens/css/variables'
-
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { getWordIndicesToVerify } from '../../../../utils/ordinal-utils'
-import {
-  useCompleteWalletBackupMutation,
-  useReportOnboardingActionMutation,
-} from '../../../../common/slices/api.slice'
+import { useCompleteWalletBackupMutation } from '../../../../common/slices/api.slice'
 
 // selectors
 import {
@@ -26,7 +21,7 @@ import {
 import { PageSelectors } from '../../../selectors'
 
 // routes
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -55,9 +50,6 @@ export const VerifyRecoveryPhrase = () => {
   const [enteredPhrase, setEnteredPhrase] = React.useState('')
   const [showError, setShowError] = React.useState(false)
 
-  // mutations
-  const [report] = useReportOnboardingActionMutation()
-
   // redux
   const dispatch = useAppDispatch()
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
@@ -74,12 +66,11 @@ export const VerifyRecoveryPhrase = () => {
   const onSkipBackup = React.useCallback(() => {
     dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     if (isOnboarding) {
-      report(BraveWallet.OnboardingAction.CompleteRecoverySkipped)
       history.push(WalletRoutes.OnboardingComplete)
       return
     }
     history.push(WalletRoutes.PortfolioAssets)
-  }, [dispatch, history, isOnboarding, report])
+  }, [dispatch, history, isOnboarding])
 
   const onNextStep = React.useCallback(async () => {
     await completeWalletBackup().unwrap()
@@ -175,7 +166,6 @@ export const VerifyRecoveryPhrase = () => {
         </ContinueButton>
         <Button
           kind='plain-faint'
-          color={leo.color.text.secondary}
           onClick={onSkipBackup}
         >
           {getLocale('braveWalletButtonSkip')}

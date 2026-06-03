@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Lataus keskeytettiin.</translation>
 <translation id="1396327438254055134">Salli sivuston käyttää V8-optimoijaa.</translation>
 <translation id="1409338233051621926">Valitse Sovellukset ja sitten Oletussovellukset</translation>
+<translation id="1414315029670184034">Älä salli sivustojen käyttää kameraasi</translation>
 <translation id="1415402041810619267">URL näkyy lyhennettynä</translation>
 <translation id="1741136041592162279">Salli Braven jakaa viimeaikaiset välilehdet laitteelle, jotta näet ne laitteen sovelluslistalla ja hakutuloksissa. Voit laittaa tämän päälle tai pois päältä Braven asetuksista.</translation>
 <translation id="1420688843103859429">Siirry taakse- ja eteenpäin pyyhkäisemällä kosketuslevyllä kahdella sormella</translation>
@@ -64,6 +65,7 @@
 <translation id="1644574205037202324">Historia</translation>
 <translation id="1652197001188145583">Kun tämä on päällä, sivustot voivat pyytää lupaa käyttää NFC-laitteita. Kun tämä on pois päältä, sivustot eivät voi käyttää NFC-laitteita.</translation>
 <translation id="1660204651932907780">Salli sivustojen toistaa ääniä (suositus)</translation>
+<translation id="1676590040242013349">"Käytä aina suojattuja yhteyksiä" on päällä.</translation>
 <translation id="1677097821151855053">Evästeillä ja muulla sivustodatalla tunnistetaan sinut, jotta voit esimerkiksi kirjautua sisään tai nähdä personoituja mainoksia. Jos haluat ylläpitää kaikkien sivustojen evästeitä, siirry <ph name="BEGIN_LINK"/>Asetuksiin<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Sivustot voivat pyytää lupaa käyttää NFC-laitteita</translation>
 <translation id="1686785653877010442">Sivustoilta lähetetään yleensä ilmoituksia esimerkiksi tuoreista uutisista tai chat-viesteistä.</translation>
@@ -79,7 +81,6 @@
 <translation id="1781533683087883868">Laita lukutilan linkit pois päältä</translation>
 <translation id="1785415724048343560">Suositellaan parhaan kokemuksen saamiseksi</translation>
 <translation id="1796588414813960292">Ääntä edellyttävät ominaisuudet eivät enää toimi</translation>
-<translation id="7401204338724669842">Vinkkejä Braven käyttöön</translation>
 <translation id="6704867734300244173">Kun tämä on päällä, Brave toimii nopeammin ja JavaScriptiä käyttävien ominaisuuksien pitäisi toimia suunnitellusti. Kun tämä on poissa päältä, suorituskyky on rajoitettu, mutta V8 on suojatumpi hyökkäyksiä vastaan.</translation>
 <translation id="1818308510395330587">Laita kamera päälle myös <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>, jotta <ph name="APP_NAME"/> voi käyttää AR:ää.</translation>
 <translation id="1822318649925991542">Personoi selauskokemusta vaihtamalla osoitepalkin paikkaa</translation>
@@ -98,6 +99,7 @@
 <translation id="1985247341569771101">Kun tämä on päällä, sivustot voivat käyttää laitteesi liiketunnistimia. Kun tämä on pois päältä, sivustot eivät voi käyttää liiketunnistimia.</translation>
 <translation id="1985716030964443178">Tämä palauttaa kaikki listan sivustot zoomauksen oletusarvoon</translation>
 <translation id="1989112275319619282">Selaa</translation>
+<translation id="1991370806334788445">Kokeile sallia kolmannen osapuolen evästeet. Selauksen suojaus ei tällöin ole niin vahva, mutta sivuston ominaisuudet toimivat todennäköisemmin oikein.</translation>
 <translation id="1994173015038366702">Sivuston URL-osoite</translation>
 <translation id="1994558116414798016">Lexend-fontti</translation>
 <translation id="2004697686368036666">Joidenkin sivustojen ominaisuudet eivät välttämättä toimi</translation>
@@ -125,7 +127,6 @@
 <translation id="2228071138934252756">Laita kamera päälle myös <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>, jotta <ph name="APP_NAME"/> saa pääsyn kameraasi.</translation>
 <translation id="2231160360698766265">Sivustot voivat toistaa suojattua sisältöä</translation>
 <translation id="2235344399760031203">Kolmannen osapuolen evästeet on estetty</translation>
-<translation id="2238944249568001759">Viime välilehteen perustuvat hakuehdotukset</translation>
 <translation id="2241587408274973373">Uusi välilehti ‐sivun kortit</translation>
 <translation id="2241634353105152135">Vain kerran</translation>
 <translation id="2253414712144136228">Poista <ph name="NAME_OF_LIST_ITEM"/></translation>
@@ -164,13 +165,9 @@
 <translation id="257931822824936280">Laajennettu – tiivistä klikkaamalla.</translation>
 <translation id="2586657967955657006">Leikepöytä</translation>
 <translation id="2588271083332682494">Laita asiat järjestykseen välilehtiryhmillä</translation>
+<translation id="2592917252160773942">Sivustot voivat pyytää pääsyä kameraan</translation>
 <translation id="2597457036804169544">Älä käytä tummaa teemaa sivustoilla</translation>
 <translation id="2606760465469169465">Vahvista automaattisesti</translation>
-<translation id="7615153661410655750">Muuta valintaa <ph name="BEGIN_LINK1"/>Android-asetuksista<ph name="END_LINK1"/>
-
-Lisäsuojaus ohjaa näitä Braven asetuksia:
-• "Käytä aina suojattuja yhteyksiä" on päällä.
-• "JavaScript-optimoija" on pois päältä. <ph name="BEGIN_LINK2"/>Muokkaa sivustoja koskevia poikkeuksia<ph name="END_LINK2"/>.</translation>
 <translation id="2621115761605608342">Salli JavaScript tietyllä sivustolla.</translation>
 <translation id="2626708220538466178">Oletusselaimen alapaneeli suljettu</translation>
 <translation id="2653659639078652383">Lähetä</translation>
@@ -214,7 +211,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="3069226013421428034">Salli kolmannen osapuolen sisäänkirjautuminen tietylle sivustolle.</translation>
 <translation id="310297983047869047">Edellinen dia</translation>
 <translation id="3108122610701115301">Aseta oletukseksi</translation>
-<translation id="3109724472072898302">Tiivistetty</translation>
 <translation id="310979712355504754">Poista kaikki</translation>
 <translation id="311394601889664316">Älä salli sivustojen muokata laitteen tiedostoja tai kansioita</translation>
 <translation id="3114012059975132928">Videosoitin</translation>
@@ -243,6 +239,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="3360338140203645771">Poistetaanko tallennetut zoomaustasot?</translation>
 <translation id="3362437373201486687">Haetaan Bluetooth-laitteita</translation>
 <translation id="3368138297038111198">Jaetaan ikkunaa</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{Näytetään 1/{TOTAL_COUNT} kohdetta vähäisen muistin vuoksi}other{Näytetään #/{TOTAL_COUNT} kohdetta vähäisen muistin vuoksi}}</translation>
 <translation id="3386292677130313581">Pyydä lupaa, kun sivustot yrittävät käyttää sijaintiasi (suositus).</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="344449859752187052">Kolmannen osapuolen evästeet estetty</translation>
@@ -260,7 +257,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="3602290021589620013">Esikatselu</translation>
 <translation id="3611658447322220736">Äskettäin suljetut sivustot saavat viimeistellä datan lähetyksen ja vastaanoton</translation>
 <translation id="3619294456800709762">Sivustot voivat siirtyä pikkuruututilaan automaattisesti</translation>
-<translation id="3628308229821498208">Ehdotetut haut</translation>
 <translation id="3632460243282703117">Tilaa</translation>
 <translation id="363748948745453283">Likimääräinen sijainti käytössä</translation>
 <translation id="3641456520301071208">Sivustot voivat pyytää sijaintiasi</translation>
@@ -335,6 +331,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="4290791284969893584">Kun sivu on suljettu, aloittamiasi tehtäviä ei välttämättä suoriteta loppuun</translation>
 <translation id="429312253194641664">Sivusto toistaa mediaa</translation>
 <translation id="42981349822642051">Laajenna</translation>
+<translation id="4310738531374808763">Etusivun räätälöinti</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Vanhenee huomenna}other{Vanhenee # päivän kuluttua}}</translation>
 <translation id="4338831206024587507">Kaikki sivustot, jotka kuuluvat verkkotunnukseen <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Älä salli sivustojen lähettää ilmoituksia</translation>
@@ -364,6 +361,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="4635969503923889910">Älä salli sivustojen käyttää NFC-laitteita</translation>
 <translation id="4644713492825682049">Poista ja nollaa luvat</translation>
 <translation id="4645575059429386691">Vanhempasi hallinnoima</translation>
+<translation id="4651224148644053314">Lisää värejä ja vaihtoehtoja</translation>
 <translation id="4652266463001779298">Ei sallittu</translation>
 <translation id="4655846733459137112">Valitse Kyllä, niin voit käyttää salasanaa helposti seuraavalla kirjautumiskerralla</translation>
 <translation id="4663373278480897665">Kamera sallittu</translation>
@@ -441,7 +439,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="5515432237048785579">Discover-fiidin alapaneeli avattu koko näytölle</translation>
 <translation id="5516455585884385570">Avaa ilmoitusasetukset</translation>
 <translation id="5527111080432883924">Pyydä lupaa, kun sivustot yrittävät lukea tekstiä ja kuvia leikepöydältä (suositus)</translation>
-<translation id="5553374991681107062">Uusimmat</translation>
 <translation id="674221630984410403">Älä nopeuta sivustoja Braven V8-moottorilla, mutta paranna Braven suojaa hyökkäyksiä vastaan hieman</translation>
 <translation id="5556459405103347317">Lataa uudelleen</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> estetty</translation>
@@ -521,10 +518,10 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="6231752747840485235">Poistetaanko <ph name="APP_NAME"/>?</translation>
 <translation id="4789073065838177382">Valitse Selainsovellus &gt; Brave</translation>
 <translation id="6260830281887654268">Uusi välilehti ‐sivun ulkoasun teemakokoelmien alapaneeli avattu puoliksi</translation>
-<translation id="6262191102408817757">Perustuu viimeisimpään välilehteen</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> ja <ph name="PERMISSION_2"/> estetty</translation>
 <translation id="6270391203985052864">Sivustot saavat pyytää lupaa lähettää ilmoituksia</translation>
 <translation id="6295158916970320988">Kaikki sivustot</translation>
+<translation id="6305257382500066042">Kokeile nyt</translation>
 <translation id="6320088164292336938">Värinä</translation>
 <translation id="6367753977865761591">Estä kolmannen osapuolen sisäänkirjautuminen tietylle sivustolle.</translation>
 <translation id="6398765197997659313">Poistu koko näytön tilasta</translation>
@@ -579,6 +576,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="6912998170423641340">Estä sivustoja lukemasta tekstiä ja kuvia leikepöydältä</translation>
 <translation id="6945221475159498467">Valitse</translation>
 <translation id="6950072572526089586">Avaamasi sivusto voi tallentaa tietoja toiminnastasi, jotta se toimii odotetulla tavalla – esimerkiksi pitääksesi sinut kirjautuneena sivustolle tai tallentaaksesi tuotteita ostoskoriin. Sivustot tallentavat usein nämä tiedot väliaikaisesti laitteellesi.</translation>
+<translation id="6964291282260073066">"WebGPU" on poistettu käytöstä.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">Ruusunpunainen teema</translation>
 <translation id="6980861169612950611">Poistetaanko sivustodata? <ph name="SITE_NAME"/></translation>
@@ -601,7 +599,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="7180611975245234373">Päivitä</translation>
 <translation id="7188508872042490670">Laitepohjainen sivustodata</translation>
 <translation id="7201549776650881587">Tämä toiminto poistaa kaiken datan ja kaikki evästeet sivuston <ph name="ORIGIN"/> alla olevilta sivustoilta tai sen sovelluksesta aloitusnäytöllä</translation>
-<translation id="7203150201908454328">Laajennettu</translation>
 <translation id="7213166370492037743">Älä salli sivustojen yhdistää mihinkään paikallisessa verkossa olevaan laitteeseen</translation>
 <translation id="7219254577985949841">Poistetaanko sivustodata?</translation>
 <translation id="723171743924126238">Valitse kuvat</translation>
@@ -610,8 +607,12 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> valittu</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> ja <ph name="PERMISSION_2"/> sallittu</translation>
 <translation id="7276071417425470385">Kun tämä on päällä, sivustot voivat pyytää lupaa käyttää virtuaalitodellisuuslaitteita. Kun tämä on pois päältä, sivustot eivät voi käyttää virtuaalitodellisuuslaitteita.</translation>
+<translation id="7279851812866769760">Jaa yhteystiedot</translation>
 <translation id="7282197670900591579">Sitruunankeltainen teema</translation>
 <translation id="728412880473384942">Sivustot ovat nopeampia mutta vähemmän turvallisia</translation>
+<translation id="5843014938239239453">Muuta valintaa <ph name="BEGIN_LINK1"/>Android-asetuksista<ph name="END_LINK1"/>
+
+Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="7366415735885268578">Lisää sivusto</translation>
 <translation id="7368695150573390554">Kaikki offline-data poistetaan</translation>
 <translation id="7369678931043226462">"Muuta Uusi välilehti ‑sivua" -alapaneeli avattu puoliksi</translation>
@@ -656,7 +657,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="780301667611848630">Ei kiitos</translation>
 <translation id="7804248752222191302">Sivusto käyttää kameraasi</translation>
 <translation id="7805832099057502789">Uusi välilehti ‐sivun ulkoasun alapaneeli avattu koko näytölle</translation>
-<translation id="6720480757902085971">Braven tarjoama</translation>
 <translation id="7809029041571842593">Uusi välilehti ‐sivun korttien alapaneeli avattu puoliksi</translation>
 <translation id="7815680994978050279">Vaarallinen lataus estettiin</translation>
 <translation id="7835852323729233924">Toistetaan mediaa</translation>
@@ -675,7 +675,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="8007176423574883786">Ei käytössä tällä laitteella</translation>
 <translation id="802154636333426148">Lataus epäonnistui.</translation>
 <translation id="8033047164036749181">Tilaa ilmoitukset tältä sivustolta</translation>
-<translation id="8042586301629853791">Lajitteluperuste:</translation>
 <translation id="8051193500142930381">Kameraa edellyttävät ominaisuudet eivät enää toimi</translation>
 <translation id="2495032782748793764">Braven oletusasetus</translation>
 <translation id="8067883171444229417">Toista video</translation>
@@ -700,6 +699,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="823874716226307142">Kun tämä on päällä, sivustot voivat pyytää pääsyä muille paikallisessa verkossa oleville laitteille. Kun tämä on pois päältä, sivustot eivät pääse muille paikallisessa verkossa oleville laitteille.</translation>
 <translation id="8249310407154411074">Siirrä ylimmäksi</translation>
 <translation id="8261506727792406068">Poista</translation>
+<translation id="8273596202562472147">Lisää vaihtoehtoja: <ph name="SITE_NAME"/></translation>
 <translation id="8284326494547611709">Tekstitykset</translation>
 <translation id="8300705686683892304">Sovelluksen ylläpitämät</translation>
 <translation id="8301363963630676147">Sallittu tällä kertaa • Käytetään likimääräistä sijaintia</translation>
@@ -723,6 +723,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="8471525937465764768">Sivustot yhdistävät yleensä USB-laitteisiin tulostaakseen dokumentteja tai lisätäkseen niitä tallennustilaan</translation>
 <translation id="8473055640493819707"><ph name="APP_NAME"/> on vanhentunut. Asenna sovellus uudelleen.</translation>
 <translation id="847433688444405067">Selaa eri laitteilla</translation>
+<translation id="8484556725636319115">"JavaScript-optimoija" on pois päältä. <ph name="BEGIN_LINK2"/>Muokkaa sivustoja koskevia poikkeuksia<ph name="END_LINK2"/>.</translation>
 <translation id="8487700953926739672">Käytettävissä offline-tilassa</translation>
 <translation id="848952951823693243">Pyydä aina mobiilisivustoa</translation>
 <translation id="8492822722330266509">Sivustot saavat lähettää ponnahdusikkunoita ja uudelleenohjata</translation>
@@ -744,7 +745,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="8676374126336081632">Tyhjennä teksti</translation>
 <translation id="8681886425883659911">Mainokset estetään sivustoilla, joiden tiedetään näyttävän häiritseviä tai harhaanjohtavia mainoksia</translation>
 <translation id="868929229000858085">Hae yhteystiedoistasi</translation>
-<translation id="8707904142362025782">Sivusto voi pyytää kameran käyttölupaa</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="8715862698998036666">Poistu koko näytön tilasta vetämällä näytön yläreunasta ja pyyhkäisemällä vasemmasta tai oikeasta reunasta.</translation>
 <translation id="8716050156658570300">Sivustot voivat pyytää lupaa käyttää liike- ja valoantureita</translation>
@@ -794,6 +794,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:
 <translation id="7359422048569205930">Salli Braven näyttää viimeaikaiset välilehdet laitteen sovelluslistalla ja hakutuloksissa. Voit laittaa tämän pois päältä milloin tahansa Braven asetuksista.</translation>
 <translation id="9162462602695099906">Tämä sivu on vaarallinen</translation>
 <translation id="9182556968660520230">Älä salli sivustojen toistaa suojattua sisältöä</translation>
+<translation id="927148002081263046">Jaa yhteystieto</translation>
 <translation id="947156494302904893">Avaamasi sivustot voivat vahvistaa, että olet oikea ihminen etkä botti</translation>
 <translation id="959682366969460160">Järjestä</translation>
 <translation id="960590623979248167">Näytä linkit</translation>

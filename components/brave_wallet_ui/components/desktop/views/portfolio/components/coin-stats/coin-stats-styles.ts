@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
@@ -17,31 +18,24 @@ export const StatWrapper = styled.div`
 `
 
 export const StatValue = styled.div`
+  font: ${leo.font.heading.h2};
+
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   margin-bottom: 12px;
   justify-content: center;
 `
 
 export const StatLabel = styled.div`
+  font: ${leo.font.default.regular};
   display: flex;
   align-items: center;
   text-align: center;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   justify-content: center;
 `
 
@@ -53,14 +47,10 @@ export const Row = styled.div`
 `
 
 export const Currency = styled.sup`
+  font: ${leo.font.small.regular};
   display: flex;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   top: -0.8em;
   margin-right: 2px;
 `

@@ -253,19 +253,6 @@ TEST(SolanaKeyringUnitTest, GetAssociatedTokenAccount) {
   }
 }
 
-TEST(SolanaKeyringUnitTest, GetAssociatedMetadataAccount) {
-  auto addr = SolanaKeyring::GetAssociatedMetadataAccount(
-      "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh");
-  ASSERT_TRUE(addr);
-  EXPECT_EQ(*addr, "6L255rMB19d544HLNumpvbdTKkTgiQ3fgMszzX6F9VAL");
-
-  addr = SolanaKeyring::GetAssociatedMetadataAccount(
-      "8q5qbP8xu1TgDWYXokwFjgTqoSNe6W3Ljj3phwqhDKqe");
-  ASSERT_TRUE(addr);
-
-  EXPECT_EQ(*addr, "586XgHr69ZhbUkkGJsQqGt16mf7jpFS6uhnvCAwb68Qq");
-}
-
 TEST(SolanaKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
@@ -285,15 +272,13 @@ TEST(SolanaKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveHDAccount(0));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(address_to_restrict)});
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(SolanaKeyringUnitTest, ImportAccount_RestrictedAddress) {
@@ -321,14 +306,12 @@ TEST(SolanaKeyringUnitTest, ImportAccount_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(address_to_restrict)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

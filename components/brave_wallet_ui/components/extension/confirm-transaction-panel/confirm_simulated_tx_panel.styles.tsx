@@ -26,15 +26,6 @@ export const TransactionChangeCollapseContent = styled.div`
   ${styledScrollbarMixin}
 `
 
-export const TransactionChangeCollapseTitle = styled.div`
-  color: ${leo.color.text.secondary};
-  font-family: Poppins;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 16px;
-`
-
 export const TransactionChangeCollapse = styled(Collapse)<{
   hasMultipleCategories?: boolean
 }>`

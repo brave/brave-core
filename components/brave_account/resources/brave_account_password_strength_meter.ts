@@ -7,11 +7,13 @@ import {
   CrLitElement,
   PropertyValues,
 } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
+import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { getCss } from './brave_account_password_strength_meter.css.js'
 import { getHtml } from './brave_account_password_strength_meter.html.js'
 
@@ -20,6 +22,12 @@ import { getHtml } from './brave_account_password_strength_meter.html.js'
 const MINIMUM_PASSWORD_STRENGTH = 80
 
 export type PasswordStrengthChangedEventDetail = { isStrongEnough: boolean }
+
+export interface BraveAccountPasswordStrengthMeterElement {
+  $: {
+    text: HTMLElement
+  }
+}
 
 export class BraveAccountPasswordStrengthMeterElement extends CrLitElement {
   static get is() {
@@ -37,9 +45,34 @@ export class BraveAccountPasswordStrengthMeterElement extends CrLitElement {
   static override get properties() {
     return {
       category: { type: String, reflect: true },
+      meetsThreshold: { type: Boolean, reflect: true },
       strength: { type: Number, state: true },
       password: { type: String },
     }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.style.setProperty('--minimum-strength', `${MINIMUM_PASSWORD_STRENGTH}`)
+  }
+
+  override firstUpdated() {
+    // Reserve a width for the label that fits the widest of the four category
+    // strings so the bar's pixel width stays constant as the category changes
+    // — otherwise the percentage-positioned threshold tick would slide
+    // horizontally between categories.
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')!
+    ctx.font = getComputedStyle(this.$.text).font
+    const maxWidth = Math.max(
+      ...[
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOO_WEAK,
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_GETTING_THERE,
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG_ENOUGH,
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_EXCEPTIONALLY_STRONG,
+      ].map((id) => ctx.measureText(loadTimeData.getString(id)).width),
+    )
+    this.$.text.style.width = `${Math.ceil(maxWidth)}px`
   }
 
   override async updated(changedProperties: PropertyValues<this>) {
@@ -65,10 +98,18 @@ export class BraveAccountPasswordStrengthMeterElement extends CrLitElement {
       }
 
       this.category =
-        this.strength < 60 ? 'Weak' : this.strength < 100 ? 'Medium' : 'Strong'
+        this.strength < 60
+          ? 'TooWeak'
+          : this.strength < MINIMUM_PASSWORD_STRENGTH
+            ? 'GettingThere'
+            : this.strength < 100
+              ? 'StrongEnough'
+              : 'ExceptionallyStrong'
+
+      this.meetsThreshold = this.strength >= MINIMUM_PASSWORD_STRENGTH
 
       this.fire('password-strength-changed', {
-        isStrongEnough: this.strength >= MINIMUM_PASSWORD_STRENGTH,
+        isStrongEnough: this.meetsThreshold,
       })
     }
   }
@@ -76,7 +117,12 @@ export class BraveAccountPasswordStrengthMeterElement extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected accessor category: 'Weak' | 'Medium' | 'Strong' = 'Weak'
+  protected accessor category:
+    | 'TooWeak'
+    | 'GettingThere'
+    | 'StrongEnough'
+    | 'ExceptionallyStrong' = 'TooWeak'
+  protected accessor meetsThreshold = false
   protected accessor strength = 0
   private accessor password = ''
 }

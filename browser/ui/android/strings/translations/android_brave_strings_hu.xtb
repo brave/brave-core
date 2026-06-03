@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Letiltja a Bejelentkezés, a Menü, a Hozzászólások és a Videóinformációk elemeket a youtube.com webhelyen.</translation>
 <translation id="8531835121131500698">YouTube-rövidek blokkolása</translation>
 <translation id="2167271714269158912">Blokkolja a rövideket a youtube.com kezdőoldalán, a népszerűek oldalán, illetve a keresési eredmények között.</translation>
+<translation id="2564435705466025309">YouTube-rövidek blokkolása</translation>
+<translation id="3603500459037204525">Blokkolja az autódubizált videókat, hogy ne jelenjenek meg a youtube.com kezdőlapján és keresési eredményeiben.</translation>
+<translation id="4067265130987656010">YouTube-miniatűrök blokkolása</translation>
+<translation id="3034711349887440574">Blokkolja a miniatűröket, hogy ne jelenjenek meg a youtube.com kezdőlapján és keresési eredményeiben.</translation>
+<translation id="8741919213635379855">YouTube-lejátszhatók blokkolása</translation>
+<translation id="2216551241986578034">Blokkolja a lejátszhatókat, hogy ne jelenjenek meg a youtube.com kezdőlapján és keresési eredményeiben.</translation>
+<translation id="9038505474874975130">YouTube-tagok által korlátozott videók blokkolása</translation>
+<translation id="3084239516382196983">Blokkolja a tagok által korlátozott videókat, hogy ne jelenjenek meg a youtube.com kezdőlapján és keresési eredményeiben.</translation>
 <translation id="6052725679982758334">Közösségi hálózatok tiltása</translation>
 <translation id="7498695072878479744">Google-bejelentkezési gombok engedélyezése külső webhelyeken</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
@@ -186,20 +194,12 @@
 <translation id="6587448235155023666">A változtatásai a Brave következő indításakor lépnek érvénybe</translation>
 <translation id="8701563696941209024">INDÍTSA ÚJRA MOST</translation>
 <translation id="834487290629916192">KÉSŐBB</translation>
-<translation id="4117451092682672487">Adatvédelem. Egyszerűen.</translation>
-<translation id="7909375417585209817">A Brave alapértelmezett böngészőként történő beállításával minden hivatkozás, amelyre rákoppint a Brave adatvédelmi beállításaival fog megnyílni.</translation>
 <translation id="763369711159699222">Segítsen a Brave továbbfejlesztésében</translation>
 <translation id="8025937231644975408">Tudassa velünk, mely funkciókat élvezi leginkább.</translation>
-<translation id="6718362830686703942">Küldjön diagnosztikai jelentéseket, amikor a rendszer összeomlik vagy lefagy.</translation>
-<translation id="8616157231067364693">Osszon meg privát és anonim termékinformációkat arról, hogy milyen funkciókat használnak a Brave felhasználói.</translation>
 <translation id="2888496576732880897">Segítsen a Brave kereső fejlesztésében</translation>
 <translation id="7198716519700700181">Megszakítások letiltása streamelés közben</translation>
 <translation id="7044431516245362795">Csatlakozzon a Web Discovery Projecthez, hogy segíts a keresési rendszer fejlesztésében és a keresési eredmények javításában. <ph name="LEARN_MORE_START"/>Tudjon meg többet.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave logó</translation>
-<translation id="1389386068457132299">Bevezetés háttérkép</translation>
-<translation id="5101985748360228609">Felső leveldekoráció</translation>
-<translation id="5270920361877570459">Alsó leveldekoráció</translation>
-<translation id="4021716437419160885">Görgetés lefelé</translation>
 <translation id="4767173360729868049">Segítsen a Brave keresés fejlesztésében illusztráció</translation>
 <translation id="8241918461631453498">Megszakítások letiltása illusztráció</translation>
 <translation id="8213310572767907663">A Brave jobb illusztráció</translation>
@@ -215,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> és más hirdetések illetve nyomkövetők blokkolva</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklám és nyomkövető blokkolva</translation>
 <translation id="8281886186245836920">Kihagyás</translation>
-<translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="986879628471635371">Előkészítési hibaelhárítás</translation>
 <translation id="5806601733251372221">Brave védelem</translation>
 <translation id="8537217141725709400">Szerezzen <ph name="TOKEN"/></translation>
@@ -365,7 +364,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="944340256927461196">Nem hagy nyomot a készülékén</translation>
 <translation id="2063044449012253966">A privát módban megtekintett oldalak nem jelennek meg a böngészési előzményében. A sütik, űrlapadatok és webhelyadatok eltűnnek, amint az összes privát ablakot bezárja.</translation>
 <translation id="7395764193745523646">Böngészés láthatósága</translation>
-<translation id="8670344404057978375">Ne feledje, hogy - még a privát ablakokban is - a böngészési tevékenysége látható lehet az internetszolgáltatója, a hálózati megfigyelők vagy a munkáltatója számára (ha munkahelyi eszközt/hálózatot használ).</translation>
+<translation id="8435098045013317895">Felhívjuk figyelmét, hogy – még privát ablak használata esetén is – böngészési tevékenysége látható maradhat az internetszolgáltatója, a hálózati megfigyelők vagy a munkaadója számára (ha munkahelyi eszközt vagy hálózatot használ).</translation>
 <translation id="1413177583895309156">A Brave VPN titkosítja és védi az online tevékenységét a Brave böngészőn kívül is.</translation>
 <translation id="3974348661685061050">Próbálja ki ingyenesen 7 napig</translation>
 <translation id="5789441016350810005">Háttérben futó böngésző mellett küldött Brave Ads-hirdetések</translation>
@@ -506,6 +505,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2718046830255553131">Az adatvédelmi jelentések adatai törölve lettek.</translation>
 <translation id="8376263745431603066">"Éjszakai mód” engedélyezése (kísérleti)</translation>
 <translation id="1383876407941801731">Keresés</translation>
+<translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="13296465911709339">A szöveged a vágólapra lett másolva.</translation>
 <translation id="2735834606413553397">A nyilvános cím át lett másolva a vágólapra.</translation>
 <translation id="2977461003134694205">Adatvédelmi statisztikák</translation>
@@ -966,23 +966,24 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="7659483790930268440">Címkeresési tábla – index:</translation>
 <translation id="5494920125229734069">Összes kiválasztása</translation>
 <translation id="2361906291514218784">Leo MI</translation>
+<translation id="2935698011275148880">Bátor származás</translation>
 <translation id="944736176598169208">Jutalmak</translation>
-<translation id="4272190451231642425">Automatikusan küldje el az összeomlásról szóló jelentéseket</translation>
 <translation id="1199170151481311646">Adatvédelmi analitika</translation>
 <translation id="1706715315466634757">Email álnevek</translation>
 <translation id="6709133671862442373">Hírek</translation>
 <translation id="5990642573624858459">Statisztikai jelentés</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Alapértelmezettre visszaállítása</translation>
-<translation id="4922034974043704366">Ez a funkció azért van engedélyezve, mert Ön ezt választotta.</translation>
 <translation id="2587535830241068901">Testreszabhatja böngészőjét, miközben támogatja a Brave-ot</translation>
-<translation id="7235314227387539944">A Brave Origin a böngésző fizetett verziója azoknak a felhasználóknak, akik nem igényelnek minden olyan funkciót, amely a Brave-t üzletként támogatja, de továbbra is a Brave által kínált adatvédelmet szeretnék. Az Origin felhasználói továbbra is élvezhetik az iparágban vezető adatvédelmet, az hirdetésblokkolást és a sebességet (a Shields segítségével), valamint a rendszeres szoftverfrissítéseket, a Chromium javításokat, valamint a biztonsági és adatvédelmi fejlesztéseket. Az Origin eltávolítja a legtöbb egyéb funkciót a böngészőből.</translation>
-<translation id="7941943775131052130">Vegyük figyelembe, hogy a Brave Origin vásárlása a Brave keresés Prémiumhoz való hozzáférést is tartalmazza, mivel az Origin eltávolítja a hirdetéseket a Brave keresés eredmények oldaláról.</translation>
+<translation id="123297831435065577">A Brave Origin a böngésző fizetett verziója azoknak a felhasználóknak, akik nem igényelnek minden olyan funkciót, amely a Brave-t üzletként támogatja, de továbbra is a Brave által kínált adatvédelmet szeretnék. Az Origin felhasználói továbbra is élvezhetik az iparágban vezető adatvédelmet, a hirdetésblokkolást és a sebességet (a Shields segítségével), valamint a rendszeres szoftverfrissítéseket, a Chromium javításokat, valamint a biztonsági és adatvédelmi fejlesztéseket.</translation>
 <translation id="2573819149217596923">A Brave funkciók módosítása</translation>
 <translation id="7415416427817229128">A Brave funkció engedélyezéséhez vagy letiltásához a böngészőt újra kell indítani a módosítások alkalmazásához. Szeretné most újraindítani?</translation>
 <translation id="2256115617011615191">Újraindítás most</translation>
+<translation id="2160089182263405907">Funkciók kikapcsolása</translation>
+<translation id="7530313002494358590">A Brave-funkciók engedélyezése vagy letiltása böngésző-újraindítást igényel a módosítások alkalmazásához. Kérjük, kattintson a <ph name="BEGIN_BOLD"/>Újraindítás most<ph name="END_BOLD"/> gombra, miután a Brave Origin befejezte a frissítést.</translation>
+<translation id="1028940738207645746">Biztosan visszaállítja az összes beállítást az alapértelmezettre?</translation>
+<translation id="5939518447894949180">Visszaállítás</translation>
 <translation id="8554205386170195281">Vásárlás</translation>
-<translation id="7071521146534760487">Fiók kezelése</translation>
 <translation id="8613144770663526433">Bejelentkezés a Brave pénztárcával</translation>
 <translation id="3696514931437952995">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Brave pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Részletek megtekintése</translation>
@@ -1017,7 +1018,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="1309636029062006520">Lejátszási listákat készíthet a kedvenc hang- és videótartalmaiból, és bármikor, bárhol lejátszhatja őket.</translation>
 <translation id="7899390017499980820">Hozzáadás lejátszási listához gomb</translation>
 <translation id="6901152954398668317">A „Hozzáadás lejátszási listához" gomb megjelenítése vagy elrejtése, amely gyors hozzáférést biztosít a médiatartalmak hozzáadásához vagy eltávolításához.</translation>
-<translation id="5939518447894949180">Visszaállítás</translation>
 <translation id="8199028711686989861">Minden videó eltávolítása a lejátszási listáról, beleértve az offline módhoz való tárolást is.</translation>
 <translation id="4590997608186539865">Lejátszási lista</translation>
 <translation id="7525067979554623046">Létrehozás</translation>
@@ -1111,9 +1111,9 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6261139507111008244">Támogassa küldetésünket &amp; nyílt forráskódú munka</translation>
 <translation id="6073373503121903099">Minimális böngésző felhasználói felület a Brave Shields középpontjában</translation>
 <translation id="2267973897341040743">Fenntartja az alapvető adblock, adatvédelmi, &amp; sebességet</translation>
-<translation id="3339535734679532460">Egyszeri vásárlás, nincs további előfizetési költség</translation>
-<translation id="2805615640226281689">Egyszeri vásárlás</translation>
-<translation id="261433018299584676">Bejelentkezési kód lekérése</translation>
+<translation id="4059093523966730868">Az egyszeri vásárlás többször is aktiválható az összes eszközén</translation>
+<translation id="7006681677649762716">Egyszeri vásárlás</translation>
+<translation id="8707617004598499947">Brave Origin vásárlás ellenőrzése</translation>
 <translation id="1943432128510653496">Jelszavak mentése</translation>
 <translation id="2100273922101894616">Automatikus bejelentkezés</translation>
 <translation id="363596933471559332">Automatikus bejelentkezés webhelyekre a tárolt hitelesítő adatokkal. Ha ez a funkció ki van kapcsolva, mindig meg kell adnia hitelesítő adatait, amikor egy webhelyre szeretne bejelentkezni.</translation>
@@ -1164,4 +1164,22 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="1724977129262658800">Oldja fel a képernyőzárat a jelszó szerkesztéséhez</translation>
 <translation id="5780792035410621042">A jelszavak másolásához először képernyőzárat kell beállítania az eszközön.</translation>
 <translation id="7986497153528221272">A jelszavak megtekintéséhez először képernyőzárat kell beállítania az eszközön</translation>
+<translation id="4882237634123415792">Egyéni keresőmotorok</translation>
+<translation id="8364431224461158026">Egyéni keresőmotor hozzáadása</translation>
+<translation id="7307935603426295341">Egyéni keresőmotor szerkesztése</translation>
+<translation id="4002066346123236978">Cím</translation>
+<translation id="3653110185270660915">Írja be a keresőmotor nevét</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Keresőmotor hozzáadása</translation>
+<translation id="6289878295410648689">Írja be a keresési URL-t, és cserélje ki a lekérdezést a következőre: <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="1298325705808878139">Például: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8706939021136180678">Az URL érvénytelen.</translation>
+<translation id="5144960943371551167">A cím csak betűket, számokat és szóközöket tartalmazhat.</translation>
+<translation id="7361775378755455309">Már létezik keresőmotor ezzel a kulcsszóval.</translation>
+<translation id="463451857046640291">Nem sikerült keresőmotort hozzáadni.</translation>
+<translation id="1229671956956864948">Nem sikerült frissíteni a keresőmotort.</translation>
+<translation id="1462771969120037152">Nem sikerült keresőmotort törölni. A törlésre kívánt keresőmotor alapértelmezettként is beállított lehet.</translation>
+<translation id="1079140196216383600">Egyéni keresőmotor törlése</translation>
+<translation id="525276572490219787">Biztosan törli a(z) "<ph name="SEARCH_ENGINE_NAME"/>" keresőmotort? Ez a művelet nem lehet visszacsinálni.</translation>
+<translation id="6406506848690869874">Szinkronizálás</translation>
 </translationbundle>

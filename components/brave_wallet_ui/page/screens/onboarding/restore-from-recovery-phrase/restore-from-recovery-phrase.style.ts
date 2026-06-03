@@ -69,14 +69,13 @@ export const RecoveryBaseCss = css`
   padding-top: 8px;
   padding-bottom: 8px;
 
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   letter-spacing: 0.01em;
 
-  color: ${(p) => p.theme.color.text01};
-  background-color: ${(p) => p.theme.color.background02};
+  color: ${leo.color.text.primary};
+  background-color: ${leo.color.container.background};
 `
 
 export const RecoveryTextArea = styled.textarea`

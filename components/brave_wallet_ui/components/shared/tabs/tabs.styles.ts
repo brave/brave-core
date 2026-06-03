@@ -4,7 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { WalletButton } from '../style'
+// Shared Styles
+import { Text, WalletButton } from '../style'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
@@ -26,15 +27,12 @@ export const TabWrapper = styled(WalletButton)`
 `
 
 export const Tab = styled.div<{ isActive: boolean }>`
+  font: ${leo.font.default.semibold};
+
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
   letter-spacing: 0.02em;
   color: ${(p) =>
     p.isActive ? leo.color.text.interactive : leo.color.text.tertiary};
@@ -49,7 +47,7 @@ export const Indicator = styled.div<{ isActive: boolean }>`
   border-radius: 2px 2px 0px 0px;
 `
 
-export const LabelSummary = styled.span<{ isActive: boolean }>`
+export const LabelSummary = styled(Text)<{ isActive: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -59,14 +57,8 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   height: 20px;
   border-radius: 6px;
   padding: 4px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 11px;
-  line-height: 16px;
   display: flex;
   align-items: center;
-  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: ${(p) =>
     p.isActive ? leo.color.text.interactive : leo.color.neutral['50']};

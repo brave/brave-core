@@ -16,6 +16,7 @@ import CertificateUtilities
 import Data
 import Lottie
 import Onboarding
+import OrderedCollections
 import Playlist
 import Preferences
 import Shared
@@ -51,7 +52,8 @@ extension BrowserViewController: TopToolbarDelegate {
         tabManager: self.tabManager,
         toolbarUrlActionsDelegate: self,
         dismiss: { [weak self] in self?.dismiss(animated: true) },
-        askForAuthentication: self.askForLocalAuthentication
+        askForAuthentication: self.askForLocalAuthentication,
+        serpMetrics: SerpMetricsServiceFactory.get(profile: self.profileController.profile)
       ),
       openTabsModel: profileController.openTabsAPI,
       toolbarUrlActionsDelegate: self,
@@ -344,13 +346,6 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
     updateTabsBarVisibility()
     displayFavoritesController()
-
-    // Dismiss any onboarding popovers when entering overlay mode
-    if let popoverController = presentedViewController as? PopoverController,
-      popoverController.contentController is FocusNTPOnboardingViewController
-    {
-      popoverController.dismissPopover()
-    }
   }
 
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
@@ -569,6 +564,15 @@ extension BrowserViewController: TopToolbarDelegate {
       return
     }
     NavigationPath.handleWidgetShortcut(shortcut, with: self)
+  }
+
+  func topToolbarAvailableShortcutButtons(
+    _ topToolbar: TopToolbarView
+  ) -> OrderedSet<WidgetShortcut> {
+    return WidgetShortcut.eligibleButtonShortcuts(
+      prefs: profileController.profile.prefs,
+      isWalletAvailable: profileController.braveWalletAPI.isAllowed
+    )
   }
 
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {

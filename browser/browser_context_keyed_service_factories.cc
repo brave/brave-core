@@ -18,7 +18,6 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -38,7 +37,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -47,9 +46,9 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
-#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
@@ -69,6 +68,7 @@
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #else
@@ -107,7 +107,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -125,6 +124,10 @@
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
 #endif
 
 namespace brave {
@@ -166,9 +169,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#if !BUILDFLAG(IS_ANDROID)
-  brave_wallet::WalletNotificationServiceFactory::GetInstance();
-#endif
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 #endif
 
@@ -190,9 +190,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnServiceFactory::GetInstance();
 #endif
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    playlist::PlaylistServiceFactory::GetInstance();
-  }
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Always instantiate the factory so Playlist prefs are registered, even when
+  // the feature flag is off. The factory itself returns null from
+  // BuildServiceInstanceForBrowserContext when the feature is disabled.
+  playlist::PlaylistServiceFactory::GetInstance();
+#endif
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetInstance();
 #endif
@@ -252,6 +255,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif  // BUILDFLAG(ENABLE_PSST)
 
   serp_metrics::SerpMetricsServiceFactory::GetInstance();
+
+#if !BUILDFLAG(IS_ANDROID)
+  WorkspaceServiceFactory::GetInstance();
+#endif
 }
 
 }  // namespace brave

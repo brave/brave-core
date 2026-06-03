@@ -35,6 +35,8 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 })
 
 export const AdditionalCountBubble = styled.div`
+  font: ${leo.font.xSmall.regular};
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,9 +46,4 @@ export const AdditionalCountBubble = styled.div`
   background-color: ${leo.color.container.highlight};
   color: ${leo.color.text.secondary};
   border-radius: 100px;
-  font-size: 11px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 16px;
 `

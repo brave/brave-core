@@ -26,8 +26,7 @@ export const Button = styled(WalletButton)`
   height: 44px;
   border: none;
   color: ${leo.color.text.primary};
-  font-family: Poppins;
-  font-size: 14px;
+  font: ${leo.font.default.regular};
   letter-spacing: 0.01em;
   box-sizing: border-box;
   background-color: ${leo.color.container.highlight};
@@ -57,7 +56,7 @@ export const Dropdown = styled.ul`
 export const CaratDown = styled.div`
   width: 16px;
   height: 16px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${leo.color.text.secondary};
   -webkit-mask-image: url(${CaratDownIcon});
   mask-image: url(${CaratDownIcon});
 `

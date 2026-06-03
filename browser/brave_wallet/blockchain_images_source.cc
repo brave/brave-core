@@ -5,21 +5,27 @@
 
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
-#include "base/functional/bind.h"
-#include "base/memory/ref_counted_memory.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_images_source_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace brave_wallet {
 
-BlockchainImagesSource::BlockchainImagesSource(const base::FilePath& base_path)
-    : BlockchainImagesSourceBase(base_path) {}
+namespace {
+
+base::FilePath GetBasePath(Profile* profile) {
+  return profile->GetPath().DirName().AppendASCII(
+      brave_wallet::kWalletBaseDirectory);
+}
+
+}  // namespace
+
+BlockchainImagesSource::BlockchainImagesSource(Profile* profile)
+    : BlockchainImagesSourceBase(GetBasePath(profile)) {}
 
 std::string BlockchainImagesSource::GetSource() {
   return kImageSourceHost;

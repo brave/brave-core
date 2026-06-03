@@ -50,7 +50,7 @@ void BraveVpnNativeWorker::Destroy(
 }
 
 void BraveVpnNativeWorker::GetTimezonesForRegions(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetTimezonesForRegions(
         base::BindOnce(&BraveVpnNativeWorker::OnGetTimezonesForRegions,
@@ -71,7 +71,7 @@ void BraveVpnNativeWorker::GetHostnamesForRegion(
     JNIEnv* env,
     const base::android::JavaRef<jstring>& region,
     const base::android::JavaRef<jstring>& region_precision) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetHostnamesForRegion(
         base::BindOnce(&BraveVpnNativeWorker::OnGetHostnamesForRegion,
@@ -95,7 +95,7 @@ void BraveVpnNativeWorker::GetWireguardProfileCredentials(
     const base::android::JavaRef<jstring>& subscriber_credential,
     const base::android::JavaRef<jstring>& public_key,
     const base::android::JavaRef<jstring>& hostname) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetWireguardProfileCredentials(
         base::BindOnce(&BraveVpnNativeWorker::OnGetWireguardProfileCredentials,
@@ -123,7 +123,7 @@ void BraveVpnNativeWorker::VerifyCredentials(
     const base::android::JavaRef<jstring>& client_id,
     const base::android::JavaRef<jstring>& subscriber_credential,
     const base::android::JavaRef<jstring>& api_auth_token) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->VerifyCredentials(
         base::BindOnce(&BraveVpnNativeWorker::OnVerifyCredentials,
@@ -151,7 +151,7 @@ void BraveVpnNativeWorker::InvalidateCredentials(
     const base::android::JavaRef<jstring>& client_id,
     const base::android::JavaRef<jstring>& subscriber_credential,
     const base::android::JavaRef<jstring>& api_auth_token) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->InvalidateCredentials(
         base::BindOnce(&BraveVpnNativeWorker::OnInvalidateCredentials,
@@ -180,7 +180,7 @@ void BraveVpnNativeWorker::GetSubscriberCredential(
     const base::android::JavaRef<jstring>& validation_method,
     const base::android::JavaRef<jstring>& purchase_token,
     const base::android::JavaRef<jstring>& bundle_id) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetSubscriberCredential(
         base::BindOnce(&BraveVpnNativeWorker::OnGetSubscriberCredential,
@@ -194,7 +194,7 @@ void BraveVpnNativeWorker::GetSubscriberCredential(
 }
 
 void BraveVpnNativeWorker::GetSubscriberCredentialV12(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetSubscriberCredentialV12(
         base::BindOnce(&BraveVpnNativeWorker::OnGetSubscriberCredential,
@@ -218,7 +218,7 @@ void BraveVpnNativeWorker::VerifyPurchaseToken(
     const base::android::JavaRef<jstring>& product_id,
     const base::android::JavaRef<jstring>& product_type,
     const base::android::JavaRef<jstring>& bundle_id) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->VerifyPurchaseToken(
         base::BindOnce(
@@ -247,16 +247,16 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
 }
 
 jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
-    return brave_vpn_service->is_purchased_user();
+    return brave_vpn_service->IsPurchased();
   }
 
   return false;
 }
 
 void BraveVpnNativeWorker::ReloadPurchasedState(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->ReloadPurchasedState();
   }
@@ -268,17 +268,17 @@ bool BraveVpnNativeWorker::IsSupportedRegion(JNIEnv* env) {
 }
 
 void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     // Reporting a new session to P3A functions.
-    brave_vpn_service->brave_vpn_metrics()->RecordAllMetrics(true);
+    brave_vpn_service->RecordAllMetrics();
   }
 }
 
 void BraveVpnNativeWorker::ReportBackgroundP3A(JNIEnv* env,
                                                jlong session_start_time_ms,
                                                jlong session_end_time_ms) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
+  auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->RecordAndroidBackgroundP3A(session_start_time_ms,
                                                   session_end_time_ms);

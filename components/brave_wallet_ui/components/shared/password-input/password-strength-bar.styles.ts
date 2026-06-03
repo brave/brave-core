@@ -36,12 +36,9 @@ export const BarProgressTooltipContainer = styled.div<{
 `
 
 export const BarMessage = styled.p<{ criteria: boolean[] }>`
+  font: ${leo.font.small.regular};
+
   color: ${(p) => getCriteriaPercentColor(p)};
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
   display: flex;
   align-items: center;
   text-align: right;

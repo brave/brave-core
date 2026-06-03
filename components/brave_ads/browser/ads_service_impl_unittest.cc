@@ -9,17 +9,23 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
+#include "base/numerics/safe_math.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/test/fake_ads_service_delegate.h"
 #include "brave/components/brave_ads/browser/test/fake_ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/test/fake_device_id.h"
 #include "brave/components/brave_ads/browser/test/fake_virtual_pref_provider_delegate.h"
+#include "brave/components/brave_ads/browser/test/mock_resource_component.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
@@ -28,7 +34,13 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/variations/pref_names.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/idle/idle.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_rewards/core/features.h"
+#endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_ads/browser/test/fake_rewards_service.h"
@@ -41,6 +53,16 @@ namespace brave_ads {
 class BraveAdsAdsServiceImplTest : public testing::Test {
  public:
   void SetUp() override {
+#if BUILDFLAG(IS_ANDROID)
+    // `brave_rewards::features::kBraveRewards` is `DISABLED_BY_DEFAULT` on
+    // `is_official_build=true` x86/x86_64 Android, which routes
+    // `brave_rewards::IsSupported` through `IsDisabledByFeature` and prevents
+    // the service from starting. Force-enable so Android matches the
+    // non-Android path these tests were written against.
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_rewards::features::kBraveRewards);
+#endif  // BUILDFLAG(IS_ANDROID)
+
     ASSERT_TRUE(profile_dir_.CreateUniqueTempDir());
 
     RegisterProfilePrefs(prefs_.registry());
@@ -65,12 +87,13 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
     ads_service_ = std::make_unique<AdsServiceImpl>(
         std::make_unique<test::FakeAdsServiceDelegate>(), prefs_, local_state_,
+        std::make_unique<brave_policy::PolicyInitializationWaiter>(
+            /*policy_service=*/nullptr),
         /*http_client=*/nullptr,
         std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
         /*channel_name=*/"foo", profile_dir_.GetPath(),
         std::make_unique<test::FakeAdsTooltipsDelegate>(), std::move(device_id),
-        std::move(bat_ads_service_factory),
-        /*resource_component=*/nullptr,
+        std::move(bat_ads_service_factory), &mock_resource_component_,
         /*history_service=*/nullptr,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
         &rewards_service_,
@@ -95,7 +118,13 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
   void Shutdown() { ads_service_->Shutdown(); }
 
+  void SimulateIdleState(ui::IdleState idle_state, base::TimeDelta idle_time) {
+    ads_service_->ProcessIdleState(idle_state, idle_time);
+  }
+
   base::test::TaskEnvironment task_environment_;
+
+  base::test::ScopedFeatureList scoped_feature_list_;
 
   base::ScopedTempDir profile_dir_;
 
@@ -110,6 +139,8 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   test::FakeRewardsService rewards_service_;
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+  testing::NiceMock<test::MockResourceComponent> mock_resource_component_;
 
   std::unique_ptr<AdsServiceImpl> ads_service_;
 };
@@ -360,7 +391,6 @@ TEST_F(
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
-#if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveAdsAdsServiceImplTest,
        ServiceDoesNotStartForSearchResultAdsWhenRewardsIsDisabledByPolicy) {
   // Arrange
@@ -426,6 +456,242 @@ TEST_F(
   EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ProcessIdleStateNotifiesWhenUserBecomesIdle) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  // Act
+  SimulateIdleState(ui::IdleState::IDLE_STATE_IDLE, base::Seconds(7));
+
+  // Assert
+  EXPECT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, ProcessIdleStateNotifiesWhenScreenLocks) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  // Act
+  SimulateIdleState(ui::IdleState::IDLE_STATE_LOCKED, base::Seconds(0));
+
+  // Assert
+  EXPECT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, ProcessIdleStateDoesNotNotifyIdleTwice) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_IDLE, base::Seconds(7));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+
+  // Act: UNKNOWN must not corrupt `last_idle_state_`, or the repeated IDLE
+  // below would be treated as a new transition and send a duplicate.
+  SimulateIdleState(ui::IdleState::IDLE_STATE_UNKNOWN, base::Seconds(0));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_IDLE, base::Seconds(7));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_ACTIVE, base::Seconds(7));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_active_count() == 1U; }));
+
+  // Assert
+  EXPECT_EQ(1U, bat_ads_service_factory_->become_idle_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ProcessIdleStateNotifiesWhenUserBecomesActive) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_IDLE, base::Seconds(7));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+
+  // Act
+  SimulateIdleState(ui::IdleState::IDLE_STATE_ACTIVE, base::Seconds(7));
+
+  // Assert
+  EXPECT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_active_count() == 1U; }));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ProcessIdleStateNotifiesWhenUserBecomesActiveAfterScreenLock) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_LOCKED, base::Seconds(0));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+
+  // Act
+  SimulateIdleState(ui::IdleState::IDLE_STATE_ACTIVE, base::Seconds(42));
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_active_count() == 1U; }));
+  EXPECT_TRUE(bat_ads_service_factory_->last_screen_was_locked());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ProcessIdleStateDoesNotSetScreenWasLockedWhenActiveTransitionsFromIdle) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_IDLE, base::Seconds(7));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+
+  // Act
+  SimulateIdleState(ui::IdleState::IDLE_STATE_ACTIVE, base::Seconds(7));
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_active_count() == 1U; }));
+  EXPECT_FALSE(bat_ads_service_factory_->last_screen_was_locked());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ProcessIdleStatePassesIdleTimeWhenUserBecomesActive) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_IDLE, base::Seconds(7));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+
+  // Act
+  SimulateIdleState(ui::IdleState::IDLE_STATE_ACTIVE, base::Seconds(42));
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_active_count() == 1U; }));
+  EXPECT_EQ(base::Seconds(42), bat_ads_service_factory_->last_idle_time());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, ProcessIdleStateDoesNotNotifyActiveTwice) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_IDLE, base::Seconds(7));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_idle_count() == 1U; }));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_ACTIVE, base::Seconds(7));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->become_active_count() == 1U; }));
+
+  // Act: UNKNOWN must not corrupt `last_idle_state_`, or the repeated ACTIVE
+  // below would be treated as a new transition and send a duplicate.
+  SimulateIdleState(ui::IdleState::IDLE_STATE_UNKNOWN, base::Seconds(0));
+  SimulateIdleState(ui::IdleState::IDLE_STATE_ACTIVE, base::Seconds(7));
+
+  // Assert
+  EXPECT_EQ(1U, bat_ads_service_factory_->become_active_count());
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    DoesNotClearNotificationAdsPrefOnShutdownIfUserHasNotOptedInToNotificationAds) {
+  // Arrange
+  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
+
+  // Act
+  Shutdown();
+
+  // Assert
+  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds),
+              testing::Not(testing::IsEmpty()));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ClearsNotificationAdsPrefOnShutdownIfUserHasOptedInToNotificationAds) {
+  // Arrange
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
+
+  // Act
+  Shutdown();
+
+  // Assert
+  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds), testing::IsEmpty());
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+TEST_F(BraveAdsAdsServiceImplTest,
+       RegistersLanguageResourceComponentWhenUserOptsInToNotificationAds) {
+  // Arrange: start the service via search result ads and wait for
+  // initialization so `bat_ads_service_remote_` is bound.
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, false);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  EXPECT_CALL(mock_resource_component_, RegisterLanguageComponent);
+
+  // Act
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       UnregistersLanguageResourceComponentWhenUserOptsOutOfNotificationAds) {
+  // Arrange: start with notification ads opted in so the language component
+  // is already registered; service must be running before opting out.
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  EXPECT_CALL(mock_resource_component_, UnregisterLanguageComponent());
+
+  // Act
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, false);
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if !BUILDFLAG(IS_ANDROID)
+TEST_F(BraveAdsAdsServiceImplTest,
+       UnregistersResourceComponentsWhenServiceBecomesIneligible) {
+  // Arrange: start the service so resource components are registered; then
+  // disable ads via policy to trigger unregistration.
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  EXPECT_CALL(mock_resource_component_, UnregisterCountryComponent());
+  EXPECT_CALL(mock_resource_component_, UnregisterLanguageComponent());
+
+  // Act
+  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                        base::Value(true));
+}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_ads

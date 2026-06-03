@@ -7,12 +7,14 @@ import { font, typography } from '@brave/leo/tokens/css/variables'
 import { Introduction } from './email_aliases_introduction'
 import { AliasList } from './email_aliases_list'
 import * as React from 'react'
+import Alert from '@brave/leo/react/alert'
 import Col from './styles/Col'
 import styled from 'styled-components'
 import {
-  Alias,
+  AliasesUpdate,
   AuthState,
   AuthenticationStatus,
+  EmailAliasesMetricsRemote,
   EmailAliasesServiceInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
@@ -33,24 +35,35 @@ const BraveAccountSignIn = () => {
   })
 }
 
-export const ManagePage = ({
-  aliasesState,
-  authState,
-  emailAliasesService,
-}: {
-  aliasesState: Alias[]
-  authState: AuthState
-  emailAliasesService: EmailAliasesServiceInterface
-}) => (
+export const SignInPage = () => (
   <PageCol>
     <Introduction />
     <BraveAccountSignIn />
-    {authState.status === AuthenticationStatus.kAuthenticated && (
-      <AliasList
-        aliases={aliasesState}
-        authEmail={authState.email}
-        emailAliasesService={emailAliasesService}
-      />
-    )}
+  </PageCol>
+)
+
+export const ManagePage = ({
+  aliasesUpdate,
+  authState,
+  emailAliasesService,
+  metrics,
+}: {
+  aliasesUpdate: AliasesUpdate
+  authState: AuthState
+  emailAliasesService: EmailAliasesServiceInterface
+  metrics?: EmailAliasesMetricsRemote
+}) => (
+  <PageCol>
+    {authState.status === AuthenticationStatus.kAuthenticated
+      && (aliasesUpdate.error ? (
+        <Alert type='error'>{aliasesUpdate.error}</Alert>
+      ) : (
+        <AliasList
+          aliases={aliasesUpdate.aliases!}
+          authEmail={authState.email}
+          emailAliasesService={emailAliasesService}
+          metrics={metrics}
+        />
+      ))}
   </PageCol>
 )

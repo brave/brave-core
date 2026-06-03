@@ -9,11 +9,6 @@ import Introspect
 import Strings
 import SwiftUI
 
-enum OnboardingSetupOption {
-  case new
-  case restore
-}
-
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
   // Used to dismiss all of Wallet
@@ -141,9 +136,6 @@ struct SetupCryptoView: View {
       backButtonTitle: Strings.Wallet.setupCryptoButtonBackButtonTitle,
       backButtonDisplayMode: .generic
     )
-    .onAppear {
-      keyringStore.reportP3AOnboarding(action: .shown)
-    }
   }
 }
 

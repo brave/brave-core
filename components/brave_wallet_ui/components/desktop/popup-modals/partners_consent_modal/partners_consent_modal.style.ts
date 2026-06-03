@@ -35,7 +35,6 @@ export const TermsLabel = styled.span`
 `
 
 export const TermsButton = styled(WalletButton)`
-  font-family: Poppins;
   color: ${color.text.interactive};
   text-decoration: none;
   font: ${font.default.semibold};

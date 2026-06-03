@@ -9,64 +9,24 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/flat_set.h"
-#include "base/functional/callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/color/color_provider_manager.h"
 
 namespace containers {
 
 namespace {
-
-using testing::_;
-
-class MockContainersServiceDelegate : public ContainersService::Delegate {
- public:
-  MockContainersServiceDelegate() {
-    ON_CALL(*this, GetReferencedContainerIds(_))
-        .WillByDefault([this](OnReferencedContainerIdsReadyCallback callback) {
-          std::move(callback).Run(referenced_container_ids_);
-        });
-    ON_CALL(*this, DeleteContainerStorage(_, _))
-        .WillByDefault([this](const std::string& id,
-                              DeleteContainerStorageCallback callback) {
-          delete_requests_.push_back(id);
-          std::move(callback).Run(delete_result_);
-        });
-  }
-
-  MOCK_METHOD(void,
-              GetReferencedContainerIds,
-              (OnReferencedContainerIdsReadyCallback),
-              (override));
-  MOCK_METHOD(void,
-              DeleteContainerStorage,
-              (const std::string&, DeleteContainerStorageCallback),
-              (override));
-
-  void SetReferencedContainersIds(base::flat_set<std::string> ids) {
-    referenced_container_ids_ = std::move(ids);
-  }
-
-  void set_delete_result(bool delete_result) { delete_result_ = delete_result; }
-  const std::vector<std::string>& delete_requests() const {
-    return delete_requests_;
-  }
-
- private:
-  base::flat_set<std::string> referenced_container_ids_;
-  bool delete_result_ = true;
-  std::vector<std::string> delete_requests_;
-};
 
 class MockContainersServiceObserver : public ContainersServiceObserver {
  public:
@@ -92,6 +52,7 @@ class ContainersServiceTest : public testing::Test {
     delegate_ = nullptr;
     service_->Shutdown();
     service_.reset();
+    ui::ColorProviderManager::ResetForTesting();
   }
 
   base::test::ScopedFeatureList feature_list_;
@@ -112,6 +73,62 @@ TEST_F(ContainersServiceTest, GetRuntimeContainerById) {
   EXPECT_FALSE(service_->GetRuntimeContainerById("non-existent-container-id"));
 }
 
+TEST_F(ContainersServiceTest, GetRuntimeContainerByName) {
+  auto container = MakeContainer("container-id", "Work");
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  auto runtime_container = service_->GetRuntimeContainerByName("Work");
+  ExpectContainer(runtime_container, "container-id", "Work");
+
+  EXPECT_FALSE(service_->GetRuntimeContainerByName("non-existent-name"));
+}
+
+TEST_F(ContainersServiceTest,
+       GetRuntimeContainerByName_FallsBackToUsedWhenNotInSyncedList) {
+  SetContainersToPrefs({}, prefs_);
+  SetLocallyUsedContainerToPrefs(MakeContainer("cached-id", "CachedName"),
+                                 prefs_);
+
+  auto runtime = service_->GetRuntimeContainerByName("CachedName");
+  ExpectContainer(runtime, "cached-id", "CachedName");
+}
+
+TEST_F(ContainersServiceTest, GetContainerIdFromContainerSpecifier_ById) {
+  auto container = MakeContainer("container-id", "Work");
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  EXPECT_EQ(service_->GetContainerIdFromContainerSpecifier(
+                ContainerId("container-id")),
+            "container-id");
+}
+
+TEST_F(ContainersServiceTest, GetContainerIdFromContainerSpecifier_ByName) {
+  auto container = MakeContainer("container-id", "Shopping");
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  EXPECT_EQ(
+      service_->GetContainerIdFromContainerSpecifier(ContainerName("Shopping")),
+      "container-id");
+}
+
+TEST_F(ContainersServiceTest,
+       GetContainerIdFromContainerSpecifier_ReturnsNulloptWhenNotFound) {
+  SetContainersToPrefs({}, prefs_);
+
+  EXPECT_FALSE(service_->GetContainerIdFromContainerSpecifier(
+      ContainerId("missing-id")));
+  EXPECT_FALSE(service_->GetContainerIdFromContainerSpecifier(
+      ContainerName("missing-name")));
+  EXPECT_FALSE(
+      service_->GetContainerIdFromContainerSpecifier(ContainerSpecifier{}));
+}
+
 TEST_F(ContainersServiceTest, GetContainers) {
   auto container = MakeContainer("container-id", "Work");
   std::vector<mojom::ContainerPtr> containers;
@@ -120,6 +137,21 @@ TEST_F(ContainersServiceTest, GetContainers) {
 
   auto containers_list = service_->GetContainers();
   ExpectContainer(containers_list[0], "container-id", "Work");
+}
+
+TEST_F(ContainersServiceTest, CreateAndPersistTemporaryContainer) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  ASSERT_TRUE(container);
+  EXPECT_TRUE(IsTemporaryContainerId(container->id));
+  EXPECT_FALSE(container->name.empty());
+  EXPECT_GE(container->icon, mojom::Icon::kMinValue);
+  EXPECT_LE(container->icon, mojom::Icon::kMaxValue);
+  EXPECT_NE(SK_ColorTRANSPARENT, container->background_color);
+
+  auto persisted = GetLocallyUsedContainerFromPrefs(prefs_, container->id);
+  ASSERT_TRUE(persisted);
+  ExpectContainer(persisted, container->id, container->name, container->icon,
+                  container->background_color);
 }
 
 TEST_F(ContainersServiceTest,
@@ -161,6 +193,14 @@ TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsUnknownWhenNotSynced) {
   auto used = GetLocallyUsedContainerFromPrefs(prefs_, "unknown-id");
   ExpectContainer(used, "unknown-id", "unknown-", mojom::Icon::kDefault,
                   kUnknownContainerBackgroundColor);
+}
+
+TEST_F(ContainersServiceTest, GetUsedContainerIds) {
+  EXPECT_TRUE(service_->GetUsedContainerIds().empty());
+
+  service_->MarkContainerUsed("used-id");
+
+  EXPECT_THAT(service_->GetUsedContainerIds(), testing::ElementsAre("used-id"));
 }
 
 TEST_F(ContainersServiceTest,

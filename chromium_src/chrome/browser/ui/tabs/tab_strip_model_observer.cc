@@ -27,6 +27,11 @@ TreeTabChange::CollapsedStateChangedChange::CollapsedStateChangedChange(
 TreeTabChange::CollapsedStateChangedChange::~CollapsedStateChangedChange() =
     default;
 
+TreeTabChange::ReparentedChange::ReparentedChange(const tabs::TreeTabNode& node)
+    : node(node) {}
+
+TreeTabChange::ReparentedChange::~ReparentedChange() = default;
+
 TreeTabChange::TreeTabChange(Type type,
                              tree_tab::TreeTabNodeId id,
                              std::unique_ptr<Delta> delta)
@@ -53,6 +58,12 @@ TreeTabChange::TreeTabChange(
                     std::make_unique<CollapsedStateChangedChange>(
                         collapsed_state_changed_change)) {}
 
+TreeTabChange::TreeTabChange(tree_tab::TreeTabNodeId id,
+                             const ReparentedChange& reparented_change)
+    : TreeTabChange(Type::kNodeReparented,
+                    id,
+                    std::make_unique<ReparentedChange>(reparented_change)) {}
+
 TreeTabChange::~TreeTabChange() = default;
 
 const TreeTabChange::CreatedChange& TreeTabChange::GetCreatedChange() const {
@@ -70,6 +81,12 @@ const TreeTabChange::CollapsedStateChangedChange&
 TreeTabChange::GetCollapsedStateChangedChange() const {
   CHECK_EQ(type, Type::kNodeCollapsedStateChanged);
   return *static_cast<CollapsedStateChangedChange*>(delta.get());
+}
+
+const TreeTabChange::ReparentedChange& TreeTabChange::GetReparentedChange()
+    const {
+  CHECK_EQ(type, Type::kNodeReparented);
+  return *static_cast<ReparentedChange*>(delta.get());
 }
 
 void TabStripModelObserver::OnTreeTabChanged(const TreeTabChange& change) {}

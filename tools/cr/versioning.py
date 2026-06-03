@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from functools import total_ordering
 import json
@@ -86,12 +88,45 @@ class Version:
         return self.parts[0]
 
     @classmethod
+    def from_value(cls, value: str) -> "Version" | None:
+        """Returns a Version only when the input has a valid format."""
+        try:
+            return cls(value)
+        except ValueError:
+            return None
+
+    @classmethod
     def from_git(cls, branch: str) -> "Version":
         """Retrieves the version from the git repository.
         """
         return cls(
             load_package_file(branch).get('config').get('projects').get(
                 'chrome').get('tag'))
+
+    @classmethod
+    def get_latest_googlesource_tag_version(cls,
+                                            major: int | None = None
+                                            ) -> "Version" | None:
+        args = [
+            'ls-remote', '--tags', '--refs', '--sort=-v:refname',
+            GOOGLESOURCE_LINK
+        ]
+        if major is not None:
+            args.append(f'refs/tags/{major}.*')
+        # It doesn't matter which repo we are in when doing this command.
+        output = repository.brave.run_git(*args)
+
+        for line in output.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+
+            git_tag = line.rsplit('/', 1)[-1].strip()
+            version = Version.from_value(git_tag)
+            if version is not None:
+                return version
+
+        return None
 
     def __eq__(self, other):
         if not isinstance(other, Version):

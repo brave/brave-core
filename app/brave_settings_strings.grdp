@@ -99,7 +99,10 @@
       Containers
     </message>
     <message name="IDS_SETTINGS_CONTAINERS_SECTION_DESCRIPTION" desc="The description for section containing settings related to containers" formatter_data="webui=Containers">
-      Organize your browsing with containers. <ph name="BEGIN_LINK">&lt;a target="_blank" href="#"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+      Containers are color-coded browser tabs that isolate your browsing data, such as cookies, cache, and site storage into separate contexts. <ph name="BEGIN_LINK">&lt;a target="_blank" href="#"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_CONTAINERS_ENABLED_LABEL" desc="The label for the toggle that enables the Containers feature" formatter_data="webui=Containers">
+      Enable Containers
     </message>
     <message name="IDS_SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL" desc="The label for dialog title for adding a container" formatter_data="webui=Containers">
       Add new container
@@ -164,6 +167,9 @@
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
     Show scrollbar
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HORIZONTAL_SCROLL_BUTTONS" desc="Title for checkbox to show scroll buttons next to the horizontal tab strip when tabs overflow">
+    Show scroll buttons on horizontal tab strip
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT" desc="The label for radio button to show vertical tab on right">
     Show on the right
@@ -640,6 +646,12 @@
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE" desc="The title for toggling the 'speedreader' feature on/off for Brave Origin">
     Speedreader
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_PLAYLIST_TOGGLE_TITLE" desc="The title for toggling the 'playlist' feature on/off for Brave Origin">
+    Playlist
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE" desc="The title for toggling the 'email aliases' feature on/off for Brave Origin">
+    Email Aliases
+  </message>  
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE" desc="The title for toggling the 'web discovery project' feature on/off for Brave Origin">
     Web Discovery Project
   </message>
@@ -657,6 +669,9 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_WALLET_TOGGLE_TITLE" desc="The title for toggling the 'wallet' feature on/off for Brave Origin">
     Wallet
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_CROSS_PROFILE_SUB_LABEL" desc="The sub-label shown under Brave Origin toggles that apply browser-wide rather than to the current profile">
+    Affects all browser profiles
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_RESET_TO_DEFAULTS_TITLE" desc="The title for resetting the toggles for Brave Origin back to their default values">
     Reset to defaults
@@ -766,6 +781,37 @@
   <!-- Push Messaging -->
   <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
     Use Google services for push messaging
+  </message>
+  <!-- History retention -->
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
+    Local history retention
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL" desc="Description for the setting that controls how long browsing history is retained">
+    How long Brave stores your browsing history locally
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_DAY" desc="Dropdown option that keeps browsing history for one day">
+    1 day
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_WEEK" desc="Dropdown option that keeps browsing history for one week">
+    1 week
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_MONTH" desc="Dropdown option that keeps browsing history for one month">
+    1 month
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_THREE_MONTHS" desc="Dropdown option that keeps browsing history for three months">
+    3 months
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_SIX_MONTHS" desc="Dropdown option that keeps browsing history for six months">
+    6 months
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_YEAR" desc="Dropdown option that keeps browsing history for one year">
+    1 year
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_FIVE_YEARS" desc="Dropdown option that keeps browsing history for five years">
+    5 years
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_FOREVER" desc="Dropdown option that keeps browsing history until the user deletes it">
+    Forever
   </message>
   <!-- Diagnostic reports -->
   <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF" desc="The label of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
@@ -1619,6 +1665,9 @@
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL" desc="The label for the tab organization model selection dropdown">
     Default model for tab focus
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_DESC" desc="The description for the tab organization model selection dropdown, with a link to a support page about Tab Focus Mode">
+    The model used to organize your tabs in Tab Focus Mode. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation

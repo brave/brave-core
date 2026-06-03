@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ABI_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ABI_UTILS_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <array>
 #include <memory>
 #include <optional>
@@ -14,6 +17,8 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 

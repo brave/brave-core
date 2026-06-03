@@ -10,18 +10,24 @@
 
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "chrome/browser/notifications/notification_display_service.h"
+#include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/message_center/public/cpp/notification.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -38,8 +44,9 @@ content::WebContents* GetActiveWebContents() {
     return g_web_contents_for_testing;
   }
 
-  Browser* browser = chrome::FindLastActive();
-  return browser ? browser->tab_strip_model()->GetActiveWebContents() : nullptr;
+  BrowserWindowInterface* browser = chrome::FindLastActive();
+  return browser ? browser->GetTabStripModel()->GetActiveWebContents()
+                 : nullptr;
 }
 
 void ClearWalletStoragePartition(content::BrowserContext* context,
@@ -48,6 +55,52 @@ void ClearWalletStoragePartition(content::BrowserContext* context,
   auto* partition = context->GetDefaultStoragePartition();
   partition->ClearDataForOrigin(StoragePartition::REMOVE_DATA_MASK_ALL, url,
                                 base::DoNothing());
+}
+
+std::u16string GetStatusTitle(brave_wallet::mojom::TransactionStatus status) {
+  switch (status) {
+    case brave_wallet::mojom::TransactionStatus::Confirmed:
+      return l10n_util::GetStringUTF16(
+          IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_CONFIRMED);
+    case brave_wallet::mojom::TransactionStatus::Error:
+      return l10n_util::GetStringUTF16(
+          IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_ERROR);
+    case brave_wallet::mojom::TransactionStatus::Dropped:
+      return l10n_util::GetStringUTF16(
+          IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED);
+    default:
+      break;
+  }
+
+  return std::u16string();
+}
+
+void DisplayTxNotificationImpl(content::BrowserContext* context,
+                               brave_wallet::mojom::TransactionStatus status,
+                               const std::string& account_name,
+                               const std::string& tx_id,
+                               const GURL& tx_url) {
+  if (auto* notification_display_service =
+          NotificationDisplayServiceFactory::GetForProfile(
+              Profile::FromBrowserContext(context))) {
+    message_center::RichNotificationData notification_data;
+    notification_data.remove_on_click = true;
+    notification_data.context_message =
+        u" ";  // Prevent origin from showing in the notification.
+
+    auto notification = std::make_unique<message_center::Notification>(
+        message_center::NOTIFICATION_TYPE_SIMPLE, tx_id, GetStatusTitle(status),
+        l10n_util::GetStringFUTF16(
+            IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TEXT,
+            base::UTF8ToUTF16(account_name)),
+        ui::ImageModel(), std::u16string(), tx_url,
+        message_center::NotifierId(
+            message_center::NotifierType::SYSTEM_COMPONENT, "service.wallet"),
+        notification_data, nullptr);
+
+    notification_display_service->Display(
+        NotificationHandler::Type::BRAVE_WALLET, *notification, nullptr);
+  }
 }
 
 }  // namespace
@@ -192,6 +245,14 @@ std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
 void BraveWalletServiceDelegateImpl::ClearWalletUIStoragePartition() {
   ClearWalletStoragePartition(context_, GURL(kBraveUIWalletURL));
   ClearWalletStoragePartition(context_, GURL(kBraveUIWalletPanelURL));
+}
+
+void BraveWalletServiceDelegateImpl::DisplayTxNotification(
+    brave_wallet::mojom::TransactionStatus status,
+    const std::string& account_name,
+    const std::string& tx_id,
+    const GURL& tx_url) {
+  DisplayTxNotificationImpl(context_, status, account_name, tx_id, tx_url);
 }
 
 }  // namespace brave_wallet

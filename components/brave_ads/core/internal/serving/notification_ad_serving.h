@@ -13,6 +13,7 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
@@ -28,6 +29,7 @@ class TimeDelta;
 
 namespace brave_ads {
 
+class AdsClient;
 class AntiTargetingResource;
 class EligibleNotificationAdsBase;
 class SubdivisionTargeting;
@@ -95,6 +97,9 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   CreativeAdRoundRobin creative_ad_round_robin_;
 
   std::unique_ptr<EligibleNotificationAdsBase> eligible_ads_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   base::WeakPtrFactory<NotificationAdServing> weak_factory_{this};
 };

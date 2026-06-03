@@ -41,6 +41,11 @@ describe('AdvancedTransactionSettings', () => {
     expect(menuItems[1]).toHaveTextContent('braveWalletPreviousTransaction')
     expect(menuItems[2]).toHaveTextContent('braveWalletRejectTransactions')
 
+    // Force the menu open so we can handle click events.
+    const menu = container.querySelector('leo-buttonmenu')
+    expect(menu).toBeInTheDocument()
+    menu?.setAttribute('isopen', 'true')
+
     // Check Next transaction button
     const nextTransactionButton = menuItems[0] as HTMLElement
     nextTransactionButton.click()

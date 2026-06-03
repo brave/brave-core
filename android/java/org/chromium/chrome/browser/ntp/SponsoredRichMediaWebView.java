@@ -16,6 +16,7 @@ import org.chromium.chrome.browser.content.WebContentsFactory;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.embedder_support.view.ContentView;
 import org.chromium.components.thinwebview.ThinWebView;
+import org.chromium.components.thinwebview.ThinWebViewAttachParams;
 import org.chromium.components.thinwebview.ThinWebViewConstraints;
 import org.chromium.components.thinwebview.ThinWebViewFactory;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -55,13 +56,15 @@ public class SponsoredRichMediaWebView {
                 ThinWebViewFactory.create(
                         activity,
                         new ThinWebViewConstraints(),
-                        windowAndroid.getIntentRequestTracker());
+                        windowAndroid.getIntentRequestTracker(),
+                        /* enablePermissionRequests= */ false);
         mWebView.getView()
                 .setLayoutParams(
                         new FrameLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.MATCH_PARENT));
-        mWebView.attachWebContents(mWebContents, webContentView, null);
+        mWebView.attachWebContents(
+                mWebContents, webContentView, new ThinWebViewAttachParams.Builder().build());
     }
 
     public void maybeLoadSponsoredRichMedia(String placementId, String creativeInstanceId) {

@@ -8,60 +8,48 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
-#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/proxy_config/pref_proxy_config_tracker.h"
 #include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
-
-namespace brave_shields {
 
 namespace {
 
-std::string GetTagFromPrefName(const std::string& pref_name) {
-  if (pref_name == prefs::kFBEmbedControlType) {
-    return brave_shields::kFacebookEmbeds;
-  }
-  if (pref_name == prefs::kTwitterEmbedControlType) {
-    return brave_shields::kTwitterEmbeds;
-  }
-  if (pref_name == prefs::kLinkedInEmbedControlType) {
-    return brave_shields::kLinkedInEmbeds;
-  }
-  return "";
+inline constexpr char kLegacyFBEmbedControlType[] = "brave.fb_embed_default";
+inline constexpr char kLegacyTwitterEmbedControlType[] =
+    "brave.twitter_embed_default";
+inline constexpr char kLegacyLinkedInEmbedControlType[] =
+    "brave.linkedin_embed_default";
 }
 
-}  // namespace
+namespace brave_shields {
 
-AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
+AdBlockPrefService::AdBlockPrefService(bool is_regular_profile,
                                        PrefService* prefs,
                                        PrefService* local_state,
-                                       const std::string& locale)
-    : ad_block_service_(ad_block_service), prefs_(prefs) {
-  pref_change_registrar_.reset(new PrefChangeRegistrar());
-  pref_change_registrar_->Init(prefs_);
-  pref_change_registrar_->Add(
-      prefs::kFBEmbedControlType,
-      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this), prefs::kFBEmbedControlType));
-  pref_change_registrar_->Add(
-      prefs::kTwitterEmbedControlType,
-      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this),
-                          prefs::kTwitterEmbedControlType));
-  pref_change_registrar_->Add(
-      prefs::kLinkedInEmbedControlType,
-      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this),
-                          prefs::kLinkedInEmbedControlType));
-  OnPreferenceChanged(prefs::kFBEmbedControlType);
-  OnPreferenceChanged(prefs::kTwitterEmbedControlType);
-  OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
+                                       const std::string& locale) {
+  if (is_regular_profile &&
+      !local_state->GetBoolean(
+          prefs::kMigratedAdblockSocialMediaBlockingSettings)) {
+    // Yes, we're reading these on the first profile launched, and migrating
+    // them to Local State. It's not ideal, but that's how the settings have
+    // existed for a long time.
+    for (const auto& [old_pref, new_pref] :
+         {std::pair{kLegacyFBEmbedControlType, prefs::kFBEmbedControlType},
+          std::pair{kLegacyTwitterEmbedControlType,
+                    prefs::kTwitterEmbedControlType},
+          std::pair{kLegacyLinkedInEmbedControlType,
+                    prefs::kLinkedInEmbedControlType}}) {
+      if (prefs->FindPreference(old_pref)->HasUserSetting()) {
+        local_state->SetBoolean(new_pref, prefs->GetBoolean(old_pref));
+      }
+    }
+    local_state->SetBoolean(prefs::kMigratedAdblockSocialMediaBlockingSettings,
+                            true);
+  }
 
   ManageAdBlockOnlyModeByLocale(local_state, locale);
 }
@@ -92,8 +80,6 @@ AdBlockPrefService::GetLatestProxyConfig(
 }
 
 void AdBlockPrefService::Shutdown() {
-  pref_change_registrar_.reset();
-
   // `pref_proxy_config_tracker_` has a reference to `proxy_config_service_`,
   // therefore detach `pref_proxy_config_tracker_` first, to prevent the
   // reference from dangling.
@@ -109,20 +95,19 @@ void AdBlockPrefService::Shutdown() {
   }
 }
 
-void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
-  std::string tag = GetTagFromPrefName(pref_name);
-  if (tag.length() == 0) {
-    return;
-  }
-  bool enabled = prefs_->GetBoolean(pref_name);
-  ad_block_service_->EnableTag(tag, enabled);
-}
-
 void AdBlockPrefService::OnProxyConfigChanged(
     const net::ProxyConfigWithAnnotation& config,
     net::ProxyConfigService::ConfigAvailability availability) {
   last_proxy_config_availability_ = availability;
   last_proxy_config_ = config;
+}
+
+// static
+void AdBlockPrefService::RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(kLegacyFBEmbedControlType, true);
+  registry->RegisterBooleanPref(kLegacyTwitterEmbedControlType, true);
+  registry->RegisterBooleanPref(kLegacyLinkedInEmbedControlType, false);
 }
 
 }  // namespace brave_shields

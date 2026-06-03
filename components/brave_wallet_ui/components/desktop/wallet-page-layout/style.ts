@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled('div')<{ maintainWidth?: boolean }>`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   width: 100%;
   min-width: ${(p) => (p.maintainWidth ? 'unset' : '500px')};
 `

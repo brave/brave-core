@@ -11,10 +11,13 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
 
+// Shared Styles
+import { Text } from '../../../../components/shared/style'
+
 export const BannerCard = styled.div`
   margin-top: 24px;
   margin-bottom: 40px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   box-shadow: 0px 0px 8px rgba(151, 151, 151, 0.16);
   border-radius: 4px;
   display: flex;
@@ -25,22 +28,14 @@ export const BannerCard = styled.div`
   padding: 16px;
 `
 
-export const ImportantText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
+export const ImportantText = styled(Text)`
   line-height: 22px;
-  color: ${(p) => p.theme.color.errorBorder};
+  color: ${leo.color.systemfeedback.errorBackground};
 `
 
-export const BannerText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+export const BannerText = styled(Text)`
   line-height: 22px;
-  color: ${(p) => p.theme.color.text};
+  color: ${leo.color.text.primary};
 `
 
 export const CenteredRow = styled.div`
@@ -60,7 +55,7 @@ export const WarningCircle = styled.div`
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
-  background-color: ${(p) => p.theme.color.errorBorder};
+  background-color: ${leo.color.systemfeedback.errorBackground};
   margin-right: 16px;
 `
 

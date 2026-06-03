@@ -3,11 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
 source_set("common") {
   sources = [
     "constants.h",
     "features.cc",
     "features.h",
+    "pref_names.h",
   ]
+  deps = [ "//base" ]
+}
+
+generated_types("schema") {
+  sources = [ "schema.idl" ]
+  root_namespace = "query_filter::%(namespace)s"
   deps = [ "//base" ]
 }

@@ -37,7 +37,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   SolanaTxManager(TxService& tx_service,
                   JsonRpcService* json_rpc_service,
                   KeyringService& keyring_service,
-                  TxStorageDelegate& delegate,
+                  TxStorage& tx_storage,
                   AccountResolverDelegate& account_resolver_delegate);
   ~SolanaTxManager() override;
 

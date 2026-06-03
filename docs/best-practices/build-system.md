@@ -4,7 +4,8 @@
 
 ## ✅ DEPS File - Use Commit Hashes
 
-**In DEPS files, always use commit hashes rather than branch names or tags.** Commit hashes are immutable and ensure reproducible builds.
+**In DEPS files, always use commit hashes rather than branch names or tags.**
+Commit hashes are immutable and ensure reproducible builds.
 
 ---
 
@@ -12,7 +13,9 @@
 
 ## ✅ Reuse Existing GN Config Args
 
-**Check for existing GN args before creating new ones.** Duplicating config arguments (e.g., creating `brave_android_keystore_path` when `android_keystore_path` already exists) adds confusion and maintenance burden.
+**Check for existing GN args before creating new ones.** Duplicating config
+arguments (e.g., creating `brave_android_keystore_path` when
+`android_keystore_path` already exists) adds confusion and maintenance burden.
 
 ---
 
@@ -23,14 +26,18 @@
 Python scripts used in the build system should follow these conventions:
 
 - **Use `argparse`** for command-line arguments, not `sys.argv` directly
-- **Use standard `Main()` pattern** to ensure proper error propagation to GN:
+- **Use the standard `main()` pattern with `sys.exit(main())`** so scripts can
+  either return explicit exit codes or rely on uncaught exceptions for non-zero
+  exits:
+
   ```python
-  def Main():
+  import sys
+
+  def main():
       ...
-      return 0
 
   if __name__ == '__main__':
-      sys.exit(Main())
+      sys.exit(main())
   ```
 
 ---
@@ -39,7 +46,9 @@ Python scripts used in the build system should follow these conventions:
 
 ## ✅ Group Sources and Deps Together in BUILD.gn
 
-**Always group `sources` and `deps` in the same block.** Don't dump everything in one place - move files to separate BUILD.gn files when needed so it's clear which deps belong to which sources.
+**Always group `sources` and `deps` in the same block.** Don't dump everything
+in one place - move files to separate BUILD.gn files when needed so it's clear
+which deps belong to which sources.
 
 ```gn
 # ❌ WRONG - all deps in root BUILD.gn, hard to track
@@ -61,7 +70,9 @@ source_set("branded_wallpaper") {
 
 ## ❌ Never More Than One Guard Per Target
 
-**There should almost never be more than one of the same guard in any given BUILD.gn target.** If you find yourself repeating the same `if (enable_brave_foo)` block multiple times, consolidate.
+**There should almost never be more than one of the same guard in any given
+BUILD.gn target.** If you find yourself repeating the same
+`if (enable_brave_foo)` block multiple times, consolidate.
 
 ---
 
@@ -69,7 +80,9 @@ source_set("branded_wallpaper") {
 
 ## ✅ Use Buildflags Instead of OS Guards for Features
 
-**Use buildflags (`BUILDFLAG(ENABLE_FOO)`) instead of OS platform guards (`is_linux`, `is_win`) for feature-specific code.** Platform guards without buildflags are deprecated.
+**Use buildflags (`BUILDFLAG(ENABLE_FOO)`) instead of OS platform guards
+(`is_linux`, `is_win`) for feature-specific code.** Platform guards without
+buildflags are deprecated.
 
 ```gn
 # ❌ WRONG - deprecated OS guard
@@ -83,7 +96,9 @@ if (enable_tor) {
 }
 ```
 
-Also: only feature-specific header files should go inside feature guards. Don't put unrelated headers inside a feature guard block even if they're only currently used by that feature.
+Also: only feature-specific header files should go inside feature guards. Don't
+put unrelated headers inside a feature guard block even if they're only
+currently used by that feature.
 
 ---
 
@@ -91,7 +106,11 @@ Also: only feature-specific header files should go inside feature guards. Don't 
 
 ## ✅ Buildflag Naming Convention
 
-**Use `enable_brave_<feature>` as the naming convention for buildflags when the flag needs to be distinguished from a Chromium flag or is a top-level Brave feature.** The `enable_brave_` prefix is not required for flags that are clearly Brave-specific by context (e.g., a flag scoped within a Brave component's own buildflags file).
+**Use `enable_brave_<feature>` as the naming convention for buildflags when the
+flag needs to be distinguished from a Chromium flag or is a top-level Brave
+feature.** The `enable_brave_` prefix is not required for flags that are clearly
+Brave-specific by context (e.g., a flag scoped within a Brave component's own
+buildflags file).
 
 ```gn
 # ❌ WRONG - non-standard naming
@@ -111,7 +130,8 @@ enable_tab_management_tool = !is_android
 
 ## ❌ Don't Duplicate License Files
 
-**Never duplicate Chromium or other project license files.** Use special cases or references instead.
+**Never duplicate Chromium or other project license files.** Use special cases
+or references instead.
 
 ---
 
@@ -119,23 +139,12 @@ enable_tab_management_tool = !is_android
 
 ## ✅ JSON Resources Should Go in GRD Files
 
-**JSON data files should be packaged as resources in `.grd` files, not loaded from disk.** This allows the same data to be used from both C++ and JS.
+**JSON data files should be packaged as resources in `.grd` files, not loaded
+from disk.** This allows the same data to be used from both C++ and JS.
 
-See `brave/components/brave_rewards/resources/brave_rewards_static_resources.grd` for an example.
-
----
-
-<a id="BS-012"></a>
-
-## ✅ Always Double-Check Dependencies
-
-**Always verify you have deps for all includes and used symbols.** Missing deps can work by accident through transitive dependencies but will break when those transitive deps change.
-
-```gn
-# Check for deps matching your includes:
-# #include "url/gurl.h" -> needs dep "//url"
-# #include "extensions/browser/..." -> needs dep "//extensions/browser/..."
-```
+See
+`brave/components/brave_rewards/resources/brave_rewards_static_resources.grd`
+for an example.
 
 ---
 
@@ -143,7 +152,10 @@ See `brave/components/brave_rewards/resources/brave_rewards_static_resources.grd
 
 ## ✅ Use `//brave/` Deps Instead of Modifying Visibility Lists
 
-**When adding deps from Chromium targets to Brave code, use high-level `//brave/` targets (e.g., `//brave/utility`) instead of modifying Chromium visibility lists.** Visibility lists exist to prevent exactly this kind of cross-boundary dependency.
+**When adding deps from Chromium targets to Brave code, use high-level
+`//brave/` targets (e.g., `//brave/utility`) instead of modifying Chromium
+visibility lists.** Visibility lists exist to prevent exactly this kind of
+cross-boundary dependency.
 
 ```gn
 # ❌ WRONG - modifying Chromium visibility list
@@ -159,7 +171,9 @@ deps += [ "//brave/utility" ]
 
 ## ✅ Add `#endif` Comments for Clarity
 
-**Add `#endif` comments to clarify what each `#endif` is closing.** See the "Refined Rule: `#endif` Comments Based on Block Length" section below for specific guidance on when to include vs omit these comments.
+**Add `#endif` comments to clarify what each `#endif` is closing.** See the
+"Refined Rule: `#endif` Comments Based on Block Length" section below for
+specific guidance on when to include vs omit these comments.
 
 ```cpp
 #if BUILDFLAG(ENABLE_SPELLCHECK)
@@ -171,9 +185,17 @@ deps += [ "//brave/utility" ]
 
 <a id="BS-015"></a>
 
-## ✅ Scripts Go in brave/scripts
+## ✅ Keep Scripts Near Their Use
 
-**Build and utility scripts should go in `brave/scripts/`, not in `build/` or other Chromium directories.**
+**Build and utility scripts should live near the build target or configuration
+that uses them.** For example, if a script is only used by a GN `action()` in a
+specific directory, place the script in that directory. If a utility script is
+referenced from `DEPS`, place it near the related dependency or configuration
+instead of adding it to a shared `brave/script` directory.
+
+**Avoid adding new build or utility scripts to `brave/script`.** Keep that
+directory for existing scripts and use a more local location for new script
+logic.
 
 ---
 
@@ -181,7 +203,9 @@ deps += [ "//brave/utility" ]
 
 ## ❌ Avoid Separate Repositories
 
-**Avoid creating separate repositories for Brave features.** Separate repos are harder to manage, code review, and maintain. Prefer keeping code within brave-core.
+**Avoid creating separate repositories for Brave features.** Separate repos are
+harder to manage, code review, and maintain. Prefer keeping code within
+brave-core.
 
 ---
 
@@ -189,7 +213,12 @@ deps += [ "//brave/utility" ]
 
 ## ✅ Add New URLs to the Network Audit Allowed List
 
-**When adding a new network endpoint URL that does not require user opt-in, it must be added to the network audit allowed list** in `brave/browser/net/brave_network_audit_allowed_lists.h`. Without this, the network audit check will fail. Endpoints that only make requests based on explicit user action (e.g., clicking a button) do not need to be added to the network auditor.
+**When adding a new network endpoint URL that does not require user opt-in, it
+must be added to the network audit allowed list** in
+`brave/browser/net/brave_network_audit_allowed_lists.h`. Without this, the
+network audit check will fail. Endpoints that only make requests based on
+explicit user action (e.g., clicking a button) do not need to be added to the
+network auditor.
 
 ---
 
@@ -197,7 +226,9 @@ deps += [ "//brave/utility" ]
 
 ## ❌ Don't Use OS Guards as Proxy for Feature Guards
 
-**Use the correct feature guard (`brave_wallet_enabled`, `enable_extensions`) instead of approximating with OS guards (`!is_android && !is_ios`).** OS guards can get out of sync with the actual feature flag logic.
+**Use the correct feature guard (`brave_wallet_enabled`, `enable_extensions`)
+instead of approximating with OS guards (`!is_android && !is_ios`).** OS guards
+can get out of sync with the actual feature flag logic.
 
 ```gn
 # ❌ WRONG - OS guard as proxy for feature
@@ -217,7 +248,11 @@ if (brave_wallet_enabled) {
 
 ## ✅ Use `use_blink` for Content-Layer Dependencies, Not `!is_ios`
 
-**Code that depends on the content layer (`//content/...`) must be guarded with `use_blink`, not `!is_ios`.** The `use_blink` flag is the correct way to detect content/Blink availability. Using `!is_ios` as a proxy is incorrect because `use_blink` is the actual flag that controls whether the content layer is built, and `!is_ios` may not always be equivalent.
+**Code that depends on the content layer (`//content/...`) must be guarded with
+`use_blink`, not `!is_ios`.** The `use_blink` flag is the correct way to detect
+content/Blink availability. Using `!is_ios` as a proxy is incorrect because
+`use_blink` is the actual flag that controls whether the content layer is built,
+and `!is_ios` may not always be equivalent.
 
 ```gn
 # ❌ WRONG - using !is_ios as proxy for content availability
@@ -251,7 +286,9 @@ if (use_blink) {
 
 ## ❌ Don't Have Both `BUILD.gn` and `sources.gni` in the Same Directory
 
-**A directory should contain either a `BUILD.gn` file (preferred) or a `sources.gni` file, but not both.** Having both creates confusion about which is authoritative and makes dependency tracking harder.
+**A directory should contain either a `BUILD.gn` file (preferred) or a
+`sources.gni` file, but not both.** Having both creates confusion about which is
+authoritative and makes dependency tracking harder.
 
 ---
 
@@ -259,7 +296,10 @@ if (use_blink) {
 
 ## ✅ Use `sources.gni` Only for Circular Dependencies with Upstream
 
-**Only use `sources.gni` when inserting source files into upstream Chromium targets with circular deps.** For all other cases, use normal `BUILD.gn` targets. Putting everything in `sources.gni` hurts incremental builds because changes trigger rebuilds of large upstream targets.
+**Only use `sources.gni` when inserting source files into upstream Chromium
+targets with circular deps.** For all other cases, use normal `BUILD.gn`
+targets. Putting everything in `sources.gni` hurts incremental builds because
+changes trigger rebuilds of large upstream targets.
 
 ---
 
@@ -267,7 +307,9 @@ if (use_blink) {
 
 ## ✅ Create Test Targets in Component BUILD.gn
 
-**Unit test files should have a test target in the component's `BUILD.gn`, not be individually listed in the top-level `test/BUILD.gn`.** The top-level test target should depend on the component's test target.
+**Unit test files should have a test target in the component's `BUILD.gn`, not
+be individually listed in the top-level `test/BUILD.gn`.** The top-level test
+target should depend on the component's test target.
 
 ```gn
 # ❌ WRONG - individual test files in top-level test/BUILD.gn
@@ -289,7 +331,10 @@ deps += [ "//brave/components/ai_chat/core:unit_tests" ]
 
 ## ✅ Create `test_support` Targets for Reusable Fakes/Mocks
 
-**When creating fake or mock implementations of services for testing, put them in a separate `test_support` BUILD.gn target rather than embedding them directly in a `unit_tests` target.** This allows multiple test targets across the codebase to reuse the same fakes.
+**When creating fake or mock implementations of services for testing, put them
+in a separate `test_support` BUILD.gn target rather than embedding them directly
+in a `unit_tests` target.** This allows multiple test targets across the
+codebase to reuse the same fakes.
 
 ```gn
 # ❌ WRONG - fake service only available to one test target
@@ -326,7 +371,8 @@ source_set("unit_tests") {
 
 ## ✅ Use `PlatformBrowserTest` for Cross-Platform Browser Tests
 
-**Browser tests that should run on both desktop and Android should use `PlatformBrowserTest` as the base class instead of `InProcessBrowserTest`.**
+**Browser tests that should run on both desktop and Android should use
+`PlatformBrowserTest` as the base class instead of `InProcessBrowserTest`.**
 
 ```cpp
 #if BUILDFLAG(IS_ANDROID)
@@ -348,7 +394,10 @@ class MyBrowserTest : public PlatformBrowserTest {};
 
 ## ✅ Use `public_deps` for Header-File Includes in BUILD.gn
 
-**When a dependency's headers are included in your target's header files (not just .cc files), that dependency must be listed in `public_deps`, not `deps`.** This ensures consumers of your target also get the transitive include paths they need.
+**When a dependency's headers are included in your target's header files (not
+just .cc files), that dependency must be listed in `public_deps`, not `deps`.**
+This ensures consumers of your target also get the transitive include paths they
+need.
 
 ```gn
 # ❌ WRONG - header-visible dependency in regular deps
@@ -371,7 +420,10 @@ source_set("my_service") {
 
 ## ✅ Utility Scripts Should Be Python, Not Node.js or Shell
 
-**Build and utility scripts in brave-core should be written in Python (using `vpython` from depot tools), not Node.js or shell scripts.** This follows Chromium conventions, avoids additional runtime dependencies, and works on all platforms including Windows.
+**Build and utility scripts in brave-core should be written in Python (using
+`vpython` from depot tools), not Node.js or shell scripts.** This follows
+Chromium conventions, avoids additional runtime dependencies, and works on all
+platforms including Windows.
 
 ---
 
@@ -379,7 +431,11 @@ source_set("my_service") {
 
 ## ✅ Unconditional Buildflags Deps with Conditional `deps +=`
 
-**When adding `deps +=` inside an `if(enable_feature)` block in GN, always add an unconditional `buildflags` dependency outside the conditional.** The buildflags header is needed even when the feature is disabled (for the `#if BUILDFLAG(...)` check itself). Run `gn check` with the buildflag disabled to verify.
+**When adding `deps +=` inside an `if(enable_feature)` block in GN, always add
+an unconditional `buildflags` dependency outside the conditional.** The
+buildflags header is needed even when the feature is disabled (for the
+`#if BUILDFLAG(...)` check itself). Run `gn check` with the buildflag disabled
+to verify.
 
 ```gn
 # ❌ WRONG - buildflags dep only inside conditional
@@ -405,7 +461,9 @@ if (enable_brave_rewards) {
 
 ## ✅ Use source_set Only for Internal Targets (with Restricted Visibility)
 
-**Public targets for a component should use `static_library` or `component`, not `source_set`.** Only internal deps should use `source_set`, and those must have restricted visibility to prevent external use.
+**Public targets for a component should use `static_library` or `component`, not
+`source_set`.** Only internal deps should use `source_set`, and those must have
+restricted visibility to prevent external use.
 
 ```gn
 # ❌ WRONG - internal source_set with default (public) visibility
@@ -426,7 +484,9 @@ source_set("internal_network") {
 
 ## ✅ Python File Writes: Use `newline='\n'`
 
-**When writing files from Python scripts, always specify `newline='\n'`** in `open()` to ensure consistent LF line endings across platforms (especially Windows).
+**When writing files from Python scripts, always specify `newline='\n'`** in
+`open()` to ensure consistent LF line endings across platforms (especially
+Windows).
 
 ```python
 # ❌ WRONG - platform-dependent line endings
@@ -444,7 +504,9 @@ with open(output_path, 'w', newline='\n') as f:
 
 ## ✅ Use `include_rules` for Common Includes, `specific_include_rules` for Edge Cases
 
-**In DEPS files, use `include_rules` for generally allowed includes across all files in a directory.** Reserve `specific_include_rules` for edge cases where an include should only be allowed in specific files.
+**In DEPS files, use `include_rules` for generally allowed includes across all
+files in a directory.** Reserve `specific_include_rules` for edge cases where an
+include should only be allowed in specific files.
 
 ```python
 # ❌ WRONG - using specific_include_rules for commonly needed includes
@@ -468,7 +530,8 @@ include_rules = [
 
 ## ✅ Bump `resource_ids.spec` by 5
 
-**When adding new resource IDs in `resource_ids.spec`, bump the next ID by 5 (not 1)** to leave room for additions without conflicting with adjacent entries.
+**When adding new resource IDs in `resource_ids.spec`, bump the next ID by 5
+(not 1)** to leave room for additions without conflicting with adjacent entries.
 
 ---
 
@@ -476,7 +539,9 @@ include_rules = [
 
 ## ✅ Use `component()` Not `static_library()` for Service GN Targets
 
-**Mojo service targets should use `component()` instead of `static_library()` in BUILD.gn.** Components support dynamic linking and are the correct target type for service implementations.
+**Mojo service targets should use `component()` instead of `static_library()` in
+BUILD.gn.** Components support dynamic linking and are the correct target type
+for service implementations.
 
 ---
 
@@ -484,7 +549,10 @@ include_rules = [
 
 ## ❌ Unit Tests for Components Must NOT Live in Browser
 
-**Unit tests for code in `//brave/components` must not be placed in `//brave/browser`.** Tests should live alongside the code they test. Use `content::RenderViewHostTestHarness` for component-level tests that need content layer support.
+**Unit tests for code in `//brave/components` must not be placed in
+`//brave/browser`.** Tests should live alongside the code they test. Use
+`content::RenderViewHostTestHarness` for component-level tests that need content
+layer support.
 
 ```gn
 # ❌ WRONG - component test in browser directory
@@ -504,9 +572,16 @@ source_set("unit_tests") {
 
 ## ✅ Place Includes Inside BUILDFLAG Guards When Only Used There
 
-**When an `#include` is only used inside a `#if BUILDFLAG(...)` block, the include must also be inside that guard.** An unconditional include for a conditionally-used header breaks builds when the feature is disabled.
+**When an `#include` is only used inside a `#if BUILDFLAG(...)` block, the
+include must also be inside that guard.** An unconditional include for a
+conditionally-used header breaks builds when the feature is disabled.
 
-**IMPORTANT: Only apply this rule when the BUILDFLAG actually exists.** Before suggesting that code be wrapped in a `#if BUILDFLAG(...)` guard, verify the buildflag is defined in the codebase (check `buildflags.gni` files or existing usage). Never fabricate or assume a buildflag name — if no buildflag exists for a feature, do not invent one. Instead, check if the feature uses `base::FeatureList` runtime checks or has no compile-time guard at all.
+**IMPORTANT: Only apply this rule when the BUILDFLAG actually exists.** Before
+suggesting that code be wrapped in a `#if BUILDFLAG(...)` guard, verify the
+buildflag is defined in the codebase (check `buildflags.gni` files or existing
+usage). Never fabricate or assume a buildflag name — if no buildflag exists for
+a feature, do not invent one. Instead, check if the feature uses
+`base::FeatureList` runtime checks or has no compile-time guard at all.
 
 ```cpp
 // ❌ WRONG - unconditional include for conditionally-used header
@@ -529,7 +604,8 @@ source_set("unit_tests") {
 
 ## ✅ Merge Consecutive Identical BUILDFLAG Blocks
 
-**When multiple consecutive code regions use the same `#if BUILDFLAG(...)` condition, merge them into a single guard block.**
+**When multiple consecutive code regions use the same `#if BUILDFLAG(...)`
+condition, merge them into a single guard block.**
 
 ```cpp
 // ❌ WRONG - redundant guards
@@ -554,7 +630,9 @@ namespace rewards { ... }
 
 ## ✅ DEPS Allowlist Paths Must Exactly Match Include Paths
 
-**DEPS file allowlist paths must exactly match the `#include` paths used in source files.** A mismatch (e.g., `common/` vs `core/`) means the DEPS check doesn't validate the right file.
+**DEPS file allowlist paths must exactly match the `#include` paths used in
+source files.** A mismatch (e.g., `common/` vs `core/`) means the DEPS check
+doesn't validate the right file.
 
 ---
 
@@ -562,7 +640,8 @@ namespace rewards { ... }
 
 ## ✅ Use `assert()` at Top of Entire-Feature BUILD.gn Files
 
-**If an entire BUILD.gn file belongs to a feature, use `assert(enable_feature)` at the top** rather than wrapping individual blocks in `if (enable_feature)`.
+**If an entire BUILD.gn file belongs to a feature, use `assert(enable_feature)`
+at the top** rather than wrapping individual blocks in `if (enable_feature)`.
 
 ```gn
 # ❌ WRONG - wrapping everything inside a conditional
@@ -585,10 +664,17 @@ source_set("wallet_tests") {
 
 ## ❌ Don't Confuse Feature Flags with Build Flags
 
-**Runtime feature flags (`base::FeatureList`) and compile-time build flags (`BUILDFLAG()`) are completely different mechanisms.** Do not confuse them in either direction: runtime feature flags cannot gate build-time deps, and buildflag-guarded code does not need a redundant runtime feature flag on top.
+**Runtime feature flags (`base::FeatureList`) and compile-time build flags
+(`BUILDFLAG()`) are completely different mechanisms.** Do not confuse them in
+either direction: runtime feature flags cannot gate build-time deps, and
+buildflag-guarded code does not need a redundant runtime feature flag on top.
 
-- **Build flags** (e.g., `enable_brave_wallet`, `BUILDFLAG(ENABLE_EXTENSIONS)`) are set at compile time via GN args. They can guard `deps`, `sources`, `#include` blocks, and code blocks.
-- **Feature flags** (e.g., `base::FeatureList::IsEnabled(kMyFeature)`) are checked at runtime. They can only guard code execution, not build-time dependency inclusion.
+- **Build flags** (e.g., `enable_brave_wallet`, `BUILDFLAG(ENABLE_EXTENSIONS)`)
+  are set at compile time via GN args. They can guard `deps`, `sources`,
+  `#include` blocks, and code blocks.
+- **Feature flags** (e.g., `base::FeatureList::IsEnabled(kMyFeature)`) are
+  checked at runtime. They can only guard code execution, not build-time
+  dependency inclusion.
 
 ```gn
 # ❌ WRONG - runtime feature flag cannot gate build-time deps
@@ -612,7 +698,9 @@ deps += [ "//brave/components/local_ai/resources" ]
 
 ## ✅ Add `static_assert` in Public Headers for Build Flag Guards
 
-**When introducing a build flag for a component, add `static_assert` in public-facing headers** to catch accidental inclusion when the feature is disabled.
+**When introducing a build flag for a component, add `static_assert` in
+public-facing headers** to catch accidental inclusion when the feature is
+disabled.
 
 ```cpp
 // In brave/components/brave_wallet/browser/brave_wallet_service.h
@@ -626,7 +714,9 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 ## ❌ Don't Use `nogncheck` - Fix the Underlying Dep Guard
 
-**Do not use `nogncheck` to suppress gn check failures.** Instead fix the underlying GN dependency to be correctly conditional. `nogncheck` is a code smell that masks real build dependency issues.
+**Do not use `nogncheck` to suppress gn check failures.** Instead fix the
+underlying GN dependency to be correctly conditional. `nogncheck` is a code
+smell that masks real build dependency issues.
 
 ```cpp
 // ❌ WRONG - suppressing the real problem
@@ -642,7 +732,9 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 ## ✅ GN Deps Guarded by Feature Flags Only, Not Platform Guards
 
-**Within a single GN target, deps should be added behind the relevant buildflags only, not nested inside platform guards.** GN and C++ guards should always match.
+**Within a single GN target, deps should be added behind the relevant buildflags
+only, not nested inside platform guards.** GN and C++ guards should always
+match.
 
 ```gn
 # ❌ WRONG - nested inside platform guard
@@ -664,7 +756,12 @@ if (enable_tor) {
 
 ## ❌ Don't Guard Deps with Unrelated Guards
 
-**A dep should only be placed inside a guard if the dep itself is specific to that guard condition.** If a dep is needed regardless of the guard condition, include it unconditionally. Putting unrelated deps inside guards (e.g., placing a general utility dep inside `if (use_blink)` or `if (!is_ios)` when it has nothing to do with blink/iOS) creates incorrect build configurations and can cause missing symbol errors on platforms where the guard evaluates to false.
+**A dep should only be placed inside a guard if the dep itself is specific to
+that guard condition.** If a dep is needed regardless of the guard condition,
+include it unconditionally. Putting unrelated deps inside guards (e.g., placing
+a general utility dep inside `if (use_blink)` or `if (!is_ios)` when it has
+nothing to do with blink/iOS) creates incorrect build configurations and can
+cause missing symbol errors on platforms where the guard evaluates to false.
 
 ```gn
 # ❌ WRONG - "//brave/components/constants" has nothing to do with blink
@@ -690,7 +787,9 @@ if (use_blink) {
 
 ## ✅ When Disabling a Feature, Compile Out Its Tests
 
-**When a build flag disables a feature, exclude the feature-specific test files from the build** using conditionals rather than trying to fix compilation errors by adjusting test dependencies.
+**When a build flag disables a feature, exclude the feature-specific test files
+from the build** using conditionals rather than trying to fix compilation errors
+by adjusting test dependencies.
 
 ```gn
 # ❌ WRONG - fixing deps to make disabled feature tests compile
@@ -708,7 +807,9 @@ if (enable_brave_rewards) {
 
 ## ✅ Build Flag Validation Requires Both States
 
-**When adding a build flag, run `gn_check`, unit tests, component tests, browser tests, and presubmit with the flag both enabled AND disabled.** Issues frequently only appear in the disabled state.
+**When adding a build flag, run `gn_check`, unit tests, component tests, browser
+tests, and presubmit with the flag both enabled AND disabled.** Issues
+frequently only appear in the disabled state.
 
 ---
 
@@ -716,12 +817,15 @@ if (enable_brave_rewards) {
 
 ## ✅ Use Chromium UI Preprocessor for Conditional WebUI Code
 
-**Use `// <if expr="enable_feature">` in JS and `<if expr="enable_feature">` in HTML to conditionally compile feature-specific WebUI code.** This completely removes the code from the build when the feature is disabled, rather than relying solely on runtime `loadTimeData` checks.
+**Use `// <if expr="enable_feature">` in JS and `<if expr="enable_feature">` in
+HTML to conditionally compile feature-specific WebUI code.** This completely
+removes the code from the build when the feature is disabled, rather than
+relying solely on runtime `loadTimeData` checks.
 
 ```js
 // ✅ CORRECT - code removed at build time when feature disabled
 // <if expr="enable_speedreader">
-import { SpeedreaderPage } from './speedreader_page.js';
+import { SpeedreaderPage } from './speedreader_page.js'
 // </if>
 ```
 
@@ -732,6 +836,7 @@ import { SpeedreaderPage } from './speedreader_page.js';
 ## ✅ Refined Rule: `#endif` Comments Based on Block Length
 
 **Clarification of the `#endif` comment rule:**
+
 - **Always add** for blocks > 3 lines
 - **Always add** when inside nested `#if` blocks
 - **Always add** when surrounding code already uses them (consistency)
@@ -743,7 +848,9 @@ import { SpeedreaderPage } from './speedreader_page.js';
 
 ## ✅ Assert Build Flag Dependencies Between Features
 
-**When Feature A depends on Feature B, assert Feature B's build flag is true when Feature A is enabled** rather than making Feature A work without Feature B for unsupported configurations.
+**When Feature A depends on Feature B, assert Feature B's build flag is true
+when Feature A is enabled** rather than making Feature A work without Feature B
+for unsupported configurations.
 
 ```gn
 # In brave/components/brave_rewards/BUILD.gn
@@ -757,7 +864,9 @@ assert(enable_brave_wallet,
 
 ## ✅ Share Constants via Common Headers
 
-**Shared constants (like limits, URLs, keys) should be defined in a common header** to avoid duplicate definitions across implementation, test, and other files.
+**Shared constants (like limits, URLs, keys) should be defined in a common
+header** to avoid duplicate definitions across implementation, test, and other
+files.
 
 ```cpp
 // ❌ WRONG - same constant in 3 files
@@ -779,7 +888,10 @@ inline constexpr char kOllamaEndpoint[] = "http://localhost:11434";
 
 ## ❌ Never Add Anything to `components/constants` (Deprecated)
 
-**The `components/constants` directory is not a real component — it is a deprecated legacy dumping ground that should be removed.** Never add new constants, headers, or targets there. Instead, place constants in a `common` target within the component that owns them.
+**The `components/constants` directory is not a real component — it is a
+deprecated legacy dumping ground that should be removed.** Never add new
+constants, headers, or targets there. Instead, place constants in a `common`
+target within the component that owns them.
 
 ```gn
 # ❌ WRONG - adding to the legacy catch-all
@@ -791,9 +903,11 @@ inline constexpr char kGate3OAuthUrl[] = "...";
 inline constexpr char kGate3OAuthUrl[] = "...";
 ```
 
-Do not add new `deps` on `//brave/components/constants` either — migrate existing usages to proper component-owned targets when you encounter them.
+Do not add new `deps` on `//brave/components/constants` either — migrate
+existing usages to proper component-owned targets when you encounter them.
 
-If a constant (especially a URL) is shared across multiple components with no clear owner, place it in a `brave_domains` target.
+If a constant (especially a URL) is shared across multiple components with no
+clear owner, place it in a `brave_domains` target.
 
 ---
 
@@ -801,7 +915,9 @@ If a constant (especially a URL) is shared across multiple components with no cl
 
 ## ✅ Forward Declarations Don't Need `BUILDFLAG` Guards
 
-**Only `#include` directives and actual usages need to be wrapped in `#if BUILDFLAG(...)` guards.** Forward declarations are harmless — they don't pull in dependencies and cost nothing at compile time if unused.
+**Only `#include` directives and actual usages need to be wrapped in
+`#if BUILDFLAG(...)` guards.** Forward declarations are harmless — they don't
+pull in dependencies and cost nothing at compile time if unused.
 
 ```cpp
 // ❌ UNNECESSARY - guarding a forward declaration
@@ -824,7 +940,11 @@ class HistoryTool;
 
 ## ❌ Don't Use Compound Buildflags (Channel + Platform + Official)
 
-**Do not create buildflags that combine channel, platform, and official_build conditions** (e.g., enabled only on nightly + desktop + official). These compound flags break during branch migration (nightly → beta → release) and create configurations that are nearly impossible to test locally. Use separate, independently testable flags instead.
+**Do not create buildflags that combine channel, platform, and official_build
+conditions** (e.g., enabled only on nightly + desktop + official). These
+compound flags break during branch migration (nightly → beta → release) and
+create configurations that are nearly impossible to test locally. Use separate,
+independently testable flags instead.
 
 ---
 
@@ -832,7 +952,10 @@ class HistoryTool;
 
 ## ❌ Don't Include Buildflag Headers in Conditionally-Compiled Files
 
-**If a file is only compiled when a buildflag is enabled (guarded by `if(enable_feature)` in BUILD.gn), that file should not `#include` the buildflag header or use `#if BUILDFLAG(...)` guards.** The file is never compiled when the flag is disabled, so checking the flag inside it is redundant and misleading.
+**If a file is only compiled when a buildflag is enabled (guarded by
+`if(enable_feature)` in BUILD.gn), that file should not `#include` the buildflag
+header or use `#if BUILDFLAG(...)` guards.** The file is never compiled when the
+flag is disabled, so checking the flag inside it is redundant and misleading.
 
 ```cpp
 // In brave/components/foo/foo_impl.cc
@@ -849,7 +972,10 @@ void DoFoo() { ... }
 void DoFoo() { ... }
 ```
 
-Note: Public headers may still benefit from a `static_assert(BUILDFLAG(...))` as a safety net against accidental inclusion (see BS-049). This rule applies to implementation files and internal headers that are strictly behind the BUILD.gn guard.
+Note: Public headers may still benefit from a `static_assert(BUILDFLAG(...))` as
+a safety net against accidental inclusion (see BS-049). This rule applies to
+implementation files and internal headers that are strictly behind the BUILD.gn
+guard.
 
 ---
 
@@ -857,7 +983,10 @@ Note: Public headers may still benefit from a `static_assert(BUILDFLAG(...))` as
 
 ## ✅ Use `public` to Restrict Header Visibility in Components
 
-**When a GN target exposes only a subset of its headers to consumers, explicitly list those headers in `public = [...]` to keep the rest internal.** This improves encapsulation — consumers can only include the declared public headers, preventing accidental coupling to implementation details.
+**When a GN target exposes only a subset of its headers to consumers, explicitly
+list those headers in `public = [...]` to keep the rest internal.** This
+improves encapsulation — consumers can only include the declared public headers,
+preventing accidental coupling to implementation details.
 
 ```gn
 # ❌ WRONG - all headers are implicitly public
@@ -884,7 +1013,9 @@ source_set("core") {
 }
 ```
 
-This is especially useful for `static_library` and `source_set` targets that contain both a public API and private implementation files. GN will enforce that only headers listed in `public` can be `#include`d by dependent targets.
+This is especially useful for `static_library` and `source_set` targets that
+contain both a public API and private implementation files. GN will enforce that
+only headers listed in `public` can be `#include`d by dependent targets.
 
 ---
 
@@ -892,4 +1023,8 @@ This is especially useful for `static_library` and `source_set` targets that con
 
 ## ✅ Add New Endpoints to the HSTS Pin List
 
-**When adding any new Brave endpoint, it must be added to the HSTS pin list** in `chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc`. New endpoints must be added to both the pins `"entries"` list and the HSTS `"entries"` list in that file. This applies to all new endpoints regardless of whether they require user opt-in.
+**When adding any new Brave endpoint, it must be added to the HSTS pin list** in
+`chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc`.
+New endpoints must be added to both the pins `"entries"` list and the HSTS
+`"entries"` list in that file. This applies to all new endpoints regardless of
+whether they require user opt-in.

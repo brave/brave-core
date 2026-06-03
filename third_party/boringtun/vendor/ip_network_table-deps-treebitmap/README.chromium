@@ -1,0 +1,14 @@
+Name: ip_network_table-deps-treebitmap
+Short Name: ip_network_table-deps-treebitmap
+URL: https://github.com/JakubOnderka/treebitmap
+Version: 0.5.0
+License: MIT
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/ip_network_table-deps-treebitmap.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

@@ -33,7 +33,7 @@ const gfx::VectorIcon& MultiContentsViewMiniToolbar::GetMoreVerticalIcon() {
 }
 
 // static
-std::unique_ptr<ui::SimpleMenuModel>
+std::unique_ptr<SplitTabMenuModel>
 MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
     SplitTabMenuModel::MenuSource source,
@@ -52,7 +52,7 @@ BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
     default;
 
 void BraveMultiContentsViewMiniToolbar::HideMenuButton() {
-  image_button_->SetVisible(false);
+  close_button_->SetVisible(false);
 }
 
 void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,

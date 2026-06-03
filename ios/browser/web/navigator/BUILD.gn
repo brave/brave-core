@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("navigator") {
+  sources = [
+    "brave_navigator_javascript_feature.h",
+    "brave_navigator_javascript_feature.mm",
+  ]
+  deps = [ ":brave_navigator_js" ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("brave_navigator_js") {
+  visibility = [ ":navigator" ]
+
+  sources = [ "resources/brave_navigator.ts" ]
+}

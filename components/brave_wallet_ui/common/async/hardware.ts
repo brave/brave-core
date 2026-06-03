@@ -20,7 +20,6 @@ import {
   getLedgerEthereumHardwareKeyring,
   getLedgerFilecoinHardwareKeyring,
   getLedgerSolanaHardwareKeyring,
-  getTrezorHardwareKeyring,
 } from '../api/hardware_keyrings'
 
 import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
@@ -84,7 +83,7 @@ export async function signTrezorTransaction(
   apiProxy: WalletApiProxy,
   path: string,
   txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId' | 'txDataUnion'>,
-  deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring(),
+  deviceKeyring: TrezorBridgeKeyring,
 ): Promise<HardwareOperationResult> {
   const nonce = await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(
     txInfo.id,
@@ -325,7 +324,7 @@ export async function signEthMessageWithHardwareKeyring(
   path: string,
   messageData: Omit<BraveWallet.SignMessageRequest, 'originInfo'>,
 ): Promise<HardwareOperationResultEthereumSignatureBytes> {
-  const deviceKeyring = getHardwareKeyring(vendor, messageData.coin)
+  const deviceKeyring = await getHardwareKeyring(vendor, messageData.coin)
   const signTypedData = messageData.signData.ethSignTypedData
   const standardSignData = messageData.signData.ethStandardSignData
   if (deviceKeyring instanceof EthereumLedgerBridgeKeyring) {
@@ -400,7 +399,7 @@ export async function signSolTransactionWithHardwareKeyring(
   message: Buffer,
   onAuthorized?: () => void,
 ): Promise<HardwareOperationResultSolanaSignature> {
-  const deviceKeyring = getHardwareKeyring(
+  const deviceKeyring = await getHardwareKeyring(
     vendor,
     BraveWallet.CoinType.SOL,
     onAuthorized,
@@ -417,7 +416,7 @@ export async function cancelHardwareOperation(
   vendor: BraveWallet.HardwareVendor,
   coin: BraveWallet.CoinType,
 ) {
-  const deviceKeyring = getHardwareKeyring(vendor, coin)
+  const deviceKeyring = await getHardwareKeyring(vendor, coin)
   if (
     deviceKeyring instanceof EthereumLedgerBridgeKeyring
     || deviceKeyring instanceof TrezorBridgeKeyring
@@ -431,14 +430,14 @@ export const getDeviceNameFromDevice = async (
   vendor: BraveWallet.HardwareVendor,
   coin: BraveWallet.CoinType,
 ): Promise<HardwareOperationResultDeviceName> => {
-  const keyring = getHardwareKeyring(vendor, coin)
+  const keyring = await getHardwareKeyring(vendor, coin)
   return keyring.getDeviceName()
 }
 
 export const loadAccountsFromDevice = async (
   opts: FetchHardwareWalletAccountsProps,
 ): Promise<HardwareOperationResultAccounts> => {
-  const keyring = getHardwareKeyring(
+  const keyring = await getHardwareKeyring(
     opts.scheme.vendor,
     opts.scheme.coin,
     opts.onAuthorized,

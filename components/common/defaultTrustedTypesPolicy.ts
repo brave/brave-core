@@ -13,9 +13,7 @@
 //
 // Note: Trusted Types are not available on iOS until iOS 26
 
-// @ts-expect-error
 if (typeof window.trustedTypes !== 'undefined') {
-  // @ts-expect-error
   window.trustedTypes.createPolicy('default', {
     createScriptURL: (url: string) => {
       const parsed = new URL(url, document.location.href)

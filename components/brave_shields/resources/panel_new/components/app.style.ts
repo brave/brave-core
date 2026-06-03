@@ -106,6 +106,7 @@ style.passthrough.css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    unicode-bidi: isolate;
 
     &:dir(ltr) {
       direction: rtl;

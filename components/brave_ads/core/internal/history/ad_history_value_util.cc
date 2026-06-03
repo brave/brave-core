@@ -23,7 +23,7 @@ constexpr std::string_view kRowKey = "adDetailRows";
 
 }  // namespace
 
-base::ListValue AdHistoryToValue(const AdHistoryList& ad_history) {
+base::ListValue AdHistoryToList(const AdHistoryList& ad_history) {
   base::ListValue list;
   list.reserve(ad_history.size());
 
@@ -36,7 +36,7 @@ base::ListValue AdHistoryToValue(const AdHistoryList& ad_history) {
                          ad_history_item.created_at
                              .InMillisecondsFSinceUnixEpochIgnoringNull())
                     .Set(kRowKey, base::ListValue().Append(
-                                      AdHistoryItemToValue(ad_history_item))));
+                                      AdHistoryItemToDict(ad_history_item))));
   }
 
   return list;

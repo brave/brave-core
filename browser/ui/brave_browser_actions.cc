@@ -10,7 +10,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -32,8 +32,13 @@
 #include "brave/components/containers/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/browser/utils.h"
+#endif
+
 namespace {
 
+#if BUILDFLAG(ENABLE_PLAYLIST) || BUILDFLAG(ENABLE_AI_CHAT)
 actions::ActionItem::ActionItemBuilder SidePanelAction(
     SidePanelEntryId id,
     int title_id,
@@ -50,6 +55,7 @@ actions::ActionItem::ActionItemBuilder SidePanelAction(
       .SetImage(ui::ImageModel::FromVectorIcon(icon, ui::kColorIcon))
       .SetProperty(actions::kActionItemPinnableKey, is_pinnable);
 }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST) || BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace
 
@@ -81,7 +87,8 @@ void BraveBrowserActions::InitializeBrowserActions() {
 
   BrowserWindowInterface* const bwi = base::to_address(bwi_);
 
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (playlist::IsPlaylistAllowed(profile_->GetPrefs())) {
     root_action_item_->AddChild(
         SidePanelAction(
             SidePanelEntryId::kPlaylist, IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
@@ -89,6 +96,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
             kActionSidePanelShowPlaylist, bwi, true)
             .Build());
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAIChatEnabled(profile_->GetPrefs())) {
@@ -110,7 +118,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
             base::BindRepeating(
                 [](BrowserWindowInterface* bwi, actions::ActionItem* item,
                    actions::ActionInvocationContext context) {
-                  brave::OpenContainerMenuOnPageActionView(bwi);
+                  brave::OpenContainerMenuOnPageActionView(bwi, item);
                 },
                 bwi))
             .SetActionId(kActionShowPartitionedStorage)

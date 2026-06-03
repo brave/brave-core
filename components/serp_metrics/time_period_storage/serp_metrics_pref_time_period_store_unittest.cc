@@ -5,6 +5,8 @@
 
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store.h"
 
+#include <string_view>
+
 #include "base/values.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -15,107 +17,118 @@ namespace serp_metrics {
 
 namespace {
 
-constexpr char kListPrefName[] = "testing.time_period_storage.list";
-constexpr char kDictPrefName[] = "testing.time_period_storage.dict";
-constexpr char kDictKey[] = "testing_key";
+constexpr std::string_view kPrefName = "baz";
+constexpr std::string_view kFooPrefKey = "foo";
+constexpr std::string_view kBarPrefKey = "bar";
 
 }  // namespace
 
 class SerpMetricsPrefTimePeriodStoreTest : public ::testing::Test {
  public:
-  SerpMetricsPrefTimePeriodStoreTest() {
-    pref_service_.registry()->RegisterListPref(kListPrefName);
-    pref_service_.registry()->RegisterDictionaryPref(kDictPrefName);
-  }
-  ~SerpMetricsPrefTimePeriodStoreTest() override = default;
-
-  PrefService* pref_service() { return &pref_service_; }
+  TestingPrefServiceSimple& pref_service() { return pref_service_; }
 
  private:
   TestingPrefServiceSimple pref_service_;
 };
 
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, SetListPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kListPrefName);
-  store.Set(base::ListValue().Append(1));
+TEST_F(SerpMetricsPrefTimePeriodStoreTest, SetStore) {
+  // Arrange
+  pref_service().registry()->RegisterDictionaryPref(kPrefName);
+  SerpMetricsPrefTimePeriodStore store(&pref_service(), kPrefName, kFooPrefKey);
 
-  ASSERT_TRUE(store.Get());
+  // Act
+  store.Set(base::ListValue().Append(1));
+  ASSERT_NE(nullptr, store.Get());
+
+  // Assert
   EXPECT_THAT(*store.Get(), ::testing::ElementsAre(1));
 }
 
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, SetDictPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kDictPrefName, kDictKey);
+TEST_F(SerpMetricsPrefTimePeriodStoreTest, UpdateStore) {
+  // Arrange
+  pref_service().registry()->RegisterDictionaryPref(kPrefName);
+  SerpMetricsPrefTimePeriodStore store(&pref_service(), kPrefName, kFooPrefKey);
   store.Set(base::ListValue().Append(1));
 
-  ASSERT_TRUE(store.Get());
+  // Act
+  store.Set(base::ListValue().Append(2).Append(3));
+  ASSERT_NE(nullptr, store.Get());
+
+  // Assert
+  EXPECT_THAT(*store.Get(), ::testing::ElementsAre(2, 3));
+}
+
+TEST_F(SerpMetricsPrefTimePeriodStoreTest, ClearStore) {
+  // Arrange
+  pref_service().registry()->RegisterDictionaryPref(kPrefName);
+  SerpMetricsPrefTimePeriodStore store(&pref_service(), kPrefName, kFooPrefKey);
+  store.Set(base::ListValue().Append(1));
+
+  // Act
+  store.Clear();
+
+  // Assert
+  EXPECT_FALSE(store.Get());
+}
+
+TEST_F(SerpMetricsPrefTimePeriodStoreTest, GetUninitializedStore) {
+  // Arrange
+  pref_service().registry()->RegisterDictionaryPref(kPrefName);
+  SerpMetricsPrefTimePeriodStore store(&pref_service(), kPrefName, kFooPrefKey);
+
+  // Assert
+  EXPECT_FALSE(store.Get());
+}
+
+TEST_F(SerpMetricsPrefTimePeriodStoreTest,
+       StoresWithDifferentKeysAreIndependent) {
+  // Arrange
+  pref_service().registry()->RegisterDictionaryPref(kPrefName);
+  SerpMetricsPrefTimePeriodStore store(&pref_service(), kPrefName, kFooPrefKey);
+  SerpMetricsPrefTimePeriodStore other_store(&pref_service(), kPrefName,
+                                             kBarPrefKey);
+
+  // Act
+  store.Set(base::ListValue().Append(1));
+  other_store.Set(base::ListValue().Append(2).Append(3));
+
+  ASSERT_NE(nullptr, store.Get());
+  ASSERT_NE(nullptr, other_store.Get());
+
+  // Assert
   EXPECT_THAT(*store.Get(), ::testing::ElementsAre(1));
+  EXPECT_THAT(*other_store.Get(), ::testing::ElementsAre(2, 3));
 }
 
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, UpdateListPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kListPrefName);
-  store.Set(base::ListValue().Append(1));
+TEST_F(SerpMetricsPrefTimePeriodStoreTest, ClearUninitializedStore) {
+  // Arrange
+  pref_service().registry()->RegisterDictionaryPref(kPrefName);
+  SerpMetricsPrefTimePeriodStore store(&pref_service(), kPrefName, kFooPrefKey);
 
-  // Update the store with new list.
-  store.Set(base::ListValue().Append(2).Append(3));
-
-  ASSERT_TRUE(store.Get());
-  EXPECT_THAT(*store.Get(), ::testing::ElementsAre(2, 3));
-}
-
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, UpdateDictPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kDictPrefName, kDictKey);
-  store.Set(base::ListValue().Append(1));
-
-  // Update the store with new list.
-  store.Set(base::ListValue().Append(2).Append(3));
-
-  ASSERT_TRUE(store.Get());
-  EXPECT_THAT(*store.Get(), ::testing::ElementsAre(2, 3));
-}
-
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, ClearListPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kListPrefName);
-  store.Set(base::ListValue().Append(1));
-
+  // Act
   store.Clear();
 
-  ASSERT_TRUE(store.Get());
-  EXPECT_THAT(*store.Get(), ::testing::IsEmpty());
-}
-
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, ClearDictPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kDictPrefName, kDictKey);
-  store.Set(base::ListValue().Append(1));
-
-  store.Clear();
-
+  // Assert
   EXPECT_FALSE(store.Get());
 }
 
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, GetUninitializedListPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kListPrefName);
-  ASSERT_TRUE(store.Get());
-  EXPECT_THAT(*store.Get(), ::testing::IsEmpty());
-}
+TEST_F(SerpMetricsPrefTimePeriodStoreTest, ClearStoreDoesNotAffectOtherKeys) {
+  // Arrange
+  pref_service().registry()->RegisterDictionaryPref(kPrefName);
+  SerpMetricsPrefTimePeriodStore store(&pref_service(), kPrefName, kFooPrefKey);
+  SerpMetricsPrefTimePeriodStore other_store(&pref_service(), kPrefName,
+                                             kBarPrefKey);
+  store.Set(base::ListValue().Append(1));
+  other_store.Set(base::ListValue().Append(2).Append(3));
 
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, GetUninitializedDictPrefStore) {
-  SerpMetricsPrefTimePeriodStore store(pref_service(), kDictPrefName, kDictKey);
+  // Act
+  store.Clear();
+
   EXPECT_FALSE(store.Get());
-}
+  ASSERT_NE(nullptr, other_store.Get());
 
-TEST_F(SerpMetricsPrefTimePeriodStoreTest, SetDictPrefStoresWithDifferentKeys) {
-  SerpMetricsPrefTimePeriodStore store1(pref_service(), kDictPrefName,
-                                        kDictKey);
-  SerpMetricsPrefTimePeriodStore store2(pref_service(), kDictPrefName,
-                                        "other_testing_key");
-
-  store1.Set(base::ListValue().Append(1));
-  store2.Set(base::ListValue().Append(2).Append(3));
-
-  ASSERT_TRUE(store1.Get());
-  EXPECT_THAT(*store1.Get(), ::testing::ElementsAre(1));
-  ASSERT_TRUE(store2.Get());
-  EXPECT_THAT(*store2.Get(), ::testing::ElementsAre(2, 3));
+  // Assert
+  EXPECT_THAT(*other_store.Get(), ::testing::ElementsAre(2, 3));
 }
 
 }  // namespace serp_metrics

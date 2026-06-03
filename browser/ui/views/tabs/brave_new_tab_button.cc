@@ -8,10 +8,15 @@
 #include <utility>
 
 #include "base/check_deref.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkRRect.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "base/containers/flat_set.h"
@@ -20,6 +25,7 @@
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/containers/containers_menu_model.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -31,6 +37,42 @@
 #endif
 
 using tabs::HorizontalTabsUpdateEnabled;
+
+namespace {
+
+// Replaces the upstream ControlButtonHighlightPathGenerator for
+// BraveNewTabButton. The upstream generator uses GetContentsBounds() for the
+// highlight rect, but LabelButton centers the icon within GetLocalBounds()
+// (vertical border insets set by UpdateButtonBorders() are not applied to the
+// image area). This generator centers the rect on
+// GetLocalBounds().CenterPoint() so the hover shape aligns with the icon.
+class BraveNewTabButtonHighlightPathGenerator
+    : public views::HighlightPathGenerator {
+ public:
+  explicit BraveNewTabButtonHighlightPathGenerator(BraveNewTabButton& button)
+      : button_(button) {}
+
+  SkPath GetHighlightPath(const views::View* view) override {
+    gfx::Rect rect(view->GetContentsBounds());
+    rect.set_y(view->GetLocalBounds().CenterPoint().y() - rect.height() / 2);
+
+    const SkScalar left_radius = button_->GetScaledCornerRadius(
+        button_->GetLeftCornerRadius(), Edge::kLeft);
+    const SkScalar right_radius = button_->GetScaledCornerRadius(
+        button_->GetRightCornerRadius(), Edge::kRight);
+    const SkVector radii[4] = {{left_radius, left_radius},
+                               {right_radius, right_radius},
+                               {right_radius, right_radius},
+                               {left_radius, left_radius}};
+    return SkPath::RRect(
+        SkRRect::MakeRectRadii(gfx::RectToSkRect(rect), radii));
+  }
+
+ private:
+  raw_ref<BraveNewTabButton> button_;
+};
+
+}  // namespace
 
 // static
 gfx::Size BraveNewTabButton::GetButtonSize() {
@@ -55,14 +97,24 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
     auto* browser = GetBrowserToOpenSettings();
     CHECK(browser);
     brave::OpenUrlInContainer(base::to_address(browser_window_interface_),
-                              browser->GetNewTabURL(), container);
+                              browser->GetNewTabURL(), container,
+                              /*is_link=*/false);
   }
 
   void OnNoContainerSelected() override {
     auto* browser = GetBrowserToOpenSettings();
     CHECK(browser);
     brave::OpenUrlWithoutContainer(base::to_address(browser_window_interface_),
-                                   browser->GetNewTabURL());
+                                   browser->GetNewTabURL(),
+                                   /*is_link=*/false);
+  }
+
+  void OnNewTemporaryContainerSelected() override {
+    auto* browser = GetBrowserToOpenSettings();
+    CHECK(browser);
+    brave::CreateTemporaryContainerAndOpenUrl(
+        base::to_address(browser_window_interface_), browser->GetNewTabURL(),
+        /*is_link=*/false);
   }
 
   // Unlike tab or link context menus, the new tab button is not tied to a
@@ -109,7 +161,10 @@ BraveNewTabButton::BraveNewTabButton(
                    fixed_flat_edge,
                    animated_flat_edge,
                    browser_window_interface),
-      browser_window_interface_(CHECK_DEREF(browser_window_interface)) {}
+      browser_window_interface_(CHECK_DEREF(browser_window_interface)) {
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<BraveNewTabButtonHighlightPathGenerator>(*this));
+}
 
 BraveNewTabButton::BraveNewTabButton(
     PressedCallback callback,
@@ -133,8 +188,9 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
     // BrowserWindowInterface.
     auto* profile = browser_window_interface_->GetProfile();
     auto* service = ContainersServiceFactory::GetForProfile(profile);
-    if (service && !(containers_context_menu_runner_ &&
-                     containers_context_menu_runner_->IsRunning())) {
+    if (service && service->ShouldShowContainerControls() &&
+        !(containers_context_menu_runner_ &&
+          containers_context_menu_runner_->IsRunning())) {
       // clear runner/model before the delegate so reopening the menu does not
       // destroy the delegate first.
       containers_context_menu_runner_.reset();

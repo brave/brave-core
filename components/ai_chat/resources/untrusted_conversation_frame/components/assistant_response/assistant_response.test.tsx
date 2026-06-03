@@ -27,7 +27,7 @@ import userEvent from '@testing-library/user-event'
 import * as Mojom from '../../../common/mojom'
 import {
   getCompletionEvent,
-  getSearchQueriesEvent,
+  getToolUseEvent,
   getWebSourcesEvent,
 } from '../../../common/test_data_utils'
 import { createTextContentBlock } from '../../../common/content_block'
@@ -310,11 +310,15 @@ test('AssistantResponse should aggregate sources from multiple events', async ()
   expect(buttons).toHaveLength(4)
 })
 
-test('AssistantResponse should aggregate search queries from multiple events', () => {
+test('AssistantResponse renders a search summary for a web search tool use event', () => {
   const events = [
     getCompletionEvent('test completion'),
-    getSearchQueriesEvent(['query one']),
-    getSearchQueriesEvent(['query two']),
+    getToolUseEvent({
+      toolName: Mojom.BRAVE_WEB_SEARCH_TOOL_NAME,
+      id: '1',
+      argumentsJson: JSON.stringify({ query: ['query one', 'query two'] }),
+      output: undefined,
+    }),
   ]
 
   const { container } = render(

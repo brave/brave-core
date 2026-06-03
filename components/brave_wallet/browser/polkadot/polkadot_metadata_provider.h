@@ -22,12 +22,15 @@
 
 namespace brave_wallet {
 
+class NetworkManager;
+
 class PolkadotMetadataProvider {
  public:
   using GetChainMetadataCallback = base::OnceCallback<void(
       base::expected<PolkadotChainMetadata, std::string>)>;
 
-  PolkadotMetadataProvider(PolkadotChainMetadataPrefs& chain_metadata_prefs,
+  PolkadotMetadataProvider(NetworkManager& network_manager,
+                           PolkadotChainMetadataPrefs& chain_metadata_prefs,
                            PolkadotSubstrateRpc& polkadot_substrate_rpc);
   ~PolkadotMetadataProvider();
 
@@ -60,6 +63,7 @@ class PolkadotMetadataProvider {
       base::expected<PolkadotChainMetadata, std::string> result);
   void RetryInitChainMetadata(std::string chain_id, uint32_t attempt);
 
+  const raw_ref<NetworkManager> network_manager_;
   const raw_ref<PolkadotChainMetadataPrefs> chain_metadata_prefs_;
   const raw_ref<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
   base::flat_map<std::string, PolkadotChainMetadata> metadata_cache_;

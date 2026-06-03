@@ -8,21 +8,23 @@ import styled from 'styled-components'
 // Leo styles
 import * as leo from '@brave/leo/tokens/css/variables'
 
+import {
+  legacyTextSizeToVariant,
+  resolveWalletTextVariant,
+  walletFont,
+  walletFontLineHeight,
+  type LegacyTextSize,
+  type WalletFontVariant,
+} from '../../../utils/font.utils'
+
+export type { LegacyTextSize, WalletFontVariant }
+
 export interface TextProps {
-  textSize?:
-    | '22px'
-    | '20px'
-    | '18px'
-    | '16px'
-    | '14px'
-    | '12px'
-    | '11px'
-    | '10px'
+  variant?: WalletFontVariant
+  /** @deprecated Use `variant` instead */
+  textSize?: LegacyTextSize
   isBold?: boolean
   textColor?:
-    | 'text01'
-    | 'text02'
-    | 'text03'
     | 'success'
     | 'error'
     | 'warning'
@@ -43,21 +45,15 @@ export const Text = styled.span<TextProps>`
   --error: ${leo.color.systemfeedback.errorText};
   --warning: ${leo.color.systemfeedback.warningText};
   --disabled: ${leo.color.text.disabled};
-  // ToDo: We should to remove these old color variables
-  // in a refactor.
-  --text01: ${(p) => p.theme.color.text01};
-  --text02: ${(p) => p.theme.color.text02};
-  --text03: ${(p) => p.theme.color.text03};
-  --success: ${(p) => p.theme.color.successIcon};
-  --line-height: ${(p) =>
-    p.textSize === '12px' ? '18px' : p.textSize === '22px' ? '24px' : '20px'};
-  font-family: 'Poppins';
+  --success: ${leo.color.systemfeedback.successText};
+  --text-variant: ${(p) => resolveWalletTextVariant(p)};
+  --line-height: ${(p) => walletFontLineHeight(resolveWalletTextVariant(p))};
   color: ${(p) =>
-    (p.color ?? p.textColor) ? `var(--${p.textColor})` : p.theme.color.text01};
-  font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
-  font-weight: ${(p) => (p.isBold ? 500 : 400)};
+    (p.color ?? p.textColor)
+      ? `var(--${p.textColor})`
+      : leo.color.text.primary};
+  font: ${(p) => walletFont(resolveWalletTextVariant(p))};
   height: ${(p) => (p.maintainHeight ? 'var(--line-height)' : 'unset')};
-  line-height: var(--line-height);
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   word-wrap: wrap;
 `
@@ -71,15 +67,13 @@ export const TextWithOverflowEllipsis = styled(Text)<{ maxLines?: number }>`
 `
 
 export const StyledDiv = styled.div`
+  font: ${leo.font.large.regular};
+
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-family: 'Poppins';
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 20px;
+  color: ${leo.color.text.primary};
   letter-spacing: 0.02em;
 `
 
@@ -153,12 +147,12 @@ export const HorizontalDivider = styled(StyledDiv)<{
 }>`
   --light-theme-color: #e9e9f4;
   @media (prefers-color-scheme: dark) {
-    --light-theme-color: ${(p) => p.theme.color.interactive08};
+    --light-theme-color: ${leo.color.neutral[30]};
   }
   background-color: ${(p) =>
     p.dividerTheme === 'lighter'
       ? 'var(--light-theme-color)'
-      : p.theme.color.interactive08};
+      : leo.color.neutral[30]};
   height: ${(p) => (p.height ? `${p.height}px` : '100%')};
   margin-left: ${(p) => p.marginLeft ?? 0}px;
   margin-right: ${(p) => p.marginRight ?? 0}px;
@@ -170,7 +164,7 @@ export const VerticalDivider = styled(StyledDiv)<{
   marginTop?: number
   marginBottom?: number
 }>`
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
   height: 2px;
   margin-top: ${(p) => p.marginTop ?? 0}px;
   margin-bottom: ${(p) => p.marginBottom ?? 0}px;
@@ -191,7 +185,7 @@ export const Icon = styled(StyledDiv)<{
 export const Loader = styled(StyledDiv)`
   animation: spin 0.75s linear infinite;
   border: 2px solid transparent;
-  border-top: 2px solid ${(p) => p.theme.color.text03};
+  border-top: 2px solid ${leo.color.text.tertiary};
   border-radius: 50%;
   height: 10px;
   margin-right: 6px;
@@ -207,20 +201,18 @@ export const Loader = styled(StyledDiv)`
 `
 
 export const StyledButton = styled.button`
+  font: ${leo.font.large.regular};
+
   display: flex;
-  font-family: 'Poppins';
   cursor: pointer;
   border: none;
   outline: none;
   background: none;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
   letter-spacing: 0.02em;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   :disabled {
     cursor: not-allowed;
   }
@@ -230,7 +222,7 @@ export const IconButton = styled(StyledButton)<{
   size?: number
   icon: string
 }>`
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${leo.color.text.secondary};
   height: ${(p) => (p.size ? p.size : 16)}px;
   mask-image: url(${(p) => p.icon});
   mask-size: contain;
@@ -246,22 +238,19 @@ export const HiddenResponsiveRow = styled(Row)<{ dontHide?: boolean }>`
 `
 
 export const StyledInput = styled.input`
-  font-family: 'Poppins';
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
   outline: none;
   background-image: none;
   box-shadow: none;
   border: none;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   padding: 0px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   background-color: transparent;
   letter-spacing: 0.02em;
   ::placeholder {
-    color: ${(p) => p.theme.color.text01};
+    color: ${leo.color.text.primary};
   }
   :focus {
     outline: none;
@@ -277,10 +266,9 @@ export const StyledInput = styled.input`
 `
 
 export const StyledLabel = styled.label`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.regular};
+  color: ${leo.color.text.primary};
 `
+
+// Re-export for callers migrating off deprecated textSize
+export { legacyTextSizeToVariant }

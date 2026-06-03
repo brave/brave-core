@@ -14,7 +14,7 @@
 "enabledFeatureNote" = "Denne funktion er aktiveret, fordi du har valgt den.";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin er en version af Brave-browseren, der giver dig mulighed for nemt at deaktivere de indtægtsgenererende funktioner, der ellers understøtter Brave som virksomhed. Brave Origin-brugere vil fortsat have gavn af vores brancheledendes privatliv, adblock og hastighed (via Brave Shields), samt regelmæssige softwareopdateringer, Chromium-patches og forbedringer af sikkerhed og privatliv. De vil også få mulighed for at deaktivere funktioner som Brave Leo, Rewards, Wallet, VPN, Web3-domæner og meget mere.\n\nNår det er købt, vil brugerne se et nyt kontrolpanel i browserens Indstillinger-menu. Eksisterende funktioner – samt eventuelle nye funktioner, vi leverer i fremtiden – vil vises her og være deaktiveret som standard.\n\n**Bemærk: Brave Origin vil ikke deaktivere browserfunktioner, du bruger i øjeblikket, og vil ikke påvirke Brave Søgning-funktioner eller Brave Søgning Ads.**";
+"featuresFooter" = "Brave Origin er en version af Brave-browseren, der giver dig mulighed for nemt at deaktivere de indtægtsgenererende funktioner, der ellers understøtter Brave som virksomhed. Brave Origin-brugere vil fortsat have gavn af vores brancheledende privatliv, adblock og hastighed (via Brave Shields), samt regelmæssige softwareopdateringer, Chromium-patches og forbedringer af sikkerhed og privatliv. De vil også få mulighed for at deaktivere funktioner som Brave Leo, Rewards, Wallet, VPN, Web3-domæner og meget mere.\n\nNår brugere har købt det, vil de se et nyt kontrolpanel i browserens Indstillinger-menu. Eksisterende funktioner – samt eventuelle nye funktioner, vi leverer i fremtiden – vil vises her og være deaktiveret som standard.\n\n**Bemærk: Brave Origin vil ikke deaktivere browserfunktioner, du bruger i øjeblikket, og vil ikke påvirke Brave Søgning-funktioner eller Brave Søgning Ads.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funktioner";
@@ -25,6 +25,9 @@
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Forbind købet med din Brave-konto";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "Nyheder";
 
@@ -32,7 +35,7 @@
 "oneTimePurchaseLabel" = "Engangskøb";
 
 /* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Tilpas din browser og støt samtidig Brave**\n\nBrave Origin er en betalt version af browseren for brugere, der ikke har brug for alle de funktioner, der understøtter Brave som virksomhed, men alligevel ønsker det privatliv, som kun Brave tilbyder. Brave Origin-brugere vil fortsat have gavn af vores brancheledendes privatliv, adblock og hastighed (via Brave Shields), samt regelmæssige softwareopdateringer, Chromium-patches og forbedringer af sikkerhed og privatliv. De vil også få mulighed for at deaktivere funktioner som AI, Rewards, Wallet, VPN, Web3-domæner og meget mere.\n\n**Brave Origin er tilgængelig via engangskøb. På mobiltelefoner (Android og iOS) og desktop kan Origin købes som en opgradering til din eksisterende frigivelseversion.** På desktop er Origin også tilgængelig som en separat, standalone-app. Uanset om det købes som en opgradering eller separat app, vil Origin-brugerne se et nyt kontrolpanel i Indstillinger-menuen. Eksisterende funktioner – samt eventuelle nye funktioner, vi leverer i fremtiden – vil vises her og være deaktiveret som standard.*\n\n* Bemærk, at hvis du har købt Origin som en opgradering til din eksisterende version af Brave, vil Origin ikke deaktivere browserfunktioner, du bruger i øjeblikket. For både opgraderingen og den standalone version vil Origin ikke påvirke Brave Søgning-funktioner eller Brave Søgning Ads.";
+"paywallDescription" = "**Tilpas din browser, mens du stadig understøtter Brave**\n\nBrave Origin er en betalt version af browseren til brugere, der ikke har brug for alle de funktioner, der understøtter Brave som virksomhed, men som stadig ønsker det privatliv, som kun Brave tilbyder. Brave Origin-brugere vil fortsat have gavn af vores brancheledende privatliv, adblock og hastighed (via Brave Shields), samt regelmæssige softwareopdateringer, Chromium-patches og forbedringer af sikkerhed og privatliv. De vil også få mulighed for at deaktivere funktioner som AI, Rewards, Wallet, VPN, Web3-domæner og meget mere.\n\n**Brave Origin er tilgængelig via et engangskøb. På mobil (Android og iOS) og desktop kan Origin købes som en opgradering til din eksisterende udgivelsesversion.** På desktop er Origin også tilgængelig som en separat, selvstændig app. Uanset om den købes som en opgradering eller en separat app, vil Origin-brugere se et nyt kontrolpanel i Indstillinger-menuen. Eksisterende funktioner – samt eventuelle nye funktioner, vi leverer i fremtiden – vil vises her og være deaktiveret som standard.*\n\n* Bemærk, at hvis du har købt Origin som en opgradering til din eksisterende version af Brave, vil Origin ikke deaktivere browserfunktioner, du bruger i øjeblikket. For både opgraderingen og den selvstændige version vil Origin ikke påvirke Brave Søgning-funktioner eller Brave Søgning Ads.";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Spilleliste";
@@ -45,6 +48,12 @@
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Kan ikke gennemføre købet. Prøv igen, eller tjek dine betalingsoplysninger på Apple, og prøv igen.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Knyt dit køb i App Store til din Brave-konto for at bruge Brave Origin på andre enheder";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Køb";
 
 /* A button label to redeem a promo code */
 "redeemPromoCodeButton" = "Indløs rabatkode";
@@ -75,6 +84,9 @@
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Støt vores mission & open source-arbejde";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Se App Store-kvittering";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

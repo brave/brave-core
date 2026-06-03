@@ -9,6 +9,7 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -116,7 +117,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable BraveAccountSectionController mAccountController;
-    private @Nullable Preference mVpnCalloutPreference;
+    private @Nullable VpnCalloutPreference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
     @Override
@@ -176,6 +177,14 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             OnboardingPrefManager.getInstance()
                     .setNotificationPermissionEnablingDialogShownFromSetting(true);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Fold/unfold triggers a configuration change without activity recreation.
+        // Refresh containment styling after the layout pass completes.
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::notifyPreferencesUpdated);
     }
 
     @Override
@@ -240,6 +249,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+        removePreferenceIfPresent(MainSettings.PREF_SETTINGS_PROMO_CARD);
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
@@ -261,6 +271,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private void prepareBravePreferences() {
         setCustomTabPreference();
         setAutofillPrivateWindowPreference();
+        // Register the final containment update listener. This runs after the current call stack
+        // completes (posted via PostTask), so it fires after any synchronous observer callbacks
+        // from MainSettings (e.g. onSignInAllowedChanged → updatePreferences →
+        // notifyPreferencesUpdated) that would otherwise replace our listener with one that sees
+        // preferences before Brave's rearrangement. Also handles the back-navigation timing race
+        // where GlobalLayout fires before onResume's organiseBravePreferences completes.
+        notifyPreferencesUpdated();
     }
 
     private void setAutofillPrivateWindowPreference() {
@@ -283,6 +300,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     /** We need to override it to avoid NullPointerException in Chromium's child classes */
+    // mRemovedPreferences stores the erased Preference type, but callers request a typed
+    // subtype via T, so the (T) cast is unverifiable at compile time.
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public <T extends Preference> T findPreference(CharSequence key) {
@@ -308,6 +328,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 && !BraveVpnPolicy.isDisabledByPolicy(getProfile())) {
             if (mVpnCalloutPreference == null) {
                 mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
+                // Dismissing the callout removes it from the screen, which changes the position of
+                // the remaining preferences within their containment groups. Notify so the rounded
+                // card styling gets recomputed; otherwise neighbors keep stale corner/margin
+                // styling computed for their old positions.
+                mVpnCalloutPreference.setOnDismissedCallback(this::notifyPreferencesUpdated);
             }
             if (mVpnCalloutPreference != null) {
                 mVpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
@@ -377,11 +402,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_CONTENT_SETTINGS, ++generalOrder);
         setPreferenceOrder(PREF_DOWNLOADS, ++generalOrder);
         setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
-        if (DeviceFormFactor.isTablet()) {
-            removePreferenceIfPresent(PREF_USE_CUSTOM_TABS);
-        } else {
-            setPreferenceOrder(PREF_USE_CUSTOM_TABS, ++generalOrder);
-        }
+        setPreferenceOrder(PREF_USE_CUSTOM_TABS, ++generalOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
             setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);
@@ -440,6 +461,20 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // We have our own Appearance settings so we don't need the upstream's one.
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
+
+        resortPreferenceScreenChildren();
+    }
+
+    // PreferenceGroup (with orderingFromXml=false) only re-sorts its children list when
+    // addPreference() is called, not when setOrder() is called on existing preferences.
+    // The addPreference(mVpnCalloutPreference) in rearrangePreferenceOrders() fires before the
+    // setPreferenceOrder() calls, so it sorts with stale XML orders. Removing and re-adding any
+    // always-present preference triggers a final sort with all the correct final order values.
+    private void resortPreferenceScreenChildren() {
+        Preference featuresSectionPref = findPreference(PREF_FEATURES_SECTION);
+        assumeNonNull(featuresSectionPref);
+        getPreferenceScreen().removePreference(featuresSectionPref);
+        getPreferenceScreen().addPreference(featuresSectionPref);
     }
 
     // A wrapper to suppress NullAway warning for the prefs which always present
@@ -686,6 +721,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SEARCH_ENGINE));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_DOWNLOADS));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SAFETY_HUB));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_SETTINGS_PROMO_CARD));
                     indexData.removeEntry(
                             getUniqueId(MainSettings.PREF_ACCOUNT_AND_GOOGLE_SERVICES_SECTION));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_GOOGLE_SERVICES));

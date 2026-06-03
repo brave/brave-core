@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_account/prefs.h"
 
-#include <string>
-
 #include "base/values.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/pref_names.h"
@@ -16,12 +14,7 @@ namespace brave_account::prefs {
 
 void RegisterPrefs(PrefRegistrySimple* registry) {
   if (features::IsBraveAccountEnabled()) {
-    registry->RegisterStringPref(kBraveAccountVerificationToken, std::string());
-    registry->RegisterStringPref(kBraveAccountAuthenticationToken,
-                                 std::string());
-    registry->RegisterStringPref(kBraveAccountEmailAddress, std::string());
-    registry->RegisterDictionaryPref(kBraveAccountServiceTokens,
-                                     base::DictValue());
+    registry->RegisterDictionaryPref(kBraveAccountState, base::DictValue());
   }
 }
 

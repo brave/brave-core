@@ -41,9 +41,9 @@ EmailAliasesPanelUI::EmailAliasesPanelUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
   webui::SetupWebUIDataSource(source, kEmailAliasesPanelResources,
                               IDR_EMAIL_ALIASES_PANEL_HTML);
-  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 }
 
 EmailAliasesPanelUI::~EmailAliasesPanelUI() = default;

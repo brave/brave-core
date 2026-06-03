@@ -21,8 +21,6 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
-
 @protocol AIChatAssociatedURLContentContext;
 
 class ProfileIOS;
@@ -69,7 +67,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ProcessTextFile(const std::vector<uint8_t>& file_data,
                        const std::string& filename,
                        ProcessTextFileCallback callback) override;
-  void UploadFile(bool use_media_capture, UploadFileCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
@@ -137,8 +134,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // Conversations are not content associated either in standalone mode or in
   // global side panel mode, to the owner_web_contents_.
   bool conversations_are_content_associated_ = false;
-
-  data_decoder::DataDecoder data_decoder_;
 
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};
 };

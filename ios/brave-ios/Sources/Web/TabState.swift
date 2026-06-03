@@ -25,6 +25,13 @@ public enum SecureContentState {
   case mixedContent
 }
 
+public enum MediaPlaybackState {
+  case none
+  case paused
+  case playing
+  case suspended
+}
+
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
@@ -210,6 +217,8 @@ public protocol TabState: AnyObject {
   func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void)
   /// Creates a full page PDF of the web contents
   func createFullPagePDF() async throws -> Data?
+  /// Whether or not find in page is currently visible
+  var isFindNavigatorVisible: Bool { get }
   /// Presents the find in page interaction using the provided text as an initial search query
   func presentFindInteraction(with text: String)
   /// Dismisses any active find in page interactions
@@ -257,6 +266,10 @@ public protocol TabState: AnyObject {
   var viewScale: CGFloat { get set }
   /// Clears the back forward list of the WKWebView
   func clearBackForwardList()
+  /// Pauses playback of all media in the web view
+  func pauseAllMediaPlayback()
+  /// Requests the playback status of media in the web view.
+  func requestMediaPlaybackState() async -> MediaPlaybackState
 
   // MARK: - Chromium specific
   func updateScripts()

@@ -20,6 +20,7 @@
 #include "brave/browser/ui/containers/container_model.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+class BraveTabContainer;
 class BraveVerticalTabStripRegionView;
 class Tab;
 class BraveTabStrip : public TabStrip {
@@ -36,12 +37,15 @@ class BraveTabStrip : public TabStrip {
 
   TabContainer* GetTabContainerForTesting();
 
+  BraveTabContainer* GetBraveTabContainer();
+
   void InvalidateTabContainerLayout();
 
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
-  void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
+  void UpdateHoverCard(HoverCardAnchorTarget* anchor_target,
+                       HoverCardUpdateType update_type) override;
   void MaybeStartDrag(TabSlotView* source,
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
@@ -60,10 +64,7 @@ class BraveTabStrip : public TabStrip {
   bool CanCloseTabViaMiddleButtonClick() const override;
   void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
                      int model_index) override;
-  void SetTabData(int model_index, tabs::TabData data) override;
-  void MoveTab(int from_model_index,
-               int to_model_index,
-               tabs::TabData data) override;
+  void OnTabPinnedStateChanged(int model_index, bool is_pinned) override;
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;
@@ -71,6 +72,7 @@ class BraveTabStrip : public TabStrip {
       const Tab* tab) const override;
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
   brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
+  bool IsHorizontalScrollingEnabled() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarMode);
@@ -116,7 +118,7 @@ class BraveTabStrip : public TabStrip {
 
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
   // dedicated notification when pinning from a group.
-  void OnSetTabData(int model_index, const tabs::TabData& new_data);
+  void OnPinnedStateChanged(int model_index, bool new_pinned_state);
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

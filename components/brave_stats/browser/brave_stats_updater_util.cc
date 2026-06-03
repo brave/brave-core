@@ -7,10 +7,9 @@
 
 #include <ctime>
 #include <memory>
+#include <optional>
 #include <string_view>
 
-#include "base/check.h"
-#include "base/check_op.h"
 #include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -107,30 +106,32 @@ base::Time GetLastMondayTime(const base::Time& time) {
   return last_monday;
 }
 
-base::Time GetYMDAsDate(std::string_view ymd, bool use_utc) {
+std::optional<base::Time> GetYMDAsDate(std::string_view ymd, bool use_utc) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
-  DCHECK_EQ(pieces.size(), 3ull);
-  base::Time::Exploded time = {};
-
-  bool ok = base::StringToInt(pieces[0], &time.year);
-  DCHECK(ok);
-  ok = base::StringToInt(pieces[1], &time.month);
-  DCHECK(ok);
-  ok = base::StringToInt(pieces[2], &time.day_of_month);
-  DCHECK(ok);
-
-  DCHECK(time.HasValidValues());
-
-  base::Time result;
-  if (use_utc) {
-    ok = base::Time::FromUTCExploded(time, &result);
-  } else {
-    ok = base::Time::FromLocalExploded(time, &result);
+  if (pieces.size() != 3U) {
+    return std::nullopt;
   }
-  DCHECK(ok);
 
-  return result;
+  base::Time::Exploded exploded = {};
+  if (!base::StringToInt(pieces.at(0), &exploded.year) ||
+      !base::StringToInt(pieces.at(1), &exploded.month) ||
+      !base::StringToInt(pieces.at(2), &exploded.day_of_month)) {
+    return std::nullopt;
+  }
+
+  if (!exploded.HasValidValues()) {
+    return std::nullopt;
+  }
+
+  base::Time date;
+  const bool success = use_utc ? base::Time::FromUTCExploded(exploded, &date)
+                               : base::Time::FromLocalExploded(exploded, &date);
+  if (!success) {
+    return std::nullopt;
+  }
+
+  return date;
 }
 
 std::string GetAPIKey() {

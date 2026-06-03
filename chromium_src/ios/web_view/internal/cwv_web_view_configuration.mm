@@ -69,7 +69,6 @@
 - (CWVPreferences*)preferences {
   // This property is not nullable, so will crash anyways on the Swift side if
   // accessed.
-  NOTREACHED();
   return nil;
 }
 

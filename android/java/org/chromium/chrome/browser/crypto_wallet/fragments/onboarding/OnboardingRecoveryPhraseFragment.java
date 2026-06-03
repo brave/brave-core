@@ -19,9 +19,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -106,10 +104,6 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                         mCopyButton.setVisibility(View.VISIBLE);
                         mRecoveryPhraseButton.setText(mContinueStringRes);
                     } else {
-                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                        if (braveWalletP3A != null && mIsOnboarding) {
-                            braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
-                        }
                         if (mOnNextPage != null) {
                             mOnNextPage.incrementPages(1);
                         }

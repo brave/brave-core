@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/common/string_utils.h"
 
-#include <limits>
 #include <string>
 #include <string_view>
 

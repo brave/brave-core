@@ -75,6 +75,7 @@
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -258,8 +259,7 @@ void OnRewriteSuggestionCompleted(
     base::WeakPtr<content::WebContents> web_contents,
     const std::string& selected_text,
     ai_chat::mojom::ActionType action_type,
-    base::expected<ai_chat::EngineConsumer::GenerationResultData,
-                   ai_chat::mojom::APIError> result) {
+    ai_chat::EngineConsumer::GenerationResult result) {
   if (!web_contents) {
     return;
   }
@@ -301,7 +301,7 @@ void OnRewriteSuggestionCompleted(
     ai_chat::OpenAIChatForTab(web_contents.get());
 
     conversation->AddSubmitSelectedTextError(selected_text, action_type,
-                                             result.error());
+                                             result.error().api_error);
   }
 
   web_contents->RemoveUserData(kAIChatRewriteDataKey);
@@ -323,10 +323,12 @@ email_aliases::EmailAliasesController* GetEmailAliasesController(
 RenderViewContextMenu::RenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params,
-    bool is_paste_enabled)
+    bool is_paste_enabled,
+    bool is_paste_and_match_style_enabled)
     : RenderViewContextMenu_Chromium(render_frame_host,
                                      params,
-                                     is_paste_enabled)
+                                     is_paste_enabled,
+                                     is_paste_and_match_style_enabled)
 #if BUILDFLAG(ENABLE_AI_CHAT)
       ,
       ai_chat_submenu_model_(this),
@@ -453,8 +455,10 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_NEW_EMAIL_ALIAS:
       if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
-        email_aliases->ShowBubble(source_web_contents_, GetRenderFrameHost(),
-                                  params_.field_renderer_id);
+        email_aliases->ShowBubble(
+            source_web_contents_, GetRenderFrameHost(),
+            params_.field_renderer_id,
+            email_aliases::SettingsPageMethod::kContextMenu);
       }
       break;
 #endif
@@ -647,6 +651,10 @@ void RenderViewContextMenu::BuildContainersMenu() {
     return;
   }
 
+  if (!service->ShouldShowContainerControls()) {
+    return;
+  }
+
   std::optional<size_t> first_separator_index;
   for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
     if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
@@ -759,17 +767,24 @@ void RenderViewContextMenu::OnNoContainerSelected() {
   brave::OpenUrlWithoutContainer(GetBrowser(), params_.link_url);
 }
 
+void RenderViewContextMenu::OnNewTemporaryContainerSelected() {
+  if (!params_.link_url.is_valid()) {
+    return;
+  }
+
+  brave::CreateTemporaryContainerAndOpenUrl(GetBrowser(), params_.link_url);
+}
+
 base::flat_set<std::string> RenderViewContextMenu::GetCurrentContainerIds() {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
-  const auto& storage_partition_config = source_web_contents_->GetSiteInstance()
-                                             ->GetSecurityPrincipal()
-                                             .GetStoragePartitionConfig();
-  if (!containers::IsContainersStoragePartition(storage_partition_config)) {
+  auto container_id =
+      containers::GetContainerIdForWebContents(source_web_contents_);
+  if (container_id.empty()) {
     return {};
   }
 
-  return {storage_partition_config.partition_name()};
+  return {container_id};
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

@@ -11,6 +11,7 @@ include_rules += [
   "+brave/components/query_filter/browser",
   "+brave/components/brave_wallet/browser",
   "+brave/components/brave_wallet/common/buildflags",
+  "+brave/components/global_privacy_control",
   "+brave/components/p3a",
   "+ios/chrome/browser",
   "+ios/web/web_state",

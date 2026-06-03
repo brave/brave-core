@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -105,6 +106,9 @@ class BraveOriginService : public KeyedService {
                            skus::mojom::SkusResultPtr summary);
   void OnSkusStateChanged();
   bool EnsureSkusConnected();
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  void OpenOriginSettings();
+#endif
 
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   std::string origin_sku_domain_;
@@ -118,8 +122,11 @@ class BraveOriginService : public KeyedService {
   base::flat_map<std::string, bool> startup_browser_policies_;
   base::flat_map<std::string, bool> startup_profile_policies_;
 
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // Whether OpenOriginSettings() has already been called this session.
+  // Only used in the upgrade case; branded builds open the dialog at startup.
   bool did_open_origin_settings_ = false;
+#endif
 
   // Browser-layer delegate for actions like opening the settings page.
   std::unique_ptr<Delegate> delegate_;

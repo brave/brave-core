@@ -5,12 +5,35 @@
 
 #include "brave/components/brave_wallet/common/test_utils.h"
 
+#include "base/containers/flat_map.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
+
+mojom::KeyringId GetTestKeyringIdForCoin(mojom::CoinType coin) {
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      return mojom::KeyringId::kDefault;
+    case mojom::CoinType::SOL:
+      return mojom::KeyringId::kSolana;
+    case mojom::CoinType::FIL:
+      return mojom::KeyringId::kFilecoin;
+    case mojom::CoinType::BTC:
+      return mojom::KeyringId::kBitcoin84;
+    case mojom::CoinType::ZEC:
+      return mojom::KeyringId::kZCashMainnet;
+    case mojom::CoinType::ADA:
+      return mojom::KeyringId::kCardanoMainnet;
+    case mojom::CoinType::DOT:
+      return mojom::KeyringId::kPolkadotMainnet;
+  }
+  NOTREACHED();
+}
 
 mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id,
                                        mojom::CoinType coin) {
@@ -24,7 +47,7 @@ mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id,
           "symbol_name",
           11,
           coin,
-          GetSupportedKeyringsForNetwork(coin, chain_id)};
+          {GetTestKeyringIdForCoin(coin)}};
 }
 
 mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id,
@@ -39,7 +62,7 @@ mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id,
           "symbol_name2",
           22,
           coin,
-          GetSupportedKeyringsForNetwork(coin, chain_id)};
+          {GetTestKeyringIdForCoin(coin)}};
 }
 
 mojom::NetworkInfo GetTestNetworkInfoWithHttpURL(const std::string& chain_id,
@@ -54,7 +77,7 @@ mojom::NetworkInfo GetTestNetworkInfoWithHttpURL(const std::string& chain_id,
           "symbol_name2",
           22,
           coin,
-          GetSupportedKeyringsForNetwork(coin, chain_id)};
+          {GetTestKeyringIdForCoin(coin)}};
 }
 
 mojom::ChainIdPtr EthMainnetChainId() {

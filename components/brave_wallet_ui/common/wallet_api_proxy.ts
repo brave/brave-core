@@ -24,7 +24,6 @@ export class WalletApiProxy {
   filTxManagerProxy = new BraveWallet.FilTxManagerProxyRemote()
   btcTxManagerProxy = new BraveWallet.BtcTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
-  braveWalletP3A = new BraveWallet.BraveWalletP3ARemote()
   braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()
 
   addJsonRpcServiceObserver(

@@ -3,84 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use crate::CxxPolkadotChainMetadata;
-use crate::Error;
+use crate::{CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult, Error};
 use parity_scale_codec::{Compact, Decode};
 use std::collections::HashMap;
-
-#[derive(Clone, Copy)]
-struct CxxPolkadotChainMetadataFields {
-    system_pallet_index: u8,
-    balances_pallet_index: u8,
-    transaction_payment_pallet_index: u8,
-    transfer_allow_death_call_index: u8,
-    transfer_keep_alive_call_index: u8,
-    transfer_all_call_index: u8,
-    ss58_prefix: u16,
-    spec_version: u32,
-}
-
-crate::impl_result!(CxxPolkadotChainMetadataFields, CxxPolkadotChainMetadataFieldsResult);
-
-#[cxx::bridge(namespace = brave_wallet)]
-mod ffi {
-    extern "Rust" {
-        type CxxPolkadotChainMetadataFieldsResult;
-
-        fn parse_chain_metadata_from_scale(
-            metadata_bytes: &[u8],
-        ) -> Box<CxxPolkadotChainMetadataFieldsResult>;
-        fn is_ok(self: &CxxPolkadotChainMetadataFieldsResult) -> bool;
-        fn error_message(self: &CxxPolkadotChainMetadataFieldsResult) -> String;
-        fn unwrap(
-            self: &mut CxxPolkadotChainMetadataFieldsResult,
-        ) -> Box<CxxPolkadotChainMetadataFields>;
-
-        type CxxPolkadotChainMetadataFields;
-        fn system_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn balances_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16;
-        fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32;
-    }
-}
-
-impl CxxPolkadotChainMetadataFields {
-    fn system_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.system_pallet_index
-    }
-
-    fn balances_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.balances_pallet_index
-    }
-
-    fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transaction_payment_pallet_index
-    }
-
-    fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transfer_allow_death_call_index
-    }
-
-    fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transfer_keep_alive_call_index
-    }
-
-    fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transfer_all_call_index
-    }
-
-    fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16 {
-        self.ss58_prefix
-    }
-
-    fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32 {
-        self.spec_version
-    }
-}
 
 fn decode_scale<T: Decode>(input: &mut &[u8]) -> Result<T, Error> {
     T::decode(input).map_err(|_| Error::InvalidScale)
@@ -197,8 +122,8 @@ fn parse_type_def(input: &mut &[u8]) -> Result<Option<Vec<VariantInfo>>, Error> 
 
 fn parse_type(input: &mut &[u8]) -> Result<Option<Vec<VariantInfo>>, Error> {
     // path: Vec<String>
-    let _ = decode_vec(input, decode_scale::<String>)?;
-    // type params
+    let _: Vec<String> = decode_vec(input, decode_scale::<String>)?;
+    // type params: Vec<(name: String, type_id: Option<Compact<u32>>)>
     let _ = decode_vec(input, |input| {
         let _: String = decode_scale(input)?;
         let _: Option<u32> = decode_option(input, decode_type_id)?;
@@ -223,6 +148,7 @@ fn parse_portable_registry(input: &mut &[u8]) -> Result<HashMap<u32, Vec<Variant
             by_id.insert(id, variants);
         }
     }
+
     Ok(by_id)
 }
 
@@ -270,10 +196,9 @@ fn parse_pallet(input: &mut &[u8], has_pallet_docs: bool) -> Result<PalletInfo, 
     let name: String = decode_scale(input)?;
 
     // storage: Option<PalletStorageMetadata>
-    let _storage = decode_option(input, |input| {
+    decode_option(input, |input| {
         let _: String = decode_scale(input)?; // prefix
-        let _ = decode_vec(input, parse_storage_entry)?;
-        Ok(())
+        decode_vec(input, parse_storage_entry)
     })?;
 
     // calls: Option<PalletCallMetadata { ty: u32 }>
@@ -366,6 +291,49 @@ fn get_call_index(
         .ok_or(Error::InvalidMetadata)
 }
 
+// Returns true if "ChargeAssetTxPayment" is present in the signed extensions,
+// indicating the signature payload must include an asset_id field.
+// https://docs.rs/frame-metadata/latest/frame_metadata/v15/struct.SignedExtensionMetadata.html
+// https://github.com/paritytech/polkadot-sdk/blob/c3ecf63034924511d6b92e3533c23c15765f16b9/substrate/frame/transaction-payment/asset-conversion-tx-payment/src/lib.rs#L165-L182
+fn parse_signed_extensions(input: &mut &[u8]) -> Result<bool, Error> {
+    let mut found = false;
+    decode_vec(input, |input| {
+        let identifier: String = decode_scale(input)?;
+        if normalize_ident(&identifier) == "chargeassettxpayment" {
+            found = true;
+        }
+        let _: u32 = decode_type_id(input)?; // ty
+        let _: u32 = decode_type_id(input)?; // additional_signed
+        Ok(())
+    })?;
+
+    Ok(found)
+}
+
+fn parse_extrinsic_metadata(input: &mut &[u8], version: u8) -> Result<bool, Error> {
+    match version {
+        // V14: https://docs.rs/frame-metadata/latest/frame_metadata/v14/struct.ExtrinsicMetadata.html
+        //   { ty: Compact<u32>, version: u8, signed_extensions: Vec<...> }
+        14 => {
+            let _: u32 = decode_type_id(input)?; // ty
+            let _: u8 = decode_scale(input)?; // version
+        }
+        // V15: https://docs.rs/frame-metadata/latest/frame_metadata/v15/struct.ExtrinsicMetadata.html
+        //   { version: u8, address_ty, call_ty, signature_ty, extra_ty,
+        //     signed_extensions: Vec<...> }
+        15 => {
+            let _: u8 = decode_scale(input)?; // version
+            let _: u32 = decode_type_id(input)?; // address_ty
+            let _: u32 = decode_type_id(input)?; // call_ty
+            let _: u32 = decode_type_id(input)?; // signature_ty
+            let _: u32 = decode_type_id(input)?; // extra_ty
+        }
+        _ => return Err(Error::InvalidMetadata),
+    }
+
+    parse_signed_extensions(input)
+}
+
 /// Parses SCALE-encoded `state_getMetadata` bytes (RuntimeMetadataPrefixed).
 ///
 /// Structure expected by this parser:
@@ -381,11 +349,15 @@ fn get_call_index(
 ///   - `error: Option<PalletErrorMetadata { ty: Compact<u32> }>`
 ///   - `index: u8`
 ///   - `docs: Vec<String>` (v15 only)
+/// - ExtrinsicMetadata (signed extensions checked for `ChargeAssetTxPayment`)
 /// - Pallet/constants/type references needed to extract:
 ///   - `Balances` pallet index
 ///   - `transfer_allow_death` call index
 ///   - `System.SS58Prefix`
 ///   - `System.Version.spec_version`
+///   - `Assets` pallet index and transfer call indexes when the pallet is
+///     present
+///   - whether `ChargeAssetTxPayment` is a signed extension
 ///
 /// References:
 /// - JSON-RPC method: https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1119-state_getmetadata
@@ -408,6 +380,8 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
 
     let pallets = parse_pallets(&mut input, /* has_pallet_docs= */ version >= 15)?;
 
+    let asset_tx_payment = parse_extrinsic_metadata(&mut input, version)?;
+
     let balances_pallet = pallets
         .iter()
         .find(|p| normalize_ident(&p.name) == "balances")
@@ -422,6 +396,19 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
 
     let transfer_all_call_index =
         get_call_index(&portable_registry, balances_pallet, "transferall")?;
+
+    let mut has_assets_pallet = false;
+    let mut assets_pallet_index = 0;
+    let mut assets_transfer_all_call_index = 0;
+    let mut assets_transfer_keep_alive_call_index = 0;
+    if let Some(assets_pallet) = pallets.iter().find(|p| normalize_ident(&p.name) == "assets") {
+        has_assets_pallet = true;
+        assets_pallet_index = assets_pallet.index;
+        assets_transfer_all_call_index =
+            get_call_index(&portable_registry, assets_pallet, "transferall")?;
+        assets_transfer_keep_alive_call_index =
+            get_call_index(&portable_registry, assets_pallet, "transferkeepalive")?;
+    }
 
     let system_pallet = pallets
         .iter()
@@ -457,25 +444,18 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         transfer_allow_death_call_index,
         transfer_keep_alive_call_index,
         transfer_all_call_index,
+        assets_pallet_index,
+        assets_transfer_all_call_index,
+        assets_transfer_keep_alive_call_index,
+        has_assets_pallet,
         ss58_prefix,
         spec_version,
+        asset_tx_payment,
     })
 }
 
-fn parse_chain_metadata_from_scale(
+pub(super) fn parse_chain_metadata_from_scale(
     metadata_bytes: &[u8],
-) -> Box<CxxPolkadotChainMetadataFieldsResult> {
-    let fields = parse_chain_metadata_fields(metadata_bytes).map(|metadata| {
-        CxxPolkadotChainMetadataFields {
-            system_pallet_index: metadata.system_pallet_index,
-            balances_pallet_index: metadata.balances_pallet_index,
-            transaction_payment_pallet_index: metadata.transaction_payment_pallet_index,
-            transfer_allow_death_call_index: metadata.transfer_allow_death_call_index,
-            transfer_keep_alive_call_index: metadata.transfer_keep_alive_call_index,
-            transfer_all_call_index: metadata.transfer_all_call_index,
-            ss58_prefix: metadata.ss58_prefix,
-            spec_version: metadata.spec_version,
-        }
-    });
-    Box::new(CxxPolkadotChainMetadataFieldsResult(fields))
+) -> Box<CxxPolkadotChainMetadataResult> {
+    Box::new(CxxPolkadotChainMetadataResult(parse_chain_metadata_fields(metadata_bytes)))
 }

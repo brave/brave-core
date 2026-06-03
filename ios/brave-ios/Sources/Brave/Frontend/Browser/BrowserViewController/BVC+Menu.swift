@@ -24,20 +24,17 @@ extension BrowserViewController {
     let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: isPrivateMode)
     let walletService = BraveWallet.ServiceFactory.get(privateMode: isPrivateMode)
     let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
-    let walletP3A = profileController.braveWalletAPI.walletP3A()
 
     var keyringStore: KeyringStore? = walletStore?.keyringStore
     if keyringStore == nil {
       if let keyringService = keyringService,
         let walletService = walletService,
-        let rpcService = rpcService,
-        let walletP3A
+        let rpcService = rpcService
       {
         keyringStore = KeyringStore(
           keyringService: keyringService,
           walletService: walletService,
-          rpcService: rpcService,
-          walletP3A: walletP3A
+          rpcService: rpcService
         )
       }
     }
@@ -46,7 +43,6 @@ extension BrowserViewController {
     if cryptoStore == nil {
       cryptoStore = CryptoStore.from(
         ipfsApi: profileController.ipfsAPI,
-        walletP3A: walletP3A,
         privateMode: isPrivateMode
       )
     }
@@ -332,11 +328,11 @@ extension BrowserViewController {
   }
 
   private var vpnMenuAction: Action {
-    func alertForExpiredState() -> UIAlertController? {
-      if !BraveSkusManager.keepShowingSessionExpiredState {
+    let alertForExpiredState: () -> UIAlertController? = { [unowned self] in
+      if !BraveVPN.isSkusCredentialSessionExpired {
         return nil
       }
-      return BraveSkusManager.sessionExpiredStateAlert(loginCallback: { _ in
+      return vpnSessionExpiredStateAlert(loginCallback: { _ in
         self.openURLInNewTab(
           .brave.account,
           isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
@@ -474,7 +470,10 @@ extension BrowserViewController {
               tabManager: self.tabManager,
               toolbarUrlActionsDelegate: self,
               dismiss: { [weak self] in self?.dismiss(animated: true) },
-              askForAuthentication: self.askForLocalAuthentication
+              askForAuthentication: self.askForLocalAuthentication,
+              serpMetrics: SerpMetricsServiceFactory.get(
+                profile: self.profileController.profile
+              )
             )
           )
         )

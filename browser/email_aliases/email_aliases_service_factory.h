@@ -15,6 +15,14 @@
 class KeyedService;
 class Profile;
 
+namespace content {
+class BrowserContext;
+}
+
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace email_aliases {
 
 class EmailAliasesService;
@@ -33,6 +41,9 @@ class EmailAliasesServiceFactory : public ProfileKeyedServiceFactory {
   ~EmailAliasesServiceFactory() override;
 
   // ProfileKeyedServiceFactory:
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
+
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };

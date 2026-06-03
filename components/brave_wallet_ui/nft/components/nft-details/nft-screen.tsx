@@ -29,8 +29,8 @@ import { isTokenWatchOnly } from '../../../utils/asset-utils'
 
 // queries & mutations
 import {
+  useGetEthNftOwnerQuery,
   useGetNftMetadataQuery,
-  useGetNftOwnerQuery,
   useUpdateUserTokenMutation,
 } from '../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
@@ -104,8 +104,8 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
     skip: !selectedAsset,
   })
 
-  const { data: ownerAddress } = useGetNftOwnerQuery(
-    tokenNetwork
+  const { data: ownerAddress } = useGetEthNftOwnerQuery(
+    tokenNetwork && selectedAsset.coin === BraveWallet.CoinType.ETH
       ? {
           contract: selectedAsset.contractAddress,
           tokenId: selectedAsset.tokenId,
@@ -281,9 +281,19 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
               justifyContent='flex-start'
               gap='4px'
             >
-              {ownerAccount && <AccountName>{ownerAccount.name}</AccountName>}
+              {ownerAccount && (
+                <AccountName
+                  textColor='primary'
+                  variant='default.regular'
+                >
+                  {ownerAccount.name}
+                </AccountName>
+              )}
               <Tooltip text={ownerAddress}>
-                <AccountAddress>
+                <AccountAddress
+                  textColor='secondary'
+                  variant='default.regular'
+                >
                   {reduceAddress(ownerAddress, '...')}
                 </AccountAddress>
               </Tooltip>
@@ -391,11 +401,26 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
               {nftMetadata?.attributes?.map((attr, idx) => (
                 <Property key={idx}>
                   <Trait>
-                    <TraitType>{attr.traitType}</TraitType>
-                    <TraitValue>{attr.value}</TraitValue>
+                    <TraitType
+                      textColor='secondary'
+                      variant='small.regular'
+                    >
+                      {attr.traitType}
+                    </TraitType>
+                    <TraitValue
+                      textColor='primary'
+                      variant='default.regular'
+                    >
+                      {attr.value}
+                    </TraitValue>
                   </Trait>
                   {attr.traitRarity && (
-                    <TraitRarity>{attr.traitRarity}</TraitRarity>
+                    <TraitRarity
+                      textColor='primary'
+                      variant='default.semibold'
+                    >
+                      {attr.traitRarity}
+                    </TraitRarity>
                   )}
                 </Property>
               ))}

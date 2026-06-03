@@ -39,6 +39,11 @@ struct AliasUpdateData {
   array<string>? domains;
 };
 
+union AliasesUpdate {
+  array<Alias> aliases;
+  string error;
+};
+
 // Observer for change in email aliases state
 interface EmailAliasesServiceObserver {
 
@@ -46,8 +51,8 @@ interface EmailAliasesServiceObserver {
   OnAuthStateChanged(AuthState state);
 
   // Called when aliases have been updated for the currently authenticated
-  // account.
-  OnAliasesUpdated(array<Alias> aliases);
+  // account, or when loading them failed.
+  OnAliasesUpdated(AliasesUpdate update);
 };
 
 // Interface for managing email aliases
@@ -64,6 +69,12 @@ interface EmailAliasesService {
 
   // Add an email aliases observer.
   AddObserver(pending_remote<EmailAliasesServiceObserver> observer);
+};
+
+// Interface for reporting email aliases metrics.
+interface EmailAliasesMetrics {
+  // Record that the user copied an alias to the clipboard.
+  OnAliasCopied();
 };
 
 // Interface for handling `Generate new alias` dialog actions

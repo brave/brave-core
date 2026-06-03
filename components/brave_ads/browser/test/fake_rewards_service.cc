@@ -7,7 +7,9 @@
 
 #include <optional>
 #include <utility>
+#include <vector>
 
+#include "base/functional/callback.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
@@ -286,7 +288,10 @@ void FakeRewardsService::GetEventLogs(
 
 void FakeRewardsService::GetRewardsWallet(
     brave_rewards::GetRewardsWalletCallback callback) {
-  std::move(callback).Run(nullptr);
+  auto wallet = brave_rewards::mojom::RewardsWallet::New();
+  wallet->payment_id = "foo";
+  wallet->recovery_seed = std::vector<uint8_t>(32, 0);
+  std::move(callback).Run(std::move(wallet));
 }
 
 void FakeRewardsService::GetEnvironment(

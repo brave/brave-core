@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import Data
 import DesignSystem
 import Foundation
@@ -27,7 +28,7 @@ public struct WalletPanelContainerView: View {
   var presentBuySendSwap: (() -> Void)?
   var openWalletURLAction: ((URL) -> Void)?
   /// An invisible `UIView` background lives in SwiftUI for UIKit API to reference later
-  var buySendSwapBackground: InvisibleUIView = .init()
+  var buySendSwapBackground: InvisibleUIView = InvisibleUIView()
 
   private enum VisibleScreen: Equatable {
     case loading
@@ -686,16 +687,6 @@ struct WalletPanelView: View {
 
       accountActivityStore.update()
     }
-  }
-}
-
-struct InvisibleUIView: UIViewRepresentable {
-  let uiView = UIView()
-  func makeUIView(context: Context) -> UIView {
-    uiView.backgroundColor = .clear
-    return uiView
-  }
-  func updateUIView(_ uiView: UIView, context: Context) {
   }
 }
 

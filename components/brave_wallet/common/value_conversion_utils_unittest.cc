@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
@@ -185,6 +186,71 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
   }
 
   {
+    auto value = base::test::ParseJson(R"({
+      "chainId": "polkadot-mainnet"
+    })");
+    value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::DOT));
+
+    base::ListValue supported_keyrings;
+    supported_keyrings.Append(
+        static_cast<int>(mojom::KeyringId::kPolkadotMainnet));
+    supported_keyrings.Append(
+        static_cast<int>(mojom::KeyringId::kPolkadotImport));
+    supported_keyrings.Append(-1);
+    value.GetDict().Set("supportedKeyrings", std::move(supported_keyrings));
+
+    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
+    ASSERT_FALSE(chain);
+  }
+
+  {
+    auto value = base::test::ParseJson(R"({
+      "chainId": "polkadot-mainnet"
+    })");
+    value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::DOT));
+
+    base::ListValue supported_keyrings;
+    supported_keyrings.Append(
+        static_cast<int>(mojom::KeyringId::kPolkadotMainnet));
+    supported_keyrings.Append(9999);
+    value.GetDict().Set("supportedKeyrings", std::move(supported_keyrings));
+
+    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
+    ASSERT_FALSE(chain);
+  }
+
+  {
+    auto value = base::test::ParseJson(R"({
+      "chainId": "polkadot-mainnet"
+    })");
+    value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::DOT));
+    value.GetDict().Set("supportedKeyrings", base::Value(0));
+
+    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
+    ASSERT_FALSE(chain);
+  }
+
+  {
+    auto value = base::test::ParseJson(R"({
+      "chainId": "polkadot-mainnet"
+    })");
+    value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::DOT));
+
+    base::ListValue supported_keyrings;
+    supported_keyrings.Append(
+        static_cast<int>(mojom::KeyringId::kPolkadotMainnet));
+    supported_keyrings.Append(
+        static_cast<int>(mojom::KeyringId::kPolkadotImport));
+    value.GetDict().Set("supportedKeyrings", std::move(supported_keyrings));
+
+    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
+    ASSERT_TRUE(chain);
+    EXPECT_THAT(chain->supported_keyrings,
+                ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
+                                  mojom::KeyringId::kPolkadotImport}));
+  }
+
+  {
     mojom::NetworkInfoPtr chain =
         ValueToNetworkInfo(base::test::ParseJson(R"({})"));
     ASSERT_FALSE(chain);
@@ -194,6 +260,21 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
         ValueToNetworkInfo(base::test::ParseJson(R"([])"));
     ASSERT_FALSE(chain);
   }
+}
+
+TEST(ValueConversionUtilsUnitTest,
+     ValueToNetworkInfoTest_SupportedKeyringMigration) {
+  auto value = base::test::ParseJson(R"({
+    "chainId": "bitcoin_mainnet",
+    "coin": 0
+  })");
+
+  mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
+  ASSERT_TRUE(chain);
+  EXPECT_EQ(chain->coin, mojom::CoinType::BTC);
+  EXPECT_THAT(chain->supported_keyrings,
+              ElementsAreArray(GetSupportedKeyringsForKnownNetwork(
+                  mojom::CoinType::BTC, mojom::kBitcoinMainnet)));
 }
 
 TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
@@ -282,6 +363,7 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
                 ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
     data_value.GetDict().Set("coin", static_cast<int>(mojom::CoinType::DOT));
+    data_value.GetDict().Set("chainId", mojom::kPolkadotTestnet);
     value_network = ValueToNetworkInfo(data_value);
     EXPECT_EQ(value_network->coin, mojom::CoinType::DOT);
     EXPECT_THAT(value_network->supported_keyrings,

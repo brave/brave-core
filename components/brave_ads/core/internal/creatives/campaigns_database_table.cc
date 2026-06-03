@@ -13,13 +13,17 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_deposit_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/segments_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -51,6 +55,30 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   }
 
   return row_count;
+}
+
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const std::map</*campaign_id*/ std::string,
+                                          CreativeCampaignInfo>& campaigns) {
+  CHECK(mojom_db_action);
+  CHECK(!campaigns.empty());
+
+  const size_t row_count = BindColumns(mojom_db_action, campaigns);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            id,
+            metric_type,
+            start_at,
+            end_at,
+            daily_cap,
+            advertiser_id,
+            priority,
+            ptr
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
+      nullptr);
 }
 
 }  // namespace
@@ -108,13 +136,13 @@ void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   mojom_db_action->sql = BuildInsertSql(mojom_db_action, campaigns);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  geo_targets_database_table_.Insert(mojom_db_transaction, geo_targets);
+  InsertGeoTargets(mojom_db_transaction, geo_targets);
 
-  dayparts_database_table_.Insert(mojom_db_transaction, dayparts);
+  InsertDayparts(mojom_db_transaction, dayparts);
 
-  segments_database_table_.Insert(mojom_db_transaction, segments);
+  InsertSegments(mojom_db_transaction, segments);
 
-  deposits_database_table_.Insert(mojom_db_transaction, deposits);
+  InsertDeposits(mojom_db_transaction, deposits);
 }
 
 void Campaigns::Create(
@@ -208,31 +236,6 @@ void Campaigns::MigrateToV52(
                    /*should_drop=*/true);
 
   RenameTable(mojom_db_transaction, "campaigns_temp", "campaigns");
-}
-
-std::string Campaigns::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const std::map</*campaign_id*/ std::string, CreativeCampaignInfo>&
-        campaigns) const {
-  CHECK(mojom_db_action);
-  CHECK(!campaigns.empty());
-
-  const size_t row_count = BindColumns(mojom_db_action, campaigns);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            id,
-            metric_type,
-            start_at,
-            end_at,
-            daily_cap,
-            advertiser_id,
-            priority,
-            ptr
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

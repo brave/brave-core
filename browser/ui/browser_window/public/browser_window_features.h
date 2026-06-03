@@ -9,10 +9,14 @@
 #include <memory>
 
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 
 class BraveShieldsUIContentsCache;
+class BraveNonClientHitTestHelper;
 class BraveVPNController;
+class FocusModeController;
 class PlaylistSidePanelCoordinator;
+class TreeTabSessionObserver;
 
 namespace brave_rewards {
 class RewardsPanelCoordinator;
@@ -50,9 +54,11 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 
   BraveVPNController* brave_vpn_controller();
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   PlaylistSidePanelCoordinator* playlist_side_panel_coordinator() {
     return playlist_side_panel_coordinator_.get();
   }
+#endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   email_aliases::EmailAliasesController* email_aliases_controller() {
@@ -60,8 +66,20 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   }
 #endif
 
+  FocusModeController* focus_mode_controller() {
+    return focus_mode_controller_.get();
+  }
+
+  const FocusModeController* focus_mode_controller() const {
+    return focus_mode_controller_.get();
+  }
+
   BraveShieldsUIContentsCache* brave_shields_ui_contents_cache() {
     return brave_shields_ui_contents_cache_.get();
+  }
+
+  BraveNonClientHitTestHelper* brave_non_client_hit_test_helper() {
+    return brave_non_client_hit_test_helper_.get();
   }
 
  private:
@@ -69,13 +87,19 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
   std::unique_ptr<brave_rewards::RewardsPanelCoordinator>
       rewards_panel_coordinator_;
+#if BUILDFLAG(ENABLE_PLAYLIST)
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+#endif
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   std::unique_ptr<email_aliases::EmailAliasesController>
       email_aliases_controller_;
 #endif
+  std::unique_ptr<FocusModeController> focus_mode_controller_;
   std::unique_ptr<BraveShieldsUIContentsCache> brave_shields_ui_contents_cache_;
+  std::unique_ptr<BraveNonClientHitTestHelper>
+      brave_non_client_hit_test_helper_;
+  std::unique_ptr<TreeTabSessionObserver> tree_tab_session_observer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

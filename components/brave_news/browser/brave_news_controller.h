@@ -40,6 +40,10 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
 
 class PrefService;
 
+namespace brave_policy {
+class PolicyInitializationWaiter;
+}  // namespace brave_policy
+
 namespace history {
 class HistoryService;
 }  // namespace history
@@ -59,6 +63,8 @@ class BraveNewsController
  public:
   BraveNewsController(
       PrefService* prefs,
+      std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+          policy_initialization_waiter,
       history::HistoryService* history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<DirectFeedFetcher::Delegate>
@@ -121,21 +127,11 @@ class BraveNewsController
                         SetConfigurationCallback callback) override;
   void AddConfigurationListener(
       mojo::PendingRemote<mojom::ConfigurationListener> listener) override;
-  void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
 
   void OnNewCardsViewed(uint16_t card_views) override;
   void OnCardVisited(uint32_t depth) override;
   void OnSidebarFilterUsage() override;
-
-  void OnPromotedItemView(const std::string& item_id,
-                          const std::string& creative_instance_id) override;
-  void OnPromotedItemVisit(const std::string& item_id,
-                           const std::string& creative_instance_id) override;
-  void OnDisplayAdVisit(const std::string& item_id,
-                        const std::string& creative_instance_id) override;
-  void OnDisplayAdView(const std::string& item_id,
-                       const std::string& creative_instance_id) override;
 
   // mojom::BraveNewsInternals
   void GetVisitedSites(GetVisitedSitesCallback callback) override;
@@ -178,6 +174,8 @@ class BraveNewsController
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate_;
+  std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+      policy_initialization_waiter_;
 
   BraveNewsPrefManager pref_manager_;
   SubscriptionsSnapshot last_subscriptions_;

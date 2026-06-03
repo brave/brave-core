@@ -22,6 +22,13 @@ bool BrowserViewLayoutDelegateImpl::ShouldShowVerticalTabs() const {
          tabs::utils::ShouldShowBraveVerticalTabs(browser_view().browser());
 }
 
+bool BrowserViewLayoutDelegateImpl::ShouldShowWindowTitleForVerticalTabs()
+    const {
+  return browser_view().browser() &&
+         tabs::utils::ShouldShowWindowTitleForVerticalTabs(
+             browser_view().browser());
+}
+
 bool BrowserViewLayoutDelegateImpl::IsVerticalTabOnRight() const {
   return browser_view().browser() &&
          tabs::utils::IsVerticalTabOnRight(browser_view().browser());
@@ -56,7 +63,7 @@ bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() const {
       .browser()
       ->GetFeatures()
       .side_panel_ui()
-      ->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+      ->GetCurrentEntryId()
       .has_value();
 }
 

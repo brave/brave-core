@@ -28,7 +28,7 @@ class MediaSession;
 namespace misc_metrics {
 
 inline constexpr char kMediaSessionUsageHistogramName[] =
-    "Brave.Core.MediaSessionUsage";
+    "Brave.Core.MediaSessionUsage.2";
 inline constexpr char kMediaSessionUsageAttributeName[] = "media_session_usage";
 
 // Observes media session activity to track the percentage of active browsing

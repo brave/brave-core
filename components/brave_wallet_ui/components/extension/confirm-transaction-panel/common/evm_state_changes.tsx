@@ -174,7 +174,8 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
           justifyContent='flex-start'
         >
           <StateChangeText
-            color={isReceive ? color.systemfeedback.successIcon : undefined}
+            textColor={isReceive ? 'success' : 'secondary'}
+            variant='small.regular'
           >
             <strong>
               {isReceive ? ' + ' : ' - '}
@@ -321,7 +322,8 @@ export const NonFungibleErcTokenTransfer = ({
           justifyContent='flex-start'
         >
           <StateChangeText
-            color={isReceive ? color.systemfeedback.successIcon : undefined}
+            textColor={isReceive ? 'success' : 'secondary'}
+            variant='small.regular'
           >
             <strong>
               {isReceive ? ' + ' : ' - '}
@@ -442,7 +444,10 @@ export const ErcTokenApproval = ({
         alignItems='center'
         justifyContent='flex-start'
       >
-        <StateChangeText>
+        <StateChangeText
+          textColor='secondary'
+          variant='small.regular'
+        >
           <span>{getLocale('braveWalletFrom')}</span>
           <strong>{beforeAmount}</strong>
           <ArrowRightIcon />

@@ -590,7 +590,8 @@ TEST_F(SystemVPNConnectionAPIUnitTest,
        IgnoreDisconnectedStateWhileConnecting) {
   auto* test_api = GetConnectionAPI();
 
-  test_api->SetConnectionStateForTesting(mojom::ConnectionState::CONNECTING);
+  test_api->UpdateAndNotifyConnectionStateChange(
+      mojom::ConnectionState::CONNECTING);
   test_api->UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState::DISCONNECTED);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());

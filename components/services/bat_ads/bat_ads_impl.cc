@@ -121,7 +121,7 @@ void BatAdsImpl::MaybeGetNotificationAd(
                 }
 
                 std::optional<base::DictValue> dict =
-                    brave_ads::NotificationAdToValue(*ad);
+                    brave_ads::NotificationAdToDict(*ad);
                 std::move(callback).Run(std::move(dict));
               },
               std::move(callback)),

@@ -5,17 +5,19 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
-#include "base/check.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/win/titlebar_config.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
@@ -116,7 +118,10 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
     }
   }
 
-  if (auto overridden_result = brave::NonClientHitTest(GetBrowserView(), point);
+  auto* browser = GetBrowserView()->browser();
+  if (auto overridden_result = browser->browser_window_features()
+                                   ->brave_non_client_hit_test_helper()
+                                   ->NonClientHitTest(GetBrowserView(), point);
       overridden_result != HTNOWHERE) {
     return overridden_result;
   }
@@ -155,4 +160,45 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
             ? 0
             : width() - caption_button_container_->width());
   }
+
+  if (auto* browser = GetBrowserView()->browser();
+      tabs::utils::ShouldShowBraveVerticalTabs(browser)) {
+    // TODO(https://github.com/brave/brave-browser/issues/55744): Investigate
+    // why calculated container height is 1px longer than around.(ex, title bar
+    // or toolbar height).
+    int caption_button_container_height_delta = -1;
+
+    if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
+      // Upstream added 2px vertical padding but it doesn't fit with brave.
+      // See BrowserFrameViewWin::TitlebarMaximizedVisualHeight().
+      caption_button_container_height_delta += -2;
+    }
+    auto size = caption_button_container_->size();
+    size.Enlarge(0, caption_button_container_height_delta);
+    caption_button_container_->SetSize(size);
+  }
+
+  // See the comment in BraveOpaqueBrowserFrameView::Layout().
+  static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
+      ->UpdateHorizontalPadding();
 }
+
+int BraveBrowserFrameViewWin::FrameTopBorderThickness(bool restored) const {
+  const bool is_fullscreen =
+      (browser_widget()->IsFullscreen() || IsMaximized()) && !restored;
+
+  if (is_fullscreen) {
+    return BrowserFrameViewWin::FrameTopBorderThickness(restored);
+  }
+
+  if (auto* browser = GetBrowserView()->browser();
+      tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
+      !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
+    return 0;
+  }
+
+  return BrowserFrameViewWin::FrameTopBorderThickness(restored);
+}
+
+BEGIN_METADATA(BraveBrowserFrameViewWin)
+END_METADATA

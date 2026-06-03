@@ -54,6 +54,9 @@ def GetCatapultDir() -> str:
   return os.path.join(GetSrcDir(), 'third_party', 'catapult')
 
 
+def GetWprGoDir() -> str:
+  return os.path.join(GetSrcDir(), 'third_party', 'webpagereplay')
+
 def GetTelemetryDir() -> str:
   return os.path.join(GetCatapultDir(), 'telemetry')
 

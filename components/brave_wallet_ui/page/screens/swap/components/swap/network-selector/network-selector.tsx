@@ -68,7 +68,7 @@ export const NetworkSelector = (props: Props) => {
       >
         <Text
           textSize='20px'
-          textColor='text01'
+          textColor='primary'
           isBold={true}
         >
           {getLocale('braveSwapChangeNetwork')}

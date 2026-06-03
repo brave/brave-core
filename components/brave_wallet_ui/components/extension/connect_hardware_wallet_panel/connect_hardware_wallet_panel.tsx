@@ -113,38 +113,13 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
 
   const account = signMessageAccount || confirmTransactionAccount
 
-  React.useEffect(() => {
-    let subscribed = true
-
-    const fetchDeviceName = async () => {
-      if (!account || !account.hardware) {
-        return
-      }
-
-      const name = await getDeviceNameFromDevice(
-        account.hardware.vendor,
-        account.accountId.coin,
-      )
-      if (subscribed) {
-        setDeviceName(name.success ? name.deviceName : '')
-      }
-    }
-
-    fetchDeviceName()
-
-    return () => {
-      subscribed = false
-    }
-  }, [account, hardwareWalletCode])
-
   // memos
   const isConnected = React.useMemo((): boolean => {
     return (
-      deviceName != ''
-      && hardwareWalletCode !== 'deviceNotConnected'
+      hardwareWalletCode !== 'deviceNotConnected'
       && hardwareWalletCode !== 'unauthorized'
     )
-  }, [deviceName, hardwareWalletCode])
+  }, [hardwareWalletCode])
 
   const title = React.useMemo(() => {
     if (!account) {
@@ -205,6 +180,19 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     request,
     signMessageHardware,
   ])
+
+  const updateDeviceName = React.useCallback(async () => {
+    if (!account || !account.hardware) {
+      return
+    }
+    const name = await getDeviceNameFromDevice(
+      account.hardware.vendor,
+      account.accountId.coin,
+    )
+    setDeviceName(name.success ? name.deviceName : '')
+  }, [account])
+
+  useInterval(updateDeviceName, isConnected ? 500 : null)
 
   const retryHardwareOperation = React.useCallback(() => {
     if (isSigning) {

@@ -45,6 +45,8 @@ static_library("internal") {
     "account/confirmations/queue/confirmation_queue.h",
     "account/confirmations/queue/confirmation_queue_database_table.cc",
     "account/confirmations/queue/confirmation_queue_database_table.h",
+    "account/confirmations/queue/confirmation_queue_database_table_util.cc",
+    "account/confirmations/queue/confirmation_queue_database_table_util.h",
     "account/confirmations/queue/confirmation_queue_delegate.h",
     "account/confirmations/queue/queue_item/confirmation_queue_item_builder.cc",
     "account/confirmations/queue/queue_item/confirmation_queue_item_builder.h",
@@ -78,6 +80,8 @@ static_library("internal") {
     "account/deposits/deposit_util.h",
     "account/deposits/deposits_database_table.cc",
     "account/deposits/deposits_database_table.h",
+    "account/deposits/deposits_database_table_util.cc",
+    "account/deposits/deposits_database_table_util.h",
     "account/deposits/deposits_database_util.cc",
     "account/deposits/deposits_database_util.h",
     "account/deposits/deposits_factory.cc",
@@ -133,6 +137,8 @@ static_library("internal") {
     "account/tokens/confirmation_tokens/confirmation_tokens.h",
     "account/tokens/confirmation_tokens/confirmation_tokens_database_table.cc",
     "account/tokens/confirmation_tokens/confirmation_tokens_database_table.h",
+    "account/tokens/confirmation_tokens/confirmation_tokens_database_table_util.cc",
+    "account/tokens/confirmation_tokens/confirmation_tokens_database_table_util.h",
     "account/tokens/confirmation_tokens/confirmation_tokens_util.cc",
     "account/tokens/confirmation_tokens/confirmation_tokens_util.h",
     "account/tokens/payment_tokens/payment_token_info.cc",
@@ -143,6 +149,8 @@ static_library("internal") {
     "account/tokens/payment_tokens/payment_tokens.h",
     "account/tokens/payment_tokens/payment_tokens_database_table.cc",
     "account/tokens/payment_tokens/payment_tokens_database_table.h",
+    "account/tokens/payment_tokens/payment_tokens_database_table_util.cc",
+    "account/tokens/payment_tokens/payment_tokens_database_table_util.h",
     "account/tokens/token_generator.cc",
     "account/tokens/token_generator.h",
     "account/tokens/token_generator_interface.h",
@@ -158,6 +166,8 @@ static_library("internal") {
     "account/transactions/transactions_database_table.h",
     "account/transactions/transactions_database_table_util.cc",
     "account/transactions/transactions_database_table_util.h",
+    "account/transactions/transactions_database_util.cc",
+    "account/transactions/transactions_database_util.h",
     "account/user_data/dynamic/diagnostic_id_user_data.cc",
     "account/user_data/dynamic/diagnostic_id_user_data.h",
     "account/user_data/dynamic/system_timestamp_user_data.cc",
@@ -257,6 +267,7 @@ static_library("internal") {
     "account/utility/tokens_feature.h",
     "account/utility/tokens_util.cc",
     "account/utility/tokens_util.h",
+    "account/utility/url_response_result.h",
     "account/wallet/wallet_info.cc",
     "account/wallet/wallet_info.h",
     "account/wallet/wallet_util.cc",
@@ -301,6 +312,8 @@ static_library("internal") {
     "ads_core/ads_core_util.h",
     "ads_impl.cc",
     "ads_impl.h",
+    "ads_initializer.cc",
+    "ads_initializer.h",
     "ads_internals/ads_internals_util.cc",
     "ads_internals/ads_internals_util.h",
     "ads_notifier_manager.cc",
@@ -311,6 +324,8 @@ static_library("internal") {
     "application_state/browser_manager_observer.h",
     "application_state/browser_util.cc",
     "application_state/browser_util.h",
+    "application_state/browser_version.cc",
+    "application_state/browser_version.h",
     "catalog/campaign/catalog_campaign_info.cc",
     "catalog/campaign/catalog_campaign_info.h",
     "catalog/campaign/catalog_daypart_info.h",
@@ -326,14 +341,14 @@ static_library("internal") {
     "catalog/campaign/creative_set/creative/catalog_type_info.h",
     "catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h",
     "catalog/campaign/creative_set/creative/notification_ad/catalog_notification_ad_payload_info.h",
-    "catalog/catalog.cc",
-    "catalog/catalog.h",
     "catalog/catalog_constants.h",
     "catalog/catalog_feature.cc",
     "catalog/catalog_feature.h",
     "catalog/catalog_info.cc",
     "catalog/catalog_info.h",
     "catalog/catalog_observer.h",
+    "catalog/catalog_resource.cc",
+    "catalog/catalog_resource.h",
     "catalog/catalog_url_request.cc",
     "catalog/catalog_url_request.h",
     "catalog/catalog_url_request_builder.cc",
@@ -415,6 +430,8 @@ static_library("internal") {
     "common/database/database_transaction_util.h",
     "common/functional/once_closure_task_queue.cc",
     "common/locale/language_code.h",
+    "common/locale/locale.cc",
+    "common/locale/locale.h",
     "common/locale/locale_util.cc",
     "common/logging_util.h",
     "common/logging_util_internal.cc",
@@ -422,9 +439,11 @@ static_library("internal") {
     "common/net/http/http_status_code_class_types.h",
     "common/net/http/http_status_code_util.cc",
     "common/net/http/http_status_code_util.h",
-    "common/platform/platform_helper.cc",
-    "common/platform/platform_helper.h",
-    "common/platform/platform_helper_types.h",
+    "common/operating_system/operating_system.cc",
+    "common/operating_system/operating_system.h",
+    "common/operating_system/operating_system_types.h",
+    "common/operating_system/operating_system_util.cc",
+    "common/operating_system/operating_system_util.h",
     "common/random/random_util.cc",
     "common/random/random_util.h",
     "common/resources/country_components.cc",
@@ -506,12 +525,16 @@ static_library("internal") {
     "content_settings/content_settings_util.h",
     "creatives/campaigns_database_table.cc",
     "creatives/campaigns_database_table.h",
+    "creatives/condition_matchers_database_table_util.cc",
+    "creatives/condition_matchers_database_table_util.h",
     "creatives/conversions/creative_set_conversion_builder.cc",
     "creatives/conversions/creative_set_conversion_builder.h",
     "creatives/conversions/creative_set_conversion_database_table.cc",
     "creatives/conversions/creative_set_conversion_database_table.h",
     "creatives/conversions/creative_set_conversion_database_table_util.cc",
     "creatives/conversions/creative_set_conversion_database_table_util.h",
+    "creatives/conversions/creative_set_conversion_database_util.cc",
+    "creatives/conversions/creative_set_conversion_database_util.h",
     "creatives/conversions/creative_set_conversion_info.cc",
     "creatives/conversions/creative_set_conversion_info.h",
     "creatives/conversions/creative_set_conversion_util.cc",
@@ -532,8 +555,12 @@ static_library("internal") {
     "creatives/creatives_info.h",
     "creatives/dayparts_database_table.cc",
     "creatives/dayparts_database_table.h",
+    "creatives/dayparts_database_table_util.cc",
+    "creatives/dayparts_database_table_util.h",
     "creatives/geo_targets_database_table.cc",
     "creatives/geo_targets_database_table.h",
+    "creatives/geo_targets_database_table_util.cc",
+    "creatives/geo_targets_database_table_util.h",
     "creatives/new_tab_page_ads/creative_new_tab_page_ad_info.cc",
     "creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h",
     "creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h",
@@ -542,6 +569,8 @@ static_library("internal") {
     "creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h",
     "creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.cc",
     "creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h",
+    "creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table_util.cc",
+    "creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table_util.h",
     "creatives/new_tab_page_ads/creative_new_tab_page_ads_util.cc",
     "creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h",
     "creatives/new_tab_page_ads/new_tab_page_ad_builder.cc",
@@ -550,6 +579,8 @@ static_library("internal") {
     "creatives/notification_ads/creative_notification_ad_info.h",
     "creatives/notification_ads/creative_notification_ads_database_table.cc",
     "creatives/notification_ads/creative_notification_ads_database_table.h",
+    "creatives/notification_ads/creative_notification_ads_database_table_util.cc",
+    "creatives/notification_ads/creative_notification_ads_database_table_util.h",
     "creatives/notification_ads/creative_notification_ads_database_util.cc",
     "creatives/notification_ads/creative_notification_ads_database_util.h",
     "creatives/notification_ads/notification_ad_builder.cc",
@@ -558,6 +589,8 @@ static_library("internal") {
     "creatives/notification_ads/notification_ad_manager.h",
     "creatives/segments_database_table.cc",
     "creatives/segments_database_table.h",
+    "creatives/segments_database_table_util.cc",
+    "creatives/segments_database_table_util.h",
     "database/database.cc",
     "database/database.h",
     "database/database_maintenance.cc",
@@ -571,10 +604,10 @@ static_library("internal") {
     "deprecated/client/client_info.h",
     "deprecated/client/client_state_manager.cc",
     "deprecated/client/client_state_manager.h",
-    "diagnostics/diagnostic_alias.h",
     "diagnostics/diagnostic_entry_types.h",
     "diagnostics/diagnostic_manager.cc",
     "diagnostics/diagnostic_manager.h",
+    "diagnostics/diagnostic_types.h",
     "diagnostics/diagnostic_value_util.cc",
     "diagnostics/diagnostic_value_util.h",
     "diagnostics/entries/catalog_id_diagnostic_entry.cc",
@@ -608,6 +641,8 @@ static_library("internal") {
     "history/ad_history_database_table.h",
     "history/ad_history_database_table_util.cc",
     "history/ad_history_database_table_util.h",
+    "history/ad_history_database_util.cc",
+    "history/ad_history_database_util.h",
     "history/ad_history_feature.cc",
     "history/ad_history_item_info.cc",
     "history/ad_history_item_value_util.cc",
@@ -652,7 +687,6 @@ static_library("internal") {
     "ml/data/text_data.h",
     "ml/data/vector_data.cc",
     "ml/data/vector_data.h",
-    "ml/ml_alias.h",
     "ml/ml_prediction_util.cc",
     "ml/ml_prediction_util.h",
     "ml/model/linear/linear.cc",
@@ -677,11 +711,11 @@ static_library("internal") {
     "ml/transformation/lowercase_transformation.h",
     "ml/transformation/mapped_tokens_transformation.cc",
     "ml/transformation/mapped_tokens_transformation.h",
+    "ml/transformation/ml_types.h",
     "ml/transformation/normalization_transformation.cc",
     "ml/transformation/normalization_transformation.h",
     "ml/transformation/transformation.cc",
     "ml/transformation/transformation.h",
-    "ml/transformation/transformation_types.h",
     "prefs/obsolete_pref_util.cc",
     "prefs/pref_path_util.cc",
     "prefs/pref_path_util.h",
@@ -695,8 +729,8 @@ static_library("internal") {
     "reminders/reminders_constants.h",
     "reminders/reminders_feature.cc",
     "reminders/reminders_feature.h",
-    "segments/segment_alias.h",
     "segments/segment_constants.h",
+    "segments/segment_types.h",
     "segments/segment_util.cc",
     "segments/segment_util.h",
     "segments/segment_value_util.cc",
@@ -875,6 +909,8 @@ static_library("internal") {
     "serving/targeting/condition_matcher/matchers/regex_condition_matcher_util.h",
     "serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.cc",
     "serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.h",
+    "serving/targeting/condition_matcher/prefs/internal/condition_matcher_feature_pref_util_internal.cc",
+    "serving/targeting/condition_matcher/prefs/internal/condition_matcher_feature_pref_util_internal.h",
     "serving/targeting/condition_matcher/prefs/internal/condition_matcher_keyword_path_component_util.cc",
     "serving/targeting/condition_matcher/prefs/internal/condition_matcher_keyword_path_component_util.h",
     "serving/targeting/condition_matcher/prefs/internal/condition_matcher_pref_util_internal.cc",
@@ -921,9 +957,9 @@ static_library("internal") {
     "targeting/behavioral/anti_targeting/resource/anti_targeting_resource_constants.h",
     "targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.cc",
     "targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h",
-    "targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_alias.h",
     "targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_parser.cc",
     "targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_parser.h",
+    "targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_types.h",
     "targeting/behavioral/purchase_intent/model/purchase_intent_model.cc",
     "targeting/behavioral/purchase_intent/model/purchase_intent_model.h",
     "targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_predictor.cc",
@@ -953,7 +989,6 @@ static_library("internal") {
     "targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h",
     "targeting/behavioral/purchase_intent/resource/purchase_intent_value_util.cc",
     "targeting/behavioral/purchase_intent/resource/purchase_intent_value_util.h",
-    "targeting/contextual/text_classification/model/text_classification_alias.h",
     "targeting/contextual/text_classification/model/text_classification_model.cc",
     "targeting/contextual/text_classification/model/text_classification_model.h",
     "targeting/contextual/text_classification/resource/text_classification_resource.cc",
@@ -963,6 +998,7 @@ static_library("internal") {
     "targeting/contextual/text_classification/text_classification_feature.h",
     "targeting/contextual/text_classification/text_classification_processor.cc",
     "targeting/contextual/text_classification/text_classification_processor.h",
+    "targeting/contextual/text_classification/text_classification_types.h",
     "targeting/geographical/subdivision/subdivision_targeting.cc",
     "targeting/geographical/subdivision/subdivision_targeting.h",
     "targeting/geographical/subdivision/subdivision_targeting_constants.h",
@@ -1006,6 +1042,8 @@ static_library("internal") {
     "user_engagement/ad_events/ad_events_database_table.h",
     "user_engagement/ad_events/ad_events_database_table_util.cc",
     "user_engagement/ad_events/ad_events_database_table_util.h",
+    "user_engagement/ad_events/ad_events_database_util.cc",
+    "user_engagement/ad_events/ad_events_database_util.h",
     "user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.cc",
     "user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h",
     "user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.cc",
@@ -1095,40 +1133,40 @@ static_library("internal") {
   if (is_android) {
     sources += [
       "common/locale/language_code_android.cc",
-      "common/platform/platform_helper_android.cc",
-      "common/platform/platform_helper_android.h",
+      "common/operating_system/operating_system_android.cc",
+      "common/operating_system/operating_system_android.h",
     ]
   }
 
   if (is_linux) {
     sources += [
       "common/locale/language_code_linux.cc",
-      "common/platform/platform_helper_linux.cc",
-      "common/platform/platform_helper_linux.h",
+      "common/operating_system/operating_system_linux.cc",
+      "common/operating_system/operating_system_linux.h",
     ]
   }
 
   if (is_mac) {
     sources += [
       "common/locale/language_code_mac.mm",
-      "common/platform/platform_helper_mac.h",
-      "common/platform/platform_helper_mac.mm",
+      "common/operating_system/operating_system_mac.h",
+      "common/operating_system/operating_system_mac.mm",
     ]
   }
 
   if (is_ios) {
     sources += [
       "common/locale/language_code_ios.mm",
-      "common/platform/platform_helper_ios.h",
-      "common/platform/platform_helper_ios.mm",
+      "common/operating_system/operating_system_ios.h",
+      "common/operating_system/operating_system_ios.mm",
     ]
   }
 
   if (is_win) {
     sources += [
       "common/locale/language_code_win.cc",
-      "common/platform/platform_helper_win.cc",
-      "common/platform/platform_helper_win.h",
+      "common/operating_system/operating_system_win.cc",
+      "common/operating_system/operating_system_win.h",
     ]
   }
 
@@ -1162,4 +1200,21 @@ static_library("internal") {
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
   ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  visibility = [
+    ":*",
+    "//brave/components/brave_ads/core/browser/virtual_pref:*",
+    "//brave/components/brave_ads/core/test:*",
+  ]
+
+  sources = [
+    "common/locale/test/fake_locale.cc",
+    "common/locale/test/fake_locale.h",
+  ]
+
+  public_deps = [ ":internal" ]
 }

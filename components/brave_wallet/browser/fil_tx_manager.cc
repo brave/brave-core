@@ -30,9 +30,9 @@ namespace brave_wallet {
 FilTxManager::FilTxManager(TxService& tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService& keyring_service,
-                           TxStorageDelegate& delegate,
+                           TxStorage& tx_storage,
                            AccountResolverDelegate& account_resolver_delegate)
-    : TxManager(std::make_unique<FilTxStateManager>(delegate,
+    : TxManager(std::make_unique<FilTxStateManager>(tx_storage,
                                                     account_resolver_delegate),
                 std::make_unique<FilBlockTracker>(json_rpc_service),
                 tx_service,

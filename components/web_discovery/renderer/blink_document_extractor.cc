@@ -33,7 +33,7 @@ void ProcessAttributeRequests(
     for (const auto& request : requests) {
       if (request->sub_selector) {
         auto web_sub_selector =
-            blink::WebString::FromUTF8(*request->sub_selector);
+            blink::WebString::FromUtf8(*request->sub_selector);
         sub_element = element.QuerySelector(web_sub_selector);
         element_to_query = &*sub_element;
       }
@@ -42,7 +42,7 @@ void ProcessAttributeRequests(
         if (request->attribute == kTextContentAttributeName) {
           attribute_value = element_to_query->TextContent().Utf8();
         } else {
-          auto attribute_name = blink::WebString::FromUTF8(request->attribute);
+          auto attribute_name = blink::WebString::FromUtf8(request->attribute);
           auto web_attribute_value =
               element_to_query->GetAttribute(attribute_name);
           if (!web_attribute_value.IsNull()) {
@@ -78,7 +78,7 @@ void BlinkDocumentExtractor::QueryElementAttributes(
   blink::WebDocument document = render_frame_->GetWebFrame()->GetDocument();
   std::vector<mojom::AttributeResultPtr> results;
   for (const auto& request : requests) {
-    auto selector = blink::WebString::FromUTF8(request->root_selector);
+    auto selector = blink::WebString::FromUtf8(request->root_selector);
     auto elements = document.QuerySelectorAll(selector);
     ProcessAttributeRequests(request->root_selector,
                              request->attribute_requests, elements, results);

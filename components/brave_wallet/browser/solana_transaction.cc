@@ -10,6 +10,8 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/to_vector.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -183,16 +185,6 @@ SolanaTransaction::SolanaTransaction(
 
 SolanaTransaction::~SolanaTransaction() = default;
 
-bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
-  return message_ == tx.message_ && raw_signatures_ == tx.raw_signatures_ &&
-         wired_tx_ == tx.wired_tx_ && sign_tx_param_ == tx.sign_tx_param_ &&
-         to_wallet_address_ == tx.to_wallet_address_ &&
-         token_address_ == tx.token_address_ && tx_type_ == tx.tx_type_ &&
-         lamports_ == tx.lamports_ && amount_ == tx.amount_ &&
-         send_options_ == tx.send_options_ &&
-         tx.fee_estimation_ == fee_estimation_;
-}
-
 // Get serialized message bytes and array of signers.
 // Serialized message will be the result of decoding
 // sign_tx_param_->encoded_serialized_msg if sign_tx_param_ exists.
@@ -251,10 +243,13 @@ SolanaTransaction::GetSignedTransactionBytes(
 
   // Preparing signatures.
   std::vector<uint8_t> transaction_bytes;
-  if (signers.size() > UINT8_MAX) {
+
+  uint8_t signers_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(signers.size())
+           .AssignIfValid(&signers_size)) {
     return std::nullopt;
   }
-  CompactU16Encode(signers.size(), &transaction_bytes);
+  base::Extend(transaction_bytes, CompactU16Encode(signers_size));
 
   // Assign selected account's signature, and keep signatures for other signers
   // from dApp transaction if exists. Fill empty signatures for
@@ -293,7 +288,8 @@ SolanaTransaction::GetSignedTransactionBytes(
         continue;
       }
     }
-    transaction_bytes.insert(transaction_bytes.end(), kSolanaSignatureSize, 0);
+
+    ExtendWithEmptySignatures(transaction_bytes, uint8_t{1u});
     ++num_of_sig;
   }
   DCHECK(num_of_sig == signers.size());
@@ -318,14 +314,16 @@ std::string SolanaTransaction::GetUnsignedTransaction() const {
 
   std::vector<uint8_t> transaction_bytes;
 
-  CompactU16Encode(signers.size(), &transaction_bytes);
+  uint8_t signers_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(signers.size())
+           .AssignIfValid(&signers_size)) {
+    return "";
+  }
 
+  base::Extend(transaction_bytes, CompactU16Encode(signers_size));
   // Insert an empty (default) signature for each signer.
-  transaction_bytes.insert(transaction_bytes.end(),
-                           kSolanaSignatureSize * signers.size(), 0);
-
-  transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
-                           message_bytes.end());
+  ExtendWithEmptySignatures(transaction_bytes, signers_size);
+  base::Extend(transaction_bytes, message_bytes);
 
   if (transaction_bytes.size() > kSolanaMaxTxSize) {
     return "";
@@ -609,28 +607,29 @@ SolanaTransaction::FromSignedTransactionBytes(
     return nullptr;
   }
 
-  size_t index = 0;
-  auto ret = CompactU16Decode(bytes, index);
-  if (!ret) {
+  // https://solana.com/docs/core/transactions/transaction-structure
+  // For Legacy and V0 transactions it is vector of signatures(64 bytes each)
+  // followed by Message.
+  base::SpanReader<const uint8_t> reader(bytes);
+
+  std::optional<uint16_t> num_of_signatures = CompactU16Decode(reader);
+  if (!num_of_signatures) {
     return nullptr;
   }
-  const uint16_t num_of_signatures = std::get<0>(*ret);
-  index += std::get<1>(*ret);
-  if (index + num_of_signatures * kSolanaSignatureSize > bytes.size()) {
+  auto raw_signatures = reader.Read(
+      base::CheckMul<size_t>(*num_of_signatures, kSolanaSignatureSize)
+          .ValueOrDie());
+  if (!raw_signatures) {
     return nullptr;
   }
-  std::vector<uint8_t> signatures(
-      bytes.begin() + index,
-      bytes.begin() + index + num_of_signatures * kSolanaSignatureSize);
-  index += num_of_signatures * kSolanaSignatureSize;
-  auto message = SolanaMessage::Deserialize(
-      std::vector<uint8_t>(bytes.begin() + index, bytes.end()));
+
+  auto message = SolanaMessage::Deserialize(reader.remaining_span());
   if (!message) {
     return nullptr;
   }
 
   return std::make_unique<SolanaTransaction>(std::move(*message),
-                                             std::move(signatures));
+                                             base::ToVector(*raw_signatures));
 }
 
 bool SolanaTransaction::IsPartialSigned() const {

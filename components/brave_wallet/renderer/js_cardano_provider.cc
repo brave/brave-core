@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "gin/converter.h"
 #include "gin/object_template_builder.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
@@ -30,8 +31,25 @@ constexpr char kCardano[] = "cardano";
 constexpr char kBrave[] = "brave";
 }  // namespace
 
-// content::RenderFrameObserver
+void JSCardanoProvider::Cleanup() {
+  // No longer need that provider object. Reset mojo connection, clean bound v8
+  // references, stop tracking the render frame.
+
+  cardano_provider_.reset();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  Dispose();
+}
+
+void JSCardanoProvider::WillReleaseScriptContext(v8::Local<v8::Context> context,
+                                                 int32_t world_id) {
+  if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
+    return;
+  }
+  Cleanup();
+}
+
 void JSCardanoProvider::OnDestruct() {
+  Cleanup();
 }
 
 std::vector<std::string> JSCardanoProvider::GetSupportedExtensions() {

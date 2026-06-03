@@ -16,10 +16,6 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "content/public/browser/web_contents_delegate.h"
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_list_observer.h"
-#endif
-
 namespace content {
 class BrowserContext;
 }
@@ -27,6 +23,8 @@ class BrowserContext;
 class HostContentSettingsMap;
 
 namespace ephemeral_storage {
+
+class BrowsingHistoryCleaner;
 
 class BraveEphemeralStorageServiceDelegate
     : public ApplicationStateObserver::Observer,
@@ -36,7 +34,8 @@ class BraveEphemeralStorageServiceDelegate
       content::BrowserContext* context,
       HostContentSettingsMap* host_content_settings_map,
       scoped_refptr<content_settings::CookieSettings> cookie_settings,
-      brave_shields::BraveShieldsSettingsService* shields_settings_service);
+      brave_shields::BraveShieldsSettingsService* shields_settings_service,
+      std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner);
   ~BraveEphemeralStorageServiceDelegate() override;
 
   // ApplicationStateObserver::Observer:
@@ -46,6 +45,7 @@ class BraveEphemeralStorageServiceDelegate
   // EphemeralStorageServiceDelegate:
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
+  void CleanupTLDBrowsingHistory(const TLDEphemeralAreaKey& key) override;
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
   void PrepareTabsForFirstPartyStorageCleanup(
       const std::vector<std::string>& ephemeral_domains,
@@ -59,9 +59,12 @@ class BraveEphemeralStorageServiceDelegate
   void TriggerCurrentAppStateNotification() override;
 #endif
 
+  bool IsShredBrowsingHistoryEnabled() override;
+
  private:
   std::vector<std::string> GetEphemeralDomainsToCleanOnAppClose();
 
+  std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner_;
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;

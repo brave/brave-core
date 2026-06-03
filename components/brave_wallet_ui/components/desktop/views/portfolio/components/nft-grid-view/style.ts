@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { WalletButton } from '../../../../../shared/style'
+import { WalletButton, Text } from '../../../../../shared/style'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
@@ -49,13 +49,8 @@ export const DIVForClickableArea = styled.div`
   z-index: 2;
 `
 
-export const NFTText = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
+export const NFTText = styled(Text)`
   font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
   margin-top: 6px;
   max-width: 99%;
   white-space: nowrap;
@@ -63,13 +58,8 @@ export const NFTText = styled.span`
   overflow: hidden;
 `
 
-export const NFTSymbol = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
+export const NFTSymbol = styled(Text)`
   font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
 `
 
 export const PinnedIcon = styled.div`
@@ -120,6 +110,8 @@ export const MoreIcon = styled(Icon).attrs({
 `
 
 export const JunkMarker = styled.div`
+  font: ${leo.font.xSmall.semibold};
+
   display: inline-flex;
   min-height: 20px;
   padding: 0px ${leo.spacing.s};
@@ -132,11 +124,6 @@ export const JunkMarker = styled.div`
   border-radius: ${leo.radius.s};
   background-color: ${leo.color.red[20]};
   color: ${leo.color.red[50]};
-  font-family: Poppins;
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
   text-transform: uppercase;
   z-index: 2;
 `

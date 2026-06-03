@@ -10,9 +10,9 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

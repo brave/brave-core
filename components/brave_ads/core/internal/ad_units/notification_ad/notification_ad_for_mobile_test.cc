@@ -9,7 +9,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -31,8 +31,8 @@ class BraveAdsNotificationAdForMobileIntegrationTest : public test::TestBase {
 
  protected:
   void SetUpMocks() override {
-    fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
-    PlatformHelper::SetForTesting(&fake_platform_helper_);
+    fake_operating_system_.SetType(OperatingSystemType::kAndroid);
+    OperatingSystem::SetForTesting(&fake_operating_system_);
 
     const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
@@ -111,11 +111,11 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   ASSERT_TRUE(NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
   // Act & Assert
-  base::test::TestFuture<bool> future;
+  base::test::TestFuture<bool> test_future;
   GetAds().TriggerNotificationAdEvent(
       ad.placement_id, mojom::NotificationAdEventType::kViewedImpression,
-      future.GetCallback());
-  EXPECT_TRUE(future.Get());
+      test_future.GetCallback());
+  EXPECT_TRUE(test_future.Get());
 
   EXPECT_TRUE(NotificationAdManager::GetInstance().Exists(ad.placement_id));
 }
@@ -143,11 +143,11 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id));
 
-  base::test::TestFuture<bool> future;
+  base::test::TestFuture<bool> test_future;
   GetAds().TriggerNotificationAdEvent(ad.placement_id,
                                       mojom::NotificationAdEventType::kClicked,
-                                      future.GetCallback());
-  EXPECT_TRUE(future.Get());
+                                      test_future.GetCallback());
+  EXPECT_TRUE(test_future.Get());
 
   EXPECT_FALSE(NotificationAdManager::GetInstance().Exists(ad.placement_id));
 }
@@ -173,11 +173,11 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   ASSERT_TRUE(NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
   // Act & Assert
-  base::test::TestFuture<bool> future;
+  base::test::TestFuture<bool> test_future;
   GetAds().TriggerNotificationAdEvent(
       ad.placement_id, mojom::NotificationAdEventType::kDismissed,
-      future.GetCallback());
-  EXPECT_TRUE(future.Get());
+      test_future.GetCallback());
+  EXPECT_TRUE(test_future.Get());
 
   EXPECT_FALSE(NotificationAdManager::GetInstance().Exists(ad.placement_id));
 }

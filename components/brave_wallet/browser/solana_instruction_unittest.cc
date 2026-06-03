@@ -138,6 +138,37 @@ TEST(SolanaInstructionUnitTest, FromToCompiledInstruction) {
   EXPECT_EQ(compiled_ins2, *compiled_ins_from_ins2);
 }
 
+// Regression test: FromCompiledInstruction must use
+// num_readonly_unsigned_accounts (not num_readonly_signed_accounts) when
+// computing num_writable_unsigned_accounts.
+TEST(SolanaInstructionUnitTest,
+     FromCompiledInstructionUsesReadonlyUnsignedForWritableUnsignedCount) {
+  std::vector<SolanaAddress> accounts = {
+      *SolanaAddress::FromBase58(kAccount1),
+      *SolanaAddress::FromBase58(kAccount2),
+      *SolanaAddress::FromBase58(kAccount3),
+      *SolanaAddress::FromBase58(kAccount4),
+      *SolanaAddress::FromBase58(kAccount5),
+      *SolanaAddress::FromBase58(kAccount1),
+      *SolanaAddress::FromBase58(kAccount2),
+      *SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId),
+  };
+
+  // header(5, 4, 1): 5 required signers, 4 readonly signed, 1 readonly unsigned
+  SolanaMessageHeader header(5, 4, 1);
+
+  SolanaCompiledInstruction compiled_ins(7, {0}, {});
+
+  auto result = SolanaInstruction::FromCompiledInstruction(compiled_ins, header,
+                                                           accounts, {}, 0, 0);
+  ASSERT_TRUE(result.has_value());
+
+  ASSERT_EQ(result->GetAccounts().size(), 1u);
+  EXPECT_EQ(result->GetAccounts()[0].pubkey, kAccount1);
+  EXPECT_TRUE(result->GetAccounts()[0].is_signer);
+  EXPECT_TRUE(result->GetAccounts()[0].is_writable);
+}
+
 TEST(SolanaInstructionUnitTest, FromToValue) {
   std::string from_account = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
   std::string to_account = from_account;

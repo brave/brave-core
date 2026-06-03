@@ -14,6 +14,7 @@
 
 #include "base/containers/span.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
@@ -21,6 +22,8 @@
 class GURL;
 
 namespace brave_ads {
+
+class AdsClient;
 
 class TabManager final : public AdsClientNotifierObserver {
  public:
@@ -74,6 +77,9 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<TabManagerObserver> observers_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   std::optional<int32_t> visible_tab_id_;
 

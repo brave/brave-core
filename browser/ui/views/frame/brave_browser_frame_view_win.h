@@ -10,10 +10,13 @@
 
 #include "chrome/browser/ui/views/frame/browser_frame_view_win.h"
 #include "components/prefs/pref_member.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveWindowFrameGraphic;
 
 class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
+  METADATA_HEADER(BraveBrowserFrameViewWin, BrowserFrameViewWin)
+
  public:
   BraveBrowserFrameViewWin(BrowserWidget* browser_widget,
                            BrowserView* browser_view);
@@ -33,6 +36,7 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   int NonClientHitTest(const gfx::Point& point) override;
   bool ShouldShowWindowTitle(TitlebarType type) const override;
   void LayoutCaptionButtons() override;
+  int FrameTopBorderThickness(bool restored) const override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 

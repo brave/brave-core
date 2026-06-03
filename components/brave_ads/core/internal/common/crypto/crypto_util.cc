@@ -7,6 +7,7 @@
 
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
+#include <openssl/mem.h>
 #include <openssl/sha.h>
 
 #include <cstddef>
@@ -86,7 +87,10 @@ std::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
     return std::nullopt;
   }
 
-  return GenerateSignKeyPairFromSecret(*derived_key);
+  std::optional<KeyPairInfo> key_pair =
+      GenerateSignKeyPairFromSecret(*derived_key);
+  SecureZero(*derived_key);
+  return key_pair;
 }
 
 KeyPairInfo GenerateBoxKeyPair() {
@@ -177,6 +181,14 @@ std::optional<std::vector<uint8_t>> MaybeDecrypt(
   // `crypto_box_ZEROBYTES`, so the `+ crypto_box_ZEROBYTES` offset is safe.
   return std::vector<uint8_t>(padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
                               padded_plaintext.cend());
+}
+
+void SecureZero(base::span<uint8_t> buffer) {
+  OPENSSL_cleanse(buffer.data(), buffer.size());
+}
+
+void SecureZero(std::string& string) {
+  OPENSSL_cleanse(string.data(), string.size());
 }
 
 }  // namespace brave_ads::crypto

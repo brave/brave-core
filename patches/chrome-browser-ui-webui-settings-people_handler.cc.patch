@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index ef29f7482a041eaa038276dcc46a86d968983fd6..7a0ad30cb2148d410bf6d92c275571beeef416c5 100644
+index 4b17209486857d75934356f15b796ef62d4ce762..06655e0ba36993198d56e29d450ca7f8bd7edcc3 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
-@@ -1153,6 +1153,7 @@ void PeopleHandler::OnSyncShutdown(syncer::SyncService* sync_service) {
+@@ -1163,6 +1163,7 @@ void PeopleHandler::OnSyncShutdown(syncer::SyncService* sync_service) {
  
  void PeopleHandler::BeforeUnloadDialogCancelled() {
    // The before unload dialog is only shown during the first sync setup.
@@ -10,7 +10,7 @@ index ef29f7482a041eaa038276dcc46a86d968983fd6..7a0ad30cb2148d410bf6d92c275571be
    DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
        signin::ConsentLevel::kSync));
    syncer::SyncService* service = GetSyncService();
-@@ -1202,6 +1203,7 @@ base::DictValue PeopleHandler::GetSyncStatusDictionary() const {
+@@ -1212,6 +1213,7 @@ base::DictValue PeopleHandler::GetSyncStatusDictionary() const {
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
            !service->GetUserSettings()->IsInitialSyncFeatureSetupComplete() &&
            identity_manager->HasPrimaryAccount(signin::ConsentLevel::kSync));
@@ -18,7 +18,7 @@ index ef29f7482a041eaa038276dcc46a86d968983fd6..7a0ad30cb2148d410bf6d92c275571be
  
    SyncStatusLabels status_labels = GetSyncStatusLabelsForSettings(
        SyncServiceFactory::GetForProfile(profile_));
-@@ -1412,6 +1414,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
+@@ -1421,6 +1423,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
  }
  
  bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {

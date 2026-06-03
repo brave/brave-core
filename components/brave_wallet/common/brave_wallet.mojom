@@ -393,7 +393,6 @@ interface PanelHandlerFactory {
       pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
       pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
       pending_receiver<BraveWalletService> brave_wallet_service,
-      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
       pending_receiver<IpfsService> brave_wallet_ipfs_service_receiver,
       pending_receiver<MeldIntegrationService> meld_integration_service);
 };
@@ -418,7 +417,6 @@ interface PageHandlerFactory {
       pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
       pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
       pending_receiver<BraveWalletService> brave_wallet_service,
-      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
       pending_receiver<IpfsService> brave_wallet_ipfs_service,
       pending_receiver<MeldIntegrationService> meld_integration_service);
 };
@@ -562,11 +560,12 @@ enum SwapProvider {
   kSquid,
   kJupiter,
   kLiFi,
+  kZeroEx,
 
   // Providers not supported by Gate3
-  kZeroEx,
   kCowSwap,
   kJupiterLegacy,  // Direct Jupiter API (legacy, for iOS)
+  kZeroExLegacy,  // Direct 0x API (legacy, for iOS/Android)
 };
 
 struct SwapQuoteParams {
@@ -916,6 +915,7 @@ struct SwapFees {
   SwapDiscountCode discount_code;
 };
 
+// KeyringId could be persisted, so do not change values of existing keyrings.
 enum KeyringId {
   kDefault = 0,
   kSolana = 1,
@@ -936,11 +936,6 @@ enum KeyringId {
   kPolkadotImport = 16,
   kPolkadotImportTestnet = 17,
 };
-
-const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
-
-const string kP3ACountTestNetworksLoadTimeKey =
-    "braveWalletP3ACountTestNetworks";
 
 enum FilecoinAddressProtocol {
   SECP256K1 = 1,  // Represents the address SECP256K1 protocol
@@ -1262,6 +1257,18 @@ interface KeyringService {
   // Sets the account name for a derived account
   SetAccountName(AccountId account_id, string name) => (bool success);
 
+  // Gets all hidden accounts.
+  GetHiddenAccounts() => (array<AccountInfo> accounts);
+
+  // Marks account as hidden.
+  AddHiddenAccount(AccountId account_id) => (bool success);
+
+  // Returns whether account can be hidden.
+  CanHideAccount(AccountId account_id) => (bool can_hide);
+
+  // Removes account from hidden list.
+  RemoveHiddenAccounts(array<AccountId> account_ids) => (bool success);
+
   // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info)
       => (array<AccountInfo>? account_infos);
@@ -1551,6 +1558,7 @@ const string kPolkadotMainnet = "polkadot_mainnet";
 
 const string kPolkadotTestnet = "polkadot_testnet";
 
+// End of polkadot chains.
 const string kArbitrumNovaChainId = "0xa4ba";
 
 const string kGnosisChainId = "0x64";
@@ -1863,20 +1871,6 @@ interface JsonRpcService {
                          string chain_id)
       => (string allowance, ProviderError error, string error_message);
 
-  // Obtains the metadata JSON for a token ID of an ERC721 contract
-  GetERC721Metadata(string contract, string token_id, string chain_id)
-      => (string token_url,
-          string response,
-          ProviderError error,
-          string error_message);
-
-  // Obtains the metadata JSON for a token ID of an ERC1155 contract
-  GetERC1155Metadata(string contract, string token_id, string chain_id)
-      => (string token_url,
-          string response,
-          ProviderError error,
-          string error_message);
-
   GetUnstoppableDomainsResolveMethod() => (ResolveMethod method);
 
   GetEnsResolveMethod() => (ResolveMethod method);
@@ -1907,13 +1901,10 @@ interface JsonRpcService {
                                        string error_message);
 
   // SNS lookups
-  SnsGetSolAddr(string domain)
-      => (string address, SolanaProviderError error, string error_message);
+  SnsGetSolAddr(string domain) => (string? address);
 
   // SNS Domain lookups
-  SnsResolveHost(string domain) => (url.mojom.Url? url,
-                                    SolanaProviderError error,
-                                    string error_message);
+  SnsResolveHost(string domain) => (url.mojom.Url? url);
 
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token)
@@ -1993,13 +1984,6 @@ interface JsonRpcService {
   GetNftBalances(
       string wallet_address, array<NftIdentifier> nft_identifiers)
       => (array<uint64> balances, string error_message);
-
-  // Returns the metadata json associated with the NFT account address
-  GetSolTokenMetadata(string chain_id, string token_mint_address)
-      => (string token_url,
-          string response,
-          SolanaProviderError error,
-          string error_message);
 
   // Returns whether a blockhash is still valid or not for a given chain.
   IsSolanaBlockhashValid(
@@ -2268,6 +2252,13 @@ struct PolkadotAccountInfo {
   PolkadotAccountBalance data;
 };
 
+enum PolkadotValidationStatus {
+  kNoError = 0,
+  kInvalidPrefix = 1,
+  kInvalidAddressFormat = 2,
+  kFailedToFetchMetadata = 3,
+};
+
 interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
@@ -2279,6 +2270,9 @@ interface PolkadotWalletService {
 
   GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
+
+  ValidateAddressForTransaction(string chain_id, string address)
+      => (PolkadotValidationStatus status);
 };
 
 enum TransactionStatus {
@@ -3167,38 +3161,6 @@ interface BraveWalletService {
   SetTransactionSimulationOptInStatus(BlowfishOptInStatus status);
 
   WriteToClipboard(string text, bool is_sensitive);
-};
-
-// For reporting wallet related P3A metrics.
-interface BraveWalletP3A {
-  // Called when the wallet provider type is evaluated after page load.
-  ReportJSProvider(JSProviderType provider_type,
-                   CoinType coin_type,
-                   bool allow_provider_overwrite);
-
-  // Called when a Wallet onboarding action is performed.
-  ReportOnboardingAction(OnboardingAction onboarding_action);
-
-  // Called to report an active wallet count for P3A
-  RecordActiveWalletCount(int32 count, CoinType coin_type);
-
-  // Called to report displayed NFT count upon viewing the NFT gallery
-  RecordNFTGalleryView(int32 nft_count);
-};
-
-enum OnboardingAction {
-  Shown = 0,
-  LegalAndPassword = 1,
-  RecoverySetup = 2,
-  Complete = 3,
-  CompleteRecoverySkipped = 4,
-  StartRestore = 5,
-};
-
-enum JSProviderType {
-  None = 0,
-  ThirdParty = 1,
-  Native = 2,
 };
 
 enum DefaultWallet {

@@ -75,6 +75,7 @@ android_library_factory("factory_java") {
     ":java",
     "//chrome/browser/feedback/android:java",
     "//chrome/browser/profiles/android:java",
+    "//ui/android:ui_java",
   ]
 
   # This internal file will be replaced by a generated file so the resulting

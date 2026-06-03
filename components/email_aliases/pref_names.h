@@ -8,8 +8,21 @@
 
 namespace email_aliases::prefs {
 
+inline constexpr char kEmailAliasesEnabled[] = "brave.email_aliases.enabled";
+
 // Preference key for storing the aliases notes.
 inline constexpr char kEmailAliasesNotes[] = "brave.email_aliases.notes";
+
+// Set to true once the user has at least one alias.
+inline constexpr char kAliasesPresent[] = "brave.email_aliases.aliases_present";
+
+// Weekly storage list for clipboard copy count metric.
+inline constexpr char kClipboardCopyCountStorage[] =
+    "brave.email_aliases.clipboard_copy_count_storage";
+
+// Set to true once the settings page access method metric has been recorded.
+inline constexpr char kSettingsPageMethodReported[] =
+    "brave.email_aliases.settings_page_method_reported";
 
 }  // namespace email_aliases::prefs
 

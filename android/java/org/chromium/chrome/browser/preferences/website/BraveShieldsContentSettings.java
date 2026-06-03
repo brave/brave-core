@@ -124,14 +124,114 @@ public class BraveShieldsContentSettings {
         }
     }
 
-    public static void setShieldsValue(Profile profile, String host, String resourceIndentifier,
-            String settingOption, boolean fromTopShields) {
+    /**
+     * Returns true if the per-site shields settings for siteUrl already match the global defaults.
+     */
+    public static boolean siteMatchesDefaults(Profile profile, String siteUrl) {
+        if (BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(siteUrl, profile)
+                != BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled("", profile)) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getNoScriptControlType(siteUrl, profile)
+                .equals(BraveShieldsContentSettingsJni.get().getNoScriptControlType("", profile))) {
+            return false;
+        }
+        if (BraveShieldsContentSettingsJni.get().getForgetFirstPartyStorageEnabled(siteUrl, profile)
+                != BraveShieldsContentSettingsJni.get()
+                        .getForgetFirstPartyStorageEnabled("", profile)) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getFingerprintingControlType(siteUrl, profile)
+                .equals(
+                        BraveShieldsContentSettingsJni.get()
+                                .getFingerprintingControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getHttpsUpgradeControlType(siteUrl, profile)
+                .equals(
+                        BraveShieldsContentSettingsJni.get()
+                                .getHttpsUpgradeControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getCookieControlType(siteUrl, profile)
+                .equals(BraveShieldsContentSettingsJni.get().getCookieControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getCosmeticFilteringControlType(siteUrl, profile)
+                .equals(
+                        BraveShieldsContentSettingsJni.get()
+                                .getCosmeticFilteringControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getAdControlType(siteUrl, profile)
+                .equals(BraveShieldsContentSettingsJni.get().getAdControlType("", profile))) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Resets all per-site shields settings for the given URL to the global defaults. Calls each JNI
+     * getter/setter pair directly to avoid broken value conversions in the setShieldsValue
+     * abstraction.
+     */
+    public static void resetSiteToDefaults(Profile profile, String siteUrl) {
+        boolean defaultShieldsEnabled =
+                BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled("", profile);
+        BraveShieldsContentSettingsJni.get()
+                .setBraveShieldsEnabled(defaultShieldsEnabled, siteUrl, profile);
+
+        String defaultScripts =
+                BraveShieldsContentSettingsJni.get().getNoScriptControlType("", profile);
+        BraveShieldsContentSettingsJni.get()
+                .setNoScriptControlType(defaultScripts, siteUrl, profile);
+
+        boolean defaultForgetMe =
+                BraveShieldsContentSettingsJni.get().getForgetFirstPartyStorageEnabled("", profile);
+        BraveShieldsContentSettingsJni.get()
+                .setForgetFirstPartyStorageEnabled(defaultForgetMe, siteUrl, profile);
+
+        String defaultFingerprinting =
+                BraveShieldsContentSettingsJni.get().getFingerprintingControlType("", profile);
+        BraveShieldsContentSettingsJni.get()
+                .setFingerprintingControlType(defaultFingerprinting, siteUrl, profile);
+
+        String defaultHttpsUpgrade =
+                BraveShieldsContentSettingsJni.get().getHttpsUpgradeControlType("", profile);
+        BraveShieldsContentSettingsJni.get()
+                .setHttpsUpgradeControlType(defaultHttpsUpgrade, siteUrl, profile);
+
+        String defaultCookies =
+                BraveShieldsContentSettingsJni.get().getCookieControlType("", profile);
+        BraveShieldsContentSettingsJni.get().setCookieControlType(defaultCookies, siteUrl, profile);
+
+        String defaultCosmeticFiltering =
+                BraveShieldsContentSettingsJni.get().getCosmeticFilteringControlType("", profile);
+        String defaultAdControl =
+                BraveShieldsContentSettingsJni.get().getAdControlType("", profile);
+        BraveShieldsContentSettingsJni.get()
+                .setCosmeticFilteringControlType(defaultCosmeticFiltering, siteUrl, profile);
+        BraveShieldsContentSettingsJni.get().setAdControlType(defaultAdControl, siteUrl, profile);
+    }
+
+    public static void setShieldsValue(
+            Profile profile,
+            String host,
+            String resourceIndentifier,
+            String settingOption,
+            boolean fromTopShields) {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
-            BraveShieldsContentSettingsJni.get().setFingerprintingControlType(
-                    settingOption, host, profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setFingerprintingControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTPS_UPGRADE)) {
-            BraveShieldsContentSettingsJni.get().setHttpsUpgradeControlType(
-                    settingOption, host, profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setHttpsUpgradeControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
@@ -317,6 +417,14 @@ public class BraveShieldsContentSettings {
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE);
     }
 
+    public static boolean isShredBrowsingHistoryEnabled(Profile profile) {
+        return BraveShieldsContentSettingsJni.get().isShredBrowsingHistoryEnabled(profile);
+    }
+
+    public static void setShredBrowsingHistoryEnabled(boolean enabled, Profile profile) {
+        BraveShieldsContentSettingsJni.get().setShredBrowsingHistory(enabled, profile);
+    }
+
     @CalledByNative
     private void setNativePtr(long nativePtr) {
         assert mNativeBraveShieldsContentSettings == 0;
@@ -372,5 +480,9 @@ public class BraveShieldsContentSettings {
         void setAutoShredMode(int mode, String url, Profile profile);
 
         int getAutoShredMode(String url, Profile profile);
+
+        boolean isShredBrowsingHistoryEnabled(Profile profile);
+
+        void setShredBrowsingHistory(boolean enabled, Profile profile);
     }
 }

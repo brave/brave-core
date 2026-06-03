@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/host_os_constants.gni")
+import("//brave/build/rust/rust_host_toolchain.gni")
 
 template("rust_to_wasm") {
   assert(defined(invoker.rust_packages),
@@ -31,6 +32,7 @@ template("rust_to_wasm") {
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
     }
+    inputs += rust_host_inputs
 
     script = "//brave/build/gn_run_rsp.py"
     args = [ "{{response_file_name}}" ]
@@ -45,8 +47,17 @@ template("rust_to_wasm") {
     # or via `cargo install`, which:
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
-    response_file_contents = [
-      "PATH=./" + host_path_sep + getenv("PATH"),
+    #
+    # The rust-toolchain `rebase_path` MUST stay absolute - see the note in
+    # `//brave/tools/crates/build_crate.gni` for why a relative entry can
+    # silently fall through to a local rustup proxy.
+    response_file_contents = [ "PATH=./" + host_path_sep +
+                               rebase_path("//third_party/rust-toolchain/bin") +
+                               host_path_sep + getenv("PATH") ]
+
+    response_file_contents += rust_host_response_file_contents
+
+    response_file_contents += [
       rebase_path("$root_build_dir/wasm-pack$host_exe_suffix"),
       "--log-level",
       "warn",

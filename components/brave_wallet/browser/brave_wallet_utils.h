@@ -53,6 +53,8 @@ base::DictValue SwapInfoToValue(const mojom::SwapInfoPtr& swap_info);
 mojom::SwapInfoPtr ValueToSwapInfo(const base::DictValue& value);
 
 bool IsEndpointUsingBraveWalletProxy(const GURL& url);
+base::flat_map<std::string, std::string> AddBraveServicesKeyHeaders(
+    base::flat_map<std::string, std::string> headers);
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
 
 void SetDefaultEthereumWallet(PrefService* prefs,

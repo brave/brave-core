@@ -8,9 +8,9 @@
 #include <memory>
 #include <vector>
 
+#include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
-#include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "components/tabs/public/tab_interface.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -69,7 +69,8 @@ class BraveTabStyleIsHoveringTest : public ChromeViewsTestBase {
 
   // Creates a tab and adds it to the container for testing.
   Tab* CreateTab(int id) {
-    auto tab = std::make_unique<Tab>(tabs::TabHandle(id), controller_.get());
+    auto tab =
+        std::make_unique<BraveTab>(tabs::TabHandle(id), controller_.get());
     return container_->AddChildView(std::move(tab));
   }
 

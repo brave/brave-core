@@ -9,14 +9,17 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
+#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/box_layout.h"
@@ -95,7 +98,10 @@ void BraveActionsContainer::AddActionViewForShields() {
     return;
   }
   shields_action_btn_ = AddChildViewAt(
-      std::make_unique<BraveShieldsActionView>(browser_window_interface_), 0);
+      std::make_unique<BraveShieldsActionView>(
+          browser_window_interface_, *ChromeLayoutProvider::Get(),
+          base::BindRepeating(&WebUIBubbleManager::Create<ShieldsPanelUI>)),
+      0);
   shields_action_btn_->SetPreferredSize(GetActionSize());
   shields_action_btn_->Init();
 }

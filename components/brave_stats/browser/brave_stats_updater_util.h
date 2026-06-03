@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_STATS_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_STATS_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -27,7 +28,8 @@ int GetIsoWeekNumber(const base::Time& time);
 
 base::Time GetLastMondayTime(const base::Time& time);
 
-base::Time GetYMDAsDate(std::string_view ymd, bool use_utc = false);
+std::optional<base::Time> GetYMDAsDate(std::string_view ymd,
+                                       bool use_utc = false);
 
 std::string GetAPIKey();
 

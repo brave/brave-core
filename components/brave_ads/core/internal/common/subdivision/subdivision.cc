@@ -30,12 +30,10 @@ bool DoesRequireResource() {
 }  // namespace
 
 Subdivision::Subdivision() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-Subdivision::~Subdivision() {
-  GetAdsClient().RemoveObserver(this);
-}
+Subdivision::~Subdivision() = default;
 
 void Subdivision::AddObserver(SubdivisionObserver* const observer) {
   observers_.AddObserver(observer);

@@ -8,9 +8,14 @@
   --conversation-content-max-width: calc(
     768px + calc(var(--conversation-content-margin) * 2)
   );
+  // This variable is a convenience for progress_bubble so that it can be fixed
+  // exactly where we want.
+  // `padding-bottom` in an ancestor changes where a
+  // sticky position is applied via `bottom` when scrolling up.
+  --conversation-content-bottom-padding: var(--leo-spacing-xl);
 
   position: relative;
-  padding-bottom: var(--leo-spacing-xl);
+  padding-bottom: var(--conversation-content-bottom-padding);
 }
 
 .conversationContent {

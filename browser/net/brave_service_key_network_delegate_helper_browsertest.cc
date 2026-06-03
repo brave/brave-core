@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+
+#include "base/containers/map_util.h"
 #include "brave/components/constants/network_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -13,6 +16,7 @@
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
  public:
@@ -35,6 +39,9 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
     base::AutoLock auto_lock(header_result_lock_);
 
     header_result_ = request.headers.contains("BraveServiceKey");
+    const std::string* auth =
+        base::FindOrNull(request.headers, "Authorization");
+    authorization_header_ = auth ? *auth : std::string();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -59,11 +66,17 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return header_result_;
   }
 
+  std::string authorization_header() {
+    base::AutoLock auto_lock(header_result_lock_);
+    return authorization_header_;
+  }
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   mutable base::Lock header_result_lock_;
   bool header_result_ = false;
+  std::string authorization_header_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
@@ -98,4 +111,37 @@ IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
   GURL target = https_server().GetURL(kExtensionUpdaterDomain, "/index.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_TRUE(header_result());
+
+  target = https_server().GetURL("search.brave.com", "/index.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_TRUE(header_result());
+
+  target = https_server().GetURL("search.brave.software", "/index.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_TRUE(header_result());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
+                       IncludesAuthorizationHeaderForSearchDomains) {
+  GURL target = https_server().GetURL("search.brave.com", "/index.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_THAT(authorization_header(),
+              ::testing::StartsWith("Signature keyId="));
+  EXPECT_THAT(authorization_header(),
+              ::testing::HasSubstr("headers=\"(request-target)\""));
+
+  target = https_server().GetURL("search.brave.software", "/index.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_THAT(authorization_header(),
+              ::testing::StartsWith("Signature keyId="));
+  EXPECT_THAT(authorization_header(),
+              ::testing::HasSubstr("headers=\"(request-target)\""));
+
+  target = https_server().GetURL(kExtensionUpdaterDomain, "/index.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_TRUE(authorization_header().empty());
+
+  target = https_server().GetURL("brave.com", "/index.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_TRUE(authorization_header().empty());
 }

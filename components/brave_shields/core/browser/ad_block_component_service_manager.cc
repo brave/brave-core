@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 
 #include <memory>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -13,17 +14,25 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/location.h"
 #include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/sequence_checker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -31,6 +40,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockExperimentalListDefault;
@@ -73,6 +83,39 @@ bool IsAdBlockOnlyModeSupportedAndFeatureEnabled(const std::string& locale) {
 
 }  // namespace
 
+// A sentinel provider that registers with the filters provider manager and
+// reports IsInitialized() = false until the component catalog has loaded and
+// all component providers have been registered. This gates filter set loading
+// until the full provider set is known, preventing premature initial loads.
+class ComponentProvidersGate : public AdBlockFiltersProvider {
+ public:
+  ComponentProvidersGate(bool engine_is_default,
+                         AdBlockFiltersProviderManager* manager)
+      : AdBlockFiltersProvider(engine_is_default, manager) {}
+  ~ComponentProvidersGate() override = default;
+  void SetInitialized() {
+    if (initialized_) {
+      return;
+    }
+    initialized_ = true;
+    NotifyObservers(engine_is_default_);
+  }
+  void LoadFilterSet(
+      base::OnceCallback<
+          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb)
+      override {
+    // No-op: this is only a sentinel provider to gate initialization.
+    std::move(cb).Run(base::BindOnce([](rust::Box<adblock::FilterSet>*) {}));
+  }
+  std::string GetNameForDebugging() override {
+    return "ComponentProvidersGate";
+  }
+  bool IsInitialized() const override { return initialized_; }
+
+ private:
+  bool initialized_ = false;
+};
+
 AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
     AdBlockFiltersProviderManager* filters_provider_manager,
@@ -86,6 +129,20 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
       catalog_provider_(catalog_provider),
       filters_provider_manager_(filters_provider_manager),
       list_p3a_(list_p3a) {
+  // The gates block filter set loading until the catalog loads and all
+  // component providers are registered, so a single engine build happens
+  // once everything is ready. They are scoped to the DAT cache feature
+  // since that's the path that benefits from deferring the first build;
+  // without DAT cache, the pre-existing startup-suppression flag is
+  // sufficient and we want to avoid changing behavior for users not on
+  // the new path.
+  if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
+    default_gate_ = std::make_unique<ComponentProvidersGate>(
+        true, filters_provider_manager_);
+    additional_gate_ = std::make_unique<ComponentProvidersGate>(
+        false, filters_provider_manager_);
+  }
+
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
@@ -141,6 +198,23 @@ void AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged() {
 
 void AdBlockComponentServiceManager::StartRegionalServices() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Mark the gate providers as initialized on every exit path, but only after
+  // any regional component providers below are registered. Running via
+  // absl::Cleanup ensures gates fire even on early returns (no local state,
+  // empty catalog) so filter set loading is unblocked in all cases. Gates are
+  // only created when the DAT cache feature is enabled, so they may be null.
+  ComponentProvidersGate* default_gate = default_gate_.get();
+  ComponentProvidersGate* additional_gate = additional_gate_.get();
+  absl::Cleanup initialize_gates = [default_gate, additional_gate] {
+    if (default_gate) {
+      default_gate->SetInitialized();
+    }
+    if (additional_gate) {
+      additional_gate->SetInitialized();
+    }
+  };
+
   if (!local_state_) {
     return;
   }

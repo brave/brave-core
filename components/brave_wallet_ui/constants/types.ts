@@ -549,6 +549,7 @@ export enum WalletRoutes {
   // hardware wallet import modals
   AddHardwareAccountModalStart = '/crypto/accounts/add-account/hardware',
   AddHardwareAccountModal = '/crypto/accounts/add-account/hardware/:accountTypeName?',
+  RestoreAccountsModal = '/crypto/accounts/add-account/restore',
 
   // wallet backup
   Backup = '/crypto/backup-wallet',
@@ -757,6 +758,7 @@ export const CardanoTestnetKeyringIds = [BraveWallet.KeyringId.kCardanoTestnet]
 
 export const PolkadotTestnetKeyringIds = [
   BraveWallet.KeyringId.kPolkadotTestnet,
+  BraveWallet.KeyringId.kPolkadotImportTestnet,
 ]
 
 /**
@@ -856,6 +858,7 @@ export type AccountModalTypes =
   | 'privateKey'
   | 'edit'
   | 'details'
+  | 'hide'
   | 'remove'
   | 'buy'
   | 'explorer'
@@ -941,6 +944,7 @@ export enum AddressMessageInfoIds {
   zcashInvalidUnifiedAddressMissingTransparentPartError = 12,
   zcashInvalidUnifiedAddressMissingOrchardPartError = 13,
   zcashInvalidAddressNetworkMismatchError = 14,
+  polkadotInvalidPrefixError = 15,
 }
 
 export type AddressMessageInfo = {
@@ -1090,6 +1094,7 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kNearIntents]: 'NEAR Intents',
   [BraveWallet.SwapProvider.kCowSwap]: 'CoW Swap',
   [BraveWallet.SwapProvider.kJupiterLegacy]: 'Jupiter (Legacy)',
+  [BraveWallet.SwapProvider.kZeroExLegacy]: '0x (Legacy)',
 }
 
 export const SupportedSwapProviders = [

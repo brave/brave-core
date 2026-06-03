@@ -17,6 +17,8 @@
 #import "cwv_web_view.h"             // NOLINT
 #import "cwv_web_view_extras.h"      // NOLINT
 
+@class BraveWebFrame;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
@@ -25,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ProfileBridge;
 @protocol LoginsTabHelperBridge;
 @protocol BraveTalkTabHelperBridge;
+@protocol BraveSearchMakeDefaultTabHelperBridge;
 @protocol PrintHandler;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
@@ -85,6 +88,9 @@ CWV_EXPORT
 /// (reference fragment navigations, pushState/replaceState, same document
 /// history navigation)
 - (void)webViewDidCommitSameDocumentNavigation:(CWVWebView*)webView;
+/// Notifies the delegate one web frame has become available
+- (void)webView:(CWVWebView*)webView
+    frameDidBecomeAvailable:(BraveWebFrame*)frame;
 
 @end
 
@@ -217,6 +223,13 @@ CWV_EXPORT
 @interface BraveWebView (BraveTalk)
 /// A bridge for handling Brave Talk tab features
 - (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveSearchHelper)
+/// A bridge for handling Brave Search helper script messages
+@property(nonatomic, weak, nullable) id<BraveSearchMakeDefaultTabHelperBridge>
+    braveSearchHelper;
 @end
 
 CWV_EXPORT

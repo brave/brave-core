@@ -4,8 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
 import { layoutPanelWidth } from '../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { Text } from '../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -34,31 +36,17 @@ export const NameAndSymbolWrapper = styled.div`
   padding: 1px 0;
 `
 
-export const AssetName = styled.span`
-  color: ${leo.color.text.primary};
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
+export const AssetName = styled(Text)`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 160px;
-  text-align: left;
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     width: 140px;
   }
 `
 
-export const AssetSymbol = styled.span`
-  color: ${leo.color.text.tertiary};
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
+export const AssetSymbol = styled(Text)`
   text-transform: uppercase;
-  text-align: left;
 `

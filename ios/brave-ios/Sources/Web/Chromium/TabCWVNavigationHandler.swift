@@ -173,4 +173,15 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     )
     tab.downloadDelegate?.tab(tab, didCreateDownload: pendingDownload)
   }
+
+  func webView(_ webView: CWVWebView, frameDidBecomeAvailable frame: BraveWebFrame) {
+    tab?.frameDidBecomeAvailable(
+      frame: .init(
+        frameID: frame.frameID,
+        isMainFrame: frame.isMainFrame,
+        originURL: frame.securityOrigin.url,
+        url: frame.url
+      )
+    )
+  }
 }

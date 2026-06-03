@@ -43,7 +43,6 @@ import {
   AccountCircle,
   AccountNameText,
   TopRow,
-  NetworkText,
   PanelTitle,
   MessageBox,
   MessageText,
@@ -60,12 +59,12 @@ import {
 import {
   TabRow,
   WarningBox,
-  WarningTitle,
   WarningText,
   LearnMoreButton,
   URLText,
   WarningIcon,
 } from '../shared-panel-styles'
+import { Text } from '../../shared/style'
 
 interface Props {
   signMessageData: BraveWallet.SignMessageRequest[]
@@ -189,7 +188,7 @@ export const SignPanel = (props: Props) => {
   React.useEffect(() => {
     if (
       showWarning
-      || ethSignTypedData?.primaryType === 'Permit'
+      || ethSignTypedData
       || (cardanoSignTypedData && network?.coin === BraveWallet.CoinType.ADA)
     ) {
       setSignStep(SignDataSteps.SignRisk)
@@ -214,10 +213,18 @@ export const SignPanel = (props: Props) => {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{network?.chainName ?? ''}</NetworkText>
+        <Text
+          textColor='tertiary'
+          variant='small.regular'
+        >
+          {network?.chainName ?? ''}
+        </Text>
         {signMessageQueueInfo.queueLength > 1 && (
           <QueueStepRow>
-            <QueueStepText>
+            <QueueStepText
+              textColor='secondary'
+              variant='default.semibold'
+            >
               {signMessageQueueInfo.queueNumber}{' '}
               {getLocale('braveWalletQueueOf')}{' '}
               {signMessageQueueInfo.queueLength}
@@ -232,23 +239,44 @@ export const SignPanel = (props: Props) => {
         )}
       </TopRow>
       <AccountCircle orb={orb} />
-      <URLText>
+      <URLText
+        textColor='secondary'
+        variant='xSmall.regular'
+      >
         <CreateSiteOrigin
           originSpec={selectedQueueData.originInfo.originSpec}
           eTldPlusOne={selectedQueueData.originInfo.eTldPlusOne}
         />
       </URLText>
-      <AccountNameText>{account?.name ?? ''}</AccountNameText>
-      <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
+      <AccountNameText
+        textColor='secondary'
+        variant='default.semibold'
+      >
+        {account?.name ?? ''}
+      </AccountNameText>
+      <PanelTitle
+        textColor='primary'
+        variant='large.semibold'
+      >
+        {getLocale('braveWalletSignTransactionTitle')}
+      </PanelTitle>
       {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
           <WarningTitleRow>
             <WarningIcon />
-            <WarningTitle warningType='danger'>
+            <Text
+              textColor='error'
+              variant='small.semibold'
+            >
               {getLocale('braveWalletSignWarningTitle')}
-            </WarningTitle>
+            </Text>
           </WarningTitleRow>
-          <WarningText>{getLocale('braveWalletSignWarning')}</WarningText>
+          <WarningText
+            textColor='error'
+            variant='small.regular'
+          >
+            {getLocale('braveWalletSignWarning')}
+          </WarningText>
           <LearnMoreButton onClick={onClickLearnMore}>
             {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
           </LearnMoreButton>
@@ -272,10 +300,13 @@ export const SignPanel = (props: Props) => {
           ) && (
             <WarningBox warningType='warning'>
               <WarningTitleRow>
-                <WarningIcon color={'warningIcon'} />
-                <WarningTitle warningType='warning'>
+                <WarningIcon warningType='warning' />
+                <Text
+                  textColor='primary'
+                  variant='small.semibold'
+                >
                   {getLocale('braveWalletNonAsciiCharactersInMessageWarning')}
-                </WarningTitle>
+                </Text>
               </WarningTitleRow>
               <LearnMoreButton
                 onClick={() => setRenderUnicode((prev) => !prev)}
@@ -291,7 +322,10 @@ export const SignPanel = (props: Props) => {
 
           {ethStandardSignData && (
             <MessageBox>
-              <MessageText>
+              <MessageText
+                textColor='secondary'
+                variant='small.regular'
+              >
                 {!renderUnicode && hasUnicode(ethStandardSignData.message)
                   ? unicodeEscape(ethStandardSignData.message)
                   : ethStandardSignData.message}
@@ -301,13 +335,21 @@ export const SignPanel = (props: Props) => {
 
           {solanaSignTypedData && (
             <MessageBox>
-              <MessageText>{solanaSignTypedData.message}</MessageText>
+              <MessageText
+                textColor='secondary'
+                variant='small.regular'
+              >
+                {solanaSignTypedData.message}
+              </MessageText>
             </MessageBox>
           )}
 
           {cardanoSignTypedData && (
             <MessageBox>
-              <MessageText>
+              <MessageText
+                textColor='secondary'
+                variant='small.regular'
+              >
                 {!renderUnicode && hasUnicode(cardanoSignTypedData.message)
                   ? unicodeEscape(cardanoSignTypedData.message)
                   : cardanoSignTypedData.message}

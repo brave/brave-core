@@ -5,79 +5,62 @@
 
 #include "brave/components/brave_wallet/common/solana_address.h"
 
-#include <optional>
-#include <utility>
+#include <stddef.h>
 
-#include "base/check.h"
+#include <optional>
+
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
 
-SolanaAddress::SolanaAddress() = default;
 SolanaAddress::~SolanaAddress() = default;
 SolanaAddress::SolanaAddress(const SolanaAddress& other) = default;
 SolanaAddress& SolanaAddress::operator=(const SolanaAddress& other) = default;
 SolanaAddress::SolanaAddress(SolanaAddress&& other) = default;
 SolanaAddress& SolanaAddress::operator=(SolanaAddress&& other) = default;
 
-bool SolanaAddress::operator==(const SolanaAddress& other) const {
-  return bytes_ == other.bytes_;
+// static
+std::optional<SolanaAddress> SolanaAddress::ReadFrom(
+    base::SpanReader<const uint8_t>& reader) {
+  auto bytes = reader.Read<kSolanaPubkeySize>();
+  if (!bytes) {
+    return std::nullopt;
+  }
+  return SolanaAddress(*bytes);
 }
 
 // static
 std::optional<SolanaAddress> SolanaAddress::FromBytes(
     base::span<const uint8_t> bytes) {
-  if (bytes.size() != kSolanaPubkeySize) {
-    return std::nullopt;
+  if (auto fixed_bytes = bytes.to_fixed_extent<kSolanaPubkeySize>()) {
+    return SolanaAddress(*fixed_bytes);
   }
-
-  return SolanaAddress(bytes);
-}
-
-// static
-std::optional<SolanaAddress> SolanaAddress::FromBytes(
-    std::vector<uint8_t> bytes) {
-  if (bytes.size() != kSolanaPubkeySize) {
-    return std::nullopt;
-  }
-
-  return SolanaAddress(std::move(bytes));
+  return std::nullopt;
 }
 
 // static
 std::optional<SolanaAddress> SolanaAddress::FromBase58(
     const std::string& base58_string) {
-  std::vector<uint8_t> bytes;
-  if (!Base58Decode(base58_string, &bytes, kSolanaPubkeySize)) {
+  auto bytes = Base58Decode(base58_string, kSolanaPubkeySize);
+  if (!bytes) {
     return std::nullopt;
   }
-
-  return SolanaAddress(std::move(bytes));
+  return SolanaAddress::FromBytes(*bytes);
 }
 
 // static
 SolanaAddress SolanaAddress::ZeroAddress() {
-  return SolanaAddress(std::vector<uint8_t>(kSolanaPubkeySize, 0));
+  return SolanaAddress(std::array<uint8_t, kSolanaPubkeySize>());
 }
 
-SolanaAddress::SolanaAddress(base::span<const uint8_t> bytes)
-    : bytes_(bytes.begin(), bytes.end()) {
-  DCHECK(IsValid());
-}
-
-SolanaAddress::SolanaAddress(std::vector<uint8_t> bytes)
-    : bytes_(std::move(bytes)) {
-  DCHECK(IsValid());
+SolanaAddress::SolanaAddress(
+    base::span<const uint8_t, kSolanaPubkeySize> bytes) {
+  base::span(bytes_).copy_from(bytes);
 }
 
 std::string SolanaAddress::ToBase58() const {
   return Base58Encode(bytes_);
-}
-
-bool SolanaAddress::IsValid() const {
-  return bytes_.size() == static_cast<size_t>(kSolanaPubkeySize);
 }
 
 }  // namespace brave_wallet

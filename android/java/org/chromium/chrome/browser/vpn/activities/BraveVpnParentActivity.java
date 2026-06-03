@@ -23,6 +23,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveLandscapeHelper;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
@@ -90,8 +91,17 @@ public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void finishNativeInitialization() {
-        super.finishNativeInitialization();
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && shouldApplyLandscapeWindowSizing()) {
+            BraveLandscapeHelper.applyLandscapeWindowSizing(this);
+        }
+    }
+
+    // Subclasses that ship a dedicated `layout-land` resource should return
+    // false so the landscape layout can use the full window width.
+    protected boolean shouldApplyLandscapeWindowSizing() {
+        return true;
     }
 
     @Override
@@ -102,7 +112,7 @@ public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
 
     protected void verifySubscription() {
         mBraveVpnPrefModel = new BraveVpnPrefModel();
-        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData<>();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
         InAppPurchaseWrapper.getInstance()
                 .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);

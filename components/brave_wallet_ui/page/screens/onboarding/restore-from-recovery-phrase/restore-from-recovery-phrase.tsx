@@ -9,14 +9,12 @@ import Button from '@brave/leo/react/button'
 import Input from '@brave/leo/react/input'
 import Icon from '@brave/leo/react/icon'
 import Checkbox from '@brave/leo/react/checkbox'
-import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 import {
   useGetWalletsToImportQuery,
-  useReportOnboardingActionMutation,
   useRestoreWalletMutation,
   useSetAutoLockMinutesMutation,
 } from '../../../../common/slices/api.slice'
@@ -61,7 +59,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   // mutations
   const [restoreWalletFromSeed, { isLoading: isCreatingWallet }] =
     useRestoreWalletMutation()
-  const [report] = useReportOnboardingActionMutation()
   const [setAutoLockMinutes] = useSetAutoLockMinutesMutation()
 
   // routing
@@ -202,13 +199,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     }
   }, [currentStep, isPasswordValid, restoreWallet])
 
-  // effects
-  React.useEffect(() => {
-    if (currentStep === 'password') {
-      report(BraveWallet.OnboardingAction.LegalAndPassword)
-    }
-  }, [report, currentStep])
-
   // render
   if (isCreatingWallet) {
     return <OnboardingCreatingWallet />
@@ -254,7 +244,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           <Button
             kind='plain'
             onClick={onRecoveryPhraseLengthChange}
-            color={leo.color.container.interactive}
           >
             {getLocale('braveWalletRestoreAlternateLength').replace(
               '$1',

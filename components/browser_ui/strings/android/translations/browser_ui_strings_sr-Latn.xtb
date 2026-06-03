@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Preuzimanje je pauzirano</translation>
 <translation id="1396327438254055134">Dozvolite sajtu da koristi V8 optimizator.</translation>
 <translation id="1409338233051621926">Dodirnite Aplikacije, pa Podrazumevane aplikacije</translation>
+<translation id="1414315029670184034">Ne dozvoljavaj sajtovima da koriste kameru</translation>
 <translation id="1415402041810619267">URL je skraćen</translation>
 <translation id="1741136041592162279">Dozvolite Brave-u da deli nedavne kartice sa uređajem da biste ih videli na listi aplikacija i u rezultatima pretrage uređaja. To možete da uključite ili isključite u Brave podešavanjima.</translation>
 <translation id="1420688843103859429">Pomerajte unazad i unapred prevlačenjem sa dva prsta na tačpedu</translation>
@@ -64,6 +65,7 @@
 <translation id="1644574205037202324">Istorija</translation>
 <translation id="1652197001188145583">Kada je uključeno, sajtovi mogu da traže da koriste NFC uređaje. Kada je isključeno, sajtovi ne mogu da koriste NFC uređaje.</translation>
 <translation id="1660204651932907780">Dozvoli sajtovima da puštaju zvuk (preporučeno)</translation>
+<translation id="1676590040242013349">Uključeno je podešavanje Uvek koristi bezbedne veze.</translation>
 <translation id="1677097821151855053">Kolačići i drugi podaci o sajtovima se koriste da biste bili zapamćeni, na primer, radi prijavljivanja ili personalizovanja oglasa. Da biste upravljali kolačićima za sve sajtove, pogledajte <ph name="BEGIN_LINK"/>Podešavanja<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Sajtovi mogu da traže da koriste NFC uređaje</translation>
 <translation id="1686785653877010442">Sajtovi obično šalju obaveštenja da bi vas obavestili o udarnim vestima ili porukama četa.</translation>
@@ -79,7 +81,6 @@
 <translation id="1781533683087883868">Isključi linkove Režima čitanja</translation>
 <translation id="1785415724048343560">Preporučuje se za najbolji doživljaj</translation>
 <translation id="1796588414813960292">Funkcije kojima treba zvuk neće raditi</translation>
-<translation id="7401204338724669842">Saveti za Brave</translation>
 <translation id="6704867734300244173">Kada je optimizator uključen, Brave radi brže i funkcije koje koriste JavaScript bi trebalo da rade kako je predviđeno. Kada je optimizator isključen, to smanjuje performanse, ali čini V8 otpornijim na napade.</translation>
 <translation id="1818308510395330587">Da biste dozvolili da <ph name="APP_NAME"/> koristi PR, uključite i kameru u <ph name="BEGIN_LINK"/>Android podešavanjima<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Promenite položaj da biste prilagodili doživljaj pregledanja</translation>
@@ -98,6 +99,7 @@
 <translation id="1985247341569771101">Kada je uključeno, sajtovi mogu da koriste senzore pokreta uređaja. Kada je isključeno, sajtovi ne mogu da koriste senzore pokreta.</translation>
 <translation id="1985716030964443178">Time ćete resetovati sve sajtove na listi na podrazumevano zumiranje</translation>
 <translation id="1989112275319619282">Pregledaj</translation>
+<translation id="1991370806334788445">Probajte da dozvolite kolačiće treće strane, što znači slabiju zaštitu pregledanja, ali veću verovatnoću da će funkcije sajta raditi na očekivani način.</translation>
 <translation id="1994173015038366702">URL sajta</translation>
 <translation id="1994558116414798016">Font Lexend</translation>
 <translation id="2004697686368036666">Funkcije na nekim sajtovima mogu da ne rade</translation>
@@ -125,7 +127,6 @@
 <translation id="2228071138934252756">Da biste dozvolili da <ph name="APP_NAME"/> pristupa kameri, uključite kameru i u <ph name="BEGIN_LINK"/>Android podešavanjima<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Sajtovi mogu da puštaju zaštićen sadržaj</translation>
 <translation id="2235344399760031203">Kolačići treće strane su blokirani</translation>
-<translation id="2238944249568001759">Predložene pretrage na osnovu vaše poslednje kartice</translation>
 <translation id="2241587408274973373">Kartice na stranici nove kartice</translation>
 <translation id="2241634353105152135">Samo jednom</translation>
 <translation id="2253414712144136228"><ph name="NAME_OF_LIST_ITEM"/> Uklonite</translation>
@@ -164,13 +165,9 @@
 <translation id="257931822824936280">Prošireno je – Kliknite da biste skupili.</translation>
 <translation id="2586657967955657006">Memorija</translation>
 <translation id="2588271083332682494">Uredite kartice pomoću grupa kartica</translation>
+<translation id="2592917252160773942">Sajtovi mogu da traže da koriste kameru</translation>
 <translation id="2597457036804169544">Tamna tema se ne primenjuje za sajtove</translation>
 <translation id="2606760465469169465">Automatska verifikacija</translation>
-<translation id="7615153661410655750">Upravljajte u <ph name="BEGIN_LINK1"/>podešavanjima Android-a<ph name="END_LINK1"/>
-
-Napredna zaštita kontroliše ova Brave podešavanja:
-• Uključeno je „Uvek koristi bezbedne veze“.
-• „JavaScript optimizator“ je isključen. <ph name="BEGIN_LINK2"/>Upravljajte izuzecima za sajtove<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Dozvolite JavaScript za određeni sajt.</translation>
 <translation id="2626708220538466178">Donja tabela podrazumevanog pregledača je zatvorena</translation>
 <translation id="2653659639078652383">Pošalji</translation>
@@ -214,7 +211,6 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="3069226013421428034">Dozvolite prijavljivanje trećih strana za određeni sajt.</translation>
 <translation id="310297983047869047">Prethodni slajd</translation>
 <translation id="3108122610701115301">Postavi na podrazumevano</translation>
-<translation id="3109724472072898302">Skupljeno</translation>
 <translation id="310979712355504754">Izbriši sve</translation>
 <translation id="311394601889664316">Ne dozvoljavaj sajtovima da menjaju fajlove ili foldere na uređaju</translation>
 <translation id="3114012059975132928">Video plejer</translation>
@@ -243,6 +239,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="3360338140203645771">Brišete nivoe zumiranja?</translation>
 <translation id="3362437373201486687">Traže se Bluetooth uređaji</translation>
 <translation id="3368138297038111198">Deli se prozor</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{Prikazuje se 1 stavka od {TOTAL_COUNT} zbog nedostatka memorije}one{Prikazuje se # stavka od {TOTAL_COUNT} zbog nedostatka memorije}few{Prikazuju se # stavke od {TOTAL_COUNT} zbog nedostatka memorije}other{Prikazuje se # stavki od {TOTAL_COUNT} zbog nedostatka memorije}}</translation>
 <translation id="3386292677130313581">Pitaj pre nego što dozvoliš sajtovima da znaju lokaciju (preporučeno)</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="344449859752187052">Kolačići treće strane su blokirani</translation>
@@ -260,7 +257,6 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="3602290021589620013">Pregled</translation>
 <translation id="3611658447322220736">Nedavno zatvoreni sajtovi mogu da završe slanje i prijem podataka</translation>
 <translation id="3619294456800709762">Sajtovi mogu automatski da uđu u sliku u slici</translation>
-<translation id="3628308229821498208">Predložene pretrage</translation>
 <translation id="3632460243282703117">Prati</translation>
 <translation id="363748948745453283">Koristi se približna lokacija</translation>
 <translation id="3641456520301071208">Sajtovi mogu da vam traže lokaciju</translation>
@@ -292,6 +288,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="1799795508209440035">Brave će danas ponovo blokirati kolačiće</translation>
 <translation id="385051799172605136">Nazad</translation>
 <translation id="3859306556332390985">Premotaj unapred</translation>
+<translation id="9046306654872718870">Personalizujte Brave pomoću prilagođenih boja i slika za početnu stranicu</translation>
 <translation id="389521680295183045">Sajtovi mogu da zatraže da znaju kada aktivno koristite uređaj</translation>
 <translation id="3895926599014793903">Prinudno omogući zumiranje</translation>
 <translation id="3903738175795615004">Prevucite od vrha ili pritisnite taster Esc da biste izašli iz režima celog ekrana.</translation>
@@ -335,6 +332,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="4290791284969893584">Posle zatvaranja stranice zadaci koje ste započeli se možda neće dovršiti</translation>
 <translation id="429312253194641664">Sajt pušta medijski sadržaj</translation>
 <translation id="42981349822642051">Proširite</translation>
+<translation id="4310738531374808763">Prilagodite stranicu Početna</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Ističe sutra}one{Ističe za # dan}few{Ističe za # dana}other{Ističe za # dana}}</translation>
 <translation id="4338831206024587507">Svi sajtovi u okviru domena <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Ne dozvoljavaj sajtovima da šalju obaveštenja</translation>
@@ -364,6 +362,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="4635969503923889910">Ne dozvoljavaj sajtovima da koriste NFC uređaje</translation>
 <translation id="4644713492825682049">Izbriši i resetuj</translation>
 <translation id="4645575059429386691">Ovim upravlja tvoj roditelj</translation>
+<translation id="4651224148644053314">Još boja i opcija</translation>
 <translation id="4652266463001779298">Nije dozvoljeno</translation>
 <translation id="4655846733459137112">Dodirnite Da da biste lako koristili ovu lozinku pri sledećem prijavljivanju</translation>
 <translation id="4663373278480897665">Kamera je dozvoljena</translation>
@@ -441,7 +440,6 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="5515432237048785579">Donja tabela Discover fida je otvorena na celom ekranu</translation>
 <translation id="5516455585884385570">Otvorite podešavanja obaveštenja</translation>
 <translation id="5527111080432883924">Pitaj pre nego što dozvoliš sajtovima da čitaju tekst i slike iz privremene memorije (preporučeno)</translation>
-<translation id="5553374991681107062">Najnovije</translation>
 <translation id="674221630984410403">Ne ubrzava sajtove pomoću Brave mehanizma V8, ali čini Brave malo otpornijim na napade</translation>
 <translation id="5556459405103347317">Učitaj ponovo</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> je blokiran</translation>
@@ -521,10 +519,10 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="6231752747840485235">Želite da deinstalatirate „<ph name="APP_NAME"/>“?</translation>
 <translation id="4789073065838177382">Dodirnite aplikaciju Pregledač &gt; Brave</translation>
 <translation id="6260830281887654268">Donja tabela sa kolekcijama tema za izgled stranice nove kartice je otvorena do polovine ekrana</translation>
-<translation id="6262191102408817757">Na osnovu poslednje kartice</translation>
 <translation id="6262279340360821358">Dozvole <ph name="PERMISSION_1"/> i <ph name="PERMISSION_2"/> su blokirane</translation>
 <translation id="6270391203985052864">Sajtovi mogu da traže da šalju obaveštenja</translation>
 <translation id="6295158916970320988">Svi sajtovi</translation>
+<translation id="6305257382500066042">Isprobajte</translation>
 <translation id="6320088164292336938">Vibracija</translation>
 <translation id="6367753977865761591">Blokirajte prijavljivanje trećih strana za određeni sajt.</translation>
 <translation id="6398765197997659313">Izađi iz režima celog ekrana</translation>
@@ -579,6 +577,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="6912998170423641340">Blokiraj sajtove tako da ne čitaju tekst i slike iz privremene memorije</translation>
 <translation id="6945221475159498467">Izaberi</translation>
 <translation id="6950072572526089586">Sajt koji posećujete može da čuva informacije o tome šta radite kako bi radio na očekivani način – na primer, da biste ostali prijavljeni na sajt ili da biste sačuvali stavke u korpi za kupovinu. Sajtovi često privremeno čuvaju te informacije na uređaju.</translation>
+<translation id="6964291282260073066">WebGPU je onemogućen.</translation>
 <translation id="6965382102122355670">Potvrdi</translation>
 <translation id="6980507581230208647">Roze tema</translation>
 <translation id="6980861169612950611">Želite da izbrišete podatke sajta? <ph name="SITE_NAME"/></translation>
@@ -601,7 +600,6 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="7180611975245234373">Osveži</translation>
 <translation id="7188508872042490670">Podaci o sajtovima na uređaju</translation>
 <translation id="7201549776650881587">Ova radnja će obrisati sve podatke i kolačiće koje čuvaju svi sajtovi u okviru domena <ph name="ORIGIN"/> ili koje čuva povezana aplikacija na početnom ekranu</translation>
-<translation id="7203150201908454328">Prošireno</translation>
 <translation id="7213166370492037743">Ne dozvoljavaj sajtovima da se povezuju sa bilo kojim uređajem na lokalnoj mreži</translation>
 <translation id="7219254577985949841">Želite da izbrišete podatke sajta?</translation>
 <translation id="723171743924126238">Izaberite slike</translation>
@@ -610,8 +608,12 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="7250468141469952378">Izabrali ste <ph name="ITEM_COUNT"/></translation>
 <translation id="7260727271532453612">Odobrene su dozvole <ph name="PERMISSION_1"/> i <ph name="PERMISSION_2"/></translation>
 <translation id="7276071417425470385">Kada je uključeno, sajtovi mogu da traže da koriste uređaje virtuelne realnosti. Kada je isključeno, sajtovi ne mogu da koriste uređaje virtuelne realnosti.</translation>
+<translation id="7279851812866769760">Delite kontakte</translation>
 <translation id="7282197670900591579">Limun-žuta tema</translation>
 <translation id="728412880473384942">Sajtovi su brži, ali manje bezbedni</translation>
+<translation id="5843014938239239453">Upravljajte u <ph name="BEGIN_LINK1"/>Android podešavanjima<ph name="END_LINK1"/>
+
+Napredna zaštita upravlja ovim Brave podešavanjima:</translation>
 <translation id="7366415735885268578">Dodajte sajt</translation>
 <translation id="7368695150573390554">Svi oflajn podaci će biti izbrisani</translation>
 <translation id="7369678931043226462">Prilagodite donju tabelu stranice nove kartice otvorenu do polovine ekrana</translation>
@@ -656,7 +658,6 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="780301667611848630">Ne, hvala</translation>
 <translation id="7804248752222191302">Sajt koristi kameru</translation>
 <translation id="7805832099057502789">Donja tabela za izgled stranice nove kartice je otvorena na celom ekranu</translation>
-<translation id="6720480757902085971">Pruža Brave</translation>
 <translation id="7809029041571842593">Donja tabela kartica na stranici nove kartice je otvorena do polovine ekrana</translation>
 <translation id="7815680994978050279">Opasno preuzimanje je blokirano</translation>
 <translation id="7835852323729233924">Reprodukcija medija</translation>
@@ -675,7 +676,6 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="8007176423574883786">Isključeno je za ovaj uređaj</translation>
 <translation id="802154636333426148">Preuzimanje nije uspelo</translation>
 <translation id="8033047164036749181">Pratite za obaveštenja sa ovog sajta</translation>
-<translation id="8042586301629853791">Sortiraj prema:</translation>
 <translation id="8051193500142930381">Funkcije kojima je potrebna kamera neće raditi</translation>
 <translation id="2495032782748793764">Podrazumevano za Brave</translation>
 <translation id="8067883171444229417">Pusti video</translation>
@@ -700,6 +700,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="823874716226307142">Kada je uključeno, sajtovi mogu da zatraže pristup drugim uređajima na lokalnoj mreži. Kada je isključeno, sajtovi ne mogu da pristupaju drugim uređajima na lokalnoj mreži.</translation>
 <translation id="8249310407154411074">Premesti na vrh</translation>
 <translation id="8261506727792406068">Izbriši</translation>
+<translation id="8273596202562472147">Još opcija za: <ph name="SITE_NAME"/></translation>
 <translation id="8284326494547611709">Titl</translation>
 <translation id="8300705686683892304">Upravlja aplikacija</translation>
 <translation id="8301363963630676147">Dozvoljeno ovaj put • Koristi se približna lokacija</translation>
@@ -723,6 +724,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="8471525937465764768">Sajtovi se obično povezuju sa USB uređajima za potrebe funkcija poput štampanja dokumenata ili čuvanja sadržaja na memorijskim uređajima</translation>
 <translation id="8473055640493819707">Aplikacija <ph name="APP_NAME"/> je zastarela. Ponovo instalirajte aplikaciju.</translation>
 <translation id="847433688444405067">Pregledajte na više uređaja</translation>
+<translation id="8484556725636319115">JavaScript optimizator je isključen. <ph name="BEGIN_LINK2"/>Upravljajte izuzecima za sajtove<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Dostupno van mreže</translation>
 <translation id="848952951823693243">Uvek se zahteva mobilni sajt</translation>
 <translation id="8492822722330266509">Sajtovi mogu da prikazuju iskačuće prozore i koriste preusmeravanja</translation>
@@ -744,7 +746,6 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="8676374126336081632">Obriši unos</translation>
 <translation id="8681886425883659911">Oglasi su blokirani na sajtovima za koje je poznato da prikazuju oglase koji ometaju aktivnosti ili obmanjujuće oglase</translation>
 <translation id="868929229000858085">Pretražite kontakte</translation>
-<translation id="8707904142362025782">Sajt može da traži da koristi kameru</translation>
 <translation id="8712637175834984815">Važi</translation>
 <translation id="8715862698998036666">Prevucite od vrha i prevucite od leve ili desne ivice da biste izašli iz režima celog ekrana.</translation>
 <translation id="8716050156658570300">Sajtovi mogu da traže da koriste senzore pokreta i svetlosti</translation>
@@ -794,6 +795,7 @@ Napredna zaštita kontroliše ova Brave podešavanja:
 <translation id="7359422048569205930">Dozvolite Brave-u da prikazuje nedavne kartice na listi aplikacija i u rezultatima pretrage uređaja. To možete da isključite u svakom trenutku u Brave podešavanjima.</translation>
 <translation id="9162462602695099906">Ova stranica je opasna</translation>
 <translation id="9182556968660520230">Ne dozvoljavaj sajtovima da puštaju zaštićeni sadržaj</translation>
+<translation id="927148002081263046">Delite kontakt</translation>
 <translation id="947156494302904893">Sajtovi koje posećujete mogu da potvrde da ste stvarna osoba, a ne bot</translation>
 <translation id="959682366969460160">Bolja organizacija</translation>
 <translation id="960590623979248167">Prikaži hiperlinkove</translation>

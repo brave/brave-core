@@ -28,13 +28,6 @@ SolanaMessageHeader::SolanaMessageHeader(uint8_t num_required_signatures,
       num_readonly_signed_accounts(num_readonly_signed_accounts),
       num_readonly_unsigned_accounts(num_readonly_unsigned_accounts) {}
 
-bool SolanaMessageHeader::operator==(const SolanaMessageHeader& header) const {
-  return num_required_signatures == header.num_required_signatures &&
-         num_readonly_signed_accounts == header.num_readonly_signed_accounts &&
-         num_readonly_unsigned_accounts ==
-             header.num_readonly_unsigned_accounts;
-}
-
 base::DictValue SolanaMessageHeader::ToValue() const {
   base::DictValue dict;
   dict.Set(kNumRequiredSignatures,

@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <string>
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_types.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"

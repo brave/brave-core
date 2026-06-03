@@ -55,20 +55,35 @@ mod ffi {
         pub transfer_allow_death_call_index: u8,
         pub transfer_keep_alive_call_index: u8,
         pub transfer_all_call_index: u8,
+        pub assets_pallet_index: u8,
+        pub assets_transfer_all_call_index: u8,
+        pub assets_transfer_keep_alive_call_index: u8,
+        pub has_assets_pallet: bool,
         pub ss58_prefix: u16,
         pub spec_version: u32,
+        pub asset_tx_payment: bool,
     }
 
     extern "Rust" {
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
+        fn scale_encode_string(value: &[u8]) -> Vec<u8>;
 
         type CxxPolkadotDecodeUnsignedTransferResult;
+        type CxxPolkadotChainMetadataResult;
+
+        fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
+        fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
+        fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
 
         fn is_ok(self: &CxxPolkadotDecodeUnsignedTransferResult) -> bool;
         fn error_message(self: &CxxPolkadotDecodeUnsignedTransferResult) -> String;
         fn unwrap(
             self: &mut CxxPolkadotDecodeUnsignedTransferResult,
         ) -> Box<CxxPolkadotDecodeUnsignedTransfer>;
+
+        fn parse_chain_metadata_from_scale(
+            metadata_bytes: &[u8],
+        ) -> Box<CxxPolkadotChainMetadataResult>;
 
         fn encode_unsigned_transfer_allow_death(
             chain_metadata: &CxxPolkadotChainMetadata,
@@ -119,7 +134,10 @@ mod ffi {
     }
 }
 
-pub(crate) use ffi::CxxPolkadotChainMetadata;
+use ffi::CxxPolkadotChainMetadata;
+impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
+
+use crate::polkadot_chain_metadata::parse_chain_metadata_from_scale;
 
 #[macro_export]
 macro_rules! impl_result {
@@ -294,6 +312,24 @@ fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
     [(encoded & 0xff) as u8, (encoded >> 8) as u8]
 }
 
+fn append_extra(buf: &mut Vec<u8>, asset_tx_payment: bool) {
+    // The asset_id is hard-coded to zero here as we only support paying transaction
+    // fees via the chain's native token (DOT) for our initial first pass.
+
+    if asset_tx_payment {
+        buf.extend_from_slice(&[
+            0x00, /* tip */
+            0x00, /* asset_id */
+            0x00, /* mode (disable metadata hash verification) */
+        ]);
+    } else {
+        buf.extend_from_slice(&[
+            0x00, /* tip */
+            0x00, /* mode (disable metadata hash verification) */
+        ]);
+    }
+}
+
 /// The definition for the extrinsic signature can be found here:
 /// https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
 ///
@@ -361,10 +397,7 @@ fn generate_extrinsic_signature_payload(
     // Write extra data, E.
     buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
     Compact(sender_nonce).encode_to(&mut buf);
-    buf.extend_from_slice(&[
-        0x00, /* tip */
-        0x00, /* mode (disable metadata hash verification) */
-    ]);
+    append_extra(&mut buf, chain_metadata.asset_tx_payment);
 
     // Write R_v.
     buf.extend_from_slice(&spec_version.to_le_bytes());
@@ -420,7 +453,7 @@ fn make_signed_extrinsic(
     buf.extend_from_slice(signature);
     buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
     Compact(sender_nonce).encode_to(&mut buf);
-    buf.extend_from_slice(&[0x00 /* tip */, 0x00 /* mode */]);
+    append_extra(&mut buf, chain_metadata.asset_tx_payment);
 
     let call_idx =
         if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
@@ -491,6 +524,10 @@ fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
 
 fn compact_scale_encode_u32(x: u32) -> Vec<u8> {
     Compact(x).encode()
+}
+
+fn scale_encode_string(value: &[u8]) -> Vec<u8> {
+    value.encode()
 }
 
 fn was_extrinsic_successful(

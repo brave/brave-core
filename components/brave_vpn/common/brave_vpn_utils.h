@@ -36,6 +36,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
 void MigrateLocalStatePrefs(PrefService* local_prefs);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterAndroidProfilePrefs(PrefRegistrySimple* registry);
+void ClearSubscriberCredential(PrefService* local_prefs);
 bool HasValidSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
 bool HasValidSkusCredential(PrefService* local_prefs);

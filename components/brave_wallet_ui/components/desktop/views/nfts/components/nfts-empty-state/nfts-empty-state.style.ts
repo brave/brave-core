@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 import { WalletButton } from '../../../../../shared/style'
@@ -21,58 +22,43 @@ export const EmptyStateImage = styled.img`
 `
 
 export const Heading = styled.h2`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 28px;
+  font: ${leo.font.large.semibold};
   text-align: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   margin: 0 0 8px 0;
 `
 
 export const SubHeading = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font: ${leo.font.default.regular};
   align-items: center;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   margin: 0 0 16px 0;
 `
 
 export const ImportButton = styled(WalletButton)`
+  font: ${leo.font.components.tableheader};
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px 22px;
   gap: 7px;
-  background-color: ${(p) => p.theme.color.interactive05};
+  background-color: ${leo.color.button.background};
   border-radius: 48px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
   text-align: center;
-  color: ${(p) => p.theme.color.background01};
+  color: ${leo.color.page.background};
   margin-bottom: 24px;
   border: none;
   cursor: pointer;
 `
 
 export const DisclaimerText = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 16px;
+  font: ${leo.font.xSmall.regular};
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   margin: 0;
 `

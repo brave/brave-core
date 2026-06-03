@@ -95,6 +95,21 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   bool IsRestrictedAddress(const std::string& address);
   void ParseLists(const base::FilePath& dir, base::OnceClosure callback);
 
+  class ScopedRestrictedAddressesForTesting {
+   public:
+    explicit ScopedRestrictedAddressesForTesting(
+        std::vector<std::string> restricted_addresses);
+    ~ScopedRestrictedAddressesForTesting();
+
+    ScopedRestrictedAddressesForTesting(
+        const ScopedRestrictedAddressesForTesting&) = delete;
+    ScopedRestrictedAddressesForTesting& operator=(
+        const ScopedRestrictedAddressesForTesting&) = delete;
+
+   private:
+    base::flat_set<std::string> previous_addresses_;
+  };
+
   bool IsEmptyForTesting();
   void ResetForTesting();
 

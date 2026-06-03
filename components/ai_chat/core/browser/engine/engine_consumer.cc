@@ -40,6 +40,18 @@ EngineConsumer::GenerationResultData::operator=(GenerationResultData&& other) =
 
 EngineConsumer::GenerationResultData::~GenerationResultData() = default;
 
+EngineConsumer::Error::~Error() = default;
+EngineConsumer::Error::Error() = default;
+EngineConsumer::Error::Error(Error&&) = default;
+EngineConsumer::Error& EngineConsumer::Error::operator=(Error&&) = default;
+
+EngineConsumer::Error::Error(mojom::APIError api_error)
+    : api_error(api_error) {}
+
+EngineConsumer::Error::Error(mojom::APIError api_error,
+                             mojom::APIErrorDetailsPtr details)
+    : api_error(api_error), details(std::move(details)) {}
+
 // static
 std::string EngineConsumer::GetPromptForEntry(
     const mojom::ConversationTurnPtr& entry) {
@@ -152,7 +164,7 @@ EngineConsumer::GetStrArrFromTabOrganizationResponses(
     // Fail the operation if server returns an error, such as rate limiting.
     // On the other hand, ignore the result which cannot be parsed as expected.
     if (!result.has_value()) {
-      error = result.error();
+      error = result.error().api_error;
       break;
     }
 

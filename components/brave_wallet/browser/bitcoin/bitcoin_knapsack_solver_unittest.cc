@@ -286,11 +286,11 @@ TEST_F(BitcoinKnapsackSolverUnitTest, RandomTest) {
   uint64_t total_inputs = 0;
 
   for (int i = 0; i < 100; ++i) {
-    if (base::RandInt(0, 10) == 0 || input_groups.empty()) {
+    if (base::RandIntInclusive(0, 10) == 0 || input_groups.empty()) {
       input_groups.emplace_back();
     }
-    auto input =
-        MakeMockTxInput(base::RandInt(0, 10000000), base::RandInt(0, 10));
+    auto input = MakeMockTxInput(base::RandIntInclusive(0, 10000000),
+                                 base::RandIntInclusive(0, 10));
     total_inputs += input.utxo_value;
     input_groups.back().AddInput(std::move(input));
   }

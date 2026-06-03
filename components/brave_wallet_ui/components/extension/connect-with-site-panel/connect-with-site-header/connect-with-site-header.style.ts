@@ -6,7 +6,9 @@
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
-import { Column, Row, WalletButton } from '../../../shared/style'
+
+// Shared Styles
+import { Column, Row, Text, WalletButton } from '../../../shared/style'
 
 export const StyledWrapper = styled.div<{ isScrolled: boolean }>`
   display: flex;
@@ -45,40 +47,16 @@ export const TitleWrapper = styled(Row)<{
   }
 `
 
-export const Title = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: center;
-  color: ${leo.color.text.primary};
-`
-
 export const DomainTextContainer = styled(Column)`
   overflow: hidden;
   box-sizing: border-box;
 `
 
-export const SiteName = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 18px;
-  text-align: left;
-  color: ${leo.color.text.primary};
+export const SiteName = styled(Text)`
   word-break: break-all;
 `
 
-export const SiteURL = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-  text-align: left;
-  color: ${leo.color.text.secondary};
+export const SiteURL = styled(Text)`
   word-break: break-all;
   margin-bottom: 6px;
 `
@@ -95,11 +73,9 @@ export const FavIcon = styled.img<{ isReadyToConnect: boolean }>`
 `
 
 export const MessageBox = styled(Row)`
+  font: ${leo.font.default.regular};
   background-color: ${leo.color.systemfeedback.infoBackground};
   border-radius: 8px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
   color: ${leo.color.text.primary};
 `
 

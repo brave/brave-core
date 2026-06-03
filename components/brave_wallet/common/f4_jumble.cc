@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/f4_jumble.h"
 
+#include <stddef.h>
+
 #include <algorithm>
 #include <array>
 

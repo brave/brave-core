@@ -300,7 +300,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
       modelOptions: [
         .init(
@@ -323,7 +324,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
         .init(
           options: .init(
@@ -345,7 +347,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
         .init(
           options: .init(
@@ -367,7 +370,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
         .init(
           options: .init(
@@ -389,7 +393,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
       ],
       onModelChanged: {

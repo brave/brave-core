@@ -47,6 +47,9 @@ class BraveTabStyle : public TabStyle {
   }
 
   int GetPinnedWidth(const bool is_split) const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetPinnedWidth(is_split);
+    }
     // We can ignore |is_split| because we're always using same width.
     return tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
   }
@@ -55,10 +58,7 @@ class BraveTabStyle : public TabStyle {
     if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetDragHandleExtension(height);
     }
-    // The "drag handle extension" is the amount of space in DIP at the top of
-    // inactive tabs where mouse clicks are treated as clicks in the "caption"
-    // area, i.e. the draggable part of the window frame.
-    return 4;
+    return tabs::GetDragHandleExtensionHeight();
   }
 
   gfx::Size GetSeparatorSize() const override {

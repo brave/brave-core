@@ -6,6 +6,7 @@
 import { getLocale } from '$web-common/locale'
 import {
   Alias,
+  AliasesUpdate,
   AuthState,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
@@ -37,12 +38,14 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
   aliases: Map<string, Alias>
   authState: AuthState
   accountRequestId: number
+  listRefreshError: string | null
   observers: Set<
     EmailAliasesServiceObserverRemote | EmailAliasesServiceObserverInterface
   >
 
-  constructor(authState: AuthState) {
+  constructor(authState: AuthState, listRefreshError: string | null = null) {
     this.authState = authState
+    this.listRefreshError = listRefreshError
     this.observers = new Set<
       EmailAliasesServiceObserverRemote | EmailAliasesServiceObserverInterface
     >()
@@ -59,7 +62,15 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
   ) {
     this.observers.add(observer)
     observer.onAuthStateChanged(this.authState)
-    observer.onAliasesUpdated([...this.aliases.values()])
+    if (this.listRefreshError !== null) {
+      observer.onAliasesUpdated({
+        error: this.listRefreshError,
+      } as AliasesUpdate)
+    } else {
+      observer.onAliasesUpdated({
+        aliases: [...this.aliases.values()],
+      } as AliasesUpdate)
+    }
   }
 
   // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
@@ -72,7 +83,9 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     const alias = { email: aliasEmail, note: note ?? '', domains: undefined }
     this.aliases.set(aliasEmail, alias)
     this.observers.forEach((observer) => {
-      observer.onAliasesUpdated([...this.aliases.values()])
+      observer.onAliasesUpdated({
+        aliases: [...this.aliases.values()],
+      } as AliasesUpdate)
     })
     return Promise.resolve()
   }
@@ -86,7 +99,9 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     }
     this.aliases.delete(aliasEmail)
     this.observers.forEach((observer) => {
-      observer.onAliasesUpdated([...this.aliases.values()])
+      observer.onAliasesUpdated({
+        aliases: [...this.aliases.values()],
+      } as AliasesUpdate)
     })
     return Promise.resolve()
   }

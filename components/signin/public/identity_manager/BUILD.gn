@@ -12,6 +12,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//components/image_fetcher/core:test_support",
+    "//components/metrics",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/signin/internal/identity_manager",

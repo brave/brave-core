@@ -29,22 +29,12 @@
         android:visibility="gone">
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/logo_holder"
+    <!-- Search provider logo -->
+    <ViewStub
+        android:id="@+id/logo_view_stub"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <org.chromium.chrome.browser.logo.LogoView
-            android:id="@+id/search_provider_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/ntp_logo_height"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="@dimen/ntp_logo_margin_top"
-            android:layout_marginBottom="23dp" />
-
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout="@layout/logo_view_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
@@ -112,20 +102,10 @@
                 android:id="@+id/composeplate_view_stub"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/composeplate_view_height"
-                android:layout_marginTop="@dimen/composeplate_view_margin_top_v1"
-                android:layout_marginStart="@dimen/mvt_container_lateral_margin"
-                android:layout_marginEnd="@dimen/mvt_container_lateral_margin"
-                android:layout="@layout/composeplate_view_layout"
-                android:visibility="gone" />
-
-            <ViewStub
-                android:id="@+id/composeplate_view_v2_stub"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/composeplate_view_height"
                 android:layout_marginTop="@dimen/composeplate_view_margin_top"
                 android:layout_marginStart="@dimen/mvt_container_lateral_margin"
                 android:layout_marginEnd="@dimen/mvt_container_lateral_margin"
-                android:layout="@layout/composeplate_view_layout_v2"
+                android:layout="@layout/composeplate_view_layout"
                 android:visibility="gone" />
 
             <!-- Query tiles -->
@@ -155,13 +135,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout="@layout/tab_switcher_module_container" />
-
-            <ViewStub
-                android:id="@+id/search_resumption_module_container_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/search_resumption_module_margin_top"
-                android:layout="@layout/search_resumption_module_layout" />
 
             <ViewStub
                 android:id="@+id/mv_tiles_layout_stub"

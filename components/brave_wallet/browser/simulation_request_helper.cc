@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 
+#include <cstdint>
 #include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -145,7 +147,9 @@ std::optional<std::string> GetBase64TransactionFromSolanaTxData(
   // The Solana runtime verifies that the number of signatures matches the
   // number in the first 8 bits of the message header. We therefore check
   // if the number of signers is a valid unsigned 8-bit integer.
-  if (signers.size() > UINT8_MAX) {
+  uint8_t signers_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(signers.size())
+           .AssignIfValid(&signers_size)) {
     return std::nullopt;
   }
 
@@ -153,11 +157,9 @@ std::optional<std::string> GetBase64TransactionFromSolanaTxData(
   // message bytes. Since the transactions are not signed yet, we use 64
   // empty bytes for each signature.
   std::vector<uint8_t> transaction_bytes;
-  CompactU16Encode(signers.size(), &transaction_bytes);
-  transaction_bytes.insert(transaction_bytes.end(),
-                           kSolanaSignatureSize * signers.size(), 0);
-  transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
-                           message_bytes.end());
+  base::Extend(transaction_bytes, CompactU16Encode(signers_size));
+  ExtendWithEmptySignatures(transaction_bytes, signers_size);
+  base::Extend(transaction_bytes, message_bytes);
 
   return base::Base64Encode(transaction_bytes);
 }

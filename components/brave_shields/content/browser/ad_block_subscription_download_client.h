@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/functional/callback.h"
 #include "components/download/public/background_service/client.h"
 #include "components/download/public/background_service/download_metadata.h"
 
@@ -21,8 +21,11 @@ class AdBlockSubscriptionDownloadManager;
 
 class AdBlockSubscriptionDownloadClient : public download::Client {
  public:
+  using SubscriptionServiceManagerGetter =
+      base::RepeatingCallback<AdBlockSubscriptionServiceManager*()>;
+
   explicit AdBlockSubscriptionDownloadClient(
-      AdBlockSubscriptionServiceManager* subscription_manager);
+      SubscriptionServiceManagerGetter subscription_manager_getter);
   ~AdBlockSubscriptionDownloadClient() override;
   AdBlockSubscriptionDownloadClient(const AdBlockSubscriptionDownloadClient&) =
       delete;
@@ -49,8 +52,7 @@ class AdBlockSubscriptionDownloadClient : public download::Client {
   // Returns the AdBlockSubscriptionDownloadManager for the profile.
   AdBlockSubscriptionDownloadManager* GetAdBlockSubscriptionDownloadManager();
 
-  raw_ptr<AdBlockSubscriptionServiceManager> subscription_manager_ =
-      nullptr;  // NOT OWNED
+  SubscriptionServiceManagerGetter subscription_manager_getter_;
 };
 
 }  // namespace brave_shields

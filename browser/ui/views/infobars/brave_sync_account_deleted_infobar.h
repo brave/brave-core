@@ -8,16 +8,15 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/views/infobars/confirm_infobar.h"
+#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 
-// The customized ConfirmInfoBar:
-// "Text _link_                     [ok_button]"
-// cancel_button is not supported
-
-class BraveSyncAccountDeletedInfoBar : public ConfirmInfoBar {
+// Customized BraveConfirmInfoBar:
+//   "Text _link_                     [ok_button]"
+// cancel_button is not supported.
+class BraveSyncAccountDeletedInfoBar : public BraveConfirmInfoBar {
  public:
   explicit BraveSyncAccountDeletedInfoBar(
-      std::unique_ptr<ConfirmInfoBarDelegate> delegate);
+      std::unique_ptr<BraveConfirmInfoBarDelegate> delegate);
 
   BraveSyncAccountDeletedInfoBar(const BraveSyncAccountDeletedInfoBar&) =
       delete;
@@ -26,7 +25,7 @@ class BraveSyncAccountDeletedInfoBar : public ConfirmInfoBar {
 
   ~BraveSyncAccountDeletedInfoBar() override;
 
-  // InfoBarView:
+  // BraveConfirmInfoBar:
   void Layout(PassKey) override;
 };
 

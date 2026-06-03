@@ -314,6 +314,11 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
     }
 
     @Override
+    protected boolean shouldApplyLandscapeWindowSizing() {
+        return false;
+    }
+
+    @Override
     public void showRestoreMenu(boolean shouldShowRestore) {
         this.mShouldShowRestoreMenu = shouldShowRestore;
         InAppPurchaseWrapper.getInstance()

@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Atinge și ține apăsată pictograma Brave, apoi trage-o în dock pentru acces rapid.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Adaugă Brave în dock";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Continuă";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Poți renunța oricând în Setări la **Shields și Confidențialitate**. [Află mai multe](#p3a-learn-more) despre Date de produs cu protecția confidențialității.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Partajează informații despre produse **complet privat și anonim**.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Trimite informații **confidențiale și anonime** despre produs.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Începe navigarea";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Setează ca implicit";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Bucură-te de conținut cu mai puține reclame și date de navigare.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Vezi diferența Brave";
 

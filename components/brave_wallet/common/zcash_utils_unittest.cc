@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
+#include <string_view>
+
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

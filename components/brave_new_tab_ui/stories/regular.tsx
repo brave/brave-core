@@ -17,7 +17,6 @@ import { useNewTabData, getGridSitesData } from './default/data/storybookState'
 import { onChangeColoredBackground, onUseBraveBackground, onShowBrandedImageChanged } from './default/data/backgroundWallpaper'
 import getTodayState from './default/data/todayStorybookState'
 import getBraveVPNState from './default/data/braveVPNStorybookState'
-import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import { getDataUrl, getUnpaddedAsDataUrl } from '../../common/privateCDN'
 import { images, updateImages } from '../data/backgrounds'
 
@@ -82,7 +81,6 @@ export const Regular = () => {
       saveShowBraveTalk={doNothing}
       saveBrandedWallpaperOptIn={onShowBrandedImageChanged}
       saveSetAllStackWidgets={doNothing}
-      getBraveNewsDisplayAd={getBraveNewsDisplayAd}
       setBraveBackground={onUseBraveBackground}
       chooseNewCustomBackgroundImage={doNothing}
       setCustomImageBackground={doNothing}

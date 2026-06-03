@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_
 
+#include <cstdint>
+
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
@@ -87,9 +89,9 @@ class PolkadotKeyring {
   std::array<uint8_t, kSr25519Pkcs8Size> GetPkcs8KeyForTesting(
       uint32_t account_index);
 
-  // Set the RNG used by the underlying Schnorr signing routines to be
+  // Set the seed used by the underlying Schnorr signing routines to be
   // deterministic for the sake of testing.
-  void SetSignatureRngForTesting();
+  void SetMockRndSeedForTesting(uint64_t seed = 0);
 
  private:
   HDKeySr25519* GetKeypair(uint32_t account_index);

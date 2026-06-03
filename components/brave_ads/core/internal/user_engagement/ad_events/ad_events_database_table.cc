@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -80,29 +81,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-AdEventInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
-  CHECK(mojom_db_row);
-
-  AdEventInfo ad_event;
-
-  ad_event.placement_id = ColumnString(mojom_db_row, 0);
-  ad_event.type = ToMojomAdType(ColumnString(mojom_db_row, 1));
-  ad_event.confirmation_type =
-      ToMojomConfirmationType(ColumnString(mojom_db_row, 2));
-  ad_event.campaign_id = ColumnString(mojom_db_row, 3);
-  ad_event.creative_set_id = ColumnString(mojom_db_row, 4);
-  ad_event.creative_instance_id = ColumnString(mojom_db_row, 5);
-  ad_event.advertiser_id = ColumnString(mojom_db_row, 6);
-  ad_event.segment = ColumnString(mojom_db_row, 7);
-  ad_event.target_url = GURL(ColumnString(mojom_db_row, 8));
-  const base::Time created_at = ColumnTime(mojom_db_row, 9);
-  if (!created_at.is_null()) {
-    ad_event.created_at = created_at;
-  }
-
-  return ad_event;
-}
-
 void GetCallback(
     GetAdEventsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
@@ -116,7 +94,7 @@ void GetCallback(
   AdEventList ad_events;
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    const AdEventInfo ad_event = FromMojomRow(mojom_db_row);
+    const AdEventInfo ad_event = AdEventFromMojomRow(mojom_db_row);
     if (!ad_event.IsValid()) {
       BLOG(0, "Invalid ad event");
       continue;
@@ -242,6 +220,42 @@ void MigrateToV50(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   // Optimize database query for `IsFirstTime` from schema 50.
   CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
                    /*columns=*/{"campaign_id", "confirmation_type"});
+}
+
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const AdEventList& ad_events) {
+  CHECK(mojom_db_action);
+  CHECK(!ad_events.empty());
+
+  const size_t row_count = BindColumns(mojom_db_action, ad_events);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            placement_id,
+            type,
+            confirmation_type,
+            campaign_id,
+            creative_set_id,
+            creative_instance_id,
+            advertiser_id,
+            segment,
+            target_url,
+            created_at
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const AdEventList& ad_events) {
+  CHECK(mojom_db_transaction);
+  CHECK(!ad_events.empty());
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, ad_events);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 void MigrateToV51(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
@@ -572,28 +586,15 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  size_t days;
+  const size_t non_new_tab_page_ad_days = UserHasJoinedBraveRewards() ? 90 : 30;
+  const std::string non_new_tab_page_ad_cutoff = TimeToSqlValueAsString(
+      base::Time::Now() - base::Days(non_new_tab_page_ad_days));
 
-  // Non-new tab page ads.
-  days = UserHasJoinedBraveRewards() ? 90 : 30;
-  Execute(mojom_db_transaction, R"(
-            DELETE FROM
-              $1
-            WHERE
-              creative_set_id NOT IN (
-                SELECT
-                  creative_set_id
-                FROM
-                  creative_set_conversions
-              )
-              AND type != 'new_tab_page_ad'
-              AND created_at <= $2)",
-          {kTableName,
-           TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
-
-  // New tab page ads.
-  days =
+  const size_t new_tab_page_ad_days =
       UserHasJoinedBraveRewards() || UserHasOptedInToSurveyPanelist() ? 90 : 2;
+  const std::string new_tab_page_ad_cutoff = TimeToSqlValueAsString(
+      base::Time::Now() - base::Days(new_tab_page_ad_days));
+
   Execute(mojom_db_transaction, R"(
             DELETE FROM
               $1
@@ -604,10 +605,11 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
                 FROM
                   creative_set_conversions
               )
-              AND type == 'new_tab_page_ad'
-              AND created_at <= $2)",
-          {kTableName,
-           TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
+              AND (
+                (type != 'new_tab_page_ad' AND created_at <= $2)
+                OR (type == 'new_tab_page_ad' AND created_at <= $3)
+              ))",
+          {kTableName, non_new_tab_page_ad_cutoff, new_tab_page_ad_cutoff});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -804,45 +806,6 @@ void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void AdEvents::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                      const AdEventList& ad_events) {
-  CHECK(mojom_db_transaction);
-  CHECK(!ad_events.empty());
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, ad_events);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-std::string AdEvents::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const AdEventList& ad_events) const {
-  CHECK(mojom_db_action);
-  CHECK(!ad_events.empty());
-
-  const size_t row_count = BindColumns(mojom_db_action, ad_events);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            placement_id,
-            type,
-            confirmation_type,
-            campaign_id,
-            creative_set_id,
-            creative_instance_id,
-            advertiser_id,
-            segment,
-            target_url,
-            created_at
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

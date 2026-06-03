@@ -36,12 +36,11 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/tabs/shared/tab_strip_observer.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
-#include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
-#include "components/prefs/pref_service.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/web_contents.h"
@@ -54,12 +53,14 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -180,16 +181,10 @@ void BraveTabStrip::AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
   }
   tab_at(model_index)->set_tree_tab_node(node_id);
 }
-void BraveTabStrip::SetTabData(int model_index, tabs::TabData data) {
-  OnSetTabData(model_index, data);
-  TabStrip::SetTabData(model_index, std::move(data));
-}
 
-void BraveTabStrip::MoveTab(int from_model_index,
-                            int to_model_index,
-                            tabs::TabData data) {
-  OnSetTabData(from_model_index, data);
-  TabStrip::MoveTab(from_model_index, to_model_index, std::move(data));
+void BraveTabStrip::OnTabPinnedStateChanged(int model_index, bool is_pinned) {
+  TabStrip::OnTabPinnedStateChanged(model_index, is_pinned);
+  OnPinnedStateChanged(model_index, is_pinned);
 }
 
 void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
@@ -203,12 +198,13 @@ void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
   tab->HideHover(style);
 }
 
-void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
+void BraveTabStrip::UpdateHoverCard(HoverCardAnchorTarget* anchor_target,
+                                    HoverCardUpdateType update_type) {
   if (brave_tabs::AreTooltipsEnabled(
           controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs())) {
     return;
   }
-  TabStrip::UpdateHoverCard(tab, update_type);
+  TabStrip::UpdateHoverCard(anchor_target, update_type);
 }
 
 void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
@@ -386,8 +382,17 @@ brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
       tab_min_width_mode_.GetValue());
 }
 
+bool BraveTabStrip::IsHorizontalScrollingEnabled() const {
+  return brave_tabs::IsScrollableHorizontalTabStripEnabled(
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
+}
+
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return tab_container_.get();  // IN-TEST
+}
+
+BraveTabContainer* BraveTabStrip::GetBraveTabContainer() {
+  return views::AsViewClass<BraveTabContainer>(tab_container_.get());
 }
 
 void BraveTabStrip::InvalidateTabContainerLayout() {
@@ -447,9 +452,15 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
     return ui::ImageModel();
   }
 
-  auto& icon =
-      containers::GetVectorIconFromIconType(container_model->container()->icon);
-  return ui::ImageModel::FromVectorIcon(icon, accent_colors->icon_color, 16);
+  const auto& container = container_model->container();
+  auto* widget = GetWidget();
+  const float scale_factor =
+      widget ? widget->GetCompositor()->device_scale_factor() : 1.0f;
+
+  return ui::ImageModel::FromImageSkia(
+      containers::GenerateContainerForegroundIcon(
+          container->id, container->icon, 16, scale_factor,
+          accent_colors->icon_color));
 #else
   return ui::ImageModel();
 #endif
@@ -503,8 +514,8 @@ BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-void BraveTabStrip::OnSetTabData(int model_index,
-                                 const tabs::TabData& new_data) {
+void BraveTabStrip::OnPinnedStateChanged(int model_index,
+                                         bool new_pinned_state) {
   if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     return;
   }
@@ -512,9 +523,7 @@ void BraveTabStrip::OnSetTabData(int model_index,
   // In case moving a tab from a group to pinned, we need to clear the
   // tree-tab-node UI state. There is no dedicated notification when pinning
   // from a group.
-  const bool pinned_state_changed =
-      tab_at(model_index)->data().pinned != new_data.pinned;
-  if (pinned_state_changed && new_data.pinned) {
+  if (new_pinned_state) {
     tab_at(model_index)->set_tree_tab_node(std::nullopt);
   }
 }

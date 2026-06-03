@@ -24,6 +24,7 @@ source_set("brave_adaptive_captcha") {
     "//brave/components/api_request_helper",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_rewards/core/buildflags:endpoint_buildflags",
     "//components/keyed_service/core",
     "//components/prefs",
     "//net",

@@ -3,69 +3,50 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// This page contains a copy of Svelte (via @brave/leo) which will attempt
+// to register its own trusted-types policy which duplicates the one registered
+// by the main page.
+import '$web-common/disableDuplicateSvelteTrustedPolicies'
+
 import { createRoot } from 'react-dom/client'
-import { ManagePage } from './content/email_aliases_manage_page'
+import { SignInPage, ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'
 import * as React from 'react'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import {
-  AuthenticationStatus,
-  AuthState,
-  Alias,
+  EmailAliasesMetrics,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverReceiver,
   EmailAliasesService,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { useEmailAliases } from './content/use_email_aliases'
 
 export const ManagePageConnected = ({
   emailAliasesService,
   bindObserver,
+  metrics,
 }: {
   emailAliasesService: EmailAliasesServiceInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+  metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
 }) => {
-  const [authState, setAuthState] = React.useState<AuthState>({
-    status: AuthenticationStatus.kStartup,
-    email: '',
-  })
-  const [aliasesState, setAliasesState] = React.useState<Alias[]>([])
-  React.useEffect(() => {
-    // Note: We keep track of the status here so we can avoid setting aliases
-    // when the user is not logged in.
-    let status: AuthenticationStatus = AuthenticationStatus.kStartup
-    const observer: EmailAliasesServiceObserverInterface = {
-      onAliasesUpdated: (aliases: Alias[]) => {
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          return
-        }
-        setAliasesState(aliases)
-      },
-      onAuthStateChanged: (state: AuthState) => {
-        status = state.status
-
-        setAuthState(state)
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          setAliasesState([])
-        }
-      },
-    }
-    return bindObserver(observer)
-  }, [])
+  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
   return (
     <ManagePage
       authState={authState}
-      aliasesState={aliasesState}
+      aliasesUpdate={aliasesUpdate}
       emailAliasesService={emailAliasesService}
+      metrics={metrics}
     />
   )
 }
 
-export const mount = (at: HTMLElement) => {
+export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
   setIconBasePath('//resources/brave-icons')
 
-  const root = createRoot(at)
   const emailAliasesService = EmailAliasesService.getRemote()
+  const emailAliasesMetrics = EmailAliasesMetrics.getRemote()
 
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
     const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
@@ -75,11 +56,21 @@ export const mount = (at: HTMLElement) => {
       observerReceiver.$.close()
     }
   }
-  root.render(
-    <StyleSheetManager target={at.getRootNode() as ShadowRoot}>
+
+  const signInRoot = createRoot(signInElem)
+  signInRoot.render(
+    <StyleSheetManager target={signInElem.getRootNode() as ShadowRoot}>
+      <SignInPage />
+    </StyleSheetManager>,
+  )
+
+  const manageRoot = createRoot(manageElem)
+  manageRoot.render(
+    <StyleSheetManager target={manageElem.getRootNode() as ShadowRoot}>
       <ManagePageConnected
         emailAliasesService={emailAliasesService}
         bindObserver={bindObserver}
+        metrics={emailAliasesMetrics}
       />
     </StyleSheetManager>,
   )

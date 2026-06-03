@@ -83,9 +83,16 @@ public struct PrivacyReportsManager {
 
   // MARK: - View
   /// Fetches required data to present the privacy reports view and returns the view.
-  static func prepareView(isPrivateBrowsing: Bool) -> PrivacyReportsView {
+  static func prepareView(
+    isPrivateBrowsing: Bool,
+    isOriginPurchased: Bool
+  ) -> PrivacyReportsView {
     let last = BraveVPNAlert.last(3)
-    let view = PrivacyReportsView(lastVPNAlerts: last, isPrivateBrowsing: isPrivateBrowsing)
+    var view = PrivacyReportsView(
+      lastVPNAlerts: last,
+      isPrivateBrowsing: isPrivateBrowsing,
+      isOriginPurchased: isOriginPurchased
+    )
 
     Preferences.PrivacyReports.ntpOnboardingCompleted.value = true
 
@@ -154,7 +161,7 @@ public struct PrivacyReportsManager {
     }
   }
 
-  static func cancelNotification() {
+  public static func cancelNotification() {
     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [
       notificationID
     ])

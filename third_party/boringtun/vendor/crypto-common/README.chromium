@@ -1,0 +1,14 @@
+Name: crypto-common
+Short Name: crypto-common
+URL: https://github.com/RustCrypto/traits
+Version: 0.1.7
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/crypto-common.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

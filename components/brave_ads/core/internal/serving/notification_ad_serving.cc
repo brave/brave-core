@@ -44,11 +44,10 @@ NotificationAdServing::NotificationAdServing(
       kNotificationAdServingVersion.Get(), subdivision_targeting,
       anti_targeting_resource, creative_ad_round_robin_);
 
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
 NotificationAdServing::~NotificationAdServing() {
-  GetAdsClient().RemoveObserver(this);
   delegate_ = nullptr;
 }
 

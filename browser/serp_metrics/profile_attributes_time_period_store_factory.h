@@ -26,7 +26,7 @@ class ProfileAttributesTimePeriodStoreFactory
       ProfileAttributesStorage& profile_attributes_storage);
 
   std::unique_ptr<SerpMetricsTimePeriodStore> Build(
-      const char* metric_name) const override;
+      std::string_view metric_name) const override;
 
  private:
   const base::FilePath profile_path_;

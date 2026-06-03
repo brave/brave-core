@@ -8,14 +8,20 @@
 #include "base/containers/map_util.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/policy/core/common/policy_details.h"
 #include "components/policy/policy_constants.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -58,10 +64,12 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(tor_info->brave_origin_pref_key, tor::prefs::kTorDisabled);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // Test that profile-level policies are NOT in browser definitions
   EXPECT_FALSE(
       browser_policy_definitions.contains(policy::key::kBraveRewardsDisabled))
       << "Profile-level policy should not be in browser definitions";
+#endif
 }
 
 TEST(BraveOriginServiceFactoryTest,
@@ -69,6 +77,7 @@ TEST(BraveOriginServiceFactoryTest,
   auto profile_policy_definitions =
       BraveOriginServiceFactory::GetProfilePolicyDefinitions();
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // Test that Brave Rewards disabled policy is correctly built (profile-level)
   const auto* rewards_info = base::FindOrNull(
       profile_policy_definitions, policy::key::kBraveRewardsDisabled);
@@ -79,6 +88,7 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(rewards_info->user_settable, false);
   EXPECT_EQ(rewards_info->brave_origin_pref_key,
             brave_rewards::prefs::kDisabledByPolicy);
+#endif
 
   // Test that browser-level policies are NOT in profile definitions
   EXPECT_FALSE(
@@ -144,9 +154,65 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_GE(browser_policy_definitions.size(), 2u)
       << "Should have at least P3A and Stats browser policies";
 
-  // Verify that we have profile-level policies
+  // Verify that we have profile-level policies. On Brave Origin builds the
+  // features that contribute profile policies (Rewards, Wallet, Wayback, etc.)
+  // are all compiled out, so the intersection is legitimately empty there.
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   EXPECT_GT(profile_policy_definitions.size(), 0u)
       << "Should have at least some profile policies";
+#endif
+}
+
+// Verifies that every policy claimed by Brave Origin is actually enforceable
+// on the current build platform — i.e. its YAML lists the platform under
+// `supported_on:`, not `future_on:`.
+//
+// Future policies are dropped by `IsBlockedFuturePolicy`
+// (configuration_policy_handler_list.cc) on Stable and Beta channels, so a
+// future policy claimed by Brave Origin silently fails to manage its pref for
+// end users — even though debug/Nightly builds (where future policies are
+// allowed) make it look like it works. Direct admin policy via
+// `kBraveSimplePolicyMap` is allowed to be future on a given platform; this
+// invariant is specifically about Brave Origin's user-facing toggles.
+TEST(BraveOriginServiceFactoryTest, OriginPolicies_NotFutureOnThisPlatform) {
+  auto check = [](const BraveOriginPolicyMap& definitions) {
+    for (const auto& [policy_key, info] : definitions) {
+      const policy::PolicyDetails* details =
+          policy::GetChromePolicyDetails(policy_key);
+      ASSERT_NE(details, nullptr)
+          << "Unknown policy in Brave Origin definitions: " << policy_key;
+      EXPECT_FALSE(details->is_future)
+          << policy_key
+          << " is in Brave Origin metadata but its YAML lists the current "
+             "build platform under future_on:. On Stable/Beta channels the "
+             "policy is dropped by IsBlockedFuturePolicy before reaching the "
+             "SimplePolicyHandler, so when an Origin user toggles this "
+             "feature the pref never becomes managed. To fix, pick one:\n"
+             "\n"
+             "  (a) If the platform's runtime support is shipped, move it "
+             "from future_on: to supported_on: in the policy YAML at\n"
+             "      brave/components/policy/resources/templates/"
+             "policy_definitions/BraveSoftware/"
+          << policy_key
+          << ".yaml\n"
+             "      (e.g. add `- android:<milestone>-` to supported_on:, "
+             "drop the future_on: block).\n"
+             "\n"
+             "  (b) If the platform's runtime support is NOT shipped, "
+             "remove (or platform-gate) this policy's entry in the matching "
+             "metadata map (kBraveOriginBrowserMetadata or "
+             "kBraveOriginProfileMetadata) at\n"
+             "      brave/browser/brave_origin/"
+             "brave_origin_service_factory.cc\n"
+             "      so that Brave Origin no longer claims to enforce this "
+             "policy on the current platform.\n"
+             "\n"
+             "Either fix makes the YAML, the Brave Origin metadata, and the "
+             "runtime tell a consistent story.";
+    }
+  };
+  check(BraveOriginServiceFactory::GetBrowserPolicyDefinitions());
+  check(BraveOriginServiceFactory::GetProfilePolicyDefinitions());
 }
 
 // Test fixture for profile-related tests

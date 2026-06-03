@@ -16,7 +16,6 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
-#include "chrome/browser/actor/actor_features.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
@@ -26,6 +25,7 @@
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/actor/core/actor_features.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "components/tabs/public/tab_interface.h"
@@ -137,8 +137,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
       actor::mojom::ActionResultCode result_code,
       std::optional<size_t> index_of_failed_action,
       std::vector<actor::ActionResultWithLatencyInfo> action_results) {
-    tool_provider_->OnActionsFinished(std::move(callback), result_code,
-                                      std::move(index_of_failed_action),
+    tool_provider_->OnActionsFinished(std::move(callback),
                                       std::move(action_results));
   }
 

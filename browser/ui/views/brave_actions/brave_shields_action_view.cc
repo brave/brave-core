@@ -1,67 +1,35 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
-#include "base/check_deref.h"
-#include "base/memory/weak_ptr.h"
-#include "base/strings/string_number_conversions.h"
-#include "brave/browser/ui/brave_icon_with_badge_image_source.h"
-#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
-#include "brave/components/constants/pref_names.h"
-#include "brave/components/constants/url_constants.h"
-#include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/speedreader/common/buildflags/buildflags.h"
-#include "chrome/browser/profiles/profile.h"
+#include "base/functional/bind.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
-#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
-#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/models/image_model.h"
-#include "ui/base/resource/resource_bundle.h"
-#include "ui/color/color_provider_manager.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "ui/gfx/image/image_skia_rep.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
-#include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
-#endif
 
 namespace {
-constexpr SkColor kBadgeBg = SkColorSetRGB(0x63, 0x64, 0x72);
 class BraveShieldsActionViewHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
-  BraveShieldsActionViewHighlightPathGenerator() = default;
-  BraveShieldsActionViewHighlightPathGenerator(
-      const BraveShieldsActionViewHighlightPathGenerator&) = delete;
-  BraveShieldsActionViewHighlightPathGenerator& operator=(
-      const BraveShieldsActionViewHighlightPathGenerator&) = delete;
-  ~BraveShieldsActionViewHighlightPathGenerator() override = default;
-
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const BraveShieldsActionView*>(view)->GetHighlightPath();
   }
@@ -72,207 +40,68 @@ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(BraveShieldsActionView,
                                       kShieldsActionIcon);
 
 BraveShieldsActionView::BraveShieldsActionView(
-    BrowserWindowInterface* browser_window_interface)
-    : LabelButton(base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
-                                      base::Unretained(this),
-                                      browser_window_interface),
-                  std::u16string()),
+    BrowserWindowInterface* browser_window_interface,
+    views::LayoutProvider& layout_provider,
+    CreateWebUIBubbleManagerCallback create_bubble_manager_callback)
+    : LabelButton(views::Button::PressedCallback(), std::u16string()),
       browser_window_interface_(browser_window_interface),
-      profile_(CHECK_DEREF(browser_window_interface->GetProfile())),
-      tab_strip_model_(
-          CHECK_DEREF(browser_window_interface->GetTabStripModel())) {
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (web_contents) {
-    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
-        ->AddObserver(this);
-  }
+      controller_(std::make_unique<BraveShieldsActionController>(
+          browser_window_interface,
+          std::move(create_bubble_manager_callback))),
+      layout_provider_(layout_provider) {
+  controller_->SetOnStateChanged(
+      base::BindRepeating(&BraveShieldsActionView::OnControllerStateChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  controller_->SetAnchorView(this);
 
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetProperty(views::kElementIdentifierKey, kShieldsActionIcon);
-  tab_strip_model_->AddObserver(this);
 
   // The MenuButtonController makes sure the panel closes when clicked if the
   // panel is already open.
   auto menu_button_controller = std::make_unique<views::MenuButtonController>(
       this,
       base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
-                          base::Unretained(this), browser_window_interface),
+                          weak_ptr_factory_.GetWeakPtr()),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
-  menu_button_controller_ = menu_button_controller.get();
   SetButtonController(std::move(menu_button_controller));
 }
 
-BraveShieldsActionView::~BraveShieldsActionView() {
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-  if (web_contents) {
-    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
-        ->RemoveObserver(this);
-  }
+void BraveShieldsActionView::ButtonPressed() {
+  controller_->OnButtonPressed();
+}
+
+BraveShieldsActionView::~BraveShieldsActionView() = default;
+
+void BraveShieldsActionView::OnControllerStateChanged() {
+  Update();
 }
 
 void BraveShieldsActionView::Init() {
-  UpdateIconState();
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveShieldsActionViewHighlightPathGenerator>());
+  Update();
 }
 
 SkPath BraveShieldsActionView::GetHighlightPath() const {
-  // Set the highlight path for the toolbar button,
-  // making it inset so that the badge can show outside it in the
-  // fake margin on the right that we are creating.
+  // Set the highlight path for the toolbar button, making it inset so that the
+  // badge can show outside it in the fake margin on the right that we create.
   auto highlight_insets =
       gfx::Insets::TLBR(0, 0, 0, -1 * kBraveActionLeftMarginExtra);
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
-  const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+  const int radii = layout_provider_->GetCornerRadiusMetric(
       views::Emphasis::kHigh, rect.size());
   return SkPath::RRect(gfx::RectToSkRect(rect), radii, radii);
 }
 
 views::Widget* BraveShieldsActionView::GetBubbleWidget() {
-  if (!webui_bubble_manager_) {
-    return nullptr;
-  }
-  return webui_bubble_manager_->GetBubbleWidget();
+  return controller_->GetBubbleWidget();
 }
 
-std::unique_ptr<IconWithBadgeImageSource>
-BraveShieldsActionView::GetImageSource() {
-  auto preferred_size = GetPreferredSize();
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-
-  auto get_color_provider_callback = base::BindRepeating(
-      [](base::WeakPtr<content::WebContents> weak_web_contents) {
-        const auto* const color_provider =
-            weak_web_contents
-                ? &weak_web_contents->GetColorProvider()
-                : ui::ColorProviderManager::Get().GetColorProviderFor(
-                      ui::NativeTheme::GetInstanceForNativeUi()
-                          ->GetColorProviderKey(nullptr));
-        return color_provider;
-      },
-      web_contents ? web_contents->GetWeakPtr()
-                   : base::WeakPtr<content::WebContents>());
-
-  std::unique_ptr<IconWithBadgeImageSource> image_source(
-      new brave::BraveIconWithBadgeImageSource(
-          preferred_size, std::move(get_color_provider_callback),
-          GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize),
-          kBraveActionLeftMarginExtra));
-  std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
-  bool is_enabled = false;
-  std::string badge_text;
-
-  if (web_contents) {
-    auto* shields_data_controller =
-        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
-
-    int count = shields_data_controller->GetTotalBlockedCount();
-    if (count > 0) {
-      badge_text = count > 99 ? "99+" : base::NumberToString(count);
-    }
-
-    is_enabled = shields_data_controller->GetBraveShieldsEnabled() &&
-                 !IsPageInReaderMode(web_contents);
-
-    if (!badge_text.empty()) {
-      badge = std::make_unique<IconWithBadgeImageSource::Badge>(
-          badge_text, SK_ColorWHITE, kBadgeBg);
-    }
-  }
-
-  image_source->SetIcon(gfx::Image(GetIconImage(is_enabled)));
-
-  if (is_enabled &&
-      profile_->GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible)) {
-    image_source->SetBadge(std::move(badge));
-  }
-
-  return image_source;
-}
-
-gfx::ImageSkia BraveShieldsActionView::GetIconImage(bool is_enabled) {
-  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
-  gfx::ImageSkia image;
-  const SkBitmap bitmap =
-      rb.GetImageNamed(is_enabled ? IDR_BRAVE_SHIELDS_ICON_64
-                                  : IDR_BRAVE_SHIELDS_ICON_64_DISABLED)
-          .AsBitmap();
-  float scale = static_cast<float>(bitmap.width()) /
-                GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize);
-  image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
-  return image;
-}
-
-void BraveShieldsActionView::UpdateIconState() {
-  const gfx::ImageSkia icon(GetImageSource(), GetPreferredSize());
-  // Use badge-and-icon source for button's image in all states
-  SetImageModel(views::Button::STATE_NORMAL,
-                ui::ImageModel::FromImageSkia(icon));
-}
-
-void BraveShieldsActionView::ButtonPressed(
-    BrowserWindowInterface* browser_window_interface) {
-  auto* web_content = tab_strip_model_->GetActiveWebContents();
-  if (!ShouldShowBubble(web_content)) {
-    return;
-  }
-
-  if (webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget()) {
-    webui_bubble_manager_->CloseBubble();
-    return;
-  }
-
-  ShowBubble(GURL(kShieldsPanelURL));
-}
-
-bool BraveShieldsActionView::IsPageInReaderMode(
-    content::WebContents* web_contents) {
-  if (!web_contents) {
-    return false;
-  }
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (auto* speedreader_tab_helper =
-          speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
-    return speedreader::DistillStates::IsDistilled(
-        speedreader_tab_helper->PageDistillState());
-  }
-#endif
-  return false;
-}
-
-void BraveShieldsActionView::ShowBubble(GURL webui_url) {
-  if (!webui_bubble_manager_ || webui_url != last_webui_url_) {
-    webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
-        this, browser_window_interface_, webui_url, IDS_BRAVE_SHIELDS);
-  }
-  last_webui_url_ = webui_url;
-
-  webui_bubble_manager_->ShowBubble();
-}
-
-bool BraveShieldsActionView::ShouldShowBubble(
-    content::WebContents* web_contents) {
-  if (!web_contents) {
-    return false;
-  }
-  const GURL& url = web_contents->GetLastCommittedURL();
-
-  if (url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
-      url.SchemeIs(url::kDataScheme) || url.SchemeIs(url::kFileSystemScheme) ||
-      url.SchemeIs(kMagnetScheme) || url.SchemeIs(content::kChromeUIScheme) ||
-      url.SchemeIs(extensions::kExtensionScheme)) {
-    // Do not show bubble if it's a local scheme
-    return false;
-  }
-
-  if (IsPageInReaderMode(web_contents)) {
-    // Do not show bubble on speedreader pages.
-    return false;
-  }
-
-  return true;
+void BraveShieldsActionView::Update() {
+  controller_->RefreshButtonImages(this);
 }
 
 std::unique_ptr<views::LabelButtonBorder>
@@ -285,21 +114,7 @@ BraveShieldsActionView::CreateDefaultBorder() const {
 
 std::u16string BraveShieldsActionView::GetRenderedTooltipText(
     const gfx::Point& p) const {
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-
-  if (web_contents) {
-    auto* shields_data_controller =
-        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
-
-    int count = shields_data_controller->GetTotalBlockedCount();
-
-    if (count > 0) {
-      return l10n_util::GetStringFUTF16Int(IDS_BRAVE_SHIELDS_ICON_TOOLTIP,
-                                           count);
-    }
-  }
-
-  return l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS);
+  return controller_->GetTooltipText();
 }
 
 void BraveShieldsActionView::OnThemeChanged() {
@@ -317,52 +132,6 @@ void BraveShieldsActionView::OnThemeChanged() {
   views::InkDrop::Get(this)->SetVisibleOpacity(kOmniboxOpacitySelected);
   views::InkDrop::Get(this)->SetHighlightOpacity(kOmniboxOpacityHovered);
   ink_drop->SetBaseColor(color_provider->GetColor(kColorOmniboxText));
-}
-
-void BraveShieldsActionView::Update() {
-  UpdateIconState();
-}
-
-void BraveShieldsActionView::OnResourcesChanged() {
-  UpdateIconState();
-}
-
-void BraveShieldsActionView::OnShieldsEnabledChanged() {
-  UpdateIconState();
-}
-
-void BraveShieldsActionView::OnRepeatedReloadsDetected() {
-  auto* web_content = tab_strip_model_->GetActiveWebContents();
-  if (!ShouldShowBubble(web_content)) {
-    return;
-  }
-
-  ShowBubble(
-      GURL(std::string(kShieldsPanelURL) + "?mode=afterRepeatedReloads"));
-}
-
-void BraveShieldsActionView::OnTabStripModelChanged(
-    TabStripModel* tab_strip_model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& selection) {
-  if (selection.active_tab_changed()) {
-    if (selection.new_contents) {
-      auto* tab_helper = brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.new_contents);
-      if (tab_helper && !tab_helper->HasObserver(this)) {
-        tab_helper->AddObserver(this);
-      }
-    }
-
-    if (selection.old_contents) {
-      auto* tab_helper = brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.old_contents);
-      if (tab_helper && tab_helper->HasObserver(this)) {
-        tab_helper->RemoveObserver(this);
-      }
-    }
-    UpdateIconState();
-  }
 }
 
 BEGIN_METADATA(BraveShieldsActionView)

@@ -15,7 +15,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
@@ -60,7 +60,7 @@ HRESULT Elevator::InstallVPNServices() {
   }
   // End of trusted source check
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   if (!brave_vpn::IsBraveVPNHelperServiceInstalled()) {
     auto success = brave_vpn::InstallBraveVPNHelperService(
         base::PathService::CheckedGet(base::DIR_ASSETS));

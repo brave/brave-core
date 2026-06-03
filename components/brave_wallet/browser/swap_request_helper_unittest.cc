@@ -242,6 +242,63 @@ TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsLiFi) {
   EXPECT_EQ(*parsed.GetDict().FindString("amount"), "1000000");
 }
 
+namespace {
+
+mojom::SwapQuoteParamsPtr MakeEvmSameChainQuoteParams(
+    mojom::SwapProvider provider) {
+  auto params = mojom::SwapQuoteParams::New();
+  auto account = MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                               mojom::AccountKind::kDerived,
+                               "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
+  params->from_account_id = account.Clone();
+  params->from_chain_id = mojom::kMainnetChainId;
+  params->from_token = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";  // USDC
+  params->from_amount = "1000000";
+  params->to_account_id = std::move(account);
+  params->to_chain_id = mojom::kMainnetChainId;
+  params->to_token = "0xdAC17F958D2ee523a2206206994597C13D831ec7";  // USDT
+  params->slippage_percentage = "0.5";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+  params->provider = provider;
+  return params;
+}
+
+}  // namespace
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsZeroEx) {
+  // 0x is gate3-backed for desktop: kZeroEx encodes to "ZERO_EX".
+  auto encoded_params = gate3::EncodeQuoteParams(
+      MakeEvmSameChainQuoteParams(mojom::SwapProvider::kZeroEx));
+  ASSERT_TRUE(encoded_params);
+
+  auto parsed = ParseJson(*encoded_params);
+  ASSERT_TRUE(parsed.is_dict());
+  EXPECT_EQ(*parsed.GetDict().FindString("provider"), "ZERO_EX");
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsAuto) {
+  // kAuto is forwarded to gate3 as provider="AUTO" so the backend selects.
+  auto encoded_params = gate3::EncodeQuoteParams(
+      MakeEvmSameChainQuoteParams(mojom::SwapProvider::kAuto));
+  ASSERT_TRUE(encoded_params);
+
+  auto parsed = ParseJson(*encoded_params);
+  ASSERT_TRUE(parsed.is_dict());
+  EXPECT_EQ(*parsed.GetDict().FindString("provider"), "AUTO");
+}
+
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsLegacyProvidersRejected) {
+  // Direct-API legacy providers must never reach gate3 — EncodeQuoteParams
+  // returns nullopt so the dispatcher catches the misroute.
+  for (auto legacy_provider :
+       {mojom::SwapProvider::kJupiterLegacy, mojom::SwapProvider::kZeroExLegacy,
+        mojom::SwapProvider::kCowSwap}) {
+    EXPECT_EQ(
+        gate3::EncodeQuoteParams(MakeEvmSameChainQuoteParams(legacy_provider)),
+        std::nullopt);
+  }
+}
+
 TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsJupiter) {
   // Test Gate3 Jupiter encoding for Solana same-chain swap
   auto params = mojom::SwapQuoteParams::New();

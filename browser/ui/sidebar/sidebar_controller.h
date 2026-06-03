@@ -19,6 +19,7 @@
 class Browser;
 class GURL;
 class Profile;
+class SidePanelUI;
 class TabStripModel;
 
 namespace sidebar {
@@ -63,6 +64,18 @@ class SidebarController : public SidebarService::Observer {
   void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
   void DeactivateCurrentPanel();
 
+  // Toggles a session-only "pin" that forces the sidebar control view
+  // visible regardless of the current show option. Pinned state is cleared
+  // when the show option changes (via OnShowSidebarOptionChanged) and when
+  // the browser window closes; it is not persisted. V2 only — invoked by
+  // the toolbar SidePanelButton when V2 is enabled.
+  void ToggleSidebarPinning();
+  bool sidebar_pinned() const { return sidebar_pinned_; }
+
+  void SetSidePanelUIForTesting(SidePanelUI* side_panel_ui) {
+    side_panel_ui_for_testing_ = side_panel_ui;
+  }
+
   // If current browser doesn't have a tab for |url|, active tab will load
   // |url|. Otherwise, existing tab will be activated.
   // ShowSingletonTab() has similar functionality but it loads url in the
@@ -95,10 +108,13 @@ class SidebarController : public SidebarService::Observer {
   // and activate it if found.
   bool ActiveTabFromOtherBrowsersForHost(const GURL& url);
 
+  // Sidebar is visible when pinned regardless of show option.
+  bool sidebar_pinned_ = false;
   raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<Sidebar> sidebar_ = nullptr;
+  raw_ptr<SidePanelUI> side_panel_ui_for_testing_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;
   std::unique_ptr<SidebarWebPanelController> web_panel_controller_;

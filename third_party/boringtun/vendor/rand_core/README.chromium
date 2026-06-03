@@ -1,0 +1,14 @@
+Name: rand_core
+Short Name: rand_core
+URL: https://github.com/rust-random/rand
+Version: 0.6.4
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/rand_core.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

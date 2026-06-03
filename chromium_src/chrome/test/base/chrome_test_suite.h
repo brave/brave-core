@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_CHROME_TEST_SUITE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_CHROME_TEST_SUITE_H_
 
-#include "brave/components/brave_shields/content/browser/brave_shields_test_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 
 #define ChromeTestSuite ChromeTestSuite_ChromiumImpl
 #include <chrome/test/base/chrome_test_suite.h>  // IWYU pragma: export

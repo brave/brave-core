@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/common/features.h"
 
-#include "base/feature_list.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
@@ -43,7 +42,7 @@ BASE_FEATURE(kBraveWalletDebugFeature,
 
 BASE_FEATURE(kBraveWalletCardanoFeature,
              "BraveWalletCardano",
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_ANDROID)
              base::FEATURE_ENABLED_BY_DEFAULT
 #else
              base::FEATURE_DISABLED_BY_DEFAULT
@@ -56,13 +55,7 @@ const base::FeatureParam<bool> kCardanoDAppSupport{
     &kBraveWalletCardanoFeature, "cardano_dapp_support", true};
 
 const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled{
-    &kBraveWalletZCashFeature, "zcash_shielded_transactions_enabled",
-#if BUILDFLAG(IS_IOS)
-    false
-#else
-    true
-#endif
-};
+    &kBraveWalletZCashFeature, "zcash_shielded_transactions_enabled", true};
 
 BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
              "BraveWalletAnkrBalances",
@@ -72,7 +65,16 @@ BASE_FEATURE(kBraveWalletTransactionSimulationsFeature,
              "BraveWalletTransactionSimulations",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletAccountHidingFeature,
+             "BraveWalletAccountHiding",
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
+
 #if BUILDFLAG(IS_IOS)
-BASE_FEATURE(kBraveWalletWebUIFeature, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveWalletWebUIFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 }  // namespace brave_wallet::features

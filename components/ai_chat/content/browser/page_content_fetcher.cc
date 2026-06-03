@@ -11,7 +11,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
@@ -20,8 +19,6 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/escape.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_split.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -38,7 +35,6 @@
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/load_flags.h"
 #include "net/base/net_errors.h"
-#include "net/cookies/site_for_cookies.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -52,7 +48,6 @@
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
-#include "url/origin.h"
 #include "url/url_constants.h"
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
@@ -98,26 +93,6 @@ net::NetworkTrafficAnnotationTag GetVideoNetworkTrafficAnnotationTag() {
         cookies_allowed: NO
         policy_exception_justification:
           "Not implemented."
-      }
-    )");
-}
-
-net::NetworkTrafficAnnotationTag GetGithubNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("ai_chat_github", R"(
-      semantics {
-        sender: "AI Chat"
-        description:
-          "This is used to fetch github pull request patch files "
-          "on behalf of the user when interacting with Leo on github."
-        trigger:
-          "Triggered by user communicating with Leo on github.com"
-        data:
-          "Provided by github"
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: YES
-        policy_exception_justification: "Cookies necessary for private repos."
       }
     )");
 }
@@ -169,28 +144,6 @@ class PageContentFetcherInternal {
     content_extractor_.set_disconnect_handler(base::BindOnce(
         &PageContentFetcherInternal::DeleteSelf, base::Unretained(this)));
     content_extractor_->GetOpenAIChatButtonNonce(std::move(callback));
-  }
-
-  void StartGithub(GURL patch_url, FetchPageContentCallback callback) {
-    auto request = std::make_unique<network::ResourceRequest>();
-    request->url = patch_url;
-    request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
-    request->credentials_mode = network::mojom::CredentialsMode::kInclude;
-    request->site_for_cookies =
-        net::SiteForCookies::FromOrigin(url::Origin::Create(patch_url));
-    request->method = net::HttpRequestHeaders::kGetMethod;
-    auto loader = network::SimpleURLLoader::Create(
-        std::move(request), GetGithubNetworkTrafficAnnotationTag());
-    loader->SetRetryOptions(
-        1, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
-               network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-    loader->SetAllowHttpErrorResults(true);
-    auto* loader_ptr = loader.get();
-    auto on_response = base::BindOnce(
-        &PageContentFetcherInternal::OnGithubContentFetchResponse,
-        weak_ptr_factory_.GetWeakPtr(), std::move(callback), std::move(loader));
-    loader_ptr->DownloadToString(url_loader_factory_.get(),
-                                 std::move(on_response), 2 * 1024 * 1024);
   }
 
   void OnTabContentResult(FetchPageContentCallback callback,
@@ -345,29 +298,6 @@ class PageContentFetcherInternal {
                             invalidation_token, true);
   }
 
-  void OnGithubContentFetchResponse(
-      FetchPageContentCallback callback,
-      std::unique_ptr<network::SimpleURLLoader> loader,
-      std::optional<std::string> response_body) {
-    auto response_code = -1;
-    if (loader->ResponseInfo()) {
-      auto headers_list = loader->ResponseInfo()->headers;
-      if (headers_list) {
-        response_code = headers_list->response_code();
-      }
-    }
-    bool is_ok =
-        loader->NetError() == net::OK && response_body && response_code == 200;
-
-    std::string content = is_ok ? *response_body : "";
-    if (!is_ok || content.empty()) {
-      DVLOG(1) << __func__ << " invalid content response from url: "
-               << loader->GetFinalURL().spec() << " status: " << response_code;
-    }
-    DVLOG(2) << "Got content: " << content;
-    SendResultAndDeleteSelf(std::move(callback), content, "", false);
-  }
-
   void OnInnerTubePlayerJsonResponse(
       FetchPageContentCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
@@ -483,82 +413,10 @@ void OnScreenshot(FetchPageContentCallback callback,
 }
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
-// Obtains a content URL from a GitHub URL (repo root, tree, pull request,
-// commit, compare, commits, or file blob)
-std::optional<GURL> GetGithubContentURL(const GURL& url) {
-  if (!url.is_valid() || url.scheme() != "https" ||
-      url.host() != "github.com") {
-    return std::nullopt;
-  }
-
-  std::vector<std::string> path_parts = base::SplitString(
-      url.path(), "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  if (path_parts.size() < 2) {
-    return std::nullopt;
-  }
-
-  const std::string& user = path_parts[0];
-  const std::string& repo = path_parts[1];
-
-  // Handle repo root: /<user>/<repo>
-  if (path_parts.size() == 2) {
-    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
-                              "/raw/HEAD/README.md"}));
-  }
-
-  const std::string& type = path_parts[2];
-
-  // Handle tree: /<user>/<repo>/tree/<branch>
-  if (type == "tree" && path_parts.size() == 4) {
-    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
-                              "/raw/", path_parts[3], "/README.md"}));
-  }
-
-  if (path_parts.size() < 4) {
-    return std::nullopt;
-  }
-
-  // Handle pull requests: /<user>/<repo>/pull/<number>
-  if (type == "pull") {
-    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
-                              "/pull/", path_parts[3], ".patch"}));
-  }
-
-  // Handle commits: /<user>/<repo>/commit/<hash>
-  if (type == "commit") {
-    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
-                              "/commit/", path_parts[3], ".patch"}));
-  }
-
-  // Handle compare: /<user>/<repo>/compare/<comparison>
-  if (type == "compare") {
-    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
-                              "/compare/", path_parts[3], ".patch"}));
-  }
-
-  // Handle commits: /<user>/<repo>/commits/<branch>
-  if (type == "commits") {
-    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
-                              "/commits/", path_parts[3], ".atom"}));
-  }
-
-  // Handle blob (file view): /<user>/<repo>/blob/<branch>/<path>
-  if (type == "blob") {
-    GURL::Replacements replacements;
-    replacements.SetQueryStr("raw=true");
-    return url.ReplaceComponents(replacements);
-  }
-
-  return std::nullopt;
-}
-
 }  // namespace
 
 // static
 bool PageContentFetcher::HasCustomExtraction(const GURL& url) {
-  if (GetGithubContentURL(url).has_value()) {
-    return true;
-  }
   if (kYouTubeHosts.contains(url.host())) {
     return true;
   }
@@ -610,12 +468,6 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
 #endif
   auto* loader = url_loader_factory_.get();
   auto* fetcher = new PageContentFetcherInternal(loader);
-  auto github_content_url = GetGithubContentURL(url);
-  if (github_content_url) {
-    DVLOG(2) << "Github url: " << *github_content_url;
-    fetcher->StartGithub(github_content_url.value(), std::move(callback));
-    return;
-  }
 
   mojo::Remote<mojom::PageContentExtractor> extractor;
   // GetRemoteInterfaces() cannot be null if the render frame is created.

@@ -18,6 +18,7 @@
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/brave_account_service_test.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
@@ -29,6 +30,7 @@
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -81,24 +83,26 @@ struct AuthenticationObserverTestCase {
 
   static void Run(const AuthenticationObserverTestCase& test_case,
                   PrefService& pref_service,
-                  mojom::Authentication& authentication) {
+                  mojo::Remote<mojom::Authentication>& authentication) {
     const auto account_state_eq = [](const mojom::AccountStatePtr& expected) {
       return testing::Truly([&](const mojom::AccountStatePtr& state) {
         return state.Equals(expected);
       });
     };
 
+    AccountStatePrefs account_state_prefs(pref_service);
+
     switch (CHECK_DEREF(test_case.from).which()) {
       case mojom::AccountState::Tag::kLoggedOut:
-        break;
-      case mojom::AccountState::Tag::kVerification:
-        pref_service.SetString(prefs::kBraveAccountVerificationToken,
-                               EncryptedVerificationToken());
+        if (test_case.from->get_logged_out()->verification) {
+          account_state_prefs.SetLoggedOutWithVerification(
+              EncryptedVerificationToken(),
+              mojom::LoggedOutVerificationIntent::kRegistration);
+        }
         break;
       case mojom::AccountState::Tag::kLoggedIn:
-        pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
-        pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                               EncryptedAuthenticationToken());
+        account_state_prefs.SetLoggedIn(kEmailAddress,
+                                        EncryptedAuthenticationToken());
         break;
     }
 
@@ -108,7 +112,7 @@ struct AuthenticationObserverTestCase {
                 OnAccountStateChanged(account_state_eq(test_case.from)))
         .Times(1);
 
-    authentication.AddObserver(mock_observer.BindAndGetRemote());
+    authentication->AddObserver(mock_observer.BindAndGetRemote());
     mock_observer.FlushForTesting();
     testing::Mock::VerifyAndClearExpectations(&mock_observer);
 
@@ -118,19 +122,19 @@ struct AuthenticationObserverTestCase {
 
     switch (test_case.action) {
       case StateAction::kSwitchToVerification:
-        pref_service.SetString(prefs::kBraveAccountVerificationToken,
-                               EncryptedVerificationToken());
+        account_state_prefs.SetLoggedOutWithVerification(
+            EncryptedVerificationToken(),
+            mojom::LoggedOutVerificationIntent::kRegistration);
         break;
       case StateAction::kSwitchToLoggedIn:
-        pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
-        pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                               EncryptedAuthenticationToken());
+        account_state_prefs.SetLoggedIn(kEmailAddress,
+                                        EncryptedAuthenticationToken());
         break;
       case StateAction::kSwitchToLoggedOut:
-        pref_service.ClearPref(prefs::kBraveAccountAuthenticationToken);
+        account_state_prefs.SetLoggedOut();
         break;
       case StateAction::kUpdateEmailAddress:
-        pref_service.SetString(prefs::kBraveAccountEmailAddress, "new_email");
+        account_state_prefs.UpdateEmail("new_email");
         break;
     }
 
@@ -145,17 +149,30 @@ struct AuthenticationObserverTestCase {
 
 namespace {
 
+mojom::AccountStatePtr LoggedOut() {
+  return mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New(nullptr));
+}
+
+mojom::AccountStatePtr LoggedOutWithVerification() {
+  return mojom::AccountState::NewLoggedOut(
+      mojom::LoggedOutState::New(mojom::LoggedOutVerification::New(
+          mojom::LoggedOutVerificationIntent::kRegistration)));
+}
+
+mojom::AccountStatePtr LoggedIn(const std::string& email) {
+  return mojom::AccountState::NewLoggedIn(
+      mojom::LoggedInState::New(email, nullptr));
+}
+
 const AuthenticationObserverTestCase*
 AuthenticationObserverLoggedOutToVerification() {
   static const base::NoDestructor<AuthenticationObserverTestCase>
       kAuthenticationObserverLoggedOutToVerification(
           {.test_name = "authentication_observer_logged_out_to_verification",
-           .from =
-               mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New()),
+           .from = LoggedOut(),
            .action = AuthenticationObserverTestCase::StateAction::
                kSwitchToVerification,
-           .to = mojom::AccountState::NewVerification(
-               mojom::VerificationState::New())});
+           .to = LoggedOutWithVerification()});
   return kAuthenticationObserverLoggedOutToVerification.get();
 }
 
@@ -164,12 +181,10 @@ AuthenticationObserverVerificationToLoggedIn() {
   static const base::NoDestructor<AuthenticationObserverTestCase>
       kAuthenticationObserverVerificationToLoggedIn(
           {.test_name = "authentication_observer_verification_to_logged_in",
-           .from = mojom::AccountState::NewVerification(
-               mojom::VerificationState::New()),
+           .from = LoggedOutWithVerification(),
            .action =
                AuthenticationObserverTestCase::StateAction::kSwitchToLoggedIn,
-           .to = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New(kEmailAddress))});
+           .to = LoggedIn(kEmailAddress)});
   return kAuthenticationObserverVerificationToLoggedIn.get();
 }
 
@@ -178,12 +193,10 @@ AuthenticationObserverLoggedInToLoggedOut() {
   static const base::NoDestructor<AuthenticationObserverTestCase>
       kAuthenticationObserverLoggedInToLoggedOut(
           {.test_name = "authentication_observer_logged_in_to_logged_out",
-           .from = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New(kEmailAddress)),
+           .from = LoggedIn(kEmailAddress),
            .action =
                AuthenticationObserverTestCase::StateAction::kSwitchToLoggedOut,
-           .to = mojom::AccountState::NewLoggedOut(
-               mojom::LoggedOutState::New())});
+           .to = LoggedOut()});
   return kAuthenticationObserverLoggedInToLoggedOut.get();
 }
 
@@ -192,12 +205,10 @@ AuthenticationObserverLoggedOutToLoggedIn() {
   static const base::NoDestructor<AuthenticationObserverTestCase>
       kAuthenticationObserverLoggedOutToLoggedIn(
           {.test_name = "authentication_observer_logged_out_to_logged_in",
-           .from =
-               mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New()),
+           .from = LoggedOut(),
            .action =
                AuthenticationObserverTestCase::StateAction::kSwitchToLoggedIn,
-           .to = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New(kEmailAddress))});
+           .to = LoggedIn(kEmailAddress)});
   return kAuthenticationObserverLoggedOutToLoggedIn.get();
 }
 
@@ -207,12 +218,10 @@ AuthenticationObserverLoggedInToLoggedInEmailChange() {
       kAuthenticationObserverLoggedInToLoggedInEmailChange(
           {.test_name =
                "authentication_observer_logged_in_to_logged_in_email_change",
-           .from = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New(kEmailAddress)),
+           .from = LoggedIn(kEmailAddress),
            .action =
                AuthenticationObserverTestCase::StateAction::kUpdateEmailAddress,
-           .to = mojom::AccountState::NewLoggedIn(
-               mojom::LoggedInState::New("new_email"))});
+           .to = LoggedIn("new_email")});
   return kAuthenticationObserverLoggedInToLoggedInEmailChange.get();
 }
 
@@ -244,11 +253,11 @@ struct RegisterInitializeTestCase {
   static void Run(const RegisterInitializeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.RegisterInitialize(std::nullopt, test_case.email,
-                                      test_case.blinded_message,
-                                      std::move(callback));
+    authentication->RegisterInitialize(
+        mojom::Service::kAccounts, test_case.email, test_case.blinded_message,
+        std::move(callback));
   }
 
   std::string test_name;
@@ -262,34 +271,6 @@ struct RegisterInitializeTestCase {
 
 namespace {
 
-const RegisterInitializeTestCase* RegisterInitializeEmailEmpty() {
-  static const base::NoDestructor<RegisterInitializeTestCase>
-      kRegisterInitializeEmailEmpty({
-          .test_name = "register_initialize_email_empty",
-          .email = "",
-          .blinded_message = {},    // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterInitializeEmailEmpty.get();
-}
-
-const RegisterInitializeTestCase* RegisterInitializeBlindedMessageEmpty() {
-  static const base::NoDestructor<RegisterInitializeTestCase>
-      kRegisterInitializeBlindedMessageEmpty({
-          .test_name = "register_initialize_blinded_message_empty",
-          .email = kEmailAddress,
-          .blinded_message = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterInitializeBlindedMessageEmpty.get();
-}
-
 const RegisterInitializeTestCase*
 RegisterInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<RegisterInitializeTestCase>
@@ -302,8 +283,11 @@ RegisterInitializeBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterInitializeBodyMissingOrFailedToParse.get();
 }
@@ -323,8 +307,11 @@ const RegisterInitializeTestCase* RegisterInitializeErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterInitializeErrorCodeIsNull.get();
 }
@@ -344,9 +331,11 @@ const RegisterInitializeTestCase* RegisterInitializeNewAccountEmailRequired() {
                                    body.code = base::Value(11005);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kNewAccountEmailRequired)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST, mojom::RegisterServerErrorCode::
+                                                 kNewAccountEmailRequired))),
       });
   return kRegisterInitializeNewAccountEmailRequired.get();
 }
@@ -366,9 +355,11 @@ const RegisterInitializeTestCase* RegisterInitializeIntentNotAllowed() {
                                    body.code = base::Value(13003);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kIntentNotAllowed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kIntentNotAllowed))),
       });
   return kRegisterInitializeIntentNotAllowed.get();
 }
@@ -388,9 +379,11 @@ const RegisterInitializeTestCase* RegisterInitializeTooManyVerifications() {
                                    body.code = base::Value(13001);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kTooManyVerifications)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kTooManyVerifications))),
       });
   return kRegisterInitializeTooManyVerifications.get();
 }
@@ -410,8 +403,11 @@ const RegisterInitializeTestCase* RegisterInitializeAccountExists() {
                                    body.code = base::Value(13004);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST, mojom::RegisterErrorCode::kAccountExists)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kAccountExists))),
       });
   return kRegisterInitializeAccountExists.get();
 }
@@ -431,9 +427,11 @@ const RegisterInitializeTestCase* RegisterInitializeEmailDomainNotSupported() {
                                    body.code = base::Value(13006);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kEmailDomainNotSupported)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST, mojom::RegisterServerErrorCode::
+                                                 kEmailDomainNotSupported))),
       });
   return kRegisterInitializeEmailDomainNotSupported.get();
 }
@@ -453,9 +451,11 @@ const RegisterInitializeTestCase* RegisterInitializeUnauthorized() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterInitializeUnauthorized.get();
 }
@@ -475,9 +475,11 @@ const RegisterInitializeTestCase* RegisterInitializeServerError() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterInitializeServerError.get();
 }
@@ -497,8 +499,11 @@ const RegisterInitializeTestCase* RegisterInitializeUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::RegisterServerErrorCode::kUnknown))),
       });
   return kRegisterInitializeUnknown.get();
 }
@@ -521,8 +526,11 @@ const RegisterInitializeTestCase* RegisterInitializeVerificationTokenEmpty() {
                                            "serialized_response";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterInitializeVerificationTokenEmpty.get();
 }
@@ -545,8 +553,11 @@ const RegisterInitializeTestCase* RegisterInitializeSerializedResponseEmpty() {
                                        body.serialized_response = "";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterInitializeSerializedResponseEmpty.get();
 }
@@ -572,9 +583,11 @@ RegisterInitializeVerificationTokenFailedToEncrypt() {
                                            "serialized_response";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kVerificationTokenEncryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kVerificationTokenEncryptionFailed))),
       });
   return kRegisterInitializeVerificationTokenFailedToEncrypt.get();
 }
@@ -617,9 +630,7 @@ TEST_P(BraveAccountServiceRegisterInitializeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterInitializeTest,
-    testing::Values(RegisterInitializeEmailEmpty(),
-                    RegisterInitializeBlindedMessageEmpty(),
-                    RegisterInitializeBodyMissingOrFailedToParse(),
+    testing::Values(RegisterInitializeBodyMissingOrFailedToParse(),
                     RegisterInitializeErrorCodeIsNull(),
                     RegisterInitializeNewAccountEmailRequired(),
                     RegisterInitializeIntentNotAllowed(),
@@ -644,11 +655,11 @@ struct RegisterFinalizeTestCase {
   static void Run(const RegisterFinalizeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.RegisterFinalize(test_case.encrypted_verification_token,
-                                    test_case.serialized_record,
-                                    std::move(callback));
+    authentication->RegisterFinalize(test_case.encrypted_verification_token,
+                                     test_case.serialized_record,
+                                     std::move(callback));
   }
 
   std::string test_name;
@@ -663,35 +674,6 @@ struct RegisterFinalizeTestCase {
 namespace {
 
 const RegisterFinalizeTestCase*
-RegisterFinalizeEncryptedVerificationTokenEmpty() {
-  static const base::NoDestructor<RegisterFinalizeTestCase>
-      kRegisterFinalizeEncryptedVerificationTokenEmpty({
-          .test_name = "register_finalize_encrypted_verification_token_empty",
-          .encrypted_verification_token = "",
-          .serialized_record = {},  // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterFinalizeEncryptedVerificationTokenEmpty.get();
-}
-
-const RegisterFinalizeTestCase* RegisterFinalizeSerializedRecordEmpty() {
-  static const base::NoDestructor<RegisterFinalizeTestCase>
-      kRegisterFinalizeSerializedRecordEmpty({
-          .test_name = "register_finalize_serialized_record_empty",
-          .encrypted_verification_token = EncryptedVerificationToken(),
-          .serialized_record = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterFinalizeSerializedRecordEmpty.get();
-}
-
-const RegisterFinalizeTestCase*
 RegisterFinalizeVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeVerificationTokenFailedToDecrypt({
@@ -701,9 +683,11 @@ RegisterFinalizeVerificationTokenFailedToDecrypt() {
           .fail_encryption = {},  // not used
           .fail_decryption = true,
           .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kVerificationTokenDecryptionFailed))),
       });
   return kRegisterFinalizeVerificationTokenFailedToDecrypt.get();
 }
@@ -719,8 +703,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterFinalizeBodyMissingOrFailedToParse.get();
 }
@@ -740,8 +727,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_NOT_FOUND, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_NOT_FOUND,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeErrorCodeIsNull.get();
 }
@@ -761,9 +751,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeInterimPasswordStateNotFound() {
                                    body.code = base::Value(14001);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_NOT_FOUND,
-              mojom::RegisterErrorCode::kInterimPasswordStateNotFound)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_NOT_FOUND, mojom::RegisterServerErrorCode::
+                                               kInterimPasswordStateNotFound))),
       });
   return kRegisterFinalizeInterimPasswordStateNotFound.get();
 }
@@ -783,9 +775,12 @@ const RegisterFinalizeTestCase* RegisterFinalizeInterimPasswordStateExpired() {
                                    body.code = base::Value(14002);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kInterimPasswordStateExpired)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::
+                          kInterimPasswordStateExpired))),
       });
   return kRegisterFinalizeInterimPasswordStateExpired.get();
 }
@@ -805,9 +800,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeUnauthorized() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeUnauthorized.get();
 }
@@ -827,8 +824,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeForbidden() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_FORBIDDEN, mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_FORBIDDEN,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeForbidden.get();
 }
@@ -848,9 +848,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeServerError() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeServerError.get();
 }
@@ -870,8 +872,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::RegisterServerErrorCode::kUnknown))),
       });
   return kRegisterFinalizeUnknown.get();
 }
@@ -904,7 +909,15 @@ TEST_P(BraveAccountServiceRegisterFinalizeTest,
 
   if (const auto& test_case = CHECK_DEREF(this->GetParam());
       test_case.mojo_expected.has_value()) {
-    EXPECT_EQ(pref_service_.GetString(prefs::kBraveAccountVerificationToken),
+    AccountStatePrefs account_state_prefs(pref_service_);
+    const auto state = account_state_prefs.GetAccountState();
+    ASSERT_TRUE(state->is_logged_out());
+    ASSERT_TRUE(state->get_logged_out()->verification);
+    EXPECT_EQ(state->get_logged_out()->verification->intent,
+              mojom::LoggedOutVerificationIntent::kRegistration);
+    EXPECT_EQ(account_state_prefs.GetVerificationToken(
+                  mojom::VerificationIntent::NewLoggedOutIntent(
+                      mojom::LoggedOutVerificationIntent::kRegistration)),
               test_case.encrypted_verification_token);
   }
 }
@@ -912,9 +925,7 @@ TEST_P(BraveAccountServiceRegisterFinalizeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterFinalizeTest,
-    testing::Values(RegisterFinalizeEncryptedVerificationTokenEmpty(),
-                    RegisterFinalizeSerializedRecordEmpty(),
-                    RegisterFinalizeVerificationTokenFailedToDecrypt(),
+    testing::Values(RegisterFinalizeVerificationTokenFailedToDecrypt(),
                     RegisterFinalizeBodyMissingOrFailedToParse(),
                     RegisterFinalizeErrorCodeIsNull(),
                     RegisterFinalizeInterimPasswordStateNotFound(),
@@ -935,50 +946,46 @@ struct RegisterVerifyTestCase {
   static void Run(const RegisterVerifyTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    if (!test_case.encrypted_verification_token.empty()) {
-      pref_service.SetString(prefs::kBraveAccountVerificationToken,
-                             test_case.encrypted_verification_token);
-    }
+    AccountStatePrefs(pref_service)
+        .SetLoggedOutWithVerification(EncryptedVerificationToken(),
+                                      test_case.logged_out_verification_intent);
 
-    authentication.RegisterVerify(
+    authentication->RegisterVerify(
         test_case.code,
         std::move(callback).Then(base::BindOnce(
             [](PrefService* pref_service,
-               std::string initial_verification_token, bool success) {
+               mojom::LoggedOutVerificationIntent
+                   logged_out_verification_intent,
+               bool success) {
+              AccountStatePrefs account_state_prefs(*pref_service);
+              const auto state = account_state_prefs.GetAccountState();
               if (success) {
-                EXPECT_EQ(
-                    pref_service->GetString(prefs::kBraveAccountEmailAddress),
-                    kEmailAddress);
-                EXPECT_EQ(pref_service->GetString(
-                              prefs::kBraveAccountAuthenticationToken),
+                ASSERT_TRUE(state->is_logged_in());
+                EXPECT_EQ(state->get_logged_in()->email, kEmailAddress);
+                EXPECT_FALSE(state->get_logged_in()->verification);
+                EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
                           EncryptedAuthenticationToken());
-                EXPECT_TRUE(
-                    pref_service
-                        ->GetString(prefs::kBraveAccountVerificationToken)
-                        .empty());
               } else {
-                EXPECT_TRUE(
-                    pref_service->GetString(prefs::kBraveAccountEmailAddress)
-                        .empty());
-                EXPECT_TRUE(
-                    pref_service
-                        ->GetString(prefs::kBraveAccountAuthenticationToken)
-                        .empty());
-                EXPECT_EQ(pref_service->GetString(
-                              prefs::kBraveAccountVerificationToken),
-                          initial_verification_token);
+                ASSERT_TRUE(state->is_logged_out());
+                ASSERT_TRUE(state->get_logged_out()->verification);
+                EXPECT_EQ(state->get_logged_out()->verification->intent,
+                          logged_out_verification_intent);
+                EXPECT_EQ(account_state_prefs.GetVerificationToken(
+                              mojom::VerificationIntent::NewLoggedOutIntent(
+                                  logged_out_verification_intent)),
+                          EncryptedVerificationToken());
               }
             },
             base::Unretained(&pref_service),
-            test_case.encrypted_verification_token,
+            test_case.logged_out_verification_intent,
             test_case.mojo_expected.has_value())));
   }
 
   std::string test_name;
   std::string code;
-  std::string encrypted_verification_token;
+  mojom::LoggedOutVerificationIntent logged_out_verification_intent;
   bool fail_decryption;
   bool fail_encryption;
   std::optional<EndpointResponse> endpoint_response;
@@ -987,32 +994,20 @@ struct RegisterVerifyTestCase {
 
 namespace {
 
-const RegisterVerifyTestCase* RegisterVerifyCodeEmpty() {
-  static const base::NoDestructor<RegisterVerifyTestCase>
-      kRegisterVerifyCodeEmpty({
-          .test_name = "register_verify_code_empty",
-          .code = "",
-          .encrypted_verification_token = {},  // not used
-          .fail_decryption = {},               // not used
-          .fail_encryption = {},               // not used
-          .endpoint_response = {},             // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterVerifyCodeEmpty.get();
-}
-
 const RegisterVerifyTestCase* RegisterVerifyVerificationTokenEmpty() {
   static const base::NoDestructor<RegisterVerifyTestCase>
       kRegisterVerifyVerificationTokenEmpty({
           .test_name = "register_verify_verification_token_empty",
           .code = "23TZMP",
-          .encrypted_verification_token = "",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kResetPassword,
           .fail_decryption = {},    // not used
           .fail_encryption = {},    // not used
           .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kUserNotInTheVerificationState)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::kCalledInWrongState))),
       });
   return kRegisterVerifyVerificationTokenEmpty.get();
 }
@@ -1022,13 +1017,16 @@ const RegisterVerifyTestCase* RegisterVerifyVerificationTokenFailedToDecrypt() {
       kRegisterVerifyVerificationTokenFailedToDecrypt({
           .test_name = "register_verify_verification_token_failed_to_decrypt",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = true,
           .fail_encryption = {},    // not used
           .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kVerificationTokenDecryptionFailed))),
       });
   return kRegisterVerifyVerificationTokenFailedToDecrypt.get();
 }
@@ -1038,14 +1036,18 @@ const RegisterVerifyTestCase* RegisterVerifyNetworkError() {
       kRegisterVerifyNetworkError({
           .test_name = "register_verify_network_error",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::ERR_CONNECTION_REFUSED, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::ERR_CONNECTION_REFUSED,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyNetworkError.get();
 }
@@ -1055,14 +1057,18 @@ const RegisterVerifyTestCase* RegisterVerifyBodyMissingOrFailedToParse() {
       kRegisterVerifyBodyMissingOrFailedToParse({
           .test_name = "register_verify_body_missing_or_failed_to_parse",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyBodyMissingOrFailedToParse.get();
 }
@@ -1072,7 +1078,8 @@ const RegisterVerifyTestCase* RegisterVerifyErrorCodeIsNull() {
       kRegisterVerifyErrorCodeIsNull({
           .test_name = "register_verify_error_code_is_null",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1082,8 +1089,11 @@ const RegisterVerifyTestCase* RegisterVerifyErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_UNAUTHORIZED, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterVerifyErrorCodeIsNull.get();
 }
@@ -1095,7 +1105,8 @@ RegisterVerifyVerificationNotFoundOrInvalidIdOrCode() {
           .test_name =
               "register_verify_verification_not_found_or_invalid_id_or_code",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1105,9 +1116,12 @@ RegisterVerifyVerificationNotFoundOrInvalidIdOrCode() {
                                    body.code = base::Value(13002);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_NOT_FOUND, mojom::RegisterErrorCode::
-                                       kVerificationNotFoundOrInvalidIdOrCode)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_NOT_FOUND,
+                      mojom::RegisterServerErrorCode::
+                          kVerificationNotFoundOrInvalidIdOrCode))),
       });
   return kRegisterVerifyVerificationNotFoundOrInvalidIdOrCode.get();
 }
@@ -1117,7 +1131,8 @@ const RegisterVerifyTestCase* RegisterVerifyEmailAlreadyVerified() {
       kRegisterVerifyEmailAlreadyVerified({
           .test_name = "register_verify_email_already_verified",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1127,9 +1142,11 @@ const RegisterVerifyTestCase* RegisterVerifyEmailAlreadyVerified() {
                                    body.code = base::Value(13009);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kEmailAlreadyVerified)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kEmailAlreadyVerified))),
       });
   return kRegisterVerifyEmailAlreadyVerified.get();
 }
@@ -1141,7 +1158,8 @@ RegisterVerifyMaximumCodeVerificationAttemptsExceeded() {
           .test_name =
               "register_verify_maximum_code_verification_attempts_exceeded",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1151,10 +1169,12 @@ RegisterVerifyMaximumCodeVerificationAttemptsExceeded() {
                                    body.code = base::Value(13010);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::
-                  kMaximumCodeVerificationAttemptsExceeded)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::
+                          kMaximumCodeVerificationAttemptsExceeded))),
       });
   return kRegisterVerifyMaximumCodeVerificationAttemptsExceeded.get();
 }
@@ -1164,7 +1184,8 @@ const RegisterVerifyTestCase* RegisterVerifyInvalidVerificationCode() {
       kRegisterVerifyInvalidVerificationCode({
           .test_name = "register_verify_invalid_verification_code",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1174,9 +1195,11 @@ const RegisterVerifyTestCase* RegisterVerifyInvalidVerificationCode() {
                                    body.code = base::Value(13011);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kInvalidVerificationCode)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST, mojom::RegisterServerErrorCode::
+                                                 kInvalidVerificationCode))),
       });
   return kRegisterVerifyInvalidVerificationCode.get();
 }
@@ -1186,7 +1209,8 @@ const RegisterVerifyTestCase* RegisterVerifyServerError() {
       kRegisterVerifyServerError({
           .test_name = "register_verify_server_error",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1196,8 +1220,11 @@ const RegisterVerifyTestCase* RegisterVerifyServerError() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterVerifyServerError.get();
 }
@@ -1207,7 +1234,8 @@ const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
       kRegisterVerifyAuthTokenEmpty({
           .test_name = "register_verify_auth_token_empty",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1220,8 +1248,11 @@ const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
                                        body.email = kEmailAddress;
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyAuthTokenEmpty.get();
 }
@@ -1231,7 +1262,8 @@ const RegisterVerifyTestCase* RegisterVerifyEmailEmpty() {
       kRegisterVerifyEmailEmpty({
           .test_name = "register_verify_email_empty",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1244,8 +1276,11 @@ const RegisterVerifyTestCase* RegisterVerifyEmailEmpty() {
                                        body.email = "";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyEmailEmpty.get();
 }
@@ -1256,7 +1291,8 @@ RegisterVerifyAuthenticationTokenEncryptionFailed() {
       kRegisterVerifyAuthenticationTokenEncryptionFailed({
           .test_name = "register_verify_authentication_token_encryption_failed",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = true,
           .endpoint_response = {{.net_error = net::OK,
@@ -1269,9 +1305,11 @@ RegisterVerifyAuthenticationTokenEncryptionFailed() {
                                        body.email = kEmailAddress;
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kAuthenticationTokenEncryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kAuthenticationTokenEncryptionFailed))),
       });
   return kRegisterVerifyAuthenticationTokenEncryptionFailed.get();
 }
@@ -1281,7 +1319,8 @@ const RegisterVerifyTestCase* RegisterVerifySuccess() {
       kRegisterVerifySuccess({
           .test_name = "register_verify_success",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1312,8 +1351,7 @@ TEST_P(BraveAccountServiceRegisterVerifyTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterVerifyTest,
-    testing::Values(RegisterVerifyCodeEmpty(),
-                    RegisterVerifyVerificationTokenEmpty(),
+    testing::Values(RegisterVerifyVerificationTokenEmpty(),
                     RegisterVerifyVerificationTokenFailedToDecrypt(),
                     RegisterVerifyNetworkError(),
                     RegisterVerifyBodyMissingOrFailedToParse(),
@@ -1329,27 +1367,29 @@ INSTANTIATE_TEST_SUITE_P(
                     RegisterVerifySuccess()),
     BraveAccountServiceRegisterVerifyTest::kNameGenerator);
 
-struct ResendConfirmationEmailTestCase {
+struct ResendVerificationEmailTestCase {
   using Endpoint = VerifyResend;
   using EndpointResponse = Endpoint::Response;
   using MojoExpected = base::expected<mojom::ResendConfirmationEmailResultPtr,
                                       mojom::ResendConfirmationEmailErrorPtr>;
 
-  static void Run(const ResendConfirmationEmailTestCase& test_case,
+  static void Run(const ResendVerificationEmailTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    if (!test_case.encrypted_verification_token.empty()) {
-      pref_service.SetString(prefs::kBraveAccountVerificationToken,
-                             test_case.encrypted_verification_token);
-    }
+    AccountStatePrefs(pref_service)
+        .SetLoggedOutWithVerification(EncryptedVerificationToken(),
+                                      test_case.logged_out_verification_intent);
 
-    authentication.ResendConfirmationEmail(std::move(callback));
+    authentication->ResendVerificationEmail(
+        mojom::VerificationIntent::NewLoggedOutIntent(
+            mojom::LoggedOutVerificationIntent::kRegistration),
+        std::move(callback));
   }
 
   std::string test_name;
-  std::string encrypted_verification_token;
+  mojom::LoggedOutVerificationIntent logged_out_verification_intent;
   bool fail_decryption;
   std::optional<EndpointResponse> endpoint_response;
   MojoExpected mojo_expected;
@@ -1357,94 +1397,108 @@ struct ResendConfirmationEmailTestCase {
 
 namespace {
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailVerificationTokenEmpty() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailVerificationTokenEmpty({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailVerificationTokenEmpty() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailVerificationTokenEmpty({
           .test_name = "resend_confirmation_email_verification_token_empty",
-          .encrypted_verification_token = "",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kResetPassword,
           .fail_decryption = {},    // not used
           .endpoint_response = {},  // not used
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  std::nullopt, mojom::ResendConfirmationEmailErrorCode::
-                                    kUserNotInTheVerificationState)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewClientError(
+                  mojom::ResendConfirmationEmailClientError::New(
+                      mojom::ResendConfirmationEmailClientErrorCode::
+                          kCalledInWrongState))),
       });
-  return kResendConfirmationEmailVerificationTokenEmpty.get();
+  return kResendVerificationEmailVerificationTokenEmpty.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailVerificationTokenFailedToDecrypt({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailVerificationTokenFailedToDecrypt() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailVerificationTokenFailedToDecrypt({
           .test_name =
               "resend_confirmation_email_verification_token_failed_to_decrypt",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = true,
           .endpoint_response = {},  // not used
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  std::nullopt, mojom::ResendConfirmationEmailErrorCode::
-                                    kVerificationTokenDecryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewClientError(
+                  mojom::ResendConfirmationEmailClientError::New(
+                      mojom::ResendConfirmationEmailClientErrorCode::
+                          kVerificationTokenDecryptionFailed))),
       });
-  return kResendConfirmationEmailVerificationTokenFailedToDecrypt.get();
+  return kResendVerificationEmailVerificationTokenFailedToDecrypt.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailSuccess() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailSuccess({
+const ResendVerificationEmailTestCase* ResendVerificationEmailSuccess() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailSuccess({
           .test_name = "resend_confirmation_email_success",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_NO_CONTENT,
                                  .body = std::nullopt}},
           .mojo_expected = mojom::ResendConfirmationEmailResult::New(),
       });
-  return kResendConfirmationEmailSuccess.get();
+  return kResendVerificationEmailSuccess.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailNetworkError({
+const ResendVerificationEmailTestCase* ResendVerificationEmailNetworkError() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailNetworkError({
           .test_name = "resend_confirmation_email_network_error",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
                                  .body = std::nullopt}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::ERR_CONNECTION_REFUSED, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::ERR_CONNECTION_REFUSED,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kInvalidResponse))),
       });
-  return kResendConfirmationEmailNetworkError.get();
+  return kResendVerificationEmailNetworkError.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailBodyMissingOrFailedToParse() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailBodyMissingOrFailedToParse({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailBodyMissingOrFailedToParse() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailBodyMissingOrFailedToParse({
           .test_name =
               "resend_confirmation_email_body_missing_or_failed_to_parse",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kInvalidResponse))),
       });
-  return kResendConfirmationEmailBodyMissingOrFailedToParse.get();
+  return kResendVerificationEmailBodyMissingOrFailedToParse.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailBadRequestWithNullErrorCode() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailBadRequestWithNullErrorCode({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailBadRequestWithNullErrorCode() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailBadRequestWithNullErrorCode({
           .test_name =
               "resend_confirmation_email_bad_request_with_null_error_code",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1453,20 +1507,23 @@ ResendConfirmationEmailBadRequestWithNullErrorCode() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_BAD_REQUEST, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::ResendConfirmationEmailServerErrorCode::kNull))),
       });
-  return kResendConfirmationEmailBadRequestWithNullErrorCode.get();
+  return kResendVerificationEmailBadRequestWithNullErrorCode.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailMaximumEmailSendAttemptsExceeded({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailMaximumEmailSendAttemptsExceeded() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailMaximumEmailSendAttemptsExceeded({
           .test_name =
               "resend_confirmation_email_maximum_email_send_attempts_exceeded",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1475,21 +1532,23 @@ ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
                                    body.code = base::Value(13008);
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_BAD_REQUEST,
-                  mojom::ResendConfirmationEmailErrorCode::
-                      kMaximumEmailSendAttemptsExceeded)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kMaximumEmailSendAttemptsExceeded))),
       });
-  return kResendConfirmationEmailMaximumEmailSendAttemptsExceeded.get();
+  return kResendVerificationEmailMaximumEmailSendAttemptsExceeded.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailEmailAlreadyVerified() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailEmailAlreadyVerified({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailEmailAlreadyVerified() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailEmailAlreadyVerified({
           .test_name = "resend_confirmation_email_email_already_verified",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1498,20 +1557,22 @@ ResendConfirmationEmailEmailAlreadyVerified() {
                                    body.code = base::Value(13009);
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_BAD_REQUEST,
-                  mojom::ResendConfirmationEmailErrorCode::
-                      kEmailAlreadyVerified)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kEmailAlreadyVerified))),
       });
-  return kResendConfirmationEmailEmailAlreadyVerified.get();
+  return kResendVerificationEmailEmailAlreadyVerified.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailServerError({
+const ResendVerificationEmailTestCase* ResendVerificationEmailServerError() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailServerError({
           .test_name = "resend_confirmation_email_server_error",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1520,18 +1581,21 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::ResendConfirmationEmailServerErrorCode::kNull))),
       });
-  return kResendConfirmationEmailServerError.get();
+  return kResendVerificationEmailServerError.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailUnknown({
+const ResendVerificationEmailTestCase* ResendVerificationEmailUnknown() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailUnknown({
           .test_name = "resend_confirmation_email_unknown",
-          .encrypted_verification_token = EncryptedVerificationToken(),
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_TOO_EARLY,
@@ -1540,37 +1604,40 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kUnknown))),
       });
-  return kResendConfirmationEmailUnknown.get();
+  return kResendVerificationEmailUnknown.get();
 }
 
-using BraveAccountServiceResendConfirmationEmailTest =
-    BraveAccountServiceTest<ResendConfirmationEmailTestCase>;
+using BraveAccountServiceResendVerificationEmailTest =
+    BraveAccountServiceTest<ResendVerificationEmailTestCase>;
 
 }  // namespace
 
-TEST_P(BraveAccountServiceResendConfirmationEmailTest,
+TEST_P(BraveAccountServiceResendVerificationEmailTest,
        MapsEndpointExpectedToMojoExpected) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
-    BraveAccountServiceResendConfirmationEmailTest,
-    testing::Values(ResendConfirmationEmailVerificationTokenEmpty(),
-                    ResendConfirmationEmailVerificationTokenFailedToDecrypt(),
-                    ResendConfirmationEmailSuccess(),
-                    ResendConfirmationEmailNetworkError(),
-                    ResendConfirmationEmailBodyMissingOrFailedToParse(),
-                    ResendConfirmationEmailBadRequestWithNullErrorCode(),
-                    ResendConfirmationEmailMaximumEmailSendAttemptsExceeded(),
-                    ResendConfirmationEmailEmailAlreadyVerified(),
-                    ResendConfirmationEmailServerError(),
-                    ResendConfirmationEmailUnknown()),
-    BraveAccountServiceResendConfirmationEmailTest::kNameGenerator);
+    BraveAccountServiceResendVerificationEmailTest,
+    testing::Values(ResendVerificationEmailVerificationTokenEmpty(),
+                    ResendVerificationEmailVerificationTokenFailedToDecrypt(),
+                    ResendVerificationEmailSuccess(),
+                    ResendVerificationEmailNetworkError(),
+                    ResendVerificationEmailBodyMissingOrFailedToParse(),
+                    ResendVerificationEmailBadRequestWithNullErrorCode(),
+                    ResendVerificationEmailMaximumEmailSendAttemptsExceeded(),
+                    ResendVerificationEmailEmailAlreadyVerified(),
+                    ResendVerificationEmailServerError(),
+                    ResendVerificationEmailUnknown()),
+    BraveAccountServiceResendVerificationEmailTest::kNameGenerator);
 
 struct AuthValidateTestCase {
   using Endpoint = AuthValidate;
@@ -1579,31 +1646,39 @@ struct AuthValidateTestCase {
   static void Run(const AuthValidateTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  base::OneShotTimer& auth_validate_timer) {
-    if (test_case.logged_in) {
-      pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
-      pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                             EncryptedAuthenticationToken());
-    }
+                  BraveAccountService& brave_account_service) {
+    AccountStatePrefs account_state_prefs(pref_service);
+    account_state_prefs.SetLoggedIn(kEmailAddress,
+                                    EncryptedAuthenticationToken());
 
     task_environment.FastForwardBy(kAuthValidatePollInterval -
                                    base::Seconds(1));
 
-    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountEmailAddress),
-              test_case.expected_email);
-    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountAuthenticationToken),
-              test_case.expected_authentication_token);
-    if (test_case.expected_auth_validate_timer_delay.is_zero()) {
-      EXPECT_FALSE(auth_validate_timer.IsRunning());
+    const auto state = account_state_prefs.GetAccountState();
+    if (test_case.expected_authentication_token.empty()) {
+      EXPECT_TRUE(state->is_logged_out());
     } else {
-      EXPECT_TRUE(auth_validate_timer.IsRunning());
-      EXPECT_EQ(auth_validate_timer.GetCurrentDelay(),
+      ASSERT_TRUE(state->is_logged_in());
+      EXPECT_EQ(state->get_logged_in()->email, test_case.expected_email);
+      EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
+                test_case.expected_authentication_token);
+    }
+
+    base::OneShotTimer* auth_validate_timer =
+        brave_account_service.AuthValidateTimerForTesting();
+    if (test_case.expected_auth_validate_timer_delay.is_zero()) {
+      if (auth_validate_timer) {
+        EXPECT_FALSE(auth_validate_timer->IsRunning());
+      }
+    } else {
+      ASSERT_TRUE(auth_validate_timer);
+      EXPECT_TRUE(auth_validate_timer->IsRunning());
+      EXPECT_EQ(auth_validate_timer->GetCurrentDelay(),
                 test_case.expected_auth_validate_timer_delay);
     }
   }
 
   std::string test_name;
-  bool logged_in;
   bool fail_decryption;
   std::optional<EndpointResponse> endpoint_response;
   std::string expected_email;
@@ -1613,25 +1688,10 @@ struct AuthValidateTestCase {
 
 namespace {
 
-const AuthValidateTestCase* AuthValidateAuthenticationTokenEmpty() {
-  static const base::NoDestructor<AuthValidateTestCase>
-      kAuthValidateAuthenticationTokenEmpty({
-          .test_name = "auth_validate_authentication_token_empty",
-          .logged_in = false,
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .expected_email = "",
-          .expected_authentication_token = "",
-          .expected_auth_validate_timer_delay = {},
-      });
-  return kAuthValidateAuthenticationTokenEmpty.get();
-}
-
 const AuthValidateTestCase* AuthValidateAuthenticationTokenFailedToDecrypt() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateAuthenticationTokenFailedToDecrypt({
           .test_name = "auth_validate_authentication_token_failed_to_decrypt",
-          .logged_in = true,
           .fail_decryption = true,
           .endpoint_response = {},  // not used
           .expected_email = kEmailAddress,
@@ -1645,7 +1705,6 @@ const AuthValidateTestCase* AuthValidateSuccessNoBody() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateSuccessNoBody({
           .test_name = "auth_validate_success_no_body",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_OK,
@@ -1661,7 +1720,6 @@ const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateSuccessEmailEmpty({
           .test_name = "auth_validate_success_email_empty",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_OK,
@@ -1681,7 +1739,6 @@ const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
 const AuthValidateTestCase* AuthValidateSuccess() {
   static const base::NoDestructor<AuthValidateTestCase> kAuthValidateSuccess({
       .test_name = "auth_validate_success",
-      .logged_in = true,
       .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_OK,
@@ -1702,7 +1759,6 @@ const AuthValidateTestCase* AuthValidateUnauthorized() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateUnauthorized({
           .test_name = "auth_validate_unauthorized",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_UNAUTHORIZED,
@@ -1721,7 +1777,6 @@ const AuthValidateTestCase* AuthValidateUnauthorized() {
 const AuthValidateTestCase* AuthValidateForbidden() {
   static const base::NoDestructor<AuthValidateTestCase> kAuthValidateForbidden({
       .test_name = "auth_validate_forbidden",
-      .logged_in = true,
       .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_FORBIDDEN,
@@ -1741,7 +1796,6 @@ const AuthValidateTestCase* AuthValidateInternalServerError() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateInternalServerError({
           .test_name = "auth_validate_internal_server_error",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1770,8 +1824,7 @@ TEST_P(BraveAccountServiceScheduleAuthValidateTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceScheduleAuthValidateTest,
-    testing::Values(AuthValidateAuthenticationTokenEmpty(),
-                    AuthValidateAuthenticationTokenFailedToDecrypt(),
+    testing::Values(AuthValidateAuthenticationTokenFailedToDecrypt(),
                     AuthValidateSuccessNoBody(),
                     AuthValidateSuccessEmailEmpty(),
                     AuthValidateSuccess(),
@@ -1780,101 +1833,76 @@ INSTANTIATE_TEST_SUITE_P(
                     AuthValidateInternalServerError()),
     BraveAccountServiceScheduleAuthValidateTest::kNameGenerator);
 
-struct CancelRegistrationTestCase {
-  static void Run(const CancelRegistrationTestCase& test_case,
+struct CancelVerificationTestCase {
+  static void Run(const CancelVerificationTestCase& test_case,
                   PrefService& pref_service,
-                  mojom::Authentication& authentication) {
-    pref_service.SetString(prefs::kBraveAccountVerificationToken,
-                           test_case.encrypted_verification_token);
-    authentication.CancelRegistration();
-    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountVerificationToken),
-              test_case.expected_verification_token);
+                  mojo::Remote<mojom::Authentication>& authentication) {
+    AccountStatePrefs account_state_prefs(pref_service);
+    account_state_prefs.SetLoggedOutWithVerification(
+        EncryptedVerificationToken(),
+        mojom::LoggedOutVerificationIntent::kRegistration);
+    authentication->CancelVerification(
+        mojom::VerificationIntent::NewLoggedOutIntent(
+            mojom::LoggedOutVerificationIntent::kRegistration));
+    authentication.FlushForTesting();
+    const auto state = account_state_prefs.GetAccountState();
+    ASSERT_TRUE(state->is_logged_out());
+    EXPECT_FALSE(state->get_logged_out()->verification);
   }
 
   std::string test_name;
-  std::string encrypted_verification_token;
-  std::string expected_verification_token;
 };
 
 namespace {
 
-const CancelRegistrationTestCase* CancelRegistrationVerificationTokenEmpty() {
-  static const base::NoDestructor<CancelRegistrationTestCase>
-      kCancelRegistrationVerificationTokenEmpty({
-          .test_name = "cancel_registration_verification_token_empty",
-          .encrypted_verification_token = "",
-          .expected_verification_token = "",
-      });
-  return kCancelRegistrationVerificationTokenEmpty.get();
-}
-
-const CancelRegistrationTestCase*
-CancelRegistrationVerificationTokenNonEmpty() {
-  static const base::NoDestructor<CancelRegistrationTestCase>
-      kCancelRegistrationVerificationTokenNonEmpty({
+const CancelVerificationTestCase*
+CancelVerificationVerificationTokenNonEmpty() {
+  static const base::NoDestructor<CancelVerificationTestCase>
+      kCancelVerificationVerificationTokenNonEmpty({
           .test_name = "cancel_registration_verification_token_non_empty",
-          .encrypted_verification_token = EncryptedVerificationToken(),
-          .expected_verification_token = "",
       });
-  return kCancelRegistrationVerificationTokenNonEmpty.get();
+  return kCancelVerificationVerificationTokenNonEmpty.get();
 }
 
-using BraveAccountServiceCancelRegistrationTest =
-    BraveAccountServiceTest<CancelRegistrationTestCase>;
+using BraveAccountServiceCancelVerificationTest =
+    BraveAccountServiceTest<CancelVerificationTestCase>;
 
 }  // namespace
 
-TEST_P(BraveAccountServiceCancelRegistrationTest,
-       HandlesCancelRegistrationOutcomes) {
+TEST_P(BraveAccountServiceCancelVerificationTest,
+       HandlesCancelVerificationOutcomes) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
-    BraveAccountServiceCancelRegistrationTest,
-    testing::Values(CancelRegistrationVerificationTokenEmpty(),
-                    CancelRegistrationVerificationTokenNonEmpty()),
-    BraveAccountServiceCancelRegistrationTest::kNameGenerator);
+    BraveAccountServiceCancelVerificationTest,
+    testing::Values(CancelVerificationVerificationTokenNonEmpty()),
+    BraveAccountServiceCancelVerificationTest::kNameGenerator);
 
 struct LogOutTestCase {
   static void Run(const LogOutTestCase& test_case,
                   PrefService& pref_service,
-                  mojom::Authentication& authentication) {
-    pref_service.SetString(prefs::kBraveAccountEmailAddress,
-                           test_case.email_address);
-    pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                           test_case.encrypted_authentication_token);
-    authentication.LogOut();
-    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountAuthenticationToken),
-              test_case.expected_authentication_token);
+                  mojo::Remote<mojom::Authentication>& authentication) {
+    AccountStatePrefs account_state_prefs(pref_service);
+    account_state_prefs.SetLoggedIn(kEmailAddress,
+                                    EncryptedAuthenticationToken());
+    authentication->LogOut();
+    authentication.FlushForTesting();
+    const auto state = account_state_prefs.GetAccountState();
+    ASSERT_TRUE(state->is_logged_out());
+    EXPECT_FALSE(state->get_logged_out()->verification);
   }
 
   std::string test_name;
-  std::string email_address;
-  std::string encrypted_authentication_token;
-  std::string expected_authentication_token;
 };
 
 namespace {
-
-const LogOutTestCase* LogOutAuthenticationTokenEmpty() {
-  static const base::NoDestructor<LogOutTestCase>
-      kLogOutAuthenticationTokenEmpty({
-          .test_name = "log_out_authentication_token_empty",
-          .email_address = "",
-          .encrypted_authentication_token = "",
-          .expected_authentication_token = "",
-      });
-  return kLogOutAuthenticationTokenEmpty.get();
-}
 
 const LogOutTestCase* LogOutAuthenticationTokenNonEmpty() {
   static const base::NoDestructor<LogOutTestCase>
       kLogOutAuthenticationTokenNonEmpty({
           .test_name = "log_out_authentication_token_non_empty",
-          .email_address = kEmailAddress,
-          .encrypted_authentication_token = EncryptedAuthenticationToken(),
-          .expected_authentication_token = "",
       });
   return kLogOutAuthenticationTokenNonEmpty.get();
 }
@@ -1889,8 +1917,7 @@ TEST_P(BraveAccountServiceLogOutTest, HandlesLogOutOutcomes) {
 
 INSTANTIATE_TEST_SUITE_P(BraveAccountServiceTests,
                          BraveAccountServiceLogOutTest,
-                         testing::Values(LogOutAuthenticationTokenEmpty(),
-                                         LogOutAuthenticationTokenNonEmpty()),
+                         testing::Values(LogOutAuthenticationTokenNonEmpty()),
                          BraveAccountServiceLogOutTest::kNameGenerator);
 
 struct LoginInitializeTestCase {
@@ -1902,11 +1929,11 @@ struct LoginInitializeTestCase {
   static void Run(const LoginInitializeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.LoginInitialize(std::nullopt, test_case.email,
-                                   test_case.serialized_ke1,
-                                   std::move(callback));
+    authentication->LoginInitialize(mojom::Service::kAccounts, test_case.email,
+                                    test_case.serialized_ke1,
+                                    std::move(callback));
   }
 
   std::string test_name;
@@ -1920,34 +1947,6 @@ struct LoginInitializeTestCase {
 
 namespace {
 
-const LoginInitializeTestCase* LoginInitializeEmailEmpty() {
-  static const base::NoDestructor<LoginInitializeTestCase>
-      kLoginInitializeEmailEmpty({
-          .test_name = "login_initialize_email_empty",
-          .email = "",
-          .serialized_ke1 = {},     // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginInitializeEmailEmpty.get();
-}
-
-const LoginInitializeTestCase* LoginInitializeSerializedKe1Empty() {
-  static const base::NoDestructor<LoginInitializeTestCase>
-      kLoginInitializeSerializedKe1Empty({
-          .test_name = "login_initialize_serialized_ke1_empty",
-          .email = kEmailAddress,
-          .serialized_ke1 = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginInitializeSerializedKe1Empty.get();
-}
-
 const LoginInitializeTestCase* LoginInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeBodyMissingOrFailedToParse({
@@ -1959,8 +1958,10 @@ const LoginInitializeTestCase* LoginInitializeBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginInitializeBodyMissingOrFailedToParse.get();
 }
@@ -1981,7 +1982,8 @@ const LoginInitializeTestCase* LoginInitializeErrorCodeIsNull() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_BAD_REQUEST, mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginInitializeErrorCodeIsNull.get();
 }
@@ -2002,8 +2004,9 @@ const LoginInitializeTestCase* LoginInitializeEmailNotVerified() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_UNAUTHORIZED,
-                                     mojom::LoginErrorCode::kEmailNotVerified)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kEmailNotVerified))),
       });
   return kLoginInitializeEmailNotVerified.get();
 }
@@ -2023,9 +2026,10 @@ const LoginInitializeTestCase* LoginInitializeIncorrectCredentials() {
                                    body.code = base::Value(14004);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectCredentials)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectCredentials))),
       });
   return kLoginInitializeIncorrectCredentials.get();
 }
@@ -2045,8 +2049,10 @@ const LoginInitializeTestCase* LoginInitializeIncorrectEmail() {
                                    body.code = base::Value(14005);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED, mojom::LoginErrorCode::kIncorrectEmail)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectEmail))),
       });
   return kLoginInitializeIncorrectEmail.get();
 }
@@ -2066,9 +2072,10 @@ const LoginInitializeTestCase* LoginInitializeIncorrectPassword() {
                                    body.code = base::Value(14006);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectPassword)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectPassword))),
       });
   return kLoginInitializeIncorrectPassword.get();
 }
@@ -2089,8 +2096,9 @@ const LoginInitializeTestCase* LoginInitializeServerError() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_INTERNAL_SERVER_ERROR,
-                                     mojom::LoginErrorCode::kMiscServerError)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginInitializeServerError.get();
 }
@@ -2111,7 +2119,8 @@ const LoginInitializeTestCase* LoginInitializeUnknown() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_TOO_EARLY, mojom::LoginServerErrorCode::kUnknown))),
       });
   return kLoginInitializeUnknown.get();
 }
@@ -2134,7 +2143,9 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenEmpty() {
                                        return body;
                                      }()}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginInitializeLoginTokenEmpty.get();
 }
@@ -2157,7 +2168,9 @@ const LoginInitializeTestCase* LoginInitializeSerializedKe2Empty() {
                                        return body;
                                      }()}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginInitializeSerializedKe2Empty.get();
 }
@@ -2179,9 +2192,9 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenFailedToEncrypt() {
                                        body.serialized_ke2 = "serialized_ke2";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              std::nullopt,
-              mojom::LoginErrorCode::kLoginTokenEncryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewClientError(mojom::LoginClientError::New(
+                  mojom::LoginClientErrorCode::kLoginTokenEncryptionFailed))),
       });
   return kLoginInitializeLoginTokenFailedToEncrypt.get();
 }
@@ -2222,9 +2235,7 @@ TEST_P(BraveAccountServiceLoginInitializeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceLoginInitializeTest,
-    testing::Values(LoginInitializeEmailEmpty(),
-                    LoginInitializeSerializedKe1Empty(),
-                    LoginInitializeBodyMissingOrFailedToParse(),
+    testing::Values(LoginInitializeBodyMissingOrFailedToParse(),
                     LoginInitializeErrorCodeIsNull(),
                     LoginInitializeEmailNotVerified(),
                     LoginInitializeIncorrectCredentials(),
@@ -2247,19 +2258,23 @@ struct LoginFinalizeTestCase {
   static void Run(const LoginFinalizeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.LoginFinalize(
+    authentication->LoginFinalize(
         test_case.encrypted_login_token, test_case.client_mac,
         std::move(callback).Then(base::BindOnce(
             [](PrefService* pref_service, std::string expected_email,
                std::string expected_authentication_token) {
-              EXPECT_EQ(
-                  pref_service->GetString(prefs::kBraveAccountEmailAddress),
-                  expected_email);
-              EXPECT_EQ(pref_service->GetString(
-                            prefs::kBraveAccountAuthenticationToken),
-                        expected_authentication_token);
+              AccountStatePrefs account_state_prefs(*pref_service);
+              const auto state = account_state_prefs.GetAccountState();
+              if (expected_authentication_token.empty()) {
+                EXPECT_TRUE(state->is_logged_out());
+              } else {
+                ASSERT_TRUE(state->is_logged_in());
+                EXPECT_EQ(state->get_logged_in()->email, expected_email);
+                EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
+                          expected_authentication_token);
+              }
             },
             base::Unretained(&pref_service), test_case.expected_email,
             test_case.expected_authentication_token)));
@@ -2278,38 +2293,6 @@ struct LoginFinalizeTestCase {
 
 namespace {
 
-const LoginFinalizeTestCase* LoginFinalizeEncryptedLoginTokenEmpty() {
-  static const base::NoDestructor<LoginFinalizeTestCase>
-      kLoginFinalizeEncryptedLoginTokenEmpty({
-          .test_name = "login_finalize_encrypted_login_token_empty",
-          .encrypted_login_token = "",
-          .client_mac = {},         // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .expected_email = "",
-          .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginFinalizeEncryptedLoginTokenEmpty.get();
-}
-
-const LoginFinalizeTestCase* LoginFinalizeClientMacEmpty() {
-  static const base::NoDestructor<LoginFinalizeTestCase>
-      kLoginFinalizeClientMacEmpty({
-          .test_name = "login_finalize_client_mac_empty",
-          .encrypted_login_token = EncryptedLoginToken(),
-          .client_mac = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .expected_email = "",
-          .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginFinalizeClientMacEmpty.get();
-}
-
 const LoginFinalizeTestCase* LoginFinalizeLoginTokenFailedToDecrypt() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeLoginTokenFailedToDecrypt({
@@ -2321,9 +2304,9 @@ const LoginFinalizeTestCase* LoginFinalizeLoginTokenFailedToDecrypt() {
           .endpoint_response = {},  // not used
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              std::nullopt,
-              mojom::LoginErrorCode::kLoginTokenDecryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewClientError(mojom::LoginClientError::New(
+                  mojom::LoginClientErrorCode::kLoginTokenDecryptionFailed))),
       });
   return kLoginFinalizeLoginTokenFailedToDecrypt.get();
 }
@@ -2341,8 +2324,10 @@ const LoginFinalizeTestCase* LoginFinalizeBodyMissingOrFailedToParse() {
                                  .body = std::nullopt}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginFinalizeBodyMissingOrFailedToParse.get();
 }
@@ -2365,7 +2350,8 @@ const LoginFinalizeTestCase* LoginFinalizeErrorCodeIsNull() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_BAD_REQUEST, mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginFinalizeErrorCodeIsNull.get();
 }
@@ -2387,9 +2373,10 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateMismatch() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::LoginErrorCode::kInterimPasswordStateMismatch)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_BAD_REQUEST,
+                  mojom::LoginServerErrorCode::kInterimPasswordStateMismatch))),
       });
   return kLoginFinalizeInterimPasswordStateMismatch.get();
 }
@@ -2411,9 +2398,10 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateNotFound() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kInterimPasswordStateNotFound)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kInterimPasswordStateNotFound))),
       });
   return kLoginFinalizeInterimPasswordStateNotFound.get();
 }
@@ -2435,9 +2423,11 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateHasExpired() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kInterimPasswordStateHasExpired)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::
+                      kInterimPasswordStateHasExpired))),
       });
   return kLoginFinalizeInterimPasswordStateHasExpired.get();
 }
@@ -2459,9 +2449,10 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectCredentials() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectCredentials)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectCredentials))),
       });
   return kLoginFinalizeIncorrectCredentials.get();
 }
@@ -2483,8 +2474,10 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectEmail() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED, mojom::LoginErrorCode::kIncorrectEmail)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectEmail))),
       });
   return kLoginFinalizeIncorrectEmail.get();
 }
@@ -2506,9 +2499,10 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectPassword() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectPassword)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectPassword))),
       });
   return kLoginFinalizeIncorrectPassword.get();
 }
@@ -2531,8 +2525,9 @@ const LoginFinalizeTestCase* LoginFinalizeServerError() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_INTERNAL_SERVER_ERROR,
-                                     mojom::LoginErrorCode::kMiscServerError)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginFinalizeServerError.get();
 }
@@ -2554,7 +2549,8 @@ const LoginFinalizeTestCase* LoginFinalizeUnknown() {
       .expected_email = "",
       .expected_authentication_token = "",
       .mojo_expected = base::unexpected(
-          mojom::LoginError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+          mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+              net::HTTP_TOO_EARLY, mojom::LoginServerErrorCode::kUnknown))),
   });
   return kLoginFinalizeUnknown.get();
 }
@@ -2580,7 +2576,9 @@ const LoginFinalizeTestCase* LoginFinalizeAuthTokenEmpty() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginFinalizeAuthTokenEmpty.get();
 }
@@ -2606,7 +2604,9 @@ const LoginFinalizeTestCase* LoginFinalizeEmailEmpty() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginFinalizeEmailEmpty.get();
 }
@@ -2631,9 +2631,10 @@ const LoginFinalizeTestCase* LoginFinalizeAuthenticationTokenFailedToEncrypt() {
                                      }()}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              std::nullopt,
-              mojom::LoginErrorCode::kAuthenticationTokenEncryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewClientError(mojom::LoginClientError::New(
+                  mojom::LoginClientErrorCode::
+                      kAuthenticationTokenEncryptionFailed))),
       });
   return kLoginFinalizeAuthenticationTokenFailedToEncrypt.get();
 }
@@ -2674,9 +2675,7 @@ TEST_P(BraveAccountServiceLoginFinalizeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceLoginFinalizeTest,
-    testing::Values(LoginFinalizeEncryptedLoginTokenEmpty(),
-                    LoginFinalizeClientMacEmpty(),
-                    LoginFinalizeLoginTokenFailedToDecrypt(),
+    testing::Values(LoginFinalizeLoginTokenFailedToDecrypt(),
                     LoginFinalizeBodyMissingOrFailedToParse(),
                     LoginFinalizeErrorCodeIsNull(),
                     LoginFinalizeInterimPasswordStateMismatch(),
@@ -2702,17 +2701,13 @@ struct GetServiceTokenTestCase {
   static void Run(const GetServiceTokenTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    pref_service.SetDict(
-        prefs::kBraveAccountServiceTokens,
-        std::move(test_case.service_tokens_dict).Run(base::Time::Now()));
-
-    if (test_case.logged_in) {
-      pref_service.SetString(prefs::kBraveAccountEmailAddress, kEmailAddress);
-      pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
-                             EncryptedAuthenticationToken());
-    }
+    AccountStatePrefs(pref_service)
+        .SetLoggedIn(kEmailAddress, EncryptedAuthenticationToken());
+    ScopedDictPrefUpdate(&pref_service, prefs::kBraveAccountState)
+        ->Set(prefs::keys::kServiceTokens,
+              std::move(test_case.service_tokens_dict).Run(base::Time::Now()));
 
     task_environment.FastForwardBy(test_case.time_advance);
 
@@ -2721,7 +2716,7 @@ struct GetServiceTokenTestCase {
             ? test_case.mojo_expected.value()->serviceToken
             : "";
 
-    authentication.GetServiceToken(
+    authentication->GetServiceToken(
         mojom::Service::kEmailAliases,
         // |callback| resolves the TestFuture in BraveAccountServiceTest with
         // the result. The Then() callback runs immediately after, before the
@@ -2729,26 +2724,22 @@ struct GetServiceTokenTestCase {
         std::move(callback).Then(base::BindOnce(
             [](PrefService* pref_service, std::string expected_service_token) {
               if (!expected_service_token.empty()) {
+                const auto* service_tokens =
+                    pref_service->GetDict(prefs::kBraveAccountState)
+                        .FindDict(prefs::keys::kServiceTokens);
+                ASSERT_TRUE(service_tokens);
                 const auto* email_aliases =
-                    pref_service->GetDict(prefs::kBraveAccountServiceTokens)
-                        .FindDict("email-aliases");
-                EXPECT_TRUE(email_aliases);
+                    service_tokens->FindDict("email-aliases");
+                ASSERT_TRUE(email_aliases);
                 const auto* service_token =
                     email_aliases->FindString(prefs::keys::kServiceToken);
-                EXPECT_TRUE(service_token);
+                ASSERT_TRUE(service_token);
                 EXPECT_EQ(*service_token,
                           base::Base64Encode(expected_service_token));
               }
             },
             base::Unretained(&pref_service),
             std::move(expected_service_token))));
-
-    // The ServiceToken (/v2/auth/service_token) network request's callback will
-    // be processed on the next message pump iteration, so this runs before the
-    // request completes.
-    if (test_case.clear_authentication_token) {
-      pref_service.ClearPref(prefs::kBraveAccountAuthenticationToken);
-    }
   }
 
   std::string test_name;
@@ -2757,9 +2748,7 @@ struct GetServiceTokenTestCase {
   // when constructing the dictionary. This is necessary for cache expiration
   // tests that need to set timestamps relative to when the test runs.
   mutable base::OnceCallback<base::DictValue(base::Time)> service_tokens_dict;
-  bool logged_in;
   bool fail_decryption;
-  bool clear_authentication_token;
   bool fail_encryption;
   base::TimeDelta time_advance;
   std::optional<EndpointResponse> endpoint_response;
@@ -2781,9 +2770,7 @@ const GetServiceTokenTestCase* GetServiceTokenCacheHit() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .logged_in = {},                   // not used
           .fail_decryption = {},             // not used
-          .clear_authentication_token = {},  // not used
           .fail_encryption = {},             // not used
           .time_advance = {},                // not used
           .endpoint_response = {},           // not used
@@ -2791,24 +2778,6 @@ const GetServiceTokenTestCase* GetServiceTokenCacheHit() {
               mojom::GetServiceTokenResult::New("cached_service_token"),
       });
   return kGetServiceTokenCacheHit.get();
-}
-
-const GetServiceTokenTestCase* GetServiceTokenUserNotLoggedIn() {
-  static const base::NoDestructor<GetServiceTokenTestCase>
-      kGetServiceTokenUserNotLoggedIn({
-          .test_name = "get_service_token_user_not_logged_in",
-          .service_tokens_dict =
-              base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = {},                   // not used
-          .fail_decryption = {},             // not used
-          .clear_authentication_token = {},  // not used
-          .fail_encryption = {},             // not used
-          .time_advance = {},                // not used
-          .endpoint_response = {},           // not used
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt, mojom::GetServiceTokenErrorCode::kUserNotLoggedIn)),
-      });
-  return kGetServiceTokenUserNotLoggedIn.get();
 }
 
 const GetServiceTokenTestCase*
@@ -2819,44 +2788,17 @@ GetServiceTokenAuthenticationTokenDecryptionFailed() {
               "get_service_token_authentication_token_decryption_failed",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = true,
-          .clear_authentication_token = {},  // not used
           .fail_encryption = {},             // not used
           .time_advance = {},                // not used
           .endpoint_response = {},           // not used
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt, mojom::GetServiceTokenErrorCode::
-                                kAuthenticationTokenDecryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewClientError(
+                  mojom::GetServiceTokenClientError::New(
+                      mojom::GetServiceTokenClientErrorCode::
+                          kAuthenticationTokenDecryptionFailed))),
       });
   return kGetServiceTokenAuthenticationTokenDecryptionFailed.get();
-}
-
-const GetServiceTokenTestCase* GetServiceTokenAuthenticationSessionChanged() {
-  static const base::NoDestructor<GetServiceTokenTestCase>
-      kGetServiceTokenAuthenticationSessionChanged({
-          .test_name = "get_service_token_authentication_session_changed",
-          .service_tokens_dict =
-              base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
-          .fail_decryption = false,
-          .clear_authentication_token = true,
-          .fail_encryption = {},  // not used
-          .time_advance = {},     // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_OK,
-                                 .body =
-                                     [] {
-                                       ServiceToken::Response::SuccessBody body;
-                                       body.auth_token =
-                                           "fetched_service_token";
-                                       return body;
-                                     }()}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt,
-              mojom::GetServiceTokenErrorCode::kAuthenticationSessionChanged)),
-      });
-  return kGetServiceTokenAuthenticationSessionChanged.get();
 }
 
 const GetServiceTokenTestCase* GetServiceTokenNetworkError() {
@@ -2865,16 +2807,18 @@ const GetServiceTokenTestCase* GetServiceTokenNetworkError() {
           .test_name = "get_service_token_network_error",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::ERR_CONNECTION_REFUSED, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::ERR_CONNECTION_REFUSED,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kInvalidResponse))),
       });
   return kGetServiceTokenNetworkError.get();
 }
@@ -2885,16 +2829,18 @@ const GetServiceTokenTestCase* GetServiceTokenBodyMissingOrFailedToParse() {
           .test_name = "get_service_token_body_missing_or_failed_to_parse",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kInvalidResponse))),
       });
   return kGetServiceTokenBodyMissingOrFailedToParse.get();
 }
@@ -2905,9 +2851,7 @@ const GetServiceTokenTestCase* GetServiceTokenErrorCodeIsNull() {
           .test_name = "get_service_token_error_code_is_null",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -2917,8 +2861,11 @@ const GetServiceTokenTestCase* GetServiceTokenErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_BAD_REQUEST, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenErrorCodeIsNull.get();
 }
@@ -2929,9 +2876,7 @@ const GetServiceTokenTestCase* GetServiceTokenEmailDomainNotSupported() {
           .test_name = "get_service_token_email_domain_not_supported",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -2941,9 +2886,12 @@ const GetServiceTokenTestCase* GetServiceTokenEmailDomainNotSupported() {
                                    body.code = base::Value(13006);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::GetServiceTokenErrorCode::kEmailDomainNotSupported)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kEmailDomainNotSupported))),
       });
   return kGetServiceTokenEmailDomainNotSupported.get();
 }
@@ -2954,9 +2902,7 @@ const GetServiceTokenTestCase* GetServiceTokenIncorrectCredentials() {
           .test_name = "get_service_token_incorrect_credentials",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -2966,9 +2912,12 @@ const GetServiceTokenTestCase* GetServiceTokenIncorrectCredentials() {
                                    body.code = base::Value(14004);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_FORBIDDEN,
-              mojom::GetServiceTokenErrorCode::kIncorrectCredentials)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_FORBIDDEN,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kIncorrectCredentials))),
       });
   return kGetServiceTokenIncorrectCredentials.get();
 }
@@ -2979,9 +2928,7 @@ const GetServiceTokenTestCase* GetServiceTokenInvalidTokenAudience() {
           .test_name = "get_service_token_invalid_token_audience",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -2991,9 +2938,12 @@ const GetServiceTokenTestCase* GetServiceTokenInvalidTokenAudience() {
                                    body.code = base::Value(14007);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_FORBIDDEN,
-              mojom::GetServiceTokenErrorCode::kInvalidTokenAudience)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_FORBIDDEN,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kInvalidTokenAudience))),
       });
   return kGetServiceTokenInvalidTokenAudience.get();
 }
@@ -3004,9 +2954,7 @@ const GetServiceTokenTestCase* GetServiceTokenBadRequest() {
           .test_name = "get_service_token_bad_request",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3016,9 +2964,11 @@ const GetServiceTokenTestCase* GetServiceTokenBadRequest() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenBadRequest.get();
 }
@@ -3029,9 +2979,7 @@ const GetServiceTokenTestCase* GetServiceTokenUnauthorized() {
           .test_name = "get_service_token_unauthorized",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3041,9 +2989,11 @@ const GetServiceTokenTestCase* GetServiceTokenUnauthorized() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenUnauthorized.get();
 }
@@ -3054,9 +3004,7 @@ const GetServiceTokenTestCase* GetServiceTokenServerError() {
           .test_name = "get_service_token_internal_server_error",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3066,9 +3014,11 @@ const GetServiceTokenTestCase* GetServiceTokenServerError() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR,
-              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenInternalServerError.get();
 }
@@ -3079,9 +3029,7 @@ const GetServiceTokenTestCase* GetServiceTokenUnknown() {
           .test_name = "get_service_token_unknown",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3091,8 +3039,11 @@ const GetServiceTokenTestCase* GetServiceTokenUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::GetServiceTokenServerErrorCode::kUnknown))),
       });
   return kGetServiceTokenUnknown.get();
 }
@@ -3103,9 +3054,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEmpty() {
           .test_name = "get_service_token_service_token_empty",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3116,8 +3065,11 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEmpty() {
                                        body.auth_token = "";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::GetServiceTokenError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_OK, mojom::GetServiceTokenServerErrorCode::
+                                        kInvalidResponse))),
       });
   return kGetServiceTokenServiceTokenEmpty.get();
 }
@@ -3128,9 +3080,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEncryptionFailed() {
           .test_name = "get_service_token_service_token_encryption_failed",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = true,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3142,9 +3092,11 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEncryptionFailed() {
                                            "fetched_service_token";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt,
-              mojom::GetServiceTokenErrorCode::kServiceTokenEncryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewClientError(
+                  mojom::GetServiceTokenClientError::New(
+                      mojom::GetServiceTokenClientErrorCode::
+                          kServiceTokenEncryptionFailed))),
       });
   return kGetServiceTokenServiceTokenEncryptionFailed.get();
 }
@@ -3155,9 +3107,7 @@ const GetServiceTokenTestCase* GetServiceTokenSuccess() {
           .test_name = "get_service_token_success",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3181,9 +3131,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceDictMissing() {
           .test_name = "get_service_token_service_dict_missing",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3211,9 +3159,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenMissing() {
                 base::DictValue().Set(prefs::keys::kLastFetched,
                                       base::TimeToValue(mock_now)));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3242,9 +3188,7 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedMissing() {
                     prefs::keys::kServiceToken,
                     base::Base64Encode("cached_service_token")));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3274,9 +3218,7 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedInvalid() {
                          base::Base64Encode("cached_service_token"))
                     .Set(prefs::keys::kLastFetched, "invalid-time-format"));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3307,9 +3249,7 @@ const GetServiceTokenTestCase* GetServiceTokenCacheExpired() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           // Advance time after setting cache to make it expired.
           .time_advance = kServiceTokenMaxAge + base::Minutes(1),
@@ -3341,9 +3281,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenDecryptionFailed() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = base::TimeDelta(),
           .endpoint_response = {{.net_error = net::OK,
@@ -3374,9 +3312,7 @@ INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceGetServiceTokenTest,
     testing::Values(GetServiceTokenCacheHit(),
-                    GetServiceTokenUserNotLoggedIn(),
                     GetServiceTokenAuthenticationTokenDecryptionFailed(),
-                    GetServiceTokenAuthenticationSessionChanged(),
                     GetServiceTokenNetworkError(),
                     GetServiceTokenBodyMissingOrFailedToParse(),
                     GetServiceTokenErrorCodeIsNull(),

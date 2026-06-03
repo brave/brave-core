@@ -25,9 +25,9 @@ ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container,
   constexpr int kDipSize = 16;
   constexpr int kDipIconSize = 12;
   return ui::ImageModel::FromImageGenerator(
-      base::BindRepeating(&GenerateContainerIcon, container->icon,
-                          container->background_color, kDipSize, kDipIconSize,
-                          scale_factor),
+      base::BindRepeating(&GenerateContainerIcon, container->id,
+                          container->icon, container->background_color,
+                          kDipSize, kDipIconSize, scale_factor),
       gfx::Size(kDipSize, kDipSize));
 }
 
@@ -47,12 +47,30 @@ ContainerModel& ContainerModel::operator=(ContainerModel&& other) noexcept =
 
 ContainerModel::~ContainerModel() = default;
 
-std::vector<ContainerModel> GetContainerModels(const ContainersService& service,
-                                               float scale_factor) {
+std::vector<ContainerModel> GetContainerModels(
+    const ContainersService& service,
+    const base::flat_set<std::string>& runtime_container_ids,
+    float scale_factor) {
   std::vector<ContainerModel> containers;
   for (auto& container : service.GetContainers()) {
     containers.emplace_back(std::move(container), scale_factor);
   }
+
+  if (!runtime_container_ids.empty()) {
+    base::flat_set<std::string> container_ids;
+    for (const auto& container : containers) {
+      container_ids.insert(container.id());
+    }
+
+    for (const auto& id : runtime_container_ids) {
+      if (container_ids.contains(id)) {
+        continue;
+      }
+      containers.push_back(GetRuntimeContainerModel(service, id, scale_factor));
+      container_ids.insert(id);
+    }
+  }
+
   return containers;
 }
 

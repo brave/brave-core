@@ -54,9 +54,20 @@ const deleteFile = (filePath) => {
 const buildTests = async (testsToRun, config) => {
   config.buildTargets = testsToRun
   util.touchOverriddenFiles()
-  util.touchGsutilChangeLogFile()
 
   await util.buildTargets(config.buildTargets, config.defaultOptions)
+}
+
+const defaultTestSuiteArgs = (testSuite) => {
+  switch (testSuite) {
+    case 'brave_network_audit_tests':
+      return [
+        '--ui-test-action-timeout=320000',
+        '--test-launcher-timeout=2200000',
+      ]
+    default:
+      return []
+  }
 }
 
 const runTests = async (
@@ -137,6 +148,9 @@ const runTests = async (
 
     // Upstream tests expect to be run from the output directory
     runOptions.cwd = config.outputDir
+
+    // Prepend default test suite args
+    runArgs = defaultTestSuiteArgs(testSuite).concat(runArgs)
 
     // Set ASAN_OPTIONS (if not already set) only for test launching.
     // Note: other stages (like build) shouldn't set ASAN_OPTIONS to avoid

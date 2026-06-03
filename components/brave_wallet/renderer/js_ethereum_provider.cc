@@ -121,7 +121,17 @@ JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame)
 
 JSEthereumProvider::~JSEthereumProvider() = default;
 
+void JSEthereumProvider::Cleanup() {
+  // No longer need that provider object. Reset mojo connection, clean bound v8
+  // references, stop tracking the render frame.
+
+  receiver_.reset();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  Dispose();
+}
+
 void JSEthereumProvider::OnDestruct() {
+  Cleanup();
 }
 
 void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
@@ -129,23 +139,15 @@ void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
   if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
     return;
   }
-  // Close mojo connection from browser to renderer.
-  receiver_.reset();
-  script_context_released_ = true;
+
+  Cleanup();
 }
 
 void JSEthereumProvider::DidDispatchDOMContentLoadedEvent() {
-  if (script_context_released_) {
-    return;
-  }
   ConnectEvent();
 }
 
 void JSEthereumProvider::DidFinishLoad() {
-  if (script_context_released_) {
-    return;
-  }
-
   // These used to be called synchronously by `JSEthereumProvider::Install`
   // which appeared to cause rare crashes with certain extensions' behavior. See
   // https://github.com/brave/brave-browser/issues/45694 for details.
@@ -273,8 +275,10 @@ bool JSEthereumProvider::GetIsMetaMask() {
 }
 
 JSEthereumProvider::MetaMask::MetaMask(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {}
+    : RenderFrameObserver(render_frame) {}
 JSEthereumProvider::MetaMask::~MetaMask() = default;
+
+void JSEthereumProvider::MetaMask::OnDestruct() {}
 
 gin::ObjectTemplateBuilder
 JSEthereumProvider::MetaMask::GetObjectTemplateBuilder(v8::Isolate* isolate) {
@@ -288,8 +292,12 @@ const gin::WrapperInfo* JSEthereumProvider::MetaMask::wrapper_info() const {
 
 v8::Local<v8::Promise> JSEthereumProvider::MetaMask::IsUnlocked(
     v8::Isolate* isolate) {
+  if (!render_frame()) {
+    return v8::Local<v8::Promise>();
+  }
+
   if (!ethereum_provider_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker().GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
   }
 

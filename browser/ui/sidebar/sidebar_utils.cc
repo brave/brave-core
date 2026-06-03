@@ -17,8 +17,10 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/common/features.h"
@@ -39,6 +41,10 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
+
 namespace sidebar {
 
 using BuiltInItemType = SidebarItem::BuiltInItemType;
@@ -53,10 +59,12 @@ SidebarService* GetSidebarService(Browser* browser) {
 bool IsActiveTabNTP(content::WebContents* active_web_contents) {
   content::NavigationEntry* entry =
       active_web_contents->GetController().GetLastCommittedEntry();
-  if (!entry)
+  if (!entry) {
     entry = active_web_contents->GetController().GetVisibleEntry();
-  if (!entry)
+  }
+  if (!entry) {
     return false;
+  }
   const GURL url = entry->GetURL();
   return NewTabUI::IsNewTab(url) || NewTabPageUI::IsNewTabPageOrigin(url) ||
          search::NavEntryIsInstantNTP(active_web_contents, entry);
@@ -65,8 +73,9 @@ bool IsActiveTabNTP(content::WebContents* active_web_contents) {
 bool IsURLAlreadyAddedToSidebar(SidebarService* service, const GURL& url) {
   const GURL converted_url = ConvertURLToBuiltInItemURL(url);
   for (const auto& item : service->items()) {
-    if (item.url == converted_url)
+    if (item.url == converted_url) {
       return true;
+    }
   }
 
   return false;
@@ -77,12 +86,14 @@ bool IsURLAlreadyAddedToSidebar(SidebarService* service, const GURL& url) {
 bool HiddenDefaultSidebarItemsContains(SidebarService* service,
                                        const GURL& url) {
   const auto not_added_default_items = service->GetHiddenDefaultSidebarItems();
-  if (not_added_default_items.empty())
+  if (not_added_default_items.empty()) {
     return false;
+  }
   const GURL converted_url = ConvertURLToBuiltInItemURL(url);
   for (const auto& item : not_added_default_items) {
-    if (item.url == converted_url)
+    if (item.url == converted_url) {
       return true;
+    }
   }
   return false;
 }
@@ -96,46 +107,54 @@ bool CanUseSidebar(Browser* browser) {
 // Ex, we don't need to add bookmarks manager as a sidebar shortcut
 // if sidebar panel already has bookmarks item.
 GURL ConvertURLToBuiltInItemURL(const GURL& url) {
-  if (url == GURL(chrome::kChromeUIBookmarksURL))
+  if (url == GURL(chrome::kChromeUIBookmarksURL)) {
     return GURL(chrome::kChromeUIBookmarksSidePanelURL);
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
-  if (url.host() == kBraveTalkHost)
+  if (url.host() == kBraveTalkHost) {
     return GURL(kBraveTalkURL);
+  }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (url.SchemeIs(content::kChromeUIScheme) && url.host() == kWalletPageHost) {
     return GURL(kBraveUIWalletPageURL);
   }
+#endif
   return url;
 }
 
 bool CanAddCurrentActiveTabToSidebar(Browser* browser) {
   auto* active_web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
-  if (!active_web_contents)
+  if (!active_web_contents) {
     return false;
+  }
 
-  if (IsActiveTabNTP(active_web_contents))
+  if (IsActiveTabNTP(active_web_contents)) {
     return false;
+  }
 
   const GURL url = active_web_contents->GetLastCommittedURL();
-  if (!url.is_valid())
+  if (!url.is_valid()) {
     return false;
+  }
 
   auto* service = GetSidebarService(browser);
-  if (IsURLAlreadyAddedToSidebar(service, url))
+  if (IsURLAlreadyAddedToSidebar(service, url)) {
     return false;
+  }
 
-  if (HiddenDefaultSidebarItemsContains(service, url))
+  if (HiddenDefaultSidebarItemsContains(service, url)) {
     return false;
+  }
 
   return true;
 }
 
 bool IsWebPanelFeatureEnabled() {
-  return base::FeatureList::IsEnabled(features::kSidebarWebPanel) &&
-         base::FeatureList::IsEnabled(::features::kSideBySide);
+  return base::FeatureList::IsEnabled(features::kSidebarWebPanel);
 }
 
 SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
@@ -144,8 +163,10 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
       return SidePanelEntryId::kReadingList;
     case BuiltInItemType::kBookmarks:
       return SidePanelEntryId::kBookmarks;
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case BuiltInItemType::kPlaylist:
       return SidePanelEntryId::kPlaylist;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case BuiltInItemType::kChatUI:
       return SidePanelEntryId::kChatUI;
@@ -173,8 +194,10 @@ std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
       return BuiltInItemType::kReadingList;
     case SidePanelEntryId::kBookmarks:
       return BuiltInItemType::kBookmarks;
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidePanelEntryId::kPlaylist:
       return BuiltInItemType::kPlaylist;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidePanelEntryId::kChatUI:
       return BuiltInItemType::kChatUI;
@@ -221,9 +244,11 @@ void SetLastUsedSidePanel(PrefService* prefs,
       case SidePanelEntryId::kBookmarks:
         type = BuiltInItemType::kBookmarks;
         break;
+#if BUILDFLAG(ENABLE_PLAYLIST)
       case SidePanelEntryId::kPlaylist:
         type = BuiltInItemType::kPlaylist;
         break;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
       case SidePanelEntryId::kChatUI:
         type = BuiltInItemType::kChatUI;
@@ -252,9 +277,12 @@ bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type) {
   switch (type) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI:
+      return true;
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist:
       return true;
+#endif
     default:
       break;
   }
@@ -265,11 +293,15 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
   switch (type) {
     case SidebarItem::BuiltInItemType::kBookmarks:
     case SidebarItem::BuiltInItemType::kReadingList:
+      return true;
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI:
+      return true;
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist:
       return true;
+#endif
     default:
       break;
   }

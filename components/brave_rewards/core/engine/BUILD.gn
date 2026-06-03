@@ -335,7 +335,7 @@ static_library("engine") {
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
-    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_rewards/core/buildflags:endpoint_buildflags",
     "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/constants",

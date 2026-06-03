@@ -6,20 +6,20 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
+// Shared Styles
+import { Text } from '../../shared/style'
+
 export const CodeSnippet = styled.pre`
   display: block;
   align-items: flex-start;
   justify-content: flex-start;
   tab-size: 0;
   width: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
   padding: 14px;
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
+  font: ${leo.font.monospace.small};
   text-align: left;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   border-radius: 4px;
   margin: 0px;
   margin-bottom: 14px;
@@ -29,16 +29,15 @@ export const CodeSnippet = styled.pre`
 `
 
 export const HexBlock = styled.div`
+  font: ${leo.font.small.regular};
+
   display: flex;
   width: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
   padding: 14px;
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
   letter-spacing: 0.01em;
   text-align: left;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   border-radius: 4px;
   word-break: break-all;
   box-sizing: border-box;
@@ -64,24 +63,11 @@ export const CodeDetailLine = styled.code`
   color: ${leo.color.text.tertiary};
 `
 
-export const DetailText = styled.span`
-  font-family: Poppins;
-  font-size: 11px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+export const DetailText = styled(Text)`
   word-break: break-all;
 `
 
 export const CodeSnippetText = styled.p`
   margin: 0px;
   padding: 0px;
-`
-
-export const TransactionText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
 `

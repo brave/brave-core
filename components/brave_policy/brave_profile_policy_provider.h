@@ -34,6 +34,7 @@ class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider,
   // ConfigurationPolicyProvider implementation.
   void Init(policy::SchemaRegistry* registry) override;
   void RefreshPolicies(policy::PolicyFetchReason reason) override;
+  bool IsInitializationComplete(policy::PolicyDomain domain) const override;
   bool IsFirstPolicyLoadComplete(policy::PolicyDomain domain) const override;
 
   // BravePolicyObserver implementation.

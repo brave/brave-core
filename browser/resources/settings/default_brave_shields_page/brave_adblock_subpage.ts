@@ -9,8 +9,10 @@ import './components/brave_adblock_subscribe_dropdown.js'
 
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import type {
+  DomRepeatEvent
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {
-  type DomRepeatEvent,
   PolymerElement
 } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 

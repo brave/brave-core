@@ -34,11 +34,6 @@
 # disalow component installation.
 -AmountExtractionHeuristicRegexesInstallerPolicyTest.ComponentRegistered
 
-# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
--DocumentProviderTest.CachingForSyncMatches
--DocumentProviderTest.IsDocumentProviderAllowed
--DocumentProviderTest.MaxMatches
-
 # This test crashes due to sequence check in BraveSearchProvider::DoHistoryQuery
 # https://github.com/brave/brave-browser/issues/47218
 -OmniboxTextUtilTest.AdjustTextForCopy
@@ -66,9 +61,6 @@
 
 # These tests fail because we disable commerce::kShoppingList
 -All/ShoppingServiceTest.TestShoppingList*/*
-
-# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
--DocumentProviderTest.IsDocumentProviderAllowed
 
 # These tests fail because we override SyncAuthManager::DetermineAccountToUse.
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
@@ -121,8 +113,11 @@
 # This test fails because we override GetTypesWithTemporaryGrantsInHcsm to
 # return an empty vector.
 -All/PEPCInitiatedPermissionRequestTestWithAutolocate.PEPCRequestHeuristicallyGrantedGeolocation/0
+-ContentSettingsPrefProviderTest.EphemeralGrantClearsPersistentGrant
+-ContentSettingsPrefProviderTest.EphemeralGrantSetsBlockedToAsk
 
 # These tests fail because we disable popular site suggestions functionality
+-MostVisitedSitesTest.CustomLinksCappedAtTenWhenRedesignDisabled
 -MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
 -MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
 -MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
@@ -170,6 +165,17 @@
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityServiceTest.*
+
+# These tests fail because the default search engine is Brave instead of Google.
+-DefaultSearchManagerTest.DefaultSearchOverridesIgnoredWhenFlagEnabled
+
+# This test fails because we disable Actor Safety Lists component.
+-ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
+
+# These tests verify that source=chrome.ob/chrome.rb is appended to search
+# URLs, but Brave overrides UpdateMatchDestinationURLWithInvocationSource to
+# suppress this Chrome-specific attribution.
+-AutocompleteControllerTest.UpdateMatchDestinationURLWithInvocationSource*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
@@ -253,11 +259,6 @@
 -PasswordManagerTest.AutofillingOfAffiliatedCredentials/0
 -PasswordManagerTest.AutofillingOfAffiliatedCredentials/1
 -PaymentsNetworkInterfaceTest.*
--PermissionContextBaseTests.ExpirationAllow
--PermissionContextBaseTests.ExpirationBlock
--PermissionContextBaseTests.TestAskAndBlock
--PermissionContextBaseTests.TestAskAndDismiss
--PermissionContextBaseTests.TestAskAndGrant
 -PermissionUmaUtilTest.ScopedRevocationReporter
 -PermissionsDelegationUmaUtilTest.SiteLevelAndOSPromptVariantsTest
 -PrimaryAccountManagerTest.*

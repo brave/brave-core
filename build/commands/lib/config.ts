@@ -66,6 +66,8 @@ export class Config {
   notary_password: string | undefined
   channel: string
   isBraveOriginBranded: boolean | undefined
+  // Parent cache directory for all internal caches (git, siso, vpython).
+  readonly cacheDir: string | undefined
   gitCachePath: string | undefined
   rbeService: string
   rbeTlsClientAuthCert: string | undefined
@@ -95,6 +97,7 @@ export class Config {
   useSiso: boolean
   useReclient: boolean
   offline: boolean
+  readonly rbeReadOnly: boolean
   use_libfuzzer: boolean
   androidAabToApk: boolean
   useBraveHermeticToolchain: boolean
@@ -198,8 +201,11 @@ export class Config {
     this.isBraveOriginBranded = envConfig.getBoolean([
       'is_brave_origin_branded',
     ])
+    this.cacheDir = envConfig.getPath(['cache_dir'])
     this.gitCachePath =
-      envConfig.getPath(['git_cache_path']) || process.env.GIT_CACHE_PATH
+      envConfig.getPath(['git_cache_path'])
+      || this.resolveCacheDir('git')
+      || process.env.GIT_CACHE_PATH
     this.rbeService = envConfig.getString(['rbe_service'], '')
     this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
     this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
@@ -218,11 +224,12 @@ export class Config {
         'scripts',
         'signature_generator.py',
       ) || ''
-    this.extraGnArgs = {}
+    this.extraGnArgs = envConfig.getMergedObject(['gn', 'args'])
     this.extraGnGenOpts = envConfig.getString(['brave_extra_gn_gen_opts'], '')
     this.extraNinjaOpts = []
     this.sisoJobsLimit = undefined
-    this.sisoCacheDir = envConfig.getPath(['siso_cache_dir'])
+    this.sisoCacheDir =
+      envConfig.getPath(['siso_cache_dir']) || this.resolveCacheDir('siso')
     this.braveAndroidSafeBrowsingApiKey = envConfig.getString([
       'brave_safebrowsing_api_key',
     ])
@@ -251,6 +258,7 @@ export class Config {
       this.useRemoteExec && !this.useSiso,
     )
     this.offline = envConfig.getBoolean(['offline'], false)
+    this.rbeReadOnly = envConfig.getBoolean(['rbe_readonly'], false)
     this.use_libfuzzer = false
     this.androidAabToApk = false
     this.useBraveHermeticToolchain = envConfig.getBoolean(
@@ -280,6 +288,10 @@ export class Config {
           }
         : {}),
       ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+    }
+
+    if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
+      fs.mkdirSync(this.cacheDir, { recursive: true })
     }
   }
 
@@ -347,14 +359,15 @@ export class Config {
   }
 
   getBraveLogoIconName() {
-    let iconName = 'brave-icon-dev-color.svg'
+    const prefix = this.isBraveOriginBranded ? 'brave-origin' : 'brave-icon'
+    let iconName = `${prefix}-dev-color.svg`
     if (this.isBraveReleaseBuild()) {
       if (this.channel === 'beta') {
-        iconName = 'brave-icon-beta-color.svg'
+        iconName = `${prefix}-beta-color.svg`
       } else if (this.channel === 'nightly') {
-        iconName = 'brave-icon-nightly-color.svg'
+        iconName = `${prefix}-nightly-color.svg`
       } else {
-        iconName = 'brave-icon-release-color.svg'
+        iconName = `${prefix}-release-color.svg`
       }
     }
     return iconName
@@ -438,6 +451,13 @@ export class Config {
     }
 
     return defaultValue
+  }
+
+  resolveCacheDir(name: string): string | undefined {
+    if (!this.cacheDir) {
+      return undefined
+    }
+    return path.join(this.cacheDir, name)
   }
 
   updateInternal(options) {
@@ -750,6 +770,10 @@ export class Config {
 
     if (this.channel) {
       env.BRAVE_CHANNEL = this.channel
+    }
+
+    if (this.cacheDir) {
+      env.VPYTHON_VIRTUALENV_ROOT = this.resolveCacheDir('vpython')
     }
 
     if (!this.useBraveHermeticToolchain) {

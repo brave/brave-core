@@ -11,6 +11,10 @@ brave_components_sessions_shared_public_deps =
 brave_components_sessions_deps = []
 
 if (enable_containers) {
+  brave_components_sessions_shared_public_deps += [
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/common",
+  ]
   brave_components_sessions_deps += [
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/common",

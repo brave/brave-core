@@ -9,17 +9,25 @@ static_library("browser") {
     "query_filter_component_installer.h",
     "query_filter_data.cc",
     "query_filter_data.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [
     "//base",
+    "//brave/components/query_filter/common:schema",
     "//components/component_updater",
     "//components/update_client",
+    "//url",
   ]
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
+    "//brave/components/query_filter/common/internal",
+    "//components/url_pattern_index",
+    "//net",
+    "//third_party/re2",
   ]
 }
 
@@ -29,6 +37,7 @@ source_set("unit_tests") {
   sources = [
     "query_filter_component_installer_unittest.cc",
     "query_filter_data_unittest.cc",
+    "utils_unittest.cc",
   ]
 
   deps = [
@@ -36,10 +45,13 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/query_filter/browser/test_support",
     "//brave/components/query_filter/common",
+    "//brave/components/query_filter/common/internal:unit_tests",
     "//components/component_updater:test_support",
     "//components/update_client",
     "//testing/gmock",
     "//testing/gtest",
+    "//url",
   ]
 }

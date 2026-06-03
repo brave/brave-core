@@ -136,8 +136,8 @@
   <message name="IDS_ERRORPAGES_HEADING_BLOCKED" desc="Heading of the error page when a request is blocked by the administrator policy, extension or the browser itself.">
     <ph name="HOST_NAME">&lt;span&gt;$1&lt;/span&gt;<ex>www.example.com</ex></ph> is blocked
   </message>
-  <message name="IDS_ERRORPAGES_HEADING_BLOCKED_SCHEME" desc="Heading of the error page when a URL Scheme is blocked by the administrator policy, extension or the browser itself.">
-    “<ph name="HOST_NAME">&lt;span&gt;$1&lt;/span&gt;<ex>mailto</ex></ph>” links are blocked
+  <message name="IDS_ERRORPAGES_HEADING_BLOCKED_BY_ADMINISTRATOR" desc="Heading of the error page when a request is blocked by the administrator policy, extension or the browser itself.">
+    This page is blocked
   </message>
   <message name="IDS_ERRORPAGES_SUMMARY_NOT_AVAILABLE" desc="Summary in the error page when we can't connect to a site.">
     The webpage at <ph name="URL">&lt;strong&gt;$1&lt;/strong&gt;</ph> might be temporarily down or it may have moved permanently to a new web address.
@@ -275,12 +275,7 @@
     This webpage requires data that you entered earlier in order to be properly displayed. You can send this data again, but by doing so you will repeat any action this page previously performed.
   </message>
 
-  <message name="IDS_ERRORPAGES_HEADING_LINKPREVIEW_NON_HTTPS_FORBIDDEN" desc="Heading in the error page when a user tries to preview non-HTTPS URL.">
-    Can't preview non-HTTPS URL
-  </message>
-  <message name="IDS_ERRORPAGES_SUMMARY_LINKPREVIEW_NON_HTTPS_FORBIDDEN" desc="Summary in the error page when a user tries to preview non-HTTPS URL.">
-    Previewing non-HTTPS URL is not allowed.
-  </message>
+
 
 
   <!-- Suggestions summary list messages. -->

@@ -60,7 +60,7 @@ export const SiteTitle = styled.h1`
   margin: 0;
   overflow: hidden;
   text-align: left;
-  // We truncate long site titles to the left
+  unicode-bidi: isolate;
   direction: rtl;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
@@ -13,19 +14,18 @@ export const StyledWrapper = styled.div`
 `
 
 export const Tip = styled.div`
+  font: ${leo.font.small.regular};
+
   position: absolute;
   border-radius: 4px;
   left: 50%;
   transform: translateX(calc(-100% + 15px)) translateY(25%);
   padding: 10px;
-  line-height: 18px;
   min-width: 168px;
-  color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.theme.palette.black};
+  color: ${leo.color.white};
+  background: ${leo.color.black};
   z-index: 120;
   white-space: nowrap;
-  font-family: Poppins;
-  font-size: 12px;
   letter-spacing: 0.01em;
   top: 9px;
 `
@@ -40,6 +40,5 @@ export const Pointer = styled.div`
   transform: translateX(-50%) translateY(25%);
   border-width: 0 7px 8px 7px;
   z-index: 120;
-  border-color: transparent transparent ${(p) => p.theme.palette.black}
-    transparent;
+  border-color: transparent transparent ${leo.color.black} transparent;
 `

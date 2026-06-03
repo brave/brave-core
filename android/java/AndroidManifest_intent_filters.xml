@@ -18,3 +18,15 @@
     <data android:scheme="https"
           android:host="brave.com" />
 </intent-filter>
+
+<!-- Path-specific declaration so Play Console's "Add web link" validator recognizes this URL
+     as a deep link target. The broad filter above already routes brave.com URLs to Brave at
+     runtime; this duplicate filter exists purely to satisfy Play Console submission tooling. -->
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="https"
+          android:host="brave.com"
+          android:pathPrefix="/deeplink-android-origin-promo" />
+</intent-filter>

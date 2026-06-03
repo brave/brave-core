@@ -19,11 +19,14 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -43,7 +46,6 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #else
 #include "chrome/browser/android/tab_android.h"
@@ -103,8 +105,10 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     content::BrowserContext* context,
     HostContentSettingsMap* host_content_settings_map,
     scoped_refptr<content_settings::CookieSettings> cookie_settings,
-    brave_shields::BraveShieldsSettingsService* shields_settings_service)
-    : context_(context),
+    brave_shields::BraveShieldsSettingsService* shields_settings_service,
+    std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner)
+    : browsing_history_cleaner_(std::move(browsing_history_cleaner)),
+      context_(context),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(std::move(cookie_settings)),
       application_state_observer_(std::make_unique<ApplicationStateObserver>(
@@ -198,6 +202,15 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
                             origin_type, std::move(filter_builder));
 }
 
+void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
+    const TLDEphemeralAreaKey& key) {
+  DVLOG(1) << __func__ << " " << key.first << " " << key.second;
+  if (!browsing_history_cleaner_) {
+    return;
+  }
+  browsing_history_cleaner_->CleanupBrowsingHistoryForDomain(key.first);
+}
+
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
   if (first_window_opened_callback_) {
     std::move(first_window_opened_callback_).Run();
@@ -235,6 +248,10 @@ void BraveEphemeralStorageServiceDelegate::
     PrepareTabsForFirstPartyStorageCleanup(
         const std::vector<std::string>& ephemeral_domains,
         const bool enforced_by_user) {
+  if (enforced_by_user) {
+    brave_shields::RecordManualShredP3A(*g_browser_process->local_state());
+  }
+
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 
@@ -376,6 +393,10 @@ BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
   }
 #endif
   return result;
+}
+
+bool BraveEphemeralStorageServiceDelegate::IsShredBrowsingHistoryEnabled() {
+  return shields_settings_service_->IsShredBrowsingHistoryEnabled();
 }
 
 }  // namespace ephemeral_storage

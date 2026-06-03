@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
+#include "brave/third_party/ethash/src/include/ethash/hash_types.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "crypto/hash.h"
 

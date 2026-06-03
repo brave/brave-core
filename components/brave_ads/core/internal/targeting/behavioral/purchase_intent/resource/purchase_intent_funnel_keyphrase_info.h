@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_types.h"
 
 namespace brave_ads {
 

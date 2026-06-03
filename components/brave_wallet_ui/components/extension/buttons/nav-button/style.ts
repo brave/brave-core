@@ -12,8 +12,8 @@ import CloseIcon from '../../../../assets/svg-icons/close.svg'
 import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
 import CheckIcon from '../../assets/filled-checkmark.svg'
 
-// styles
-import { walletButtonFocusMixin } from '../../../shared/style'
+// Shared Styles
+import { walletButtonFocusMixin, Text } from '../../../shared/style'
 import { Link } from 'react-router-dom'
 
 export type PanelButtonTypes =
@@ -38,7 +38,6 @@ interface StyledButtonProps {
 const StyledButtonCssMixin = (p: StyledButtonProps) => {
   return css<StyledButtonProps>`
     ${walletButtonFocusMixin}
-    font-family: Poppins;
     font-style: normal;
     min-width: ${(p) => p?.minWidth || 'unset'};
     min-height: ${(p) => p?.minHeight || 'unset'};
@@ -60,12 +59,12 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
             || p.buttonType === 'sign'
           ? leo.color.primitive.primary[40]
           : p.buttonType === 'danger'
-            ? p.theme.color.errorBorder
+            ? leo.color.systemfeedback.errorBackground
             : 'transparent'};
 
     border: ${(p) =>
       p.buttonType === 'secondary' || p.buttonType === 'reject'
-        ? `1px solid ${p.theme.color.interactive08}`
+        ? `1px solid ${leo.color.neutral[30]}`
         : 'none'};
 
     pointer-events: ${(p) => (p.disabled ? 'none' : 'auto')};
@@ -87,26 +86,24 @@ export const StyledLink = styled(Link).withConfig<StyledButtonProps>({
   ${(p) => StyledButtonCssMixin(p)}
 `
 
-export const ButtonText = styled.span<{
+export const ButtonText = styled(Text)<{
   buttonType: PanelButtonTypes
   isV2?: boolean
 }>`
-  font-family: Poppins;
-  font-size: ${(p) => (p.isV2 ? '16px' : '13px')};
-  font-weight: 600;
+  font-size: ${(p) => (p.isV2 ? '16px' : '14px')};
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
   color: ${(p) =>
     p.buttonType === 'secondary'
     || p.buttonType === 'reject'
     || p.buttonType === 'cancel'
       ? leo.color.text.secondary
-      : p.theme.palette.white};
+      : leo.color.white};
 `
 
 export const RejectIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${leo.color.text.secondary};
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});
   mask-size: 100%;
@@ -116,7 +113,7 @@ export const RejectIcon = styled.div`
 export const SignIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${leo.color.white};
   -webkit-mask-image: url(${KeyIcon});
   mask-image: url(${KeyIcon});
   mask-size: 100%;
@@ -126,7 +123,7 @@ export const SignIcon = styled.div`
 export const ConfirmIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${leo.color.white};
   -webkit-mask-image: url(${CheckIcon});
   mask-image: url(${CheckIcon});
   mask-size: 100%;

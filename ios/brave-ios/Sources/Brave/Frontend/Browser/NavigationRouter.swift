@@ -17,6 +17,7 @@ public enum DeepLink: String {
   case browserMenu = "menu"
   case setDefaultBrowser = "set-default"
   case importData = "import-data"
+  case originPromo = "origin_promo"
 }
 
 // The root navigation for the Router. Look at the tests to see a complete URL
@@ -101,6 +102,8 @@ public enum NavigationPath: Equatable {
       bvc.presentDefaultBrowserScreenCallout(skipSafeGuards: true)
     case .importData:
       bvc.presentDataImporter()
+    case .originPromo:
+      bvc.presentBraveOriginDeepLink()
     }
   }
 
@@ -134,6 +137,11 @@ public enum NavigationPath: Equatable {
           attemptLocationFieldFocus: true,
           isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
         )
+      }
+      if let tab = bvc.tabManager.selectedTab {
+        // Attach a WidgetSearchTabHelper to just this tab for a single shot search.
+        // It will be removed after the search commits or if the user navigates away.
+        tab.widgetSearchTabHelper = .init(tab: tab)
       }
     case .newTab:
       bvc.openBlankNewTab(

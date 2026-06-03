@@ -15,21 +15,16 @@
 
 namespace brave_ads::ml {
 
-HashedNGramsTransformation::HashedNGramsTransformation()
-    : Transformation(TransformationType::kHashedNGrams) {
+HashedNGramsTransformation::HashedNGramsTransformation() {
   hash_vectorizer_ = std::make_unique<HashVectorizer>();
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(
     int bucket_count,
-    std::vector<uint32_t> subgrams)
-    : Transformation(TransformationType::kHashedNGrams) {
+    std::vector<uint32_t> subgrams) {
   hash_vectorizer_ =
       std::make_unique<HashVectorizer>(bucket_count, std::move(subgrams));
 }
-
-HashedNGramsTransformation::HashedNGramsTransformation(
-    HashedNGramsTransformation&& hashed_ngrams) noexcept = default;
 
 HashedNGramsTransformation::~HashedNGramsTransformation() = default;
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e5a19d931 100644
+index 84a8a52028f62ca9e72c9accb182fd7efa3a796e..ae69209f7523e304305dafd6de66ae129672fa3e 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -123,6 +123,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -124,6 +124,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  
   private:
@@ -10,7 +10,7 @@ index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e
    // Gets the bounds for the leading and trailing separators for a tab.
    TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
  
-@@ -132,6 +133,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -133,6 +134,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
  
    // Returns whether the mouse is currently hovering this tab.
@@ -18,7 +18,7 @@ index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e
    bool IsHovering() const;
  
    // Returns whether the hover animation is being shown.
-@@ -364,6 +366,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+@@ -363,6 +365,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
    const bool compact_left_to_bottom = ShouldCompactLeadingEdge(path_type);
@@ -26,7 +26,7 @@ index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e
  
    float left_extension_corner_radius = extension_corner_radius;
    if (compact_left_to_bottom) {
-@@ -1041,14 +1044,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1058,14 +1061,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

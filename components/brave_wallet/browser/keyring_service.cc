@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
+#include <algorithm>
 #include <array>
 #include <optional>
 #include <set>
@@ -36,6 +37,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
@@ -56,6 +58,7 @@
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/buildflags/dev_buildflags.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -86,6 +89,14 @@ constexpr char kImportedAccountCoinTypeDeprecated[] = "coin_type";
 constexpr char kSelectedAccountDeprecated[] = "selected_account";
 constexpr char kPasswordEncryptorNonceDeprecated[] = "password_encryptor_nonce";
 constexpr char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";
+
+// 7 days. Matches settings UI limit.
+constexpr int kMaxAutolockMinutes = 10080;
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
+// Allows auto unlocking wallet password with command line in dev builds.
+inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
+#endif
 
 base::RepeatingCallback<std::array<uint8_t, kEncryptorNonceSize>()>*
     g_create_nonce_callback_for_testing = nullptr;
@@ -1024,6 +1035,22 @@ void MaybeRunPasswordMigrations(PrefService* profile_prefs,
   MaybeMigrateToWalletMnemonic(profile_prefs, password);
 }
 
+base::flat_set<std::string> GetHiddenAccountUniqueKeys(
+    PrefService* profile_prefs) {
+  if (!IsAccountHidingEnabled()) {
+    return {};
+  }
+
+  base::flat_set<std::string> hidden_account_unique_keys;
+  for (const auto& hidden_account :
+       profile_prefs->GetList(kBraveWalletHiddenAccounts)) {
+    if (auto* unique_key = hidden_account.GetIfString()) {
+      hidden_account_unique_keys.insert(*unique_key);
+    }
+  }
+  return hidden_account_unique_keys;
+}
+
 }  // namespace
 
 void SetCreateNonceCallbackForTesting(
@@ -1042,6 +1069,7 @@ struct KeyringSeed {
   std::vector<uint8_t> eth_seed;
   std::vector<uint8_t> seed;
   std::vector<uint8_t> entropy;
+  std::array<uint8_t, bip39::kSeedSize> polkadot_seed = {};
 };
 
 std::optional<KeyringSeed> MakeSeedFromMnemonic(
@@ -1071,6 +1099,12 @@ std::optional<KeyringSeed> MakeSeedFromMnemonic(
 
   result.entropy = *entropy;
 
+  auto polkadot_seed = bip39::MnemonicToEntropyToSeed(mnemonic, "");
+  if (!polkadot_seed) {
+    return std::nullopt;
+  }
+  result.polkadot_seed = *polkadot_seed;
+
   return result;
 }
 
@@ -1093,11 +1127,18 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
 
   enabled_keyrings_ = GetEnabledKeyrings();
 
-  MaybeUnlockWithCommandLine();
+  // Delay unlock attempt until after initialization is done by caller.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&KeyringService::MaybeUnlockWithCommandLine,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 KeyringService::~KeyringService() {
   auto_lock_timer_.reset();
+}
+
+void KeyringService::SetDelegate(BraveWalletServiceDelegate* delegate) {
+  delegate_ = delegate;
 }
 
 void KeyringService::Bind(
@@ -1258,9 +1299,13 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
   }
   if (IsKeyringEnabled(KeyringId::kPolkadotMainnet)) {
     auto polkadot_seed =
-        base::span(keyring_seed.seed).first<kPolkadotSeedSize>();
+        base::span(keyring_seed.polkadot_seed).first<kPolkadotSeedSize>();
     polkadot_mainnet_keyring_ = std::make_unique<PolkadotKeyring>(
         polkadot_seed, KeyringId::kPolkadotMainnet, is_address_allowed);
+  }
+  if (IsKeyringEnabled(KeyringId::kPolkadotTestnet)) {
+    auto polkadot_seed =
+        base::span(keyring_seed.polkadot_seed).first<kPolkadotSeedSize>();
     polkadot_testnet_keyring_ = std::make_unique<PolkadotKeyring>(
         polkadot_seed, KeyringId::kPolkadotTestnet, is_address_allowed);
   }
@@ -1857,7 +1902,7 @@ mojom::AccountInfoPtr KeyringService::ImportPolkadotAccountSync(
     const std::string& password,
     const std::string& network) {
   if (account_name.empty() || json_export.empty() || password.empty() ||
-      IsLockedSync() || !IsPolkadotNetwork(network)) {
+      IsLockedSync() || !IsPolkadotRelayNetwork(network)) {
     return nullptr;
   }
   CHECK(encryptor_);
@@ -2043,12 +2088,22 @@ void KeyringService::RemoveAccount(mojom::AccountIdPtr account_id,
   }
 
   if (account_id->kind == mojom::AccountKind::kImported) {
-    std::move(callback).Run(RemoveImportedAccountInternal(account_id));
+    const bool removed = RemoveImportedAccountInternal(account_id);
+    if (removed && delegate_) {
+      delegate_->ResetPermissionsForAccount(
+          account_id->coin, GetAccountPermissionIdentifier(account_id));
+    }
+    std::move(callback).Run(removed);
     return;
   }
 
   if (account_id->kind == mojom::AccountKind::kHardware) {
-    std::move(callback).Run(RemoveHardwareAccountInternal(*account_id));
+    const bool removed = RemoveHardwareAccountInternal(*account_id);
+    if (removed && delegate_) {
+      delegate_->ResetPermissionsForAccount(
+          account_id->coin, GetAccountPermissionIdentifier(account_id));
+    }
+    std::move(callback).Run(removed);
     return;
   }
 
@@ -2163,7 +2218,6 @@ std::optional<std::string> KeyringService::AddHDAccountForKeyringInternal(
   if (auto* keyring = GetKeyring<PolkadotKeyring>(keyring_id)) {
     return keyring->AddNewHDAccount(index);
   }
-
   return std::nullopt;
 }
 
@@ -2623,6 +2677,14 @@ void KeyringService::IsLocked(IsLockedCallback callback) {
 }
 
 void KeyringService::Reset(bool notify_observer) {
+  // TODO(https://github.com/brave/brave-browser/issues/55303): Wallet Reset
+  // should be always initiated by BraveWalletService.
+  // Now it is a temporary workaround to synchronously stop account discovery in
+  // parent wallet service just before keyrings are reset.
+  if (wallet_reset_cb_) {
+    wallet_reset_cb_.Run();
+  }
+
   ResetAllAccountInfosCache();
   StopAutoLockTimer();
   encryptor_.reset();
@@ -2640,11 +2702,18 @@ void KeyringService::StopAutoLockTimer() {
 }
 
 void KeyringService::ResetAutoLockTimer() {
+  // Autolock is disabled in most of the tests.
+  if (!is_autolock_enabled_.value_or(false)) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   if (auto_lock_timer_->IsRunning()) {
     auto_lock_timer_->Reset();
   } else {
-    size_t auto_lock_minutes =
-        (size_t)profile_prefs_->GetInteger(kBraveWalletAutoLockMinutes);
+    int auto_lock_minutes =
+        std::clamp(profile_prefs_->GetInteger(kBraveWalletAutoLockMinutes), 1,
+                   kMaxAutolockMinutes);
     auto_lock_timer_->Start(FROM_HERE, base::Minutes(auto_lock_minutes), this,
                             &KeyringService::OnAutoLockFired);
   }
@@ -2719,6 +2788,110 @@ void KeyringService::SetAccountName(mojom::AccountIdPtr account_id,
       return;
   }
   NOTREACHED() << account_id->kind;
+}
+
+void KeyringService::GetHiddenAccounts(GetHiddenAccountsCallback callback) {
+  std::move(callback).Run(GetHiddenAccountsSync());
+}
+
+std::vector<mojom::AccountInfoPtr> KeyringService::GetHiddenAccountsSync() {
+  auto account_unique_keys = GetHiddenAccountUniqueKeys(profile_prefs_.get());
+
+  std::vector<mojom::AccountInfoPtr> hidden_accounts;
+  for (const auto& keyring_id : GetEnabledKeyrings()) {
+    for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
+      if (account_unique_keys.contains(account_info->account_id->unique_key)) {
+        hidden_accounts.push_back(std::move(account_info));
+      }
+    }
+  }
+
+  return hidden_accounts;
+}
+
+bool KeyringService::CanHideAccount(const mojom::AccountId& account_id) const {
+  if (!IsAccountHidingEnabled()) {
+    return false;
+  }
+
+  if (account_id.kind != mojom::AccountKind::kDerived) {
+    return false;
+  }
+
+  auto derived_accounts =
+      GetDerivedAccountsForKeyring(profile_prefs_, account_id.keyring_id);
+  const auto account_it =
+      std::ranges::find_if(derived_accounts, [&](const auto& account_info) {
+        return *account_info.GetAccountId() == account_id;
+      });
+  if (account_it == derived_accounts.end()) {
+    return false;
+  }
+
+  if (account_it == derived_accounts.begin()) {
+    return false;
+  }
+
+  return true;
+}
+
+void KeyringService::CanHideAccount(
+    mojom::AccountIdPtr account_id,
+    KeyringService::CanHideAccountCallback callback) {
+  CHECK(account_id);
+  std::move(callback).Run(CanHideAccount(*account_id));
+}
+
+void KeyringService::AddHiddenAccount(mojom::AccountIdPtr account_id,
+                                      AddHiddenAccountCallback callback) {
+  CHECK(account_id);
+
+  if (!CanHideAccount(*account_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletHiddenAccounts);
+  if (!std::ranges::contains(*update, base::Value(account_id->unique_key))) {
+    update->Append(account_id->unique_key);
+    NotifyAccountsChanged();
+    MaybeFixAccountSelection();
+  }
+
+  if (delegate_) {
+    delegate_->ResetPermissionsForAccount(
+        account_id->coin, GetAccountPermissionIdentifier(account_id));
+  }
+
+  std::move(callback).Run(true);
+}
+
+void KeyringService::RemoveHiddenAccounts(
+    std::vector<mojom::AccountIdPtr> account_ids,
+    RemoveHiddenAccountsCallback callback) {
+  if (!IsAccountHidingEnabled()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  base::flat_set<std::string> unique_keys_to_remove;
+  for (const auto& account_id : account_ids) {
+    unique_keys_to_remove.insert(account_id->unique_key);
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, kBraveWalletHiddenAccounts);
+  const size_t removed_count = update->EraseIf([&](const base::Value& value) {
+    const auto* unique_key = value.GetIfString();
+    if (!unique_key || !unique_keys_to_remove.contains(*unique_key)) {
+      return false;
+    }
+    return true;
+  });
+  if (removed_count > 0) {
+    NotifyAccountsChanged();
+  }
+
+  std::move(callback).Run(true);
 }
 
 bool KeyringService::SetKeyringDerivedAccountNameInternal(
@@ -3544,11 +3717,17 @@ void KeyringService::ResetAllAccountInfosCache() {
 }
 
 const std::vector<mojom::AccountInfoPtr>& KeyringService::GetAllAccountInfos() {
+  auto hidden_account_unique_keys =
+      GetHiddenAccountUniqueKeys(profile_prefs_.get());
   if (!account_info_cache_ || account_info_cache_->empty()) {
     account_info_cache_ =
         std::make_unique<std::vector<mojom::AccountInfoPtr>>();
     for (const auto& keyring_id : GetEnabledKeyrings()) {
       for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
+        if (hidden_account_unique_keys.contains(
+                std::string(account_info->account_id->unique_key))) {
+          continue;
+        }
         account_info_cache_->push_back(std::move(account_info));
       }
     }
@@ -3648,30 +3827,42 @@ void KeyringService::MaybeFixAccountSelection() {
     SetSelectedAccountInternal(*account_infos[0]);
   }
 
-  if (!unique_keys.contains(GetSelectedDappAccountFromPrefs(
-          profile_prefs_, mojom::CoinType::ETH))) {
-    // ETH dApp account appears to be removed. Forcedly clear ETH dApp account
-    // selection.
-    SetSelectedDappAccountInternal(mojom::CoinType::ETH, {});
-  }
+  for (auto coin : GetEnabledCoins()) {
+    if (!CoinSupportsDapps(coin)) {
+      continue;
+    }
 
-  if (!unique_keys.contains(GetSelectedDappAccountFromPrefs(
-          profile_prefs_, mojom::CoinType::SOL))) {
-    // SOL dApp account appears to be removed. Forcedly clear SOL dApp account
-    // selection.
-    SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
+    if (!unique_keys.contains(
+            GetSelectedDappAccountFromPrefs(profile_prefs_, coin))) {
+      auto first_account_for_coin =
+          std::ranges::find_if(account_infos, [&](const auto& account_info) {
+            return account_info->account_id->coin == coin;
+          });
+      SetSelectedDappAccountInternal(
+          coin, first_account_for_coin == account_infos.end()
+                    ? nullptr
+                    : (*first_account_for_coin)->Clone());
+    }
   }
 }
 
+void KeyringService::SetAutolockEnabled(bool enabled) {
+  CHECK(!is_autolock_enabled_.has_value());
+  is_autolock_enabled_ = enabled;
+}
+
 void KeyringService::MaybeUnlockWithCommandLine() {
-#if !defined(OFFICIAL_BUILD)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
+#if defined(OFFICIAL_BUILD)
+  NOTREACHED();
+#endif
   std::string dev_wallet_password =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kDevWalletPassword);
+          kDevWalletPassword);
   if (!dev_wallet_password.empty()) {
     Unlock(dev_wallet_password, base::DoNothing());
   }
-#endif  // !defined(OFFICIAL_BUILD)
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
 }
 
 void KeyringService::OnCreateWalletRegisterComponentUpdater(

@@ -113,7 +113,7 @@
 "aichat.customModelFormDetailsFieldPlaceholder" = "輸入詳細資訊";
 
 /* The button title for dismissing the keyboard */
-"aichat.customModelFormDoneButtonTitle" = "已完成";
+"aichat.customModelFormDoneButtonTitle" = "完成";
 
 /* The navigation bar title when editing an existing custom model */
 "aichat.customModelFormEditModelNavigationTitle" = "編輯模型";
@@ -165,6 +165,12 @@
 
 /* The label for the system prompt field */
 "aichat.customModelFormSystemPromptFieldTitle" = "系統提示";
+
+/* The description text explaining what tools supports means */
+"aichat.customModelFormToolsSupportFieldDescription" = "如果此模型支援函式呼叫/工具使用";
+
+/* The label for the tools support toggle */
+"aichat.customModelFormToolsSupportFieldTitle" = "工具支援";
 
 /* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
 "aichat.customModelFormUnsafeEndpointWarning" = "此端點可能不安全。";

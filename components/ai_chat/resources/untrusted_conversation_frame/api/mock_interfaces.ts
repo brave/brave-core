@@ -38,6 +38,7 @@ export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   suggestedQuestions: [],
   suggestionStatus: Mojom.SuggestionGenerationStatus.None,
   currentError: Mojom.APIError.None,
+  currentErrorDetails: undefined,
   isTemporary: false,
 }
 

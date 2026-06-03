@@ -10,6 +10,15 @@
 
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 
+namespace blink::mojom {
+class FileChooserParams;
+}
+
+namespace content {
+class FileSelectListener;
+class RenderFrameHost;
+}  // namespace content
+
 class AIChatUI;
 class Profile;
 
@@ -47,6 +56,11 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
       const content::OpenURLParams& params,
       base::OnceCallback<void(content::NavigationHandle&)>
           navigation_handle_callback) override;
+
+  // Allow the file chooser to be used from the AI Chat side panel.
+  void RunFileChooser(content::RenderFrameHost* render_frame_host,
+                      scoped_refptr<content::FileSelectListener> listener,
+                      const blink::mojom::FileChooserParams& params) override;
 
  private:
   // This callback is invoked multiple times, so we need to ensure that

@@ -13,9 +13,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -406,6 +407,15 @@ void BraveRewardsActionView::ToggleRewardsPanel() {
   if (IsPanelOpen()) {
     DCHECK(bubble_manager_);
     bubble_manager_->CloseBubble();
+    return;
+  }
+
+  // If the Rewards WebUI has just been disabled (e.g. via Brave Origin or
+  // enterprise policy) but the browser has not yet been restarted, the WebUI
+  // config has been unregistered. Attempting to show the bubble in that state
+  // would dereference a null `TopChromeWebUIConfig` and crash.
+  if (brave_rewards::ShouldBlockRewardsWebUI(
+          browser_window_interface_->GetProfile(), GURL(kRewardsPageTopURL))) {
     return;
   }
 

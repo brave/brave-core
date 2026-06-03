@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -59,6 +60,7 @@
 #include "ui/views/widget/widget_delegate.h"
 
 #if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #endif  // BUILDFLAG(IS_MAC)
 
@@ -162,8 +164,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   chrome::AddTabAt(browser(), GURL(), -1, true);
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_FALSE(infobar_container()->GetVisible());
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserView::GetBrowserViewForBrowser(browser())
+                ->IsBookmarkBarAnimating();
+  }));
 
   // Check bookmark bar/contents container position.
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
@@ -176,8 +180,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Check contents container is positioned right after the vertical tab.
   brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
   EXPECT_EQ(brave::BookmarkBarState::kNever, brave::GetBookmarkBarState(prefs));
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserView::GetBrowserViewForBrowser(browser())
+                ->IsBookmarkBarAnimating();
+  }));
   EXPECT_FALSE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_area_origin());
@@ -197,8 +203,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
   EXPECT_EQ(brave::BookmarkBarState::kAlways,
             brave::GetBookmarkBarState(prefs));
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserView::GetBrowserViewForBrowser(browser())
+                ->IsBookmarkBarAnimating();
+  }));
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().origin(),
             bookmark_bar()->bounds().bottom_left() +
@@ -329,13 +337,21 @@ class BraveBrowserViewWithRoundedCornersTest
 // Test 1: Rounded corners behavior with side panel toggled
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersWithSidePanelTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(https://github.com/brave/brave-browser/issues/55995): Re-enable on
+  // macOS 26.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->contents_height_side_panel();
-  const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
+  views::View* side_panel = browser_view()->side_panel();
+  const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
       GetRoundedCornersBorderRadiusAtWindowCorner();
@@ -392,6 +408,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 // Test 2: Rounded corners in split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersWithSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
@@ -401,8 +425,8 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->contents_height_side_panel();
-  const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
+  views::View* side_panel = browser_view()->side_panel();
+  const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
       GetRoundedCornersBorderRadiusAtWindowCorner();
@@ -429,6 +453,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 // Test 3: Rounded corners after exiting split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersAfterExitingSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
@@ -442,8 +474,8 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->contents_height_side_panel();
-  const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
+  views::View* side_panel = browser_view()->side_panel();
+  const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
       GetRoundedCornersBorderRadiusAtWindowCorner();
@@ -562,6 +594,43 @@ INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     BraveBrowserViewWithRoundedCornersTest,
     testing::Bool());
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       BoundingBoxStableWithSidePanelTest) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* brave_view = brave_browser_view();
+
+  // Get bounds with panel closed.
+  auto bounds_panel_closed =
+      brave_view->GetBoundingBoxInScreenForMouseOverHandling();
+
+  // Bounds should span the full browser width.
+  EXPECT_EQ(browser_view()->width(), bounds_panel_closed.width());
+
+  // Bounds should start at the bottom of the top container.
+  EXPECT_EQ(browser_view()->top_container()->GetBoundsInScreen().bottom(),
+            bounds_panel_closed.y());
+
+  // Bounds should extend to the bottom of the browser window.
+  EXPECT_EQ(brave_view->GetBoundsInScreen().bottom(),
+            bounds_panel_closed.bottom());
+
+  // Open the side panel.
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  // Bounds should be unchanged after opening the side panel.
+  EXPECT_EQ(bounds_panel_closed,
+            brave_view->GetBoundingBoxInScreenForMouseOverHandling());
+
+  // Close the side panel.
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  // Bounds should be unchanged after closing the side panel.
+  EXPECT_EQ(bounds_panel_closed,
+            brave_view->GetBoundingBoxInScreenForMouseOverHandling());
+}
 
 // MacOS does not need views window scrim. We use sheet to show window modals
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.

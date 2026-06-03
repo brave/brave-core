@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
@@ -22,6 +23,7 @@ class GURL;
 namespace brave_ads {
 
 class ConversionsObserver;
+class TabManager;
 struct ConversionInfo;
 
 class Conversions final : public TabManagerObserver {
@@ -74,6 +76,9 @@ class Conversions final : public TabManagerObserver {
       creative_set_conversions_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
+
+  base::ScopedObservation<TabManager, TabManagerObserver>
+      tab_manager_observation_{this};
 
   base::WeakPtrFactory<Conversions> weak_factory_{this};
 };

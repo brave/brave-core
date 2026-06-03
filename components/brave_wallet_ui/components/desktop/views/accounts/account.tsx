@@ -115,6 +115,7 @@ import { AccountDetailsOptions } from '../../../../options/nav-options'
 // Hooks
 import useInterval from '../../../../common/hooks/interval'
 import {
+  useAddHiddenAccountMutation,
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery,
@@ -182,6 +183,7 @@ export const Account = () => {
   // mutations
   const [startShieldSync] = useStartShieldSyncMutation()
   const [stopShieldSync] = useStopShieldSyncMutation()
+  const [addHiddenAccount] = useAddHiddenAccountMutation()
 
   // routing
   const { accountId: addressOrUniqueKey, selectedTab } = useParams<{
@@ -520,6 +522,11 @@ export const Account = () => {
 
   const onClickMenuOption = React.useCallback(
     (option: AccountModalTypes) => {
+      if (option === 'hide' && selectedAccount) {
+        void addHiddenAccount({ accountId: selectedAccount.accountId })
+        history.push(WalletRoutes.Accounts)
+        return
+      }
       if (option === 'remove') {
         onRemoveAccount()
         return
@@ -536,6 +543,16 @@ export const Account = () => {
         setShowViewOnBlockExplorerModal(true)
         return
       }
+      // Polkadot uses index-based AccountIds, so accountId.address is empty
+      // and the displayable address is network-specific. Defer to the modal,
+      // which resolves the per-network address.
+      if (
+        option === 'explorer'
+        && selectedAccount?.accountId.coin === BraveWallet.CoinType.DOT
+      ) {
+        setShowViewOnBlockExplorerModal(true)
+        return
+      }
       if (option === 'explorer' && selectedAccount?.accountId.address) {
         onClickViewOnBlockExplorer(
           'address',
@@ -548,7 +565,9 @@ export const Account = () => {
       dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
     },
     [
+      addHiddenAccount,
       dispatch,
+      history,
       onRemoveAccount,
       networksFilteredByAccountsCoinType,
       selectedAccount,
@@ -806,7 +825,7 @@ export const Account = () => {
             >
               <EmptyTransactionsIcon />
               <Text
-                textColor='text01'
+                textColor='primary'
                 textSize='16px'
                 isBold={true}
               >
@@ -815,7 +834,7 @@ export const Account = () => {
               <VerticalSpace space='10px' />
               <Text
                 textSize='14px'
-                textColor='text03'
+                textColor='tertiary'
                 isBold={false}
               >
                 {getLocale('braveWalletNoTransactionsYetDescription')}

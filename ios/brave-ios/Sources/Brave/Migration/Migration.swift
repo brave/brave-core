@@ -27,6 +27,9 @@ public class BraveProfileMigrations {
     migrateBlockPopupsPreferences()
     migrateSyncPasswordsDefault()
     migrateShieldsToContentSettings()
+    migrateYouTubeQualityPreference()
+    migrateGPCPreference()
+    migrateMediaBackgroundingPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -98,6 +101,30 @@ public class BraveProfileMigrations {
     // disabled to enabled. Keep them on the old `defaultValue`
     Preferences.Chromium.syncPasswordsEnabled.value = false
     Preferences.Migration.syncPasswordsEnabledByDefault.value = true
+  }
+
+  private func migrateYouTubeQualityPreference() {
+    Preferences.DeprecatedPreferences.youtubeHighQuality.migrate { value in
+      let value = DeprecatedYoutubeHighQualityPreference(rawValue: value)
+      if value != .off {
+        profileController.profile.prefs.set(
+          value == .on ? 1 : 2,
+          forPath: kYouTubeAutoQualityMode
+        )
+      }
+    }
+  }
+
+  private func migrateGPCPreference() {
+    Preferences.DeprecatedPreferences.enableGPC.migrate { value in
+      profileController.profile.prefs.set(value, forPath: kGlobalPrivacyControlEnabled)
+    }
+  }
+
+  private func migrateMediaBackgroundingPreference() {
+    Preferences.DeprecatedPreferences.mediaAutoBackgrounding.migrate { value in
+      profileController.profile.prefs.set(value, forPath: kMediaBackgroundingEnabled)
+    }
   }
 }
 
@@ -278,6 +305,12 @@ extension Migration {
   }
 }
 
+private enum DeprecatedYoutubeHighQualityPreference: String {
+  case wifi
+  case on
+  case off
+}
+
 extension Preferences {
   fileprivate final class DeprecatedPreferences {
     static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
@@ -320,6 +353,24 @@ extension Preferences {
 
     /// Whether or not to block popups from websites automaticaly
     static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
+
+    /// Controls whether or not youtube videos should play with the highest quality by default
+    static let youtubeHighQuality = Option<String>(
+      key: "general.youtube-high-quality",
+      default: DeprecatedYoutubeHighQualityPreference.off.rawValue
+    )
+
+    /// A boolean value inidicating if GPC is enabled
+    public static var enableGPC = Preferences.Option<Bool>(
+      key: "shields.enable-gpc",
+      default: true
+    )
+
+    /// Controls whether or not media should continue playing in the background
+    static let mediaAutoBackgrounding = Option<Bool>(
+      key: "general.media-auto-backgrounding",
+      default: false
+    )
   }
 
   /// Migration preferences
@@ -585,7 +636,8 @@ extension Preferences {
       return
     }
 
-    Preferences.General.youtubeHighQuality.value = YoutubeHighQualityPreference.off.rawValue
+    Preferences.DeprecatedPreferences.youtubeHighQuality.value =
+      DeprecatedYoutubeHighQualityPreference.off.rawValue
     Migration.youtubeHighQualityDefault.value = true
   }
 }

@@ -14,10 +14,10 @@
 #include "base/location.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -61,17 +61,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-ConfirmationTokenInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
-  CHECK(mojom_db_row);
-
-  ConfirmationTokenInfo confirmation_token;
-  confirmation_token.unblinded_token =
-      cbr::UnblindedToken(ColumnString(mojom_db_row, 0));
-  confirmation_token.public_key = cbr::PublicKey(ColumnString(mojom_db_row, 1));
-  confirmation_token.signature_base64 = ColumnString(mojom_db_row, 2);
-  return confirmation_token;
-}
-
 void GetAllCallback(
     GetConfirmationTokensCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
@@ -86,7 +75,8 @@ void GetAllCallback(
   ConfirmationTokenList confirmation_tokens;
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    const ConfirmationTokenInfo confirmation_token = FromMojomRow(mojom_db_row);
+    const ConfirmationTokenInfo confirmation_token =
+        ConfirmationTokenFromMojomRow(mojom_db_row);
     if (!confirmation_token.IsValid()) {
       BLOG(0, "Invalid confirmation token");
       continue;
@@ -96,6 +86,38 @@ void GetAllCallback(
   }
 
   std::move(callback).Run(/*success=*/true, std::move(confirmation_tokens));
+}
+
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const ConfirmationTokenList& confirmation_tokens) {
+  CHECK(mojom_db_action);
+  CHECK(!confirmation_tokens.empty());
+
+  const size_t row_count = BindColumns(mojom_db_action, confirmation_tokens);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            unblinded_token,
+            public_key,
+            signature
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/3U, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const ConfirmationTokenList& confirmation_tokens) {
+  CHECK(mojom_db_transaction);
+
+  if (confirmation_tokens.empty()) {
+    return;
+  }
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, confirmation_tokens);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 }  // namespace
@@ -113,21 +135,6 @@ void ConfirmationTokens::Save(const ConfirmationTokenList& confirmation_tokens,
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
-}
-
-void ConfirmationTokens::Insert(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const ConfirmationTokenList& confirmation_tokens) {
-  CHECK(mojom_db_transaction);
-
-  if (confirmation_tokens.empty()) {
-    return;
-  }
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, confirmation_tokens);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 void ConfirmationTokens::Delete(const ConfirmationTokenInfo& confirmation_token,
@@ -213,27 +220,6 @@ void ConfirmationTokens::Migrate(
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-std::string ConfirmationTokens::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const ConfirmationTokenList& confirmation_tokens) const {
-  CHECK(mojom_db_action);
-  CHECK(!confirmation_tokens.empty());
-
-  const size_t row_count = BindColumns(mojom_db_action, confirmation_tokens);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            unblinded_token,
-            public_key,
-            signature
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/3U, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

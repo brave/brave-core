@@ -13,28 +13,38 @@
 
 int GetLayoutConstant(LayoutConstant constant);
 
+// Rounded corners.
+// The distance between main content areas and other UI elements.
+inline constexpr int kRoundedCornersContentsViewMargin = 4;
+
 namespace tabs {
 
 // Horizontal tab layout:
 //
-// The upstream tab implemenation assumes that tab view bounds overlap. In order
-// to create a gap between tabs without violating these assumptions, tabs views
-// are given a small overlap. Rounded tab rectangles are drawn centered and
-// inset horizontally by an amount that will create the required visual gap.
+// The upstream tab implementation assumes that tab view bounds overlap. In
+// order to create a gap between tabs without violating these assumptions, tabs
+// views are given a small overlap. Rounded tab rectangles are drawn centered
+// and inset horizontally by an amount that will create the required visual gap.
 
 // The visual height of tabs in horizontal tabs mode. Note that the height of
-// the view may be greater than the visual height of the tab shape. See also
-// `kHorizontalTabVerticalSpacing`.
+// the view may be greater than the visual height of the tab shape.
 int GetHorizontalTabHeight();
+
+// Returns the amount of visual spacing between the top and bottom of tabs and
+// the bounds of the tab strip region. The portion of this space below tabs will
+// be occupied by tab group underlines.
+int GetHorizontalTabVerticalSpacing();
+
+// Y-offset applied to buttons aligned with the horizontal tab strip (new tab
+// button, tab strip combo/search buttons, Mac caption buttons) so they sit
+// centered against the tab row.
+int GetHorizontalTabButtonYOffset();
 
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
 
 // The amount of visual spacing between the top and bottom of tabs and the
-// bounds of the tab strip region. The portion of this space below tabs will be
-// occupied by tab group underlines.
-inline constexpr int kHorizontalTabVerticalSpacing = 4;
-
+// bounds of the tab strip region for a split view tab.
 inline constexpr int kHorizontalSplitViewTabVerticalSpacing = 6;
 
 // The height of the tab strip in horizontal mode.
@@ -53,7 +63,7 @@ inline constexpr int kHorizontalTabOverlap = 2;
 inline constexpr int kHorizontalTabInset =
     (kHorizontalTabGap + kHorizontalTabOverlap) / 2;
 
-// The content padding within a tab.
+// The horizontal content padding within a tab.
 int GetHorizontalTabPadding();
 
 // The horizontal difference between the visual edge of a tab group and the
@@ -72,6 +82,15 @@ int GetTabGroupTitleVerticalInset();
 
 // The amount of padding at sides of tab group header "chips".
 int GetTabGroupTitleHorizontalInset();
+
+// The amount of space at the top of inactive tabs where mouse clicks are
+// treated as clicks in the "caption" area, i.e. the draggable part of the
+// window frame.
+int GetDragHandleExtensionHeight();
+
+// Indicates whether horizontal tabs (and the toolbar) are displayed in compact
+// mode.
+bool UseCompactHorizontalTabs();
 
 }  // namespace tabs
 

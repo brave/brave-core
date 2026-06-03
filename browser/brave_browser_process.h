@@ -11,6 +11,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
+#include "brave/browser/brave_stats/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -24,7 +25,7 @@ class BraveReferralsService;
 class URLSanitizerComponentInstaller;
 }  // namespace brave
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 namespace brave_vpn {
 class BraveVPNConnectionManager;
 }  // namespace brave_vpn
@@ -38,9 +39,11 @@ namespace brave_shields {
 class AdBlockService;
 }  // namespace brave_shields
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 namespace brave_stats {
 class BraveStatsUpdater;
 }  // namespace brave_stats
+#endif
 
 namespace debounce {
 class DebounceComponentInstaller;
@@ -109,7 +112,9 @@ class BraveBrowserProcess {
 #endif
   virtual p3a::P3AService* p3a_service() = 0;
   virtual brave::BraveReferralsService* brave_referrals_service() = 0;
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   virtual brave_stats::BraveStatsUpdater* brave_stats_updater() = 0;
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   virtual brave_ads::BraveStatsHelper* ads_brave_stats_helper() = 0;
   virtual brave_ads::ResourceComponent* resource_component() = 0;
@@ -120,7 +125,7 @@ class BraveBrowserProcess {
   virtual speedreader::SpeedreaderRewriterService*
   speedreader_rewriter_service() = 0;
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   virtual brave_vpn::BraveVPNConnectionManager*
   brave_vpn_connection_manager() = 0;
 #endif

@@ -25,8 +25,9 @@ class TabCommandSource : public CommandSource {
   TabCommandSource& operator=(const TabCommandSource& other) = delete;
 
   // Command source overrides
-  CommandSource::CommandResults GetCommands(const std::u16string& input,
-                                            Browser* browser) const override;
+  CommandSource::CommandResults GetCommands(
+      const std::u16string& input,
+      BrowserWindowInterface* browser) const override;
 };
 }  // namespace commander
 

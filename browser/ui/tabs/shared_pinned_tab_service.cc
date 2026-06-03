@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -75,8 +76,6 @@ class DummyContentsData
   raw_ptr<content::WebContents> shared_contents_ = nullptr;
 
   bool stop_propagation_ = false;
-
-  std::unique_ptr<SharedPinnedTabDummyView> dummy_view_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -189,12 +188,7 @@ void DummyContentsData::SynchronizeURL() {
 }
 
 void DummyContentsData::ShowDummyView() {
-  if (!dummy_view_) {
-    dummy_view_ =
-        SharedPinnedTabDummyView::Create(shared_contents_, dummy_contents_);
-  }
-
-  dummy_view_->Install();
+  SharedPinnedTabDummyView::CreateAndInstall(shared_contents_, dummy_contents_);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(DummyContentsData);
@@ -885,13 +879,15 @@ void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
   // Init observers
   browser_collection_observation_.Observe(
       GlobalBrowserCollection::GetInstance());
-  auto browsers = chrome::FindAllTabbedBrowsersWithProfile(profile_);
-  for (auto* browser : browsers) {
-    OnBrowserCreated(browser);
-  }
+
+  ProfileBrowserCollection::GetForProfile(profile_)->ForEach(
+      [this](BrowserWindowInterface* browser) {
+        OnBrowserCreated(browser);
+        return true;
+      });
 
   // Synchronize all pre-existing pinned tabs.
-  for (auto* browser : browsers) {
+  for (auto* browser : browsers_) {
     auto* tab_strip_model = browser->GetTabStripModel();
     for (int i = 0; i < tab_strip_model->IndexOfFirstNonPinnedTab(); ++i) {
       auto* contents = tab_strip_model->GetWebContentsAt(i);

@@ -15,9 +15,6 @@ import {
 // Styled Components
 import {
   ConnectPanelButton,
-  AccountAddressText,
-  AccountNameText,
-  BalanceText,
   NameAndAddressColumn,
   AccountCircle,
   LeftSide,
@@ -25,6 +22,7 @@ import {
 } from './select-account-item.style'
 import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
 import { Tooltip } from '../../../shared/tooltip/index'
+import { Text } from '../../../shared/style'
 
 // Utils
 import {
@@ -167,9 +165,12 @@ export const SelectAccountItem = (props: Props) => {
       <LeftSide>
         <AccountCircle orb={orb} />
         <NameAndAddressColumn>
-          <AccountNameText>
+          <Text
+            textColor='primary'
+            variant='default.semibold'
+          >
             {reduceAccountDisplayName(account.name, 22)}
-          </AccountNameText>
+          </Text>
           {account.address && (
             <Tooltip
               isAddress={true}
@@ -177,11 +178,14 @@ export const SelectAccountItem = (props: Props) => {
               maxWidth={120}
               text={account.address}
             >
-              <AccountAddressText>
+              <Text
+                textColor='primary'
+                variant='small.regular'
+              >
                 {account.accountId.coin === BraveWallet.CoinType.ADA
                   ? account.name
                   : reduceAddress(account.accountId.address)}
-              </AccountAddressText>
+              </Text>
             </Tooltip>
           )}
           {accountFiatValue === '' ? (
@@ -190,7 +194,12 @@ export const SelectAccountItem = (props: Props) => {
               height={18}
             />
           ) : (
-            <BalanceText>{accountFiatValue}</BalanceText>
+            <Text
+              textColor='secondary'
+              variant='small.regular'
+            >
+              {accountFiatValue}
+            </Text>
           )}
         </NameAndAddressColumn>
       </LeftSide>

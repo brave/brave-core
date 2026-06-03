@@ -130,12 +130,9 @@ template <template <typename> class T>
 void OnBeforeURLRequest_SnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     T<brave::BraveRequestInfo> ctx,
-    const std::optional<GURL>& url,
-    brave_wallet::mojom::SolanaProviderError error,
-    const std::string& error_message) {
+    const std::optional<GURL>& url) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (ctx && error == brave_wallet::mojom::SolanaProviderError::kSuccess &&
-      url && url->is_valid()) {
+  if (ctx && url.has_value() && url->is_valid()) {
     ctx->set_new_url_spec(url->spec());
   }
 

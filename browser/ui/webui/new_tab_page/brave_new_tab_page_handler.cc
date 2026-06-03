@@ -35,7 +35,7 @@
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/chrome_select_file_policy.h"
+#include "chrome/browser/ui/select_file_policy/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
@@ -363,7 +363,7 @@ void BraveNewTabPageHandler::OpenVPNAccountPage(
 void BraveNewTabPageHandler::ReportVPNWidgetUsage() {
   auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
-  vpn_service->brave_vpn_metrics()->RecordWidgetUsage(true);
+  vpn_service->RecordWidgetUsageMetrics(true);
 }
 #endif
 

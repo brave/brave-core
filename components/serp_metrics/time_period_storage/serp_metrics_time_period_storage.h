@@ -6,18 +6,19 @@
 #ifndef BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_TIME_PERIOD_STORAGE_H_
 #define BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_TIME_PERIOD_STORAGE_H_
 
-#include <list>
 #include <memory>
 
+#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_time_period_storage_daily_value_info.h"
 
 namespace serp_metrics {
 
 class SerpMetricsTimePeriodStore;
 
-// Allows to track a sum of some values added from time to time via `AddDelta`
+// Allows to track a sum of some values added from time to time via `AddCount`
 // over the last predefined time period.
-class SerpMetricsTimePeriodStorage {
+class SerpMetricsTimePeriodStorage final {
  public:
   SerpMetricsTimePeriodStorage(
       std::unique_ptr<SerpMetricsTimePeriodStore> store,
@@ -29,26 +30,22 @@ class SerpMetricsTimePeriodStorage {
 
   ~SerpMetricsTimePeriodStorage();
 
-  void AddDelta(uint64_t delta);
-  uint64_t GetPeriodSumInTimeRange(const base::Time& start_time,
-                                   const base::Time& end_time) const;
-  uint64_t GetPeriodSum() const;
+  void AddCount(uint64_t count);
+  uint64_t GetCountForTimeRange(const base::Time& start_time,
+                                const base::Time& end_time) const;
+  uint64_t GetCount() const;
 
   void Clear();
 
  private:
-  struct DailyValue {
-    base::Time day;
-    uint64_t value = 0ULL;
-  };
-  void FilterToPeriod();
+  void FillToToday();
   void Load();
   void Save();
 
-  std::unique_ptr<SerpMetricsTimePeriodStore> store_;
+  std::unique_ptr<SerpMetricsTimePeriodStore> time_period_store_;
   size_t period_days_;
 
-  std::list<DailyValue> daily_values_;
+  base::circular_deque<DailyValueInfo> daily_values_;
 };
 
 }  // namespace serp_metrics

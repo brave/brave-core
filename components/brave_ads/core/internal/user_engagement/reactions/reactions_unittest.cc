@@ -59,10 +59,10 @@ TEST_F(BraveAdsReactionsTest, ToggleLikeAd) {
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-          /*id*/ ::testing::_, /*created_at*/ test::Now(),
-          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          /*id=*/::testing::_, /*created_at=*/test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value=*/0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kLikedAd,
-          /*reconciled_at*/ std::nullopt)))
+          /*reconciled_at=*/std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
@@ -86,10 +86,10 @@ TEST_F(BraveAdsReactionsTest, ToggleDislikeAd) {
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-          /*id*/ ::testing::_, /*created_at*/ test::Now(),
-          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          /*id=*/::testing::_, /*created_at=*/test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value=*/0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kDislikedAd,
-          /*reconciled_at*/ std::nullopt)))
+          /*reconciled_at=*/std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
@@ -248,10 +248,10 @@ TEST_F(BraveAdsReactionsTest, ToggleSaveAd) {
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-          /*id*/ ::testing::_, /*created_at*/ test::Now(),
-          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          /*id=*/::testing::_, /*created_at=*/test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value=*/0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kSavedAd,
-          /*reconciled_at*/ std::nullopt)))
+          /*reconciled_at=*/std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
@@ -278,11 +278,11 @@ TEST_F(BraveAdsReactionsTest, ToggleMarkAdAsInappropriate) {
   base::RunLoop run_loop;
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+                  /*id=*/::testing::_, /*created_at=*/test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value=*/0.0,
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kMarkAdAsInappropriate,
-                  /*reconciled_at*/ std::nullopt)))
+                  /*reconciled_at=*/std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 

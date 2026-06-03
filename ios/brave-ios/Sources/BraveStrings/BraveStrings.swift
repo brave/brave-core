@@ -4991,26 +4991,6 @@ extension Strings {
         comment: "Option Text for Auto Save Only Wi-Fi Option"
       )
 
-    public static let playlistOfflineDataToggleOption =
-      NSLocalizedString(
-        "playlist.playlistOfflineDataToggleOption",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Playlist Offline Data",
-        comment:
-          "Text for Playlist Offline Data Toggle while clearing the offline data storage in settings"
-      )
-
-    public static let playlistMediaAndOfflineDataToggleOption =
-      NSLocalizedString(
-        "playlist.playlistMediaAndOfflineDataToggleOption",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Playlist Media & Offline Data",
-        comment:
-          "Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings"
-      )
-
     public static let playlistResetAlertTitle =
       NSLocalizedString(
         "playList.playlistResetAlertTitle",
@@ -7788,61 +7768,6 @@ extension Strings {
       value: "on %@",
       comment: "This is a suffix statement. example: SomeChannel on Twitter"
     )
-    public static let braveTalkRewardsOptInTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "To start a free call, turn on Brave Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen"
-      )
-
-    public static let braveTalkRewardsOptInBody =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "With Brave Rewards, you can view privacy-preserving ads from the Brave Ads network. No trackers. No slowdowns. And your data stays totally safe.",
-        comment: "Body for Brave Talk rewards opt-in screen"
-      )
-
-    public static let braveTalkRewardsOptInButtonTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Turn on Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen button"
-      )
-
-    public static let braveTalkRewardsOptInDisclaimer =
-      NSLocalizedString(
-        "rewards.optInDisclaimer",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "By clicking, you agree to the %@ and %@. Disable any time in Settings.",
-        comment:
-          "The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...'"
-      )
-
-    public static let braveTalkRewardsOptInSuccessTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInSuccessTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "You can now start a free call",
-        comment: "Title for successful Brave Talk rewards opt-in"
-      )
-
-    public static let braveTalkRewardsOptInSuccessBody =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInSuccessBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Click anywhere on the screen to continue to Brave Talk.",
-        comment: "Body for successful Brave Talk rewards opt-in"
-      )
   }
 }
 
@@ -9485,5 +9410,113 @@ extension Strings {
       comment:
         "Label for account when indicating that a domain has multiple accounts"
     )
+    public static let managePasswordDetailInputPasswordPlaceholder =
+      NSLocalizedString(
+        "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Enter Password",
+        comment: "Placeholder for the password field when adding or editing a login"
+      )
+    public static let managePasswordDetailRevealPassword =
+      NSLocalizedString(
+        "autofill.managePasswords.passwordDetail.revealPassword",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Reveal",
+        comment: "Reveal password label"
+      )
+    public static let managePasswordsAuthenticationReason =
+    NSLocalizedString(
+      "autofill.managePasswords.authenticationReason",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Please authenticate to manage your passwords.",
+      comment: "The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management."
+    )
   }
+}
+
+// MARK: - QuickView
+extension Strings {
+  public static let quickViewShieldAccessibilityLabel = NSLocalizedString(
+    "quickview.shield.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shield",
+    comment:
+      "Accessibility text for an icon button which will open shield screen in QuickView mode."
+  )
+
+  public static let quickViewPlaylistAccessibilityLabel = NSLocalizedString(
+    "quickview.playlist.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Add to Playlist",
+    comment:
+      "Accessibility text for an icon button which will add media source to Playlist in QuickView mode."
+  )
+
+  public static let quickViewReaderModeAccessibilityLabel = NSLocalizedString(
+    "quickview.reader.mode.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable Reader Mode",
+    comment:
+      "Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode."
+  )
+
+  public static let quickViewTranslateAccessibilityLabel = NSLocalizedString(
+    "quickview.translate.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable Translate",
+    comment:
+      "Accessibility text for an icon button which will translate the current page in QuickView mode."
+  )
+
+  public static let quickViewRefreshAccessibilityLabel = NSLocalizedString(
+    "quickview.refresh.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Refresh",
+    comment:
+      "Accessibility text for an icon button which will refresh the current page in QuickView mode."
+  )
+
+  public static let quickViewBackAccessibilityLabel = NSLocalizedString(
+    "quickview.back.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Previous Page",
+    comment:
+      "Accessibility text for an icon button which will go back to the previous page in QuickView mode."
+  )
+
+  public static let quickViewForwardAccessibilityLabel = NSLocalizedString(
+    "quickview.forward.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Next Page",
+    comment:
+      "Accessibility text for an icon button which will go forward to the next page in QuickView mode."
+  )
+
+  public static let quickViewShareAccessibilityLabel = NSLocalizedString(
+    "quickview.share.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Share",
+    comment:
+      "Accessibility text for an icon button which will share the current page in QuickView mode."
+  )
+
+  public static let quickViewOpenTabAccessibilityLabel = NSLocalizedString(
+    "quickview.open.tab.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Open in tab",
+    comment:
+      "Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab."
+  )
 }

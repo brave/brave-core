@@ -9,10 +9,12 @@ assert(enable_containers)
 
 static_library("browser") {
   public = [
+    "container_specifier.h",
     "containers_service.h",
     "containers_service_observer.h",
     "containers_settings_handler.h",
     "prefs_registration.h",
+    "temporary_container.h",
     "unknown_container.h",
   ]
 
@@ -25,11 +27,13 @@ static_library("browser") {
     "prefs.cc",
     "prefs.h",
     "prefs_registration.cc",
+    "temporary_container.cc",
     "unknown_container.cc",
   ]
 
   friend = [
     "//brave/browser/containers:browser_tests",
+    "//brave/browser/ui/containers:unit_tests",
     ":unit_tests",
   ]
 
@@ -39,6 +43,7 @@ static_library("browser") {
     "//base",
     "//brave/components/containers/core/common",
     "//brave/components/resources:strings",
+    "//brave/third_party/bip39wally-core-native:bip39wally-core",
     "//brave/ui/color:nala_color_id",
     "//components/keyed_service/core",
     "//components/pref_registry",
@@ -54,22 +59,39 @@ static_library("browser") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "containers_test_utils.cc",
+    "containers_test_utils.h",
+  ]
+
+  public_deps = [ ":browser" ]
+
+  deps = [
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/color",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
     "containers_service_unittest.cc",
     "containers_settings_handler_unittest.cc",
-    "containers_test_utils.cc",
-    "containers_test_utils.h",
     "default_containers_list_unittest.cc",
     "prefs_unittest.cc",
+    "temporary_container_unittest.cc",
   ]
 
   deps = [
     ":browser",
+    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/containers/core/common",
+    "//brave/ui/color:nala_color_id",
     "//components/sync_preferences:test_support",
     "//mojo/public/cpp/bindings",
     "//testing/gmock",

@@ -24,7 +24,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -82,62 +81,6 @@ void StartProcess(RewardsServiceImpl* rewards_service) {
   rewards_service->StartProcessForTesting(
       base::BindLambdaForTesting([&]() { run_loop.Quit(); }));
   run_loop.Run();
-}
-
-void StartProcessWithConnectedUser(Profile* profile) {
-  auto* prefs = profile->GetPrefs();
-
-  prefs->SetString(prefs::kDeclaredGeo, "US");
-
-  constexpr char kRewardsWalletJSON[] = R"(
-      {"payment_id":"2b6e71a6-f3c7-5999-9235-11605a60ec93",
-       "recovery_seed":"QgcQHdg6fo53/bGKVwZlL1UkLiql8X7U68jaWgz6FWQ="})";
-
-  prefs->SetString(prefs::kWalletBrave, kRewardsWalletJSON);
-
-  base::DictValue wallet;
-  wallet.Set("token", "token");
-  wallet.Set("address", GetUpholdExternalAddress());
-  wallet.Set("status", static_cast<int>(mojom::WalletStatus::kConnected));
-  wallet.Set("user_name", "Brave Test");
-
-  auto encrypted = EncryptPrefString(*base::WriteJson(wallet));
-  ASSERT_TRUE(encrypted);
-
-  prefs->SetString(prefs::kExternalWalletType, "uphold");
-  prefs->SetString(prefs::kWalletUphold, *encrypted);
-
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  DCHECK(rewards_service);
-
-  test_util::StartProcess(static_cast<RewardsServiceImpl*>(rewards_service));
-
-  {
-    // Verify that the payment ID was read correctly.
-    std::string payment_id;
-    base::RunLoop run_loop;
-    rewards_service->GetRewardsWallet(
-        base::BindLambdaForTesting([&](mojom::RewardsWalletPtr rewards_wallet) {
-          payment_id = rewards_wallet->payment_id;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    ASSERT_EQ(payment_id, "2b6e71a6-f3c7-5999-9235-11605a60ec93");
-  }
-
-  {
-    // Verify that the external wallet data was read correctly.
-    mojom::ExternalWalletPtr external_wallet;
-    base::RunLoop run_loop;
-    rewards_service->GetExternalWallet(
-        base::BindLambdaForTesting([&](mojom::ExternalWalletPtr wallet) {
-          external_wallet = std::move(wallet);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    ASSERT_TRUE(external_wallet);
-    ASSERT_EQ(external_wallet->address, GetUpholdExternalAddress());
-  }
 }
 
 GURL GetUrl(net::EmbeddedTestServer* https_server,
@@ -230,14 +173,6 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
   // Rewards onboarding will be skipped if the rewards enabled flag is set
   PrefService* prefs = browser->profile()->GetPrefs();
   prefs->SetBoolean(prefs::kEnabled, bypassed);
-}
-
-std::optional<std::string> EncryptPrefString(const std::string& value) {
-  std::string encrypted;
-  if (!OSCrypt::EncryptString(value, &encrypted)) {
-    return {};
-  }
-  return base::Base64Encode(encrypted);
 }
 
 }  // namespace brave_rewards::test_util

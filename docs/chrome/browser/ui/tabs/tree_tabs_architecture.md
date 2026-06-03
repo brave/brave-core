@@ -10,13 +10,17 @@ framework to support hierarchical tab organization.
 
 ## Foundation: Group Tabs Architecture
 
-Before diving into tree tabs, it's essential to understand the existing Group Tabs architecture that serves as the foundation.
+Before diving into tree tabs, it's essential to understand the existing Group
+Tabs architecture that serves as the foundation.
 
 ### Core Components
 
 #### 1. TabCollection Hierarchy
 
-The [tab collection](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_collection.h;drc=ecd02bc4ab0da9efc6f1765f4f46fb46252f3167) framework is designed as a hierarchical system that can contain both tabs and other collections:
+The
+[tab collection](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_collection.h;drc=ecd02bc4ab0da9efc6f1765f4f46fb46252f3167)
+framework is designed as a hierarchical system that can contain both tabs and
+other collections:
 
 ```cpp
 class TabCollection {
@@ -28,7 +32,7 @@ public:
   // - GROUP:     A container to grouped tabs.
   // - SPLIT:     A container for split tabs.
   enum class Type { TABSTRIP, PINNED, UNPINNED, GROUP, SPLIT };
-  
+
   // Hierarchical structure support
   TabInterface* AddTab(std::unique_ptr<TabInterface> tab, size_t index);
   T* AddCollection(std::unique_ptr<T> collection, size_t index);
@@ -36,8 +40,8 @@ public:
 };
 ```
 
-The TabCollection provides recursive representation of groups of tabs. 
-So examplary structure would be like this:
+The TabCollection provides recursive representation of groups of tabs. So
+examplary structure would be like this:
 
 ```
 TabStripCollection
@@ -55,21 +59,21 @@ TabStripCollection
       └── Tab 5
 ```
 
-The TabCollection also **manages ownership** of its tabs and child collections, 
+The TabCollection also **manages ownership** of its tabs and child collections,
 ensuring proper lifecycle management. So **only TabStripModel** can directly
 manipulate TabCollection hierarchy.
 
 [**TabStripModel** owns **TabStripCollection** with the name `contents_data_`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.h;l=1379;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c),
 and access and manipulates tabs and collections through it. So we can think of
-[`TabStripCollection`](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_strip_collection.h;drc=a6e87177f32db34e28997e3f2d9fc67968e58fab) as the **central interface of tab management** for 
-TabStripModel.
-
+[`TabStripCollection`](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_strip_collection.h;drc=a6e87177f32db34e28997e3f2d9fc67968e58fab)
+as the **central interface of tab management** for TabStripModel.
 
 #### 2. TabGroup as Metadata Container
 
-[**TabGroupTabCollection**](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_group_tab_collection.h;drc=6c7213c72cc5e42c881d0ae57127ffe550963893) is a specialized TabCollection that manages grouped
-tabs. But it's focusing on managing the lifecycle of tabs within the group, while
-the actual group metadata is stored in a separate **TabGroup** class.
+[**TabGroupTabCollection**](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_group_tab_collection.h;drc=6c7213c72cc5e42c881d0ae57127ffe550963893)
+is a specialized TabCollection that manages grouped tabs. But it's focusing on
+managing the lifecycle of tabs within the group, while the actual group metadata
+is stored in a separate **TabGroup** class.
 
 ```cpp
 class TabGroupTabCollection : public TabCollection {
@@ -79,8 +83,8 @@ class TabGroupTabCollection : public TabCollection {
 
 ```
 
-
-[**TabGroup**](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_group.h;drc=fcc336e81a365fd858cae859059b29be8f995427) contains all group-related metadata:
+[**TabGroup**](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_group.h;drc=fcc336e81a365fd858cae859059b29be8f995427)
+contains all group-related metadata:
 
 ```cpp
 class TabGroup {
@@ -95,11 +99,12 @@ class TabGroup {
 };
 ```
 
-The important point here is that **TabGroupTabCollection** is not exposed to
-UI components except **TabStripModel**. Instead, UI components access group 
+The important point here is that **TabGroupTabCollection** is not exposed to UI
+components except **TabStripModel**. Instead, UI components access group
 metadata through **TabGroupModel**.
 
-[**BrowserTabStripController**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=757;drc=0fe57d75274de3140505b20e948a6d9fca1ffb68) demonstrates how UI components access group metadata:
+[**BrowserTabStripController**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=757;drc=0fe57d75274de3140505b20e948a6d9fca1ffb68)
+demonstrates how UI components access group metadata:
 
 ```cpp
 bool BrowserTabStripController::IsGroupCollapsed(
@@ -114,14 +119,15 @@ bool BrowserTabStripController::IsGroupCollapsed(
 
 #### 4. TabGroupModel as Registry
 
-[**TabGroupModel**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_group_model.h;drc=fb8950cdd1c1de2b7d7fcc92ebbc5c84c03107a9) only contains TabGroup references for access. [**TabGroupModel**
-is also owned by **TabStripModel**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.h;l=1382;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c).
+[**TabGroupModel**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_group_model.h;drc=fb8950cdd1c1de2b7d7fcc92ebbc5c84c03107a9)
+only contains TabGroup references for access.
+[**TabGroupModel** is also owned by **TabStripModel**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.h;l=1382;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c).
 
 ```cpp
 class TabGroupModel {
   // Registry pointing to TabGroups (doesn't own them)
   std::map<tab_groups::TabGroupId, raw_ptr<TabGroup>> groups_;
-  
+
   // These will be called by TabStrripModel when it manipulates
   // TabGroupTabCollection.
   void AddTabGroup(TabGroup* group, base::PassKey<TabStripModel>);
@@ -130,7 +136,9 @@ class TabGroupModel {
 ```
 
 **Example: How TabStripModel creates a group**  
-When a user creates a new tab group, [TabStripModel::AddToNewGroup](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.cc;l=4138;drc=0fe57d75274de3140505b20e948a6d9fca1ffb68) demonstrates the integration pattern:
+When a user creates a new tab group,
+[TabStripModel::AddToNewGroup](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.cc;l=4138;drc=0fe57d75274de3140505b20e948a6d9fca1ffb68)
+demonstrates the integration pattern:
 
 ```cpp
 void TabStripModel::AddToNewGroup(const std::vector<int>& indices) {
@@ -155,14 +163,18 @@ void TabStripModel::AddToNewGroup(const std::vector<int>& indices) {
 }
 ```
 
-This pattern shows how ownership flows: TabCollection → TabGroup → TabGroupModel registry.
+This pattern shows how ownership flows: TabCollection → TabGroup → TabGroupModel
+registry.
 
-**Critical Access Pattern**: 
+**Critical Access Pattern**:
+
 - **TabCollection system** manages ownership
-- **UI components** (except TabStripModel) must access **TabGroup** via **TabGroupModel**, never **TabGroupTabCollection** directly
+- **UI components** (except TabStripModel) must access **TabGroup** via
+  **TabGroupModel**, never **TabGroupTabCollection** directly
 
 **Example: UI accessing group metadata**  
-[BrowserTabStripController](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=723;drc=b2ea91862833a9b13ff555010327c6b65e1820e1) demonstrates proper access through TabGroupModel:
+[BrowserTabStripController](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=723;drc=b2ea91862833a9b13ff555010327c6b65e1820e1) demonstrates
+proper access through TabGroupModel:
 
 ```cpp
 TabGroup* BrowserTabStripController::GetTabGroup(
@@ -187,7 +199,9 @@ void BrowserTabStripController::SetVisualDataForGroup(
 ```
 
 #### 5. TabGroupChanged Notifications
-All changes to tab groups will be [notified through **TabStripModelObserver**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model_observer.h;l=549;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c),
+
+All changes to tab groups will be
+[notified through **TabStripModelObserver**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model_observer.h;l=549;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c),
 typically observed by UI components:
 
 ```cpp
@@ -196,7 +210,9 @@ class TabStripModelObserver {
 };
 ```
 
-Change details are encapsulated in the [**TabGroupChange**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model_observer.h;l=263;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c) struct:
+Change details are encapsulated in the
+[**TabGroupChange**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model_observer.h;l=263;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c)
+struct:
 
 ```cpp
 struct TabGroupChange {
@@ -220,7 +236,8 @@ struct TabGroupChange {
 ```
 
 **Example: UI observing group changes**  
-[BrowserTabStripController](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=922;drc=b2ea91862833a9b13ff555010327c6b65e1820e1) demonstrates how UI components react to group changes:
+[BrowserTabStripController](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=922;drc=b2ea91862833a9b13ff555010327c6b65e1820e1) demonstrates
+how UI components react to group changes:
 
 ```cpp
 void BrowserTabStripController::OnTabGroupChanged(
@@ -259,7 +276,7 @@ void BrowserTabStripController::OnTabGroupChanged(
 
 ## Tree Tabs Implementation
 
-Building on this foundation, tree tabs extend the collection framework with 
+Building on this foundation, tree tabs extend the collection framework with
 hierarchical tab relationships based on opener connections.
 
 ### Core Components
@@ -269,7 +286,6 @@ hierarchical tab relationships based on opener connections.
 **TreeTabNodeTabCollection** is the central component managing the hierarchical
 tree system. And **TreeTabNode** is the metadata container for tree-related
 information. This will be owned by **TreeTabNodeTabCollection**.
-
 
 ```cpp
 class TabCollection {
@@ -284,12 +300,12 @@ public:
 class TreeTabNodeTabCollection : public TabCollection {
   raw_ptr<TabInterface> current_tab_;     // The tab this node represents
   std::unique_ptr<TreeTabNode> node_;     // OWNS the TreeTabNode metadata
-  
+
   // Called when tree tab is truned on or off to build/flatten tree structure
   static void BuildTreeTabs(TabCollection& root, /* callbacks */);
   static void FlattenTreeTabs(TabCollection& root, /* callbacks */);
-  
-  // Hierarchy navigation  
+
+  // Hierarchy navigation
   TreeTabNodeTabCollection* GetTopLevelAncestor();
   std::vector<std::variant<TabInterface*, TabCollection*>> GetTreeNodeChildren();
 
@@ -298,10 +314,9 @@ class TreeTabNodeTabCollection : public TabCollection {
 };
 ```
 
-
-The **TreeTabNodeTabCollection** owns one tab(or groups/split if needed in future)
-and other **TreeTabNodeTabCollection** as its children, forming a tree structure.
-So we would have structure of tree tabs like this when it's enabled:
+The **TreeTabNodeTabCollection** owns one tab(or groups/split if needed in
+future) and other **TreeTabNodeTabCollection** as its children, forming a tree
+structure. So we would have structure of tree tabs like this when it's enabled:
 
 ```TabStripCollection
  ├── PinnedCollection
@@ -318,8 +333,7 @@ So we would have structure of tree tabs like this when it's enabled:
       ...
 ```
 
-
-#### 2. TreeTabNode as Metadata Container  
+#### 2. TreeTabNode as Metadata Container
 
 **TreeTabNode** contains all tree-related metadata:
 
@@ -329,7 +343,7 @@ class TreeTabNode {
   int level_ = 0;        // Depth in tree (root = 0)
   int height_ = 0;       // Height of subtree rooted at this node
   bool collapsed_ = false; // Hide/show child tabs
-  
+
   // Tree structure calculations
   int CalculateLevelAndHeightRecursively();
   void OnChildHeightChanged();
@@ -364,16 +378,18 @@ class TreeTabModel {
 };
 ```
 
-Note that this relationship is similar to the existing  **TabGroup** and 
+Note that this relationship is similar to the existing **TabGroup** and
 **TabGroupTabCollection** relationship. Which means:
-* **TreeTabNodeTabCollection** manages the lifecycle of tabs within the tree,
-while the actual tree metadata is stored in a separate **TreeTabNode** class.  
-* **TreeTabNode** is stored in **TreeTabModel** for UI access and it's owned by
-  **TabStripModel**.
-* Only **TabStripModel** can directly manipulate **TreeTabNodeTabCollection**.
-* UI components access tree metadata through **TreeTabNode**.
 
-**Following the Group Pattern**: So this mirrors how tab group classes are organized:
+- **TreeTabNodeTabCollection** manages the lifecycle of tabs within the tree,
+  while the actual tree metadata is stored in a separate **TreeTabNode** class.
+- **TreeTabNode** is stored in **TreeTabModel** for UI access and it's owned by
+  **TabStripModel**.
+- Only **TabStripModel** can directly manipulate **TreeTabNodeTabCollection**.
+- UI components access tree metadata through **TreeTabNode**.
+
+**Following the Group Pattern**: So this mirrors how tab group classes are
+organized:
 
 ```cpp
 // Group Pattern (existing):
@@ -384,6 +400,7 @@ TreeTabNodeTabCollection owns TreeTabNode → TreeTabModel provides UI access
 ```
 
 ### Mode-Specific Behavior via Delegate Pattern
+
 Currently, we have complicated conditionals scattered throughout the tab UI
 regarding mode, such as:
 
@@ -422,24 +439,25 @@ class BraveTabStripCollectionDelegate {
 public:
   // Determines if this delegate should handle tab manipulation
   virtual bool ShouldHandleTabManipulation() const { return false; }
-  
+
   // Pre/post-processing hooks for tab operations
   virtual void AddTabRecursive(std::unique_ptr<TabInterface> tab, size_t index,
                               std::optional<tab_groups::TabGroupId> new_group_id,
                               bool new_pinned_state,
                               TabInterface* opener) const {}
-  
-  virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(size_t index) const { 
-    return nullptr; 
+
+  virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(size_t index) const {
+    return nullptr;
   }
-  
+
   virtual void MoveTabsRecursive(const std::vector<int>& tab_indices,
                                 size_t destination_index,
                                 /* ... */) const {}
 };
 ```
 
-**Purpose**: Provides a leeway for pre/post-processing of `TabStripCollection`'s behavior without modifying core collection logic.
+**Purpose**: Provides a leeway for pre/post-processing of `TabStripCollection`'s
+behavior without modifying core collection logic.
 
 #### BraveTreeTabStripCollectionDelegate - Tree Mode Specialization
 
@@ -448,7 +466,7 @@ class BraveTreeTabStripCollectionDelegate : public BraveTabStripCollectionDelega
 public:
   // Activates tree-specific handling
   bool ShouldHandleTabManipulation() const override { return true; }
-  
+
   // Tree-aware tab operations with pre/post-processing
   void AddTabRecursive(std::unique_ptr<TabInterface> tab, size_t index,
                       std::optional<tab_groups::TabGroupId> new_group_id,
@@ -466,7 +484,8 @@ private:
 
 ##### Clean Architecture Benefits
 
-This delegate pattern eliminates the need for conditionals throughout the codebase:
+This delegate pattern eliminates the need for conditionals throughout the
+codebase:
 
 ```cpp
 // Instead of this everywhere:
@@ -474,7 +493,7 @@ void TabStripCollection::AddTab(/*...*/) {
   if (is_tree_tabs_mode) {
     // Tree-specific logic
   } else {
-    // Default logic  
+    // Default logic
   }
 }
 
@@ -497,17 +516,18 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(/*...*/) {
 
 #### TreeTabChanged Notifications
 
-The existing `TabStripModelObserver` is extended with tree-specific change notifications:
+The existing `TabStripModelObserver` is extended with tree-specific change
+notifications:
 
 ```cpp
 struct TreeTabChange {
   enum Type { kNodeCreated, kNodeWillBeDestroyed };
-  
+
   struct CreatedChange : public Delta {
     raw_ref<const TreeTabNode> node;
   };
-  
-  struct WillBeDestroyedChange : public Delta {  
+
+  struct WillBeDestroyedChange : public Delta {
     raw_ref<const TreeTabNode> node;
   };
 };
@@ -518,8 +538,9 @@ class TabStripModelObserver {
 };
 ```
 
-**Following the TabGroupChange pattern**: This mirrors the existing **TabGroupChange notification system** mentioned earlier
-and tree related changes also would be notified via BrowserTabStripController:
+**Following the TabGroupChange pattern**: This mirrors the existing
+**TabGroupChange notification system** mentioned earlier and tree related
+changes also would be notified via BrowserTabStripController:
 
 ```cpp
 // Existing pattern for groups:
@@ -543,7 +564,8 @@ void TabStripModel::NotifyTreeTabNodeCreated(const tabs::TreeTabNode& node) {
 ```
 
 **Example: UI responding to tree changes**  
-Similar to how **BrowserTabStripController** reacts to tab group changes, tree tab UI would be handled:
+Similar to how **BrowserTabStripController** reacts to tab group changes, tree
+tab UI would be handled:
 
 ```cpp
 void BraveBrowserTabStripController::OnTreeTabChanged(
@@ -567,102 +589,125 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
 ## How it works with other tab management features?
 
 ### Split tabs
+
 #### CreateSplit
 
-**Flow:** User chooses "New split" on selected tabs → **TabStripModel::AddToSplitImpl** →
-**MoveTabsAndSetPropertiesImpl** (delegate **MoveTabsRecursive** in tree mode) →
-**CreateSplit(split_id, tabs, visual_data)**.
+**Flow:** User chooses "New split" on selected tabs →
+**TabStripModel::AddToSplitImpl** → **MoveTabsAndSetPropertiesImpl** (delegate
+**MoveTabsRecursive** in tree mode) → **CreateSplit(split_id, tabs,
+visual_data)**.
 
 - **Default:** **TabStripCollection::CreateSplit** assumes one parent: creates
   **SplitTabCollection**, inserts via **AddTabCollectionImpl** (which updates
-  **split_mapping_**), moves tabs in. **GetSplitTabCollection(split_id)** works.
+  **split*mapping***), moves tabs in. **GetSplitTabCollection(split_id)** works.
 
 - **Tree tabs:** When the delegate **ShouldHandleTabManipulation()**
-  (**BraveTreeTabStripCollectionDelegate**), the delegate's **CreateSplit** runs and
-  handles tabs in different **TreeTabNodeTabCollection**s:
+  (**BraveTreeTabStripCollectionDelegate**), the delegate's **CreateSplit** runs
+  and handles tabs in different **TreeTabNodeTabCollection**s:
   1. Resolve first/second tab by recursive index (stable removal order).
-  2. Remove from tree (higher index first): **MoveChildrenOfTreeTabNodeToParent**,
-     **MaybeRemoveTab**, **MaybeRemoveCollection**.
-  3. Build **SplitTabCollection**, add tabs, wrap it in one **TreeTabNodeTabCollection**
-     (the "wrapper").
+  2. Remove from tree (higher index first):
+     **MoveChildrenOfTreeTabNodeToParent**, **MaybeRemoveTab**,
+     **MaybeRemoveCollection**.
+  3. Build **SplitTabCollection**, add tabs, wrap it in one
+     **TreeTabNodeTabCollection** (the "wrapper").
   4. Register with **TreeTabModel**, insert wrapper at first tab's position via
      **AddTabCollectionAtPosition** → **AddTabCollectionImpl**.
 
-**Split registry:** **split_mapping_** (split_id → **SplitTabCollection***) is only
-updated for **SPLIT** (and splits inside **GROUP**). The wrapper is **TREE_NODE**, so
-the delegate must explicitly register the inner **SplitTabCollection** in
-**split_mapping_** (or extend **AddCollectionMapping** to recurse into **TREE_NODE**);
-otherwise **GetSplitTabCollection(split_id)** is null and callers hit a CHECK. 
-In order to address this, we need to update **AddCollectionMapping** to recurse into **TREE_NODE**
-and register the inner **SplitTabCollection** in **split_mapping_**.
+**Split registry:** **split*mapping*** (split\*id → **SplitTabCollection\***) is
+only updated for **SPLIT** (and splits inside **GROUP**). The wrapper is
+**TREE_NODE**, so the delegate must explicitly register the inner
+**SplitTabCollection** in \*\*split_mapping**\* (or extend
+**AddCollectionMapping** to recurse into **TREE*NODE**); otherwise
+**GetSplitTabCollection(split_id)** is null and callers hit a CHECK. In order to
+address this, we need to update **AddCollectionMapping** to recurse into
+**TREE_NODE** and register the inner **SplitTabCollection** in
+**split_mapping*\*\*.
 
 #### Unsplit
 
 **Flow:** User chooses "Unsplit" (e.g. from split context menu) →
 **TabStripModel::RemoveSplit(split_id)** → **RemoveSplitImpl** →
-**contents_data_->Unsplit(split_id)** (i.e. **TabStripCollection::Unsplit** or the
-delegate's **Unsplit** in tree mode).
+**contents*data*->Unsplit(split_id)** (i.e. **TabStripCollection::Unsplit** or
+the delegate's **Unsplit** in tree mode).
 
-- **Default:** **TabStripCollection::Unsplit** looks up **GetSplitTabCollection(split_id)**,
-  gets the split's parent and index, moves each tab into the parent via **MoveTabImpl**,
-  then **RemoveTabCollectionImpl(split)**.
+- **Default:** **TabStripCollection::Unsplit** looks up
+  **GetSplitTabCollection(split_id)**, gets the split's parent and index, moves
+  each tab into the parent via **MoveTabImpl**, then
+  **RemoveTabCollectionImpl(split)**.
 
-- **Tree tabs:** **BraveTreeTabStripCollectionDelegate::Unsplit** runs when the delegate
-  handles manipulation. The split's parent is the **TREE_NODE** wrapper. It:
+- **Tree tabs:** **BraveTreeTabStripCollectionDelegate::Unsplit** runs when the
+  delegate handles manipulation. The split's parent is the **TREE_NODE**
+  wrapper. It:
   1. Notifies **TreeTabModel::RemoveTreeTabNode** for the wrapper node.
   2. Extracts tabs from the split (**GetTabsRecursive**, **MaybeRemoveTab**) and
      re-inserts each at the wrapper's position as its own tree node via
      **AddTabAsTreeNodeToCollection** (preserving recursive index).
   3. Moves any children of the wrapper node to the wrapper's parent with
      **MoveChildrenOfTreeTabNodeToNode**.
-  4. Removes the wrapper (and the split it owns) via **RemoveTabCollection(wrapper)**.
-
+  4. Removes the wrapper (and the split it owns) via
+     **RemoveTabCollection(wrapper)**.
 
 ### Groups
 
-In tree mode, a group is represented by a single **TreeTabNodeTabCollection** wrapping the
-**TabGroupTabCollection**; tabs inside the group stay direct children of the group (no per-tab
-tree node). **BuildTreeTabs** wraps each **TabGroupTabCollection** in one tree node;
-**TreeTabNodeTabCollection** has a constructor that takes a **TabGroupTabCollection** for this.
+In tree mode, a group is represented by a single **TreeTabNodeTabCollection**
+wrapping the **TabGroupTabCollection**; tabs inside the group stay direct
+children of the group (no per-tab tree node). **BuildTreeTabs** wraps each
+**TabGroupTabCollection** in one tree node; **TreeTabNodeTabCollection** has a
+constructor that takes a **TabGroupTabCollection** for this.
 
 #### Add to group
 
 **Flow:** User adds tabs to a new or existing group →
 **TabStripModel::AddToNewGroup** / **AddToExistingGroupImpl** →
-**MoveTabsAndSetPropertiesImpl** (delegate **AddTabRecursive** or **MoveTabsRecursive** in tree
-mode).
+**MoveTabsAndSetPropertiesImpl** (delegate **AddTabRecursive** or
+**MoveTabsRecursive** in tree mode).
 
 - **Default:** **TabStripCollection** / **UnpinnedCollection** create or look up
-  **TabGroupTabCollection**, move tabs in via **AddTabRecursive** or **MoveTabImpl**.
+  **TabGroupTabCollection**, move tabs in via **AddTabRecursive** or
+  **MoveTabImpl**.
 
-- **Tree tabs:** When **new_group_id** is set, the delegate does not wrap tabs in tree nodes;
-  the group wraps them. **AddTabRecursive** forwards to the collection with **new_group_id** and
-  skips wrapping. **MoveTabsRecursive** dispatches to **MoveTabsIntoGroup**: unwrap tabs from
-  their tree nodes (or detach from another group), add to the target group. If the group is
-  detached (new group), the delegate wraps it in a **TreeTabNodeTabCollection** and attaches it
-  at the correct tree position via **AddTabCollectionAtPosition** and **PopDetachedGroupCollectionForDelegate**.
+- **Tree tabs:** When **new_group_id** is set, the delegate does not wrap tabs
+  in tree nodes; the group wraps them. **AddTabRecursive** forwards to the
+  collection with **new_group_id** and skips wrapping. **MoveTabsRecursive**
+  dispatches to **MoveTabsIntoGroup**: unwrap tabs from their tree nodes (or
+  detach from another group), add to the target group. If the group is detached
+  (new group), the delegate wraps it in a **TreeTabNodeTabCollection** and
+  attaches it at the correct tree position via **AddTabCollectionAtPosition**
+  and **PopDetachedGroupCollectionForDelegate**.
 
 #### Remove from group
 
 **Flow:** User removes tabs from a group → **TabStripModel::RemoveFromGroup** →
-**MoveTabsAndSetPropertiesImpl** (no **new_group_id**) → delegate **MoveTabsRecursive**.
+**MoveTabsAndSetPropertiesImpl** (no **new_group_id**) → delegate
+**MoveTabsRecursive**.
 
-- **Default:** Tabs are moved out of **TabGroupTabCollection** into the unpinned (or pinned)
-  collection.
+- **Default:** Tabs are moved out of **TabGroupTabCollection** into the unpinned
+  (or pinned) collection.
 
-- **Tree tabs:** When the tabs’ parent is **TabGroupTabCollection** and **new_group_id** is
-  unset, the delegate runs **MoveTabsOutOfGroup**: move each tab out of the group and wrap it
-  in its own **TreeTabNodeTabCollection** at the destination index (same pattern as moving
-  into unpinned).
+- **Tree tabs:** When the tabs’ parent is **TabGroupTabCollection** and
+  **new_group_id** is unset, the delegate runs **MoveTabsOutOfGroup**: move each
+  tab out of the group and wrap it in its own **TreeTabNodeTabCollection** at
+  the destination index (same pattern as moving into unpinned).
 
 #### Move between groups
 
-**Flow:** Same as add-to-group from the model’s perspective: **MoveTabsAndSetPropertiesImpl**
-with **new_group_id** set → delegate **MoveTabsRecursive** → **MoveTabsIntoGroup**. Tabs may
-come from another group or from standalone tree nodes; **MoveTabsIntoGroup** detaches or
-unwraps them and adds them to the target group.
+**Flow:** Same as add-to-group from the model’s perspective:
+**MoveTabsAndSetPropertiesImpl** with **new_group_id** set → delegate
+**MoveTabsRecursive** → **MoveTabsIntoGroup**. Tabs may come from another group
+or from standalone tree nodes; **MoveTabsIntoGroup** detaches or unwraps them
+and adds them to the target group.
 
-**UI:** **BraveTabStrip::AddTabToGroup** uses **GetTreeTabNodeIdForGroup** (model → collection
-→ delegate) to set the tab’s **tree_tab_node** when adding to a group in tree mode, so layout
-shows the tab under the group’s tree node. **GetTreeTabNode** returns **GetEmptyTreeTabNode()**
-when the node is temporarily null (e.g. tab just moved into group before **TabGroupedStateChanged**).
+**UI:** **BraveTabStrip::AddTabToGroup** uses **GetTreeTabNodeIdForGroup**
+(model → collection → delegate) to set the tab’s **tree_tab_node** when adding
+to a group in tree mode, so layout shows the tab under the group’s tree node.
+**GetTreeTabNode** returns **GetEmptyTreeTabNode()** when the node is
+temporarily null (e.g. tab just moved into group before
+**TabGroupedStateChanged**).
+
+---
+
+## Related Documents
+
+- [tree_tabs_session_restore.md](tree_tabs_session_restore.md) — Design for
+  persisting the `TreeTabNode` hierarchy across browser restarts via the session
+  service.

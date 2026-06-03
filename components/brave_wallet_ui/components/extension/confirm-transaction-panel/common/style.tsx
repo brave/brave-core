@@ -3,10 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
-// shared styles
-import { WalletButton } from '../../../shared/style'
+// Shared Styles
+import { Text, WalletButton } from '../../../shared/style'
 import { TabRow } from '../../shared-panel-styles'
 
 export const QueueStepRow = styled.div`
@@ -16,22 +17,15 @@ export const QueueStepRow = styled.div`
   flex-direction: row;
 `
 
-export const QueueStepText = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
+export const QueueStepText = styled(Text)`
   margin-right: 9px;
 `
 
 export const queueStepButtonRowPadding = '16px 0px 4px 0px'
 
 export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.default.semibold};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;
@@ -45,7 +39,7 @@ export const FavIcon = styled.img<{ height?: string }>`
   width: auto;
   height: ${(p) => p?.height || '40px'};
   border-radius: 5px;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   margin-bottom: 7px;
 `
 

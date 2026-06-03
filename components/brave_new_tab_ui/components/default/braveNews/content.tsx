@@ -13,7 +13,6 @@ import CardLarge from './cards/_articles/cardArticleLarge'
 import CardError from './cards/cardError'
 import CardLoading from './cards/cardLoading'
 import CardNoContent from './cards/cardNoContent'
-import CardDisplayAd from './cards/displayAd'
 import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import Refresh from './options/refresh'
@@ -197,17 +196,11 @@ export default function BraveNewsContent(props: Props) {
       {!isOnlyDisplayingPeekingCard &&
         <>
           <>
-            <CardDisplayAd
-              onVisitDisplayAd={props.onVisitDisplayAd}
-              onViewedDisplayAd={props.onViewedDisplayAd}
-              getContent={props.getDisplayAd}
-            />
             <div {...{ [attributeNameCardCount]: introCount }} ref={registerCardCountTriggerElement} />
           </>
           {
             /* Infinitely repeating collections of content. */
             Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
-              const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
               let startingDisplayIndex = runningCardCount
               runningCardCount += feed.pages[index].items.length
               return (
@@ -217,14 +210,9 @@ export default function BraveNewsContent(props: Props) {
                   content={feed.pages[index]}
                   publishers={publishers}
                   articleToScrollTo={props.articleToScrollTo}
-                  shouldScrollToDisplayAd={shouldScrollToDisplayAd}
                   onReadFeedItem={props.onReadFeedItem}
                   onPeriodicCardViews={registerCardCountTriggerElement}
                   onSetPublisherPref={props.onSetPublisherPref}
-                  onPromotedItemViewed={props.onPromotedItemViewed}
-                  onVisitDisplayAd={props.onVisitDisplayAd}
-                  onViewedDisplayAd={props.onViewedDisplayAd}
-                  getDisplayAdContent={props.getDisplayAd}
                 />
               )
             })

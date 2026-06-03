@@ -15,8 +15,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/ui/webui/sanitized_image_source.h"
@@ -58,9 +58,6 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
-  source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
-                     base::CommandLine::ForCurrentProcess()->HasSwitch(
-                         brave_wallet::mojom::kP3ACountTestNetworksSwitch));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
@@ -129,7 +126,6 @@ void WalletPageUI::CreatePageHandler(
         bitcoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
         brave_wallet_service,
-    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> brave_wallet_p3a,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         brave_wallet_ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
@@ -155,7 +151,6 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(solana_tx_manager_proxy));
     wallet_service->Bind(std::move(filecoin_tx_manager_proxy));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
-    wallet_service->Bind(std::move(brave_wallet_p3a));
     wallet_service->Bind(std::move(swap_service));
     wallet_service->Bind(std::move(asset_ratio_service));
     wallet_service->Bind(std::move(meld_integration_service));

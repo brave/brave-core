@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/browser/application_state/application_state_observer.h"
 
 namespace brave_ads {
+class ApplicationStateObserver;
 
 // Notifies `ApplicationStateObserver` when the browser becomes active or
 // inactive.
@@ -30,6 +31,9 @@ class ApplicationStateMonitor {
 
   // Returns whether the browser is currently active.
   virtual bool IsBrowserActive() const;
+
+  // Lifecycle
+  virtual void Reset() {}
 
  protected:
   // Notifies observers that the browser became active.

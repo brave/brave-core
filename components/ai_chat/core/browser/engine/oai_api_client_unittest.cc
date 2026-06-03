@@ -220,8 +220,10 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
       mojom::TextContentBlock::New("Where was it?")));
   messages.push_back(std::move(user_msg));
 
+  auto wrapped_options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(model_options));
   client_->PerformRequest(
-      *model_options, std::move(messages), std::nullopt,
+      *wrapped_options, std::move(messages), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -275,8 +277,10 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
       mojom::TextContentBlock::New("Test message")));
   messages.push_back(std::move(user_msg));
 
+  auto wrapped_options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(model_options));
   client_->PerformRequest(
-      *model_options, std::move(messages), std::nullopt,
+      *wrapped_options, std::move(messages), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -325,8 +329,10 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
       mojom::TextContentBlock::New("Test message")));
   messages.push_back(std::move(user_msg));
 
+  auto wrapped_options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(model_options));
   client_->PerformRequest(
-      *model_options, std::move(messages), std::nullopt,
+      *wrapped_options, std::move(messages), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -496,6 +502,12 @@ INSTANTIATE_TEST_SUITE_P(
                   mojom::ImageContentBlock::New(GURL(kTestImageUrl)));
             }),
             "image_url", std::nullopt, std::nullopt},
+        ContentBlockSerializationTestParam{
+            "FileExtractedText", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFileExtractedTextContentBlock(
+                  mojom::FileExtractedTextContentBlock::New(kTestContent));
+            }),
+            "text", std::nullopt, kTestContent},
         ContentBlockSerializationTestParam{
             "PageExcerpt", base::BindRepeating([]() {
               return mojom::ContentBlock::NewPageExcerptContentBlock(
@@ -699,8 +711,10 @@ TEST_P(OAIAPIInvalidResponseTest,
       });
 
   // Begin request
+  auto wrapped_options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(model_options));
   client_->PerformRequest(
-      *model_options, std::vector<OAIMessage>(), std::nullopt,
+      *wrapped_options, std::vector<OAIMessage>(), std::nullopt,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -822,8 +836,10 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
       mojom::TextContentBlock::New("What's the weather in New York?")));
   messages.push_back(std::move(user_msg));
 
+  auto wrapped_options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(model_options));
   client_->PerformRequest(
-      *model_options, std::move(messages), std::move(tool_defs),
+      *wrapped_options, std::move(messages), std::move(tool_defs),
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

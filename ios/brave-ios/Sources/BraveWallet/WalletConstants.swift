@@ -38,10 +38,10 @@ public struct WalletConstants {
   )!
 
   /// Terms of Use for Ethereum Name Service (ENS)
-  public static let ensTermsOfUseURL: URL = URL(string: "https://consensys.net/terms-of-use/")!
+  public static let ensTermsOfUseURL: URL = URL(string: "https://chainstack.com/tos/")!
 
   /// Privacy Policy for Ethereum Name Service (ENS)
-  public static let ensPrivacyPolicyURL: URL = URL(string: "https://consensys.net/privacy-policy/")!
+  public static let ensPrivacyPolicyURL: URL = URL(string: "https://chainstack.com/privacy/")!
 
   /// The url to learn more about ENS off-chain lookups
   public static let braveWalletENSOffchainURL = URL(
@@ -76,6 +76,7 @@ public struct WalletConstants {
     BraveWallet.FilecoinEthereumTestnetChainId,
     BraveWallet.BitcoinTestnet,
     BraveWallet.ZCashTestnet,
+    BraveWallet.CardanoTestnet,
   ]
 
   /// Primary network chain ids
@@ -85,6 +86,13 @@ public struct WalletConstants {
     BraveWallet.FilecoinMainnet,
     BraveWallet.BitcoinMainnet,
     BraveWallet.ZCashMainnet,
+    BraveWallet.CardanoMainnet,
+  ]
+
+  /// Chain ids that are required and cannot be de-selected during onboarding.
+  static let mandatoryNetworkChainIds: [String] = [
+    BraveWallet.SolanaMainnet,
+    BraveWallet.MainnetChainId,
   ]
 
   public enum SupportedCoinTypesMode {

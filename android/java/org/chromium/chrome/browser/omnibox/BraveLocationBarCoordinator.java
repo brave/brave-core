@@ -21,8 +21,6 @@ import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
-import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
-import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.LocationBarMediator.OmniboxUma;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
@@ -37,6 +35,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -82,8 +81,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             OmniboxUma omniboxUma,
             BookmarkState bookmarkState,
             BooleanSupplier isToolbarMicEnabledSupplier,
-            @Nullable Supplier<MerchantTrustSignalsCoordinator>
-                    merchantTrustSignalsCoordinatorSupplier,
             OmniboxActionDelegateImpl omniboxActionDelegate,
             @Nullable BrowserStateBrowserControlsVisibilityDelegate
                     browserControlsVisibilityDelegate,
@@ -101,10 +98,11 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             boolean isToolbarPositionCustomizationEnabled,
             @Nullable PageZoomManager pageZoomManager,
             Function<Tab, @Nullable Bitmap> tabFaviconFunction,
-            @Nullable MultiInstanceManager multiInstanceManager,
             SnackbarManager snackbarManager,
             View bottomContainerView,
-            @Nullable OmniboxChipManager omniboxChipManager) {
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable LocationBarFocusScrimHandler scrimHandler,
+            @Nullable UserEducationHelper userEducationHelper) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -124,7 +122,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 omniboxUma,
                 bookmarkState,
                 isToolbarMicEnabledSupplier,
-                merchantTrustSignalsCoordinatorSupplier,
                 omniboxActionDelegate,
                 browserControlsVisibilityDelegate,
                 backPressManager,
@@ -144,10 +141,11 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 isToolbarPositionCustomizationEnabled,
                 pageZoomManager,
                 tabFaviconFunction,
-                multiInstanceManager,
                 snackbarManager,
                 bottomContainerView,
-                omniboxChipManager);
+                omniboxChipManager,
+                scrimHandler,
+                userEducationHelper);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

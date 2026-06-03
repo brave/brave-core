@@ -16,9 +16,10 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     WEB_PERSISTENT = 0,
     WEB_NON_PERSISTENT = 1,
     EXTENSION = 2,
-    SEND_TAB_TO_SELF = 3,
+    // SEND_TAB_TO_SELF = 3,  // Deprecated.
     TRANSIENT = 4,
-    PERMISSION_REQUEST = 5,
+    // Deprecated
+    // PERMISSION_REQUEST = 5,
     SHARING = 6,
     ANNOUNCEMENT = 7,
     NEARBY_SHARE = 8,
@@ -26,7 +27,8 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     NOTIFICATIONS_MUTED = 10,
     TAILORED_SECURITY = 11,
     DEFAULT_BROWSER_CHANGED = 12,
-    MAX = DEFAULT_BROWSER_CHANGED,
+    BRAVE_WALLET = 13,
+    MAX = BRAVE_WALLET,
   };
 
   static_assert(

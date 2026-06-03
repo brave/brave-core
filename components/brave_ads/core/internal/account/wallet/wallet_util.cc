@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+std::optional<WalletInfo> MaybeBuildWalletFromRecoverySeed(
     const std::string& payment_id,
     const std::string& recovery_seed_base64) {
   std::optional<std::vector<uint8_t>> recovery_seed =
@@ -27,6 +27,7 @@ std::optional<WalletInfo> CreateWalletFromRecoverySeed(
 
   std::optional<crypto::KeyPairInfo> key_pair =
       crypto::GenerateSignKeyPairFromSeed(*recovery_seed);
+  crypto::SecureZero(*recovery_seed);
   if (!key_pair || !key_pair->IsValid()) {
     return std::nullopt;
   }
@@ -35,6 +36,7 @@ std::optional<WalletInfo> CreateWalletFromRecoverySeed(
       .payment_id = payment_id,
       .public_key_base64 = base::Base64Encode(key_pair->public_key),
       .secret_key_base64 = base::Base64Encode(key_pair->secret_key)};
+  crypto::SecureZero(key_pair->secret_key);
 
   if (!wallet.IsValid()) {
     return std::nullopt;
@@ -43,12 +45,12 @@ std::optional<WalletInfo> CreateWalletFromRecoverySeed(
   return wallet;
 }
 
-std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+std::optional<WalletInfo> MaybeBuildWalletFromRecoverySeed(
     const mojom::WalletInfo* const mojom_wallet) {
   CHECK(mojom_wallet);
 
-  return CreateWalletFromRecoverySeed(mojom_wallet->payment_id,
-                                      mojom_wallet->recovery_seed_base64);
+  return MaybeBuildWalletFromRecoverySeed(mojom_wallet->payment_id,
+                                          mojom_wallet->recovery_seed_base64);
 }
 
 }  // namespace brave_ads

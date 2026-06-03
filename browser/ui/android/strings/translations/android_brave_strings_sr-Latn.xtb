@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blokira prijavu, meni, komentare i informativne video elemente na sajtu youtube.com.</translation>
 <translation id="8531835121131500698">Blokiraj YouTube Shorts</translation>
 <translation id="2167271714269158912">Blokira Shorts na početnoj stranici, stranici „Popularno“ i rezultatima pretrage na youtube.com.</translation>
+<translation id="2564435705466025309">Blokiraj YouTube videe sa automatskim sinhronizovanjem</translation>
+<translation id="3603500459037204525">Blokira videe sa automatskim sinhronizovanjem koji se pojavljuju na početnoj stranici i u rezultatima pretrage na youtube.com.</translation>
+<translation id="4067265130987656010">Blokiraj YouTube slike</translation>
+<translation id="3034711349887440574">Blokira slike koje se pojavljuju na početnoj stranici i u rezultatima pretrage na youtube.com.</translation>
+<translation id="8741919213635379855">Blokiraj YouTube Playables</translation>
+<translation id="2216551241986578034">Blokira Playables koji se pojavljuju na početnoj stranici i u rezultatima pretrage na youtube.com.</translation>
+<translation id="9038505474874975130">Blokiraj YouTube videe samo za članove</translation>
+<translation id="3084239516382196983">Blokira videe samo za članove koji se pojavljuju na početnoj stranici i u rezultatima pretrage na youtube.com.</translation>
 <translation id="6052725679982758334">Blokiranje društvenih medija</translation>
 <translation id="7498695072878479744">Dozvoli Google-ovu dugmad za prijavu na sajtovima trećih strana</translation>
 <translation id="863171915776379000">Dozvoli prijavu preko Facebook-a i ugrađene objave sa Facebook-a</translation>
@@ -186,20 +194,12 @@
 <translation id="6587448235155023666">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave</translation>
 <translation id="8701563696941209024">PONOVO POKRENI</translation>
 <translation id="834487290629916192">KASNIJE</translation>
-<translation id="4117451092682672487">Pojednostavljena zaštita privatnosti.</translation>
-<translation id="7909375417585209817">Kada je Brave podešen kao podrazumevani pregledač, svaki link koji dodirnete otvara se uz Brave-ovu zaštitu privatnosti.</translation>
 <translation id="763369711159699222">Pomozite nam da poboljšamo Brave</translation>
 <translation id="8025937231644975408">Recite nam koja svojstva najviše uživaš.</translation>
-<translation id="6718362830686703942">Pošaljite nam dijagnostički izveštaj u slučaju da pregledač prekine sa radom ili se zamrzne.</translation>
-<translation id="8616157231067364693">Podelite privatna i anonimna saznanja o funkcijama proizvoda koje koriste Brave korisnici.</translation>
 <translation id="2888496576732880897">Doprinesi razvoju Brave pretrage</translation>
 <translation id="7198716519700700181">Blokiraj prekide kada streamuješ</translation>
 <translation id="7044431516245362795">Pridružite se projektu istraživanja veba i doprinesite povećanju indeksa i poboljšau rezultata pretrage. <ph name="LEARN_MORE_START"/>Saznajte više.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave logotip</translation>
-<translation id="1389386068457132299">Pozadina za uključivanje</translation>
-<translation id="5101985748360228609">Dekoracija gornjeg lista</translation>
-<translation id="5270920361877570459">Dekoracija donjeg lista</translation>
-<translation id="4021716437419160885">Skrolovanje nadole</translation>
 <translation id="4767173360729868049">Ilustracija Brave pretraživanja</translation>
 <translation id="8241918461631453498">Ilustracija blokiranja prekida</translation>
 <translation id="8213310572767907663">Ilustracija poboljšanja Brave-a</translation>
@@ -215,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> i drugi oglasi i praćenja su blokirani</translation>
 <translation id="3092683655478890840">Blokiranih oglasa i praćenja: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Preskoči</translation>
-<translation id="6165508094623778733">Saznajte više</translation>
 <translation id="986879628471635371">Rešavanje problema pri uvodnom procesu</translation>
 <translation id="5806601733251372221">Brave štitovi</translation>
 <translation id="8537217141725709400">Zaradite <ph name="TOKEN"/></translation>
@@ -365,7 +364,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="944340256927461196">Ne ostavljajte trag na svom uređaju</translation>
 <translation id="2063044449012253966">Sajtovi koje posećujete u privatnim prozorima neće se pojavljivati u vašoj istoriji. Kolačići, podaci iz obrasca i podaci sa sajtova nestaju kada se svi privatni prozori zatvore.</translation>
 <translation id="7395764193745523646">Vidljivost pregledanja veba</translation>
-<translation id="8670344404057978375">Imajte u vidu da, čak i u privatnim prozorima, vaša aktivnost pregledanja veba i dalje može biti vidljiva vašem internet provajderu, posmatračima mreže ili vašem poslodavcu (ako koristite poslovni uređaj / poslovnu mrežu).</translation>
+<translation id="8435098045013317895">Imajte u vidu da — čak i u privatnim prozorima — vaša aktivnost pregledanja veba i dalje može biti vidljiva vašem ISP-u, posmatračima mreže ili vašem poslodavcu (ako koristite poslovni uređaj/mrežu).</translation>
 <translation id="1413177583895309156">Brave VPN šifruje i štiti sve što radite onlajn, čak i van Brave pregledača.</translation>
 <translation id="3974348661685061050">Probajte 7 dana besplatno</translation>
 <translation id="5789441016350810005">Brave oglasi koji su poslati dok je pregledač u pozadini</translation>
@@ -505,6 +504,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="2718046830255553131">Podaci iz izveštaja o privatnosti su izbrisani.</translation>
 <translation id="8376263745431603066">Uključi „Noćni režim“ (eksperimentalno)</translation>
 <translation id="1383876407941801731">Pretraga</translation>
+<translation id="6165508094623778733">Saznajte više</translation>
 <translation id="13296465911709339">Tekst je kopiran u privremenu memoriju.</translation>
 <translation id="2735834606413553397">Javna adresa je kopirana u privremenu memoriju.</translation>
 <translation id="2977461003134694205">Statistički podaci o privatnosti</translation>
@@ -965,23 +965,24 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="7659483790930268440">Indeks tabele za pretragu adresa:</translation>
 <translation id="5494920125229734069">Izaberi sve</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="2935698011275148880">Brave Poreklo</translation>
 <translation id="944736176598169208">Nagrade</translation>
-<translation id="4272190451231642425">Automatski šalji izveštaje o padu</translation>
 <translation id="1199170151481311646">Analitika koja štiti privatnost</translation>
 <translation id="1706715315466634757">Imejl alijasi</translation>
 <translation id="6709133671862442373">Vesti</translation>
 <translation id="5990642573624858459">Izveštavanje statistike</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Resetuj sve na podrazumevano</translation>
-<translation id="4922034974043704366">Ova funkcija je omogućena jer ste je vi uključili</translation>
 <translation id="2587535830241068901">Prilagodite svoj brauzer, a da i dalje podržavate Brave</translation>
-<translation id="7235314227387539944">Brave Origin je plaćena verzija pregledača za korisnike koji ne trebaju sve funkcije koje podržavaju Brave kao poslovanje, ali i dalje žele privatnost koju samo Brave nudi. Origin korisnici će nastaviti da imaju koristi od naše vodeće zaštite privatnosti, blokiranja oglasa i brzine (preko Shields), kao i redovnih ažuriranja softvera, Chromium zakrpa i poboljšanja bezbednosti i privatnosti. Origin će ukloniti većinu ostalih funkcija iz pregledača.</translation>
-<translation id="7941943775131052130">Napomena da će kupovina Brave Origin takođe uključiti pristup Brave Search Premium, pošto će Origin ukloniti oglase sa stranice rezultata Brave pretrage.</translation>
+<translation id="123297831435065577">Brave Origin je plaćena verzija pregledača za korisnike koji ne trebaju sve funkcije koje podržavaju Brave kao poslovanje, ali i dalje žele privatnost koju samo Brave nudi. Origin korisnici će nastaviti da imaju koristi od naše vodeće zaštite privatnosti, blokiranja oglasa i brzine (preko Shields), kao i redovnih ažuriranja softvera, Chromium zakrpa i poboljšanja bezbednosti i privatnosti.</translation>
 <translation id="2573819149217596923">Promena Brave funkcija</translation>
 <translation id="7415416427817229128">Omogućavanje ili onemogućavanje Brave funkcije zahteva da se pregledač restartuje kako bi se primene izmene. Želiš li da restartueš sada?</translation>
 <translation id="2256115617011615191">Restartuj sada</translation>
+<translation id="2160089182263405907">Isključivanje funkcija</translation>
+<translation id="7530313002494358590">Omogućavanje ili isključivanje funkcije Brave zahteva restartovanje pregledača da bi se izmene primenile. Molim vas da kliknete <ph name="BEGIN_BOLD"/>Restartuj sada<ph name="END_BOLD"/> čim Brave Origin završi ažuriranje.</translation>
+<translation id="1028940738207645746">Želite li zaista da resetujete sve postavke na podrazumevano?</translation>
+<translation id="5939518447894949180">Resetuj</translation>
 <translation id="8554205386170195281">Kupovina</translation>
-<translation id="7071521146534760487">Upravljanje nalogom</translation>
 <translation id="8613144770663526433">Prijavite se pomoću Brave novčanika</translation>
 <translation id="3696514931437952995">Prijavljujete se na: <ph name="ORIGIN"/>. Brave novčanik će podeliti vašu adresu novčanika sa: <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Prikaži detalje</translation>
@@ -1016,7 +1017,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="1309636029062006520">Napravite plejliste omiljenih audio i video sadržaja i pustite ih bilo kada, bilo gde.</translation>
 <translation id="7899390017499980820">Dugme za dodavanje na plejlistu</translation>
 <translation id="6901152954398668317">Prikazuje ili sakriva dugme za dodavanje na plejlistu da biste lakše pristupili dodavanju ili uklanjanju medija.</translation>
-<translation id="5939518447894949180">Resetuj</translation>
 <translation id="8199028711686989861">Uklanja sve video sadržaje sa plejliste, uključujući režim za oflajn čuvanje.</translation>
 <translation id="4590997608186539865">Plejlista</translation>
 <translation id="7525067979554623046">Kreiraj</translation>
@@ -1110,9 +1110,9 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6261139507111008244">Podrži našu misiju i rad na otvorenom kodu</translation>
 <translation id="6073373503121903099">Minimalističan korisnički interfejs pregledača fokusiran na Brave Shields</translation>
 <translation id="2267973897341040743">Zadrži osnovnu blokadu oglasa, privatnost i brzinu</translation>
-<translation id="3339535734679532460">Jednokratna kupovina, bez dodatnih troškova pretplate</translation>
-<translation id="2805615640226281689">Jednokratna kupovina</translation>
-<translation id="261433018299584676">Pošalji mi kod za prijavu</translation>
+<translation id="4059093523966730868">Jednokratna kupovina se može aktivirati više puta na svim vašim uređajima</translation>
+<translation id="7006681677649762716">Jednokratna kupovina</translation>
+<translation id="8707617004598499947">Verifikujte Brave Origin kupovinu</translation>
 <translation id="1943432128510653496">Sačuvaj lozinke</translation>
 <translation id="2100273922101894616">Automatsko prijavljivanje</translation>
 <translation id="363596933471559332">Automatski se prijavljujte na veb-sajtove pomoću sačuvanih akreditiva. Kada je ova funkcija isključena, tražićemo vam da se verifikujete pre svakog prijavljivanja na veb-sajt.</translation>
@@ -1167,4 +1167,22 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="1724977129262658800">Otključajte da biste izmenili lozinku</translation>
 <translation id="5780792035410621042">Da biste kopirali lozinke, prvo podesite otključavanje ekrana na uređaju</translation>
 <translation id="7986497153528221272">Da biste videli lozinke, prvo podesite otključavanje ekrana na uređaju</translation>
+<translation id="4882237634123415792">Prilagođeni pretraživači</translation>
+<translation id="8364431224461158026">Dodaj prilagođeni pretraživač</translation>
+<translation id="7307935603426295341">Izmeni prilagođeni pretraživač</translation>
+<translation id="4002066346123236978">Naslov</translation>
+<translation id="3653110185270660915">Unesite naziv pretraživača</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Dodaj pretraživač</translation>
+<translation id="6289878295410648689">Napišite URL pretrage i zamenite upite sa <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="1298325705808878139">Na primer: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8706939021136180678">URL je nevažeći.</translation>
+<translation id="5144960943371551167">Naziv može sadržati samo slova, brojeve i razmake.</translation>
+<translation id="7361775378755455309">Pretraživač sa ovom ključnom rečju već postoji.</translation>
+<translation id="463451857046640291">Nije uspelo dodavanje pretraživača.</translation>
+<translation id="1229671956956864948">Nije uspelo ažuriranje pretraživača.</translation>
+<translation id="1462771969120037152">Nije uspelo brisanje pretraživača. Pretraživač koji pokušavate da izbrišete može biti postavljen kao podrazumevani.</translation>
+<translation id="1079140196216383600">Obriši prilagođeni pretraživač</translation>
+<translation id="525276572490219787">Želite li sigurno da izbrišete "<ph name="SEARCH_ENGINE_NAME"/>"? Ova radnja se ne može opozvati.</translation>
+<translation id="6406506848690869874">Sinhronizuj</translation>
 </translationbundle>

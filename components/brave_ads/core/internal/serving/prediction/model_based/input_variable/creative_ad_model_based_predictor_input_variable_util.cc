@@ -7,8 +7,8 @@
 
 #include <algorithm>
 
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_segment_input_variables_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/segment/creative_ad_model_based_predictor_untargeted_segment_input_variable_info.h"

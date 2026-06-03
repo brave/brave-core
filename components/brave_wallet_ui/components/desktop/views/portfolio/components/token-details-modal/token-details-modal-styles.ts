@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
 export const modalWidth = '500px'
@@ -20,25 +21,18 @@ export const TokenBalanceRow = styled.div`
   align-items: center;
 `
 export const CryptoBalance = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 45px;
-  line-height: 45px;
+  font: ${leo.font.heading.display1};
   margin: 0;
   padding: 0 16px 0 0;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const FiatBalance = styled.h6`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 18px;
-  font-weight: 400;
+  font: ${leo.font.large.regular};
   margin: 0;
   padding-top: 20px;
   padding-bottom: 4px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
 `
 
 export const DetailColumn = styled.div`
@@ -49,23 +43,17 @@ export const DetailColumn = styled.div`
 `
 
 export const TokenDetailLabel = styled.h6`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 600;
+  font: ${leo.font.default.semibold};
   margin: 0;
   padding: 0;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const TokenDetailValue = styled.h6`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
+  font: ${leo.font.default.regular};
   margin: 8px 0 0 0;
   padding: 0;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `
 
 export const ContractAddress = styled(TokenDetailValue)`
@@ -73,20 +61,18 @@ export const ContractAddress = styled(TokenDetailValue)`
 `
 
 export const HideTokenButton = styled(WalletButton)`
+  font: ${leo.font.default.regular};
+
   background: none;
-  border: 1px solid ${(p) => p.theme.palette.blurple500};
+  border: 1px solid ${leo.color.blurple[50]};
   height: 40px;
   margin-top: 70px;
   border-radius: 100px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
   width: 320px;
   display: flex;
   align-self: center;
   justify-content: center;
   align-items: center;
-  color: ${(p) => p.theme.palette.blurple500};
+  color: ${leo.color.blurple[50]};
   cursor: pointer;
 `

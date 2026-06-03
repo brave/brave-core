@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/template_url_starter_pack_data.h b/components/search_engines/template_url_starter_pack_data.h
+index a2800658774a8057b4d6b125d205826430e9081d..d7e925a06b6550597f2aca3ddec1cc21c7065024 100644
+--- a/components/search_engines/template_url_starter_pack_data.h
++++ b/components/search_engines/template_url_starter_pack_data.h
+@@ -34,6 +34,7 @@ enum class StarterPackId {
+   kPage = 5,
+   kAiMode = 6,
+ 
++  BRAVE_TEMPLATE_URL_STARTER_PACK_ID_ENUM
+   kMaxStarterPackId
+ };
+ 

@@ -17,6 +17,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/functional/bind.h"
@@ -33,6 +34,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
@@ -59,7 +61,6 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -77,6 +78,7 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
+using base::test::TestFuture;
 using testing::_;
 using testing::Contains;
 using testing::ElementsAreArray;
@@ -285,9 +287,6 @@ class TestJsonRpcServiceObserver
       observer_receiver_{this};
 };
 
-constexpr char https_metadata_response[] =
-    R"({"attributes":[{"trait_type":"Feet","value":"Green Shoes"},{"trait_type":"Legs","value":"Tan Pants"},{"trait_type":"Suspenders","value":"White Suspenders"},{"trait_type":"Upper Body","value":"Indigo Turtleneck"},{"trait_type":"Sleeves","value":"Long Sleeves"},{"trait_type":"Hat","value":"Yellow / Blue Pointy Beanie"},{"trait_type":"Eyes","value":"White Nerd Glasses"},{"trait_type":"Mouth","value":"Toothpick"},{"trait_type":"Ears","value":"Bing Bong Stick"},{"trait_type":"Right Arm","value":"Swinging"},{"trait_type":"Left Arm","value":"Diamond Hand"},{"trait_type":"Background","value":"Blue"}],"description":"5,000 animated Invisible Friends hiding in the metaverse. A collection by Markus Magnusson & Random Character Collective.","image":"https://rcc.mypinata.cloud/ipfs/QmXmuSenZRnofhGMz2NyT3Yc4Zrty1TypuiBKDcaBsNw9V/1817.gif","name":"Invisible Friends #1817"})";
-
 std::optional<base::DictValue> ToValue(
     const network::ResourceRequest& request) {
   std::string_view request_string(request.request_body->elements()
@@ -384,7 +383,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     if (!method || *method != "getAccountInfo") {
       return false;
     }
-    if (!account_address_.IsValid()) {
+    if (!account_address_) {
       return true;
     }
     return AddressFromParams(dict) == account_address_;
@@ -421,35 +420,19 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     result_span.copy_prefix_from(sol_record_payload_address.bytes());
 
     std::vector<uint8_t> message;
-    message.insert(message.end(), sol_record_payload_address.bytes().begin(),
-                   sol_record_payload_address.bytes().end());
-    message.insert(message.end(), sol_record_address.bytes().begin(),
-                   sol_record_address.bytes().end());
+    base::Extend(message, sol_record_payload_address.bytes());
+    base::Extend(message, sol_record_address.bytes());
     std::string hex_message = base::HexEncodeLower(message);
-    ED25519_sign(result_span.subspan(32u).data(),
-                 reinterpret_cast<const uint8_t*>(hex_message.data()),
-                 hex_message.length(), signer_key.data());
+    auto hex_message_span = base::as_byte_span(hex_message);
+    ED25519_sign(result_span.subspan(32u).data(), hex_message_span.data(),
+                 hex_message_span.size(), signer_key.data());
 
     return result;
   }
 
   static std::vector<uint8_t> MakeTextRecordV1PayloadData(
       const std::string& text) {
-    return std::vector<uint8_t>(text.begin(), text.end());
-  }
-
-  template <class T>
-  static void PushAsLE(std::vector<uint8_t>& to, T value) {
-    to.resize(to.size() + sizeof(T));
-    auto* insert_to = &to[to.size() - sizeof(T)];
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-    T in_le = value;
-#else
-    T in_le = ByteSwap(value);
-#endif
-
-    (*reinterpret_cast<T*>(insert_to)) = in_le;
+    return base::ToVector(base::as_byte_span(text));
   }
 
   static std::vector<uint8_t> MakeTextRecordV2PayloadData(
@@ -460,28 +443,30 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     result.reserve(300);
 
     // Staleness validation type.
-    PushAsLE(result, uint16_t(staleness_validation_type));
+    base::Extend(result, base::U16ToLittleEndian(
+                             static_cast<uint16_t>(staleness_validation_type)));
     // ROA validation type. (only kNone for test records supported)
-    PushAsLE(result, uint16_t(SnsRecordV2ValidationType::kNone));
+    base::Extend(result, base::U16ToLittleEndian(static_cast<uint16_t>(
+                             SnsRecordV2ValidationType::kNone)));
     // content length.
-    PushAsLE(result, uint32_t(content.size()));
+    base::Extend(result, base::U32ToLittleEndian(
+                             base::checked_cast<uint32_t>(content.size())));
 
     // staleness id.
     if (staleness_validation_type == SnsRecordV2ValidationType::kSolana) {
       CHECK(solana_validation_id);
-      result.insert(result.end(), solana_validation_id->bytes().begin(),
-                    solana_validation_id->bytes().end());
+      base::Extend(result, solana_validation_id->bytes());
+
     } else if (staleness_validation_type ==
                SnsRecordV2ValidationType::kEthereum) {
-      result.resize(result.size() + kEthAddressLength);
+      base::Extend(result, std::vector<uint8_t>(kEthAddressLength));
     } else if (staleness_validation_type ==
                SnsRecordV2ValidationType::kSolanaUnverified) {
-      result.resize(result.size() + kSolanaPubkeySize);
+      base::Extend(result, std::vector<uint8_t>(kSolanaPubkeySize));
     }
 
     // content
-    auto content_span = base::as_byte_span(content);
-    result.insert(result.end(), content_span.begin(), content_span.end());
+    base::Extend(result, base::as_byte_span(content));
 
     return result;
   }
@@ -496,40 +481,40 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     result.reserve(300);
 
     // Staleness validation type.
-    PushAsLE(result, uint16_t(staleness_validation_type));
+    base::Extend(result, base::U16ToLittleEndian(
+                             static_cast<uint16_t>(staleness_validation_type)));
     // ROA validation type.
-    PushAsLE(result, uint16_t(roa_validation_type));
+    base::Extend(result, base::U16ToLittleEndian(
+                             static_cast<uint16_t>(roa_validation_type)));
     // content length.
-    PushAsLE(result, uint32_t(content.bytes().size()));
+    base::Extend(result, base::U32ToLittleEndian(base::checked_cast<uint32_t>(
+                             content.bytes().size())));
 
     // staleness id.
     if (staleness_validation_type == SnsRecordV2ValidationType::kSolana) {
       CHECK(solana_validation_id);
-      result.insert(result.end(), solana_validation_id->bytes().begin(),
-                    solana_validation_id->bytes().end());
+      base::Extend(result, solana_validation_id->bytes());
     } else if (staleness_validation_type ==
                SnsRecordV2ValidationType::kEthereum) {
-      result.resize(result.size() + kEthAddressLength);
+      base::Extend(result, std::vector<uint8_t>(kEthAddressLength));
     } else if (staleness_validation_type ==
                SnsRecordV2ValidationType::kSolanaUnverified) {
-      result.resize(result.size() + kSolanaPubkeySize);
+      base::Extend(result, std::vector<uint8_t>(kSolanaPubkeySize));
     }
 
     // roa id.
     if (roa_validation_type == SnsRecordV2ValidationType::kSolana) {
       CHECK(solana_roa_id);
-      result.insert(result.end(), solana_roa_id->bytes().begin(),
-                    solana_roa_id->bytes().end());
+      base::Extend(result, solana_roa_id->bytes());
     } else if (roa_validation_type == SnsRecordV2ValidationType::kEthereum) {
-      result.resize(result.size() + kEthAddressLength);
+      base::Extend(result, std::vector<uint8_t>(kEthAddressLength));
     } else if (roa_validation_type ==
                SnsRecordV2ValidationType::kSolanaUnverified) {
-      result.resize(result.size() + kSolanaPubkeySize);
+      base::Extend(result, std::vector<uint8_t>(kSolanaPubkeySize));
     }
 
     // content
-    auto content_span = base::as_byte_span(content.bytes());
-    result.insert(result.end(), content_span.begin(), content_span.end());
+    base::Extend(result, content.bytes());
 
     return result;
   }
@@ -539,7 +524,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       return "timeout";
     }
 
-    if (!account_address_.IsValid()) {
+    if (!account_address_ || !owner_) {
       return MakeJsonRpcValueResponse(base::Value());
     }
 
@@ -550,7 +535,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     value.Set("data", std::move(data_array));
     value.Set("executable", false);
     value.Set("lamports", 123);
-    value.Set("owner", owner_.ToBase58());
+    value.Set("owner", owner_->ToBase58());
     value.Set("rentEpoch", 123);
 
     return MakeJsonRpcValueResponse(base::Value(std::move(value)));
@@ -559,8 +544,8 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
   std::vector<uint8_t>& data() { return data_; }
 
  protected:
-  SolanaAddress account_address_;
-  SolanaAddress owner_;
+  std::optional<SolanaAddress> account_address_;
+  std::optional<SolanaAddress> owner_;
   std::vector<uint8_t> data_;
 };
 
@@ -959,59 +944,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
-  void SetTokenMetadataInterceptor(
-      const std::string& interface_id,
-      const std::string& chain_id,
-      const std::string& supports_interface_provider_response,
-      const std::string& token_uri_provider_response = "",
-      const std::string& metadata_response = "",
-      net::HttpStatusCode supports_interface_status = net::HTTP_OK,
-      net::HttpStatusCode token_uri_status = net::HTTP_OK,
-      net::HttpStatusCode metadata_status = net::HTTP_OK) {
-    GURL network_url =
-        network_manager_->GetNetworkURL(chain_id, mojom::CoinType::ETH);
-    ASSERT_TRUE(network_url.is_valid());
-    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [=, this](const network::ResourceRequest& request) {
-          url_loader_factory_.ClearResponses();
-          if (request.method ==
-              "POST") {  // An eth_call, either to supportsInterface or tokenURI
-            std::string_view request_string(request.request_body->elements()
-                                                ->at(0)
-                                                .As<network::DataElementBytes>()
-                                                .AsStringPiece());
-            bool is_supports_interface_req =
-                request_string.find(GetFunctionHash(
-                    "supportsInterface(bytes4)")) != std::string::npos;
-            if (is_supports_interface_req) {
-              ASSERT_NE(request_string.find(interface_id.substr(2)),
-                        std::string::npos);
-              EXPECT_EQ(request.url.spec(), network_url);
-              url_loader_factory_.AddResponse(
-                  network_url.spec(), supports_interface_provider_response,
-                  supports_interface_status);
-              return;
-            } else {
-              std::string function_hash;
-              if (interface_id == kERC721MetadataInterfaceId) {
-                function_hash = GetFunctionHash("tokenURI(uint256)");
-              } else {
-                function_hash = GetFunctionHash("uri(uint256)");
-              }
-              ASSERT_NE(request_string.find(function_hash), std::string::npos);
-              url_loader_factory_.AddResponse(network_url.spec(),
-                                              token_uri_provider_response,
-                                              token_uri_status);
-              return;
-            }
-          } else {  // A HTTP GET to fetch the metadata json from the web
-            url_loader_factory_.AddResponse(request.url.spec(),
-                                            metadata_response, metadata_status);
-            return;
-          }
-        }));
-  }
-
   void SetGetEthNftStandardInterceptor(
       const GURL& expected_url,
       const std::map<std::string, std::string>& interface_id_to_response) {
@@ -1039,24 +971,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
-  void SetSolTokenMetadataInterceptor(
-      const GURL& expected_rpc_url,
-      const std::string& get_account_info_response,
-      const GURL& expected_metadata_url,
-      const std::string& metadata_response) {
-    auto network_url =
-        GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
-    ASSERT_TRUE(expected_rpc_url.is_valid());
-    ASSERT_TRUE(expected_metadata_url.is_valid());
-    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [=, this](const network::ResourceRequest& request) {
-          url_loader_factory_.AddResponse(expected_rpc_url.spec(),
-                                          get_account_info_response);
-          url_loader_factory_.AddResponse(expected_metadata_url.spec(),
-                                          metadata_response);
-        }));
-  }
-
   void SetInterceptor(const GURL& expected_url,
                       const std::string& expected_method,
                       const std::string& expected_cache_header,
@@ -1078,9 +992,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
           }
 
           if (IsEndpointUsingBraveWalletProxy(request.url)) {
-            header_value =
-                request.headers.GetHeader("x-brave-key").value_or("");
-            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+            EXPECT_EQ(MakeBraveServicesKeyHeaders().at("x-brave-key"),
+                      request.headers.GetHeader("x-brave-key"));
           } else {
             EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
           }
@@ -1097,8 +1010,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
           EXPECT_EQ(request.url, expected_url);
 
           if (IsEndpointUsingBraveWalletProxy(request.url)) {
-            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY),
-                      request.headers.GetHeader("x-brave-key").value_or(""));
+            EXPECT_EQ(MakeBraveServicesKeyHeaders().at("x-brave-key"),
+                      request.headers.GetHeader("x-brave-key"));
           } else {
             EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
           }
@@ -1281,67 +1194,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                        mojom::ProviderError error,
                                        const std::string& error_message) {
           EXPECT_EQ(response, expected_response);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
-  void TestGetERC721Metadata(const std::string& contract,
-                             const std::string& token_id,
-                             const std::string& chain_id,
-                             const std::string& expected_response,
-                             mojom::ProviderError expected_error,
-                             const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetERC721Metadata(
-        contract, token_id, chain_id,
-        base::BindLambdaForTesting(
-            [&](const std::string& token_url, const std::string& response,
-                mojom::ProviderError error, const std::string& error_message) {
-              EXPECT_EQ(response, expected_response);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
-
-  void TestGetERC1155Metadata(const std::string& contract,
-                              const std::string& token_id,
-                              const std::string& chain_id,
-                              const std::string& expected_response,
-                              mojom::ProviderError expected_error,
-                              const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetERC1155Metadata(
-        contract, token_id, chain_id,
-        base::BindLambdaForTesting(
-            [&](const std::string& token_url, const std::string& response,
-                mojom::ProviderError error, const std::string& error_message) {
-              EXPECT_EQ(response, expected_response);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
-
-  void TestGetEthTokenUri(const std::string& contract,
-                          const std::string& token_id,
-                          const std::string& chain_id,
-                          const std::string& interface_id,
-                          const GURL& expected_uri,
-                          mojom::ProviderError expected_error,
-                          const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetEthTokenUri(
-        chain_id, contract, token_id, interface_id,
-        base::BindLambdaForTesting([&](const GURL& uri,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(uri, expected_uri);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
@@ -1860,30 +1712,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
     EXPECT_EQ(
         expected_error_message,
         json_rpc_service_->AddEthereumChainForOrigin(std::move(chain), origin));
-  }
-
-  void TestGetSolTokenMetadata(const std::string& token_mint_address,
-                               const std::string& expected_response,
-                               mojom::SolanaProviderError expected_error,
-                               const std::string& expected_error_message) {
-    base::RunLoop loop;
-    json_rpc_service_->GetSolTokenMetadata(
-        mojom::kSolanaMainnet, token_mint_address,
-        base::BindLambdaForTesting([&](const std::string& token_url,
-                                       const std::string& response,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          if (response.empty()) {
-            EXPECT_EQ(response, expected_response);
-          } else {
-            EXPECT_EQ(base::test::ParseJson(response),
-                      base::test::ParseJson(expected_response));
-          }
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          loop.Quit();
-        }));
-    loop.Run();
   }
 
   void TestGetNftMetadatas(
@@ -4254,48 +4082,6 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(JsonRpcServiceUnitTest, GetERC721Metadata) {
-  // Ensure GetERC721Metadata passes the correct interface ID to
-  // GetEthTokenMetadata
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kMainnetChainId,
-                              R"({
-                                  "jsonrpc":"2.0",
-                                  "id":1,
-                                  "result": "0x0000000000000000000000000000000000000000000000000000000000000001"
-                              })",
-                              R"({
-                                  "jsonrpc":"2.0",
-                                  "id":1,
-                                  "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
-                              })",
-                              https_metadata_response);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, https_metadata_response,
-                        mojom::ProviderError::kSuccess, "");
-}
-
-TEST_F(JsonRpcServiceUnitTest, GetERC1155Metadata) {
-  // Ensure GetERC1155Metadata passes the correct interface ID to
-  // GetEthTokenMetadata
-  SetTokenMetadataInterceptor(kERC1155MetadataInterfaceId,
-                              mojom::kMainnetChainId,
-                              R"({
-                                  "jsonrpc":"2.0",
-                                  "id":1,
-                                  "result": "0x0000000000000000000000000000000000000000000000000000000000000001"
-                              })",
-                              R"({
-                                  "jsonrpc":"2.0",
-                                  "id":1,
-                                  "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
-                              })",
-                              https_metadata_response);
-  TestGetERC1155Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                         mojom::kMainnetChainId, https_metadata_response,
-                         mojom::ProviderError::kSuccess, "");
-}
-
 TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   bool callback_called = false;
 
@@ -6618,37 +6404,28 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 };
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
+  TestFuture<const std::optional<std::string>&> addr;
+
   // Has nft for domain. Return nft owner.
-  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
-  EXPECT_CALL(callback, Run(NftOwnerAddress().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), NftOwnerAddress().ToBase58());
 
   // HTTP error while checking nft mint. Fail resolution.
   mint_address_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run("", mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), std::nullopt);
   mint_address_handler_->FailWithTimeout(false);
 
   // HTTP error while checking nft owner. Fail resolution.
   get_program_accounts_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run("", mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), std::nullopt);
   get_program_accounts_handler_->FailWithTimeout(false);
 
   // Domain detokenized. Fallback to domain/SOL owner.
   mint_address_handler_->data() = GetAccountInfoHandler::MakeMintData(0);
-  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV2().ToBase58());
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
@@ -6656,29 +6433,22 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
   mint_address_handler_->Disable();
   sol_record_v1_address_handler_->Disable();
 
+  TestFuture<const std::optional<std::string>&> addr;
+
   // No nft, no SOL record. Return domain owner address.
-  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
-  EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), DomainOwnerAddress().ToBase58());
 
   // HTTP error for domain key account. Fail resolution.
   domain_address_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run("", mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), std::nullopt);
   domain_address_handler_->FailWithTimeout(false);
 
   // No domain key account. Fail resolution.
   domain_address_handler_->Disable();
-  EXPECT_CALL(callback,
-              Run("", mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), std::nullopt);
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
@@ -6686,71 +6456,56 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   mint_address_handler_->Disable();
 
   // No nft, has sol record. Return address from SOL record.
-  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  TestFuture<const std::optional<std::string>&> addr;
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // Bad signature. Fallback to owner address.
   sol_record_v1_address_handler_->data()[170] ^= 123;
-  EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), DomainOwnerAddress().ToBase58());
   sol_record_v1_address_handler_->data()[170] ^= 123;
 
   // HTTP error for SOL record key account. Fail resolution.
   sol_record_v1_address_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run("", mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), std::nullopt);
   sol_record_v1_address_handler_->FailWithTimeout(false);
 
   // No SOL record account. Fallback to owner address.
   sol_record_v1_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), DomainOwnerAddress().ToBase58());
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record) {
   mint_address_handler_->Disable();
 
+  TestFuture<const std::optional<std::string>&> addr;
+
   // No nft, has sol v2 record. Return address from SOLv2 record.
-  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
-  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV2().ToBase58());
 
   // Disable v2 record - fallback to v1.
   sol_record_v2_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // No SOL v1 record account. Fallback to owner address.
   sol_record_v1_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), DomainOwnerAddress().ToBase58());
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
   mint_address_handler_->Disable();
 
+  TestFuture<const std::optional<std::string>&> addr;
+
   // Return address from SOLv2 record by default.
-  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
-  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV2().ToBase58());
 
   // kNone staleness - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6761,10 +6516,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
               SnsRecordV2ValidationType::kNone, std::nullopt,
               SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // kEthereum staleness - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6775,10 +6528,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
               SnsRecordV2ValidationType::kEthereum, std::nullopt,
               SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // kSolanaUnverified staleness - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6789,10 +6540,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
               SnsRecordV2ValidationType::kSolanaUnverified, std::nullopt,
               SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // kSolana staleness with invalid stalenss id - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6803,21 +6552,18 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
               SnsRecordV2ValidationType::kSolana, SolanaAddress::ZeroAddress(),
               SnsRecordV2ValidationType::kSolana, SolRecordAddressV2(),
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
   mint_address_handler_->Disable();
 
+  TestFuture<const std::optional<std::string>&> addr;
+
   // Return address from SOLv2 record by default.
-  base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
-  EXPECT_CALL(callback, Run(SolRecordAddressV2().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV2().ToBase58());
 
   // kNone roa - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6828,10 +6574,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
               SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
               SnsRecordV2ValidationType::kNone, std::nullopt,
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // kEthereum roa - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6842,10 +6586,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
               SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
               SnsRecordV2ValidationType::kEthereum, std::nullopt,
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // kSolanaUnverified roa - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6856,10 +6598,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
               SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
               SnsRecordV2ValidationType::kSolanaUnverified, std::nullopt,
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 
   // kSolana roa with invalid roa id - fallback to next record
   sol_record_v2_address_handler_->Reset(
@@ -6870,29 +6610,22 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
               SnsRecordV2ValidationType::kSolana, DomainOwnerAddress(),
               SnsRecordV2ValidationType::kSolana, SolanaAddress::ZeroAddress(),
               SolRecordAddressV2())));
-  EXPECT_CALL(callback, Run(SolRecordAddressV1().ToBase58(),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsGetSolAddr(sns_host(), addr.GetCallback());
+  EXPECT_EQ(addr.Take(), SolRecordAddressV1().ToBase58());
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
   DisableV2Handlers();  // Legacy v1 records test.
 
-  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  TestFuture<const std::optional<GURL>&> url;
+
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV1());
 
   // HTTP error for url record account. Fail resolution.
   url_record_v1_address_handler_->FailWithTimeout();
-  EXPECT_CALL(
-      callback,
-      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), std::nullopt);
   url_record_v1_address_handler_->FailWithTimeout(false);
 }
 
@@ -6901,108 +6634,75 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
 
   url_record_v1_address_handler_->Disable();
 
+  TestFuture<const std::optional<GURL>&> url;
+
   // No url record. Will return ipfs record.
-  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV1());
 
   // HTTP error for ipfs record account. Fail resolution.
   ipfs_record_v1_address_handler_->FailWithTimeout();
-  EXPECT_CALL(
-      callback,
-      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), std::nullopt);
   ipfs_record_v1_address_handler_->FailWithTimeout(false);
 
   // No ipfs record account. Fail resolution.
   ipfs_record_v1_address_handler_->Disable();
-  EXPECT_CALL(
-      callback,
-      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), std::nullopt);
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records) {
-  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+  TestFuture<const std::optional<GURL>&> url;
 
   // Test with nft disabled as domain owner is used as staleness id by default
   // in tests.
   mint_address_handler_->Disable();
 
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV2());
 
   url_record_v2_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV2());
 
   ipfs_record_v2_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV1());
 
   url_record_v1_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV1());
 
   ipfs_record_v1_address_handler_->Disable();
-  EXPECT_CALL(
-      callback,
-      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), std::nullopt);
 
   InitHandlers();
   mint_address_handler_->Enable();
 
   // Falls back to V1 url record as current owner is an nft owner, but record's
   // staleness id is set to domain owner.
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV1());
 
   // Falls back to V1 url record as current owner is an nft owner, but record's
   // staleness id is set to domain owner.
   url_record_v2_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV1());
 
   ipfs_record_v2_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV1());
 
   url_record_v1_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV1());
 
   ipfs_record_v1_address_handler_->Disable();
-  EXPECT_CALL(
-      callback,
-      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), std::nullopt);
 
   InitHandlers();
   mint_address_handler_->Enable();
@@ -7022,49 +6722,35 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records) {
               SnsRecordV2ValidationType::kSolana, NftOwnerAddress(),
               IpfsValueV2().spec())));
 
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV2());
 
   url_record_v2_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV2());
 
   ipfs_record_v2_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV1());
 
   url_record_v1_address_handler_->Disable();
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV1()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV1());
 
   ipfs_record_v1_address_handler_->Disable();
-  EXPECT_CALL(
-      callback,
-      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), std::nullopt);
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
-  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+  TestFuture<const std::optional<GURL>&> url;
   // Test with nft disabled as domain owner is used as staleness id by default
   // in tests.
   mint_address_handler_->Disable();
 
   // V2 url record by default.
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV2());
 
   // kNone staleness - fallback to next record
   url_record_v2_address_handler_->Reset(
@@ -7075,10 +6761,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
               SnsRecordV2ValidationType::kNone, std::nullopt,
               UrlValueV2().spec())));
 
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV2());
 
   // kEthereum staleness - fallback to next record
   url_record_v2_address_handler_->Reset(
@@ -7089,10 +6773,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
               SnsRecordV2ValidationType::kEthereum, std::nullopt,
               UrlValueV2().spec())));
 
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV2());
 
   // kSolanaUnverified staleness - fallback to next record
   url_record_v2_address_handler_->Reset(
@@ -7103,10 +6785,8 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
               SnsRecordV2ValidationType::kSolanaUnverified, std::nullopt,
               UrlValueV2().spec())));
 
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV2());
 
   // kSolana staleness, but address doesn't match owner - fallback to next
   // record
@@ -7118,33 +6798,25 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
               SnsRecordV2ValidationType::kSolana, SolanaAddress::ZeroAddress(),
               UrlValueV2().spec())));
 
-  EXPECT_CALL(callback, Run(testing::Eq(IpfsValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), IpfsValueV2());
 }
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_NetworkError) {
-  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+  TestFuture<const std::optional<GURL>&> url;
   // Test with nft disabled as domain owner is used as staleness id by default
   // in tests.
   mint_address_handler_->Disable();
 
   // V2 url record by default.
-  EXPECT_CALL(callback, Run(testing::Eq(UrlValueV2()),
-                            mojom::SolanaProviderError::kSuccess, ""));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), UrlValueV2());
 
   // Network error fails whole resolve process.
   url_record_v2_address_handler_->FailWithTimeout(true);
 
-  EXPECT_CALL(
-      callback,
-      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  WaitAndVerify(&callback);
+  json_rpc_service_->SnsResolveHost(sns_host(), url.GetCallback());
+  EXPECT_EQ(url.Take(), std::nullopt);
 }
 
 TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
@@ -7220,305 +6892,6 @@ TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
                  contract_addresses.Clone(), topics.Clone(),
                  std::move(expected_logs), mojom::ProviderError::kSuccess, "");
-}
-
-TEST_F(JsonRpcServiceUnitTest, GetSolTokenMetadata) {
-  // Valid inputs should yield metadata JSON (happy case)
-  std::string get_account_info_response = R"({
-    "jsonrpc": "2.0",
-    "result": {
-      "context": {
-        "apiVersion": "1.13.3",
-        "slot": 161038284
-      },
-      "value": {
-        "data": [
-          "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAMgAAABodHRwczovL2JhZmtyZWlmNHd4NTR3anI3cGdmdWczd2xhdHIzbmZudHNmd25ndjZldXNlYmJxdWV6cnhlbmo2Y2s0LmlwZnMuZHdlYi5saW5rP2V4dD0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOgDAQIAAABlDeYSX9s0rnt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/UEDizyp6mLT1tUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-          "base64"
-        ],
-        "executable": false,
-        "lamports": 5616720,
-        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
-        "rentEpoch": 361
-      }
-    },
-    "id": 1
-  })";
-  const std::string valid_metadata_response = R"({
-    "attributes": [
-      {
-        "trait_type": "hair",
-        "value": "green & blue"
-      },
-      {
-        "trait_type": "pontus",
-        "value": "no"
-      }
-    ],
-    "description": "",
-    "external_url": "",
-    "image": "https://bafkreiagsgqhjudpta6trhjuv5y2n2exsrhbkkprl64tvg2mftjsdm3vgi.ipfs.dweb.link?ext=png",
-    "name": "SPECIAL SAUCE",
-    "properties": {
-      "category": "image",
-      "creators": [
-        {
-          "address": "7oUUEdptZnZVhSet4qobU9PtpPfiNUEJ8ftPnrC6YEaa",
-          "share": 98
-        },
-        {
-          "address": "tsU33UT3K2JTfLgHUo7hdzRhRe4wth885cqVbM8WLiq",
-          "share": 2
-        }
-      ],
-      "files": [
-        {
-          "type": "image/png",
-          "uri": "https://bafkreiagsgqhjudpta6trhjuv5y2n2exsrhbkkprl64tvg2mftjsdm3vgi.ipfs.dweb.link?ext=png"
-        }
-      ],
-      "maxSupply": 0
-    },
-    "seller_fee_basis_points": 1000,
-    "symbol": ""
-  })";
-  auto network_url = GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
-  SetSolTokenMetadataInterceptor(
-      network_url, get_account_info_response,
-      GURL("https://"
-           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
-           "dweb.link/?ext="),
-      valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh",
-                          valid_metadata_response,
-                          mojom::SolanaProviderError::kSuccess, "");
-
-  // Invalid token_mint_address yields internal error.
-  SetSolTokenMetadataInterceptor(
-      network_url, get_account_info_response,
-      GURL("https://"
-           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
-           "dweb.link/?ext="),
-      valid_metadata_response);
-  TestGetSolTokenMetadata("Invalid", "",
-                          mojom::SolanaProviderError::kInternalError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // Non 200 getAccountInfo response of yields internal server error.
-  SetHTTPRequestTimeoutInterceptor();
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
-                          mojom::SolanaProviderError::kInternalError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // Invalid getAccountInfo response JSON yields internal error
-  SetSolTokenMetadataInterceptor(
-      network_url, "Invalid json response",
-      GURL("https://"
-           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
-           "dweb.link/?ext="),
-      valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
-                          mojom::SolanaProviderError::kInternalError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // Valid response JSON, invalid account info (missing result.value.owner
-  // field) info yields parse error
-  get_account_info_response = R"({
-    "jsonrpc": "2.0",
-    "result": {
-      "context": {
-        "apiVersion": "1.13.3",
-        "slot": 161038284
-      },
-      "value": {
-        "data": [
-          "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAMgAAABodHRwczovL2JhZmtyZWlmNHd4NTR3anI3cGdmdWczd2xhdHIzbmZudHNmd25ndjZldXNlYmJxdWV6cnhlbmo2Y2s0LmlwZnMuZHdlYi5saW5rP2V4dD0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOgDAQIAAABlDeYSX9s0rnt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/UEDizyp6mLT1tUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-          "base64"
-        ],
-        "executable": false,
-        "lamports": 5616720,
-        "rentEpoch": 361
-      }
-    },
-    "id": 1
-  })";
-  SetSolTokenMetadataInterceptor(
-      network_url, get_account_info_response,
-      GURL("https://"
-           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
-           "dweb.link/?ext="),
-      valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
-                          mojom::SolanaProviderError::kParsingError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // Valid response JSON, parsable account info, but invalid account info data
-  // (invalid base64) yields parse error
-  get_account_info_response = R"({
-    "jsonrpc": "2.0",
-    "result": {
-      "context": {
-        "apiVersion": "1.13.3",
-        "slot": 161038284
-      },
-      "value": {
-        "data": [
-          "*Invalid Base64*",
-          "base64"
-        ],
-        "executable": false,
-        "lamports": 5616720,
-        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
-        "rentEpoch": 361
-      }
-    },
-    "id": 1
-  })";
-  SetSolTokenMetadataInterceptor(
-      network_url, get_account_info_response,
-      GURL("https://"
-           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
-           "dweb.link/?ext="),
-      valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
-                          mojom::SolanaProviderError::kParsingError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // Valid response JSON, parsable account info, invalid account info data
-  // (valid base64, but invalid borsh encoded metadata) yields parse error
-  get_account_info_response = R"({
-    "jsonrpc": "2.0",
-    "result": {
-      "context": {
-        "apiVersion": "1.13.3",
-        "slot": 161038284
-      },
-      "value": {
-        "data": [
-          "d2hvb3BzIQ==",
-          "base64"
-        ],
-        "executable": false,
-        "lamports": 5616720,
-        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
-        "rentEpoch": 361
-      }
-    },
-    "id": 1
-  })";
-  SetSolTokenMetadataInterceptor(
-      network_url, get_account_info_response,
-      GURL("https://"
-           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
-           "dweb.link/?ext="),
-      valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
-                          mojom::SolanaProviderError::kParsingError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // Valid response JSON, parsable account info, invalid account info data
-  // (valid base64, valid borsh encoding, but when decoded the URI is not a
-  // valid URI)
-  get_account_info_response = R"({
-    "jsonrpc": "2.0",
-    "result": {
-      "context": {
-        "apiVersion": "1.13.3",
-        "slot": 161038284
-      },
-      "value": {
-        "data": [
-          "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAsAAABpbnZhbGlkIHVybOgDAQIAAABlDeYSX9s0rnt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/UEDizyp6mLT1tUA",
-          "base64"
-        ],
-        "executable": false,
-        "lamports": 5616720,
-        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
-        "rentEpoch": 361
-      }
-    },
-    "id": 1
-  })";
-  SetSolTokenMetadataInterceptor(
-      network_url, get_account_info_response,
-      GURL("https://"
-           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
-           "dweb.link/?ext="),
-      valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
-                          mojom::SolanaProviderError::kParsingError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-}
-
-TEST_F(JsonRpcServiceUnitTest, GetEthTokenUri) {
-  // Invalid contract address input
-  TestGetEthTokenUri("", "0x1", mojom::kMainnetChainId,
-                     kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // Invalid token ID input
-  TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
-                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // Invalid chain ID input
-  TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
-                     kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // Unknown interfaceID input
-  TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-                     mojom::kMainnetChainId, "invalid interface", GURL(),
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // Valid inputs but HTTP Timeout
-  SetHTTPRequestTimeoutInterceptor();
-  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // Valid inputs, request exceeds limit response
-  SetLimitExceededJsonErrorResponse();
-  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kLimitExceeded,
-                     "Request exceeds defined limit");
-
-  // Valid inputs, invalid provider JSON
-  SetInvalidJsonInterceptor();
-  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // Valid inputs, valid RPC response JSON, valid RLP encoding, invalid URI
-  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
-                 "eth_call", "", R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b696e76616c69642075726c000000000000000000000000000000000000000000"
-  })");
-  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // All valid
-  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
-                 "eth_call", "", R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
-  })");
-  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                     mojom::kMainnetChainId, kERC721MetadataInterfaceId,
-                     GURL("https://invisiblefriends.io/api/1817"),
-                     mojom::ProviderError::kSuccess, "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetEthNftStandard) {
@@ -8023,18 +7396,6 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
       mojom::CoinType::SOL, false);
   ASSERT_TRUE(AddUserAsset(prefs(), asset2.Clone()));
 
-  // Test record in registry, the value should be used.
-  TestGetSPLTokenProgramByMint(
-      FROM_HERE, "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
-      mojom::kSolanaMainnet, mojom::SPLTokenProgram::kToken2022,
-      mojom::SolanaProviderError::kSuccess, "");
-
-  // Test record in both registry and user assets. The value in user assets
-  // should be used.
-  TestGetSPLTokenProgramByMint(FROM_HERE, tsla_mint_addr, mojom::kSolanaMainnet,
-                               mojom::SPLTokenProgram::kToken2022,
-                               mojom::SolanaProviderError::kSuccess, "");
-
   std::string json = R"(
     {
       "jsonrpc":"2.0","id":1,
@@ -8051,6 +7412,26 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
     }
   )";
 
+  auto expected_network_url =
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+
+  // Mint program is always resolved via getAccountInfo so SPL vs Token-2022
+  // cannot go stale from prefs or the static token list.
+  SetInterceptor(expected_network_url, "getAccountInfo", "",
+                 base::ReplaceStringPlaceholders(
+                     json, {mojom::kSolanaToken2022ProgramId}, nullptr));
+
+  // Registry-only mint; network returns Token-2022 owner.
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
+      mojom::kSolanaMainnet, mojom::SPLTokenProgram::kToken2022,
+      mojom::SolanaProviderError::kSuccess, "");
+
+  // Mint also in registry and user assets; network is authoritative.
+  TestGetSPLTokenProgramByMint(FROM_HERE, tsla_mint_addr, mojom::kSolanaMainnet,
+                               mojom::SPLTokenProgram::kToken2022,
+                               mojom::SolanaProviderError::kSuccess, "");
+
   // Test record in user assets with unknown token program, result is from
   // network and the pref value should be updated based on the result.
   auto user_asset =
@@ -8059,8 +7440,6 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
   ASSERT_TRUE(user_asset);
   EXPECT_EQ(user_asset->spl_token_program, mojom::SPLTokenProgram::kUnknown);
 
-  auto expected_network_url =
-      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
   SetInterceptor(expected_network_url, "getAccountInfo", "",
                  base::ReplaceStringPlaceholders(
                      json, {mojom::kSolanaTokenProgramId}, nullptr));

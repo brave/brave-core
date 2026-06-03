@@ -22,7 +22,6 @@ import {
 import {
   StyledWrapper,
   FavIcon,
-  Title,
   TitleWrapper,
   SiteName,
   SiteURL,
@@ -38,7 +37,7 @@ import {
   DomainTextContainer,
 } from './connect-with-site-header.style'
 import { AccountCircle } from '../select-account-item/select-account-item.style'
-import { HorizontalSpace, Column, Row } from '../../../shared/style'
+import { HorizontalSpace, Column, Row, Text } from '../../../shared/style'
 
 // Hooks
 import { useAddressOrb } from '../../../../common/hooks/use-orb'
@@ -78,7 +77,12 @@ export const ConnectWithSiteHeader = (props: Props) => {
         ) : (
           <HorizontalSpace space='24px' />
         )}
-        <Title>{getLocale('braveWalletConnectWallet')}</Title>
+        <Text
+          textColor='primary'
+          variant='large.semibold'
+        >
+          {getLocale('braveWalletConnectWallet')}
+        </Text>
         <HorizontalSpace space='24px' />
       </TitleWrapper>
 
@@ -118,7 +122,10 @@ export const ConnectWithSiteHeader = (props: Props) => {
                   {isDAppVerified && <VerifiedIcon />}
                 </Tooltip>
               </Row>
-              <SiteURLCentered>
+              <SiteURLCentered
+                textColor='secondary'
+                variant='small.regular'
+              >
                 <CreateSiteOrigin
                   originSpec={originInfo.originSpec}
                   eTldPlusOne={originInfo.eTldPlusOne}
@@ -142,8 +149,18 @@ export const ConnectWithSiteHeader = (props: Props) => {
                 alignItems='flex-start'
                 gap='4px'
               >
-                <SiteName>{originInfo.eTldPlusOne}</SiteName>
-                <SiteURL>
+                <SiteName
+                  textColor='primary'
+                  variant='large.semibold'
+                  textAlign='left'
+                >
+                  {originInfo.eTldPlusOne}
+                </SiteName>
+                <SiteURL
+                  textColor='secondary'
+                  variant='small.regular'
+                  textAlign='left'
+                >
                   <CreateSiteOrigin
                     originSpec={originInfo.originSpec}
                     eTldPlusOne={originInfo.eTldPlusOne}

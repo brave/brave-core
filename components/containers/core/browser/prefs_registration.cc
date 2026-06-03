@@ -13,6 +13,7 @@
 namespace containers {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(prefs::kContainersEnabled, true);
   registry->RegisterListPref(
       prefs::kContainersList,
       ConvertContainersToListValue(CreateDefaultContainersList()),

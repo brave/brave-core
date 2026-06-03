@@ -49,6 +49,10 @@ class QueryFilterComponentInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   bool IsBraveComponent() const override;
+
+  // A test only method to set a callback which would be fired when the
+  // component has finished attempting to load and parse the file.
+  void SetOnFileLoadedCallbackForTesting(base::OnceClosure* callback = nullptr);
 };
 
 // Registers the Query Filter component with the component updater.

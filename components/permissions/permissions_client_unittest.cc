@@ -42,23 +42,24 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
             "4n2qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz:123"),
        ContentSettingsType::BRAVE_CARDANO}};
 
-  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+  size_t i = 0;
+  for (const auto& test_case : cases) {
     GURL embedding_origin("https://test.com");
     EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
-        UNSAFE_TODO(cases[i]).requesting_origin, embedding_origin,
-        UNSAFE_TODO(cases[i]).type))
+        test_case.type, test_case.requesting_origin, embedding_origin))
         << "case: " << i;
 
     GURL embedding_origin_with_port("https://test.com:123");
     EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
-        UNSAFE_TODO(cases[i]).requesting_origin_with_port,
-        embedding_origin_with_port, UNSAFE_TODO(cases[i]).type))
+        test_case.type, test_case.requesting_origin_with_port,
+        embedding_origin_with_port))
         << "case: " << i;
 
     EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
-        UNSAFE_TODO(cases[i]).requesting_origin, embedding_origin,
-        ContentSettingsType::GEOLOCATION))
+        ContentSettingsType::GEOLOCATION, test_case.requesting_origin,
+        embedding_origin))
         << "case: " << i;
+    ++i;
   }
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

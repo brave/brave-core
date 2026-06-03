@@ -112,7 +112,7 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
 
       auto rule_it = rule_group_it->rules.begin();
       for (const auto& rule_value : *fields) {
-        if (!ParsePayloadRule(rule_value, rule_it.base())) {
+        if (!ParsePayloadRule(rule_value, &*rule_it)) {
           return std::nullopt;
         }
         rule_it = std::next(rule_it);

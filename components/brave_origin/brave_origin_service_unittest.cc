@@ -14,6 +14,7 @@
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -804,7 +805,14 @@ TEST_F(BraveOriginServiceWithSkusTest, FirstPurchaseDetection_CallsDelegate) {
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_TRUE(result.Get());
-  EXPECT_TRUE(delegate_called);
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Branded builds handle the post-purchase flow via the startup dialog,
+  // not by opening the settings page. No PostTask is scheduled on this
+  // path, so checking immediately after the callback resolves is safe.
+  EXPECT_FALSE(delegate_called);
+#else
+  ASSERT_TRUE(base::test::RunUntil([&] { return delegate_called; }));
+#endif
 }
 
 TEST_F(BraveOriginServiceWithSkusTest, AlreadyPurchased_DoesNotCallDelegate) {
@@ -855,9 +863,16 @@ TEST_F(BraveOriginServiceWithSkusTest, DelegateIsOneShot_OnlyFiresOnce) {
   base::test::TestFuture<bool> result1;
   service_->CheckPurchaseState(result1.GetCallback());
   EXPECT_TRUE(result1.Get());
-  EXPECT_TRUE(delegate_called);
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Branded builds never schedule the delegate task.
+  EXPECT_FALSE(delegate_called);
+#else
+  ASSERT_TRUE(base::test::RunUntil([&] { return delegate_called; }));
+#endif
 
-  // Reset the flag and verify the delegate is not called again.
+  // Reset the flag and verify the delegate is not called again. After the
+  // first purchase, did_open_origin_settings_ is set, so no new task is
+  // posted; checking immediately is safe.
   delegate_called = false;
   base::test::TestFuture<bool> result2;
   service_->CheckPurchaseState(result2.GetCallback());
@@ -898,7 +913,12 @@ TEST_F(BraveOriginServiceWithSkusTest,
                        base::DictValue().Set("trigger", true));
 
   ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
-  EXPECT_TRUE(delegate_called);
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Branded builds never schedule the delegate task.
+  EXPECT_FALSE(delegate_called);
+#else
+  ASSERT_TRUE(base::test::RunUntil([&] { return delegate_called; }));
+#endif
 }
 
 // Test class for when BraveOrigin feature is disabled

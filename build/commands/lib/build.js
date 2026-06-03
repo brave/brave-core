@@ -9,6 +9,7 @@ import path from 'node:path'
 import fs from 'fs-extra'
 import * as Log from './log.ts'
 import branding from './branding.js'
+import * as buildUtils from './buildUtils.ts'
 
 /**
  * Checks to make sure the src/chrome/VERSION matches brave-core's package.json version
@@ -39,6 +40,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
 
   util.touchOverriddenFiles()
   branding.update()
+  buildUtils.ensureVsFilesMount()
   await util.buildNativeRedirectCC()
 
   if (options.prepare_only) {

@@ -42,12 +42,10 @@ std::string GetTopSegmentFromPageProbabilities(
 TextClassificationProcessor::TextClassificationProcessor(
     TextClassificationResource& resource)
     : resource_(resource) {
-  TabManager::GetInstance().AddObserver(this);
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-TextClassificationProcessor::~TextClassificationProcessor() {
-  TabManager::GetInstance().RemoveObserver(this);
-}
+TextClassificationProcessor::~TextClassificationProcessor() = default;
 
 void TextClassificationProcessor::Process(const std::string& text) {
   if (resource_->IsLoaded()) {

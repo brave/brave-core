@@ -31,10 +31,10 @@ CardanoTxManager::CardanoTxManager(
     TxService& tx_service,
     CardanoWalletService& cardano_wallet_service,
     KeyringService& keyring_service,
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<CardanoTxStateManager>(delegate,
+          std::make_unique<CardanoTxStateManager>(tx_storage,
                                                   account_resolver_delegate),
           std::make_unique<CardanoBlockTracker>(cardano_wallet_service),
           tx_service,

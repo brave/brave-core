@@ -19,12 +19,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieProperty;
 import com.airbnb.lottie.model.KeyPath;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ThreadUtils;
@@ -37,13 +37,13 @@ import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.Channel;
 import org.chromium.brave_news.mojom.Publisher;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
@@ -60,7 +60,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
 
     private LinearLayout mParentLayout;
     private LinearLayout mOptinLayout;
-    private SwitchCompat mSwitchShowNews;
+    private MaterialSwitch mSwitchShowNews;
     private TextView mTvSearch;
     private TextView mTvFollowingCount;
     private Button mBtnTurnOnNews;
@@ -99,7 +99,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         if (view != null) {
             mParentLayout = (LinearLayout) view.findViewById(R.id.layout_parent);
             mOptinLayout = (LinearLayout) view.findViewById(R.id.layout_optin_card);
-            mSwitchShowNews = (SwitchCompat) view.findViewById(R.id.switch_show_news);
+            mSwitchShowNews = (MaterialSwitch) view.findViewById(R.id.switch_show_news);
             mDivider = view.findViewById(R.id.divider);
             mLayoutSwitch = view.findViewById(R.id.layout_switch);
             mBtnTurnOnNews = (Button) view.findViewById(R.id.btn_turn_on_news);

@@ -5,7 +5,7 @@
 
 import { BraveWallet, CreateAccountOptionsType } from '../constants/types'
 import { getLocale } from '../../common/locale'
-import { getNetworkLogo } from './asset-options'
+import { getCreateAccountLogo } from './asset-options'
 
 export const CreateAccountOptions = (options: {
   visibleNetworks: BraveWallet.NetworkInfo[]
@@ -27,7 +27,7 @@ export const CreateAccountOptions = (options: {
     description: getLocale('braveWalletCreateAccountEthereumDescription'),
     name: 'Ethereum',
     coin: BraveWallet.CoinType.ETH,
-    icon: getNetworkLogo(BraveWallet.MAINNET_CHAIN_ID, 'ETH'),
+    icon: getCreateAccountLogo(BraveWallet.CoinType.ETH),
     chainIcons: ['eth-color', 'matic-color', 'op-color', 'aurora-color'],
   })
 
@@ -35,7 +35,7 @@ export const CreateAccountOptions = (options: {
     description: getLocale('braveWalletCreateAccountSolanaDescription'),
     name: 'Solana',
     coin: BraveWallet.CoinType.SOL,
-    icon: getNetworkLogo(BraveWallet.SOLANA_MAINNET, 'SOL'),
+    icon: getCreateAccountLogo(BraveWallet.CoinType.SOL),
     chainIcons: ['sol-color'],
   })
 
@@ -44,7 +44,7 @@ export const CreateAccountOptions = (options: {
     name: 'Filecoin',
     coin: BraveWallet.CoinType.FIL,
     fixedNetwork: BraveWallet.FILECOIN_MAINNET,
-    icon: getNetworkLogo(BraveWallet.FILECOIN_MAINNET, 'FIL'),
+    icon: getCreateAccountLogo(BraveWallet.CoinType.FIL),
     chainIcons: ['filecoin-color'],
   })
   if (
@@ -57,7 +57,7 @@ export const CreateAccountOptions = (options: {
       name: 'Filecoin Testnet',
       coin: BraveWallet.CoinType.FIL,
       fixedNetwork: BraveWallet.FILECOIN_TESTNET,
-      icon: getNetworkLogo(BraveWallet.FILECOIN_TESTNET, 'FIL'),
+      icon: getCreateAccountLogo(BraveWallet.CoinType.FIL),
       chainIcons: ['filecoin-color'],
     })
   }
@@ -68,7 +68,7 @@ export const CreateAccountOptions = (options: {
       name: 'Bitcoin',
       fixedNetwork: BraveWallet.BITCOIN_MAINNET,
       coin: BraveWallet.CoinType.BTC,
-      icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC'),
+      icon: getCreateAccountLogo(BraveWallet.CoinType.BTC),
       chainIcons: ['btc-color'],
     })
     if (
@@ -81,7 +81,7 @@ export const CreateAccountOptions = (options: {
         name: 'Bitcoin Testnet',
         fixedNetwork: BraveWallet.BITCOIN_TESTNET,
         coin: BraveWallet.CoinType.BTC,
-        icon: getNetworkLogo(BraveWallet.BITCOIN_TESTNET, 'BTC'),
+        icon: getCreateAccountLogo(BraveWallet.CoinType.BTC),
         chainIcons: ['btc-color'],
       })
     }
@@ -93,7 +93,7 @@ export const CreateAccountOptions = (options: {
       name: 'Zcash',
       fixedNetwork: BraveWallet.Z_CASH_MAINNET,
       coin: BraveWallet.CoinType.ZEC,
-      icon: getNetworkLogo(BraveWallet.Z_CASH_MAINNET, 'ZEC'),
+      icon: getCreateAccountLogo(BraveWallet.CoinType.ZEC),
       chainIcons: [],
     })
     if (
@@ -106,7 +106,7 @@ export const CreateAccountOptions = (options: {
         name: 'Zcash Testnet',
         fixedNetwork: BraveWallet.Z_CASH_TESTNET,
         coin: BraveWallet.CoinType.ZEC,
-        icon: getNetworkLogo(BraveWallet.Z_CASH_TESTNET, 'ZEC'),
+        icon: getCreateAccountLogo(BraveWallet.CoinType.ZEC),
         chainIcons: [],
       })
     }
@@ -118,7 +118,7 @@ export const CreateAccountOptions = (options: {
       name: 'Cardano',
       fixedNetwork: BraveWallet.CARDANO_MAINNET,
       coin: BraveWallet.CoinType.ADA,
-      icon: getNetworkLogo(BraveWallet.CARDANO_MAINNET, 'ADA'),
+      icon: getCreateAccountLogo(BraveWallet.CoinType.ADA),
       chainIcons: ['ada-color'],
     })
     if (
@@ -131,7 +131,7 @@ export const CreateAccountOptions = (options: {
         name: 'Cardano Testnet',
         fixedNetwork: BraveWallet.CARDANO_TESTNET,
         coin: BraveWallet.CoinType.ADA,
-        icon: getNetworkLogo(BraveWallet.CARDANO_TESTNET, 'ADA'),
+        icon: getCreateAccountLogo(BraveWallet.CoinType.ADA),
         chainIcons: ['ada-color'],
       })
     }
@@ -143,7 +143,7 @@ export const CreateAccountOptions = (options: {
       name: 'Polkadot',
       coin: BraveWallet.CoinType.DOT,
       fixedNetwork: BraveWallet.POLKADOT_MAINNET,
-      icon: getNetworkLogo(BraveWallet.POLKADOT_MAINNET, 'DOT'),
+      icon: getCreateAccountLogo(BraveWallet.CoinType.DOT),
       chainIcons: ['dot-color'],
     })
 
@@ -157,7 +157,7 @@ export const CreateAccountOptions = (options: {
         name: 'Polkadot Westend',
         fixedNetwork: BraveWallet.POLKADOT_TESTNET,
         coin: BraveWallet.CoinType.DOT,
-        icon: getNetworkLogo(BraveWallet.POLKADOT_TESTNET, 'DOT'),
+        icon: getCreateAccountLogo(BraveWallet.CoinType.DOT),
         chainIcons: ['dot-color'],
       })
     }

@@ -7,8 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TEST_UTILS_H_
 
 #include <array>
+#include <cstddef>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"
@@ -24,6 +26,19 @@ namespace brave_wallet {
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req);
 std::string ReadMetadataFixtureJson(std::string_view file_name);
 std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name);
+
+// Replaces the zero-based nth occurrence of `needle` in `bytes` with
+// `replacement`. Returns false if `needle` is empty or if the requested
+// occurrence is not found.
+//
+// Examples:
+//   ReplaceNthOccurrence("a b a b", "a", "x", 0) -> "x b a b"
+//   ReplaceNthOccurrence("a b a b", "a", "x", 1) -> "a b x b"
+//   ReplaceNthOccurrence("a b", "z", "x", 0) -> false
+bool ReplaceNthOccurrence(std::vector<uint8_t>& bytes,
+                          std::string_view needle,
+                          std::string_view replacement,
+                          size_t occurrence);
 
 struct PolkadotMockRpc {
  public:
@@ -64,7 +79,6 @@ struct PolkadotMockRpc {
   void AddGetInitialChainHeader();
   void AddGetParentBlockHeader();
   void AddGetFinalizedBlockHash();
-  void AddGetFinalizedBlockHeader();
   void AddGetSigningBlockHash();
   void AddGetRuntimeInfo();
   void AddGetGenesisBlockHash();
@@ -85,6 +99,9 @@ struct PolkadotMockRpc {
   bool HandleGetAccountInfoRequest(const network::ResourceRequest& req,
                                    const base::DictValue& req_body);
 
+  bool HandleGetFinalizedBlockHeader(const network::ResourceRequest& res,
+                                     const base::DictValue& req_body);
+
   bool HandleAuthorSubmitExtrinsic(const network::ResourceRequest& req,
                                    const base::DictValue& req_body);
 
@@ -103,10 +120,11 @@ struct PolkadotMockRpc {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender_pubkey_ = {};
   raw_ptr<network::TestURLLoaderFactory> url_loader_factory_ = nullptr;
   raw_ptr<NetworkManager> network_manager_ = nullptr;
-  base::flat_map<base::DictValue, std::string_view> req_res_pairs_;
+  base::flat_map<base::DictValue, std::string> req_res_pairs_;
   std::string testnet_url_;
   std::string mainnet_url_;
   std::optional<std::string> expected_extrinsic_;
+  std::string finalized_block_hash_;  // Hex-encoded, no leading 0x.
   std::string finalized_block_header_json_;
   base::flat_map<uint32_t, std::string> block_hash_map_;
   base::flat_map<std::string, PolkadotBlock> block_map_;
@@ -118,6 +136,19 @@ struct PolkadotMockRpc {
   bool reject_extrinsic_submission_ = false;
   bool reject_account_info_request_ = false;
 };
+
+// Build metadata from a known relay/parachain name returned by system_chain.
+// Returns std::nullopt for unknown names. The returned metadata has an
+// unknown spec_version (set to 0); callers must populate spec_version from
+// state_getRuntimeVersion before using it for version-sensitive operations.
+std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
+    std::string_view chain_name);
+
+PolkadotChainMetadata MakeWestendMetadata();
+PolkadotChainMetadata MakePolkadotMetadata();
+PolkadotChainMetadata MakeWestendAssetHubMetadata();
+PolkadotChainMetadata MakePolkadotAssetHubMetadata();
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TEST_UTILS_H_

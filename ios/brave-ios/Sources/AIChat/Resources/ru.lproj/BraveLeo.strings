@@ -166,6 +166,12 @@
 /* The label for the system prompt field */
 "aichat.customModelFormSystemPromptFieldTitle" = "Системный запрос";
 
+/* The description text explaining what tools supports means */
+"aichat.customModelFormToolsSupportFieldDescription" = "Если эта модель поддерживает вызовы функций / использование инструментов";
+
+/* The label for the tools support toggle */
+"aichat.customModelFormToolsSupportFieldTitle" = "Поддержка инструментов";
+
 /* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
 "aichat.customModelFormUnsafeEndpointWarning" = "По такому URL обслуживающий фреймворк получает запросы. Чтобы узнать больше, прочтите соответствующие инструкции, например для Ollama всегда нужно обращаться к http://localhost:11434/v1/chat/completions.";
 

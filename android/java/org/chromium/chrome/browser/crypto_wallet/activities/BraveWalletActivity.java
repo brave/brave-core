@@ -142,8 +142,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         mWalletOnboardingPagerAdapter =
-                new WalletOnboardingPagerAdapter(
-                        this, mBraveWalletP3A, mRestartSetupAction, mRestartRestoreAction);
+                new WalletOnboardingPagerAdapter(this, mRestartSetupAction, mRestartRestoreAction);
         mCryptoWalletOnboardingViewPager.setAdapter(mWalletOnboardingPagerAdapter);
 
         if (Utils.shouldShowCryptoOnboarding()) {
@@ -177,7 +176,11 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     protected ActivityWindowAndroid createWindowAndroid() {
         return new ActivityWindowAndroid(
-                this, true, getIntentRequestTracker(), null, /* trackOcclusion= */ false) {
+                this,
+                true,
+                getIntentRequestTracker(),
+                null,
+                /* occlusionTrackingAllowed= */ false) {
             @Override
             public ModalDialogManager getModalDialogManager() {
                 return mModalDialogManager;

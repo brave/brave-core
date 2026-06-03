@@ -1,6 +1,7 @@
 # Running tests
 
 Usually you'll run:
+
 - `npm run test -- [test suite] --filter="..."`
 
 where test suite is any of:
@@ -18,6 +19,6 @@ See chromium's docs/testing_in_chromium.md.
 
 ## Javascript / Typescript unit tests
 
-Isolated *.test.ts(x) tests are run via:
+Isolated \*.test.ts(x) tests are run via:
 
 - npm run test-unit -- [path blob filter]

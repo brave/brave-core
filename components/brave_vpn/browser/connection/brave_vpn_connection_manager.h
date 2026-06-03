@@ -104,9 +104,14 @@ class BraveVPNConnectionManager {
     target_vpn_entry_name_ = name;
   }
 
+  void SetConnectionStateForTesting(mojom::ConnectionState state) {
+    DCHECK(connection_api_impl_);
+    connection_api_impl_->UpdateAndNotifyConnectionStateChange(state);
+  }
+
  private:
   friend class BraveVpnButtonUnitTest;
-  friend class BraveVPNServiceTest;
+  friend class BraveVpnServiceImplV1Test;
   friend class BraveVPNWireguardConnectionAPIUnitTest;
   friend class SystemVPNConnectionAPIUnitTest;
   FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,

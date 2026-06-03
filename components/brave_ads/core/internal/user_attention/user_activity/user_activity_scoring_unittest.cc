@@ -169,6 +169,28 @@ TEST_F(BraveAdsUserActivityScoringTest,
   EXPECT_EQ(1.8, GetUserActivityScore(triggers, events));
 }
 
+TEST_F(
+    BraveAdsUserActivityScoringTest,
+    GetUserActivityScoreMatchesLongerTriggerEvenWhenShorterSuffixTriggerHasHigherScore) {
+  // Arrange
+  const UserActivityTriggerList triggers =
+      ToUserActivityTriggers("06=1.0;0D1406=0.3");
+
+  UserActivityManager::GetInstance().RecordEvent(
+      UserActivityEventType::kOpenedNewTab);  // 0D
+  UserActivityManager::GetInstance().RecordEvent(
+      UserActivityEventType::kTypedUrl);  // 14
+  UserActivityManager::GetInstance().RecordEvent(
+      UserActivityEventType::kClickedLink);  // 06
+
+  const UserActivityEventList events =
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
+          base::Hours(1));
+
+  // Act & Assert
+  EXPECT_EQ(0.3, GetUserActivityScore(triggers, events));
+}
+
 TEST_F(BraveAdsUserActivityScoringTest,
        GetUserActivityScoreForEmptyEventSequence) {
   // Arrange

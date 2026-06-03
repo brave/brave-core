@@ -8,6 +8,7 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/common/features.h"
 #include "url/gurl.h"
 
@@ -30,7 +31,9 @@ struct SidebarItem {
     kBookmarks = 3,
     kReadingList = 4,
     kHistory = 5,
+#if BUILDFLAG(ENABLE_PLAYLIST)
     kPlaylist = 6,
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     kChatUI = 7,
 #endif
@@ -38,7 +41,10 @@ struct SidebarItem {
 
   // Count of built-in items based on enabled features.
   static constexpr size_t kBuiltInItemsCount =
-      5  // kWallet, kBookmarks, kReadingList, kHistory, kPlaylist
+      4  // kWallet, kBookmarks, kReadingList, kHistory
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      + 1  // kPlaylist
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
       + 1  // kChatUI
 #endif

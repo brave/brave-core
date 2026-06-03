@@ -65,6 +65,7 @@ export const NavButton: React.FC<Props> = ({
         <ButtonText
           buttonType={buttonType}
           isV2={isV2}
+          isBold={true}
         >
           {text}
         </ButtonText>

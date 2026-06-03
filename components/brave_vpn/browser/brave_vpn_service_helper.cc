@@ -70,10 +70,6 @@ void SetSubscriberCredential(PrefService* local_prefs,
                        std::move(cred_dict));
 }
 
-void ClearSubscriberCredential(PrefService* local_prefs) {
-  local_prefs->ClearPref(prefs::kBraveVPNSubscriberCredential);
-}
-
 void SetSkusCredential(PrefService* local_prefs,
                        const std::string& skus_credential,
                        const base::Time& expiration_time) {

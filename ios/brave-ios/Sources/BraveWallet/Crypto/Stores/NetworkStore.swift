@@ -117,15 +117,6 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       rpcService: rpcService,
       _chainChangedEvent: { [weak self] chainId, coin, origin in
         Task { @MainActor [self] in
-          // Verify correct account is selected for the new network.
-          // This could occur from Eth Switch Chain request when Solana account selected.
-          let accountId = await self?.walletService.ensureSelectedAccountForChain(
-            coin: coin,
-            chainId: chainId
-          )
-          if accountId == nil {
-            assertionFailure("Should not have a nil selectedAccount for any network.")
-          }
           // Sync our local properties with updated values
           if let origin, origin == self?.origin {
             self?.selectedChainIdForOrigin = chainId

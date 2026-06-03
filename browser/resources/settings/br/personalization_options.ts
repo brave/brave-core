@@ -5,26 +5,38 @@
 
 import '../brave_privacy_page/brave_personalization_options.js'
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  RegisterPolymerTemplateModifications
+} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerTemplateModifications({
   'settings-personalization-options': (templateContent) => {
-    const metricsReportingControl = templateContent.getElementById('metricsReportingControl')
-    if (!metricsReportingControl) {
-      console.error(`[Brave Settings Overrides] Couldn't find metricsReportingControl`)
+    const metricsConsentRestructureTemplate = templateContent.querySelector(
+      'template[is="dom-if"][if="[[!shouldUseMetricsConsentRestructure_]]"]')
+    if (!metricsConsentRestructureTemplate) {
+      console.error('[Settings] Could not find metrics consent template')
     } else {
-      // Removed because we need to locate metrics reportng option between ours at our settings-brave-personalization-options
-      metricsReportingControl.remove()
+      const metricsReportingControl = metricsConsentRestructureTemplate.
+        content.getElementById('metricsReportingControl')
+      if (!metricsReportingControl) {
+        console.error(`[Settingss] Couldn't find metricsReportingControl`)
+      } else {
+        // Removed because we need to locate the metrics reporting option
+        // between ours at our settings-brave-personalization-options
+        metricsReportingControl.remove()
+      }
     }
 
     // searchSugestToggle is moved to search engines section.
-    const searchSuggestToggleTemplate = templateContent.querySelector('template[is="dom-if"][if="[[showSearchSuggestToggle_()]]"]')
+    const searchSuggestToggleTemplate = templateContent.querySelector(
+      'template[is="dom-if"][if="[[showSearchSuggestToggle_()]]"]')
     if (!searchSuggestToggleTemplate) {
-      console.error('[Brave Settings Overrides] Could not find searchSuggestToggle template')
+      console.error('[Settings] Could not find searchSuggestToggle template')
     } else {
-      const searchSuggestToggle = searchSuggestToggleTemplate.content.getElementById('searchSuggestToggle')
+      const searchSuggestToggle = searchSuggestToggleTemplate.content.
+        getElementById('searchSuggestToggle')
       if (!searchSuggestToggle) {
-        console.error('[Brave Settings Overrides] Could not find searchSuggestToggle id')
+        console.error('[Settings] Could not find searchSuggestToggle id')
       } else {
         searchSuggestToggle.setAttribute('hidden', 'true')
       }

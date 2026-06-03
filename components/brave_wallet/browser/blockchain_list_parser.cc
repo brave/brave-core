@@ -565,8 +565,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
       continue;
     }
     network->coin = mojom::CoinType::ETH;
-    network->supported_keyrings =
-        GetSupportedKeyringsForNetwork(network->coin, network->chain_id);
+    network->supported_keyrings = {mojom::KeyringId::kDefault};
 
     result->push_back(std::move(network));
   }

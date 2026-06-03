@@ -13,8 +13,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/default_clock.h"
@@ -28,8 +30,8 @@
 #include "brave/components/sync/test/brave_mock_sync_engine.h"
 #include "build/build_config.h"
 #include "components/network_time/network_time_tracker.h"
-#include "components/os_crypt/sync/os_crypt.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/os_crypt/async/browser/test_utils.h"
+#include "components/os_crypt/async/common/test_encryptor.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
 #include "components/sync/base/data_type.h"
@@ -52,10 +54,15 @@
 
 using testing::_;
 using testing::ByMove;
+using testing::Eq;
+using testing::IsEmpty;
 using testing::NiceMock;
+using testing::Optional;
 using testing::Return;
 
 namespace syncer {
+
+using GetSeedStatusEnum = syncer::BraveSyncServiceImpl::GetSeedStatusEnum;
 
 namespace {
 
@@ -109,8 +116,7 @@ class SyncServiceObserverMock : public SyncServiceObserver {
 class BraveSyncServiceImplTest : public testing::Test {
  public:
   BraveSyncServiceImplTest()
-      : brave_sync_prefs_(sync_service_impl_bundle_.pref_service()),
-        sync_prefs_(sync_service_impl_bundle_.pref_service()) {
+      : sync_prefs_(sync_service_impl_bundle_.pref_service()) {
     sync_service_impl_bundle_.identity_test_env()
         ->SetAutomaticIssueOfAccessTokens(true);
     brave_sync::Prefs::RegisterProfilePrefs(
@@ -149,13 +155,16 @@ class BraveSyncServiceImplTest : public testing::Test {
     auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
     sync_service_delegate_ = sync_service_delegate.get();
 
+    os_crypt_async_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+
     sync_service_impl_ = std::make_unique<BraveSyncServiceImpl>(
         sync_service_impl_bundle_.CreateBasicInitParams(std::move(sync_client)),
-        std::move(sync_service_delegate));
+        std::move(sync_service_delegate), os_crypt_async_.get());
     sync_service_impl_->Initialize(std::move(controllers));
   }
 
-  brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
+  brave_sync::Prefs* brave_sync_prefs() { return &sync_service_impl_->prefs(); }
 
   SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
@@ -179,10 +188,10 @@ class BraveSyncServiceImplTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
 
  private:
   SyncServiceImplBundle sync_service_impl_bundle_;
-  brave_sync::Prefs brave_sync_prefs_;
   SyncPrefs sync_prefs_;
   std::unique_ptr<network_time::NetworkTimeTracker> network_time_tracker_;
   std::unique_ptr<BraveSyncServiceImpl> sync_service_impl_;
@@ -194,8 +203,6 @@ TEST_F(BraveSyncServiceImplTest, GroupPolicyOverride) {
   pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
                                  base::Value("https://sync.example.com/v2"));
 
-  OSCryptMocker::SetUp();
-
   CreateSyncService();
 
   EXPECT_FALSE(engine());
@@ -205,8 +212,6 @@ TEST_F(BraveSyncServiceImplTest, GroupPolicyOverride) {
       brave_sync_service_impl()->GetSyncServiceUrlForDebugging();
   EXPECT_EQ(expected_service_url, actual_service_url);
 
-  OSCryptMocker::TearDown();
-
   pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
                                  base::Value(""));
 }
@@ -214,8 +219,6 @@ TEST_F(BraveSyncServiceImplTest, GroupPolicyOverride) {
 TEST_F(BraveSyncServiceImplTest, GroupPolicyNonHttpsOverride) {
   pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
                                  base::Value("http://sync.example.com/v2"));
-
-  OSCryptMocker::SetUp();
 
   CreateSyncService();
 
@@ -226,15 +229,11 @@ TEST_F(BraveSyncServiceImplTest, GroupPolicyNonHttpsOverride) {
       brave_sync_service_impl()->GetSyncServiceUrlForDebugging();
   EXPECT_NE(expected_service_url, actual_service_url);
 
-  OSCryptMocker::TearDown();
-
   pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
                                  base::Value(""));
 }
 
 TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
-  OSCryptMocker::SetUp();
-
   CreateSyncService();
 
   EXPECT_FALSE(engine());
@@ -242,16 +241,11 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
-  bool failed_to_decrypt = false;
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), kValidSyncCode);
-  EXPECT_FALSE(failed_to_decrypt);
-
-  OSCryptMocker::TearDown();
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(),
+              testing::Eq(kValidSyncCode));
 }
 
 TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
-  OSCryptMocker::SetUp();
-
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -259,16 +253,11 @@ TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
       brave_sync_service_impl()->SetSyncCode("word one and then two");
   EXPECT_FALSE(set_code_result);
 
-  bool failed_to_decrypt = false;
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
-  EXPECT_FALSE(failed_to_decrypt);
-
-  OSCryptMocker::TearDown();
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(),
+              testing::Optional(::testing::IsEmpty()));
 }
 
 TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
-  OSCryptMocker::SetUp();
-
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -278,11 +267,8 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
       brave_sync_service_impl()->SetSyncCode(sync_code_extra_whitespace);
   EXPECT_TRUE(set_code_result);
 
-  bool failed_to_decrypt = false;
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), kValidSyncCode);
-  EXPECT_FALSE(failed_to_decrypt);
-
-  OSCryptMocker::TearDown();
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(),
+              testing::Eq(kValidSyncCode));
 }
 
 // Google test doc strongly recommends to use `*DeathTest` naming
@@ -298,8 +284,6 @@ using BraveSyncServiceImplDeathTest = BraveSyncServiceImplTest;
 #define MAYBE_EmulateGetOrCreateSyncCodeCHECK EmulateGetOrCreateSyncCodeCHECK
 #endif
 TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
-  OSCryptMocker::SetUp();
-
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -312,21 +296,23 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
+  // Encrypt an invalid passphrase with the same async encryptor the service
+  // uses, so decryption succeeds but IsPassphraseValid() fails — triggering
+  // the CHECK in GetOrCreateSyncCode().
   std::string wrong_seed = "123";
   std::string encrypted_wrong_seed;
-  EXPECT_TRUE(OSCrypt::EncryptString(wrong_seed, &encrypted_wrong_seed));
+  os_crypt_async_->GetInstance(base::BindLambdaForTesting(
+      [&wrong_seed, &encrypted_wrong_seed](os_crypt_async::Encryptor e) {
+        EXPECT_TRUE(e.EncryptString(wrong_seed, &encrypted_wrong_seed));
+      }));
 
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
                             base::Base64Encode(encrypted_wrong_seed));
 
   EXPECT_CHECK_DEATH(brave_sync_service_impl()->GetOrCreateSyncCode());
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
-  OSCryptMocker::SetUp();
-
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -335,15 +321,10 @@ TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
 
   brave_sync_service_impl()->StopAndClearWithResetLocalDataReason();
 
-  bool failed_to_decrypt = false;
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
-  EXPECT_FALSE(failed_to_decrypt);
-
-  OSCryptMocker::TearDown();
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Optional(IsEmpty()));
 }
 
 TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -352,13 +333,12 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
 
   // Pretend we need the passphrase by triggering OnPassphraseRequired and
   // supplying the encrypted portion of data, as it is done in
   // sync_service_crypto_unittest.cc
-  brave_sync_service_impl()->GetCryptoForTests()->OnPassphraseRequired(
+  brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
       KeyDerivationParams::CreateForPbkdf2(),
       MakeEncryptedData(kValidSyncCode,
                         KeyDerivationParams::CreateForPbkdf2()));
@@ -378,7 +358,8 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // So we just make DataTypeManagerImpl::SetConfigurer requirements be
   // satisfied.
   // Related Chromium commit 7cdf92e9470fc73a09b871f99d14ff115edef652
-  brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
+  brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
+      KEEP_METADATA);
 
   // We have to cleanup SyncServiceCrypto.state_.engine with Reset
   // because on 2nd OnEngineInitialized call it is non-null and CHECK gets
@@ -387,22 +368,20 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // TODO(alexeybarabash): revert PR#13397 if it is not required anymore.
   // https://github.com/brave/brave-browser/issues/39353
 
-  brave_sync_service_impl()->GetCryptoForTests()->Reset();
-  brave_sync_service_impl()->GetCryptoForTests()->OnPassphraseRequired(
+  brave_sync_service_impl()->GetCryptoForTesting()->Reset();
+  brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
       KeyDerivationParams::CreateForPbkdf2(),
       MakeEncryptedData(kValidSyncCode,
                         KeyDerivationParams::CreateForPbkdf2()));
-  brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
+  brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
+      KEEP_METADATA);
 
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -446,12 +425,124 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
   data_type_manager_mock_ptr.release();
   brave_sync_service_impl()->data_type_manager_ =
       std::move(bak_data_type_manager);
+}
 
-  OSCryptMocker::TearDown();
+// Simulate a locked keychain or key rotation: a Prefs instance with a
+// different encryptor cannot decrypt data written by the original one.
+TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->SetEncryptorForTesting(
+      os_crypt_async::GetTestEncryptorForTesting());
+
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kDecryptFailed));
+}
+
+TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  // Empty seed is expected as valid when sync is not turned on
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Optional(IsEmpty()));
+
+  // Valid code round-trips correctly
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(kValidSyncCode));
+
+  // Since this test was moved here from BraveSyncPrefsTest
+  // we don't want anymore to BraveSyncServiceImpl::OnBraveSyncPrefsChanged get
+  // invoked
+  brave_sync_service_impl()->RemoveAllPrefsChangeRegistrarForTesting();
+
+  // Wrong base64-encoded seed must fail decryption
+  const char kWrongBase64String[] = "AA%BB";
+  std::string base64_decoded;
+  EXPECT_FALSE(base::Base64Decode(kWrongBase64String, &base64_decoded));
+  pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
+                            kWrongBase64String);
+  EXPECT_FALSE(brave_sync_service_impl()->GetSeed().has_value());
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kDecryptFailed));
+
+  // Valid encrypted data but for a different key (e.g. key rotation or data
+  // from another machine) must fail decryption.
+  std::unique_ptr<os_crypt_async::Encryptor> original_encryptor =
+      brave_sync_service_impl()->SetEncryptorForTesting(
+          os_crypt_async::GetTestEncryptorForTesting());
+  ASSERT_TRUE(brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode));
+  brave_sync_service_impl()->SetEncryptorForTesting(
+      std::move(*original_encryptor));
+
+  EXPECT_FALSE(brave_sync_service_impl()->GetSeed().has_value());
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kDecryptFailed));
+}
+
+TEST_F(BraveSyncServiceImplTest,
+       GetPreferredDataTypesGivesAllWhenHasNoEncryptor) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->ResetEncryptorForTesting();
+
+  ASSERT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kEncryptorIsNotSet));
+  EXPECT_EQ(brave_sync_service_impl()->GetPreferredDataTypes(),
+            DataTypeSet::All());
+}
+
+TEST_F(BraveSyncServiceImplTest,
+       GetPreferredDataTypesGivesAllWhenIsInitializing) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->SetInitializingForTesting();
+
+  EXPECT_EQ(brave_sync_service_impl()->GetPreferredDataTypes(),
+            DataTypeSet::All());
+}
+
+TEST_F(BraveSyncServiceImplTest,
+       StopAndClearWithNotSignedInDoNotWipePrefsWhenIsInitializing) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->SetInitializingForTesting();
+
+  using ResetEngineReason = syncer::SyncServiceImpl::ResetEngineReason;
+  brave_sync_service_impl()->StopAndClear(ResetEngineReason::kNotSignedIn);
+
+  auto seed = brave_sync_service_impl()->GetSeed();
+  EXPECT_TRUE(seed.has_value() && !seed.value().empty());
+}
+
+TEST_F(BraveSyncServiceImplTest,
+       StopAndClearWithoutNotSignedInDoesWipePrefsWhenIsInitializing) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->SetInitializingForTesting();
+
+  using ResetEngineReason = syncer::SyncServiceImpl::ResetEngineReason;
+  brave_sync_service_impl()->StopAndClear(ResetEngineReason::kDisabledAccount);
+
+  auto seed = brave_sync_service_impl()->GetSeed();
+  EXPECT_TRUE(seed.has_value() && seed.value().empty());
 }
 
 TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -459,8 +550,7 @@ TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   std::unique_ptr<testing::NiceMock<BraveMockSyncEngine>> mock_sync_engine =
@@ -472,11 +562,9 @@ TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
   brave_sync_service_impl()->PermanentlyDeleteAccount(base::BindOnce(
       [](const syncer::SyncProtocolError& sync_protocol_error) {}));
   brave_sync_service_impl()->engine_ = std::move(engine_orig);
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_Success) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -489,12 +577,9 @@ TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_Success) {
         EXPECT_EQ(spe.error_type, SYNC_SUCCESS);
       }),
       sync_protocol_error);
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_FailureAndRetry) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -521,12 +606,9 @@ TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_FailureAndRetry) {
 
     EXPECT_EQ(on_account_deleted_invoked, UNSAFE_TODO(was_callback_invoked[i]));
   }
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -545,12 +627,9 @@ TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
   EXPECT_FALSE(join_chain_callback_invoked);
   brave_sync_service_impl()->LocalDeviceAppeared();
   EXPECT_TRUE(join_chain_callback_invoked);
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -581,8 +660,6 @@ TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
       SyncServiceImpl::ResetEngineReason::kDisabledAccount);
 
   EXPECT_TRUE(join_chain_callback_invoked);
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
@@ -595,7 +672,6 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
   // Otherwise TestSyncUserSettings would not allow to override
   // IsEncryptEverythingEnabled.
 
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -603,12 +679,11 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   // Code below turns on encrypt everything
-  brave_sync_service_impl()->GetCryptoForTests()->OnEncryptedTypesChanged(
+  brave_sync_service_impl()->GetCryptoForTesting()->OnEncryptedTypesChanged(
       AlwaysEncryptedUserTypes(), true);
 
   // Ensure encrypt everything was actually enabled
@@ -640,12 +715,9 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
               signin::AccountManagedStatusFinderOutcome::kConsumerGmail));
   EXPECT_EQ(history_delete_directives_precondition_state,
             DataTypeController::PreconditionState::kPreconditionsMet);
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -653,8 +725,7 @@ TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   EXPECT_FALSE(
@@ -664,12 +735,58 @@ TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
   EXPECT_EQ(selected_types.size(), 2u);
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kPasswords));
-
-  OSCryptMocker::TearDown();
 }
 
+#if BUILDFLAG(IS_ANDROID)
+TEST_F(BraveSyncServiceImplTest,
+       MigrateAndroidSyncEverythingOnEngineInitialized) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
+
+  // Complete setup so IsInitialSyncFeatureSetupComplete() returns true.
+  // OnEngineInitialized was already called after we set the sync code, but
+  // exited early because setup was not yet complete at that point.
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete();
+
+  // Simulate pre-cr149 device state: sync-everything was enabled.
+  {
+    auto setup_handle = brave_sync_service_impl()->GetSetupInProgressHandle();
+    UserSelectableTypeSet registered_types =
+        brave_sync_service_impl()
+            ->GetUserSettings()
+            ->GetRegisteredSelectableTypes();
+    brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
+        /*keep_everything_synced=*/true, registered_types);
+  }
+  ASSERT_TRUE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+
+  // Re-trigger OnEngineInitialized (simulating app restart with cr149).
+  // Stop the data type manager first — required by DataTypeManagerImpl's
+  // SetConfigurer. Reset crypto state to clear the engine pointer set during
+  // the first OnEngineInitialized call, otherwise a CHECK fires.
+  brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
+      KEEP_METADATA);
+  brave_sync_service_impl()->GetCryptoForTesting()->Reset();
+  brave_sync_service_impl()->OnEngineInitialized(true, false);
+
+  // After migration: sync_everything must be off, all registered types
+  // selected.
+  EXPECT_FALSE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+  EXPECT_EQ(brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes(),
+            brave_sync_service_impl()
+                ->GetUserSettings()
+                ->GetRegisteredSelectableTypes());
+}
+#endif  // BUILDFLAG(IS_ANDROID)
+
 TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
-  OSCryptMocker::SetUp();
   CreateSyncService(DataTypeSet({BOOKMARKS, HISTORY, PASSWORDS}));
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -708,8 +825,6 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   brave_sync_service_impl()->OnGetTypeEntitiesCount(bookmarks_count);
   histogram_tester.ExpectBucketCount(
       brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 2, 1);
-
-  OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
@@ -718,7 +833,7 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   // Pretend for test that we are doing iOS behaviour for leave sync chain
   // details, becuase BraveSyncServiceImplTest.NoLeaveDetailsWhenInitializeIOS
   // is not executed on iOS
-  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTests(
+  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTesting(
       brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
 
   brave_sync_prefs()->AddLeaveChainDetail(__FILE__, __LINE__, "details");
@@ -728,7 +843,7 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
   brave_sync_prefs_change_registrar_.Init(pref_service());
   brave_sync_prefs_change_registrar_.Add(
-      brave_sync::Prefs::GetLeaveChainDetailsPathForTests(),
+      brave_sync::Prefs::GetLeaveChainDetailsPathForTesting(),
       base::BindRepeating(
           [](size_t* leave_chain_pref_changed_count) {
             ++(*leave_chain_pref_changed_count);
@@ -756,7 +871,6 @@ class BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest
 
 TEST_F(BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest,
        OnlyBookmarks) {
-  OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
 
@@ -779,8 +893,7 @@ TEST_F(BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest,
 
   brave_sync_service_impl()
       ->GetUserSettings()
-      ->SetInitialSyncFeatureSetupComplete(
-          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+      ->SetInitialSyncFeatureSetupComplete();
   EXPECT_TRUE(engine());
 
   EXPECT_FALSE(
@@ -790,8 +903,6 @@ TEST_F(BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest,
   EXPECT_EQ(selected_types.size(), 1u);
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
   EXPECT_FALSE(selected_types.Has(UserSelectableType::kPasswords));
-
-  OSCryptMocker::TearDown();
 }
 
 namespace {

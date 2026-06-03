@@ -106,8 +106,7 @@ export function MatchedText(props: { text: string; match?: Match }) {
 export default function FilterMenu<T>(props: Props<T>) {
   const [filtered, lookup] = useMemo(() => {
     // If the menu isn't open don't do any filtering.
-    if (!props.isOpen)
-      return [props.categories, new Map<T, Match | undefined>()]
+    if (!props.isOpen) return [[], new Map<T, Match | undefined>()]
 
     const lookup = new Map<T, Match | undefined>()
     return [

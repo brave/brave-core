@@ -10,12 +10,15 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/i18n/rtl.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -36,6 +39,8 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_divider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -194,15 +199,10 @@ void BraveToolbarView::Init() {
 
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
-  views::SetHitTestComponent(this, HTCAPTION);
-
-  DCHECK(location_bar_view_);
-  // Get ToolbarView's container_view as a parent of location_bar_view_ because
-  // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  views::View* container_view = location_bar_view_->parent();
-  DCHECK(container_view);
-
-  views::SetHitTestComponent(container_view, HTCAPTION);
+  CHECK_DEREF(browser())
+      .browser_window_features()
+      ->brave_non_client_hit_test_helper()
+      ->RegisterCaptionArea(this);
 
   // For non-normal mode, we don't have to do any more work.
   if (display_mode_ != DisplayMode::kNormal) {
@@ -216,7 +216,7 @@ void BraveToolbarView::Init() {
   // buttons. Upstream conditionally creates |toolbar_divider_|, they check
   // whether it's null or not. So safe to make remove here.
   if (toolbar_divider_) {
-    auto view = container_view->RemoveChildViewT(toolbar_divider_.get());
+    auto view = RemoveChildViewT(toolbar_divider_.get());
     toolbar_divider_ = nullptr;
   }
 
@@ -270,6 +270,7 @@ void BraveToolbarView::Init() {
                                  [](BraveToolbarView* self) {
                                    self->UpdateHorizontalPadding();
                                    self->UpdateVerticalTabToggleVisibility();
+                                   self->UpdateVerticalTabTogglePlacement();
                                  },
                                  base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
@@ -280,6 +281,10 @@ void BraveToolbarView::Init() {
     vertical_tabs_collapsed_.Init(
         brave_tabs::kVerticalTabsCollapsed, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateVerticalTabToggleState,
+                            base::Unretained(this)));
+    vertical_tabs_on_right_.Init(
+        brave_tabs::kVerticalTabsOnRight, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateVerticalTabTogglePlacement,
                             base::Unretained(this)));
 #if BUILDFLAG(IS_LINUX)
     use_custom_chrome_frame_.Init(
@@ -297,12 +302,12 @@ void BraveToolbarView::Init() {
 
   // Add vertical tab toggle button to the left of the back button.
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
-    auto back_button_index = container_view->GetIndexOf(back_);
-    vertical_tab_toggle_ = container_view->AddChildViewAt(
-        std::make_unique<ToolbarButton>(
-            base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
-                                base::Unretained(this))),
-        back_button_index.value_or(0));
+    auto back_button_index = GetIndexOf(back_);
+    vertical_tab_toggle_ =
+        AddChildViewAt(std::make_unique<ToolbarButton>(base::BindRepeating(
+                           &BraveToolbarView::OnVerticalTabTogglePressed,
+                           base::Unretained(this))),
+                       back_button_index.value_or(0));
     vertical_tab_toggle_->SetVectorIcon(
         vertical_tabs_collapsed_.GetValue()
             ? kVerticalTabStripToggleCollapsedIcon
@@ -311,24 +316,23 @@ void BraveToolbarView::Init() {
     UpdateVerticalTabToggleState();
   }
 
-  bookmark_ = container_view->AddChildViewAt(
-      std::make_unique<BraveBookmarkButton>(
-          base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
-      *container_view->GetIndexOf(location_bar_view_));
+  bookmark_ =
+      AddChildViewAt(std::make_unique<BraveBookmarkButton>(base::BindRepeating(
+                         callback, browser_, IDC_BOOKMARK_THIS_TAB)),
+                     *GetIndexOf(location_bar_view_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
   SetBraveButtonFlexBehavior(bookmark_);
 
-  side_panel_ = container_view->AddChildViewAt(
-      std::make_unique<SidePanelButton>(browser()),
-      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  side_panel_ = AddChildViewAt(std::make_unique<SidePanelButton>(browser()),
+                               *GetIndexOf(app_menu_button()) - 1);
   SetBraveButtonFlexBehavior(side_panel_);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  wallet_ = container_view->AddChildViewAt(
-      std::make_unique<WalletButton>(GetAppMenuButton(), profile),
-      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  wallet_ =
+      AddChildViewAt(std::make_unique<WalletButton>(app_menu_button(), profile),
+                     *GetIndexOf(app_menu_button()) - 1);
   wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                     ui::EF_MIDDLE_MOUSE_BUTTON);
   wallet_->UpdateImageAndText();
@@ -341,9 +345,8 @@ void BraveToolbarView::Init() {
   // Don't check policy status since we're going to
   // setup a watcher for policy pref.
   if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
-    ai_chat_button_ = container_view->AddChildViewAt(
-        std::make_unique<AIChatButton>(browser()),
-        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    ai_chat_button_ = AddChildViewAt(std::make_unique<AIChatButton>(browser()),
+                                     *GetIndexOf(app_menu_button()) - 1);
     SetBraveButtonFlexBehavior(ai_chat_button_);
     show_ai_chat_button_.Init(
         ai_chat::prefs::kBraveAIChatShowToolbarButton,
@@ -360,9 +363,8 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
-    brave_vpn_ = container_view->AddChildViewAt(
-        std::make_unique<BraveVPNButton>(browser()),
-        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
+                                *GetIndexOf(app_menu_button()) - 1);
     SetBraveButtonFlexBehavior(brave_vpn_);
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
@@ -376,10 +378,14 @@ void BraveToolbarView::Init() {
   }
 #endif
 
-  // Make sure that avatar button should be located right before the app menu.
-  if (auto* avatar = GetAvatarToolbarButton()) {
-    container_view->ReorderChildView(
-        avatar, *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  // Make sure that avatar button is located right before the app menu.
+  if (auto* avatar_button = static_cast<AvatarToolbarButton*>(
+          GetAvatarToolbarButtonInterface())) {
+    ReorderChildView(avatar_button, *GetIndexOf(app_menu_button()) - 1);
+  }
+
+  if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
+    UpdateVerticalTabTogglePlacement();
   }
 
   brave_initialized_ = true;
@@ -463,7 +469,8 @@ void BraveToolbarView::Update(content::WebContents* tab) {
 
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
-  auto* avatar_button = GetAvatarToolbarButton();
+  auto* avatar_button =
+      static_cast<AvatarToolbarButton*>(GetAvatarToolbarButtonInterface());
   if (avatar_button) {
     auto* profile = browser_->profile();
     const bool should_show_profile =
@@ -488,21 +495,23 @@ void BraveToolbarView::UpdateHorizontalPadding() {
     return;
   }
 
-  // Get ToolbarView's container_view as a parent of location_bar_view_ because
-  // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  DCHECK(location_bar_view_ && location_bar_view_->parent());
-  views::View* container_view = location_bar_view_->parent();
-
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
-    container_view->SetBorder(nullptr);
-  } else {
-    auto [leading, trailing] =
-        tabs::utils::GetLeadingTrailingCaptionButtonWidth(
-            browser_view_->browser_widget());
-    container_view->SetBorder(views::CreateEmptyBorder(
-        gfx::Insets().set_left(leading).set_right(trailing)));
+    SetBorder(nullptr);
+    return;
   }
+
+  const gfx::Insets current_insets = GetInsets();
+  auto [leading, trailing] = tabs::utils::GetLeadingTrailingCaptionButtonWidth(
+      browser_view_->browser_widget());
+
+  // Skip the SetBorder() call if insets are already correct. Layout triggers
+  // this method and SetBorder() would invalidate layout again, causing a loop.
+  if (current_insets.left() == leading && current_insets.right() == trailing) {
+    return;
+  }
+  SetBorder(views::CreateEmptyBorder(
+      gfx::Insets().set_left(leading).set_right(trailing)));
 }
 
 void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
@@ -525,17 +534,6 @@ void BraveToolbarView::VisibilityChanged(views::View* starting_from,
   if (visible) {
     // Ink drop highlight is cleared whenever visibility changes, so re-apply.
     UpdateVerticalTabToggleState();
-  }
-}
-
-void BraveToolbarView::ViewHierarchyChanged(
-    const views::ViewHierarchyChangedDetails& details) {
-  ToolbarView::ViewHierarchyChanged(details);
-
-  if (details.is_add && details.parent == this) {
-    // Mark children of the toolbar view as client area so that they are not
-    // perceived as caption area. See brave_non_client_hit_test_helper.h
-    views::SetHitTestComponent(details.child, HTCLIENT);
   }
 }
 
@@ -653,6 +651,46 @@ void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
 
   vertical_tab_toggle_->SetVisible(
       tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+}
+
+void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
+  // Callers must gate on `SupportsBraveVerticalTabs(browser_)`, which both
+  // ensures we're in `DisplayMode::kNormal` (other modes early-return from
+  // `Init()` before the toggle is created).
+  CHECK(vertical_tab_toggle_);
+
+  const std::optional<size_t> toggle_idx = GetIndexOf(vertical_tab_toggle_);
+  CHECK(toggle_idx.has_value());
+
+  // The vertical tab strip is placed by physical position and does not mirror
+  // in RTL: `kVerticalTabsOnRight` means physically right regardless of UI
+  // direction. The toolbar container, however, lays out children with a
+  // horizontal `views::FlexLayout` which mirrors logical child indices in RTL
+  // (logical index 0 renders on the visual right). To keep the toggle on the
+  // same physical side as the strip, invert the placement choice when the UI
+  // is RTL.
+  const bool place_near_app_menu =
+      tabs::utils::IsVerticalTabOnRight(browser_) != base::i18n::IsRTL();
+
+  size_t target_idx = 0;
+  if (place_near_app_menu) {
+    const auto menu_idx = GetIndexOf(app_menu_button());
+    CHECK(menu_idx.has_value());
+    CHECK_GT(*menu_idx, 0u);
+    target_idx = *menu_idx - 1;
+  } else {
+    // Pin index 0 for the leading edge so placement does not depend on the
+    // back button's child index (forward is pinnable today; back could become
+    // pinnable upstream). Computing `back_idx - 1` would risk CHECK failures or
+    // surprising order if navigation-button pinning changes.
+    target_idx = 0;
+  }
+
+  if (*toggle_idx == target_idx) {
+    return;
+  }
+
+  ReorderChildView(vertical_tab_toggle_, target_idx);
 }
 
 void BraveToolbarView::UpdateVerticalTabToggleState() {

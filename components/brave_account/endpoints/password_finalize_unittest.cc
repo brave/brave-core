@@ -10,6 +10,7 @@
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -36,28 +37,46 @@ const PasswordFinalizeTestCase* Success() {
            .net_error = net::OK,
            .status_code = net::HTTP_OK,
            .body = PasswordFinalize::Response::SuccessBody()}});
-
   return kSuccess.get();
 }
 
 // clang-format off
 // application/json errors:
 // - HTTP 400:
+//   - { "code": null, "error": "Bad Request", "status": 400 }
 //   - { "code": 14002, "error": "interim password state has expired", "status": 400 }
-//   - { "code": 0, "error": "Bad Request", "status": 400 }
 // - HTTP 401:
-//   - { "code": 0, "error": "Unauthorized", "status": 401 }
+//   - { "code": null, "error": "Unauthorized", "status": 401 }
 // - HTTP 403:
-//   - { "code": 0, "error": "Forbidden", "status": 403 }
+//   - { "code": null, "error": "Forbidden", "status": 403 }
 // - HTTP 404:
 //   - { "code": 14001, "error": "interim password state not found", "status": 404 }
 // - HTTP 5XX:
-//   - { "code": 0, "error": "Internal Server Error", "status": <5xx> }
+//   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const PasswordFinalizeTestCase* ApplicationJsonError() {
+const PasswordFinalizeTestCase* ApplicationJsonErrorCodeIsNull() {
   static const base::NoDestructor<PasswordFinalizeTestCase>
-      kApplicationJsonError(
-          {.test_name = "application_json_error",
+      kApplicationJsonErrorCodeIsNull(
+          {.test_name = "application_json_error_code_is_null",
+           .http_status_code = net::HTTP_BAD_REQUEST,
+           .raw_response_body =
+               R"({ "code": null,
+                    "error": "Bad Request",
+                    "status": 400 })",
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordFinalize::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}});
+  return kApplicationJsonErrorCodeIsNull.get();
+}
+
+const PasswordFinalizeTestCase* ApplicationJsonErrorCodeIsNotNull() {
+  static const base::NoDestructor<PasswordFinalizeTestCase>
+      kApplicationJsonErrorCodeIsNotNull(
+          {.test_name = "application_json_error_code_is_not_null",
            .http_status_code = net::HTTP_BAD_REQUEST,
            .raw_response_body =
                R"({ "code": 14002,
@@ -66,11 +85,11 @@ const PasswordFinalizeTestCase* ApplicationJsonError() {
            .expected_response = {.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
                                  .body = base::unexpected([] {
-                                   PasswordFinalize::Response::ErrorBody error;
-                                   error.code = base::Value(14002);
-                                   return error;
+                                   PasswordFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14002);
+                                   return body;
                                  }())}});
-  return kApplicationJsonError.get();
+  return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
 // non-application/json errors:
@@ -88,9 +107,9 @@ const PasswordFinalizeTestCase* NonApplicationJsonError() {
   return kNonApplicationJsonError.get();
 }
 
-}  // namespace
-
 using PasswordFinalizeTest = EndpointTest<PasswordFinalize>;
+
+}  // namespace
 
 TEST_P(PasswordFinalizeTest, HandlesReplies) {
   RunTestCase();
@@ -99,7 +118,8 @@ TEST_P(PasswordFinalizeTest, HandlesReplies) {
 INSTANTIATE_TEST_SUITE_P(PasswordFinalizeTestCases,
                          PasswordFinalizeTest,
                          testing::Values(Success(),
-                                         ApplicationJsonError(),
+                                         ApplicationJsonErrorCodeIsNull(),
+                                         ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
                          PasswordFinalizeTest::kNameGenerator);
 

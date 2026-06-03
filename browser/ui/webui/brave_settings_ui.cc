@@ -47,8 +47,7 @@
 #include "brave/components/commands/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/playlist/core/common/features.h"
-#include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -105,14 +104,19 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/webui/settings/brave_tor_handler.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
+#include "extensions/common/extension_features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -130,6 +134,7 @@
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #endif
 
@@ -265,10 +270,19 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                   kBraveNTPBrandedWallpaperSurveyPanelist) &&
                               !profile->GetPrefs()->GetBoolean(
                                   brave_rewards::prefs::kDisabledByPolicy));
+#if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
-      "isPlaylistAllowed",
-      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-          profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
+      "isPlaylistFeatureEnabled",
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist));
+  html_source->AddBoolean(
+      "isPlaylistDisabledByPolicy",
+      profile->GetPrefs()->IsManagedPreference(
+          playlist::kPlaylistEnabledPref) &&
+          !profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
+#else
+  html_source->AddBoolean("isPlaylistFeatureEnabled", false);
+  html_source->AddBoolean("isPlaylistDisabledByPolicy", false);
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   html_source->AddBoolean(
       "showCommandsInOmnibox",
@@ -277,16 +291,21 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs));
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  html_source->AddBoolean("isEmailAliasesEnabled",
-                          email_aliases::features::IsEmailAliasesEnabled());
+  html_source->AddBoolean(
+      "isEmailAliasesEnabled",
+      email_aliases::features::IsEmailAliasesEnabled() &&
+          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+              profile));
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
       "isContainersEnabled",
       base::FeatureList::IsEnabled(containers::features::kContainers));
 #endif
-  html_source->AddBoolean("isBraveAccountEnabled",
-                          brave_account::features::IsBraveAccountEnabled());
+  html_source->AddBoolean(
+      "isBraveAccountEnabled",
+      brave_account::features::IsBraveAccountEnabledForProfile(
+          CHECK_DEREF(profile->GetPrefs())));
   html_source->AddBoolean("isBraveOriginBrandedBuild",
                           BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   html_source->AddBoolean("isBraveOriginPurchased",
@@ -394,6 +413,16 @@ void BraveSettingsUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesMetrics> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service =
+      email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(profile);
+  if (service) {
+    service->metrics().BindInterface(std::move(receiver));
+  }
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 

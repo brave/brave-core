@@ -58,7 +58,8 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   // NOLINTNEXTLINE(runtime/references)
   RenderViewContextMenu(content::RenderFrameHost& render_frame_host,
                         const content::ContextMenuParams& params,
-                        bool is_paste_enabled);
+                        bool is_paste_enabled,
+                        bool is_paste_and_match_style_enabled);
   ~RenderViewContextMenu() override;
   // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;
@@ -78,6 +79,7 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   void OnContainerSelected(
       const containers::mojom::ContainerPtr& container) override;
   void OnNoContainerSelected() override;
+  void OnNewTemporaryContainerSelected() override;
   base::flat_set<std::string> GetCurrentContainerIds() override;
   Browser* GetBrowserToOpenSettings() override;
   float GetScaleFactor() override;

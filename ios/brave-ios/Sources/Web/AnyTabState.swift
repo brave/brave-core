@@ -166,6 +166,10 @@ public class AnyTabState: TabState {
     try await tab.createFullPagePDF()
   }
 
+  public var isFindNavigatorVisible: Bool {
+    tab.isFindNavigatorVisible
+  }
+
   public func presentFindInteraction(with text: String) {
     tab.presentFindInteraction(with: text)
   }
@@ -201,6 +205,14 @@ public class AnyTabState: TabState {
 
   public func clearBackForwardList() {
     tab.clearBackForwardList()
+  }
+
+  public func pauseAllMediaPlayback() {
+    tab.pauseAllMediaPlayback()
+  }
+
+  public func requestMediaPlaybackState() async -> MediaPlaybackState {
+    await tab.requestMediaPlaybackState()
   }
 
   public func updateScripts() {

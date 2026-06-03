@@ -161,7 +161,7 @@ export const SellAssetModal = (props: Props) => {
                 <Text
                   textSize='12px'
                   isBold={false}
-                  textColor='text03'
+                  textColor='tertiary'
                   marginRight={8}
                 >
                   {getLocale('braveWalletBalance')}
@@ -169,7 +169,7 @@ export const SellAssetModal = (props: Props) => {
                 <Text
                   textSize='12px'
                   isBold={true}
-                  textColor='text01'
+                  textColor='primary'
                 >
                   {formatTokenBalanceWithSymbol(
                     sellAssetBalance,
@@ -207,7 +207,7 @@ export const SellAssetModal = (props: Props) => {
                 <Text
                   textSize='22px'
                   isBold={true}
-                  textColor='text01'
+                  textColor='primary'
                 >
                   {selectedAsset.symbol}
                 </Text>
@@ -220,7 +220,7 @@ export const SellAssetModal = (props: Props) => {
               <Text
                 textSize='14px'
                 isBold={false}
-                textColor='text01'
+                textColor='primary'
                 textAlign='left'
               >
                 {getLocale('braveWalletNotEnoughBalance').replace(

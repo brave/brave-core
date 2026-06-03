@@ -19,6 +19,7 @@ import {
 import {
   AssetIconProps,
   AssetIconFactory,
+  Text,
   WalletButton,
   Row,
   Column,
@@ -44,26 +45,8 @@ export const TopRow = styled.div`
   width: 100%;
 `
 
-export const BalanceText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 36px;
-  font-weight: 500;
-  line-height: 54px;
-  color: ${leo.color.text.primary};
-`
-
-export const FiatChange = styled.span<{ isDown?: boolean }>`
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
+export const FiatChange = styled(Text)`
   margin-right: 8px;
-  color: ${(p) =>
-    p.isDown
-      ? leo.color.systemfeedback.errorIcon
-      : leo.color.systemfeedback.successIcon};
 `
 
 export const ButtonRow = styled.div<{
@@ -103,31 +86,22 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 export const SubDivider = styled.div`
   width: 100%;
   height: 2px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
   margin-bottom: 12px;
 `
 
-export const DividerText = styled.span`
-  font-family: Poppins;
-  font-size: 15px;
-  line-height: 20px;
-  letter-spacing: 0.04em;
-  font-weight: 600;
+export const DividerText = styled(Text)`
   margin-bottom: 10px;
-  color: ${(p) => p.theme.color.text03};
 `
 
 export const PercentBubble = styled.div<{ isDown?: boolean }>`
+  font: ${leo.font.xSmall.regular};
   display: flex;
   padding: 4px 8px;
   border-radius: 4px;
   background-color: ${(p) =>
     p.isDown ? leo.color.red[20] : leo.color.green[20]};
-  font-family: Poppins;
-  font-size: 11px;
-  line-height: 16px;
   letter-spacing: 0.02em;
-  font-weight: 500;
   color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
 `
 
@@ -136,14 +110,6 @@ export const Spacer = styled.div`
   height: 2px;
   width: 100%;
   margin-top: 10px;
-`
-
-export const CoinGeckoText = styled.span`
-  font-family: Arial;
-  font-size: 10px;
-  font-weight: normal;
-  color: ${(p) => p.theme.color.text03};
-  margin: 15px 0px;
 `
 
 export const FilterTokenRow = styled.div<{

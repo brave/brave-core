@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.91.99",
+  "version": "1.93.25",
   "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "update_patches": "node ./build/commands/scripts/commands.js update_patches",
     "apply_patches": "node ./build/commands/scripts/commands.js apply_patches",
     "start": "node ./build/commands/scripts/commands.js start",
-    "network-audit": "npm run test brave_network_audit_tests -- --ui-test-action-timeout=320000 --test-launcher-timeout=2200000",
+    "network-audit": "node ./build/commands/scripts/commands.js test brave_network_audit_tests",
     "push_l10n": "node ./build/commands/scripts/commands.js push_l10n",
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
@@ -68,15 +68,15 @@
     "url": "https://github.com/brave/brave-browser/issues"
   },
   "engines": {
-    "node": ">=24.11.1 <25.0.0",
-    "npm": ">=11.6.2"
+    "node": ">=24.16.0 <25.0.0",
+    "npm": ">=11.13.0"
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
   "config": {
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "147.0.7727.102",
+        "tag": "149.0.7827.54",
         "repository": {
           "url": "https://chromium.googlesource.com/chromium/src.git"
         },
@@ -99,6 +99,7 @@
     }
   },
   "devDependencies": {
+    "@commander-js/extra-typings": "14.0.0",
     "@storybook/addon-essentials": "8.6.14",
     "@storybook/addon-knobs": "8.0.1",
     "@storybook/csf-tools": "8.6.14",
@@ -132,7 +133,7 @@
     "browserify-zlib": "0.2.0",
     "buffer": "6.0.3",
     "chalk": "4.1.2",
-    "commander": "2.20.3",
+    "commander": "14.0.3",
     "crypto-browserify": "3.12.0",
     "css-loader": "5.2.7",
     "csstype": "2.6.21",
@@ -158,10 +159,10 @@
     "globals": "17.3.0",
     "https-browserify": "1.0.0",
     "identity-obj-proxy": "3.0.0",
-    "jsdom": "26.0.0",
     "jest": "30.3.0",
     "jest-environment-jsdom": "30.3.0",
     "jest-junit": "16.0.0",
+    "jsdom": "26.0.0",
     "less": "3.13.1",
     "less-loader": "11.1.3",
     "log-update": "3.4.0",
@@ -201,8 +202,8 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "@brave/leo": "github:brave/leo#c60b65212d7342d89596964170373a056a9a3cbd",
-    "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#10e967f89a7a5d70fb03b820b13be03421eb53d3",
+    "@brave/leo": "github:brave/leo#e4af287f27ef5bb412a57a057d0edbbc81326168",
+    "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#c4f018ef347db5792dabba0c2a7e3a678099c3d3",
     "@brave/wallet-standard-brave": "0.0.16",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
@@ -221,7 +222,7 @@
     "async": "3.2.4",
     "bignumber.js": "9.1.2",
     "core-js": "3.33.3",
-    "darkreader": "4.9.119",
+    "darkreader": "4.9.125",
     "date-fns": "2.28.0",
     "jszip": "3.8.0",
     "prettier-bytes": "1.0.4",
@@ -243,16 +244,17 @@
   },
   "overrides": {
     "@zondax/ledger-filecoin": "2.0.4",
-    "axios": "1.15.0",
+    "axios": "1.16.0",
     "elliptic": "6.6.1",
     "esbuild": "0.25.0",
     "js-yaml": "4.1.1",
     "prismjs": "1.30.0",
-    "protobufjs": "7.5.5",
+    "protobufjs": "7.5.6",
     "serialize-javascript": "7.0.3",
     "tiny-secp256k1": "1.1.7",
     "flatted": "3.4.2",
     "yaml@1": "1.10.3",
-    "yaml@2": "2.8.3"
+    "yaml@2": "2.8.3",
+    "uuid": "14.0.0"
   }
 }

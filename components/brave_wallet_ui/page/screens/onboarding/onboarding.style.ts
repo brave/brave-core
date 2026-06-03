@@ -41,7 +41,7 @@ export const MainWrapper = styled.div<{ isTabView?: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   padding: 30px;
   border-radius: ${(p) => (p.isTabView ? 24 : 8)}px;
   margin-top: ${(p) => (p.isTabView ? '100px' : '10vh')};
@@ -71,10 +71,8 @@ export const Title = styled.p<{
   maxWidth?: string
   textAlign?: 'right' | 'center'
 }>`
-  font-family: Poppins;
-  font-size: 20px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.heading.h3};
+  color: ${leo.color.text.primary};
   letter-spacing: 0.02em;
   margin-bottom: 16px;
   max-width: ${(p) => p?.maxWidth || 'unset'};
@@ -82,23 +80,17 @@ export const Title = styled.p<{
 `
 
 export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
+  font: ${leo.font.default.regular};
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
   letter-spacing: 0.01em;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   text-align: ${(p) => p?.textAlign || 'left'};
 
   & > * > strong {
-    font-weight: 600;
-    font-size: 14px;
-    color: ${(p) => p.theme.color.text01};
+    color: ${leo.color.text.primary};
   }
 `
 

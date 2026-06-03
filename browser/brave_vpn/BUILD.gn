@@ -14,10 +14,24 @@ source_set("brave_vpn") {
   ]
 
   deps = [
+    "//brave/components/brave_vpn/common",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//components/user_prefs",
+  ]
+}
+
+source_set("v1_utils") {
+  sources = [
+    "vpn_connection_manager_utils.cc",
+    "vpn_connection_manager_utils.h",
+  ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/common/buildflags",
-    "//chrome/browser/profiles:profile",
     "//chrome/common:channel_info",
     "//components/prefs",
     "//components/user_prefs",

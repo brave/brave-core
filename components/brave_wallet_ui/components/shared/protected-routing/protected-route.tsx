@@ -6,11 +6,10 @@
 import * as React from 'react'
 import { Redirect, Route, RouteProps } from 'react-router'
 
-import { WalletRoutes } from '../../../constants/types'
-
 interface ProtectedRouteProps {
   requirement: boolean
-  redirectRoute: WalletRoutes
+  /** May include search/hash (e.g. restored session after unlock). */
+  redirectRoute: string
 }
 
 export const ProtectedRoute = ({

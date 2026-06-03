@@ -51,7 +51,7 @@ source_set("unit_tests") {
 
   deps = [
     ":sim",
-    "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/browser:v1_utils",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",

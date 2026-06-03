@@ -518,6 +518,20 @@ void BlockchainRegistry::ParseLists(const base::FilePath& install_dir,
       base::BindOnce(&UpdateRegistry, std::move(callback)));
 }
 
+BlockchainRegistry::ScopedRestrictedAddressesForTesting::
+    ScopedRestrictedAddressesForTesting(
+        std::vector<std::string> restricted_addresses) {
+  auto* registry = GetInstance();
+  previous_addresses_ = registry->restricted_addresses_;
+  registry->UpdateRestrictedAddressesList(std::move(restricted_addresses));
+}
+
+BlockchainRegistry::ScopedRestrictedAddressesForTesting::
+    ~ScopedRestrictedAddressesForTesting() {
+  auto* registry = GetInstance();
+  registry->restricted_addresses_ = std::move(previous_addresses_);
+}
+
 bool BlockchainRegistry::IsEmptyForTesting() {
   return coingecko_ids_map_.empty() && token_list_map_.empty() &&
          chain_list_.empty() && dapp_lists_.empty() &&

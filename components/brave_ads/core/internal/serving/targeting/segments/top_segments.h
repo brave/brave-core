@@ -10,7 +10,7 @@
 #include <optional>
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 
 namespace brave_ads {
 

@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">បោះពុម្ព</translation>
 <translation id="2600847485413879104">រង្វាន់ BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">កំពុងទាញយកផ្នែក...</translation>
 <translation id="4894106830958548828">ខ្ញុំយល់ស្រប</translation>
 <translation id="2729085694451916573">ខ្សែសន្ទាបីរហុងឆ្តឈាប់ <ph name="PART_ONE"/>ភាងស្េ​ឧបឆុដេរេ​អ្រអម្តាកស្កេ<ph name="PART_ONE_END"/>អិក្ដោហ្រកែសំេ<ph name="PART_TWO"/>តាមិិនជាខ្ន់<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">ការ​ស្វែងរក​និង​មាតិកា​ទំព័រ​របស់​អ្នក​ត្រូវបាន​ដំណើរការ​នៅលើ​ឧបករណ៍​នេះ។ គ្មាន​អ្វី​ត្រូវ​បាន​ផ្ញើ​ទៅ Brave ឬ​មើល​ឃើញ​ដោយ​អ្នកត្រួត​ពិនិត្យ​ដែល​ជា​មនុស្ស​ឡើយ។ នេះជាមុខងារពិសោធន៍ ហើយវានឹងមិនត្រឹមត្រូវជានិច្ចទេ។</translation>
 <translation id="7534079972563542000">Domainយ៉ាងអាចលោតបាន</translation>
 <translation id="4492298165410552103">ធ្វើឱ្យ Brave អាចប្រើ Unstoppable Domains បានឬគី?</translation>
 <translation id="5015092481905019948">Brave នឹងប្រើ <ph name="PROVIDER_NAME"/> ដើម្បីដោះស្រាយឈ្មោះដែន <ph name="DOMAIN_LIST"/> ដែលស្ថិតនៅលើ <ph name="DOMAIN_PROVIDER_NAME"/>។ Brave លាក់អាសយដ្ឋាន IP របស់អ្នក។ ប្រសិនបើអ្នកបើកជម្រើសនេះ <ph name="PROVIDER_NAME"/> នឹងឃើញថាមាននរណាម្នាក់កំពុងព្យាយាមចូលទៅកាន់ដែនទាំងនេះ ប៉ុន្តាមិនអាចឃើញព័ត៌មានផ្សេងទៀតបានឡើយ។ សូមមើល <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>លក្ខខណ្ឌនៃការប្រើប្រាស់<ph name="END_PROVIDER_TOU_LINK"/> និង <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>គោលនយោបាយ bảo mật<ph name="END_PROVIDER_PRIVACY_LINK"/>។</translation>
@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">អនុញ្ញាតឲ្យ <ph name="URL"/> បើកការជជែកជាមួយ Leo AI នៅក្នុង Brave?</translation>
 <translation id="4355784577209159847">អនុញ្ញាតការប្រើខូគីរបស់ភាគីទីតាំងសម្រាប់ការចូលគណនី Google ថ្មី</translation>
 <translation id="5770656036486891920"><ph name="URL"/> ចង់ប្រើខូគីរបស់ភាគីទីតាំងសម្រាប់ការចូលគណនី Google ថ្មី</translation>
+<translation id="5582087890067572966">🎉 អ្នកកំពុងរកប្រាក់ចំណូលហើយ!</translation>
+<translation id="4364336119478610380">អ្នក​ឹង​រក​បាន​ប្រាក់​ចំណូល​រៀងរាល់​ពេលដែល​ការ​ជូនដំណឹង​ដូច​នេះ​លេច​ឡើង​នៅលើ​អេក្រង់​របស់​អ្នក។ អ្នក​មិន​ចាំបាច់​ចុច​ដើម្បី​រក​ប្រាក់​ឈានលើ​ទេ។</translation>
+<translation id="5893017172751072752">អ្នក​រក​ប្រាក់​ចំណូល​នៅពេល​ដែល​ការ​ជូនដំណឹង Brave Ads លេច​ឡើង</translation>
+<translation id="3447730462826640312">អ្នកមិនត្រូវការចុចដើម្បីរកប្រាក់ចំណូលទេ ប៉ុន្តែចុចបើសិនជាអ្នកមានចំណាប់អារម្មណ៍!</translation>
 <translation id="2104347391516032700">សេវាកម្មប្រព័ន្ធប្រាក់រង្វាន់ BAT</translation>
 <translation id="5939518447894949180">កំណត់ឡើងវិញ</translation>
 <translation id="3349204812119681938">Reset Brave Rewards</translation>
@@ -737,7 +741,6 @@
 <translation id="1288078776976153868">បណ្តាញ</translation>
 <translation id="1148827340205946630">អ្នកប្រើបានបដិសេធសំណើ។</translation>
 <translation id="2403819048476450281">ផារ៉ាម៉ែត្រ។</translation>
-<translation id="3849003816301348130">អាសយដ្ឋានគោលដៅស្ថិតនៅលើបញ្ជី OFAC SDN</translation>
 <translation id="3955144560853195652">មេដៃស៊ុមដែលត្រូវបានបន្ថែមមិនស្គាល់ <ph name="VALUE"/></translation>
 <translation id="1875861420974447980">ID Chain នេះបានប្រើរួចហើយ</translation>
 <translation id="167698752210114155">មានកំហុសខាងក្នុង</translation>
@@ -851,11 +854,12 @@
 <translation id="3751611888003301070">ផ្លូវ</translation>
 <translation id="3799091982455573025">ស្វហប នៅលើ <ph name="NETWORK_NAME"/> តាមរយៈ <ph name="EXCHANGE_NAME"/></translation>
 <translation id="5136093123841570193">ជំពូត​ពី <ph name="FRIST_NETWORK_NAME"/> ទៅ <ph name="SECOND_NETWORK_NAME"/></translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ជំហាន}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ជំហាន}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} ជំហាន)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} ជំហាន)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> តាមរយៈ <ph name="PROVIDER_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> តាមរយៈ</translation>
 <translation id="646023614746251785">បញ្ជាក់ទម្លោះ</translation>
 <translation id="6264944956989873014">បញ្ជាក់ការ​តភ្ជាប់</translation>
 <translation id="7067917728851842589">បញ្ជាក់ការផ្ញើ</translation>
@@ -936,6 +940,7 @@
 <translation id="1108298724135935307">បានភ្ជាប់គេហទំព័រ</translation>
 <translation id="5716350339763180836">តុល្យភាព</translation>
 <translation id="5538251867290702601">ក្រាប់ស្នូល</translation>
+<translation id="8123016618655108594">ការបែងចែក</translation>
 <translation id="352407037922720467">ផ្ទាំង NFTs</translation>
 <translation id="163697698769819510">បម្រុងទុកកាបុប ឥឡូវនេះ ដើម្បីការពារទ្រព្យសម្បត្តិរបស់អ្នក និងធានាថាអ្នកនឹងមិនដែលបាត់បង់ក្នុងការចូលប្រើ</translation>
 <translation id="1018806299114415224">បម្រើទុកឥឡូវ</translation>
@@ -988,6 +993,7 @@
 <translation id="2795015351889043417">ឯកសារ JSON</translation>
 <translation id="5468881191994555667">ជ្រើសរើសឯកសារ</translation>
 <translation id="795667975304826397">មិនមានឯកសារ</translation>
+<translation id="6720675936326555106">ឯកសារ​ដែល​បាន​ជ្រើស</translation>
 <translation id="5891811606602061966">នាំចូលគណនីមិនបានទេ សូមព្យាយាមម្តងទៀត។</translation>
 <translation id="6566535583781706170">នាំចូលគណនី</translation>
 <translation id="5051929972046200722">ជ្រើសរើសឧបករណ៍នឹងឧបករណ៍ការបើកបង្កាន់ដៃ</translation>
@@ -1034,10 +1040,12 @@
 <translation id="2416098547200943834">ចំណាំ៖ កូនសោរផ្ទាល់ខ្លួនត្រូវបានផ្ដល់ឱ្យជាលេខសម្ងាត់ហិកសេកូដ JSON ដែលមានពិស្តារព័ត៌មានកូនសោរផ្ទាល់ខ្លួន និងព័ត៌មានពិធីសារ។ <ph name="LINK_START"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_END"/>។</translation>
 <translation id="7657130382217527063">យោល៖ គន្លឹះឯកជនត្រូវតែផ្ដល់ជាឯកសារ JSON ដែលត្រូវបានបញ្ចូល hex ដែលមានគន្លឹះឯកជន និងព័ត៌មានពិធីការ។ <ph name="LINK_START"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_END"/>។</translation>
 <translation id="4482913669726886926">ចំណាំ៖ មានតែគ្រាប់ចុចដែលបានពង្រីក <ph name="FORMAT"/> ប៉ុណ្ណោះដែលត្រូវបានគាំទ្រ។</translation>
+<translation id="6457746820359933716">នាំចូល​ដោយ​ប្រើ​ឯកសារ JSON ដែល​នាំចេញ​ពី Polkadot.js ឬ​កម្មវិធី​ដាក់ ឥណទាន​ដែល​ឆបគ្នា។ បញ្ចូល​ពាក្យ​សម្ងាត់​ដែល​ប្រើ​ដើម្បី​អ៊ិនគ្រីប​ការ​នាំចេញ។</translation>
 <translation id="9133762451347918196">គណនី Testnet</translation>
 <translation id="42126664696688958">នាំចេញ</translation>
 <translation id="1366855498335432549">បញ្ញើរប្រាក់</translation>
 <translation id="790104325876206743">ការកំណត់គណនី</translation>
+<translation id="8856844353253421399">ធ្វើបច្ចុប្បន្នភាព​ចុងក្រោយ <ph name="TIME_AGO"/> មុន</translation>
 <translation id="6322030314101903925">មិនមានទ្រព្យសម្បត្តិដែលអាចប្រើបាន</translation>
 <translation id="836614343069504000">ដាក់ប្រាក់ ឬទិញថូខឹនដើម្បីចាប់ផ្តើម។ ប្រសិនបើអ្នកមិនឃើញថូខឹនពីគណនីនាំចូលទេ សូមពិនិត្យតម្រង និងការកំណត់បង្ហាញ។ ថូខិនដែលមិនស្គាល់អាចត្រូវបានបន្ថែមជាទ្រព្យសកម្មផ្ទាល់ខ្លួន។</translation>
 <translation id="2902856457593699108">បង្ហាញសោ</translation>
@@ -1156,12 +1164,12 @@
 <translation id="4324239559624557455">រយៈពេល ២៤ម៉ោង</translation>
 <translation id="9139452553033760558">រយៈពេលមួយសប្ដាហ៏</translation>
 <translation id="1658834457013045127">ជានិច្ច</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> បានភ្ជាប់</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> បានផ្ដាច់</translation>
-<translation id="5317781812114905957">សេចក្ដីណែនាំ</translation>
-<translation id="1178198982208000092">ភ្ជាប់អ្នកន៍ <ph name="DEVICE_NAME"/> របស់អ្នក</translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> ត្រូវបាន​ភ្ជាប់ទៅ <ph name="DEVICE_NAME"/></translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> បានផ្ដាច់</translation>
+<translation id="434328838837168401">មើល​សេចក្ដីណែនាំ</translation>
+<translation id="13670155462680755">ភ្ជាប់ <ph name="ACCOUNT_NAME"/> របស់​អ្នក​ដើម្បី​បន្ត</translation>
 <translation id="6941881257520473899">កាបូបផ្ទុកត្រូវតម្រូវឱ្យមានស្ថានភាពលើឧបករណ៍វិញ។</translation>
-<translation id="2288190100157580461">កាបូបផ្ទុកត្រូវតាមប្រើសេវា <ph name="NETWORK"/> App នឹងត្រូវតែងេីបមេាននៅលើ <ph name="DEVICE_NAME"/> របស់អ្នក</translation>
+<translation id="4108619287854657806">Hardware wallet តម្រូវឱ្យបើកកម្មវិធី <ph name="NETWORK"/> នៅលើ <ph name="ACCOUNT_NAME"/></translation>
 <translation id="8687869982094542529">បានផ្ញើ</translation>
 <translation id="5013754027092416509">បានទទួល</translation>
 <translation id="5867988533873716616">មិនមាន URL នៃខ្សែគោល​និយមមិនមាននៅឡើយទេ។</translation>
@@ -1346,6 +1354,7 @@
 <translation id="8491675129455635799">ដាក់​ទ្រព្យសកម្ម​ជា​ក្រុម​ដោយ</translation>
 <translation id="5331775401966766526">តម្រង និងការកំណត់បង្ហាញ</translation>
 <translation id="5332541468425943610">ការកំណត់បង្ហាញ NFT</translation>
+<translation id="1539149309756422999">ការបែងចែកទ្រព្យសកម្ម</translation>
 <translation id="886032538431162695">តម្រៀបទ្រព្យសកម្ម</translation>
 <translation id="6080181976198929758">តម្រៀបតាមតម្លៃរូបប័ណ្ណឬតម្លៃឪពុក</translation>
 <translation id="2563815561570398537">លាក់សមតុល្យតូច</translation>
@@ -1589,6 +1598,9 @@
 <translation id="5882719778740918116">សូមផ្ញើរតោកខឹនទៅអាសយដ្ឋាននេះ​តាម<ph name="VALUE"/></translation>
 <translation id="6885009592653876601">ទិញ, ផ្ញើ, និង​ប្តូរ​សម្ប​ទែះ crypto ច្រើនជាង 200</translation>
 <translation id="8716223552348254401">ភាពយុត្តិធម៌ក្នុងកាប្រើប្រាស់កម្មវិធីរកមិនមានគ្រោះថ្នាក់</translation>
+<translation id="1198271701881992799">តោះចាប់ផ្ដើម</translation>
+<translation id="7904301836463577071">ទិញ crypto ដំបូងរបស់អ្នកដោយប្រើកាតឥណទាន ឬកាតឥណពន្ធ</translation>
+<translation id="3721561070667360112">ដាក់ប្រាក់ crypto ពី wallet ឬការផ្លាស់ប្តូរផ្សេងទៀត</translation>
 <translation id="4559901986238865734">លក្ខណៈជាវាភាពច្រើន &amp; គាំទ្រ NFT</translation>
 <translation id="296101411136980896">ចុចដើម្បី​ប្ដូរ</translation>
 <translation id="753655478253155745">ទីបួន</translation>
@@ -1736,6 +1748,7 @@
 <translation id="8549067157732633185">តោខឹននេះគឺបានធ្វើបញ្ជីឧទ្ទិសត្រូវបានផ្តល់។</translation>
 <translation id="2130170065617939165">តោខឹននេះគឺបានធ្វើបញ្ជីឧទ្ទិសនៅបញ្ជីដល់លើ <ph name="NUMBER_OF_LISTS"/></translation>
 <translation id="1554316484739382186">អ្នកប្រាក់គិត: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> គណនី</translation>
 <translation id="5360752485622434494">ចាប់ BAT រង្វាន់ Brave នៅលើ <ph name="PROVIDER"/></translation>
@@ -1880,6 +1893,7 @@
 <translation id="4150336849480030462">ផ្ទេរ SPL Token ជាមួយការបង្កើតគណនី Token ដែលបានភ្ជាប់</translation>
 <translation id="2244921323472112851">យើងមិនអាចរកឃើញទំព័រដែលអ្នកកំពុងស្វែងរកឥឡូវនេះទេ។</translation>
 <translation id="6277237872689140644">អាចហ៊ានទៅមកកន្លែងផ្សេងទេ រឺ URL អាចមានកួច។</translation>
+<translation id="1788572014530152502">មាន​ការ​ធ្វើលេខ​ប្រឌិត​លម្អិត​លម្អ​ការ​ឡើង​វិញ​របស់​អ្នក។ ក្នុង​ករណី​ច្រើន វា​មាន​ន័យ​ថា​មិន​មាន <ph name="SYMBOL"/> គ្រប់គ្រាន់ដើម្បី​គ្របដណ្ដប់​ថ្លៃ​ក្រុម​ផ្នែក​បណ្ដាញ​នេះ។ សាកល្បង​ចំនួន​តូច​ជាង​ដើម្បី​ផ្លាស់​ប្តូរ។</translation>
 <translation id="2737084171727561244">ទៅកាន់ផតភូលីអូ</translation>
 <translation id="3499452861061048987">បន្ថែមតោកខឹន</translation>
 <translation id="5046066249040287308">សេវាកម្មប្រព័ន្ធ ប្រាក់រង្វាន់ Brave Wallet Utility</translation>
@@ -2126,12 +2140,14 @@
 <translation id="6459036216700972269">បិទផ್ದាងបែងចែក</translation>
 <translation id="4235382917338421035">ផ្លាស់ប្ដូរទីតាំងផ្ទាំង</translation>
 <translation id="4288085058450834672">បង្ហាញកម្មវិធី</translation>
+<translation id="4750337523930607658">បិទ/បើករបៀបផ្ដោតអារម្មណ៍</translation>
 <translation id="4144468798716165316">ពាក្យបញ្ជា​រហ័ស</translation>
 <translation id="3617523374417810198">ទិដ្ឋភាពបែងចែកថ្មី</translation>
 <translation id="8571323456914890254">បើក​នៅ​ក្នុង​ទិដ្ឋភាពបែក</translation>
 <translation id="5329136173514538969">មិនបំបែកផ្ទាំង</translation>
 <translation id="7595612919377246359">ប្ដូរទីតាំងផ្ទាំង</translation>
 <translation id="2367972762794486313">បង្ហាញកម្មវិធី</translation>
+<translation id="3142853026316054951">បិទ/បើករបៀបផ្ដោតអារម្មណ៍</translation>
 <translation id="3468387898712904997">ឈ្មោះអ៊ីមែលថ្មី</translation>
 <translation id="8591883849678260674">មើលប្រភព</translation>
 <translation id="1969654232209826429">នាទីអាន</translation>
@@ -2179,6 +2195,7 @@
 <translation id="5923170497201832190">រំកិលទៅខាងក្រោម</translation>
 <translation id="6219262425964000211">ទម្លាក់ឯកសារនៅទីនេះ</translation>
 <translation id="4313763911013851687">ទម្លាក់ឯកសារណាមួយនៅទីនេះ ដើម្បីបន្ថែមវាទៅក្នុងការសន្ទនា</translation>
+<translation id="8206915760129310348">ឯកសារខ្លះមិនអាចអានបាន ហើយមិនត្រូវបានភ្ជាប់ទេ</translation>
 <translation id="4524675003624341892">ផ្ដល់សំណួរណែនាំ…</translation>
 <translation id="4567071417854988869">សង្ខេបវីដេអូនេះ</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2189,7 +2206,9 @@
 <translation id="7932221068776853847">ផ្ដាច់ដើម្បីដាច់មាតិកានៅតាមទំព័រសម្រាប់ Leo ហើយចាប់ផ្តើមការសន្ទនាតាមថ្មី។</translation>
 <translation id="8743383817154663379">មានបញ្ហានៅពេលដំណើរការតម្រូវការរបស់អ្នក។ សូមព្យាយាមម្ដងទៀតនៅពេលក្រោយ។</translation>
 <translation id="2712650703044366764">គំរូនេះមានចំនុចបញ្ចប់មិនត្រឹមត្រូវ។ សូមពិនិត្យការកំណត់របស់អ្នកហើយព្យាយាមម្តងទៀត។</translation>
-<translation id="1167803637855350748">មានបញ្ហាតភ្ជាប់តាមប្រព័ន្ធបណ្ដាញទៅកាន់ Leo, សូមពិនិត្យមើលការតភ្ជាប់របស់អ្នកនិងព្យាយាមម្តងទៀត។</translation>
+<translation id="7092656392206649236">មានបញ្ហានៅពេលទំនាក់ទំនងជាមួយ Leo។ សូមព្យាយាមម្ដងទៀត។</translation>
+<translation id="3552709750512842961">កូដស្ថានភាព៖ <ph name="STATUS_CODE"/>, កូដកំហុស៖ <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">កូដស្ថានភាព៖ <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">អ្នកបានឈានដល់កម្រិតប្រមូលតម្លៃទូទាត់។ សូមព្យាយាមម្តងទៀតក្នុងរយៈពេលប៉ុន្មានម៉ោងក្រោយ។</translation>
 <translation id="3683964919745779766">លោកអ្នកបានឆ្លៀតការកំណត់លំនាំរបស់គំរូនេះឬហ្វឺគោល។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។</translation>
 <translation id="7692501701960747469">កូនសោ API ដែលបានកំណត់សម្រាប់គំរូនេះមិនត្រឹមត្រូវទេ។ សូមពិនិត្យការកំណត់របស់លោកអ្នកហើយព្យាយាមឡើងវិញ។</translation>
@@ -2472,7 +2491,9 @@
 <translation id="5663901348199429994">ឈ្មោះអ៊ីមែលរបស់អ្នក</translation>
 <translation id="9046133327037621173">ឈ្មោះអ៊ីមែលថ្មី</translation>
 <translation id="3768606658230902536">បង្កើតអាសយដ្ឋានអ៊ីមែលចៃដន្យដែលបញ្ជូនបន្តទៅប្រអប់សាររបស់អ្នក ខណៈពេលដែលរក្សាអ៊ីមែលផ្ទាល់ខ្លួនរបស់អ្នកជាឯកជន។</translation>
-<translation id="6887156107256264506">អ្នកបានឈានដល់ដែនកំណត់នៃ 5 ឈ្មោះអ៊ីម៉ែលឥតគិតថ្លៃ។ ចុច "គ្រប់គ្រង" ដើម្បីប្រើឡើងវិញ ឬលុបឈ្មោះ។</translation>
+<translation id="4452721050684632493">បានដល់ដែនកំណត់ alias</translation>
+<translation id="2912191433415590080">អ្នកបានប្រើ alias អ៊ីមែលទាំងអស់ <ph name="MAX_ALIASES"/> របស់អ្នករួចហើយ។ លុប alias ដែលមានស្រាប់ដើម្បីបង្កើតថ្មីមួយ។</translation>
+<translation id="3847337908410945070">Alias របស់អ្នក (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">ឈ្មោះថ្មី</translation>
 <translation id="8072910658503112482">ណែនាំឈ្មោះអ៊ីមែលផ្សេងទៀត</translation>
 <translation id="7710361355427562228">កំពុង​បង្កើតឈ្មោះថ្មី...</translation>
@@ -2515,6 +2536,8 @@
 <translation id="2991633563551889054">លាក់កាតនិយាយ</translation>
 <translation id="5355776323718420036">លាក់គេហទំព័រដែលពេញនិយម</translation>
 <translation id="1689504141194856995">លាក់កាត VPN</translation>
+<translation id="2919329118360099847">Brave នឹងត្រូវបានប្រើជាម៉ាស៊ីនស្វែងរកនៅក្នុងរបារអាសយដ្ឋានសម្រាប់បង្អួចធម្មតា។</translation>
+<translation id="6792837540759934892">កំណត់ Brave ជាម៉ាស៊ីនស្វែងរកលំនាំដើម?</translation>
 <translation id="8262911270872215147">ប្ដូរព័ត៌មានតាមបំណង</translation>
 <translation id="3884037897537157986">បិទព័ត៌មាន</translation>
 <translation id="7847477075635510673">លាក់ព័ត៌មាន</translation>
@@ -2561,7 +2584,8 @@
 <translation id="4724752924364329714">ប្រសិនបើគេហទំព័រនេះហាក់ដូចជាមិនដំណើរការ សាកល្បងបិទខែលការពារ។</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>ចំណាំ៖ វាអាចបន្ថយការពារភាពឯកជនរបស់ Brave។<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">នេះអាចកាត់បន្ថយការការពារឯកជនភាពរបស់ Brave។ <ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">អ្នកតាមដាន ការផ្សាយពាណិជ្ជកម្ម និងលក្ខណៈផ្សេងទៀតត្រូវបានទប់ស្កាត់។</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> អ្នកតាមដាន ការផ្សាយពាណិជ្ជកម្ម និងលក្ខណៈផ្សេងទៀតត្រូវបានទប់ស្កាត់។</translation>
+<translation id="2275121279487164685">អ្នកតាមដាន និងការផ្សាយពាណិជ្ជកម្ម</translation>
 <translation id="4968268657895673116">គេហទំព័រនេះមិនដំណើរការឱ្យបានត្រឹមត្រូវទេលើ Shields?</translation>
 <translation id="5412004902081180614">របាយការណ៍</translation>
 <translation id="3620004479054499575">តើអ្នកកំពុងជួបបញ្ហាជាមួយគេហទំព័រនេះឬទេ?</translation>
@@ -2623,9 +2647,11 @@
 <translation id="3795015906457257780">អ្នកកំពុងមើលគេហទំព័រនេះដោយគ្មានការការពារឯកជនភាពរបស់ Brave។</translation>
 <translation id="7194012750329511146">ខែលការពារ Brave
 <ph name="NUMBER"/> អ្នកតាមដាន ការផ្សាយពាណិជ្ជកម្ម និងការអ្វីៗខុសត្រូវបានបិទ</translation>
+<translation id="2900068182947574679">ស្គ្រីប</translation>
 <translation id="4292121526390005808">ស្គ្រីបដែលបានបិទ</translation>
 <translation id="5046271170844958713">ស្គ្រីបដែលបានអនុញ្ញាត</translation>
 <translation id="199862531047218413">បានអនុវត្តការការពារការស្កេនស្នាមម្រាមដៃ</translation>
+<translation id="896105002981074545">ការការពារស្នាមម្រាមដៃ</translation>
 <translation id="5032505924781383272">ការការពារដែលអនុវត្តមិនចាំបាច់មានន័យថាគេហទំព័រនេះកំពុងព្យាយាមស្កេនកម្មវិធីរុករករបស់អ្នកទេ។</translation>
 <translation id="1905384713982899903">ស្នាមម្រាមដៃដែលបានបិទ</translation>
 <translation id="314364527871618241">ស្នាមម្រាមដៃដែលបានអនុញ្ញាត</translation>
@@ -2637,6 +2663,7 @@
 <translation id="542789539047208469">ព័ត៌មានគេហទំព័រ</translation>
 <translation id="7586067492365979844">ខែលការពារ Brave មានផ្ទះលំនៅថ្មី និងឌីហ្សាញ។ វាឥឡូវគូរផ្សងគ្នាជាមួយข័ណ្ឌណម័ណ្ឌល សម្រាប់បទពិសោធន៍មួយយប់។</translation>
 <translation id="9114542678887529043">ខែលការពារ Brave មានផ្ទះលំនៅថ្មី និងឌីហ្សាញ។ ចូលប្រើវាដោយចុចលើរូបតំណាងគេហទំព័រក្នុងរបារ주소។</translation>
+<translation id="4242533952199664413">បើកការកំណត់</translation>
 <translation id="6294662480095808915">ឯកជនភាព។ ដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="4366423156486478559">ទទួលបានការការពាររបស់ Brave នៅលើគ្រប់តំណ ដែលអ្នកចុច។ គ្រាន់តែដាក់ Brave ជាលំនាំដើម ហើយរុករក។ ជាលក្ខណៈឯកជន។</translation>
 <translation id="3830912418080848377">នាំចូលការកំណត់</translation>
@@ -2648,7 +2675,7 @@
 <translation id="2273851479262317744">កំណត់ Brave ជាកម្មវិធីរុករកលំនាំដើម</translation>
 <translation id="5037676449506322593">ជ្រើសរើសទាំងអស់</translation>
 <translation id="5148943178722443958">ជួយធ្វើឱ្យ Brave កាន់តែប្រសើរឡើង។</translation>
-<translation id="479535542793009168">ស្ថេរភាព &amp; ឌាច់ស្នូល</translation>
+<translation id="8874748598814587364">ស្ថេរភាព</translation>
 <translation id="1097073572755862978">ផ្ញើរបាយការណ៍វិភាគ ប្រសិនបើអ្នកជួបប្រទះការគាំង ឬបង្កក។ <ph name="LINK_BEFORE"/>ស្វែងយល់​បន្ថែម។<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">ចែករំលែកការយល់ដឹងអំពីផលិតផលឯកជន និងអនាមិកអំពីមុខងារអ្វីខ្លះដែលកំពុងត្រូវបានប្រើប្រាស់ដោយអ្នកប្រើប្រាស់របស់ Brave។ <ph name="LINK_BEFORE"/>ស្វែងយល់​បន្ថែម។<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">ការកំណត់បានបញ្ចប់</translation>
@@ -2764,4 +2791,79 @@
 <translation id="1602850501393095406">ចុច ↑ ដើម្បីបង្ហាញ</translation>
 <translation id="8367705492654390392">សួរអ្វីក៏បាន</translation>
 <translation id="8525248723479742219">ចាក់ហើយ</translation>
+<translation id="1751249301761991853">ផ្ទាល់ខ្លួន</translation>
+<translation id="1122068467107743258">ការងារ</translation>
+<translation id="8372721116225477180">សង្គម</translation>
+<translation id="1539343118617844331">សាលា</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">សូមស្វាគមន៍ Brave Origin។ ដើម្បីបន្តសូមទិញឬស្តារការទិញ Brave Origin របស់អ្នក។</translation>
+<translation id="4801175670604644729">អ្នកត្រូវការការទិញ Brave Origin សកម្មដើម្បីប្រើកម្មវិធីរុករក នេះ។</translation>
+<translation id="4144294274624829008">ស្តារការទិញ Brave Origin</translation>
+<translation id="6080178356113101120">ទិញ Brave Origin</translation>
+<translation id="1009496146858538651">ស្តារការទិញ</translation>
+<translation id="3461564061600681423">បញ្ចូលលេខសម្គាល់ការទិញរបស់អ្នកដើម្បីធានា​ការទិញ Brave Origin របស់អ្នក។</translation>
+<translation id="2036379724374431790">លេខសម្គាល់ការទិញ</translation>
+<translation id="4348430971280118761">បញ្ចូលលេខសម្គាល់ការទិញរបស់អ្នក</translation>
+<translation id="7451866456310404779">ផ្ទៀងផ្ទាត់លេខសម្គាល់ការទិញ</translation>
+<translation id="8853195592604941919">កំពុងផ្ទៀងផ្ទាត់… វាអាចចំណាយពេលមួយនាទី។</translation>
+<translation id="4633706444004110760">សូមថ្លែងអរគុណលើការដំឡើង Brave Origin ដែលជាកំណែកម្មវិធីរុករកសម្រាប់អ្នកប្រើប្រាស់ដែលមិនចាំបាច់ឯកលក្ខណ៍ទាំងអស់ដែលគាំទង Brave ជាប្រវត្តិសាស្ត្រលម្អ ប៉ុន្តែនៅតែចង់ឯកលក្ខណ៍ឯកជនដែល Brave ប៉ុណ្ណាក្តាប់។ អ្នកប្រើប្រាស់ Origin នឹងបន្តទទួលបានប្រយោជន៍ពីលក្ខណៈឯកលក្ខណ៍ឯកជនលំដាប់អាជ្ញាធរកម្ពូលលម្អ និងល្បឿន (តាមរយៈ Shields) របស់ Brave ក៏ដូចជាការធានាផ្នែកទន្ទឹមដែលរៀងរាល់ Chromium ដែលទូទាត់ និងលក្ខណៈឯកលក្ខណ៍ឯកជនលម្អ។ Origin នឹងលុបបង្ហាញលក្ខណៈផ្សេងទៀតច្រើនលេងពីកម្មវិធីរុករក។</translation>
+<translation id="5816720995022674532">Origin គឺឥតគិតថ្លៃដើម្បីប្រើលើឧបករណ៍ Linux ប៉ុន្តែ​នៅតែ <ph name="BEGIN_LINK"/>មាននៅលើទីផ្សារ<ph name="END_LINK"/> ប្រសិនបើអ្នកចង់គាំទង Brave ជាប្រវត្តិសាស្ត្រលម្អ។ ការទិញក៏នឹងដោះលាក់ឯកលក្ខណ៍ដែលប្រើប្រាស់ Origin លើ Android iOS macOS និងឧបករណ៍ Windows។</translation>
+<translation id="3065220545261045367">គាំទង Brave ដោយទិញ Origin</translation>
+<translation id="2069499076031488636">ធ្វើដំណើរការឈានទៅលើ Origin សម្រាប់ឥតគិតថ្លៃលើ Linux</translation>
+<translation id="5713644099811900409">គណនី Brave</translation>
+<translation id="2906576968270573525">ចូលឬបង្កើតគណនី Brave</translation>
+<translation id="6972754398087986839">ចាប់ផ្ដើម</translation>
+<translation id="5378207817582281342">ជិតដល់ហើយ!</translation>
+<translation id="3750210661641549834">ដើម្បីបង្កើតគណនីរបស់អ្នក សូមផ្ទៀងផ្ទាត់អាសយដ្ឋានអ៊ីមែលរបស់អ្នក។</translation>
+<translation id="4129813507847680661">បញ្ចូលលេខកូដចុះឈ្មោះ</translation>
+<translation id="1672793037892810340">អ្នកគួរតែបានទទួលអ៊ីមែលដែលមានលេខកូដដែលអ្នកនឹងត្រូវបញ្ចូល។</translation>
+<translation id="4821255729182569254">ផ្ញើអ៊ីមែលបញ្ជាក់ឡើងវិញ</translation>
+<translation id="5837679375142747484">មិនឃើញអ៊ីមែលនេះទេ? ពិនិត្យមើលថតសារឥតបានការ ឬ <ph name="BEGIN_LINK"/>ផ្ញើឡើងវិញ<ph name="END_LINK"/>។</translation>
+<translation id="1080588816740959885">មិនឃើញអ៊ីមែលនេះទេ? ពិនិត្យមើលថតសារឥតបានការ ឬ ផ្ញើឡើងវិញ។</translation>
+<translation id="1020730839570724178">បោះបង់ការចុះឈ្មោះ</translation>
+<translation id="4869737930995549965">ចាកចេញ</translation>
+<translation id="5538654494923870167">ចាប់ផ្តើមជាមួយគណនី Brave របស់អ្នក</translation>
+<translation id="1544145635547515689">បង្កើតគណនី Brave</translation>
+<translation id="3828644479849256404">មានគណនីរួចហើយ? ចូល</translation>
+<translation id="6624553071240278643">បង្កើតគណនីរបស់អ្នក</translation>
+<translation id="6505120968393722022">អ្នកមិនអាចប្រើអាសយដ្ឋាន @bravealias.com ដើម្បីបង្កើតគណនី Brave ទេ។ សូមព្យាយាមម្តងទៀតជាមួយដែនផ្សេង។</translation>
+<translation id="8248460961680233459">បង្កើតពាក្យសម្ងាត់</translation>
+<translation id="4917385247580444890">រឹងមាំ</translation>
+<translation id="5486261815000869482">អះអាងពាក្យសម្ងាត់</translation>
+<translation id="7345706641791090287">អះអាងពាក្យសម្ងាត់របស់អ្នក</translation>
+<translation id="7114054701490058191">ពាក្យសម្ងាត់មិនត្រូវគ្នា</translation>
+<translation id="1293857704520741614">ចូលទៅក្នុងគណនីរបស់អ្នក</translation>
+<translation id="118617366439356381">ភ្លេចពាក្យសម្ងាត់របស់អ្នកមែនទេ?</translation>
+<translation id="5183159033908953146">បញ្ជាក់អ៊ីមែលគណនី Brave របស់អ្នក ហើយបន្ទាប់មកអ្នកនឹងទទួលបានតំណដើម្បីកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។ តំណនេះនឹងមានសុពលភាពតែ 30 នាទីប៉ុណ្ណោះ។</translation>
+<translation id="3997368361371298873">ការព្រមាន៖ ដោយសារអ្នកមិនបានចូលក្នុងឧបករណ៍នេះ ការកំណត់ពាក្យសម្ងាត់ឡើងវិញនឹង<ph name="BEGIN_BOLD"/>លុបទិន្នន័យទាំងអស់របស់អ្នក<ph name="END_BOLD"/>នៅលើម៉ាស៊ីនមេ។ ប្រសិនបើអ្នកមានឧបករណ៍ផ្សេងទៀតដែលអ្នកបានចូលរួចហើយ សូមផ្លាស់ប្តូរពាក្យសម្ងាត់របស់អ្នកពីឧបករណ៍នោះ ជំនួសឱ្យការកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។</translation>
+<translation id="3674472551471103443">កំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ</translation>
+<translation id="2755539422340788311">ផ្ទៀងផ្ទាត់អ៊ីមែលរបស់អ្នក</translation>
+<translation id="6641436078676327508">អ្នកគួរតែបានទទួលអ៊ីមែលដែលមានលេខកូដខ្លី។ សូមបញ្ចូលវានៅទីនេះដើម្បីបន្ត។</translation>
+<translation id="7228810962389847249">បញ្ចូលលេខកូដនៅទីនេះ</translation>
+<translation id="4683390091376980486">បញ្ជាក់លេខកូដ</translation>
+<translation id="3970028678400797622">ផ្ញើលេខកូដអ៊ីមែលឡើងវិញ</translation>
+<translation id="2475982808118771221">មានកំហុសកើតឡើង</translation>
+<translation id="5430795854491041407">កំហុសឆ្គង</translation>
+<translation id="2232323423357029857">កម្មវិធីរុករកបានជួបប្រទះកំហុសដែលមិនបានរំពឹងទុក<ph name="ERROR_CODE"/>។ សូមចាប់ផ្តើមកម្មវិធីរុករកឡើងវិញ ហើយព្យាយាមម្តងទៀត។</translation>
+<translation id="7167650060829320707">កំហុសម៉ាស៊ីនមេខាងក្នុង (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>)។ សូមព្យាយាមម្តងទៀតពេលក្រោយ។</translation>
+<translation id="2387645930330673048">គណនីនេះកំពុងរង់ចាំការផ្ទៀងផ្ទាត់អ៊ីមែល។</translation>
+<translation id="2199962270601714404">រកមិនឃើញគណនីសម្រាប់អាសយដ្ឋានអ៊ីមែលនោះទេ។ សូមព្យាយាមម្តងទៀត ឬបង្កើតគណនីថ្មី។</translation>
+<translation id="8130611002720478693">ពាក្យសម្ងាត់មិនត្រឹមត្រូវ។ សូមព្យាយាមម្តងទៀត។</translation>
+<translation id="7144067487084094749">គណនីមួយមានរួចហើយសម្រាប់អាសយដ្ឋានអ៊ីមែលនេះ។ សូមសាកល្បងចូល ជំនួសឱ្យការបង្កើតគណនី។</translation>
+<translation id="5288951359968156008">ដែននៃអាសយដ្ឋានអ៊ីមែលនេះមិនត្រូវបានគាំទ្រទេ។ សូមប្រើអាសយដ្ឋានអ៊ីមែលផ្សេង។</translation>
+<translation id="7625678607509255072">លើសដែនកំណត់នៃការផ្ទៀងផ្ទាត់អ៊ីមែល។ សូមរង់ចាំ 30 នាទី មុនពេលព្យាយាមម្តងទៀត។</translation>
+<translation id="4582421696414628320">ការផ្ទៀងផ្ទាត់បានផុតកំណត់។ សូមចាប់ផ្តើមដំណើរការចុះឈ្មោះម្តងទៀត។</translation>
+<translation id="8439543211004394821">លេខកូដមិនត្រឹមត្រូវត្រូវបានបញ្ចូលច្រើនពេក។ សូមចាប់ផ្តើមដំណើរការចុះឈ្មោះម្តងទៀត។</translation>
+<translation id="3229986152760633988">លេខកូដខុស សូមព្យាយាមម្តងទៀត។</translation>
+<translation id="4178004989875422946">គណនី Brave នឹងអនុញ្ញាតឱ្យអ្នកចូលដំណើរការសេវាកម្ម Brave បានយ៉ាងងាយស្រួល។</translation>
+<translation id="8314772463905284467">Caps Lock កំពុងបើក</translation>
+<translation id="7044608453949401443">មិនអនុញ្ញាតឱ្យមានដកឃ្លានៅដើម ឬចុងបញ្ចប់នៃពាក្យសម្ងាត់ទេ។</translation>
+<translation id="2939492377741553693">អ៊ីមែលបញ្ជាក់ត្រូវបានផ្ញើឡើងវិញ។</translation>
+<translation id="2112559299194052697">មិនអាចផ្ញើឡើងវិញបានទេ</translation>
+<translation id="7932611814134267012">អ៊ីមែលផ្ទៀងផ្ទាត់ច្រើនពេកត្រូវបានផ្ញើរួចហើយ។ សូមពិនិត្យមើលថតសារឥតបានការរបស់អ្នក។</translation>
+<translation id="1364223093800750401">អ៊ីមែលត្រូវបានផ្ទៀងផ្ទាត់រួចហើយ។</translation>
+<translation id="3353844160742960162">ការកែសម្រួលការកំណត់ឯកជនភាព</translation>
+<translation id="528205534230423181">គេហទំព័រនេះផ្តល់នូវការកំណត់ឯកជនភាពដែល Brave អាចកែសម្រួលដោយស្វ័យប្រវត្តិសម្រាប់អ្នក។ នេះគឺជាអ្វីដែលយើងណែនាំ៖</translation>
+<translation id="1063227610401477317">អនុវត្តការផ្លាស់ប្តូរ</translation>
+<translation id="5539769255716491933">រាយការណ៍ពីជំហានដែលបរាជ័យ</translation>
 </translationbundle>

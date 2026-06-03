@@ -122,9 +122,9 @@ TEST(KDFTest, ScryptNoCheckKnownAnswers) {
         key));
 
     std::vector<uint8_t> key_with_check(c.len);
-    crypto::kdf::DeriveKeyScrypt(c.params, base::as_byte_span(c.password),
-                                 base::as_byte_span(c.salt), key_with_check,
-                                 crypto::SubtlePassKey::ForTesting());
+    crypto::kdf::Scrypt(c.params, base::as_byte_span(c.password),
+                        base::as_byte_span(c.salt), key_with_check,
+                        crypto::SubtlePassKey::ForTesting());
     EXPECT_EQ(key, key_with_check);
 
     std::vector<uint8_t> result_bytes(c.len);

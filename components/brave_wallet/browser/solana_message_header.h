@@ -21,7 +21,7 @@ struct SolanaMessageHeader {
                       uint8_t num_readonly_unsigned_accounts);
   SolanaMessageHeader() = default;
   ~SolanaMessageHeader() = default;
-  bool operator==(const SolanaMessageHeader&) const;
+  bool operator==(const SolanaMessageHeader&) const = default;
 
   base::DictValue ToValue() const;
   static std::optional<SolanaMessageHeader> FromValue(

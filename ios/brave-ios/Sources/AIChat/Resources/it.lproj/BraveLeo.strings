@@ -166,6 +166,12 @@
 /* The label for the system prompt field */
 "aichat.customModelFormSystemPromptFieldTitle" = "Prompt di sistema";
 
+/* The description text explaining what tools supports means */
+"aichat.customModelFormToolsSupportFieldDescription" = "Se questo modello supporta la chiamata di funzioni/utilizzo di strumenti";
+
+/* The label for the tools support toggle */
+"aichat.customModelFormToolsSupportFieldTitle" = "Supporto strumenti";
+
 /* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
 "aichat.customModelFormUnsafeEndpointWarning" = "Questo endpoint potrebbe non essere sicuro.";
 

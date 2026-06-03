@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 
+#include <ostream>
 #include <string_view>
 
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/browser/component_updater/component_info.h"
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar_delegate.h"
 
@@ -64,6 +66,17 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
     resource_component_registrar_delegate_->OnResourceComponentRegistered(
         *resource_component_id_, *last_install_dir_);
   }
+}
+
+void ResourceComponentRegistrar::UnregisterResourceComponent() {
+  if (!resource_component_id_) {
+    return;
+  }
+
+  Unregister();
+  OnComponentUnregistered(*resource_component_id_);
+  last_install_dir_.reset();
+  resource_component_id_.reset();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

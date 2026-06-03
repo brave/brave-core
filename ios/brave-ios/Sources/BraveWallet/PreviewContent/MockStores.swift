@@ -23,7 +23,6 @@ extension WalletStore {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       ipfsApi: TestIpfsAPI(),
-      walletP3A: TestBraveWalletP3A(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService(),
       zcashWalletService: BraveWallet.TestZCashWalletService(),
       meldIntegrationService: BraveWallet.TestMeldIntegrationService(),
@@ -45,7 +44,6 @@ extension CryptoStore {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       ipfsApi: TestIpfsAPI(),
-      walletP3A: TestBraveWalletP3A(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
@@ -103,14 +101,15 @@ extension KeyringStore {
     .init(
       keyringService: MockKeyringService(),
       walletService: MockBraveWalletService(),
-      rpcService: MockJsonRpcService(),
-      walletP3A: TestBraveWalletP3A()
+      rpcService: MockJsonRpcService()
     )
   }
   static var previewStoreWithWalletCreated: KeyringStore {
     let store = KeyringStore.previewStore
-    store.createWallet(password: "password")
-    store.allAccounts = [.previewAccount, .mockSolAccount]
+    Task {
+      let _ = await store.createWallet(password: "password", networks: [])
+      store.allAccounts = [.previewAccount, .mockSolAccount]
+    }
     return store
   }
 }

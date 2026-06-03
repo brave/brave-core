@@ -113,6 +113,14 @@ export const ZCashInvalidAddressNetworkMismatchErrorMessage: AddressMessageInfo 
     id: AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError,
   }
 
+// Polkadot
+export const PolkadotInvalidPrefixErrorMessage: AddressMessageInfo = {
+  title: '',
+  description: 'braveWalletPolkadotInvalidPrefix',
+  type: 'error',
+  id: AddressMessageInfoIds.polkadotInvalidPrefixError,
+}
+
 export const AddressValidationMessages = [
   ENSOffchainLookupMessage,
   HasNoDomainAddressMessage,
@@ -128,4 +136,5 @@ export const AddressValidationMessages = [
   ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage,
   ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage,
   ZCashInvalidAddressNetworkMismatchErrorMessage,
+  PolkadotInvalidPrefixErrorMessage,
 ]

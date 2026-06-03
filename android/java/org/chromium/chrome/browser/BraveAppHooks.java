@@ -7,15 +7,32 @@ package org.chromium.chrome.browser;
 
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmark;
+
+import java.util.NoSuchElementException;
 
 @NullMarked
 public class BraveAppHooks extends AppHooks {
     /** Async fetch the iterator of partner bookmarks (or null if not available). */
     @Override
     public void requestPartnerBookmarkIterator(
-            Callback<PartnerBookmark.@Nullable BookmarkIterator> callback) {
-        callback.onResult(null);
+            Callback<PartnerBookmark.BookmarkIterator> callback) {
+        // Brave has no partner bookmarks; signal completion with an empty iterator so the
+        // PartnerBookmarksShim is marked as loaded and the bookmark model can finish loading.
+        callback.onResult(
+                new PartnerBookmark.BookmarkIterator() {
+                    @Override
+                    public void close() {}
+
+                    @Override
+                    public boolean hasNext() {
+                        return false;
+                    }
+
+                    @Override
+                    public PartnerBookmark next() {
+                        throw new NoSuchElementException();
+                    }
+                });
     }
 }

@@ -4,18 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [[substitution]]
-description = 'Add containers headers for tab restore'
-re_pattern = '(using content::NavigationEntry;\n)'
-replace = '''
-#include "brave/components/containers/buildflags/buildflags.h"
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/content/browser/tab_restore_utils.h"
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-\1'''
-
-[[substitution]]
 description = 'Pass containers storage partition config when restoring tabs'
 re_pattern = 'tab_util::GetSiteInstanceForNewTab\(([\s\S]*?)\)\)'
 replace = '''tab_util::GetSiteInstanceForNewTab(

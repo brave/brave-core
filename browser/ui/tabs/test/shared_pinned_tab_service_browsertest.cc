@@ -17,10 +17,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -42,7 +42,8 @@ SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
 Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
   auto* new_browser =
       chrome::OpenEmptyWindow(browser()->profile(),
-                              /*should_trigger_session_restore= */ false);
+                              /*should_trigger_session_restore= */ false)
+          ->GetBrowserForMigrationOnly();
   browsers_.push_back(new_browser->AsWeakPtr());
   return new_browser;
 }

@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
+#include <stddef.h>
+
 #include <algorithm>
+#include <array>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -13,6 +16,7 @@
 #include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"

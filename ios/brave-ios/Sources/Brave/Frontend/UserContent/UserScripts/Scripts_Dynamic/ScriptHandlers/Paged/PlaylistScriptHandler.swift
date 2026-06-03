@@ -52,7 +52,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   static let playlistLongPressed = "playlistLongPressed_\(uniqueID)"
   static let playlistProcessDocumentLoad = "playlistProcessDocumentLoad_\(uniqueID)"
   static let mediaCurrentTimeFromTag = "mediaCurrentTimeFromTag_\(uniqueID)"
-  static let stopMediaPlayback = "stopMediaPlayback_\(uniqueID)"
 
   static let scriptName = "PlaylistScript"
   static let scriptId = UUID().uuidString
@@ -72,7 +71,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
           "$<playlistLongPressed>": playlistLongPressed,
           "$<playlistProcessDocumentLoad>": playlistProcessDocumentLoad,
           "$<mediaCurrentTimeFromTag>": mediaCurrentTimeFromTag,
-          "$<stopMediaPlayback>": stopMediaPlayback,
         ],
         securityToken: scriptId,
         script: script
@@ -256,23 +254,6 @@ extension PlaylistScriptHandler {
         } else {
           completion(0.0)
         }
-      }
-    }
-  }
-
-  static func stopPlayback(tab: (any TabState)?) {
-    guard let tab = tab else { return }
-
-    tab.evaluateJavaScript(
-      functionName: "window.__firefox__.\(stopMediaPlayback)",
-      args: [Self.scriptId],
-      contentWorld: Self.scriptSandbox,
-      asFunction: true
-    ) { value, error in
-      if let error = error {
-        Logger.module.error(
-          "Error Retrieving Stopping Media Playback: \(error.localizedDescription)"
-        )
       }
     }
   }

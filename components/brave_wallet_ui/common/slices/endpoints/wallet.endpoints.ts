@@ -20,7 +20,10 @@ import { WalletPageActions } from '../../../page/actions'
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { getLocale } from '../../../../common/locale'
-import { keyringIdForNewAccount } from '../../../utils/account-utils'
+import {
+  keyringIdForNewAccount,
+  isPolkadotRelayNetwork,
+} from '../../../utils/account-utils'
 import { suggestNewAccountName } from '../../../utils/address-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { AddAccountArgs } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
@@ -580,6 +583,7 @@ async function createDefaultAccounts({
 }) {
   const networksRegistry = await cache.getNetworksRegistry()
   const accountsRegistry = await cache.getAccountsRegistry()
+  const { accounts: hiddenAccounts } = await keyringService.getHiddenAccounts()
 
   const visibleNetworks = getEntitiesListFromEntityState(
     networksRegistry,
@@ -590,6 +594,12 @@ async function createDefaultAccounts({
   const networksWithUniqueKeyrings = []
 
   for (const net of visibleNetworks) {
+    if (
+      net.coin === BraveWallet.CoinType.DOT
+      && !isPolkadotRelayNetwork(net.chainId)
+    ) {
+      continue
+    }
     const keyringId = keyringIdForNewAccount(net.coin, net.chainId)
     if (!networkKeyrings.includes(keyringId)) {
       networkKeyrings.push(keyringId)
@@ -597,7 +607,10 @@ async function createDefaultAccounts({
     }
   }
 
-  const accounts = getEntitiesListFromEntityState(accountsRegistry)
+  const accounts = [
+    ...getEntitiesListFromEntityState(accountsRegistry),
+    ...hiddenAccounts,
+  ]
   const addAccountArgs = networksWithUniqueKeyrings
     .filter(
       (net) =>

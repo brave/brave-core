@@ -11,8 +11,8 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import {
+  RegisterClientErrorCode,
   RegisterError,
-  RegisterErrorCode,
 } from './brave_account.mojom-webui.js'
 import { showError } from './brave_account_common.js'
 
@@ -32,6 +32,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     return {
       email: { type: String },
       isCapsLockOn: { type: Boolean },
+      isCreatingAccount: { type: Boolean, state: true },
       isEmailValid: { type: Boolean },
       isPasswordStrongEnough: { type: Boolean },
       isPasswordValid: { type: Boolean },
@@ -48,6 +49,9 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   // (`registerInitialize`/`registerFinalize`). We'll revisit handling this
   // through Mojo in C++ if that proves practical.
   protected async onCreateAccountButtonClicked() {
+    if (this.isCreatingAccount) return
+    this.isCreatingAccount = true
+
     try {
       const blindedMessage = this.registration.start(this.password)
       const { encryptedVerificationToken, serializedResponse } =
@@ -72,16 +76,19 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         error = e as RegisterError
       } else if (typeof e === 'string') {
         error = {
-          netErrorOrHttpStatus: null,
-          errorCode: RegisterErrorCode.kOpaqueError,
+          clientError: { errorCode: RegisterClientErrorCode.kOpaqueError },
         }
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        error = {
+          clientError: { errorCode: RegisterClientErrorCode.kUnexpected },
+        }
       }
 
       showError({ kind: 'register', details: error })
     }
+
+    this.isCreatingAccount = false
   }
 
   private browserProxy: BraveAccountBrowserProxy =
@@ -89,6 +96,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
   protected accessor email: string = ''
   protected accessor isCapsLockOn: boolean = false
+  protected accessor isCreatingAccount: boolean = false
   protected accessor isEmailValid: boolean = false
   protected accessor isPasswordStrongEnough: boolean = false
   protected accessor isPasswordValid: boolean = false

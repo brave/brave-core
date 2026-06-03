@@ -63,6 +63,9 @@ extern const base::FeatureParam<bool> kAutomaticModelSupportsTools;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatRemoteModelsConfig);
+
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);
@@ -124,15 +127,15 @@ BASE_DECLARE_FEATURE(kTabManagementTool);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kNEARModels);
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kNEARModelsEncryption;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kNEARModelsEncryptionSearch;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsNEARModelsEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kBraveSummaryModel);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSummaryModelEnabled();
-
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-BASE_DECLARE_FEATURE(kAIChatConversationAPIV2);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatConversationAPIV2Enabled();
 
 // Whether we should show rich search widgets in the conversation.
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kRichSearchWidgets);
@@ -147,6 +150,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kCodeExecutionTool);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kCodeExecutionToolCharts;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxConsoleLogOutputSize;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsCodeExecutionToolEnabled();
 
 #if BUILDFLAG(IS_IOS)

@@ -21,7 +21,6 @@
 #include "base/i18n/time_formatting.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
@@ -30,6 +29,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -41,7 +41,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/query_filter/utils.h"
+#include "brave/components/query_filter/browser/utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -54,11 +54,12 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_navigator.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -114,13 +115,12 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1) && BUILDFLAG(IS_WIN)
 #include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V1) && BUILDFLAG(IS_WIN)
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
@@ -128,8 +128,15 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
-#include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#include "components/tabs/public/tab_interface.h"
+#if defined(TOOLKIT_VIEWS)
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#endif
 #endif
 
 using content::WebContents;
@@ -240,13 +247,14 @@ void NewOffTheRecordWindowTor(Profile* profile) {
   TorProfileManager::SwitchToTorProfile(profile);
 }
 
-void NewTorConnectionForSite(Browser* browser) {
-  Profile* profile = browser->profile();
+void NewTorConnectionForSite(BrowserWindowInterface* browser) {
+  Profile* profile = browser->GetProfile();
   DCHECK(profile);
   tor::TorProfileService* service =
       TorProfileServiceFactory::GetForContext(profile);
   DCHECK(service);
-  WebContents* current_tab = browser->tab_strip_model()->GetActiveWebContents();
+  WebContents* current_tab =
+      browser->GetTabStripModel()->GetActiveWebContents();
   if (!current_tab) {
     return;
   }
@@ -274,7 +282,7 @@ void ShowBraveVPNBubble(Browser* browser) {
 }
 
 void ToggleBraveVPNTrayIcon() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1) && BUILDFLAG(IS_WIN)
   brave_vpn::EnableVPNTrayIcon(!brave_vpn::IsVPNTrayIconEnabled());
   if (brave_vpn::IsVPNTrayIconEnabled()) {
     brave_vpn::wireguard::ShowBraveVpnStatusTrayIcon();
@@ -292,7 +300,7 @@ void ToggleBraveVPNButton(Browser* browser) {
 
 void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::BraveVpnService* vpn_service =
+  auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
   CHECK(vpn_service);
   std::string target_url;
@@ -332,13 +340,6 @@ void ShowWalletBubble(Browser* browser) {
 #endif
 }
 
-void ShowApproveWalletBubble(Browser* browser) {
-#if defined(TOOLKIT_VIEWS)
-  static_cast<BraveBrowserView*>(browser->window())
-      ->CreateApproveWalletBubble();
-#endif
-}
-
 void CloseWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();
@@ -346,12 +347,12 @@ void CloseWalletBubble(Browser* browser) {
 }
 #endif
 
-void CopySanitizedURL(Browser* browser, const GURL& url) {
-  if (!browser || !browser->profile()) {
+void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url) {
+  if (!browser || !browser->GetProfile()) {
     return;
   }
   GURL sanitized_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
-                           browser->profile())
+                           browser->GetProfile())
                            ->SanitizeURL(url);
 
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
@@ -484,6 +485,12 @@ void CleanAndCopySelectedURL(Browser* browser) {
   auto* brave_browser_window = BraveBrowserWindow::From(browser->window());
   if (brave_browser_window) {
     brave_browser_window->CleanAndCopySelectedURL();
+  }
+}
+
+void ToggleFocusMode(BrowserWindowInterface* browser) {
+  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+    controller->ToggleEnabled();
   }
 }
 
@@ -1035,8 +1042,6 @@ void ToggleAllBookmarksButtonVisibility(Browser* browser) {
 }
 
 bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto* tab_strip_model = browser->tab_strip_model();
   auto active_index = tab_strip_model->active_index();
   if (active_index == TabStripModel::kNoTab) {
@@ -1047,8 +1052,6 @@ bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {
 }
 
 bool CanSplitTabsWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto* tab_strip_model = browser->tab_strip_model();
   if (tab_strip_model->empty()) {
     return false;
@@ -1098,8 +1101,6 @@ void SplitTabsWithSideBySide(Browser* browser,
 }
 
 void RemoveSplitWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto selected_indices = GetSelectedIndices(browser);
   auto* tab_strip_model = browser->tab_strip_model();
   for (auto index : selected_indices) {
@@ -1110,8 +1111,6 @@ void RemoveSplitWithSideBySide(Browser* browser) {
 }
 
 void SwapTabsInSplitWithSideBySide(Browser* browser) {
-  CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
-
   auto* tab_strip_model = browser->tab_strip_model();
   auto active_index = tab_strip_model->active_index();
   CHECK_NE(TabStripModel::kNoTab, active_index);
@@ -1164,22 +1163,25 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
-                           const tabs::TabHandle& tab,
-                           const containers::mojom::ContainerPtr& container) {
-  const auto* tab_ptr = tab.Get();
-  if (!tab_ptr) {
-    LOG(ERROR) << "Tab is not valid";
-    return;
-  }
+void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
+                            const std::vector<tabs::TabHandle>& tabs,
+                            const containers::mojom::ContainerPtr& container) {
+  for (const auto& tab : tabs) {
+    const auto* tab_ptr = tab.Get();
+    if (!tab_ptr) {
+      LOG(ERROR) << "Tab is not valid";
+      continue;
+    }
 
-  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
-  OpenUrlInContainer(browser_window, url, container);
+    const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+    OpenUrlInContainer(browser_window, url, container);
+  }
 }
 
 void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
-                        const containers::mojom::ContainerPtr& container) {
+                        const containers::mojom::ContainerPtr& container,
+                        bool is_link) {
   if (!url.is_valid()) {
     LOG(ERROR) << "Url is not valid";
     return;
@@ -1187,7 +1189,9 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
 
   CHECK(container);
 
-  NavigateParams params(browser_window, url, ui::PAGE_TRANSITION_LINK);
+  NavigateParams params(
+      browser_window, url,
+      is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser_window->GetProfile(),
@@ -1197,33 +1201,95 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
   Navigate(&params);
 }
 
-void OpenTabUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                                const tabs::TabHandle& tab) {
-  const auto* tab_ptr = tab.Get();
-  if (!tab_ptr) {
-    LOG(ERROR) << "Tab is not valid";
-    return;
-  }
+void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
+                                 const std::vector<tabs::TabHandle>& tabs) {
+  for (const auto& tab : tabs) {
+    const auto* tab_ptr = tab.Get();
+    if (!tab_ptr) {
+      LOG(ERROR) << "Tab is not valid";
+      continue;
+    }
 
-  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
-  OpenUrlWithoutContainer(browser_window, url);
+    const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+    OpenUrlWithoutContainer(browser_window, url);
+  }
 }
 
 void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                             const GURL& url) {
+                             const GURL& url,
+                             bool is_link) {
   if (!url.is_valid()) {
     LOG(ERROR) << "Url is not valid";
     return;
   }
 
-  NavigateParams params(browser_window, url, ui::PAGE_TRANSITION_LINK);
+  NavigateParams params(
+      browser_window, url,
+      is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   Navigate(&params);
 }
 
-void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window) {
-  // TODO(https://github.com/brave/brave-browser/issues/53350)
-  NOTIMPLEMENTED();
+void CreateTemporaryContainerAndOpenTabUrls(
+    BrowserWindowInterface* browser_window,
+    const std::vector<tabs::TabHandle>& tabs) {
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
+  CHECK(containers_service);
+  OpenTabUrlsInContainer(
+      browser_window, tabs,
+      containers_service->CreateAndPersistTemporaryContainer());
+}
+
+void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* browser_window,
+                                        const GURL& url,
+                                        bool is_link) {
+  CHECK(browser_window);
+  if (!url.is_valid()) {
+    LOG(ERROR) << "Url is not valid";
+    return;
+  }
+
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
+  CHECK(containers_service);
+  OpenUrlInContainer(browser_window, url,
+                     containers_service->CreateAndPersistTemporaryContainer(),
+                     is_link);
+}
+
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,
+                                       actions::ActionItem* item) {
+  if (!browser_window) {
+    DVLOG(1) << "Browser window is not valid";
+    return;
+  }
+
+#if !defined(TOOLKIT_VIEWS)
+  return;
+#else
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser_window);
+  if (!browser_view || !browser_view->toolbar_button_provider()) {
+    DVLOG(1) << "Browser view or toolbar button provider is not valid";
+    return;
+  }
+
+  tabs::TabInterface* tab = browser_window->GetActiveTabInterface();
+  if (!tab) {
+    DVLOG(1) << "Tab is not valid";
+    return;
+  }
+
+  tabs::BraveTabFeatures* brave_tab_features =
+      tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures());
+  CHECK(brave_tab_features);
+
+  page_actions::PartitionedStoragePageActionController* const controller =
+      brave_tab_features->partitioned_storage_page_action_controller();
+  CHECK(controller);
+  controller->ExecuteAction(browser_view->toolbar_button_provider(), item);
+#endif
 }
 #endif
 

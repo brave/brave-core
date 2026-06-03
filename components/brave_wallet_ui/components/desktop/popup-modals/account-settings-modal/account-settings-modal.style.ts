@@ -14,7 +14,7 @@ import LeoSegmentedControl, {
 import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 
 // Shared Styles
-import { WalletButton, Row, Column } from '../../../shared/style'
+import { Text, WalletButton, Row, Column } from '../../../shared/style'
 import {
   layoutPanelWidth, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
@@ -57,15 +57,13 @@ export const QRCodeImage = styled.img`
 `
 
 export const AddressButton = styled(WalletButton)`
+  font: ${leo.font.large.regular};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  font-family: Poppins;
-  font-size: 16px;
-  line-height: 20px;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   cursor: pointer;
   outline: none;
   background: none;
@@ -83,7 +81,7 @@ export const ButtonRow = styled.div`
 export const CopyIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${leo.color.neutral[70]};
   -webkit-mask-image: url(${ClipboardIcon});
   mask-image: url(${ClipboardIcon});
   mask-size: cover;
@@ -95,23 +93,20 @@ export const PrivateKeyWrapper = styled(Column)`
 `
 
 export const PrivateKeyBubble = styled(WalletButton)`
+  font: ${leo.font.default.semibold};
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   padding: 5px 10px;
   max-width: 350px;
   height: auto;
   border-radius: 4px;
   margin: 0px;
   word-break: break-all;
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 22px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   outline: none;
   border: none;
 `
@@ -129,11 +124,7 @@ export const ButtonWrapper = styled.div`
   }
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+export const ErrorText = styled(Text)`
   margin-bottom: 16px;
 `
 
@@ -141,7 +132,7 @@ export const Line = styled.div`
   display: flex;
   width: 100%;
   height: 2px;
-  background: ${(p) => p.theme.color.divider01};
+  background: ${leo.color.divider.subtle};
 `
 
 export const Alert = styled(AlertReact)`

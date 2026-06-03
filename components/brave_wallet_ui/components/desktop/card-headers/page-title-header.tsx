@@ -63,7 +63,12 @@ export const PageTitleHeader = ({
           />
         </MenuButton>
       )}
-      <HeaderTitle isMobileOrPanel={isMobileOrPanel}>{title}</HeaderTitle>
+      <HeaderTitle
+        variant={isMobileOrPanel ? 'large.semibold' : 'heading.h1'}
+        textColor='primary'
+      >
+        {title}
+      </HeaderTitle>
     </Row>
   )
 }

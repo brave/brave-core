@@ -11,7 +11,7 @@ source_set("query_filter") {
 
   deps = [
     "//base",
-    "//brave/components/query_filter",
+    "//brave/components/query_filter/browser",
     "//net",
     "//url",
   ]

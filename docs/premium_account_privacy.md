@@ -2,14 +2,12 @@
 
 Brave's premium services (VPN, Leo, Search Premium, etc.) use a blind token
 protocol based on [Privacy Pass](https://privacypass.github.io/) to decouple
-**payment identity** from **service usage**. When you use a premium feature,
-the service verifies you have a valid subscription without learning who you
-are.
+**payment identity** from **service usage**. When you use a premium feature, the
+service verifies you have a valid subscription without learning who you are.
 
 ## Overview
 
-The system uses a **Verifiable Oblivious Pseudorandom Function (VOPRF)** via
-the
+The system uses a **Verifiable Oblivious Pseudorandom Function (VOPRF)** via the
 [challenge-bypass-ristretto](https://github.com/nickel-city/challenge-bypass-ristretto)
 library. The core idea: the server signs tokens it cannot see, and the client
 later presents those tokens to access services. Because the server never saw the
@@ -66,9 +64,9 @@ The subscription service forwards the blinded tokens to the **Challenge Bypass
 Server (CBR)**, which signs them without ever seeing the originals. The CBR
 returns:
 
-*   **Signed tokens** -- blind signatures over the blinded tokens.
-*   **Batch proof** -- a DLEQ (Discrete Log Equality) proof that the signing
-    was performed correctly with the issuer's key.
+- **Signed tokens** -- blind signatures over the blinded tokens.
+- **Batch proof** -- a DLEQ (Discrete Log Equality) proof that the signing was
+  performed correctly with the issuer's key.
 
 ### 3. Unblinding and verification (client-side)
 
@@ -86,14 +84,14 @@ let unblinded_creds = batch_proof
     .or(Err(InternalError::InvalidProof))?;
 ```
 
-After this step the browser holds signed tokens that are cryptographically
-valid but **cannot be correlated** to the signing request by the server.
+After this step the browser holds signed tokens that are cryptographically valid
+but **cannot be correlated** to the signing request by the server.
 
 ### 4. Credential presentation (client-side)
 
 When accessing a premium service, the browser picks an unspent credential,
-derives a verification key, and signs the issuer identifier to bind the token
-to the specific service
+derives a verification key, and signs the issuer identifier to bind the token to
+the specific service
 (`components/skus/browser/rs/lib/src/sdk/credentials/present.rs`):
 
 ```rust
@@ -103,8 +101,8 @@ let signature =
     verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();
 ```
 
-The presentation is sent as an HTTP cookie containing the token preimage,
-HMAC signature, and validity window. No user identity is included.
+The presentation is sent as an HTTP cookie containing the token preimage, HMAC
+signature, and validity window. No user identity is included.
 
 ### 5. Redemption (server-side)
 
@@ -113,47 +111,47 @@ signature against its issuer key and checks the token has not been spent with
 that issuer before. A duplicate redemption attempt with the same token preimage
 against the same issuer but with a different binding payload is rejected with
 409 Conflict. An exact retry of a previously accepted redemption (same token,
-issuer, and payload) is treated as an idempotent replay and acknowledged
-without error.
+issuer, and payload) is treated as an idempotent replay and acknowledged without
+error.
 
 ## Credential Types
 
-| Type | Description |
-|------|-------------|
-| **TimeLimitedV2** | Primary production type. Tokens are bucketed into time windows (e.g. daily) with per-window sub-issuer keys. Single-use per time window, enforced server-side by the CBR's redemption store. The client also tracks a local `spent` flag to avoid re-presenting a token, but the authoritative duplicate check is in the CBR. |
-| **SingleUse** | One-time tokens using the same blind signature scheme. |
-| **TimeLimited (v1)** | Legacy. Server-generated HMAC-derived tokens -- weaker privacy since the server produces the token values directly. |
+| Type                 | Description                                                                                                                                                                                                                                                                                                                   |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **TimeLimitedV2**    | Primary production type. Tokens are bucketed into time windows (e.g. daily) with per-window sub-issuer keys. Single-use per time window, enforced server-side by the CBR's redemption store. The client also tracks a local `spent` flag to avoid re-presenting a token, but the authoritative duplicate check is in the CBR. |
+| **SingleUse**        | One-time tokens using the same blind signature scheme.                                                                                                                                                                                                                                                                        |
+| **TimeLimited (v1)** | Legacy. Server-generated HMAC-derived tokens -- weaker privacy since the server produces the token values directly.                                                                                                                                                                                                           |
 
-TimeLimitedV2 credentials store a `valid_from` / `valid_to` window and a
-`spent` flag per token in local storage, allowing the SDK to automatically
-select the right credential for the current time period and track usage.
+TimeLimitedV2 credentials store a `valid_from` / `valid_to` window and a `spent`
+flag per token in local storage, allowing the SDK to automatically select the
+right credential for the current time period and track usage.
 
 ## Privacy Properties
 
-| Property | How it is achieved |
-|---|---|
-| **Unlinkability** | Blind signing means the CBR signs tokens it cannot see; it cannot later match a presented token to a signing request. |
-| **No identity in presentation** | The credential cookie contains only the token, its HMAC, and the validity window -- no account ID, email, or payment info. |
-| **Double-spend prevention** | The CBR records redeemed token preimages keyed per-issuer and rejects true duplicates (same token, different binding) with 409 Conflict; exact replays of a prior redemption are accepted as idempotent. Spent-token records are retained until the issuer's expiration time, after which they may be purged. |
-| **Issuer binding** | The HMAC signature binds each token to a specific merchant and SKU (e.g. `brave.com?sku=leo-monthly`), preventing cross-service usage. |
-| **Time-limited validity** | V3 issuers create sub-issuer keys per time window; expired credentials are cryptographically unverifiable. |
+| Property                        | How it is achieved                                                                                                                                                                                                                                                                                            |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Unlinkability**               | Blind signing means the CBR signs tokens it cannot see; it cannot later match a presented token to a signing request.                                                                                                                                                                                         |
+| **No identity in presentation** | The credential cookie contains only the token, its HMAC, and the validity window -- no account ID, email, or payment info.                                                                                                                                                                                    |
+| **Double-spend prevention**     | The CBR records redeemed token preimages keyed per-issuer and rejects true duplicates (same token, different binding) with 409 Conflict; exact replays of a prior redemption are accepted as idempotent. Spent-token records are retained until the issuer's expiration time, after which they may be purged. |
+| **Issuer binding**              | The HMAC signature binds each token to a specific merchant and SKU (e.g. `brave.com?sku=leo-monthly`), preventing cross-service usage.                                                                                                                                                                        |
+| **Time-limited validity**       | V3 issuers create sub-issuer keys per time window; expired credentials are cryptographically unverifiable.                                                                                                                                                                                                    |
 
 ## What Each Party Knows
 
-| Party | Knows | Does not know |
-|---|---|---|
-| **Payment provider** (Stripe, Apple, Google) | Your payment identity and that you purchased a Brave subscription | Which credentials you use or when you use services |
-| **Subscription service** (payment.bsg.brave.com) | Your account, order, and that blinded tokens were requested | The original token values; cannot link signing requests to presented credentials |
-| **Premium service** (Leo, VPN, Search, etc.) | That a valid credential was presented | Who presented it -- no account or payment info is included |
-| **CBR** (blind signer) | That it signed some blinded tokens and that some tokens were redeemed | Cannot link signing to redemption due to the blinding step |
+| Party                                            | Knows                                                                 | Does not know                                                                    |
+| ------------------------------------------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Payment provider** (Stripe, Apple, Google)     | Your payment identity and that you purchased a Brave subscription     | Which credentials you use or when you use services                               |
+| **Subscription service** (payment.bsg.brave.com) | Your account, order, and that blinded tokens were requested           | The original token values; cannot link signing requests to presented credentials |
+| **Premium service** (Leo, VPN, Search, etc.)     | That a valid credential was presented                                 | Who presented it -- no account or payment info is included                       |
+| **CBR** (blind signer)                           | That it signed some blinded tokens and that some tokens were redeemed | Cannot link signing to redemption due to the blinding step                       |
 
 ## Key Source Locations
 
-| Component | Path |
-|---|---|
-| SKUs SDK (Rust) | `components/skus/browser/rs/lib/src/` |
-| Token generation and fetch | `components/skus/browser/rs/lib/src/sdk/credentials/fetch.rs` |
-| Credential presentation | `components/skus/browser/rs/lib/src/sdk/credentials/present.rs` |
-| Data models | `components/skus/browser/rs/lib/src/models.rs` |
-| SKUs C++ service | `components/skus/browser/skus_service_impl.cc` |
+| Component                  | Path                                                                       |
+| -------------------------- | -------------------------------------------------------------------------- |
+| SKUs SDK (Rust)            | `components/skus/browser/rs/lib/src/`                                      |
+| Token generation and fetch | `components/skus/browser/rs/lib/src/sdk/credentials/fetch.rs`              |
+| Credential presentation    | `components/skus/browser/rs/lib/src/sdk/credentials/present.rs`            |
+| Data models                | `components/skus/browser/rs/lib/src/models.rs`                             |
+| SKUs C++ service           | `components/skus/browser/skus_service_impl.cc`                             |
 | VPN credential integration | `components/brave_vpn/browser/connection/brave_vpn_region_data_manager.cc` |

@@ -608,6 +608,11 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_IMPORT_ACCOUNT_UPLOAD_PLACEHOLDER},
     {"braveWalletImportAccountError", IDS_BRAVE_WALLET_IMPORT_ACCOUNT_ERROR},
     {"braveWalletImportAccount", IDS_BRAVE_WALLET_IMPORT_ACCOUNT},
+    {"braveWalletImportAccountPrivateKeyDescription",
+     IDS_BRAVE_WALLET_IMPORT_ACCOUNT_PRIVATE_KEY_DESCRIPTION},
+    {"braveWalletImportAccountJsonFileDescription",
+     IDS_BRAVE_WALLET_IMPORT_ACCOUNT_JSON_FILE_DESCRIPTION},
+    {"braveWalletUploadJsonFile", IDS_BRAVE_WALLET_UPLOAD_JSON_FILE},
     {"braveWalletConnectHardwareTitle",
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_TITLE},
     {"braveWalletConnectHardwareInfo1",
@@ -689,6 +694,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddAsset", IDS_BRAVE_WALLET_ADD_ASSET},
     {"braveWalletAccountsExport", IDS_BRAVE_WALLET_ACCOUNTS_EXPORT},
     {"braveWalletAccountsDeposit", IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT},
+    {"braveWalletAccountsHide", IDS_BRAVE_WALLET_ACCOUNTS_HIDE},
+    {"braveWalletAccountsRestore", IDS_BRAVE_WALLET_ACCOUNTS_RESTORE},
     {"braveWalletAccountsRemove", IDS_BRAVE_WALLET_ACCOUNTS_REMOVE},
     {"braveWalletAccountSettings", IDS_BRAVE_WALLET_ACCOUNT_SETTINGS},
     {"braveWalletLastUpdatedAgo", IDS_BRAVE_WALLET_LAST_UPDATED_AGO},
@@ -699,13 +706,14 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER},
     {"braveWalletFilExportPrivateKeyFormatDescription",
      IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION},
-    {"braveWalletTestnetAccounts", IDS_BRAVE_WALLET_TESTNET_ACCOUNTS},
     {"braveWalletFilImportPrivateKeyFormatDescription",
      IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION},
     {"braveWalletBtcImportPrivateKeyFormatDescription",
      IDS_BRAVE_WALLET_BTC_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION},
     {"braveWalletPolkadotImportJsonDescription",
      IDS_BRAVE_WALLET_POLKADOT_IMPORT_JSON_DESCRIPTION},
+    {"braveWalletLookingForTestnetAccounts",
+     IDS_BRAVE_WALLET_LOOKING_FOR_TESTNET_ACCOUNTS},
     {"braveWalletAccountSettingsShowKey",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY},
     {"braveWalletAccountSettingsHideKey",
@@ -1164,6 +1172,12 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAccountName", IDS_BRAVE_WALLET_ACCOUNT_NAME},
     {"braveWalletMinimumAmount", IDS_BRAVE_WALLET_MINIMUM_AMOUNT},
     {"braveWalletMaximumAmount", IDS_BRAVE_WALLET_MAXIMUM_AMOUNT},
+    {"braveWalletAccountCreatedSuccessfully",
+     IDS_BRAVE_WALLET_ACCOUNT_CREATED_SUCCESSFULLY},
+    {"braveWalletAccountImportedSuccessfully",
+     IDS_BRAVE_WALLET_ACCOUNT_IMPORTED_SUCCESSFULLY},
+    {"braveWalletHardwareWalletAccountConnectedSuccessfully",
+     IDS_BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY},
     {"braveWalletNetworkFilterAll", IDS_BRAVE_WALLET_NETWORK_FILTER_ALL},
     {"braveWalletAssetFilterLowToHigh",
      IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH},
@@ -1216,6 +1230,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_POLKADOT_MAINNET_ACCOUNT_DESCRIPTION},
     {"braveWalletPolkadotTestnetAccountDescription",
      IDS_BRAVE_WALLET_POLKADOT_TESTNET_ACCOUNT_DESCRIPTION},
+    {"braveWalletPolkadotInvalidPrefix",
+     IDS_BRAVE_WALLET_POLKADOT_INVALID_PREFIX},
     {"braveWalletShowNetworkLogoOnNftsTitle",
      IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE},
     {"braveWalletShowNetworkLogoOnNftsDescription",
@@ -1540,8 +1556,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletDidntFindAssetInList",
      IDS_BRAVE_WALLET_DIDNT_FIND_ASSET_IN_LIST},
     {"braveWalletAssetNotFound", IDS_BRAVE_WALLET_ASSET_NOT_FOUND},
-    {"braveWalletRequestFeatureButtonText",
-     IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT},
+    {"braveWalletReportAnIssueButtonText",
+     IDS_BRAVE_WALLET_REPORT_AN_ISSUE_BUTTON_TEXT},
     {"braveWalletEnsOffchainProceedWithYes",
      IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_YES},
     {"braveWalletEnsOffchainProceedWithNo",
@@ -1808,9 +1824,7 @@ inline constexpr char kCryptoFilAddressKey[] = "crypto.FIL.address";
 
 // ERC-165 identifier for ERC721 interface.
 inline constexpr char kERC1155InterfaceId[] = "0xd9b67a26";
-inline constexpr char kERC1155MetadataInterfaceId[] = "0x0e89341c";
 inline constexpr char kERC721InterfaceId[] = "0x80ac58cd";
-inline constexpr char kERC721MetadataInterfaceId[] = "0x5b5e139f";
 
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";

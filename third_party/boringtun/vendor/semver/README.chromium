@@ -1,0 +1,14 @@
+Name: semver
+Short Name: semver
+URL: https://github.com/dtolnay/semver
+Version: 1.0.28
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/semver.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

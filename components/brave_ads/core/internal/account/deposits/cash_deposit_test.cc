@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 
+#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
@@ -35,11 +36,16 @@ TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
   CashDeposit deposit;
 
   // Act & Assert
-  base::test::TestFuture<bool, double> test_future;
-  deposit.GetValue(test::kCreativeInstanceId, test_future.GetCallback());
-  const auto [success, value] = test_future.Take();
-  EXPECT_TRUE(success);
-  EXPECT_DOUBLE_EQ(test::kValue, value);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    base::test::TestFuture<bool, double> test_future;
+    deposit.GetValue(test::kCreativeInstanceId, test_future.GetCallback());
+    const auto [success, value] = test_future.Take();
+    if (!success) {
+      return false;
+    }
+    EXPECT_DOUBLE_EQ(test::kValue, value);
+    return true;
+  }));
 }
 
 TEST_F(BraveAdsCashDepositIntegrationTest,

@@ -11,19 +11,24 @@ export const Text = styled.span<{
   textSize?: '20px' | '18px' | '16px' | '14px' | '12px'
   responsiveTextSize?: '20px' | '18px' | '16px' | '14px' | '12px'
   isBold?: boolean
-  textColor?: 'text01' | 'text02' | 'text03' | 'error' | 'success' | 'warning'
+  textColor?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'error'
+    | 'success'
+    | 'warning'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }>`
-  --text01: ${(p) => p.theme.color.text01};
-  --text02: ${(p) => p.theme.color.text02};
-  --text03: ${(p) => p.theme.color.text03};
+  --primary: ${leo.color.text.primary};
+  --secondary: ${leo.color.text.secondary};
+  --tertiary: ${leo.color.text.tertiary};
   --error: ${leo.color.red[40]};
   --success: ${leo.color.green[30]};
   --warning: ${leo.color.yellow[30]};
-  font-family: 'Poppins';
   color: ${(p) =>
-    p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
+    p.textColor ? `var(--${p.textColor})` : leo.color.text.primary};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
   font-weight: ${(p) => (p.isBold ? 500 : 400)};
   height: ${(p) => (p.maintainHeight ? '20px' : 'unset')};
@@ -41,15 +46,13 @@ export const Text = styled.span<{
 `
 
 export const StyledDiv = styled.div`
+  font: ${leo.font.large.regular};
+
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-family: 'Poppins';
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 20px;
+  color: ${leo.color.text.primary};
   letter-spacing: 0.02em;
 `
 
@@ -122,8 +125,8 @@ export const HorizontalDivider = styled(StyledDiv)<{
 }>`
   background-color: ${(p) =>
     p.dividerTheme === 'darker'
-      ? p.theme.color.interactive08
-      : p.theme.color.divider01};
+      ? leo.color.neutral[30]
+      : leo.color.divider.subtle};
   height: ${(p) => (p.height ? `${p.height}px` : '100%')};
   margin-left: ${(p) => p.marginLeft ?? 0}px;
   margin-right: ${(p) => p.marginRight ?? 0}px;
@@ -138,7 +141,7 @@ export const VerticalDivider = styled(StyledDiv)<{
   marginTop?: number
   marginBottom?: number
 }>`
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
   height: 2px;
   margin-top: ${(p) => p.marginTop ?? 0}px;
   margin-bottom: ${(p) => p.marginBottom ?? 0}px;
@@ -155,7 +158,7 @@ export const Icon = styled(LeoIcon)<{
 export const Loader = styled(StyledDiv)`
   animation: spin 0.75s linear infinite;
   border: 2px solid transparent;
-  border-top: 2px solid ${(p) => p.theme.color.text03};
+  border-top: 2px solid ${leo.color.text.tertiary};
   border-radius: 50%;
   height: 10px;
   margin-right: 6px;
@@ -171,20 +174,18 @@ export const Loader = styled(StyledDiv)`
 `
 
 export const StyledButton = styled.button`
+  font: ${leo.font.large.regular};
+
   display: flex;
-  font-family: 'Poppins';
   cursor: pointer;
   border: none;
   outline: none;
   background: none;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
   letter-spacing: 0.02em;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   :disabled {
     cursor: not-allowed;
   }
@@ -212,22 +213,19 @@ export const ShownResponsiveRow = styled(Row)<{ maxWidth?: number }>`
 `
 
 export const StyledInput = styled.input`
-  font-family: 'Poppins';
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
   outline: none;
   background-image: none;
   box-shadow: none;
   border: none;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   padding: 0px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   background-color: transparent;
   letter-spacing: 0.02em;
   ::placeholder {
-    color: ${(p) => p.theme.color.text01};
+    color: ${leo.color.text.primary};
   }
   :focus {
     outline: none;
@@ -243,12 +241,8 @@ export const StyledInput = styled.input`
 `
 
 export const StyledLabel = styled.label`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.regular};
+  color: ${leo.color.text.primary};
 `
 
 export const LPIcon = styled.div<{ icon: string; size?: string }>`

@@ -39,6 +39,7 @@ public enum AssetImageName: String {
   case filecoin = "filecoin-asset-icon"
   case bitcoin = "bitcoin-asset-icon"
   case zcash = "zcash-asset-icon"
+  case ada = "ada-asset-icon"
   case polygon = "matic"
   case binance = "bnb-asset-icon"
   case celo = "celo"
@@ -59,8 +60,16 @@ extension BraveWallet.NetworkInfo: @retroactive Identifiable {
     chainName.split(separator: " ").first?.capitalized ?? chainName
   }
 
+  var isPrimaryNetwork: Bool {
+    WalletConstants.primaryNetworkChainIds.contains(chainId)
+  }
+
   var isKnownTestnet: Bool {
     WalletConstants.supportedTestNetworkChainIds.contains(chainId)
+  }
+
+  var isMandatoryNetwork: Bool {
+    WalletConstants.mandatoryNetworkChainIds.contains(chainId)
   }
 
   public var nativeToken: BraveWallet.BlockchainToken {
@@ -121,6 +130,8 @@ extension BraveWallet.NetworkInfo: @retroactive Identifiable {
       return AssetImageName.bitcoin.rawValue
     } else if symbol.caseInsensitiveCompare("ZEC") == .orderedSame {
       return AssetImageName.zcash.rawValue
+    } else if symbol.caseInsensitiveCompare("ADA") == .orderedSame {
+      return AssetImageName.ada.rawValue
     }
     return nil
   }

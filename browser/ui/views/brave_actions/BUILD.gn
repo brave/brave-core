@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+assert(enable_extensions && toolkit_views)
+
+source_set("brave_actions") {
+  sources = [
+    "brave_icon_with_badge_image_source.cc",
+    "brave_icon_with_badge_image_source.h",
+    "brave_shields_action_controller.cc",
+    "brave_shields_action_controller.h",
+    "brave_shields_action_view.cc",
+    "brave_shields_action_view.h",
+    "brave_shields_toolbar_button.cc",
+    "brave_shields_toolbar_button.h",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/brave_shields",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui/extensions",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/bubble",
+    "//chrome/browser/ui/views/toolbar",
+  ]
+
+  if (enable_speedreader) {
+    deps += [ "//brave/browser/ui/speedreader" ]
+  }
+}

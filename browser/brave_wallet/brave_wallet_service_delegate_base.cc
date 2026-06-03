@@ -5,11 +5,20 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 
+#include "base/auto_reset.h"
+#include "base/check_is_test.h"
+#include "base/command_line.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/permissions/permission_util.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/common/content_switches.h"
+
+namespace {
+bool g_enable_autolock_commandline_check = true;
+}
 
 namespace brave_wallet {
 
@@ -50,6 +59,21 @@ bool BraveWalletServiceDelegateBase::ResetPermission(
       *type, context_, origin, account);
 }
 
+void BraveWalletServiceDelegateBase::ResetPermissionsForAccount(
+    mojom::CoinType coin,
+    const std::string& account) {
+  auto type = CoinTypeToPermissionType(coin);
+  if (!type) {
+    return;
+  }
+
+  const auto content_settings_type =
+      permissions::PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+          *type);
+  permissions::BraveWalletPermissionContext::ResetPermissionsForAccount(
+      context_, content_settings_type, account);
+}
+
 bool BraveWalletServiceDelegateBase::IsPermissionDenied(
     mojom::CoinType coin,
     const url::Origin& origin) {
@@ -72,6 +96,25 @@ base::FilePath BraveWalletServiceDelegateBase::GetWalletBaseDirectory() {
 
 bool BraveWalletServiceDelegateBase::IsPrivateWindow() {
   return is_private_window_;
+}
+
+bool BraveWalletServiceDelegateBase::IsAutolockEnabled() {
+  if (g_enable_autolock_commandline_check) {
+    if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+            switches::kTestType)) {
+      CHECK_IS_TEST();
+      // We don't want autolock happening in most of the tests.
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// static
+base::AutoReset<bool>
+BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting() {
+  return {&g_enable_autolock_commandline_check, false};
 }
 
 }  // namespace brave_wallet

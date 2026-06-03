@@ -10,7 +10,6 @@ import("//tools/grit/preprocess_if_expr.gni")
 assert(enable_ai_chat)
 
 transpile_web_ui("ai_chat_ui") {
-  output_module = false
   resource_name = "ai_chat_ui"
   entry_points = [
     [

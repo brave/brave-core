@@ -51,15 +51,12 @@ export const HeaderItem = styled.div<{
   hideOnSmall?: boolean
   sortable?: boolean
 }>`
+  font: ${leo.font.small.semibold};
+
   display: flex;
   align-items: center;
   gap: ${({ sortable }) => (sortable ? '5px' : '0px')};
   cursor: ${({ sortable }) => (sortable ? 'pointer' : 'auto')};
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 18px;
   color: ${leo.color.text.tertiary};
   ${({ hideOnPanel }) =>
     hideOnPanel
@@ -105,13 +102,10 @@ export const Cell = styled.div<{
   hideOnPanel?: boolean
   hideOnSmall?: boolean
 }>`
+  font: ${leo.font.default.regular};
+
   display: flex;
   align-items: center;
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
   letter-spacing: 0.14px;
   color: ${leo.color.text.primary};
   overflow: hidden;
@@ -149,6 +143,8 @@ export const AssetsColumnItemSpacer = styled.div`
 export const TextWrapper = styled.div<{
   alignment: 'right' | 'left' | 'center'
 }>`
+  font: ${leo.font.default.regular};
+
   display: flex;
   justify-content: ${(p) => {
     switch (p.alignment) {
@@ -163,15 +159,9 @@ export const TextWrapper = styled.div<{
     }
   }};
   width: 100%;
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
   color: ${leo.color.text.primary};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    font-size: 12px;
   }
 `
 
@@ -184,15 +174,12 @@ export const ButtonsRow = styled.div`
   pointer-events: none;
 `
 
-export const CoinGeckoText = styled.span`
-  font-family: Arial;
-  font-size: 10px;
-  font-weight: normal;
-  color: ${leo.color.text.secondary};
+export const CoinGeckoText = styled(Text)`
   margin: 15px 0px;
 `
 
 export const ActionButton = styled(WalletButton)`
+  font: ${leo.font.small.regular};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -204,11 +191,6 @@ export const ActionButton = styled(WalletButton)`
   border: 1px solid ${leo.color.divider.interactive};
   margin-right: 6px;
   pointer-events: auto;
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px;
   letter-spacing: 0.36px;
   color: ${leo.color.text.interactive};
 `

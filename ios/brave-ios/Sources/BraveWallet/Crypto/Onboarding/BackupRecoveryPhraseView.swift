@@ -165,7 +165,6 @@ struct BackupRecoveryPhraseView: View {
           action: { _ in
             isShowingSkipWarning = false
             // Skip button is only shown during onboarding
-            keyringStore.reportP3AOnboarding(action: .completeRecoverySkipped)
             Preferences.Wallet.isOnboardingCompleted.value = true
           }
         ),

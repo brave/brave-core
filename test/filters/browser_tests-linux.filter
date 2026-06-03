@@ -5,22 +5,9 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# FlushForTesting() deadlocks on Linux because Brave background services (AI
-# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
-# main thread.
-# https://github.com/brave/brave-browser/issues/54038
--AutofillCounterTest.TimeRanges
-
-# These tests fail because we disable adding Open Search engines by default.
-# See https://github.com/brave/brave-browser/issues/14496
-# We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
-# via SearchEngineTabHelper::IsFormSubmit in chromium_src override.
--PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
--ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
-
 # These tests pass locally but fail on CI
 -All/ChromeMultiProfileStartupBrowserTestBase.PostProfileInitInvocation/1
--All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
 -AvatarMenuBrowserTest.AddNewProfile
 -DebuggerExtensionApiTest.ParentTargetPermissions
 -GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
@@ -35,6 +22,19 @@
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
 -PermissionElementBrowserTest.DoubleClickDoesNotTriggerTwoRequests
 -WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
+
+# FlushForTesting() deadlocks on Linux because Brave background services (AI
+# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
+# main thread.
+# https://github.com/brave/brave-browser/issues/54038
+-AutofillCounterTest.TimeRanges
+
+# These tests fail because we disable adding Open Search engines by default.
+# See https://github.com/brave/brave-browser/issues/14496
+# We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
+# via SearchEngineTabHelper::IsFormSubmit in chromium_src override.
+-PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
+-ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
 # This test runs fine when run individually, but times out when run with test
 # launcher.
@@ -82,6 +82,16 @@
 -WindowManagementTest.ScreenDetailedOnChange
 -WindowManagementTest.ScreenDetailedOnHdrHeadroomChange
 
+# Chromium test: race between document.cookie setter (CookieJar mojo pipe, async
+# with AsyncSetCookie) and cookieStore.get() (CookieStore API, separate mojo pipe).
+# These use independent RestrictedCookieManager pipes with no ordering guarantee.
+# Brave's ephemeral storage checks (FillEphemeralStorageParams,
+# IsEphemeralCookieAccessible) add processing overhead that widens the race window.
+# Stable upstream: 0.2% flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/55325
+-All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/0
+-All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
+
 # Chromium test: intermittent RunLoop timeout in DevTools paused debugger focus
 # mechanism. The test relies on an async chain (DebuggerPaused event → SourcesPanel
 # module loading → bringToFront IPC) that sometimes doesn't complete before the
@@ -103,6 +113,13 @@
 # before NetworkBecameIdle. 1% upstream flake rate over 30 days per LUCI Analysis.
 # https://github.com/brave/brave-browser/issues/54205
 -PageStabilityMetricsTest.NetworkAndMainThreadIdle
+# Same root cause as above: cosmetic filter polling prevents the
+# IdlenessDetector's 500ms quiet window. The Paint test path resolves the
+# network request after paint stability, so it also waits for
+# NetworkBecameIdle which never fires. 2.5% upstream flake rate over 30 days
+# per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54503
+-PageStabilityMetricsTest.Paint
 
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
@@ -127,6 +144,34 @@
 # the ObservationDelayController code path.
 # https://github.com/brave/brave-browser/issues/54159
 -ObservationDelayControllerTest.UsePageStabilityForSameDocumentNavigation
+
+# Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
+# breaking this test's canvas-based video playback detection. The test only
+# compiles on Linux non-sanitizer builds (#if BUILDFLAG(IS_LINUX)).
+# Upstream stable: 640x480 0.6%, 3840x2160 0.3% flake rate (30-day LUCI).
+# https://github.com/brave/brave-browser/issues/54521
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
+
+# This Chromium test fails because the Glic WebUI creates its webview
+# asynchronously via JavaScript, and Brave's environment doesn't fully support
+# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
+-GuestUtilBrowserTest.OnGuestAdded_Glic
+
+# Chromium test: ApplyDefaultSearchChangeForTesting(FROM_EXTENSION) on Linux
+# leaves default_search_provider_ null (extension DSEs unsupported on Linux)
+# while default_search_provider_source_ stays FROM_EXTENSION. Brave's
+# DefaultSearchManager override causes MaybeShowDialog() to record the
+# histogram twice with differing conditions (kControlledByPolicy and
+# kExtensionControlled), failing the ExpectUniqueSample assertion.
+# Already disabled on Windows in upstream source; upstream TODO crbug.com/429600559
+# acknowledges the broken extension DSE test setup.
+# Stable upstream: 0.3% flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54542
+-SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowWithExtensionEnabledThatOverridesDSE
+
+# This test is flakey upstream due to https://issues.chromium.org/issues/511552103
+-All/TextfieldDumpAccessibilityEventsTest.TextSelectionChanged/linux_ViewsAXEnabled
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
@@ -182,8 +227,3 @@
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
 -ZeroCacheTimePrefetchProxyBrowserTest.*
-
-# This Chromium test fails because the Glic WebUI creates its webview
-# asynchronously via JavaScript, and Brave's environment doesn't fully support
-# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
--GuestUtilBrowserTest.OnGuestAdded_Glic

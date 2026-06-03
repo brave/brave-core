@@ -450,7 +450,6 @@ struct NFTView: View {
         {
           self.isShowingNFTDiscoveryAlert = true
         }
-        nftStore.recordNFTGalleryView()
       }
     }
   }

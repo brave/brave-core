@@ -7,6 +7,7 @@ import BraveCore
 import BraveShields
 import Foundation
 import OSLog
+import Preferences
 @_spi(ChromiumWebViewAccess) import Web
 
 extension TabDataValues {
@@ -19,9 +20,10 @@ extension TabDataValues {
   }
 }
 
-class BraveSearchTabHelper: TabObserver, TabPolicyDecider {
+class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaultTabHelperBridge {
   private weak var tab: (any TabState)?
   private let rewards: BraveRewards
+  private let searchEngines: SearchEngines
 
   /// A helper property that handles native to Brave Search communication.
   private var braveSearchManager: BraveSearchManager?
@@ -31,9 +33,12 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider {
 
   var presentSearchResultClickedInfoBar: (() -> Void)?
 
-  init(tab: some TabState, rewards: BraveRewards) {
+  var presentInQuickView: ((URL, any TabState) -> Void)?
+
+  init(tab: some TabState, rewards: BraveRewards, searchEngines: SearchEngines) {
     self.tab = tab
     self.rewards = rewards
+    self.searchEngines = searchEngines
 
     tab.addObserver(self)
     tab.addPolicyDecider(self)
@@ -44,7 +49,62 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider {
     tab?.removePolicyDecider(self)
   }
 
+  // MARK: - Brave Search Default Prompts
+
+  /// Tracks how many in current browsing session the user has been prompted to set Brave Search as a default
+  /// while on one of Brave Search websites.
+  private static var canSetAsDefaultCounter = 0
+  /// How many times user should be shown the default browser prompt on Brave Search websites.
+  private static let maxCountOfDefaultBrowserPromptsPerSession = 3
+  /// How many times user is shown the default browser prompt in total, this does not reset between app launches.
+  private static let maxCountOfDefaultBrowserPromptsTotal = 10
+
+  func checkCanSetBraveSearchAsDefault() -> Bool {
+    guard let tab else { return false }
+    if tab.isPrivate {
+      Logger.module.debug("Private mode detected, skipping setting Brave Search as a default")
+      return false
+    }
+
+    let maximumPromptCount = Preferences.Search.braveSearchDefaultBrowserPromptCount
+    if Self.canSetAsDefaultCounter >= Self.maxCountOfDefaultBrowserPromptsPerSession
+      || maximumPromptCount.value >= Self.maxCountOfDefaultBrowserPromptsTotal
+    {
+      Logger.module.debug("Maximum number of tries of Brave Search website prompts reached")
+      return false
+    }
+
+    Self.canSetAsDefaultCounter += 1
+    maximumPromptCount.value += 1
+
+    let defaultEngine = searchEngines.defaultEngine(forType: .standard)?.shortName
+    return defaultEngine != OpenSearchEngine.EngineNames.brave
+  }
+
+  func setBraveSearchAsDefault() {
+    searchEngines.updateDefaultEngine(
+      OpenSearchEngine.EngineNames.brave,
+      forType: .standard
+    )
+  }
+
+  // MARK: - BraveSearchMakeDefaultTabHelperBridge
+
+  func getCanSetDefaultSearchProvider() -> Bool {
+    checkCanSetBraveSearchAsDefault()
+  }
+
+  func setIsDefaultSearchProvider() {
+    setBraveSearchAsDefault()
+  }
+
   // MARK: - TabObserver
+
+  func tabDidCreateWebView(_ tab: some TabState) {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      BraveWebView.from(tab: tab)?.braveSearchHelper = self
+    }
+  }
 
   func tabDidFinishNavigation(_ tab: some TabState) {
     if FeatureList.kUseProfileWebViewConfiguration.enabled,
@@ -179,6 +239,13 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider {
       braveSearchResultAdManager = nil
     }
 
+    if FeatureList.kQuickViewEnabled.enabled,
+      shouldOpenInQuickView(requestURL: requestURL, requestInfo: requestInfo, tab: tab)
+    {
+      presentInQuickView?(requestURL, tab)
+      return .cancel
+    }
+
     return .allow
   }
 
@@ -278,6 +345,23 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider {
         self.braveSearchManager = nil
       }
     }
+  }
+
+  private func shouldOpenInQuickView(
+    requestURL: URL,
+    requestInfo: WebRequestInfo,
+    tab: some TabState
+  ) -> Bool {
+    guard requestInfo.isMainFrame,
+      requestInfo.navigationType == .linkActivated,
+      requestInfo.isUserInitiated,
+      let sourceURL = tab.lastCommittedURL,
+      BraveSearchManager.isValidURL(sourceURL),  // sourceURL needs to be valid brave search url
+      sourceURL.path == "/search" || sourceURL.path == "/ask",
+      !BraveSearchManager.isValidURL(requestURL),  // don't intercept same-domain nav
+      requestURL.isWebPage(includeDataURIs: false)
+    else { return false }
+    return true
   }
 }
 

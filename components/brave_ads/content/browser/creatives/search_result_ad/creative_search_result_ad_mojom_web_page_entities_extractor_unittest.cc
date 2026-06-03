@@ -34,7 +34,7 @@ void VerifyRequiredMojomCreativeAdExpectations(
           GURL(test::kCreativeAdLandingPage), test::kCreativeAdHeadlineText,
           test::kCreativeAdDescription,
           ::testing::DoubleEq(test::kCreativeAdRewardsValue),
-          /*creative_set_conversion*/ ::testing::_));
+          /*creative_set_conversion=*/::testing::_));
 }
 
 void VerifyRequiredMojomCreativeSetConversionExpectations(

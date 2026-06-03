@@ -16,8 +16,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/common/importer/importer_constants.h"
-#include "brave/components/brave_education/education_urls.h"
-#include "brave/components/brave_education/features.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -32,6 +31,11 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/components/brave_education/education_urls.h"
+#include "brave/components/brave_education/features.h"
+#endif
 
 namespace {
 
@@ -69,17 +73,23 @@ bool IsChromeDev(const std::u16string& browser_name) {
          browser_name == kChromeDevLinuxBrowserName;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 bool ShouldRedirectToGettingStartedPage() {
   return base::FeatureList::IsEnabled(
       brave_education::features::kShowGettingStartedPage);
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 
 }  // namespace
 
 WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile)
-    : profile_(profile),
+    : profile_(profile)
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+      ,
       brave_education_server_checker_(*profile->GetPrefs(),
-                                      profile->GetURLLoaderFactory()) {
+                                      profile->GetURLLoaderFactory())
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+{
   base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(
       GURL("https://browser-education.brave.com"))
       ->StartCheckIsDefaultAndGetDefaultClientName(
@@ -200,6 +210,7 @@ void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
   CHECK_EQ(1U, args.size());
   const auto& callback_id = args[0].GetString();
   AllowJavascript();
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   if (!ShouldRedirectToGettingStartedPage()) {
     OnGettingStartedServerCheck(callback_id, /* available */ false);
     return;
@@ -208,6 +219,9 @@ void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
       brave_education::EducationPageType::kGettingStarted,
       base::BindOnce(&WelcomeDOMHandler::OnGettingStartedServerCheck,
                      weak_ptr_factory_.GetWeakPtr(), callback_id));
+#else
+  OnGettingStartedServerCheck(callback_id, /* available */ false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 }
 
 void WelcomeDOMHandler::OnGettingStartedServerCheck(
@@ -217,12 +231,16 @@ void WelcomeDOMHandler::OnGettingStartedServerCheck(
     return;
   }
   GURL url;
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   if (available) {
     url = brave_education::GetEducationPageBrowserURL(
         brave_education::EducationPageType::kGettingStarted);
   } else {
     url = GURL(chrome::kChromeUINewTabURL);
   }
+#else
+  url = GURL(chrome::kChromeUINewTabURL);
+#endif  // BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   ResolveJavascriptCallback(base::Value(callback_id), base::Value(url.spec()));
 }
 

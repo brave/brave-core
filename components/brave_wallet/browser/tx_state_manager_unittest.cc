@@ -23,7 +23,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -65,12 +65,12 @@ class TxStateManagerUnitTest : public testing::Test {
     // The only different between each coin type's tx state manager in these
     // base functions are their pref paths, so here we just use
     // EthTxStateManager to test common methods in TxStateManager.
-    factory_ = GetTestValueStoreFactory(temp_dir_);
-    delegate_ = GetTxStorageDelegateForTest(&prefs_, factory_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    tx_storage_ = CreateTxStorageForTest(temp_dir_.GetPath());
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
     tx_state_manager_ = std::make_unique<EthTxStateManager>(
-        *delegate_, *account_resolver_delegate_);
+        *tx_storage_, *account_resolver_delegate_);
     eth_account_id_ = account_resolver_delegate_->RegisterAccount(
         MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
                       mojom::AccountKind::kDerived,
@@ -91,7 +91,7 @@ class TxStateManagerUnitTest : public testing::Test {
   std::optional<base::Value> GetTxs() {
     base::RunLoop run_loop;
     std::optional<base::Value> value_out;
-    delegate_->store_->Get(
+    tx_storage_->store_->Get(
         "transactions",
         base::BindLambdaForTesting([&](std::optional<base::Value> value) {
           value_out = std::move(value);
@@ -104,8 +104,7 @@ class TxStateManagerUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   base::ScopedTempDir temp_dir_;
-  scoped_refptr<value_store::TestValueStoreFactory> factory_;
-  std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<TxStorage> tx_storage_;
   std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
   mojom::AccountIdPtr eth_account_id_;
   std::unique_ptr<TxStateManager> tx_state_manager_;
@@ -428,7 +427,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
 // causes timeouts on ASAN builds.
 #if defined(ADDRESS_SANITIZER)
   tx_state_manager_->SetNoRetireForTesting(true);
-  delegate_->DisableWritesForTesting(true);
+  tx_storage_->DisableWritesForTesting(true);
 #endif  // defined(ADDRESS_SANITIZER)
   for (size_t i = 0; i < 1000; ++i) {
     EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
@@ -446,7 +445,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   }
 #if defined(ADDRESS_SANITIZER)
   tx_state_manager_->SetNoRetireForTesting(false);
-  delegate_->DisableWritesForTesting(false);
+  tx_storage_->DisableWritesForTesting(false);
 #endif  // defined(ADDRESS_SANITIZER)
 
   EXPECT_TRUE(tx_state_manager_->GetTx("0"));

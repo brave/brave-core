@@ -15,11 +15,11 @@ namespace brave_wallet {
 
 class TxMeta;
 class BitcoinTxMeta;
-class TxStorageDelegate;
+class TxStorage;
 
 class BitcoinTxStateManager : public TxStateManager {
  public:
-  BitcoinTxStateManager(TxStorageDelegate& delegate,
+  BitcoinTxStateManager(TxStorage& tx_storage,
                         AccountResolverDelegate& account_resolver_delegate);
   ~BitcoinTxStateManager() override;
   BitcoinTxStateManager(const BitcoinTxStateManager&) = delete;

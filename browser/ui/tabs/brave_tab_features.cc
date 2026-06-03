@@ -14,6 +14,7 @@
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
@@ -51,8 +52,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
 
   // Expect upstream's Init to create the registry.
-  CHECK(side_panel_registry());
-  brave::RegisterContextualSidePanel(side_panel_registry(), tab.GetContents());
+  auto* side_panel_registry = SidePanelRegistry::From(&tab);
+  CHECK(side_panel_registry);
+  brave::RegisterContextualSidePanel(side_panel_registry, tab.GetContents());
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAllowedForContext(profile)) {

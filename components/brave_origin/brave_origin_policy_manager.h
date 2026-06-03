@@ -69,6 +69,13 @@ class BraveOriginPolicyManager {
   // Check if the singleton has been initialized
   bool IsInitialized() const;
 
+  // Declares that `Init()` is expected to be called later in this process.
+  // Consumers gated on this manager use it to distinguish production startup
+  // (where lazy `Init()` will eventually run, so they should wait) from test
+  // contexts that never bootstrap us (where there is nothing to wait for).
+  void SetExpectedToBeInitialized();
+  bool IsExpectedToBeInitialized() const;
+
   // Set/get the purchase state. When the purchase state changes,
   // observers are notified to refresh policies.
   void SetPurchased(bool purchased);
@@ -97,6 +104,7 @@ class BraveOriginPolicyManager {
                               std::optional<std::string_view> profile_id) const;
 
   bool initialized_ = false;
+  bool expected_to_be_initialized_ = false;
   bool is_purchased_ = false;
   BraveOriginPolicyMap browser_policy_definitions_;
   BraveOriginPolicyMap profile_policy_definitions_;

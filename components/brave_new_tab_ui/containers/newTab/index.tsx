@@ -14,7 +14,7 @@ import {
   BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion, VPNWidget
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
+import BraveNews from '../../components/default/braveNews'
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
@@ -60,7 +60,6 @@ interface Props {
   todayData: BraveNewsState
   braveVPNData: BraveVPNState
   actions: NewTabActions
-  getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
@@ -837,7 +836,6 @@ class NewTabPage extends React.Component<Props, State> {
         <BraveNews
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
-          displayAdToScrollTo={this.props.todayData.displayAdToScrollTo}
           displayedPageCount={this.props.todayData.currentPageIndex}
           publishers={this.props.todayData.publishers}
           isFetching={this.props.todayData.isFetching === true}
@@ -851,12 +849,8 @@ class NewTabPage extends React.Component<Props, State> {
           }
           onCustomizeBraveNews={() => { this.openSettings(SettingsTabType.BraveNews) }}
           onReadFeedItem={this.props.actions.today.readFeedItem}
-          onPromotedItemViewed={this.props.actions.today.promotedItemViewed}
           onSetPublisherPref={this.props.actions.today.setPublisherPref}
           onCheckForUpdate={this.props.actions.today.checkForUpdate}
-          onViewedDisplayAd={this.props.actions.today.displayAdViewed}
-          onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
-          getDisplayAd={this.props.getBraveNewsDisplayAd}
         />
         }
         <Settings

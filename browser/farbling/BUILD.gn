@@ -25,6 +25,7 @@ if (!is_android) {
       "brave_speech_synthesis_farbling_browsertest.cc",
       "brave_webaudio_farbling_browsertest.cc",
       "brave_webgl_farbling_browsertest.cc",
+      "brave_webgpu_farbling_browsertest.cc",
     ]
 
     deps = [
@@ -35,8 +36,8 @@ if (!is_android) {
       "//brave/common",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_shields/content/browser",
-      "//brave/components/brave_shields/content/browser:test_support",
       "//brave/components/brave_shields/core/browser",
+      "//brave/components/brave_shields/core/browser:test_support",
       "//brave/components/brave_shields/core/common",
       "//brave/components/constants",
       "//brave/components/webcompat/core/common",
@@ -55,6 +56,7 @@ if (!is_android) {
       "//components/prefs",
       "//content/public/browser",
       "//content/test:test_support",
+      "//gpu/config",
       "//ui/color:test_support",
       "//ui/native_theme:test_support",
     ]

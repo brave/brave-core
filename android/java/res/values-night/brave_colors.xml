@@ -5,14 +5,7 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 <resources>
-    <!-- Theme colors -->
-    <!-- Overriding chromium theme colors to brave theme colors -->
-    <color name="baseline_primary_30">#F0F2FF</color>
-    <color name="baseline_primary_80">#FA7250</color>
-    <color name="baseline_primary_90">#5B2A23</color>
-    <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
-    <color name="modern_blue_600">@color/baseline_primary_30</color>
 
     <!-- Theme colors -->
     <color name="brave_link">#A0A5EB</color>
@@ -24,14 +17,13 @@
     <color name="onboarding_bg_color">#1E2029</color>
     <color name="onboarding_timer_color">#478AFF</color>
 
-    <color name="onboarding_progress_start_color">@color/baseline_primary_80</color>
+    <color name="onboarding_progress_start_color">@color/primitive_primary_80</color>
     <color name="onboarding_progress_mid_color">#FF1893</color>
     <color name="onboarding_progress_end_color">#A78AFF</color>
 
     <color name="onboarding_progressbar_secondary_bg">#212529</color>
 
     <color name="onboarding_card_bg_color">#1E2029</color>
-    <color name="onboarding_card_text_color">#F0F2FF</color>
     <color name="onboarding_negative_button_color">#A0A5EB</color>
 
     <color name="scan_qr_code_text_color">#F0F2FF</color>
@@ -91,7 +83,7 @@
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
-    <color name="brave_sync_border_color">@color/baseline_neutral_20</color>
+    <color name="brave_sync_border_color">@color/primitive_neutral_20</color>
     <color name="brave_sync_bg_secondary_color">#212529</color>
 
     <color name="container_background">#1c1c1d</color>
@@ -104,18 +96,10 @@
 
     <color name="brave_set_default_dialog_text_color">@android:color/white</color>
 
-    <color name="qr_button_color">@color/baseline_neutral_20</color>
-    <color name="shield_title_color">#F0F2FF</color>
+    <color name="qr_button_color">@color/primitive_neutral_20</color>
     <color name="shield_text_color">#F0F2FF</color>
 
-    <color name="shield_divider_color">#3B3E4F</color>
-    <color name="shield_bg_color">#17171F</color>
-    <color name="shield_back_button_tint">#FF7654</color>
-
     <color name="shield_toggle_button_tint">#F0F2FF</color>
-    <color name="shield_toggle_bg_color">#1E2029</color>
-
-    <color name="shield_thank_you_icon_color">#F0F2FF</color>
 
     <color name="filter_title_color">#EDEEF1</color>
     <color name="filter_summary_color">#C2C4CF</color>
@@ -219,14 +203,4 @@
     <color name="text_interactive">#bcc6f3</color>
 
     <color name="open_yt_dialog_bg">#000000</color>
-
-    <!-- Empty state icon Colors -->
-    <color name="empty_state_icon_bg_color">#000B89</color>
-    <color name="empty_state_icon_bg_background_color">#000B89</color>
-    <color name="empty_state_icon_bg_foreground_color">#000B89</color>
-    <color name="empty_state_icon_color">#828CFF</color>
-    <color name="empty_state_icon_tabswitcher_bg_color">#000B89</color>
-    <color name="empty_state_tab_border_color">#828CFF</color>
-    <color name="empty_state_tab_group_border_color">#828CFF</color>
-
 </resources>

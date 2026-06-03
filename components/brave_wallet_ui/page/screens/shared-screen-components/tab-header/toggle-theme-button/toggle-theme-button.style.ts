@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Assets
 import DayIcon from '../../../send/assets/assets/day-icon.svg'
@@ -13,7 +14,7 @@ import NightIcon from '../../../send/assets/assets/night-icon.svg'
 import { StyledButton, StyledDiv } from '../../../send/shared.styles'
 
 export const Button = styled(StyledButton)`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   border-radius: 100%;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
   height: 40px;

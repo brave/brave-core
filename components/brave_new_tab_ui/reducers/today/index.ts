@@ -23,8 +23,6 @@ export type BraveNewsState = {
   feed?: BraveNews.Feed
   publishers?: BraveNews.Publishers
   articleScrollTo?: BraveNews.FeedItemMetadata
-  // Page number of ad to scroll to
-  displayAdToScrollTo?: number
 }
 
 function storeInHistoryState (data: object) {
@@ -43,22 +41,18 @@ const defaultState: BraveNewsState = {
   cardsVisited: 0
 }
 // Get previously-clicked article from history state
-if (history.state && (history.state.todayArticle || history.state.todayAdPosition)) {
+if (history.state && history.state.todayArticle) {
   // TODO(petemill): Type this history.state data and put in an API module
   // see `async/today`.
   defaultState.hasInteracted = true
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
   defaultState.articleScrollTo = history.state.todayArticle
-  if (!defaultState.articleScrollTo) {
-    defaultState.displayAdToScrollTo = history.state.todayAdPosition as number | undefined
-  }
   defaultState.cardsVisited = history.state.todayCardsVisited as number || 0
   // Clear history state now that we have the info on app state
   storeInHistoryState({
     todayArticle: undefined,
     todayPageIndex: undefined,
-    todayCardsVisited: undefined,
-    todayAdPosition: undefined
+    todayCardsVisited: undefined
   })
 }
 
@@ -87,7 +81,7 @@ reducer.on(Actions.dataReceived, (state, payload) => {
   }
   if (payload.feed) {
     const isNewFeed = !state.feed || state.feed.hash !== payload.feed.hash
-    const shouldMaintainPageIndex = (state.articleScrollTo || state.displayAdToScrollTo)
+    const shouldMaintainPageIndex = !!state.articleScrollTo
     if (isNewFeed) {
       newState.feed = payload.feed
       newState.currentPageIndex = shouldMaintainPageIndex ? state.currentPageIndex : 0

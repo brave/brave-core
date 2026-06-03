@@ -2,11 +2,11 @@ use memchr::memrchr as find_char_reverse;
 
 use super::network::NetworkFilterError;
 
-use once_cell::sync::Lazy;
 use regex::Regex;
+use std::sync::LazyLock;
 
 /// For now, only support `$removeparam` with simple alphanumeric/dash/underscore patterns.
-static VALID_PARAM: Lazy<Regex> = Lazy::new(|| Regex::new(r"^[a-zA-Z0-9_\-]+$").unwrap());
+static VALID_PARAM: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[a-zA-Z0-9_\-]+$").unwrap());
 
 #[derive(Clone, Copy)]
 pub(crate) enum NetworkFilterLeftAnchor {

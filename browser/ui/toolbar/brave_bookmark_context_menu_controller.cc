@@ -25,6 +25,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #endif
 
@@ -35,13 +36,15 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
     Profile* profile,
     BookmarkLaunchLocation opened_from,
     const std::vector<
-        raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>& selection)
+        raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>& selection,
+    bool can_paste)
     : BookmarkContextMenuController(parent_window,
                                     delegate,
                                     browser,
                                     profile,
                                     opened_from,
-                                    selection),
+                                    selection,
+                                    can_paste),
       browser_(browser),
       prefs_(browser_ ? browser_->profile()->GetPrefs() : nullptr) {
   if (!browser_) {
@@ -92,6 +95,10 @@ void BraveBookmarkContextMenuController::MaybeAddContainersBookmarkSubmenu(
 
   auto* service = ContainersServiceFactory::GetForProfile(profile);
   if (!service) {
+    return;
+  }
+
+  if (!service->ShouldShowContainerControls()) {
     return;
   }
 

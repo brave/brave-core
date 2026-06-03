@@ -37,57 +37,123 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   // https://assethub-westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
   // https://polkadot.subscan.io/account/14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3
 
-  EXPECT_EQ(ParsePolkadotAccount(
-                "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 42)
-                .value()
-                .ToString(),
-            "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 42);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->ToString(),
+              "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
+  }
 
-  EXPECT_EQ(ParsePolkadotAccount(
-                "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", 0)
-                .value()
-                .ToString(),
-            "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3");
+  {
+    auto parsed = ParsePolkadotAccount(
+        "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", 0);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->ToString(),
+              "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3");
+  }
 
-  EXPECT_EQ(
-      ParsePolkadotAccount(
-          R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
-          0)
-          .value()
-          .ToString(),
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
+  {
+    auto parsed = ParsePolkadotAccount(
+        R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
+        0);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(
+        parsed->ToString(),
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
+  }
 
-  // Address isn't 0x-prefixed
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 0));
+  // Address isn't 0x-prefixed.
+  {
+    auto parsed = ParsePolkadotAccount(
+        "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
 
   // Invalid ss58 prefix.
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "4FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 42));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "24E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", 0));
+  {
+    auto parsed = ParsePolkadotAccount(
+        "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
+  }
 
   // Address is too long.
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234",
-      0));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234)",
-      42));
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48123"
+        "4",
+        0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234)",
+        42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
 
   // Address is too short.
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a", 0));
-  EXPECT_FALSE(ParsePolkadotAccount("", 0));
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount("", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
 
   // Random nonsense.
-  EXPECT_FALSE(ParsePolkadotAccount("random string full of random words", 0));
+  {
+    auto parsed = ParsePolkadotAccount("random string full of random words", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
 }
 
 TEST(PolkadotUtils, Uint128MojomConversions) {
@@ -148,8 +214,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
         R"({
-            "address":"5Fc3qszVcAXHAmjjm61KcxqvV1kh91jpydE476NjjnJneNdP",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgJwZYie6q9xdZXp0Tp0awNekjcrjm4Ge+Vh5Lwh9XlJ3sEQ6F4cJUGsR6Kx5IcNP7LBci3ArjzqlJ7/qOSQzS/rJ45+1kPakLVG2YZXQWW3LAzdc6CkDXzrzYnrUF3DyhY6sm59VLHwd6azVzFxqAMd+NJYVWxAxUlESkQlJafdg/4z3wmY",
+            "address":"5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgIwzkDYhRCw+IdkOicc2Yh3kjcrjm4Ge+Vh5Lwh9XlJ3tA5UqJjSku1cAtVjOkDkEV0G/vmmLGXkDA+5ksPMKTuSfr+F0Lm6rRe5bKuQ4ZEmKD+IuD/EeR8eNkp535llXA6sm59VGuHPMeEv8sd437VEIuE8KS+DJIKLR/7L3MZiKGGRsHS",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
   }
@@ -166,8 +232,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =
         R"({
-            "address":"5FUag6Xjkr2TMgejpdsvQo3c1FSrZqEeZoHh173StGbME4XF",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgI35vhV4Hb3Cr04X+unU7qckjcrjm4Ge+Vh5Lwh9XlJ3tSn4/Z3n+oAn5X+MByi6HOHjolX4w2S+vHn7qX2ExTqqMqygndQ5qbu68HgGm326rq2dZ8nZ9n6VnS1dX88/MQ6sm59VLuGiKa4uQ4KX1JrUFoTxhgvl83I4WrM1y+1/nbb1yyn",
+            "address":"5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLTbm4tzKImwlp+eooQnWJrkjcrjm4Ge+Vh5Lwh9XlJ3s2YTtKXeTLFuneM0BD85jwGoUM9PzT086Z1nm+oS0TpzwQ0SgO0SebKBeClkDdjfDOp7Q7TNAWLeuw72BZZ+LE6sm59VAeXSA+GVrz9OHNuwOp2/W2o6g1Jrcf2H/qJl2Vs6/za",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
   }
@@ -208,8 +274,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
         R"({
-            "address":"5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgK8fiV6lGVSFewy6uxsU1C4kjcrjm4Ge+Vh5Lwh9XlJ3vAbQs+/0vSBKGe71ik2n/owjXKi9/fBCOIbIDIttGbopozlHDAyPEOrftWc4aiMZfTHRTh/Hb0kJ4C79LBJ84Y6sm59VMs51zUalbzBwa9c75OqlTCtqRouH8891IU51jczQkHY",
+            "address":"5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgIwzkDYhRCw+IdkOicc2Yh3kjcrjm4Ge+Vh5Lwh9XlJ3tA5UqJjSku1cAtVjOkDkEV0G/vmmLGXkDA+5ksPMKTuSfr+F0Lm6rRe5bKuQ4ZEmKD+IuD/EeR8eNkp535llXA6sm59VGuHPMeEv8sd437VEIuE8KS+DJIKLR/7L3MZiKGGRsHS",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
   }
@@ -226,8 +292,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =
         R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "address":"5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLTbm4tzKImwlp+eooQnWJrkjcrjm4Ge+Vh5Lwh9XlJ3s2YTtKXeTLFuneM0BD85jwGoUM9PzT086Z1nm+oS0TpzwQ0SgO0SebKBeClkDdjfDOp7Q7TNAWLeuw72BZZ+LE6sm59VAeXSA+GVrz9OHNuwOp2/W2o6g1Jrcf2H/qJl2Vs6/za",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
   }

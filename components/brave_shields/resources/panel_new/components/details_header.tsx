@@ -37,7 +37,11 @@ export function DetailsHeader(props: Props) {
         </Button>
         <div className='text'>
           <h4>{props.title}</h4>
-          <div className='host overflow-ellipsis-start'>&lrm;{host}</div>
+          <div className='host overflow-ellipsis-start'>
+            {'\u2068'}
+            {host}
+            {'\u2069'}
+          </div>
           {props.children}
         </div>
       </div>

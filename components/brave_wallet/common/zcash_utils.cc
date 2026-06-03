@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
+#include <algorithm>
 #include <array>
 #include <string>
 #include <string_view>
@@ -15,6 +16,8 @@
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/numerics/safe_conversions.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
@@ -261,7 +264,7 @@ DecodedZCashTransparentAddress& DecodedZCashTransparentAddress::operator=(
 base::DictValue OrchardOutput::ToValue() const {
   base::DictValue dict;
 
-  dict.Set("address", base::HexEncode(addr.data(), addr.size()));
+  dict.Set("address", base::HexEncode(addr));
   dict.Set("amount", base::NumberToString(value));
   if (memo) {
     dict.Set("memo", base::HexEncode(memo.value()));

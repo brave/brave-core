@@ -99,7 +99,7 @@ public class PlaylistCoordinator: NSObject {
     // Even if another controller is presented and even when PIP is enabled in playlist.
     // Therefore we need to stop the page/tab from playing when using playlist.
     // On iPad, media will continue to play with or without the background play setting.
-    tab?.stopMediaPlayback()
+    tab?.pauseAllMediaPlayback()
 
     let mediaStreamer = PlaylistMediaStreamer(
       playerView: browserController!.view,
@@ -119,12 +119,29 @@ public class PlaylistCoordinator: NSObject {
       player: player,
       delegate: .init(
         openTabURL: { [weak browserController] url, isPrivate in
-          browserController?.dismiss(animated: true)
-          browserController?.openURLInNewTab(
-            url,
-            isPrivate: Preferences.Privacy.privateBrowsingOnly.value ? true : isPrivate,
-            isPrivileged: false
-          )
+          guard let browserController else { return }
+          let isPrivate = Preferences.Privacy.privateBrowsingOnly.value ? true : isPrivate
+          let openTab: () -> Void = {
+            browserController.dismiss(animated: true)
+            browserController.openURLInNewTab(
+              url,
+              isPrivate: isPrivate,
+              isPrivileged: false
+            )
+          }
+
+          if isPrivate,
+            !browserController.privateBrowsingManager.isPrivateBrowsing,
+            Preferences.Privacy.privateBrowsingLock.value
+          {
+            browserController.askForLocalAuthentication { success, _ in
+              if success {
+                openTab()
+              }
+            }
+          } else {
+            openTab()
+          }
         },
         onDismissal: { [weak self, weak player] in
           guard let self else { return }

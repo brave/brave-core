@@ -1,21 +1,20 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index bdc44a47df82f729f183d11b16dd7a921d4245bd..79f1a18bef8e94b653f3989d4311ac4a63fc96ca 100644
+index c6328dbceb0af518411fd05aa9c97b4280f161eb..fba4af36657b466b541c90f855cb1eec5366f934 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -65,7 +65,7 @@ import org.chromium.chrome.browser.ui.signin.SignOutCoordinator;
- import org.chromium.chrome.browser.ui.signin.SigninUtils;
- import org.chromium.chrome.browser.ui.signin.SignoutButtonPreference;
- import org.chromium.chrome.browser.ui.signin.history_sync.HistorySyncHelper;
--import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
-+import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
- import org.chromium.components.browser_ui.settings.ChromeBasePreference;
- import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
- import org.chromium.components.browser_ui.settings.SettingsUtils;
-@@ -628,6 +628,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -262,6 +262,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+ 
+     @Override
+     public boolean onPreferenceChange(Preference preference, Object newValue) {
++        if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
+         if (mSyncService.isUsingExplicitPassphrase()
+                 && preference
+                         .getKey()
+@@ -451,6 +452,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       */
      private void updateSyncPreferences() {
          String signedInAccountName =
 +                mGoogleActivityControls != null ? "" : // We want the next `if` to be always false.
-                 CoreAccountInfo.getEmailFrom(
-                         getIdentityManager()
-                                 .getPrimaryAccountInfo(
+                 CoreAccountInfo.getEmailFrom(getIdentityManager().getPrimaryAccountInfo());
+         // May happen if account is removed from the device while this screen is shown.
+         if (signedInAccountName == null) {

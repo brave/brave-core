@@ -1,5 +1,5 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index f408f6851b77f669aa8345948d858b2c1a15f3b8..b05203b7ef62f285ef78b1740562d47675939564 100755
+index f408f6851b77f669aa8345948d858b2c1a15f3b8..c069eb00a6a6b1ee84cb0ef2d4c60581dca1b735 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
 @@ -236,6 +236,7 @@ def _GetAbisToDigitMask(build_number, patch_number):
@@ -15,7 +15,7 @@ index f408f6851b77f669aa8345948d858b2c1a15f3b8..b05203b7ef62f285ef78b1740562d476
    Thus, this method is responsible for the final two digits of versionCode.
    """
 -  base_version_code = (build_number * 1000 + patch_number) * 100
-+  base_version_code = int('%02d%02d%03d00' % (42, build_number, patch_number))
++  from brave_version_utils import generate_base_version_code; base_version_code = generate_base_version_code(build_number, patch_number)
  
    mfg, bitness = _ARCH_TO_MFG_AND_BITNESS[arch]
  

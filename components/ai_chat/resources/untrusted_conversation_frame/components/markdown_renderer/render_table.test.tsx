@@ -125,10 +125,8 @@ describe('Table Rendering', () => {
 
       const cells = document.querySelectorAll('td')
       expect(cells[0]).toHaveAttribute('data-label', 'Name')
-      // Empty header not stored, so gets next header
-      expect(cells[1]).toHaveAttribute('data-label', 'Location')
-      // No more headers
-      expect(cells[2]).toHaveAttribute('data-label', '')
+      expect(cells[1]).not.toHaveAttribute('data-label')
+      expect(cells[2]).toHaveAttribute('data-label', 'Location')
     })
   })
 
@@ -166,7 +164,7 @@ describe('Table Rendering', () => {
       expect(cells).toHaveLength(2)
 
       cells.forEach((cell) => {
-        expect(cell).toHaveAttribute('data-label', '')
+        expect(cell).not.toHaveAttribute('data-label')
       })
     })
 
@@ -243,6 +241,40 @@ describe('Table Rendering', () => {
       // Verify the <br> tag is properly rendered as an HTML element
       const brElement = cellWithBr!.querySelector('br')
       expect(brElement).toBeInTheDocument()
+    })
+
+    test('data-labels line up for table with empty first header', () => {
+      const markdown = `
+| | Filmjölk | Viili |
+|---|---|---|
+| *Origin* | Sweden | Finland |
+| *Texture* | Smooth, slightly thick | Stretchy, ropy |
+| *Flavour* | Buttery, mild tang | Mild, slightly sour |
+| *Ferment temp* | Room temp (21–25°C) | Room temp (20–25°C) |
+| *Heat milk first?* | Recommended | No |
+| *Ferment time* | ~24 hours | 12–48 hours |
+| *Fizzy?* | Slight | Slight |
+      `.trim()
+
+      renderMarkdown(markdown)
+
+      // 3 headers (first is empty)
+      const headers = document.querySelectorAll('th')
+      expect(headers).toHaveLength(3)
+      expect(headers[0]).toHaveTextContent('')
+      expect(headers[1]).toHaveTextContent('Filmjölk')
+      expect(headers[2]).toHaveTextContent('Viili')
+
+      // 7 data rows × 3 columns = 21 cells
+      const cells = document.querySelectorAll('td')
+      expect(cells).toHaveLength(21)
+
+      // Every cell's data-label should line up with its column header
+      cells.forEach((cell, index) => {
+        const column = index % 3
+        const values = [null, 'Filmjölk', 'Viili']
+        expect(cell.getAttribute('data-label')).toBe(values[column])
+      })
     })
 
     test('renders table with bold headers', () => {

@@ -20,6 +20,7 @@
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
@@ -34,6 +35,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -256,47 +258,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
   ai_chat_contents->Close();
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessImageFile) {
-  auto* ai_chat_contents = web_contents();
-  ASSERT_TRUE(ai_chat_contents);
-
-  auto* page_handler = GetPageHandler(ai_chat_contents);
-  ASSERT_TRUE(page_handler);
-
-  // Test with invalid image data - should result in null
-  std::vector<uint8_t> invalid_data = {1, 2, 3, 4};
-  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future_invalid;
-
-  page_handler->ProcessImageFile(invalid_data, "test.png",
-                                 future_invalid.GetCallback());
-
-  auto invalid_result = future_invalid.Take();
-  EXPECT_FALSE(invalid_result);  // Should be null for invalid data
-
-  // Test with valid PNG image data - should succeed
-  constexpr uint8_t kValidPng[] = {
-      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
-      0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
-      0x00, 0x01, 0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53, 0xde,
-      0x00, 0x00, 0x00, 0x10, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9c, 0x62,
-      0x5a, 0xc4, 0x5e, 0x08, 0x08, 0x00, 0x00, 0xff, 0xff, 0x02, 0x71,
-      0x01, 0x1d, 0xcd, 0xd0, 0xd6, 0x62, 0x00, 0x00, 0x00, 0x00, 0x49,
-      0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82};
-
-  std::vector<uint8_t> valid_data(std::begin(kValidPng), std::end(kValidPng));
-  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future_valid;
-
-  page_handler->ProcessImageFile(valid_data, "valid.png",
-                                 future_valid.GetCallback());
-
-  auto valid_result = future_valid.Take();
-  ASSERT_TRUE(valid_result);  // Should succeed with valid PNG data
-  EXPECT_EQ(valid_result->filename, "valid.png");
-  EXPECT_EQ(valid_result->type, ai_chat::mojom::UploadedFileType::kImage);
-  EXPECT_GT(valid_result->data.size(), 0u);
-  EXPECT_EQ(valid_result->filesize, valid_result->data.size());
-}
-
 #if BUILDFLAG(ENABLE_PDF)
 IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessPdfFile) {
   auto* page_handler = GetPageHandler(web_contents());
@@ -316,33 +277,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessPdfFile) {
   EXPECT_EQ(*result->extracted_text, kExpectedPdfText);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
-                       OnFilesUploaded_WithPdf) {
-  auto* page_handler = GetPageHandler(web_contents());
-  ASSERT_TRUE(page_handler);
-
-  auto [pdf_path, pdf_bytes] = ReadTestPdf();
-
-  // Build UploadedFile with full path as filename (simulating what
-  // UploadFileHelper returns from the file picker).
-  std::vector<ai_chat::mojom::UploadedFilePtr> files;
-  files.push_back(ai_chat::mojom::UploadedFile::New(
-      pdf_path.AsUTF8Unsafe(), pdf_bytes.size(), std::move(pdf_bytes),
-      ai_chat::mojom::UploadedFileType::kPdf, std::nullopt));
-
-  base::test::TestFuture<
-      std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
-      future;
-  page_handler->OnFilesUploaded(future.GetCallback(),
-                                std::make_optional(std::move(files)));
-
-  auto result = future.Take();
-  ASSERT_TRUE(result.has_value());
-  ASSERT_EQ(result->size(), 1u);
-  EXPECT_EQ((*result)[0]->filename, "dummy.pdf");
-  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
-  EXPECT_EQ(*(*result)[0]->extracted_text, kExpectedPdfText);
-}
 #endif  // BUILDFLAG(ENABLE_PDF)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -405,41 +339,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessHtmlFile) {
   EXPECT_TRUE(result->extracted_text->find("<script>") != std::string::npos);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
-                       OnFilesUploaded_WithText) {
-  auto* page_handler = GetPageHandler(web_contents());
-  ASSERT_TRUE(page_handler);
-
-  base::FilePath txt_path;
-  std::vector<uint8_t> txt_bytes;
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    txt_path = base::PathService::CheckedGet(brave::DIR_TEST_DATA)
-                   .AppendASCII("leo")
-                   .AppendASCII("dummy.txt");
-    auto bytes = base::ReadFileToBytes(txt_path);
-    ASSERT_TRUE(bytes.has_value());
-    txt_bytes = std::move(*bytes);
-  }
-
-  std::vector<ai_chat::mojom::UploadedFilePtr> files;
-  files.push_back(ai_chat::mojom::UploadedFile::New(
-      txt_path.AsUTF8Unsafe(), txt_bytes.size(), std::move(txt_bytes),
-      ai_chat::mojom::UploadedFileType::kText, std::nullopt));
-
-  base::test::TestFuture<
-      std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
-      future;
-  page_handler->OnFilesUploaded(future.GetCallback(),
-                                std::make_optional(std::move(files)));
-
-  auto result = future.Take();
-  ASSERT_TRUE(result.has_value());
-  ASSERT_EQ(result->size(), 1u);
-  EXPECT_EQ((*result)[0]->filename, "dummy.txt");
-  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
-  EXPECT_EQ(*(*result)[0]->extracted_text, kExpectedTextContent);
-}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
@@ -483,7 +382,6 @@ class FakeChatUI : public mojom::ChatUI {
   }
   void OnChildFrameBound(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver) override {}
-  void OnUploadFilesSelected() override {}
 
   std::optional<int32_t> last_content_id_;
   int call_count_ = 0;
@@ -495,7 +393,8 @@ class FakeConversationUI : public mojom::ConversationUI {
   void OnConversationHistoryUpdate(
       const mojom::ConversationTurnPtr entry) override {}
   void OnAPIRequestInProgress(bool in_progress) override {}
-  void OnAPIResponseError(mojom::APIError error) override {}
+  void OnAPIResponseError(mojom::APIError api_error,
+                          mojom::APIErrorDetailsPtr details) override {}
   void OnTaskStateChanged(mojom::TaskState task_state) override {}
   void OnModelDataChanged(const std::string& conversation_model_key,
                           const std::string& default_model_key,
@@ -750,6 +649,173 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
   conversation->GetAssociatedContentInfo(content_future.GetCallback());
   EXPECT_TRUE(content_future.Take().empty())
       << "New conversation on chrome:// page should have no associated content";
+}
+
+// Subclass of AIChatUIPageHandlerBrowserTest that disables the global side
+// panel feature so the page handler uses the tab-associated (non-global) path
+// — i.e. conversations_are_content_associated_ is true and
+// BindRelatedConversation/NewConversation reuse the tab's content_id-bound
+// conversation via GetOrCreateConversationHandlerForContent.
+class AIChatUIPageHandlerTabPanelBrowserTest
+    : public AIChatUIPageHandlerBrowserTest {
+ public:
+  AIChatUIPageHandlerTabPanelBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        ai_chat::features::kAIChatGlobalSidePanelEverywhere);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Subclass of AIChatUIPageHandlerTabPanelBrowserTest that additionally disables
+// kPageContextEnabledInitially, to verify content is not attached when the
+// flag is off (in the tab-scoped, non-global side panel path). Inherits the
+// HTTPS server and cert verifier setup.
+class AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest
+    : public AIChatUIPageHandlerTabPanelBrowserTest {
+ public:
+  AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        ai_chat::features::kPageContextEnabledInitially);
+  }
+
+  // Creates a handler whose active_chat_tab_helper_ is set to |context|, which
+  // puts BindRelatedConversation into its content-associated else branch.
+  std::unique_ptr<AIChatUIPageHandler> CreateHandlerForContents(
+      content::WebContents* context) {
+    mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+    return std::make_unique<AIChatUIPageHandler>(
+        context, context,
+        Profile::FromBrowserContext(context->GetBrowserContext()),
+        std::move(receiver), browser()->tab_strip_model());
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Regression test: when the page context menu fires Leo, the menu code calls
+// AIChatService::GetOrCreateConversationHandlerForContent(content_id, ...) and
+// SubmitSelectedText() *before* the side panel opens. The tab-scoped side
+// panel must then bind to that same conversation, otherwise the user sees an
+// empty side panel and the submitted message appears to have been dropped.
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerTabPanelBrowserTest,
+                       BindRelatedConversation_PicksUpExistingTabConversation) {
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  ASSERT_TRUE(tab_helper);
+
+  // Mimic the context menu flow: get or create a conversation tied to the
+  // tab's content_id before the side panel has opened.
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  auto* preexisting = service->GetOrCreateConversationHandlerForContent(
+      tab_helper->web_contents_content().content_id(),
+      tab_helper->web_contents_content().GetWeakPtr());
+  ASSERT_TRUE(preexisting);
+  const std::string preexisting_uuid = preexisting->get_conversation_uuid();
+
+  // Stand up a fresh page handler for the same tab, simulating the side panel
+  // opening, and call BindRelatedConversation as the frontend does on startup.
+  mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+  auto handler = std::make_unique<AIChatUIPageHandler>(
+      tab_contents, tab_contents,
+      Profile::FromBrowserContext(tab_contents->GetBrowserContext()),
+      std::move(receiver), browser()->tab_strip_model());
+
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->BindRelatedConversation(
+      conversation.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::string> uuid_future;
+  conversation->GetConversationUuid(
+      uuid_future.GetCallback<const std::string&>());
+  EXPECT_EQ(uuid_future.Get(), preexisting_uuid)
+      << "Side panel should bind to the conversation already tied to this "
+         "tab's content_id (e.g. created by the context menu), not a new one.";
+}
+
+IN_PROC_BROWSER_TEST_F(
+    AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest,
+    BindRelatedConversation_DoesNotAddContentWhenFlagDisabled) {
+  // OpenNewTab navigates to an HTTPS URL, so CanAssociateContent would normally
+  // pass — the flag check is the only thing preventing content from attaching.
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+
+  auto handler = CreateHandlerForContents(tab_contents);
+
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->BindRelatedConversation(
+      conversation.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>
+      content_future;
+  conversation->GetAssociatedContentInfo(content_future.GetCallback());
+  EXPECT_TRUE(content_future.Take().empty())
+      << "BindRelatedConversation should not add page content when "
+         "kPageContextEnabledInitially is disabled";
+}
+
+// When a conversation already exists for the tab's content_id (e.g. created by
+// the context menu before the side panel opened), reusing it via
+// GetOrCreateConversationHandlerForContent must not attach page content if
+// features::kPageContextEnabledInitially is disabled — the cached path bypasses
+// MaybeAssociateContent, so this guards against any future change that might
+// add content unconditionally.
+IN_PROC_BROWSER_TEST_F(
+    AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest,
+    BindRelatedConversation_CachedConversationStaysUnattachedWhenFlagDisabled) {
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  ASSERT_TRUE(tab_helper);
+
+  // Pre-create a conversation tied to the tab. With the flag disabled,
+  // CreateConversationHandlerForContent passes nullptr to MaybeAssociateContent
+  // so no content gets attached at creation time.
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  auto* preexisting = service->GetOrCreateConversationHandlerForContent(
+      tab_helper->web_contents_content().content_id(),
+      tab_helper->web_contents_content().GetWeakPtr());
+  ASSERT_TRUE(preexisting);
+  const std::string preexisting_uuid = preexisting->get_conversation_uuid();
+
+  auto handler = CreateHandlerForContents(tab_contents);
+
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->BindRelatedConversation(
+      conversation.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  // The bound conversation must be the cached one.
+  base::test::TestFuture<std::string> uuid_future;
+  conversation->GetConversationUuid(
+      uuid_future.GetCallback<const std::string&>());
+  EXPECT_EQ(uuid_future.Get(), preexisting_uuid);
+
+  // And it must still have no associated content.
+  base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>
+      content_future;
+  conversation->GetAssociatedContentInfo(content_future.GetCallback());
+  EXPECT_TRUE(content_future.Take().empty())
+      << "Reusing a cached tab-associated conversation must not attach page "
+         "content when kPageContextEnabledInitially is disabled";
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)

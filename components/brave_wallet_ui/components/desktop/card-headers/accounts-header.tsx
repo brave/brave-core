@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { WalletRoutes } from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // Selectors
 import { UISelectors } from '../../../common/selectors'
@@ -32,7 +32,11 @@ import {
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
-export const AccountsHeader = () => {
+interface Props {
+  hiddenAccounts: BraveWallet.AccountInfo[]
+}
+
+export const AccountsHeader = ({ hiddenAccounts }: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
@@ -61,14 +65,24 @@ export const AccountsHeader = () => {
       padding='24px 0px'
       justifyContent='space-between'
     >
-      <HeaderTitle>{getLocale('braveWalletTopNavAccounts')}</HeaderTitle>
+      <HeaderTitle
+        textColor='primary'
+        variant='heading.h1'
+      >
+        {getLocale('braveWalletTopNavAccounts')}
+      </HeaderTitle>
       <MenuWrapper ref={portfolioOverviewMenuRef}>
         <MenuButton
           onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
         >
           <MenuButtonIcon name='plus-add' />
         </MenuButton>
-        {showPortfolioOverviewMenu && <AccountsMenu />}
+        {showPortfolioOverviewMenu && (
+          <AccountsMenu
+            hiddenAccounts={hiddenAccounts}
+            onCloseMenu={() => setShowPortfolioOverviewMenu(false)}
+          />
+        )}
       </MenuWrapper>
     </Row>
   )

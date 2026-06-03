@@ -9,9 +9,9 @@
 #include <optional>
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 #include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
 namespace brave_ads::ml::pipeline {
 

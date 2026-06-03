@@ -4,31 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as Mojom from './mojom'
+import { modelIcons, fallbackModelIcon } from './model_icon_map'
 
 export const IGNORE_EXTERNAL_LINK_WARNING_KEY = 'IGNORE_EXTERNAL_LINK_WARNING'
-
-const modelIcons = {
-  'chat-automatic': 'product-brave-leo',
-  'chat-near-glm-5': 'zai-color',
-  'chat-claude-instant': 'anthropic-color',
-  'chat-claude-haiku': 'anthropic-color',
-  'chat-claude-sonnet': 'anthropic-color',
-  'chat-qwen': 'qwen-color',
-  'chat-brave-summary': 'social-brave-release-favicon-fullheight-color',
-  'chat-basic': 'meta-color',
-  'chat-glm-4-7-flash': 'zai-color',
-  'chat-llama-4-maverick': 'meta-color',
-  'chat-gpt-oss-20b': 'openai-color',
-  'chat-gpt-oss-120b': 'openai-color',
-  'chat-mistral-large': 'mistral-color',
-  'chat-kimi-k2-5': 'kimi-color',
-  'chat-qwen-3-235b': 'qwen-color',
-  'chat-deepseek-v3-2': 'deepseek-color',
-  'chat-qwen-3-coder-480b': 'qwen-color',
-  'chat-claude-opus': 'anthropic-color',
-}
-
-const fallbackModelIcon = 'product-brave-leo'
 
 export function getModelIcon(model: Mojom.Model): string {
   // Check if it's an Ollama model by endpoint
@@ -37,7 +15,7 @@ export function getModelIcon(model: Mojom.Model): string {
   ) {
     return 'ollama'
   }
-  return modelIcons[model.key as keyof typeof modelIcons] ?? fallbackModelIcon
+  return modelIcons[model.key] ?? fallbackModelIcon
 }
 
 export const AUTOMATIC_MODEL_KEY = 'chat-automatic'

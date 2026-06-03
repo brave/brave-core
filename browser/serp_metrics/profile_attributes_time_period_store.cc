@@ -14,12 +14,19 @@
 namespace serp_metrics {
 
 ProfileAttributesTimePeriodStore::ProfileAttributesTimePeriodStore(
-    const base::FilePath& profile_path,
+    base::FilePath profile_path,
     ProfileAttributesStorage& profile_attributes_storage,
-    std::string metric_name)
-    : profile_path_(profile_path),
+    std::string_view metric_name)
+    : profile_path_(std::move(profile_path)),
       profile_attributes_storage_(profile_attributes_storage),
-      metric_name_(std::move(metric_name)) {}
+      metric_name_(metric_name) {
+  if (!Get()) {
+    // Initialize an empty list so the engine key always exists in the profile
+    // attributes dict. This ensures virtual pref paths that query this key
+    // resolve to 0 rather than failing on a clean profile.
+    Set(base::ListValue());
+  }
+}
 
 ProfileAttributesTimePeriodStore::~ProfileAttributesTimePeriodStore() = default;
 
@@ -46,9 +53,8 @@ void ProfileAttributesTimePeriodStore::Set(base::ListValue list) {
   }
 
   base::DictValue serp_metrics;
-  if (const base::DictValue* existing_serp_metrics = entry->GetSerpMetrics();
-      existing_serp_metrics) {
-    serp_metrics = existing_serp_metrics->Clone();
+  if (const base::DictValue* const value = entry->GetSerpMetrics()) {
+    serp_metrics = value->Clone();
   }
 
   serp_metrics.Set(metric_name_, std::move(list));

@@ -3,8 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 declare_args() {
-  enable_playlist_webui = toolkit_views
+  enable_playlist = !is_brave_origin_branded
 }
+
+declare_args() {
+  enable_playlist_webui = enable_playlist && toolkit_views
+}
+
+assert(enable_playlist || !is_android,
+       "enable_playlist=false is not supported on Android")
+assert(enable_playlist || !is_ios,
+       "enable_playlist=false is not supported on iOS")

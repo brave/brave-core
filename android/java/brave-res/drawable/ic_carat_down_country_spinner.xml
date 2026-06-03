@@ -1,9 +1,0 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="16dp"
-    android:height="16dp"
-    android:viewportWidth="16"
-    android:viewportHeight="16">
-  <path
-      android:pathData="M8,9.954L14.542,4.502C14.919,4.188 15.48,4.239 15.794,4.616C16.108,4.993 16.057,5.554 15.68,5.868L8.569,11.794C8.239,12.069 7.761,12.069 7.431,11.794L0.32,5.868C-0.057,5.554 -0.108,4.993 0.206,4.616C0.52,4.239 1.081,4.188 1.458,4.502L8,9.954Z"
-      android:fillColor="@color/brave_rewards_modal_text_color"/>
-</vector>

@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Pausatu da deskarga</translation>
 <translation id="1396327438254055134">Eman V8 optimizatzailea erabiltzeko baimena webguneari.</translation>
 <translation id="1409338233051621926">Sakatu Aplikazioak eta, gero, sakatu Aplikazio lehenetsiak</translation>
+<translation id="1414315029670184034">Ez eman kamera erabiltzeko baimena webguneei</translation>
 <translation id="1415402041810619267">URLa moztuta dago</translation>
 <translation id="1741136041592162279">Eman zure azkenaldiko fitxak gailuarekin partekatzeko aukera Brave-ri, gailuko aplikazioen zerrendan eta bilaketa-emaitzetan ikusi ahal izan ditzazun. Aukera hori aktibatu edo desaktibatzeko, joan Brave-ren ezarpenetara.</translation>
 <translation id="1420688843103859429">Nabigatu atzera eta aurrera ukipen-panelean 2 hatz pasatuta</translation>
@@ -64,6 +65,7 @@
 <translation id="1644574205037202324">Historia</translation>
 <translation id="1652197001188145583">Aktibatuta dagoenean, webguneek NFC bidezko gailuak erabiltzeko baimena eska dezakete. Desaktibatuta dagoenean, webguneek ezin dute erabili NFC bidezko gailurik.</translation>
 <translation id="1660204651932907780">Baimendu webguneei soinua erreproduzitzea (gomendatua)</translation>
+<translation id="1676590040242013349">"Erabili beti konexio seguruak" aktibatuta dago.</translation>
 <translation id="1677097821151855053">Cookieak eta webguneko beste datu batzuk zu gogoratzeko erabiltzen dira; adibidez, saioa hasteko edo iragarkiak pertsonalizatzeko. Webgune guztietako cookieak kudeatzeko, ikusi <ph name="BEGIN_LINK"/>Ezarpenak<ph name="END_LINK"/> atala.</translation>
 <translation id="1679305402657584804">Webguneek NFC bidezko gailuak erabiltzeko baimena eska dezakete</translation>
 <translation id="1686785653877010442">Webguneek jakinarazpenak bidali ohi dituzte azken orduko albiste edo txat-mezuen berri emateko.</translation>
@@ -79,7 +81,6 @@
 <translation id="1781533683087883868">Desaktibatu irakurtzeko modurako estekak</translation>
 <translation id="1785415724048343560">Zerbitzurik onena jasotzeko gomendatua</translation>
 <translation id="1796588414813960292">Soinua behar duten eginbideek ez dute funtzionatuko</translation>
-<translation id="7401204338724669842">Brave-ri buruzko aholkuak</translation>
 <translation id="6704867734300244173">Aktibatuta dagoenean, Brave-k bizkorrago funtzionatzen du eta JavaScript darabilten eginbideek behar bezala funtzionatu beharko lukete. Desaktibatuta dagoenean, errendimendua gutxitzen du, baina V8 erasoen aurrean indartzen du.</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/> aplikazioari EA erabiltzeko baimena emateko, kamera erabiltzeko baimena aktibatu behar duzu <ph name="BEGIN_LINK"/>Android-en ezarpenetan<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Aldatu posizioa arakatzeko modua pertsonalizatzeko</translation>
@@ -98,6 +99,7 @@
 <translation id="1985247341569771101">Aktibatuta dagoenean, webguneek gailuaren mugimendu-sentsoreak erabil ditzakete. Desaktibatuta dagoenean, webguneek ezin dute erabili mugimendu-sentsorerik.</translation>
 <translation id="1985716030964443178">Zerrendako webgune guztiak zoom lehenetsira berrezarriko dira</translation>
 <translation id="1989112275319619282">Arakatu</translation>
+<translation id="1991370806334788445">Eman hirugarrenen cookieak erabiltzeko baimena. Babes txikiagoa izango duzu arakatzean, baina webgunearen eginbideek espero bezala funtzionatzeko probabilitate handiagoa izango dute.</translation>
 <translation id="1994173015038366702">Webgunearen URLa</translation>
 <translation id="1994558116414798016">Lexend letra</translation>
 <translation id="2004697686368036666">Baliteke webgune batzuetako eginbideek ez funtzionatzea</translation>
@@ -125,7 +127,6 @@
 <translation id="2228071138934252756"><ph name="APP_NAME"/> aplikazioari kamera erabiltzeko baimena emateko, kamera erabiltzeko baimena aktibatu behar duzu <ph name="BEGIN_LINK"/>Android-en ezarpenetan<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Webguneek eduki babestua erreproduzi dezakete</translation>
 <translation id="2235344399760031203">Hirugarrenen cookieak blokeatu dira</translation>
-<translation id="2238944249568001759">Azken fitxaren arabera iradokitako bilaketak</translation>
 <translation id="2241587408274973373">Fitxa berriaren orriaren txartelak</translation>
 <translation id="2241634353105152135">Behin soilik</translation>
 <translation id="2253414712144136228">Kendu <ph name="NAME_OF_LIST_ITEM"/></translation>
@@ -164,13 +165,9 @@
 <translation id="257931822824936280">Zabalduta; egin klik tolesteko.</translation>
 <translation id="2586657967955657006">Arbela</translation>
 <translation id="2588271083332682494">Txukundu dena fitxa taldeekin</translation>
+<translation id="2592917252160773942">Webguneek zure kamera erabiltzeko baimena eska dezakete</translation>
 <translation id="2597457036804169544">Ez aplikatu gai iluna webguneetan</translation>
 <translation id="2606760465469169465">Egiaztapen automatikoa</translation>
-<translation id="7615153661410655750">Kudeatu <ph name="BEGIN_LINK1"/>Android-en ezarpenetan<ph name="END_LINK1"/>
-
-Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
-• "Erabili beti konexio seguruak" aktibatuta dago.
-• JavaScript-en optimizatzailea desaktibatuta dago. <ph name="BEGIN_LINK2"/>Kudeatu webgunearen salbuespenak<ph name="END_LINK2"/>.</translation>
 <translation id="2621115761605608342">Baimendu JavaScript erabiltzea webgune zehatz batean.</translation>
 <translation id="2626708220538466178">Pantailaren behealdean ainguratutako orria, arakatzaile lehenetsiari buruzkoa, itxita dago</translation>
 <translation id="2653659639078652383">Bidali</translation>
@@ -214,7 +211,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="3069226013421428034">Eman webgune jakin batean saioa hasteko baimena hirugarrenei.</translation>
 <translation id="310297983047869047">Aurreko diapositiba</translation>
 <translation id="3108122610701115301">Ezarri lehenetsi gisa</translation>
-<translation id="3109724472072898302">Tolestuta</translation>
 <translation id="310979712355504754">Ezabatu guztiak</translation>
 <translation id="311394601889664316">Ez eman gailuko fitxategiak edo karpetak editatzeko baimena webguneei</translation>
 <translation id="3114012059975132928">Bideo-erreproduzigailua</translation>
@@ -243,6 +239,7 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="3360338140203645771">Gordetako zoom-mailak ezabatu nahi dituzu?</translation>
 <translation id="3362437373201486687">Bluetooth bidezko gailuak bilatzen</translation>
 <translation id="3368138297038111198">Leiho bat partekatzen</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{Memoria gutxi dagoenez, {TOTAL_COUNT} elementutatik bat erakusten da}other{Memoria gutxi dagoenez, {TOTAL_COUNT} elementutatik # erakusten dira}}</translation>
 <translation id="3386292677130313581">Webguneei zure kokapena erakusteko baimena eman aurretik, eskatu onespena (gomendatua)</translation>
 <translation id="3403537308306431953">%% <ph name="ZOOM_LEVEL"/></translation>
 <translation id="344449859752187052">Hirugarrenen cookieak blokeatuta</translation>
@@ -260,7 +257,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="3602290021589620013">Aurrebista</translation>
 <translation id="3611658447322220736">Berriki itxitako webguneek datuak bidaltzen eta jasotzen amai dezakete</translation>
 <translation id="3619294456800709762">Webguneek automatikoki ireki dezakete pantaila txiki gainjarria</translation>
-<translation id="3628308229821498208">Bilaketa iradokiak</translation>
 <translation id="3632460243282703117">Harpidetu</translation>
 <translation id="363748948745453283">Gutxi gorabeherako kokapena erabiltzen da</translation>
 <translation id="3641456520301071208">Webguneek kokapena eska dezakete</translation>
@@ -335,6 +331,7 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="4290791284969893584">Orri bat ixten baduzu, baliteke hasitako zereginak ez amaitzea</translation>
 <translation id="429312253194641664">Webgune bat multimedia-edukia erreproduzitzen ari da</translation>
 <translation id="42981349822642051">Zabaldu</translation>
+<translation id="4310738531374808763">Pertsonalizatu orri nagusia</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Bihar iraungiko da}other{# egun barru iraungiko da}}</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> domeinuko webgune guztiak</translation>
 <translation id="4340799661701629185">Ez eman jakinarazpenak bidaltzeko baimena webguneei</translation>
@@ -364,6 +361,7 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="4635969503923889910">Ez eman NFC bidezko gailuak erabiltzeko baimena webguneei</translation>
 <translation id="4644713492825682049">Ezabatu eta berrezarri</translation>
 <translation id="4645575059429386691">Gurasoek kudeatuta</translation>
+<translation id="4651224148644053314">Kolore eta aukera gehiago</translation>
 <translation id="4652266463001779298">Baimenik gabe</translation>
 <translation id="4655846733459137112">Saioa hasten duzun hurrengo aldian pasahitz hau erraz erabiltzeko, sakatu Bai</translation>
 <translation id="4663373278480897665">Kamera erabil daiteke</translation>
@@ -441,7 +439,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="5515432237048785579">Pantailaren behealdean ainguratutako orria, Discover-en jarioari buruzkoa, altuera osoan irekita dago</translation>
 <translation id="5516455585884385570">Ireki jakinarazpen-ezarpenak</translation>
 <translation id="5527111080432883924">Eskatu berrespena webguneei arbeleko testua eta irudiak ikustea baimendu baino lehen (gomendatua)</translation>
-<translation id="5553374991681107062">Azkenak</translation>
 <translation id="674221630984410403">Webguneak ez dira bizkortzen Brave-ren V8 motorrarekin, baina erasoen aurrean zertxobait seguruagoa da Brave</translation>
 <translation id="5556459405103347317">Kargatu berriro</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> blokeatuta dago</translation>
@@ -521,10 +518,10 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="6231752747840485235">"<ph name="APP_NAME"/>" desinstalatu nahi duzu?</translation>
 <translation id="4789073065838177382">Sakatu Arakatzailea &gt; Brave.</translation>
 <translation id="6260830281887654268">Pantailaren behealdean ainguratutako orria, fitxa berriaren itxura aldatzeko gaien bildumak dituena, altuera erdian irekita dago</translation>
-<translation id="6262191102408817757">Azken fitxaren arabera</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> eta <ph name="PERMISSION_2"/> blokeatu egin dira</translation>
 <translation id="6270391203985052864">Webguneek jakinarazpenak bidaltzea eska dezakete</translation>
 <translation id="6295158916970320988">Webgune guztiak</translation>
+<translation id="6305257382500066042">Probatu</translation>
 <translation id="6320088164292336938">Dardara</translation>
 <translation id="6367753977865761591">Blokeatu webgune jakin batean saioa hasteko aukera hirugarrenei.</translation>
 <translation id="6398765197997659313">Irten pantaila osoko modutik</translation>
@@ -579,6 +576,7 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="6912998170423641340">Ez utzi webguneei arbeleko testua eta irudiak ikusten</translation>
 <translation id="6945221475159498467">Hautatu</translation>
 <translation id="6950072572526089586">Bisitatzen dituzun webguneek egiten ari zarenari buruzko informazioa gordetzen dute batzuetan, espero duzun moduan funtzionatu ahal izateko; adibidez, zure saioa hasita mantentzeko edo erosketa-saskian produktuak gordetzeko. Askotan, webguneek gailuan gordetzen dute informazio hori aldi baterako.</translation>
+<translation id="6964291282260073066">"WebGPU" desgaituta dago.</translation>
 <translation id="6965382102122355670">Ados</translation>
 <translation id="6980507581230208647">Gai arrosa</translation>
 <translation id="6980861169612950611">Webguneko datuak ezabatu nahi dituzu? <ph name="SITE_NAME"/></translation>
@@ -601,7 +599,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="7180611975245234373">Freskatu</translation>
 <translation id="7188508872042490670">Gailuan gordetako webguneetako datuak</translation>
 <translation id="7201549776650881587"><ph name="ORIGIN"/> webgunearen mendeko webgune guztiek edo hari dagokion orri nagusiko aplikazioak gorde dituzten datu eta cookie guztiak ezabatuko dira</translation>
-<translation id="7203150201908454328">Zabalduta</translation>
 <translation id="7213166370492037743">Ez eman sare lokaleko ezein gailutara konektatzeko baimenik webguneei</translation>
 <translation id="7219254577985949841">Webguneko datuak ezabatu nahi dituzu?</translation>
 <translation id="723171743924126238">Hautatu irudiak</translation>
@@ -610,8 +607,12 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> hautatu dira</translation>
 <translation id="7260727271532453612">Baimena eman zaie hauei: <ph name="PERMISSION_1"/> eta <ph name="PERMISSION_2"/></translation>
 <translation id="7276071417425470385">Aktibatuta dagoenean, webguneek errealitate birtualeko gailuak erabiltzeko baimena eska dezakete. Desaktibatuta dagoenean, webguneek ezin dute erabili errealitate birtualeko gailurik.</translation>
+<translation id="7279851812866769760">Partekatu kontaktuak</translation>
 <translation id="7282197670900591579">Limoi-koloreko gaia</translation>
 <translation id="728412880473384942">Webguneek bizkorrago funtzionatzen dute, baina ez dira hain seguruak</translation>
+<translation id="5843014938239239453">Kudeatu <ph name="BEGIN_LINK1"/>Android-en ezarpenetan<ph name="END_LINK1"/>
+
+Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:</translation>
 <translation id="7366415735885268578">Gehitu webgune bat</translation>
 <translation id="7368695150573390554">Konexiorik gabeko datuak ezabatuko dira</translation>
 <translation id="7369678931043226462">Pantailaren behealdean ainguratutako orria, fitxa berriaren orria pertsonalizatzeari buruzkoa, altuera erdian irekita dago</translation>
@@ -656,7 +657,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="780301667611848630">Ez, eskerrik asko</translation>
 <translation id="7804248752222191302">Webgune bat kamera erabiltzen ari da</translation>
 <translation id="7805832099057502789">Pantailaren behealdean ainguratutako orria, fitxa berriaren itxura duena, altuera osoan irekita dago</translation>
-<translation id="6720480757902085971">Brave-k eman du</translation>
 <translation id="7809029041571842593">Pantailaren behealdean ainguratutako orria, fitxa berriaren orriaren txartelak dituena, altuera erdian irekita dago</translation>
 <translation id="7815680994978050279">Deskarga arriskutsu bat blokeatu da</translation>
 <translation id="7835852323729233924">Multimedia-edukia erreproduzitzen</translation>
@@ -675,7 +675,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="8007176423574883786">Desaktibatu egin da gailu honetan</translation>
 <translation id="802154636333426148">Ezin izan da deskargatu</translation>
 <translation id="8033047164036749181">Harpidetu webgune honen jakinarazpenak jasotzeko</translation>
-<translation id="8042586301629853791">Ordenatzeko irizpidea:</translation>
 <translation id="8051193500142930381">Kamera bat behar duten eginbideek ez dute funtzionatuko</translation>
 <translation id="2495032782748793764">Brave-ren gai lehenetsia</translation>
 <translation id="8067883171444229417">Erreproduzitu bideoa</translation>
@@ -700,6 +699,7 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="823874716226307142">Aktibatuta dagoenean, webguneek sare lokaleko beste gailu batzuk erabiltzeko baimena eska dezakete. Desaktibatuta dagoenean, webguneek ezin dute erabili sare lokaleko beste gailurik.</translation>
 <translation id="8249310407154411074">Eraman goraino</translation>
 <translation id="8261506727792406068">Ezabatu</translation>
+<translation id="8273596202562472147"><ph name="SITE_NAME"/> webgunearen aukera gehiago</translation>
 <translation id="8284326494547611709">Azpitituluak</translation>
 <translation id="8300705686683892304">Aplikazio batek kudeatzen du</translation>
 <translation id="8301363963630676147">Oraingoan baimenduta • Gutxi gorabeherakoa erabiltzen</translation>
@@ -723,6 +723,7 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="8471525937465764768">Webguneak USB bidezko gailuetara konektatu ohi dira dokumentu bat inprimatzeko edo biltegiratze-gailu batean gordetzeko, eta antzeko eginbideak eskaintzeko</translation>
 <translation id="8473055640493819707">Zaharkituta dago "<ph name="APP_NAME"/>". Instalatu berriro aplikazioa.</translation>
 <translation id="847433688444405067">Arakatu gailu guztietan</translation>
+<translation id="8484556725636319115">"JavaScript-en optimizatzailea" desaktibatuta dago. <ph name="BEGIN_LINK2"/>Kudeatu webgunearen salbuespenak<ph name="END_LINK2"/>.</translation>
 <translation id="8487700953926739672">Konexiorik gabe erabilgarri</translation>
 <translation id="848952951823693243">Eskatu beti mugikorretarako webgunea</translation>
 <translation id="8492822722330266509">Webguneek leiho gainerakorrak bidali, eta birbideratzeak erabil ditzakete</translation>
@@ -744,7 +745,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="8676374126336081632">Garbitu idatzitakoa</translation>
 <translation id="8681886425883659911">Iragarki oztopatzaileak edo engainagarriak erakusten dituzten webguneak blokeatzen dira</translation>
 <translation id="868929229000858085">Bilatu kontaktuak</translation>
-<translation id="8707904142362025782">Webguneek zure kamera erabiltzeko baimena eska dezakete</translation>
 <translation id="8712637175834984815">Ados</translation>
 <translation id="8715862698998036666">Pantaila osoko ikuspegitik irteteko, arrastatu goitik eta pasatu hatza ezkerreko edo eskuineko ertzetik.</translation>
 <translation id="8716050156658570300">Webguneek mugimendu- eta argi-sentsoreak erabiltzeko baimena eska dezakete</translation>
@@ -794,6 +794,7 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:
 <translation id="7359422048569205930">Eman azkenaldiko fitxak gailuko aplikazioen zerrendan eta bilaketa-emaitzetan erakusteko baimena Brave-ri. Aukera hori desaktibatzeko, joan Brave-ren ezarpenetara.</translation>
 <translation id="9162462602695099906">Orri hau arriskutsua da</translation>
 <translation id="9182556968660520230">Ez eman eduki babestua erreproduzitzeko baimena webguneei</translation>
+<translation id="927148002081263046">Partekatu kontaktua</translation>
 <translation id="947156494302904893">Bisitatzen dituzun webguneek benetako pertsona bat zarela eta robot bat ez zarela egiazta dezakete</translation>
 <translation id="959682366969460160">Antola zaitez</translation>
 <translation id="960590623979248167">Erakutsi hiperestekak</translation>

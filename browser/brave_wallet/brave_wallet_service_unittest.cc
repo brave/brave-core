@@ -21,9 +21,11 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
@@ -35,15 +37,15 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "build/build_config.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
@@ -60,10 +62,15 @@
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
 
 using content::StoragePartition;
 using testing::Contains;
@@ -298,6 +305,23 @@ class TestBraveWalletServiceObserver
       observer_receiver_{this};
 };
 
+class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
+ public:
+  MockBraveWalletServiceDelegate() = default;
+  ~MockBraveWalletServiceDelegate() override = default;
+
+  MOCK_METHOD(void,
+              DisplayTxNotification,
+              (mojom::TransactionStatus status,
+               const std::string& account_name,
+               const std::string& tx_id,
+               const GURL& tx_url),
+              (override));
+  MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
+  bool IsPrivateWindow() override { return false; }
+  bool IsAutolockEnabled() override { return false; }
+};
+
 class BraveWalletServiceUnitTest : public testing::Test {
  public:
   BraveWalletServiceUnitTest()
@@ -471,10 +495,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return BlockchainRegistry::GetInstance();
   }
 
-  void SetupWallet() {
-    keyring_service_->CreateWalletInternal(kMnemonicDivideCruise,
-                                           kTestWalletPassword, false, false);
+  void SetupWallet(KeyringService* keyring_service) {
+    keyring_service->CreateWalletInternal(kMnemonicDivideCruise,
+                                          kTestWalletPassword, false, false);
   }
+
+  void SetupWallet() { SetupWallet(keyring_service_); }
 
   void SetInterceptors(std::map<GURL, std::string> responses) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -883,6 +909,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
+
+  mojo::Receiver<brave_wallet::mojom::TxServiceObserver>&
+  GetTxServiceObserverReceiver() {
+    return service_->tx_service_observer_receiver_;
+  }
 
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -1987,151 +2018,6 @@ TEST_F(BraveWalletServiceUnitTest, SolanaTokenUserAssetsAPI) {
   EXPECT_FALSE(SetUserAssetVisible(sol_0x100->Clone(), true));
 }
 
-TEST_F(BraveWalletServiceUnitTest, MigrateEip1559ForCustomNetworks) {
-  // Note: The testing profile has already performed the prefs migration by the
-  // time this test runs, so undo its effects here for testing purposes
-  ASSERT_TRUE(
-      GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
-  GetPrefs()->ClearPref(kBraveWalletEip1559ForCustomNetworksMigrated);
-
-  char legacy_custom_networks_pref[] =
-      R"( {
-            "ethereum": [ {
-            "activeRpcEndpointIndex": 0,
-            "blockExplorerUrls": [ "https://aurorascan.dev" ],
-            "chainId": "0x4e454152",
-            "chainName": "Aurora Mainnet Custom",
-            "coin": 60,
-            "iconUrls": [  ],
-            "is_eip1559": false,
-            "nativeCurrency": {
-                "decimals": 18,
-                "name": "Ether",
-                "symbol": "ETH"
-            },
-            "rpcUrls": [ "https://mainnet-aurora.brave.com/" ]
-          }, {
-            "activeRpcEndpointIndex": 0,
-            "blockExplorerUrls": [ "https://etherscan.io" ],
-            "chainId": "0x1",
-            "chainName": "Ethereum Mainnet Custom",
-            "coin": 60,
-            "iconUrls": [  ],
-            "is_eip1559": true,
-            "nativeCurrency": {
-                "decimals": 18,
-                "name": "Ethereum",
-                "symbol": "ETH"
-            },
-            "rpcUrls": [ "https://mainnet-infura.brave.com/" ]
-          }, {
-            "activeRpcEndpointIndex": 0,
-            "blockExplorerUrls": [ "https://lineascan.build" ],
-            "chainId": "0xe708",
-            "chainName": "Linea",
-            "coin": 60,
-            "iconUrls": [  ],
-            "is_eip1559": true,
-            "nativeCurrency": {
-                "decimals": 18,
-                "name": "Linea Ether",
-                "symbol": "ETH"
-            },
-            "rpcUrls": [ "https://linea.blockpi.network/v1/rpc/public" ]
-          } ],
-          "solana": [ {
-            "activeRpcEndpointIndex": 0,
-            "blockExplorerUrls": [ "https://explorer.solana.com/?cluster=testnet" ],
-            "chainId": "0x66",
-            "chainName": "Solana Testnet Custom",
-            "coin": 501,
-            "iconUrls": [  ],
-            "nativeCurrency": {
-                "decimals": 9,
-                "name": "Solana",
-                "symbol": "SOL"
-            },
-            "rpcUrls": [ "https://api.testnet.solana.com/" ]
-          } ]
-        }
-  )";
-
-  EXPECT_FALSE(
-      GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
-  GetPrefs()->SetBoolean(kSupportEip1559OnLocalhostChainDeprecated, false);
-  GetPrefs()->SetDict(kBraveWalletCustomNetworks,
-                      base::test::ParseJsonDict(legacy_custom_networks_pref));
-
-  BraveWalletService::MigrateEip1559ForCustomNetworks(GetPrefs());
-  for (auto&& [coin_key, value] :
-       GetPrefs()->GetDict(kBraveWalletCustomNetworks)) {
-    for (auto& custom_network : *value.GetIfList()) {
-      EXPECT_FALSE(custom_network.GetDict().FindBool("is_eip1559"));
-    }
-  }
-
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(kSupportEip1559OnLocalhostChainDeprecated));
-
-  EXPECT_EQ(GetPrefs()->GetDict(kBraveWalletEip1559CustomChains),
-            base::test::ParseJsonDict(R"( {
-              "0x1": true,
-              "0x4e454152": false,
-              "0x539": false,
-              "0xe708": true
-            })"));
-
-  EXPECT_FALSE(network_manager_->IsEip1559Chain("0x4e454152"));
-  EXPECT_TRUE(network_manager_->IsEip1559Chain("0x1"));
-  EXPECT_TRUE(network_manager_->IsEip1559Chain("0xe708"));
-  EXPECT_FALSE(network_manager_->IsEip1559Chain(mojom::kLocalhostChainId));
-
-  // solana does not get into this list.
-  EXPECT_FALSE(network_manager_->IsEip1559Chain("0x66"));
-
-  EXPECT_TRUE(
-      GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
-}
-
-TEST_F(BraveWalletServiceUnitTest, MigrateGoerliNetwork) {
-  // Note: The testing profile has already performed the prefs migration by the
-  // time this test runs, so undo its effects here for testing purposes
-  ASSERT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
-  GetPrefs()->SetBoolean(kBraveWalletGoerliNetworkMigrated, false);
-  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
-
-  auto selected_networks = base::test::ParseJsonDict(R"({
-    "ethereum": {
-      "https://app.uniswap.org": "0xaa36a7"
-    }
-  })");
-  GetPrefs()->SetDict(kBraveWalletSelectedNetworksPerOrigin,
-                      std::move(selected_networks));
-
-  auto default_networks = base::test::ParseJsonDict(R"({
-    "ethereum": "0xaa36a7"
-  })");
-  GetPrefs()->SetDict(kBraveWalletSelectedNetworks,
-                      std::move(default_networks));
-
-  // CASE 1: Goerli is the selected network of some origin
-  ASSERT_FALSE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
-  BraveWalletService::MigrateGoerliNetwork(GetPrefs());
-  EXPECT_EQ(network_manager_->GetCurrentChainId(
-                mojom::CoinType::ETH,
-                url::Origin::Create(GURL("https://app.uniswap.org"))),
-            mojom::kSepoliaChainId);
-  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
-
-  // CASE 2: Goerli is the default ETH network
-  GetPrefs()->SetBoolean(kBraveWalletGoerliNetworkMigrated, false);
-  BraveWalletService::MigrateGoerliNetwork(GetPrefs());
-  EXPECT_EQ(
-      *GetPrefs()->GetDict(kBraveWalletSelectedNetworks).FindString("ethereum"),
-      mojom::kSepoliaChainId);
-  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
-}
-
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
   bool success;
@@ -2564,73 +2450,6 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
 #endif
 }
 
-TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 0, 1);
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-
-  task_environment_.FastForwardBy(base::Days(1));
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 2, 2);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 3, 1);
-
-  task_environment_.FastForwardBy(base::Days(6));
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 1, 1);
-}
-
-TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-
-  task_environment_.RunUntilIdle();
-  GetLocalState()->SetTime(kBraveWalletP3AFirstUnlockTime, base::Time());
-  GetLocalState()->SetTime(kBraveWalletP3ALastUnlockTime, base::Time());
-
-  task_environment_.FastForwardBy(base::Hours(30));
-  // Existing unlock timestamp should not trigger "new" value for new user
-  // metric
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 1, 1);
-
-  task_environment_.FastForwardBy(base::Hours(30));
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 1, 2);
-}
-
-TEST_F(BraveWalletServiceUnitTest, LastUsageTimeMetric) {
-  histogram_tester_->ExpectTotalCount(kBraveWalletLastUsageTimeHistogramName,
-                                      0);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletLastUsageTimeHistogramName,
-                                        1, 1);
-
-  task_environment_.FastForwardBy(base::Days(7));
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       2, 1);
-
-  task_environment_.FastForwardBy(base::Days(7));
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       3, 1);
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       1, 7);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       1, 8);
-}
-
 TEST_F(BraveWalletServiceUnitTest, GetNftDiscoveryEnabled) {
   // Default should be off
   GetNftDiscoveryEnabled(false);
@@ -2678,32 +2497,6 @@ TEST_F(BraveWalletServiceUnitTest, SetPrivateWindowsEnabled) {
   service_->SetPrivateWindowsEnabled(false);
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletPrivateWindowsEnabled));
-}
-
-TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
-  histogram_tester_->ExpectTotalCount(kBraveWalletMonthlyHistogramName, 0);
-  histogram_tester_->ExpectTotalCount(kBraveWalletWeeklyHistogramName, 0);
-  histogram_tester_->ExpectTotalCount(kBraveWalletDailyHistogramName, 0);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletMonthlyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletWeeklyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 1);
-
-  task_environment_.FastForwardBy(base::Days(7));
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletMonthlyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletWeeklyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 1);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletMonthlyHistogramName, 1, 2);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletWeeklyHistogramName, 1, 2);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 2);
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
@@ -2892,16 +2685,14 @@ TEST_F(BraveWalletServiceUnitTest, ConvertFEVMToFVMAddress) {
   }
 }
 
-TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSolDot) {
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSol) {
   SetupWallet();
 
   std::vector<mojom::AccountInfoPtr> accounts;
   accounts.push_back(GetAccountUtils().EnsureEthAccount(0));
   accounts.push_back(GetAccountUtils().EnsureSolAccount(0));
   accounts.push_back(GetAccountUtils().EnsureFilAccount(0));
-  accounts.push_back(GetAccountUtils().EnsureDotAccount(0));
   accounts.push_back(GetAccountUtils().EnsureFilTestAccount(0));
-  accounts.push_back(GetAccountUtils().EnsureDotTestAccount(0));
 
   for (auto& acc : accounts) {
     base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
@@ -2913,6 +2704,50 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSolDot) {
     service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
     service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
     testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+}
+
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Dot) {
+  SetupWallet();
+
+  auto dot_mainnet_account = GetAccountUtils().EnsureDotAccount(0);
+  auto dot_testnet_account = GetAccountUtils().EnsureDotTestAccount(0);
+
+  auto polkadot_mainnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front();
+  auto polkadot_testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front();
+
+  SetInterceptors(
+      {{polkadot_mainnet_url,
+        ReadMetadataFixtureJson("state_getMetadata_polkadot.json")},
+       {polkadot_testnet_url,
+        ReadMetadataFixtureJson("state_getMetadata_westend.json")}});
+
+  for (auto* acc : {dot_mainnet_account.get(), dot_testnet_account.get()}) {
+    auto expected_address = std::optional<std::string>(acc->address);
+
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
+        future1;
+    service_->GenerateReceiveAddress(acc->account_id.Clone(),
+                                     future1.GetCallback());
+    auto [address1, error1] = future1.Take();
+    EXPECT_EQ(address1, expected_address);
+    EXPECT_FALSE(error1.has_value());
+
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
+        future2;
+    service_->GenerateReceiveAddress(acc->account_id.Clone(),
+                                     future2.GetCallback());
+    auto [address2, error2] = future2.Take();
+    EXPECT_EQ(address2, expected_address);
+    EXPECT_FALSE(error2.has_value());
   }
 }
 
@@ -2973,371 +2808,6 @@ TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
       }));
 }
 
-TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
-  GetPrefs()->SetBoolean(kBraveWalletIsCompressedNftMigrated, false);
-
-  std::vector<mojom::BlockchainTokenPtr> tokens;
-  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
-  EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_FALSE(tokens[0]->is_nft);
-
-  // Add a compressed Solana NFT that's not marked as compressed before
-  // migration.
-  auto nft = mojom::BlockchainToken::New();
-  nft->contract_address = "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW";
-  nft->name = "Solana NFT";
-  nft->logo = "solana.png";
-  nft->is_compressed = false;
-  nft->is_erc20 = false;
-  nft->is_erc721 = false;
-  nft->is_erc1155 = false;
-  nft->is_nft = true;
-  nft->is_spam = false;
-  nft->symbol = "SOLNFT";
-  nft->decimals = 0;
-  nft->visible = true;
-  nft->chain_id = mojom::kSolanaMainnet;
-  nft->coin = mojom::CoinType::SOL;
-
-  // Add it, but mock simple hash response saying it's not compressed
-  std::map<GURL, std::string> responses;
-  responses[GURL(
-      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
-      "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
-      R"({
-    "nfts": [
-      {
-        "nft_id": "solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "chain": "solana",
-        "contract_address": "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "token_id": null,
-        "name": "Common Water Warrior #19",
-        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
-        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
-        "contract": {
-          "type": "NonFungibleEdition",
-          "name": "Common Water Warrior #19",
-          "symbol": "DRAGON",
-          "deployed_by": null,
-          "deployed_via_contract": null,
-          "owned_by": null,
-          "has_multiple_collections": false
-        },
-        "collection": {
-          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
-          "name": null,
-          "description": null,
-          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
-          "spam_score": 73
-        },
-        "last_sale": null,
-        "first_created": {},
-        "rarity": {
-          "rank": null,
-          "score": null,
-          "unique_attributes": null
-        },
-        "royalty": [],
-        "extra_metadata": {
-          "token_program": "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY"
-        }
-      }
-    ]
-  })";
-  SetInterceptors(responses);
-  ASSERT_TRUE(AddUserAsset(nft.Clone()));
-
-  // Add non compressed solana NFT
-  auto nft2 = mojom::BlockchainToken::New();
-  nft2->contract_address = "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW";
-  nft2->name = "Solana NFT 2";
-  nft2->logo = "solana2.png";
-  nft2->is_compressed = false;
-  nft2->is_erc20 = false;
-  nft2->is_erc721 = false;
-  nft2->is_erc1155 = false;
-  nft2->is_nft = true;
-  nft2->is_spam = false;
-  nft2->symbol = "SOLNFT2";
-  nft2->decimals = 0;
-  nft2->visible = true;
-  nft2->chain_id = mojom::kSolanaMainnet;
-  nft2->coin = mojom::CoinType::SOL;
-
-  // Add it, but mock simple hash response saying it's not compressed
-  responses[GURL(
-      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
-      "assets?nft_ids=solana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
-      R"({
-    "nfts": [
-      {
-        "nft_id": "solana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "chain": "solana",
-        "contract_address": "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "token_id": null,
-        "name": "Common Water Warrior #19",
-        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
-        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
-        "contract": {
-          "type": "NonFungibleEdition",
-          "name": "Common Water Warrior #19",
-          "symbol": "DRAGON",
-          "deployed_by": null,
-          "deployed_via_contract": null,
-          "owned_by": null,
-          "has_multiple_collections": false
-        },
-        "collection": {
-          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
-          "name": null,
-          "description": null,
-          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
-          "spam_score": 73
-        }
-      }
-    ]
-  })";
-  SetInterceptors(responses);
-  ASSERT_TRUE(AddUserAsset(nft2.Clone()));
-
-  // Check that it's added
-  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
-  EXPECT_EQ(tokens.size(), 3u);
-  EXPECT_TRUE(tokens[1]->is_nft);
-  EXPECT_TRUE(tokens[1]->contract_address ==
-              "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
-  EXPECT_FALSE(tokens[1]->is_compressed);
-  EXPECT_TRUE(tokens[2]->is_nft);
-  EXPECT_TRUE(tokens[2]->contract_address ==
-              "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
-  EXPECT_FALSE(tokens[2]->is_compressed);
-
-  // Now mock the response saying it's compressed (note compression field).
-  responses[GURL(
-      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
-      "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW%"
-      "2Csolana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
-      R"({
-    "nfts": [
-      {
-        "nft_id": "solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "chain": "solana",
-        "contract_address": "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "token_id": null,
-        "name": "Common Water Warrior #19",
-        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
-        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
-        "contract": {
-          "type": "NonFungibleEdition",
-          "name": "Common Water Warrior #19",
-          "symbol": "DRAGON",
-          "deployed_by": null,
-          "deployed_via_contract": null,
-          "owned_by": null,
-          "has_multiple_collections": false
-        },
-        "collection": {
-          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
-          "name": null,
-          "description": null,
-          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
-          "spam_score": 73
-        },
-        "last_sale": null,
-        "first_created": {},
-        "rarity": {
-          "rank": null,
-          "score": null,
-          "unique_attributes": null
-        },
-        "royalty": [],
-        "extra_metadata": {
-          "compression": {
-            "compressed": true,
-            "merkle_tree": "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd",
-            "leaf_index": 1316261
-          },
-          "token_program": "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY"
-        }
-      },
-      {
-        "nft_id": "solana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "chain": "solana",
-        "contract_address": "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "token_id": null,
-        "name": "Common Water Warrior #19",
-        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
-        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
-        "contract": {
-          "type": "NonFungibleEdition",
-          "name": "Common Water Warrior #19",
-          "symbol": "DRAGON",
-          "deployed_by": null,
-          "deployed_via_contract": null,
-          "owned_by": null,
-          "has_multiple_collections": false
-        },
-        "collection": {
-          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
-          "name": null,
-          "description": null,
-          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
-          "spam_score": 73
-        }
-      }
-    ]
-  })";
-  SetInterceptors(responses);
-
-  // Reset kBraveWalletIsCompressedNftMigrated pref, and run the migration.
-  service_->MaybeMigrateCompressedNfts();
-  task_environment_.RunUntilIdle();
-
-  // Check that the NFT is now compressed, and the other is not.
-  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
-  EXPECT_EQ(tokens.size(), 3u);
-  EXPECT_TRUE(tokens[1]->contract_address ==
-              "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
-  EXPECT_TRUE(tokens[1]->is_compressed);
-  EXPECT_TRUE(tokens[2]->contract_address ==
-              "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
-  EXPECT_FALSE(tokens[2]->is_compressed);
-  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletIsCompressedNftMigrated));
-}
-
-TEST_F(BraveWalletServiceUnitTest, MaybeMigrateSPLNfts) {
-  GetPrefs()->SetBoolean(kBraveWalletIsSPLTokenProgramMigrated, false);
-
-  std::vector<mojom::BlockchainTokenPtr> tokens;
-  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
-  EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_FALSE(tokens[0]->is_nft);
-
-  // SPL NFT that's marked as kUnsupported SPL token program before migration
-  // should be migrated to kUnknown.
-  auto nft_unsupported = mojom::BlockchainToken::New();
-  nft_unsupported->contract_address =
-      "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW";
-  nft_unsupported->name = "Solana NFT";
-  nft_unsupported->logo = "solana.png";
-  nft_unsupported->is_compressed = false;
-  nft_unsupported->is_erc20 = false;
-  nft_unsupported->is_erc721 = false;
-  nft_unsupported->is_erc1155 = false;
-  nft_unsupported->is_nft = true;
-  nft_unsupported->is_spam = false;
-  nft_unsupported->symbol = "SOLNFT";
-  nft_unsupported->decimals = 0;
-  nft_unsupported->visible = true;
-  nft_unsupported->chain_id = mojom::kSolanaMainnet;
-  nft_unsupported->coin = mojom::CoinType::SOL;
-  nft_unsupported->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
-  auto added_nft_unsupported =
-      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(nft_unsupported));
-  ASSERT_TRUE(added_nft_unsupported);
-
-  // Non-NFT asset, should remain unchanged.
-  auto non_nft = mojom::BlockchainToken::New();
-  non_nft->contract_address = "F7E9L2tuxC9TQ6TMEFPNztefr9qiq6EnuJA1KgDWcpeZ";
-  non_nft->name = "Solana Token";
-  non_nft->logo = "solana_token.png";
-  non_nft->is_compressed = false;
-  non_nft->is_erc20 = true;
-  non_nft->is_erc721 = false;
-  non_nft->is_erc1155 = false;
-  non_nft->is_nft = false;
-  non_nft->is_spam = false;
-  non_nft->symbol = "SOLTOKEN";
-  non_nft->decimals = 0;
-  non_nft->visible = true;
-  non_nft->chain_id = mojom::kSolanaMainnet;
-  non_nft->coin = mojom::CoinType::SOL;
-  non_nft->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
-  auto added_non_nft =
-      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(non_nft));
-  ASSERT_TRUE(added_non_nft);
-
-  // SPL NFT already marked with a different program (e.g., kUnknown), should
-  // remain unchanged.
-  auto nft_known_program = mojom::BlockchainToken::New();
-  nft_known_program->contract_address =
-      "B29EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeX";
-  nft_known_program->name = "Known Program NFT";
-  nft_known_program->logo = "known_program.png";
-  nft_known_program->is_compressed = false;
-  nft_known_program->is_erc20 = false;
-  nft_known_program->is_erc721 = false;
-  nft_known_program->is_erc1155 = false;
-  nft_known_program->is_nft = true;
-  nft_known_program->is_spam = false;
-  nft_known_program->symbol = "KNOWNFT";
-  nft_known_program->decimals = 0;
-  nft_known_program->visible = true;
-  nft_known_program->chain_id = mojom::kSolanaMainnet;
-  nft_known_program->coin = mojom::CoinType::SOL;
-  nft_known_program->spl_token_program = mojom::SPLTokenProgram::kUnknown;
-  auto added_nft_known_program =
-      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(nft_known_program));
-  ASSERT_TRUE(added_nft_known_program);
-
-  // Case 4: Non-SOL NFT that should not be changed.
-  auto non_sol_nft = mojom::BlockchainToken::New();
-  non_sol_nft->contract_address = "0xAF5AD1e10926C0eE4aF4EDAc61Dd60E853753f8A";
-  non_sol_nft->name = "Non-SOL NFT";
-  non_sol_nft->logo = "non_sol_nft.png";
-  non_sol_nft->is_compressed = false;
-  non_sol_nft->is_erc20 = false;
-  non_sol_nft->is_erc721 = true;
-  non_sol_nft->is_erc1155 = false;
-  non_sol_nft->is_nft = true;
-  non_sol_nft->is_spam = false;
-  non_sol_nft->symbol = "NONSOLNFT";
-  non_sol_nft->decimals = 0;
-  non_sol_nft->visible = true;
-  non_sol_nft->chain_id = mojom::kMainnetChainId;
-  non_sol_nft->coin = mojom::CoinType::ETH;
-  non_sol_nft->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
-  non_sol_nft->token_id = "0x1";
-  auto added_non_sol_nft =
-      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(non_sol_nft));
-  ASSERT_TRUE(added_non_sol_nft);
-
-  // Run the migration.
-  service_->MaybeMigrateSPLTokenProgram();
-  task_environment_.RunUntilIdle();
-
-  // Verify that the NFT marked as kUnsupported is now set to kUnknown.
-  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
-  EXPECT_EQ(tokens.size(), 4u);  // Initial token + 3 added assets on Solana
-  EXPECT_EQ(tokens[1]->contract_address,
-            "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
-  EXPECT_TRUE(tokens[1]->is_nft);
-  EXPECT_EQ(tokens[1]->spl_token_program, mojom::SPLTokenProgram::kUnknown);
-
-  // Verify that the non-NFT token's SPLTokenProgram remains unchanged.
-  EXPECT_EQ(tokens[2]->contract_address,
-            "F7E9L2tuxC9TQ6TMEFPNztefr9qiq6EnuJA1KgDWcpeZ");
-  EXPECT_FALSE(tokens[2]->is_nft);
-  EXPECT_EQ(tokens[2]->spl_token_program, mojom::SPLTokenProgram::kUnsupported);
-
-  // Verify that the NFT already with a known program remains unchanged.
-  EXPECT_EQ(tokens[3]->contract_address,
-            "B29EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeX");
-  EXPECT_TRUE(tokens[3]->is_nft);
-  EXPECT_EQ(tokens[3]->spl_token_program, mojom::SPLTokenProgram::kUnknown);
-
-  // Verify that the non-SOL NFT remains unchanged.
-  GetUserAssets(mojom::kMainnetChainId, mojom::CoinType::ETH, &tokens);
-  EXPECT_EQ(tokens.size(), 3u);
-  EXPECT_EQ(tokens[2]->contract_address,
-            "0xAF5AD1e10926C0eE4aF4EDAc61Dd60E853753f8A");
-  EXPECT_TRUE(tokens[2]->is_nft);
-  EXPECT_EQ(tokens[2]->spl_token_program, mojom::SPLTokenProgram::kUnsupported);
-
-  // Migration should be marked as done.
-  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletIsSPLTokenProgramMigrated));
-}
-
 TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {
   SetupWallet();
 
@@ -3396,6 +2866,80 @@ TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {
       service_->GetNetworkForAccountOnOriginSync(origin, ada_testnet_account_id)
           ->chain_id,
       mojom::kCardanoTestnet);
+}
+
+TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
+  SetupWallet();
+  auto delegate =
+      std::make_unique<testing::NiceMock<MockBraveWalletServiceDelegate>>();
+  service_->SetDelegateForTesting(std::move(delegate));
+  auto* delegate_ptr = static_cast<MockBraveWalletServiceDelegate*>(
+      service_->GetDelegateForTesting());
+  auto account = GetAccountUtils().EnsureEthAccount(0);
+  ASSERT_TRUE(account);
+
+  const GURL expected_tx_url("chrome://wallet/crypto/accounts/" +
+                             account->address + "/transactions");
+
+  struct TestCase {
+    mojom::TransactionStatus status;
+    uint32_t times_called;
+  };
+
+  std::vector<TestCase> test_cases = {
+      {mojom::TransactionStatus::Unapproved, 0},
+      {mojom::TransactionStatus::Approved, 0},
+      {mojom::TransactionStatus::Rejected, 0},
+      {mojom::TransactionStatus::Submitted, 0},
+      {mojom::TransactionStatus::Confirmed, 1},
+      {mojom::TransactionStatus::Error, 1},
+      {mojom::TransactionStatus::Dropped, 1},
+      {mojom::TransactionStatus::Signed, 0},
+  };
+
+  for (auto test_case : test_cases) {
+    SCOPED_TRACE(test_case.status);
+    auto tx_info = mojom::TransactionInfo::New(
+        "tx_meta_id", account->account_id.Clone(), "",
+        mojom::TxDataUnion::NewEthTxData(
+            mojom::TxData::New(mojom::kLocalhostChainId, "0x0", "0x1", "0x5208",
+                               "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                               "0x0", std::vector<uint8_t>())),
+        test_case.status, mojom::TransactionType::ETHSend,
+        std::vector<std::string>(), std::vector<std::string>(),
+        base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
+        nullptr, mojom::kLocalhostChainId, std::nullopt, false, nullptr,
+        nullptr);
+
+    EXPECT_CALL(*delegate_ptr,
+                DisplayTxNotification(test_case.status, account->name,
+                                      tx_info->id, expected_tx_url))
+        .Times(test_case.times_called);
+    tx_service_->OnTransactionStatusChanged(tx_info.Clone());
+    GetTxServiceObserverReceiver().FlushForTesting();
+    testing::Mock::VerifyAndClearExpectations(delegate_ptr);
+  }
+}
+
+TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
+  // Wallet autolock is turned off in tests by default.
+  EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
+  task_environment_.FastForwardBy(base::Minutes(20));
+  EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
+
+  auto scoped_enable_autolock =
+      BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting();
+
+  auto another_wallet_service = std::make_unique<BraveWalletService>(
+      url_loader_factory_.GetSafeWeakWrapper(),
+      BraveWalletServiceDelegate::Create(profile_.get()), profile_->GetPrefs(),
+      &local_state_);
+  SetupWallet(another_wallet_service->keyring_service());
+
+  // Wallet is locked after some period which matches production behavior.
+  EXPECT_FALSE(another_wallet_service->keyring_service()->IsLockedSync());
+  task_environment_.FastForwardBy(base::Minutes(20));
+  EXPECT_TRUE(another_wallet_service->keyring_service()->IsLockedSync());
 }
 
 }  // namespace brave_wallet

@@ -41,7 +41,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
-import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -53,7 +52,6 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -85,7 +83,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -113,8 +110,6 @@ public class Utils {
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
     public static final BigInteger MAX_UINT256 =
             BigInteger.ONE.shiftLeft(256).subtract(BigInteger.ONE);
-
-    public static int[] P3ACoinTypes = {CoinType.ETH, CoinType.SOL, CoinType.FIL};
 
     public static List<String> getRecoveryPhraseAsList(final String recoveryPhrase) {
         final String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -1103,7 +1098,6 @@ public class Utils {
      *
      * @param activityRef Weak reference to Brave Wallet base activity.
      * @param tokenType Token type used for filtering (e.g. {@code TokenType.NON_NFTS}).
-     * @param allNetworks List of all networks, used to log P3A records.
      * @param selectedNetwork Currently selected network.
      * @param accountInfos Array of account info.
      * @param filterByTokens Tokens used for fetching prices and balances. It may be {@code null}
@@ -1119,7 +1113,6 @@ public class Utils {
     public static void getTxExtraInfo(
             WeakReference<BraveWalletBaseActivity> activityRef,
             TokenUtils.TokenType tokenType,
-            List<NetworkInfo> allNetworks,
             NetworkInfo selectedNetwork,
             AccountInfo[] accountInfos,
             BlockchainToken[] filterByTokens,
@@ -1219,41 +1212,8 @@ public class Utils {
                                         getNativeAssetsBalancesContext.nativeAssetsBalances,
                                         getBlockchainTokensBalancesContext
                                                 .blockchainTokensBalances);
-                                logP3ARecords(
-                                        JavaUtils.asArray(getNativeAssetsBalancesContext),
-                                        JavaUtils.asArray(getBlockchainTokensBalancesContext),
-                                        activityRef,
-                                        allNetworks,
-                                        selectedNetwork);
                             });
                 });
-    }
-
-    /**
-     * Gets P3A networks (i.e. networks with chain Id contained in {@code
-     * WalletConstants.KNOWN_TEST_CHAIN_IDS)} excluding testnet chains by default. Testnet chain
-     * counting can be enabled using the switch `--p3a-count-wallet-test-networks`.
-     *
-     * @param allNetworks Given network list that will be filtered.
-     * @param callback Callback containing a filtered list of P3A networks.
-     */
-    public static void getP3ANetworks(
-            List<NetworkInfo> allNetworks, AsyncUtils.Callback1<List<NetworkInfo>> callback) {
-        ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
-        boolean countTestNetworks =
-                CommandLine.getInstance()
-                        .hasSwitch(BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
-        for (NetworkInfo network : allNetworks) {
-            // Exclude testnet chain data by default.
-            // Testnet chain counting can be enabled via the
-            // --p3a-count-wallet-test-networks switch
-            if (countTestNetworks
-                    || !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(network.chainId)) {
-                relevantNetworks.add(network);
-            }
-        }
-
-        callback.call(relevantNetworks);
     }
 
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {
@@ -1310,46 +1270,6 @@ public class Utils {
         }
 
         return num.doubleValue();
-    }
-
-    private static void logP3ARecords(
-            AsyncUtils.GetNativeAssetsBalancesResponseContext[] nativeAssetsBalancesResponses,
-            AsyncUtils.GetBlockchainTokensBalancesResponseContext[]
-                    blockchainTokensBalancesResponses,
-            WeakReference<BraveWalletBaseActivity> activityRef,
-            List<NetworkInfo> allNetworks,
-            NetworkInfo selectedNetwork) {
-        BraveWalletBaseActivity activity = activityRef.get();
-        if (activity == null
-                || activity.isFinishing()
-                || JavaUtils.anyNull(activity.getBraveWalletP3A())) {
-            return;
-        }
-        BraveWalletP3a braveWalletP3A = activity.getBraveWalletP3A();
-
-        AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(1);
-
-        AsyncUtils.GetP3ABalancesContext getP3ABalancesContext =
-                new AsyncUtils.GetP3ABalancesContext(multiResponse.singleResponseComplete);
-        BalanceHelper.getP3ABalances(
-                activityRef, allNetworks, selectedNetwork, getP3ABalancesContext);
-
-        multiResponse.setWhenAllCompletedAction(
-                () -> {
-                    HashMap<Integer, HashSet<String>> activeAddresses =
-                            getP3ABalancesContext.activeAddresses;
-                    // P3A active accounts
-                    BalanceHelper.updateActiveAddresses(
-                            nativeAssetsBalancesResponses,
-                            blockchainTokensBalancesResponses,
-                            activeAddresses);
-                    for (int coinType : P3ACoinTypes) {
-                        HashSet<String> active = activeAddresses.get(coinType);
-                        if (active != null) {
-                            braveWalletP3A.recordActiveWalletCount(active.size(), coinType);
-                        }
-                    }
-                });
     }
 
     /**

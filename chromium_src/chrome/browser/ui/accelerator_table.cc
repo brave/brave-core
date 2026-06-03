@@ -3,17 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/accelerator_table.h"
-
 #include "base/containers/extend.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/ui_features.h"
 
-#define GetAcceleratorList GetAcceleratorList_ChromiumImpl
 #include <chrome/browser/ui/accelerator_table.cc>
-#undef GetAcceleratorList
 
 namespace {
 
@@ -41,6 +36,10 @@ constexpr AcceleratorMapping kBraveAcceleratorMap[] = {
 
 }  // namespace
 
+// Our own version of GetAcceleratorList(). This removes the upstream
+// accelerator for new split tab on Windows and Linux, as it conflicts with our
+// existing Tor shortcut (see `kBraveAcceleratorMap`) and adds our own
+// accelerators.
 std::vector<AcceleratorMapping> GetAcceleratorList() {
   std::vector<AcceleratorMapping> accelerator_list(
       GetAcceleratorList_ChromiumImpl());

@@ -8,7 +8,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_test_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
@@ -152,17 +152,18 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   brave::FarblingPRNG prng;
   brave::FarblingPRNG prng_incognito;
   EXPECT_TRUE(brave_farbling_service->MakePseudoRandomGeneratorForURL(
-      farbling_url(), &prng));
+      farbling_url(), {}, &prng));
   EXPECT_TRUE(brave_farbling_service_incognito->MakePseudoRandomGeneratorForURL(
-      farbling_url(), &prng_incognito));
+      farbling_url(), {}, &prng_incognito));
   EXPECT_NE(prng, prng_incognito);
 
   // Compare the farbling tokens.
   const auto farbling_token = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile1), farbling_url());
+      HostContentSettingsMapFactory::GetForProfile(profile1), farbling_url(),
+      {});
   const auto farbling_token_incognito = brave_shields::GetFarblingToken(
       HostContentSettingsMapFactory::GetForProfile(incognito_profile),
-      farbling_url());
+      farbling_url(), {});
   EXPECT_FALSE(farbling_token.is_zero());
   EXPECT_FALSE(farbling_token_incognito.is_zero());
   EXPECT_NE(farbling_token, farbling_token_incognito);
@@ -198,16 +199,18 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
   brave::FarblingPRNG prng_1;
   brave::FarblingPRNG prng_2;
   EXPECT_TRUE(brave_farbling_service_profile_1->MakePseudoRandomGeneratorForURL(
-      farbling_url(), &prng_1));
+      farbling_url(), {}, &prng_1));
   EXPECT_TRUE(brave_farbling_service_profile_2->MakePseudoRandomGeneratorForURL(
-      farbling_url(), &prng_2));
+      farbling_url(), {}, &prng_2));
   EXPECT_NE(prng_1, prng_2);
 
   // Compare the farbling tokens.
   const auto farbling_token_1 = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile_1), farbling_url());
+      HostContentSettingsMapFactory::GetForProfile(profile_1), farbling_url(),
+      {});
   const auto farbling_token_2 = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile_2), farbling_url());
+      HostContentSettingsMapFactory::GetForProfile(profile_2), farbling_url(),
+      {});
   EXPECT_FALSE(farbling_token_1.is_zero());
   EXPECT_FALSE(farbling_token_2.is_zero());
   EXPECT_NE(farbling_token_1, farbling_token_2);

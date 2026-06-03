@@ -9,14 +9,12 @@
 #include "chrome/browser/ui/webui/side_panel/reading_list/reading_list.mojom.h"
 #include "chrome/browser/ui/webui/side_panel/reading_list/reading_list_page_handler.h"
 #include "content/public/browser/visibility.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ReadingListUI;
 
-class BraveReadingListPageHandler : public ReadingListPageHandler,
-                                    public content::WebContentsObserver {
+class BraveReadingListPageHandler : public ReadingListPageHandler {
  public:
   BraveReadingListPageHandler(
       mojo::PendingReceiver<reading_list::mojom::PageHandler> receiver,

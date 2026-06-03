@@ -14,6 +14,7 @@
 #include "ios/web/js_messaging/web_frame_internal.h"
 #include "ios/web/js_messaging/web_view_js_utils.h"
 #include "ios/web/public/favicon/favicon_status.h"
+#include "ios/web/public/find_in_page/crw_find_interaction.h"
 #include "ios/web/public/js_messaging/web_frames_manager.h"
 #include "ios/web/public/ui/crw_web_view_proxy.h"
 #include "ios/web/web_state/ui/crw_web_controller.h"
@@ -197,6 +198,10 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 
 - (UIViewPrintFormatter*)viewPrintFormatter {
   return [self.webState->GetView() viewPrintFormatter];
+}
+
+- (BOOL)isFindNavigatorVisible {
+  return self.webState->GetFindInteraction().findNavigatorVisible;
 }
 
 @end

@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 // Styled Components
 import {
@@ -11,11 +13,11 @@ import {
   Title,
   HeaderButton,
   CloseIcon,
-  BackIcon,
   Modal,
   Divider,
   ModalContent,
 } from './style'
+import { Row } from '../../shared/style'
 
 export interface Props {
   children?: React.ReactNode
@@ -27,6 +29,7 @@ export interface Props {
   hideHeader?: boolean
   headerPaddingVertical?: string
   headerPaddingHorizontal?: string
+  headerPaddingMobile?: string
   height?: string
 }
 
@@ -39,6 +42,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       width,
       headerPaddingVertical,
       headerPaddingHorizontal,
+      headerPaddingMobile,
       showDivider,
       hideHeader,
       onClose,
@@ -75,13 +79,24 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
             <Header
               headerPaddingHorizontal={headerPaddingHorizontal}
               headerPaddingVertical={headerPaddingVertical}
+              headerPaddingMobile={headerPaddingMobile}
             >
-              {onBack && (
-                <HeaderButton onClick={onBack}>
-                  <BackIcon />
-                </HeaderButton>
-              )}
-              <Title>{title}</Title>
+              <Row
+                width='unset'
+                gap='16px'
+              >
+                {onBack && (
+                  <Button
+                    onClick={onBack}
+                    kind='outline'
+                    size='small'
+                    fab
+                  >
+                    <Icon name='arrow-left' />
+                  </Button>
+                )}
+                <Title>{title}</Title>
+              </Row>
               <HeaderButton onClick={onClose}>
                 <CloseIcon />
               </HeaderButton>
@@ -89,8 +104,9 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
           )}
           {showDivider && <Divider />}
           <ModalContent
-            fullWidth
-            flex={1}
+            justifyContent='flex-start'
+            width='100%'
+            height='100%'
           >
             {children}
           </ModalContent>

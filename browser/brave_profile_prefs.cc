@@ -29,6 +29,7 @@
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
+#include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -40,7 +41,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -48,7 +48,7 @@
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/psst/buildflags/buildflags.h"
-#include "brave/components/query_filter/pref_names.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/serp_metrics/pref_names.h"
@@ -57,14 +57,15 @@
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "build/build_config.h"
+#include "chrome/browser/new_tab_page/ntp_pref_names.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
-#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/history/core/common/pref_names.h"
 #include "components/ntp_tiles/tile_type.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
@@ -167,10 +168,6 @@ using extensions::FeatureSwitch;
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-#include "brave/components/email_aliases/email_aliases_service.h"
-#endif
-
 namespace brave {
 
 namespace {
@@ -193,11 +190,6 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
                                 base::Value(false));
   registry->SetDefaultPrefValue(feed::prefs::kEnableSnippetsByDse,
-                                base::Value(false));
-
-  // Explicitly disable safe browsing extended reporting by default in case they
-  // change it in upstream.
-  registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
                                 base::Value(false));
 #else
   // Turn on most visited mode on NTP by default.
@@ -225,6 +217,15 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Disable safebrowsing reporting
   registry->SetDefaultPrefValue(
       prefs::kSafeBrowsingExtendedReportingOptInAllowed, base::Value(false));
+
+  // Explicitly disable safe browsing extended reporting by default in case they
+  // change it in upstream.
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
+                                base::Value(false));
+
+  // Disable safe browsing deep scanning per security/privacy team.
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingDeepScanningEnabled,
+                                base::Value(false));
 
 #if defined(TOOLKIT_VIEWS)
   // Disable side search by default.
@@ -271,6 +272,12 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Disabled due to crash with tab group dragging.
   // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
   registry->SetDefaultPrefValue(prefs::kSplitViewDragAndDropEnabled,
+                                base::Value(false));
+
+  // Disables WebRTC logs collection.
+  registry->SetDefaultPrefValue(prefs::kWebRtcEventLogCollectionAllowed,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(prefs::kWebRtcTextLogCollectionAllowed,
                                 base::Value(false));
 }
 
@@ -355,6 +362,7 @@ void RegisterProfilePrefsForMigration(
 #endif
 
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
+  brave_shields::AdBlockPrefService::RegisterProfilePrefsForMigration(registry);
 
   // Added 2024-05
   ipfs::RegisterDeprecatedIpfsPrefs(registry);
@@ -431,16 +439,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
+  registry->RegisterIntegerPref(prefs::kBraveHistoryRetentionDays, 90);
   registry->RegisterBooleanPref(
       query_filter::kTrackingQueryParametersFilteringEnabled, true);
   registry->RegisterBooleanPref(
       global_privacy_control::kGlobalPrivacyControlEnabled, true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
-                                true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,
-                                true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
-                                false);
   registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
                                 false);
   registry->RegisterIntegerPref(brave_shields::prefs::kShieldsDisabledCount, 0);
@@ -589,14 +592,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   web_discovery::WebDiscoveryService::RegisterProfilePrefs(registry);
 #endif
 
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
-#endif
-
 #if defined(TOOLKIT_VIEWS)
   registry->RegisterBooleanPref(prefs::kPinShareMenuButton, true);
   registry->RegisterBooleanPref(prefs::kPinPwaInstallButton, true);
 #endif  // defined(TOOLKIT_VIEWS)
+
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kShredBrowsingHistoryEnabled, false);
 
   OverrideDefaultPrefValues(registry);
 }

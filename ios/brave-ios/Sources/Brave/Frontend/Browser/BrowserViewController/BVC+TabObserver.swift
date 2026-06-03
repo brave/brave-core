@@ -386,6 +386,27 @@ extension BrowserViewController: TabObserver {
       updateStatusBarOverlayColor()
     }
   }
+
+  public func tab(_ tab: some TabState, frameDidBecomeAvailable frame: WebFrame) {
+    // when user taps back button to go back to the previous page from an activated
+    // reader mode page, most of the `TabObserver` methods are fired before
+    // web main frame is ready,
+    // For this case, we need to check readability after main frame did became available
+    guard FeatureList.kUseProfileWebViewConfiguration.enabled,
+      frame.isMainFrame,
+      let readerMode = tab.readerMode,
+      let url = tab.visibleURL,
+      !url.isNewTabURL,
+      !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode),
+      !url.isFileURL
+    else { return }
+    Task {
+      await readerMode.checkReadability()
+      if tabManager.selectedTab === tab {
+        topToolbar.updateReaderModeState(readerMode.state)
+      }
+    }
+  }
 }
 
 extension BrowserViewController {

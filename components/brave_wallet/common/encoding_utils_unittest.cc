@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 
+#include <string_view>
+
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"

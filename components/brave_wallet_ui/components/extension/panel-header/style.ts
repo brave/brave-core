@@ -3,21 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import CloseIcon from '../../../assets/svg-icons/close.svg'
+
+// Shared Styles
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   hasSearch: boolean
 }
-
-export const HeaderTitle = styled.span`
-  font-family: Poppins;
-  font-size: 18px;
-  line-height: 26px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-`
 
 export const HeaderWrapper = styled.div<StyleProps>`
   display: flex;
@@ -25,7 +19,7 @@ export const HeaderWrapper = styled.div<StyleProps>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: 1px solid ${leo.color.divider.subtle};
   padding: 0px 12px;
   margin-bottom: ${(p) => (p.hasSearch ? '0px' : '8px')};
 `

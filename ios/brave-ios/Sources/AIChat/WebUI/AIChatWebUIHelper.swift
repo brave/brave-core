@@ -12,7 +12,6 @@ public enum AIChatWebUIPageAction {
     case photos
   }
   case handleVoiceRecognitionRequest(_ completion: (String?) -> Void)
-  case handleFileUploadRequest(FileUploadMode, _ completion: ([AiChat.UploadedFile]?) -> Void)
   case presentSettings
   case presentPremiumPaywall
   case presentManagePremium
@@ -30,6 +29,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
   public var tabsForPrivateMode: (_ isPrivate: Bool) -> [any TabState] = { _ in [] }
   public var profileController: BraveProfileController
   public var attachPrivacySensitiveTabHelpers: ((any TabState, any Profile) -> Void)?
+  public var webDelegateForTab: ((any TabState) -> AIChatWebDelegate?)?
 
   public init?(
     tab: some TabState,
@@ -122,7 +122,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     guard
       let childHelper = AIChatWebUIHelper(
         tab: tab,
-        webDelegate: webDelegate,
+        webDelegate: webDelegateForTab?(tab) ?? webDelegate,
         braveTalkJavascript: braveTalkJavascript,
         profileController: profileController
       ),
@@ -139,17 +139,6 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
       return
     }
     handler?(tab, .handleVoiceRecognitionRequest(completion))
-  }
-
-  public func handleFileUploadRequest(
-    _ useMediaCapture: Bool,
-    completionHandler completion: @escaping ([AiChat.UploadedFile]?) -> Void
-  ) {
-    guard let tab else {
-      completion(nil)
-      return
-    }
-    handler?(tab, .handleFileUploadRequest(useMediaCapture ? .camera : .photos, completion))
   }
 
   public func openAIChatSettings() {

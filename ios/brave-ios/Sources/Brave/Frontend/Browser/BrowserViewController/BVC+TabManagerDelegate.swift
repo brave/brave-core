@@ -26,7 +26,9 @@ extension BrowserViewController: TabManagerDelegate {
     if tab.profile.prefs.isPlaylistAvailable {
       tab.playlist = .init(tab: tab)
     }
-    tab.youtubeQualityTabHelper = .init(tab: tab)
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.youtubeQualityTabHelper = .init(tab: tab)
+    }
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
@@ -59,6 +61,11 @@ extension BrowserViewController: TabManagerDelegate {
       // but in case its called incorrectly, avoid returning any private tabs
       guard let self, !isPrivate else { return [] }
       return tabManager.allTabs.filter { !$0.isPrivate }
+    }
+    tab.aiChatWebUIHelper?.webDelegateForTab = { detachedTab in
+      /// If AIChat created a hidden tab for history or bookmarks, we need to
+      /// use it's `AIChatWebDelegate` to fetch content from.
+      detachedTab.leoTabHelper
     }
     tab.walletWebUIHelper = .init(
       tab: tab,
@@ -109,7 +116,7 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    tab.braveSearch = .init(tab: tab, rewards: rewards)
+    tab.braveSearch = .init(tab: tab, rewards: rewards, searchEngines: profile.searchEngines)
     tab.braveSearch?.presentSearchResultClickedInfoBar = { [weak self] in
       guard let self else { return }
       let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
@@ -118,6 +125,20 @@ extension BrowserViewController: TabManagerDelegate {
         }
       )
       show(toast: searchResultClickedInfobar, duration: nil)
+    }
+    tab.braveSearch?.presentInQuickView = { [weak self] url, tab in
+      guard let self else { return }
+      let quickViewController = QuickViewController(
+        url: url,
+        profileController: profileController
+      ) { [weak self] request in
+        guard let self else { return }
+        self.tabManager.addTabAndSelect(
+          request,
+          isPrivate: self.privateBrowsingManager.isPrivateBrowsing
+        )
+      }
+      self.present(quickViewController, animated: true)
     }
   }
 
@@ -367,8 +388,11 @@ extension BrowserViewController: TabManagerDelegate {
       searchResultAdClickedInfoBar = nil
     }
 
-    newTabTakeoverInfoBar?.dismiss(false)
-    newTabTakeoverInfoBar = nil
+    let isNewTabURL = tabManager.selectedTab?.visibleURL?.isNewTabURL
+    if isNewTabURL != true {
+      newTabTakeoverInfoBar?.dismiss(false)
+      newTabTakeoverInfoBar = nil
+    }
   }
 
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {

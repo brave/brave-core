@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/ml_types.h"
 
 namespace brave_ads {
 

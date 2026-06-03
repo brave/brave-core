@@ -1,0 +1,93 @@
+diff --git a/chrome/updater/mac/.install.sh b/chrome/updater/mac/.install.sh
+index 3b1874d09fca0cf88e361927dfea7c4273790030..67479bdad6fbd5e95231e0ecc0dae081801f606e 100755
+--- a/chrome/updater/mac/.install.sh
++++ b/chrome/updater/mac/.install.sh
+@@ -322,7 +322,7 @@ main() {
+   # --ignore-times, which is desirable, as it forces rsync to copy files even
+   # when their sizes and modification times are identical, as their content
+   # still may be different.
+-  readonly RSYNC_FLAGS="--ignore-times --links --perms --recursive --times"
++  readonly RSYNC_FLAGS="--ignore-times --links $(if [[ ${EUID} -eq 0 ]]; then echo "--perms --recursive --times"; else echo "--no-perms --executability --chmod=u=rwX,go=rX --recursive"; fi)"
+ 
+   note "update_dmg_mount_point = ${update_dmg_mount_point}"
+ 
+@@ -337,7 +337,7 @@ main() {
+   # The update to install.
+ 
+   # update_app is the path to the new version of the .app.
+-  local update_app="${update_dmg_mount_point}/${APP_DIR}"
++  local update_app="${update_dmg_mount_point}/${PRODUCT_NAME}.app"
+   note "update_app = ${update_app}"
+ 
+   # Make sure that it's an absolute path.
+@@ -455,15 +455,68 @@ main() {
+   # directory unusable even for an instant.
+   if [[ -n "${update_versioned_dir}" ]]; then
+     note "rsyncing versioned directory"
+-    if ! rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
++    if ! perl -e 'alarm shift; exec @ARGV' "${RSYNC_TIMEOUT:-600}" rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
+                                               "${new_versioned_dir}"; then
++      local rsync_status=${PIPESTATUS[0]}
++      # The assignment we just made set PIPESTATUS[0] to 0. Restore it. The
++      # leading `!` keeps `set -e` from terminating the script.
++      ! (exit "${rsync_status}")
+       err "rsync of versioned directory failed, status ${PIPESTATUS[0]}"
+ 
+       # If the rsync of a new-layout versioned directory failed, remove it.
+       # The incomplete version would break code signature validation.
+       note "cleaning up new_versioned_dir"
+       rm -rf "${new_versioned_dir}"
+-      exit 12
++      if [[ ${rsync_status} -eq 142 ]]; then
++      # rsync timed out.
++        exit 80
++      fi
++      # Try various remedies; Report in exit code what would have worked.
++      local mkdir_stderr
++      if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
++      then
++        # If `mkdir` fails, then other remedies won't work either; Exit with a
++        # code that tells us the cause.
++        case "${mkdir_stderr}" in
++          *"Read-only file system"*)
++            exit 70 ;;
++          *"No space left on device"*|*"Disc quota exceeded"*)
++            exit 71 ;;
++          *"Operation not permitted"*)
++            exit 72 ;;
++          *"Permission denied"*)
++            exit 73 ;;
++          *"File exists"*|*"Not a directory"*)
++            exit 74 ;;
++          *)
++            exit 75 ;;
++        esac
++      fi
++      # `mkdir` succeeded. Retry the original rsync. If it succeeds, then clean
++      # up and return an exit code that tells us that this fix is worth keeping.
++      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
++                                              "${new_versioned_dir}"; then
++        rm -rf "${new_versioned_dir}"
++        exit 76
++      fi
++      # Another potential remedy is to rsync into the parent directory. As
++      # before, if this succeeds, clean up and return a unique exit code that
++      # tells us that this workaround is worth keeping.
++      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
++                                              "${installed_versions_dir}"; then
++        rm -rf "${new_versioned_dir}"
++        exit 77
++      fi
++      # Try the same rsync-into-parent, but from a clean slate.
++      rm -rf "${new_versioned_dir}"
++      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
++                                              "${installed_versions_dir}"; then
++        rm -rf "${new_versioned_dir}"
++        exit 78
++      fi
++      # None of the attempted remedies worked.
++      rm -rf "${new_versioned_dir}"
++      exit 79
+     fi
+   fi
+ 

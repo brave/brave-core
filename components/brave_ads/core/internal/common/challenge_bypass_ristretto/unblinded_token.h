@@ -23,7 +23,7 @@ class VerificationKey;
 // the client and server both "know" this value, it should nevertheless not be
 // sent between the two.
 
-class UnblindedToken {
+class UnblindedToken final {
  public:
   UnblindedToken();
   explicit UnblindedToken(const std::string& unblinded_token_base64);

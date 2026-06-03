@@ -8,21 +8,16 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "components/tabs/public/tab_interface.h"
-#include "content/public/browser/security_principal.h"
-#include "content/public/browser/site_instance.h"
-#include "content/public/browser/web_contents.h"
 #include "ui/compositor/compositor.h"
 #include "ui/views/widget/widget.h"
 
 namespace containers {
 
 ContainersBookmarkMenuModelDelegate::ContainersBookmarkMenuModelDelegate(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const GURL& bookmark_url)
     : browser_(browser), bookmark_url_(bookmark_url) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
@@ -43,36 +38,22 @@ void ContainersBookmarkMenuModelDelegate::OnNoContainerSelected() {
   brave::OpenUrlWithoutContainer(base::to_address(browser_), bookmark_url_);
 }
 
+void ContainersBookmarkMenuModelDelegate::OnNewTemporaryContainerSelected() {
+  CHECK(browser_);
+  brave::CreateTemporaryContainerAndOpenUrl(base::to_address(browser_),
+                                            bookmark_url_);
+}
+
 base::flat_set<std::string>
 ContainersBookmarkMenuModelDelegate::GetCurrentContainerIds() {
-  if (!browser_) {
-    CHECK_IS_TEST();
-    return {};
-  }
-
-  tabs::TabInterface* active_tab = browser_->GetActiveTabInterface();
-  if (!active_tab) {
-    return {};
-  }
-
-  content::WebContents* contents = active_tab->GetContents();
-  if (!contents) {
-    return {};
-  }
-
-  const auto storage_partition_config = contents->GetSiteInstance()
-                                            ->GetSecurityPrincipal()
-                                            .GetStoragePartitionConfig();
-  if (!IsContainersStoragePartition(storage_partition_config)) {
-    return {};
-  }
-
-  return {storage_partition_config.partition_name()};
+  // The bookmark menu is not associated with any tab or link, so there are no
+  // current container IDs.
+  return {};
 }
 
 Browser* ContainersBookmarkMenuModelDelegate::GetBrowserToOpenSettings() {
   CHECK(browser_);
-  return base::to_address(browser_);
+  return browser_->GetBrowserForMigrationOnly();
 }
 
 float ContainersBookmarkMenuModelDelegate::GetScaleFactor() {

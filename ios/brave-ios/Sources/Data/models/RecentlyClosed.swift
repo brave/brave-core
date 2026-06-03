@@ -82,7 +82,7 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
         // validate baseDomain matches
         guard let url = URL(string: recentlyClosedTabItem.url),
           let baseDomain = url.baseDomain,
-          baseDomains.contains(where: { $0 == baseDomain })
+          baseDomains.contains(baseDomain)
         else {
           // eTLD of the url does not match
           continue

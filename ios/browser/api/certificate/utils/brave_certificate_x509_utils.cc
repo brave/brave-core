@@ -300,6 +300,9 @@ std::string SignatureAlgorithmDigestToName(
     case bssl::SignatureAlgorithm::kRsaPssSha512:
       return "SHA-512";
     case bssl::SignatureAlgorithm::kMtcProofDraftDavidben08:
+    case bssl::SignatureAlgorithm::kMldsa44:
+    case bssl::SignatureAlgorithm::kMldsa65:
+    case bssl::SignatureAlgorithm::kMldsa87:
       NOTREACHED();
   }
 }
@@ -322,6 +325,9 @@ std::string SignatureAlgorithmIdToName(
     case bssl::SignatureAlgorithm::kEcdsaSha512:
       return "ECDSA";
     case bssl::SignatureAlgorithm::kMtcProofDraftDavidben08:
+    case bssl::SignatureAlgorithm::kMldsa44:
+    case bssl::SignatureAlgorithm::kMldsa65:
+    case bssl::SignatureAlgorithm::kMldsa87:
       NOTREACHED();
   }
 }

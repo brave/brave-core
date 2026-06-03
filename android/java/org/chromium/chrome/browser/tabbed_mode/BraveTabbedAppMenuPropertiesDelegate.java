@@ -39,9 +39,9 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
-import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.HomepageManager;
+import org.chromium.chrome.browser.hub.HubManager;
 import org.chromium.chrome.browser.incognito.IncognitoUtils;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
@@ -54,7 +54,6 @@ import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.tinker_tank.TinkerTankDelegate;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -235,7 +234,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<LayoutStateProvider> layoutStateProvider,
             NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            WebFeedSnackbarController.FeedLauncher feedLauncher,
             ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             @NonNull
@@ -243,6 +241,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             incognitoReauthControllerOneshotSupplier,
             MonotonicObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             PageZoomManager pageZoomManager,
+            OneshotSupplier<HubManager> hubManagerSupplier,
             @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider) {
         super(
                 context,
@@ -254,12 +253,12 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 appMenuDelegate,
                 layoutStateProvider,
                 bookmarkModelSupplier,
-                feedLauncher,
                 modalDialogManager,
                 snackbarManager,
                 incognitoReauthControllerOneshotSupplier,
                 readAloudControllerSupplier,
                 pageZoomManager,
+                hubManagerSupplier,
                 openInAppMenuItemProvider);
 
         mBraveAppMenuDelegate = appMenuDelegate;
@@ -588,9 +587,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         // Move to other window
-        if (MultiWindowUtils.instanceSwitcherEnabled()
-                && MultiWindowUtils.isMultiInstanceApi31Enabled()
-                && !DeviceInfo.isAutomotive()) {
+        if (MultiWindowUtils.isMultiInstanceApi31Enabled() && !DeviceInfo.isAutomotive()) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
@@ -620,15 +617,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         AppMenuHandler.AppMenuItemType.STANDARD,
                         buildModelForStandardMenuItem(
                                 R.id.open_history_menu_id, R.string.menu_history, 0)));
-
-        // Tinker Tank
-        if (TinkerTankDelegate.isEnabled()) {
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.tinker_tank_menu_id, R.string.menu_tinker_tank, 0)));
-        }
 
         // Downloads
         modelList.add(
@@ -735,16 +723,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.disable_price_tracking_menu_id,
                                 R.string.disable_price_tracking_menu_item,
                                 0)));
-
-        // AI / AI PDF
-        if (ChromeFeatureList.isEnabled(
-                ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY)) {
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.ai_web_menu_id, R.string.menu_summarize_with_ai, 0)));
-        }
 
         // Find in page
         modelList.add(

@@ -75,21 +75,14 @@ class NightModeTabHelper: TabObserver {
 
     // Site domains that should NOT inject night mode
     let siteList = Set([
-      "twitter", "youtube", "twitch",
-      "soundcloud", "github", "netflix",
-      "imdb", "mail.proton", "amazon",
-      "x",
+      // Popular sites that already have dark mode
+      "twitter", "youtube", "twitch", "soundcloud", "github", "netflix", "imdb", "mail.proton", "x",
+      "search.brave", "google", "qwant", "startpage", "duckduckgo",
 
-      // Search Engines
-      "search.brave", "google", "qwant",
-      "startpage", "duckduckgo", "presearch",
-
-      // Dev sites
-      "macrumors", "9to5mac", "developer.apple",
-
-      // Casual sites
-      "wowhead", "xbox", "thegamer",
-      "cineplex", "starwars",
+      // Sites that have webcompat issues with DarkReader, document the particular webcompat issue
+      // with each site so that it may be tested again when DarkReader is updated.
+      "developer.apple",  // Some images disappear
+      "cineplex",  // Trailer thumbnails disappear
     ])
 
     return siteList.contains(domainName)

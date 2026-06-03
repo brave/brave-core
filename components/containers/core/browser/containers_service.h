@@ -15,6 +15,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -62,13 +63,29 @@ class ContainersService : public KeyedService {
   // the synced list, otherwise a placeholder from `CreateUnknownContainer`.
   void MarkContainerUsed(std::string_view container_id);
 
+  // Creates a temporary container and persists it locally.
+  mojom::ContainerPtr CreateAndPersistTemporaryContainer();
+
   // Returns the runtime container with the given `id`. Runtime containers are
   // containers that are currently in use by the user. This can be a synced
   // container or a removed, but still used container.
   mojom::ContainerPtr GetRuntimeContainerById(std::string_view id) const;
 
+  // Returns the runtime container with the given `name`.
+  mojom::ContainerPtr GetRuntimeContainerByName(std::string_view name) const;
+
   // Returns the list of user-editable containers.
   std::vector<mojom::ContainerPtr> GetContainers() const;
+
+  // Returns ids of containers that have been used in this profile.
+  std::vector<std::string> GetUsedContainerIds() const;
+
+  // Whether the Containers controls (menus, management UI) should be shown.
+  bool ShouldShowContainerControls() const;
+
+  // Returns the container id for the given container specifier.
+  std::optional<std::string> GetContainerIdFromContainerSpecifier(
+      const ContainerSpecifier& container_specifier) const;
 
   void ScheduleOrphanedContainersCleanupForTesting();
 

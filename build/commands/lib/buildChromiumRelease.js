@@ -153,7 +153,7 @@ function buildChromiumRelease(buildOptions = {}) {
       'Warning: the command resets all changes in src/ folder.\n'
         + 'src/brave stays untouched. Pass --force to continue.',
     )
-    return 1
+    process.exit(1)
   }
   config.buildConfig = 'Release'
   config.isChromium = true
@@ -211,7 +211,6 @@ function buildChromiumRelease(buildOptions = {}) {
   Log.progressScope('make archive', () => {
     chromiumConfig.processArtifacts()
   })
-  return 0
 }
 
 export default buildChromiumRelease

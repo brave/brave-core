@@ -10,6 +10,7 @@
 #include <array>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -22,9 +23,13 @@
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace {
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
+
+// IN-TEST
+base::OnceClosure* g_on_file_loaded_callback_for_testing_ = nullptr;
 
 // This is the SHA-256 of the query-filter component's public key.
 inline constexpr std::array<uint8_t, 32> kQueryFilterComponentPublicKeySHA256 =
@@ -43,6 +48,14 @@ std::string ReadQueryFilterFile(const base::FilePath& path) {
 
 void OnQueryFilterFileRead(const base::Version& version,
                            const std::string& json_data) {
+  absl::Cleanup cleanup_for_test_only = []() {
+    if (g_on_file_loaded_callback_for_testing_) {
+      CHECK_IS_TEST();
+      CHECK(!g_on_file_loaded_callback_for_testing_->is_null());
+      std::move(*g_on_file_loaded_callback_for_testing_).Run();
+    }
+  };
+
   if (json_data.empty()) {
     return;
   }
@@ -51,6 +64,7 @@ void OnQueryFilterFileRead(const base::Version& version,
 
   if (!data->PopulateDataFromComponent(json_data)) {
     LOG(WARNING) << "Failed to populate data from component";
+    return;
   }
   data->UpdateVersion(version);
 }
@@ -129,6 +143,12 @@ QueryFilterComponentInstallerPolicy::GetInstallerAttributes() const {
 
 bool QueryFilterComponentInstallerPolicy::IsBraveComponent() const {
   return true;
+}
+
+void QueryFilterComponentInstallerPolicy::
+    SetOnFileLoadedCallbackForTesting(  // IN-TEST
+        base::OnceClosure* callback) {
+  g_on_file_loaded_callback_for_testing_ = callback;
 }
 
 void RegisterQueryFilterComponent(

@@ -40,7 +40,7 @@ class BitcoinTxManager : public TxManager,
   BitcoinTxManager(TxService& tx_service,
                    BitcoinWalletService& bitcoin_wallet_service,
                    KeyringService& keyring_service,
-                   TxStorageDelegate& delegate,
+                   TxStorage& tx_storage,
                    AccountResolverDelegate& account_resolver_delegate);
   ~BitcoinTxManager() override;
   BitcoinTxManager(const BitcoinTxManager&) = delete;

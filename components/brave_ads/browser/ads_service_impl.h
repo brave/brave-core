@@ -11,6 +11,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -22,9 +23,11 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_observer.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -33,11 +36,13 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+#include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/content_settings_type_set.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -47,6 +52,13 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/base/idle/idle.h"
+
+namespace brave_rewards {
+class RewardsService;
+}  // namespace brave_rewards
+namespace history {
+class HistoryService;
+}  // namespace history
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/content/rewards_service.h"
@@ -61,30 +73,41 @@ class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
+namespace brave_policy {
+class PolicyInitializationWaiter;
+}  // namespace brave_policy
+
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
+class BraveAdsAdsServiceImplTest;
 class DeviceId;
 class ResourceComponent;
+class ApplicationStateMonitor;
+class HttpClient;
 
-class AdsServiceImpl final : public AdsService,
-                             public bat_ads::mojom::BatAdsClient,
-                             public bat_ads::mojom::BatAdsObserver,
-                             public ApplicationStateObserver,
-                             public ResourceComponentObserver,
+class AdsServiceImpl : public AdsService,
+                       public bat_ads::mojom::BatAdsClient,
+                       public bat_ads::mojom::BatAdsObserver,
+                       public ApplicationStateObserver,
+                       public ResourceComponentObserver,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-                             public brave_rewards::RewardsServiceObserver,
+                       public brave_rewards::RewardsServiceObserver,
 #endif
-                             public content_settings::Observer {
+                       public content_settings::Observer {
  public:
-  // `http_client`, `resource_component`, `history_service`, and
-  // `host_content_settings` can be `nullptr` in tests. `rewards_service`
-  // can be `nullptr` when Rewards is unsupported or disabled by policy.
+  // `http_client`, `history_service`, and `host_content_settings` can be
+  // `nullptr` in tests. `rewards_service` can be `nullptr` when Rewards is
+  // unsupported or disabled by policy. `policy_initialization_waiter` defers
+  // the initial ads-eligibility gate until the policy bundle has been merged
+  // into the managed pref store.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService& prefs,
       PrefService& local_state,
+      std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+          policy_initialization_waiter,
       std::unique_ptr<HttpClient> http_client,
       std::unique_ptr<VirtualPrefProvider::Delegate>
           virtual_pref_provider_delegate,
@@ -105,30 +128,32 @@ class AdsServiceImpl final : public AdsService,
 
   ~AdsServiceImpl() override;
 
+  // AdsService:
+  bool IsIneligibleToStart() const override;
+  bool IsInitialized() const override;
+
   // KeyedService:
   void Shutdown() override;
 
  private:
-  bool IsBatAdsServiceBound() const;
-
-  void RegisterResourceComponents();
-  void RegisterResourceComponentsForCurrentCountryCode();
-  void RegisterResourceComponentsForDefaultLanguageCode();
+  friend class BraveAdsAdsServiceImplTest;
 
   void Migrate();
+
+  void RegisterResourceComponents();
+  void RegisterCountryResourceComponent();
+  void UnregisterCountryResourceComponent();
+  void RegisterLanguageResourceComponent();
+  void UnregisterLanguageResourceComponent();
 
   bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
   bool UserHasOptedInToSearchResultAds() const;
 
-  void InitializeNotificationsForCurrentProfile();
-
-  void GetDeviceIdAndMaybeStartBatAdsService();
-  void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
-
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
+  void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
   void StartBatAdsService();
   void DisconnectHandler();
   void BatAdsServiceCreatedCallback();
@@ -140,6 +165,7 @@ class AdsServiceImpl final : public AdsService,
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
 
+  void NotifyAdsServiceIneligibleToStart();
   void NotifyDidInitializeAdsService();
   void NotifyDidShutdownAdsService();
   void NotifyDidClearAdsServiceData();
@@ -173,7 +199,7 @@ class AdsServiceImpl final : public AdsService,
   void InitializeNewTabPageAdsPrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
   void InitializeSearchResultAdsPrefChangeRegistrar();
-  void OnOptedInToAdsPrefChanged(const std::string& path);
+  void OnAdsPrefChanged(const std::string& path);
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
@@ -387,6 +413,8 @@ class AdsServiceImpl final : public AdsService,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
 
+  bool is_ineligible_to_start_ = false;
+
   bool is_bat_ads_initialized_ = false;
 
   bool is_shutting_down_ = false;
@@ -398,6 +426,8 @@ class AdsServiceImpl final : public AdsService,
   PrefChangeRegistrar local_state_pref_change_registrar_;
 
   mojom::SysInfo sys_info_;
+
+  std::optional<std::string> cached_device_id_;
 
   base::RepeatingTimer idle_state_timer_;
   ui::IdleState last_idle_state_ = ui::IdleState::IDLE_STATE_ACTIVE;
@@ -420,6 +450,7 @@ class AdsServiceImpl final : public AdsService,
 
   const std::string channel_name_;
 
+  const raw_ptr<ResourceComponent> resource_component_;  // Not owned.
   base::ScopedObservation<ResourceComponent, ResourceComponentObserver>
       resource_component_observation_{this};
 
@@ -441,12 +472,18 @@ class AdsServiceImpl final : public AdsService,
   const base::FilePath ads_service_path_;
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  const raw_ptr<brave_rewards::RewardsService> rewards_service_;  // Not owned.
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
   base::ScopedObservation<ApplicationStateMonitor, ApplicationStateObserver>
       application_state_monitor_observation_{this};
+
+  // Reset eagerly in Shutdown() so the observer is detached from
+  // PolicyService before the destructor runs.
+  std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+      policy_initialization_waiter_;
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};

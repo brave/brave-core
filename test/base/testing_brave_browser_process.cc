@@ -18,7 +18,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
 namespace tor {
@@ -124,10 +124,12 @@ TestingBraveBrowserProcess::brave_referrals_service() {
   return nullptr;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 brave_stats::BraveStatsUpdater*
 TestingBraveBrowserProcess::brave_stats_updater() {
   return nullptr;
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 brave_ads::BraveStatsHelper*
@@ -152,7 +154,7 @@ TestingBraveBrowserProcess::speedreader_rewriter_service() {
 }
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 brave_vpn::BraveVPNConnectionManager*
 TestingBraveBrowserProcess::brave_vpn_connection_manager() {
   return brave_vpn_connection_manager_.get();

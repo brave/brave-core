@@ -6,9 +6,15 @@
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
 source_set("prefs") {
-  sources = [ "browser_prefs_impl.mm" ]
+  sources = [
+    "browser_prefs_impl.mm",
+    "pref_names.h",
+    "shared_pref_names_bridge.h",
+    "shared_pref_names_bridge.mm",
+  ]
   deps = [
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
@@ -26,6 +32,8 @@ source_set("prefs") {
     "//brave/components/constants",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/browser",
+    "//brave/components/email_aliases/buildflags",
+    "//brave/components/global_privacy_control",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
@@ -33,6 +41,7 @@ source_set("prefs") {
     "//brave/components/playlist/core/common",
     "//brave/components/skus/browser",
     "//brave/ios/browser/brave_stats",
+    "//brave/ios/browser/youtube",
     "//components/omnibox/browser",
     "//components/pref_registry",
     "//components/prefs",
@@ -50,5 +59,8 @@ source_set("prefs") {
   }
   if (enable_brave_talk) {
     deps += [ "//brave/components/brave_talk" ]
+  }
+  if (enable_email_aliases) {
+    deps += [ "//brave/components/email_aliases:service" ]
   }
 }

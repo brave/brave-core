@@ -71,10 +71,17 @@ ViewCounterService::ViewCounterService(
       background_images_service_);
 
   if (ads_service_) {
-    ads_service_->AddObserver(this);
+    ads_service_observation_.Observe(ads_service_.get());
+    if (ads_service_->IsInitialized()) {
+      // If `AdsService` was initialized before observer registration, the
+      // `ViewCounterService::OnDidInitializeAdsService` callback will not be
+      // called so we call it explicitly.
+      OnDidInitializeAdsService();
+    }
   }
 
-  host_content_settings_map_->AddObserver(this);
+  host_content_settings_map_observation_.Observe(
+      host_content_settings_map_.get());
 
   new_tab_count_state_ =
       std::make_unique<WeeklyStorage>(local_state, prefs::kNewTabsCreated);
@@ -106,13 +113,7 @@ ViewCounterService::ViewCounterService(
   UpdateP3AValues();
 }
 
-ViewCounterService::~ViewCounterService() {
-  if (ads_service_) {
-    ads_service_->RemoveObserver(this);
-  }
-
-  host_content_settings_map_->RemoveObserver(this);
-}
+ViewCounterService::~ViewCounterService() = default;
 
 void ViewCounterService::OnDidInitializeAdsService() {
   background_images_service_->RegisterSponsoredImagesComponent();
@@ -232,6 +233,8 @@ ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
 }
 
 void ViewCounterService::Shutdown() {
+  ads_service_observation_.Reset();
+  host_content_settings_map_observation_.Reset();
   ntp_background_images_service_observation_.Reset();
 }
 

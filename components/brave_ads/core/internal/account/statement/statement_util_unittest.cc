@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/test/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
@@ -20,7 +22,7 @@ namespace brave_ads {
 
 class BraveAdsStatementUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
+TEST_F(BraveAdsStatementUtilTest, MaybeGetNextPaymentDate) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("31 January 2020"));
 
@@ -30,11 +32,13 @@ TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
                                 next_payment_token_redemption_at);
 
   // Act
-  const base::Time next_payment_date = GetNextPaymentDate(/*transactions=*/{});
+  const std::optional<base::Time> next_payment_date =
+      MaybeGetNextPaymentDate(/*transactions=*/{});
 
   // Assert
+  ASSERT_TRUE(next_payment_date);
   EXPECT_EQ(test::TimeFromUTCString("7 March 2020 23:59:59.999"),
-            next_payment_date);
+            *next_payment_date);
 }
 
 TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {

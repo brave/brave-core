@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
-#include <algorithm>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -21,6 +21,7 @@
 #include "base/strings/string_view_util.h"
 #include "base/types/optional_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"

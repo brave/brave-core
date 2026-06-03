@@ -48,10 +48,7 @@ export const ToSectionWrapper = styled(Column)`
 `
 
 export const Input = styled.input`
-  font-family: 'Poppins';
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
   outline: none;
   background-image: none;
   box-shadow: none;
@@ -90,15 +87,13 @@ export const AmountInput = styled(Input)<{
 `
 
 export const PresetButton = styled(WalletButton)`
+  font: ${leo.font.xSmall.semibold};
   outline: none;
   border: none;
   background-color: ${leo.color.neutral[10]};
   border-radius: 4px;
-  font-family: Poppins;
   font-size: 10px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   padding: 4px 6px;
   color: ${leo.color.neutral[50]};
   text-transform: uppercase;

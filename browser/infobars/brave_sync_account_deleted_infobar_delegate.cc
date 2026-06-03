@@ -13,7 +13,6 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -24,8 +23,7 @@
 // static
 void BraveSyncAccountDeletedInfoBarDelegate::Create(
     content::WebContents* active_web_contents,
-    Profile* profile,
-    Browser* browser) {
+    Profile* profile) {
   brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
   const bool notification_pending =
       brave_sync_prefs.IsSyncAccountDeletedNoticePending();
@@ -47,21 +45,15 @@ void BraveSyncAccountDeletedInfoBarDelegate::Create(
     return;
   }
 
-  // Create custom confirm infobar
-  std::unique_ptr<infobars::InfoBar> infobar(
-      std::make_unique<BraveSyncAccountDeletedInfoBar>(
-          base::WrapUnique<ConfirmInfoBarDelegate>(
-              new BraveSyncAccountDeletedInfoBarDelegate(browser, profile))));
-
-  // Show infobar
-  infobar_manager->AddInfoBar(std::move(infobar));
+  infobar_manager->AddInfoBar(std::make_unique<BraveSyncAccountDeletedInfoBar>(
+      base::WrapUnique<BraveConfirmInfoBarDelegate>(
+          new BraveSyncAccountDeletedInfoBarDelegate(profile))));
 }
 
 // Start class impl
 BraveSyncAccountDeletedInfoBarDelegate::BraveSyncAccountDeletedInfoBarDelegate(
-    Browser* browser,
     Profile* profile)
-    : ConfirmInfoBarDelegate(), profile_(profile), browser_(browser) {}
+    : profile_(profile) {}
 
 BraveSyncAccountDeletedInfoBarDelegate::
     ~BraveSyncAccountDeletedInfoBarDelegate() {}

@@ -5,11 +5,13 @@
 ## Test in Isolation with Fakes
 
 **Prefer fakes over real dependencies:**
+
 - Prevents cascading test failures
 - Produces more maintainable, modular code
 - Makes tests faster and more deterministic
 
 **Example: Use MockTool instead of real navigation tool:**
+
 ```cpp
 // ✅ GOOD - Control exact timing with MockTool
 auto mock_tool = std::make_unique<MockTool>();
@@ -30,17 +32,20 @@ std::move(tool_callback).Run(/* result */);
 ## Test the API, Not Implementation
 
 **Focus on public interfaces:**
+
 - Allows internal implementation changes without breaking tests
 - Provides accurate usage examples for other developers
 - Makes tests more maintainable
 
 **BAD:**
+
 ```cpp
 // ❌ Testing internal implementation details
 EXPECT_EQ(object->private_state_, 42);
 ```
 
 **GOOD:**
+
 ```cpp
 // ✅ Testing public API behavior
 EXPECT_TRUE(object->IsReady());
@@ -56,6 +61,7 @@ EXPECT_EQ(object->GetValue(), 42);
 When testing HTTP headers from pages with subresources, use per-domain maps:
 
 **BAD:**
+
 ```cpp
 // ❌ WRONG - Global expected value, race condition with subresources
 std::string expected_header_;
@@ -70,6 +76,7 @@ void OnRequest(const HttpRequest& request) {
 ```
 
 **GOOD:**
+
 ```cpp
 // ✅ CORRECT - Per-domain expected values
 std::map<std::string, std::string> expected_headers_;
@@ -84,7 +91,8 @@ void OnRequest(const HttpRequest& request) {
 }
 ```
 
-Subresource requests can arrive out-of-order, so per-resource expected values prevent race conditions.
+Subresource requests can arrive out-of-order, so per-resource expected values
+prevent race conditions.
 
 ---
 
@@ -92,9 +100,11 @@ Subresource requests can arrive out-of-order, so per-resource expected values pr
 
 ## Throttle Testing - Use Large Throttle Windows
 
-**Problem:** Throttle timers start when a fetch happens, not when test timing checks begin.
+**Problem:** Throttle timers start when a fetch happens, not when test timing
+checks begin.
 
 **BAD:**
+
 ```cpp
 // ❌ WRONG - 500ms throttle, but WaitForSelector might take 250ms!
 const int kThrottleMs = 500;
@@ -103,6 +113,7 @@ NonBlockingDelay(base::Milliseconds(250));  // Checking too early!
 ```
 
 **GOOD:**
+
 ```cpp
 // ✅ CORRECT - Large throttle window accounts for polling time
 const int kThrottleMs = 2000;
@@ -110,7 +121,8 @@ WaitForSelectorBlocked();  // Takes ~200-300ms
 NonBlockingDelay(base::Milliseconds(1000));  // Still well within throttle
 ```
 
-Polling-based waits consume time from the throttle window, so use throttle times much larger than expected polling durations.
+Polling-based waits consume time from the throttle window, so use throttle times
+much larger than expected polling durations.
 
 ---
 
@@ -122,14 +134,18 @@ Polling-based waits consume time from the throttle window, so use throttle times
 
 ### ✅ Search for Existing Chromium Patterns
 
-**Before implementing a fix for async/timing issues, search the Chromium codebase for similar patterns.**
+**Before implementing a fix for async/timing issues, search the Chromium
+codebase for similar patterns.**
 
-When you encounter a testing problem (flakiness, timing issues, async operations), ask:
+When you encounter a testing problem (flakiness, timing issues, async
+operations), ask:
+
 1. Does Chromium have tests with similar requirements?
 2. What patterns do they use to solve this?
 3. Is there a more deterministic, event-driven approach?
 
 **Research workflow:**
+
 1. Generate an initial fix proposal
 2. Search Chromium codebase for similar test scenarios
 3. Compare your approach to existing Chromium patterns
@@ -139,9 +155,11 @@ When you encounter a testing problem (flakiness, timing issues, async operations
 
 ### ✅ Include Chromium Code References
 
-**When following a Chromium pattern, include a reference in your code comments.**
+**When following a Chromium pattern, include a reference in your code
+comments.**
 
 **GOOD - Reference in code comment:**
+
 ```cpp
 // NOTE: Replace() is an IPC to the renderer that updates the DOM
 // asynchronously. We use a MutationObserver to wait for the DOM to update
@@ -153,6 +171,7 @@ static constexpr char kWaitForTextScript[] = R"(
 ```
 
 **GOOD - Reference in commit message:**
+
 ```
 Fix flaky RewriteInPlace_ContentEditable test
 
@@ -166,7 +185,9 @@ service_worker_internals_ui_browsertest.cc.
 
 ## ✅ Always Check `EvalJs` Results
 
-**When using `EvalJs` in tests, always check the result with `EXPECT_TRUE`/`EXPECT_EQ`.** An unchecked `EvalJs` call silently swallows errors - any gibberish expression would appear to "pass" the test.
+**When using `EvalJs` in tests, always check the result with
+`EXPECT_TRUE`/`EXPECT_EQ`.** An unchecked `EvalJs` call silently swallows
+errors - any gibberish expression would appear to "pass" the test.
 
 ```cpp
 // ❌ WRONG - unchecked EvalJs, silently ignores exceptions
@@ -183,7 +204,8 @@ EXPECT_EQ(true, content::EvalJs(web_contents,
 
 ## ❌ Don't Duplicate Test Constants - Expose via Header
 
-**Don't duplicate constants between production code and test code.** If both need the same value, expose it via a shared header file.
+**Don't duplicate constants between production code and test code.** If both
+need the same value, expose it via a shared header file.
 
 ```cpp
 // ❌ WRONG - same constant duplicated in test
@@ -203,7 +225,9 @@ inline constexpr base::TimeDelta kCleanupDelay = base::Seconds(30);
 
 ## ❌ Don't Depend on `//chrome` from Components Tests
 
-**Component-level unit tests must not depend on `//chrome`.** If you need objects typically created by Chrome infrastructure, create them manually in the test.
+**Component-level unit tests must not depend on `//chrome`.** If you need
+objects typically created by Chrome infrastructure, create them manually in the
+test.
 
 ```cpp
 // ❌ WRONG - depending on //chrome from components test
@@ -223,7 +247,9 @@ auto settings_map = base::MakeRefCounted<HostContentSettingsMap>(
 
 ## ✅ Prefer `*_for_testing()` Accessors Over `FRIEND_TEST`
 
-**When tests need access to a single private member, provide a `*_for_testing()` accessor** returning a reference instead of adding multiple `FRIEND_TEST` macros.
+**When tests need access to a single private member, provide a `*_for_testing()`
+accessor** returning a reference instead of adding multiple `FRIEND_TEST`
+macros.
 
 ```cpp
 // ❌ WRONG - proliferating FRIEND_TEST macros
@@ -247,7 +273,9 @@ class BraveTab {
 
 ## ✅ Verify Tests Actually Test What They Claim
 
-**When using test-only controls (globals, mocks, feature overrides), verify the test still exercises the code path it claims to test.** A test that disables the code under test proves nothing.
+**When using test-only controls (globals, mocks, feature overrides), verify the
+test still exercises the code path it claims to test.** A test that disables the
+code under test proves nothing.
 
 ```cpp
 // ❌ WRONG - test disables the code it claims to test
@@ -264,7 +292,8 @@ void SetUp() { g_disable_stats_for_testing = true; }
 
 ## ✅ Re-enable Test-Only Globals in `TearDown`
 
-**When a test disables functionality via a global in `SetUp()`, always re-enable it in `TearDown()`** to avoid leaking state to other tests.
+**When a test disables functionality via a global in `SetUp()`, always re-enable
+it in `TearDown()`** to avoid leaking state to other tests.
 
 ```cpp
 // ❌ WRONG - leaks state to other tests
@@ -281,7 +310,8 @@ void TearDown() { g_disable_auto_start = false; }
 
 ## ✅ Include Diagnostic State in Test Assertions
 
-**Test assertions should include diagnostic context using the `<<` operator** so failures are debuggable without re-running under a debugger.
+**Test assertions should include diagnostic context using the `<<` operator** so
+failures are debuggable without re-running under a debugger.
 
 ```cpp
 // ❌ WRONG - no context on failure
@@ -298,7 +328,9 @@ EXPECT_EQ(result.status, Status::kSuccess)
 
 ## ✅ Use `SCOPED_TRACE` with `base::Location` in Browser Test Helpers
 
-**Use `SCOPED_TRACE(base::Location::Current())` in browser test helper functions** to get file/line information in failure output. Without this, failures in helpers only show the helper's line, not the caller.
+**Use `SCOPED_TRACE(base::Location::Current())` in browser test helper
+functions** to get file/line information in failure output. Without this,
+failures in helpers only show the helper's line, not the caller.
 
 ```cpp
 // ❌ WRONG - failure points to helper, not caller
@@ -320,7 +352,9 @@ void VerifyTabCount(Browser* browser, int expected,
 
 ## ✅ Unit Tests Required for Bad/Invalid Input
 
-**Tool and handler implementations must have unit tests covering bad/invalid input scenarios,** not just happy paths. Test with malformed data, empty inputs, null values, and out-of-range parameters.
+**Tool and handler implementations must have unit tests covering bad/invalid
+input scenarios,** not just happy paths. Test with malformed data, empty inputs,
+null values, and out-of-range parameters.
 
 ---
 
@@ -328,7 +362,9 @@ void VerifyTabCount(Browser* browser, int expected,
 
 ## ✅ Relocate Test Checks When Refactoring
 
-**When refactoring removes a test check, that check must be relocated to the appropriate new location, not simply deleted.** Test coverage should never decrease during refactoring. If a check is no longer applicable, document why.
+**When refactoring removes a test check, that check must be relocated to the
+appropriate new location, not simply deleted.** Test coverage should never
+decrease during refactoring. If a check is no longer applicable, document why.
 
 ---
 
@@ -336,7 +372,10 @@ void VerifyTabCount(Browser* browser, int expected,
 
 ## ✅ Verify Ordering in Tests That Return Ordered Data
 
-**When testing functions that return ordered data, explicitly verify the order of results in the test,** not just the content. If the function is supposed to return results in a specific order (e.g., most recent first), the test should assert that order.
+**When testing functions that return ordered data, explicitly verify the order
+of results in the test,** not just the content. If the function is supposed to
+return results in a specific order (e.g., most recent first), the test should
+assert that order.
 
 ```cpp
 // ❌ WRONG - only checks content exists
@@ -357,7 +396,9 @@ EXPECT_EQ(results[2].url, "https://a.com");  // oldest
 
 ## ✅ Use `base::test::ParseJsonDict` for Test Comparisons
 
-**In tests comparing JSON values, use `base::test::ParseJsonDict()`** for simpler, more readable assertions. **Never use `testing::HasSubstr`** to validate JSON -- it is fragile and doesn't verify structure.
+**In tests comparing JSON values, use `base::test::ParseJsonDict()`** for
+simpler, more readable assertions. **Never use `testing::HasSubstr`** to
+validate JSON -- it is fragile and doesn't verify structure.
 
 ```cpp
 // ❌ WRONG - substring matching on JSON
@@ -380,7 +421,8 @@ EXPECT_EQ(actual, base::test::ParseJsonDict(
 
 ## ✅ Verify Negative Expectations in Tests
 
-**When testing error/failure paths, verify that side effects that should NOT occur are explicitly checked.** Don't only test the positive path.
+**When testing error/failure paths, verify that side effects that should NOT
+occur are explicitly checked.** Don't only test the positive path.
 
 ```cpp
 // ❌ WRONG - only checks the error is returned, doesn't verify no side effects
@@ -397,7 +439,9 @@ EXPECT_FALSE(result.has_value());
 
 ## ✅ Test All Fields in Serialization Tests
 
-**Verify ALL fields in serialization/deserialization tests, including secondary fields like favicon URLs.** Also always test deserialization of invalid/malformed input.
+**Verify ALL fields in serialization/deserialization tests, including secondary
+fields like favicon URLs.** Also always test deserialization of
+invalid/malformed input.
 
 ```cpp
 // ❌ WRONG - only checks primary fields
@@ -421,7 +465,8 @@ EXPECT_FALSE(bad_result.has_value());
 
 ## ✅ Use Parameterized Tests for Similar Scenarios
 
-**When testing multiple similar scenarios with different inputs/outputs, use parameterized tests instead of separate test functions.**
+**When testing multiple similar scenarios with different inputs/outputs, use
+parameterized tests instead of separate test functions.**
 
 ```cpp
 // ❌ WRONG - separate tests for each variation
@@ -457,7 +502,8 @@ TEST_F(MyTest, HandleAllTypes) {
 
 ## ✅ Extract Repetitive Test Assertions into Helpers
 
-**When tests repeat the same assertion blocks (e.g., checking content block types and fields), extract into reusable helper functions.**
+**When tests repeat the same assertion blocks (e.g., checking content block
+types and fields), extract into reusable helper functions.**
 
 ```cpp
 // ❌ WRONG - repeated assertion blocks
@@ -482,7 +528,8 @@ VerifyImageBlock(*blocks[1], "img.png");
 
 ## ✅ Use `ASSERT_TRUE` Before Accessing Optional Values
 
-**In tests, use `ASSERT_TRUE(optional.has_value())` before accessing an optional's value.** Do not use `value_or("")` as a fallback -- it hides bugs.
+**In tests, use `ASSERT_TRUE(optional.has_value())` before accessing an
+optional's value.** Do not use `value_or("")` as a fallback -- it hides bugs.
 
 ```cpp
 // ❌ WRONG - hides missing values
@@ -499,7 +546,9 @@ EXPECT_EQ(map[*entry->uuid], expected_content);
 
 ## ✅ Test Both Sides of Guard Conditions
 
-**When testing code with a guard condition (e.g., blocked during loading, enabled after), test both sides:** verify the behavior is blocked when the guard is active AND that it proceeds correctly when the guard is released.
+**When testing code with a guard condition (e.g., blocked during loading,
+enabled after), test both sides:** verify the behavior is blocked when the guard
+is active AND that it proceeds correctly when the guard is released.
 
 ```cpp
 // ❌ WRONG - only tests the happy path
@@ -524,7 +573,11 @@ TEST_F(MyTest, ActionSucceedsAfterLoad) {
 
 ## ❌ Don't Simulate Impossible Production States in Tests
 
-**Tests should not construct states that cannot occur in production.** If a test needs to set up a scenario, it should follow the same code path as production rather than directly manipulating internal state into an impossible configuration. Tests for impossible states prove nothing and can give false confidence.
+**Tests should not construct states that cannot occur in production.** If a test
+needs to set up a scenario, it should follow the same code path as production
+rather than directly manipulating internal state into an impossible
+configuration. Tests for impossible states prove nothing and can give false
+confidence.
 
 ---
 
@@ -532,7 +585,9 @@ TEST_F(MyTest, ActionSucceedsAfterLoad) {
 
 ## ✅ Use `WillOnce` Instead of `WillRepeatedly` for Single Calls
 
-**When a mock method is expected to be called exactly once, use `WillOnce` instead of `WillRepeatedly`.** `WillRepeatedly` hides bugs where the method is called more times than expected.
+**When a mock method is expected to be called exactly once, use `WillOnce`
+instead of `WillRepeatedly`.** `WillRepeatedly` hides bugs where the method is
+called more times than expected.
 
 ```cpp
 // ❌ WRONG - hides extra calls
@@ -548,7 +603,9 @@ EXPECT_CALL(mock, Fetch(_)).WillOnce(Return(result));
 
 ## ✅ Verify Observable Side Effects in Browser Tests
 
-**Browser tests should verify observable side effects** (e.g., a tab actually appeared, a URL actually loaded, a dialog was shown) rather than just checking return values. This catches integration issues that unit tests miss.
+**Browser tests should verify observable side effects** (e.g., a tab actually
+appeared, a URL actually loaded, a dialog was shown) rather than just checking
+return values. This catches integration issues that unit tests miss.
 
 ```cpp
 // ❌ WRONG - only checks return value
@@ -566,7 +623,9 @@ EXPECT_EQ(GetActiveWebContents()->GetURL(), url);
 
 ## ✅ Bug-Fix PRs Must Include Test Coverage
 
-**Every bug-fix PR should include a test that reproduces the specific bug scenario being fixed.** Without this, there's no guarantee the bug won't regress. The test should fail without the fix and pass with it.
+**Every bug-fix PR should include a test that reproduces the specific bug
+scenario being fixed.** Without this, there's no guarantee the bug won't
+regress. The test should fail without the fix and pass with it.
 
 ---
 
@@ -574,7 +633,9 @@ EXPECT_EQ(GetActiveWebContents()->GetURL(), url);
 
 ## ✅ When Fixing a Test, Run All Tests in the Same File
 
-**When fixing a flaky or failing test, run all tests in the same file across all test fixtures,** not just the single test being changed. This catches regressions or interactions between tests that share fixtures.
+**When fixing a flaky or failing test, run all tests in the same file across all
+test fixtures,** not just the single test being changed. This catches
+regressions or interactions between tests that share fixtures.
 
 ---
 
@@ -582,7 +643,10 @@ EXPECT_EQ(GetActiveWebContents()->GetURL(), url);
 
 ## ✅ Use ASSERT for Preconditions That Subsequent Code Depends On
 
-**When a test check guards state that later code depends on, use `ASSERT_*` (fatal) instead of `EXPECT_*` (non-fatal).** A failing `EXPECT` allows continued execution, which can crash on null dereferences or produce confusing secondary failures.
+**When a test check guards state that later code depends on, use `ASSERT_*`
+(fatal) instead of `EXPECT_*` (non-fatal).** A failing `EXPECT` allows continued
+execution, which can crash on null dereferences or produce confusing secondary
+failures.
 
 ```cpp
 // ❌ WRONG - EXPECT allows crash on null dereference
@@ -600,7 +664,11 @@ item->DoSomething();  // only reached if item is valid
 
 ## ✅ Use `DETACH_FROM_SEQUENCE()` in Database Constructors
 
-**Database classes that use `SEQUENCE_CHECKER` should call `DETACH_FROM_SEQUENCE(sequence_checker_)` in their constructor.** This allows the sequence checker to re-bind to whatever sequence first uses the object, which is essential for mock-based testing where objects may be created on a different sequence than they're used on.
+**Database classes that use `SEQUENCE_CHECKER` should call
+`DETACH_FROM_SEQUENCE(sequence_checker_)` in their constructor.** This allows
+the sequence checker to re-bind to whatever sequence first uses the object,
+which is essential for mock-based testing where objects may be created on a
+different sequence than they're used on.
 
 ```cpp
 // ❌ WRONG - sequence checker binds to construction thread
@@ -620,7 +688,10 @@ MyDatabase::MyDatabase() {
 
 ## ✅ Use `TEST()` Instead of `TEST_F()` for Empty Fixtures
 
-**When a test fixture class is empty (inherits from `testing::Test` with no added members, `SetUp()`, or `TearDown()`), use the plain `TEST()` macro.** `TEST_F` is only needed when the fixture provides shared state or configuration across tests.
+**When a test fixture class is empty (inherits from `testing::Test` with no
+added members, `SetUp()`, or `TearDown()`), use the plain `TEST()` macro.**
+`TEST_F` is only needed when the fixture provides shared state or configuration
+across tests.
 
 ```cpp
 // ❌ WRONG - empty fixture with TEST_F
@@ -642,7 +713,10 @@ TEST(MyUtilsTest, ParsesValidInput) {
 
 ## ✅ Use `NOTREACHED()` with Request Body in Test Mock Server Handlers
 
-**In test mock servers and URL interceptors, use `NOTREACHED() << request.content` (or equivalent) as the default handler to catch unhandled requests.** This makes test failures immediately obvious and includes the request body in the failure message for debugging.
+**In test mock servers and URL interceptors, use
+`NOTREACHED() << request.content` (or equivalent) as the default handler to
+catch unhandled requests.** This makes test failures immediately obvious and
+includes the request body in the failure message for debugging.
 
 ```cpp
 // ❌ WRONG - silently returns empty response for unhandled requests
@@ -665,7 +739,9 @@ std::unique_ptr<HttpResponse> HandleRequest(const HttpRequest& request) {
 
 ## ✅ Use Descriptive Test Method Names
 
-**Test method names should be long and descriptive enough to explain the scenario without reading the test body.** Do not sacrifice clarity to save characters. Long names are preferable to short, cryptic names.
+**Test method names should be long and descriptive enough to explain the
+scenario without reading the test body.** Do not sacrifice clarity to save
+characters. Long names are preferable to short, cryptic names.
 
 ```cpp
 // ❌ WRONG - too terse
@@ -683,9 +759,19 @@ TEST_F(WalletServiceTest, GetTokenBalances_HandlesNetworkTimeoutGracefully) { ..
 
 ## ✅ PRs Should Include Reasonable Test Coverage
 
-**Code that can be tested should be tested.** When reviewing or writing a PR, ensure that new logic, branches, and edge cases have corresponding tests. This applies to all PRs, not just bug fixes. Don't be overly strict — use judgment — but flag obvious gaps where meaningful test coverage is missing.
+**Code that can be tested should be tested.** When reviewing or writing a PR,
+ensure that new logic, branches, and edge cases have corresponding tests. This
+applies to all PRs, not just bug fixes. Don't be overly strict — use judgment —
+but flag obvious gaps where meaningful test coverage is missing.
 
-**If code is difficult to test, suggest refactors that improve testability** rather than accepting untested code. Common refactors include extracting logic into pure functions, adding dependency injection, or separating I/O from computation.
+**Exception:** Don't require a dedicated test when the change is trivial UI with
+no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
+an existing untested pattern in the surrounding code.
+
+**If code is difficult to test, suggest refactors that improve testability**
+rather than accepting untested code. Common refactors include extracting logic
+into pure functions, adding dependency injection, or separating I/O from
+computation.
 
 ```cpp
 // ❌ WRONG - new feature PR with no tests for core logic
@@ -704,7 +790,10 @@ TEST_F(WalletServiceTest, GetTokenBalances_HandlesNetworkTimeoutGracefully) { ..
 
 ## ✅ Use chromium_src Include Pattern to Test Upstream Overrides
 
-**When overriding upstream Chromium code via `chromium_src`, include the upstream test file and add Brave-specific tests after it.** This runs all upstream tests (catching regressions from your overrides) plus your new tests, with minimal effort.
+**When overriding upstream Chromium code via `chromium_src`, include the
+upstream test file and add Brave-specific tests after it.** This runs all
+upstream tests (catching regressions from your overrides) plus your new tests,
+with minimal effort.
 
 ```cpp
 // chromium_src/components/foo/foo_service_unittest.cc
@@ -723,7 +812,53 @@ TEST_F(FooServiceTest, BraveSpecificBehavior) {
 ```
 
 Good examples in the repo:
+
 - `chromium_src/components/sync/engine/sync_scheduler_impl_unittest.cc`
 - `chromium_src/components/ntp_tiles/most_visited_sites_unittest.cc`
 - `chromium_src/components/variations/service/variations_service_unittest.cc`
 
+---
+
+<a id="TI-041"></a>
+
+## ✅ Test All Feature Flag Combinations with Bitmask Parameterization
+
+**When testing a class affected by multiple `base::Feature` flags, use
+value-parameterized tests to cover all 2^N flag combinations.** Represent each
+combination as a bitmask where bit `i` enables feature `i`. This prevents
+regressions caused by unexpected flag interactions.
+
+```cpp
+namespace {
+const std::vector<base::test::FeatureRef> kTestFeatures = {
+    features::kFlagA, features::kFlagB, features::kFlagC};
+}  // namespace
+
+// Generates 2^3 = 8 test instances, one per combination
+INSTANTIATE_TEST_SUITE_P(
+    All, MyFeatureTest,
+    testing::Range<size_t>(0, 1 << kTestFeatures.size()));
+
+class MyFeatureTest : public testing::TestWithParam<size_t> {
+ protected:
+  void SetUp() override {
+    std::vector<base::test::FeatureRef> enabled, disabled;
+    for (size_t i = 0; i < kTestFeatures.size(); i++) {
+      (GetParam() & (size_t{1} << i) ? enabled : disabled)
+          .push_back(kTestFeatures[i]);
+    }
+    scoped_feature_list_.InitWithFeatures(enabled, disabled);
+  }
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_P(MyFeatureTest, BehaviorIsCorrectForAllFlagCombinations) {
+  // Test logic runs under every flag combination automatically
+}
+```
+
+Place `kTestFeatures` in an unnamed namespace per Chromium C++ style. Use `int`
+instead of `size_t` for masks with more than 16 flags to avoid overflow.
+
+See
+[Chromium C++ Testing Best Practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/public/ads_util.h"
 
 #include "base/test/scoped_command_line.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
+#include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "build/build_config.h"
@@ -27,6 +27,8 @@ class BraveAdsAdsUtilTest : public ::testing::Test {
   }
 
  protected:
+  test::FakeLocale fake_locale_;
+
   TestingPrefServiceSimple prefs_;
 
   base::test::ScopedCommandLine scoped_command_line_;
@@ -65,7 +67,7 @@ TEST_F(BraveAdsAdsUtilTest, UsesStagingWhenEnabledOnAndroid) {
 
 TEST_F(BraveAdsAdsUtilTest, IsSupportedRegion) {
   // Arrange
-  const test::ScopedCurrentCountryCode scoped_current_country_code{"US"};
+  fake_locale_.SetCountryCode("US");
 
   // Act & Assert
   EXPECT_TRUE(IsSupportedRegion());
@@ -73,8 +75,7 @@ TEST_F(BraveAdsAdsUtilTest, IsSupportedRegion) {
 
 TEST_F(BraveAdsAdsUtilTest, IsUnsupportedRegion) {
   // Arrange
-  const test::ScopedCurrentCountryCode scoped_current_country_code{
-      /*cuba*/ "CU"};
+  fake_locale_.SetCountryCode(/*cuba*/ "CU");
 
   // Act & Assert
   EXPECT_FALSE(IsSupportedRegion());

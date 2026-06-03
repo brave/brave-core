@@ -11,6 +11,7 @@
 #include "base/uuid.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace containers {
@@ -43,6 +44,11 @@ ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
       prefs::kContainersList,
       base::BindRepeating(&ContainersSettingsHandler::OnContainersChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kContainersEnabled,
+      base::BindRepeating(
+          &ContainersSettingsHandler::OnContainersEnabledPrefChanged,
+          base::Unretained(this)));
 }
 
 ContainersSettingsHandler::~ContainersSettingsHandler() {}
@@ -121,6 +127,15 @@ void ContainersSettingsHandler::RemoveContainer(
   std::move(callback).Run(std::nullopt);
 }
 
+void ContainersSettingsHandler::GetContainersEnabled(
+    GetContainersEnabledCallback callback) {
+  std::move(callback).Run(prefs_->GetBoolean(prefs::kContainersEnabled));
+}
+
+void ContainersSettingsHandler::SetContainersEnabled(bool enabled) {
+  prefs_->SetBoolean(prefs::kContainersEnabled, enabled);
+}
+
 // static
 std::optional<mojom::ContainerOperationError>
 ContainersSettingsHandler::ValidateEditableContainerProperties(
@@ -144,6 +159,13 @@ void ContainersSettingsHandler::OnContainersChanged() {
   // Notify UI about container list changes (from this window or others).
   if (ui_) {
     ui_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
+  }
+}
+
+void ContainersSettingsHandler::OnContainersEnabledPrefChanged() {
+  if (ui_) {
+    ui_->OnContainersEnabledChanged(
+        prefs_->GetBoolean(prefs::kContainersEnabled));
   }
 }
 

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -21,7 +22,7 @@ TEST_F(BraveAdsGeoUrlHostTest, GetProductionUrlHost) {
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
-  EXPECT_EQ("https://geo.ads.brave.com", GetGeoUrlHost());
+  EXPECT_EQ("https://geo.ads.brave.com", GetUrlHost(UrlHostType::kGeo));
 }
 
 TEST_F(BraveAdsGeoUrlHostTest, GetStagingUrlHost) {
@@ -31,7 +32,7 @@ TEST_F(BraveAdsGeoUrlHostTest, GetStagingUrlHost) {
       mojom::EnvironmentType::kStaging;
 
   // Act & Assert
-  EXPECT_EQ("https://geo.ads.bravesoftware.com", GetGeoUrlHost());
+  EXPECT_EQ("https://geo.ads.bravesoftware.com", GetUrlHost(UrlHostType::kGeo));
 }
 
 }  // namespace brave_ads

@@ -17,11 +17,11 @@
 #include "base/test/scoped_command_line.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
-#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h"
+#include "brave/components/brave_ads/core/internal/application_state/test/fake_browser_version.h"
+#include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/test/fake_operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/tab_test_helper.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -140,7 +140,9 @@ class TestBase : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  FakePlatformHelper fake_platform_helper_;
+  FakeBrowserVersion fake_browser_version_;
+  FakeLocale fake_locale_;
+  FakeOperatingSystem fake_operating_system_;
 
   ::testing::NiceMock<AdsClientMock> ads_client_mock_;
   AdsClientNotifier ads_client_notifier_;
@@ -174,11 +176,6 @@ class TestBase : public ::testing::Test {
 
   bool setup_called_ = false;
   bool teardown_called_ = false;
-
-  const ScopedCurrentLanguageCode scoped_current_language_code_;
-  const ScopedCurrentCountryCode scoped_current_country_code_;
-
-  ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
 
   bool is_integration_test_ = false;  // Defaults to unit test.
 

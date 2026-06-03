@@ -32,9 +32,10 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.glic.GlicEnabling;
+import org.chromium.chrome.browser.glic.GlicEnablingJni;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -57,7 +58,6 @@ import java.util.List;
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 @EnableFeatures(ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_CUSTOMIZATION_V2)
-@DisableFeatures({ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY})
 public class BraveAdaptiveToolbarSettingsFragmentTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -65,6 +65,7 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
     @Mock private UserPrefsJni mUserPrefsNatives;
     @Mock private PrefService mPrefService;
     @Mock private TemplateUrlService mTemplateUrlService;
+    @Mock private GlicEnabling.Natives mGlicEnablingNatives;
 
     private ChromeSwitchPreference mSwitchPreference;
     private RadioButtonGroupAdaptiveToolbarPreference mRadioPreference;
@@ -73,6 +74,8 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
     public void setUpTest() throws Exception {
         UserPrefsJni.setInstanceForTesting(mUserPrefsNatives);
         doReturn(mPrefService).when(mUserPrefsNatives).get(any());
+
+        GlicEnablingJni.setInstanceForTesting(mGlicEnablingNatives);
 
         ChromeSharedPreferences.getInstance().removeKey(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED);
         ChromeSharedPreferences.getInstance().removeKey(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS);

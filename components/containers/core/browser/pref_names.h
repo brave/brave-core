@@ -8,6 +8,10 @@
 
 namespace containers::prefs {
 
+// Controls whether Containers feature (menus, management UI) is available;
+// existing container tabs are not affected when the pref is disabled.
+inline constexpr char kContainersEnabled[] = "brave.containers.enabled";
+
 // Syncable list of containers.
 inline constexpr char kContainersList[] = "brave.containers.list";
 

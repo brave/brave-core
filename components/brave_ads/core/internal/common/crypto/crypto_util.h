@@ -43,6 +43,14 @@ std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
     base::span<const uint8_t> public_key,
     base::span<const uint8_t> secret_key);
 
+// Overwrites `buffer` with zeros so the contents cannot be recovered from
+// freed memory.
+void SecureZero(base::span<uint8_t> buffer);
+
+// Overwrites `string` with zeros so the contents cannot be recovered from
+// freed memory.
+void SecureZero(std::string& string);
+
 }  // namespace brave_ads::crypto
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CRYPTO_CRYPTO_UTIL_H_

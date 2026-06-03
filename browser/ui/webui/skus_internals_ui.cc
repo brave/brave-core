@@ -27,7 +27,7 @@
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/chrome_select_file_policy.h"
+#include "chrome/browser/ui/select_file_policy/chrome_select_file_policy.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -38,10 +38,12 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
 
 namespace {
@@ -229,7 +231,7 @@ void SkusInternalsUI::FileSelectionCanceled() {
 
 std::string SkusInternalsUI::GetLastVPNConnectionError() const {
   std::string error;
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   auto* manager = g_brave_browser_process->brave_vpn_connection_manager();
   CHECK(manager);
   error = manager->GetLastConnectionError();

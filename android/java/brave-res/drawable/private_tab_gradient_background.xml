@@ -10,7 +10,7 @@
         android:startColor="@color/primitive_private_window_20"
         android:centerColor="@color/primitive_private_window_10"
         android:endColor="@color/primitive_private_window_5"
-        android:angle="225"
+        android:angle="270"
         />
 
 </shape>

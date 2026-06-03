@@ -19,6 +19,7 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
@@ -27,12 +28,13 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/os_crypt/sync/os_crypt.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_test.h"
@@ -63,11 +65,12 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   }
 
   std::optional<std::string> EncryptPrefString(const std::string& value) {
-    std::string encrypted;
-    if (!OSCrypt::EncryptString(value, &encrypted)) {
-      return {};
+    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    g_browser_process->os_crypt_async()->GetInstance(future.GetCallback());
+    if (auto result = future.Get<0>().EncryptString(value)) {
+      return base::Base64Encode(base::as_string_view(result.value()));
     }
-    return base::Base64Encode(encrypted);
+    return std::nullopt;
   }
 
   RewardsServiceImpl& GetRewardsService() {

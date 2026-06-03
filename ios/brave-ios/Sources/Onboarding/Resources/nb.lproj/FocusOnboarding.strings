@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Trykk og hold på Brave-ikonet, og dra det deretter inn i dokken for rask tilgang.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Legg til Brave i dokken din";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Fortsett";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Du kan velge bort dette under **Shields og personvern** i innstillingene. [Les mer](#p3a-learn-more) om våre personvernbevarende produktanalyser.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Del **privat og anonym** produktinnsikt.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Del **private og anonyme** produktinnsikter.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Begynn å surfe";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Bruk som standard";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Se favorittene dine med færre annonser.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Se Brave-forskjellen";
 

@@ -219,7 +219,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     json_rpc_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
-    WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
+    WaitForTxStorageInitialized(tx_service()->GetTxStorageForTesting());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
 
     profile_.SetPermissionControllerDelegate(

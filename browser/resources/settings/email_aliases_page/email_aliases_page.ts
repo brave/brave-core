@@ -15,16 +15,25 @@ import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 
 class EmailAliasesPage extends HTMLElement {
   connectedCallback() {
-    this.attachShadow({ mode: 'open' })
-    const subpage = document.createElement('settings-subpage')
-    this.shadowRoot!.appendChild(subpage)
     const title = loadTimeData.getString(
       EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL,
     )
+
+    this.attachShadow({ mode: 'open' })
+    const subpage = document.createElement('settings-subpage')
     subpage.setAttribute('page-title', title)
+    subpage.setAttribute('class', 'multi-card')
+    this.shadowRoot!.appendChild(subpage)
+
     customElements.whenDefined('settings-brave-account-row').then(() => {
       import('/email_aliases.bundle.js' as any).then(({ mount }) => {
-        mount(subpage)
+        const signInSection = document.createElement('settings-section')
+        subpage.appendChild(signInSection)
+
+        const manageSection = document.createElement('settings-section')
+        subpage.appendChild(manageSection)
+
+        mount(signInSection, manageSection)
       })
     })
 

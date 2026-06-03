@@ -9,13 +9,6 @@ source_set("layout_provider") {
     "brave_layout_provider.h",
   ]
 
-  if (is_mac) {
-    sources += [
-      "brave_layout_provider_mac.h",
-      "brave_layout_provider_mac.mm",
-    ]
-  }
-
   deps = [
     "//base",
     "//ui/views",

@@ -18,9 +18,9 @@ import {
   ButtonRow,
   Description,
   AllowanceTitle,
-  AllowanceContent,
   AllowanceOption,
 } from './style'
+import { Text } from '../../shared/style'
 
 type AllowanceTypes = 'proposed' | 'custom'
 
@@ -78,7 +78,10 @@ export const EditAllowance = (props: Props) => {
       title={getLocale('braveWalletEditPermissionsTitle')}
     >
       <StyledWrapper>
-        <Description>
+        <Description
+          textColor='secondary'
+          variant='small.regular'
+        >
           {getLocale('braveWalletEditPermissionsDescription').replace(
             '$1',
             approvalTarget,
@@ -94,17 +97,26 @@ export const EditAllowance = (props: Props) => {
           >
             <div data-value='proposed'>
               <AllowanceOption>
-                <AllowanceTitle>
+                <AllowanceTitle
+                  textColor='primary'
+                  variant='small.regular'
+                >
                   {getLocale('braveWalletEditPermissionsProposedAllowance')}
                 </AllowanceTitle>
-                <AllowanceContent>
+                <Text
+                  textColor='primary'
+                  variant='default.semibold'
+                >
                   {formattedProposedAllowance} {symbol}
-                </AllowanceContent>
+                </Text>
               </AllowanceOption>
             </div>
             <div data-value='custom'>
               <AllowanceOption>
-                <AllowanceTitle>
+                <AllowanceTitle
+                  textColor='primary'
+                  variant='small.regular'
+                >
                   {getLocale('braveWalletEditPermissionsCustomAllowance')}
                 </AllowanceTitle>
                 <Input

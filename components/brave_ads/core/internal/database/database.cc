@@ -30,6 +30,30 @@
 
 namespace brave_ads {
 
+namespace {
+
+// Returns true for OS/filesystem error families that reflect environmental
+// conditions rather than code bugs.
+bool IsTransientSqliteError(sql::SqliteResultCode result_code) {
+  // Extended result codes encode extra context in the upper bits; masking to
+  // the primary result code matches every variant of a family (e.g.
+  // kBusyRecovery falls under kBusy).
+  const int primary_result_code = static_cast<int>(result_code) & 0xFF;
+  return primary_result_code ==
+             static_cast<int>(sql::SqliteResultCode::kBusy) ||
+         primary_result_code ==
+             static_cast<int>(sql::SqliteResultCode::kLocked) ||
+         primary_result_code ==
+             static_cast<int>(sql::SqliteResultCode::kReadOnly) ||
+         primary_result_code == static_cast<int>(sql::SqliteResultCode::kIo) ||
+         primary_result_code ==
+             static_cast<int>(sql::SqliteResultCode::kFullDisk) ||
+         primary_result_code ==
+             static_cast<int>(sql::SqliteResultCode::kCantOpen);
+}
+
+}  // namespace
+
 Database::Database(base::FilePath path)
     : db_path_(std::move(path)),
       db_(sql::Database::Tag("AdsInternalDatabase")) {
@@ -395,16 +419,7 @@ void Database::ErrorCallback(int extended_error,
     const sql::SqliteResultCode result_code =
         sql::ToSqliteResultCode(extended_error);
 
-    if (result_code != sql::SqliteResultCode::kFullDisk &&
-        result_code != sql::SqliteResultCode::kIoRead &&
-        result_code != sql::SqliteResultCode::kIoWrite &&
-        result_code != sql::SqliteResultCode::kIoFsync &&
-        result_code != sql::SqliteResultCode::kIoTruncate &&
-        result_code != sql::SqliteResultCode::kReadOnlyDbMoved &&
-        result_code != sql::SqliteResultCode::kBusy &&
-        result_code != sql::SqliteResultCode::kLocked &&
-        result_code != sql::SqliteResultCode::kIoAccess &&
-        result_code != sql::SqliteResultCode::kIoFstat) {
+    if (!IsTransientSqliteError(result_code)) {
       SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_schema_version",
                               database::kVersionNumber);
       SCOPED_CRASH_KEY_STRING1024(
@@ -414,6 +429,8 @@ void Database::ErrorCallback(int extended_error,
                                   db_.GetErrorMessage());
       SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_result_code",
                               static_cast<int>(result_code));
+      // Upload a non-fatal crash report so unexpected SQLite errors are
+      // visible in Backtrace without crashing the browser.
       DUMP_WILL_BE_NOTREACHED();
     }
   }

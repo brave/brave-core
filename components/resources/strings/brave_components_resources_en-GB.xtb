@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">Print</translation>
 <translation id="2600847485413879104">Rewards BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">Downloading Component...</translation>
 <translation id="4894106830958548828">I understand</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers. This is an experimental feature and won't always get it right.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Enable support of Unstoppable Domains in Brave?</translation>
 <translation id="5015092481905019948">Brave will be using <ph name="PROVIDER_NAME"/> to resolve <ph name="DOMAIN_LIST"/> domain names that are on <ph name="DOMAIN_PROVIDER_NAME"/>. Brave hides your IP address. If you enable this, <ph name="PROVIDER_NAME"/> will see that someone is trying to visit these domains but nothing else. See <ph name="PROVIDER_NAME"/>'s <ph name="BEGIN_PROVIDER_TOU_LINK"/>terms of use<ph name="END_PROVIDER_TOU_LINK"/> and <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>privacy policy<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Allow <ph name="URL"/> to open Leo AI conversations in Brave?</translation>
 <translation id="4355784577209159847">Allow use of third-party cookies for legacy Google sign-in</translation>
 <translation id="5770656036486891920"><ph name="URL"/> wants to use third-party cookies for legacy Google sign-in</translation>
+<translation id="5582087890067572966">🎉 You're now earning!</translation>
+<translation id="4364336119478610380">You earn whenever a notification like this appears on your screen. You don't need to click to earn.</translation>
+<translation id="5893017172751072752">You earn when a Brave Ads notification appears</translation>
+<translation id="3447730462826640312">You don't need to click to earn, but do click if you're interested!</translation>
 <translation id="2104347391516032700">Bat Rewards Service</translation>
 <translation id="5939518447894949180">Reset</translation>
 <translation id="3349204812119681938">Reset Brave Rewards</translation>
@@ -745,7 +749,6 @@
 <translation id="1288078776976153868">network</translation>
 <translation id="1148827340205946630">The user rejected the request.</translation>
 <translation id="2403819048476450281">Invalid parameters.</translation>
-<translation id="3849003816301348130">Destination address is on the OFAC SDN list.</translation>
 <translation id="3955144560853195652">Chain <ph name="VALUE"/> hasn't been added</translation>
 <translation id="1875861420974447980">This Chain ID is currently used</translation>
 <translation id="167698752210114155">An internal error has occurred</translation>
@@ -859,11 +862,12 @@
 <translation id="3751611888003301070">Routes</translation>
 <translation id="3799091982455573025">Swap on <ph name="NETWORK_NAME"/> via <ph name="EXCHANGE_NAME"/></translation>
 <translation id="5136093123841570193">Bridge from <ph name="FRIST_NETWORK_NAME"/> to <ph name="SECOND_NETWORK_NAME"/></translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} step}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} steps}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} step)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} steps)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> via <ph name="PROVIDER_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> via</translation>
 <translation id="646023614746251785">Confirm swap</translation>
 <translation id="6264944956989873014">Confirm bridge</translation>
 <translation id="7067917728851842589">Confirm send</translation>
@@ -944,6 +948,7 @@
 <translation id="1108298724135935307">Connected sites</translation>
 <translation id="5716350339763180836">Balances</translation>
 <translation id="5538251867290702601">Graph</translation>
+<translation id="8123016618655108594">Distribution</translation>
 <translation id="352407037922720467">NFTs tab</translation>
 <translation id="163697698769819510">Back up your wallet now to protect your assets and ensure you never lose access.</translation>
 <translation id="1018806299114415224">Back up now</translation>
@@ -996,6 +1001,7 @@
 <translation id="2795015351889043417">JSON file</translation>
 <translation id="5468881191994555667">Choose file</translation>
 <translation id="795667975304826397">No file chosen</translation>
+<translation id="6720675936326555106">Selected file</translation>
 <translation id="5891811606602061966">Failed to import account, please try again.</translation>
 <translation id="6566535583781706170">Import account</translation>
 <translation id="5051929972046200722">Select your hardware wallet device</translation>
@@ -1042,10 +1048,12 @@
 <translation id="2416098547200943834">NOTE: private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NOTE: private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOTE: Only <ph name="FORMAT"/> extended keys are supported.</translation>
+<translation id="6457746820359933716">Import using a JSON file exported from Polkadot.js or compatible wallets. Enter the password used to encrypt the export.</translation>
 <translation id="9133762451347918196">Testnet accounts</translation>
 <translation id="42126664696688958">Export</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="790104325876206743">Account settings</translation>
+<translation id="8856844353253421399">Last updated <ph name="TIME_AGO"/> ago</translation>
 <translation id="6322030314101903925">No available assets</translation>
 <translation id="836614343069504000">Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.</translation>
 <translation id="2902856457593699108">Show key</translation>
@@ -1164,12 +1172,12 @@
 <translation id="4324239559624557455">For 24 hours</translation>
 <translation id="9139452553033760558">For 1 week</translation>
 <translation id="1658834457013045127">Forever</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connected</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
-<translation id="5317781812114905957">Instructions</translation>
-<translation id="1178198982208000092">Connect your <ph name="DEVICE_NAME"/></translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> is connected to <ph name="DEVICE_NAME"/></translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> is disconnected</translation>
+<translation id="434328838837168401">View instructions</translation>
+<translation id="13670155462680755">Connect your <ph name="ACCOUNT_NAME"/> to continue</translation>
 <translation id="6941881257520473899">Hardware wallet requires confirmation on device.</translation>
-<translation id="2288190100157580461">Hardware wallet requires <ph name="NETWORK"/> App opened on <ph name="DEVICE_NAME"/></translation>
+<translation id="4108619287854657806">Hardware wallet requires <ph name="NETWORK"/> App opened on <ph name="ACCOUNT_NAME"/></translation>
 <translation id="8687869982094542529">sent</translation>
 <translation id="5013754027092416509">received</translation>
 <translation id="5867988533873716616">Block explorer URL is not available.</translation>
@@ -1354,6 +1362,7 @@
 <translation id="8491675129455635799">Group assets by</translation>
 <translation id="5331775401966766526">Filters and display settings</translation>
 <translation id="5332541468425943610">NFT display settings</translation>
+<translation id="1539149309756422999">Assets distribution</translation>
 <translation id="886032538431162695">Sort assets</translation>
 <translation id="6080181976198929758">Sort by fiat value or name</translation>
 <translation id="2563815561570398537">Hide small balances</translation>
@@ -1597,6 +1606,9 @@
 <translation id="5882719778740918116">Only send tokens to this address on <ph name="VALUE"/></translation>
 <translation id="6885009592653876601">Buy, send, and swap 200+ crypto assets</translation>
 <translation id="8716223552348254401">Browser-native, no risky extensions</translation>
+<translation id="1198271701881992799">Let's get started</translation>
+<translation id="7904301836463577071">Buy your first crypto with a credit or debit card</translation>
+<translation id="3721561070667360112">Deposit crypto from another wallet or exchange</translation>
 <translation id="4559901986238865734">Multi-chain &amp; NFT support</translation>
 <translation id="296101411136980896">Click to switch</translation>
 <translation id="753655478253155745">Twelfth</translation>
@@ -1744,6 +1756,7 @@
 <translation id="8549067157732633185">This token is verified</translation>
 <translation id="2130170065617939165">This token is verified on <ph name="NUMBER_OF_LISTS"/> lists</translation>
 <translation id="1554316484739382186">Spender: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> account</translation>
 <translation id="5360752485622434494">Brave Rewards BATs on <ph name="PROVIDER"/></translation>
@@ -1888,6 +1901,7 @@
 <translation id="4150336849480030462">SPL token transfer with associated token account creation</translation>
 <translation id="2244921323472112851">We can’t find the page you’re looking for right now.</translation>
 <translation id="6277237872689140644">It may have moved to a different place or the URL may contain a typo.</translation>
+<translation id="1788572014530152502">There was an error processing your transaction. In many cases, this means there isn't enough <ph name="SYMBOL"/> to cover the network fee. Try a smaller amount instead.</translation>
 <translation id="2737084171727561244">Go to Portfolio</translation>
 <translation id="3499452861061048987">Add token</translation>
 <translation id="5046066249040287308">Brave Wallet utility service</translation>
@@ -2137,12 +2151,14 @@
 <translation id="6459036216700972269">Unsplit tabs</translation>
 <translation id="4235382917338421035">Swap tab positions</translation>
 <translation id="4288085058450834672">Show apps</translation>
+<translation id="4750337523930607658">Toggle Focus Mode</translation>
 <translation id="4144468798716165316">Quick commands</translation>
 <translation id="3617523374417810198">New split view</translation>
 <translation id="8571323456914890254">Open in split view</translation>
 <translation id="5329136173514538969">Unsplit tabs</translation>
 <translation id="7595612919377246359">Swap tab positions</translation>
 <translation id="2367972762794486313">Show apps</translation>
+<translation id="3142853026316054951">Toggle focus mode</translation>
 <translation id="3468387898712904997">New Email Alias</translation>
 <translation id="8591883849678260674">View original</translation>
 <translation id="1969654232209826429">min. read</translation>
@@ -2190,6 +2206,7 @@
 <translation id="5923170497201832190">Scroll to bottom</translation>
 <translation id="6219262425964000211">Drop files here</translation>
 <translation id="4313763911013851687">Drop any files here to add them to the conversation</translation>
+<translation id="8206915760129310348">Some files could not be read and were not attached</translation>
 <translation id="4524675003624341892">Suggest questions …</translation>
 <translation id="4567071417854988869">Summarise this video</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2200,7 +2217,9 @@
 <translation id="7932221068776853847">Disconnect to stop sending this page content to Leo, and start a new conversation</translation>
 <translation id="8743383817154663379">Something went wrong while processing your request. Please try again later.</translation>
 <translation id="2712650703044366764">This model has an invalid endpoint. Please check your configuration and try again.</translation>
-<translation id="1167803637855350748">There was a network issue connecting to Leo. Check your connection and try again.</translation>
+<translation id="7092656392206649236">Something went wrong while communicating with Leo. Please try again.</translation>
+<translation id="3552709750512842961">Status code: <ph name="STATUS_CODE"/>, error code: <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">Status code: <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">You've reached the premium rate limit. Please try again in a few hours.</translation>
 <translation id="3683964919745779766">You've reached the rate limit for this model or are out of credits. Please try again later.</translation>
 <translation id="7692501701960747469">The API key configured for this model is invalid. Please check your configuration and try again.</translation>
@@ -2483,7 +2502,9 @@
 <translation id="5663901348199429994">Your Email aliases</translation>
 <translation id="9046133327037621173">New email alias</translation>
 <translation id="3768606658230902536">Create a random email address that forwards to your inbox while keeping your personal email private.</translation>
-<translation id="6887156107256264506">You have reached the limit of 5 free email aliases. Click "Manage" to re-use or delete an alias.</translation>
+<translation id="4452721050684632493">Alias limit reached</translation>
+<translation id="2912191433415590080">You've used all <ph name="MAX_ALIASES"/> of your email aliases. Delete an existing alias to create a new one.</translation>
+<translation id="3847337908410945070">Your aliases (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">New alias</translation>
 <translation id="8072910658503112482">Suggest another email alias</translation>
 <translation id="7710361355427562228">Generating new alias...</translation>
@@ -2526,6 +2547,8 @@
 <translation id="2991633563551889054">Hide Talk card</translation>
 <translation id="5355776323718420036">Hide top sites</translation>
 <translation id="1689504141194856995">Hide VPN card</translation>
+<translation id="2919329118360099847">Brave will be used as the search engine in the address bar for normal windows.</translation>
+<translation id="6792837540759934892">Set Brave as the default search engine?</translation>
 <translation id="8262911270872215147">Customise News</translation>
 <translation id="3884037897537157986">Disable News</translation>
 <translation id="7847477075635510673">Hide News</translation>
@@ -2572,7 +2595,8 @@
 <translation id="4724752924364329714">If this site seems broken, try Shields down.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">This may reduce Brave's privacy protections. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Trackers, ads and more blocked.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> trackers, ads and more blocked</translation>
+<translation id="2275121279487164685">Trackers and ads</translation>
 <translation id="4968268657895673116">Is this site not working correctly with Shields up?</translation>
 <translation id="5412004902081180614">Report</translation>
 <translation id="3620004479054499575">Are you experiencing issues with this site?</translation>
@@ -2634,9 +2658,11 @@
 <translation id="3795015906457257780">You are viewing this site without Brave's privacy protections.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, ads and more blocked</translation>
+<translation id="2900068182947574679">Scripts</translation>
 <translation id="4292121526390005808">Blocked scripts</translation>
 <translation id="5046271170844958713">Allowed scripts</translation>
 <translation id="199862531047218413">anti-fingerprinting protections applied</translation>
+<translation id="896105002981074545">Fingerprinting protections</translation>
 <translation id="5032505924781383272">Applied protections do not necessarily indicate that this web page is attempting to fingerprint your browser.</translation>
 <translation id="1905384713982899903">Blocked fingerprints</translation>
 <translation id="314364527871618241">Allowed fingerprints</translation>
@@ -2649,6 +2675,7 @@
 <translation id="542789539047208469">Site Info</translation>
 <translation id="7586067492365979844">Brave Shields has a new home and design. It now integrates with site information for a one-stop experience.</translation>
 <translation id="9114542678887529043">Brave Shields has a new home and design. Access it by clicking the site icon in the address bar.</translation>
+<translation id="4242533952199664413">Open settings</translation>
 <translation id="6294662480095808915">Privacy. By default.</translation>
 <translation id="4366423156486478559">Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</translation>
 <translation id="3830912418080848377">Import Settings</translation>
@@ -2660,7 +2687,7 @@
 <translation id="2273851479262317744">Set Brave as default browser</translation>
 <translation id="5037676449506322593">Select all</translation>
 <translation id="5148943178722443958">Help make Brave better.</translation>
-<translation id="479535542793009168">Stability &amp; Diagnostics</translation>
+<translation id="8874748598814587364">Stability</translation>
 <translation id="1097073572755862978">Send diagnostic reports if you experience a crash or freeze. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Share private and anonymous product insights about what features are being used by Brave's users. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Set-up complete</translation>
@@ -2789,4 +2816,79 @@ Let's get you connected!</translation>
 <translation id="1602850501393095406">Press ↑ to highlight</translation>
 <translation id="8367705492654390392">Ask anything</translation>
 <translation id="8525248723479742219">Play later</translation>
+<translation id="1751249301761991853">Personal</translation>
+<translation id="1122068467107743258">Work</translation>
+<translation id="8372721116225477180">Social</translation>
+<translation id="1539343118617844331">School</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Welcome to Brave Origin. To continue, please buy or restore your Brave Origin purchase.</translation>
+<translation id="4801175670604644729">You need an active Brave Origin purchase to use this browser.</translation>
+<translation id="4144294274624829008">Restore Brave Origin purchase</translation>
+<translation id="6080178356113101120">Buy Brave Origin</translation>
+<translation id="1009496146858538651">Restore Purchase</translation>
+<translation id="3461564061600681423">Enter your purchase ID to activate your Brave Origin purchase.</translation>
+<translation id="2036379724374431790">Purchase ID</translation>
+<translation id="4348430971280118761">Enter your purchase ID</translation>
+<translation id="7451866456310404779">Verify purchase ID</translation>
+<translation id="8853195592604941919">Verifying… This may take a minute.</translation>
+<translation id="4633706444004110760">Thanks for installing Brave Origin, a version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from Brave's industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.</translation>
+<translation id="5816720995022674532">Origin is free to use on Linux devices, but still <ph name="BEGIN_LINK"/>available for purchase<ph name="END_LINK"/> if you'd like to support Brave as a business. Purchasing would also unlock the ability to use Origin on Android, iOS, macOS, and Windows devices.</translation>
+<translation id="3065220545261045367">Support Brave by purchasing Origin</translation>
+<translation id="2069499076031488636">Proceed with Origin for free on Linux</translation>
+<translation id="5713644099811900409">Brave Account</translation>
+<translation id="2906576968270573525">Log in or create a Brave account</translation>
+<translation id="6972754398087986839">Get Started</translation>
+<translation id="5378207817582281342">Almost there!</translation>
+<translation id="3750210661641549834">In order to create your account, please verify your email address.</translation>
+<translation id="4129813507847680661">Enter registration code</translation>
+<translation id="1672793037892810340">You should have received an email with a code that you'll need to input.</translation>
+<translation id="4821255729182569254">Resend confirmation email</translation>
+<translation id="5837679375142747484">Don't see the email? Check your spam folder or <ph name="BEGIN_LINK"/>resend<ph name="END_LINK"/> it.</translation>
+<translation id="1080588816740959885">Don't see the email? Check your spam folder or resend it.</translation>
+<translation id="1020730839570724178">Cancel registration</translation>
+<translation id="4869737930995549965">Log out</translation>
+<translation id="5538654494923870167">Get started with your Brave account</translation>
+<translation id="1544145635547515689">Create a Brave account</translation>
+<translation id="3828644479849256404">Already have an account? Log in</translation>
+<translation id="6624553071240278643">Create your account</translation>
+<translation id="6505120968393722022">You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.</translation>
+<translation id="8248460961680233459">Create a password</translation>
+<translation id="4917385247580444890">Strong</translation>
+<translation id="5486261815000869482">Confirm password</translation>
+<translation id="7345706641791090287">Confirm your password</translation>
+<translation id="7114054701490058191">Passwords don't match</translation>
+<translation id="1293857704520741614">Log in to your account</translation>
+<translation id="118617366439356381">Forgot your password?</translation>
+<translation id="5183159033908953146">Confirm your Brave account email and you'll then receive a link to reset your password. The link will only be valid for 30 minutes.</translation>
+<translation id="3997368361371298873">Warning: since you are not logged in to this device, resetting your password will <ph name="BEGIN_BOLD"/>delete all of your data<ph name="END_BOLD"/> on the server. If you have another device where you are logged in, change your password from that device instead of resetting your password.</translation>
+<translation id="3674472551471103443">Reset your password</translation>
+<translation id="2755539422340788311">Verify your email</translation>
+<translation id="6641436078676327508">You should have received an email with a short code. Please enter it here to continue.</translation>
+<translation id="7228810962389847249">Enter the code here</translation>
+<translation id="4683390091376980486">Confirm code</translation>
+<translation id="3970028678400797622">Resend email code</translation>
+<translation id="2475982808118771221">An error occurred</translation>
+<translation id="5430795854491041407">error</translation>
+<translation id="2232323423357029857">The browser encountered an unexpected error<ph name="ERROR_CODE"/>. Please restart the browser and try again.</translation>
+<translation id="7167650060829320707">Internal server error (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). Please try again later.</translation>
+<translation id="2387645930330673048">This account is awaiting email verification.</translation>
+<translation id="2199962270601714404">No account found for that email address. Please try again, or create a new account.</translation>
+<translation id="8130611002720478693">Incorrect password. Please try again.</translation>
+<translation id="7144067487084094749">An account already exists for this email address. Try logging in instead of creating an account.</translation>
+<translation id="5288951359968156008">The domain of this email address is not supported. Please use a different email address.</translation>
+<translation id="7625678607509255072">Email verification limit exceeded. Please wait 30 minutes before trying again.</translation>
+<translation id="4582421696414628320">Verification expired. Start the registration process again.</translation>
+<translation id="8439543211004394821">Too many incorrect codes were entered. Start the registration process again.</translation>
+<translation id="3229986152760633988">Wrong code, please try again.</translation>
+<translation id="4178004989875422946">A Brave account will allow you to easily access Brave services.</translation>
+<translation id="8314772463905284467">Caps Lock is on</translation>
+<translation id="7044608453949401443">Spaces not allowed at the beginning or end of the password.</translation>
+<translation id="2939492377741553693">Confirmation email resent.</translation>
+<translation id="2112559299194052697">Unable to resend</translation>
+<translation id="7932611814134267012">Too many verification emails have been sent already. Please check your spam folder.</translation>
+<translation id="1364223093800750401">Email already verified.</translation>
+<translation id="3353844160742960162">Privacy Settings Tuning</translation>
+<translation id="528205534230423181">This website offers privacy settings that Brave can automatically adjust for you. Here's what we recommend:</translation>
+<translation id="1063227610401477317">Apply Changes</translation>
+<translation id="5539769255716491933">Report Failed Steps</translation>
 </translationbundle>

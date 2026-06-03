@@ -38,7 +38,7 @@ class ManagePasswordsViewModel {
     }
   }
 
-  private let autofillDataManager: CWVAutofillDataManager
+  let autofillDataManager: CWVAutofillDataManager
   private let observer: AutofillDataManagerObserver
 
   init(autofillDataManager: CWVAutofillDataManager) {

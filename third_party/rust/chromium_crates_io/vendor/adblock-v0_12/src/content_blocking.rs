@@ -5,9 +5,9 @@ use crate::filters::network::{NetworkFilter, NetworkFilterMask, NetworkFilterMas
 use crate::lists::ParsedFilter;
 
 use memchr::{memchr as find_char, memmem};
-use once_cell::sync::Lazy;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use std::sync::LazyLock;
 
 use std::collections::HashSet;
 use std::convert::{TryFrom, TryInto};
@@ -305,10 +305,12 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
     type Error = CbRuleCreationFailure;
 
     fn try_from(v: NetworkFilter) -> Result<Self, Self::Error> {
-        static SPECIAL_CHARS: Lazy<Regex> =
-            Lazy::new(|| Regex::new(r##"([.+?^${}()|\[\]\\])"##).unwrap());
-        static REPLACE_WILDCARDS: Lazy<Regex> = Lazy::new(|| Regex::new(r##"\*"##).unwrap());
-        static TRAILING_SEPARATOR: Lazy<Regex> = Lazy::new(|| Regex::new(r##"\^$"##).unwrap());
+        static SPECIAL_CHARS: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r##"([.+?^${}()|\[\]\\])"##).unwrap());
+        static REPLACE_WILDCARDS: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r##"\*"##).unwrap());
+        static TRAILING_SEPARATOR: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r##"\^$"##).unwrap());
         if let Some(raw_line) = &v.raw_line {
             if v.is_redirect() {
                 return Err(CbRuleCreationFailure::NetworkRedirectUnsupported);

@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Utils
+import { getLocale } from '../../../../common/locale'
+
 // Selectors
 import { WalletSelectors, UISelectors } from '../../../common/selectors'
 
@@ -17,8 +20,8 @@ import {
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
 import {
-  FeatureRequestButton, //
-} from '../../shared/feature-request-button/feature-request-button'
+  CTAButton, //
+} from '../../shared/cta_button/cta_button'
 import {
   TabHeader, //
 } from '../../../page/screens/shared-screen-components/tab-header/tab-header'
@@ -164,7 +167,11 @@ export const WalletPageWrapper = (props: Props) => {
         {isWalletCreated && !isWalletLocked && !hideNav && <WalletNav />}
         {!isWalletLocked && (
           <FeatureRequestButtonWrapper>
-            <FeatureRequestButton />
+            <CTAButton
+              buttonText={getLocale('braveWalletReportAnIssueButtonText')}
+              url='https://community.brave.app/tags/c/wallet/131/bug'
+              iconName='bug'
+            />
           </FeatureRequestButtonWrapper>
         )}
         <BlockForHeight />

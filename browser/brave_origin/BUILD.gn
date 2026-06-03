@@ -5,11 +5,14 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -31,13 +34,16 @@ source_set("brave_origin") {
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_policy",
     "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
+    "//brave/components/email_aliases/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/browser:browser_process",
@@ -72,6 +78,10 @@ source_set("brave_origin") {
     deps += [ "//brave/components/speedreader" ]
   }
 
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
+  }
+
   if (enable_tor) {
     deps += [ "//brave/components/tor:pref_names" ]
   }
@@ -87,6 +97,13 @@ source_set("brave_origin") {
   if (enable_brave_talk) {
     deps += [ "//brave/components/brave_talk" ]
   }
+
+  if (enable_email_aliases) {
+    deps += [
+      "//brave/components/email_aliases:pref_names",
+      "//brave/components/email_aliases:service",
+    ]
+  }
 }
 
 source_set("unit_tests") {
@@ -101,10 +118,12 @@ source_set("unit_tests") {
     "//brave/browser/ui/brave_origin",
     "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/constants",
     "//brave/components/p3a",
     "//chrome/browser/profiles",
     "//chrome/test:test_support",
+    "//components/policy:generated",
     "//components/policy/core/common:test_support",
     "//content/test:test_support",
     "//testing/gtest",

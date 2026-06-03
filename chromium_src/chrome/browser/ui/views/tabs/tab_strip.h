@@ -41,15 +41,16 @@ class BraveTabHoverCardController;
   bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id)           \
       const override;                                                        \
   brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;           \
+  bool IsHorizontalScrollingEnabled() const override;                        \
   virtual TabDragContext* GetDragContext
 
 #define TabHoverCardController BraveTabHoverCardController
 #define AddTabToGroup virtual AddTabToGroup
-#define SetTabData virtual SetTabData
 #define MoveTab virtual MoveTab
+#define OnTabPinnedStateChanged virtual OnTabPinnedStateChanged
 #include <chrome/browser/ui/views/tabs/tab_strip.h>  // IWYU pragma: export
+#undef OnTabPinnedStateChanged
 #undef MoveTab
-#undef SetTabData
 #undef AddTabToGroup
 #undef TabHoverCardController
 #undef GetDragContext

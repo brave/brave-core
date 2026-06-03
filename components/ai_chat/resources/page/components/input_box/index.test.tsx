@@ -3,25 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-/* eslint-disable jest/no-conditional-expect, import/first */
+/* eslint-disable jest/no-conditional-expect */
 
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
 import { ContentType, UploadedFileType, TaskState } from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
-import InputBox, { InputBoxProps } from '.'
-
-// Mock the convertFileToUploadedFile function
-jest.mock('../../utils/file_utils', () => ({
-  convertFileToUploadedFile: jest.fn(),
-}))
-
-import { convertFileToUploadedFile } from '../../utils/file_utils'
-const mockConvertFileToUploadedFile =
-  convertFileToUploadedFile as jest.MockedFunction<
-    typeof convertFileToUploadedFile
-  >
+import InputBox, { InputBoxProps, type InputBoxHandle } from '.'
 
 // Mock URL.createObjectURL for tests that include image files
 // This is needed because AttachmentUploadItems calls URL.createObjectURL to create blob URLs for images
@@ -34,7 +23,7 @@ const testContext: InputBoxProps['context'] = {
   isMobile: false,
   hasAcceptedAgreement: true,
   getPluralString: () => Promise.resolve(''),
-  attachImages: jest.fn(),
+  attachFiles: jest.fn(),
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
   openAIChatAgentProfile: () => {},
@@ -45,7 +34,6 @@ const testContext: InputBoxProps['context'] = {
   conversationHistory: [],
   unassociatedTabs: [],
   setAttachmentsDialog: () => {},
-  uploadFile: jest.fn(),
   getScreenshots: jest.fn(),
   setInputText: () => {},
   submitInputTextToAPI: jest.fn(),
@@ -71,6 +59,7 @@ const testContext: InputBoxProps['context'] = {
   selectedSkill: undefined,
   processImageFile: jest.fn(),
   processPdfFile: jest.fn(),
+  processTextFile: jest.fn(),
   skills: [],
 }
 
@@ -332,6 +321,66 @@ describe('input box', () => {
     expect(attachmentWrapper).toBeInTheDocument()
   })
 
+  const pendingPdf = {
+    filename: 'test.pdf',
+    data: [],
+    extractedText: '',
+    type: UploadedFileType.kPdf,
+    filesize: 1024,
+  }
+
+  it.each([
+    ['isUploadingFiles=true, no pending files', true, [], true, false],
+    ['isUploadingFiles=true, pending files', true, [pendingPdf], true, true],
+    ['isUploadingFiles=false, no pending files', false, [], false, false],
+    ['isUploadingFiles=false, pending files', false, [pendingPdf], false, true],
+  ])(
+    'upload spinner visibility (%s)',
+    async (
+      _label,
+      isUploadingFiles,
+      pendingMessageFiles,
+      expectSpinner,
+      expectFileChip,
+    ) => {
+      const { container } = await renderInputBox(
+        <MockContext>
+          <InputBox
+            context={{
+              ...testContext,
+              pendingMessageFiles,
+              isUploadingFiles,
+            }}
+            conversationStarted={false}
+          />
+        </MockContext>,
+      )
+
+      const attachmentWrapper = container.querySelector('.attachmentWrapper')
+      if (expectSpinner || expectFileChip) {
+        expect(attachmentWrapper).toBeInTheDocument()
+      } else {
+        expect(attachmentWrapper).not.toBeInTheDocument()
+      }
+
+      if (expectSpinner) {
+        expect(
+          attachmentWrapper!.querySelector('leo-progressring'),
+        ).toBeInTheDocument()
+      } else {
+        expect(
+          container.querySelector('leo-progressring'),
+        ).not.toBeInTheDocument()
+      }
+
+      if (expectFileChip) {
+        expect(screen.getByText('test.pdf')).toBeInTheDocument()
+      } else {
+        expect(screen.queryByText('test.pdf')).not.toBeInTheDocument()
+      }
+    },
+  )
+
   it('attachments are shown if only documents are available', async () => {
     const { container } = await renderInputBox(
       <MockContext>
@@ -432,34 +481,14 @@ describe('input box', () => {
       return file
     }
 
-    beforeEach(() => {
-      jest.clearAllMocks()
-
-      mockConvertFileToUploadedFile.mockImplementation((file: File) => {
-        const mimeType = file.type.toLowerCase()
-        let type = UploadedFileType.kText
-        if (mimeType.startsWith('image/')) {
-          type = UploadedFileType.kImage
-        } else if (mimeType === 'application/pdf') {
-          type = UploadedFileType.kPdf
-        }
-        return Promise.resolve({
-          filename: file.name,
-          filesize: file.size,
-          data: Array.from(new Uint8Array(8)),
-          type,
-        })
-      })
-    })
-
     it('accepts all file types on paste', async () => {
-      const mockAttachImages = jest.fn()
+      const mockAttachFiles = jest.fn()
       const { container } = await renderInputBox(
         <MockContext>
           <InputBox
             context={{
               ...testContext,
-              attachImages: mockAttachImages,
+              attachFiles: mockAttachFiles,
             }}
             conversationStarted={false}
           />
@@ -488,20 +517,7 @@ describe('input box', () => {
       })
 
       await waitFor(() => {
-        expect(mockAttachImages).toHaveBeenCalledWith([
-          expect.objectContaining({
-            filename: 'test.png',
-            filesize: 1024,
-            data: expect.any(Array),
-            type: UploadedFileType.kImage,
-          }),
-          expect.objectContaining({
-            filename: 'test.txt',
-            filesize: 1024,
-            data: expect.any(Array),
-            type: UploadedFileType.kText,
-          }),
-        ])
+        expect(mockAttachFiles).toHaveBeenCalledWith([imageFile, textFile])
       })
     })
   })
@@ -569,4 +585,30 @@ describe('input box', () => {
       ).not.toBeInTheDocument()
     },
   )
+
+  it('focusInput ref focuses the editable', async () => {
+    const inputBoxRef = React.createRef<InputBoxHandle>()
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          ref={inputBoxRef}
+          context={testContext}
+          conversationStarted
+        />
+      </MockContext>,
+    )
+
+    const editable = container.querySelector(
+      '[data-testid="leo-input"]',
+    ) as HTMLElement | null
+    expect(editable).not.toBeNull()
+    const focusSpy = jest.spyOn(editable!, 'focus')
+
+    await act(async () => {
+      inputBoxRef.current!.focusInput()
+    })
+
+    expect(focusSpy).toHaveBeenCalled()
+    focusSpy.mockRestore()
+  })
 })

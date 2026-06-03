@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index a70633920f4475ae7adb3be39076688ec19d9178..f6a4a65a7a69a66eb8cd5c294a4cefc44cd94f6d 100644
+index ea4cda7c684c5474918085681ed4dcaf9d6c271b..4f075086e961bb80fc58245eff8e84d98e34a90b 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -91,6 +91,7 @@ static_library("browser") {
+@@ -90,6 +90,7 @@ static_library("browser") {
    # for PageInfoRelatedWebsiteSetsTest tests.
    # TODO(crbug.com/40145057): remove deprecated RWS and this include.
    public_deps += [ "//components/privacy_sandbox:privacy_sandbox_prefs" ]

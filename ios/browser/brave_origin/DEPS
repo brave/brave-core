@@ -6,6 +6,7 @@ include_rules = [
   "+brave/components/brave_vpn",
   "+brave/components/brave_wallet/common",
   "+brave/components/constants",
+  "+brave/components/email_aliases",
   "+brave/components/p3a",
   "+brave/components/playlist/core/common",
 ]

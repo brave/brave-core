@@ -153,6 +153,13 @@
 
     </LinearLayout>
 
+    <include
+        android:id="@+id/sign_msg_warning_container"
+        layout="@layout/sign_warning_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/non_ascii_warning_layout" />
+
     <EditText
         android:id="@+id/sign_message_text"
         style="@style/BraveWalletEditTextBordered"

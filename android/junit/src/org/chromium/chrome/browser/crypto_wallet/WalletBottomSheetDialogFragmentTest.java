@@ -12,7 +12,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -38,12 +41,21 @@ public class WalletBottomSheetDialogFragmentTest {
     @Mock private WalletModel mWalletModel;
     @Mock private KeyringModel mKeyringModel;
 
+    private ActivityController<?> mActivityController;
+
+    @After
+    public void tearDown() {
+        if (mActivityController != null) {
+            mActivityController.pause().stop().destroy();
+        }
+    }
+
     @Test
     public void onAttach_registersKeyringObserver() {
         when(mWalletModel.getKeyringModel()).thenReturn(mKeyringModel);
 
-        TestWalletActivity activity =
-                Robolectric.buildActivity(TestWalletActivity.class).setup().get();
+        mActivityController = Robolectric.buildActivity(TestWalletActivity.class).setup();
+        TestWalletActivity activity = (TestWalletActivity) mActivityController.get();
         activity.setWalletModel(mWalletModel);
 
         TestWalletBottomSheetFragment fragment = new TestWalletBottomSheetFragment();
@@ -56,16 +68,13 @@ public class WalletBottomSheetDialogFragmentTest {
 
     @Test
     public void onAttach_withoutCallback_throws() {
-        FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).setup().get();
+        mActivityController = Robolectric.buildActivity(FragmentActivity.class).setup();
+        FragmentActivity activity = (FragmentActivity) mActivityController.get();
 
         TestWalletBottomSheetFragment fragment = new TestWalletBottomSheetFragment();
-        assertThrows(
-                IllegalStateException.class,
-                () ->
-                        activity.getSupportFragmentManager()
-                                .beginTransaction()
-                                .add(fragment, "tag")
-                                .commitNow());
+        FragmentTransaction fragmentTransaction =
+                activity.getSupportFragmentManager().beginTransaction().add(fragment, "tag");
+        assertThrows(IllegalStateException.class, fragmentTransaction::commitNow);
     }
 
     /** Simple fragment that exposes {@link WalletBottomSheetDialogFragment#getWalletModel()}. */

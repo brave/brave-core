@@ -6,10 +6,11 @@
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
 import {
-  type PageVisibility,
   pageVisibility as chromiumPageVisibility,
   resetPageVisibilityForTesting
 } from '../page_visibility.js'
+
+import type { PageVisibility } from '../page_visibility.js'
 
 // Merge our interface additions with upstream's interface
 declare module '../page_visibility.js' {
@@ -33,7 +34,8 @@ declare module '../page_visibility.js' {
     speedreader?: boolean
     // </if>
     surveyPanelist?: boolean,
-    braveTor?: boolean
+    braveTor?: boolean,
+    emailAliases?: boolean
   }
 }
 
@@ -70,6 +72,7 @@ function getPageVisibility () {
       // </if>
       surveyPanelist: false,
       braveTor: false,
+      emailAliases: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
@@ -104,13 +107,17 @@ function getPageVisibility () {
     containers: loadTimeData.getBoolean('isContainersEnabled'),
     // </if>
     content: alwaysTrueProxy,
-    playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
+    playlist: loadTimeData.getBoolean('isPlaylistFeatureEnabled') &&
+              !loadTimeData.getBoolean('isPlaylistDisabledByPolicy'),
     // <if expr="enable_speedreader">
     speedreader: loadTimeData.getBoolean('isSpeedreaderAllowed'),
     // </if>
     // <if expr="enable_tor">
     braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
               loadTimeData.getBoolean('shouldExposeElementsForTesting'),
+    // </if>
+    // <if expr="enable_email_aliases">
+    emailAliases: loadTimeData.getBoolean('isEmailAliasesEnabled'),
     // </if>
     origin: loadTimeData.getBoolean('isBraveOriginPurchased') &&
             !loadTimeData.getBoolean('isBraveOriginBrandedBuild'),

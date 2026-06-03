@@ -34,9 +34,16 @@
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_element_identifiers.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_action_container.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/display/display_switches.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -127,7 +134,9 @@ class AIChatConversationTaskBrowserTest
   ConversationHandler* CreateConversationWithMockEngine() {
     AIChatConversationUIBrowserTestBase::CreateConversationWithMockEngine();
 
-    // Get the ContentAgentToolProvider from the conversation
+    // Get the ContentAgentToolProvider from the conversation.
+    // We won't use MockToolProvider since these tests need the real
+    // ContentAgentToolProvider to validate it performs its actions.
     auto* tool_provider =
         conversation_handler_->GetFirstToolProviderForTesting();
     EXPECT_TRUE(tool_provider);
@@ -164,12 +173,6 @@ class AIChatConversationTaskBrowserTest
     args.Set("website_url", url.spec());
     return mojom::ToolUseEvent::New("web_page_navigator", tool_id,
                                     *base::WriteJson(args), std::nullopt,
-                                    std::nullopt, nullptr, false);
-  }
-
-  mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
-                                            const std::string& tool_id) {
-    return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
                                     std::nullopt, nullptr, false);
   }
 
@@ -442,8 +445,17 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
-  // A task UI shows when there are 2 tool segments of a tool loop, i.e. the AI
-  // responds to a tool use result with another tool use request.
+  // The task UI shows for any assistant response group containing at least
+  // one task tool use; the ProgressBubble surfaces the active tool label or
+  // a "Thinking" placeholder while the loop runs, and a completion/paused/
+  // stopped state once the loop ends.
+  const std::string thinking_label =
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_TOOL_LABEL_THINKING);
+  const std::string paused_label =
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_TASK_STATE_PAUSED_LABEL);
+  const std::string complete_label =
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_TOOL_LABEL_COMPLETE);
+
   CreateConversationWithMockEngine();
   std::string uuid = conversation_handler_->get_conversation_uuid();
 
@@ -487,8 +499,11 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
 
-  // No task UI should be shown with only one tool segment in the loop
-  EXPECT_FALSE(VerifyConversationFrameElementState("assistant-task", false));
+  // The task UI shows as soon as there's at least one task tool use, and
+  // the progress bubble displays the tool label while the tool runs.
+  EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
+  EXPECT_TRUE(VerifyConversationFrameElementText("progress-bubble-description",
+                                                 "mock_tool"));
   // Handle the tool execution response with another tool use request.
   {
     auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
@@ -509,8 +524,10 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
         .InSequence(tool_call_seq)
         .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
           EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
-          EXPECT_FALSE(VerifyConversationFrameElementState(
-              "tool-event-thinking", false));
+          // While a tool is executing the bubble shows that tool's label,
+          // not the "Thinking" placeholder.
+          EXPECT_TRUE(VerifyConversationFrameElementText(
+              "progress-bubble-description", "mock_tool"));
           tool_execute = base::BindOnce(
               [](Tool::UseToolCallback callback) {
                 std::move(callback).Run(
@@ -534,8 +551,10 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
 
     auto callbacks = generate_future->Take();
 
-    // Now we should be thinking
-    EXPECT_TRUE(VerifyConversationFrameElementState("tool-event-thinking"));
+    // Now we should be thinking - tool execution finished, waiting for the
+    // engine to respond.
+    EXPECT_TRUE(VerifyConversationFrameElementText(
+        "progress-bubble-description", thinking_label));
 
     // Shouldn't call the tool again because we are pausing.
     EXPECT_CALL(*mock_tool, UseTool).Times(0).InSequence(tool_call_seq);
@@ -565,9 +584,9 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
 
-  // The task should have a "paused" label
-  EXPECT_TRUE(
-      VerifyConversationFrameElementState("assistant-task-paused-label"));
+  // The task's progress bubble should now read "Paused"
+  EXPECT_TRUE(VerifyConversationFrameElementText("progress-bubble-description",
+                                                 paused_label));
 
   // When we submit a new message, the task is no longer active. It should still
   // exist but should not have its "paused" label.
@@ -593,8 +612,61 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
   EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
-  EXPECT_FALSE(VerifyConversationFrameElementState(
-      "assistant-task-paused-label", false));
+  // The prior, no-longer-active task settles into the completed state — its
+  // bubble no longer reads "Paused".
+  EXPECT_TRUE(VerifyConversationFrameElementText("progress-bubble-description",
+                                                 complete_label));
+}
+
+// Verify that the upstream GlicAndActorButtonsContainer is not constructed in
+// either the toolbar or the tab strip of a window that is executing a task.
+// The container has been the source of crashes; Brave disables it by
+// overriding the `kGlicActorUiTaskIcon` feature param to false (see
+// chromium_src/chrome/common/chrome_features.cc). This test guards against
+// regressions of that override.
+IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
+                       NoUpstreamGlicAndActorButtonsContainer) {
+  CreateConversationWithMockEngine();
+  std::string uuid = conversation_handler_->get_conversation_uuid();
+  NavigateToConversationUI(uuid);
+
+  // Drive the conversation into a running task state via a tool use event.
+  {
+    auto generate_future = SetupMockGenerateAssistantResponse();
+    conversation_handler_->SubmitHumanConversationEntry(
+        "Navigate to example.com", std::nullopt);
+    auto callbacks = generate_future->Take();
+    GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            CreateNavigateToolUseEvent("tool_id_1", test_url)),
+        std::nullopt));
+    std::move(callbacks.completed_callback)
+        .Run(base::ok(
+            EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+  }
+  ASSERT_TRUE(base::test::RunUntil([this]() {
+    return GetConversationState()->tool_use_task_state ==
+           mojom::TaskState::kRunning;
+  }));
+
+  // The toolbar must not contain the upstream glic actor task icon.
+  BrowserView* agent_browser_view =
+      BrowserView::GetBrowserViewForBrowser(agent_browser_window_);
+  ASSERT_TRUE(agent_browser_view);
+  EXPECT_EQ(agent_browser_view->toolbar()->glic_actor_task_icon(), nullptr);
+
+  // The tab strip's action container must not contain the upstream glic actor
+  // button container. The container itself may be absent depending on the
+  // window's tab strip configuration; if so, there is nothing to verify.
+  auto* tab_strip_action_container =
+      BrowserElementsViews::From(agent_browser_window_)
+          ->GetViewAs<TabStripActionContainer>(
+              kTabStripActionContainerElementId);
+  if (tab_strip_action_container) {
+    EXPECT_EQ(tab_strip_action_container->glic_actor_button_container(),
+              nullptr);
+  }
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)

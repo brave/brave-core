@@ -6,7 +6,8 @@
 
 ## ✅ Use Existing Utilities Instead of Custom Code
 
-**Always check for existing well-tested utilities before writing custom code.** Chromium and base have extensive libraries for common operations.
+**Always check for existing well-tested utilities before writing custom code.**
+Chromium and base have extensive libraries for common operations.
 
 ```cpp
 // ❌ WRONG - custom query string parsing
@@ -28,7 +29,10 @@ while (!it.IsAtEnd()) {
 
 ## ✅ Use base::OnceCallback and base::BindOnce
 
-**`base::Callback` and `base::Bind` are deprecated.** Use `base::OnceCallback`/`base::RepeatingCallback` and `base::BindOnce`/`base::BindRepeating`. Use `std::move` when passing or calling a `base::OnceCallback`.
+**`base::Callback` and `base::Bind` are deprecated.** Use
+`base::OnceCallback`/`base::RepeatingCallback` and
+`base::BindOnce`/`base::BindRepeating`. Use `std::move` when passing or calling
+a `base::OnceCallback`.
 
 ---
 
@@ -36,7 +40,9 @@ while (!it.IsAtEnd()) {
 
 ## ✅ Never Use std::time - Use base::Time
 
-**Always use `base::Time` and related classes instead of C-style `std::time`, `ctime`, or `time_t`.** The base library provides cross-platform, type-safe time utilities.
+**Always use `base::Time` and related classes instead of C-style `std::time`,
+`ctime`, or `time_t`.** The base library provides cross-platform, type-safe time
+utilities.
 
 ---
 
@@ -44,7 +50,9 @@ while (!it.IsAtEnd()) {
 
 ## ✅ Use `JSONValueConverter` for JSON/Type Conversion
 
-**When parsing JSON into C++ types, prefer `base::JSONValueConverter` over manual key-by-key parsing.** Manual parsing is verbose, error-prone, and results in duplicated boilerplate.
+**When parsing JSON into C++ types, prefer `base::JSONValueConverter` over
+manual key-by-key parsing.** Manual parsing is verbose, error-prone, and results
+in duplicated boilerplate.
 
 ```cpp
 // ❌ WRONG - manual JSON parsing
@@ -67,15 +75,23 @@ static void RegisterJSONConverter(
 
 ## ✅ Use the Right Associative Container
 
-**Chromium's container guidelines (`base/containers/README.md`) recommend specific containers for each use case.** `std::unordered_map`/`std::unordered_set` are banned.
+**Chromium's container guidelines (`base/containers/README.md`) recommend
+specific containers for each use case.**
+`std::unordered_map`/`std::unordered_set` are banned.
 
-**Default (unordered):** Use `absl::flat_hash_map` and `absl::flat_hash_set` for general-purpose needs. They provide the best all-around performance for both small and large datasets.
+**Default (unordered):** Use `absl::flat_hash_map` and `absl::flat_hash_set` for
+general-purpose needs. They provide the best all-around performance for both
+small and large datasets.
 
-**Sorted, write-once or small:** Use `base::flat_map`/`base::flat_set`. Good cache locality; O(n) mutations are fine for small collections or write-once containers.
+**Sorted, write-once or small:** Use `base::flat_map`/`base::flat_set`. Good
+cache locality; O(n) mutations are fine for small collections or write-once
+containers.
 
-**Sorted, large, frequently-mutated:** Use `std::map`/`std::set`. O(log n) mutations matter at scale.
+**Sorted, large, frequently-mutated:** Use `std::map`/`std::set`. O(log n)
+mutations matter at scale.
 
-**Compile-time lookup tables:** Use `base::MakeFixedFlatMap`/`base::MakeFixedFlatSet` (see [CSA-045](#CSA-045)).
+**Compile-time lookup tables:** Use
+`base::MakeFixedFlatMap`/`base::MakeFixedFlatSet` (see [CSA-045](#CSA-045)).
 
 ```cpp
 // ❌ WRONG - banned
@@ -91,7 +107,10 @@ base::flat_map<std::string, int> lookup_;
 std::map<std::string, int> large_mutable_lookup_;
 ```
 
-**Pointer stability:** If you need stable pointers to values, wrap them in `std::unique_ptr` inside an `absl::flat_hash_map`. If you need stable pointers to keys, use `absl::node_hash_map`/`absl::node_hash_set` (separate node allocation).
+**Pointer stability:** If you need stable pointers to values, wrap them in
+`std::unique_ptr` inside an `absl::flat_hash_map`. If you need stable pointers
+to keys, use `absl::node_hash_map`/`absl::node_hash_set` (separate node
+allocation).
 
 ```cpp
 // ✅ CORRECT - value pointer stability via unique_ptr wrapping
@@ -101,7 +120,9 @@ absl::flat_hash_map<Key, std::unique_ptr<Value>> stable_values;
 absl::node_hash_map<std::string, int> stable_keys;
 ```
 
-**Also banned:** `absl::btree_map`/`absl::btree_set` (significant code size penalties in Chromium). See [Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
+**Also banned:** `absl::btree_map`/`absl::btree_set` (significant code size
+penalties in Chromium). See
+[Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
 
 ---
 
@@ -109,7 +130,9 @@ absl::node_hash_map<std::string, int> stable_keys;
 
 ## ❌ Don't Use Deprecated `GetAs*` Methods on `base::Value`
 
-**The `GetAsString()`, `GetAsInteger()`, etc. methods on `base::Value` are deprecated.** Use the newer direct access methods like `GetString()`, `GetInt()`, `GetDouble()`.
+**The `GetAsString()`, `GetAsInteger()`, etc. methods on `base::Value` are
+deprecated.** Use the newer direct access methods like `GetString()`,
+`GetInt()`, `GetDouble()`.
 
 ```cpp
 // ❌ WRONG
@@ -126,7 +149,8 @@ const std::string& str = value->GetString();
 
 ## ✅ Use `GetIfBool`/`GetIfInt`/`GetIfString` for Safe `base::Value` Access
 
-**When extracting values from a `base::Value` where the type may not match, use `GetIf*` accessors instead of `Get*` which CHECK-fails on type mismatch.**
+**When extracting values from a `base::Value` where the type may not match, use
+`GetIf*` accessors instead of `Get*` which CHECK-fails on type mismatch.**
 
 ```cpp
 // ❌ WRONG - crashes if value is not a bool
@@ -142,7 +166,8 @@ if (value.GetIfBool().value_or(false)) { ... }
 
 ## ❌ Don't Use `std::to_string` - Use `base::NumberToString`
 
-**`std::to_string` is on Chromium's deprecated list.** Use `base::NumberToString` instead.
+**`std::to_string` is on Chromium's deprecated list.** Use
+`base::NumberToString` instead.
 
 ```cpp
 // ❌ WRONG
@@ -158,7 +183,8 @@ std::string port_str = base::NumberToString(port);
 
 ## ❌ Don't Use C-Style Casts
 
-**Chromium prohibits C-style casts.** Use C++ casts (`static_cast`, `reinterpret_cast`, etc.) which are safer and more explicit.
+**Chromium prohibits C-style casts.** Use C++ casts (`static_cast`,
+`reinterpret_cast`, etc.) which are safer and more explicit.
 
 ```cpp
 // ❌ WRONG
@@ -174,7 +200,10 @@ double result = static_cast<double>(integer_value) / total;
 
 ## ✅ Prefer std::move Over Clone
 
-**Use `std::move` instead of cloning when you don't need the original value anymore.** This avoids unnecessary copies. This is especially important when passing `std::vector` or other large objects to callback `.Run()` calls — forgetting `std::move` silently copies the entire buffer.
+**Use `std::move` instead of cloning when you don't need the original value
+anymore.** This avoids unnecessary copies. This is especially important when
+passing `std::vector` or other large objects to callback `.Run()` calls —
+forgetting `std::move` silently copies the entire buffer.
 
 ```cpp
 // ❌ WRONG - copies the entire vector into the callback
@@ -192,7 +221,8 @@ std::move(cb).Run(std::move(buffer), other_arg);
 
 ## ❌ Don't Create Unnecessary Wrapper Types
 
-**Don't create plural/container types when you can use arrays of the singular type.** Extra wrapper types add complexity without value.
+**Don't create plural/container types when you can use arrays of the singular
+type.** Extra wrapper types add complexity without value.
 
 ```cpp
 // ❌ WRONG - unnecessary plural type
@@ -210,7 +240,8 @@ std::vector<MonthlyStatement> GetMonthlyStatements();
 
 ## ✅ Use Pref Dict/List Values Directly
 
-**Don't serialize to JSON strings when storing structured data in prefs.** Use `SetDict`/`SetList` directly instead of `JSONWriter::Write` + `SetString`.
+**Don't serialize to JSON strings when storing structured data in prefs.** Use
+`SetDict`/`SetList` directly instead of `JSONWriter::Write` + `SetString`.
 
 ```cpp
 // ❌ WRONG - serializing to JSON string unnecessarily
@@ -229,7 +260,8 @@ prefs->SetList(prefs::kMyPref, std::move(list_value));
 
 ## ✅ Use `extern const char[]` Over `#define` for Strings
 
-**Use `extern const char[]` instead of `#define` for string constants to keep them namespaced.**
+**Use `extern const char[]` instead of `#define` for string constants to keep
+them namespaced.**
 
 ```cpp
 // ❌ WRONG - pollutes preprocessor namespace
@@ -249,7 +281,9 @@ Exception: use `#define` when you need to pass the value in from GN.
 
 ## ✅ Prefer Enum Types Over String Constants for Typed Values
 
-**When a value has a fixed set of valid options, use an enum with string conversion rather than passing raw strings.** This enables compiler-checked switch statements and prevents invalid values.
+**When a value has a fixed set of valid options, use an enum with string
+conversion rather than passing raw strings.** This enables compiler-checked
+switch statements and prevents invalid values.
 
 ```cpp
 // ❌ WRONG - raw strings
@@ -266,7 +300,8 @@ void SetWalletType(WalletType type);
 
 ## ❌ No C++ Exceptions in Third-Party Libraries
 
-**C++ exceptions are disallowed in Chromium.** When integrating third-party libraries, verify they build with exception support disabled.
+**C++ exceptions are disallowed in Chromium.** When integrating third-party
+libraries, verify they build with exception support disabled.
 
 ---
 
@@ -274,7 +309,9 @@ void SetWalletType(WalletType type);
 
 ## ✅ Use `base::EraseIf` / `std::erase_if` Instead of Manual Erase Loops
 
-**Prefer `base::EraseIf` (for `base::flat_*` containers) or `std::erase_if` (for standard containers) over manual iterator-based erase loops.** Cleaner and less error-prone.
+**Prefer `base::EraseIf` (for `base::flat_*` containers) or `std::erase_if` (for
+standard containers) over manual iterator-based erase loops.** Cleaner and less
+error-prone.
 
 ```cpp
 // ❌ WRONG - manual erase loop
@@ -298,7 +335,10 @@ std::erase_if(items, [](const auto& item) { return item.IsExpired(); });
 
 ## ✅ Use `base::span` at API Boundaries Instead of `const std::vector&`
 
-**Prefer `base::span<const T>` over `const std::vector<T>&` for function parameters that only read data.** Spans are lightweight, non-owning views that accept any contiguous container (`std::vector`, `base::HeapArray`, C arrays, `base::FixedArray`), making APIs more flexible.
+**Prefer `base::span<const T>` over `const std::vector<T>&` for function
+parameters that only read data.** Spans are lightweight, non-owning views that
+accept any contiguous container (`std::vector`, `base::HeapArray`, C arrays,
+`base::FixedArray`), making APIs more flexible.
 
 ```cpp
 // ❌ WRONG - forces callers to use std::vector
@@ -308,7 +348,8 @@ void ProcessBuffer(const std::vector<uint8_t>& data);
 void ProcessBuffer(base::span<const uint8_t> data);
 ```
 
-This is especially important for byte buffer APIs where the data source may be a `std::vector`, `base::HeapArray`, or a static array.
+This is especially important for byte buffer APIs where the data source may be a
+`std::vector`, `base::HeapArray`, or a static array.
 
 ---
 
@@ -316,7 +357,9 @@ This is especially important for byte buffer APIs where the data source may be a
 
 ## ✅ Use `base::FixedArray` Over `std::vector` for Known-Size Runtime Allocations
 
-**When the size is known at creation but not at compile time, use `base::FixedArray`.** It avoids heap allocation for small sizes and communicates immutable size.
+**When the size is known at creation but not at compile time, use
+`base::FixedArray`.** It avoids heap allocation for small sizes and communicates
+immutable size.
 
 ```cpp
 // ❌ WRONG - vector suggests dynamic resizing
@@ -332,7 +375,10 @@ base::FixedArray<uint8_t> out(size);
 
 ## ✅ Use `base::HeapArray<uint8_t>` for Fixed-Size Byte Buffers
 
-**When you need an owned byte buffer that won't be resized after creation, use `base::HeapArray<uint8_t>` instead of `std::vector<unsigned char>` or `std::vector<uint8_t>`.** `HeapArray` communicates that the size is fixed, provides bounds-checked indexing, and converts easily to `base::span`.
+**When you need an owned byte buffer that won't be resized after creation, use
+`base::HeapArray<uint8_t>` instead of `std::vector<unsigned char>` or
+`std::vector<uint8_t>`.** `HeapArray` communicates that the size is fixed,
+provides bounds-checked indexing, and converts easily to `base::span`.
 
 ```cpp
 // ❌ WRONG - vector implies the buffer may grow
@@ -344,9 +390,12 @@ auto dat_buffer = base::HeapArray<uint8_t>::WithSize(size);
 ProcessBuffer(dat_buffer.as_span());
 ```
 
-Use `HeapArray::Uninit(size)` for performance-sensitive paths where zero-initialization is unnecessary.
+Use `HeapArray::Uninit(size)` for performance-sensitive paths where
+zero-initialization is unnecessary.
 
-**Note:** When interfaces (e.g., Mojo, Rust FFI) require `std::vector`, you may need to keep using `std::vector` at those boundaries, but prefer `HeapArray` for internal buffer management.
+**Note:** When interfaces (e.g., Mojo, Rust FFI) require `std::vector`, you may
+need to keep using `std::vector` at those boundaries, but prefer `HeapArray` for
+internal buffer management.
 
 ---
 
@@ -354,7 +403,9 @@ Use `HeapArray::Uninit(size)` for performance-sensitive paths where zero-initial
 
 ## ✅ Use `base::ToVector` for Range-to-Vector Conversions
 
-**Use `base::ToVector(range)` instead of manual copy patterns when converting a range to a `std::vector`.** It handles `reserve()` and iteration automatically, and supports projections.
+**Use `base::ToVector(range)` instead of manual copy patterns when converting a
+range to a `std::vector`.** It handles `reserve()` and iteration automatically,
+and supports projections.
 
 ```cpp
 // ❌ WRONG - manual reserve + copy + back_inserter
@@ -376,7 +427,9 @@ auto names = base::ToVector(items, &Item::name);
 
 ## ✅ Prefer Contiguous Containers Over Linked Lists
 
-**Never use `std::list` for pure traversal — poor cache locality.** Use `std::list` only when stable iterators or frequent mid-container insert/remove is required. Prefer `std::vector` with `reserve()` for known sizes.
+**Never use `std::list` for pure traversal — poor cache locality.** Use
+`std::list` only when stable iterators or frequent mid-container insert/remove
+is required. Prefer `std::vector` with `reserve()` for known sizes.
 
 ---
 
@@ -384,7 +437,8 @@ auto names = base::ToVector(items, &Item::name);
 
 ## ✅ Use `std::optional` Instead of Sentinel Values
 
-**Never use empty string `""`, `-1`, or other magic values as sentinels for "no value".** Use `std::optional<T>`.
+**Never use empty string `""`, `-1`, or other magic values as sentinels for "no
+value".** Use `std::optional<T>`.
 
 ```cpp
 // ❌ WRONG - "" as sentinel for "no custom title"
@@ -400,7 +454,8 @@ void SetCustomTitle(std::optional<std::string> title);  // nullopt means "unset"
 
 ## ✅ Use `.emplace()` for `std::optional` Initialization Clarity
 
-**When engaging a `std::optional` member, prefer `.emplace()` for clarity about the intent.**
+**When engaging a `std::optional` member, prefer `.emplace()` for clarity about
+the intent.**
 
 ```cpp
 // Less clear
@@ -416,7 +471,8 @@ elapsed_timer_.emplace();
 
 ## ✅ Return `std::optional` Instead of `bool` + Out Parameter
 
-**When a function needs to return a value that may or may not exist, use `std::optional<T>` instead of returning `bool` with an out parameter.**
+**When a function needs to return a value that may or may not exist, use
+`std::optional<T>` instead of returning `bool` with an out parameter.**
 
 ```cpp
 // ❌ WRONG
@@ -432,7 +488,9 @@ std::optional<int> GetHistorySize();
 
 ## ✅ Use `constexpr` for Compile-Time Constants
 
-**Constants defined in anonymous namespaces should use `constexpr` instead of `const` when the value is known at compile time.** Place constants inside the component's namespace.
+**Constants defined in anonymous namespaces should use `constexpr` instead of
+`const` when the value is known at compile time.** Place constants inside the
+component's namespace.
 
 ```cpp
 // ❌ WRONG
@@ -454,7 +512,8 @@ constexpr int kMaxRetries = 3;
 
 ## ✅ Use Raw String Literals for Multiline Strings
 
-**When embedding multiline strings (JavaScript, SQL, etc.), use raw string literals (`R"()"`) instead of escaping each line.**
+**When embedding multiline strings (JavaScript, SQL, etc.), use raw string
+literals (`R"()"`) instead of escaping each line.**
 
 ```cpp
 // ❌ WRONG
@@ -477,7 +536,8 @@ const char kScript[] = R"(
 
 ## ❌ Don't Pass Primitive Types by `const` Reference
 
-**Primitive types (`int`, `bool`, `float`, pointers) should be passed by value, not by `const` reference.** Passing by reference adds unnecessary indirection.
+**Primitive types (`int`, `bool`, `float`, pointers) should be passed by value,
+not by `const` reference.** Passing by reference adds unnecessary indirection.
 
 ```cpp
 // ❌ WRONG
@@ -493,7 +553,8 @@ void ProcessItem(int id, bool enabled);
 
 ## ❌ Don't Add `DISALLOW_COPY_AND_ASSIGN` in New Code
 
-**The `DISALLOW_COPY_AND_ASSIGN` macro is deprecated.** Explicitly delete the copy constructor and copy assignment operator instead.
+**The `DISALLOW_COPY_AND_ASSIGN` macro is deprecated.** Explicitly delete the
+copy constructor and copy assignment operator instead.
 
 ```cpp
 // ❌ WRONG
@@ -516,7 +577,9 @@ class MyClass {
 
 ## ✅ Declare Move Operations as `noexcept`
 
-**When defining custom move constructors/assignment operators for structs used in `std::vector`, declare them `noexcept`.** Without `noexcept`, `std::vector` falls back to copying during reallocations.
+**When defining custom move constructors/assignment operators for structs used
+in `std::vector`, declare them `noexcept`.** Without `noexcept`, `std::vector`
+falls back to copying during reallocations.
 
 ```cpp
 // ❌ WRONG
@@ -533,7 +596,9 @@ Topic& operator=(Topic&&) noexcept = default;
 
 ## ❌ Avoid `std::optional<T>&` References
 
-**Never pass `std::optional<T>&` as a function parameter.** It's confusing and can cause hidden copies. Take by value if storing, or use `base::optional_ref<T>` for non-owning optional references.
+**Never pass `std::optional<T>&` as a function parameter.** It's confusing and
+can cause hidden copies. Take by value if storing, or use
+`base::optional_ref<T>` for non-owning optional references.
 
 ```cpp
 // ❌ WRONG - confusing, hidden copies
@@ -552,7 +617,9 @@ void Process(base::optional_ref<const std::string> value);
 
 ## ✅ Short-Circuit on Non-HTTP(S) URLs
 
-**In URL processing code (shields, debouncing, content settings), add an early return for non-HTTP/HTTPS URLs.** This prevents wasting time on irrelevant schemes and avoids edge cases.
+**In URL processing code (shields, debouncing, content settings), add an early
+return for non-HTTP/HTTPS URLs.** This prevents wasting time on irrelevant
+schemes and avoids edge cases.
 
 ```cpp
 // ✅ CORRECT - early exit
@@ -569,7 +636,10 @@ bool ShouldDebounce(const GURL& url) {
 
 ## ❌ Don't Narrow Integer Types in Setters or Parameters
 
-**Setter and function parameter types must match the underlying field type.** Accepting a narrower type (e.g., `uint32_t` when the field is `uint64_t`) silently truncates values. This is especially dangerous in security-sensitive code like wallet/crypto transactions.
+**Setter and function parameter types must match the underlying field type.**
+Accepting a narrower type (e.g., `uint32_t` when the field is `uint64_t`)
+silently truncates values. This is especially dangerous in security-sensitive
+code like wallet/crypto transactions.
 
 ```cpp
 // ❌ WRONG - parameter narrower than field, silent truncation
@@ -591,7 +661,9 @@ class Transaction {
 
 ## ✅ Deprecate Prefs Before Removing Them
 
-**When removing a preference that was previously stored in user profiles, first deprecate the pref (register it for clearing) in one release before fully removing it.** This ensures the old value is cleared from existing profiles.
+**When removing a preference that was previously stored in user profiles, first
+deprecate the pref (register it for clearing) in one release before fully
+removing it.** This ensures the old value is cleared from existing profiles.
 
 ---
 
@@ -599,11 +671,22 @@ class Transaction {
 
 ## ❌ Don't Modify Production Code Solely to Accommodate Tests
 
-**Test-specific workarounds should not affect production behavior.** Use test infrastructure like `kHostResolverRules` command line switches in `SetUpCommandLine` instead of adding production code paths only needed for tests.
+**Test-specific workarounds should not affect production behavior.** Use test
+infrastructure like `kHostResolverRules` command line switches in
+`SetUpCommandLine` instead of adding production code paths only needed for
+tests.
 
-**Only flag this rule when you are certain the code exists solely for tests.** Clear signals include `CHECK_IS_TEST()`, `#if defined(UNIT_TEST)`, `_for_testing` suffixes, or comments explicitly mentioning test support. Do NOT flag legitimate production logic such as handling empty/null/default values, reset paths, or cleanup behavior — these are normal defensive coding patterns, not test accommodations. When uncertain, do not flag.
+**Only flag this rule when you are certain the code exists solely for tests.**
+Clear signals include `CHECK_IS_TEST()`, `#if defined(UNIT_TEST)`,
+`_for_testing` suffixes, or comments explicitly mentioning test support. Do NOT
+flag legitimate production logic such as handling empty/null/default values,
+reset paths, or cleanup behavior — these are normal defensive coding patterns,
+not test accommodations. When uncertain, do not flag.
 
-**Exception:** Thin `ForTesting()` accessors that expose internalized features (e.g., `base::Feature`) are acceptable. These keep the feature internalized while providing a clean way for tests to reference it, and do not affect production behavior.
+**Exception:** Thin `ForTesting()` accessors that expose internalized features
+(e.g., `base::Feature`) are acceptable. These keep the feature internalized
+while providing a clean way for tests to reference it, and do not affect
+production behavior.
 
 ---
 
@@ -611,7 +694,9 @@ class Transaction {
 
 ## ✅ Use `url::kStandardSchemeSeparator` Instead of Hardcoded `"://"`
 
-**When constructing URLs, use `url::kStandardSchemeSeparator` instead of the hardcoded string `"://"`.** This is more maintainable and consistent with Chromium conventions.
+**When constructing URLs, use `url::kStandardSchemeSeparator` instead of the
+hardcoded string `"://"`.** This is more maintainable and consistent with
+Chromium conventions.
 
 ```cpp
 // ❌ WRONG
@@ -629,7 +714,8 @@ std::string url = base::StrCat({url::kHttpsScheme,
 
 ## ✅ Use `base::DoNothing()` for No-Op Callbacks
 
-**Use `base::DoNothing()` instead of empty lambdas when a no-op callback is needed.** It is the Chromium-idiomatic way and is more readable.
+**Use `base::DoNothing()` instead of empty lambdas when a no-op callback is
+needed.** It is the Chromium-idiomatic way and is more readable.
 
 ```cpp
 // ❌ WRONG - empty lambda
@@ -645,7 +731,10 @@ service->DoAsync(base::DoNothing());
 
 ## ✅ Use `base::StrAppend` Over `+= base::StrCat`
 
-**When appending to an existing string, use `base::StrAppend(&str, {...})` instead of `str += base::StrCat({...})`.** `StrCat` creates a temporary string that is then copied; `StrAppend` appends directly to the target, avoiding unnecessary allocation.
+**When appending to an existing string, use `base::StrAppend(&str, {...})`
+instead of `str += base::StrCat({...})`.** `StrCat` creates a temporary string
+that is then copied; `StrAppend` appends directly to the target, avoiding
+unnecessary allocation.
 
 ```cpp
 // ❌ WRONG - temporary string then copy
@@ -661,7 +750,8 @@ base::StrAppend(&result, {kOpenTag, "\n", "=== METADATA ===\n"});
 
 ## ✅ Use `base::Reversed()` for Reverse Iteration
 
-**Prefer `base::Reversed()` with range-based for loops over explicit reverse iterators.** Always add a comment explaining why reverse order is needed.
+**Prefer `base::Reversed()` with range-based for loops over explicit reverse
+iterators.** Always add a comment explaining why reverse order is needed.
 
 ```cpp
 // ❌ WRONG - explicit reverse iterators
@@ -682,7 +772,8 @@ for (const auto& entry : base::Reversed(history)) {
 
 ## ✅ Use `absl::StrFormat` Over `base::StringPrintf`
 
-**Prefer `absl::StrFormat` for formatted string construction.** `base::StringPrintf` is being deprecated in favor of `absl::StrFormat`.
+**Prefer `absl::StrFormat` for formatted string construction.**
+`base::StringPrintf` is being deprecated in favor of `absl::StrFormat`.
 
 ```cpp
 // ❌ WRONG - deprecated
@@ -698,7 +789,9 @@ std::string msg = absl::StrFormat("Error %d: %s", code, desc);
 
 ## ✅ Use `base::saturated_cast` for Safe Numeric Conversions
 
-**When converting between integer types, use `base::saturated_cast<TargetType>()` combined with `.value_or(default)` for safe, concise conversion of optional numeric values.**
+**When converting between integer types, use
+`base::saturated_cast<TargetType>()` combined with `.value_or(default)` for
+safe, concise conversion of optional numeric values.**
 
 ```cpp
 // ❌ WRONG - manual null-check and static_cast
@@ -716,7 +809,9 @@ result = base::saturated_cast<uint64_t>(value.value_or(0));
 
 ## ✅ Use `std::ranges` Algorithms Over Manual Loops
 
-**Prefer C++20 `std::ranges::any_of`, `std::ranges::all_of`, `std::ranges::find_if` over manual for-loops with break conditions.** The ranges versions are more concise and readable.
+**Prefer C++20 `std::ranges::any_of`, `std::ranges::all_of`,
+`std::ranges::find_if` over manual for-loops with break conditions.** The ranges
+versions are more concise and readable.
 
 ```cpp
 // ❌ WRONG - manual loop
@@ -739,7 +834,9 @@ bool found = std::ranges::any_of(items,
 
 ## ✅ Guard `substr()` with Size Check
 
-**Only call `substr()` when the content actually exceeds the limit.** For content within the limit, use the original string to avoid unnecessary memory allocation and copying.
+**Only call `substr()` when the content actually exceeds the limit.** For
+content within the limit, use the original string to avoid unnecessary memory
+allocation and copying.
 
 ```cpp
 // ❌ WRONG - always creates a substring
@@ -757,7 +854,9 @@ const std::string& truncated = (content.size() > max_length)
 
 ## ✅ Use `base::expected<T, E>` Over Optional + Error Out-Parameter
 
-**When a function can fail and needs to communicate error details, use `base::expected<T, E>` instead of `std::optional<T>` with a separate error out-parameter.** This bundles success and error into a single return value.
+**When a function can fail and needs to communicate error details, use
+`base::expected<T, E>` instead of `std::optional<T>` with a separate error
+out-parameter.** This bundles success and error into a single return value.
 
 ```cpp
 // ❌ WRONG - separate error out-parameter
@@ -773,7 +872,9 @@ base::expected<Result, std::string> Parse(const std::string& input);
 
 ## ✅ Use `base::MakeFixedFlatMap` for Static Enum-to-String Mappings
 
-**For compile-time constant mappings between enums and strings, use `base::MakeFixedFlatMap`.** It provides compile-time verification and is more maintainable than switch statements or runtime-built maps.
+**For compile-time constant mappings between enums and strings, use
+`base::MakeFixedFlatMap`.** It provides compile-time verification and is more
+maintainable than switch statements or runtime-built maps.
 
 ```cpp
 // ❌ WRONG - runtime map
@@ -795,7 +896,10 @@ constexpr auto kActionNames = base::MakeFixedFlatMap<ActionType, std::string_vie
 
 ## ✅ Use `base::JSONReader::ReadDict` for JSON Dictionary Parsing
 
-**When parsing a JSON string expected to be a dictionary, use `base::JSONReader::ReadDict()`** which returns `std::optional<base::Value::Dict>` directly, instead of `base::JSONReader::Read()` followed by manual `GetIfDict()` extraction.
+**When parsing a JSON string expected to be a dictionary, use
+`base::JSONReader::ReadDict()`** which returns
+`std::optional<base::Value::Dict>` directly, instead of
+`base::JSONReader::Read()` followed by manual `GetIfDict()` extraction.
 
 ```cpp
 // ❌ WRONG - manual extraction
@@ -814,7 +918,9 @@ if (!dict) return;
 
 ## ✅ Pass-by-Value for Sink Parameters (Google Style)
 
-**Per Google C++ Style Guide, use pass-by-value for parameters that will be moved into the callee** (sink parameters) instead of `T&&`. The caller uses `std::move()` either way, and pass-by-value is simpler.
+**Per Google C++ Style Guide, use pass-by-value for parameters that will be
+moved into the callee** (sink parameters) instead of `T&&`. The caller uses
+`std::move()` either way, and pass-by-value is simpler.
 
 ```cpp
 // ❌ WRONG - rvalue reference parameter
@@ -830,7 +936,9 @@ void SetName(std::string name) { name_ = std::move(name); }
 
 ## ✅ Annotate Obsolete Pref Migration Entries with Dates
 
-**When adding preference migration code that removes deprecated prefs, annotate the entry with the date it was added.** This makes it easy to identify and clean up old migration code later.
+**When adding preference migration code that removes deprecated prefs, annotate
+the entry with the date it was added.** This makes it easy to identify and clean
+up old migration code later.
 
 ```cpp
 // ❌ WRONG - no context for when this was added
@@ -846,7 +954,8 @@ profile_prefs->ClearPref(kOldFeaturePref);  // Added 2025-01 (safe to remove aft
 
 ## ✅ Use `base::FindOrNull()` for Map Lookups
 
-**Use `base::FindOrNull()` instead of the manual find-and-check-end pattern for map lookups.** It's more concise and less error-prone.
+**Use `base::FindOrNull()` instead of the manual find-and-check-end pattern for
+map lookups.** It's more concise and less error-prone.
 
 ```cpp
 // ❌ WRONG - verbose find + check
@@ -866,7 +975,8 @@ return base::FindOrNull(metric_configs_, metric_name);
 
 ## ✅ Use `base::Extend` for Appending Ranges to Vectors
 
-**Use `base::Extend(target, source)` instead of manual `insert(end, begin, end)` for appending one collection to another.**
+**Use `base::Extend(target, source)` instead of manual `insert(end, begin, end)`
+for appending one collection to another.**
 
 ```cpp
 // ❌ WRONG - verbose
@@ -883,7 +993,10 @@ base::Extend(accelerator_list, base::span(kBraveAcceleratorMap));
 
 ## ✅ Use `base::test::ParseJson` and `base::ExpectDict*` in Tests
 
-**Use `base::test::ParseJson()` for parsing JSON in tests, and `base::test::*` utilities from `base/test/values_test_util.h` for asserting dict contents.** These are more readable and produce better error messages than manual JSON parsing.
+**Use `base::test::ParseJson()` for parsing JSON in tests, and `base::test::*`
+utilities from `base/test/values_test_util.h` for asserting dict contents.**
+These are more readable and produce better error messages than manual JSON
+parsing.
 
 ```cpp
 // ❌ WRONG - manual JSON parsing in tests
@@ -905,7 +1018,8 @@ EXPECT_THAT(dict, base::test::DictHasValue("name", "test"));
 
 ## ✅ Use `kOsAll` for Cross-Platform Feature Flags
 
-**When registering feature flags in `about_flags.cc` that should be available on all platforms, use `kOsAll`** instead of listing individual platform constants.
+**When registering feature flags in `about_flags.cc` that should be available on
+all platforms, use `kOsAll`** instead of listing individual platform constants.
 
 ```cpp
 // ❌ WRONG - listing platforms individually
@@ -921,9 +1035,16 @@ EXPECT_THAT(dict, base::test::DictHasValue("name", "test"));
 
 ## ✅ Workaround Code Must Have Tracking Issues
 
-**Any temporary workaround or hack code must reference a tracking issue with a `TODO(https://github.com/brave/brave-browser/issues/<id>)` comment** explaining when and why it can be removed. Workarounds without tracking issues become permanent technical debt.
+**Any temporary workaround or hack code must reference a tracking issue with a
+`TODO(https://github.com/brave/brave-browser/issues/<id>)` comment** explaining
+when and why it can be removed. Workarounds without tracking issues become
+permanent technical debt.
 
-**This rule does NOT apply to permanent design decisions.** If a comment explains why an alternative API or approach was not used due to a known limitation, and the current code is the intended long-term solution (not something to revisit later), it is not a workaround -- it is a design rationale comment and does not need a tracking issue.
+**This rule does NOT apply to permanent design decisions.** If a comment
+explains why an alternative API or approach was not used due to a known
+limitation, and the current code is the intended long-term solution (not
+something to revisit later), it is not a workaround -- it is a design rationale
+comment and does not need a tracking issue.
 
 ```cpp
 // ❌ WRONG - unexplained workaround
@@ -948,7 +1069,9 @@ base::OneShotTimer idle_timer_;
 
 ## ✅ Use Named Constants for JSON Property Keys
 
-**When accessing JSON object properties in C++, define named constants for the key strings** rather than using inline string literals. This prevents typos and makes refactoring easier.
+**When accessing JSON object properties in C++, define named constants for the
+key strings** rather than using inline string literals. This prevents typos and
+makes refactoring easier.
 
 ```cpp
 // ❌ WRONG - inline string literals
@@ -968,7 +1091,10 @@ auto* url = dict.FindString(kEndpointUrl);
 
 ## ❌ Never Return `std::string_view` from Functions That Build Strings
 
-**Do not return `std::string_view` from a function that constructs or concatenates a string internally.** The view would point into a temporary string's buffer and become a dangling reference after the function returns. Return `std::string` or `std::optional<std::string>` instead.
+**Do not return `std::string_view` from a function that constructs or
+concatenates a string internally.** The view would point into a temporary
+string's buffer and become a dangling reference after the function returns.
+Return `std::string` or `std::optional<std::string>` instead.
 
 ```cpp
 // ❌ WRONG - dangling reference to temporary
@@ -989,7 +1115,8 @@ std::string BuildUrl(std::string_view host) {
 
 ## ✅ Prefer `constexpr int` Over Single-Value Enums
 
-**When a constant is just a single numeric value, use `constexpr int` rather than creating a single-value enum.** Enums are for sets of related values.
+**When a constant is just a single numeric value, use `constexpr int` rather
+than creating a single-value enum.** Enums are for sets of related values.
 
 ```cpp
 // ❌ WRONG - enum for a single value
@@ -1005,7 +1132,9 @@ constexpr int kBravePolicySource = 10;
 
 ## ✅ Use `base::FilePath` for File Path Parameters
 
-**Parameters representing file system paths should use `base::FilePath` instead of `std::string`.** This provides type safety, simplifies call sites, and makes APIs self-documenting.
+**Parameters representing file system paths should use `base::FilePath` instead
+of `std::string`.** This provides type safety, simplifies call sites, and makes
+APIs self-documenting.
 
 ```cpp
 // ❌ WRONG - generic string for a path
@@ -1021,7 +1150,9 @@ std::string GetProfileId(const base::FilePath& profile_path);
 
 ## ✅ Explicitly Assign Enum Values When Conditionally Compiling Out Members
 
-**When conditionally compiling out enum values behind a build flag, explicitly assign numeric values to remaining members.** This prevents value shifts that break serialization, persistence, or IPC.
+**When conditionally compiling out enum values behind a build flag, explicitly
+assign numeric values to remaining members.** This prevents value shifts that
+break serialization, persistence, or IPC.
 
 ```cpp
 // ❌ WRONG - values shift when kTalk is compiled out
@@ -1049,7 +1180,8 @@ enum class SidebarItem {
 
 ## ✅ Name All Function Parameters in Header Declarations
 
-**Always name function parameters in header declarations, especially when types alone are ambiguous.** Match the parameter names used in the `.cc` file.
+**Always name function parameters in header declarations, especially when types
+alone are ambiguous.** Match the parameter names used in the `.cc` file.
 
 ```cpp
 // ❌ WRONG - ambiguous parameters
@@ -1067,7 +1199,8 @@ void OnSubmitSignedExtrinsic(std::optional<std::string> transaction_hash,
 
 ## ✅ Struct Members: No Trailing Underscores
 
-**Plain struct members should not have trailing underscores.** The trailing underscore convention is for class member variables, not struct fields.
+**Plain struct members should not have trailing underscores.** The trailing
+underscore convention is for class member variables, not struct fields.
 
 ```cpp
 // ❌ WRONG
@@ -1091,9 +1224,14 @@ struct ContentSite {
 
 ## ❌ Don't Introduce New Uses of Deprecated APIs
 
-**When an API is marked deprecated, never introduce new uses.** Check headers for deprecation notices before using unfamiliar APIs.
+**When an API is marked deprecated, never introduce new uses.** Check headers
+for deprecation notices before using unfamiliar APIs.
 
-**Reviewer note:** To flag a violation of this rule, you MUST read the actual header file that declares the API and confirm a deprecation notice exists in the current source tree. Do not rely on memory or training data — APIs change across chromium upgrades and assumptions about what is or isn't deprecated are frequently wrong.
+**Reviewer note:** To flag a violation of this rule, you MUST read the actual
+header file that declares the API and confirm a deprecation notice exists in the
+current source tree. Do not rely on memory or training data — APIs change across
+chromium upgrades and assumptions about what is or isn't deprecated are
+frequently wrong.
 
 ```cpp
 // ❌ WRONG - base::Hash deprecated for 6+ years
@@ -1109,7 +1247,9 @@ uint32_t hash = base::FastHash(base::as_byte_span(str));
 
 ## ✅ Default-Initialize POD-Type Members in Headers
 
-**Plain old data (POD) type members in structs and classes declared in headers must have explicit default initialization.** Uninitialized POD members lead to undefined behavior when read before being written.
+**Plain old data (POD) type members in structs and classes declared in headers
+must have explicit default initialization.** Uninitialized POD members lead to
+undefined behavior when read before being written.
 
 ```cpp
 // ❌ WRONG
@@ -1131,7 +1271,9 @@ struct TopicArticle {
 
 ## ✅ Prefer `std::string_view` Over `const char*` for Parameters
 
-**Use `std::string_view` instead of `const char*` for function parameters that accept string data.** `std::string_view` is more flexible (accepts `std::string`, `const char*`, string literals) and carries size information.
+**Use `std::string_view` instead of `const char*` for function parameters that
+accept string data.** `std::string_view` is more flexible (accepts
+`std::string`, `const char*`, string literals) and carries size information.
 
 ```cpp
 // ❌ WRONG
@@ -1147,17 +1289,26 @@ std::string_view GetDomain(std::string_view env_from_switch);
 
 ## ⚠️ `std::string_view` Class Members — Know When They're Safe
 
-**Storing `std::string_view` as a class member is dangerous in general** because the referenced data must outlive the object. However, there are well-established safe patterns:
+**Storing `std::string_view` as a class member is dangerous in general** because
+the referenced data must outlive the object. However, there are well-established
+safe patterns:
 
 **Safe — no need to flag:**
-- Members initialized from `inline constexpr char[]` constants (e.g., pref keys like `kMyPrefName`), `kFeatureName` string literals, or other compile-time string constants with static storage duration
+
+- Members initialized from `inline constexpr char[]` constants (e.g., pref keys
+  like `kMyPrefName`), `kFeatureName` string literals, or other compile-time
+  string constants with static storage duration
 - Members initialized from string literals directly (`"some_string"`)
-- Members in short-lived stack objects where the caller's string clearly outlives the object
+- Members in short-lived stack objects where the caller's string clearly
+  outlives the object
 
 **Dangerous — flag these:**
+
 - Members initialized from `std::string` temporaries or function return values
-- Members in long-lived objects (singletons, services) initialized from non-static strings
-- Members where the constructor accepts `std::string_view` and the caller might pass a temporary
+- Members in long-lived objects (singletons, services) initialized from
+  non-static strings
+- Members where the constructor accepts `std::string_view` and the caller might
+  pass a temporary
 
 ```cpp
 // ✅ SAFE - pref keys are inline constexpr with static lifetime
@@ -1173,7 +1324,9 @@ class Config {
 };
 ```
 
-**When reviewing:** Check what the `string_view` member is actually initialized from before flagging. Pref key constants and string literals have static lifetime and are safe.
+**When reviewing:** Check what the `string_view` member is actually initialized
+from before flagging. Pref key constants and string literals have static
+lifetime and are safe.
 
 ---
 
@@ -1181,7 +1334,10 @@ class Config {
 
 ## ✅ Use `base::circular_deque` Over `std::deque`
 
-**Always use `base::circular_deque` (or `base::queue`/`base::stack`) instead of `std::deque` (or `std::queue`/`std::stack`).** The base versions have consistent memory usage across platforms and save code size. See [Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
+**Always use `base::circular_deque` (or `base::queue`/`base::stack`) instead of
+`std::deque` (or `std::queue`/`std::stack`).** The base versions have consistent
+memory usage across platforms and save code size. See
+[Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
 
 ```cpp
 // ❌ WRONG - platform-dependent behavior
@@ -1195,7 +1351,9 @@ base::queue<int> pending;
 base::stack<int> history;
 ```
 
-**Note:** `base::circular_deque` does not maintain stable iterators during mutations. Use `std::list` if stable iterators with constant-time insert/remove are required.
+**Note:** `base::circular_deque` does not maintain stable iterators during
+mutations. Use `std::list` if stable iterators with constant-time insert/remove
+are required.
 
 ---
 
@@ -1203,7 +1361,10 @@ base::stack<int> history;
 
 ## ✅ Use `size_t` for Sizes, Counts, and Indices
 
-**Use `size_t` for object sizes, allocation sizes, element counts, array offsets, and vector indices.** This prevents unnecessary casts with STL APIs. Public APIs should use `size_t` even if internals optimize with `uint32_t`. See [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+**Use `size_t` for object sizes, allocation sizes, element counts, array
+offsets, and vector indices.** This prevents unnecessary casts with STL APIs.
+Public APIs should use `size_t` even if internals optimize with `uint32_t`. See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
 ```cpp
 // ❌ WRONG - unnecessary casts
@@ -1221,7 +1382,10 @@ for (size_t i = 0; i < vec.size(); ++i) { ... }
 
 ## ✅ Use Transparent Comparisons for `base::flat_map` String Lookups
 
-**`base::flat_map` and `base::flat_set` support transparent comparisons, enabling lookups with `std::string_view` or `const char*` without constructing temporary `std::string` objects.** This avoids unnecessary heap allocations on lookups.
+**`base::flat_map` and `base::flat_set` support transparent comparisons,
+enabling lookups with `std::string_view` or `const char*` without constructing
+temporary `std::string` objects.** This avoids unnecessary heap allocations on
+lookups.
 
 ```cpp
 // ❌ WRONG - operator[] constructs a temporary std::string
@@ -1233,7 +1397,9 @@ base::flat_map<std::string, int> map;
 auto it = map.find("key");  // no temporary string created
 ```
 
-For `base::flat_set` of `std::unique_ptr`, use `base::UniquePtrComparator` for transparent lookups by raw pointer. See [Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
+For `base::flat_set` of `std::unique_ptr`, use `base::UniquePtrComparator` for
+transparent lookups by raw pointer. See
+[Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
 
 ---
 
@@ -1241,9 +1407,14 @@ For `base::flat_set` of `std::unique_ptr`, use `base::UniquePtrComparator` for t
 
 ## ❌ Don't Rely on Implicit `const char*` → `string_view` for Non-Null-Terminated Data
 
-**When constructing `std::string_view` from a byte buffer or `reinterpret_cast`'d pointer, always pass the size explicitly.** Implicit `string_view(const char*)` calls `strlen()`, which causes undefined behavior if the data is not null-terminated.
+**When constructing `std::string_view` from a byte buffer or
+`reinterpret_cast`'d pointer, always pass the size explicitly.** Implicit
+`string_view(const char*)` calls `strlen()`, which causes undefined behavior if
+the data is not null-terminated.
 
-This commonly occurs when migrating from `(const char* src, size_t src_len)` APIs to `string_view` APIs — dropping the size parameter silently changes the semantics.
+This commonly occurs when migrating from `(const char* src, size_t src_len)`
+APIs to `string_view` APIs — dropping the size parameter silently changes the
+semantics.
 
 ```cpp
 std::vector<uint8_t> data = GetBytes();
@@ -1256,3 +1427,194 @@ base::ReadUnicodeCharacter(
 base::ReadUnicodeCharacter(
     base::as_string_view(data), &i, &code_point);
 ```
+
+---
+
+<a id="CSA-070"></a>
+
+## ✅ String Usage in Rust/C++ FFI
+
+**Pick FFI string types by data flow (borrow vs. own) and payload size (standard
+vs. large).** Rust's `String`/`Vec` and C++'s `std::string`/`std::vector` use
+different allocators and memory layouts, so the wrong choice causes hidden
+copies, lifetime bugs, or container overhead. Sections below cover each case
+with examples.
+
+### Rust → C++ read-only text — `&str` (maps to `rust::Str`)
+
+Zero-copy. Rust retains ownership; C++ reads as a view. Use for logging,
+printing, parsing.
+
+```rust
+// ❌ WRONG - forces C++ container overhead for a borrow
+unsafe extern "C++" {
+    fn log_event(name: &CxxString);
+}
+
+// ✅ CORRECT - zero-copy borrow
+unsafe extern "C++" {
+    fn log_event(name: &str);
+}
+```
+
+```cpp
+void LogEvent(rust::Str name) {
+  // Treat rust::Str as std::string_view — read only, do not store.
+  VLOG(1) << base::RustStrToStringView(name);
+}
+```
+
+### C++ → Rust read-only text — `&str` (maps to `rust::Str`)
+
+Zero-copy. Rust receives a native `&str` it can search, slice, or print
+immediately. Use for validation, key lookup.
+
+```rust
+// ❌ WRONG - bridge type leaks into idiomatic Rust code
+fn is_valid_key(key: &CxxString) -> bool;
+
+// ✅ CORRECT - native &str on the Rust side
+fn is_valid_key(key: &str) -> bool {
+    KNOWN_KEYS.contains(&key)
+}
+```
+
+```cpp
+bool valid = ffi::is_valid_key(key_string_view);  // implicit conversion
+```
+
+### Rust → C++ ownership, standard text — `String` (maps to `rust::String`)
+
+Container move; no text copy. C++ owns the `rust::String` for the scope of the
+call. **Deep-copy into `std::string` to preserve past the function's return** —
+never store `rust::String` as a class member.
+
+```rust
+// ✅ Return owned text by value
+fn build_report() -> String {
+    format!("report: {}", compute())
+}
+```
+
+```cpp
+// ❌ WRONG - bridge type held past FFI call; ties C++ class to Rust
+// allocator and bridge layout.
+class Reporter {
+  rust::String last_report_;
+};
+void Reporter::Refresh() {
+  last_report_ = ffi::build_report();
+}
+
+// ✅ CORRECT - deep-copy into std::string at the boundary
+class Reporter {
+  std::string last_report_;
+};
+void Reporter::Refresh() {
+  rust::String r = ffi::build_report();
+  last_report_.assign(r.data(), r.length());
+}
+```
+
+### Rust → C++ ownership, MASSIVE payload — `Box<Vec<u8>>` (maps to `rust::Box<rust::Vec<uint8_t>>`)
+
+Zero-copy. Heap pointer moves to C++; C++ wraps bytes in `std::string_view` or
+`base::span`. Rust's allocator cleans up when `Box` drops. Use for file buffers,
+JSON blobs, streaming payloads.
+
+```rust
+// ❌ WRONG - container copy through rust::String layout
+fn produce_payload() -> String;
+
+// ✅ CORRECT - pointer move, zero-copy
+fn produce_payload() -> Box<Vec<u8>>;
+```
+
+```cpp
+void Consume(rust::Box<rust::Vec<uint8_t>> buf) {
+  base::span<const uint8_t> bytes(buf);
+  // ...consume bytes. Rust deallocator runs when buf drops.
+}
+```
+
+### C++ → Rust ownership, standard text — `String` (maps to `rust::String`)
+
+Deep copy into Rust heap. C++ builds text, copies into `rust::String`, drops its
+local copy. Rust gains un-aliased control of an idiomatic container.
+
+```rust
+// ❌ WRONG - borrowing CxxString into long-lived Rust state ties Rust's
+// lifetime to a C++ container.
+fn store_name(name: &CxxString);
+
+// ✅ CORRECT - C++ deep-copies at the call site
+fn store_name(name: String);
+```
+
+```cpp
+std::string computed = base::StrCat({prefix, suffix});
+ffi::store_name(rust::String(computed));  // deep copy into Rust heap
+```
+
+### C++ → Rust ownership, MASSIVE payload — `UniquePtr<CxxString>`
+
+Zero-copy pointer move. Allocation context stays C++-side; `cxx` invokes the C++
+destructor when Rust drops the `UniquePtr`. Use for ingesting large blobs.
+
+```rust
+// ❌ WRONG - forces deep copy of large buffer
+fn ingest(blob: String);
+
+// ✅ CORRECT - zero-copy pointer move
+fn ingest(blob: UniquePtr<CxxString>);
+```
+
+```cpp
+auto blob = std::make_unique<std::string>(LoadLargeFile());
+ffi::ingest(std::move(blob));  // ownership transfers to Rust
+```
+
+### Collections of strings
+
+Same borrow-vs-own split. `&CxxVector<CxxString>` is almost never the right
+answer.
+
+**Rust → C++ read-only array — `&[&str]`**
+
+Zero-copy, zero-allocation. No C++ container overhead.
+
+```rust
+// ❌ WRONG - C++ container overhead for a borrow
+unsafe extern "C++" {
+    fn process(keys: &CxxVector<CxxString>);
+}
+
+// ✅ CORRECT
+unsafe extern "C++" {
+    fn process(keys: &[&str]);
+}
+```
+
+**C++ → Rust ownership, large — `UniquePtr<CxxVector<CxxString>>`**
+
+Container lifetime owned by Rust; strings readable without per-element
+conversion.
+
+```rust
+fn ingest(items: UniquePtr<CxxVector<CxxString>>);
+```
+
+```cpp
+auto items = std::make_unique<std::vector<std::string>>(BuildItems());
+ffi::ingest(std::move(items));
+```
+
+**C++ → Rust ownership, small / ergonomic — `Vec<String>` (deep copy)**
+
+Highest safety. Fully decouples from C++ memory on receipt.
+
+```rust
+fn ingest_small(items: Vec<String>);
+```
+
+---

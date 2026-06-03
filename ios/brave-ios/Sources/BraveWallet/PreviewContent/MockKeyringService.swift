@@ -390,6 +390,31 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(true)
   }
 
+  func hiddenAccounts(completion: @escaping ([BraveWallet.AccountInfo]) -> Void) {
+    completion([])
+  }
+
+  func addHiddenAccount(
+    accountId: BraveWallet.AccountId,
+    completion: @escaping (Bool) -> Void
+  ) {
+    completion(false)
+  }
+
+  func canHideAccount(
+    accountId: BraveWallet.AccountId,
+    completion: @escaping (Bool) -> Void
+  ) {
+    completion(false)
+  }
+
+  func removeHiddenAccounts(
+    accountIds: [BraveWallet.AccountId],
+    completion: @escaping (Bool) -> Void
+  ) {
+    completion(true)
+  }
+
   func addHardwareAccounts(
     info: [BraveWallet.HardwareWalletAccount]
   ) async -> [BraveWallet.AccountInfo]? {

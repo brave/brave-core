@@ -31,7 +31,7 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
   ZCashTxManager(TxService& tx_service,
                  ZCashWalletService& bitcoin_wallet_service,
                  KeyringService& keyring_service,
-                 TxStorageDelegate& delegate,
+                 TxStorage& tx_storage,
                  AccountResolverDelegate& account_resolver_delegate);
   ~ZCashTxManager() override;
   ZCashTxManager(const ZCashTxManager&) = delete;
@@ -42,8 +42,6 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
       AddUnapprovedZCashTransactionCallback callback);
 
  private:
-  friend class BraveWalletP3AUnitTest;
-
   ZCashTxStateManager& GetZCashTxStateManager();
   ZCashBlockTracker& GetZCashBlockTracker();
 

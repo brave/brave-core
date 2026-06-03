@@ -13,7 +13,12 @@ Example:
 
 You can produce the JSON output for a presubmit run by using:
     npm run presubmit -- --base origin/master --json .presubmit_results.json
+
+Notice: Keep this script as *standalone*, with no deps to `tools/cr` code, so
+we can have no room for deps if downloaded and run on its own.
 """
+
+from __future__ import annotations
 
 import argparse
 import logging
@@ -22,10 +27,44 @@ import subprocess
 import json
 import sys
 import hashlib
-from typing import List, Dict, Any
+from typing import Any
 
 
-def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
+def _check_call(*command,
+                capture_stdout: bool = False,
+                stdin: bytes | None = None) -> str | None:
+    """Run *command* as a subprocess, logging the invocation.
+
+    Logs the full command string at INFO level before executing it.  Stderr
+    is inherited from the parent process so subprocess output streams
+    directly to the terminal.
+
+    Args:
+        *command: The program and its arguments (passed as positional args,
+            not as a list).
+        capture_stdout: When `True`, capture the child's stdout and return it
+            as a UTF-8 decoded string.  When `False` (default), stdout is
+            inherited from the parent and the function returns `None`.
+        stdin: Optional bytes to send to the child's stdin.
+
+    Returns:
+        The decoded stdout if `capture_stdout=True`, otherwise `None`.
+
+    Raises:
+        subprocess.CalledProcessError: If the process exits with a non-zero
+            return code.
+    """
+    logging.info(' >>>> %s', ' '.join(str(a) for a in command))
+    result = subprocess.run(command,
+                            check=True,
+                            input=stdin,
+                            stdout=subprocess.PIPE if capture_stdout else None)
+    if capture_stdout:
+        return result.stdout.decode('utf-8', errors='replace')
+    return None
+
+
+def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
                   pr_number: str) -> None:
     """
     Posts comments to a GitHub pull request based on presubmit results.
@@ -38,13 +77,20 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
             The pull request number where the comments will be posted.
     """
     # Get a list of existing comments for this PR
-    existing_comments: List[str] = json.loads(
-        subprocess.check_output([
-            'gh', 'api', f'repos/brave/brave-core/issues/{pr_number}/comments',
-            '--paginate', '--jq', '[.[] | {id: .id, body: .body}]'
-        ],
-                                text=True,
-                                stderr=subprocess.PIPE))
+    comments_response = _check_call(
+        'gh',
+        'api',
+        f'repos/brave/brave-core/issues/{pr_number}/comments',
+        '--paginate',
+        '--jq',
+        '[.[] | {id: .id, body: .body}]',
+        capture_stdout=True)
+    logging.debug('Existing comments response: %s', comments_response)
+    existing_comments: list[dict[str, Any]] = []
+    for line in comments_response.splitlines():
+        if not line.strip():
+            continue
+        existing_comments.extend(json.loads(line))
 
     # Filtering out all comments that do not contain a presubmit hash as those
     # are not relevant to our comment management.
@@ -113,14 +159,14 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
 
             body_content += f'\n\n{comment_hash}'
 
-            subprocess.run([
-                'gh', 'api',
-                f'repos/brave/brave-core/issues/{pr_number}/comments', '-X',
-                'POST', '-F', 'body=@-'
-            ],
-                           input=body_content.encode('utf-8'),
-                           stderr=subprocess.PIPE,
-                           check=True)
+            _check_call('gh',
+                        'api',
+                        f'repos/brave/brave-core/issues/{pr_number}/comments',
+                        '-X',
+                        'POST',
+                        '-F',
+                        'body=@-',
+                        stdin=body_content.encode('utf-8'))
 
     # Now we delete the old comments that the hashes didn't come up.
     for comment in existing_comments:
@@ -132,12 +178,10 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
         if comment_hash not in active_report_hashes:
             logging.info('Deleting comment with id %s, hash %s', comment["id"],
                          comment_hash)
-            subprocess.check_call([
+            _check_call(
                 'gh', 'api',
                 f'repos/brave/brave-core/issues/comments/{comment["id"]}',
-                '-X', 'DELETE'
-            ],
-                                  stderr=subprocess.PIPE)
+                '-X', 'DELETE')
 
 
 def validate_pr_number(value: str) -> str:
@@ -167,21 +211,13 @@ def main() -> int:
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
     presubmit_path = Path(args.input)
-    presubmit_entries: Dict[str, Any] = json.loads(presubmit_path.read_text())
+    presubmit_entries: dict[str, Any] = json.loads(
+        presubmit_path.read_bytes().decode('utf-8'))
     if not presubmit_entries:
         logging.info('No presubmit entries found.')
         return 0
 
-    try:
-        post_comments(presubmit_entries, args.pr)
-    except subprocess.CalledProcessError as exception:
-        stderr = exception.stderr
-        if isinstance(stderr, bytes):
-            stderr = stderr.decode('utf-8', errors='replace')
-        logging.error(
-            'Subprocess command failed (return code %s): %s\nStderr: %s',
-            exception.returncode, exception.cmd, stderr if stderr else '')
-        raise
+    post_comments(presubmit_entries, args.pr)
 
     return 0
 

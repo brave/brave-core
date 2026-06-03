@@ -29,7 +29,7 @@ import { PageNotFound } from '../screens/page_not_found/page_not_found'
 export const UnlockedWalletRoutes = ({
   sessionRoute,
 }: {
-  sessionRoute: WalletRoutes | undefined
+  sessionRoute: string | undefined
 }) => {
   // render
   return (

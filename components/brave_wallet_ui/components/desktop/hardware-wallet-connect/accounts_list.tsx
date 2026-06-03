@@ -302,7 +302,10 @@ export const HardwareWalletAccountsList = ({
       </SelectRow>
       {showSchemesDropdown && (
         <DisclaimerWrapper>
-          <DisclaimerText>
+          <DisclaimerText
+            textColor='secondary'
+            variant='small.regular'
+          >
             {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}
           </DisclaimerText>
         </DisclaimerWrapper>

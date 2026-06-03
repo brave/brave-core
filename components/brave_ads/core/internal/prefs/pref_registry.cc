@@ -10,6 +10,10 @@
 
 namespace brave_ads {
 
+namespace {
+constexpr int kDefaultIssuerPingMilliseconds = 7'200'000;
+}  // namespace
+
 void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
   // Ads prefs.
   registry->RegisterTimePref(prefs::kFirstRunAt, base::Time::Now());
@@ -42,7 +46,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   registry->RegisterInt64Pref(prefs::kCatalogPing, 0);
   registry->RegisterTimePref(prefs::kCatalogLastUpdated, base::Time());
 
-  registry->RegisterIntegerPref(prefs::kIssuerPing, 7'200'000);
+  registry->RegisterIntegerPref(prefs::kIssuerPing,
+                                kDefaultIssuerPingMilliseconds);
   registry->RegisterListPref(prefs::kIssuers);
 
   registry->RegisterListPref(prefs::kNotificationAds);

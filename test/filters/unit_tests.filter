@@ -29,13 +29,15 @@
 -GlicButtonControllerTest.*
 -GlicEnablingStandardFreTest.NotConsented_Returns*
 -GlicEnablingTrustFirstOnboardingTest.*
+-GlicFreControllerTest.*
+-GlicMediaIntegrationTest.*
 -GlicMetricsFeaturesEnabledTest.*
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
 -MultistepFilterServiceFactoryTest.*
 -TabOrganizationServiceTest.*
 -TabStripActionContainerTest*.OrdersButtonsCorrectly*
--TabStripActionContainerTest.GlicButton*
+-TabStripActionContainerTest.Glic*
 
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
 -All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeForNewTabPage/*
@@ -75,8 +77,7 @@
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled
 -GoogleChromeSchemeUtilTest.ExtractGoogleChromeSchemeInnerUrl
 -GoogleChromeSchemeUtilTest.StripGoogleChromeScheme
--SearchboxHandlerPecApiTest.GetPlaceholderConfig_EmptySearchboxConfigReturnsAskGoogleOnly
--SearchboxHandlerPecApiTest.GetPlaceholderConfig_WithToolConfigs
+-SearchboxHandlerPecApiTest.GetPlaceholderConfig_*
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
 -TemplateURLServiceTest.RepairStarterPackEngines
@@ -116,13 +117,15 @@
 # These tests crash or fail because we have kOptimizationHints feature disabled,
 # which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
 # nullptr.
--AILanguageModelTest.*
+-AIClassifierTest.*
+-AILanguageModel*Test.*
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
 -AIProofreaderTest.*
 -AISummarizerTest.*
 -AIWriterTest.*
 -ActorSitePolicyTest.*
+-All/ChangePasswordFormFinderTest.*/*
 -ChangePasswordFormFinderTest.*
 -ChromeComposeClientTest.*
 -ComposeEnablingTest.*
@@ -130,6 +133,7 @@
 -ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
 -DigitalIdentityLowRiskOriginsTest.*
+-FindsTabHelperTest.TestThresholdMet
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerTest.*
 -LoginStateCheckerTest.*
@@ -211,6 +215,12 @@
 -BookmarkBarPreloadPipelineManagerTest.PrefetchAndPrerenderDisallowSearchUrl
 
 # This test is disabled because the Brave NTP doesn't support this feature
+-NewTabPageHandlerTest.OnAnimatedDoodleImageClicked
+-NewTabPageHandlerTest.OnAnimatedDoodleImageRendered
+-NewTabPageHandlerTest.OnStaticDoodleImageClicked
+-NewTabPageHandlerTest.OnStaticDoodleImageRendered
+-NewTabPageHandlerTest.OnDoodleImageClicked
+-NewTabPageHandlerTest.OnDoodleImageRendered
 -NewTabPageModulesTest.MakeModuleIdDetails_*
 
 # Isolated Web Apps (IWAs) use web bundles which we don't support.
@@ -260,11 +270,17 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.ExtensionSyncDisabledWhileSignedIn
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+-All/DiceResponseHandlerParamTest.Signin/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
+-AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
+-ConnectorsServiceRealTimeURLIdentifierTest.ReturnsCorrectIdentifier/*
 -ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
+-ContextualTasksEligibilityManagerTest.*
+-ContextualTasksUiServiceTest.PrefetchOnEligibilityChange
+-ContextualTasksUiServiceTest.PrefetchOnStartupIfAlreadyEligible
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadAfterSignOut
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadWithFullSync
 -DeveloperPrivateApiTransportModeUnitTest.ExtensionUploadableOnSignIn
@@ -274,6 +290,7 @@
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailableForSignedInUsers
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
+-EnclaveManagerTest.CookieJarChangeDoesNotDiscardActions
 -EnclaveManagerTest.PrimaryUserChange
 -ExtensionLocalDataBatchUploaderTest.LocalDataDescriptionOnlyReturnsUploadableExtensions
 -ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigration
@@ -286,8 +303,7 @@
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
 -PeopleHandlerTest.*
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
--ShowPromoTest.ShouldShowSyncPromoSyncEnabled
--ShowPromoTest.ShowSyncPromoWithSignedInAccount
+-ShowPromoTest.*
 -SigninUtilHistorySyncOptinTest.*
 
 # Failed because we disabled upstream's entire client-side field trials.
@@ -297,7 +313,9 @@
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
+-All/ClientSideDetectionHostOnlyESBTest.TestPreClassificationCheckOnlyESBClassification/*
 -All/ClientSideDetectionHostSkipImageClassificationScoringTest.*/*
+-All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -All/ClientSideDetectionServiceTest.*/*
 -All/LastDownloadFinderTest.AddProfileAfterStarting/1
 -All/LastDownloadFinderTest.NonBinaryOnly/1
@@ -311,7 +329,9 @@
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
 -ChromeTailoredSecurityServiceTest.*
 -ClientSideDetectionHostCreditCardFormTest.*
+-ClientSideDetectionHostNewObserversForceRequestTest.*
 -ClientSideDetectionHostNotificationTest.*
+-ClientSideDetectionHostPriorityTest.*
 -ClientSideDetectionHostScamDetectionTest.*
 -ClientSideDetectionHostTest.*
 -ClientSideDetectionIntelligentScanDelegateDesktopTest*
@@ -371,6 +391,7 @@
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChangePasswordFormFillingSubmissionHelperTest.*
 -ChromeHintsManagerFetchingTest.HintsFetched_*
+-FindsTabHelperTest.TestSRPBackNavigationThresholdMet
 -PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
 -PasswordChangeDelegateImplTest.OtpDetectionProcessed
 -PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
@@ -379,6 +400,7 @@
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
 -All/PageInfoBubbleViewCookiesSubpageTitleTest.DisplaysCookiesAndSiteDataTitle/*
+-All/PageInfoCookiesContentViewA11yNameTest.ThirdPartyCookiesToggleA11yName/*
 -CookieControlsUserBypassTest.*
 -PageInfoCookiesContentViewTest.*
 
@@ -496,10 +518,6 @@
 -ContextualCueingHelperTest.*
 -ContextualCueingServiceTestZeroStateSuggestions.*
 
-# These tests fail because we disable kTpcdMetadataGrants.
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohort_PreserveSome
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohorts
-
 # These tests fail because we disable
 # ntp_features::kCustomizeChromeWallpaperSearch.
 -WallpaperSearchBackgroundManagerTest.*
@@ -529,9 +547,14 @@
 # These tests fail because we disable one time permission functionality in
 # components/content_settings/core/browser/content_settings_utils.cc override.
 -All/OneTimePermissionProviderExpiryTest.RenewContentSetting_Noop/*
+-HostContentSettingsMapTest.SetOneTimeAndPersistentGeolocationSetting
+-HostContentSettingsMapTest.SetOneTimeGeolocationGrantWithPersistentPermissionBlocked
 -OneTimePermissionProviderTest.*
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
+
+# These tests fail because we disable popular site suggestions functionality
+-MostVisitedHandlerTest/MostVisitedAutoRemovalTest.OnMostVisitedTileHoverMetrics/*
 
 # These fail because we override GetChromeChannel to always use
 # with_extended_stable = false and override channel info
@@ -559,28 +582,29 @@
 -HostContentSettingsMapTest.RecordDefaultSensorsSetting
 -HostContentSettingsMapTest.SetOneTimeGeolocationSetting
 
-# These tests fail because we stub features::HasTabSearchToolbarButton() to
-# return true
--TabSearchContainerTest.AnimatesToExpanded
--TabSearchContainerTest.ButtonsHaveFlatEdges
--TabSearchContainerTest.OrdersButtonsCorrectly
-
 # These tests fail because they try to access unregistered prefs that Brave
 # implements for the omnibox. The upstream test would probably need to be
 # patched to include that registration code.
 -OmniboxControllerTest.CheckDefaultAutocompleteProviders
--OmniboxEditModelPopupTest.AimPopupEnabledNavigationFallback
--OmniboxEditModelPopupTest.OnCurrentMatchChangedResetsSelectionBeforeAccessingMatches
+-OmniboxEditModelPopupTest.*
 -OmniboxEditModelTest.*
+-WebUIReadOnlyOmniboxTest.GetOmniboxTextLength
+-WebUIReadOnlyOmniboxTest.StateManagement
 
 # These tests fail because we disable uploading these event logs
-# See WebRtcLogUploader::UploadCompressedLog patch.
+# See WebRtcLogUploader::UploadCompressedLog patch as well as
+# prefs::kWebRtcEventLogCollectionAllowed and
+# prefs::kWebRtcTextLogCollectionAllowed.
+-RTCDiagnosticLoggingTest.EventLogUuidNotOverwrittenInFinish
+-RTCDiagnosticLoggingTest.MetadataMerged
 -RTCDiagnosticLoggingTest.StartFinishAndUploadDiagnosticLogging
 -RTCDiagnosticLoggingTest.UploadDiagnosticLoggingWithoutStop
 -RTCDiagnosticLoggingTest.UploadSiteOriginLogging
 -UploadSupportingConnectionTypes/WebRtcEventLogManagerTestForNetworkConnectivity.*
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
+-WebRtcLoggingControllerTest.ManagedProfileWithUnsetPolicy
+-WebRtcLoggingControllerTest.UnmanagedProfileWithUnsetPolicy
 
 # The following test uses Chromium's list of "starter pack engines", which
 # includes entries not supported by Brave (i.e. "@gemini").
@@ -604,9 +628,7 @@
 
 # Read anything is disabled
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
-
-# This test fails because we disable Actor Safety Lists component.
--ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
+-RenderViewContextMenuListenToThisPageTest.MenuItemPresentWhenEnabled
 
 # These tests fail because it's expected that the generated tabs have
 # suggestions like "Ask Google about this tab", whereas our results have
@@ -656,6 +678,36 @@
 # https://github.com/brave/brave-core/pull/35714
 -PageActionViewTest.ChipStateUpdatesBackgroundColor
 -PageActionViewTest.ChipStateUpdatesForegroundColor
+
+# These tests fail because we disable `blink::features::kAIRewriterAPI`
+-AIRewriterTest.*
+
+# These tests fail because we change kRemoteFrontendDomain to devtools.brave.com
+-DevToolsUIBindingsLoadNetworkResourceTest.BlocksFileSchemeFromRemoteFrontend
+-DevToolsUIBindingsLoadNetworkResourceTest.BlocksFileSchemeFromRemoteFrontendWithLocalTarget
+
+# These tests fail because brave.omnibox.history_suggestions_enabled is not
+# registered.
+-OmniboxEditModelPopupTest.AiModeButtonClick*
+-OmniboxEditModelPopupTest.AimPopup*
+
+# These tests crash because the tests initialize profile first and then reset
+# the global features. The ephemeral_storage::ApplicationStateObserver created
+# by the EphemeralStorageServiceDelegate in EphemeralStorageService uses
+# global browser collection observer that becomes invalid when the global
+# features reset. ephemeral_storage::ApplicationStateObserver d'tor then causes
+# the crash.
+-DefaultBrowserManagerTest.*
+-DefaultBrowserNotificationObserverTest.DoesNotShowNotificationIfAlreadyNotDefault
+-DefaultBrowserNotificationObserverTest.DoesNotShowNotificationWhenDefault
+-DefaultBrowserNotificationObserverTest.DoesNotShowNotificationWhenUnknown
+-DefaultBrowserNotificationObserverTest.ShowsNotificationWhenNotDefault
+-SiteSettingsHelperChooserExceptionTest.GetChooserExceptionListFromProfile
+
+# These tests fail because we override HasTabSearchToolbarButton to always
+# return true.
+-TabStripPrefsTest.MigrateTabSearchPref_ExperimentDisabled
+-TabStripPrefsTest.MigrateTabSearchPref_RecoveryFromBrokenMigration
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -714,8 +766,6 @@
 -InstantNTPURLRewriteTest.*
 -ManageProfileHandlerTest.*
 -MultiProfileCredentialsFilterTest.SyncCredentialsFilter
--NewTabPageHandlerTest.OnDoodleImageClicked
--NewTabPageHandlerTest.OnDoodleImageRendered
 -NoStatePrefetchTest.MaxConcurrencyTest
 -NoStatePrefetchTest.NoStatePrefetchDuplicate
 -OmniboxViewViewsSteadyStateElisionsTest.*

@@ -5,6 +5,10 @@
 
 import("//mojo/public/tools/bindings/mojom.gni")
 
+if (is_ios) {
+  import("//brave/build/ios/mojom/mojom_wrappers.gni")
+}
+
 mojom("mojom") {
   sources = [ "brave_account.mojom" ]
 
@@ -16,4 +20,11 @@ mojom("mojom") {
 
   generate_java = true
   webui_module_path = "/"
+}
+
+if (is_ios) {
+  ios_objc_mojom_wrappers("mojom_objc") {
+    mojom_target = "//brave/components/brave_account/mojom"
+    sources = [ "brave_account.mojom" ]
+  }
 }

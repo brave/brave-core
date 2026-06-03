@@ -16,8 +16,8 @@ export const BubbleContainer = styled.div<{
   border-radius: ${(p) => (p.isV2 ? '16px' : '12px')};
   padding: ${(p) => (p.isV2 ? '24px' : '5px 12px')};
   background-color: ${(p) =>
-    p.isV2 ? leo.color.container.highlight : p.theme.color.background02};
-  border: ${(p) => (p.isV2 ? 'none' : `1px solid ${p.theme.color.divider01}`)};
+    p.isV2 ? leo.color.container.highlight : leo.color.container.background};
+  border: ${(p) => (p.isV2 ? 'none' : `1px solid ${leo.color.divider.subtle}`)};
   margin-bottom: 12px;
   box-sizing: border-box;
 `

@@ -9,10 +9,13 @@
 #include <optional>
 
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
+
+class AdsClient;
 
 class BrowserManager final : public AdsClientNotifierObserver {
  public:
@@ -54,6 +57,9 @@ class BrowserManager final : public AdsClientNotifierObserver {
   void OnNotifyBrowserDidEnterBackground() override;
 
   base::ObserverList<BrowserManagerObserver> observers_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   std::optional<bool> is_active_;
 

@@ -8,13 +8,6 @@ import BraveShared
 import Preferences
 import SwiftUI
 
-struct Selectable<T: Identifiable & Equatable>: Equatable, Identifiable {
-  let isSelected: Bool
-  let model: T
-
-  var id: T.ID { model.id }
-}
-
 struct NetworkFilterView: View {
 
   @State var networks: [Selectable<BraveWallet.NetworkInfo>]

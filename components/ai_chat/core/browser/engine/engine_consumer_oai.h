@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "services/network/public/cpp/network_context_getter.h"
 
 template <class T>
 class scoped_refptr;
@@ -38,9 +39,11 @@ using api_request_helper::APIRequestResult;
 
 class EngineConsumerOAIRemote : public EngineConsumer {
  public:
-  explicit EngineConsumerOAIRemote(
-      const mojom::CustomModelOptions& model_options,
+  EngineConsumerOAIRemote(
+      mojom::ModelOptionsPtr model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      network::NetworkContextGetter network_context_getter,
+      AIChatCredentialManager* credential_manager,
       ModelService* model_service,
       PrefService* prefs);
   EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
@@ -97,7 +100,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       GetSuggestedTopicsCallback callback) override;
 
   std::unique_ptr<OAIAPIClient> api_ = nullptr;
-  mojom::CustomModelOptions model_options_;
+  mojom::ModelOptionsPtr model_options_;
 
   base::WeakPtrFactory<EngineConsumerOAIRemote> weak_ptr_factory_{this};
 };

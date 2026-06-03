@@ -3,15 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/base64url.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/test/engine_test_observer.h"
+#include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
@@ -112,6 +115,12 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     BaseLocalDataFilesBrowserTest::SetUp();
   }
 
+  void SetUpInProcessBrowserTestFixture() override {
+    BaseLocalDataFilesBrowserTest::SetUpInProcessBrowserTestFixture();
+    ad_block_test_helper_ =
+        std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
+  }
+
   // BaseLocalDataFilesBrowserTest overrides
   const char* test_data_directory() override { return kTestDataDirectory; }
   const char* embedded_test_server_directory() override { return ""; }
@@ -176,15 +185,18 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   }
 
   void InitAdBlockForDebounce() {
+    // Drain the initial empty-catalog engine update first so the observer
+    // below can only wake on the rule-load update (not a stale one).
+    ad_block_test_helper_->WaitForAdBlockEngineInitialLoad();
+
     auto source_provider =
         std::make_unique<brave_shields::TestFiltersProvider>("||blocked.com^");
     source_provider->RegisterAsSourceProvider(
         g_brave_browser_process->ad_block_service());
     source_providers_.push_back(std::move(source_provider));
-    auto& engine = g_brave_browser_process->ad_block_service()
-                       ->GetDefaultEngineForTesting();
-    EngineTestObserver engine_observer(&engine);
-    engine_observer.Wait();
+    brave_shields::AdBlockServiceTestObserver observer(
+        g_brave_browser_process->ad_block_service());
+    observer.WaitForDefault();
   }
 
   void PostRunTestOnMainThread() override {
@@ -192,10 +204,19 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     BaseLocalDataFilesBrowserTest::PostRunTestOnMainThread();
   }
 
+  void TearDownOnMainThread() override {
+    // Reset before service shutdown so the helper's observer detaches while
+    // the service is still alive.
+    ad_block_test_helper_.reset();
+    BaseLocalDataFilesBrowserTest::TearDownOnMainThread();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
+      ad_block_test_helper_;
 };
 
 // Test simple redirection by query parameter.

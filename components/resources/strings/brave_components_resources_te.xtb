@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">ముద్రించు</translation>
 <translation id="2600847485413879104">Rewards BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">సొలనా</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">కాంపొనెంట్ను డౌన్లోడ్ చేస్తున్నారు...</translation>
 <translation id="4894106830958548828">I understand</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">మీ శోధనలు మరియు పేజీ కంటెంట్‌లు ఈ పరికరంలో ప్రాసెస్ చేయబడతాయి. ఏదీ Brave కి పంపబడదు లేదా మానవ సమీక్షకులు చూడరు. ఇది ఒక ప్రయోగాత్మక ఫీచర్ మరియు ఎల్లప్పుడూ సరైన ఫలితాన్ని ఇవ్వకపోవచ్చు.</translation>
 <translation id="7534079972563542000">ఛేదించని డొమెయిన్స్</translation>
 <translation id="4492298165410552103">Brave లో Unstoppable Domains అనే విధానాన్ని ప్రారంభిస్తాను?</translation>
 <translation id="5015092481905019948">Brave <ph name="DOMAIN_PROVIDER_NAME"/> లో ఉన్న <ph name="DOMAIN_LIST"/> డొమెయిన్ నేమ్‌లను చెదరగొట్టేందుకు <ph name="PROVIDER_NAME"/> ను ఉపయోగిస్తుంది. Brave మీ IP చిరునామాను దాచుతుంది. మీరు దీనిని ప్రారంభిస్తే, <ph name="PROVIDER_NAME"/> ఈ డొమెయిన్‌లను సందర్శించేందుకు ఎవరో ప్రయత్నిస్తున్నారు అనేది మాత్రమే తెలుసుకుంటుంది కానీ మిగిలిన సమాచారం కాదు. <ph name="PROVIDER_NAME"/> యొక్క <ph name="BEGIN_PROVIDER_TOU_LINK"/>ఉపయోగ నిబంధనలు<ph name="END_PROVIDER_TOU_LINK"/> మరియు <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>గోప్యతా విధానం<ph name="END_PROVIDER_PRIVACY_LINK"/>ని చూడండి.</translation>
@@ -483,6 +483,10 @@
 <translation id="1518915449477235311"><ph name="URL"/> Braveలో Leo AI సంభాషణలు తెరవడం అనుమతించాలా?</translation>
 <translation id="4355784577209159847">లెగసీ Google సైన్-ఇన్ కోసం తృతీయ పక్ష కుకీల వినియోగాన్ని అనుమతించు</translation>
 <translation id="5770656036486891920"><ph name="URL"/> లెగసీ Google సైన్-ఇన్ కోసం తృతీయ పక్ష కుకీల వినియోగం అనుమతించేలా చేయాలనుకుంటోంది</translation>
+<translation id="5582087890067572966">🎉 మీరు ఇప్పుడు సంపాదిస్తున్నారు!</translation>
+<translation id="4364336119478610380">మీ స్క్రీన్ పై ఇలాంటి నోటిఫికేషన్ కనిపించినప్పుడు మీరు సంపాదిస్తారు. సంపాదించడానికి మీకు క్లిక్ చేయనవసరం లేదు.</translation>
+<translation id="5893017172751072752">Brave యాడ్స్ నోటిఫికేషన్ కనిపించినప్పుడు మీరు సంపాదిస్తారు</translation>
+<translation id="3447730462826640312">సంపాదించడానికి క్లిక్ చేయనవసరం లేదు, కానీ మీరు ఆసక్తి ఉంటే క్లిక్ చేయండి!</translation>
 <translation id="2104347391516032700">BAT రివార్డ్స్ సర్వీస్</translation>
 <translation id="5939518447894949180">రీసెట్ చేయి</translation>
 <translation id="3349204812119681938">Brave Rewards పునఃప్రారంభించు</translation>
@@ -732,7 +736,6 @@
 <translation id="1288078776976153868">నెట్‌వర్క్</translation>
 <translation id="1148827340205946630">వినియోగదారుడు అభ్యర్థనను తిరస్కరించారు.</translation>
 <translation id="2403819048476450281">చెల్లని పారామితులు.</translation>
-<translation id="3849003816301348130">గమ్యం చిరునామా OFAC SDN లిస్టులో ఉంది.</translation>
 <translation id="3955144560853195652">చేయి <ph name="VALUE"/> జోడించబడలేదు</translation>
 <translation id="1875861420974447980">ఈ చైన్ ID ప్రస్తుతం ఉపయోగంలో ఉంది</translation>
 <translation id="167698752210114155">అంతర్గత లోపం జరిగింది</translation>
@@ -846,11 +849,12 @@
 <translation id="3751611888003301070">మార్గాలు</translation>
 <translation id="3799091982455573025"><ph name="NETWORK_NAME"/> ద్వారా <ph name="EXCHANGE_NAME"/> లో స్వాప్ చేయండి</translation>
 <translation id="5136093123841570193">తొలి నెట్‌వర్క్ నుండి <ph name="FRIST_NETWORK_NAME"/> నుండి <ph name="SECOND_NETWORK_NAME"/></translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} అడుగు}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} అడుగులు}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} అడుగు)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} అడుగులు)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> ద్వారా <ph name="PROVIDER_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> ద్వారా</translation>
 <translation id="646023614746251785">పరివర్తనను నిర్ధారించండి</translation>
 <translation id="6264944956989873014">బ్రిడ్జ్‌ను నిర్ధారించండి</translation>
 <translation id="7067917728851842589">పంపిణీని నిర్ధారించండి</translation>
@@ -931,6 +935,7 @@
 <translation id="1108298724135935307">కనెక్ట్ చేసిన సైట్‌లు</translation>
 <translation id="5716350339763180836">బాలెన్సులు</translation>
 <translation id="5538251867290702601">గ్రాఫ్</translation>
+<translation id="8123016618655108594">పంపిణీ</translation>
 <translation id="352407037922720467">NFTs ట్యాబ్</translation>
 <translation id="163697698769819510">మీ ఆస్తులను రక్షించటానికి మరియు మీరు ఎప్పుడూ యాక్సెస్‌ని కోల్పోకుండా నిర్ధారించడానికి మీ వాలెట్‌ను ఇప్పుడే బ్యాకప్ చేయండి.</translation>
 <translation id="1018806299114415224">ఇప్పుడే బ్యాకప్ చేయండి</translation>
@@ -983,6 +988,7 @@
 <translation id="2795015351889043417">JSON ఫైల్</translation>
 <translation id="5468881191994555667">ఫైల్ ఎంచుకోండి</translation>
 <translation id="795667975304826397">ఎలాంటి ఫైల్ ఎంచుకోలేదు</translation>
+<translation id="6720675936326555106">ఎంచుకున్న ఫైల్‌</translation>
 <translation id="5891811606602061966">ఖాతాను దిగుమతి చేయడంలో విఫలమైంది, దయచేసి మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="6566535583781706170">ఖాతా దిగుమతి</translation>
 <translation id="5051929972046200722">మీ హార్డ్‌వేర్ వాలెట్ పరికరాన్ని ఎంచుకోండి</translation>
@@ -1029,10 +1035,12 @@
 <translation id="2416098547200943834">గమనిక: ప్రైవేట్ కీ అష్టదికోడ్జన్ సాధించిన JSON రూపంలో అందిస్తుంది, ఇందులో ప్రైవేట్ కీ మరియు ప్రోటోకాల్ సమాచారం ఉంటుంది. <ph name="LINK_START"/>మరింత తెలుసుకోండి<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">గమనిక: ప్రైవేట్ కీ అష్టదికోడ్జన్ సాధించిన JSON లో అందించాలి, ఇందులో ప్రైవేట్ కీ మరియు ప్రోటోకాల్ సమాచారం ఉంటుంది. <ph name="LINK_START"/>మరింత తెలుసుకోండి<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">గమనిక: కేవలం <ph name="FORMAT"/> పొడిగించిన కీలు మాత్రమే మద్దతునిస్తుంది.</translation>
+<translation id="6457746820359933716">Polkadot.js లేదా సారూప్య వాలెట్‌ల నుండి ఎక్స్‌పోర్ట్ చేసిన JSON ఫైల్‌ను ఉపయోగించి ఇంపోర్ట్ చేయండి. ఎక్స్‌పోర్ట్‌ను గుప్తీకరించడానికి ఉపయోగించిన పాస్‌వర్డ్‌ను నమోదు చేయండి.</translation>
 <translation id="9133762451347918196">టెస్ట్‌నెట్ ఖాతాలు</translation>
 <translation id="42126664696688958">ఎగుమతి</translation>
 <translation id="1366855498335432549">నിക്ഷేపం</translation>
 <translation id="790104325876206743">ఖాతా సమచారం</translation>
+<translation id="8856844353253421399">చివరిసారి <ph name="TIME_AGO"/> క్షణాల క్రితం నవీకరించింది</translation>
 <translation id="6322030314101903925">అందుబాటులో ఆస్తులు లేవు</translation>
 <translation id="836614343069504000">ప్రారంభించడానికి టోకెన్లను ఉంచు లేదా కొనటానికి డిపాజిట్ చేయండి. మీరు దిగుమతి చేసిన ఖాతా నుండి టోకెన్లు కనపడకపోతే, ఫిల్టర్స్ మరియు ప్రదర్శన సెట్టింస్ని తనిఖీ చేయండి. తెలీయని టోకెన్లు స్వంత ఆస్తులుగా జోడించడానికి అవసరం ఉంది.</translation>
 <translation id="2902856457593699108">కీ చూపించు</translation>
@@ -1151,12 +1159,12 @@
 <translation id="4324239559624557455">24 గంటలకు</translation>
 <translation id="9139452553033760558">1 వారం పాటు</translation>
 <translation id="1658834457013045127">శాశ్వతంగా</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> కనెక్ట్ చేయబడింది</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> డిస్కనెక్ట్ చేయబడింది</translation>
-<translation id="5317781812114905957">సూచనలు</translation>
-<translation id="1178198982208000092">మీ <ph name="DEVICE_NAME"/> కనెక్ట్ చేయండి</translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> <ph name="DEVICE_NAME"/> కి కనెక్ట్ చేయబడింది</translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> డిస్కనెక్ట్ చేయబడింది</translation>
+<translation id="434328838837168401">సూచనలను చూడండి</translation>
+<translation id="13670155462680755">కొనసాగించడానికి మీ <ph name="ACCOUNT_NAME"/> కనెక్ట్ చేయండి</translation>
 <translation id="6941881257520473899">హార్డ్వేర్ వాలెట్ పరికరంలో ధృవీకరణ అవసరం.</translation>
-<translation id="2288190100157580461">హార్డ్వేర్ వాలెట్ <ph name="DEVICE_NAME"/> పరికరంలో <ph name="NETWORK"/> అప్లికేషన్ తెరవాలి.</translation>
+<translation id="4108619287854657806">హార్డ్‌వేర్ వాలెట్ <ph name="ACCOUNT_NAME"/> పై <ph name="NETWORK"/> అప్లికేషన్ తెరవాలి</translation>
 <translation id="8687869982094542529">పంపబడింది</translation>
 <translation id="5013754027092416509">స్వీకరించబడింది</translation>
 <translation id="5867988533873716616">బ్లాక్ ఎక్స్‌ప్లోరర్ URL అందుబాటులో లేదు.</translation>
@@ -1341,6 +1349,7 @@
 <translation id="8491675129455635799">ఆస్తులను గ్రూప్ ద్వారా</translation>
 <translation id="5331775401966766526">ఫిల్టర్లు మరియు ప్రదర్శన సెట్టింగులు</translation>
 <translation id="5332541468425943610">NFT ప్రదర్శన సెట్టింగులు</translation>
+<translation id="1539149309756422999">ఆస్తుల పంపిణీ</translation>
 <translation id="886032538431162695">ఆస్తులను క్రమబద్ధీకరించు</translation>
 <translation id="6080181976198929758">ఫియాట్ విలువ లేదా పేరుతో రక ములను క్రమబద్ధీకరించు</translation>
 <translation id="2563815561570398537">చిన్న బ్యాలెన్స్‌లను దాచు</translation>
@@ -1581,6 +1590,9 @@
 <translation id="5882719778740918116">ఈ చిరునామాకు టోకెన్లు పంపడానికి, మార్గం <ph name="VALUE"/> లో ఉండాలి</translation>
 <translation id="6885009592653876601">200+ క్రిప్టో ఆస్తులను కొనండి, పంపండి మరియు మార్పిడి చేయండి</translation>
 <translation id="8716223552348254401">బ్రౌజర్-నేటివ్గా, ప్రమాదకరమైన ఎక్స్టెన్షన్స్ ఉండవు</translation>
+<translation id="1198271701881992799">ప్రారంభిద్దాం</translation>
+<translation id="7904301836463577071">క్రెడిట్ లేదా డెబిట్ కార్డుతో మీ మొదటి క్రిప్టోను కొనుగోలు చేయండి</translation>
+<translation id="3721561070667360112">మరొక వాలెట్ లేదా ఎక్స్‌ఛేంజ్ నుండి క్రిప్టోను డిపాజిట్ చేయండి</translation>
 <translation id="4559901986238865734">మల్టీ-చెయిన్ &amp; NFT మద్దతు</translation>
 <translation id="296101411136980896">మార్చడానికి క్లిక్ చేయండి</translation>
 <translation id="753655478253155745">పన్నెండవ</translation>
@@ -1728,6 +1740,7 @@
 <translation id="8549067157732633185">ఈ టోకెన్ నిర్ధారించబడింది</translation>
 <translation id="2130170065617939165">ఈ టోకెన్ <ph name="NUMBER_OF_LISTS"/> జాబితాలలో నిర్ధారించబడింది</translation>
 <translation id="1554316484739382186">ఖర్చు చేయూతే చిరునామా: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> ఖాతా</translation>
 <translation id="5360752485622434494">Brave Rewards BAT <ph name="PROVIDER"/> లో</translation>
@@ -1872,6 +1885,7 @@
 <translation id="4150336849480030462">సంబంధిత టోకెన్ ఖాతా సృష్టితో కూడిన SPL టోకెన్ ట్రాన్స్‌ఫర్</translation>
 <translation id="2244921323472112851">మీరు వెతుకుతున్న పేజీ ని ఇప్పుడు కనుగొనలేము.</translation>
 <translation id="6277237872689140644">ఇది భిన్నమైన ప్రదేశానికి తరలించబడింది లేదా URLలో తప్పు ఉండవచ్చు.</translation>
+<translation id="1788572014530152502">మీ లావాదేవీని ప్రాసెస్ చేయడంలో ఒక లోపం ఉంది. చాలా సందర్భాలలో, నెట్‌వర్క్ ఫీ కవర్ చేయడానికి తగిన <ph name="SYMBOL"/> లేదని అర్థం. బదులుగా చిన్న మొత్తం ప్రయత్నించండి.</translation>
 <translation id="2737084171727561244">పోర్ట్ఫోలియో కి వెళ్ళండి</translation>
 <translation id="3499452861061048987">టోకెన్ జోడించండి</translation>
 <translation id="5046066249040287308">Brave Wallet యుటిలిటీ సర్వీస్</translation>
@@ -2121,12 +2135,14 @@
 <translation id="6459036216700972269">విభజిత ట్యాబ్‌లను ఎల్లప్పుడూ మూసివేయి</translation>
 <translation id="4235382917338421035">ట్యాబ్ స్థానాలను మార్చు</translation>
 <translation id="4288085058450834672">అనువర్తనాలను చూపించు</translation>
+<translation id="4750337523930607658">ఫోకస్ మోడ్‌ను టోగుల్ చేయండి</translation>
 <translation id="4144468798716165316">Quick commands</translation>
 <translation id="3617523374417810198">కొత్త విభజిత వీక్షణ</translation>
 <translation id="8571323456914890254">విభజిత వీక్షణలో తెరవండి</translation>
 <translation id="5329136173514538969">విభజిత ట్యాబ్‌లను ఎల్లప్పుడూ మూసివేయి</translation>
 <translation id="7595612919377246359">ట్యాబ్ స్థానాలను మార్చు</translation>
 <translation id="2367972762794486313">అనువర్తనాలను చూపు</translation>
+<translation id="3142853026316054951">ఫోకస్ మోడ్‌ను టోగుల్ చేయండి</translation>
 <translation id="3468387898712904997">కొత్త ఇమెయిల్ అలియాస్</translation>
 <translation id="8591883849678260674">అసలు పేజీని వీక్షించండి</translation>
 <translation id="1969654232209826429">నిమిషం. చదవండి</translation>
@@ -2174,6 +2190,7 @@
 <translation id="5923170497201832190">దిగువకు స్క్రోల్ చేయి</translation>
 <translation id="6219262425964000211">ఇమేజెస్‌ని ఇక్కడ వదలండి</translation>
 <translation id="4313763911013851687">చర్చలో వాటిని జోడించడానికి ఏ ఫైళ్లనైనా ఇక్కడ వదలండి</translation>
+<translation id="8206915760129310348">కొన్ని ఫైళ్లను చదవలేకపోయాము మరియు అటాచ్ చేయబడలేదు</translation>
 <translation id="4524675003624341892">ప్రశ్నలను సూచించు…</translation>
 <translation id="4567071417854988869">ఈ వీడియో సారాంశం</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2184,7 +2201,9 @@
 <translation id="7932221068776853847">Leo కి ఈ పేజీ సమగ్ర వచనాన్ని పంపడం ఆపడానికి డిస్కనెక్ట్ చేసి, కొత్త సంభాషణ ప్రారంభించండి</translation>
 <translation id="8743383817154663379">మీ అభ్యర్థనను ప్రాసెస్ చేయడంలో ఏదో తప్పు జరిగింది. దయచేసి మరికొద్ది సమయం తర్వాత ప్రయత్నించండి.</translation>
 <translation id="2712650703044366764">ఈ నమూనాలో అనంతమైన ఎండ్‌పాయింట్ ఉంది. దయచేసి మీ కాన్ఫిగరేషన్‌ని తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.</translation>
-<translation id="1167803637855350748">Leo కి కనెక్ట్ అవ్వడంలో నెట్వర్క్ సమస్య ఎదురైంది, మీ కనెక్షన్ ని తనిఖీ చేయి మరియు మళ్ళీ ప్రయత్నించండి</translation>
+<translation id="7092656392206649236">Leo తో కమ్యూనికేట్ చేస్తున్నప్పుడు ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.</translation>
+<translation id="3552709750512842961">స్థితి కోడ్: <ph name="STATUS_CODE"/>, ఎర్రర్ కోడ్: <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">స్థితి కోడ్: <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">మీరు ప్రీమియం రేట్ లిమిట్‌ని చేరారు. దయచేసి కొన్ని గంటల తర్వాత మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="3683964919745779766">మీరు ఈ మోడల్ కోసం రేట్ పరిమితిని చేరుకున్నారు లేదా క్రీడ లేవు. దయచేసి తర్వాత మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="7692501701960747469">ఈ మోడల్ కోసం కాన్ఫిగర్ చేయబడిన API కీ చెల్లదు. దయచేసి మీ కాన్ఫిగరేషన్ ను తనిఖీ చేసి మళ్ళీ ప్రయత్నించండి.</translation>
@@ -2467,7 +2486,9 @@
 <translation id="5663901348199429994">మీ ఇమెయిల్ అలియాసెస్</translation>
 <translation id="9046133327037621173">కొత్త ఇమెయిల్ అలియాస్</translation>
 <translation id="3768606658230902536">మీ వ్యక్తిగత ఇమెయిల్‌ను నిబంధన చేయునప్పుడు మీ ఇన్బాక్స్కు ఫార్వార్డ్ చేస్తున్న యాదృచ్ఛిక ఇమెయిల్ చిరునామాను సృష్టించండి.</translation>
-<translation id="6887156107256264506">మీరు 5 ఉచిత ఇమెయిల్ అలియాసెస్ పరిమితికి చేరుకున్నారు. అలియాస్‌ను మళ్ళీ ఉపయోగించడానికి లేదా తొలగించడానికి "మ్యానేజ్" క్లిక్ చేయండి.</translation>
+<translation id="4452721050684632493">మారుపేరు పరిమితి చేరుకుంది</translation>
+<translation id="2912191433415590080">మీరు మీ ఇమెయిల్ మారుపేర్లలో <ph name="MAX_ALIASES"/> అన్నీ ఉపయోగించారు. కొత్తదాన్ని సృష్టించడానికి ఇప్పటికే ఉన్న మారుపేరును తొలగించండి.</translation>
+<translation id="3847337908410945070">మీ మారుపేర్లు (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">కొత్త అలియాస్</translation>
 <translation id="8072910658503112482">మరొక ఇమెయిల్ అలియాస్‌ను సూచించండి</translation>
 <translation id="7710361355427562228">కొత్త అలియాస్ సృష్టిస్తుంది...</translation>
@@ -2510,6 +2531,8 @@
 <translation id="2991633563551889054">టాక్ కార్డ్ విడిచిపెట్టండి</translation>
 <translation id="5355776323718420036">టాప్ సైట్లను దాచండి</translation>
 <translation id="1689504141194856995">VPN కార్డ్ విడిచిపెట్టండి</translation>
+<translation id="2919329118360099847">సాధారణ విండోల కోసం చిరునామా బార్‌లో Brave శోధన ఇంజిన్‌గా ఉపయోగించబడుతుంది.</translation>
+<translation id="6792837540759934892">Brave ను డిఫాల్ట్ శోధన ఇంజిన్‌గా సెట్ చేయాలా?</translation>
 <translation id="8262911270872215147">న్యూస్ కస్టమైజ్ చేయండి</translation>
 <translation id="3884037897537157986">బ్రేవ్ న్యూస్ ఆపివేయి</translation>
 <translation id="7847477075635510673">బ్రేవ్ న్యూస్ దాచివేయి</translation>
@@ -2556,7 +2579,8 @@
 <translation id="4724752924364329714">ఈ సైట్ చెడు చూపనిపిస్తే, షీల్డ్స్‌ను డౌన్‌ చేయడం ప్రయత్నించండి.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>గమనిక: ఇది బ్రేవ్ యొక్క గోప్యతా పరిరక్షణలను తగ్గిస్తుందని గమనించండి.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">ఇది Brave యొక్క గోప్యతా రక్షణలను తగ్గించవచ్చు. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">ట్రాకర్స్, యాడ్‌లు మరియు మరిన్నవి బ్లాక్ చేయబడ్డాయి.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> ట్రాకర్‌లు, యాడ్‌లు మరియు మరిన్ని బ్లాక్ చేయబడ్డాయి</translation>
+<translation id="2275121279487164685">ట్రాకర్లు మరియు యాడలు</translation>
 <translation id="4968268657895673116">Shields పై ఉన్నప్పుడు ఈ సైట్ సరిగ్గా పనిచేయకపోతుందా?</translation>
 <translation id="5412004902081180614">నివేదించండి</translation>
 <translation id="3620004479054499575">మీకు ఈ సైట్‌తో సమస్యలు ఎదురవుతున్నాయా?</translation>
@@ -2618,9 +2642,11 @@
 <translation id="3795015906457257780">మీరు ఈ సైట్‌ను Brave యొక్క ప్రైవసీ పరిరక్షణలతో వీక్షిస్తున్నారు.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> ట్రాకర్లు, యాడ్లు, మరియు మరిన్నింటిని బ్లాక్ చేసింది</translation>
+<translation id="2900068182947574679">స్క్రిప్ట్‌లు</translation>
 <translation id="4292121526390005808">బ్లాక్ చేయబడిన స్క్రిప్ట్‌లు</translation>
 <translation id="5046271170844958713">అనుమతించబడిన స్క్రిప్ట్‌లు</translation>
 <translation id="199862531047218413">యాంటీ-ఫింగర్ప్రింటింగ్ పరిరక్షణలు అన్వయించబడ్డాయి</translation>
+<translation id="896105002981074545">ఫింగర్ ప్రింటింగ్ సంరక్షణలు</translation>
 <translation id="5032505924781383272">అన్వయించిన పరిరక్షణలు ఈ వెబ్‌పేజీ మీ బ్రౌజర్‌ను ఫింగర్‌ప్రింట్ చేయడానికి ప్రయత్నిస్తున్నదని అవర్జనకంగా సూచించవు.</translation>
 <translation id="1905384713982899903">బ్లాక్ చేయబడిన ఫింగర్ప్రింట్లు</translation>
 <translation id="314364527871618241">అనుమతించబడిన ఫింగర్ప్రింట్లు</translation>
@@ -2633,6 +2659,7 @@
 <translation id="542789539047208469">సైట్ సమాచారం</translation>
 <translation id="7586067492365979844">బ్రేవ్ షీల్డ్‌లకు కొత్త ఇల్లు మరియు డిజైన్ ఉంది. ఇది ఒక-స్టాప్ అనుభవం కోసం సైట్ సమాచారం యొక్క ఏకీకరణ ఇప్పుడు.</translation>
 <translation id="9114542678887529043">బ్రేవ్ షీల్డ్‌లకు కొత్త ఇల్లు మరియు డిజైన్ ఉంది. చిరునామా పట్టీలో సైట్ చిహ్నాన్ని క్లిక్ చేయడం ద్వారా దానిని యాక్సెస్ చేయండి.</translation>
+<translation id="4242533952199664413">సెట్టింగ్‌లను తెరువు</translation>
 <translation id="6294662480095808915">గోప్యతా. డిఫాల్ట్ ద్వారా.</translation>
 <translation id="4366423156486478559">మీరు క్లిక్ చేసే ప్రతి లింక్‌పై బ్రేవ్ పరిరక్షణ పొందండి. కేవలం బ్రేవ్‌ని డిఫాల్ట్‌గా సెట్ చేయండి మరియు బ్రౌజ్ చేయండి. గోప్యంగా.</translation>
 <translation id="3830912418080848377">సెట్టింగ్స్ దిగుమతి చేయండి</translation>
@@ -2644,7 +2671,7 @@
 <translation id="2273851479262317744">బ్రేవ్ బ్రౌజర్‌ను డిఫాల్ట్‌గా సెట్ చేయండి</translation>
 <translation id="5037676449506322593">అన్నీ ఎంచుకోండి</translation>
 <translation id="5148943178722443958">Brave ను మెరుగుపరచడానికి సహకరించండి.</translation>
-<translation id="479535542793009168">స్థిరత్వం &amp; నిర్ధారణలు</translation>
+<translation id="8874748598814587364">స్థిరత్వం</translation>
 <translation id="1097073572755862978">క్రాష్ లేదా ఫ్రీజ్ ఎదురయ్యే వస్తే డయాగ్నోస్టిక్ రిపోర్ట్‌లను పంపండి. <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">బ్రేవ్ వినియోగదారులు ఉపయోగిస్తున్న ఫీచర్‌ల గురించి ప్రైవేట్ మరియు అనామిక ఉత్పత్తి అంతర్గతాలు పంచుకోండి. <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">సెట్టప్ పూర్తయింది</translation>
@@ -2773,4 +2800,79 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="1602850501393095406">హైలైట్ చేయడానికి ↑ నొక్కండి</translation>
 <translation id="8367705492654390392">ఏదైనా అడుగు</translation>
 <translation id="8525248723479742219">తర్వాత ప్లే చేయండి</translation>
+<translation id="1751249301761991853">వ్యక్తిగత</translation>
+<translation id="1122068467107743258">పని</translation>
+<translation id="8372721116225477180">సామాజికం</translation>
+<translation id="1539343118617844331">పాఠశాల</translation>
+<translation id="2935698011275148880">Brave మూలం</translation>
+<translation id="3983844925615091103">Brave Origin కు స్వాగతం. కొనసాగించడానికి, దయచేసి మీ Brave Origin ఖరీదుని కొనండి లేదా పునరుద్ధరించండి.</translation>
+<translation id="4801175670604644729">ఈ బ్రౌజర్‌ని ఉపయోగించడానికి మీకు సక్రియ Brave Origin ఖరీద అవసరం.</translation>
+<translation id="4144294274624829008">Brave Origin ఖరీదును పునరుద్ధరించండి</translation>
+<translation id="6080178356113101120">Brave Origin కిని కొనండి</translation>
+<translation id="1009496146858538651">ఖరీదును పునరుద్ధరించండి</translation>
+<translation id="3461564061600681423">మీ Brave Origin ఖరీదుని సక్రియం చేయడానికి మీ ఖరీద IDని నమోదు చేయండి.</translation>
+<translation id="2036379724374431790">ఖరీద ID</translation>
+<translation id="4348430971280118761">మీ ఖరీద IDని నమోదు చేయండి</translation>
+<translation id="7451866456310404779">ఖరీద IDని ధృవీకరించండి</translation>
+<translation id="8853195592604941919">ధృవీకరిస్తోంది… ఇది ఒక నిమిషం పట్టవచ్చు.</translation>
+<translation id="4633706444004110760">Brave Origin ఇన్‌స్టాల్ చేసినందుకు ధన్యవాదాలు, ఇది Brave కు ఒక సంస్కరణ, ఇది Brave ను ఒక వ్యాపారం విధంగా సపోర్ట్ చేసే అన్ని ఫీచర్‌లు కోసం ఆవశ్యకం లేని యూజర్‌ల కోసం, కానీ Brave మాత్రమే అందించే గోప్యతను ఇప్పుడు కోరుకుంటారు. Origin యూజర్‌లు Brave యొక్క ఇండస్ట్రీ-లీడింగ్ గోప్యత, adblock, మరియు స్పీడ్ (Shields ద్వారా), అలాగే రెగులర్ సాఫ్ట్‌వేర్ అప్‌డేట్‌లు, Chromium పాచెస్, మరియు సెక్యూరిటీ మరియు గోప్యత ఇమ్‌ప్రూవ్‌మెంట్‌ల నుండి ప్రయోజనం పొందటాన్ని కొనసాగిస్తారు. Origin బ్రౌజర్ నుండి చాలా ఇతర ఫీచర్‌లను తీసివేస్తుంది.</translation>
+<translation id="5816720995022674532">Origin Linux పరికరాలలో ఉపయోగించడానికి ఉచితం, కానీ ఇప్పుడు Brave ని ఒక వ్యాపారం విధంగా సపోర్ట్ చేయాలనుకుంటే <ph name="BEGIN_LINK"/>కిని కొనడానికి అందుబాటులో ఉంది<ph name="END_LINK"/>. ఖరీదు చేయడం Android, iOS, macOS, మరియు Windows పరికరాలపై Origin ను ఉపయోగించే సామర్థ్యాన్ని అన్‌లాక్ చేస్తుంది.</translation>
+<translation id="3065220545261045367">Origin ను కొనడం ద్వారా Brave ని సపోర్ట్ చేయండి</translation>
+<translation id="2069499076031488636">Linux లో Origin తో ఉచితంగా కొనసాగండి</translation>
+<translation id="5713644099811900409">బ్రేవ్ ఖాతా</translation>
+<translation id="2906576968270573525">Brave ఖాతాలో సైన్ ఇన్ చేయండి లేదా సృష్టించండి</translation>
+<translation id="6972754398087986839">ప్రారంభించండి</translation>
+<translation id="5378207817582281342">దాదాపు పూర్తయింది!</translation>
+<translation id="3750210661641549834">మీ ఖాతాను సృష్టించడానికి, దయచేసి మీ ఇమెయిల్ చిరునామాను ధృవీకరించండి.</translation>
+<translation id="4129813507847680661">నమోదు కోడ్‌ను నమోదు చేయండి</translation>
+<translation id="1672793037892810340">మీరు ఇన్‌పుట్ చేయవలసిన కోడ్‌తో ఒక ఇమెయిల్‌ను అందుకొని ఉండాలి.</translation>
+<translation id="4821255729182569254">నిర్ధారణ ఇమెయిల్‌ను తిరిగి పంపండి</translation>
+<translation id="5837679375142747484">ఇమెయిల్ కనిపించడం లేదా? మీ స్పామ్ ఫోల్డర్‌ను పరిశీలించండి లేదా <ph name="BEGIN_LINK"/>తిరిగి పంపండి<ph name="END_LINK"/>.</translation>
+<translation id="1080588816740959885">ఇమెయిల్ కనిపించడం లేదా? మీ స్పామ్ ఫోల్డర్‌ను పరిశీలించండి లేదా తిరిగి పంపండి.</translation>
+<translation id="1020730839570724178">నమోదును రద్దు చేయండి</translation>
+<translation id="4869737930995549965">లాగ్ అవుట్</translation>
+<translation id="5538654494923870167">మీ Brave ఖాతాతో ప్రారంభించండి</translation>
+<translation id="1544145635547515689">Brave ఖాతా సృష్టించండి</translation>
+<translation id="3828644479849256404">ఇప్పటికే ఖాతా ఉందా? లాగిన్ చేయండి</translation>
+<translation id="6624553071240278643">మీ ఖాతాను సృష్టించండి</translation>
+<translation id="6505120968393722022">Brave ఖాతాలను సృష్టించడానికి మీరు @bravealias.com చిరునామాలను ఉపయోగించలేరు. దయచేసి వేరే డొమైన్‌తో మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="8248460961680233459">పాస్వర్డ్ సృష్టించండి</translation>
+<translation id="4917385247580444890">బలమైన</translation>
+<translation id="5486261815000869482">పాస్‌వర్డ్‌ను నిర్ధారించండి</translation>
+<translation id="7345706641791090287">మీ పాస్‌వర్డ్‌ను నిర్ధారించండి</translation>
+<translation id="7114054701490058191">పాస్‌వర్డ్‌లు సరిపోలడం లేదు</translation>
+<translation id="1293857704520741614">మీ ఖాతాలోకి లాగిన్ అవ్వండి</translation>
+<translation id="118617366439356381">మీ పాస్‌వర్డ్‌ను మర్చిపోయారా?</translation>
+<translation id="5183159033908953146">మీ Brave ఖాతా ఇమెయిల్‌ను నిర్ధారించండి, ఆపై మీరు మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి ఒక లింక్‌ను అందుకుంటారు. లింక్ కేవలం 30 నిమిషాల పాటు మాత్రమే చెల్లుబాటు అవుతుంది.</translation>
+<translation id="3997368361371298873">హెచ్చరిక: మీరు ఈ పరికరానికి లాగిన్ అయి లేనందున, మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడం వలన సర్వర్‌లోని <ph name="BEGIN_BOLD"/>మీ డేటా మొత్తం తొలగించబడుతుంది<ph name="END_BOLD"/>. మీరు లాగిన్ అయి ఉన్న మరొక పరికరం ఉంటే, మీ పాస్‌వర్డ్‌ను రీసెట్ చేయకుండా ఆ పరికరం నుండి మీ పాస్‌వర్డ్‌ను మార్చండి.</translation>
+<translation id="3674472551471103443">మీ పాస్‌వర్డ్‌ను రీసెట్ చేయండి</translation>
+<translation id="2755539422340788311">మీ ఇమెయిల్‌ను ధృవీకరించండి</translation>
+<translation id="6641436078676327508">మీరు చిన్న కోడ్‌తో ఒక ఇమెయిల్‌ను అందుకొని ఉండాలి. కొనసాగించడానికి దయచేసి దానిని ఇక్కడ నమోదు చేయండి.</translation>
+<translation id="7228810962389847249">కోడ్‌ను ఇక్కడ నమోదు చేయండి</translation>
+<translation id="4683390091376980486">కోడ్‌ను నిర్ధారించండి</translation>
+<translation id="3970028678400797622">ఇమెయిల్ కోడ్‌ను తిరిగి పంపండి</translation>
+<translation id="2475982808118771221">ఒక లోపం సంభవించింది</translation>
+<translation id="5430795854491041407">ఎర్రర్</translation>
+<translation id="2232323423357029857">బ్రౌజర్ ఊహించని లోపాన్ని ఎదుర్కొంది<ph name="ERROR_CODE"/>. దయచేసి బ్రౌజర్‌ను పునఃప్రారంభించి మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="7167650060829320707">అంతర్గత సర్వర్ లోపం (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). దయచేసి తర్వాత మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="2387645930330673048">ఈ ఖాతా ఇమెయిల్ ధృవీకరణ కోసం వేచి ఉంది.</translation>
+<translation id="2199962270601714404">ఆ ఇమెయిల్ చిరునామా కోసం ఏ ఖాతా కనుగొనబడలేదు. దయచేసి మళ్ళీ ప్రయత్నించండి, లేదా కొత్త ఖాతాను సృష్టించండి.</translation>
+<translation id="8130611002720478693">తప్పు పాస్‌వర్డ్. దయచేసి మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="7144067487084094749">ఈ ఇమెయిల్ చిరునామా కోసం ఇప్పటికే ఒక ఖాతా ఉంది. ఖాతా సృష్టించే బదులు లాగిన్ చేయడానికి ప్రయత్నించండి.</translation>
+<translation id="5288951359968156008">ఈ ఇమెయిల్ చిరునామా యొక్క డొమైన్ మద్దతు లేదు. దయచేసి వేరే ఇమెయిల్ చిరునామాను ఉపయోగించండి.</translation>
+<translation id="7625678607509255072">ఇమెయిల్ ధృవీకరణ పరిమితి దాటింది. దయచేసి మళ్ళీ ప్రయత్నించడానికి ముందు 30 నిమిషాలు వేచి ఉండండి.</translation>
+<translation id="4582421696414628320">ధృవీకరణ గడువు ముగిసింది. నమోదు ప్రక్రియను మళ్ళీ ప్రారంభించండి.</translation>
+<translation id="8439543211004394821">చాలా తప్పు కోడ్‌లు నమోదు చేయబడ్డాయి. నమోదు ప్రక్రియను మళ్ళీ ప్రారంభించండి.</translation>
+<translation id="3229986152760633988">తప్పు కోడ్, దయచేసి మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="4178004989875422946">Brave ఖాతా మీరు Brave సేవలను సులభంగా యాక్సెస్ చేయడానికి అనుమతిస్తుంది.</translation>
+<translation id="8314772463905284467">క్యాప్స్ లాక్ ఆన్‌లో ఉంది</translation>
+<translation id="7044608453949401443">పాస్‌వర్డ్ ప్రారంభంలో లేదా ముగింపులో స్పేస్‌లు అనుమతించబడవు.</translation>
+<translation id="2939492377741553693">నిర్ధారణ ఇమెయిల్ తిరిగి పంపబడింది.</translation>
+<translation id="2112559299194052697">తిరిగి పంపలేకపోతున్నారు</translation>
+<translation id="7932611814134267012">ఇప్పటికే చాలా ధృవీకరణ ఇమెయిల్‌లు పంపబడ్డాయి. దయచేసి మీ స్పామ్ ఫోల్డర్‌ను తనిఖీ చేయండి.</translation>
+<translation id="1364223093800750401">ఇమెయిల్ ఇప్పటికే ధృవీకరించబడింది.</translation>
+<translation id="3353844160742960162">గోప్యతా సెట్టింగ్‌ల ట్యూనింగ్</translation>
+<translation id="528205534230423181">ఈ వెబ్‌సైట్ Brave మీ కోసం స్వయంచాలకంగా సర్దుబాటు చేయగల గోప్యతా సెట్టింగ్‌లను అందిస్తుంది. మేము సిఫార్సు చేసేది ఇదిగో:</translation>
+<translation id="1063227610401477317">మార్పులను అన్వయించండి</translation>
+<translation id="5539769255716491933">విఫలమైన దశలను నివేదించండి</translation>
 </translationbundle>

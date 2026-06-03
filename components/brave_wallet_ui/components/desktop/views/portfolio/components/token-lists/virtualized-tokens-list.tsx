@@ -11,7 +11,10 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
-import { getAssetIdKey } from '../../../../../../utils/asset-utils'
+import {
+  dedupeAssetsByIdKey,
+  getAssetIdKey,
+} from '../../../../../../utils/asset-utils'
 
 // Styles
 import { listItemInitialHeight, AutoSizerStyle } from './token-list.style'
@@ -85,10 +88,16 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
   userAssetList,
   selectedAssetId,
 }: VirtualizedTokensListProps<T>) {
+  const dedupedUserAssetList = React.useMemo(
+    () =>
+      dedupeAssetsByIdKey(userAssetList as BraveWallet.BlockchainToken[]) as T,
+    [userAssetList],
+  )
+
   // Refs
   const listRef = React.useRef<List | null>(null)
   const itemSizes = React.useRef<number[]>(
-    new Array(userAssetList.length).fill(listItemInitialHeight),
+    new Array(dedupedUserAssetList.length).fill(listItemInitialHeight),
   )
 
   // Methods
@@ -102,7 +111,7 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
       }
       // Get selectedAssetId index
       if (listRef.current && selectedAssetId) {
-        const itemIndex = userAssetList.findIndex(
+        const itemIndex = dedupedUserAssetList.findIndex(
           (asset) => getAssetIdKey(asset) === selectedAssetId,
         )
         // Scroll selected asset into view
@@ -111,7 +120,7 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
         }
       }
     },
-    [listRef, selectedAssetId, userAssetList],
+    [listRef, selectedAssetId, dedupedUserAssetList],
   )
 
   const setSize = React.useCallback(
@@ -146,8 +155,8 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
             width={width}
             height={height}
             itemSize={getSize}
-            itemData={userAssetList}
-            itemCount={userAssetList.length}
+            itemData={dedupedUserAssetList}
+            itemCount={dedupedUserAssetList.length}
             overscanCount={10}
             itemKey={getItemKey}
             children={(itemProps) => (

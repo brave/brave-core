@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 
 class PrefService;
@@ -24,12 +24,12 @@ namespace serp_metrics {
 class SerpMetricsTimePeriodStorage;
 class SerpMetricsTimePeriodStoreFactory;
 
-// SerpMetrics records and aggregates search engine usage counts.
+// `SerpMetrics` records and aggregates search engine usage counts.
 //
-// Counts are exposed for two reporting windows, based on the timestamp of the
-// last successful usage ping (i.e., only searches not yet reported):
+// Counts are exposed for two reporting windows, based on `kLastReportedAt`
+// (i.e., only searches not yet included in the last report):
 //  - Yesterday: searches from the most recent completed calendar day
-//    (00:00:00 to 23:59:59 in the reporting timezone).
+//    (00:00:00 to 23:59:59 UTC).
 //  - Stale period: searches older than yesterday (but still within the
 //    `TimePeriodStorage` retention window).
 
@@ -57,14 +57,14 @@ class SerpMetrics final {
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 
  private:
-  // Returns the start of the stale period in local time, based on the last day
-  // a usage ping was sent. Searches recorded on `kLastCheckYMD` have not yet
-  // been reported, so the stale period begins at local midnight of that day. If
-  // the last check date is unavailable or invalid, an empty time is returned to
+  // Returns the start of the stale period in UTC, based on the last day
+  // metrics were reported. Searches recorded since that day have not yet been
+  // reported, so the stale period begins at UTC midnight of that day. If the
+  // last reported date is unavailable or invalid, an empty time is returned to
   // indicate that the full retention period should be considered stale.
   base::Time GetStartOfStalePeriod() const;
 
-  const raw_ptr<PrefService> local_state_;  // Not owned.
+  const raw_ref<PrefService> local_state_;
 
   base::flat_map<SerpMetricType, std::unique_ptr<SerpMetricsTimePeriodStorage>>
       time_period_storages_;

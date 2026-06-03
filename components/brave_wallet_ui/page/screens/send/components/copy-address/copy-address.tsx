@@ -40,7 +40,7 @@ export const CopyAddress = (props: Props) => {
       <AddressButton onClick={handleClick}>
         <Text
           textSize='12px'
-          textColor='text03'
+          textColor='tertiary'
           isBold={false}
         >
           {address}

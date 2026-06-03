@@ -104,9 +104,8 @@ public enum Web3Service: String, CaseIterable {
     case .ask:
       return .loadInterstitial(.solana)
     case .enabled:
-      let (url, status, _) = await rpcService.snsResolveHost(domain: domain)
-      guard status == .success,
-        let url,
+      let url = await rpcService.snsResolveHost(domain: domain)
+      guard let url,
         !url.isBookmarklet
       else {
         return .none

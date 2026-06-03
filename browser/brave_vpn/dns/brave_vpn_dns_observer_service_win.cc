@@ -49,7 +49,8 @@ void SkipDNSDialog(PrefService* prefs, bool checked) {
 
 gfx::NativeWindow GetAnchorBrowserWindow() {
   auto* browser = chrome::FindLastActive();
-  return browser ? browser->window()->GetNativeWindow() : gfx::NativeWindow();
+  return browser ? browser->GetWindow()->GetNativeWindow()
+                 : gfx::NativeWindow();
 }
 
 bool AreConfigsEqual(SecureDnsConfig& one, SecureDnsConfig& two) {

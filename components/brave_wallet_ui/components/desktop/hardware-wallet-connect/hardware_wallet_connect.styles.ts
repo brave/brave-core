@@ -8,6 +8,9 @@ import { LoaderIcon } from 'brave-ui/components/icons'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Checkbox from '@brave/leo/react/checkbox'
 
+// Shared Styles
+import { Text } from '../../shared/style'
+
 import TrezorLight from './images/trezor_light.svg'
 import TrezorDark from './images/trezor_dark.svg'
 import LedgerLight from './images/ledger_light.svg'
@@ -45,8 +48,7 @@ export const HardwareWalletGraphic = styled.div<{
 `
 
 export const HardwareWalletCaption = styled.div`
-  font-family: Poppins;
-  font-size: 16px;
+  font: ${leo.font.large.regular};
   text-align: left;
   flex-shrink: 0;
   max-width: 200px;
@@ -94,13 +96,10 @@ export const HardwareWalletAccountListItem = styled.div`
 `
 
 export const HardwareWalletAccountListItemRow = styled.div`
+  font: ${leo.font.default.regular};
+
   flex: 1;
   flex-direction: row;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
   display: flex;
   align-items: center;
   letter-spacing: 0.01em;
@@ -151,11 +150,7 @@ export const SelectWrapper = styled.div`
   }
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+export const ErrorText = styled(Text)`
   margin-bottom: 10px;
 `
 
@@ -169,20 +164,19 @@ export const LoadingWrapper = styled.div`
 `
 
 export const LoadIcon = styled(LoaderIcon)<Partial<StyleProps>>`
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   height: ${(p) => (p.size === 'small' ? '25px' : '70px')};
   width: ${(p) => (p.size === 'small' ? '25px' : '70px')};
   opacity: 0.4;
 `
 
 export const NoSearchResultText = styled.div`
-  font-family: Poppins;
-  font-size: 12px;
+  font: ${leo.font.small.regular};
   text-align: center;
   letter-spacing: 0.01em;
   width: 100%;
   margin-top: 16px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
 `
 
 export const Instructions = styled.div<{ mode: 'info' | 'success' | 'error' }>`
@@ -200,9 +194,7 @@ export const Instructions = styled.div<{ mode: 'info' | 'success' | 'error' }>`
   gap: 8px;
 `
 
-export const Bold = styled.span`
-  font-weight: 600;
-`
+export const Bold = styled(Text)``
 
 export const AccountCheckbox = styled(Checkbox)`
   --checkbox-box-size: 24px;
@@ -242,13 +234,11 @@ export const AccountListContent = styled.div`
 `
 
 export const DropdownLabel = styled.div`
-  font-family: 'Poppins';
   font: ${leo.font.small.semibold};
   color: ${leo.color.text.primary};
 `
 
 export const HelpLink = styled.a`
-  font-family: Poppins;
   font: ${leo.font.small.semibold};
   color: ${leo.color.text.interactive};
   text-decoration: none;

@@ -4,24 +4,25 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { StyledInput } from '../../shared-swap.styles'
 
 export const Input = styled(StyledInput)`
   width: 100%;
   height: 32px;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${leo.color.neutral[30]};
   border-radius: 4px;
   padding-left: 12px;
   font-weight: 200;
   ::placeholder {
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
     font-size: 14px;
     font-weight: 200;
   }
   :disabled {
-    border: 1px solid ${(p) => p.theme.color.disabled};
+    border: 1px solid ${leo.color.text.disabled};
     ::placeholder {
-      color: ${(p) => p.theme.color.disabled};
+      color: ${leo.color.text.disabled};
     }
   }
 `

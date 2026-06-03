@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <limits>
 #include <optional>
 #include <string>

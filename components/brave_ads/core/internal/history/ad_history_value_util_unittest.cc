@@ -96,7 +96,7 @@ class BraveAdsAdHistoryValueUtilTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsAdHistoryValueUtilTest, AdHistoryToValue) {
+TEST_F(BraveAdsAdHistoryValueUtilTest, AdHistoryToList) {
   // Arrange
   const AdHistoryList ad_history =
       test::BuildAdHistory(mojom::AdType::kNotificationAd,
@@ -105,7 +105,7 @@ TEST_F(BraveAdsAdHistoryValueUtilTest, AdHistoryToValue) {
                            /*use_random_uuids=*/false);
 
   // Act
-  const base::ListValue list = AdHistoryToValue(ad_history);
+  const base::ListValue list = AdHistoryToList(ad_history);
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonList(kAdHistoryAsJson), list);

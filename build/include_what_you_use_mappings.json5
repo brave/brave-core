@@ -1,0 +1,354 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// IWYU mapping file consumed by brave/tools/cr/iwyu/run_iwyu.py.
+//
+// Chromium ships libc++, whose standard headers (`<algorithm>`, `<atomic>`,
+// ...) are split into many private detail headers under
+// `third_party/libc++/src/include/__<name>/`.  Without these mappings, IWYU
+// would suggest:
+//
+//   #include "__algorithm/ranges_sort.h"
+//   #include "__atomic/atomic.h"
+//   #include "__fwd/sstream.h"
+//
+// instead of the public-facing:
+//
+//   #include <algorithm>
+//   #include <atomic>
+//   #include <sstream>
+//
+// Each rule uses the `@` wildcard prefix so a single regex pattern remaps
+// every private header under a `__<name>/` subtree to its public facade.
+// `__fwd/<x>.h` is the libc++ forward-decl shim for `<x>` and must be
+// enumerated per-header.
+//
+// IMPORTANT: the `@` regex matches the include string *including* its
+// delimiters.  Brave's compile commands produce both angle-bracket
+// (`<__algorithm/...>`) and quoted (`"__algorithm/..."`) forms depending
+// on platform / build config, so every rule has both variants.
+//
+// See `tools/cr/iwyu/README.md` and IWYU's IWYUMappings.md for the file format.
+
+[
+  // === Private detail subdirectories -- angle-bracket form ===
+
+  { 'include': ['@<__algorithm/.*>', 'private', '<algorithm>', 'public'] },
+  { 'include': ['@<__atomic/.*>', 'private', '<atomic>', 'public'] },
+  { 'include': ['@<__bit/.*>', 'private', '<bit>', 'public'] },
+  { 'include': ['@<__charconv/.*>', 'private', '<charconv>', 'public'] },
+  { 'include': ['@<__chrono/.*>', 'private', '<chrono>', 'public'] },
+  { 'include': ['@<__compare/.*>', 'private', '<compare>', 'public'] },
+  { 'include': ['@<__concepts/.*>', 'private', '<concepts>', 'public'] },
+  {
+    'include': [
+      '@<__condition_variable/.*>',
+      'private',
+      '<condition_variable>',
+      'public',
+    ],
+  },
+  { 'include': ['@<__coroutine/.*>', 'private', '<coroutine>', 'public'] },
+  { 'include': ['@<__exception/.*>', 'private', '<exception>', 'public'] },
+  { 'include': ['@<__expected/.*>', 'private', '<expected>', 'public'] },
+  { 'include': ['@<__filesystem/.*>', 'private', '<filesystem>', 'public'] },
+  { 'include': ['@<__format/.*>', 'private', '<format>', 'public'] },
+  { 'include': ['@<__functional/.*>', 'private', '<functional>', 'public'] },
+  { 'include': ['@<__ios/.*>', 'private', '<ios>', 'public'] },
+  { 'include': ['@<__iterator/.*>', 'private', '<iterator>', 'public'] },
+  { 'include': ['@<__locale/.*>', 'private', '<locale>', 'public'] },
+  { 'include': ['@<__math/.*>', 'private', '<cmath>', 'public'] },
+  { 'include': ['@<__memory/.*>', 'private', '<memory>', 'public'] },
+  {
+    'include': [
+      '@<__memory_resource/.*>',
+      'private',
+      '<memory_resource>',
+      'public',
+    ],
+  },
+  { 'include': ['@<__mutex/.*>', 'private', '<mutex>', 'public'] },
+  { 'include': ['@<__new/.*>', 'private', '<new>', 'public'] },
+  { 'include': ['@<__numeric/.*>', 'private', '<numeric>', 'public'] },
+  { 'include': ['@<__ostream/.*>', 'private', '<ostream>', 'public'] },
+  { 'include': ['@<__random/.*>', 'private', '<random>', 'public'] },
+  { 'include': ['@<__ranges/.*>', 'private', '<ranges>', 'public'] },
+  { 'include': ['@<__stop_token/.*>', 'private', '<stop_token>', 'public'] },
+  { 'include': ['@<__string/.*>', 'private', '<string>', 'public'] },
+  {
+    'include': ['@<__system_error/.*>', 'private', '<system_error>', 'public'],
+  },
+  { 'include': ['@<__thread/.*>', 'private', '<thread>', 'public'] },
+  { 'include': ['@<__tuple/.*>', 'private', '<tuple>', 'public'] },
+  { 'include': ['@<__type_traits/.*>', 'private', '<type_traits>', 'public'] },
+  { 'include': ['@<__utility/.*>', 'private', '<utility>', 'public'] },
+  { 'include': ['@<__variant/.*>', 'private', '<variant>', 'public'] },
+  { 'include': ['@<__vector/.*>', 'private', '<vector>', 'public'] },
+
+  // === Private detail subdirectories -- quoted form ===
+
+  { 'include': ['@"__algorithm/.*"', 'private', '<algorithm>', 'public'] },
+  { 'include': ['@"__atomic/.*"', 'private', '<atomic>', 'public'] },
+  { 'include': ['@"__bit/.*"', 'private', '<bit>', 'public'] },
+  { 'include': ['@"__charconv/.*"', 'private', '<charconv>', 'public'] },
+  { 'include': ['@"__chrono/.*"', 'private', '<chrono>', 'public'] },
+  { 'include': ['@"__compare/.*"', 'private', '<compare>', 'public'] },
+  { 'include': ['@"__concepts/.*"', 'private', '<concepts>', 'public'] },
+  {
+    'include': [
+      '@"__condition_variable/.*"',
+      'private',
+      '<condition_variable>',
+      'public',
+    ],
+  },
+  { 'include': ['@"__coroutine/.*"', 'private', '<coroutine>', 'public'] },
+  { 'include': ['@"__exception/.*"', 'private', '<exception>', 'public'] },
+  { 'include': ['@"__expected/.*"', 'private', '<expected>', 'public'] },
+  { 'include': ['@"__filesystem/.*"', 'private', '<filesystem>', 'public'] },
+  { 'include': ['@"__format/.*"', 'private', '<format>', 'public'] },
+  { 'include': ['@"__functional/.*"', 'private', '<functional>', 'public'] },
+  { 'include': ['@"__ios/.*"', 'private', '<ios>', 'public'] },
+  { 'include': ['@"__iterator/.*"', 'private', '<iterator>', 'public'] },
+  { 'include': ['@"__locale/.*"', 'private', '<locale>', 'public'] },
+  { 'include': ['@"__math/.*"', 'private', '<cmath>', 'public'] },
+  { 'include': ['@"__memory/.*"', 'private', '<memory>', 'public'] },
+  {
+    'include': [
+      '@"__memory_resource/.*"',
+      'private',
+      '<memory_resource>',
+      'public',
+    ],
+  },
+  { 'include': ['@"__mutex/.*"', 'private', '<mutex>', 'public'] },
+  { 'include': ['@"__new/.*"', 'private', '<new>', 'public'] },
+  { 'include': ['@"__numeric/.*"', 'private', '<numeric>', 'public'] },
+  { 'include': ['@"__ostream/.*"', 'private', '<ostream>', 'public'] },
+  { 'include': ['@"__random/.*"', 'private', '<random>', 'public'] },
+  { 'include': ['@"__ranges/.*"', 'private', '<ranges>', 'public'] },
+  { 'include': ['@"__stop_token/.*"', 'private', '<stop_token>', 'public'] },
+  { 'include': ['@"__string/.*"', 'private', '<string>', 'public'] },
+  {
+    'include': ['@"__system_error/.*"', 'private', '<system_error>', 'public'],
+  },
+  { 'include': ['@"__thread/.*"', 'private', '<thread>', 'public'] },
+  { 'include': ['@"__tuple/.*"', 'private', '<tuple>', 'public'] },
+  {
+    'include': ['@"__type_traits/.*"', 'private', '<type_traits>', 'public'],
+  },
+  { 'include': ['@"__utility/.*"', 'private', '<utility>', 'public'] },
+  { 'include': ['@"__variant/.*"', 'private', '<variant>', 'public'] },
+  { 'include': ['@"__vector/.*"', 'private', '<vector>', 'public'] },
+
+  // === Forward-decl shims -- angle-bracket form ===
+  // `__fwd/<x>.h` is libc++'s forward-decl-only header for `<x>`.
+
+  { 'include': ['<__fwd/array.h>', 'private', '<array>', 'public'] },
+  { 'include': ['<__fwd/byte.h>', 'private', '<cstddef>', 'public'] },
+  { 'include': ['<__fwd/complex.h>', 'private', '<complex>', 'public'] },
+  { 'include': ['<__fwd/deque.h>', 'private', '<deque>', 'public'] },
+  { 'include': ['<__fwd/format.h>', 'private', '<format>', 'public'] },
+  { 'include': ['<__fwd/fstream.h>', 'private', '<fstream>', 'public'] },
+  { 'include': ['<__fwd/functional.h>', 'private', '<functional>', 'public'] },
+  { 'include': ['<__fwd/ios.h>', 'private', '<ios>', 'public'] },
+  { 'include': ['<__fwd/istream.h>', 'private', '<istream>', 'public'] },
+  { 'include': ['<__fwd/mdspan.h>', 'private', '<mdspan>', 'public'] },
+  { 'include': ['<__fwd/memory.h>', 'private', '<memory>', 'public'] },
+  {
+    'include': [
+      '<__fwd/memory_resource.h>',
+      'private',
+      '<memory_resource>',
+      'public',
+    ],
+  },
+  { 'include': ['<__fwd/ostream.h>', 'private', '<ostream>', 'public'] },
+  { 'include': ['<__fwd/pair.h>', 'private', '<utility>', 'public'] },
+  { 'include': ['<__fwd/queue.h>', 'private', '<queue>', 'public'] },
+  { 'include': ['<__fwd/span.h>', 'private', '<span>', 'public'] },
+  { 'include': ['<__fwd/sstream.h>', 'private', '<sstream>', 'public'] },
+  { 'include': ['<__fwd/stack.h>', 'private', '<stack>', 'public'] },
+  { 'include': ['<__fwd/streambuf.h>', 'private', '<streambuf>', 'public'] },
+  { 'include': ['<__fwd/string.h>', 'private', '<string>', 'public'] },
+  {
+    'include': ['<__fwd/string_view.h>', 'private', '<string_view>', 'public'],
+  },
+  { 'include': ['<__fwd/subrange.h>', 'private', '<ranges>', 'public'] },
+  { 'include': ['<__fwd/tuple.h>', 'private', '<tuple>', 'public'] },
+  { 'include': ['<__fwd/variant.h>', 'private', '<variant>', 'public'] },
+  { 'include': ['<__fwd/vector.h>', 'private', '<vector>', 'public'] },
+
+  // === Forward-decl shims -- quoted form ===
+
+  { 'include': ['"__fwd/array.h"', 'private', '<array>', 'public'] },
+  { 'include': ['"__fwd/byte.h"', 'private', '<cstddef>', 'public'] },
+  { 'include': ['"__fwd/complex.h"', 'private', '<complex>', 'public'] },
+  { 'include': ['"__fwd/deque.h"', 'private', '<deque>', 'public'] },
+  { 'include': ['"__fwd/format.h"', 'private', '<format>', 'public'] },
+  { 'include': ['"__fwd/fstream.h"', 'private', '<fstream>', 'public'] },
+  {
+    'include': ['"__fwd/functional.h"', 'private', '<functional>', 'public'],
+  },
+  { 'include': ['"__fwd/ios.h"', 'private', '<ios>', 'public'] },
+  { 'include': ['"__fwd/istream.h"', 'private', '<istream>', 'public'] },
+  { 'include': ['"__fwd/mdspan.h"', 'private', '<mdspan>', 'public'] },
+  { 'include': ['"__fwd/memory.h"', 'private', '<memory>', 'public'] },
+  {
+    'include': [
+      '"__fwd/memory_resource.h"',
+      'private',
+      '<memory_resource>',
+      'public',
+    ],
+  },
+  { 'include': ['"__fwd/ostream.h"', 'private', '<ostream>', 'public'] },
+  { 'include': ['"__fwd/pair.h"', 'private', '<utility>', 'public'] },
+  { 'include': ['"__fwd/queue.h"', 'private', '<queue>', 'public'] },
+  { 'include': ['"__fwd/span.h"', 'private', '<span>', 'public'] },
+  { 'include': ['"__fwd/sstream.h"', 'private', '<sstream>', 'public'] },
+  { 'include': ['"__fwd/stack.h"', 'private', '<stack>', 'public'] },
+  { 'include': ['"__fwd/streambuf.h"', 'private', '<streambuf>', 'public'] },
+  { 'include': ['"__fwd/string.h"', 'private', '<string>', 'public'] },
+  {
+    'include': ['"__fwd/string_view.h"', 'private', '<string_view>', 'public'],
+  },
+  { 'include': ['"__fwd/subrange.h"', 'private', '<ranges>', 'public'] },
+  { 'include': ['"__fwd/tuple.h"', 'private', '<tuple>', 'public'] },
+  { 'include': ['"__fwd/variant.h"', 'private', '<variant>', 'public'] },
+  { 'include': ['"__fwd/vector.h"', 'private', '<vector>', 'public'] },
+
+  // `third_party/jni_zero/jni_zero.h` is Chromium's wrapper over `<jni.h>`
+  // and pulls it in transitively.  Anywhere IWYU would suggest the raw
+  // `<jni.h>`, route through jni_zero so files that already include the
+  // wrapper don't pick up a redundant `<jni.h>`.
+  {
+    'include': [
+      '<jni.h>',
+      'private',
+      '"third_party/jni_zero/jni_zero.h"',
+      'public',
+    ],
+  },
+
+  // We use a short version for rust's cxx headers
+  {
+    'include': [
+      '"third_party/rust/chromium_crates_io/vendor/cxx-v1/include/cxx.h"',
+      'private',
+      '"third_party/rust/cxx/v1/cxx.h"',
+      'public',
+    ],
+  },
+
+  // This one seems to be IWYU doing something weird, as I can get both the
+  // forwarding header and span.h pulled in some cases.
+  {
+    'include': [
+      '"base/containers/span_forward_internal.h"',
+      'private',
+      '"base/containers/span.h"',
+      'public',
+    ],
+  },
+
+  // BoringSSL: the project convention is to spell these as
+  // `"openssl/<name>.h"` since `third_party/boringssl:external_config` adds
+  // `src/include` to every consumer's `-I` path (see boringssl/BUILD.gn).
+  // Map the full physical path back to that short form.
+  {
+    'include': [
+      '"third_party/boringssl/src/include/openssl/base.h"',
+      'private',
+      '"openssl/base.h"',
+      'public',
+    ],
+  },
+  {
+    'include': [
+      '"third_party/boringssl/src/include/openssl/digest.h"',
+      'private',
+      '"openssl/digest.h"',
+      'public',
+    ],
+  },
+
+  // Pin the basic integer and size typedefs to their canonical C headers.
+  // `openssl/base.h` re-exports `<stddef.h>` and `<stdint.h>` via
+  // `IWYU pragma: export`, which would otherwise make it a valid provider
+  // for these types and cause IWYU to keep a vestigial `openssl/base.h`
+  // include just to satisfy a `size_t` / `uint8_t` use.
+  { 'symbol': ['size_t', 'private', '<stddef.h>', 'public'] },
+  { 'symbol': ['ptrdiff_t', 'private', '<stddef.h>', 'public'] },
+  { 'symbol': ['int8_t', 'private', '<stdint.h>', 'public'] },
+  { 'symbol': ['int16_t', 'private', '<stdint.h>', 'public'] },
+  { 'symbol': ['int32_t', 'private', '<stdint.h>', 'public'] },
+  { 'symbol': ['int64_t', 'private', '<stdint.h>', 'public'] },
+  { 'symbol': ['uint8_t', 'private', '<stdint.h>', 'public'] },
+  { 'symbol': ['uint16_t', 'private', '<stdint.h>', 'public'] },
+  { 'symbol': ['uint32_t', 'private', '<stdint.h>', 'public'] },
+  { 'symbol': ['uint64_t', 'private', '<stdint.h>', 'public'] },
+  {
+    'include': [
+      '"ethash/hash_types.h"',
+      'private',
+      '"brave/third_party/ethash/src/include/ethash/hash_types.h"',
+      'public',
+    ],
+  },
+
+  // mappings that require further investigation.
+  {
+    'include': [
+      '"gtest/gtest.h"',
+      'private',
+      '"testing/gtest/include/gtest/gtest.h"',
+      'public',
+    ],
+  },
+  {
+    'include': [
+      '"gmock/gmock.h"',
+      'private',
+      '"testing/gmock/include/gmock/gmock.h"',
+      'public',
+    ],
+  },
+  {
+    'include': ['"span.h"', 'private', '"base/containers/span.h"', 'public'],
+  },
+
+  // this seems to occur only on windows build
+  { 'include': ['"map"', 'private', '<map>', 'public'] },
+  { 'include': ['"tuple"', 'private', '<tuple>', 'public'] },
+  { 'include': ['"string_view"', 'private', '<string_view>', 'public'] },
+
+  // Using <new> as an include blackhole
+  //
+  // These headers are being blackholed because they are not desired to ever be
+  // shown in our code. They are usually cases where we could add an export
+  // pragma in upstream code, or where include-what-you-use is confused about
+  // things.
+  { 'include': ['<vcruntime_new.h>', 'private', '<new>', 'public'] },
+  { 'include': ['<vcruntime_string.h>', 'private', '<new>', 'public'] },
+  {
+    'include': [
+      '"mojo/public/cpp/bindings/struct_ptr.h"',
+      'private',
+      '<new>',
+      'public',
+    ],
+  },
+  {
+    'include': [
+      '"base/containers/checked_iterators.h"',
+      'private',
+      '<new>',
+      'public',
+    ],
+  },
+  { 'include': ['"base/macros/if.h"', 'private', '<new>', 'public'] },
+  { 'include': ['"base/macros/is_empty.h"', 'private', '<new>', 'public'] },
+]

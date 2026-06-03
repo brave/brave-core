@@ -4,11 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("history_embeddings") {
-  sources = [ "content/brave_history_embeddings_service.h" ]
+  sources = [ "content/brave_history_embeddings_helpers.h" ]
 
   deps = [
     "//components/history_embeddings/content",
-    "//components/history_embeddings/core",
     "//components/page_content_annotations/core",
   ]
 }

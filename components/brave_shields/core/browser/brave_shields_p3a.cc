@@ -9,10 +9,13 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/p3a/utils.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -167,6 +170,14 @@ ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
   return GetSettingCountFromRules(fp_rules);
 }
 
+void ReportManualShredP3A(const PrefService& local_state) {
+  if (!base::FeatureList::IsEnabled(features::kBraveShredFeature)) {
+    return;
+  }
+  UMA_HISTOGRAM_BOOLEAN(kManualShredHistogramName,
+                        local_state.GetBoolean(kManualShredTriggeredPrefName));
+}
+
 }  // namespace
 
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
@@ -269,7 +280,7 @@ void RecordHTTPSUpgradeSettingP3A(HostContentSettingsMap* map) {
       GURL(), GURL(), ContentSettingsType::BRAVE_HTTPS_UPGRADE);
   constexpr int kHTTPSUpgradeStrict = 2;
   constexpr int kHTTPSUpgradeStandard = 1;
-  constexpr int kHTTPSUpgradePerSiteStrict = 1;
+  constexpr int kHTTPSUpgradePerSiteNonDefault = 1;
   int global_answer = INT_MAX - 1;
   if (global_setting != CONTENT_SETTING_ALLOW) {
     global_answer = global_setting == CONTENT_SETTING_BLOCK
@@ -281,22 +292,65 @@ void RecordHTTPSUpgradeSettingP3A(HostContentSettingsMap* map) {
 
   auto per_site_settings =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_HTTPS_UPGRADE);
-  bool has_per_site_strict = std::ranges::any_of(
-      per_site_settings, [](const ContentSettingPatternSource& entry) {
-        return entry.GetContentSetting() == CONTENT_SETTING_BLOCK &&
+  bool has_per_site_non_default = std::ranges::any_of(
+      per_site_settings,
+      [&global_setting](const ContentSettingPatternSource& entry) {
+        return entry.GetContentSetting() != global_setting &&
                !entry.primary_pattern.MatchesAllHosts();
       });
   int per_site_answer =
-      has_per_site_strict ? kHTTPSUpgradePerSiteStrict : INT_MAX - 1;
+      has_per_site_non_default ? kHTTPSUpgradePerSiteNonDefault : INT_MAX - 1;
   UMA_HISTOGRAM_EXACT_LINEAR(kUpgradeHTTPSPerSiteHistogramName, per_site_answer,
                              2);
 }
 
+void ReportAutoShredSettingsP3A(const HostContentSettingsMap& map) {
+  if (!base::FeatureList::IsEnabled(features::kBraveShredFeature)) {
+    return;
+  }
+  const auto global = AutoShredSetting::FromValue(map.GetWebsiteSetting(
+      GURL(), GURL(), AutoShredSetting::kContentSettingsType));
+  const bool global_enabled = (global != mojom::AutoShredMode::NEVER);
+
+  const bool has_exception = std::ranges::any_of(
+      map.GetSettingsForOneType(AutoShredSetting::kContentSettingsType),
+      [&global](const ContentSettingPatternSource& entry) {
+        if (entry.primary_pattern.MatchesAllHosts()) {
+          return false;
+        }
+        return AutoShredSetting::FromValue(entry.setting_value) != global;
+      });
+
+  int answer;
+  if (!global_enabled && !has_exception) {
+    answer = 0;
+  } else if (!global_enabled && has_exception) {
+    answer = 1;
+  } else if (global_enabled && !has_exception) {
+    answer = 2;
+  } else {
+    answer = 3;
+  }
+  base::UmaHistogramExactLinear(kAutoShredSettingsHistogramName, answer, 4);
+}
+
+void RecordManualShredP3A(PrefService& local_state) {
+  local_state.SetBoolean(kManualShredTriggeredPrefName, true);
+  ReportManualShredP3A(local_state);
+}
+
 void MaybeRecordInitialShieldsSettings(
+    PrefService* local_state,
     PrefService* profile_prefs,
     HostContentSettingsMap* map,
     ControlType cosmetic_filtering_control_type,
     ControlType fingerprinting_control_type) {
+  if (map) {
+    ReportAutoShredSettingsP3A(*map);
+  }
+  if (local_state) {
+    ReportManualShredP3A(*local_state);
+  }
   if (profile_prefs->GetInteger(kFirstReportedRevisionPrefName) >=
       kCurrentReportRevision) {
     return;
@@ -352,6 +406,7 @@ void MaybeRecordInitialShieldsSettings(
 
 void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state) {
   local_state->RegisterIntegerPref(kUsagePrefName, -1);
+  local_state->RegisterBooleanPref(kManualShredTriggeredPrefName, false);
 }
 
 void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* registry) {

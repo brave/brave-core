@@ -6,31 +6,23 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
+
+// Shared Styles
 import { layoutPanelWidth } from '../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { Text } from '../shared/style'
 
 export const StyledWrapper = styled.span`
   display: flex;
   align-items: center;
 `
 
-export const PriceChange = styled.span<{
-  isDown: boolean
-}>`
+export const PriceChange = styled(Text)`
   display: flex;
   align-items: center;
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  color: ${(p) =>
-    p.isDown
-      ? leo.color.systemfeedback.errorText
-      : leo.color.systemfeedback.successText};
+  font: ${leo.font.default.semibold};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    font-size: 12px;
-    font-weight: 400;
+    font: ${leo.font.small.regular};
   }
 `
 

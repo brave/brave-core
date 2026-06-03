@@ -18,7 +18,11 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -29,6 +33,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -71,7 +76,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -98,6 +103,10 @@
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
 #endif
 
 namespace {
@@ -166,8 +175,7 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandsForSend();
   UpdateCommandsForPin();
 
-  if (base::FeatureList::IsEnabled(features::kSideBySide) &&
-      browser_->is_type_normal() && selection.active_tab_changed()) {
+  if (browser_->is_type_normal() && selection.active_tab_changed()) {
     UpdateCommandForSplitView();
   }
 }
@@ -358,6 +366,23 @@ void BraveBrowserCommandController::InitBraveCommandState() {
               browser_->profile()));
 #endif
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  UpdateCommandEnabled(
+      IDC_NEW_TEMPORARY_CONTAINER,
+      ContainersServiceFactory::GetForProfile(browser_->profile()));
+#endif
+
+  // Reload options if person has an update in workspaces
+  if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
+      browser_->is_type_normal()) {
+    UpdateCommandForWorkspace();
+    pref_change_registrar_.Add(
+        kWorkspacesMetadataPref,
+        base::BindRepeating(
+            &BraveBrowserCommandController::UpdateCommandForWorkspace,
+            base::Unretained(this)));
+  }
+
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
     UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
@@ -366,6 +391,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   }
 
   UpdateCommandEnabled(IDC_FORCE_PASTE, true);
+
+  UpdateCommandForFocusMode();
 }
 
 void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
@@ -448,16 +475,15 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
     // Only show vpn sub menu for purchased user.
-    UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
-    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN,
-                         vpn_service->is_purchased_user());
+    UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->IsPurchased());
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, vpn_service->IsPurchased());
   }
 #endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForPlaylist() {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+  if (playlist::IsPlaylistAllowed(browser_->profile()->GetPrefs())) {
     UpdateCommandEnabled(
         IDC_SHOW_PLAYLIST_BUBBLE,
         browser_->is_type_normal() &&
@@ -514,14 +540,12 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
                        brave::CanCloseUnpinnedTabs(&*browser_));
 }
 
-void BraveBrowserCommandController::UpdateCommandForSplitView() {
-  // Some upstream unit test calls split tab apis w/o enabling SideBySide
-  // feature.
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    CHECK_IS_TEST();
-    return;
-  }
+void BraveBrowserCommandController::UpdateCommandForFocusMode() {
+  UpdateCommandEnabled(IDC_TOGGLE_FOCUS_MODE,
+                       BrowserSupportsFocusMode(base::to_address(browser_)));
+}
 
+void BraveBrowserCommandController::UpdateCommandForSplitView() {
   UpdateCommandEnabled(
       IDC_NEW_SPLIT_VIEW,
       brave::CanOpenNewSplitTabsWithSideBySide(base::to_address(browser_)));
@@ -533,6 +557,17 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
        {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW}) {
     UpdateCommandEnabled(command_enabled_when_tab_is_split, is_split_tabs);
   }
+}
+
+void BraveBrowserCommandController::UpdateCommandForWorkspace() {
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
+
+  if (!service) {
+    return;
+  }
+
+  UpdateCommandEnabled(IDC_SAVE_WORKSPACE, true);
+  UpdateCommandEnabled(IDC_OPEN_WORKSPACE, !service->ListWorkspaces().empty());
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
@@ -678,10 +713,10 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_PLAYLIST_BUBBLE:
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
       brave::ShowPlaylistBubble(&*browser_);
+      break;
 #else
       NOTREACHED() << " This command shouldn't be enabled";
 #endif
-      break;
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
       brave::ShowWaybackMachineBubble(&*browser_);
@@ -739,7 +774,15 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_SHOW_EMAIL_ALIASES:
-      browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage();
+      browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage(
+          email_aliases::SettingsPageMethod::kAppMenu);
+      break;
+#endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    case IDC_NEW_TEMPORARY_CONTAINER:
+      brave::CreateTemporaryContainerAndOpenUrl(base::to_address(browser_),
+                                                browser_->GetNewTabURL(),
+                                                /*is_link=*/false);
       break;
 #endif
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
@@ -776,25 +819,21 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::BringAllTabs(&*browser_);
       break;
     case IDC_NEW_SPLIT_VIEW: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       chrome::NewSplitTab(base::to_address(browser_),
                           split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }
     case IDC_TILE_TABS: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       brave::SplitTabsWithSideBySide(
           base::to_address(browser_),
           split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }
     case IDC_BREAK_TILE: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       brave::RemoveSplitWithSideBySide(base::to_address(browser_));
       break;
     }
     case IDC_SWAP_SPLIT_VIEW: {
-      CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
       brave::SwapTabsInSplitWithSideBySide(base::to_address(browser_));
       break;
     }
@@ -802,6 +841,21 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ForcePasteInBrowser(base::to_address(browser_));
       break;
     }
+    case IDC_TOGGLE_FOCUS_MODE:
+      brave::ToggleFocusMode(base::to_address(browser_));
+      break;
+    case IDC_SAVE_WORKSPACE:
+      if (auto* svc =
+              WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
+        svc->ShowSaveWorkspaceDialog();
+      }
+      break;
+    case IDC_OPEN_WORKSPACE:
+      if (auto* svc =
+              WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
+        svc->ShowOpenWorkspaceDialog();
+      }
+      break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
       break;

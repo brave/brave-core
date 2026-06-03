@@ -39,6 +39,7 @@ source_set("win") {
     ":wireguard_utils",
     "//base",
     "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/browser:v1_utils",
     "//brave/components/brave_vpn/browser/connection/wireguard",
     "//brave/components/brave_vpn/browser/connection/wireguard/credentials",
     "//brave/components/brave_vpn/common",

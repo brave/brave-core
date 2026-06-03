@@ -30,10 +30,10 @@ BitcoinTxManager::BitcoinTxManager(
     TxService& tx_service,
     BitcoinWalletService& bitcoin_wallet_service,
     KeyringService& keyring_service,
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<BitcoinTxStateManager>(delegate,
+          std::make_unique<BitcoinTxStateManager>(tx_storage,
                                                   account_resolver_delegate),
           std::make_unique<BitcoinBlockTracker>(
               bitcoin_wallet_service.bitcoin_rpc()),

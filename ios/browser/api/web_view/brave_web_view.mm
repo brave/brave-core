@@ -16,16 +16,22 @@
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/ios/browser/api/web_view/autofill/brave_autofill_controller.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
+#include "brave/ios/browser/api/web_view/brave_web_frame_internal.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
+#include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
+#include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
+#include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
@@ -34,6 +40,7 @@
 #include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
+#include "brave/ios/browser/youtube/youtube_network_change_observer.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
@@ -67,6 +74,8 @@
 #include "ios/chrome/browser/web/model/print/print_handler.h"
 #include "ios/chrome/browser/web/model/print/print_tab_helper.h"
 #include "ios/web/common/crw_input_view_provider.h"
+#include "ios/web/public/js_messaging/content_world.h"
+#include "ios/web/public/js_messaging/web_frames_manager_observer_bridge.h"
 #include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
@@ -243,7 +252,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     didFinishNavigation:(web::NavigationContext*)navigation;
 @end
 
-@interface BraveWebView () <FaviconDriverObserverBridge>
+@interface BraveWebView () <FaviconDriverObserverBridge,
+                            CRWWebFramesManagerObserver>
 @property(nonatomic, weak)
     id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
         aiChatUIHandler;
@@ -252,12 +262,15 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 @property(nonatomic, weak) id<BraveTalkTabHelperBridge> braveTalkHelper;
 #endif
+@property(nonatomic, weak) id<BraveSearchMakeDefaultTabHelperBridge>
+    braveSearchHelper;
 @property(nonatomic, weak) id<PrintHandler> printHandler;
 @end
 
 @implementation BraveWebView {
   std::unique_ptr<BraveWebViewWebStatePolicyDecider> _webStatePolicyDecider;
   std::unique_ptr<FaviconDriverObserver> _faviconObserver;
+  std::unique_ptr<web::WebFramesManagerObserverBridge> _webFrameObserverBridge;
 }
 
 // These are shadowed CWVWebView properties
@@ -266,6 +279,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)dealloc {
   if (self.webState) {
     BraveWebViewHolder::RemoveFromWebState(self.webState);
+    self.webState->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
+        ->RemoveObserver(self.webFrameObserverBridge);
   }
   if (auto* faviconDriver =
           brave_favicon::BraveIOSWebFaviconDriver::FromWebState(
@@ -279,6 +294,14 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     _faviconObserver = std::make_unique<FaviconDriverObserver>(self);
   }
   return _faviconObserver.get();
+}
+
+- (web::WebFramesManagerObserverBridge*)webFrameObserverBridge {
+  if (!_webFrameObserverBridge) {
+    _webFrameObserverBridge =
+        std::make_unique<web::WebFramesManagerObserverBridge>(self);
+  }
+  return _webFrameObserverBridge.get();
 }
 
 + (nullable BraveWebView*)braveWebViewForWebState:(web::WebState*)webState {
@@ -328,6 +351,9 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
                                                /*max_image_height=*/1024);
     favicon_driver->AddObserver(self.faviconDriverObserver);
   }
+
+  self.webState->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
+      ->AddObserver(self.webFrameObserverBridge);
 }
 
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
@@ -356,11 +382,18 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   }
 
   brave_ads::AdsTabHelper::MaybeCreateForWebState(self.webState);
+  if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
+    serp_metrics::SerpMetricsTabHelper::MaybeCreateForWebState(self.webState);
+  }
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   BraveTalkTabHelper::CreateForWebState(self.webState);
   BraveTalkTabHelper::FromWebState(self.webState)
       ->SetBridge(self.braveTalkHelper);
 #endif
+
+  BraveSearchMakeDefaultTabHelper::CreateForWebState(self.webState);
+  BraveSearchMakeDefaultTabHelper::FromWebState(self.webState)
+      ->SetBridge(self.braveSearchHelper);
 
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
 
@@ -374,6 +407,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
         self.webState,
         ios::FaviconServiceFactory::GetForProfile(
             profile->GetOriginalProfile(), ServiceAccessType::IMPLICIT_ACCESS));
+
+    youtube::YouTubeNetworkChangeObserver::CreateForWebState(self.webState);
   }
 }
 
@@ -437,10 +472,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
                                               formHelper:formHelper
                                         suggestionHelper:suggestionHelper
                                             driverHelper:driverHelper];
-  return [[CWVAutofillController alloc]
+  return [[BraveAutofillController alloc]
            initWithWebState:self.webState
-       createAutofillClient:
-           base::BindRepeating(&autofill::BraveWebViewAutofillClientIOS::Create)
               autofillAgent:autofillAgent
             passwordManager:std::move(passwordManager)
       passwordManagerClient:std::move(passwordManagerClient)
@@ -530,6 +563,17 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if ([self.UIDelegate respondsToSelector:@selector(webView:
                                               didUpdateFaviconStatus:)]) {
     [self.UIDelegate webView:self didUpdateFaviconStatus:self.faviconStatus];
+  }
+}
+
+#pragma mark - CRWWebFramesManagerObserver
+
+- (void)webFramesManager:(web::WebFramesManager*)webFramesManager
+    frameBecameAvailable:(web::WebFrame*)webFrame {
+  if ([self.navigationDelegate
+          respondsToSelector:@selector(webView:frameDidBecomeAvailable:)]) {
+    BraveWebFrame* frame = [[BraveWebFrame alloc] initWithWebFrame:webFrame];
+    [self.navigationDelegate webView:self frameDidBecomeAvailable:frame];
   }
 }
 
@@ -712,6 +756,19 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if (PrintTabHelper* tab_helper =
           PrintTabHelper::FromWebState(self.webState)) {
     tab_helper->set_printer(printHandler);
+  }
+}
+
+@end
+
+@implementation BraveWebView (BraveSearchHelper)
+
+- (void)setBraveSearchHelper:
+    (id<BraveSearchMakeDefaultTabHelperBridge>)braveSearchHelper {
+  _braveSearchHelper = braveSearchHelper;
+  if (BraveSearchMakeDefaultTabHelper* tab_helper =
+          BraveSearchMakeDefaultTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(braveSearchHelper);
   }
 }
 

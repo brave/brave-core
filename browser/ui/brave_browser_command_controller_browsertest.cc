@@ -14,6 +14,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
@@ -29,8 +31,6 @@
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -123,7 +123,8 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     auto target_state = purchased
                             ? brave_vpn::mojom::PurchasedState::PURCHASED
                             : brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
-    service->SetPurchasedState(skus::GetDefaultEnvironment(), target_state);
+    service->SetPurchasedStateForTesting(skus::GetDefaultEnvironment(),
+                                         target_state);
     // Call explicitely to update vpn commands status because mojo works in
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
@@ -196,10 +197,8 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 #if defined(TOOLKIT_VIEWS)
   void WaitForSidePanelClose() {
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return browser()
-                 ->GetBrowserView()
-                 .contents_height_side_panel()
-                 ->state() == SidePanel::State::kClosed;
+      return browser()->GetBrowserView().side_panel()->state() ==
+             SidePanel::State::kClosed;
     }));
   }
 #endif  // #if defined(TOOLKIT_VIEWS)
@@ -509,7 +508,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
   auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return browser()->GetBrowserView().contents_height_side_panel()->state() ==
+    return browser()->GetBrowserView().side_panel()->state() ==
            SidePanel::State::kClosed;
   }));
 
@@ -580,17 +579,12 @@ class BraveBrowserCommandControllerWithSideBySideTest
     : public BraveBrowserCommandControllerTest {
  public:
   BraveBrowserCommandControllerWithSideBySideTest() {
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide}, {});
   }
   ~BraveBrowserCommandControllerWithSideBySideTest() override = default;
 
   TabStripModel* tab_strip_model() { return browser()->tab_strip_model(); }
 
   CommandUpdater* command_updater() { return browser()->command_controller(); }
-
- private:
-  base::test::ScopedFeatureList scoped_features_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
@@ -659,6 +653,42 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
   EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+}
+
+class BraveBrowserCommandControllerFocusModeTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerFocusModeTest() {
+    scoped_features_.InitWithFeatures({features::kBraveFocusMode}, {});
+  }
+  ~BraveBrowserCommandControllerFocusModeTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
+                       FocusModeToggle) {
+  auto* controller = browser()->GetFeatures().focus_mode_controller();
+  ASSERT_TRUE(controller);
+
+  EXPECT_FALSE(controller->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_TRUE(controller->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_FALSE(controller->IsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
+                       FocusModeDisabledForPopupWindow) {
+  Browser* popup = Browser::Create(
+      Browser::CreateParams(Browser::TYPE_POPUP, browser()->profile(), true));
+  chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
+  popup->window()->Show();
+  EXPECT_FALSE(
+      popup->command_controller()->IsCommandEnabled(IDC_TOGGLE_FOCUS_MODE));
 }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)

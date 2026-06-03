@@ -5,11 +5,12 @@
 
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
 
-#include <numeric>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
@@ -18,37 +19,35 @@ namespace serp_metrics {
 
 namespace {
 
-// 24 hours covers a standard day; the extra 2 hours covers the maximum DST
-// shift (Antarctica/Troll), guaranteeing the result lands inside the next
-// calendar day without overshooting into the day after.
-constexpr base::TimeDelta kNextMidnightOffset =
-    base::Hours(24) + base::Hours(2);
+constexpr std::string_view kDayKey = "day";
+constexpr std::string_view kValueKey = "value";
 
-base::Time Midnight(base::Time time) {
-  return time.LocalMidnight();
-}
+// Pre migration buckets were created by local midnight, so a plain
+// `UTCMidnight()` would land on the wrong calendar day. Migrate them to UTC
+// midnight of the same local day. Post migration UTC buckets pass through
+// unchanged.
+base::Time MaybeMigrateLocalTimeBucket(base::Time bucket_time) {
+  // UTC midnight buckets are already in the correct format. This also handles
+  // legacy buckets from `UTC+0` users: their local midnight equals UTC
+  // midnight, so returning unchanged is correct. No other timezone offset is a
+  // multiple of 24 hours (offsets are bounded by UTC±14), so local midnight can
+  // never coincide with a UTC midnight in any other zone.
+  if (bucket_time == bucket_time.UTCMidnight()) {
+    return bucket_time;
+  }
 
-// Returns the midnight that starts the calendar day after `time`. Safe
-// across DST transitions and does not require `time` to be at midnight.
-base::Time NextMidnight(base::Time time) {
-  // No precondition is enforced on `time` being at midnight. Two legitimate
-  // cases produce non-midnight inputs: legacy prefs written by the old
-  // DST-offset code contain timestamps 1 hour past midnight, and travel across
-  // timezones means a timestamp that was midnight in the original timezone is
-  // no longer midnight in the current one. Adding `kNextMidnightOffset` always
-  // lands within the next calendar day regardless of the input, so `Midnight`
-  // returns its correct start.
-  //
-  // Known limitation: if `time` appears later than 22:00 in the current local
-  // timezone (possible when crossing more than 22 timezone hours, e.g. UTC+12
-  // to UTC-11), `time + kNextMidnightOffset` overshoots into the day after next
-  // and one empty bucket is silently skipped. A correct fix requires ICU
-  // calendar arithmetic to advance by exactly one calendar day. DST transitions
-  // shift clocks by at most 2 hours, so the 22:00 bound is never reached for
-  // DST and all DST cases are handled correctly. Migrating all
-  // `SerpMetricsTimePeriodStorage` callers to UTC buckets would eliminate both
-  // the DST and timezone-travel edge cases entirely.
-  return Midnight(time + kNextMidnightOffset);
+  if (bucket_time != bucket_time.LocalMidnight()) {
+    return bucket_time.UTCMidnight();
+  }
+
+  base::Time::Exploded local_exploded;
+  bucket_time.LocalExplode(&local_exploded);
+  base::Time utc_midnight;
+  if (!base::Time::FromUTCExploded(local_exploded, &utc_midnight)) {
+    return bucket_time.UTCMidnight();
+  }
+
+  return utc_midnight;
 }
 
 }  // namespace
@@ -56,89 +55,104 @@ base::Time NextMidnight(base::Time time) {
 SerpMetricsTimePeriodStorage::SerpMetricsTimePeriodStorage(
     std::unique_ptr<SerpMetricsTimePeriodStore> store,
     size_t period_days)
-    : store_(std::move(store)), period_days_(period_days) {
-  CHECK(store_);
+    : time_period_store_(std::move(store)), period_days_(period_days) {
+  CHECK(time_period_store_);
+
   Load();
 }
 
 SerpMetricsTimePeriodStorage::~SerpMetricsTimePeriodStorage() = default;
 
-void SerpMetricsTimePeriodStorage::AddDelta(uint64_t delta) {
-  FilterToPeriod();
-  daily_values_.front().value += delta;
+void SerpMetricsTimePeriodStorage::AddCount(uint64_t count) {
+  FillToToday();
+  daily_values_.front().value += count;
   Save();
 }
 
-uint64_t SerpMetricsTimePeriodStorage::GetPeriodSumInTimeRange(
+uint64_t SerpMetricsTimePeriodStorage::GetCountForTimeRange(
     const base::Time& start_time,
     const base::Time& end_time) const {
-  // We only record values between the specified time range (inclusive).
-  return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ULL,
-                         [start_time, end_time](uint64_t acc, const auto& u2) {
-                           uint64_t add = 0;
-                           // Check only last continious days.
-                           if (u2.day >= start_time && u2.day <= end_time) {
-                             add = u2.value;
-                           }
-                           return acc + add;
-                         });
+  uint64_t count = 0;
+  for (const auto& daily_value : daily_values_) {
+    if (daily_value.time >= start_time && daily_value.time <= end_time) {
+      count += daily_value.value;
+    }
+  }
+  return count;
 }
 
-uint64_t SerpMetricsTimePeriodStorage::GetPeriodSum() const {
+uint64_t SerpMetricsTimePeriodStorage::GetCount() const {
   const base::Time now = base::Time::Now();
-  const base::Time n_days_ago = Midnight(now) - base::Days(period_days_ - 1);
-  return GetPeriodSumInTimeRange(n_days_ago, now);
+  const base::Time n_days_ago =
+      now.UTCMidnight() - base::Days(period_days_ - 1);
+  return GetCountForTimeRange(n_days_ago, now);
 }
 
 void SerpMetricsTimePeriodStorage::Clear() {
   daily_values_.clear();
-  store_->Clear();
+  time_period_store_->Clear();
 }
 
-void SerpMetricsTimePeriodStorage::FilterToPeriod() {
-  const base::Time now_midnight = Midnight(base::Time::Now());
+void SerpMetricsTimePeriodStorage::FillToToday() {
+  const base::Time now_midnight = base::Time::Now().UTCMidnight();
 
   if (daily_values_.empty()) {
-    // No prior data; seed the list with an empty bucket for today.
+    // No prior data; seed with an empty bucket for today.
     daily_values_.push_front({now_midnight, 0});
     return;
   }
 
-  // Use `NextMidnight` to correctly handle short calendar days at DST start.
-  const base::Time last_recorded_midnight = daily_values_.front().day;
-  base::Time bucket_midnight = NextMidnight(last_recorded_midnight);
-  while (bucket_midnight <= now_midnight) {
-    // Add an empty bucket for the missed day.
-    daily_values_.push_front({bucket_midnight, 0});
-
+  // `daily_values_` are already migrated to UTC midnight by `Load()`.
+  const base::Time last_recorded_at = daily_values_.front().time;
+  base::Time midnight_bucket = last_recorded_at.UTCMidnight() + base::Days(1);
+  while (midnight_bucket <= now_midnight) {
+    daily_values_.push_front({midnight_bucket, 0});
     if (daily_values_.size() > period_days_) {
-      // Drop the oldest bucket outside the window.
       daily_values_.pop_back();
     }
-
-    bucket_midnight = NextMidnight(bucket_midnight);
+    midnight_bucket += base::Days(1);
   }
 }
 
 void SerpMetricsTimePeriodStorage::Load() {
   CHECK(daily_values_.empty());
-  const base::ListValue* list = store_->Get();
+
+  const base::ListValue* const list = time_period_store_->Get();
   if (!list) {
     return;
   }
-  for (const auto& it : *list) {
-    CHECK(it.is_dict());
-    const base::DictValue& dict = it.GetDict();
-    auto day = dict.FindDouble("day");
-    auto value = dict.FindDouble("value");
-    if (!day || !value) {
+
+  for (const auto& daily_value : *list) {
+    if (!daily_value.is_dict()) {
       continue;
     }
+    const base::DictValue& dict = daily_value.GetDict();
+
+    std::optional<double> day = dict.FindDouble(kDayKey);
+    if (!day) {
+      continue;
+    }
+
+    std::optional<double> value = dict.FindDouble(kValueKey);
+    if (!value) {
+      continue;
+    }
+
+    const base::Time bucket_time = base::Time::FromSecondsSinceUnixEpoch(*day);
+    const base::Time utc_bucket_time = MaybeMigrateLocalTimeBucket(bucket_time);
+
+    // Merge adjacent daily values that map to the same UTC midnight.
+    if (!daily_values_.empty() &&
+        daily_values_.back().time == utc_bucket_time) {
+      daily_values_.back().value += static_cast<uint64_t>(*value);
+      continue;
+    }
+
     if (daily_values_.size() == period_days_) {
       break;
     }
-    daily_values_.push_back({base::Time::FromSecondsSinceUnixEpoch(*day),
-                             static_cast<uint64_t>(*value)});
+
+    daily_values_.push_back({utc_bucket_time, static_cast<uint64_t>(*value)});
   }
 }
 
@@ -147,15 +161,12 @@ void SerpMetricsTimePeriodStorage::Save() {
   CHECK_LE(daily_values_.size(), period_days_);
 
   base::ListValue list;
-  // TODO(iefremov): Optimize if needed.
-  list.clear();
-  for (const auto& u : daily_values_) {
-    base::DictValue value;
-    value.Set("day", u.day.InSecondsFSinceUnixEpoch());
-    value.Set("value", static_cast<double>(u.value));
-    list.Append(std::move(value));
+  for (const auto& daily_value : daily_values_) {
+    list.Append(base::DictValue()
+                    .Set(kDayKey, daily_value.time.InSecondsFSinceUnixEpoch())
+                    .Set(kValueKey, static_cast<double>(daily_value.value)));
   }
-  store_->Set(std::move(list));
+  time_period_store_->Set(std::move(list));
 }
 
 }  // namespace serp_metrics

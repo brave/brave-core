@@ -48,7 +48,7 @@ constexpr std::string_view kLikeSegmentReactionTypeKey = "optAction";
 
 }  // namespace
 
-AdHistoryItemInfo AdHistoryItemFromValue(const base::DictValue& dict) {
+AdHistoryItemInfo AdHistoryItemFromDict(const base::DictValue& dict) {
   AdHistoryItemInfo ad_history_item;
 
   ParseCreatedAt(dict, ad_history_item);
@@ -58,7 +58,7 @@ AdHistoryItemInfo AdHistoryItemFromValue(const base::DictValue& dict) {
   return ad_history_item;
 }
 
-base::DictValue AdHistoryItemToValue(const AdHistoryItemInfo& ad_history_item) {
+base::DictValue AdHistoryItemToDict(const AdHistoryItemInfo& ad_history_item) {
   return base::DictValue()
       .Set(kCreatedAtKey, base::TimeToValue(ad_history_item.created_at))
       .Set(kAdContentKey,

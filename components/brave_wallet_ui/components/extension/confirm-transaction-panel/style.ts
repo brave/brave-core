@@ -10,9 +10,11 @@ import Icon from '@brave/leo/react/icon'
 import LinkIcon from '../../../assets/svg-icons/link-icon.svg'
 import { WarningBoxIcon } from '../shared-panel-styles'
 
+// Shared Styles
 import {
   AssetIconProps,
   AssetIconFactory,
+  Text,
   WalletButton,
   styledScrollbarMixin,
 } from '../../shared/style'
@@ -24,7 +26,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   padding: 0px 16px;
 `
 
@@ -65,41 +67,16 @@ export const ToCircle = styled.div<{ orb: string }>`
   left: 34px;
 `
 
-export const AccountNameText = styled.span`
+export const AccountNameText = styled(Text)`
   cursor: default;
-  font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
 `
 
-export const NetworkText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
-`
-
-export const TransactionAmountBig = styled.span`
-  font-family: Poppins;
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 600;
+export const TransactionAmountBig = styled(Text)`
   word-break: break-all;
   text-align: center;
 `
 
-export const TransactionFiatAmountBig = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+export const TransactionFiatAmountBig = styled(Text)`
   margin-bottom: 10px;
   word-break: break-all;
   text-align: center;
@@ -110,7 +87,7 @@ export const MessageBox = styled.div<{ isDetails: boolean; width?: string }>`
   align-items: flex-start;
   justify-content: 'flex-start';
   flex-direction: column;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   box-sizing: border-box;
   border-radius: 4px;
   width: ${(p) => p.width ?? '90%'};
@@ -123,22 +100,7 @@ export const MessageBox = styled.div<{ isDetails: boolean; width?: string }>`
   ${styledScrollbarMixin}
 `
 
-export const TransactionTitle = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
-`
-
-export const TransactionTypeText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
-  font-weight: 600;
+export const TransactionTypeText = styled(Text)`
   word-break: break-all;
   text-align: left;
 `
@@ -147,14 +109,14 @@ export const ArrowIcon = styled(ArrowRightIcon)`
   display: inline-block;
   width: 16px;
   height: 16px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `
 
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${(p) => p.theme.color.divider01};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
+  border: 1px solid ${leo.color.divider.subtle};
   margin-top: 6px;
   margin-bottom: 6px;
 `
@@ -179,13 +141,9 @@ export const SectionColumn = styled.div`
 `
 
 export const EditButton = styled(WalletButton)`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${leo.font.small.semibold};
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;
@@ -194,13 +152,7 @@ export const EditButton = styled(WalletButton)`
   padding: 0px;
 `
 
-export const TransactionText = styled.span<{ hasError?: boolean }>`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) =>
-    p.hasError ? p.theme.color.errorText : p.theme.color.text03};
+export const TransactionText = styled(Text)`
   text-align: left;
   word-break: break-all;
 `
@@ -217,23 +169,19 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   height: 25px;
   width: 24px;
   opacity: 0.4;
 `
 
 export const ContractButton = styled(WalletButton)`
+  font: ${leo.font.default.semibold};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;
@@ -260,7 +208,7 @@ export const ExplorerIcon = styled.div`
   margin-left: 8px;
   mask-size: contain;
   mask-repeat: no-repeat;
-  background-color: ${(p) => p.theme.color.interactive05};
+  background-color: ${leo.color.button.background};
 `
 
 export const WarningInfoCircleIcon = styled(Icon).attrs({

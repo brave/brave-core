@@ -26,12 +26,11 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sessions/session_service.h"
-#include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -45,6 +44,7 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
@@ -120,24 +120,34 @@ void BraveBrowser::OnTabClosing(content::WebContents* contents) {
     return;
   }
 
-  if (chrome::FindAllTabbedBrowsersWithProfile(profile()).size() > 1) {
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(
-                       [](base::WeakPtr<BraveBrowser> browser) {
-                         if (browser) {
-                           // We don't want close confirm dialog to show up. In
-                           // this case, Shared pinned tabs will be moved to
-                           // another window, so we don't have to warn users.
-                           browser->confirmed_to_close_ = true;
-                           chrome::CloseWindow(browser.get());
-                         }
-                       },
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
+  bool more_than_one = false;
+  ProfileBrowserCollection::GetForProfile(profile())->ForEach(
+      [this, &more_than_one](BrowserWindowInterface* browser) {
+        if (!more_than_one) {
+          more_than_one = true;
+          return true;
+        }
+
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+            FROM_HERE, base::BindOnce(
+                           [](base::WeakPtr<BraveBrowser> browser) {
+                             if (browser) {
+                               // We don't want close confirm dialog to show up.
+                               // In this case, Shared pinned tabs will be moved
+                               // to another window, so we don't have to warn
+                               // users.
+                               browser->confirmed_to_close_ = true;
+                               chrome::CloseWindow(browser.get());
+                             }
+                           },
+                           weak_ptr_factory_.GetWeakPtr()));
+
+        return false;
+      });
 }
 
 void BraveBrowser::TabStripEmpty() {
-  if (unload_controller_.is_attempting_to_close_browser() ||
+  if (profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) ||
       !is_type_normal() || ignore_enable_closing_last_tab_pref_) {
     Browser::TabStripEmpty();
     return;
@@ -310,20 +320,6 @@ bool BraveBrowser::NormalBrowserSupportsWindowFeature(
 
   return Browser::NormalBrowserSupportsWindowFeature(feature,
                                                      check_can_support);
-}
-
-bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
-  const auto original_visible = Browser::IsWebContentsVisible(web_contents);
-  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
-  if (!tab) {
-    return original_visible;
-  }
-
-  if (original_visible && !tab->IsActivated()) {
-    return false;
-  }
-
-  return original_visible;
 }
 
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,

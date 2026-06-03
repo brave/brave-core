@@ -402,7 +402,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                                     BravePreferenceKeys
                                             .BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
                                     null);
-            List<WidgetTile> widgetTileList = new ArrayList();
+            List<WidgetTile> widgetTileList = new ArrayList<>();
 
             // Check if there's any saved data
             if (widgetTilesJson == null || widgetTilesJson.isEmpty()) {

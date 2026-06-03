@@ -3,31 +3,27 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 import ArrowDown2Icon from '../../../assets/svg-icons/arrow-down-2.svg'
+
+// Shared Styles
 import {
   AssetIconFactory,
   AssetIconProps,
+  Text,
   WalletButton,
 } from '../../shared/style'
 
-export const ExchangeRate = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-
+export const ExchangeRate = styled(Text)`
   display: flex;
   align-items: center;
-  text-align: right;
-  color: ${(p) => p.theme.color.text03};
 `
 
 export const SwapDetails = styled.div`
   position: relative;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   box-shadow: 0 0 90px rgba(99, 105, 110, 0.08);
   border-radius: 8px;
   height: 220px;
@@ -38,7 +34,7 @@ export const SwapDetails = styled.div`
 export const SwapDetailsDivider = styled.div`
   position: absolute;
   top: 50%;
-  border: 0.5px solid ${(p) => p.theme.color.divider01};
+  border: 0.5px solid ${leo.color.divider.subtle};
   width: 100%;
 `
 
@@ -46,8 +42,8 @@ export const SwapDetailsArrowContainer = styled.div`
   top: calc(50% - 16px); // 16px = half of 32px (height)
   left: calc(50% - 16px); // 16px = half of 32px (width)
   position: absolute;
-  border: 1px solid ${(p) => p.theme.color.divider01};
-  background-color: ${(p) => p.theme.color.background01};
+  border: 1px solid ${leo.color.divider.subtle};
+  background-color: ${leo.color.page.background};
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -60,7 +56,7 @@ export const SwapDetailsArrowContainer = styled.div`
 export const SwapDetailsArrow = styled.div`
   -webkit-mask-image: url(${ArrowDown2Icon});
   mask-image: url(${ArrowDown2Icon});
-  background-color: ${(p) => p.theme.color.interactive08};
+  background-color: ${leo.color.neutral[30]};
   width: 12px;
   height: 16px;
 `
@@ -77,17 +73,8 @@ export const SwapAssetHeader = styled.div`
   margin: 8px 12px;
 `
 
-export const SwapAssetTitle = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text03};
-`
-
 export const SwapAssetAddress = styled.div`
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -104,18 +91,10 @@ export const AddressOrb = styled.div<{ orb: string }>`
   margin: 3px;
 `
 
-export const AccountNameText = styled.span`
+export const AccountNameText = styled(Text)`
   cursor: default;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 15px;
   display: flex;
   align-items: center;
-  text-align: right;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
   margin-right: 3px;
 `
 
@@ -144,34 +123,20 @@ export const Spacer = styled.div`
   height: 4px;
 `
 
-export const SwapAssetAmountSymbol = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 22px;
+export const SwapAssetAmountSymbol = styled(Text)`
   display: flex;
   align-items: center;
-  color: ${(p) => p.theme.color.text01};
 `
 
-export const NetworkDescriptionText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+export const NetworkDescriptionText = styled(Text)`
   display: flex;
   align-items: center;
-  color: ${(p) => p.theme.color.text03};
 `
 
 export const LaunchButton = styled(WalletButton)`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${leo.font.small.semibold};
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;

@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -26,7 +25,9 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   }
 
   const base::Time now = base::Time::Now();
-  const int day_of_week = DayOfWeek(now, /*is_local=*/true);
+  base::Time::Exploded exploded;
+  now.LocalExplode(&exploded);
+  const int day_of_week = exploded.day_of_week;
   const int minutes = MinutesElapsedSinceLocalMidnight(now);
 
   return std::ranges::any_of(

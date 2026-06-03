@@ -13,13 +13,13 @@
 
 namespace brave_wallet {
 
-class TxStorageDelegate;
+class TxStorage;
 class AccountResolverDelegate;
 
 class PolkadotTxStateManager : public TxStateManager {
  public:
   explicit PolkadotTxStateManager(
-      TxStorageDelegate& delegate,
+      TxStorage& tx_storage,
       AccountResolverDelegate& account_resolver_delegate);
   ~PolkadotTxStateManager() override;
 

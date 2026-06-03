@@ -458,7 +458,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, RandomTest) {
   uint64_t total_inputs = 0;
 
   for (int i = 0; i < 50; ++i) {
-    auto input = MakeMockTxInput(base::RandInt(1000000, 100000000));
+    auto input = MakeMockTxInput(base::RandIntInclusive(1000000, 100000000));
     total_inputs += input.utxo_value;
     inputs.push_back(std::move(input));
   }

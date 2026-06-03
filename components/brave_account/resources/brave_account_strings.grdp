@@ -62,14 +62,17 @@
   <message name="IDS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL" desc="Label for the 'Create a password' input field" formatter_data="webui=BraveAccount">
     Create a password
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK" desc="The password strength meter's 'weak' state" formatter_data="webui=BraveAccount">
-    Weak
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOO_WEAK" desc="The password strength meter's 'too weak' state (below the minimum required strength)" formatter_data="webui=BraveAccount">
+    Too weak to proceed
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM" desc="The password strength meter's 'medium' state" formatter_data="webui=BraveAccount">
-    Medium
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_GETTING_THERE" desc="The password strength meter's 'getting there' state (below the minimum required strength, but close)" formatter_data="webui=BraveAccount">
+    Getting there
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG" desc="The password strength meter's 'strong' state" formatter_data="webui=BraveAccount">
-    Strong
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG_ENOUGH" desc="The password strength meter's 'strong enough' state (meets the minimum required strength)" formatter_data="webui=BraveAccount">
+    Strong enough
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_EXCEPTIONALLY_STRONG" desc="The password strength meter's 'exceptionally strong' state (maximum strength)" formatter_data="webui=BraveAccount">
+    Exceptionally strong
   </message>
   <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL" desc="Label for the 'Confirm password' input field" formatter_data="webui=BraveAccount">
     Confirm password
@@ -172,6 +175,9 @@
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="" formatter_data="webui=BraveAccount">
     Wrong code, please try again.
   </message>
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_REGISTRATION_VERIFICATION_ALREADY_PENDING_FOR_THIS_EMAIL" desc="" formatter_data="webui=BraveAccount">
+    An account has already been requested for this email address. Please check your email or try again in 30 minutes.
+  </message>
 
   <!-- Common: -->
   <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount,BraveAccountSettings">
@@ -185,6 +191,9 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER" desc="Placeholder for the 'Email address' input field" formatter_data="webui=BraveAccount">
     Enter your email address
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN" desc="Suggested correction for a likely email typo" formatter_data="webui=BraveAccount">
+    Did you mean <ph name="SUGGESTION">$1<ex>user@gmail.com</ex></ph>?
   </message>
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" desc="Placeholder for the 'Create a password'/'Password' input fields" formatter_data="webui=BraveAccount">
     Enter your password

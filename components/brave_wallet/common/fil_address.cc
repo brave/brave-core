@@ -5,12 +5,17 @@
 
 #include "brave/components/brave_wallet/common/fil_address.h"
 
+#include <stddef.h>
+
+#include <algorithm>
+#include <array>
 #include <optional>
 
 #include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/containers/to_vector.h"
 #include "base/notreached.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

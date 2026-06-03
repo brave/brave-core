@@ -11,6 +11,7 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
@@ -169,6 +170,13 @@ void SetShieldsMetadata(HostContentSettingsMap* map,
   map->SetWebsiteSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA,
       base::Value(std::move(shields_metadata)));
+}
+
+// Returns a 64-bit persistent hash of |data| (two rounds of PersistentHash).
+uint64_t PersistentHashU64(base::span<const uint8_t> data) {
+  const uint32_t hash = base::PersistentHash(data);
+  return (static_cast<uint64_t>(hash) << 32) |
+         base::PersistentHash(base::byte_span_from_ref(hash));
 }
 
 base::Token CreateStableFarblingToken(const GURL& url) {
@@ -848,7 +856,9 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
   }
 }
 
-base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
+base::Token GetFarblingToken(HostContentSettingsMap* map,
+                             const GURL& url,
+                             base::span<const uint8_t> additional_entropy) {
   base::Token token;
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return token;
@@ -871,7 +881,14 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
     SetShieldsMetadata(map, url, std::move(shields_metadata));
   }
 
-  return token;
+  if (additional_entropy.empty()) {
+    return token;
+  }
+
+  const uint64_t high = token.high() ^ PersistentHashU64(additional_entropy);
+  const uint64_t low =
+      token.low() ^ PersistentHashU64(base::byte_span_from_ref(high));
+  return base::Token(high, low);
 }
 
 bool IsDeveloperModeEnabled(PrefService* profile_state) {

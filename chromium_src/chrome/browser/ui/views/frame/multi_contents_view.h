@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_H_
 
+#include "chrome/browser/ui/tabs/split_tab_highlight_controller.h"
+
 #define UpdateSplitRatio(...)       \
   UpdateSplitRatio(__VA_ARGS__);    \
   virtual void ResetResizeArea() {} \
@@ -27,8 +29,16 @@
   GetContentsContainerViewFor_UnUsed(); \
   virtual ContentsContainerView* GetContentsContainerViewFor
 
+// kSplitViewContentInset is used both inside and outside MultiContentsView,
+// so override the constant to 0 rather than zeroing the inset fields in the
+// constructor. Brave controls padding via the rounded corners feature instead.
+#define kSplitViewContentInset \
+  kSplitViewContentInset = 0;  \
+  static constexpr int kSplitViewContentInset_UnUsed
+
 #include <chrome/browser/ui/views/frame/multi_contents_view.h>  // IWYU pragma: export
 
+#undef kSplitViewContentInset
 #undef GetContentsContainerViewFor
 #undef GetActiveContentsView
 #undef GetActiveContentsContainerView

@@ -31,6 +31,7 @@ brave_policies = [
   "BraveSoftware/DefaultBraveHttpsUpgradeSetting.yaml",
   "BraveSoftware/DefaultBraveReferrersSetting.yaml",
   "BraveSoftware/DefaultBraveRemember1PStorageSetting.yaml",
+  "BraveSoftware/EmailAliasesEnabled.yaml",
   "BraveSoftware/IPFSEnabled.yaml",
   "BraveSoftware/TorDisabled.yaml",
 ]

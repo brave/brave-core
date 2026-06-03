@@ -20,7 +20,6 @@ import {
 
 // style
 import {
-  TransactionTitle,
   TransactionTypeText,
   TransactionText,
   Divider,
@@ -30,7 +29,7 @@ import {
 } from './style'
 import { WarningBoxTitleRow } from '../shared-panel-styles'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
-import { Column } from '../../shared/style'
+import { Column, Text } from '../../shared/style'
 
 interface TransactionInfoProps {
   onToggleEditGas?: () => void
@@ -101,10 +100,16 @@ export const TransactionInfo = ({
         <>
           {transactionDetails.gasPremium && (
             <SectionColumn>
-              <TransactionTitle>
+              <Text
+                textColor='secondary'
+                variant='small.semibold'
+              >
                 {getLocale('braveWalletTransactionGasPremium')}
-              </TransactionTitle>
-              <TransactionTypeText>
+              </Text>
+              <TransactionTypeText
+                textColor='tertiary'
+                variant='small.semibold'
+              >
                 {transactionsNetwork
                   && new Amount(transactionDetails.gasPremium)
                     .divideByDecimals(transactionsNetwork.decimals)
@@ -115,10 +120,16 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasLimit && (
             <SectionColumn>
-              <TransactionTitle>
+              <Text
+                textColor='secondary'
+                variant='small.semibold'
+              >
                 {getLocale('braveWalletTransactionGasLimit')}
-              </TransactionTitle>
-              <TransactionTypeText>
+              </Text>
+              <TransactionTypeText
+                textColor='tertiary'
+                variant='small.semibold'
+              >
                 {transactionsNetwork
                   && new Amount(transactionDetails.gasLimit)
                     .divideByDecimals(transactionsNetwork.decimals)
@@ -129,10 +140,16 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasFeeCap && (
             <SectionColumn>
-              <TransactionTitle>
+              <Text
+                textColor='secondary'
+                variant='small.semibold'
+              >
                 {getLocale('braveWalletTransactionGasFeeCap')}
-              </TransactionTitle>
-              <TransactionTypeText>
+              </Text>
+              <TransactionTypeText
+                textColor='tertiary'
+                variant='small.semibold'
+              >
                 {transactionsNetwork
                   && new Amount(transactionDetails.gasFeeCap)
                     .divideByDecimals(transactionsNetwork.decimals)
@@ -143,13 +160,16 @@ export const TransactionInfo = ({
         </>
       ) : (
         <SectionRow>
-          <TransactionTitle>
+          <Text
+            textColor='secondary'
+            variant='small.semibold'
+          >
             {getLocale(
               isERC20Approve
                 ? 'braveWalletAllowSpendTransactionFee'
                 : feeLocale,
             )}
-          </TransactionTitle>
+          </Text>
 
           {onToggleEditGas && (
             <EditButton onClick={onToggleEditGas}>
@@ -160,13 +180,19 @@ export const TransactionInfo = ({
       )}
 
       {hasFeeEstimatesError ? (
-        <TransactionText hasError={true}>
+        <TransactionText
+          textColor='error'
+          variant='small.regular'
+        >
           {getLocale('braveWalletTransactionHasFeeEstimatesError')}
         </TransactionText>
       ) : isLoadingGasFee ? (
         <FeeSkeleton />
       ) : (
-        <TransactionTypeText>
+        <TransactionTypeText
+          textColor='tertiary'
+          variant='small.semibold'
+        >
           {(transactionsNetwork
             && new Amount(gasFee)
               .divideByDecimals(transactionsNetwork.decimals)
@@ -178,7 +204,10 @@ export const TransactionInfo = ({
       {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
         <FeeSkeleton />
       ) : (
-        <TransactionText>
+        <TransactionText
+          textColor='tertiary'
+          variant='small.regular'
+        >
           {new Amount(transactionDetails.gasFeeFiat).formatAsFiat(
             defaultFiatCurrency,
           )}
@@ -192,10 +221,13 @@ export const TransactionInfo = ({
           <Divider />
 
           <WarningBoxTitleRow>
-            <TransactionTitle>
+            <Text
+              textColor='secondary'
+              variant='small.semibold'
+            >
               {getLocale('braveWalletConfirmTransactionTotal')}{' '}
               {!isFilecoinTransaction && getLocale(feeLocale)}
-            </TransactionTitle>
+            </Text>
           </WarningBoxTitleRow>
           <TransactionValue
             isErc721Transfer={isERC721SafeTransferFrom || isERC721TransferFrom}
@@ -204,13 +236,19 @@ export const TransactionInfo = ({
           />
 
           {isFilecoinTransaction ? null : hasFeeEstimatesError ? (
-            <TransactionText hasError>
+            <TransactionText
+              textColor='error'
+              variant='small.regular'
+            >
               {getLocale('braveWalletTransactionHasFeeEstimatesError')}
             </TransactionText>
           ) : isLoadingGasFee ? (
             <FeeSkeleton />
           ) : (
-            <TransactionTypeText>
+            <TransactionTypeText
+              textColor='tertiary'
+              variant='small.semibold'
+            >
               +{' '}
               {transactionsNetwork
                 && new Amount(gasFee)
@@ -222,7 +260,10 @@ export const TransactionInfo = ({
           {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
             <FeeSkeleton />
           ) : (
-            <TransactionText>
+            <TransactionText
+              textColor='tertiary'
+              variant='small.regular'
+            >
               {new Amount(transactionDetails.fiatTotal).formatAsFiat(
                 defaultFiatCurrency,
               )}
@@ -232,12 +273,18 @@ export const TransactionInfo = ({
       )}
 
       {insufficientFundsForGasError && (
-        <TransactionText hasError={true}>
+        <TransactionText
+          textColor='error'
+          variant='small.regular'
+        >
           {getLocale('braveWalletSwapInsufficientFundsForGas')}
         </TransactionText>
       )}
       {!insufficientFundsForGasError && insufficientFundsError && (
-        <TransactionText hasError={true}>
+        <TransactionText
+          textColor='error'
+          variant='small.regular'
+        >
           {getLocale('braveWalletSwapInsufficientBalance')}
         </TransactionText>
       )}
@@ -246,10 +293,16 @@ export const TransactionInfo = ({
         <>
           <Divider />
 
-          <TransactionTitle>
+          <Text
+            textColor='secondary'
+            variant='small.semibold'
+          >
             {getLocale('braveWalletAllowSpendCurrentAllowance')}
-          </TransactionTitle>
-          <TransactionTypeText>
+          </Text>
+          <TransactionTypeText
+            textColor='tertiary'
+            variant='small.semibold'
+          >
             {isCurrentAllowanceUnlimited
               ? getLocale('braveWalletTransactionApproveUnlimited')
               : currentTokenAllowance}{' '}
@@ -258,10 +311,16 @@ export const TransactionInfo = ({
 
           <Divider />
 
-          <TransactionTitle>
+          <Text
+            textColor='secondary'
+            variant='small.semibold'
+          >
             {getLocale('braveWalletAllowSpendProposedAllowance')}
-          </TransactionTitle>
-          <TransactionTypeText>
+          </Text>
+          <TransactionTypeText
+            textColor='tertiary'
+            variant='small.semibold'
+          >
             {transactionDetails.isApprovalUnlimited
               ? getLocale('braveWalletTransactionApproveUnlimited')
               : new Amount(transactionDetails.valueExact).formatAsAsset(
@@ -275,8 +334,18 @@ export const TransactionInfo = ({
       {memoText && (
         <SectionColumn>
           <Divider />
-          <TransactionTitle>{getLocale('braveWalletMemo')}</TransactionTitle>
-          <TransactionTypeText>{memoText}</TransactionTypeText>
+          <Text
+            textColor='secondary'
+            variant='small.semibold'
+          >
+            {getLocale('braveWalletMemo')}
+          </Text>
+          <TransactionTypeText
+            textColor='tertiary'
+            variant='small.semibold'
+          >
+            {memoText}
+          </TransactionTypeText>
         </SectionColumn>
       )}
     </>
@@ -336,7 +405,10 @@ const TransactionValue = ({
 
   // render
   return (
-    <TransactionTypeText>
+    <TransactionTypeText
+      textColor='tertiary'
+      variant='small.semibold'
+    >
       {transactionValueText} {symbol}
     </TransactionTypeText>
   )

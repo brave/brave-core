@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.password_manager;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
+
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -47,9 +49,10 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
         // enum. To avoid use patching, just use reflection, luckily we have
         // settingsNavigation.createSettingsIntent which can accept Class argument.
         try {
-            Class passwordSettingsClass =
+            Class<? extends Fragment> passwordSettingsClass =
                     Class.forName(
-                            "org.chromium.chrome.browser.password_manager.settings.PasswordSettings"); // presubmit: ignore-long-line
+                                    "org.chromium.chrome.browser.password_manager.settings.PasswordSettings") // presubmit: ignore-long-line
+                            .asSubclass(Fragment.class);
             context.startActivity(
                     SettingsNavigationFactory.createSettingsNavigation()
                             .createSettingsIntent(context, passwordSettingsClass, fragmentArgs));
@@ -63,7 +66,7 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
             sProfileMap =
                     new ProfileKeyedMap<>(
                             ProfileKeyedMap.ProfileSelection.REDIRECTED_TO_ORIGINAL,
-                            ProfileKeyedMap.NO_REQUIRED_CLEANUP_ACTION);
+                            ProfileKeyedMap.noRequiredCleanupAction());
         }
         return sProfileMap.getForProfile(profile, BravePasswordManagerHelper::new);
     }

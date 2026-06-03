@@ -9,11 +9,9 @@
 
 #include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/nft_display/resources/grit/nft_display_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/grit/browser_resources.h"
-#include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"

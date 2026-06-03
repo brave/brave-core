@@ -24,6 +24,12 @@ class SettingsBraveContentPlaylistElement extends BravePlaylistPageBase {
   static get template () {
     return getTemplate()
   }
+
+  private isPlaylistManaged_(
+      pref: chrome.settingsPrivate.PrefObject): boolean {
+    return pref &&
+        pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED;
+  }
 }
 
 customElements.define(SettingsBraveContentPlaylistElement.is, SettingsBraveContentPlaylistElement)

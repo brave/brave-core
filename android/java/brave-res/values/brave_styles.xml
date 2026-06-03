@@ -6,11 +6,6 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="BraveSwitchTheme">
-        <item name="colorControlActivated">#fb542b</item>
-        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
-    </style>
-
     <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
     </style>
@@ -243,6 +238,29 @@
         <item name="android:background">@color/brave_plan_bg</item>
         <item name="titleTextColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <!-- Toolbar for the Install VPN profile screen. Background and text follow
+         the page theme (light/dark) instead of the legacy purple. -->
+    <style name="BraveVpnProfileToolbar" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/onboarding_text_color</item>
+        <item name="android:background">@color/schemes_surface_container</item>
+        <item name="titleTextColor">@color/onboarding_text_color</item>
+        <item name="android:textColorPrimary">@color/onboarding_text_color</item>
+    </style>
+
+    <!-- Theme for the Install VPN profile activity. Colors the status and
+         navigation bars to match the page surface, following the upstream
+         settings pattern (theme-level statusBarColor/navigationBarColor with the
+         shared window_light_* bools for icon contrast). -->
+    <style
+        name="Theme.Brave.VpnProfile"
+        parent="Theme.Chromium.Activity"
+        tools:ignore="UnusedResources">
+        <item name="android:statusBarColor">@color/schemes_surface_container</item>
+        <item name="android:windowLightStatusBar">@bool/window_light_status_bar</item>
+        <item name="android:navigationBarColor">@color/schemes_surface_container</item>
+        <item name="android:windowLightNavigationBar">@bool/window_light_navigation_bar</item>
     </style>
 
     <style name="VpnPaywallToolbar" parent="Theme.AppCompat.Light">
@@ -484,6 +502,21 @@
         <item name="fontStyle">normal</item>
     </style>
 
+    <style name="FontHeadingDisplay2">
+        <item name="android:textSize">40sp</item>
+        <item name="android:fontWeight">600</item>
+        <item name="lineHeight">48sp</item>
+        <item name="fontStyle">normal</item>
+    </style>
+
+    <style name="IncognitoNtpTitle" parent="HeadingH1"/>
+
+    <style name="IncognitoNtpSectionTitle" parent="DefaultSemibold"/>
+
+    <style name="IncognitoNtpSectionDescription" parent="SmallRegular"/>
+
+    <style name="IncognitoNtpCta" parent="SmallSemibold"/>
+
   <style name="MonospaceSmall">
     <item name="android:textSize">@dimen/monospace_small</item>
     <item name="lineHeight">16sp</item>
@@ -498,26 +531,6 @@
     -->
     <item name="android:typeface">monospace</item>
   </style>
-
-    <!-- Brave News -->
-    <style name="BraveNewsAdLogoText">
-         <item name="android:textColor">@color/blurple</item>
-    </style>
-
-    <style name="BraveNewsAdTitleText">
-        <item name="android:textSize">@dimen/brave_news_ad_title_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
-
-    <style name="BraveNewsAdDescText">
-        <item name="android:textSize">@dimen/brave_news_ad_desc_textsize</item>
-        <item name="android:textColor">@color/news_time_color</item>
-    </style>
-
-    <style name="BraveNewsAdButtonText">
-        <item name="android:textSize">@dimen/brave_news_ad_button_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
 
     <style name="BraveNewsMoreOffersTabletText">
         <item name="android:textSize">@dimen/brave_news_more_offers_tablet_textsize</item>
@@ -577,24 +590,6 @@
     </style>
     <style name="BraveNewsHeadlinePublisherPhoneText">
         <item name="android:textSize">@dimen/brave_news_headline_publisher_phone_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
-
-    <style name="BraveNewsPromotedArticleTitleText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_title_textsize</item>
-    </style>
-
-    <style name="BraveNewsPromotedArticleDescText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_desc_textsize</item>
-    </style>
-
-    <style name="BraveNewsPromotedArticlePromotedText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_promoted_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
-
-    <style name="BraveNewsPromotedArticlePublisherText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_publisher_textsize</item>
         <item name="android:textColor">@color/news_text_color</item>
     </style>
 
@@ -710,5 +705,15 @@
         <item name="buttonTint">@color/brave_checkbox_background_color_selector</item>
         <item name="buttonIconTint">@color/brave_checkbox_color_selector</item>
         <item name="android:textSize">@dimen/default_regular</item>
+    </style>
+
+    <style name="PreferenceCategory.NoTitle" parent="Preference.Category">
+        <item name="android:layout">@layout/preference_category_no_title</item>
+    </style>
+
+    <style name="TextAppearance.BraveBlockedItemIcon" parent="TextAppearance.TextSmall">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 </resources>

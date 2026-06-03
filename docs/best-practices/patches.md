@@ -1,12 +1,14 @@
 # Patches
 
-<a id="PATCH-001"></a>
-<a id="PATCH-002"></a>
-<a id="PATCH-003"></a>
+<a id="PATCH-001"></a> <a id="PATCH-002"></a> <a id="PATCH-003"></a>
 
 ## ❌ Patches Must Contain Only Functional Changes
 
-**Patches should contain only the minimal functional changes needed.** Never add comments, empty lines, whitespace changes, or any other non-functional modifications. Leave whitespace intact to minimize diff size. Unnecessary changes make patches harder to review and more likely to conflict during Chromium upgrades.
+**Patches should contain only the minimal functional changes needed.** Never add
+comments, empty lines, whitespace changes, or any other non-functional
+modifications. Leave whitespace intact to minimize diff size. Unnecessary
+changes make patches harder to review and more likely to conflict during
+Chromium upgrades.
 
 ---
 
@@ -14,7 +16,8 @@
 
 ## ❌ No Multiline Patches - Use Defines
 
-**Never create multiline patches. Use `#define` macros or chromium_src overrides instead.**
+**Never create multiline patches. Use `#define` macros or chromium_src overrides
+instead.**
 
 ---
 
@@ -22,7 +25,9 @@
 
 ## ✅ Use `include` for Extensible Patches
 
-**When a patch adds to a list or block, use an `include` directive to make the patch extensible.** This way additional items can be added in brave-core without modifying the patch.
+**When a patch adds to a list or block, use an `include` directive to make the
+patch extensible.** This way additional items can be added in brave-core without
+modifying the patch.
 
 ---
 
@@ -30,7 +35,8 @@
 
 ## ✅ Patches Should Use `define` for Extensibility
 
-**Patches should use `#define` macros to be extensible.** This allows adding behavior in brave-core without changing the patch.
+**Patches should use `#define` macros to be extensible.** This allows adding
+behavior in brave-core without changing the patch.
 
 ```cpp
 // ❌ WRONG - patching inline code directly
@@ -49,10 +55,14 @@ Convention for define names: `BRAVE_ALL_CAPS_ORIGINAL_METHOD_NAME`.
 
 ## Patch Style Guidelines
 
-- **Keep patches to one line** even if it violates lint character line limits (lint doesn't run on patched files)
-- **In XML patches, use HTML comments** (`<!-- -->`) instead of deleting lines to reduce the diff
-- **Minimize line modifications** - put additions on separate lines to avoid modifying existing lines
-- **Match existing code exactly** when possible so patches auto-resolve during updates
+- **Keep patches to one line** even if it violates lint character line limits
+  (lint doesn't run on patched files)
+- **In XML patches, use HTML comments** (`<!-- -->`) instead of deleting lines
+  to reduce the diff
+- **Minimize line modifications** - put additions on separate lines to avoid
+  modifying existing lines
+- **Match existing code exactly** when possible so patches auto-resolve during
+  updates
 
 ```xml
 <!-- ❌ WRONG - deleting XML elements -->
@@ -74,7 +84,8 @@ Convention for define names: `BRAVE_ALL_CAPS_ORIGINAL_METHOD_NAME`.
 
 ## ✅ Use `-=` for List Removal in Patches
 
-**When removing items from GN lists, use `-=` instead of modifying the original line.** This makes the patch an addition rather than a modification.
+**When removing items from GN lists, use `-=` instead of modifying the original
+line.** This makes the patch an addition rather than a modification.
 
 ```gn
 # ❌ WRONG - modifying the original deps line
@@ -90,7 +101,9 @@ Convention for define names: `BRAVE_ALL_CAPS_ORIGINAL_METHOD_NAME`.
 
 ## ✅ Use `deps +=` with a Variable for Extensible GN Patches
 
-**When a patch adds dependencies to a Chromium BUILD.gn target, define a variable in Brave code and patch only the variable reference.** This allows adding/removing deps without modifying the patch.
+**When a patch adds dependencies to a Chromium BUILD.gn target, define a
+variable in Brave code and patch only the variable reference.** This allows
+adding/removing deps without modifying the patch.
 
 ```gn
 # ❌ WRONG - patching inline deps
@@ -110,6 +123,11 @@ brave_browser_window_deps = [
 
 ## ❌ Don't Patch Python Build Scripts
 
-**Do not add patches to Python build scripts (e.g., `java_cpp_enum.py` or similar build tools).** These patches prevent correct incremental rebuilds and break remote `siso` build actions. Instead, prefer: (1) a `chromium_src` override, (2) a multiline header patch, or (3) a `#define`-based approach. For Java/C++ enums processed by upstream Python scripts, a multiline patch in the header file is acceptable as a pragmatic solution.
+**Do not add patches to Python build scripts (e.g., `java_cpp_enum.py` or
+similar build tools).** These patches prevent correct incremental rebuilds and
+break remote `siso` build actions. Instead, prefer: (1) a `chromium_src`
+override, (2) a multiline header patch, or (3) a `#define`-based approach. For
+Java/C++ enums processed by upstream Python scripts, a multiline patch in the
+header file is acceptable as a pragmatic solution.
 
 ---

@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 969c2af4439e4a534ad935dd09c0324a12e81829..1302c1894a0f882cee7ad0d61f8c50c69db25728 100644
+index 63c2601cfcaabb179221dcd63506c09b1d85487f..6221bcbd08972a113370302761fb21706e94c21a 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2510,6 +2510,7 @@ static_library("browser") {
-   } else {
-     sources += [ "net/net_error_diagnostics_dialog_stub.cc" ]
-   }
+@@ -1655,6 +1655,7 @@ static_library("browser") {
+     "//chrome/browser/sharing/glic_experimental_triggering:impl",
+     "//chrome/browser/ui/webauthn:impl",
+   ]
 +  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps allow_circular_includes_from += brave_chrome_browser_allow_circular_includes_from
  
-   if (is_android) {
-     sources += [
-@@ -8451,6 +8452,7 @@ static_library("browser_public_dependencies") {
-       "//rlz:rlz_lib",
+   if (enable_webui_ntp) {
+     deps += [
+@@ -5091,6 +5092,7 @@ group("browser_public_dependencies") {
+       "//components/offline_pages/core/background:background_offliner",
      ]
    }
 +  import("//brave/browser/sources.gni") public_deps += brave_chrome_browser_public_deps

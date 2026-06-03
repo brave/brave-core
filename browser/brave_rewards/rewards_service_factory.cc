@@ -10,6 +10,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
@@ -17,10 +18,13 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
+#include "chrome/browser/policy/profile_policy_connector.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/policy/core/common/policy_service.h"
 #include "content/public/browser/storage_partition.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -92,15 +96,24 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
       },
       profile);
 
+  policy::PolicyService* policy_service = nullptr;
+  if (auto* policy_connector = profile->GetProfilePolicyConnector()) {
+    policy_service = policy_connector->policy_service();
+  }
+  auto policy_initialization_waiter =
+      std::make_unique<brave_policy::PolicyInitializationWaiter>(
+          policy_service);
+
   std::unique_ptr<RewardsServiceImpl> rewards_service =
       std::make_unique<RewardsServiceImpl>(
           profile->GetPrefs(), profile->GetPath(),
           FaviconServiceFactory::GetForProfile(
               profile, ServiceAccessType::EXPLICIT_ACCESS),
-          request_image_callback, cancel_request_image_callback,
-          profile->GetDefaultStoragePartition()
+          g_browser_process->os_crypt_async(),
+          std::move(policy_initialization_waiter), request_image_callback,
+          cancel_request_image_callback, profile->GetDefaultStoragePartition()
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-              ,
+                                             ,
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context)
 #endif
       );

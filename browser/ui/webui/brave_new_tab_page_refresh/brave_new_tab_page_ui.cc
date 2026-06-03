@@ -151,12 +151,12 @@ void BraveNewTabPageUI::BindInterface(
 }
 
 void BraveNewTabPageUI::BindInterface(
-    mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver) {
-  realbox_handler_ = std::make_unique<RealboxHandler>(
-      std::move(receiver), Profile::FromWebUI(web_ui()),
-      web_ui()->GetWebContents(),
-      base::BindRepeating(&BraveNewTabPageUI::GetContextualSessionHandle,
-                          base::Unretained(this)));
+    mojo::PendingReceiver<searchbox::mojom::PageHandlerFactory>
+        pending_receiver) {
+  if (searchbox_page_factory_receiver_.is_bound()) {
+    searchbox_page_factory_receiver_.reset();
+  }
+  searchbox_page_factory_receiver_.Bind(std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -275,5 +275,15 @@ void BraveNewTabPageUI::BindInterface(
   CHECK(history_ui_handler_);
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+void BraveNewTabPageUI::CreatePageHandler(
+    mojo::PendingRemote<searchbox::mojom::Page> pending_page,
+    mojo::PendingReceiver<searchbox::mojom::PageHandler> pending_page_handler) {
+  realbox_handler_ = std::make_unique<RealboxHandler>(
+      std::move(pending_page_handler), std::move(pending_page),
+      Profile::FromWebUI(web_ui()), web_ui()->GetWebContents(),
+      base::BindRepeating(&BraveNewTabPageUI::GetContextualSessionHandle,
+                          base::Unretained(this)));
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)

@@ -13,8 +13,11 @@ import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { showError, showSuccess } from './brave_account_common.js'
 import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
+  RegisterClientErrorCode,
   RegisterError,
+  ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
+  VerificationIntent,
 } from './brave_account.mojom-webui.js'
 
 export class BraveAccountOtpDialogElement extends CrLitElement {
@@ -28,6 +31,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
+      intent: { type: Object },
       code: { type: String },
       isCodeValid: { type: Boolean },
       isResendingConfirmationEmail: { type: Boolean, state: true },
@@ -44,7 +48,9 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         error = e as RegisterError
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        error = {
+          clientError: { errorCode: RegisterClientErrorCode.kUnexpected },
+        }
       }
 
       showError({ kind: 'register', details: error })
@@ -58,13 +64,19 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     let error: ResendConfirmationEmailError | undefined
 
     try {
-      await this.browserProxy.authentication.resendConfirmationEmail()
+      await this.browserProxy.authentication.resendVerificationEmail(
+        this.intent,
+      )
     } catch (e) {
       if (e && typeof e === 'object') {
         error = e as ResendConfirmationEmailError
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        error = {
+          clientError: {
+            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
+          },
+        }
       }
     }
 
@@ -86,6 +98,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
+  protected accessor intent!: VerificationIntent
   protected accessor code = ''
   protected accessor isCodeValid = false
   protected accessor isResendingConfirmationEmail = false

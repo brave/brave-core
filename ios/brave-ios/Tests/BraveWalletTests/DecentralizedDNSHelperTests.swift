@@ -217,7 +217,7 @@ import XCTest
     let rpcService = MockJsonRpcService()
     rpcService._snsResolveMethod = { $0(.ask) }
     rpcService._snsResolveHost = { _, completion in
-      completion(nil, .internalError, "")
+      completion(nil)
     }
 
     guard
@@ -247,7 +247,7 @@ import XCTest
     let rpcService = MockJsonRpcService()
     rpcService._snsResolveMethod = { $0(.enabled) }
     rpcService._snsResolveHost = { _, completion in
-      completion(resolvedURL, .success, "")
+      completion(resolvedURL)
     }
 
     guard
@@ -276,7 +276,7 @@ import XCTest
     let rpcService = MockJsonRpcService()
     rpcService._snsResolveMethod = { $0(.disabled) }
     rpcService._snsResolveHost = { _, completion in
-      completion(nil, .internalError, "")
+      completion(nil)
     }
 
     guard

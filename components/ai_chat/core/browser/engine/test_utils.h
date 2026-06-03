@@ -37,6 +37,10 @@ void VerifyFileBlock(const base::Location& location,
                      const GURL& expected_url,
                      std::string_view expected_filename);
 
+void VerifyFileExtractedTextBlock(const base::Location& location,
+                                  const mojom::ContentBlockPtr& block,
+                                  std::string_view expected_text);
+
 void VerifyPageTextBlock(const base::Location& location,
                          const mojom::ContentBlockPtr& block,
                          std::string_view expected_text);

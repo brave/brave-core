@@ -16,6 +16,7 @@
 #include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -28,7 +29,13 @@
 #include "chrome/common/buildflags.h"
 #include "components/browsing_data/content/browsing_data_helper.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/used_container_storage_partitions.h"
+#include "brave/components/containers/core/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -138,6 +145,30 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   ChromeBrowsingDataRemoverDelegate::RemoveEmbedderData(
       delete_begin, delete_end, remove_mask, filter_builder, origin_type_mask,
       std::move(callback));
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // Clear containers storage when no storage partition is specified in the
+  // filter.
+  if (base::FeatureList::IsEnabled(containers::features::kContainers) &&
+      !filter_builder->GetStoragePartitionConfig().has_value()) {
+    const uint64_t container_remove_mask =
+        content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
+        remove_mask;
+    // Only clear the storage when the remove mask covers data types that live
+    // on a storage partition.
+    if (container_remove_mask) {
+      for (const content::StoragePartitionConfig& config :
+           containers::GetUsedContainerStoragePartitionConfigs(profile_)) {
+        std::unique_ptr<content::BrowsingDataFilterBuilder> partition_filter =
+            filter_builder->Copy();
+        partition_filter->SetStoragePartitionConfig(config);
+        profile_->GetBrowsingDataRemover()->RemoveWithFilter(
+            delete_begin, delete_end, container_remove_mask, origin_type_mask,
+            std::move(partition_filter));
+      }
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   // We do this because ChromeBrowsingDataRemoverDelegate::RemoveEmbedderData()
   // doesn't clear shields settings with non all time range.

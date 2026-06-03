@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.toolbar.adaptive;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.optional_button.BaseButtonDataProvider;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonData.ButtonSpec;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Handles displaying Leo AI button on toolbar. */
@@ -36,13 +36,13 @@ public class BraveLeoButtonController extends BaseButtonDataProvider {
         super(
                 tabProvider,
                 modalDialogManager,
-                buttonDrawable,
-                context.getString(R.string.menu_brave_leo),
-                /* actionChipLabelResId= */ Resources.ID_NULL,
-                /* supportsTinting= */ true,
-                /* iphCommandBuilder= */ null,
-                AdaptiveToolbarButtonVariant.LEO,
-                /* tooltipTextResId= */ R.string.menu_brave_leo);
+                new ButtonSpec.Builder(
+                                buttonDrawable,
+                                context.getString(R.string.menu_brave_leo),
+                                /* supportsTinting= */ true)
+                        .setButtonVariant(AdaptiveToolbarButtonVariant.LEO)
+                        .setHoverTooltipTextId(R.string.menu_brave_leo)
+                        .build());
 
         mContext = context;
     }

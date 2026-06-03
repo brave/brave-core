@@ -67,29 +67,29 @@
 <translation id="5588534392045217394">La recherche Brave ne modifie et ne censure aucun résultat, et n'établit pas de profil vous concernant.</translation>
 <translation id="6811221529729056895">Essayez Brave Search maintenant</translation>
 <translation id="5525668735313040116">Rechercher sur le Web en mode privé</translation>
-<translation id="3446024864193919737">Afficher les récompenses de Brave</translation>
+<translation id="3446024864193919737">Afficher le programme de récompenses Brave</translation>
 <translation id="5585019845078534178">Cartes</translation>
 <translation id="3870475560794762985">Afficher les images sponsorisées</translation>
 <translation id="5684562942023496754">Vous pouvez obtenir des gains en regardant des images sponsorisées.</translation>
 <translation id="6168679340384667457">Vous gagnez des BAT pour les images commanditées que vous voyez. Désactiver les images commanditées réduira le montant que vous pouvez gagner.</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="2414654907269324670">Vous obtenez des BAT pour les images sponsorisées.</translation>
-<translation id="4942016616604700968">Activer les récompenses</translation>
-<translation id="8934374643857605034">En tant qu'utilisateur des Récompenses Brave, vous pouvez gagner des BAT lorsque vous voyez des images sponsorisées.</translation>
-<translation id="1570714748649804013">En tant qu'utilisateur des Récompenses Brave, vous gagnez des BAT pour les images sponsorisées que vous voyez. Si vous désactivez les images sponsorisées, cela réduira le montant que vous pouvez gagner.</translation>
-<translation id="8998727244653964783">Vous pouvez gagner des BAT en voyant des images sponsorisées lorsque vous connectez un compte de dépôt aux Récompenses Brave. En attendant, vous contribuez à soutenir les créateurs avec les images sponsorisées.</translation>
-<translation id="5512383650263136662">Vous pouvez gagner des BAT lorsque vous voyez des images sponsorisées avec les Récompenses Brave. Vous n'utilisez pas les Récompenses? L'activation des images sponsorisées soutient tout de même la mission de Brave.</translation>
+<translation id="4942016616604700968">Activer le programme de récompenses</translation>
+<translation id="8934374643857605034">En tant qu'utilisateur du programme de récompenses Brave, vous pouvez gagner des BAT lorsque vous voyez des images sponsorisées.</translation>
+<translation id="1570714748649804013">En tant qu'utilisateur du programme de récompenses Brave, vous gagnez des BAT pour les images sponsorisées que vous voyez. Si vous désactivez les images sponsorisées, cela réduira le montant que vous pouvez gagner.</translation>
+<translation id="8998727244653964783">Vous pouvez gagner des BAT en voyant des images sponsorisées lorsque vous connectez un compte dépositaire au programme de récompenses Brave. En attendant, vous contribuez à soutenir les créateurs avec les images sponsorisées.</translation>
+<translation id="5512383650263136662">Vous pouvez gagner des BAT lorsque vous voyez des images sponsorisées avec le programme de récompenses Brave. Vous n'utilisez pas le programme de récompenses? L'activation des images sponsorisées soutient tout de même la mission de Brave.</translation>
 <translation id="2875302873837723333">principaux sites</translation>
 <translation id="8173998484743827990">Statistiques Brave</translation>
 <translation id="383680190590774040">horloge</translation>
 <translation id="1383876407941801731">Recherche</translation>
-<translation id="3333887201479867589">Récompenses de Brave</translation>
+<translation id="3333887201479867589">Programme de récompenses Brave</translation>
 <translation id="3159285901314605198">Image d'arrière-plan</translation>
 <translation id="385051799172605136">Retour</translation>
 <translation id="4225429340218993596">Couleurs unies</translation>
 <translation id="7610541582755894669">Dégradés</translation>
 <translation id="1606851618930975029">Actualiser à chaque nouvel onglet</translation>
-<translation id="7040134046053881468">Ouvrir le panneau des récompenses</translation>
+<translation id="7040134046053881468">Ouvrir le panneau du programme de récompenses</translation>
 <translation id="370665806235115550">Chargement en cours...</translation>
 <translation id="4634933166298842522">Gérer les abonnements</translation>
 <translation id="4108314971463891922">Suivre</translation>
@@ -112,7 +112,7 @@
 <translation id="6216996674668969227">Gagnez des jetons en regardant des publicités, sans compromettre votre vie privée.</translation>
 <translation id="7191394989411626168">En désactivant « Cartes », toutes les cartes actuellement visibles seront cachées. Toutefois, vous pourrez toujours recevoir des notifications pour les nouvelles cartes.</translation>
 <translation id="6820526586005233839">Brave Ads suspendu</translation>
-<translation id="5190407395832551012">Pour protéger Brave Rewards, nous demanderons aléatoirement aux utilisateurs de résoudre un captcha. Cliquez sur « Résoudre » pour reprendre les annonces.</translation>
+<translation id="5190407395832551012">Pour protéger le programme de récompenses Brave, nous demanderons aléatoirement aux utilisateurs de résoudre un captcha. Cliquez sur « Résoudre » pour reprendre les publicités.</translation>
 <translation id="1693773514029371138">Résoudre</translation>
 <translation id="6991128190741664836">Plus tard</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
@@ -215,7 +215,7 @@
 <translation id="949044897316791211">Date du prochain paiement des gains</translation>
 <translation id="2211646556917925490">Total des publicités reçues ce mois-ci</translation>
 <translation id="4229016885653790965">Désolé! Les annonces ne sont pas encore disponibles dans votre région.</translation>
-<translation id="2539279826042558064">Brave Rewards et Ads ne sont pas disponibles sur votre appareil pour le moment.</translation>
+<translation id="2539279826042558064">Le programme de récompenses Brave et les publicités ne sont pas disponibles sur votre appareil pour le moment.</translation>
 <translation id="5736977383725358876">Notification fréquence des publicités</translation>
 <translation id="7701040980221191251">Aucun</translation>
 <translation id="480668534656787076">Max 1 par heure</translation>
@@ -269,7 +269,7 @@
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="6969783933307596818">Actualisation automatique toutes les 5 secondes</translation>
 <translation id="5025866799968038247">Informations sur le solde</translation>
-<translation id="5124196035444856536">Profil Récompenses créé à :</translation>
+<translation id="5124196035444856536">Profil du programme de récompenses créé le :</translation>
 <translation id="6643016212128521049">Effacer</translation>
 <translation id="8949473809474431949">Montant versé</translation>
 <translation id="4468686134841688885">Créé à :</translation>
@@ -286,7 +286,7 @@
 <translation id="7420180413541445142">Reserver</translation>
 <translation id="3390504443230842742">Transaction exerne</translation>
 <translation id="7413895050241358090">Crédits</translation>
-<translation id="386483240851194811">Les récompenses ont été désactivées</translation>
+<translation id="386483240851194811">Le programme de récompenses a été désactivé</translation>
 <translation id="3354337256330577726">La contribution automatique a été désactivée</translation>
 <translation id="6727186931929643711">Nouvel essai arrété</translation>
 <translation id="6461242868382182003">Type de compte :</translation>
@@ -302,12 +302,12 @@
 <translation id="5457113250005438886">Non valide</translation>
 <translation id="6161467863097205016">Graine d'information clé :</translation>
 <translation id="5323604113525002127">Nous affichons les [[numberOfLines]] dernières lignes du journal. Si vous souhaitez consulter le journal complet, vous pouvez le télécharger ci-dessus.</translation>
-<translation id="7168491065836975228">Récompense les internes</translation>
+<translation id="7168491065836975228">Données internes du programme de récompenses</translation>
 <translation id="1992397118740194946">Non défini</translation>
 <translation id="758790787422117549">Identification de la personnalité</translation>
 <translation id="7180611975245234373">Actualiser</translation>
 <translation id="1456696701804096710">Essayer le compte à nouveau :</translation>
-<translation id="8118649457152178086">Pays des récompenses :</translation>
+<translation id="8118649457152178086">Pays du programme de récompenses :</translation>
 <translation id="2152423226436243241">Contribuer automatiquement</translation>
 <translation id="7504352885209484360">Contribution récurrente</translation>
 <translation id="916115051162298064">Diagnostics des annonces</translation>
@@ -320,16 +320,16 @@
 <translation id="4235360514405112390">Valide</translation>
 <translation id="458999179147014626">Adresse de dépôt du compte :</translation>
 <translation id="3653417592104122757">Historique du portefeuille</translation>
-<translation id="3339401101952651943">Détails des Récompenses</translation>
-<translation id="3363158483789327529">Aucun profil Récompenses n'a été créé</translation>
-<translation id="476272015919848174">Identifiant de paiement Récompenses :</translation>
+<translation id="3339401101952651943">Détails du programme de récompenses</translation>
+<translation id="3363158483789327529">Aucun profil du programme de récompenses n'a été créé</translation>
+<translation id="476272015919848174">Identifiant de paiement du programme de récompenses :</translation>
 <translation id="9008441690901662695">État des Récompenses :</translation>
 <translation id="9069875072411692547">Non connecté</translation>
 <translation id="3368922792935385530">Connecté</translation>
 <translation id="5058161306698404465">Environnement de création :</translation>
 <translation id="5856438412804207598">Environnement actuel :</translation>
 <translation id="5916290544882167205">Brave Software. Brave est une marque déposée de Brave Software. Les noms de sites peuvent être des marques commerciales ou des marques déposées du propriétaire du site.</translation>
-<translation id="9026369588205476247">Pour protéger votre vie privée, cette déclaration de Brave Récompenses n'est pas sauvegardée, enregistrée ou consignée ailleurs que sur votre appareil (cet ordinateur). Elle ne peut pas être récupérée de Brave en cas de perte de données sur votre appareil.</translation>
+<translation id="9026369588205476247">Pour protéger votre vie privée, cette déclaration du programme de récompenses Brave n'est pas sauvegardée, enregistrée ou consignée ailleurs que sur votre appareil (cet ordinateur). Elle ne peut pas être récupérée depuis Brave en cas de perte de données sur votre appareil.</translation>
 <translation id="1919345977826869612">Annonces</translation>
 <translation id="3587482841069643663">Tous</translation>
 <translation id="4241224519481557898">Catégorie</translation>
@@ -353,7 +353,7 @@
 <translation id="4932733599132424254">Date</translation>
 <translation id="3552003743293281224">Dépôts</translation>
 <translation id="3866249974567520381">Description</translation>
-<translation id="8605272644314973683">Brave Rewards est</translation>
+<translation id="8605272644314973683">Le programme de récompenses Brave est</translation>
 <translation id="298067735430872465">Revenus publicitaires</translation>
 <translation id="1418534671788496616">Afficher l'historique des dépôts</translation>
 <translation id="3412655388715513818">Exclure ce site</translation>
@@ -375,9 +375,8 @@
 <translation id="3448261046185459858">Vous pouvez supprimer tout site recevant des contributions mensuelles depuis le panneau Contribution.</translation>
 <translation id="5082474983463379713">Veuillez noter s'il vous plaît :</translation>
 <translation id="1430915738399379752">Imprimer</translation>
-<translation id="2600847485413879104">Récompenses BAT</translation>
+<translation id="2600847485413879104">Programme de récompenses BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Maintenir</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -388,7 +387,7 @@
 <translation id="5669281110673664811">Vider la liste des exclusions</translation>
 <translation id="1797334173232638045">Vos sites épinglés ont été déplacés vers</translation>
 <translation id="3074127054582480056">Attention</translation>
-<translation id="3494964159182650590">Résumé des récompenses</translation>
+<translation id="3494964159182650590">Résumé du programme de récompenses</translation>
 <translation id="2913994227901456490">Voir les [[numItems]] éléments</translation>
 <translation id="6685434227783226855">Envoyer ma contribution</translation>
 <translation id="8428213095426709021">Paramètres</translation>
@@ -402,10 +401,10 @@
 <translation id="8772672608371898774">Éditeur vérifié de Brave</translation>
 <translation id="5050370287908180130">Consultez le relevé mensuel pour plus de détails</translation>
 <translation id="7853202427316060426">Activité</translation>
-<translation id="7232682712743566408">Solde de récompenses</translation>
-<translation id="4258022280942725182">Vos récompenses Brave</translation>
+<translation id="7232682712743566408">Solde du programme de récompenses</translation>
+<translation id="4258022280942725182">Votre programme de récompenses Brave</translation>
 <translation id="6727483290601442544">Afficher les détails</translation>
-<translation id="4206899127409458763">Créer votre profil Récompenses Brave</translation>
+<translation id="4206899127409458763">Créer votre profil du programme de récompenses Brave</translation>
 <translation id="8706157865312453070">Sites exclus</translation>
 <translation id="2501059654604370822">Retirer des exclusions</translation>
 <translation id="9075700728717335924">Vous avez exclu</translation>
@@ -414,7 +413,7 @@
 <translation id="5113531205597573951">Sites consultés</translation>
 <translation id="4450893287417543264">Ne plus afficher</translation>
 <translation id="7642372245223412840">Se connecter à bitFlyer</translation>
-<translation id="6143701117592994599">En connectant Récompenses Brave à un compte bitFlyer, vous pourrez gagner des BAT et retirer vos BAT gagnés de Récompenses Brave.</translation>
+<translation id="6143701117592994599">En connectant le programme de récompenses Brave à un compte bitFlyer, vous pourrez gagner des BAT et retirer vos BAT gagnés depuis le programme de récompenses Brave.</translation>
 <translation id="4354564238172327160">Devenez un créateur Brave !</translation>
 <translation id="4639659520811817892">Inscrivez-vous dès aujourd'hui sur creators.brave.com et commencez à gagner des BAT grâce à vos adeptes et vos abonnés.</translation>
 <translation id="4816455138209470435">Brave prend en charge YouTube, Twitch, Vimeo et d'autres sites !</translation>
@@ -424,7 +423,7 @@
 <translation id="7703007724342399482">Récupérez 2 % en cryptomonnaie avec la carte Uphold</translation>
 <translation id="1109729143147368573">Dépensez votre cryptomonnaie et autres actifs chez presque 50 millions de marchants et de GAB dans le monde entier. Dépensez votre cryptomonnaie pour obtenir de la cryptomonnaie!</translation>
 <translation id="3787061634640932557">Modifier les cartes</translation>
-<translation id="2070991379950719711">Commencer à utiliser Brave Rewards</translation>
+<translation id="2070991379950719711">Commencer à utiliser le programme de récompenses Brave</translation>
 <translation id="6297791103122079275">Talk</translation>
 <translation id="5977237145327845546">Lancez un appel vidéo privé avec vos amis et collègues.</translation>
 <translation id="8863928195533744356">Démarrer l'appel</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">Téléchargement du composant...</translation>
 <translation id="4894106830958548828">Je comprends</translation>
 <translation id="2729085694451916573">Chaîne de test pour <ph name="PART_ONE"/>paramètres fictifs<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>En savoir plus<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">Vos recherches et le contenu des pages sont traités sur cet appareil. Rien n'est envoyé à Brave ni vu par des évaluateurs humains. Il s'agit d'une fonctionnalité expérimentale qui n'est pas toujours juste.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Activer la prise en charge d'Unstoppable Domains dans Brave?</translation>
 <translation id="5015092481905019948">Brave utilisera <ph name="PROVIDER_NAME"/> pour résoudre les noms de domaine <ph name="DOMAIN_LIST"/> qui sont sur <ph name="DOMAIN_PROVIDER_NAME"/>. Brave masque votre adresse IP. Si vous activez cette option, <ph name="PROVIDER_NAME"/> verra que quelqu'un tente de consulter ces domaines, mais rien d'autre. Consultez les <ph name="BEGIN_PROVIDER_TOU_LINK"/>conditions d'utilisation<ph name="END_PROVIDER_TOU_LINK"/> et la <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>politique de confidentialité<ph name="END_PROVIDER_PRIVACY_LINK"/> de<ph name="PROVIDER_NAME"/>.</translation>
@@ -483,11 +483,15 @@
 <translation id="1518915449477235311">Autoriser <ph name="URL"/> à ouvrir les conversations IA Leo dans Brave?</translation>
 <translation id="4355784577209159847">Autoriser l'utilisation de témoins tiers pour l'ancienne connexion à Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> souhaite utiliser des témoins tiers pour l'ancienne connexion à Google</translation>
+<translation id="5582087890067572966">🎉 Vous gagnez désormais de l'argent!</translation>
+<translation id="4364336119478610380">Vous gagnez de l'argent à chaque fois que ce type de notification s'affiche à l'écran. Inutile de cliquer dessus pour gagner de l'argent.</translation>
+<translation id="5893017172751072752">Vous gagnez de l'argent lorsqu'une notification Publicités Brave s'affiche</translation>
+<translation id="3447730462826640312">Vous n'avez pas besoin de cliquer sur la notification pour gagner de l'argent, mais cliquez dessus si son contenu vous intéresse!</translation>
 <translation id="2104347391516032700">Service de récompenses Bat</translation>
 <translation id="5939518447894949180">Recommencer</translation>
-<translation id="3349204812119681938">Réinitialiser Brave Rewards</translation>
-<translation id="4915997950539925115">Si vous procédez à la réinitialisation, votre profil Récompenses Brave actuel sera supprimé et les Récompenses Brave ne seront plus activées. Si vous réactivez les Récompenses Brave plus tard, vous recommencerez avec un tout nouveau profil. Lisez notre <ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/> pour en savoir plus.</translation>
-<translation id="4806029412510565611">Je comprends que mon profil Récompenses Brave actuel et mes données Récompenses Brave seront supprimés de mon appareil, et j'ai lu l'<ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/>.</translation>
+<translation id="3349204812119681938">Réinitialiser le programme de récompenses Brave</translation>
+<translation id="4915997950539925115">Si vous procédez à la réinitialisation, votre profil du programme de récompenses Brave actuel sera supprimé et les récompenses Brave ne seront plus activées. Si vous réactivez les récompenses Brave plus tard, vous recommencerez avec un tout nouveau profil. Lisez notre <ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/> pour en savoir plus.</translation>
+<translation id="4806029412510565611">Je comprends que mon profil du programme de récompenses Brave actuel et mes données de récompenses Brave seront supprimés de mon appareil, et j'ai lu l'<ph name="LINK_BEGIN"/>article d'assistance concernant la réinitialisation<ph name="LINK_END"/>.</translation>
 <translation id="8835777704176513489">Désactiver et réinitialiser les Récompenses</translation>
 <translation id="1570055891464728855">Réinitialiser maintenant</translation>
 <translation id="6431824580671230473">Ne vous inquiétez pas : tous les BAT déjà présents dans votre compte <ph name="PROVIDER"/> ne seront pas affectés par la réinitialisation.</translation>
@@ -495,7 +499,7 @@
 <translation id="5803444802570526678">Le compte <ph name="PROVIDER"/> n’est plus pris en charge.</translation>
 <translation id="3794463124070392793">Confirmez votre région</translation>
 <translation id="4620879582500359234">Toutes les BAT déjà présentes dans votre compte <ph name="PROVIDER"/> y resteront.</translation>
-<translation id="935303782545595866">Votre historique de 30 jours d'Ads et vos autres paramètres du programme de récompenses Brave seront réinitialisés.</translation>
+<translation id="935303782545595866">Votre historique de 30 jours de publicités et vos autres paramètres du programme de récompenses Brave seront réinitialisés.</translation>
 <translation id="6279637499952804615">Vous pouvez choisir un autre compte de paiement après cette étape.</translation>
 <translation id="5419770758409992826">Votre compte <ph name="PROVIDER"/> sera déconnecté, et votre profil du programme de récompenses Brave sera réinitialisé.</translation>
 <translation id="7717357606512850995">Vérifier l'état</translation>
@@ -508,28 +512,28 @@
 <translation id="2394961582378297792">Déconnecté</translation>
 <translation id="7934950257968365573">Connectez-vous à votre compte <ph name="PROVIDER"/></translation>
 <translation id="8631427463833030968">Gérer les publicités</translation>
-<translation id="590733288489975971">Rewards d'Ads</translation>
+<translation id="590733288489975971">Programme de récompenses à partir de publicités</translation>
 <translation id="5308380583665731573">Connecter</translation>
 <translation id="3026978804849658576">Afficher le relevé</translation>
 <translation id="1848737374354350807">Solde</translation>
 <translation id="6516984207843289176">Connecter le compte</translation>
 <translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Envie de gagner de l'argent?<ph name="BOLD_END"/> Connectez un compte pour que nous puissions vous envoyer vos revenus.</translation>
 <translation id="902298128239575729">Envoyer des contributions avec le programme de récompenses Brave</translation>
-<translation id="6276721355724491595">Une fois que vous aurez connecté un compte de dépôt, vous pourrez envoyer des contributions sur demande à vos créateurs préférés en utilisant votre solde associé au programme de récompenses Brave.</translation>
+<translation id="6276721355724491595">Une fois que vous aurez connecté un compte dépositaire, vous pourrez envoyer des contributions sur demande à vos créateurs préférés en utilisant votre solde associé au programme de récompenses Brave.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {Ce mois-ci, vous avez visité # créateur soutenu par Récompenses Brave}
-      other {Ce mois-ci, vous avez visité # créateurs soutenus par Récompenses Brave}
+      =1 {Ce mois-ci, vous avez visité # créateur soutenu par le programme de récompenses Brave}
+      other {Ce mois-ci, vous avez visité # créateurs soutenus par le programme de récompenses Brave}
     }</translation>
 <translation id="3264975266761862670">Prêt à commencer à gagner de l'argent ?</translation>
 <translation id="2784412028126205842">Connecter le compte de paiement</translation>
-<translation id="6067959437127691361">L'utilisation de Récompenses Brave aide à soutenir des créateurs de contenu et vous permet de gagner des BAT.</translation>
+<translation id="6067959437127691361">L'utilisation du programme de récompenses Brave aide à soutenir des créateurs de contenu et vous permet de gagner des BAT.</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="3863981251715594911">Comment ça marche?</translation>
 <translation id="7931127789630755251">Gagnez des jetons pour les publicités privées que vous voyez dans Brave</translation>
 <translation id="2278423362884506724">Soutenez les créateurs de contenu et utilisez vos jetons pour acheter des cartes-cadeaux, les échanger contre d'autres devises, etc.</translation>
 <translation id="6278643716658443228">Paramètres de récompenses</translation>
 <translation id="2862978891748913252">Sélectionnez votre pays</translation>
-<translation id="3717922248131893262">Pour continuer à utiliser les récompenses Brave, sélectionnez votre pays pour que nous puissions vous afficher les bonnes options et publicités pour votre région. <ph name="LINK_BEGIN"/>Politique de confidentialité<ph name="LINK_END"/></translation>
+<translation id="3717922248131893262">Pour continuer à utiliser le programme de récompenses Brave, sélectionnez votre pays pour que nous puissions vous afficher les bonnes options et publicités pour votre région. <ph name="LINK_BEGIN"/>Politique de confidentialité<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Commencer à utiliser Récompenses</translation>
 <translation id="2956070106555335453">Résumé</translation>
 <translation id="2369994359029526515">Créateur non vérifié</translation>
@@ -565,13 +569,13 @@
 <translation id="5234764350956374838">Fermer</translation>
 <translation id="7859066142771796818">Utilisez les jetons pour acheter des cartes-cadeaux, les échanger contre d'autres devises, soutenir les créateurs de contenu, et plus encore.</translation>
 <translation id="7352651011704765696">Quelque chose n'a pas fonctionné</translation>
-<translation id="5425006356459378415">Les récompenses Brave ne sont pas disponibles</translation>
-<translation id="909076461795862330">Une erreur s'est produite lors de la configuration des récompenses Brave. Veuillez réessayer.</translation>
+<translation id="5425006356459378415">Le programme de récompenses Brave n'est pas disponible</translation>
+<translation id="909076461795862330">Une erreur s'est produite lors de la configuration du programme de récompenses Brave. Veuillez réessayer.</translation>
 <translation id="3180990265682133881">Une erreur s'est produite lors de la configuration de votre pays. Veuillez réessayer.</translation>
-<translation id="5931798071481566121">Les nouvelles inscriptions aux récompenses Brave ne sont pas activées dans votre région. Vous pourrez réessayer plus tard. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
+<translation id="5931798071481566121">Les nouvelles inscriptions au programme de récompenses Brave ne sont pas activées dans votre région. Vous pourrez réessayer plus tard. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="6439128034594289376">Hourra! vous êtes prêt!</translation>
 <translation id="6136350726756049410">Désormais, vous pouvez être récompensé pour avoir regardé des publicités. Vous contribuez à rendre le Web meilleur pour tous. Et c’est génial!</translation>
-<translation id="5547108999862247665">Comment fonctionnent les Récompenses Brave?</translation>
+<translation id="5547108999862247665">Comment fonctionne le programme de récompenses Brave?</translation>
 <translation id="3970520675790340955">Sélectionnez votre pays pour que nous puissions vous afficher les bonnes options et publicités pour votre région.</translation>
 <translation id="6945221475159498467">Sélectionner</translation>
 <translation id="3279158300746391749">Appuyez sur l'icône BAT <ph name="BAT_ICON"/> dans la barre de l'URL pour commencer.</translation>
@@ -581,9 +585,9 @@
 <translation id="840952951051929644">En activant les Récompenses, vous acceptez les <ph name="TOS_LINK_BEGIN"/>Conditions d'utilisation<ph name="TOS_LINK_END"/> et la <ph name="PP_LINK_BEGIN"/>Politique de confidentialité<ph name="PP_LINK_END"/>.</translation>
 <translation id="5259608623172605993">Gagnez de l'argent en visualisant des publicités privées dans Brave</translation>
 <translation id="3099020087817489135">Bénéficier d'avantages spéciaux et de réductions</translation>
-<translation id="3991575120992914717">Activer les récompenses Brave</translation>
-<translation id="1015443539415537847">Les récompenses Brave ne sont malheureusement pas disponibles</translation>
-<translation id="5007776270364097327">Malheureusement, il semblerait que vous résidiez dans une région au sein de laquelle les récompenses Brave ne sont pas disponibles.</translation>
+<translation id="3991575120992914717">Activer le programme de récompenses Brave</translation>
+<translation id="1015443539415537847">Le programme de récompenses Brave n'est malheureusement pas disponible</translation>
+<translation id="5007776270364097327">Malheureusement, il semblerait que vous résidiez dans une région où le programme de récompenses Brave n'est pas disponible.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">N'ayez crainte.</translation>
 <translation id="5027616819996705541">Vous pouvez toujours naviguer de manière anonyme !</translation>
@@ -597,9 +601,9 @@
 <translation id="4185473179105062442">Recevez les BAT directement à une adresse de cryptomonnaie en garde autonome</translation>
 <translation id="5802986777701714573">Nous avons ajouté une nouvelle façon pour vous de recevoir vos récompenses mensuelles BAT. Associez un compte de l'un de nos partenaires ou utilisez la nouvelle option de garde autonome pour commencer à gagner dès maintenant.</translation>
 <translation id="3251885322612056119">Conditions d'utilisation mises à jour</translation>
-<translation id="7454675823870922788">Nous avons mis à jour les conditions d'utilisation des Récompenses Brave. Nous avons effectué ces mises à jour pour clarifier nos conditions et garantir qu'elles prennent en compte les nouvelles fonctionnalités. Si vous continuez à utiliser les Récompenses Brave, vous acceptez les nouvelles conditions d'utilisation. Si vous ne les acceptez pas, vous pouvez <ph name="LINK_BEGIN"/>réinitialiser<ph name="LINK_END"/> les Récompenses Brave, ce qui entraînera la désactivation de la fonctionnalité.</translation>
-<translation id="616595399243298960">Nous avons mis à jour nos conditions de service. Pour continuer à le programme de récompenses Brave, veuillez lire et accepter les nouvelles conditions.</translation>
-<translation id="5192526308598085294">Consultez les <ph name="LINK_BEGIN"/>conditions d'utilisation des Récompenses Brave<ph name="LINK_END"/></translation>
+<translation id="7454675823870922788">Nous avons mis à jour les conditions d'utilisation du programme de récompenses Brave. Nous avons effectué ces mises à jour pour clarifier nos conditions et garantir qu'elles prennent en compte les nouvelles fonctionnalités. Si vous continuez à utiliser les récompenses Brave, vous acceptez les nouvelles conditions d'utilisation. Si vous ne les acceptez pas, vous pouvez <ph name="LINK_BEGIN"/>réinitialiser<ph name="LINK_END"/> les récompenses Brave, ce qui entraînera la désactivation de la fonctionnalité.</translation>
+<translation id="616595399243298960">Nous avons mis à jour nos conditions de service. Pour continuer à utiliser le programme de récompenses Brave, veuillez lire et accepter les nouvelles conditions.</translation>
+<translation id="5192526308598085294">Consultez les <ph name="LINK_BEGIN"/>conditions d'utilisation du programme de récompenses Brave<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">J'accepte</translation>
 <translation id="343114360276812078">Voir les conditions</translation>
 <translation id="86107454835395919">Définir comme contribution mensuelle</translation>
@@ -655,28 +659,28 @@
 <translation id="756341217015623253">Se connecter ou s'inscrire</translation>
 <translation id="2653844658857826081">NOUVEAU</translation>
 <translation id="1165039591588034296">Erreur</translation>
-<translation id="8673410329158754690">Vous avez atteint le nombre maximum de profils pour ce compte <ph name="PROVIDER"/>.</translation>
+<translation id="8673410329158754690">Vous avez atteint le nombre maximum de profils du programme de récompenses Brave pour ce compte <ph name="PROVIDER"/>.</translation>
 <translation id="8385898883512695376">Limite atteinte sur le compte de paiement</translation>
-<translation id="6895088073061692390">Malheureusement, votre profil Brave Rewards a été signalé, car nos contrôles automatisés ont détecté une activité Brave Ads inattendue.</translation>
-<translation id="4229056297802204697">Tant que votre profil est signalé, vous pouvez continuer à voir des publicités, mais vous ne pourrez pas recevoir de paiements. Vous ne pourrez pas non plus connecter un compte de dépôt à Brave Rewards.</translation>
+<translation id="6895088073061692390">Malheureusement, votre profil du programme de récompenses Brave a été signalé parce que nos vérifications automatisées ont détecté une activité inhabituelle liée aux publicités Brave.</translation>
+<translation id="4229056297802204697">Tant que votre profil est signalé, vous pouvez continuer à voir des publicités, mais vous ne pourrez pas recevoir de paiements. Vous ne pourrez pas non plus connecter un compte dépositaire au programme de récompenses Brave.</translation>
 <translation id="5124846913141379164">Il est possible que votre profil ait été signalé par erreur et qu'aucune action immédiate ne soit requise de votre part. Il est possible que le signalement sur votre profil soit supprimé à l'avenir.</translation>
-<translation id="8947002243324362172">En savoir plus sur le processus de Brave pour signaler les profils Récompenses.</translation>
-<translation id="4699218748197721830">Le profil Récompenses Brave est signalé</translation>
+<translation id="8947002243324362172">En savoir plus sur le processus de signalement des profils du programme de récompenses Brave.</translation>
+<translation id="4699218748197721830">Le profil du programme de récompenses Brave a été signalé</translation>
 <translation id="2607420597216860026">Veuillez réessayer après avoir terminé la vérification d'identifiant sur <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Il vous faut un compte validé pour vous connecter</translation>
-<translation id="1859789048900659918">Il semblerait que le pays de vos récompenses Brave ne corresponde pas à celui du compte <ph name="PROVIDER"/> que vous essayez de connecter.</translation>
+<translation id="1859789048900659918">Hum, il semble que le pays de votre programme de récompenses Brave ne corresponde pas au pays du compte <ph name="PROVIDER"/> que vous essayez de connecter.</translation>
 <translation id="3080649636035373911">Les pays ne correspondent pas</translation>
-<translation id="5260522591743022748">Hmm, vos récompenses Brave semblent avoir déjà été validées par un autre compte <ph name="PROVIDER"/>. Essayez de les valider à nouveau avec votre ancien compte.</translation>
+<translation id="5260522591743022748">Hum, il semble que votre programme de récompenses Brave a déjà été vérifié avec un autre compte <ph name="PROVIDER"/>. Veuillez réessayer la vérification avec votre compte précédent.</translation>
 <translation id="6408621361472415607">Autre compte</translation>
-<translation id="5225019866741699134">Il semblerait qu'il ne soit pas possible de connecter <ph name="PROVIDER"/> aux récompenses Brave pour l'instant. Veuillez réessayer ultérieurement.</translation>
+<translation id="5225019866741699134">Il semblerait qu'il ne soit pas possible de connecter <ph name="PROVIDER"/> au programme de récompenses Brave pour l'instant. Veuillez réessayer ultérieurement.</translation>
 <translation id="6105073131081187815">Vous pouvez consulter l'<ph name="BEGIN_LINK"/>état du service ici<ph name="END_LINK"/>.</translation>
 <translation id="3969419585013689529">Connexion au partenaire de portefeuille de garde temporairement indisponible</translation>
-<translation id="1024520300696337331">Votre compte<ph name="PROVIDER"/> ne peut pas être connecté à votre profil Récompenses Brave. Votre compte<ph name="PROVIDER"/> est inscrit dans un pays où la connexion aux récompenses Brave n'est pas actuellement prise en charge.</translation>
-<translation id="619384413404021992">Consultez la <ph name="LINK_BEGIN"/>liste actuelle des régions prises en charge et apprenez-en plus<ph name="END_LINK"/> sur la manière de connecter un compte de dépôt aux récompenses Brave.</translation>
+<translation id="1024520300696337331">Votre compte <ph name="PROVIDER"/> ne peut pas être connecté à votre profil du programme de récompenses Brave pour le moment. Votre compte <ph name="PROVIDER"/> est enregistré dans un pays qui n’est actuellement pas pris en charge pour la connexion au programme de récompenses Brave.</translation>
+<translation id="619384413404021992">Consultez la <ph name="LINK_BEGIN"/> liste actuelle des régions prises en charge et apprenez-en davantage <ph name="END_LINK"/> sur la connexion d’un compte avec dépositaire au programme de récompenses Brave.</translation>
 <translation id="7933193151688235283">Région non prise en charge</translation>
 <translation id="5376524136040178759">Selon Uphold, votre compte fait actuellement l'objet de limitations. Veuillez vous connecter à votre compte Uphold pour vérifier que vous n'avez pas reçu d'avertissement ou que vous n'avez pas d'action à effectuer, puis réessayez. Par exemple, vous devez peut-être communiquer des renseignements supplémentaires à Uphold.</translation>
 <translation id="6349168810769273818">Fonctionnalités du compte Uphold limitées</translation>
-<translation id="1279668677171152085">Impossible de valider la demande de connexion de votre compte <ph name="PROVIDER"/> aux Récompenses Brave. <ph name="BEGIN_LINK"/>Communiquez avec l'assistance<ph name="END_LINK"/> pour obtenir de l'aide.</translation>
+<translation id="1279668677171152085">Un problème est survenu lors de la validation de votre demande de connexion de votre compte <ph name="PROVIDER"/> au programme de récompenses Brave. Vous pouvez <ph name="BEGIN_LINK"/> communiquer avec l’assistance <ph name="END_LINK"/> pour obtenir de l'aide.</translation>
 <translation id="8761736799800527591">La demande n'a pas pu être validée</translation>
 <translation id="8285276813470932793">Nous n'avons pas pu traiter votre demande. Veuillez réessayer, et <ph name="LINK_BEGIN"/>communiquez avec l'assistance<ph name="LINK_END"/> si le problème persiste.</translation>
 <translation id="135956957367307069">Votre demande est toujours en cours de traitement, veuillez patienter.</translation>
@@ -716,7 +720,7 @@
 <translation id="4094286757932277327">Portefeuille de garde</translation>
 <translation id="1511998469385905184">Vous pouvez réessayer plus tard.</translation>
 <translation id="7550470870580166294">Des fonds insuffisants</translation>
-<translation id="7020972866926315918">Il semblerait que vous soyez déconnecté du compte <ph name="PROVIDER"/> associé au programme de récompenses Brave. Connectez-vous pour continuer.</translation>
+<translation id="7020972866926315918">Il semble que vous êtes déconnecté de <ph name="PROVIDER"/> pour le programme de récompenses Brave. Connectez-vous de nouveau pour continuer.</translation>
 <translation id="1166682575529520472">Chaque mois</translation>
 <translation id="2134931506717037391">Envoyer <ph name="AMOUNT"/> BAT</translation>
 <translation id="4791565605790056151">Envoi de contribution</translation>
@@ -735,7 +739,6 @@
 <translation id="1288078776976153868">réseau</translation>
 <translation id="1148827340205946630">L'utilisateur a rejeté la demande.</translation>
 <translation id="2403819048476450281">Paramètres non valides.</translation>
-<translation id="3849003816301348130">L'adresse de destination est sur la liste OFAC SDN.</translation>
 <translation id="3955144560853195652">La chaîne <ph name="VALUE"/> n'a pas été ajoutée</translation>
 <translation id="1875861420974447980">Cet ID de chaîne est déjà utilisé</translation>
 <translation id="167698752210114155">Une erreur interne s'est produite</translation>
@@ -849,11 +852,12 @@
 <translation id="3751611888003301070">Itinéraires d'acheminement</translation>
 <translation id="3799091982455573025">Échanger sur <ph name="NETWORK_NAME"/> via <ph name="EXCHANGE_NAME"/></translation>
 <translation id="5136093123841570193">Créer un pont de <ph name="FRIST_NETWORK_NAME"/> vers <ph name="SECOND_NETWORK_NAME"/></translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} étape}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} étapes}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} étape)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} étapes)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> via <ph name="PROVIDER_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> via</translation>
 <translation id="646023614746251785">Confirmer l’échange</translation>
 <translation id="6264944956989873014">Confirmer le pont</translation>
 <translation id="7067917728851842589">Confirmer l’envoi</translation>
@@ -934,6 +938,7 @@
 <translation id="1108298724135935307">Sites connectés</translation>
 <translation id="5716350339763180836">Soldes</translation>
 <translation id="5538251867290702601">Graphique</translation>
+<translation id="8123016618655108594">Distribution</translation>
 <translation id="352407037922720467">Onglet des NFT</translation>
 <translation id="163697698769819510">Sauvegardez votre portefeuille maintenant afin de protéger vos actifs et de vous assurer de ne jamais en perdre l'accès.</translation>
 <translation id="1018806299114415224">Sauvegarder maintenant</translation>
@@ -986,6 +991,7 @@
 <translation id="2795015351889043417">Fichier JSON</translation>
 <translation id="5468881191994555667">Choisir un fichier</translation>
 <translation id="795667975304826397">Aucun fichier choisi</translation>
+<translation id="6720675936326555106">Fichier sélectionné</translation>
 <translation id="5891811606602061966">Échec de l'importation du compte, veuillez réessayer.</translation>
 <translation id="6566535583781706170">Importer le compte</translation>
 <translation id="5051929972046200722">Sélectionner votre appareil de portefeuille physique</translation>
@@ -1032,10 +1038,12 @@
 <translation id="2416098547200943834">REMARQUE : une clé privée est fournie en tant fichier JSON codé en hexadécimal contenant la clé privée et des informations du protocole. <ph name="LINK_START"/> En savoir plus<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">REMARQUE : une clé privée doit être fournie en tant fichier JSON codé en hexadécimal contenant la clé privée et des informations du protocole. <ph name="LINK_START"/> En savoir plus<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">REMARQUE : Seules les clés étendues <ph name="FORMAT"/> sont prises en charge.</translation>
+<translation id="6457746820359933716">Importez à partir d'un fichier JSON exporté depuis Polkadot.js ou des portefeuilles compatibles. Entrez le mot de passe utilisé pour chiffrer l'exportation.</translation>
 <translation id="9133762451347918196">Comptes Testnet</translation>
 <translation id="42126664696688958">Exporter</translation>
 <translation id="1366855498335432549">Dépôt</translation>
 <translation id="790104325876206743">Paramètres du compte</translation>
+<translation id="8856844353253421399">Dernière mise à jour : <ph name="TIME_AGO"/></translation>
 <translation id="6322030314101903925">Aucun actif disponible</translation>
 <translation id="836614343069504000">Déposez ou achetez des jetons pour commencer. Si vous ne voyez pas les jetons d'un compte importé, vérifiez les filtres et les paramètres d'affichage. Il se peut que des jetons inconnus doivent être ajoutés en tant qu'actifs personnalisés.</translation>
 <translation id="2902856457593699108">Afficher la clé</translation>
@@ -1154,12 +1162,12 @@
 <translation id="4324239559624557455">Pendant 24 heures</translation>
 <translation id="9139452553033760558">Pendant 1 semaine</translation>
 <translation id="1658834457013045127">Définitivement</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connecté</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> déconnecté</translation>
-<translation id="5317781812114905957">Instructions</translation>
-<translation id="1178198982208000092">Connecter votre <ph name="DEVICE_NAME"/></translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> est connecté à <ph name="DEVICE_NAME"/></translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> est déconnecté</translation>
+<translation id="434328838837168401">Afficher les instructions</translation>
+<translation id="13670155462680755">Connectez votre <ph name="ACCOUNT_NAME"/> pour continuer</translation>
 <translation id="6941881257520473899">Le portefeuille physique nécessite une confirmation sur l'appareil.</translation>
-<translation id="2288190100157580461">Le portefeuille physique nécessite que l'application <ph name="NETWORK"/> soit ouverte sur <ph name="DEVICE_NAME"/></translation>
+<translation id="4108619287854657806">Le portefeuille physique nécessite que l'application <ph name="NETWORK"/> soit ouverte sur <ph name="ACCOUNT_NAME"/></translation>
 <translation id="8687869982094542529">envoyé</translation>
 <translation id="5013754027092416509">reçu</translation>
 <translation id="5867988533873716616">L'URL de l'explorateur de bloc n'est pas disponible.</translation>
@@ -1344,6 +1352,7 @@
 <translation id="8491675129455635799">Regrouper les actifs par</translation>
 <translation id="5331775401966766526">Filtres et paramètres d'affichage</translation>
 <translation id="5332541468425943610">Paramètres d'affichage des NFT</translation>
+<translation id="1539149309756422999">Répartition des actifs</translation>
 <translation id="886032538431162695">Trier les actifs</translation>
 <translation id="6080181976198929758">Trier par valeur fiduciaire ou par nom</translation>
 <translation id="2563815561570398537">Masquer les soldes avec de petits montants</translation>
@@ -1587,6 +1596,9 @@
 <translation id="5882719778740918116">N'envoyez des jetons à cette adresse que pour <ph name="VALUE"/></translation>
 <translation id="6885009592653876601">Achetez, envoyez et échangez plus de 200 crypto-actifs.</translation>
 <translation id="8716223552348254401">Natif du navigateur, sans extensions risquées</translation>
+<translation id="1198271701881992799">Commençons</translation>
+<translation id="7904301836463577071">Achetez votre première crypto avec une carte de crédit ou de débit</translation>
+<translation id="3721561070667360112">Déposez de la crypto depuis un autre portefeuille ou échange</translation>
 <translation id="4559901986238865734">Prise en charge multi-chaîne et NFT</translation>
 <translation id="296101411136980896">Cliquez pour changer</translation>
 <translation id="753655478253155745">Douzième</translation>
@@ -1734,6 +1746,7 @@
 <translation id="8549067157732633185">Ce jeton est vérifié</translation>
 <translation id="2130170065617939165">Ce jeton est vérifié sur <ph name="NUMBER_OF_LISTS"/> listes</translation>
 <translation id="1554316484739382186">Compte de dépense : <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">Compte <ph name="PROVIDER"/></translation>
 <translation id="5360752485622434494">BAT des récompenses Brave sur <ph name="PROVIDER"/></translation>
@@ -1878,6 +1891,7 @@
 <translation id="4150336849480030462">Transfert de jeton SPL avec création d'un compte de jetons associé</translation>
 <translation id="2244921323472112851">Nous ne trouvons pas la page que vous recherchez pour le moment.</translation>
 <translation id="6277237872689140644">Elle a peut-être été déplacée ou bien l'URL contient une faute de frappe.</translation>
+<translation id="1788572014530152502">Il y a eu une erreur lors du traitement de votre transaction. Dans de nombreux cas, cela signifie qu'il n'y a pas assez de <ph name="SYMBOL"/> pour couvrir les frais de réseau. Essayez avec un montant inférieur.</translation>
 <translation id="2737084171727561244">Aller au portefeuille</translation>
 <translation id="3499452861061048987">Ajouter un jeton</translation>
 <translation id="5046066249040287308">Service d'aide du portefeuille Brave</translation>
@@ -2127,12 +2141,14 @@
 <translation id="6459036216700972269">Annuler la vue partagée des onglets</translation>
 <translation id="4235382917338421035">Changer la position de l'onglet</translation>
 <translation id="4288085058450834672">Afficher les applications</translation>
+<translation id="4750337523930607658">Activer/désactiver le mode Focus</translation>
 <translation id="4144468798716165316">Commandes rapides</translation>
 <translation id="3617523374417810198">Nouvelle vue partagée</translation>
 <translation id="8571323456914890254">Ouvrir dans une vue partagée</translation>
 <translation id="5329136173514538969">Annuler la vue partagée des onglets</translation>
 <translation id="7595612919377246359">Changer la position de l'onglet</translation>
 <translation id="2367972762794486313">Afficher les applications</translation>
+<translation id="3142853026316054951">Activer/désactiver le mode Focus</translation>
 <translation id="3468387898712904997">Nouvel alias courriel</translation>
 <translation id="8591883849678260674">Voir l'original</translation>
 <translation id="1969654232209826429">min. de lecture</translation>
@@ -2180,6 +2196,7 @@
 <translation id="5923170497201832190">Faire défiler l'onglet vers le bas</translation>
 <translation id="6219262425964000211">Déposez les fichiers ici</translation>
 <translation id="4313763911013851687">Déposez des fichiers ici pour les ajouter à la conversation</translation>
+<translation id="8206915760129310348">Certains fichiers n'ont pas pu être lus et n'ont pas été joints</translation>
 <translation id="4524675003624341892">Suggérer des questions…</translation>
 <translation id="4567071417854988869">Résumer cette vidéo</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2190,7 +2207,9 @@
 <translation id="7932221068776853847">Se déconnecter pour ne plus envoyer le contenu de cette page à Leo et entamer une nouvelle conversation</translation>
 <translation id="8743383817154663379">Un problème est survenu lors du traitement de votre demande. Veuillez réessayer.</translation>
 <translation id="2712650703044366764">Ce modèle a un point de terminaison invalide. Veuillez vérifier votre configuration et réessayer.</translation>
-<translation id="1167803637855350748">Un problème réseau s'est produit lors de la connexion à Leo. Vérifiez votre connexion et réessayez.</translation>
+<translation id="7092656392206649236">Un problème est survenu lors de la communication avec Leo. Veuillez réessayer.</translation>
+<translation id="3552709750512842961">Code de statut : <ph name="STATUS_CODE"/>, code d'erreur : <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">Code de statut : <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Vous avez atteint la limite de taux premium. Veuillez réessayer dans quelques heures.</translation>
 <translation id="3683964919745779766">Vous avez atteint la limite de taux pour ce modèle ou n'avez plus assez de crédit. Veuillez réessayer.</translation>
 <translation id="7692501701960747469">La clé API configurée pour ce modèle est invalide. Veuillez vérifier votre configuration et réessayer.</translation>
@@ -2473,7 +2492,9 @@
 <translation id="5663901348199429994">Vos alias courriel</translation>
 <translation id="9046133327037621173">Nouvel alias courriel</translation>
 <translation id="3768606658230902536">Créez une adresse courriel aléatoire qui redirige vers votre boîte de réception tout en gardant votre adresse courriel personnelle privée.</translation>
-<translation id="6887156107256264506">Vous avez atteint la limite de 5 alias courriel gratuits. Cliquez sur « Gérer » pour réutiliser ou supprimer un alias.</translation>
+<translation id="4452721050684632493">Limite d'alias atteinte</translation>
+<translation id="2912191433415590080">Vous avez utilisé l'ensemble de vos <ph name="MAX_ALIASES"/> alias courriel. Supprimez un alias existant pour en créer un nouveau.</translation>
+<translation id="3847337908410945070">Vos alias (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">Nouvel alias</translation>
 <translation id="8072910658503112482">Suggérer un autre alias courriel</translation>
 <translation id="7710361355427562228">Génération d'un nouvel alias...</translation>
@@ -2516,6 +2537,8 @@
 <translation id="2991633563551889054">Masquer le module Appels</translation>
 <translation id="5355776323718420036">Masquer mes sites</translation>
 <translation id="1689504141194856995">Masquer le module VPN</translation>
+<translation id="2919329118360099847">Brave sera utilisé comme moteur de recherche dans la barre d'adresse pour les fenêtres normales.</translation>
+<translation id="6792837540759934892">Définir Brave comme moteur de recherche par défaut?</translation>
 <translation id="8262911270872215147">Personnaliser les actualités</translation>
 <translation id="3884037897537157986">Désactiver les actualités</translation>
 <translation id="7847477075635510673">Masquer les actualités</translation>
@@ -2531,7 +2554,7 @@
 <translation id="3500134717967948757">Afficher le widget Leo IA dans les nouveaux onglets</translation>
 <translation id="6851426306697017546">Afficher l'horloge</translation>
 <translation id="4844370919312937270">Afficher le widget du moteur de recherche dans les nouveaux onglets</translation>
-<translation id="7328310113820087094">Avec <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, vous pouvez gagner pour voir des publicités sur la page Nouvel onglet.</translation>
+<translation id="7328310113820087094">Avec le <ph name="LINK_BEGIN"/> programme de récompenses Brave <ph name="LINK_END"/>, vous pouvez gagner des récompenses en voyant des publicités sur la page du nouvel onglet.</translation>
 <translation id="4100520468072294616">Afficher les annonces de la page de nouvel onglet</translation>
 <translation id="5009354496127441090">Afficher mes sites</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
@@ -2562,7 +2585,8 @@
 <translation id="4724752924364329714">Si ce site semble en panne, essayez de désactiver Shields.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Remarque : cela pourrait diminuer la protection de la vie privée offerte par Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Cela peut réduire les protections de confidentialité de Brave. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Traqueurs, annonces et autres contenus bloqués.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> traqueurs, annonces et autres contenus bloqués</translation>
+<translation id="2275121279487164685">Traqueurs et annonces</translation>
 <translation id="4968268657895673116">Ce site ne fonctionne-t-il pas correctement avec les boucliers activés ?</translation>
 <translation id="5412004902081180614">Signaler</translation>
 <translation id="3620004479054499575">Avez-vous des difficultés avec ce site?</translation>
@@ -2624,9 +2648,11 @@
 <translation id="3795015906457257780">Vous consultez ce site sans les protections de confidentialité de Brave.</translation>
 <translation id="7194012750329511146">Boucliers Brave
 <ph name="NUMBER"/> traqueurs, publicités et autres éléments bloqués</translation>
+<translation id="2900068182947574679">Scripts</translation>
 <translation id="4292121526390005808">Scripts bloqués</translation>
 <translation id="5046271170844958713">Scripts autorisés</translation>
 <translation id="199862531047218413">protections anti-empreinte numérique appliquées</translation>
+<translation id="896105002981074545">Protections contre le fingerprinting</translation>
 <translation id="5032505924781383272">Les protections appliquées n'indiquent pas nécessairement que cette page Web essaie de prendre l'empreinte numérique de votre navigateur.</translation>
 <translation id="1905384713982899903">Empreintes numériques bloquées</translation>
 <translation id="314364527871618241">Empreintes numériques autorisées</translation>
@@ -2639,6 +2665,7 @@
 <translation id="542789539047208469">Infos sur le site</translation>
 <translation id="7586067492365979844">Les boucliers Brave ont un nouveau design et une nouvelle page d'accueil. Ils s'intègrent désormais à l'information du site pour une expérience centralisée.</translation>
 <translation id="9114542678887529043">Les boucliers Brave ont un nouveau design et une nouvelle page d'accueil. Accédez-y en cliquant sur l'icône du site dans la barre d'adresses.</translation>
+<translation id="4242533952199664413">Ouvrir les paramètres</translation>
 <translation id="6294662480095808915">La confidentialité. Une évidence.</translation>
 <translation id="4366423156486478559">Profitez des outils de protection de Brave chaque fois que vous cliquez sur un lien. Optez pour Brave comme navigateur par défaut et naviguez… en toute confidentialité.</translation>
 <translation id="3830912418080848377">Importer les paramètres</translation>
@@ -2650,7 +2677,7 @@
 <translation id="2273851479262317744">Définir Brave comme navigateur par défaut</translation>
 <translation id="5037676449506322593">Tout sélectionner</translation>
 <translation id="5148943178722443958">Aidez-nous à améliorer Brave.</translation>
-<translation id="479535542793009168">Stabilité et diagnostics</translation>
+<translation id="8874748598814587364">Stabilité</translation>
 <translation id="1097073572755862978">Envoyer des rapports de diagnostic en cas de dysfonctionnement. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Partager des données privées et anonymes sur les fonctionnalités utilisées par les utilisateurs de Brave. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Configuration terminée</translation>
@@ -2779,4 +2806,79 @@ Connectez-vous!</translation>
 <translation id="1602850501393095406">Appuyez sur ↑ pour mettre en surbrillance</translation>
 <translation id="8367705492654390392">Poser une question</translation>
 <translation id="8525248723479742219">Lire plus tard</translation>
+<translation id="1751249301761991853">Personnel</translation>
+<translation id="1122068467107743258">Travail</translation>
+<translation id="8372721116225477180">Social</translation>
+<translation id="1539343118617844331">École</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Bienvenue dans Brave Origin. Pour continuer, veuillez acheter ou restaurer votre achat Brave Origin.</translation>
+<translation id="4801175670604644729">Vous devez avoir un achat actif de Brave Origin pour utiliser ce navigateur.</translation>
+<translation id="4144294274624829008">Restaurer l'achat de Brave Origin</translation>
+<translation id="6080178356113101120">Acheter Brave Origin</translation>
+<translation id="1009496146858538651">Restaurer l'achat</translation>
+<translation id="3461564061600681423">Entrez votre identifiant d'achat pour activer votre achat de Brave Origin.</translation>
+<translation id="2036379724374431790">Identifiant d'achat</translation>
+<translation id="4348430971280118761">Entrez votre identifiant d'achat</translation>
+<translation id="7451866456310404779">Vérifier l'identifiant d'achat</translation>
+<translation id="8853195592604941919">Vérification en cours… Cela peut prendre une minute.</translation>
+<translation id="4633706444004110760">Merci d'avoir installé Brave Origin, une version du navigateur pour les utilisateurs qui n'ont pas besoin de toutes les fonctionnalités qui soutiennent Brave en tant qu'entreprise, mais qui veulent quand même la confidentialité que seul Brave offre. Les utilisateurs d'Origin continueront à bénéficier de notre confidentialité de pointe, du blocage des publicités et de la vitesse (via les boucliers Brave), ainsi que des mises à jour régulières des logiciels, des correctifs Chromium et des améliorations de sécurité et de confidentialité. Origin supprimera la plupart des autres fonctionnalités du navigateur.</translation>
+<translation id="5816720995022674532">Origin est gratuit sur les appareils Linux, mais reste <ph name="BEGIN_LINK"/>disponible à l'achat<ph name="END_LINK"/> si vous souhaitez soutenir Brave en tant qu'entreprise. L'achat déverrouille également la possibilité d'utiliser Origin sur les appareils Android, iOS, macOS et Windows.</translation>
+<translation id="3065220545261045367">Soutenir Brave en achetant Origin</translation>
+<translation id="2069499076031488636">Continuer avec Origin gratuitement sur Linux</translation>
+<translation id="5713644099811900409">Compte Brave</translation>
+<translation id="2906576968270573525">Connectez-vous ou créez un compte Brave</translation>
+<translation id="6972754398087986839">Démarrer</translation>
+<translation id="5378207817582281342">Vous avez presque terminé !</translation>
+<translation id="3750210661641549834">Pour créer votre compte, veuillez vérifier votre adresse courriel.</translation>
+<translation id="4129813507847680661">Saisir le code d’inscription</translation>
+<translation id="1672793037892810340">Vous devriez avoir reçu un courriel contenant un code à saisir.</translation>
+<translation id="4821255729182569254">Renvoyer le courriel de confirmation</translation>
+<translation id="5837679375142747484">Vous ne voyez pas le courriel ? Vérifiez votre dossier de pourriels ou <ph name="BEGIN_LINK"/>renvoyez-le<ph name="END_LINK"/>.</translation>
+<translation id="1080588816740959885">Vous ne voyez pas le courriel ? Vérifiez votre dossier de pourriels ou renvoyez-le.</translation>
+<translation id="1020730839570724178">Annuler l’inscription</translation>
+<translation id="4869737930995549965">Se déconnecter</translation>
+<translation id="5538654494923870167">Démarrez avec votre compte Brave</translation>
+<translation id="1544145635547515689">Créer un compte Brave</translation>
+<translation id="3828644479849256404">Vous avez déjà un compte ? Connectez-vous</translation>
+<translation id="6624553071240278643">Créez votre compte</translation>
+<translation id="6505120968393722022">Vous ne pouvez pas utiliser des adresses @bravealias.com pour créer un compte Brave. Veuillez réessayer avec un domaine différent.</translation>
+<translation id="8248460961680233459">Créer un mot de passe</translation>
+<translation id="4917385247580444890">Fort</translation>
+<translation id="5486261815000869482">Confirmer le mot de passe</translation>
+<translation id="7345706641791090287">Confirmez votre mot de passe</translation>
+<translation id="7114054701490058191">Les mots de passe ne correspondent pas</translation>
+<translation id="1293857704520741614">Connectez-vous à votre compte</translation>
+<translation id="118617366439356381">Mot de passe oublié ?</translation>
+<translation id="5183159033908953146">Confirmez l’adresse courriel de votre compte Brave et vous recevrez un lien pour réinitialiser votre mot de passe. Le lien ne sera valide que pendant 30 minutes.</translation>
+<translation id="3997368361371298873">Avertissement : puisque vous n’êtes pas connecté à cet appareil, réinitialiser votre mot de passe <ph name="BEGIN_BOLD"/>supprimera toutes vos données<ph name="END_BOLD"/> sur le serveur. Si vous disposez d’un autre appareil sur lequel vous êtes connecté, modifiez votre mot de passe à partir de cet appareil au lieu de le réinitialiser.</translation>
+<translation id="3674472551471103443">Réinitialiser votre mot de passe</translation>
+<translation id="2755539422340788311">Vérifiez votre courriel</translation>
+<translation id="6641436078676327508">Vous devriez avoir reçu un courriel contenant un code court. Veuillez le saisir ici pour continuer.</translation>
+<translation id="7228810962389847249">Saisissez le code ici</translation>
+<translation id="4683390091376980486">Confirmer le code</translation>
+<translation id="3970028678400797622">Renvoyer le code par courriel</translation>
+<translation id="2475982808118771221">Une erreur s’est produite</translation>
+<translation id="5430795854491041407">erreur</translation>
+<translation id="2232323423357029857">Le navigateur a rencontré une erreur inattendue<ph name="ERROR_CODE"/>. Veuillez redémarrer le navigateur et réessayer.</translation>
+<translation id="7167650060829320707">Erreur interne du serveur (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). Veuillez réessayer plus tard.</translation>
+<translation id="2387645930330673048">Ce compte est en attente de vérification du courriel.</translation>
+<translation id="2199962270601714404">Aucun compte trouvé pour cette adresse courriel. Veuillez réessayer ou créer un nouveau compte.</translation>
+<translation id="8130611002720478693">Mot de passe incorrect. Veuillez réessayer.</translation>
+<translation id="7144067487084094749">Un compte existe déjà pour cette adresse courriel. Essayez de vous connecter au lieu de créer un compte.</translation>
+<translation id="5288951359968156008">Le domaine de cette adresse courriel n’est pas pris en charge. Veuillez utiliser une adresse courriel différente.</translation>
+<translation id="7625678607509255072">Limite de vérifications par courriel dépassée. Veuillez attendre 30 minutes avant de réessayer.</translation>
+<translation id="4582421696414628320">La vérification a expiré. Recommencez le processus d’inscription.</translation>
+<translation id="8439543211004394821">Trop de codes incorrects ont été saisis. Recommencez le processus d’inscription.</translation>
+<translation id="3229986152760633988">Code incorrect, veuillez réessayer.</translation>
+<translation id="4178004989875422946">Un compte Brave vous permettra d’accéder facilement aux services Brave.</translation>
+<translation id="8314772463905284467">Le verrouillage des majuscules est activé</translation>
+<translation id="7044608453949401443">Les espaces ne sont pas autorisés au début ou à la fin du mot de passe.</translation>
+<translation id="2939492377741553693">Courriel de confirmation renvoyé.</translation>
+<translation id="2112559299194052697">Impossible de renvoyer</translation>
+<translation id="7932611814134267012">Trop de courriels de vérification ont déjà été envoyés. Veuillez vérifier votre dossier de pourriels.</translation>
+<translation id="1364223093800750401">Courriel déjà vérifié.</translation>
+<translation id="3353844160742960162">Ajustement des paramètres de confidentialité</translation>
+<translation id="528205534230423181">Ce site Web offre des paramètres de confidentialité que Brave peut ajuster automatiquement pour vous. Voici ce que nous recommandons :</translation>
+<translation id="1063227610401477317">Appliquer les modifications</translation>
+<translation id="5539769255716491933">Signaler les étapes échouées</translation>
 </translationbundle>

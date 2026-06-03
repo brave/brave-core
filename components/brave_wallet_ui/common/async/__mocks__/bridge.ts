@@ -11,7 +11,6 @@ import type { AnyAction } from 'redux'
 // types
 import {
   BraveWallet,
-  CommonNftMetadata,
   MeldCryptoCurrency,
   MeldFiatCurrency,
   MeldFilter,
@@ -98,6 +97,7 @@ export class MockedWalletApiProxy {
     mockFilecoinAccount,
     mockCardanoAccount,
   ]
+  hiddenAccountInfos: BraveWallet.AccountInfo[] = []
 
   selectedNetwork: BraveWallet.NetworkInfo = mockEthMainnet
 
@@ -622,6 +622,11 @@ export class MockedWalletApiProxy {
       }
       return { allAccounts }
     },
+    getHiddenAccounts: async () => {
+      return {
+        accounts: this.hiddenAccountInfos,
+      }
+    },
     validatePassword: async (password: string) => ({
       result: password === 'password',
     }),
@@ -661,6 +666,73 @@ export class MockedWalletApiProxy {
         success: validId,
       }
     },
+    addHiddenAccount: async (accountId) => {
+      const accountToHide = this.accountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!accountToHide) {
+        return { success: false }
+      }
+      this.accountInfos = this.accountInfos.filter(
+        (a) => a.accountId.uniqueKey !== accountId.uniqueKey,
+      )
+      if (
+        !this.hiddenAccountInfos.some(
+          (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+        )
+      ) {
+        this.hiddenAccountInfos = [...this.hiddenAccountInfos, accountToHide]
+      }
+      return { success: true }
+    },
+    canHideAccount: async (accountId) => {
+      const account = this.accountInfos.find(
+        (a) => a.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (
+        !account
+        || account.accountId.kind !== BraveWallet.AccountKind.kDerived
+      ) {
+        return { canHide: false }
+      }
+
+      const keyringDerivedAccounts = this.accountInfos.filter(
+        (a) =>
+          a.accountId.kind === BraveWallet.AccountKind.kDerived
+          && a.accountId.keyringId === account.accountId.keyringId,
+      )
+
+      return {
+        canHide:
+          keyringDerivedAccounts.length > 1
+          && keyringDerivedAccounts[0].accountId.uniqueKey
+            !== account.accountId.uniqueKey,
+      }
+    },
+    removeHiddenAccounts: async (accountIds) => {
+      const requestedKeys = new Set(accountIds.map((a) => a.uniqueKey))
+      const accountsToUnhide = this.hiddenAccountInfos.filter((a) =>
+        requestedKeys.has(a.accountId.uniqueKey),
+      )
+      if (accountsToUnhide.length === 0) {
+        return { success: false }
+      }
+
+      this.hiddenAccountInfos = this.hiddenAccountInfos.filter(
+        (a) => !requestedKeys.has(a.accountId.uniqueKey),
+      )
+      for (const accountToUnhide of accountsToUnhide) {
+        if (
+          !this.accountInfos.some(
+            (a) =>
+              a.accountId.uniqueKey === accountToUnhide.accountId.uniqueKey,
+          )
+        ) {
+          this.accountInfos = [...this.accountInfos, accountToUnhide]
+        }
+      }
+      return { success: true }
+    },
     unlock: async (password) => {
       return { success: password === 'password' }
     },
@@ -681,28 +753,6 @@ export class MockedWalletApiProxy {
           baseFeePerGas: '0',
         } as BraveWallet.GasEstimation1559 | null,
       }
-    },
-  }
-
-  braveWalletP3A: InstanceType<typeof BraveWallet.BraveWalletP3AInterface> = {
-    reportOnboardingAction: (action) => {
-      console.log(`reporting onboarding action: ${action}`)
-    },
-    reportJSProvider: (providerType, coinType, allowProviderOverwrite) => {
-      console.log(
-        `reporting JS provider: ${JSON.stringify(
-          { providerType, coinType, allowProviderOverwrite },
-          undefined,
-          2,
-        )}`,
-      )
-    },
-    recordActiveWalletCount(count, coinType) {
-      // Follow up issue to fix test via https://github.com/brave/brave-browser/issues/43583
-      // console.log(`active wallet count: ${count} for ${coinType}`)
-    },
-    recordNFTGalleryView(nftCount) {
-      console.log(`viewing nft gallery with ${nftCount} nfts`)
     },
   }
 
@@ -1087,65 +1137,6 @@ export class MockedWalletApiProxy {
         allowance: '1000000000000000000', // 1 unit
         error: BraveWallet.ProviderError.kSuccess,
         errorMessage: '',
-      }
-    },
-    // NFT Metadata
-    getERC721Metadata: async (contract, tokenId, chainId) => {
-      const mockedMetadata = mockNFTMetadata.find(
-        (d) =>
-          new Amount(d.tokenID).toHex() === new Amount(tokenId).toHex()
-          && d.contractInformation.address === contract,
-      )
-      if (!mockedMetadata) {
-        return {
-          error: 1,
-          errorMessage: 'metadata not found',
-          tokenUrl: '',
-          response: '',
-        }
-      }
-      return {
-        error: 0,
-        errorMessage: '',
-        tokenUrl: mockedMetadata.contractInformation.logo,
-        response: JSON.stringify({
-          attributes: [
-            {
-              trait_type: 'mocked trait name',
-              value: '100%',
-            } as { trait_type: string; value: string },
-          ],
-          description: mockedMetadata.contractInformation.description,
-          image: mockedMetadata.imageURL,
-          name: mockedMetadata.contractInformation.name,
-        } as CommonNftMetadata),
-      }
-    },
-    getERC1155Metadata: async (contract, tokenId, chainId) => {
-      return this.jsonRpcService.getERC721Metadata!(contract, tokenId, chainId)
-    },
-    getSolTokenMetadata: async (chainId, tokenMintAddress) => {
-      const mockedMetadata =
-        mockNFTMetadata.find(
-          (d) =>
-            d.tokenID === tokenMintAddress
-            && d.contractInformation.address === tokenMintAddress,
-        ) || mockNFTMetadata[0]
-      return {
-        error: 0,
-        errorMessage: '',
-        tokenUrl: mockedMetadata.contractInformation.logo,
-        response: JSON.stringify({
-          attributes: [
-            {
-              trait_type: 'mocked trait name',
-              value: '100%',
-            } as { trait_type: string; value: string },
-          ],
-          description: mockedMetadata.contractInformation.description,
-          image: mockedMetadata.imageURL,
-          name: mockedMetadata.contractInformation.name,
-        } as CommonNftMetadata),
       }
     },
     getNftMetadatas: async (nftIdentifiers) => {

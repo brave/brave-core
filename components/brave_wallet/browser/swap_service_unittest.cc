@@ -227,7 +227,7 @@ class SwapServiceUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
-TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
+TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuote) {
   // Case 1: non-null zeroExFee
   SetInterceptor(R"(
     {
@@ -346,7 +346,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-          mojom::SwapProvider::kZeroEx),
+          mojom::SwapProvider::kZeroExLegacy),
       callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -426,13 +426,13 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-          mojom::SwapProvider::kZeroEx),
+          mojom::SwapProvider::kZeroExLegacy),
       callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
+TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuoteError) {
   // Case 1: validation error
   std::string error = R"(
     {
@@ -452,7 +452,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-          mojom::SwapProvider::kZeroEx),
+          mojom::SwapProvider::kZeroExLegacy),
       callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -480,12 +480,12 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-          mojom::SwapProvider::kZeroEx),
+          mojom::SwapProvider::kZeroExLegacy),
       callback.Get());
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(SwapServiceUnitTest, GetZeroExQuoteUnexpectedReturn) {
+TEST_F(SwapServiceUnitTest, GetZeroExLegacyQuoteUnexpectedReturn) {
   std::string unexpected_return = "Woot";
   SetInterceptor(unexpected_return);
 
@@ -500,12 +500,12 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteUnexpectedReturn) {
       GetCannedSwapQuoteParams(
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
           mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-          mojom::SwapProvider::kZeroEx),
+          mojom::SwapProvider::kZeroExLegacy),
       callback.Get());
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(SwapServiceUnitTest, GetZeroExTransaction) {
+TEST_F(SwapServiceUnitTest, GetZeroExLegacyTransaction) {
   SetInterceptor(R"(
     {
       "transaction": {
@@ -537,13 +537,13 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransaction) {
           GetCannedSwapQuoteParams(
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-              mojom::SwapProvider::kZeroEx)),
+              mojom::SwapProvider::kZeroExLegacy)),
       callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(SwapServiceUnitTest, GetZeroExTransactionError) {
+TEST_F(SwapServiceUnitTest, GetZeroExLegacyTransactionError) {
   std::string error =
       R"({"name":"INPUT_INVALID","message":"Validation Failed"})";
   SetErrorInterceptor(error);
@@ -559,12 +559,12 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionError) {
           GetCannedSwapQuoteParams(
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-              mojom::SwapProvider::kZeroEx)),
+              mojom::SwapProvider::kZeroExLegacy)),
       callback.Get());
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(SwapServiceUnitTest, GetZeroExTransactionUnexpectedReturn) {
+TEST_F(SwapServiceUnitTest, GetZeroExLegacyTransactionUnexpectedReturn) {
   SetInterceptor("Woot");
 
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
@@ -578,7 +578,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionUnexpectedReturn) {
           GetCannedSwapQuoteParams(
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
               mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
-              mojom::SwapProvider::kZeroEx)),
+              mojom::SwapProvider::kZeroExLegacy)),
       callback.Get());
   task_environment_.RunUntilIdle();
 }
@@ -603,7 +603,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
     auto url = swap_service_->GetZeroExQuoteURL(
         *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
                                   mojom::CoinType::ETH, chain_id, "ETH",
-                                  mojom::SwapProvider::kZeroEx),
+                                  mojom::SwapProvider::kZeroExLegacy),
         "85");
     EXPECT_EQ(url,
               absl::StrFormat(
@@ -623,7 +623,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
     url = swap_service_->GetZeroExQuoteURL(
         *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
                                   mojom::CoinType::ETH, chain_id, "ETH",
-                                  mojom::SwapProvider::kZeroEx),
+                                  mojom::SwapProvider::kZeroExLegacy),
         "");
     EXPECT_EQ(url,
               absl::StrFormat(
@@ -641,7 +641,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
   EXPECT_EQ(swap_service_->GetZeroExQuoteURL(
                 *GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3", "DAI",
                                           mojom::CoinType::ETH, "0x3", "ETH",
-                                          mojom::SwapProvider::kZeroEx),
+                                          mojom::SwapProvider::kZeroExLegacy),
                 "0.00875"),
             "");
 }
@@ -666,7 +666,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
     auto url = swap_service_->GetZeroExTransactionURL(
         *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
                                   mojom::CoinType::ETH, chain_id, "ETH",
-                                  mojom::SwapProvider::kZeroEx),
+                                  mojom::SwapProvider::kZeroExLegacy),
         "85");
     EXPECT_EQ(url,
               absl::StrFormat(
@@ -686,7 +686,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
     url = swap_service_->GetZeroExTransactionURL(
         *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
                                   mojom::CoinType::ETH, chain_id, "ETH",
-                                  mojom::SwapProvider::kZeroEx),
+                                  mojom::SwapProvider::kZeroExLegacy),
         "");
     EXPECT_EQ(url,
               absl::StrFormat(
@@ -704,7 +704,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
   EXPECT_EQ(swap_service_->GetZeroExTransactionURL(
                 *GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3", "DAI",
                                           mojom::CoinType::ETH, "0x3", "ETH",
-                                          mojom::SwapProvider::kZeroEx),
+                                          mojom::SwapProvider::kZeroExLegacy),
                 "85"),
             "");
 }
@@ -988,6 +988,87 @@ TEST_F(SwapServiceUnitTest, GetJupiterGate3QuoteError) {
   EXPECT_EQ(error->get_gate3_error()->kind,
             mojom::Gate3SwapErrorKind::kUnknown);
   EXPECT_TRUE(error_string.empty());
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExAndAutoGate3Quote) {
+  // Both desktop kZeroEx (explicit) and kAuto (delegated) route to gate3 and
+  // produce a Gate3SwapQuote — never the legacy ZeroExQuote variant. The
+  // interceptor returns the same ZERO_EX-served route for both inputs.
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "zeroex_route_1",
+          "provider": "ZERO_EX",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+                "symbol": "USDT",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "1000327",
+              "tool": {
+                "name": "0x",
+                "logo": "https://example.com/0x.png"
+              },
+              "percent": "100"
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "1000327",
+          "destinationAmountMin": "990324",
+          "estimatedTime": 15,
+          "priceImpact": -0.01,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "slippagePercentage": "0.5",
+          "transactionParams": null,
+          "requiresTokenAllowance": true,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  for (auto provider :
+       {mojom::SwapProvider::kZeroEx, mojom::SwapProvider::kAuto}) {
+    SCOPED_TRACE(testing::Message() << "provider: " << provider);
+    base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                           mojom::SwapErrorUnionPtr, const std::string&>
+        future;
+    swap_service_->GetQuote(
+        GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
+                                 "DAI", mojom::CoinType::ETH,
+                                 mojom::kMainnetChainId, "ETH", provider),
+        future.GetCallback());
+    auto [quote, fees, error, error_string] = future.Take();
+    ASSERT_TRUE(quote);
+    ASSERT_TRUE(quote->is_gate3_quote());
+    EXPECT_FALSE(fees);
+    EXPECT_FALSE(error);
+    EXPECT_TRUE(error_string.empty());
+
+    const auto& gate3_quote = quote->get_gate3_quote();
+    ASSERT_EQ(gate3_quote->routes.size(), 1u);
+    EXPECT_EQ(gate3_quote->routes[0]->provider, mojom::SwapProvider::kZeroEx);
+    EXPECT_TRUE(gate3_quote->routes[0]->requires_token_allowance);
+  }
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterTransaction) {

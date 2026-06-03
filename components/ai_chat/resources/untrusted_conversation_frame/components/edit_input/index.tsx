@@ -8,28 +8,33 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 
+import Editable from '../../../page/components/input_box/editable'
+import { Content } from '../../../page/components/input_box/editable_content'
 import styles from './style.module.scss'
 
 interface Props {
-  text: string
-  onSubmit: (text: string) => void
+  content: Content
+  onSubmit: (content: Content) => void
   onCancel: () => void
   isSubmitDisabled: boolean
 }
 
 function EditInput(props: Props) {
-  const [text, setText] = React.useState(props.text)
-  const textareaRef = React.useCallback((node: HTMLTextAreaElement | null) => {
-    /**
-     * When editing, we want the cursor to be positioned
-     * at the end of the text. Typically we would also call
-     * focus() here, but that isn't necessary in this case
-     * because the textarea already has [autoFocus] set.
-     */
-    node && node.setSelectionRange(node.value.length, node.value.length)
+  const [content, setContent] = React.useState<Content>(props.content)
+  const editableRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const el = editableRef.current
+    if (!el) return
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    range.collapse(false)
+    const sel = window.getSelection()
+    sel?.removeAllRanges()
+    sel?.addRange(range)
   }, [])
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (
       e.key === 'Enter'
       && !e.shiftKey
@@ -37,7 +42,7 @@ function EditInput(props: Props) {
       && !props.isSubmitDisabled
     ) {
       if (!e.repeat) {
-        props.onSubmit(e.currentTarget.value)
+        props.onSubmit(content)
       }
       e.preventDefault()
     } else if (e.key === 'Escape') {
@@ -49,15 +54,12 @@ function EditInput(props: Props) {
     <div className={styles.content}>
       <div
         className={styles.growWrap}
-        data-replicated-value={text}
+        onKeyDown={handleKeyDown}
       >
-        <textarea
-          ref={textareaRef}
-          value={text}
-          onChange={(e) => setText(e.currentTarget.value)}
-          onKeyDown={handleKeyDown}
-          autoFocus
-          rows={1}
+        <Editable
+          ref={editableRef}
+          content={content}
+          onContentChange={setContent}
         />
       </div>
       <div className={styles.actions}>
@@ -74,7 +76,7 @@ function EditInput(props: Props) {
           size='small'
           kind='filled'
           isDisabled={props.isSubmitDisabled}
-          onClick={() => props.onSubmit(text)}
+          onClick={() => props.onSubmit(content)}
         >
           {getLocale(S.CHAT_UI_SAVE_BUTTON_LABEL)}
         </Button>

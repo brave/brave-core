@@ -384,7 +384,8 @@ TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
   ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
                         pref_manager_->GetSubscriptions()));
   ASSERT_EQ(feed.pages.size(), 1u);
-  ASSERT_EQ(feed.pages[0]->items.size(), 18u);
+  // 14 items in `g_page_content_order` + 2 in `g_random_content_order`.
+  ASSERT_EQ(feed.pages[0]->items.size(), 16u);
 }
 
 }  // namespace brave_news

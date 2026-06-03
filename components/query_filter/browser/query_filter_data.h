@@ -12,20 +12,9 @@
 
 #include "base/no_destructor.h"
 #include "base/version.h"
+#include "brave/components/query_filter/common/schema.h"
 
 namespace query_filter {
-
-struct QueryFilterRule {
-  QueryFilterRule();
-  ~QueryFilterRule();
-
-  QueryFilterRule(const QueryFilterRule&);
-  QueryFilterRule& operator=(const QueryFilterRule&);
-
-  std::vector<std::string> include;
-  std::vector<std::string> exclude;
-  std::vector<std::string> params;
-};
 
 // Singleton responsible for storing rules from the query filter component.
 // See brave/adblock-lists/brave-lists/query-filter.json
@@ -46,21 +35,30 @@ class QueryFilterData {
   // Returns the current version of the query filter component.
   const std::string GetVersion() const;
 
-  // Loads the file, parses the rules and stores them in |rules_|.
+  // Parses |json_data| and stores the rules in |rules_|.
+  // |json_data| must follow the schema in query_filter_schema.idl.
+  // Parsing is relaxed: any rule entry that does not match schema::Rule is
+  // ignored.
+  // Returns true if the root array was parsed successfully and at least one
+  // valid rule was found; false otherwise.
   bool PopulateDataFromComponent(std::string_view json_data);
 
-  // Resets the |rules_| to an empty vector and the |version_| to empty.
-  void ResetRulesForTesting();
-
   // Returns the current set of query filter rules.
-  // Returns an empty vector if no rules are available.
-  const std::vector<QueryFilterRule>& rules() const;
+  // Returns an empty ruleset if no rules are available.
+  const std::vector<schema::Rule>& rules() const { return rules_; }
+
+  // A test only method to reset the |rules_| and |version_|.
+  void ResetRulesForTesting() noexcept;
 
  private:
   friend class base::NoDestructor<QueryFilterData>;
   QueryFilterData();
 
-  std::vector<QueryFilterRule> rules_;
+  // The container to hold the query filter rules.
+  std::vector<schema::Rule> rules_;
+  // Holds the current version of the query filter component.
+  // This gets populated by the QueryFilterComponentInstallerPolicy when the
+  // query filter component is ready.
   base::Version version_;
 };
 

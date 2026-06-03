@@ -24,7 +24,7 @@ class UnblindedToken;
 // A `SigningKey` is used to sign a `BlindedToken` and to verify an
 // `UnblindedToken`.
 
-class SigningKey {
+class SigningKey final {
  public:
   SigningKey();
   explicit SigningKey(const std::string& signing_key_base64);

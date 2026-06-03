@@ -146,7 +146,7 @@ export const style = scoped.css`
     container-type: inline-size;
     view-timeline-name: --ntp-main-view-timeline;
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -222,6 +222,10 @@ export const style = scoped.css`
     margin-block-end: 16px;
     margin-inline-start: 0;
     margin-inline-end: 0;
+  }
+
+  .caption-container:has(.centered-ntt-cta-button) {
+    position: static;
   }
 
   .widget-container {

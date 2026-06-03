@@ -33,7 +33,7 @@ export const AccountListButton = (props: Props) => {
         <Text
           isBold={true}
           textSize='14px'
-          textColor='text01'
+          textColor='primary'
         >
           {account.name}
         </Text>
@@ -41,7 +41,7 @@ export const AccountListButton = (props: Props) => {
         <Text
           isBold={false}
           textSize='12px'
-          textColor='text03'
+          textColor='tertiary'
         >
           {reduceAddress(account.address)}
         </Text>

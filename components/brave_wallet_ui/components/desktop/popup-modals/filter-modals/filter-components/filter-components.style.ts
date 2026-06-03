@@ -27,16 +27,13 @@ export const CheckboxWrapper = styled(Row)`
 `
 
 export const SelectAllButton = styled(WalletButton)`
+  font: ${leo.font.small.semibold};
   cursor: pointer;
   outline: none;
   border: none;
   background: none;
   padding: 0px;
-  font-family: Poppins;
-  font-size: 12px;
   letter-spacing: 0.03em;
-  line-height: 16px;
-  font-weight: 600;
   color: ${leo.color.text.interactive};
 `
 

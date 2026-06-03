@@ -4,11 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { StyledDiv, StyledButton, Icon } from '../../shared-swap.styles'
 
 export const SelectButton = styled(StyledButton)`
-  background-color: ${(p) => p.theme.color.background01};
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  background-color: ${leo.color.page.background};
+  border: 1px solid ${leo.color.neutral[30]};
   border-radius: 4px;
   box-sizing: border-box;
   flex-direction: row;
@@ -25,7 +26,7 @@ export const SelectorWrapper = styled(StyledDiv)`
 `
 
 export const SelectorBox = styled(StyledDiv)`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   min-width: 200px;
   position: absolute;
   z-index: 10;
@@ -41,5 +42,5 @@ export const SelectorBox = styled(StyledDiv)`
 `
 
 export const StyledCaratDownIcon = styled(Icon)`
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 `

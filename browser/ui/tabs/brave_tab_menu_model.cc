@@ -32,6 +32,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/tabs/containers_tab_menu_model_delegate.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -213,6 +214,10 @@ void BraveTabMenuModel::BuildItemForContainers(
   auto* service =
       ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
   if (!service) {
+    return;
+  }
+
+  if (!service->ShouldShowContainerControls()) {
     return;
   }
 

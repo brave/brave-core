@@ -39,7 +39,12 @@ export const ExploreWeb3Header = () => {
       padding='24px 0px'
       justifyContent='flex-start'
     >
-      <HeaderTitle>{getLocale('braveWalletTopNavExplore')}</HeaderTitle>
+      <HeaderTitle
+        textColor='primary'
+        variant='heading.h1'
+      >
+        {getLocale('braveWalletTopNavExplore')}
+      </HeaderTitle>
     </Row>
   )
 }

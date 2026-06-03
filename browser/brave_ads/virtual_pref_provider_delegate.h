@@ -21,7 +21,7 @@ class DictValue;
 
 namespace brave_ads {
 
-class VirtualPrefProviderDelegate : public VirtualPrefProvider::Delegate {
+class VirtualPrefProviderDelegate final : public VirtualPrefProvider::Delegate {
  public:
   VirtualPrefProviderDelegate(
       Profile& profile,

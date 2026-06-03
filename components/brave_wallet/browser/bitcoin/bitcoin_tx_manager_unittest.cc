@@ -10,13 +10,10 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -24,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -64,9 +62,8 @@ class BitcoinTxManagerUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), bitcoin_wallet_service_.get(), nullptr,
-        nullptr, nullptr, *keyring_service_, &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        nullptr, nullptr, *keyring_service_, &prefs_,
+        CreateTxStorageForTest(temp_dir_.GetPath()));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
 

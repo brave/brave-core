@@ -538,7 +538,7 @@ public class TxFragment extends Fragment {
         gasFeeAmountFiat.setText(
                 String.format(
                         getResources().getString(R.string.crypto_wallet_amount_fiat),
-                        new Amount(mParsedTx.getFiatTotal()).toStringFormat()));
+                        new Amount(mParsedTx.getGasFeeFiat()).toStringFormat()));
         TextView totalAmountFiat = view.findViewById(R.id.total_amount_fiat);
         totalAmountFiat.setText(
                 String.format(

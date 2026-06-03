@@ -13,13 +13,16 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/outsets_f.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
 
@@ -98,6 +101,21 @@ int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
   return 0;
 }
 
+BrowserFrameViewMac::BoundsAndMargins
+BraveBrowserFrameViewMac::GetCaptionButtonBounds() const {
+  auto bounds_and_margins = BrowserFrameViewMac::GetCaptionButtonBounds();
+  bounds_and_margins.bounds.set_y(bounds_and_margins.bounds.y() +
+                                  tabs::GetHorizontalTabButtonYOffset());
+  // Compact: zero the caption button vertical margins so the leading
+  // exclusion collapses around the buttons themselves, letting the shorter
+  // tab strip sit centred against the traffic lights.
+  if (tabs::UseCompactHorizontalTabs() &&
+      !bounds_and_margins.bounds.IsEmpty()) {
+    bounds_and_margins.margins.set_top(0).set_bottom(0);
+  }
+  return bounds_and_margins;
+}
+
 bool BraveBrowserFrameViewMac::ShouldShowWindowTitleForVerticalTabs() const {
   return tabs::utils::ShouldShowWindowTitleForVerticalTabs(
              GetBrowserView()->browser()) &&
@@ -134,9 +152,13 @@ int BraveBrowserFrameViewMac::NonClientHitTest(const gfx::Point& point) {
   // widget, violating brave::NonClientHitTest's precondition that the toolbar
   // and browser view share the same widget. Skip it while immersive mode is
   // active.
-  if (!ImmersiveModeController::From(GetBrowserView()->browser())
-           ->IsEnabled()) {
-    if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
+  auto* browser_view = GetBrowserView();
+  auto* browser = browser_view->browser();
+  if (!ImmersiveModeController::From(browser)->IsEnabled()) {
+    auto* non_client_hit_test_helper =
+        browser->browser_window_features()->brave_non_client_hit_test_helper();
+    if (auto res =
+            non_client_hit_test_helper->NonClientHitTest(browser_view, point);
         res != HTNOWHERE) {
       return res;
     }

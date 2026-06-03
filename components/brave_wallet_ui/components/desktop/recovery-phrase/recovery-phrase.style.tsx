@@ -62,18 +62,14 @@ export const WordPos = styled.span`
 `
 
 export const RecoveryBubbleBadge = styled.p`
+  font: ${leo.font.xSmall.regular};
   position: absolute;
   top: -15px;
   left: -8px;
-  color: ${(p) => p.theme.palette.white};
-  background-color: ${(p) => p.theme.color.brandBat};
+  color: ${leo.color.white};
+  background-color: ${leo.color.primitive.brands.primaryFixed};
   width: 40px;
   border-radius: 4px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,6 +93,7 @@ export const FrostedGlass = styled.div`
 `
 
 export const HiddenPhraseContainer = styled.div`
+  font: ${leo.font.components.tableheader};
   position: relative;
   top: 0;
   bottom: 0;
@@ -108,14 +105,9 @@ export const HiddenPhraseContainer = styled.div`
   cursor: pointer;
 
   & p {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
     text-align: center;
     margin-top: 10px;
-    color: ${(p) => p.theme.color.background01};
+    color: ${leo.color.page.background};
   }
 `
 

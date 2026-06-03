@@ -12,10 +12,10 @@ namespace brave_ads {
 
 struct PurchaseIntentSignalHistoryInfo;
 
-base::DictValue PurchaseIntentSignalHistoryToValue(
+base::DictValue PurchaseIntentSignalHistoryToDict(
     const PurchaseIntentSignalHistoryInfo& purchase_intent_signal_history);
 
-PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(
+PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromDict(
     const base::DictValue& dict);
 
 }  // namespace brave_ads

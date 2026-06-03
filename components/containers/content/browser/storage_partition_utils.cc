@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/strings/string_util.h"
+#include "brave/components/containers/content/browser/containers_web_contents_user_data.h"
 #include "brave/components/containers/core/common/features.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
@@ -49,6 +50,15 @@ std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
   return std::nullopt;
 }
 
+std::string_view GetContainerIdFromStoragePartitionConfig(
+    const content::StoragePartitionConfig& partition_config) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  if (!IsContainersStoragePartition(partition_config)) {
+    return std::string_view();
+  }
+  return partition_config.partition_name();
+}
+
 std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
   if (!web_contents) {
@@ -58,11 +68,19 @@ std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
   const auto& config = web_contents->GetSiteInstance()
                            ->GetSecurityPrincipal()
                            .GetStoragePartitionConfig();
-  if (!IsContainersStoragePartition(config)) {
-    return std::string();
+  if (std::string_view id = GetContainerIdFromStoragePartitionConfig(config);
+      !id.empty()) {
+    return std::string(id);
   }
 
-  return config.partition_name();
+  const ContainersWebContentsUserData* user_data =
+      ContainersWebContentsUserData::FromWebContents(web_contents);
+  if (user_data &&
+      IsValidStoragePartitionKeyComponent(user_data->container_id())) {
+    return user_data->container_id();
+  }
+
+  return std::string();
 }
 
 }  // namespace containers

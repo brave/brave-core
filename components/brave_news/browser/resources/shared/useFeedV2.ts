@@ -73,6 +73,14 @@ const maybeLoadFeed = (view?: FeedView) => {
 
   const feed: FeedV2 = JSON.parse(data)
 
+  // Remove any cached feed whose items include a type no longer supported
+  // in the FeedItemV2.
+  if (feed.items?.some(item => !item.article && !item.cluster && !item.discover && !item.hero)) {
+    localStorage.removeItem(FEED_KEY)
+    sessionStorage.removeItem(FEED_KEY)
+    return undefined
+  }
+
   // If we loaded the feed from localStorage, and it's too old remove it from
   // storage and return undefined.
   if (isTooOld(feed)) {

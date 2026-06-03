@@ -28,7 +28,6 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   ~FakeBrowserViewLayoutDelegate() override = default;
 
   bool ShouldDrawTabStrip() const override { return false; }
-  bool ShouldUseTouchableTabstrip() const override { return false; }
   bool ShouldDrawVerticalTabStrip() const override { return false; }
   bool IsVerticalTabStripCollapsed() const override { return false; }
   bool ShouldDrawWebAppFrameToolbar() const override { return false; }
@@ -68,6 +67,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsProjectsPanelVisible() const override { return false; }
 
   bool ShouldShowVerticalTabs() const override { return false; }
+  bool ShouldShowWindowTitleForVerticalTabs() const override { return false; }
   bool IsVerticalTabOnRight() const override { return false; }
   bool ShouldUseBraveWebViewRoundedCornersForContents() const override {
     return false;

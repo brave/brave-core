@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Додати закладку";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Додати";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Додати до обраного";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Нова папка";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Додати в Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Додати до обраного";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Автозаповнення";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Облікові записи";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Збережені паролі для %@ буде видалено з ланцюжка синхронізації та з вашого пристрою.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Ви впевнені?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Видалити";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Збережено";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Створюйте, зберігайте та керуйте паролями, щоб легко входити на сайти та в програми.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Ніколи не зберігалося";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Пропонувати зберігати паролі";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Шукати веб-сайти";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Керування паролями";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Невідомо";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Автозаповнення";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Автоматичне переспрямування сторінок AMP";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Приватні вкладки";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Якщо браузер було закрито в приватному режимі, він знову відкриється в приватному режимі.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Запам'ятати режим перегляду";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Панель навігації";

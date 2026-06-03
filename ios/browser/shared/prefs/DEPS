@@ -14,6 +14,7 @@ include_rules = [
   "+brave/components/de_amp/common",
   "+brave/components/debounce/core/browser",
   "+brave/components/decentralized_dns/core",
+  "+brave/components/email_aliases",
   "+brave/components/ipfs",
   "+brave/components/l10n/common",
   "+brave/components/ntp_background_images/browser",

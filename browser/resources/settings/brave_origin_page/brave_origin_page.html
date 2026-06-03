@@ -92,16 +92,18 @@
   <origin-toggle-button id="toggleP3AButton"
       policy-key="BraveP3AEnabled"
       label="$i18n{braveOriginP3AToggleTitle}"
+      sub-label="$i18n{braveOriginCrossProfileSubLabel}"
       icon="bar-chart">
   </origin-toggle-button>
 
   <origin-toggle-button id="toggleStatsReportingButton"
       policy-key="BraveStatsPingEnabled"
       label="$i18n{braveOriginStatsReportingToggleTitle}"
+      sub-label="$i18n{braveOriginCrossProfileSubLabel}"
       icon="bar-chart">
   </origin-toggle-button>
 
-  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine">
+  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine or enable_playlist or enable_email_aliases">
     <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
   </if>
 
@@ -130,6 +132,16 @@
     </origin-toggle-button>
   </if>
 
+  <if expr="enable_playlist">
+    <template is="dom-if" if="[[isPlaylistFeatureEnabled_]]">
+      <origin-toggle-button id="togglePlaylistButton"
+          policy-key="BravePlaylistEnabled"
+          label="$i18n{braveOriginPlaylistToggleTitle}"
+          icon="product-playlist">
+      </origin-toggle-button>
+    </template>
+  </if>
+
   <if expr="enable_brave_talk">
     <origin-toggle-button id="toggleTalkButton"
         policy-key="BraveTalkDisabled"
@@ -144,6 +156,7 @@
         policy-key="TorDisabled"
         inverted
         label="$i18n{braveOriginTorWindowsToggleTitle}"
+        sub-label="$i18n{braveOriginCrossProfileSubLabel}"
         icon="product-tor">
     </origin-toggle-button>
   </if>
@@ -174,13 +187,21 @@
     </origin-toggle-button>
   </if>
 
-  <!-- TODO: Web Discovery policy not yet registered in Brave Origin
-  <origin-toggle-button id="toggleWebDiscoveryProjectButton"
-      policy-key="BraveWebDiscoveryEnabled"
-      label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
-      icon="brave-icon-search">
-  </origin-toggle-button>
-  -->
+  <if expr="enable_email_aliases">
+    <origin-toggle-button id="toggleEmailAliasesButton"
+        policy-key="EmailAliasesEnabled"
+        label="$i18n{braveEmailAliasesToggleTitle}"
+        icon="email-shield">
+    </origin-toggle-button> 
+  </if>
+
+  <if expr="enable_web_discovery">
+    <origin-toggle-button id="toggleWebDiscoveryProjectButton"
+        policy-key="BraveWebDiscoveryEnabled"
+        label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
+        icon="brave-icon-search">
+    </origin-toggle-button>
+  </if>
 
   <cr-link-row id="resetToDefaults" class="hr"
     label="$i18n{braveOriginResetToDefaultsTitle}"

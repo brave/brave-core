@@ -12,13 +12,15 @@
 #include "base/containers/span.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_types.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
+class TabManager;
 class TextClassificationResource;
 
 class TextClassificationProcessor final : public TabManagerObserver {
@@ -42,6 +44,9 @@ class TextClassificationProcessor final : public TabManagerObserver {
   void OnTextContentDidChange(int32_t tab_id,
                               base::span<const GURL> redirect_chain,
                               const std::string& text) override;
+
+  base::ScopedObservation<TabManager, TabManagerObserver>
+      tab_manager_observation_{this};
 
   const raw_ref<TextClassificationResource> resource_;
 

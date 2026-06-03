@@ -1,0 +1,85 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/config/clang/clang.gni")
+import("//build/config/rust.gni")
+import("//build/config/sysroot.gni")
+
+assert(enable_brave_vpn_v2,
+       "BoringTun is only buildable when Brave VPN 2.0 architecture is enabled")
+
+action("boringtun") {
+  script = "build.py"
+
+  inputs = [
+    ".cargo/config.toml",
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/lib.rs",
+  ]
+
+  if (is_win) {
+    _bt_out_filename = "boringtun.dll"
+  } else if (is_linux) {
+    _bt_out_filename = "libboringtun.so"
+  } else if (is_mac) {
+    _bt_out_filename = "libboringtun.dylib"
+  }
+
+  outputs = [
+    "$root_out_dir/$_bt_out_filename",
+    "$target_gen_dir/include/wireguard_ffi.h",
+    "$target_gen_dir/boringtun.stamp",
+  ]
+
+  depfile = "$target_gen_dir/boringtun.d"
+
+  args = [
+    "--quiet-until-error",
+    "--target-os",
+    target_os,
+    "--target-cpu",
+    target_cpu,
+    "--cargo-target-dir",
+    rebase_path("$target_gen_dir/cargo-target", root_build_dir),
+    "--rust-sysroot",
+    rebase_path(rust_sysroot, root_build_dir),
+    "--cc-binpath",
+    rebase_path("$clang_base_path/bin", root_build_dir),
+    "--output-lib",
+    rebase_path(root_out_dir, root_build_dir),
+    "--output-headers",
+    rebase_path("$target_gen_dir/include", root_build_dir),
+    "--depfile",
+    rebase_path("$target_gen_dir/boringtun.d", root_build_dir),
+    "--stamp",
+    rebase_path("$target_gen_dir/boringtun.stamp", root_build_dir),
+  ]
+
+  if (is_debug) {
+    args += [ "--debug" ]
+  }
+
+  if (!is_win && sysroot != "") {
+    args += [
+      "--cc-sysroot",
+      rebase_path(sysroot, root_build_dir),
+    ]
+  }
+
+  if (is_win) {
+    import("//build/config/win/visual_studio_version.gni")
+    args += [
+      "--cc-sysroot",
+      rebase_path(visual_studio_path, root_build_dir),
+    ]
+  } else if (is_mac) {
+    args += [
+      "--mac-min-version",
+      mac_deployment_target,
+    ]
+  }
+}

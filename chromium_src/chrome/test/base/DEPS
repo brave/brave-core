@@ -4,6 +4,6 @@ include_rules = [
   "+brave/renderer",
   "+brave/app",
   "+brave/utility",
-  "+brave/components/brave_shields/content/browser",
+  "+brave/components/brave_shields/core/browser",
   "+brave/test/base",
 ]

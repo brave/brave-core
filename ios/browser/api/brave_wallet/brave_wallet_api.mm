@@ -8,7 +8,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
@@ -234,19 +233,6 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
   _providerScripts[@(coinType)] = [scripts copy];
   return scripts;
-}
-
-- (nullable id<BraveWalletBraveWalletP3A>)walletP3A {
-  auto* service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForState(_profile);
-  if (!service) {
-    return nil;
-  }
-
-  mojo::PendingRemote<brave_wallet::mojom::BraveWalletP3A> pending_remote;
-  service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
-  return [[BraveWalletBraveWalletP3AMojoImpl alloc]
-      initWithBraveWalletP3A:std::move(pending_remote)];
 }
 
 @end

@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_PREF_TIME_PERIOD_STORE_H_
 #define BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_PREF_TIME_PERIOD_STORE_H_
 
+#include <string>
+#include <string_view>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
 
@@ -17,24 +20,19 @@ class ListValue;
 
 namespace serp_metrics {
 
-// Implementation of `SerpMetricsTimePeriodStore` that uses `PrefService` for
-// storage. Supports both direct list prefs and dictionary-based list prefs.
-class SerpMetricsPrefTimePeriodStore : public SerpMetricsTimePeriodStore {
+// Persists the rolling time period window in a `PrefService` dictionary.
+class SerpMetricsPrefTimePeriodStore final : public SerpMetricsTimePeriodStore {
  public:
-  // Constructor for direct list pref store.
-  SerpMetricsPrefTimePeriodStore(PrefService* prefs, const char* pref_name);
-
-  // Constructor for dictionary-based list pref store.
   SerpMetricsPrefTimePeriodStore(PrefService* prefs,
-                                 const char* pref_name,
-                                 const char* dict_key);
-
-  ~SerpMetricsPrefTimePeriodStore() override;
+                                 std::string_view pref_name,
+                                 std::string_view pref_key);
 
   SerpMetricsPrefTimePeriodStore(const SerpMetricsPrefTimePeriodStore&) =
       delete;
   SerpMetricsPrefTimePeriodStore& operator=(
       const SerpMetricsPrefTimePeriodStore&) = delete;
+
+  ~SerpMetricsPrefTimePeriodStore() override;
 
   // SerpMetricsTimePeriodStore:
   const base::ListValue* Get() override;
@@ -43,8 +41,8 @@ class SerpMetricsPrefTimePeriodStore : public SerpMetricsTimePeriodStore {
 
  private:
   const raw_ptr<PrefService> prefs_;
-  const char* pref_name_ = nullptr;
-  const char* dict_key_ = nullptr;
+  const std::string pref_name_;
+  const std::string pref_key_;
 };
 
 }  // namespace serp_metrics

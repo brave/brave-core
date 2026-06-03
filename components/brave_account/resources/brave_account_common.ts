@@ -5,104 +5,168 @@
 
 // @ts-expect-error
 import { leoShowAlert } from '//resources/brave/leo.bundle.js'
+import {
+  AsyncDirective,
+  directive,
+  nothing,
+} from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
+  LoginClientErrorCode,
   LoginError,
-  LoginErrorCode,
+  LoginServerErrorCode,
+  RegisterClientErrorCode,
   RegisterError,
-  RegisterErrorCode,
+  RegisterServerErrorCode,
+  ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
-  ResendConfirmationEmailErrorCode,
+  ResendConfirmationEmailServerErrorCode,
 } from './brave_account.mojom-webui.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
+
+// Custom directive that freezes the previously rendered value when `freeze`
+// is true. Similar to Lit's `noChange` (not exported by Chromium's Lit wrapper
+// from //third_party/lit/v3_0/lit.ts), but instead of preventing the update,
+// it reuses the last rendered value.
+class FreezeWhenDirective extends AsyncDirective {
+  private previousValue: unknown = nothing
+
+  render(freeze: boolean, value: unknown): unknown {
+    return freeze ? this.previousValue : (this.previousValue = value)
+  }
+}
+
+export const freezeWhen = directive(FreezeWhenDirective)
 
 export type Error =
   | { kind: 'login'; details: LoginError }
   | { kind: 'register'; details: RegisterError }
   | { kind: 'resendConfirmationEmail'; details: ResendConfirmationEmailError }
 
-const LOGIN_ERROR_STRINGS: Partial<Record<LoginErrorCode, string>> = {
-  [LoginErrorCode.kEmailNotVerified]:
-    BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_EMAIL_NOT_VERIFIED,
-  [LoginErrorCode.kIncorrectEmail]:
-    BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_EMAIL,
-  [LoginErrorCode.kIncorrectPassword]:
+const LOGIN_CLIENT_ERROR_STRINGS: Partial<
+  Record<LoginClientErrorCode, string>
+> = {
+  [LoginClientErrorCode.kInvalidLoginError]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD,
 }
 
-const REGISTER_ERROR_STRINGS: Partial<Record<RegisterErrorCode, string>> = {
-  [RegisterErrorCode.kAccountExists]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_ACCOUNT_EXISTS,
-  [RegisterErrorCode.kEmailDomainNotSupported]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
-  [RegisterErrorCode.kTooManyVerifications]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
-  [RegisterErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
-  [RegisterErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
-  [RegisterErrorCode.kInvalidVerificationCode]:
-    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
+const LOGIN_SERVER_ERROR_STRINGS: Partial<
+  Record<LoginServerErrorCode, string>
+> = {
+  [LoginServerErrorCode.kEmailNotVerified]:
+    BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_EMAIL_NOT_VERIFIED,
+  [LoginServerErrorCode.kIncorrectEmail]:
+    BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_EMAIL,
+  [LoginServerErrorCode.kIncorrectPassword]:
+    BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD,
 }
 
-const RESEND_CONFIRMATION_EMAIL_ERROR_STRINGS: Partial<
-  Record<ResendConfirmationEmailErrorCode, string>
+const REGISTER_CLIENT_ERROR_STRINGS: Partial<
+  Record<RegisterClientErrorCode, string>
+> = {}
+
+const REGISTER_SERVER_ERROR_STRINGS: Partial<
+  Record<RegisterServerErrorCode, string>
 > = {
-  [ResendConfirmationEmailErrorCode.kMaximumEmailSendAttemptsExceeded]:
+  [RegisterServerErrorCode.kAccountExists]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_ACCOUNT_EXISTS,
+  [RegisterServerErrorCode.kEmailDomainNotSupported]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
+  [RegisterServerErrorCode.kTooManyVerifications]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
+  [RegisterServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
+  [RegisterServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+  [RegisterServerErrorCode.kInvalidVerificationCode]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
+  [RegisterServerErrorCode.kRegistrationVerificationAlreadyPendingForThisEmail]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_REGISTRATION_VERIFICATION_ALREADY_PENDING_FOR_THIS_EMAIL,
+}
+
+const RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS: Partial<
+  Record<ResendConfirmationEmailClientErrorCode, string>
+> = {}
+
+const RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
+  Record<ResendConfirmationEmailServerErrorCode, string>
+> = {
+  [ResendConfirmationEmailServerErrorCode.kMaximumEmailSendAttemptsExceeded]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
-  [ResendConfirmationEmailErrorCode.kEmailAlreadyVerified]:
+  [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
 }
 
 function getErrorMessageImpl<
-  T extends
-    | LoginErrorCode
-    | RegisterErrorCode
-    | ResendConfirmationEmailErrorCode,
+  ClientErrorCode extends
+    | LoginClientErrorCode
+    | RegisterClientErrorCode
+    | ResendConfirmationEmailClientErrorCode,
+  ServerErrorCode extends
+    | LoginServerErrorCode
+    | RegisterServerErrorCode
+    | ResendConfirmationEmailServerErrorCode,
 >(
-  errorStrings: Partial<Record<T, string>>,
-  details: { netErrorOrHttpStatus: number | null; errorCode: T | null },
+  clientErrorStrings: Partial<Record<ClientErrorCode, string>>,
+  serverErrorStrings: Partial<Record<ServerErrorCode, string>>,
+  error: {
+    clientError?: { errorCode: ClientErrorCode } | null
+    serverError?: {
+      netErrorOrHttpStatus: number
+      errorCode: ServerErrorCode
+    } | null
+  },
 ): string {
-  const { netErrorOrHttpStatus, errorCode } = details
-
   const errorLabel = loadTimeData.getString(
     BraveAccountStrings.BRAVE_ACCOUNT_ERROR,
   )
 
-  if (netErrorOrHttpStatus == null) {
-    // client-side error
+  if (error.clientError) {
+    const stringId = clientErrorStrings[error.clientError.errorCode]
+    if (stringId) {
+      return loadTimeData.getString(stringId)
+    }
+
     return loadTimeData.getStringF(
       BraveAccountStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
-      errorCode != null ? ` (${errorLabel}=${errorCode})` : '',
+      ` (${errorLabel}=${error.clientError.errorCode})`,
     )
   }
 
-  // server-side error
-  const specificErrorMessage =
-    errorCode != null && errorStrings[errorCode]
-      ? loadTimeData.getString(errorStrings[errorCode])
-      : null
+  const serverError = error.serverError!
+  const stringId = serverErrorStrings[serverError.errorCode]
+  if (stringId) {
+    return loadTimeData.getString(stringId)
+  }
 
-  return (
-    specificErrorMessage
-    ?? loadTimeData.getStringF(
-      BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-      `${netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${netErrorOrHttpStatus}`,
-      errorCode != null ? `, ${errorLabel}=${errorCode}` : '',
-    )
+  return loadTimeData.getStringF(
+    BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
+    `${serverError.netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${
+      serverError.netErrorOrHttpStatus
+    }`,
+    `, ${errorLabel}=${serverError.errorCode}`,
   )
 }
 
 function getErrorMessage(error: Error): string {
   switch (error.kind) {
     case 'login':
-      return getErrorMessageImpl(LOGIN_ERROR_STRINGS, error.details)
+      return getErrorMessageImpl(
+        LOGIN_CLIENT_ERROR_STRINGS,
+        LOGIN_SERVER_ERROR_STRINGS,
+        error.details,
+      )
     case 'register':
-      return getErrorMessageImpl(REGISTER_ERROR_STRINGS, error.details)
+      return getErrorMessageImpl(
+        REGISTER_CLIENT_ERROR_STRINGS,
+        REGISTER_SERVER_ERROR_STRINGS,
+        error.details,
+      )
     case 'resendConfirmationEmail':
       return getErrorMessageImpl(
-        RESEND_CONFIRMATION_EMAIL_ERROR_STRINGS,
+        RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS,
+        RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS,
         error.details,
       )
   }

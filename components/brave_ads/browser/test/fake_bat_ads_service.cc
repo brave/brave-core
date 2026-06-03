@@ -5,9 +5,13 @@
 
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service.h"
 
+#include <ostream>
 #include <utility>
 
 #include "base/functional/callback.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace brave_ads::test {
 
@@ -36,9 +40,11 @@ void FakeBatAdsService::Create(
     mojo::PendingAssociatedReceiver<bat_ads::mojom::BatAds>
         bat_ads_pending_associated_receiver,
     mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
-    /*bat_ads_client_notifier_pending_receiver*/,
+        bat_ads_client_notifier_pending_receiver,
     CreateCallback callback) {
   bat_ads_.BindReceiver(std::move(bat_ads_pending_associated_receiver));
+  bat_ads_client_notifier_.BindReceiver(
+      std::move(bat_ads_client_notifier_pending_receiver));
   std::move(callback).Run();
 }
 

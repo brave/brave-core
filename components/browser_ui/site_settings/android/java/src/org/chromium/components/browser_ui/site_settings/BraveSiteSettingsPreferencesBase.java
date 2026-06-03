@@ -18,7 +18,6 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
     private static final String ADS_KEY = "ads";
     private static final String BACKGROUND_SYNC_KEY = "background_sync";
     private static final String IDLE_DETECTION = "idle_detection";
-    private static final String DIVIDER_KEY = "divider";
     private static final String PERMISSION_AUTOREVOCATION_KEY = "permission_autorevocation";
     public static final String ETHEREUM_CONNECTED_SITES_KEY = "ethereum_connected_sites";
     public static final String SOLANA_CONNECTED_SITES_KEY = "solana_connected_sites";
@@ -48,14 +47,16 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         super.onResume();
     }
 
-    /**
-     *  We need to override it to avoid NullPointerException in Chromium's child classes
-     */
+    /** We need to override it to avoid NullPointerException in Chromium's child classes */
+    // The cast mirrors the upstream PreferenceFragmentCompat#findPreference contract: callers
+    // request a specific Preference subtype via the type parameter, but mRemovedPreferences
+    // stores the erased Preference type, so the (T) cast is unverifiable at compile time.
+    @SuppressWarnings("unchecked")
     @Override
-    public Preference findPreference(CharSequence key) {
-        Preference result = super.findPreference(key);
+    public <T extends Preference> T findPreference(CharSequence key) {
+        T result = super.findPreference(key);
         if (result == null) {
-            result = mRemovedPreferences.get((String) key);
+            result = (T) mRemovedPreferences.get((String) key);
         }
         return result;
     }
@@ -92,14 +93,7 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
             // Solana preference may be removed if wallet is disabled by policy.
             if (prefSolanaConnectedSites != null) {
                 int solanaConnectedSitesOrder = prefSolanaConnectedSites.getOrder();
-                Preference prefDivider = getPreferenceScreen().findPreference(DIVIDER_KEY);
-                if (prefDivider == null) {
-                    // There is divider when `Android Settings Containment` flag is turned on
-                    prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 1);
-                } else {
-                    prefDivider.setOrder(solanaConnectedSitesOrder + 1);
-                    prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 2);
-                }
+                prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 1);
             }
         }
     }

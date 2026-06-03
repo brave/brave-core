@@ -37,7 +37,6 @@ import { WalletActions } from '../../../../../common/actions'
 import { WalletPageActions } from '../../../../../page/actions'
 
 // utils
-import getAPIProxy from '../../../../../common/async/bridge'
 import { getLocale } from '$web-common/locale'
 import {
   LOCAL_STORAGE_KEYS, //
@@ -492,11 +491,6 @@ export const Nfts = ({
     },
     [history, selectedTab],
   )
-
-  // effects
-  React.useEffect(() => {
-    getAPIProxy().braveWalletP3A.recordNFTGalleryView(visibleNfts.length)
-  }, [visibleNfts.length])
 
   // render
   return (

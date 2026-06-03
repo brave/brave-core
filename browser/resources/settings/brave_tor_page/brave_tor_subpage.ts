@@ -123,7 +123,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         computed: 'computeProvidedBridgesPlaceholder_(useBridges_, providedBridges_)'
       },
 
-      disableTorOption_: Boolean,
+      isTorManaged_: Boolean,
 
       torEnabledPref_: {
         type: Object,
@@ -180,7 +180,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   private declare shouldShowBridgesGroup_: boolean
   private declare requestedBridgesPlaceholder_: string
   private declare providedBridgesPlaceholder_: string
-  private declare disableTorOption_: boolean
+  private declare isTorManaged_: boolean
   private declare torEnabledPref_: chrome.settingsPrivate.PrefObject
   private declare torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
   private declare torSnowflakeExtensionAllowed_: boolean
@@ -221,7 +221,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       this.setTorEnabledPref_(enabled)
     })
     this.browserProxy_.isTorManaged().then((managed: boolean) => {
-      this.disableTorOption_ = managed
+      this.isTorManaged_ = managed
     })
 
     if (loadTimeData.getBoolean('enable_extensions')) {

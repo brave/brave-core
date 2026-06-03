@@ -7,28 +7,22 @@
 import unittest
 from pathlib import Path
 import hashlib
-import io
 import json
+import os
 import time
-from unittest.mock import patch
-import sys
 
 import plaster
 
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 
 
 class PlasterTest(unittest.TestCase):
 
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
-        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
-
-        # Override PLASTER_FILES_PATH to use the rewrite path in the fake Brave
-        # repo
-        plaster.PLASTER_FILES_PATH = self.fake_chromium_src.brave / 'rewrite'
 
     def test_original_expected_toml_rules(self):
         """Test applying all .toml files in the test/ folder."""
@@ -103,7 +97,7 @@ class PlasterTest(unittest.TestCase):
             'Initial content for Plaster file.')
 
         # Checking for the creation of the patchinfo file
-        patchinfo = plaster.PatchInfo(plaster_path)
+        patchinfo = plaster.PatchinfoBuilder(plaster_path)
         patchinfo_from_disk = json.loads(
             patchinfo.patchinfo.path.read_text(encoding='utf-8'))
 
@@ -111,9 +105,7 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(
             patchinfo_from_disk['patchChecksum'],
             hashlib.sha256(
-                self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium,
-                    test_file_chromium).read_text().encode()).hexdigest())
+                patchinfo.patch.path.read_text().encode()).hexdigest())
         self.assertEqual(patchinfo_from_disk['appliesTo'][0]['path'],
                          str(test_file_chromium))
         self.assertEqual(
@@ -121,9 +113,9 @@ class PlasterTest(unittest.TestCase):
             hashlib.sha256(
                 (self.fake_chromium_src.chromium /
                  test_file_chromium).read_text().encode()).hexdigest())
-        self.assertEqual(
-            patchinfo_from_disk['plaster']['path'],
-            str(plaster_path.relative_to(self.fake_chromium_src.brave)))
+        # PatchinfoBuilder normalizes plaster path to be relative to brave root.
+        self.assertEqual(patchinfo_from_disk['plaster']['path'],
+                         str(patchinfo.plaster_file))
         self.assertEqual(
             patchinfo_from_disk['plaster']['checksum'],
             hashlib.sha256(plaster_path.read_text().encode()).hexdigest())
@@ -158,6 +150,174 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(temp_file.read_text(), 'bar')
         temp_file.unlink()
 
+    def test_yaml_plaster_applies_like_toml(self):
+        """A .yaml plaster produces the same result as the equivalent .toml."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_yaml_plaster.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Initial content for Chromium file.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_yaml_plaster.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Simple yaml substitution\n'
+                                "    re_pattern: 'Chromium'\n"
+                                "    replace: 'Plaster'\n")
+
+        plaster.PlasterFile(plaster_path).apply()
+
+        self.assertEqual(
+            (self.fake_chromium_src.chromium / test_file_chromium).read_text(),
+            'Initial content for Plaster file.')
+
+        # The patch file is named after the source, not the plaster
+        # extension, so it should be a sibling of where the .toml patch
+        # would have landed.
+        patchinfo = plaster.PatchinfoBuilder(plaster_path)
+        self.assertTrue(patchinfo.patch.path.exists())
+        self.assertTrue(patchinfo.patchinfo.path.exists())
+
+    def test_yaml_plaster_validation_failures(self):
+        """YAML plasters surface the same validation errors as TOML."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_yaml_validation.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Initial content for Chromium file.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_yaml_validation.idl',
+                                      self.fake_chromium_src.chromium)
+
+        cases = [
+            ('substitutions:\n'
+             '  - description: Both patterns specified\n'
+             "    pattern: 'Chromium'\n"
+             "    re_pattern: 'Chromium'\n"
+             "    replace: 'Plaster'\n",
+             'Please specify either pattern or re_pattern'),
+            ('substitutions:\n'
+             '  - description: No pattern specified\n'
+             "    replace: 'Plaster'\n", 'No pattern specified'),
+            ('substitutions:\n'
+             '  - description: No replace specified\n'
+             "    pattern: 'Chromium'\n", 'No replace value specified'),
+        ]
+
+        for yaml_content, expected_error in cases:
+            with self.subTest(error=expected_error):
+                plaster_path = plaster.PLASTER_FILES_PATH / (
+                    str(test_file_chromium) + '.yaml')
+                plaster_path.parent.mkdir(parents=True, exist_ok=True)
+                plaster_path.write_text(yaml_content)
+
+                plaster_file = plaster.PlasterFile(plaster_path)
+                with self.assertRaises(ValueError) as context:
+                    plaster_file.apply()
+                self.assertIn(expected_error, str(context.exception))
+
+    def test_yaml_and_toml_collision_is_rejected(self):
+        """Having both .yaml and .toml plasters for the same source errors."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_collision.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_collision.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_stem = (plaster.PLASTER_FILES_PATH / str(test_file_chromium))
+        plaster_stem.parent.mkdir(parents=True, exist_ok=True)
+
+        yaml_path = plaster_stem.with_suffix(plaster_stem.suffix + '.yaml')
+        yaml_path.write_text('substitutions:\n'
+                             '  - description: yaml form\n'
+                             "    re_pattern: 'Chromium'\n"
+                             "    replace: 'Brave'\n")
+
+        toml_path = plaster_stem.with_suffix(plaster_stem.suffix + '.toml')
+        toml_path.write_text("[[substitution]]\n"
+                             "description = 'toml form'\n"
+                             "re_pattern = 'Chromium'\n"
+                             "replace = 'Brave'\n")
+
+        with self.assertRaises(plaster.PlasterError) as context:
+            plaster.PlasterFile(yaml_path).apply()
+        message = str(context.exception)
+        self.assertIn('Both `.yaml` and `.toml`', message)
+        self.assertIn(str(yaml_path), message)
+        self.assertIn(str(toml_path), message)
+
+        # And the other direction: starting from the .toml file.
+        with self.assertRaises(plaster.PlasterError):
+            plaster.PlasterFile(toml_path).apply()
+
+    def test_duplicate_yaml_keys_are_rejected(self):
+        """A YAML mapping with a duplicate key surfaces as a ValueError.
+
+        Without this guard, `yaml.safe_load` would silently keep the last
+        value for the repeated key, and a typo would shadow the real
+        field — applying a different patch than the author intended.
+        """
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_duplicate_key.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_duplicate_key.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        # `pattern` is declared twice; the second occurrence would
+        # silently win without the strict loader.
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Duplicate pattern key\n'
+                                "    pattern: 'Chromium'\n"
+                                "    pattern: 'Brave'\n"
+                                "    replace: 'Brave'\n")
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(ValueError) as context:
+            plaster_file.apply()
+        message = str(context.exception)
+        self.assertIn('Duplicate key', message)
+        self.assertIn("'pattern'", message)
+
+    def test_unknown_substitution_key_is_rejected(self):
+        """Unrecognised substitution keys raise instead of being ignored."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_unknown_key.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_unknown_key.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        # Common typo: `replacement` (the field is `replace`).
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Typo in key name\n'
+                                "    pattern: 'Chromium'\n"
+                                "    replacement: 'Brave'\n")
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(ValueError) as context:
+            plaster_file.apply()
+        message = str(context.exception)
+        self.assertIn('Unrecognised substitution key', message)
+        self.assertIn("'replacement'", message)
+
     def test_check_success_multiple_up_to_date(self):
         """Test plaster check succeeds for 3 up-to-date plaster files."""
         # Create 3 source files in chromium and matching .toml in brave/rewrite
@@ -187,7 +347,7 @@ class PlasterTest(unittest.TestCase):
             # Apply the rewrite so files are up-to-date
             plaster_file = plaster.PlasterFile(rewrite_path)
             plaster_file.apply()
-        # Now check should succeed (no sys.exit(1))
+        # Now check should succeed without raising.
         class DummyArgs:
 
             def __init__(self):
@@ -195,10 +355,7 @@ class PlasterTest(unittest.TestCase):
                 self.verbose = False
 
         args = DummyArgs()
-        # Should not call sys.exit at all
-        with patch('sys.exit') as mock_exit:
-            plaster.check(args)
-            mock_exit.assert_not_called()
+        self.assertEqual(plaster.check(args), 0)
 
     def test_check_fails_when_toml_changed(self):
         """Test plaster check fails when there's a mismatch."""
@@ -237,9 +394,7 @@ class PlasterTest(unittest.TestCase):
                 self.verbose = False
 
         args = DummyArgs()
-        with patch('sys.exit') as mock_exit:
-            plaster.check(args)
-            mock_exit.assert_not_called()
+        self.assertEqual(plaster.check(args), 0)
         # Now change one toml file to cause a failure
         changed_path = rewrite_paths[1]
         changed_path.write_text('''
@@ -248,13 +403,10 @@ class PlasterTest(unittest.TestCase):
           re_pattern = 'foo2'
           replace = 'DIFFERENT'
         ''')
-        # Now check should fail and print the file on stderr
-        stderr = io.StringIO()
-        with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
+        # Now check should raise PlasterFileNeedsRegen with the path included.
+        with self.assertRaises(plaster.PlasterFileNeedsRegen) as context:
             plaster.check(args)
-            mock_exit.assert_called_once_with(1)
-            output = stderr.getvalue()
-            self.assertIn(str(changed_path), output)
+        self.assertIn(str(changed_path), str(context.exception))
 
     def test_regex_flags_array_works(self):
         """Test that multiple flags in array are passed through correctly."""
@@ -363,7 +515,7 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(result, 'Content with CHROMIUM and Brave words.')
 
     def test_invalid_regex_fails(self):
-        """Test that invalid regex patterns output errors with sys.exit(1)."""
+        """Test that invalid regex patterns raise PlasterApplyError."""
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_invalid_regex.idl')
 
@@ -397,14 +549,11 @@ class PlasterTest(unittest.TestCase):
                 ''')
 
                 plaster_file = plaster.PlasterFile(plaster_path)
-                stderr = io.StringIO()
-                with patch('sys.stderr',
-                           stderr), patch('sys.exit') as mock_exit:
+                with self.assertRaises(plaster.PlasterApplyError) as context:
                     plaster_file.apply()
-                    mock_exit.assert_called_once_with(1)
-                    output = stderr.getvalue()
-                    self.assertIn('Invalid regex:', output)
-                    self.assertIn(str(plaster_path), output)
+                message = str(context.exception)
+                self.assertIn('Invalid regex:', message)
+                self.assertIn(str(plaster_path), message)
 
     def test_pattern_validation_failures(self):
         """Test various pattern validation failures."""
@@ -580,7 +729,7 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(result2, 'Text with {braces} and (parentheses).')
 
     def test_count_mismatch_fails(self):
-        """Test that count mismatch causes sys.exit(1) with error output."""
+        """Test that count mismatch raises PlasterApplyError."""
         # Test case: more matches than expected
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_file1.idl')
@@ -606,13 +755,11 @@ class PlasterTest(unittest.TestCase):
 
         # Should fail because there are 3 matches but count expects 2
         plaster_file = plaster.PlasterFile(plaster_path)
-        stderr = io.StringIO()
-        with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
+        with self.assertRaises(plaster.PlasterApplyError) as context:
             plaster_file.apply()
-            mock_exit.assert_called_once_with(1)
-            output = stderr.getvalue()
-            self.assertIn('Unexpected number of matches (3 vs 2)', output)
-            self.assertIn(str(plaster_path), output)
+        message = str(context.exception)
+        self.assertIn('Unexpected number of matches (3 vs 2)', message)
+        self.assertIn(str(plaster_path), message)
 
     def test_default_count(self):
         """Test default count=1 behavior."""
@@ -666,13 +813,11 @@ class PlasterTest(unittest.TestCase):
 
         # Should fail because there are 2 matches but default expects 1
         plaster_file_incorrect = plaster.PlasterFile(plaster_path_incorrect)
-        stderr = io.StringIO()
-        with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
+        with self.assertRaises(plaster.PlasterApplyError) as context:
             plaster_file_incorrect.apply()
-            mock_exit.assert_called_once_with(1)
-            output = stderr.getvalue()
-            self.assertIn('Unexpected number of matches (2 vs 1)', output)
-            self.assertIn(str(plaster_path_incorrect), output)
+        message = str(context.exception)
+        self.assertIn('Unexpected number of matches (2 vs 1)', message)
+        self.assertIn(str(plaster_path_incorrect), message)
 
     def test_count_zero_replaces_all(self):
         """
@@ -762,6 +907,316 @@ class PlasterTest(unittest.TestCase):
             result,
             'Brave application and Firefox application and Safari application.'
         )
+
+    def _setup_applied_plaster(self, test_file: Path,
+                               initial_content: str) -> plaster.PlasterFile:
+        """Stages a chromium source, writes a plaster toml, and applies it."""
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, initial_content, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(f'Add {test_file.name}',
+                                      self.fake_chromium_src.chromium)
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file) + '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Replace Chromium with Brave'
+          re_pattern = 'Chromium'
+          replace = 'Brave'
+        ''')
+        plaster_file = plaster.PlasterFile(plaster_path)
+        plaster_file.apply()
+        return plaster_file
+
+    def test_needs_apply_false_after_fresh_apply(self):
+        """needs_apply returns False immediately after a successful apply."""
+        plaster_file = self._setup_applied_plaster(
+            Path('chrome/common/extensions/api/needs_apply_fresh.idl'),
+            'Initial Chromium content.')
+        self.assertFalse(plaster_file.needs_apply())
+
+    def test_needs_apply_true_after_source_change(self):
+        """needs_apply returns True when the source file is modified."""
+        test_file = Path(
+            'chrome/common/extensions/api/needs_apply_source_change.idl')
+        plaster_file = self._setup_applied_plaster(
+            test_file, 'Initial Chromium content.')
+        source_path = self.fake_chromium_src.chromium / test_file
+        later = source_path.stat().st_mtime + 10
+        source_path.write_text('Tampered Brave content.')
+        os.utime(source_path, (later, later))
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_needs_apply_true_after_toml_change(self):
+        """needs_apply returns True when the plaster toml is modified."""
+        test_file = Path(
+            'chrome/common/extensions/api/needs_apply_toml_change.idl')
+        plaster_file = self._setup_applied_plaster(
+            test_file, 'Initial Chromium content.')
+        later = plaster_file.path.stat().st_mtime + 10
+        plaster_file.path.write_text('''
+          [[substitution]]
+          description = 'A different rule'
+          re_pattern = 'Brave'
+          replace = 'Lion'
+        ''')
+        os.utime(plaster_file.path, (later, later))
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_needs_apply_true_when_patchinfo_missing(self):
+        """needs_apply returns True when the patchinfo file does not exist."""
+        plaster_file = self._setup_applied_plaster(
+            Path('chrome/common/extensions/api/needs_apply_no_patchinfo.idl'),
+            'Initial Chromium content.')
+        plaster.PatchinfoBuilder(plaster_file.path).patchinfo.path.unlink()
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_needs_apply_true_when_patchinfo_missing_fields(self):
+        """needs_apply returns True when patchinfo lacks required pairs."""
+        plaster_file = self._setup_applied_plaster(
+            Path('chrome/common/extensions/api/needs_apply_incomplete_info.idl'
+                 ), 'Initial Chromium content.')
+        patchinfo_path = plaster.PatchinfoBuilder(
+            plaster_file.path).patchinfo.path
+        # Schema-only patchinfo: no appliesTo, plaster, or patchChecksum.
+        patchinfo_path.write_text('{"schemaVersion": 1}',
+                                  encoding='utf-8',
+                                  newline='')
+        # Backdate patchinfo so the mtime check trips and the field check
+        # runs.
+        older = patchinfo_path.stat().st_mtime - 100
+        os.utime(patchinfo_path, (older, older))
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_needs_apply_true_after_patch_change(self):
+        """needs_apply returns True when the patch file is modified."""
+        test_file = Path(
+            'chrome/common/extensions/api/needs_apply_patch_change.idl')
+        plaster_file = self._setup_applied_plaster(
+            test_file, 'Initial Chromium content.')
+        patch_path = plaster.PatchinfoBuilder(plaster_file.path).patch.path
+        later = patch_path.stat().st_mtime + 10
+        patch_path.write_text('tampered patch contents\n')
+        os.utime(patch_path, (later, later))
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_needs_apply_true_when_patch_missing(self):
+        """needs_apply returns True when the patch file does not exist."""
+        plaster_file = self._setup_applied_plaster(
+            Path('chrome/common/extensions/api/needs_apply_no_patch.idl'),
+            'Initial Chromium content.')
+        plaster.PatchinfoBuilder(plaster_file.path).patch.path.unlink()
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_needs_apply_true_when_source_missing(self):
+        """needs_apply returns True when the chromium source is missing."""
+        test_file = Path(
+            'chrome/common/extensions/api/needs_apply_no_source.idl')
+        plaster_file = self._setup_applied_plaster(
+            test_file, 'Initial Chromium content.')
+        (self.fake_chromium_src.chromium / test_file).unlink()
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_needs_apply_false_when_stale_mtime_but_checksums_match(self):
+        """needs_apply returns False when mtime is stale but checksums match.
+        """
+        plaster_file = self._setup_applied_plaster(
+            Path('chrome/common/extensions/api/needs_apply_stale_mtime.idl'),
+            'Initial Chromium content.')
+        patchinfo_path = plaster.PatchinfoBuilder(
+            plaster_file.path).patchinfo.path
+        older = patchinfo_path.stat().st_mtime - 100
+        os.utime(patchinfo_path, (older, older))
+        self.assertFalse(plaster_file.needs_apply())
+
+
+class PatchinfoTest(unittest.TestCase):
+    """Tests for Patchinfo and Patchinfo.parse."""
+
+    _VALID_JSON = '''{
+      "schemaVersion": 1,
+      "patchChecksum": "cff50e7ef57149c15b3550204e6ed5beadb14d9ede81a0d1d9e0c2fa89a3708f",
+      "appliesTo": [
+        {
+          "path": "chrome/updater/mac/.install.sh",
+          "checksum": "aef9cc2e118501527bab9f46a652ba8c28009ea46771af219de45a680a4157ad"
+        }
+      ],
+      "plaster": {
+        "path": "rewrite/chrome/updater/mac/.install.sh.toml",
+        "checksum": "c8335aa0242a7f4426bb8e870239585063d20c2e3c1bfbe07a3060f003bd2a31"
+      }
+    }'''
+
+    def test_from_json_happy_path(self):
+        """from_json populates every field from a well-formed patchinfo."""
+        info = plaster.Patchinfo.from_json(self._VALID_JSON)
+        self.assertIsNotNone(info)
+        self.assertEqual(info.schema_version, 1)
+        self.assertEqual(
+            info.patch_checksum,
+            'cff50e7ef57149c15b3550204e6ed5beadb14d9ede81a0d1d9e0c2fa89a3708f')
+        self.assertIsInstance(info.applies_to, plaster.Patchinfo.Entry)
+        self.assertEqual(info.applies_to.path,
+                         'chrome/updater/mac/.install.sh')
+        self.assertEqual(
+            info.applies_to.checksum,
+            'aef9cc2e118501527bab9f46a652ba8c28009ea46771af219de45a680a4157ad')
+        self.assertIsInstance(info.plaster, plaster.Patchinfo.Entry)
+        self.assertEqual(info.plaster.path,
+                         'rewrite/chrome/updater/mac/.install.sh.toml')
+        self.assertEqual(
+            info.plaster.checksum,
+            'c8335aa0242a7f4426bb8e870239585063d20c2e3c1bfbe07a3060f003bd2a31')
+
+    def test_from_json_rejects_invalid_input(self):
+        """from_json returns None for malformed JSON, wrong types, or missing
+        required fields."""
+        valid_entry = {'path': 'x', 'checksum': 'h'}
+        valid_plaster = {'path': 'p', 'checksum': 'hp'}
+        base = {
+            'schemaVersion': 1,
+            'patchChecksum': 'a',
+            'appliesTo': [valid_entry],
+            'plaster': valid_plaster,
+        }
+
+        cases: list[tuple[str, str]] = [
+            ('not JSON at all', 'not json'),
+            ('list root', '[]'),
+            ('int root', '42'),
+            ('string root', '"hello"'),
+            ('missing schemaVersion',
+             json.dumps({
+                 k: v
+                 for k, v in base.items() if k != 'schemaVersion'
+             })),
+            ('wrong schemaVersion type',
+             json.dumps({
+                 **base, 'schemaVersion': '1'
+             })),
+            ('missing patchChecksum',
+             json.dumps({
+                 k: v
+                 for k, v in base.items() if k != 'patchChecksum'
+             })),
+            ('wrong patchChecksum type',
+             json.dumps({
+                 **base, 'patchChecksum': 123
+             })),
+            ('missing appliesTo',
+             json.dumps({
+                 k: v
+                 for k, v in base.items() if k != 'appliesTo'
+             })),
+            ('empty appliesTo', json.dumps({
+                **base, 'appliesTo': []
+            })),
+            ('more than one appliesTo entry',
+             json.dumps({
+                 **base, 'appliesTo': [valid_entry, valid_entry]
+             })),
+            ('non-list appliesTo',
+             json.dumps({
+                 **base, 'appliesTo': valid_entry
+             })),
+            ('appliesTo entry missing path',
+             json.dumps({
+                 **base, 'appliesTo': [{
+                     'checksum': 'h'
+                 }]
+             })),
+            ('appliesTo entry missing checksum',
+             json.dumps({
+                 **base, 'appliesTo': [{
+                     'path': 'x'
+                 }]
+             })),
+            ('appliesTo entry wrong path type',
+             json.dumps({
+                 **base, 'appliesTo': [{
+                     'path': 1,
+                     'checksum': 'h'
+                 }]
+             })),
+            ('missing plaster',
+             json.dumps({
+                 k: v
+                 for k, v in base.items() if k != 'plaster'
+             })),
+            ('non-dict plaster', json.dumps({
+                **base, 'plaster': 'oops'
+            })),
+            ('plaster missing path',
+             json.dumps({
+                 **base, 'plaster': {
+                     'checksum': 'hp'
+                 }
+             })),
+            ('plaster missing checksum',
+             json.dumps({
+                 **base, 'plaster': {
+                     'path': 'p'
+                 }
+             })),
+            ('plaster wrong checksum type',
+             json.dumps({
+                 **base, 'plaster': {
+                     'path': 'p',
+                     'checksum': 7
+                 }
+             })),
+        ]
+
+        for name, content in cases:
+            with self.subTest(case=name):
+                self.assertIsNone(plaster.Patchinfo.from_json(content))
+
+    def test_parsed_instance_is_frozen(self):
+        """Patchinfo and Patchinfo.Entry both reject attribute assignment."""
+        from dataclasses import FrozenInstanceError
+        info = plaster.Patchinfo.from_json(self._VALID_JSON)
+        self.assertIsNotNone(info)
+        with self.assertRaises(FrozenInstanceError):
+            info.schema_version = 99
+        with self.assertRaises(FrozenInstanceError):
+            info.applies_to.path = 'other'
+
+    def test_parsed_instance_equality_and_hashable(self):
+        """Two patchinfos parsed from identical JSON compare equal and hash
+        equal."""
+        a = plaster.Patchinfo.from_json(self._VALID_JSON)
+        b = plaster.Patchinfo.from_json(self._VALID_JSON)
+        self.assertEqual(a, b)
+        self.assertEqual(hash(a), hash(b))
+
+    def test_to_json_matches_schema(self):
+        """to_json emits exactly the keys/structure of a .patchinfo file."""
+        info = plaster.Patchinfo(
+            schema_version=1,
+            patch_checksum='pc',
+            applies_to=plaster.Patchinfo.Entry(path='src.cc', checksum='sc'),
+            plaster=plaster.Patchinfo.Entry(path='r.toml', checksum='rc'),
+        )
+        self.assertEqual(
+            json.loads(info.to_json()), {
+                'schemaVersion': 1,
+                'patchChecksum': 'pc',
+                'appliesTo': [{
+                    'path': 'src.cc',
+                    'checksum': 'sc'
+                }],
+                'plaster': {
+                    'path': 'r.toml',
+                    'checksum': 'rc'
+                },
+            })
+
+    def test_json_roundtrip(self):
+        """from_json(x.to_json()) == x for any well-formed Patchinfo."""
+        original = plaster.Patchinfo.from_json(self._VALID_JSON)
+        self.assertIsNotNone(original)
+        roundtripped = plaster.Patchinfo.from_json(original.to_json())
+        self.assertEqual(original, roundtripped)
 
 
 if __name__ == '__main__':

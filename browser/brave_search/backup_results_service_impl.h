@@ -17,10 +17,17 @@
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "chrome/browser/profiles/profile_observer.h"
+#include "content/public/browser/navigation_controller.h"
 #include "net/http/http_request_headers.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "url/gurl.h"
 
+class PrefService;
 class Profile;
+
+namespace gfx {
+class Size;
+}  // namespace gfx
 
 namespace content {
 class WebContents;
@@ -36,6 +43,9 @@ namespace brave_search {
 class BackupResultsServiceImpl : public BackupResultsService,
                                  public ProfileObserver {
  public:
+  static void RecordLastViewSize(PrefService* local_state,
+                                 const gfx::Size& size);
+
   explicit BackupResultsServiceImpl(Profile* profile);
 
   ~BackupResultsServiceImpl() override;
@@ -100,7 +110,25 @@ class BackupResultsServiceImpl : public BackupResultsService,
   void CleanupAndDispatchResult(PendingRequestList::iterator pending_request,
                                 std::optional<BackupResults> result);
 
+  void MaybeApplyUserAgentOverride(
+      content::WebContents& web_contents,
+      content::NavigationController::LoadURLParams& load_url_params);
+
+  void SeedNavigationHistory(content::WebContents& web_contents,
+                             const GURL& target_url);
+
+  net::HttpRequestHeaders GetExtraHeaders(
+      const std::optional<net::HttpRequestHeaders>& request_headers);
+
+  // Returns true if the daily request limit has been reached, false otherwise.
+  bool UpdateDailyRequestCount();
+
   raw_ptr<Profile> profile_;
+  raw_ptr<PrefService> local_state_;
+
+  // Cached on first use; nullopt if param is absent/invalid.
+  std::optional<blink::UserAgentOverride> ua_override_;
+  std::optional<net::HttpRequestHeaders> feature_headers_;
 
   PendingRequestList pending_requests_;
 

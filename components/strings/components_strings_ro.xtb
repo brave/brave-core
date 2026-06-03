@@ -21,12 +21,13 @@
 <translation id="1036348656032585052">Dezactivează</translation>
 <translation id="1036436692654972538">Salvează pe dispozitiv</translation>
 <translation id="1036881361735705143">Plic C4</translation>
+<translation id="1038106730571050514">Afișează sugestii</translation>
+<translation id="1038168778161626396">Numai cifrare</translation>
 <translation id="1038842779957582377">nume necunoscut</translation>
 <translation id="1041998700806130099">Mesajul din foaia sarcinii</translation>
 <translation id="1044897699341250361">Ce înseamnă aceasta</translation>
 <translation id="1046350918013988591">Cupoane și oferte de reduceri</translation>
 <translation id="1050038467049342496">închide celelalte aplicații;</translation>
-<translation id="1053959602163383901">Ai ales să confirmi folosind un dispozitiv de autentificare pe site-urile care folosesc <ph name="PROVIDER_ORIGIN"/>. Este posibil ca acest furnizor să fi stocat informații despre metoda de plată, pe care le poți <ph name="LINK_TEXT"/>.</translation>
 <translation id="1055184225775184556">&amp;Anulați adăugarea</translation>
 <translation id="1056898198331236512">Avertisment</translation>
 <translation id="1248991947169346185"><ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a juca jocul Dino Run în Brave</translation>
@@ -43,6 +44,7 @@
 <translation id="1068672505746868501">Nu traduce niciodată paginile în <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1070333806075222467">Metal (lucios)</translation>
 <translation id="1070901266639972381">Noapte</translation>
+<translation id="1071917609930274619">Cifrare de date</translation>
 <translation id="1073690811593784042">Sticlă (colorat)</translation>
 <translation id="1074287282535157335">Plătește în patru rate sau lunar (în funcție de eligibilitate)</translation>
 <translation id="1074497978438210769">Nesecurizat</translation>
@@ -84,10 +86,12 @@
 <translation id="1138458427267715730">Primește alerte când scade prețul pe orice site de pe web</translation>
 <translation id="1142713751288681188">Tip de hârtie</translation>
 <translation id="1142965388643537393">Informații de călătorie</translation>
+<translation id="1143142264369994168">Semnatarul certificatului</translation>
 <translation id="1144136880160289237">Încă nu ai niciun subiect activ</translation>
 <translation id="1149617035358809955">să îți confirme identitatea pentru a completa informațiile de plată</translation>
 <translation id="1150565364351027703">Ochelari de soare</translation>
 <translation id="1150979032973867961">Acest server nu a putut dovedi că este <ph name="DOMAIN"/>; sistemul de operare al computerului nu consideră că certificatul său de securitate este de încredere. Cauza poate fi o configurare greșită sau interceptarea conexiunii de către un atacator.</translation>
+<translation id="1115388613038124176">Poți completa automat cardurile salvate în Portofelul Brave</translation>
 <translation id="1151972924205500581">Trebuie să introduceți o parolă</translation>
 <translation id="1156303062776767266">Se afișează un fișier local sau comun</translation>
 <translation id="1158211211994409885"><ph name="HOST_NAME"/> a închis conexiunea în mod neașteptat.</translation>
@@ -128,6 +132,7 @@
 <translation id="1202892408424955784">Produse urmărite</translation>
 <translation id="1204184165594298176">{0,plural, =1{Fișierul nu poate fi copiat}few{<ph name="FILE_COUNT"/> fișiere nu pot fi copiate}other{<ph name="FILE_COUNT"/> de fișiere nu pot fi copiate}}</translation>
 <translation id="120509973613679868">Călătorii de afaceri</translation>
+<translation id="1476484148752770616">Poți completa automat cardurile salvate în Portofelul Brave.</translation>
 <translation id="120587177308723209">Sporturi virtuale</translation>
 <translation id="1206967143813997005">Semnătură inițială nevalidă</translation>
 <translation id="1209206284964581585">Ascunde momentan</translation>
@@ -136,6 +141,7 @@
 <translation id="449113506387905750">Folosește informațiile salvate în Contul Brave pentru a completa automat parole, chei de acces, adrese, metode de plată și alte informații</translation>
 <translation id="1219129156119358924">Securitatea sistemului</translation>
 <translation id="1219134100826635117">Administratorul a blocat această acțiune</translation>
+<translation id="1221024147024329929">PKCS #1 MD2 cu criptare RSA</translation>
 <translation id="1222060260947439312">Tava din dreapta</translation>
 <translation id="1224330468394120478">A3x6</translation>
 <translation id="1225240795350945817">Număr de card:</translation>
@@ -146,6 +152,7 @@
 <translation id="1228893227497259893">Identificator greșit pentru entitate</translation>
 <translation id="1230244617745022071"><ph name="SOURCE"/> (detectată automat)</translation>
 <translation id="1232569758102978740">Fără titlu</translation>
+<translation id="1234539281285007945">Este necesar <ph name="FIELD_1"/></translation>
 <translation id="1236081509407217141">Permiți RV?</translation>
 <translation id="1236689197410206751">AfterPay</translation>
 <translation id="1240347957665416060">Numele dispozitivului tău</translation>
@@ -231,7 +238,6 @@
 <translation id="1357195169723583938">Cine a folosit dispozitivul recent și când</translation>
 <translation id="1358187717814494928">Creează o foaie</translation>
 <translation id="1359836962251219822">Bucătărie și masă</translation>
-<translation id="4471036740481432056">Informațiile tale sunt salvate în Portofelul Brave pentru <ph name="ACCOUNT"/>. Le poți folosi în serviciile Brave pentru a completa mai rapid formulare.</translation>
 <translation id="1361528602584216624">Limită per Pix: <ph name="TRANSACTION_LIMIT"/> R$</translation>
 <translation id="1363015776076529485">Metodele de plată disponibile pentru a fi selectate pentru a continua plata, deschise la înălțimea completă.</translation>
 <translation id="1363028406613469049">Melodia</translation>
@@ -365,6 +371,7 @@
 <translation id="1567405528131216114">Adaugă <ph name="TOPIC"/></translation>
 <translation id="1569487616857761740">Introdu data expirării</translation>
 <translation id="1385693425784118652">Brave încearcă să activeze Windows Hello pentru completarea parolelor.</translation>
+<translation id="1569905000953679183">Preluarea politicii privind instalarea extensiilor</translation>
 <translation id="1572765991610098222"><ph name="WIDTH"/> x <ph name="HEIGHT"/> in</translation>
 <translation id="1574714699824202614">Se confirmă metoda de plată</translation>
 <translation id="1576277203042721907">Statistici despre cumpărături</translation>
@@ -382,6 +389,7 @@
 <translation id="1595731774593926493">Șterge numărul de remediere</translation>
 <translation id="1597307423671074806">Videoclip WebM</translation>
 <translation id="6492710526857439641">Linkul Sfat pentru Brave, apasă pe Enter pentru a deschide <ph name="IPH_LINK_FOCUSED_LINK_TEXT"/></translation>
+<translation id="4637891589811401888">Trimis. Deschide Brave pe celălalt dispozitiv.</translation>
 <translation id="1599199147673445968">Card nou? <ph name="BEGIN_LINK"/>Introdu detaliile cardului<ph name="END_LINK"/></translation>
 <translation id="1601786938618212857">Zip</translation>
 <translation id="1604192142734009334">Frumusețe și fitness</translation>
@@ -408,8 +416,10 @@
 <translation id="1639239467298939599">Se încarcă</translation>
 <translation id="1640180200866533862">Politici privind utilizatorii</translation>
 <translation id="1640244768702815859"><ph name="BEGIN_LINK"/>Accesează pagina de pornire a site-ului<ph name="END_LINK"/>.</translation>
+<translation id="1640283014264083726">PKCS # 1 MD4 cu criptare RSA</translation>
 <translation id="1641962500621836664">Se salvează fișierul asociat camerei</translation>
 <translation id="1641976391427233992">Amână ieșirea până la</translation>
+<translation id="1643072738649235303">Semnătură X9.62 ECDSA cu SHA-1</translation>
 <translation id="8088023492467080559">Accesează butonul Verificarea de siguranță pentru Brave și activează pentru a accesa pagina cu verificarea de siguranță pentru Brave din setări</translation>
 <translation id="1644574205037202324">Istoric</translation>
 <translation id="1645004815457365098">Sursă necunoscută</translation>
@@ -456,16 +466,17 @@
 <translation id="1717218214683051432">Senzori de mișcare</translation>
 <translation id="1717494416764505390">Căsuța de e-mail 3</translation>
 <translation id="1717688554309417925">Servicii de debit și cecuri</translation>
-<translation id="1717882880162336471">Încearcă Modul AI</translation>
 <translation id="1719434663396780149">Alertele privind scăderea prețurilor sunt activate. Poți modifica opțiunea în <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>.</translation>
 <translation id="1719838434204287058">24 x 30 in</translation>
 <translation id="1720941539803966190">Închide tutorialul</translation>
 <translation id="1721424275792716183">* Câmp obligatoriu</translation>
 <translation id="1723636263173393300">Această politică nu poate să conțină mai mult de <ph name="MAX_ITEMS_LIMIT"/> comenzi rapide.</translation>
 <translation id="1725591448053514783">Plic personal 6</translation>
+<translation id="172754119609519423">Este necesar <ph name="FIELD_1"/>, <ph name="FIELD_2"/> sau <ph name="FIELD_3"/></translation>
 <translation id="1727613060316725209">Certificatul este valid</translation>
 <translation id="1728677426644403582">Se afișează sursa unei pagini web</translation>
 <translation id="173080396488393970">Acest tip de card nu este acceptat</translation>
+<translation id="1731563515262205847">ML-DSA-65</translation>
 <translation id="1732445923934584865">Întreabă în persoană</translation>
 <translation id="1733064249834771892">Fonturi</translation>
 <translation id="1733631169686303142">Echipamente audio</translation>
@@ -490,6 +501,7 @@
 <translation id="1756026472674246267">Deschide linkul într-o filă nouă</translation>
 <translation id="1756555787993603971">Acum poți folosi un card virtual pentru a finaliza mai sigur achiziții cu completarea automată.</translation>
 <translation id="175656076281618225">Magie</translation>
+<translation id="1757269861068472918">Permiți accesul la file în fiecare fir?</translation>
 <translation id="1757773103848038814">Font Monospace</translation>
 <translation id="3727704638090640904">Butonul Schimbă parola Brave, activează pentru a schimba parola Contului Brave</translation>
 <translation id="1762779605905950734">Numele străzii</translation>
@@ -507,6 +519,7 @@
 <translation id="1803254472779303354">Blocarea mouse-ului este permisă</translation>
 <translation id="1803351196216024260">Poate solicita permisiunea de a folosi microfonul</translation>
 <translation id="1804258830776932716">Activează Pix conectându-ți rapid contul</translation>
+<translation id="2342567518551476675">Când opțiunea este activată, Brave va identifica și va folosi automat filele relevante pentru răspunsuri mai bune.</translation>
 <translation id="1806174020048213474">Aplicația solicită permisiunea de a instala date de conectare la Wi-Fi. După configurare, dispozitivul <ph name="DEVICE_TYPE"/> se va conecta automat la rețelele Wi-Fi participante. Pentru a elimina aceste date de conectare, dezinstalează aplicația.</translation>
 <translation id="1807246157184219062">Luminos</translation>
 <translation id="1807528111851433570">Foaia inițială</translation>
@@ -518,6 +531,7 @@
 <translation id="1812975699435941848">Educație sanitară și pregătire medicală</translation>
 <translation id="1816436748874040213">Poate solicita permisiunea de a derula și de a face zoom în filele la care s-a permis accesul</translation>
 <translation id="1816707915923025275">Introdu @history pentru a căuta în istoricul de navigare</translation>
+<translation id="1816849970130491878">Poți economisi timp activând trimiterea automată a filelor pentru toate firele.</translation>
 <translation id="8221062743840200789">Rol: sfat Brave. Etichetă de accesibilitate: <ph name="CHROME_TIP"/></translation>
 <translation id="1818522458013171885">Deblochează</translation>
 <translation id="1818585559878922121">Filme documentare</translation>
@@ -614,6 +628,7 @@
 <translation id="1979156660928743046">Informații despre conținutul media</translation>
 <translation id="8152900367508796729">Căutările tale, cele mai bune potriviri și conținutul paginilor acestora sunt trimise la Brave. Ele nu vor fi folosite de evaluatori umani pentru a îmbunătăți AI. Organizația poate să modifice oricând aceste setări.</translation>
 <translation id="1988881251331415125">Dacă scrierea este corectă, <ph name="BEGIN_LINK"/>încearcă să rulezi Diagnosticarea de conectivitate<ph name="END_LINK"/>.</translation>
+<translation id="1991370806334788445">Încearcă să permiți cookie-urile terță parte, ceea ce înseamnă mai puțină protecție pentru navigare, dar există șanse mai mari ca funcțiile site-urilor să funcționeze conform așteptărilor.</translation>
 <translation id="1992331125980284532">JIS B3</translation>
 <translation id="1997484222658892567"><ph name="URL"/> dorește să stocheze permanent cantități mari de date pe computer</translation>
 <translation id="1997774360448418989">Hârtie (ușoară)</translation>
@@ -653,7 +668,6 @@
 <translation id="2059202684901022309">22 x 34 in</translation>
 <translation id="2064568741209980952">Creditare și împrumut</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 sugestie}few{# sugestii}other{# de sugestii}}</translation>
-<translation id="2066915425250589881">solicitare de ștergere</translation>
 <translation id="2066969741541525119">Site-ul care urmează este blocat de organizația ta</translation>
 <translation id="2069913043427250781">Vehicule și siguranța circulației</translation>
 <translation id="2071156619270205202">Cardul nu este eligibil pentru un număr de card virtual.</translation>
@@ -690,6 +704,7 @@
 <translation id="2108755909498034140">repornește computerul;</translation>
 <translation id="2109845311767915560">Grup de file comun</translation>
 <translation id="2111166930115883695">Apasă pe Space pentru a juca</translation>
+<translation id="2113921862428609753">Acces la informații pentru autoritate</translation>
 <translation id="2113977810652731515">Card</translation>
 <translation id="2114841414352855701">Politica este ignorată, deoarece a fost înlocuită de <ph name="POLICY_NAME"/>.</translation>
 <translation id="2118132148597630479">Plic C5</translation>
@@ -728,6 +743,7 @@
 <translation id="21613918653299710">Galerii de imagini online</translation>
 <translation id="2161656808144014275">Text</translation>
 <translation id="2162435186600002085">Sigla principală din antet</translation>
+<translation id="2162535140284745414">Primește sugestii în timp real care te pot ajuta să găsești noi moduri de a naviga cu AI.</translation>
 <translation id="2162620598375156287">Acum la <ph name="CURRENT_PRICE"/> pe <ph name="SOURCE_WEBSITE"/></translation>
 <translation id="2164510882479075877">Verifică dacă există vreo greșeală de scriere în <ph name="HOST_NAME"/>.</translation>
 <translation id="2166049586286450108">Acces complet de administrare</translation>
@@ -749,8 +765,11 @@
 <translation id="2184405333245229118">{COUNT,plural, =1{1 adresă}few{# adrese}other{# de adrese}}</translation>
 <translation id="2188375229972301266">Perforare multiplă în partea de jos</translation>
 <translation id="218940509700321686">Valori separate prin virgulă</translation>
+<translation id="2190094353033916816">Această politică are valori diferite aplicate la nivel de dispozitiv și de utilizator. Politica funcționează corespunzător.</translation>
+<translation id="219061769324072544">Credit,Card,Debit</translation>
 <translation id="2191980191135734720">Deblochează ecranul la pasul următor, de obicei cu amprenta. Poți și să <ph name="LINK_TEXT"/>.</translation>
 <translation id="2194856509914051091">De reținut</translation>
+<translation id="2195729137168608510">Protecție e-mail</translation>
 <translation id="2198183835992354675">Numărul de călător cunoscut</translation>
 <translation id="2198215508485017216">A apărut o eroare neașteptată. <ph name="BEGIN_LINK"/>Află mai multe despre încărcările în Drive<ph name="END_LINK"/></translation>
 <translation id="2200678913752027654">Butonul Nu îmi place; apasă pe Enter pentru a deschide un formular și a trimite feedback detaliat despre motivul pentru care nu îți place această sugestie</translation>
@@ -826,7 +845,6 @@
 <translation id="2301098101308036335">ce site-uri sunt accesate și când.</translation>
 <translation id="2302571905116831849">Completează automat cardul de fidelitate</translation>
 <translation id="2303437270440428119">Foaie de calcul OpenDocument</translation>
-<translation id="2305294852062272447">Salvezi permisul de conducere?</translation>
 <translation id="2306124309679506798">Permiți o experiență captivantă?</translation>
 <translation id="2310789833878085574">Salvează și completează automat</translation>
 <translation id="2312234273148520048">Condimente și sosuri</translation>
@@ -896,6 +914,7 @@
 <translation id="2400600116338235695">Poate solicita permisiunea de a se conecta la porturi seriale</translation>
 <translation id="2403474027143565107">Exactă</translation>
 <translation id="240450251994300576">Sigla secundară din antet</translation>
+<translation id="2404715426538856682">Carduri de credit și de debit · IBAN-uri · Carduri de fidelitate</translation>
 <translation id="2404884497378469141">Încearcă să copiezi din nou fișierele</translation>
 <translation id="2413155254802890957">Veche</translation>
 <translation id="2413528052993050574">Acest server nu a putut dovedi că este <ph name="DOMAIN"/>; este posibil ca certificatul său de securitate să fie revocat. Cauza poate fi o configurare greșită sau interceptarea conexiunii de către un atacator.</translation>
@@ -956,11 +975,11 @@
 <translation id="3233967599412104589">Butonul Setează Brave ca browser prestabilit, apasă pe Enter ca să setezi Brave ca browser prestabilit pentru sistem în setările iOS</translation>
 <translation id="2514548229949738417">Casă și grădină</translation>
 <translation id="2515629240566999685">să verifici semnalul din zona ta.</translation>
-<translation id="2515761554693942801">Ai ales să confirmi cu Touch ID pe site-urile care folosesc <ph name="PROVIDER_ORIGIN"/>. Este posibil ca acest furnizor să fi stocat informații despre metoda de plată, pe care le poți <ph name="LINK_TEXT"/>.</translation>
 <translation id="2518584823165598232">Acest card nu este disponibil. Contactează furnizorul cardului.</translation>
 <translation id="2521385132275182522">Capsare în dreapta jos</translation>
 <translation id="2521736961081452453">Creează un formular</translation>
 <translation id="2524461107774643265">Adaugă mai multe informații</translation>
+<translation id="5238917643845023930"><ph name="BEGIN_BOLD"/>Conținutul paginii de finalizare a achiziției este trimis la Brave pentru a oferi aceste opțiuni.<ph name="END_BOLD"/> Planurile de plată se supun condițiilor de eligibilitate. Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LINK"/>setările pentru plăți<ph name="END_LINK"/>.</translation>
 <translation id="2526062290525841862">Pentru a rula această aplicație, reactivează modul pentru dezvoltatori de aplicații web izolate</translation>
 <translation id="5151177152796946073">Poți folosi adresele salvate în toate produsele Brave. Această adresă se va salva în Contul tău Brave, <ph name="ACCOUNT"/>.</translation>
 <translation id="2527451058878391043">Codul CVC se află pe partea din față a cardului. Este codul din patru cifre din dreapta sus, deasupra numărului cardului.</translation>
@@ -1016,6 +1035,7 @@
 <translation id="2610561535971892504">Dă clic pentru a copia</translation>
 <translation id="2612676031748830579">Număr card</translation>
 <translation id="686139377353794280">Toate codurile de securitate salvate pe dispozitiv și în Contul Brave vor fi șterse</translation>
+<translation id="2613758321247965174">{MINUTES,plural, =1{Activ acum 1 minut}few{Activ acum # minute}other{Activ acum # de minute}}</translation>
 <translation id="2614835674900828050">Indisponibil pentru această achiziție</translation>
 <translation id="2616412942031748191">Optimizare și marketing în motoare de căutare</translation>
 <translation id="2618206371527040026">Conferințe și publicații academice</translation>
@@ -1027,6 +1047,7 @@
 <translation id="2627847595568876492">Se extrage textul din PDF...</translation>
 <translation id="6484547507342500969">Acest server nu a putut dovedi că este <ph name="DOMAIN"/>, deoarece folosește un certificat de securitate în care Brave sau configurația sistemului pentru criptarea traficului web nu are încredere. Cauza poate fi o eroare de configurare sau interceptarea conexiunii de către un atacator.</translation>
 <translation id="2628224721443278970">Conectează-te la Microsoft OneDrive</translation>
+<translation id="2631059741268498165">Administratorul a localizat dispozitivul cât timp era dezactivat. A fost reactivat și este gata de folosire.</translation>
 <translation id="2631387782019878060">Cod de verificare: <ph name="OTP"/></translation>
 <translation id="2634124572758952069">Nu s-a găsit adresa IP pentru serverul <ph name="HOST_NAME"/>.</translation>
 <translation id="2638567100095052009">Introdu @ pentru a căuta în <ph name="FEATURED_SEARCH_LIST"/></translation>
@@ -1052,6 +1073,7 @@
 <translation id="2673968385134502798">Jocuri</translation>
 <translation id="2674170444375937751">Sigur doriți să ștergeți aceste pagini din istoric?</translation>
 <translation id="2674524144218093528">Zugrăvirea și finisarea locuințelor</translation>
+<translation id="2675716371350192683">Conținutul tău nu va fi folosit pentru a îmbunătăți AI. Organizația poate să modifice oricând aceste setări.</translation>
 <translation id="26774279487328902"><ph name="GROUP_COUNT"/> grupuri de file nu mai sunt disponibile</translation>
 <translation id="2677748264148917807">Ieși</translation>
 <translation id="2679216653373462289">Folosește senzorii de mișcare și de lumină</translation>
@@ -1101,7 +1123,6 @@
 <translation id="2740531572673183784">OK</translation>
 <translation id="2742128390261873684">Automatizarea casei</translation>
 <translation id="2743512410823092182">Resurse și echipamente pentru DJ</translation>
-<translation id="2743934314332613923">Actualizezi permisul de conducere?</translation>
 <translation id="2757727729385895652">Se încarcă <ph name="COUNT"/> fișiere în Google Drive</translation>
 <translation id="2759299890026163685">Asigură-te că ai o conexiune stabilă la internet înainte de a încerca din nou</translation>
 <translation id="2759825833388495838">completează parola pe <ph name="APP_NAME"/></translation>
@@ -1141,6 +1162,7 @@
 <translation id="2837891525090413132">Poate solicita blocarea și folosirea tastaturii</translation>
 <translation id="2839032553903800133">Notificările au fost blocate</translation>
 <translation id="2839501879576190149">Urmează un site fals</translation>
+<translation id="844810198869599189">Conținutul paginii de finalizare a achiziției este trimis la Brave pentru a oferi aceste opțiuni. Planurile de plată se supun condițiilor de eligibilitate. Ca să ascunzi opțiunile de plată mai târziu în completarea automată, accesează <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/>.</translation>
 <translation id="2843623755398178332">Derulezi și faci zoom în fila la care ai permis accesul?</translation>
 <translation id="2851291081585704741">Ești offline</translation>
 <translation id="7250620099767663516">Gestionează ce informații din Brave salvezi în Contul Brave</translation>
@@ -1161,7 +1183,6 @@
 <translation id="2882949212241984732">Îndoire tip fereastră dublă</translation>
 <translation id="2893773853358652045">A patra rolă</translation>
 <translation id="2894137550885451583">Acestea sunt prețurile în <ph name="CURRENCY"/> pentru produsul <ph name="PRODUCT"/></translation>
-<translation id="2894233157216554317">Actualizezi pașaportul?</translation>
 <translation id="2898398337339787921">Microsoft Excel</translation>
 <translation id="2900528713135656174">Creează un eveniment</translation>
 <translation id="2902312830803030883">Mai multe acțiuni</translation>
@@ -1178,6 +1199,7 @@
 <translation id="2915496182262110498">Pictură</translation>
 <translation id="2916038427272391327">închide celelalte programe;</translation>
 <translation id="2917630513638801879">Cyan 1</translation>
+<translation id="2918484639460781603">Accesați setările</translation>
 <translation id="2919185931486062599">Vânătoare și tir</translation>
 <translation id="2922350208395188000">Certificatul serverului nu poate fi verificat.</translation>
 <translation id="2922792708490674">{0,plural, =1{Fișierul nu poate fi descărcat}few{<ph name="FILE_COUNT"/> fișiere nu pot fi descărcate}other{<ph name="FILE_COUNT"/> de fișiere nu pot fi descărcate}}</translation>
@@ -1252,7 +1274,6 @@
 <translation id="3024663005179499861">Tip de politică greșit</translation>
 <translation id="3027915437837548462">Imagine SVG</translation>
 <translation id="3030331669969285614">Aceste semnale împiedică sau anulează o modificare generatoare de conflicte și vor fi disponibile numai pentru o perioadă limitată.</translation>
-<translation id="3030542417256082866">Salvezi vehiculul?</translation>
 <translation id="5877261609750575671">Adresa de acasă te poate ajuta să finalizezi activități în serviciile Brave, cum ar fi să obții rezultate mai relevante ale căutării și indicații de orientare în Brave Maps. Poți să editezi sau să ștergi adresa din <ph name="BEGIN_LINK"/>Contul Brave <ph name="ACCOUNT"/><ph name="END_LINK"/>.</translation>
 <translation id="3033777742142108756">Folosirea senzorilor de mișcare și de lumină este permisă momentan</translation>
 <translation id="3034526003882782781">Derularea și zoomul sunt permise</translation>
@@ -1264,6 +1285,7 @@
 <translation id="3041584414879052436">Lista emitentelor Cumpără acum, plătește mai târziu este închisă.</translation>
 <translation id="3041612393474885105">Informații despre certificat</translation>
 <translation id="3045769629416806687">Sporturi extreme</translation>
+<translation id="9014065296419901407">Salvează informațiile în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_1"/> și lucrează mai productiv, de exemplu, completează formulare în produsele Brave. Poți să <ph name="BEGIN_LINK"/>gestionezi informațiile<ph name="END_LINK"/> în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_2"/> pentru <ph name="ACCOUNT"/></translation>
 <translation id="8418829431154568330">Istoricul Desktopului la distanță Brave, inclusiv marcajele temporale, gazdele și ID-urile sesiunii de client</translation>
 <translation id="2396578282884469363">De obicei, te conectezi în siguranță la site-uri, dar Brave nu a putut folosi o conexiune securizată de data aceasta. Un atacator ar putea încerca să intercepteze sau să modifice conexiunea la rețea. <ph name="BEGIN_LEARN_MORE_LINK"/>Află mai multe despre acest mesaj de avertisment<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3052964831964880138">Scădere de preț de <ph name="PRICE_DROP"/> pentru <ph name="PRODUCT_NAME"/></translation>
@@ -1324,6 +1346,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3134859781443140237">Rețea locală</translation>
 <translation id="3137283076021007034"><ph name="KEYWORD"/> – Caută în <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="3137507986424712703">{COUNT,plural, =0{Niciuna}=1{date de conectare pentru un cont}few{date de conectare pentru # conturi}other{date de conectare pentru # de conturi}}</translation>
+<translation id="2545867218553945050">Pentru a activa aceste setări și a folosi informațiile din Contul Brave, accesează Setările serviciilor de completare automată</translation>
 <translation id="3140646734028448730">Servicii comerciale</translation>
 <translation id="3141093262818886744">Deschide oricum</translation>
 <translation id="3141337053413339205">Treci la această filă.</translation>
@@ -1343,6 +1366,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3162070126914310576">Dispozitivul nu poate fi înregistrat acum deoarece unitatea organizațională a atins limita inițială pentru înregistrări. Contactează administratorul pentru asistență.</translation>
 <translation id="3162559335345991374">Rețeaua Wi-Fi pe care o folosești poate solicita accesarea paginii de conectare.</translation>
 <translation id="316638481603975524">Poate să solicite instalarea aplicațiilor web</translation>
+<translation id="5128545107355520364">Brave îți va oferi opțiunea de a le salva în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> data viitoare când le folosești</translation>
 <translation id="3168744840365648658">Echipamente radio</translation>
 <translation id="3168938241115725594">Vehicule clasice</translation>
 <translation id="3169472444629675720">Discover</translation>
@@ -1383,6 +1407,8 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3220264767789936523">Îmbrăcăminte formală</translation>
 <translation id="3223287115535306850">Pictograma de încărcare pentru lansarea aplicației</translation>
 <translation id="3223425961342298674">Folosirea locației nu este permisă</translation>
+<translation id="3225277284238802910">Este necesar <ph name="FIELD_1"/> sau <ph name="FIELD_2"/></translation>
+<translation id="3225319735946384299">Semnarea codului</translation>
 <translation id="3225919329040284222">Serverul a prezentat un certificat care nu se potrivește cu așteptările încorporate. Aceste așteptări sunt incluse pentru anumite site-uri web, cu un grad sporit de securitate, pentru a vă proteja.</translation>
 <translation id="3226128629678568754">Apăsați butonul de reîncărcare pentru a retrimite datele necesare pentru încărcarea paginii.</translation>
 <translation id="3226387218769101247">Miniaturi</translation>
@@ -1396,8 +1422,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3236212803136366317">Beneficiile cardului</translation>
 <translation id="2816340899490518371">Datele nu s-au putut salva în Portofelul Brave</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a personaliza aspectul browserului</translation>
-<translation id="3240791268468473923">Foaia „Datele de conectare pentru plăți securizate nu corespund datelor de conectare” este deschisă</translation>
-<translation id="324180406144491771">Linkurile <ph name="HOST_NAME"/> sunt blocate</translation>
 <translation id="3243650379537999343">Desenează</translation>
 <translation id="3248329428895535435">Nu afișa pe acest site</translation>
 <translation id="3249102948665905108">Încărcarea fișierului în <ph name="CLOUD_PROVIDER"/> s-a finalizat cu erori</translation>
@@ -1407,6 +1431,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3261488570342242926">Află despre cardurile virtuale</translation>
 <translation id="3262698603497362968">Opțiuni de cumpărare</translation>
 <translation id="3264315627780269177">Această filă nu poate fi trimisă</translation>
+<translation id="4025268232566269954">Chiar dacă dezactivezi sugestiile, titlul paginii și adresele URL ale filelor pot fi în continuare procesate pentru alte funcții Brave. Poți gestiona accesul browserului la aceste date în</translation>
 <translation id="3266793032086590337">Valoare (conflictuală)</translation>
 <translation id="3268451620468152448">File deschise</translation>
 <translation id="3270041629388773465">Finalizează achiziția mai rapid, cu codurile CVC salvate</translation>
@@ -1422,7 +1447,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3282085321714087552">Organizația ta, <ph name="ENROLLMENT_DOMAIN"/>, a trimis câteva informații următoarelor site-uri, cum ar fi setări sau politici.</translation>
 <translation id="3286372614333682499">portret</translation>
 <translation id="3287510313208355388">Descarcă când ești online</translation>
-<translation id="3288238092761586174">Poate fi necesar ca <ph name="URL"/> să parcurgă câțiva pași suplimentari pentru a confirma plata</translation>
 <translation id="3289578402369490638">Din alte magazine de pe web</translation>
 <translation id="3293642807462928945">Află mai multe despre politica <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">Afișează și gestionează parolele din setările Brave</translation>
@@ -1471,7 +1495,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3378612801784846695">Subiectele se bazează pe istoricul tău de navigare recent, iar site-urile le folosesc pentru a-ți afișa anunțuri personalizate, protejându-ți totodată identitatea</translation>
 <translation id="3380365263193509176">Eroare necunoscută</translation>
 <translation id="3380864720620200369">Cod de client:</translation>
-<translation id="3381668585148405088">Confirmă achiziția</translation>
 <translation id="3383566085871012386">Ordinea de prioritate actuală</translation>
 <translation id="3383713837163550889">Fișierele locale se vor șterge într-un minut</translation>
 <translation id="3384522979010096022">Organizația ta nu îți permite să vezi acest site</translation>
@@ -1487,12 +1510,12 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3409896703495473338">Gestionează setările de securitate</translation>
 <translation id="4302350545547675750">Gestionează în Managerul de parole Brave</translation>
 <translation id="3411091017011773343">Încarcă în <ph name="HOURS"/> h</translation>
-<translation id="341134412449102894">Informațiile tale sunt salvate în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> pentru <ph name="ACCOUNT"/></translation>
 <translation id="3413466783792948876">Cel mai sigur este să accesezi site-ul mai târziu dacă folosești o rețea publică. Riscul este mai mic într-o rețea de încredere, cum ar fi rețeaua Wi-Fi de acasă sau de la serviciu.</translation>
 <translation id="3414275587143250384">Cloud computing și sisteme distribuite</translation>
 <translation id="3414952576877147120">Dimensiune:</translation>
 <translation id="7115177860507615612">Butonul Joacă Brave Dino din Brave, activează pentru a juca Dino Run în Brave</translation>
 <translation id="8251789548015352228">Căutările tale, cele mai bune potriviri și conținutul paginilor acestora sunt trimise la Brave și pot fi văzute de evaluatori umani pentru a îmbunătăți această funcție. Aceasta este o funcție experimentală și nu va răspunde întotdeauna corect.</translation>
+<translation id="3421387094817716717">Cheia publică a curburii eliptice</translation>
 <translation id="3422248202833853650">Încearcă să ieși din celelalte programe pentru a elibera memoria.</translation>
 <translation id="3422472998109090673">Momentan, <ph name="HOST_NAME"/> nu poate fi accesat.</translation>
 <translation id="3422794267539320056">Atinge dinozaurul sau apasă pe tasta de spațiu ca să joci</translation>
@@ -1540,6 +1563,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="350069200438440499">Nume fișier:</translation>
 <translation id="3501300228850242680">Metal (muzică)</translation>
 <translation id="350421688684366066">Etichete (foarte lucios)</translation>
+<translation id="3507062913298382727">Salvează cartea de identitate</translation>
 <translation id="350763432931695541">Se extrage textul din următoarele pagini</translation>
 <translation id="3507869775212388416">Locuri de muncă în domeniul juridic</translation>
 <translation id="3507936815618196901">să creeze o hartă 3D a lucrurilor din jurul tău și să urmărească poziția camerei video</translation>
@@ -1567,9 +1591,11 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="7554105781342217505">Mai multe despre Brave Enterprise Connectors</translation>
 <translation id="3542628208405253498">Imaginea cardului</translation>
 <translation id="3542768452570884558">Deschide linkul într-o fereastră nouă</translation>
+<translation id="3543597750097719865">Semnătură X9.62 ECDSA cu SHA-512</translation>
 <translation id="3543935938072367282">Finalizează achiziția mai rapid cu ajutorul completării automate</translation>
 <translation id="3547442767634383572">prezentarea generală a profilului de serviciu,</translation>
 <translation id="3547746132308051926">20 x 24 in</translation>
+<translation id="3547854697327105403">Permite accesul la filele relevante în fiecare fir</translation>
 <translation id="3549904448933807997">informații despre browsere și profiluri (inclusiv profilurile personale și de serviciu),</translation>
 <translation id="3552155506104542239">Avertisment: politica intră în conflict cu <ph name="POLICY_NAME"/> și nu va avea niciun efect asupra aplicațiilor pentru Android. În caz contrar, politica funcționează corespunzător.</translation>
 <translation id="3552297013052089404">Font Sans Serif</translation>
@@ -1577,7 +1603,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3558573058928565255">În timpul zilei</translation>
 <translation id="3559897352860026926">Solicită-i administratorului să verifice setările de configurare pentru <ph name="CLOUD_PROVIDER"/>.</translation>
 <translation id="3560824484345057728">Vezi site-urile conexe</translation>
-<translation id="356359327498380603">Actualizezi vehiculul?</translation>
 <translation id="3566021033012934673">Conexiunea nu este privată</translation>
 <translation id="3566336457819493938">215 x 315 mm</translation>
 <translation id="3566649245868131295">Locuri de muncă în domeniul sănătății și medicinei</translation>
@@ -1714,11 +1739,13 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3744212718085287312">Dorești să-l securizezi folosind un card virtual data viitoare?</translation>
 <translation id="8500803517201014627">Textul, conținutul și adresa URL a paginii pe care scrii vor fi trimise la Brave, examinate de oameni și folosite pentru a îmbunătăți această funcție. Evită să introduci informații cu caracter personal (cum ar fi detalii medicale sau financiare) sau să folosești acest instrument pe site-uri care conțin informații private sau sensibile.</translation>
 <translation id="3748009735914587286">Metal (foarte lucios)</translation>
+<translation id="3748647055058832337">Opțiune indisponibilă pentru acest comerciant</translation>
 <translation id="4084353961109487742">Metoda de plată automată salvată poate fi folosită pentru această plată. Pentru a dezactiva portofelele electronice sau aplicația de plată în Brave, accesează <ph name="BEGIN_LINK1"/>setările pentru plăți<ph name="END_LINK1"/></translation>
 <translation id="3752181611900535304">Salvezi adresa în cont?</translation>
 <translation id="3752543821772132562">S-a ignorat deoarece <ph name="POLICY_NAME"/> nu este setat.</translation>
 <translation id="3754210790023674521">Ieși din modul picture-in-picture</translation>
 <translation id="3754664361823138853">&amp;Deschide pagina Istoric</translation>
+<translation id="3757511311058373406">Filtre de navigare automată</translation>
 <translation id="3759461132968374835">Nu există blocări raportate recent. Blocările care au avut loc când raportarea blocărilor era dezactivată nu vor apărea aici.</translation>
 <translation id="3760561303380396507">Folosești Windows Hello în loc de CVC?</translation>
 <translation id="3761171036307311438">Numele de pe cartea de credit:</translation>
@@ -1759,6 +1786,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="3815434930383843058">8 x 12 in</translation>
 <translation id="3816482573645936981">Valoare (înlocuită)</translation>
 <translation id="3817524650114746564">Deschide setările proxy ale computerului</translation>
+<translation id="3820749202859700794">Curbură eliptică SECG secp521r1 (cunoscută și sub numele de NIST P-521)</translation>
 <translation id="382115839591654906">CVC pentru <ph name="CARD_NAME"/></translation>
 <translation id="3822492359574576064">blocarea și utilizarea mouse-ului</translation>
 <translation id="3823019343150397277">IBAN</translation>
@@ -1868,7 +1896,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4014895360827978999">Servicii comerciale și sisteme de plată</translation>
 <translation id="4018819349042761761">Cheie publică</translation>
 <translation id="4023431997072828269">Întrucât formularul este trimis printr-o conexiune care nu este securizată, informațiile tale vor vizibile pentru alte persoane.</translation>
-<translation id="4024673763872230929">Salvează-ți informațiile și completează formularele mai rapid. Se salvează pe dispozitiv.</translation>
 <translation id="4025325634010721551">Politicile au fost reîncărcate</translation>
 <translation id="4025338605225449265">Valute și schimb valutar</translation>
 <translation id="4025777154208238692">Ordine inversă</translation>
@@ -1928,12 +1955,14 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4098306082496067348">Atinge detaliile cardului virtual pentru a le adăuga la finalizarea achiziției.</translation>
 <translation id="4099048595830172239">Politica implementată de administrator nu recomandă să permiți accesul <ph name="APPLICATION_TITLE"/> la ecran atunci când este vizibil conținut confidențial:</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a personaliza dimensiunea și tipul fontului în Brave</translation>
+<translation id="4100421230355095925">ML-DSA-44</translation>
 <translation id="4101413244023615925">Text și elemente grafice</translation>
 <translation id="4101917550061398111">Șterge elementele selectate</translation>
 <translation id="4102567721634170493">Știri locale</translation>
 <translation id="4103249731201008433">Numărul de serie al gadgetului este nevalid</translation>
 <translation id="4103592298805904008">Carton (un perete)</translation>
 <translation id="4104702906064390950">Se salvează informațiile codului IBAN</translation>
+<translation id="4106101218644797743">setările de sincronizare</translation>
 <translation id="4106887816571530227">Conținutul încorporat nu este permis</translation>
 <translation id="4107047499377819067">Instalarea serviciilor VPN în fundal a început. Poate dura câteva minute.</translation>
 <translation id="4110642094637545339">Sigla Google Pay, AfterPay</translation>
@@ -1943,6 +1972,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4113354056388982663">Actualizare critică pentru performanța aplicațiilor pentru Android</translation>
 <translation id="270198531912208609">Dorești să salvezi acest card în Contul Brave și pe acest dispozitiv?</translation>
 <translation id="4114146879518089587">Accesează site-ul</translation>
+<translation id="4115378294792113321">Magenta</translation>
 <translation id="4116663294526079822">Permiteți întotdeauna pe acest site</translation>
 <translation id="4116701314593212016">JIS B7</translation>
 <translation id="4116798170070772848">RA2</translation>
@@ -2032,6 +2062,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4265635050210404830">Cardurile tale de fidelitate</translation>
 <translation id="4265872034478892965">Permisă de administrator</translation>
 <translation id="7044970527849636581">Pentru a accesa istoricul de pe alte dispozitive, conectează-te și sincronizează istoricul. În plus, vei putea accesa parolele și multe altele pe toate dispozitivele. Poți opri sincronizarea oricând din setări. Brave poate personaliza Căutarea și alte servicii pe baza istoricului.</translation>
+<translation id="4268025649754414643">Cifrare cheie</translation>
 <translation id="4269029136757623689">Ventilatoare pentru casă</translation>
 <translation id="4269264543938335308">Costume de baie</translation>
 <translation id="4269599248168651462">Certificatul de server este emis pentru un nume care nu este unic.</translation>
@@ -2050,7 +2081,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4282280603030594840">Achiziționări de autovehicule</translation>
 <translation id="4282346679996504092">Alertele pentru acest produs au fost dezactivate și marcajul a fost eliminat</translation>
 <translation id="4284885181066817063">Blocată de <ph name="DOMAIN"/></translation>
-<translation id="4285498937028063278">Anulați fixarea</translation>
 <translation id="4288101205645068104">Șterge vehiculul</translation>
 <translation id="4290920330097335010">Nu permite niciodată</translation>
 <translation id="4297502707443874121">Miniatură pentru pagina <ph name="THUMBNAIL_PAGE"/></translation>
@@ -2077,6 +2107,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4318312030194671742">Serviciul Paint Preview Compositor</translation>
 <translation id="4318566738941496689">Numele și adresa de rețea ale dispozitivului tău</translation>
 <translation id="4320119221194966055">Credite de nevoi personale</translation>
+<translation id="432088302786119211">{COUNT,plural, =1{Link primit de la <ph name="DEVICE_NAME"/>}few{# linkuri primite de la <ph name="DEVICE_NAME"/>}other{# de linkuri primite de la <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="4325600325087822253">Tava 17</translation>
 <translation id="4325863107915753736">Articolul nu a fost găsit</translation>
 <translation id="4326324639298822553">Verifică data de expirare și încearcă din nou</translation>
@@ -2088,11 +2119,13 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4332872603299969513">Literatură pentru copii</translation>
 <translation id="4333295216031073611">Listă de cumpărături</translation>
 <translation id="4333561522337981382">Gestionează ferestre de pe toate ecranele</translation>
+<translation id="4333854382783149454">PKCS #1 SHA-1 cu criptare RSA</translation>
 <translation id="4336913590841287350">Această politică nu este încă acceptată ca politică privind utilizatorii pe iOS.</translation>
 <translation id="5792122559159836842">Anunțul folosea prea multe resurse pentru dispozitivul tău, așa că Brave l-a eliminat.</translation>
 <translation id="4340810192899866471">Importă din JSON</translation>
 <translation id="6116812392674177288">Acest computer nu este detectat ca fiind gestionat de companie, deci politica poate instala automat doar extensiile găzduite în Magazinul web Brave. Adresa URL pentru actualizare din Magazinul web Brave este „<ph name="CWS_UPDATE_URL"/>”.</translation>
 <translation id="4342742994656318294">Parcuri tematice</translation>
+<translation id="4346670990181948854">Informații despre călătorii · Vehicule</translation>
 <translation id="4348834659292907206">Conexiunea la <ph name="SITE"/> nu este securizată</translation>
 <translation id="4349365535725594680">Nu poți permite accesul la conținut confidențial</translation>
 <translation id="4349810866125026513">Încarcă oricum</translation>
@@ -2130,9 +2163,10 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4414515549596849729">Cookie-uri și date privind site-urile</translation>
 <translation id="4415156962929755728">Plastic (foarte lucios)</translation>
 <translation id="4415426530740016218">Adresă de preluare</translation>
+<translation id="4415748029120993980">Curbură eliptică SECG secp384r1 (cunoscută și sub numele de NIST P-384)</translation>
+<translation id="4418150423720608641">ML-DSA-87</translation>
 <translation id="4419287616181386201">Parolele se pot șterge din setările de gestionare</translation>
 <translation id="4425750422187370446">Îmbrăcăminte sport</translation>
-<translation id="443008484043213881">Instrumente</translation>
 <translation id="443121186588148776">Port serial</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> nu a acceptat certificatul de conectare sau un astfel de certificat nu a fost oferit.</translation>
 <translation id="4432792777822557199">Paginile în <ph name="SOURCE_LANGUAGE"/> vor fi traduse în <ph name="TARGET_LANGUAGE"/> de acum înainte</translation>
@@ -2152,6 +2186,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4454620051637646665">Închide bannerul</translation>
 <translation id="4456937135469235202">Călătorii de aventuri</translation>
 <translation id="4458013283022578512">Introdu o întrebare</translation>
+<translation id="4458516738555515761">Preluarea politicii</translation>
 <translation id="4464826014807964867">Site-uri cu informații de la organizația ta</translation>
 <translation id="4466576951214254884">Credite pentru studenți și finanțare pentru studii universitare</translation>
 <translation id="4467821340016922962">Pentru a ieși din ecranul complet și a vedea descărcarea, apasă pe |<ph name="ACCELERATOR"/>|</translation>
@@ -2199,6 +2234,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4542971377163063093">Tava 6</translation>
 <translation id="563788859854213593">Pentru a plăti mai rapid data viitoare, salvează cardul și adresa de facturare în Contul Brave</translation>
 <translation id="4546730006268514143">Transferul a expirat</translation>
+<translation id="4547989603022124809">Activezi permiterea accesului la file pentru acest fir?</translation>
 <translation id="4548974025982531828">{NUM_DAYS,plural, =1{Creat acum o zi}few{Creat acum {NUM_DAYS} zile}other{Creat acum {NUM_DAYS} de zile}}</translation>
 <translation id="455113658016510503">A9</translation>
 <translation id="4556069465387849460">Folosești blocarea ecranului pentru a completa parolele</translation>
@@ -2217,6 +2253,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4594403342090139922">&amp;Anulați ștergerea</translation>
 <translation id="4598556348158889687">Gestionarea stocării</translation>
 <translation id="459914240367517409">Design și dezvoltare web</translation>
+<translation id="5585910165070997524">Plătește mai rapid cu Google Pay după salvarea cardului. Detaliile cardului sunt criptate în Portofelul Brave.</translation>
 <translation id="4602465984861132303">Popice</translation>
 <translation id="4603727370377253901">Rezervări de zboruri</translation>
 <translation id="8338928872956435647">Vezi sfaturile privind Brave</translation>
@@ -2240,6 +2277,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4640225694041297329">Afișează rezultate din ultimele 7 zile</translation>
 <translation id="1603927605650766014">Pentru a te alătura acestui grup de file, actualizează Brave</translation>
 <translation id="464342062220857295">Funcții de căutare</translation>
+<translation id="4740546528718298274">Brave procesează titlurile paginilor și adresele URL pe dispozitivul tău sau într-un spațiu privat în cloud</translation>
 <translation id="4644567637638438744">Fișierele pot fi încărcate numai dacă te-ai conectat la Microsoft OneDrive</translation>
 <translation id="4644670975240021822">În ordine inversă, cu fața în jos</translation>
 <translation id="4648262692072505866">Valoarea hash trebuie să fie în formatul SHA-256.</translation>
@@ -2328,6 +2366,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Fereastră pop-up blocată}few{# ferestre pop-up blocate}other{# de ferestre pop-up blocate}}</translation>
 <translation id="4780320432697076749">Software foto</translation>
 <translation id="4780366598804516005">Căsuța de e-mail 1</translation>
+<translation id="4785273477715803444">Filtrează jurnalele</translation>
 <translation id="752757955979594126">Gestionează Contul Brave</translation>
 <translation id="4785689107224900852">Comută la această filă</translation>
 <translation id="4785998536350006000">Se caută „<ph name="SEARCH_QUERY"/>”</translation>
@@ -2361,7 +2400,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6907401036011007312">Pentru a trimite grupuri de file, actualizează Brave</translation>
 <translation id="483241715238664915">Activează avertizările</translation>
 <translation id="4832961164064927107">Grătare</translation>
-<translation id="3970015471727108357">Salvează informațiile și lucrează mai productiv, de exemplu, completează formulare în produsele Brave. Poți să <ph name="BEGIN_LINK"/>gestionezi informațiile<ph name="END_LINK"/> în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> pentru <ph name="ACCOUNT"/></translation>
+<translation id="1750361314954317776">Brave va permite în mod prestabilit accesul la filele deschise relevante pentru a te ajuta să primești răspunsuri mai bine personalizate la întrebări.</translation>
 <translation id="246176083348620700">Vezi istoricul Brave</translation>
 <translation id="484462545196658690">Automat</translation>
 <translation id="4844937814014739139">Derularea și zoomul în filele comune</translation>
@@ -2387,7 +2426,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4877422487531841831">Căutare <ph name="TEXT"/></translation>
 <translation id="4877521229462766300">Permiți conținutul încorporat?</translation>
 <translation id="4879491255372875719">Automat (prestabilit)</translation>
-<translation id="4880328155169081699">Actualizezi cartea de identitate?</translation>
 <translation id="4880827082731008257">Caută în istoric</translation>
 <translation id="4881695831933465202">Deschide</translation>
 <translation id="4881808915112408168">24 x 31.5 in</translation>
@@ -2467,6 +2505,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="4995474875135717171">Modificat la:</translation>
 <translation id="4995749490935861684"><ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a gestiona căutarea pe site și motorul de căutare prestabilit</translation>
 <translation id="4998950033665438990">O față</translation>
+<translation id="2033688757301422080">Modul AI în Căutarea Brave</translation>
 <translation id="5001338033791319371">Pentru a ieși din ecranul complet și a vedea descărcarea, trage din partea de sus și atinge butonul Înapoi</translation>
 <translation id="5001526427543320409">Cookie-uri terță parte</translation>
 <translation id="3676215163710610678">Dacă este activată, Brave va stoca o copie a cardului pe acest dispozitiv, pentru completarea mai rapidă a formularelor.</translation>
@@ -2483,6 +2522,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="2013297594801702701">Poți folosi adresele salvate în toate produsele Brave. Această adresă se va salva în Contul tău Brave, <ph name="USER_EMAIL"/>.</translation>
 <translation id="5019819206251569004">senzori de mișcare și de lumină</translation>
 <translation id="5019952743397118625">Politica <ph name="EXTENSION_DEVELOPER_MODE_SETTINGS_POLICY_NAME"/> este setată. <ph name="DEVELOPER_TOOLS_AVAILABILITY_POLICY_NAME"/> nu va controla disponibilitatea modului pentru dezvoltatori în pagina de extensii.</translation>
+<translation id="6910167971652631325">Dacă selectezi sau ignori o sugestie, Brave se va adapta pentru a se asigura că vezi numai conținut relevant pentru tine</translation>
 <translation id="5021500396464456616">Contactează persoana care ți-a trimis acest link</translation>
 <translation id="6516968977334148048">Urmărește prețurile cu Brave</translation>
 <translation id="5023310440958281426">Consultați politicile administratorului</translation>
@@ -2503,12 +2543,11 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5051254010007014901"><ph name="TOOLBELT_PRECEDING_MATCH_TEXT"/>, apasă pe Tab pentru mai multe comenzi directe de căutare disponibile după această sugestie de căutare</translation>
 <translation id="5052488928733955073">Eroare la completarea informațiilor. Verifică-ți conexiunea.</translation>
 <translation id="5052517576853118371">Subiecte active</translation>
+<translation id="4845759156174221500">Un număr de card virtual va fi completat când finalizezi achiziția cu acest card pentru a-ți proteja detaliile reale. Gestionează în Portofelul Brave. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Pentru a trimite fișierul prin Trimitere în apropiere, eliberează spațiu (<ph name="DISK_SPACE_SIZE"/>) pe dispozitiv}few{Pentru a trimite fișierele prin Trimitere în apropiere, eliberează spațiu (<ph name="DISK_SPACE_SIZE"/>) pe dispozitiv}other{Pentru a trimite fișierele prin Trimitere în apropiere, eliberează spațiu (<ph name="DISK_SPACE_SIZE"/>) pe dispozitiv}}</translation>
 <translation id="5056587122125565772">Creează o imagine</translation>
 <translation id="505757197798929356">Specifică motivul deschiderii (obligatoriu)</translation>
 <translation id="5058282932481719070">află mai multe despre completarea automată îmbunătățită în setări</translation>
-<translation id="5060419232449737386">Setări pentru subtitrări</translation>
-<translation id="5060483733937416656">Ai ales să confirmi cu Windows Hello pe site-urile care folosesc <ph name="PROVIDER_ORIGIN"/>. Este posibil ca acest furnizor să fi stocat informații despre metoda de plată, pe care le poți <ph name="LINK_TEXT"/>.</translation>
 <translation id="5061227663725596739">Ai vrut să scrii <ph name="LOOKALIKE_DOMAIN"/>?</translation>
 <translation id="5066056036849835175">Istoricul de printare</translation>
 <translation id="5068524481479508725">A10</translation>
@@ -2521,6 +2560,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5087286274860437796">Momentan, certificatul serverului este nevalid.</translation>
 <translation id="5087580092889165836">Adaugă un card</translation>
 <translation id="5088142053160410913">Mesajul pentru operator</translation>
+<translation id="5088534251099454936">PKCS #1 SHA-512 cu criptare RSA</translation>
 <translation id="5089810972385038852">Stat</translation>
 <translation id="5093232627742069661">Îndoire în Z</translation>
 <translation id="5093417502834168387">Probleme la conectare? Încearcă altă metodă</translation>
@@ -2569,7 +2609,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5147633291963801297">Vezi scăderile de prețuri în panoul lateral</translation>
 <translation id="5148809049217731050">Cu fața în sus</translation>
 <translation id="5148889558173091794">Organizația ta a blocat <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>, deoarece încalcă o politică. <ph name="BEGIN_LEARN_MORE_LINK"/>Află mai multe despre acest mesaj de avertisment<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="3780045618446958024">Istoricul căutărilor mele pe Brave</translation>
 <translation id="5153907427821264830"><ph name="STATUS"/> • <ph name="MESSAGE"/></translation>
 <translation id="5157504274688344097">Comerț de masă și supermarketuri</translation>
 <translation id="5158275234811857234">Copertă</translation>
@@ -2587,9 +2626,10 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5180662470511508940">Blocarea tastaturii nu este permisă</translation>
 <translation id="5187079891181379721">Evenimente corporatiste</translation>
 <translation id="5190072300954988691">Folosirea camerei foto și a microfonului nu este permisă</translation>
+<translation id="5190835502935405962">Bară de marcaje</translation>
 <translation id="5191315092027169558">Profilul este gestionat de <ph name="DOMAIN"/></translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> vrea să descarce mai multe fișiere</translation>
-<translation id="5199121357983849992">Salvezi documentul de identitate?</translation>
+<translation id="519528950056409240">Permite Portofelului să trimită date</translation>
 <translation id="5200063972779787617">Salvează adresa în cont</translation>
 <translation id="5201306358585911203">O pagină încorporată de pe această pagină afișează mesajul</translation>
 <translation id="5203716867500274632">Administratorul tău a permis ca următoarele să fie sincronizate între sesiunile anterioare și cele actuale de pe dispozitivele tale ChromeOS:</translation>
@@ -2605,7 +2645,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5217759126664161410">Format de protocol nevalid.</translation>
 <translation id="5221377878828867877">Refolosirea parolelor este monitorizată de organizația ta</translation>
 <translation id="5222812217790122047">Adresa de e-mail este obligatorie</translation>
-<translation id="5225215474235602477">Salvezi pașaportul?</translation>
 <translation id="5228269245420405804">Învățământ la distanță</translation>
 <translation id="5229844812197559338"><ph name="SELECT_PROVIDER_TITLE"/>. <ph name="LOGO_DESCRIPTION"/></translation>
 <translation id="5230733896359313003">Adresă de expediere</translation>
@@ -2634,6 +2673,8 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5255833070095767006">350 x 460 mm</translation>
 <translation id="5257739419779698609">{0,plural, =1{Politica implementată de administrator nu recomandă să copiezi acest fișier în <ph name="DESTINATION_NAME"/>}few{Politica implementată de administrator nu recomandă să copiezi aceste fișiere în <ph name="DESTINATION_NAME"/>}other{Politica implementată de administrator nu recomandă să copiezi aceste fișiere în <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="5258473597674772367">Grupul de file <ph name="GROUP_NAME"/> nu mai este disponibil</translation>
+<translation id="5260842098960755113">Firul a fost închis</translation>
+<translation id="5262342527470539728">Informațiile tale sunt salvate în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> pentru <ph name="ACCOUNT"/></translation>
 <translation id="5263867360296733198">Examinarea este obligatorie înainte de încărcare</translation>
 <translation id="5266128565379329178">Legare în partea de sus</translation>
 <translation id="5269225904387178860">Perforare cvadruplă în partea de jos</translation>
@@ -2689,6 +2730,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5348330584842140856">Fișierul nu a fost mutat deoarece nu mai există</translation>
 <translation id="5349543692327946794">Etichete (inkjet)</translation>
 <translation id="5351548097010183514">Materiale și articole pentru construcții</translation>
+<translation id="5352033265844765294">Marcare temporală</translation>
 <translation id="5354143049423063163">Fonduri speculative</translation>
 <translation id="5355557959165512791">Nu poți accesa <ph name="SITE"/> acum, deoarece certificatul său a fost revocat. Erorile de rețea și atacurile sunt de obicei temporare și probabil că această pagină va funcționa mai târziu.</translation>
 <translation id="5359752295193133096">Permite în mod prestabilit accesul la filele deschise relevante pentru răspunsuri mai rapide și mai bine personalizate.</translation>
@@ -2697,6 +2739,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5363148545938487338">Salesforce</translation>
 <translation id="5363309033720083897">Port serial permis de administrator</translation>
 <translation id="5363532265530011914">Șosete și ciorapi</translation>
+<translation id="5370560471646081222">Site-urile pe care le adaugi aici nu vor fi folosite ca referință pentru răspunsuri, chiar dacă fila este deschisă.</translation>
 <translation id="5371425731340848620">Actualizează cardul</translation>
 <translation id="537425196847960924"><ph name="USER_DISPLAY_NAME"/> a modificat o filă</translation>
 <translation id="5374324662289354619">Paginile de remediere a erorilor interne sunt dezactivate momentan.</translation>
@@ -2704,13 +2747,11 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5375686690914744327">SRA1</translation>
 <translation id="5377026284221673050">„Ora este setată în trecut”, „Ora este setată în viitor” sau „&lt;span class="error-code"&gt;NET::ERR_CERT_DATE_INVALID&lt;/span&gt;”</translation>
 <translation id="5379618281582508161">Confirmă-ți identitatea ca să folosești această parolă pe toate dispozitivele</translation>
-<translation id="5380539543938195166">Actualizezi numărul de călător cunoscut?</translation>
 <translation id="5380953781541843508">în ordine crescătoare</translation>
 <translation id="5381318171304904246">Dacă alegi să continui, te vom direcționa către site-ul băncii. După ce confirmi, vei reveni automat pentru a finaliza achiziția.</translation>
 <translation id="5381952079334035181"><ph name="MEMBER_FIRST_NAME"/> a actualizat fila <ph name="WEBSITE_TITLE"/></translation>
 <translation id="5383478552402031184">Montarea pardoselilor</translation>
 <translation id="5385857628869214740">Umor</translation>
-<translation id="5385966243497224160">Nu se poate previzualiza adresa URL non-HTTPS</translation>
 <translation id="5386426401304769735">Lanțul de certificate pentru acest site conține un certificat semnat folosind SHA-1.</translation>
 <translation id="5391010642126249196">Ai accesat</translation>
 <translation id="5391306025131596142">&amp;Deschide pagina Istoric</translation>
@@ -2742,6 +2783,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5426179911063097041"><ph name="SITE"/> dorește să îți trimită notificări</translation>
 <translation id="5431318178759467895">Color</translation>
 <translation id="5433756542371550806">Variații ale liniilor de comandă</translation>
+<translation id="5434065355175441495">Criptare RSA PKCS #1</translation>
 <translation id="8517215617486022589">Brave <ph name="BEGIN_EMPHASIS"/>nu va salva<ph name="END_EMPHASIS"/>:
           <ph name="BEGIN_LIST"/>
             <ph name="LIST_ITEM"/>istoricul de navigare,
@@ -2791,6 +2833,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5499229993630251170">Continui acest fir?</translation>
 <translation id="550365051221576010">Completează tot</translation>
 <translation id="5506286895894263601">Lista nu conține comenzi rapide valide.</translation>
+<translation id="5507756662695126555">Non-repudiere</translation>
 <translation id="5508443345185481044">Camere foto și video</translation>
 <translation id="5509762909502811065">B0</translation>
 <translation id="5509780412636533143">Marcaje gestionate</translation>
@@ -2826,6 +2869,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5543564889050342791">Grădini zoologice, acvarii și rezervații</translation>
 <translation id="5543722831081909240">180 de grade</translation>
 <translation id="5544836308113951378">Croaziere și curse charter</translation>
+<translation id="5546252337258681768">Dispozitiv deblocat</translation>
 <translation id="5547939254150808298">Printare și publicare</translation>
 <translation id="554815783948612276">Furnizori de forum și chat</translation>
 <translation id="5548606607480005320">Verificare de siguranță</translation>
@@ -2849,6 +2893,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5573641252776268565">Editează pașaportul</translation>
 <translation id="5578606540385219379">Furnizori de servicii</translation>
 <translation id="5580958916614886209">Verifică luna în care expiră și încearcă din nou</translation>
+<translation id="5582453333200265572">Actualizează cartea de identitate</translation>
 <translation id="5583442610070676234">Mai multe acțiuni pentru tabelul de comparație <ph name="COMPARE_SET_NAME"/></translation>
 <translation id="1279569289359558111">Codul IBAN nu a putut fi salvat în Portofelul Brave. A fost salvat în Brave pe acest dispozitiv.</translation>
 <translation id="558420943003240152">Gestionează parolele și cheile de acces…</translation>
@@ -2861,8 +2906,11 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5596627076506792578">Mai multe opțiuni</translation>
 <translation id="5596939519753369075">2 x 3,5 in</translation>
 <translation id="5597254438174353289">Albastru 3</translation>
+<translation id="5600044805561809264">Poți să pui cu ușurință întrebări despre filele pe care le trimiți în timp ce navighezi.</translation>
 <translation id="5603469469737324249"><ph name="ISSUER_1_NAME"/> sau <ph name="ISSUER_2_NAME"/></translation>
 <translation id="560412284261940334">Gestionarea nu este acceptată</translation>
+<translation id="5604254791550001355">Editează solicitarea</translation>
+<translation id="560431066250575003">{HOURS,plural, =1{Activ acum o oră}few{Activ acum # ore}other{Activ acum # de ore}}</translation>
 <translation id="5605249000617390290">Află mai multe despre urmărirea prețurilor</translation>
 <translation id="5605670050355397069">Registru</translation>
 <translation id="5610142619324316209">să verifici conexiunea;</translation>
@@ -2870,6 +2918,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5611398002774823980">Salvează în cont</translation>
 <translation id="2012723355262040739">Tradu această pagină cu Brave Traducere</translation>
 <translation id="5612720917913232150"><ph name="URL"/> dorește să utilizeze locația computerului</translation>
+<translation id="5614190747811328134">Notificare pentru utilizator</translation>
 <translation id="5614520971155863709">Jocuri de cărți</translation>
 <translation id="5617949217645503996"><ph name="HOST_NAME"/> te-a redirecționat de prea multe ori.</translation>
 <translation id="5619721953841297650">Presetare</translation>
@@ -2885,6 +2934,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5640474731385449758">Extensia <ph name="EXTENSION_NAME"/> solicită deschiderea linkurilor de <ph name="PROTOCOL"/> pe <ph name="ORIGIN"/> prin <ph name="HANDLER_HOSTNAME"/>.</translation>
 <translation id="5642362243427711530"><ph name="FIRST_STRING"/>. <ph name="SECOND_STRING"/></translation>
 <translation id="5642411781689336699">Sisteme stereo și componente pentru acestea</translation>
+<translation id="5642508497713047">Semnatar CRL</translation>
 <translation id="5644090287519800334">Deplasarea poziției X a imaginii de pe fața 1</translation>
 <translation id="5644128326840674462">Banner de promovare</translation>
 <translation id="5645132789250840550">Plastic (semilucios)</translation>
@@ -2915,7 +2965,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5689516760719285838">Locație</translation>
 <translation id="569000877158168851">Valoarea DnsOverHttpsTemplates nu este relevantă și nu va fi folosită decât dacă politica DnsOverHttpsMode este setată la <ph name="SECURE_DNS_MODE_AUTOMATIC"/> sau la <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5691848789297492617">Salvează cardul deschis la înălțimea completă.</translation>
-<translation id="5695542892312572833">Folosești Windows Hello ca să confirmi și finalizezi achiziția?</translation>
 <translation id="5699628521141772782">Lactate și ouă</translation>
 <translation id="5701381305118179107">Pe centru</translation>
 <translation id="5707154300732650394">Continuă-ți parcursul</translation>
@@ -2953,7 +3002,9 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5752519522101347518">Se încarcă site-ul de verificare bancară</translation>
 <translation id="5753570386948603678">Șterge din istoric</translation>
 <translation id="5759751709240058861">Mișcă și folosește camera</translation>
+<translation id="5762131895127128324">Permise de conducere · Cărți de identitate · Pașapoarte</translation>
 <translation id="5763042198335101085">Introdu o adresă de e-mail validă</translation>
+<translation id="5763338081255973061">{DAYS,plural, =0{Activ astăzi}=1{Activ acum o zi}few{Activ acum # zile}other{Activ acum # de zile}}</translation>
 <translation id="5764725887548570807">Format de origine nevalid.</translation>
 <translation id="5764920692828389743">Trimite la <ph name="EMAIL_ADDRESS"/></translation>
 <translation id="5765072501007116331">Pentru a vedea metodele de livrare și cerințele, selectează o adresă</translation>
@@ -2967,6 +3018,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5783922175933467571">Linkul pentru <ph name="TAB_GROUP_DISPLAY_NAME"/> expiră în 48 de ore</translation>
 <translation id="5784606427469807560">A apărut o eroare la confirmarea cardului. Verifică conexiunea la internet și încearcă din nou.</translation>
 <translation id="5785756445106461925">În plus, această pagină include alte resurse care nu sunt securizate. Aceste resurse sunt vizibile pentru alți utilizatori în cursul transferului și pot fi modificate de un atacator pentru a schimba aspectul paginii.</translation>
+<translation id="5787146423283493983">Acord privind cheia</translation>
 <translation id="5793317771769868848">Metoda de plată se va șterge de pe acest dispozitiv</translation>
 <translation id="5794065675298686371">Activează notificările de urmărire a prețurilor</translation>
 <translation id="5800727402210090597">Service și reparații pentru telefoane mobile</translation>
@@ -2976,6 +3028,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5937482014241669139">Vezi istoricul Brave</translation>
 <translation id="5810442152076338065">Conexiunea la <ph name="DOMAIN"/> este criptată folosind o suită de codificare învechită.</translation>
 <translation id="5813119285467412249">&amp;Repetați adăugarea</translation>
+<translation id="5813274153495000141">Salvează-ți informațiile și completează formularele mai rapid. Se salvează pe dispozitiv.</translation>
 <translation id="5813753398265398978">Fizică</translation>
 <translation id="5817918615728894473">Asociază</translation>
 <translation id="5820625124144807242">După ce examinezi comanda, trebuie să te conectezi la cont sau să creezi un cont <ph name="BNPL_ISSUER_NAME"/>. Contul va fi conectat automat la Google Pay.</translation>
@@ -3020,7 +3073,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5887400589839399685">Cardul a fost salvat</translation>
 <translation id="5887687176710214216">Accesat ultima dată ieri</translation>
 <translation id="4104845878245066653">Pentru a accesa istoricul de pe celelalte dispozitive, confirmă-ți identitatea și sincronizează istoricul și filele. Poți opri sincronizarea oricând din setări. Brave poate personaliza Căutarea și alte servicii pe baza istoricului.</translation>
-<translation id="5890248301649767931">Salvezi numărul de remediere?</translation>
 <translation id="5895138241574237353">Reîncepe</translation>
 <translation id="5895187275912066135">Emis la</translation>
 <translation id="3476147989326158506">Brave încearcă să afișeze informații sensibile.</translation>
@@ -3032,6 +3084,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5910140988253729859">Anulează completarea automată</translation>
 <translation id="5911020115933784199">Evenimente și înregistrări</translation>
 <translation id="5911110632211230665">Deschidere blocată</translation>
+<translation id="1765144800915733093">Deschide Portofelul Brave</translation>
 <translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> a adăugat această filă</translation>
 <translation id="5915189366813702112">Flexibilitate la locul de muncă</translation>
 <translation id="59174027418879706">Activat</translation>
@@ -3046,6 +3099,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5924510104057992926">Examinarea este obligatorie înainte de deschidere</translation>
 <translation id="5924782825030413055">Sursa ultimei actualizări a consimțământului:</translation>
 <translation id="5925040402342933574">Disc optic (semilucios)</translation>
+<translation id="5925147183566400388">Adresa URI a declarației de certificare a practicii</translation>
 <translation id="5926982310317673627">Săli de gimnastică și cluburi de sănătate</translation>
 <translation id="5927279462592128805">Microsoft Word</translation>
 <translation id="5930147475897662863">Activează această setare pentru a folosi funcția Ajută-mă să scriu</translation>
@@ -3072,6 +3126,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="5968400720580217226">Modul AI</translation>
 <translation id="5969199813874624822">Salvează și urmărește prețul</translation>
 <translation id="5969933937005244170">Filele deschise relevante vor fi folosite numai dacă le trimiți într-un fir</translation>
+<translation id="5972020793760134803">Comută la fila</translation>
 <translation id="5973514677932942122"><ph name="EXPIRATION_DATE"/> | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">A șasea rolă</translation>
 <translation id="5975083100439434680">Micșorează</translation>
@@ -3098,7 +3153,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6014801569448771146">Verifică-ți parolele</translation>
 <translation id="6014851866995737824">S-a ignorat deoarece lista „activează” sau „dezactivează” lipsește.</translation>
 <translation id="6015796118275082299">An</translation>
-<translation id="6017028474478839719">Salvezi cartea de identitate?</translation>
 <translation id="6017514345406065928">Verde</translation>
 <translation id="818107217016701700">Șterge istoricul de navigare, cookie-urile, memoria cache și altele din setările Brave</translation>
 <translation id="4738711932360196351">Script Brave Apps</translation>
@@ -3122,6 +3176,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6042308850641462728">Mai multe</translation>
 <translation id="6043357981274314628">Terminat!</translation>
 <translation id="6045164183059402045">Șablon de impunere</translation>
+<translation id="6046026831939367176">Site-ul <ph name="URL"/> solicită folosirea locației aproximative.</translation>
 <translation id="6046892054959167494">Introdu <ph name="SEARCH_AGGREGATOR_KEYWORD"/> pentru a căuta sau pentru a întreba <ph name="SEARCH_AGGREGATOR_SHORT_NAME"/></translation>
 <translation id="6047927260846328439">Acest conținut ar putea încerca să te păcălească să instalezi software sau să dezvălui informații cu caracter personal. <ph name="BEGIN_LINK"/>Afișează oricum<ph name="END_LINK"/></translation>
 <translation id="6049056807983403918">Plic B4</translation>
@@ -3133,7 +3188,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="605237284704429106">Se completează codul IBAN</translation>
 <translation id="3284406940349582552">Poți folosi adresele salvate în toate produsele Brave. Această adresă se salvează în Contul tău Brave (<ph name="ACCOUNT"/>).</translation>
 <translation id="5814871361966482530">Află mai multe despre modul în care Brave îți protejează datele din Politica de confidențialitate.</translation>
-<translation id="6055888660316801977">Foaia „Datele de conectare pentru plăți securizate nu corespund datelor de conectare”</translation>
+<translation id="6055392876709372977">PKCS #1 SHA-256 cu criptare RSA</translation>
 <translation id="6055982527635883756">Plic (de arhivă)</translation>
 <translation id="6057177372083677067">Videoclipuri online</translation>
 <translation id="6058646026409894363">Inginerie civilă</translation>
@@ -3188,6 +3243,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6131824478727057281">locație</translation>
 <translation id="6133320744616005677">Permite în continuare</translation>
 <translation id="6133984428121856852">Extensia de fișier este goală sau incorectă.</translation>
+<translation id="6138680304137685902">Semnătură X9.62 ECDSA cu SHA-384</translation>
 <translation id="6139975341602920272">17 x 22 in</translation>
 <translation id="6143097244789397208">Realitate augmentată și virtuală</translation>
 <translation id="614327212146763975">Folosirea senzorilor de mișcare și de lumină este permisă</translation>
@@ -3210,7 +3266,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6167577165590485365">Ultima încercare de preluare:</translation>
 <translation id="6171968084616623939"><ph name="PROXY_INVALID_SCHEME_HOST_PORT"/> nu este o valoare validă.</translation>
 <translation id="1057223975912338979">Brave încearcă să-ți confirme identitatea pentru a-ți completa informațiile de plată.</translation>
-<translation id="6173208311907792313">Finalizează achiziția folosind Windows Hello</translation>
 <translation id="6175423614837252320">Fotografia a fost salvată în Google Drive</translation>
 <translation id="6176387967264100435">Acest preț este ridicat</translation>
 <translation id="6177128806592000436">Conexiunea la acest site nu este sigură</translation>
@@ -3255,9 +3310,11 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6246316216123107851">Acum <ph name="NUM_DAYS"/> zile</translation>
 <translation id="6246382863801034910">Vehicul</translation>
 <translation id="6246868321321344665">Organizația ta poate vedea datele de navigare, cum ar fi parolele și istoricul, atât în profilurile de serviciu, cât și în cele personale</translation>
+<translation id="6248988683584659830">Setări de căutare</translation>
 <translation id="6250932670816326647">Produse pentru baie și corp</translation>
 <translation id="6251906504834538140">{0,plural, =1{Fișierul nu poate fi mutat}few{<ph name="FILE_COUNT"/> fișiere nu pot fi mutate}other{<ph name="FILE_COUNT"/> de fișiere nu pot fi mutate}}</translation>
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a gestiona fișierele pe care le-ai descărcat în Brave</translation>
+<translation id="8057290549484414862">Salvează cardul în Portofelul Brave</translation>
 <translation id="6254436959401408446">Nu există suficientă memorie pentru a deschide pagina</translation>
 <translation id="625463612687472648">Anulează permisiunea</translation>
 <translation id="6259156558325130047">&amp;Repetați reordonarea</translation>
@@ -3283,6 +3340,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="6295618774959045776">CVC:</translation>
 <translation id="629730747756840877">Cont</translation>
+<translation id="6299098428775578517">Setări pentru sugestii</translation>
 <translation id="6300452962057769623">{0,plural, =0{Dispozitivul va reporni acum}=1{Dispozitivul va reporni într-o secundă}few{Dispozitivul va reporni în # secunde}other{Dispozitivul va reporni în # de secunde}}</translation>
 <translation id="6301104306974789820">Primește notificări de urmărire a prețurilor</translation>
 <translation id="6302546952464230349">Afișează detaliile permisiunii <ph name="PERMISSION_NAME"/></translation>
@@ -3301,6 +3359,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="7962450223988560278">Setează Brave ca browser prestabilit pentru sistem în setările iOS</translation>
 <translation id="6327065120806001832">accesul la rețeaua locală</translation>
 <translation id="6328639280570009161">Încercați să dezactivați anticiparea rețelei</translation>
+<translation id="2992154309947281535">Ca să completezi automat informațiile, activează opțiunea Folosește permisele pe Brave în setările Portofelului</translation>
 <translation id="6329815962353376655">&lt;Scrie o întrebare&gt;</translation>
 <translation id="6331597954316706229">Pentru răspunsuri cât mai bine personalizate, permite ca toate firele să facă referire la filele deschise relevante.</translation>
 <translation id="633348045801643466">Afișează opțiunile de <ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>efectuare a plății mai târziu<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/> la finalizarea achiziției</translation>
@@ -3318,6 +3377,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6349101878882523185">Instalează <ph name="APP_NAME"/></translation>
 <translation id="6351658970066645919">Șterge datele de navigare</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Niciuna}=1{O parolă (pentru <ph name="DOMAIN_LIST"/>, sincronizată)}=2{2 parole (pentru <ph name="DOMAIN_LIST"/>, sincronizate)}few{# parole (pentru <ph name="DOMAIN_LIST"/>, sincronizate)}other{# de parole (pentru <ph name="DOMAIN_LIST"/>, sincronizate)}}</translation>
+<translation id="6354918092619878358">Curbură eliptică SECG secp256r1 (cunoscută și sub numele de ANSI X9.62 prime256v1, NIST P-256)</translation>
 <translation id="6357546827188504216">Grupurile de file <ph name="GROUP_TITLE_1"/> și <ph name="GROUP_TITLE_2"/> nu mai sunt disponibile</translation>
 <translation id="6358088212770985041">să modifice metodele de plată</translation>
 <translation id="6358450015545214790">Ce înseamnă acestea?</translation>
@@ -3329,7 +3389,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6366710531182496394">Capsare dublă în stânga</translation>
 <translation id="6367196786591004737">Șterge intrarea</translation>
 <translation id="6370022303958842211">Acțiuni de acces la dispozitive, cum ar fi conectări (inclusiv motive de conectare nereușite), deconectări, blocări și deblocări</translation>
-<translation id="6372779601614872746">Permite accesul la filele deschise relevante</translation>
 <translation id="6374469231428023295">Încearcă din nou</translation>
 <translation id="6374865374745447009">gestionarea ferestrelor</translation>
 <translation id="6376881782310775282">Serverul de dezvoltare pentru această aplicație nu poate fi accesat</translation>
@@ -3348,7 +3407,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6390200185239044127">Îndoire în Z la jumătate</translation>
 <translation id="6390533465682072118">Recuperare</translation>
 <translation id="639068771471208680">Multi-Part Form</translation>
-<translation id="6391700400718590966">Foaia „Datele de conectare pentru plăți securizate nu corespund datelor de conectare” este închisă</translation>
 <translation id="6391911601916058725">Permiți întotdeauna accesul la filele deschise relevante?</translation>
 <translation id="6392799395081100092">Hârtie (Vellum)</translation>
 <translation id="6393156038355142111">Sugerează o parolă puternică</translation>
@@ -3376,6 +3434,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6428450836711225518">Confirmă numărul de telefon</translation>
 <translation id="6429267199680088961">A4 Tab</translation>
 <translation id="7772223497488184427">Schimbă parola Brave</translation>
+<translation id="6431556523611594411">Permite accesul la filele deschise</translation>
 <translation id="6432297414176614592">Mai multe despre subiectele anunțurilor</translation>
 <translation id="6432831586648556868">Locuri de muncă în vânzări și marketing</translation>
 <translation id="6433490469411711332">Editează informațiile de contact</translation>
@@ -3385,6 +3444,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6436994298828707228">Conexiunea este blocată deoarece a fost inițiată de o pagină publică pentru conectarea la dispozitive sau servere din rețeaua ta locală.</translation>
 <translation id="4314443819377484539">Desene Brave</translation>
 <translation id="643917412048333145">Rochii</translation>
+<translation id="6440450906295708112">Sursa variantelor</translation>
 <translation id="6440503408713884761">Ignorat</translation>
 <translation id="6443406338865242315">extensiile și pluginurile instalate,</translation>
 <translation id="6444329331928531170">Pensionare și pensie</translation>
@@ -3398,10 +3458,12 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6451458296329894277">Confirmă retrimiterea formularului</translation>
 <translation id="6452429044474066211">Scufundări și activități subacvatice</translation>
 <translation id="6452889436791091116">ISO ID-1</translation>
+<translation id="6453646205942063831">Titlurile paginilor și adresele URL ale filelor deschise sunt folosite pentru a-ți oferi sugestii relevante</translation>
 <translation id="6455632609396391811">Asigurări de sănătate</translation>
 <translation id="6456955391422100996">Anunțul a fost eliminat.</translation>
 <translation id="6457206614190510200">Broșare pe mijloc</translation>
 <translation id="6457455098507772300">Alertele privind scăderile de preț apar ca notificări pop-up pe desktop</translation>
+<translation id="6458519747993638565">Activ acum</translation>
 <translation id="6458606150257356946">Inserează oricum</translation>
 <translation id="6462438303393708881">Anulează încărcarea</translation>
 <translation id="6464094930452079790">Imagini</translation>
@@ -3427,6 +3489,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6502510275417601303">Alerta privind noua setare pentru plăți este închisă</translation>
 <translation id="6502991525169604759">Fără modificări</translation>
 <translation id="6505072878288254563">Se traduce</translation>
+<translation id="6506374932220792071">Semnătură X9.62 ECDSA cu SHA-256</translation>
 <translation id="6506936645890046535">Poate solicita accesul la cookie-uri</translation>
 <translation id="6506959208958864820">Plic</translation>
 <translation id="6507117483253822672">Scrie cu mai multă încredere oriunde pe web</translation>
@@ -3437,7 +3500,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="6519885440226079262">Poate solicita permisiunea de a-ți urmări mâinile</translation>
 <translation id="6520026037299163656">Aplicații web și instrumente online</translation>
-<translation id="65203098586853226">Se face traducerea din <ph name="SOURCE"/> în <ph name="TARGET"/></translation>
 <translation id="6520509611422418552"><ph name="MEMBER_FIRST_NAME"/> s-a alăturat grupului de file <ph name="GROUP_NAME"/></translation>
 <translation id="6521745193039995384">Inactivă</translation>
 <translation id="6522682797352430154">Muzică clasică</translation>
@@ -3464,7 +3526,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6567832540451970450">Administratorul permite <ph name="PERMISSION"/> pentru acest site</translation>
 <translation id="3720758671413152948">Butonul Gestionează metodele de plată, activează pentru a gestiona informațiile despre plăți și carduri de credit în setările Brave</translation>
 <translation id="6569060085658103619">Se afișează pagina unei extensii</translation>
-<translation id="6571992525120410251">Solicită-i serviciului <ph name="ENGINE_NAME"/> orice</translation>
 <translation id="6573200754375280815">Perforare dublă în dreapta</translation>
 <translation id="2679746641101586196">Brave încearcă să completeze informații sensibile în <ph name="APP_NAME"/>.</translation>
 <translation id="6575408526598156416">Salvează în cont</translation>
@@ -3473,6 +3534,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6579858392010591435">Sărbători și evenimente de sezon</translation>
 <translation id="6581831440014388355">Eliminarea părului nedorit de pe corp și față</translation>
 <translation id="3157702622633401823">Atacatorii de pe site-ul pe care ai încercat să-l accesezi pot să instaleze software dăunător care fură sau șterge informații cum ar fi parolele, fotografiile, mesajele sau numerele de carduri de credit. Brave recomandă insistent să închizi pagina. <ph name="BEGIN_LEARN_MORE_LINK"/>Află mai multe despre acest avertisment<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2571911185264872034">Stocat în Portofelul Brave</translation>
 <translation id="6587893660316489419">Plic B5</translation>
 <translation id="6587923378399804057">Linkul copiat de tine</translation>
 <translation id="6591833882275308647">Dispozitivul <ph name="DEVICE_TYPE"/> nu este gestionat</translation>
@@ -3511,7 +3573,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6655085656059574817">Dacă menții contul conectat, vei plăti mai rapid cu <ph name="BNPL_ISSUER_NAME"/>, dar îl poți deconecta accesând <ph name="BEGIN_LINK"/><ph name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT_WALLET_LINK_TEXT"/><ph name="END_LINK"/></translation>
 <translation id="6656935431494847393">Include informații cum ar fi rezervările de zboruri și informațiile despre vehicule</translation>
 <translation id="6657585470893396449">Parolă</translation>
-<translation id="6659156657345021268">Informațiile tale sunt salvate doar pe dispozitiv. Vei avea ocazia să le salvezi în Portofel data viitoare când vei completa un formular relevant.</translation>
 <translation id="6659246032834639189">Acest preț este scăzut</translation>
 <translation id="6660413144148052430">Locație</translation>
 <translation id="6662457027866368246">Prima rolă</translation>
@@ -3543,7 +3604,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6698097747703777657">Nu ai primit codul? <ph name="BEGIN_LINK"/>Obține un cod nou<ph name="END_LINK"/></translation>
 <translation id="6698381487523150993">Creat:</translation>
 <translation id="2705279181653063410">Pentru a dezactiva Pix în Brave, accesează <ph name="BEGIN_LINK1"/>setările pentru plăți<ph name="END_LINK1"/>.</translation>
-<translation id="6089469914764503915">Salvează informațiile și lucrează mai productiv, de exemplu, completează formulare în produsele Brave. Poți să <ph name="MANAGE_INFO_LINK"/> în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> pentru <ph name="ACCOUNT"/>.</translation>
 <translation id="67007264085648978">Glisor pentru timp</translation>
 <translation id="6702851555558236418">Software audio și muzical</translation>
 <translation id="6702919718839027939">Prezentare</translation>
@@ -3567,7 +3627,6 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6727094998759448074">SRA4</translation>
 <translation id="6732087373923685049">Cameră</translation>
 <translation id="6734506549556896534">Jocuri de simulare</translation>
-<translation id="3195271249864852838">Planurile de plată se supun condițiilor de eligibilitate. <ph name="BEGIN_BOLD"/>Conținutul paginii de finalizare a achiziției este trimis la Brave pentru a oferi aceste opțiuni.<ph name="END_BOLD"/> Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LINK"/>setările pentru plăți<ph name="END_LINK"/>.</translation>
 <translation id="6737708609449480586">Alimente coapte</translation>
 <translation id="6738516213925468394">Datele au fost criptate cu <ph name="BEGIN_LINK"/>expresia de acces pentru sincronizare<ph name="END_LINK"/> la <ph name="TIME"/>. Introdu expresia de acces pentru a începe sincronizarea.</translation>
 <translation id="6740851646645036700">Deocamdată ai atins limita pentru ajutor la scriere. Încearcă din nou mai târziu.</translation>
@@ -3629,12 +3688,12 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6834757537110528125">Site-ul nu acceptă o conexiune securizată</translation>
 <translation id="6841864657731852591">Cilindru pentru gravură</translation>
 <translation id="6842196666980060516">184 x 260 mm</translation>
+<translation id="6844746916504777213">Nu trimite niciodată aceste site-uri</translation>
 <translation id="6844998850832008753">Urmărirea mâinilor este permisă de data aceasta</translation>
 <translation id="976643339176907534">Butonul Gestionează setările de securitate, activează pentru a gestiona Navigarea sigură și alte opțiuni din setările Brave</translation>
 <translation id="6850286078059909152">Culoarea textului</translation>
 <translation id="6852204201400771460">Reîncarci aplicația?</translation>
 <translation id="6854691830678097752">Pentru finalizarea mai rapidă a achizițiilor, salvează codul CVC în contul <ph name="ACCOUNT_EMAIL"/></translation>
-<translation id="6855951327659224749">Golește formularul ca să folosești opțiunea Plătește mai târziu</translation>
 <translation id="6857776781123259569">Gestionează parolele…</translation>
 <translation id="6858034839887287663">A2x4</translation>
 <translation id="6860888819347870819">Poate solicita permisiunea de a intra în modul picture-in-picture</translation>
@@ -3661,6 +3720,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6893057134494550310">Folie de laminat</translation>
 <translation id="6893171174618024812">Pentru a dezactiva aplicația de plată în Brave, accesează <ph name="BEGIN_LINK1"/>setările pentru plăți<ph name="END_LINK1"/></translation>
 <translation id="6895330447102777224">Cardul tău este confirmat</translation>
+<translation id="6895573608763679343"><ph name="SUGGESTION_TITLE"/>, <ph name="SUGGESTION_DESCRIPTION"/>, <ph name="MATCH_POSITION"/> din <ph name="NUM_MATCHES_IN_GROUP"/> din grupul <ph name="GROUP_HEADER"/>.</translation>
 <translation id="6896758677409633944">Copiază</translation>
 <translation id="6897140037006041989">User Agent</translation>
 <translation id="6898699227549475383">Organizația (O)</translation>
@@ -3700,6 +3760,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="6950684638814147129">Eroare la analizarea valorii JSON: <ph name="ERROR"/></translation>
 <translation id="695140971690006676">Resetează-le pe toate</translation>
 <translation id="6954049078461159956">Hochei</translation>
+<translation id="6954269228996542693">Se descarcă pachetele de limbi... <ph name="PERCENT"/> %</translation>
 <translation id="695582302419398462">Carton (perete dublu)</translation>
 <translation id="6957153644870901611">Activează completarea automată îmbunătățită pentru a completa automat mai multe câmpuri</translation>
 <translation id="6957887021205513506">Certificatul serverului pare a fi un fals.</translation>
@@ -3736,7 +3797,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="7003278537452757231">Covoare și preșuri</translation>
 <translation id="7003322000677139268">Piese și accesorii pentru vehicule</translation>
 <translation id="7004499039102548441">File recente</translation>
-<translation id="9034916448420493087">Informațiile tale sunt salvate în <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> pentru <ph name="ACCOUNT"/>. Îl poți folosi în produsele Brave pentru a completa mai rapid formulare.</translation>
+<translation id="7004562620237466965">Numai descifrare</translation>
 <translation id="7006930604109697472">Trimite oricum</translation>
 <translation id="7009364359744329733">Momentan, cardul nu este disponibil. Încearcă din nou mai târziu.</translation>
 <translation id="7010658264061801199">Mâncare și băutură</translation>
@@ -3768,6 +3829,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="7057567173736333354">Descrie imaginea</translation>
 <translation id="7058163556978339998"><ph name="BROWSER"/> s-a asigurat că certificatul acestui site a fost emis de <ph name="ISSUER"/>.</translation>
 <translation id="7058774143982824355">Serviciul de analiză a parolelor din CSV</translation>
+<translation id="7059913660448028407">Opțiunea nu este disponibilă momentan</translation>
 <translation id="6761410840196521760">Pentru a plăti mai rapid data viitoare, salvează cardul și adresa de facturare în Portofelul Brave</translation>
 <translation id="5320462991730735481">Adaugă și gestionează adrese din setările Brave</translation>
 <translation id="7063157783216323487">Verde 2</translation>
@@ -3778,6 +3840,7 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="7070144569727915108">setări de sistem</translation>
 <translation id="70705239631109039">Conexiunea nu este complet sigură</translation>
 <translation id="7075452647191940183">Solicitarea este prea mare</translation>
+<translation id="7075513071073410194">PKCS #1 MD5 cu criptare RSA</translation>
 <translation id="7075896597860500885">Copierea de pe acest site nu este recomandată</translation>
 <translation id="7078665357168027058">RA3</translation>
 <translation id="7079699498125013497">\u0020\u2022\u0020</translation>
@@ -3865,10 +3928,10 @@ Pentru a ascunde opțiunile de plată mai târziu, accesează <ph name="BEGIN_LI
 <translation id="7210993021468939304">activitatea Linux din container și pot să instaleze și să ruleze aplicații Linux în container</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/> despre această problemă.</translation>
 <translation id="7213191991901907140">Descrie-ne experiența ta</translation>
-<translation id="7217745192097460130">Folosești Touch ID ca să confirmi și finalizezi achiziția?</translation>
 <translation id="7219179957768738017">Conexiunea utilizează <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Se procesează</translation>
 <translation id="7221855153210829124">Afișeze notificări</translation>
+<translation id="7225676267118764980">Schimbă furnizorul de completare automată și alte setări</translation>
 <translation id="7226892411756387078">Text simplu</translation>
 <translation id="7227293336683593977">Istoricul prețurilor</translation>
 <translation id="7228306718910595403">Starea de calificare UE</translation>
@@ -3941,7 +4004,6 @@ Detalii suplimentare:
 <translation id="7353601530677266744">Linie de comandă</translation>
 <translation id="7359588939039777303">Anunțurile au fost blocate.</translation>
 <translation id="7308957539693927108">Când Brave găsește reduceri disponibile, le va afișa la finalizarea achiziției</translation>
-<translation id="7362039113312920489">Examinează și gestionează</translation>
 <translation id="7362281996276843968">Acest grup este închis</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a adăuga și a gestiona adrese din setările Brave</translation>
 <translation id="7365849542400970216">Permiți detectarea folosirii dispozitivului?</translation>
@@ -4021,24 +4083,24 @@ Detalii suplimentare:
 <translation id="1548956355291859153">Butonul Gestionează sincronizarea, activează pentru a gestiona informațiile de sincronizat din setările Brave</translation>
 <translation id="7451311239929941790"><ph name="BEGIN_LINK"/>să afli mai multe<ph name="END_LINK"/> despre această problemă.</translation>
 <translation id="745208957946308667">Joc cu dinozauri, apasă pe tasta de spațiu pentru a juca</translation>
+<translation id="74521886886364465"><ph name="SUGGESTION_TITLE"/>, <ph name="MATCH_POSITION"/> din <ph name="NUM_MATCHES_IN_GROUP"/> din grupul <ph name="GROUP_HEADER"/>.</translation>
 <translation id="7453032093368223821">Gestionează alte date</translation>
 <translation id="7454377933424667109">Cont Cloud</translation>
 <translation id="7455133967321480974">Utilizați setarea prestabilită la nivel global (Blocați)</translation>
 <translation id="7455452752247248289">Tehnologie pentru întreprinderi</translation>
 <translation id="745640750744109667">A0x3</translation>
 <translation id="7457071735008326060">Autocamioane și remorci</translation>
-<translation id="7461924472993315131">Fixează</translation>
 <translation id="7463068149674892185">Această acțiune nu este recomandată</translation>
 <translation id="746329643760972486">macOS</translation>
 <translation id="746412105358554870">Optimizare și securitate JavaScript</translation>
 <translation id="7465036432780054056"><ph name="EMBEDDED_URL"/> va ști că ai accesat <ph name="TOP_LEVEL_URL"/></translation>
 <translation id="7465963048299965912">10 x 13 in</translation>
-<translation id="7467332121947433617">Actualizezi documentul de identitate?</translation>
 <translation id="7469935732330206581">Formularul nu este sigur</translation>
 <translation id="7470854469646445678">Specifică motivul copierii (obligatoriu)</translation>
 <translation id="7471007961486718967">Specifică motivul transferului (obligatoriu)</translation>
 <translation id="7473033553872550521">Poți și să contactezi proprietarul site-ului și să-i sugerezi să facă upgrade la HTTPS. <ph name="LEARN_MORE"/></translation>
 <translation id="7473891865547856676">Nu, mulțumesc</translation>
+<translation id="7475618719385705713">Pagina este blocată</translation>
 <translation id="7481312909269577407">Înainte</translation>
 <translation id="7481603210197454575">Plic italienesc</translation>
 <translation id="7482823403440483089">Completare automată îmbunătățită</translation>
@@ -4060,6 +4122,7 @@ Detalii suplimentare:
 <translation id="7508255263130623398">ID-ul de dispozitiv returnat pentru politică este gol sau nu corespunde cu ID-ul de dispozitiv actual</translation>
 <translation id="7508577201115425418">Servicii de printare și pentru documente</translation>
 <translation id="7510269639068718544">Pisici</translation>
+<translation id="7511707705708508147">Moneda nu este acceptată</translation>
 <translation id="7511955381719512146">Rețeaua Wi-Fi pe care o folosești poate solicita accesarea adresei <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
 <translation id="7512685745044087310">Această politică nu poate să fie activată și obligatorie, prin urmare starea acesteia a fost setată la „Recomandată”.</translation>
 <translation id="7514365320538308">Descarcă</translation>
@@ -4134,6 +4197,7 @@ Detalii suplimentare:
 <translation id="7615932826417658001">Adaugă cartea de identitate</translation>
 <translation id="7616390733770379387">Acestea apar în ordine aleatorie.</translation>
 <translation id="8565825862287624454">Administratorul a activat Brave Enterprise Connectors în browser. Acești conectori au acces la o parte din datele tale.</translation>
+<translation id="6114261010694947707">Cardul s-a salvat în Portofelul Brave ca să îl poți folosi în toate serviciile Brave</translation>
 <translation id="7617825962482469577">Plic C7/C6</translation>
 <translation id="7618270539713451657">Arte marțiale</translation>
 <translation id="7619838219691048931">Foaia finală</translation>
@@ -4275,11 +4339,13 @@ Detalii suplimentare:
 <translation id="7819605256207059717">Blocat de organizația ta</translation>
 <translation id="7822611063308883975">Console mobile pentru jocuri</translation>
 <translation id="7825558994363763489">Cuptoare cu microunde</translation>
+<translation id="7827688884439021871">Primește sugestii în timp real care te pot ajuta să găsești noi moduri de a naviga cu AI</translation>
 <translation id="782886543891417279">Rețeaua Wi-Fi pe care o folosești (<ph name="WIFI_NAME"/>) poate solicita accesarea paginii de conectare.</translation>
 <translation id="7831993212387676366">Ce este lista de cumpărături?</translation>
 <translation id="7840103971441592723">Captura de ecran a început</translation>
 <translation id="784137052867620416">Statistici despre cumpărături</translation>
 <translation id="7841633276323004751">Metodele de plată disponibile să fie selectate pentru a continua plata. Tastatura este ascunsă.</translation>
+<translation id="6144294577598632959">Gemini poate să-ți reamintească informațiile cu caracter personal din toate aplicațiile Brave și să le completeze automat în pagina pe care o vezi.</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Niciuna}=1{O aplicație (<ph name="EXAMPLE_APP_1"/>)}=2{Două aplicații (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}few{# aplicații (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{# de aplicații (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="7846161022626028328">A apărut o eroare. Încearcă din nou.</translation>
 <translation id="784623644169604270">Nicio activitate recentă</translation>
@@ -4293,6 +4359,7 @@ Detalii suplimentare:
 <translation id="7862306158978555061">să afișeze informații sensibile.</translation>
 <translation id="7865448901209910068">Viteza optimă</translation>
 <translation id="7865482168955081228">Ecranul de eroare Cumpără acum, plătește mai târziu este închis.</translation>
+<translation id="7869655448736341731">Oricare</translation>
 <translation id="3178316939409145825">Conținutul paginii de finalizare a achiziției este trimis la Brave pentru a oferi aceste opțiuni.</translation>
 <translation id="7870281855125116701">A fost găsită o reducere</translation>
 <translation id="7971990257511863579">Schimbă parola Contului Brave</translation>
@@ -4361,6 +4428,7 @@ Detalii suplimentare:
 <translation id="7967636097426665267">Echipamente de comunicații</translation>
 <translation id="79682505114836835">Valoarea <ph name="VALUE"/> este o culoare hexazecimală nevalidă.</translation>
 <translation id="7968982339740310781">Afișați detaliile</translation>
+<translation id="7972714317346275248">PKCS #1 SHA-384 cu criptare RSA</translation>
 <translation id="7976053965094442846">Emitenți de servicii Cumpără acum, plătește mai târziu, disponibili pentru plata în timp. Tastatura este ascunsă.</translation>
 <translation id="7976214039405368314">Prea multe solicitări</translation>
 <translation id="7977538094055660992">Dispozitiv de ieșire</translation>
@@ -4437,6 +4505,7 @@ Detalii suplimentare:
 <translation id="8091372947890762290">Se așteaptă activarea pe server</translation>
 <translation id="8092254339843485299">6 x 8 in</translation>
 <translation id="8094917007353911263">Rețeaua pe care o folosești poate solicita accesarea adresei <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
+<translation id="8095168258866348967">Se instalează pachetele de limbi...</translation>
 <translation id="809543534949702122">Istoricul căutărilor</translation>
 <translation id="8098855213644561659">A3 Extra</translation>
 <translation id="809898108652741896">A6</translation>
@@ -4452,6 +4521,7 @@ Detalii suplimentare:
 <translation id="8120720167840853945">Această politică nu stabilește comportamentul prestabilit al altor politici.</translation>
 <translation id="8127301229239896662">„<ph name="SOFTWARE_NAME"/>” nu a fost instalat corect pe computer sau în rețea. Contactează administratorul IT pentru a remedia această problemă.</translation>
 <translation id="8130113808541743942">Mută în...</translation>
+<translation id="813024282736408069">Activează un card virtual pentru completarea automată</translation>
 <translation id="8131740175452115882">Confirmați</translation>
 <translation id="8133495915926741232">Alege categoriile vaste de subiecte care pot fi folosite pentru a personaliza anunțurile. Dacă dezactivezi o categorie mai vastă, vei bloca și subiectele conexe. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
 <translation id="8134058435519644366">Recrutare și personal</translation>
@@ -4489,7 +4559,6 @@ Detalii suplimentare:
 <translation id="8194956568907463262">Shootere</translation>
 <translation id="8198379961710069585">Butonul Istoricul căutărilor, activează pentru a căuta în istoric</translation>
 <translation id="8199437620497683918">Disc optic (lucios)</translation>
-<translation id="8199730148066603000">Previzualizarea adresei URL non-HTTPS nu este permisă.</translation>
 <translation id="8200772114523450471">Reia</translation>
 <translation id="8202097416529803614">Rezumatul comenzii</translation>
 <translation id="8202370299023114387">Conflict</translation>
@@ -4520,8 +4589,8 @@ Detalii suplimentare:
 <translation id="8246482227229072868">Inele</translation>
 <translation id="8248406213705193919">Salvezi cardul în siguranță?</translation>
 <translation id="8249296373107784235">Abandonați</translation>
-<translation id="824968735947741546">Se traduce din <ph name="SOURCE"/> (detectată automat) în <ph name="TARGET"/></translation>
 <translation id="8996951854370742934">Adresa se salvează momentan pe acest dispozitiv. Pentru a o folosi în toate produsele Brave, salveaz-o în Contul Brave, <ph name="ACCOUNT"/>.</translation>
+<translation id="8250533425540303610">Se instalează <ph name="LANGUAGE"/>...</translation>
 <translation id="8251493595871259082">Completează adresa introducând mai puțin text</translation>
 <translation id="8252991034201168845">Butonul Gestionează setările de accesibilitate, apasă pe Enter pentru a personaliza instrumentele de accesibilitate în setările sistemului de operare Brave</translation>
 <translation id="8253091569723639551">Adresa de facturare este obligatorie</translation>
@@ -4549,6 +4618,7 @@ Detalii suplimentare:
 <translation id="8281886186245836920">Omite</translation>
 <translation id="8282292167096638950">Șterge permisul de conducere</translation>
 <translation id="8282409409360764263">Întreținerea grădinilor</translation>
+<translation id="792704835644878748">Salvează codul IBAN în Portofelul Brave</translation>
 <translation id="8282947398454257691">Află identificatorul unic de dispozitiv</translation>
 <translation id="4596532552309852907">Gestionează Navigarea sigură și alte opțiuni din setările Brave</translation>
 <translation id="828558778104922222">Fotografia s-a pierdut din cauza unei erori necunoscute</translation>
@@ -4560,6 +4630,7 @@ Detalii suplimentare:
 <translation id="8289355894181816810">Dacă nu știți sigur ce înseamnă aceasta, contactați administratorul de rețea.</translation>
 <translation id="8291367150570302588">Cartea de identitate</translation>
 <translation id="829335040383910391">Sunet</translation>
+<translation id="8294425747071240447">Sugestii bazate pe AI</translation>
 <translation id="8294431847097064396">Sursă</translation>
 <translation id="8297545700510100061">Cookie-urile și alte date ale site-urilor sunt folosite pentru a te reține, de exemplu, pentru a te conecta sau pentru a personaliza anunțuri. Pentru a gestiona cookie-urile pentru toate site-urile, consultă <ph name="SETTINGS"/>.</translation>
 <translation id="8298115750975731693">Rețeaua Wi-Fi pe care o folosești (<ph name="WIFI_NAME"/>) poate solicita accesarea adresei <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
@@ -4582,12 +4653,12 @@ Detalii suplimentare:
 <translation id="8332188693563227489">Accesul la <ph name="HOST_NAME"/> nu este permis</translation>
 <translation id="833262891116910667">Evidențiază</translation>
 <translation id="8339163506404995330">Paginile în <ph name="LANGUAGE"/> nu vor fi traduse</translation>
-<translation id="8339275256517065202">Finalizează achiziția folosind Touch ID</translation>
 <translation id="833935588477667012"><ph name="FIELD_LABEL"/>, obligatoriu</translation>
 <translation id="8339463238135163999"><ph name="DESCRIPTION"/><ph name="SEPARATOR"/><ph name="TIMESTMAP"/></translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="8344776605855290140">Înregistrarea cardului virtual s-a deschis la înălțimea completă</translation>
 <translation id="834805203690963649">Atacatorii pot să vadă și să modifice informațiile pe care le trimiți sau le primești de la site.</translation>
+<translation id="8349305172487531364">Bara de marcaje</translation>
 <translation id="8350416046273606058">Comanda rapidă nu poate conține spații: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="8351131234907093545">Creează o notă</translation>
 <translation id="8352849934814541340">Administratorul acestui dispozitiv a instalat aplicații pentru funcții suplimentare. Aplicațiile au acces la unele dintre datele tale.</translation>
@@ -4635,6 +4706,7 @@ Detalii suplimentare:
 Detalii suplimentare:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8416874502399604126">Microfonul este permis de această dată</translation>
+<translation id="1409378845393760167">Salvează informațiile în <ph name="GOOGLE_WALLET_TITLE_1"/> și lucrează mai productiv, de exemplu, completează formulare în produsele Brave. Poți să <ph name="MANAGE_INFO_LINK"/> în <ph name="GOOGLE_WALLET_TITLE_2"/> pentru <ph name="ACCOUNT"/>.</translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
 <translation id="8425213833346101688">Modificați</translation>
 <translation id="8426945547715537628">Permiți modificarea tastaturii?</translation>
@@ -4675,6 +4747,7 @@ Detalii suplimentare:
 <translation id="8488350697529856933">Se aplică pentru</translation>
 <translation id="8490137692873530638">Receptorul de hârtie 10</translation>
 <translation id="8493948351860045254">Eliberează spațiu</translation>
+<translation id="8495170825732897952">Introdu @@ în orice formular pentru a reaminti și a completa informații fără a schimba fila</translation>
 <translation id="8498870489552322848">să completeze informații sensibile în <ph name="APP_NAME"/>.</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> a răspuns prea târziu.</translation>
 <translation id="8502023382441452707">Aniversări și onomastici</translation>
@@ -4691,6 +4764,7 @@ Detalii suplimentare:
 <translation id="8521812709849134608">Blaturi</translation>
 <translation id="8522180136695974431">Monitorizarea și raportarea creditelor</translation>
 <translation id="1426902392270366682">Brave te poate ajuta să îți protejezi Contul Brave și să îți schimbi parola.</translation>
+<translation id="852450791482410042">Plătește acum</translation>
 <translation id="8527228059738193856">Difuzoare</translation>
 <translation id="8527681393107582734">Agricultură și silvicultură</translation>
 <translation id="8528149813106025610">Îmbrăcăminte pentru copii</translation>
@@ -4808,7 +4882,6 @@ Detalii suplimentare:
 <translation id="8726549941689275341">Dimensiunea paginii:</translation>
 <translation id="8730621377337864115">Terminat</translation>
 <translation id="8731268612289859741">Cod de securitate</translation>
-<translation id="8731917264694569036">Finalizează achiziția folosind dispozitivul</translation>
 <translation id="8733345475331865475">Asigurări auto</translation>
 <translation id="2184048523283917559">Poți bloca subiectele la care nu vrei să permiți accesul site-urilor. Brave șterge automat subiectele mai vechi de patru săptămâni. Află mai multe</translation>
 <translation id="8734529307927223492">Dispozitivul <ph name="DEVICE_TYPE"/> este gestionat de <ph name="MANAGER"/></translation>
@@ -4828,6 +4901,7 @@ Detalii suplimentare:
 <translation id="1796409354047419363">Poți să-ți editezi numele în <ph name="BEGIN_LINK"/>Contul Brave<ph name="END_LINK"/> <ph name="ACCOUNT"/>.</translation>
 <translation id="8759274551635299824">Acest card este expirat</translation>
 <translation id="87601671197631245">Site-ul folosește o configurație de securitate învechită, care îți poate expune informațiile (de exemplu, parolele, mesajele sau cardurile de credit) când sunt trimise la acest site.</translation>
+<translation id="8763676559028782284">{COUNT,plural, =1{Link trimis de pe <ph name="DEVICE_NAME"/>}few{# linkuri trimise de pe <ph name="DEVICE_NAME"/>}other{# de linkuri trimise de pe <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="8763927697961133303">Dispozitiv USB</translation>
 <translation id="8766943070169463815">Foaia de autentificare cu date de conectare pentru plăți securizate este deschisă</translation>
 <translation id="8767765348545497220">Închide balonul de ajutor</translation>
@@ -4840,7 +4914,6 @@ Detalii suplimentare:
 <translation id="877348612833018844">{0,plural, =1{Muți fișierul confidențial?}few{Muți fișierele confidențiale?}other{Muți fișierele confidențiale?}}</translation>
 <translation id="8775347646940100151">Hârtie (cu antet)</translation>
 <translation id="8775863327608679820">Emitenții de servicii Cumpără acum, plătește mai târziu disponibili pentru plata în timp, deschiși la jumătate din înălțime.</translation>
-<translation id="8776941011841875705">Salvezi numărul de călător cunoscut?</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="514805123051954646">Butonul Tradu pagina, activează pentru a traduce această pagină cu Brave Traducere</translation>
 <translation id="8785658048882205566">Motociclete</translation>
@@ -4898,6 +4971,7 @@ Detalii suplimentare:
 <translation id="8870700989640064057">Imprimi fișierul confidențial?</translation>
 <translation id="8871485335898060555">Antichități și obiecte de colecție</translation>
 <translation id="8871553383647848643">Personalizează aspectul browserului</translation>
+<translation id="887350038812854047">Această politică are aceeași valoare aplicată la nivel de dispozitiv și de utilizator. Politica funcționează corespunzător.</translation>
 <translation id="8874790741333031443">Încearcă să permiți temporar cookie-urile terță parte, ceea ce înseamnă mai puțină protecție pentru navigare, dar există șanse mai mari ca funcțiile site-urilor să funcționeze conform așteptărilor.</translation>
 <translation id="8874824191258364635">Introdu un număr de card valid</translation>
 <translation id="8877780815363510165">Pescuit</translation>
@@ -4908,6 +4982,7 @@ Detalii suplimentare:
 <translation id="8891031436559779793">Vei primi o notificare dacă prețul scade pe orice site.</translation>
 <translation id="8891727572606052622">Mod proxy nevalid.</translation>
 <translation id="8894794286471754040">Cu latura lungă înainte</translation>
+<translation id="7850375166078768069">Pentru a folosi alt serviciu de completare automată în Brave, activează-l în setările Android și aici</translation>
 <translation id="7192431032621242241">Pentru a solicita să vezi acest conținut, continuă cu Contul Brave</translation>
 <translation id="8897428486789851669">Înot</translation>
 <translation id="8898854704577986668">Afișează istoricul în panoul lateral</translation>
@@ -4931,6 +5006,7 @@ Detalii suplimentare:
 <translation id="893332455753468063">Adaugă un nume</translation>
 <translation id="8938242527120341116">Filtrele de conținut ale dispozitivului au blocat <ph name="BLOCKED_URL"/></translation>
 <translation id="8942355029279167844">Administratorul a permis ca <ph name="APP_NAME"/> să colecteze date de diagnosticare pentru a îmbunătăți experiența cu produsul. Consultă <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/> pentru mai multe informații.</translation>
+<translation id="8943282376843390568">Verde-gălbui</translation>
 <translation id="8949410982325929394">Ton</translation>
 <translation id="8949493680961858543">A1x4</translation>
 <translation id="8952569554322479410">Un site tocmai a solicitat acces la <ph name="REQUEST_TYPE"/>. Ajută-ne să îmbunătățim modul în care site-urile solicită accesul, răspunzând la acest sondaj de un minut.</translation>
@@ -4978,7 +5054,6 @@ Detalii suplimentare:
 <translation id="5979301400168151411">Site-uri Brave</translation>
 <translation id="8309858808266687860">Încearcă Brave Enterprise Core</translation>
 <translation id="9027531288681624875">Pentru a ieși din ecranul complet, apasă lung pe |<ph name="ACCELERATOR"/>|</translation>
-<translation id="9031426777610376427">Actualizezi numărul de remediere?</translation>
 <translation id="9035022520814077154">Eroare de securitate</translation>
 <translation id="9035824888276246493">Salvează codurile de securitate</translation>
 <translation id="9036306139374661733">Permiți accesul la microfon?</translation>
@@ -5039,7 +5114,6 @@ Detalii suplimentare:
 <translation id="3582535072753734287">Browserul nu este gestionat de o companie sau o altă organizație. Este posibil ca activitatea de pe acest dispozitiv să fie gestionată în afara Brave. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
 <translation id="2628864952962474930"><ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a-ți continua parcursul și a vedea activitatea relevantă din istoricul Brave</translation>
 <translation id="9119042192571987207">Încărcat</translation>
-<translation id="9119308212838450857"><ph name="PROVIDER_ORIGIN"/> solicită să-ți confirmi identitatea</translation>
 <translation id="9119764377203471454">Nu se pot adăuga atașamente</translation>
 <translation id="9120593907434185157">Salvează adresa</translation>
 <translation id="912327514020027767">Fuste</translation>
@@ -5054,6 +5128,7 @@ Detalii suplimentare:
 <translation id="5130929741967388676">Browserul Brave dorește să folosească amprenta pentru a completa automat parolele</translation>
 <translation id="9141013498910525015">Gestionează adresele</translation>
 <translation id="9141435142213469335">Salvează adresa cu mai multe informații</translation>
+<translation id="9141510259469546089">Achiziție minimă: <ph name="CHECKOUT_AMOUNT_MINIMUM"/></translation>
 <translation id="9141672681283222114">RA este permisă de data aceasta</translation>
 <translation id="9143898823728499852">Poți completa automat acest card deoarece contul <ph name="CARD_ISSUER_NAME"/> este conectat la Google Pay</translation>
 <translation id="9144951720726881238">Data expirării:</translation>
@@ -5110,6 +5185,7 @@ Detalii suplimentare:
 <translation id="9210825002219699214">Călătorii aeriene</translation>
 <translation id="9213433120051936369">Personalizează aspectul</translation>
 <translation id="2206050430829841793">O aplicație împiedică browserul Brave să se conecteze în siguranță la acest site</translation>
+<translation id="9217513960785028513">Întreabă <ph name="ENGINE_NAME"/> sau introdu adresa URL</translation>
 <translation id="92178312226016010">Urmărești acest produs.</translation>
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="9219103736887031265">Imagini</translation>
@@ -5127,6 +5203,7 @@ Detalii suplimentare:
 <translation id="937885410143139026">Datele au fost trimise la consola de administrare</translation>
 <translation id="939736085109172342">Dosar nou</translation>
 <translation id="940524522703752213">Încărcarea fișierelor în <ph name="CLOUD_PROVIDER"/> va începe în <ph name="MINUTES"/> minute</translation>
+<translation id="943185096918807504">Achiziție maximă: <ph name="CHECKOUT_AMOUNT_MAXIMUM"/></translation>
 <translation id="944578681290094302">Arată ce recompense și beneficii sunt disponibile pentru carduri la finalizarea achiziției <ph name="CARD_BENEFIT_HELP_LINK_BEGIN"/>Află despre beneficiile cardurilor<ph name="CARD_BENEFIT_HELP_LINK_END"/></translation>
 <translation id="5858078029174489466">Completează automat acest card pentru achizițiile făcute în Brave când este salvat pe acest dispozitiv</translation>
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă pe Tab, apoi pe Enter pentru a crea rapid un site în Site-uri Brave</translation>

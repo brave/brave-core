@@ -58,7 +58,13 @@ struct ReaderModeUtils {
       // PAGE UNESCAPED REPLACEMENTS MUST BE DONE AFTER THIS LINE
       .replacingOccurrences(
         of: "%READER-ORIGINAL-PAGE-META-TAGS%",
-        with: readabilityResult.cspMetaTags.joined(separator: "  \n")
+        with: readabilityResult.cspMetaTags
+          .map {
+            let content =
+              $0.javaScriptEscapedString?.unquotedIfNecessary ?? $0.htmlEntityEncodedString
+            return "<meta http-equiv=\"Content-Security-Policy\" content=\"\(content)\">"
+          }
+          .joined(separator: "\n")
       )
 
       // DO NOT DO ANY REPLACEMENTS AFTER THIS LINE

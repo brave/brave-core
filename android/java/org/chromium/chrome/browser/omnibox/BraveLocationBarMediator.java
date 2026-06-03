@@ -22,7 +22,6 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
-import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
@@ -33,6 +32,7 @@ import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.omnibox.AutocompleteInput;
+import org.chromium.components.omnibox.AutocompleteInput.AutocompleteState;
 import org.chromium.components.omnibox.OmniboxFocusReason;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.PageTransition;
@@ -86,9 +86,9 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
-            @Nullable MultiInstanceManager multiInstanceManager,
             LocationBarEmbedder locationBarEmbedder,
-            @Nullable OmniboxChipManager omniboxChipManager) {
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable LocationBarFocusScrimHandler scrimHandler) {
         super(
                 context,
                 locationBarLayout,
@@ -110,9 +110,9 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 modalDialogManagerSupplier,
                 pageZoomIndicatorCoordinator,
                 fuseboxCoordinator,
-                multiInstanceManager,
                 locationBarEmbedder,
-                omniboxChipManager);
+                omniboxChipManager,
+                scrimHandler);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
@@ -270,7 +270,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         // autocomplete text will be updated but the visible text will not.
         beginInput(
                 new AutocompleteInput()
-                        .setSuppressAutomaticSuggestionsUntilUserStartsTyping(true)
+                        .setAutocompleteState(AutocompleteState.STANDBY)
                         .setFocusReason(OmniboxFocusReason.DEFAULT_WITH_HARDWARE_KEYBOARD));
         setUrlBarText(
                 UrlBarData.forNonUrlText(query),

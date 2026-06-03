@@ -40,17 +40,18 @@ tools/cr/brockit.py lift --to=135.0.7037.1 --from-ref=origin/master
 ```
 
 When using `--from-ref`, any valid git reference can be used, such as a branch,
-or even hashes. Additionally there are special tags that can be passed to this
-flag.
+or even hashes. Additionally there are special labels that can be passed to
+this flag.
 
  * `--from-ref=@upstream`: This will use the upstream branch as the base for
-    the lift. This requires the user to set an upstream branch.
+    the lift. This requires the user to set an upstream branch. This value is
+    the default when none is provided.
  * `--from-ref=@previous`: This tag means the previous version since the last
     upgrade in the current branch. This is useful when telling brockit that you
     are doing a minor version bump.
- * `--from-ref=@previous-major`: This tag means the reference the parent commit
-    for the current major. This is useful when doing rebases, and wanting to
-    select from the version change.
+ * `--from-ref=@previous-major`: This label means the reference the parent
+    commit for the current major. This is useful when doing rebases, and
+    wanting to select from the version change.
 
 Using upstream:
 
@@ -59,12 +60,18 @@ git branch --set-upstream-to=origin/master
 tools/cr/brockit.py lift --to=135.0.7037.1
 ```
 
-The `--to` flag also provides special flags:
- * `--to=@latest-canary`: This will use the latest canary version as per
-    Chromium Dash. For this particular flag, both the *Canary*, and the
-    *Canary (DCHECK)* channels will be queried for the latest.
- * `--to=@latest-dev`, and `--to=@latest-beta`: Same as the falg above, but
-    to these respective channels.
+The `--to` flag also accepts special labels:
+ * `--to=@latest-tag`: Uses the latest tag from the Chromium repository.
+ * `--to=@latest-m{MAJOR}`: Uses the latest tag for the given major version
+    (e.g. `--to=@latest-m135`).
+ * `--to=@latest-for-branch`: Infers the major version from the current branch
+    name, which must follow the `cr{MAJOR}` convention (e.g. `cr135`), and
+    uses the latest tag for that major.
+ * `--to=@latest-canary`: Uses the latest canary version from Chromium Dash.
+    Both the *Canary* and the *Canary (DCHECK)* channels are queried and the
+    highest version is used.
+ * `--to=@latest-dev`, `--to=@latest-beta`, `--to=@latest-stable`: Same as
+    the flag above, but for the respective channel.
 
 The following steps will take place:
 
@@ -79,7 +86,7 @@ The following steps will take place:
    expected to provide separate commits for deleted patches, explaining the
    reason.
 6. Having resolved all conflicts. Restart *🚀Brockit!* with `--continue` and
-   other similar arguments you may want to keep (e.g. `--vscode`).
+   other similar arguments you may want to keep.
 7. *🚀Brockit!* will pick up from where it stopped, possibly running
   `npm run update_patches`, staging all patches, and committing the under
   *Conflict-resolved patches from Chromium [from] to [to].*
@@ -163,6 +170,46 @@ away all minor bumps in a branch down to a single one. This is useful when
 when running a cr branch, as it is common to have multiple minor daily bumps
 in a branch.
 
+### `brockit.py update-xcode-toolchain`
+The hermetic toolchain is generated in CI, and at the end of it, a download URL
+is provided for the generated toolchain. The URL is usually printed in the logs
+as:
+
+```
+Download URL: https://....tar.gz
+```
+
+To create a commit updating the hermetic toolchain, simply pass this URL to the
+command:
+
+```sh
+tools/cr/brockit.py update-xcode-toolchain <URL>
+```
+
+Pass `--culprit=<hash>` to provide a specific culprit for the toolchain update.
+If none is provided, `brockit` will trying to determine the culprit by looking
+for the last commit updating the toolchain in Chromium.
+
+### `brockit.py gen-rust-toolchain`
+This command triggers the Rust/WASM toolchain Jenkins pipelines (one per
+platform) for a given Chromium tag. It reads credentials from `~/.jenkins.json`
+and kicks off a parameterized build for each pipeline.
+
+```sh
+tools/cr/brockit.py gen-rust-toolchain 150.0.7850.1
+```
+
+The `tag` argument also accepts the same `@latest-*` labels (e.g. `@latest-tag`,
+etc).
+
+Pass `--watch` to show a live-updating table of each pipeline's stage and
+status until all finish. Pressing Ctrl+C stops watching, but the builds keep
+running.
+
+```sh
+tools/cr/brockit.py gen-rust-toolchain @latest-canary --watch
+```
+
 ### `brockit.py reassign`
 This command is used to change the authorship of a given commit in the branch.
 It generates an empty commit with the message `reassign! {original_subject}`
@@ -186,37 +233,59 @@ the reassignment commit, the resulting commit adopts the reassignment commit's
 authorship.
 """
 
+from __future__ import annotations
+
 import argparse
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 import json
 import logging
 import os
-from pathlib import Path, PurePath
+from pathlib import Path
 import pickle
 import platform
 import re
 import requests
+from rich.box import Box
+from rich.live import Live
 from rich.markdown import Markdown
 from rich.padding import Padding
+from rich.spinner import Spinner
+from rich.table import Table
+from rich.text import Text
 import subprocess
 import sys
-from typing import Optional, List, Dict
+import time
 
-from incendiary_error_handler import IncendiaryErrorHandler
 from git_status import GitStatus
 from patchfile import Patchfile
+import plaster
+from plaster import PlasterFile, PlasterFileNeedsRegen
+import rebase_v2
+from rebase_v2 import REASSIGN_COMMIT_MSG_PREFIX
 import repository
-from repository import Repository, CHROMIUM_SRC_PATH
-from terminal import console, terminal
+from repository import Repository
+from terminal import (IncendiaryErrorHandler, Task as BaseTask, console,
+                      is_verbose, terminal)
 import versioning
 from versioning import Version
+from vpython_utils import VPYTHON3_PATH
+from vscode import VsCodeIpcConnection
 
 # This file is updated whenever the version number is updated in package.json
 PINSLIST_TIMESTAMP_FILE = (
     'chromium_src/net/tools/transport_security_state_generator/'
     'input_file_parsers.cc')
 VERSION_UPGRADE_FILE = Path('.version_upgrade')
+
+# Commit subject prefixes that identify brockit-managed upgrade commits.
+# Patches whose most recent branch commit carries one of these subjects are
+# NOT dev-cycle changes and therefore must NOT be turned into fixups.
+_UPGRADE_COMMIT_WITH_PATCHES_PREFIXES = (
+    'Conflict-resolved patches from Chromium ',
+    'Apply-fixed 🩹 patches from Chromium ',
+    'Update patches from Chromium ',
+)
 
 # The link to a specific commit in the Chromium source code.
 GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}' '/+/{commit}'
@@ -225,8 +294,76 @@ GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}' '/+/{commit}'
 # availability for a given version.
 RUST_TOOLCHAIN_URL = 'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux/linux-x64-rust-toolchain-{revision}.tar.xz'
 
+# Brave-side script that pins the hermetic Xcode toolchain. Its
+# `XCODE_VERSION` / `XCODE_BUILD_VERSION` / `MAC_SDK_*` constants are the only
+# thing `update-xcode-toolchain` edits.
+HERMETIC_XCODE_SCRIPT = 'build/mac/download_hermetic_xcode.py'
+
+# Chromium-side file pinning the macOS SDK that we cross-reference to find the
+# upstream commit that triggered this toolchain bump.
+CHROMIUM_MAC_SDK_GNI = 'build/config/mac/mac_sdk.gni'
+
 # Google dash link used to check the latest version for a given channel
 CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?channel={channel}&platform={platform}&num=1'
+
+# Configuration file holding the Jenkins credentials used to trigger toolchain
+# pipelines. See `GenRustToolchain` for the expected schema.
+JENKINS_CONFIG_FILE = Path.home() / '.jenkins.json'
+
+# The Jenkins jobs that build and publish the Rust/WASM toolchain, one per
+# platform. Each accepts a single `CHROMIUM_TAG` build parameter.
+RUST_TOOLCHAIN_JOBS = (
+    'brave-browser-rust-toolchain-aux-build-linux-x64',
+    'brave-browser-rust-toolchain-aux-build-macos-arm64',
+    'brave-browser-rust-toolchain-aux-build-macos-x64',
+    'brave-browser-rust-toolchain-aux-build-windows-x64',
+)
+
+# How often `gen-rust-toolchain --watch` polls Jenkins for pipeline progress.
+WATCH_POLL_INTERVAL_SECONDS = 8
+
+# Maps Pipeline Stage View (`wfapi`) statuses onto the canonical states the
+# watch table tracks. Statuses not listed (e.g. NOT_EXECUTED) leave the state
+# unchanged.
+_WFAPI_STATUS_TO_STATE = {
+    'IN_PROGRESS': 'RUNNING',
+    'PAUSED_PENDING_INPUT': 'RUNNING',
+    'SUCCESS': 'SUCCESS',
+    'FAILED': 'FAILURE',
+    'ABORTED': 'ABORTED',
+    'UNSTABLE': 'UNSTABLE',
+}
+
+# States meaning a pipeline has finished and no longer needs polling.
+_TERMINAL_WATCH_STATES = frozenset(
+    {'SUCCESS', 'FAILURE', 'ABORTED', 'UNSTABLE', 'CANCELLED'})
+
+# Minimalist box for the `--watch` table: column dividers plus a single
+# header rule, no outer frame (paired with `show_edge=False`). Each of the
+# eight lines is four chars -- left edge, cell fill, column divider, right
+# edge -- in the order Rich's `Box` expects (top, head, head-rule, mid, row,
+# foot-rule, foot, bottom). Edge/foot lines are placeholders never drawn once
+# the edge is hidden and the table has no footer.
+_WATCH_TABLE_BOX = Box('    \n'  # top
+                       '  │ \n'  # head
+                       ' ── \n'  # head rule
+                       '  │ \n'  # mid
+                       '  │ \n'  # row
+                       ' ── \n'  # foot rule
+                       '  │ \n'  # foot
+                       '    \n')  # bottom
+
+# Icon + rich style for each watch state, used to render the State column.
+_WATCH_STATE_STYLE = {
+    'QUEUED': ('⏳', 'dim'),
+    'RUNNING': ('🔧', 'cyan'),
+    'SUCCESS': ('✔️', 'green'),
+    'FAILURE': ('🚨', 'bold red'),
+    'ABORTED': ('🛑', 'yellow'),
+    'CANCELLED': ('🚫', 'yellow'),
+    'UNSTABLE': ('⚠️', 'yellow'),
+    'UNKNOWN': ('🤔', 'dim'),
+}
 
 # A decorator to be shown for messages that the user should address before
 # continuing.
@@ -247,10 +384,8 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 - No specific code changes in Brave (only line number changes in patches)
 """
 
-# This is a brockit specific prefix for commit messages, similar to `fixup!`.
-REASSIGN_COMMIT_MSG_PREFIX = 'reassign!'
 
-def _get_current_branch_upstream_name() -> Optional[str]:
+def _get_current_branch_upstream_name() -> str | None:
     """Retrieves the name of the current branch's upstream.
     """
     try:
@@ -289,8 +424,8 @@ def _update_pinslist_timestamp() -> str:
     )
 
     # Write back to the file
-    with open(PINSLIST_TIMESTAMP_FILE, "w", encoding="utf-8") as file:
-        file.write(updated_content)
+    (repository.brave.root / PINSLIST_TIMESTAMP_FILE).write_text(
+        updated_content, encoding='utf-8', newline='')
 
     updated = repository.brave.run_git('diff', PINSLIST_TIMESTAMP_FILE)
     if updated == '':
@@ -312,9 +447,9 @@ def _is_gh_cli_logged_in():
     return False
 
 
-def _get_apply_patches_list():
+def _get_apply_patches_list() -> dict[Repository, list[Patchfile]] | None:
     """Retrieves the list of patches to be applied by running
-    `npm run apply_patches`
+    `npm run apply_patches`, grouped by repository.
     """
 
     try:
@@ -326,7 +461,13 @@ def _get_apply_patches_list():
         match = re.search(r'\[\s*{.*?}\s*\]', e.stdout, re.DOTALL)
         if match is None:
             return None
-        return json.loads(match.group(0))
+        entries = json.loads(match.group(0))
+        patch_paths = [Path(entry['patchPath']) for entry in entries]
+        patch_files: dict[Repository, list[Patchfile]] = {}
+        for patch_path in patch_paths:
+            patchfile = Patchfile(path=patch_path)
+            patch_files.setdefault(patchfile.repository, []).append(patchfile)
+        return patch_files
 
     return None
 
@@ -338,17 +479,29 @@ class ApplyPatchesRecord:
 
     # A dictionary of all patches with attempted `--3way`, grouped by
     # repository.
-    patch_files: dict[Repository, Patchfile] = field(default_factory=dict)
+    patch_files: dict[Repository,
+                      list[Patchfile]] = field(default_factory=dict)
 
     # A list of patches that cannot be applied due to their source file being
     # deleted.
     patches_to_deleted_files: list[Patchfile] = field(default_factory=list)
 
     # A list of files that require manual conflict resolution before continuing.
-    files_with_conflicts: list[str] = field(default_factory=list)
+    files_with_conflicts: list[Path] = field(default_factory=list)
 
     # A list of patches that fail entirely when running apply with `--3way`.
     broken_patches: list[Patchfile] = field(default_factory=list)
+
+    # A list of patches where the apply failure was resolved by plaster.
+    plaster_fixed_patches: list[Path] = field(default_factory=list)
+
+    # A list of patches where the apply failure could not be resolved by
+    # plaster.
+    plaster_broken_patches: list[Patchfile] = field(default_factory=list)
+
+    def all_conflict_resolved_patches(self) -> list[Patchfile]:
+        """Returns a flattened list of all conflict-resolved candidates."""
+        return [p for patches in self.patch_files.values() for p in patches]
 
     def requires_conflict_resolution(self):
         """Checks if there are any patches that require manual conflict
@@ -358,9 +511,34 @@ class ApplyPatchesRecord:
         to address any potential patch changes.
         """
         return (self.files_with_conflicts or self.patches_to_deleted_files
-                or self.broken_patches)
+                or self.broken_patches or self.plaster_broken_patches)
 
-    def stage_all_patches(self, ignore_deleted_files=False):
+    def check_broken_plasters_fixed(self) -> None:
+        """Verifies all previously-broken plasters are now resolved.
+
+        For each entry in plaster_broken_patches:
+        - If the plaster file still exists, runs a dry-run check to confirm
+          the plaster output is up to date.
+        - If the plaster file is gone, verifies the corresponding .patch
+          file has also been removed.
+
+        Raises InvalidInputException if any broken plaster is not yet resolved.
+        """
+        for patchfile in self.plaster_broken_patches:
+            if patchfile.plaster.exists():
+                try:
+                    PlasterFile(patchfile.plaster).apply(dry_run=True)
+                except PlasterFileNeedsRegen as e:
+                    raise InvalidInputException(
+                        'Plaster file has not been fixed and re-applied: '
+                        f'{patchfile.plaster}') from e
+            else:
+                if (repository.brave.root / patchfile.path).exists():
+                    raise InvalidInputException(
+                        'Plaster file was deleted but patch still exists: '
+                        f'{patchfile.path}')
+
+    def stage_all_patches(self):
         """Stages all patches that were applied, so they can be committed as
         conflict-resolved patches.
 
@@ -369,12 +547,12 @@ class ApplyPatchesRecord:
                 If set to True, deleted files will be ignored, and not staged.
         """
         for _, patches in self.patch_files.items():
-            for patch in patches:
-                if (ignore_deleted_files and not Path(patch.path).exists()):
+            for patchfile in patches:
+                if not (repository.brave.root / patchfile.path).exists():
                     # Skip deleted files.
                     continue
 
-                repository.brave.run_git('add', patch.path)
+                repository.brave.run_git('add', patchfile.path)
 
 
 @dataclass(frozen=True)
@@ -399,12 +577,12 @@ class ContinuationFile:
     has_shown_advisory: bool = False
 
     # The continuation data for the patches.
-    apply_record: Optional[ApplyPatchesRecord] = field(default=None)
+    apply_record: ApplyPatchesRecord | None = field(default=None)
 
     @staticmethod
     def load(target_version: Version,
-             working_version: Optional[Version] = None,
-             check: bool = True) -> Optional["ContinuationFile"]:
+             working_version: Version | None = None,
+             check: bool = True) -> ContinuationFile | None:
         """Loads the continuation file.
 
         This function loads the continuation file, and returns the instance of
@@ -427,8 +605,7 @@ class ContinuationFile:
                     f'File {VERSION_UPGRADE_FILE} does not exist')
             return None
 
-        with open(VERSION_UPGRADE_FILE, 'rb') as file:
-            continuation = pickle.load(file)
+        continuation = pickle.loads(VERSION_UPGRADE_FILE.read_bytes())
 
         if (continuation.target_version != target_version
                 or (working_version is not None
@@ -449,8 +626,7 @@ class ContinuationFile:
     def save(self):
         """Saves the continuation file.
         """
-        with open(VERSION_UPGRADE_FILE, 'wb') as file:
-            pickle.dump(self, file)
+        VERSION_UPGRADE_FILE.write_bytes(pickle.dumps(self))
 
     @staticmethod
     def clear():
@@ -484,42 +660,25 @@ class ActionNeededException(Exception):
         super().__init__(message)
         console.log(message)
 
-class Task:
-    """ Base class for all tasks in brockit.
 
-    This class provides a common interface for other tasks to build upon. It
-    provides a run method that will execute the task, and a status_message
-    method that will return a string to be displayed while the task is running.
+# Banners framing every Brockit task run, shared with `run_watching`.
+_BROCKIT_START_BANNER = '[italic]🚀 Brockit!'
+_BROCKIT_END_BANNER = '[bold]💥 Done!'
+
+
+class Task(BaseTask):
+    """Base class for all Brockit tasks.
+
+    Adds the Brockit banners around the generic `terminal.Task` run; the actual
+    behaviour (status spinner, `execute`/`status_message` contract) lives in the
+    base class. Subclasses provide `status_message`.
     """
 
-    def run(self, **kwargs) -> bool:
-        """Runs the task with a status message.
+    # Abstract base: concrete subclasses implement `status_message`.
+    # pylint: disable=abstract-method
 
-        This function will run the task inside the scope of a status message.
-
-        Args:
-            an open set of argument to be passed along to the derived class's
-            execute method.
-
-        Returns:
-            Return 1 if the task failed, 0 if the task succeeded. This is used
-            as the process' exit code.
-        """
-        console.log('[italic]🚀 Brockit!')
-        with terminal.with_status(self.status_message()):
-            # Calling `self.execute` triggers the linter, as there's no
-            # `execute` method in this class. The derived classes are expected
-            # to provide this method.
-            # pylint: disable=no-member
-            self.execute(**kwargs)
-        console.log('[bold]💥 Done!')
-
-    def status_message(self) -> str:
-        """Returns a status message for the task.
-
-        This function has to be implemented by the derived class.
-        """
-        raise NotImplementedError
+    start_banner = _BROCKIT_START_BANNER
+    end_banner = _BROCKIT_END_BANNER
 
 
 class Versioned(Task):
@@ -531,7 +690,7 @@ class Versioned(Task):
 
     def __init__(self,
                  base_version: Version,
-                 target_version: Optional[Version] = None):
+                 target_version: Version | None = None):
         # The version in `package.json` found in that upstream branch.
         self.base_version = base_version
 
@@ -547,6 +706,10 @@ class Versioned(Task):
             raise InvalidInputException(
                 f'Target version {self.target_version} is not higher than base '
                 f'version {self.base_version}.')
+
+    def is_major(self) -> bool:
+        """Returns True if this is a major version upgrade."""
+        return self.target_version.major > self.base_version.major
 
     def _save_updated_patches(self):
         """Creates the updated patches change
@@ -578,16 +741,10 @@ class Versioned(Task):
     all patches that might have been changed or deleted. Untracked patches are
     excluded from addition at this stage.
     """
-        terminal.run([
-            Path('third_party/depot_tools/vpython3'),
-            './tools/crates/run_gnrt.py', 'vendor'
-        ],
-                     cwd=repository.chromium.path)
-        terminal.run([
-            Path('third_party/depot_tools/vpython3'),
-            './tools/crates/run_gnrt.py', 'gen'
-        ],
-                     cwd=repository.chromium.path)
+        terminal.run([VPYTHON3_PATH, './tools/crates/run_gnrt.py', 'vendor'],
+                     cwd=repository.chromium.root)
+        terminal.run([VPYTHON3_PATH, './tools/crates/run_gnrt.py', 'gen'],
+                     cwd=repository.chromium.root)
 
         if dry_run:
             return
@@ -628,6 +785,7 @@ class Regen(Versioned):
 
         self._save_gnrt_rerun(dry_run=dry_run)
 
+
 class GitHubIssue(Versioned):
     """Creates a GitHub issue for the upgrade.
 
@@ -649,7 +807,7 @@ class GitHubIssue(Versioned):
         This title is the same used for the push request.
         """
         title = 'Upgrade from Chromium {previous} to Chromium {to}'
-        if self.target_version.major > self.base_version.major:
+        if self.is_major():
             # For major updates, the issue description doesn't have a precise
             # version number.
             title = title.format(previous=str(self.base_version.major),
@@ -659,7 +817,7 @@ class GitHubIssue(Versioned):
                                  to=str(self.target_version))
         return title
 
-    def lookup_issue(self, title: str) -> Optional[List]:
+    def lookup_issue(self, title: str) -> list | None:
         """Looks up the issue for the upgrade.
 
         This function checks if there's already an issue with the title
@@ -724,14 +882,12 @@ class GitHubIssue(Versioned):
         else:
             cmd += ['--assignee', 'mkarolin', '--assignee', 'samartnik']
 
-        is_major = self.target_version.major > self.base_version.major
-
-        if is_major or upstream_branch == 'master':
+        if self.is_major() or upstream_branch == 'master':
             # It is not common for upstream test to be run on uplifts of minor
             # upgrades.
             cmd += ['--label', '"CI/run-upstream-tests"']
 
-        if is_major:
+        if self.is_major():
             cmd += ['--label', '"CI/storybook-url"']
 
             # Always create PR for major version upgrades as draft
@@ -885,7 +1041,7 @@ class Upgrade(Versioned):
     def __init__(self,
                  target_version: Version,
                  is_continuation: bool,
-                 base_version: Optional[Version] = None):
+                 base_version: Version | None = None):
         if ((base_version is None and not is_continuation)
                 or (base_version is not None and is_continuation)):
             # either it is a new upgrade, and a base version is provided, or it
@@ -932,8 +1088,7 @@ class Upgrade(Versioned):
     def status_message(self):
         return "Upgrading Chromium base version"
 
-    def apply_patches_3way(self,
-                           launch_vscode: bool = False) -> ApplyPatchesRecord:
+    def apply_patches_3way(self) -> ApplyPatchesRecord:
         """Applies patches that have failed using the --3way option to allow for
         manual conflict resolution.
 
@@ -942,68 +1097,55 @@ class Upgrade(Versioned):
         are waiting for conflict resolution.
 
         A list of the patches applied will be produced as well.
-        """
-        # A dictionary that holds a list for all patch files affected, by
-        # repository.
-        patch_files = {}
 
-        # This is a flat of list of patches that cannot be applied due to their
+        When running brockit in a vscode terminal, this method will open any
+        files that need attention in the editor session.
+        """
+        # This is a flat list of patches that cannot be applied due to their
         # source file being deleted.
-        patches_to_deleted_files = []
+        patches_to_deleted_files: list[Patchfile] = []
 
         # A list of files that require manual conflict resolution before
         # continuing.
-        files_with_conflicts = []
+        files_with_conflicts: list[Path] = []
 
         # These are patches that fail entirely when running apply with `--3way`.
-        broken_patches = []
+        broken_patches: list[Patchfile] = []
 
-        if patch_files:
-            raise NotImplementedError(
-                'unreachable: 3way apply should happen only once.')
+        # Patches where the apply failure was resolved by plaster.
+        plaster_fixed_patches: list[Path] = []
 
-        # the raw list of patches that failed to apply.
-        patch_failures = _get_apply_patches_list()
-        if patch_failures is None:
-            raise ValueError(
-                'Apply patches failed to provide a list of patches.')
+        # Patches where the apply failure could not be resolved by plaster.
+        plaster_broken_patches: list[Patchfile] = []
 
-        for entry in patch_failures:
-            patch = Patchfile(path=PurePath(entry['patchPath']),
-                              provided_source=entry.get('path'))
-
-            if entry['reason'] == 'SRC_REMOVED':
-                # Skip patches that can't apply as the source is gone.
-                patches_to_deleted_files.append(patch)
-                continue
-
-            # Grouping patch files by their repositories, so to allow us to
-            # iterate through them, applying them in their repo paths.
-            patch_files.setdefault(patch.repository, []).append(patch)
+        # A list of all patchfiles that failed to apply, grouped by repository.
+        patch_files = _get_apply_patches_list()
+        if patch_files is None:
+            raise ValueError('Apply patches had no failed patches.')
 
         if patch_files:
             terminal.log_task(
                 '[bold]Reapplying patch files with --3way:\n[/]%s' %
-                '\n'.join(f'    * {file}' for file in [
-                    patch.path for patch_list in patch_files.values()
-                    for patch in patch_list
-                ]))
+                '\n'.join(f'    * {patchfile.path}'
+                          f'{" 🩹" if patchfile.has_plaster else ""}'
+                          for patch_list in patch_files.values()
+                          for patchfile in patch_list))
 
-        vscode_args = ['code']
+        vscode_files: list[Path] = []
         for repo, patches in patch_files.items():
-            for patch in patches:
-                apply_result = patch.apply()
-                if apply_result.patch:
-                    # Let's use the updated patchfile instance.
-                    patch = apply_result.patch
+            for patchfile in patches:
+                status: Patchfile.ApplyStatus = patchfile.apply()
 
-                if apply_result.status == Patchfile.ApplyStatus.CONFLICT:
-                    files_with_conflicts.append(
-                        patch.source_from_brave().as_posix())
-                elif apply_result.status == Patchfile.ApplyStatus.BROKEN:
-                    broken_patches.append(patch)
-                elif apply_result.status == Patchfile.ApplyStatus.DELETED:
-                    patches_to_deleted_files.append(patch)
+                if status == Patchfile.ApplyStatus.CONFLICT:
+                    files_with_conflicts.append(patchfile.source_from_brave())
+                elif status == Patchfile.ApplyStatus.BROKEN:
+                    broken_patches.append(patchfile)
+                elif status == Patchfile.ApplyStatus.DELETED:
+                    patches_to_deleted_files.append(patchfile)
+                elif status == Patchfile.ApplyStatus.PLASTER_FIXED:
+                    plaster_fixed_patches.append(patchfile.path)
+                elif status == Patchfile.ApplyStatus.PLASTER_BROKEN:
+                    plaster_broken_patches.append(patchfile)
 
         for repo, patches in patch_files.items():
             # Resetting any staged states from apply patches as that can cause
@@ -1022,37 +1164,39 @@ class Upgrade(Versioned):
             # This set will hold the information about the deleted patches
             # in a way that they can be grouped around the chang that caused
             # their removal.
-            deletion_report = {}
+            deletion_report: dict[str, dict[Patchfile,
+                                            Patchfile.SourceStatus]] = {}
 
-            for patch in patches_to_deleted_files:
-                # Make sure we have an correct file source for the patch.
-                patch = patch.fetch_source_from_git()
+            for patchfile in patches_to_deleted_files:
                 # Finding the culptrit commit hash.
-                commit = patch.get_last_commit_for_source()
+                commit = patchfile.get_last_commit_for_source()
                 deletion_report.setdefault(
                     commit,
-                    {})[patch] = patch.get_source_removal_status(commit)
+                    {})[patchfile] = patchfile.get_source_removal_status(
+                        commit)
 
             for commit, patches in deletion_report.items():
-                for patch, status in patches.items():
+                for patchfile, status in patches.items():
                     if status.status == 'D':
                         console.log(
-                            Padding(f'✘ {patch.source()} [red bold](deleted)',
-                                    (0, 4)))
-                        vscode_args.append(patch.path)
+                            Padding(
+                                f'✘ {patchfile.source} [red bold](deleted)',
+                                (0, 4)))
+                        vscode_files.append(patchfile.path)
                     elif status.status == 'R':
-                        renamed_to = patch.repository.from_brave(
-                        ) / status.renamed_to
+                        renamed_to = Path(patchfile.repository.from_brave() /
+                                          status.renamed_to)
                         console.log(
                             Padding(
-                                f'✘ {patch.source_from_brave()}\n    '
+                                f'✘ {patchfile.source_from_brave()}\n    '
                                 f'([yellow bold]renamed to[/] {renamed_to})',
                                 (0, 4)))
-                        vscode_args += [patch.path, renamed_to]
+                        vscode_files += [patchfile.path, renamed_to]
 
-            # Printing the commmit message for the grouped changes.
-            console.log(
-                Padding(f'{next(iter(patches.items()))[1].commit_details}\n',
+                # Printing the commmit message for the grouped changes.
+                console.log(
+                    Padding(
+                        f'{next(iter(patches.items()))[1].commit_details}\n',
                         (0, 8),
                         style="dim"))
 
@@ -1061,25 +1205,29 @@ class Upgrade(Versioned):
                 '[bold]Broken patches that fail to apply entirely '
                 f'{ACTION_NEEDED_DECORATOR}:[/]')
 
-            for patch in broken_patches:
-                source = patch.source_from_brave()
-                console.log(Padding(f'✘ {patch.path} ➜ {source}', (0, 4)))
-                vscode_args += [patch.path, source]
+            for patchfile in broken_patches:
+                source = patchfile.source_from_brave()
+                console.log(Padding(f'✘ {patchfile.path} ➜ {source}', (0, 4)))
+                vscode_files += [patchfile.path, source]
+
+        if plaster_broken_patches:
+            terminal.log_task('[bold]Plaster failed to fix patches '
+                              f'{ACTION_NEEDED_DECORATOR}:[/]')
+
+            for patchfile in plaster_broken_patches:
+                source = patchfile.source_from_brave()
+                console.log(
+                    Padding(f'✘ {patchfile.plaster} ➜ {source}', (0, 4)))
+                vscode_files += [patchfile.plaster, source]
 
         if files_with_conflicts:
-            vscode_args += files_with_conflicts
+            vscode_files += files_with_conflicts
             file_list = '\n'.join(f'    ✘ {file}'
                                   for file in files_with_conflicts)
             terminal.log_task(f'[bold]Manually resolve conflicts for '
                               f'{ACTION_NEEDED_DECORATOR}:[/]\n{file_list}')
 
-        if launch_vscode and len(vscode_args) > 1:
-            try:
-                terminal.run(vscode_args)
-            except subprocess.CalledProcessError as e:
-                logging.error(
-                    'Failed to launch VSCode with the following args: %s\n%s',
-                    ' '.join(vscode_args), e.stderr)
+        VsCodeIpcConnection().open_file(vscode_files)
 
         # The continuation file is updated at the end of the process, in case
         # the process has to be continued later.
@@ -1087,7 +1235,9 @@ class Upgrade(Versioned):
             patch_files=patch_files,
             patches_to_deleted_files=patches_to_deleted_files,
             files_with_conflicts=files_with_conflicts,
-            broken_patches=broken_patches)
+            broken_patches=broken_patches,
+            plaster_fixed_patches=plaster_fixed_patches,
+            plaster_broken_patches=plaster_broken_patches)
 
         replace(ContinuationFile.load(target_version=self.target_version),
                 apply_record=apply_record).save()
@@ -1104,9 +1254,10 @@ class Upgrade(Versioned):
         package = versioning.load_package_file('HEAD')
         package['config']['projects']['chrome']['tag'] = str(
             self.target_version)
-        with open(versioning.PACKAGE_FILE, "w") as package_file:
-            json.dump(package, package_file, indent=2)
-            package_file.write("\n")
+        with Path(versioning.PACKAGE_FILE).open('w',
+                                                encoding='utf-8',
+                                                newline='') as package_file:
+            package_file.write(json.dumps(package, indent=2) + '\n')
 
         repository.brave.run_git('add', versioning.PACKAGE_FILE)
 
@@ -1117,13 +1268,66 @@ class Upgrade(Versioned):
             f'Update from Chromium {self.base_version} '
             f'to Chromium {self.target_version}.')
 
-    def _save_conflict_resolved_patches(self):
-        repository.brave.git_commit(
-            f'Conflict-resolved patches from Chromium {self.base_version} to '
-            f'Chromium {self.target_version}.')
+    def _commit_pinned_patches_and_fixups(self,
+                                          patch_paths: set[str],
+                                          commit_message: str,
+                                          no_verify: bool = False) -> None:
+        """Commits patch paths, routing dev-cycle patches as fixups.
 
-    def _run_update_patches_with_no_deletions(self):
-        """Runs update_patches and returns if any deleted patches are found.
+        For major version upgrades, inspects each patch's branch history. If
+        the most-recent branch commit touching a patch is not a brockit upgrade
+        commit, the patch is committed as a fixup! for that dev-cycle commit
+        instead. The remaining patches are committed together under
+        commit_message.
+        """
+        if self.is_major():
+            up_to_git_ref = _solve_brave_ref('@previous-major')
+
+            fixup_groups: dict[str, list[str]] = {}
+            for patch_path in patch_paths:
+                commits = repository.brave.run_git('log', '--pretty=%H %s',
+                                                   f'{up_to_git_ref}..HEAD',
+                                                   '--', patch_path)
+
+                for line in commits.splitlines():
+                    commit_hash, subject = line.split(' ', 1)
+                    if not any(
+                            subject.startswith(p)
+                            for p in _UPGRADE_COMMIT_WITH_PATCHES_PREFIXES):
+                        fixup_groups.setdefault(commit_hash,
+                                                []).append(patch_path)
+                        break
+
+            fixup_patches: set[str] = set()
+            for fixup_target, fixup_patch_paths in fixup_groups.items():
+                for patch_path in fixup_patch_paths:
+                    repository.brave.run_git('add', patch_path)
+                    fixup_patches.add(patch_path)
+                repository.brave.git_commit_fixup(fixup_target)
+
+            patch_paths -= fixup_patches
+
+        if patch_paths:
+            repository.brave.run_git('add', *patch_paths)
+            repository.brave.git_commit(commit_message, no_verify=no_verify)
+
+    def _commit_plaster_fixed_patches(self, apply_record: ApplyPatchesRecord):
+        """Commits patches that were fixed by plaster."""
+        patch_paths = {
+            path.as_posix()
+            for path in apply_record.plaster_fixed_patches
+        }
+        # Adding no_verify to avoid issues if someone is using an old version
+        # of the commit-msg hook that has not included this name as an
+        # exception for the branch tag.
+        self._commit_pinned_patches_and_fixups(
+            patch_paths,
+            f'Apply-fixed 🩹 patches from Chromium {self.base_version} '
+            f'to Chromium {self.target_version}.',
+            no_verify=True)
+
+    def _run_update_patches(self) -> GitStatus:
+        """Runs update_patches and returns the resulting GitStatus.
 
         This function is usually preferred, as it checks if any patches are
         deleted after running update_patches. Deleted patches should be
@@ -1131,7 +1335,7 @@ class Upgrade(Versioned):
         anymore.
 
         return:
-          Returns True if no deleted patches are found, and False otherwise.
+          The GitStatus after running update_patches.
         """
         terminal.run_npm_command('update_patches')
 
@@ -1139,17 +1343,19 @@ class Upgrade(Versioned):
         if status.has_deleted_patch_files():
             raise InvalidInputException(
                 'Deleted patches detected. These should be committed as their '
-                'own changes:\n%s' % '\n'.join(status.deleted))
+                'own changes:\n%s' %
+                '\n'.join(status.staged.deleted + status.unstaged.deleted))
         if status.has_untracked_patch_files():
             raise InvalidInputException(
                 'Untracked patch files detected. These should be committed as '
-                'their own changes:\n%s' % '\n'.join(status.untracked))
+                'their own changes:\n%s' % '\n'.join(status.unstaged.added))
         if status.has_staged_files():
             raise InvalidInputException(
-                'Staged files detected after running update_patches. Please make '
-                'sure to commit or unstage any changes, to avoid committing '
-                'changes unintentionally.\n'
-                'Staged files:\n%s' % '\n'.join(status.staged))
+                'Staged files detected after running update_patches. Please '
+                'make sure to commit or unstage any changes, to avoid '
+                'committing changes unintentionally.\n'
+                'Staged files:\n%s' %
+                '\n'.join(status.get_all_staged_entries()))
 
         # The resulting updated patches should not be doing anything beyond
         # what they were doing already, both for "Update patches" and
@@ -1157,12 +1363,13 @@ class Upgrade(Versioned):
         # patches to make sure that the number of hunks in these patch files
         # have not changed, as any significant change to a patchfile should be
         # submitted as its own change, with a culprit for visibility.
+        all_modified = status.staged.modified + status.unstaged.modified
         modified_patches = [
-            path for path in status.modified
+            path for path in all_modified
             if path.startswith('patches/') and path.endswith('.patch')
         ]
         if not modified_patches:
-            return
+            return status
 
         def count_hunks(contents: str) -> int:
             return contents.count('\n@@ -')
@@ -1171,7 +1378,7 @@ class Upgrade(Versioned):
         for patch in modified_patches:
             hunks_before = count_hunks(repository.brave.read_file(patch))
             hunks_after = count_hunks(
-                Path(repository.brave.path / patch).read_text())
+                (repository.brave.root / patch).read_bytes().decode('utf-8'))
             if hunks_before != hunks_after:
                 patches_with_hunk_changes.append(
                     (patch, hunks_before, hunks_after))
@@ -1182,9 +1389,12 @@ class Upgrade(Versioned):
                 for patch, b, a in patches_with_hunk_changes
             ])
             raise InvalidInputException(
-                'The following modified patches have changes in the number of hunks, '
-                'and are expected to be submitted separately as fixes with Chromium culprits:\n'
+                'The following modified patches have changes in the number of '
+                'hunks, and are expected to be submitted separately as fixes '
+                'with Chromium culprits:\n'
                 f'{list_str}')
+
+        return status
 
     def look_for_diffs(self, *files) -> str:
         """Return the diffs for the files provided for this upgrade.
@@ -1199,7 +1409,7 @@ class Upgrade(Versioned):
                            contents: str,
                            lookup: str,
                            added: bool = False,
-                           removed: bool = False) -> Optional[str]:
+                           removed: bool = False) -> str | None:
         """Uses a basic regex to extract the value being assinged into a key.
 
     This function is useful to extract the value of a key from a file contents
@@ -1241,7 +1451,7 @@ class Upgrade(Versioned):
                 return value.strip().lstrip().replace('"', '').replace("'", "")
         return None
 
-    def _check_toolchain(self, file_path: str, key: str) -> Optional[Dict]:
+    def _check_toolchain(self, file_path: str, key: str) -> dict | None:
         """ Helper function to check for toolchain updates.
 
     This helper is used to check for the MacOS SDK, Windows SDK to see if the
@@ -1283,7 +1493,7 @@ class Upgrade(Versioned):
             }
         }
 
-    def _check_win_toolchain(self) -> Optional[Dict]:
+    def _check_win_toolchain(self) -> dict | None:
         """Check for Windows toolchain updates.
 
     This function returns an advisory record if the Windows SDK has been
@@ -1303,7 +1513,7 @@ class Upgrade(Versioned):
                 'build/commands/lib/config.js with correct hashes.')
         return result
 
-    def _check_mac_toolchain(self) -> Optional[Dict]:
+    def _check_mac_toolchain(self) -> dict | None:
         """Check for MacOS toolchain updates.
 
     This function returns an advisory record if the MacoOS SDK has been updated,
@@ -1316,13 +1526,15 @@ class Upgrade(Versioned):
                 'MacOS SDK has been updated. '
                 f'{result["current"]} ➜ {result["target"]}')
             result['advice'] = (
-                'Contact DevOps regarding the new macOS SDK for the hermetic '
-                'toolchain. Update `XCODE_VERSION` and `XCODE_VERSION` values '
-                'in build/mac/download_hermetic_xcode.py for the new download '
-                'URL.')
+                'Contact DevOps to ask for an updated MacOS toolchain node to '
+                'be used to generate a new toolchain, then generate the new '
+                'toolchain in https://ci.brave.com/view/toolchains/. Once the '
+                'new toolchain is generated, call '
+                '`brockit.py update-xcode-toolchain <url>` with the URL in the '
+                '"Download URL:" line printed in CI.')
         return result
 
-    def _check_rust_toolchain(self) -> Optional[Dict]:
+    def _check_rust_toolchain(self) -> dict | None:
         """Check for Rust toolchain updates.
 
     This function checks for any updates to the Rust toolchain, including the
@@ -1373,7 +1585,8 @@ class Upgrade(Versioned):
             'current': get_rust_clang_revision(self.working_version),
             'target': updated_version,
             'description': 'The rust toolchain has been updated.',
-            'advice': 'Run the jobs in https://ci.brave.com/view/rust to generate a new Rust toolchain.',
+            'advice': ('Run the jobs in https://ci.brave.com/view/toolchains/ '
+                       'to generate a new Rust toolchain.'),
             'commit': {
                 'hash': commit_hash,
                 'message': commit_message
@@ -1391,7 +1604,8 @@ class Upgrade(Versioned):
         * The rust toolchain has been updated.
             CL: Roll clang+rust llvmorg-21-init-1655-g7b473dfe-1 : llvmorg-2...
                 https://chromium.googlesource.com/chromium/src/+/f9fada98083846
-            Run the jobs in https://ci.brave.com/view/rust to generate a new...
+            Run the jobs in https://ci.brave.com/view/toolchains/ to generate
+            a new...
 
     Returns:
         True if all checks pass, and False otherwise.
@@ -1436,7 +1650,7 @@ class Upgrade(Versioned):
 
     def _continue(self,
                   no_conflict_continuation: bool = False,
-                  apply_record: Optional[ApplyPatchesRecord] = None):
+                  apply_record: ApplyPatchesRecord | None = None):
         """Continues the upgrade process.
 
     This function is responsible for continuing the upgrade process. It will
@@ -1459,25 +1673,38 @@ class Upgrade(Versioned):
             apply_record = (ContinuationFile.load(
                 self.target_version).apply_record)
 
-        self._run_update_patches_with_no_deletions()
-
-        # There are rare cases where we can end up hitting a continuation where
-        # a patch gets deleted due a cherry-pick finally being made obsolete,
-        # which means no apply records ever occurred, and therefore this value
-        # is None.
         if apply_record:
-            apply_record.stage_all_patches(ignore_deleted_files=True)
-            has_changes = repository.brave.has_staged_changed()
-        else:
-            has_changes = False
+            apply_record.check_broken_plasters_fixed()
 
-        if not has_changes and not no_conflict_continuation:
+        update_status = self._run_update_patches()
+
+        # `apply_records` is not guaranteed to exist for every continuation. In
+        # some cases `_run_update_patches` is reponsible for pausing the lift
+        # process (e.g. cherry-pick shows up in upstream and causes patch
+        # deletions without 3way apply).
+        conflict_resolved_patches = None
+        if apply_record:
+            # A list of all "Conflict-resolved" candidates still waiting to be
+            # committed.
+            conflict_resolved_patches = {
+                patch.path.as_posix()
+                for patch in apply_record.all_conflict_resolved_patches()
+                if patch.path.as_posix() in update_status.unstaged.modified
+            }
+
+        if not conflict_resolved_patches and not no_conflict_continuation:
             raise InvalidInputException(
                 'Nothing has been staged to commit conflict-resolved patches. '
                 '(Did you mean to pass [bold cyan]--no-conflict-change[/]?)')
 
-        if has_changes:
-            self._save_conflict_resolved_patches()
+        if conflict_resolved_patches:
+            # For major upgrades, patches last touched by dev-cycle commits
+            # are routed as fixup! commits to avoid rebase conflicts when
+            # running rebase --squash-minor-bumps.
+            self._commit_pinned_patches_and_fixups(
+                conflict_resolved_patches,
+                f'Conflict-resolved patches from Chromium {self.base_version} '
+                f'to Chromium {self.target_version}.')
 
         self._save_updated_patches()
         # Run init again to make sure nothing is missing after updating
@@ -1491,21 +1718,16 @@ class Upgrade(Versioned):
         # continuation file around.
         ContinuationFile.clear()
 
-    def _start(self, launch_vscode: bool, ack_advisory: bool):
+    def _start(self, ack_advisory: bool):
         """Starts the upgrade process.
 
     This function is responsible for starting the upgrade process. It will
     update the package version, run `npm run init`, and then run
     `npm run update_patches`. If any patches fail to apply, it will run
-    `npm run apply_patches_3way` to allow for manual conflict resolution.
+    `apply_patches_3way` to allow for manual conflict resolution.
 
     For cases where no conflict resolution is required, the process will
     will continue, concluding the whole four steps of the upgrade process.
-
-    Args:
-        launch_vscode:
-            Indicates if the user wants to launch vscode with the patches that
-            require manual conflict resolution.
 
     Return:
         Returns True if the process was successful, and False otherwise.
@@ -1530,6 +1752,17 @@ class Upgrade(Versioned):
             'Changes since base version: %s' %
             self.target_version.get_googlesource_diff_link(self.base_version))
 
+        if self.is_major():
+            # When doing a major lift, the branch name should indicate that
+            # (e.g. `cr149`).
+            expected_branch = f'cr{self.target_version.major}'
+            current_branch = repository.brave.current_branch()
+            if current_branch != expected_branch:
+                raise InvalidInputException(
+                    f'Major version upgrades must be done on a branch named '
+                    f'"{expected_branch}", but the current branch is '
+                    f'"{current_branch}".')
+
         if not ack_advisory and not self._prerun_checks():
             raise ActionNeededException(
                 '👋 (Address advisories and then rerun with '
@@ -1542,7 +1775,7 @@ class Upgrade(Versioned):
 
             # When no conflicts come back, we can proceed with the
             # update_patches.
-            self._run_update_patches_with_no_deletions()
+            self._run_update_patches()
         except subprocess.CalledProcessError as e:
             if ('There were some failures during git reset of specific '
                     'repo paths' in e.stderr):
@@ -1554,8 +1787,9 @@ class Upgrade(Versioned):
             if (e.returncode != 0
                     and 'Exiting as not all patches were successful!'
                     in e.stderr.splitlines()[-1]):
-                apply_record = self.apply_patches_3way(
-                    launch_vscode=launch_vscode)
+                apply_record = self.apply_patches_3way()
+                if apply_record.plaster_fixed_patches:
+                    self._commit_plaster_fixed_patches(apply_record)
                 if apply_record.requires_conflict_resolution():
                     # Manual resolution required.
                     raise ActionNeededException(
@@ -1580,8 +1814,8 @@ class Upgrade(Versioned):
         terminal.run_npm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
-    def execute(self, no_conflict_continuation: bool, launch_vscode: bool,
-                with_github: bool, ack_advisory: bool):
+    def execute(self, no_conflict_continuation: bool, with_github: bool,
+                ack_advisory: bool):
         """Executes the upgrade process.
 
     Keep in this function all code that is common to both start and continue.
@@ -1590,9 +1824,6 @@ class Upgrade(Versioned):
         no_conflict_continuation:
             Indicates that a continuation does not produce a conflict-resolved
             change.
-        launch_vscode:
-            Indicates the user wants to launch vscode with the patches that
-            require manual conflict resolution.
         with_github:
             Indicates the user wants to create or update the github issue for
             the upgrade.
@@ -1643,34 +1874,52 @@ class Upgrade(Versioned):
 
             self._continue(no_conflict_continuation=no_conflict_continuation)
         else:
-            self._start(launch_vscode=launch_vscode, ack_advisory=ack_advisory)
+            self._start(ack_advisory=ack_advisory)
 
         if with_github:
             GitHubIssue(base_version=self.base_version,
                         target_version=self.target_version
                         ).create_or_update_version_issue(with_pr=False)
 
-        self._save_gnrt_rerun()
+        try:
+            terminal.run([VPYTHON3_PATH, plaster.__file__, 'check'])
+        except subprocess.CalledProcessError:
+            terminal.log_task(
+                '[bold]❌[/] Plaster check. Please investigate it.')
+
+        try:
+            self._save_gnrt_rerun()
+        except subprocess.CalledProcessError:
+            terminal.log_task('[bold]❌[/] GNRT rerun. Please investigate it.')
 
 
-def solve_git_ref(from_ref: str) -> str:
+def _solve_brave_ref(from_ref: str | None) -> str:
     """Solves the git reference.
 
     This function is used to resolve the git reference provided by the user.
     This reference can be either a branch name, a commit hash, or a special
-    tag used by brockit to find specific changes.
+    label used by brockit to find specific changes.
 
     Args:
         from_ref:
-            The git reference to resolve.
+            The git reference to resolve. If not provided, it defaults
+            `@upstream`.
 
     Returns:
         The resolved git reference, if the reference is valid, or the
-        reference for the solved special tag:
-        @upstream: The upstream branch of the current branch.
-        @previous: The commit just before the last version bump.
-        @previous-major: The commit just before the last major version bump.
+        reference for the solved special label:
+
+        +-----------------+--------------------------------------------------+
+        | Label           | Description                                      |
+        +-----------------+--------------------------------------------------+
+        | @upstream       | Upstream branch of the current branch            |
+        | @previous       | Commit just before the last version bump         |
+        | @previous-major | Commit just before the last major version bump   |
+        +-----------------+--------------------------------------------------+
     """
+    if not from_ref:
+        from_ref = '@upstream'
+
     if from_ref and from_ref[0] != '@':
         # No special handling needed
         if not repository.brave.is_valid_git_reference(from_ref):
@@ -1728,52 +1977,51 @@ class Rebase(Task):
         return "Rebasing current branch..."
 
     @staticmethod
-    def discard_regen_changes_from_rebase_plan(todo_file: PurePath):
+    def discard_regen_changes_from_rebase_plan(todo_file: Path):
         """Removes regen changes from the rebase plan.
 
     This function removes all lines that contain the string `Update patches`
     or `Updated strings` from the rebase plan file, and saves the changes to
     the file.
         """
-        with open(todo_file, 'r') as file:
-            lines = file.readlines()
-
-        with open(todo_file, 'w') as file:
-            for line in lines:
-                if ('Update patches from Chromium ' not in line
-                        and 'Updated strings for Chromium ' not in line):
-                    file.write(line)
+        lines = todo_file.read_bytes().decode('utf-8').splitlines(
+            keepends=True)
+        todo_file.write_text(
+            ''.join(line for line in lines
+                    if 'Update patches from Chromium ' not in line
+                    and 'Updated strings for Chromium ' not in line),
+            encoding='utf-8',
+            newline='')
 
     @staticmethod
-    def recommit_in_rebase_plan(todo_file: PurePath):
+    def recommit_in_rebase_plan(todo_file: Path):
         """Recommits the first commit in the rebase plan.
 
     This function replaces the first `pick` in the rebase plan with `edit`,
     which forces the first commit to be recommitted.
         """
-        with open(todo_file, 'r') as file:
-            contents = file.read()
-
-        with open(todo_file, 'w') as file:
-            contents = contents.replace('pick', 'edit', 1)
-            file.write(contents)
+        contents = todo_file.read_bytes().decode('utf-8')
+        todo_file.write_text(contents.replace('pick', 'edit', 1),
+                             encoding='utf-8',
+                             newline='')
 
     @staticmethod
-    def squash_minor_bumps_from_rebase_plan(todo_file: PurePath):
+    def squash_minor_bumps_from_rebase_plan(todo_file: Path):
         """Squashes minor bumps from the rebase plan.
 
     This function groups all commmit lines that start with "Update from
     Chromium" into a single commit on top, and does the same for commits
     that start with "Conflict-resolved patches from Chromium"
     """
-        with open(todo_file, 'r') as file:
-            lines = file.readlines()
+        lines = todo_file.read_bytes().decode('utf-8').splitlines(
+            keepends=True)
 
         version = []
         conflict = []
         gnrt = []
         iwyu = []
         others = []
+        plaster_reruns = []
         reassign = []
         for line in lines:
             # Empty lines and comment lines are not interesting when doing the
@@ -1802,6 +2050,9 @@ class Rebase(Task):
             if comment.startswith('Update from Chromium '):
                 version.append(
                     line if not version else line.replace('pick', 'squash'))
+            elif comment.startswith('Apply-fixed 🩹 patches from Chromium '):
+                plaster_reruns.append(line if not plaster_reruns else line.
+                                      replace('pick', 'squash'))
             elif comment.startswith(
                     'Conflict-resolved patches from Chromium '):
                 conflict.append(
@@ -1818,7 +2069,8 @@ class Rebase(Task):
                 others.append(line)
 
         # Merging all categories in the desired order.
-        new_todo_file = version + conflict + gnrt + iwyu + others
+        new_todo_file = (version + plaster_reruns + conflict + gnrt + iwyu +
+                         others)
 
         # Looking for every occurrence of lines starting with `reassign! `,
         # taking the commit message after it, and looking for the the first
@@ -1870,12 +2122,12 @@ class Rebase(Task):
                               1] = new_todo_file[target_index + 1].replace(
                                   'pick', 'squash', 1)
 
-        with open(todo_file, 'w') as file:
-            file.writelines(new_todo_file)
-
+        todo_file.write_text(''.join(new_todo_file),
+                             encoding='utf-8',
+                             newline='')
 
     @staticmethod
-    def fix_squash_commit_messages(todo_file: PurePath):
+    def fix_squash_commit_messages(todo_file: Path):
         """Fixes the commit messages during rebase squash.
 
     This function handles rebase squashes to correct the commit messages. It
@@ -1888,8 +2140,8 @@ class Rebase(Task):
     For minor bumps, it keeps the message of the last minor bump, which is the
     one that should be retained.
         """
-        with open(todo_file, 'r') as file:
-            lines = file.readlines()
+        lines = todo_file.read_bytes().decode('utf-8').splitlines(
+            keepends=True)
 
         # Filter out empty lines and comments once to make searching easier
         # We keep the original index to reference back to 'lines' if needed
@@ -1915,12 +2167,17 @@ class Rebase(Task):
             _, last_line = valid_entries[-1]
             content_to_write = [last_line]
 
-        with open(todo_file, 'w') as file:
-            file.writelines(content_to_write)
+        todo_file.write_text(''.join(content_to_write),
+                             encoding='utf-8',
+                             newline='')
 
-    def execute(self, from_ref: Optional[str], to_ref: Optional[str],
-                recommit: bool, discard_regen_changes: bool,
-                squash_minor_bumps: bool) -> bool:
+    def execute(self,
+                from_ref: str | None,
+                to_ref: str | None,
+                recommit: bool,
+                discard_regen_changes: bool,
+                squash_minor_bumps: bool,
+                v2: bool = False) -> bool:
         """Rebases the current branch onto the provided ref.
 
     This function rebases the current branch onto the provided branch. It is
@@ -1946,23 +2203,20 @@ class Rebase(Task):
     Returns:
         True if the rebase was successful, and False otherwise.
         """
-        if to_ref is None:
-            to_ref = '@upstream'
-
-        to_ref = solve_git_ref(to_ref)
+        to_ref = _solve_brave_ref(to_ref)
 
         if from_ref is None:
             if Version.from_git(to_ref).major != Version.from_git(
                     'HEAD').major:
                 # If the major version is different, we default to the
                 # previous major version.
-                from_ref = solve_git_ref(from_ref or '@previous-major')
+                from_ref = _solve_brave_ref(from_ref or '@previous-major')
             else:
                 # If the major version is the same, we default to the
                 # previous version.
-                from_ref = solve_git_ref(from_ref or '@previous')
+                from_ref = _solve_brave_ref(from_ref or '@previous')
 
-        from_ref = solve_git_ref(from_ref)
+        from_ref = _solve_brave_ref(from_ref)
 
         current_branch = repository.brave.current_branch()
         terminal.log_task(
@@ -1973,19 +2227,44 @@ class Rebase(Task):
         # if that's desired. That's done by calling this script again with
         # special internal flags.
         env = os.environ.copy()
-        editor = [sys.executable, __file__]
+        # Capture the user's preferred editors BEFORE we override
+        # `GIT_SEQUENCE_EDITOR` / `GIT_EDITOR` below -- v2's editor
+        # fallback flows through `--internal-rebase-crash-*-editor` and
+        # needs to know what the user originally configured.
+        crash_seq_editor = rebase_v2.get_git_editor('GIT_SEQUENCE_EDITOR')
+        crash_msg_editor = rebase_v2.get_git_editor()
+        editor = [str(VPYTHON3_PATH), __file__]
+        # v2 plan-rewriting flags share the `--internal-rebase-v2-plan-`
+        # prefix so the dispatch can detect them with one check and
+        # consolidate both into a single `rewrite_plan` call.
+        discard_flag = ('--internal-rebase-v2-plan-discard-recyclable'
+                        if v2 else '--internal-rebase-remove-regen-changes')
+        squash_plan_flag = ('--internal-rebase-v2-plan-squash-pinned'
+                            if v2 else '--internal-rebase-squash-minor-bumps')
+        squash_msg_flag = ('--internal-rebase-v2-fix-message' if v2 else
+                           '--internal-rebase-squash-commit-message')
         if discard_regen_changes:
-            editor.append('--internal-rebase-remove-regen-changes')
+            editor.append(discard_flag)
         if recommit:
             editor.append('--internal-rebase-recommit')
         if squash_minor_bumps:
-            editor.append('--internal-rebase-squash-minor-bumps')
+            editor.append(squash_plan_flag)
 
             # Squashes will cause `GIT_EDITOR` also to open for the commit
             # message, so we need to handle those too.
-            env["GIT_EDITOR"] = (
-                f'{sys.executable} '
-                f'{__file__} --internal-rebase-squash-commit-message')
+            msg_editor_cmd = (
+                f'{str(VPYTHON3_PATH)} {__file__} {squash_msg_flag}')
+            if v2:
+                msg_editor_cmd += (
+                    f' --internal-rebase-crash-msg-editor={crash_msg_editor}')
+            env["GIT_EDITOR"] = msg_editor_cmd
+
+        if v2 and len(editor) > 2:
+            # Pass the captured sequence-editor fallback alongside the
+            # v2 plan flags so the subprocess can hand off to it when
+            # `EditorRecoverableFailure` fires.
+            editor.append(
+                f'--internal-rebase-crash-sequence-editor={crash_seq_editor}')
 
         if len(editor) > 2:
             env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
@@ -1996,16 +2275,19 @@ class Rebase(Task):
             ) == 'Windows' else 'true'
 
         try:
+            # `interactive=True` as we may need to open an editor if
+            # `EditorRecoverableFailure` is raised, so we can capture the pipes.
             terminal.run([
                 'git', 'rebase', '--interactive', '--autosquash',
                 '--empty=drop', '--onto', to_ref, from_ref, current_branch
             ],
-                         env=env)
+                         env=env,
+                         interactive=True)
             if recommit:
                 repository.brave.run_git('commit', '--amend', '--no-edit')
                 repository.brave.run_git('rebase', '--continue')
         except subprocess.CalledProcessError as e:
-            raise InvalidInputException(f'Rebase failed. {e.stderr}') from e
+            raise InvalidInputException('Rebase failed.') from e
 
 
 class Reassign(Task):
@@ -2015,7 +2297,7 @@ class Reassign(Task):
     reassigned to a different author. This class is responsible for creating an
     empty commit whose author is the person calling this command. This commit is
     similar to a `fixup!` commit, being called `reassign!`, followed by the
-    short hash for the change being reassinged. This change is then picked up
+    short hash for the change being reassigned. This change is then picked up
     by the brockit's `rebase` command, and squashed as the base commit for the
     original change, resulting in a change of authorship.
     """
@@ -2036,6 +2318,13 @@ class Reassign(Task):
             any valid git reference that resolves to a single commit.
         """
 
+        status = GitStatus()
+        if status.has_staged_files():
+            raise InvalidInputException(
+                'Staged files detected. Please commit or unstage changes '
+                'before reassigning:\n%s' %
+                '\n'.join(status.get_all_staged_entries()))
+
         commit, message = repository.brave.run_git('log', '-1', change, '-s',
                                                    '--format=%h %s').split(
                                                        ' ', 1)
@@ -2044,37 +2333,655 @@ class Reassign(Task):
             allows_empty=True,
             no_verify=True)
 
-def fetch_chromium_dash_version(channel: str, target_platform: str) -> Version:
-    """Fetches the latest version from the Chromium Dash.
+
+class UpdateXcodeToolchain(Task):
+    """Pins `build/mac/download_hermetic_xcode.py` to a freshly built archive.
+
+    This is a convenience command to update the URL for downloading the hermetic
+    Xcode toolchain.
     """
-    response = requests.get(CHROMIUMDASH_LATEST_RELEASE.format(
-        channel=channel, platform=target_platform),
-                            timeout=10)
-    return Version(response.json()[0].get('version'))
+
+    # Filename pattern emitted by tools/cr/toolchains/build_xcode_toolchain.py.
+    # The six dash-separated tokens map 1:1 onto the six constants in
+    # `HERMETIC_XCODE_SCRIPT`.
+    _TOOLCHAIN_URL_RE = re.compile(
+        r'xcode-hermetic-toolchain'
+        r'-(?P<xcode_version>[^-/]+)'
+        r'-(?P<xcode_build_version>[^-/]+)'
+        r'-(?P<mac_sdk_official_version>[^-/]+)'
+        r'-(?P<mac_sdk_official_build_version>[^-/]+)'
+        r'-for-upstream'
+        r'-(?P<mac_sdk_upstream_version>[^-/]+)'
+        r'-(?P<mac_sdk_upstream_build_version>[^-/]+)'
+        r'\.tar\.gz')
+
+    def status_message(self):
+        return "Updating Apple toolchain..."
+
+    @staticmethod
+    def _replace_constant(text: str, name: str, value: str) -> str:
+        """Rewrites a single `<name> = '<value>'` assignment in *text*.
+
+        Anchored at line start and matches both single- and double-quoted
+        existing values so it stays robust if the script ever switches quote
+        style.
+        """
+        pattern = re.compile(rf"^({re.escape(name)}\s*=\s*)(['\"])[^'\"]*\2",
+                             re.MULTILINE)
+        new_text, count = pattern.subn(rf"\1'{value}'", text, count=1)
+        if count != 1:
+            raise InvalidInputException(
+                f'Could not find assignment for {name} in '
+                f'{HERMETIC_XCODE_SCRIPT}')
+        return new_text
+
+    def _rewrite_hermetic_xcode_script(self, tokens: dict[str, str]) -> bool:
+        """Pins the six toolchain constants to the values parsed from the URL.
+
+        Returns True if the on-disk file actually changed, False when every
+        constant was already set to the requested value (so the caller can
+        skip committing).
+        """
+        script_path = repository.brave.root / HERMETIC_XCODE_SCRIPT
+        original = script_path.read_bytes().decode('utf-8')
+        updated = original
+        mapping = (
+            ('XCODE_VERSION', tokens['xcode_version']),
+            ('XCODE_BUILD_VERSION', tokens['xcode_build_version']),
+            ('MAC_SDK_OFFICIAL_VERSION', tokens['mac_sdk_official_version']),
+            ('MAC_SDK_OFFICIAL_BUILD_VERSION',
+             tokens['mac_sdk_official_build_version']),
+            ('MAC_SDK_UPSTREAM_VERSION', tokens['mac_sdk_upstream_version']),
+            ('MAC_SDK_UPSTREAM_BUILD_VERSION',
+             tokens['mac_sdk_upstream_build_version']),
+        )
+        for name, value in mapping:
+            updated = self._replace_constant(updated, name, value)
+
+        if updated == original:
+            return False
+
+        script_path.write_text(updated, encoding='utf-8', newline='')
+        return True
+
+    def _resolve_chromium_commit(self, tokens: dict[str, str]) -> str:
+        """Finds the Chromium commit that pinned the upstream macOS SDK.
+
+        We attempt to find the last commit that introduced one of the values
+        indicated as the upstream toolchain numbers.
+        """
+        version = re.escape(tokens['mac_sdk_upstream_version'])
+        build = re.escape(tokens['mac_sdk_upstream_build_version'])
+        regex = (f'mac_sdk_official_version = "{version}"'
+                 f'|mac_sdk_official_build_version = "{build}"')
+        commit_hash = repository.chromium.run_git('log', '--extended-regexp',
+                                                  '-G', regex, '--pretty=%H',
+                                                  '-1', '--',
+                                                  CHROMIUM_MAC_SDK_GNI)
+        if not commit_hash:
+            raise InvalidInputException(
+                f'Could not find a Chromium commit setting '
+                '`mac_sdk_official_version = '
+                f'"{tokens["mac_sdk_upstream_version"]}"` '
+                'or '
+                '`mac_sdk_official_build_version = '
+                f'"{tokens["mac_sdk_upstream_build_version"]}"` '
+                f'in {CHROMIUM_MAC_SDK_GNI}. Pass [bold cyan]--culprit[/] to '
+                'point at it explicitly.')
+        return commit_hash
+
+    def execute(self, url: str, culprit: str | None):
+        # Regex breaking each part of the url in different groups.
+        status = GitStatus()
+        if status.has_staged_files():
+            raise InvalidInputException(
+                'Staged files detected. Please commit or unstage changes '
+                'before generating a toolchain update:\n%s' %
+                '\n'.join(status.get_all_staged_entries()))
+
+        match = self._TOOLCHAIN_URL_RE.search(url)
+        if match is None:
+            raise InvalidInputException(
+                f'URL does not match the xcode-hermetic-toolchain pattern: '
+                f'{url}')
+        tokens = match.groupdict()
+
+        if not self._rewrite_hermetic_xcode_script(tokens):
+            raise InvalidInputException(
+                f'{HERMETIC_XCODE_SCRIPT} is already pinned to these values; '
+                'nothing to commit.')
+
+        commit_hash = culprit or self._resolve_chromium_commit(tokens)
+
+        title = (f'Switch to Xcode {tokens["xcode_version"]} '
+                 f'{tokens["xcode_build_version"]}')
+        repository.brave.run_git('add', HERMETIC_XCODE_SCRIPT)
+        repository.brave.git_commit(title,
+                                    env={
+                                        **os.environ,
+                                        'tags': 'toolchain',
+                                        'culprit': commit_hash,
+                                    })
 
 
-def fetch_lastest_canary_version(channel) -> Version:
-    """Fetches the latest canary version from the Chromium Dash.
+@dataclass
+class _WatchedJob:
+    """Mutable per-pipeline state tracked while `--watch` polls Jenkins."""
+
+    # The Jenkins job name.
+    job: str
+
+    # The transient queue-item URL from the trigger's `Location` header.
+    queue_url: str
+
+    # The build URL, resolved once an executor dequeues the job.
+    build_url: str | None = None
+
+    # Canonical state: QUEUED / RUNNING / SUCCESS / FAILURE / ABORTED /
+    # UNSTABLE / CANCELLED / UNKNOWN.
+    state: str = 'QUEUED'
+
+    # Human-readable current stage (or the queue reason while QUEUED).
+    stage: str = ''
+
+    # Pre-formatted elapsed build time (e.g. "12m04s"), as of the last poll.
+    # Used as-is for non-running rows; RUNNING rows tick forward from the two
+    # fields below instead (see `_ElapsedClock`).
+    elapsed: str = ''
+
+    # The raw server-reported build duration (ms) at the last poll, and the
+    # monotonic clock read at that same instant. Together they anchor a
+    # RUNNING row's locally-ticking elapsed counter. Both None until a build
+    # is resolved.
+    duration_millis: int | None = None
+    elapsed_anchor: float | None = None
+
+    # The pipeline's configured `display-name`, resolved once when watching
+    # starts. None until resolved, or when the pipeline sets no display name.
+    display_name: str | None = None
+
+    @property
+    def bot(self) -> str:
+        """Label for the table's Bot column.
+
+        The pipeline's configured `display-name` when it has one, otherwise
+        its Jenkins job name.
+        """
+        return self.display_name or self.job
+
+    @property
+    def is_terminal(self) -> bool:
+        """Whether the pipeline has finished and no longer needs polling."""
+        return self.state in _TERMINAL_WATCH_STATES
+
+    def link(self, base_url: str) -> str:
+        """The best link available: the build URL, else the job page."""
+        return self.build_url or f'{base_url}/job/{self.job}/'
+
+
+class _ElapsedClock:
+    """Renderable that advances a RUNNING job's elapsed time between polls.
+
+    Rich re-renders the `Live` tree on every refresh -- the same mechanism
+    that animates the RUNNING spinner -- so recomputing the value here lets
+    the counter tick smoothly at the Live refresh rate instead of jumping once
+    per poll. `base_millis` is the duration the server reported at the last
+    poll and `anchor` is the monotonic clock read at that same instant; the
+    rendered value is `base + (now - anchor)`. Every poll re-anchors both, so
+    the local ticking stays corrected by the authoritative server value and
+    settles on it once the build leaves RUNNING.
     """
+
+    def __init__(self, base_millis: int, anchor: float) -> None:
+        self._base_millis = base_millis
+        self._anchor = anchor
+
+    def __rich__(self) -> Text:
+        elapsed_millis = (self._base_millis +
+                          (time.monotonic() - self._anchor) * 1000)
+        return Text(GenRustToolchain._format_duration(elapsed_millis),
+                    justify='right')
+
+
+class GenRustToolchain(Task):
+    """Triggers the Rust/WASM toolchain Jenkins pipelines for a Chromium tag.
+
+    There is one pipeline per platform (see `RUST_TOOLCHAIN_JOBS`), and each
+    takes a single `CHROMIUM_TAG` build parameter. This task resolves the
+    requested version (accepting the same labels as `lift --to`, e.g.
+    `@latest-canary`), reads the Jenkins credentials from `~/.jenkins.json`,
+    and kicks off a parameterized build for every pipeline.
+
+    The expected `~/.jenkins.json` schema is:
+
+        {
+          "url": "https://ci.brave.com",
+          "username": "<ldap-user>",
+          "token": "<jenkins-api-token>"
+        }
+    """
+
+    def status_message(self):
+        return "Triggering Rust toolchain builds..."
+
+    def run_watching(self, tag: str) -> None:
+        """Entry point for `--watch` that bypasses `Task.run`.
+
+        The watch table is a `rich.live.Live` display, and rich permits only
+        one live display at a time. `Task.run` wraps `execute` in the shared
+        status spinner -- itself a live display -- so the watch flow cannot go
+        through it. This mirrors `run`'s banner framing but drives `execute`
+        directly, without the spinner.
+        """
+        console.log(self.start_banner)
+        self.execute(tag=tag, watch=True)
+        console.log(self.end_banner)
+
+    @staticmethod
+    def _load_jenkins_config() -> tuple[str, str, str]:
+        """Reads the Jenkins base URL and credentials from `~/.jenkins.json`.
+
+        Returns:
+            A `(base_url, username, token)` tuple, with any trailing slash
+            stripped from the base URL.
+        """
+        if not JENKINS_CONFIG_FILE.is_file():
+            raise InvalidInputException(
+                f'Jenkins config not found at {JENKINS_CONFIG_FILE}. Create it '
+                'with [bold cyan]url[/], [bold cyan]username[/], and '
+                '[bold cyan]token[/] fields.')
+
+        try:
+            config = json.loads(
+                JENKINS_CONFIG_FILE.read_bytes().decode('utf-8'))
+        except json.JSONDecodeError as e:
+            raise InvalidInputException(
+                f'Failed to parse {JENKINS_CONFIG_FILE}: {e}') from e
+
+        missing = [
+            key for key in ('url', 'username', 'token') if not config.get(key)
+        ]
+        if missing:
+            raise InvalidInputException(
+                f'{JENKINS_CONFIG_FILE} is missing required field(s): '
+                f'{", ".join(missing)}.')
+
+        return config['url'].rstrip('/'), config['username'], config['token']
+
+    @staticmethod
+    def _get_crumb(session: requests.Session, base_url: str) -> dict[str, str]:
+        """Fetches a Jenkins CSRF crumb as a ready-to-merge header dict.
+
+        Returns an empty dict when the crumb issuer is unavailable. API-token
+        auth is usually crumb-exempt, so a missing issuer is treated as "no
+        crumb needed" rather than a hard failure.
+        """
+        try:
+            response = session.get(f'{base_url}/crumbIssuer/api/json',
+                                   timeout=15)
+            response.raise_for_status()
+            data = response.json()
+            return {data['crumbRequestField']: data['crumb']}
+        except (requests.RequestException, KeyError, ValueError):
+            return {}
+
+    def execute(self, tag: str, watch: bool = False):
+        # Resolve the version first so a bad tag/label fails before we touch
+        # any Jenkins state.
+        version = _fetch_chromium_tag(tag)
+
+        base_url, username, token = self._load_jenkins_config()
+
+        session = requests.Session()
+        session.auth = (username, token)
+        crumb = self._get_crumb(session, base_url)
+
+        terminal.log_task(
+            f'Triggering Rust toolchain pipelines for Chromium {version}:')
+
+        watched: list[_WatchedJob] = []
+        failures: list[str] = []
+        for job in RUST_TOOLCHAIN_JOBS:
+            try:
+                response = session.post(
+                    f'{base_url}/job/{job}/buildWithParameters',
+                    params={'CHROMIUM_TAG': str(version)},
+                    headers=crumb,
+                    timeout=30)
+                response.raise_for_status()
+            except requests.RequestException as e:
+                failures.append(job)
+                console.log(Padding(f'✘ {job}: {e}', (0, 4)))
+                continue
+
+            # Jenkins' 201 Location header points at the transient queue item,
+            # not the build: the build number isn't assigned until an executor
+            # picks the job up, and the queue URL only serves JSON.
+            queue_url = response.headers.get('Location', '')
+            watched.append(_WatchedJob(job=job, queue_url=queue_url))
+            if not watch:
+                # Link the job page, which always resolves and surfaces the
+                # queued/running build.
+                terminal.log_task(f'[bold]✔️ [/]{job} ➜ {base_url}/job/{job}/')
+
+        if failures:
+            raise BadOutcomeException(
+                'Failed to trigger the following Rust toolchain pipelines:\n%s'
+                % '\n'.join(f'    * {job}' for job in failures))
+
+        if watch:
+            self._watch(session, base_url, version, watched)
+
+    @staticmethod
+    def _get_json(session: requests.Session, url: str) -> dict | None:
+        """GETs `url` and returns the parsed JSON, or None on any failure."""
+        try:
+            response = session.get(url, timeout=15)
+            response.raise_for_status()
+            return response.json()
+        except (requests.RequestException, ValueError):
+            return None
+
+    def _resolve_display_name(self, session: requests.Session, base_url: str,
+                              job: _WatchedJob) -> None:
+        """Records a pipeline's `display-name` for the Bot column, if set.
+
+        Jenkins returns the job name as `displayName` when no display name is
+        configured, so a value equal to the job name is treated as "unset" and
+        left as None -- `_WatchedJob.bot` then falls back to the job name.
+        """
+        info = self._get_json(
+            session,
+            f'{base_url}/job/{job.job}/api/json?tree=displayName,name')
+        if info is None:
+            return
+        display_name = info.get('displayName')
+        if display_name and display_name != info.get('name'):
+            job.display_name = display_name
+
+    @staticmethod
+    def _format_duration(millis) -> str:
+        """Formats a Jenkins millisecond duration as e.g. "12m04s"."""
+        if not millis:
+            return ''
+        total_seconds = int(millis) // 1000
+        minutes, seconds = divmod(total_seconds, 60)
+        if minutes:
+            return f'{minutes}m{seconds:02d}s'
+        return f'{seconds}s'
+
+    def _poll_job(self, session: requests.Session, job: _WatchedJob) -> None:
+        """Refreshes one pipeline's state in place.
+
+        Resolves the queue item to a build the first time an executor picks it
+        up, then tracks the running build's stage and result via the Pipeline
+        Stage View API (falling back to the plain build API).
+        """
+        if job.is_terminal:
+            return
+
+        if job.build_url is None:
+            if not job.queue_url:
+                job.state = 'UNKNOWN'
+                job.stage = 'no queue item returned'
+                return
+            item = self._get_json(session, f'{job.queue_url}api/json')
+            if item is None:
+                return  # Transient; retry on the next poll.
+            if item.get('cancelled'):
+                job.state = 'CANCELLED'
+                job.stage = 'queue item cancelled'
+                return
+            executable = item.get('executable')
+            if not executable:
+                # Still queued; surface Jenkins' reason (e.g. "Waiting for
+                # next available executor").
+                job.state = 'QUEUED'
+                job.stage = (item.get('why') or 'waiting').strip()
+                return
+            job.build_url = executable.get('url') or ''
+            job.state = 'RUNNING'
+
+        self._refresh_build_state(session, job)
+
+    def _record_elapsed(self, job: _WatchedJob, millis) -> None:
+        """Anchors a job's elapsed time to the latest server-reported duration.
+
+        Stores the raw duration and a monotonic timestamp so a RUNNING row can
+        tick forward between polls (see `_ElapsedClock`), and keeps the
+        formatted string used to render every non-running row.
+        """
+        job.duration_millis = int(millis) if millis else None
+        job.elapsed_anchor = time.monotonic()
+        job.elapsed = self._format_duration(millis)
+
+    def _refresh_build_state(self, session: requests.Session,
+                             job: _WatchedJob) -> None:
+        """Updates state/stage/elapsed for a job that already has a build."""
+        describe = self._get_json(session, f'{job.build_url}wfapi/describe')
+        if describe is not None:
+            job.state = _WFAPI_STATUS_TO_STATE.get(describe.get('status', ''),
+                                                   job.state)
+            self._record_elapsed(job, describe.get('durationMillis'))
+            stages = describe.get('stages') or []
+            running = [s for s in stages if s.get('status') == 'IN_PROGRESS']
+            if running:
+                # The deepest reported in-progress stage is the most specific.
+                job.stage = running[-1].get('name', '')
+            elif job.is_terminal:
+                job.stage = '(done)'
+            elif stages:
+                job.stage = stages[-1].get('name', '')
+            return
+
+        # Fallback for jobs without the Stage View plugin: the plain build API
+        # gives building/result but no per-stage detail.
+        info = self._get_json(session, f'{job.build_url}api/json')
+        if info is None:
+            return
+        self._record_elapsed(job, info.get('duration'))
+        if info.get('building'):
+            job.state = 'RUNNING'
+            job.stage = 'building'
+        else:
+            job.state = info.get('result') or 'UNKNOWN'
+            job.stage = '(done)'
+
+    @staticmethod
+    def _state_cell(state: str) -> str | Spinner:
+        """Renders the State column.
+
+        RUNNING gets an animated throbber (the `Live` display drives the
+        animation); every other state is a static icon + label.
+        """
+        if state == 'RUNNING':
+            return Spinner('dots', text='RUNNING', style='cyan')
+        icon, style = _WATCH_STATE_STYLE.get(state, ('?', 'dim'))
+        return f'[{style}]{icon} {state}[/]'
+
+    @staticmethod
+    def _elapsed_cell(job: _WatchedJob) -> str | _ElapsedClock:
+        """Renders the Elapsed column.
+
+        A RUNNING build with a resolved duration ticks forward between polls
+        via `_ElapsedClock`; every other state shows the static,
+        server-accurate value captured at the last poll.
+        """
+        if (job.state == 'RUNNING' and job.duration_millis is not None
+                and job.elapsed_anchor is not None):
+            return _ElapsedClock(job.duration_millis, job.elapsed_anchor)
+        return job.elapsed or '—'
+
+    @staticmethod
+    def _link_cell(url: str) -> Text:
+        """Renders a URL as a styled, clickable hyperlink for the Build column.
+
+        Table cells skip the `ReprHighlighter` that `console.log`/`print` run
+        over their output, so a bare URL string renders as plain text. Wrapping
+        it in a `Text` with a `link` style emits the OSC 8 hyperlink escape
+        (clickable in capable terminals) and the blue underline mirrors the
+        look Rich gives auto-detected URLs elsewhere in brockit.
+        """
+        return Text(url, style=f'underline blue link {url}')
+
+    @staticmethod
+    def _dim_cell(renderable: str | Text, dim: bool) -> str | Text:
+        """Dims a non-state cell for finished, non-successful rows.
+
+        Returns the renderable untouched when `dim` is False. Otherwise wraps
+        it in Rich's `dim` style (preserving any existing style, such as the
+        Build column's hyperlink) so the whole row reads as muted -- except the
+        State cell, which the caller leaves coloured so the outcome stands out.
+        """
+        if not dim:
+            return renderable
+        text = renderable if isinstance(renderable, Text) else Text(
+            str(renderable))
+        text.stylize('dim')
+        return text
+
+    def _render_table(self, version: Version, base_url: str,
+                      jobs: list[_WatchedJob]) -> Table:
+        """Builds the per-pipeline progress table rendered in place by Live."""
+        table = Table(title=f'Rust toolchain · Chromium {version}',
+                      title_justify='left',
+                      box=_WATCH_TABLE_BOX,
+                      show_edge=False,
+                      expand=True)
+        table.add_column('Bot', no_wrap=True)
+        table.add_column('State', no_wrap=True)
+        table.add_column('Stage', no_wrap=True)
+        table.add_column('Elapsed', justify='right', no_wrap=True)
+        table.add_column('Build', overflow='fold')
+        for job in jobs:
+            # A job that has finished as anything other than SUCCESS is dimmed
+            # across the row, except its State cell, which keeps its colour so
+            # the failure still stands out.
+            dim = job.is_terminal and job.state != 'SUCCESS'
+            table.add_row(
+                self._dim_cell(job.bot, dim), self._state_cell(job.state),
+                self._dim_cell(job.stage or '—', dim),
+                self._dim_cell(self._elapsed_cell(job), dim),
+                self._dim_cell(self._link_cell(job.link(base_url)), dim))
+        return table
+
+    def _watch(self, session: requests.Session, base_url: str,
+               version: Version, jobs: list[_WatchedJob]) -> None:
+        """Polls the triggered pipelines, updating an in-place table until all
+        finish or the user interrupts with Ctrl+C (which detaches and leaves
+        the builds running).
+        """
+        terminal.log_task('Watching pipelines — press [bold cyan]Ctrl+C[/] to '
+                          'stop watching (builds keep running).')
+        # Resolve each pipeline's display name once up front so the Bot column
+        # shows it from the very first render.
+        for job in jobs:
+            self._resolve_display_name(session, base_url, job)
+        try:
+            # The throbber on RUNNING rows animates off the Live's own refresh
+            # (~12.5fps matches the `dots` spinner cadence); the data itself is
+            # only re-polled every WATCH_POLL_INTERVAL_SECONDS.
+            with Live(self._render_table(version, base_url, jobs),
+                      console=console,
+                      refresh_per_second=12.5) as live:
+                while True:
+                    for job in jobs:
+                        self._poll_job(session, job)
+                    live.update(self._render_table(version, base_url, jobs))
+                    if all(job.is_terminal for job in jobs):
+                        break
+                    time.sleep(WATCH_POLL_INTERVAL_SECONDS)
+        except KeyboardInterrupt:
+            # Detach cleanly: the builds keep running on CI.
+            console.log('[yellow]Stopped watching. Builds continue on CI:[/]')
+            for job in jobs:
+                console.log(Padding(f'{job.bot}: {job.link(base_url)}',
+                                    (0, 4)))
+
+
+def fetch_chromium_dash_version(channel: str) -> Version:
+    """Fetches the highest latest version across all platforms for a channel.
+
+    For the canary channel, the ASAN variant on Windows is also considered.
+    """
+
+    def _fetch(channel: str, target_platform: str) -> Version:
+        response = requests.get(CHROMIUMDASH_LATEST_RELEASE.format(
+            channel=channel, platform=target_platform),
+                                timeout=10)
+        return Version(response.json()[0].get('version'))
+
+    platforms = ('Windows', 'Linux', 'Android', 'Mac', 'ios')
+    versions = [_fetch(channel, platform) for platform in platforms]
     if channel == 'canary':
-        # The canary branch has two versions, the regular and the ASAN version,
-        # and we want the highest of the two.
-        canary_version = fetch_chromium_dash_version('canary',
-                                                     target_platform='Windows')
-        canary_asan_version = fetch_chromium_dash_version(
-            'canary_asan', target_platform='Windows')
-        linux_version = fetch_chromium_dash_version(channel='canary',
-                                                    target_platform='Linux')
-        adroid_version = fetch_chromium_dash_version(channel='canary',
-                                                     target_platform='Android')
-        mac_version = fetch_chromium_dash_version(channel='canary',
-                                                  target_platform='Mac')
-        ios_verion = fetch_chromium_dash_version(channel='canary',
-                                                 target_platform='ios')
-        return max(canary_version, canary_asan_version, linux_version,
-                   adroid_version, ios_verion, mac_version)
+        versions.append(_fetch('canary_asan', target_platform='Windows'))
+    return max(versions)
 
-    return fetch_chromium_dash_version(channel, target_platform='Windows')
+
+def _fetch_chromium_tag(to: str) -> Version:
+    """Resolves the --to flag value to a Version.
+
+    +---------------------------+---------------------------------------------+
+    | Labels                    | Description                                 |
+    +---------------------------+---------------------------------------------+
+    | @latest-tag               | Latest tag in the Chromium repo             |
+    | @latest-m{MAJOR}          | Latest tag for the given major version      |
+    | @latest-for-branch        | Latest tag for the major inferred from the  |
+    |                           | current branch name ( format cr{MAJOR})     |
+    | @latest-canary            | Latest canary release from ChromiumDash     |
+    | @latest-beta              | Latest beta release from ChromiumDash       |
+    | @latest-dev               | Latest dev release from ChromiumDash        |
+    | @latest-stable            | Latest stable release from ChromiumDash     |
+    +---------------------------+---------------------------------------------+
+    """
+
+    # If not a label, then this value is expected to be a valid Chromium
+    # version.
+    if not to.startswith('@'):
+        return Version(to)
+
+    if to == '@latest-for-branch':
+        branch = repository.brave.current_branch()
+        match = re.fullmatch(r'cr(\d+)', branch)
+        if not match:
+            raise InvalidInputException(
+                '@latest-for-branch requires the current branch to be named '
+                f'cr{{MAJOR}} (e.g. cr135), but the current branch is '
+                f'"{branch}".')
+        return _fetch_chromium_tag(f'@latest-m{match.group(1)}')
+
+    if to == '@latest-tag':
+        version = Version.get_latest_googlesource_tag_version()
+        if version is None:
+            raise InvalidInputException(
+                'Could not fetch latest Googlesource tag.')
+        return version
+    if to.startswith('@latest-m'):
+        major_str = to[len('@latest-m'):]
+        if not major_str.isdigit():
+            raise InvalidInputException(
+                f'Invalid major version in "{to}": '
+                f'"{major_str}" is not a valid integer.')
+        version = Version.get_latest_googlesource_tag_version(
+            major=int(major_str))
+        if version is None:
+            raise InvalidInputException(
+                'Could not find a Googlesource tag for major version '
+                f'{major_str}.')
+        return version
+    if to.startswith('@latest-'):
+        [_, channel] = to.split('-', 1)
+        if channel not in ('canary', 'beta', 'dev', 'stable'):
+            raise InvalidInputException(
+                f'Invalid @latest channel: "{channel}". '
+                'Valid options: canary, beta, dev, stable.')
+
+        return fetch_chromium_dash_version(channel)
+
+    raise InvalidInputException(
+        f'Unknown label: "{to}". '
+        'Valid labels: @latest-tag, @latest-m{MAJOR}, @latest-for-branch, '
+        '@latest-canary, @latest-beta, @latest-dev, @latest-stable.')
 
 
 def show(args: argparse.Namespace):
@@ -2087,19 +2994,20 @@ def show(args: argparse.Namespace):
         console.print(f'upstream version: {Version.from_git("HEAD")}')
 
     if args.from_ref_value is not None:
-        from_ref_value = Version.from_git(solve_git_ref(args.from_ref_value))
+        from_ref_value = Version.from_git(_solve_brave_ref(
+            args.from_ref_value))
         if from_ref_value is not None:
             console.print(f'base version: {from_ref_value}')
 
     if args.log_link:
         console.print('googlesource link: %s' %
                       Version.from_git('HEAD').get_googlesource_diff_link(
-                          Version.from_git(solve_git_ref('@previous'))))
+                          Version.from_git(_solve_brave_ref('@previous'))))
 
-    if args.latest_chromiumdash_version is not None:
-        console.print(
-            'latest canary version: %s' %
-            fetch_lastest_canary_version(args.latest_chromiumdash_version))
+    if args.chromium_version_label is not None:
+        console.print('version: %s' %
+                      _fetch_chromium_tag(args.chromium_version_label))
+
 
 def main():
     # This is a global parser with arguments that apply to every function.
@@ -2118,14 +3026,16 @@ def main():
         dest='infra_mode')
 
     # The `--from-ref` parse is used by multiple operations.
-    base_version_parser = argparse.ArgumentParser(add_help=False)
+    base_version_parser = argparse.ArgumentParser(
+        add_help=False, formatter_class=argparse.RawTextHelpFormatter)
     base_version_parser.add_argument(
         '--from-ref',
         help=
-        'A reference to the version that the upgrade is coming from. This is '
-        'a git branch, hash, tag, etc, or one of the special values: @upstream'
-        ' (upstream branch), @previous (the previous version from HEAD). '
-        'Defaults to @upstream.',
+        ('A brave-core git reference for the Chromium version to upgrade\n'
+         'from (branch, commit hash, tag, etc.), or one of these labels:\n'
+         '  @upstream        Upstream branch of the current branch (default)\n'
+         '  @previous        Commit just before the last version bump\n'
+         '  @previous-major  Commit just before the last major version bump'),
         default=None)
 
     parser = argparse.ArgumentParser()
@@ -2134,11 +3044,28 @@ def main():
     lift_parser = subparsers.add_parser(
         'lift',
         parents=[global_parser, base_version_parser],
+        formatter_class=argparse.RawTextHelpFormatter,
         help='Upgrade the chromium base version. Special tags: '
-        '@latest-[beta|dev|canary] pulls the version from chromium dash.')
-    lift_parser.add_argument('--to',
-                             required=True,
-                             help='The branch used as the base version.')
+        '@latest-[beta|dev|canary] pulls the version from chromium dash; '
+        '@latest-tag pulls the latest tag from Googlesource.')
+    lift_parser.add_argument(
+        '--to',
+        required=True,
+        help=(
+            'The Chromium version to upgrade to (e.g. 147.0.7727.117),\n'
+            'or one of the following labels:\n'
+            '  @latest-tag         Latest tag from the Chromium Googlesource'
+            ' repo\n'
+            '  @latest-m{MAJOR}    Latest Googlesource tag for the given major'
+            ' version\n'
+            '  @latest-for-branch  Latest tag for the major inferred from the\n'
+            '                      current branch name (must be named'
+            ' cr{MAJOR})\n'
+            '  @latest-canary      Latest canary release from ChromiumDash\n'
+            '  @latest-beta        Latest beta release from ChromiumDash\n'
+            '  @latest-dev         Latest dev release from ChromiumDash\n'
+            '  @latest-stable      Latest stable release from ChromiumDash'),
+    )
     lift_parser.add_argument(
         '--continue',
         action='store_true',
@@ -2158,11 +3085,6 @@ def main():
         action='store_true',
         help='Creates or updates the github for this branch.',
         dest='with_github')
-    lift_parser.add_argument(
-        '--vscode',
-        action='store_true',
-        help=
-        'Launches vscode for manual conflict resolution and similar issues.')
     lift_parser.add_argument(
         '--no-conflict-change',
         action='store_true',
@@ -2205,6 +3127,10 @@ def main():
         help=
         'Squashes all the minor bumps in-between the the last version and the '
         'previous upstream ref.')
+    rebase_parser.add_argument(
+        '--v2',
+        action='store_true',
+        help='Use the Rebase v2 code path (rebase_v2.py).')
 
     subparsers.add_parser(
         'update-version-issue',
@@ -2226,9 +3152,9 @@ def main():
                              action='store_true',
                              help='Prints the git log links to googlesource.')
     show_parser.add_argument(
-        '--latest-chromiumdash-version',
+        '--chromium-version-label',
         default=None,
-        help='Prints the latest version available for the channel provided.')
+        help='Prints the version for the given label (e.g. @latest-canary).')
 
     reassign_parser = subparsers.add_parser(
         'reassign',
@@ -2240,17 +3166,52 @@ def main():
         'change',
         help='The commit reference to reassign (hash, HEAD~N, etc.).')
 
+    update_xcode_parser = subparsers.add_parser(
+        'update-xcode-toolchain',
+        parents=[global_parser],
+        help='Pins build/mac/download_hermetic_xcode.py to a freshly built '
+        'hermetic Xcode toolchain archive.')
+    update_xcode_parser.add_argument(
+        'url',
+        help=
+        'Archive URL emitted by tools/cr/toolchains/build_xcode_toolchain.py '
+        '(filename must follow the xcode-hermetic-toolchain-<...>.tar.gz '
+        'pattern).')
+    update_xcode_parser.add_argument(
+        '--culprit',
+        default=None,
+        help='Chromium commit hash to reference in the commit body. Defaults '
+        'to auto-detecting the commit that pinned the upstream macOS SDK in '
+        f'{CHROMIUM_MAC_SDK_GNI}.',
+        dest='culprit')
+
+    gen_rust_parser = subparsers.add_parser(
+        'gen-rust-toolchain',
+        parents=[global_parser],
+        formatter_class=argparse.RawTextHelpFormatter,
+        help='Triggers the Rust/WASM toolchain Jenkins pipelines for a '
+        'Chromium tag. Requires credentials in ~/.jenkins.json.')
+    gen_rust_parser.add_argument(
+        'tag',
+        help=('The Chromium version to build the toolchain for (e.g.\n'
+              '150.0.7850.1), or one of the @latest-* labels accepted by\n'
+              '`lift --to` (e.g. @latest-canary, @latest-m150,\n'
+              '@latest-for-branch, @latest-tag).'))
+    gen_rust_parser.add_argument(
+        '--watch',
+        action='store_true',
+        help='After triggering, show a live-updating table of each '
+        "pipeline's\nstage and status until all finish. Press Ctrl+C to stop "
+        'watching;\nthe builds keep running.')
+
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')
     args = parser.parse_args()
 
-    def has_verbose():
-        return hasattr(args, 'verbose') and args.verbose
-
-    logging.basicConfig(
-        level=logging.DEBUG if has_verbose() else logging.INFO,
-        format='%(message)s',
-        handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
+    logging.basicConfig(level=logging.DEBUG if is_verbose() else logging.INFO,
+                        format='%(message)s',
+                        handlers=[IncendiaryErrorHandler()],
+                        force=True)
 
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
@@ -2261,9 +3222,8 @@ def main():
                 parser.error(
                     'Switch --from-ref not supported with --continue.')
 
-    def resolve_from_ref_flag_version() -> Version:
-        return Version.from_git(
-            solve_git_ref(args.from_ref if args.from_ref else '@upstream'))
+    def resolve_version_with_from_ref_arg() -> Version:
+        return Version.from_git(_solve_brave_ref(args.from_ref))
 
     if args.command == 'lift' and args.no_conflict and not args.is_continuation:
         parser.error('--no-conflict-change can only be used with --continue')
@@ -2271,33 +3231,20 @@ def main():
         parser.error('--restart does not support --continue')
     if args.command == 'lift' and args.ack_advisory and args.is_continuation:
         parser.error('--ack-advisory does not support --continue')
-    if args.command == 'lift' and args.to.startswith('@latest-'):
-        [_, channel] = args.to.split('-')
-        if channel not in ['canary', 'beta', 'dev']:
-            parser.error('Invalid channel for --to.')
-
-    def resolve_to_flag() -> Version:
-        if args.to.startswith('@latest-'):
-            [_, channel] = args.to.split('-')
-            if channel not in ['canary', 'beta', 'dev']:
-                parser.error('Invalid channel for --to.')
-            return fetch_lastest_canary_version(channel)
-        return Version(args.to)
-
     try:
         if args.command == 'lift':
-            target = resolve_to_flag()
+            target = _fetch_chromium_tag(args.to)
             if args.restart:
                 ReUpgrade(target).run()
 
             if not args.is_continuation:
                 upgrade = Upgrade(target, args.is_continuation,
-                                  resolve_from_ref_flag_version())
+                                  resolve_version_with_from_ref_arg())
             else:
-                upgrade = Upgrade(resolve_to_flag(), args.is_continuation)
+                upgrade = Upgrade(_fetch_chromium_tag(args.to),
+                                  args.is_continuation)
 
             upgrade.run(no_conflict_continuation=args.no_conflict,
-                        launch_vscode=args.vscode,
                         with_github=args.with_github,
                         ack_advisory=args.ack_advisory)
         if args.command == 'rebase':
@@ -2305,13 +3252,25 @@ def main():
                          to_ref=args.to_ref,
                          recommit=args.recommit,
                          discard_regen_changes=args.discard_regen_changes,
-                         squash_minor_bumps=args.squash_minor_bumps)
+                         squash_minor_bumps=args.squash_minor_bumps,
+                         v2=args.v2)
         if args.command == 'regen':
-            Regen(resolve_from_ref_flag_version()).run(dry_run=args.dry_run)
+            Regen(
+                resolve_version_with_from_ref_arg()).run(dry_run=args.dry_run)
         if args.command == 'update-version-issue':
-            GitHubIssue(resolve_from_ref_flag_version()).run()
+            GitHubIssue(resolve_version_with_from_ref_arg()).run()
         if args.command == 'reassign':
             Reassign().run(change=args.change)
+        if args.command == 'update-xcode-toolchain':
+            UpdateXcodeToolchain().run(url=args.url, culprit=args.culprit)
+        if args.command == 'gen-rust-toolchain':
+            task = GenRustToolchain()
+            if args.watch:
+                # `--watch` provdes live updates, therefore it doesn't use the
+                # spinner provided by `Task.run`.
+                task.run_watching(tag=args.tag)
+            else:
+                task.run(tag=args.tag)
         if args.command == 'reference':
             console.print(Markdown(__doc__))
         if args.command == 'show':
@@ -2327,14 +3286,62 @@ if __name__ == '__main__':
         # Special flags used to carry out some of the rebase tasks fed by git
         # during rebase --interactive mode.
         if '--internal-rebase-remove-regen-changes' in sys.argv:
-            Rebase.discard_regen_changes_from_rebase_plan(
-                PurePath(sys.argv[-1]))
+            Rebase.discard_regen_changes_from_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-recommit' in sys.argv:
-            Rebase.recommit_in_rebase_plan(PurePath(sys.argv[-1]))
+            Rebase.recommit_in_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-squash-minor-bumps' in sys.argv:
-            Rebase.squash_minor_bumps_from_rebase_plan(PurePath(sys.argv[-1]))
+            Rebase.squash_minor_bumps_from_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-squash-commit-message' in sys.argv:
-            Rebase.fix_squash_commit_messages(PurePath(sys.argv[-1]))
+            Rebase.fix_squash_commit_messages(Path(sys.argv[-1]))
+
+        def _crash_editor_from_argv(flag_prefix: str) -> str:
+            """Pulls a `--<flag_prefix>=<editor>` value out of `sys.argv`.
+
+            Raises `NotImplementedError` when the flag is absent or its
+            value is empty -- `Rebase.execute` appends this flag
+            unconditionally for v2 rebase steps, so a missing value
+            means a wiring bug rather than something recoverable at
+            runtime.
+            """
+            prefix = f'{flag_prefix}='
+            for arg in sys.argv:
+                if arg.startswith(prefix):
+                    value = arg[len(prefix):]
+                    if value:
+                        return value
+                    break
+            raise NotImplementedError(
+                f'Expected --{flag_prefix}=<editor> in sys.argv but '
+                f'none was found (or it was empty). `Rebase.execute` '
+                f'should have appended it for this v2 dispatch.')
+
+        if any(a.startswith('--internal-rebase-v2-plan-') for a in sys.argv):
+            editor_path = Path(sys.argv[-1])
+            crash_editor = _crash_editor_from_argv(
+                '--internal-rebase-crash-sequence-editor')
+            try:
+                rebase_v2.rewrite_plan(
+                    todo_file=editor_path,
+                    discard_recyclable=(
+                        '--internal-rebase-v2-plan-discard-recyclable'
+                        in sys.argv),
+                    pinned_squashed=('--internal-rebase-v2-plan-squash-pinned'
+                                     in sys.argv))
+            except rebase_v2.EditorRecoverableFailure as e:
+                rebase_v2.hand_off_to_editor(editor_path,
+                                             reason=str(e),
+                                             editor=crash_editor)
+        if '--internal-rebase-v2-fix-message' in sys.argv:
+            editor_path = Path(sys.argv[-1])
+            crash_editor = _crash_editor_from_argv(
+                '--internal-rebase-crash-msg-editor')
+            try:
+                writer = rebase_v2.MessageWriter.parse(editor_path)
+                writer.rewrite_with_last_message()
+            except rebase_v2.EditorRecoverableFailure as e:
+                rebase_v2.hand_off_to_editor(editor_path,
+                                             reason=str(e),
+                                             editor=crash_editor)
         sys.exit(0)
 
     sys.exit(main())

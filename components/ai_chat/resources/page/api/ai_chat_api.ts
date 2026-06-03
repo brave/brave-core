@@ -95,9 +95,6 @@ export default function createAIChatApi(
       }),
 
       ...endpointsFor(uiHandler, {
-        uploadFile: {
-          mutationResponse: (result) => result.uploadedFiles,
-        },
         processImageFile: {
           mutationResponse: (result) => result.processedFile,
         },
@@ -156,7 +153,10 @@ export default function createAIChatApi(
       >,
       uiHandler: uiHandler as Pick<
         Mojom.AIChatUIHandlerInterface,
-        VoidMethodKeys<Mojom.AIChatUIHandlerInterface>
+        | VoidMethodKeys<Mojom.AIChatUIHandlerInterface>
+        | `processTextFile`
+        | `processImageFile`
+        | `processPdfFile`
       >,
       metrics: metrics as Pick<
         Mojom.MetricsInterface,
@@ -192,10 +192,6 @@ export default function createAIChatApi(
         {
           // We don't need to do any handling here, just pass through
           onNewDefaultConversation(contentId: number) {},
-
-          // TODO(https://github.com/brave/brave-browser/issues/52539): rename
-          // in mojom to `onAttachedFilesAreProcessing`.
-          onUploadFilesSelected() {},
 
           onChildFrameBound(parentPagePendingReceiver) {},
         },

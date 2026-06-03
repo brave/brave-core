@@ -5,8 +5,10 @@
 
 #include "chrome/browser/ui/layout_constants.h"
 
+#include <algorithm>
 #include <optional>
 
+#include "base/feature_list.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"
@@ -14,12 +16,14 @@
 namespace {
 
 using tabs::HorizontalTabsUpdateEnabled;
+using tabs::UseCompactHorizontalTabs;
 
 std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
   const bool touch_ui = ui::TouchUiController::Get()->touch_ui();
+  const bool compact = UseCompactHorizontalTabs();
   switch (inset) {
     case LOCATION_BAR_PAGE_INFO_ICON_PADDING:
-      return gfx::Insets::VH(6, 6);
+      return gfx::Insets::VH(compact ? 4 : 6, 6);
     case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
       return gfx::Insets::VH(4, 4);
     case TOOLBAR_BUTTON:
@@ -27,7 +31,10 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
       // icon size - ToolbarButton::kDefaultIconSize
       return gfx::Insets(touch_ui ? 12 : 4);
     case TOOLBAR_INTERIOR_MARGIN:
-      return touch_ui ? gfx::Insets() : gfx::Insets::VH(4, 6);
+      if (touch_ui) {
+        return gfx::Insets();
+      }
+      return gfx::Insets::VH(compact ? 2 : 4, 6);
     default:
       break;
   }
@@ -54,7 +61,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case LayoutConstant::kTabStripPadding: {
       if (HorizontalTabsUpdateEnabled()) {
-        return tabs::kHorizontalTabVerticalSpacing;
+        return tabs::GetHorizontalTabVerticalSpacing();
       }
       return std::nullopt;
     }
@@ -62,7 +69,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       if (!HorizontalTabsUpdateEnabled()) {
         return std::nullopt;
       }
-      return 1;
+      return UseCompactHorizontalTabs() ? 8 : 1;
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
       return 4;
@@ -78,7 +85,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
 
     case LayoutConstant::kLocationBarHeight:
       // Consider adjust below element padding also when this height is changed.
-      return 32;
+      return UseCompactHorizontalTabs() ? 28 : 32;
     case LayoutConstant::kLocationBarTrailingIconSize:
       return 18;
     case LayoutConstant::kLocationBarIconSize:
@@ -86,7 +93,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case LayoutConstant::kLocationBarElementPadding:
     case LayoutConstant::kLocationBarPageInfoIconVerticalPadding:
     case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
-      return 2;
+      return UseCompactHorizontalTabs() ? 1 : 2;
     default:
       break;
   }
@@ -126,32 +133,41 @@ int GetLayoutConstant(LayoutConstant constant) {
 
 namespace tabs {
 
-namespace {
-
-bool UseCompact() {
-  return base::FeatureList::IsEnabled(tabs::kBraveCompactHorizontalTabs);
+int GetHorizontalTabHeight() {
+  return UseCompactHorizontalTabs() ? 26 : 32;
 }
 
-}  // namespace
+int GetHorizontalTabVerticalSpacing() {
+  return UseCompactHorizontalTabs() ? 2 : 4;
+}
 
-int GetHorizontalTabHeight() {
-  return UseCompact() ? 28 : 32;
+int GetHorizontalTabButtonYOffset() {
+  return UseCompactHorizontalTabs() ? -5 : -4;
 }
 
 int GetHorizontalTabStripHeight() {
-  return GetHorizontalTabHeight() + (kHorizontalTabVerticalSpacing * 2);
+  return GetHorizontalTabHeight() + (GetHorizontalTabVerticalSpacing() * 2);
 }
 
 int GetHorizontalTabPadding() {
-  return UseCompact() ? 4 : 8;
+  return UseCompactHorizontalTabs() ? 4 : 8;
 }
 
 int GetTabGroupTitleVerticalInset() {
-  return (GetHorizontalTabHeight() - kTabGroupLineHeight) / 2;
+  return std::max(0, (GetHorizontalTabHeight() - kTabGroupLineHeight) / 2);
 }
 
 int GetTabGroupTitleHorizontalInset() {
-  return UseCompact() ? 6 : 10;
+  return UseCompactHorizontalTabs() ? 6 : 10;
+}
+
+int GetDragHandleExtensionHeight() {
+  return UseCompactHorizontalTabs() ? 2 : 4;
+}
+
+bool UseCompactHorizontalTabs() {
+  return base::FeatureList::IsEnabled(kBraveCompactHorizontalTabs) &&
+         !ui::TouchUiController::Get()->touch_ui();
 }
 
 }  // namespace tabs

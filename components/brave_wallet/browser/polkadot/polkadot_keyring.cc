@@ -17,18 +17,6 @@
 
 namespace brave_wallet {
 
-namespace {
-
-inline constexpr char const kPolkadotTestnet[] =
-    "\x1c"
-    "westend";
-
-inline constexpr char const kPolkadotMainnet[] =
-    "\x20"
-    "polkadot";
-
-}  // namespace
-
 PolkadotKeyring::PolkadotKeyring(
     base::span<const uint8_t, kPolkadotSeedSize> seed,
     mojom::KeyringId keyring_id,
@@ -40,14 +28,6 @@ PolkadotKeyring::PolkadotKeyring(
   // https://wiki.polkadot.com/learn/learn-account-advanced/#derivation-paths
 
   CHECK(IsPolkadotKeyring(keyring_id_));
-
-  if (IsTestnet()) {
-    root_account_key_ =
-        root_account_key_.DeriveHard(base::as_byte_span(kPolkadotTestnet));
-  } else {
-    root_account_key_ =
-        root_account_key_.DeriveHard(base::as_byte_span(kPolkadotMainnet));
-  }
 }
 
 PolkadotKeyring::~PolkadotKeyring() = default;
@@ -123,7 +103,8 @@ std::optional<std::string> PolkadotKeyring::AddNewHDAccount(
   }
 
   auto keypair =
-      root_account_key_.DeriveHard(base::byte_span_from_ref(account_index));
+      (account_index == 0 ? root_account_key_.Clone()
+                          : root_account_key_.DeriveHard(account_index - 1));
 
   Ss58Address ss58_addr;
   ss58_addr.prefix = IsTestnet() ? kWestendPrefix : kPolkadotPrefix;
@@ -149,10 +130,10 @@ void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST
   rand_nonce_bytes_for_testing_ = nonce_bytes;
 }
 
-void PolkadotKeyring::SetSignatureRngForTesting() {
+void PolkadotKeyring::SetMockRndSeedForTesting(uint64_t seed) {
   CHECK_IS_TEST();
   for (auto& [idx, keypair] : secondary_keys_) {
-    keypair.UseMockRngForTesting();  // IN-TEST
+    keypair.SetMockRndSeedForTesting(seed);  // IN-TEST
   }
 }
 

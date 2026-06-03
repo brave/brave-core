@@ -27,7 +27,8 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
@@ -62,6 +63,10 @@
 #include "brave/components/brave_vpn/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
 #endif
@@ -76,6 +81,7 @@
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
 #include "brave/browser/ui/views/tabs/switches.h"
+#include "brave/browser/workspaces/features.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
@@ -89,8 +95,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/extensions/updater/features.h"
+#include "extensions/common/extension_features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
@@ -119,6 +125,7 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/darker_theme/features.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/page_info/features.h"
 #endif
 
@@ -198,6 +205,16 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
            brave_wallet::features::kBraveWalletZCashFeature,                  \
            kZCashFeatureVariations, "BraveWalletZCash")},                     \
       {                                                                       \
+          "brave-wallet-polkadot",                                            \
+          "Enable experimental Brave Wallet Polkadot support",                \
+          "The Polkadot integration in Brave Wallet is currently in preview " \
+          "and under active development. This version should not be used "    \
+          "with real funds. Use at your own risk.",                           \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletPolkadotFeature),           \
+      },                                                                      \
+      {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \
           "Bitcoin support for native Brave Wallet",                          \
@@ -257,6 +274,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define BRAVE_NEWS_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
 #define PLAYLIST_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                          \
       {                                                            \
@@ -273,6 +291,9 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
           FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
       })
+#else
+#define PLAYLIST_FEATURE_ENTRIES
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #define PSST_FEATURE_ENTRIES                                           \
   IF_BUILDFLAG(ENABLE_PSST,                                            \
@@ -426,7 +447,8 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       {                                                                      \
           "brave-compact-horizontal-tabs",                                   \
           "Compact horizontal tabs design",                                  \
-          "Reduces the height of horizontal tabs",                           \
+          "Reduces the height of the horizontal tab strip and toolbar "      \
+          "(including the URL bar)",                                         \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveCompactHorizontalTabs),             \
       },                                                                     \
@@ -500,6 +522,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES
+#endif  // defined(TOOLKIT_VIEWS)
+
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_FOCUS_MODE_FEATURE_ENTRIES                             \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-focus-mode",                                            \
+      "Focus Mode",                                                  \
+      "Enables Focus Mode, which hides browser chrome and provides " \
+      "hover-to-reveal access to hidden UI elements",                \
+      kOsWin | kOsMac | kOsLinux,                                    \
+      FEATURE_VALUE_TYPE(features::kBraveFocusMode),                 \
+  })
+#else
+#define BRAVE_FOCUS_MODE_FEATURE_ENTRIES
 #endif  // defined(TOOLKIT_VIEWS)
 
 #if defined(TOOLKIT_VIEWS)
@@ -620,13 +656,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "when the conversation is created.",                                 \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kPageContextEnabledInitially), \
-      },                                                                       \
-      {                                                                        \
-          "brave-ai-chat-conversation-api-v2",                                 \
-          "Brave AI Chat Conversation API V2",                                 \
-          "Enables Conversation API V2 for AI Chat",                           \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationAPIV2),     \
       },                                                                       \
       {                                                                        \
           "brave-ai-chat-show-input-on-new-tab-page",                          \
@@ -777,6 +806,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),         \
       }))
 
+#if !BUILDFLAG(IS_ANDROID)
+#define BRAVE_WORKSPACE_FEATURE_ENTRY                            \
+  EXPAND_FEATURE_ENTRIES({                                       \
+      "brave-workspace",                                         \
+      "Brave Workspace",                                         \
+      "Save sets of windows and tabs into loadable workspaces.", \
+      kOsWin | kOsLinux | kOsMac,                                \
+      FEATURE_VALUE_TYPE(features::kWorkspaces),                 \
+  })
+#else
+#define BRAVE_WORKSPACE_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -807,6 +849,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
       },                                                                       \
       {                                                                        \
+          "center-ntt-cta-button",                                             \
+          "Center image NTT CTA button",                                       \
+          "Centers image NTT CTA button above the widget area",                \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ntp_background_images::features::kCenterNttCtaButton),           \
+      },                                                                       \
+      {                                                                        \
           "brave-filled-bookmark-folder-icon",                                 \
           "Use filled bookmark folder icon",                                   \
           "Uses the legacy filled bookmark folder icon instead of the "        \
@@ -820,6 +870,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables the refreshed version of the New Tab Page",                 \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(features::kBraveNewTabPageRefreshEnabled),        \
+      },                                                                       \
+      {                                                                        \
+          "brave-adblock-dat-cache",                                           \
+          "Enable adblock DAT file caching",                                   \
+          "Cache compiled adblock engines to disk as serialized DAT files. "   \
+          "On subsequent startups, cached DAT files are loaded instead of "    \
+          "reprocessing filter lists, improving startup time.",                \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_shields::features::kAdblockDATCache),       \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
@@ -1259,8 +1318,8 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "learn more about the server implementation in the repository link " \
           "mentioned below. "                                                  \
           "Note: Only HTTPS URLs are supported by default. HTTP URLs are "     \
-          "only allowed for potentially trustworthy origins like localhost."   \
-          "Insecure URLs that don't meet these requirements will be ignored"   \
+          "only allowed for potentially trustworthy origins like localhost. "  \
+          "Insecure URLs that don't meet these requirements will be ignored "  \
           "in favor of the official Brave-hosted server",                      \
           kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
@@ -1306,7 +1365,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "brave-request-info-unique-ptr",                                     \
           "BraveRequestInfo unique_ptr",                                       \
           "Enable experimental use of unique_ptr/WeakPtr instead of "          \
-          "shared_ptr"                                                         \
+          "shared_ptr "                                                        \
           "for BraveRequestInfo",                                              \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
@@ -1328,6 +1387,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
+  BRAVE_FOCUS_MODE_FEATURE_ENTRIES                                             \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
@@ -1343,6 +1403,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   PSST_FEATURE_ENTRIES                                                         \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
   EMAIL_ALIASES_FEATURE_ENTRIES                                                \
+  BRAVE_WORKSPACE_FEATURE_ENTRY                                                \
   EXPAND_FEATURE_ENTRIES({                                                     \
       "brave-origin",                                                          \
       "Enable Brave Origin",                                                   \

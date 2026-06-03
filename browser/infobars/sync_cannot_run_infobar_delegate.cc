@@ -13,23 +13,27 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
+using syncer::BraveSyncServiceImpl;
+
 namespace {
 
-bool SeedDecryptionFailed(raw_ptr<brave_sync::Prefs> brave_sync_prefs) {
-  CHECK_NE(brave_sync_prefs, nullptr);
-  bool failed_to_decrypt = false;
-  std::string seed = brave_sync_prefs->GetSeed(&failed_to_decrypt);
-  return failed_to_decrypt;
+BraveSyncServiceImpl* GetSyncService(Profile* profile) {
+  return SyncServiceFactory::IsSyncAllowed(profile)
+             ? static_cast<BraveSyncServiceImpl*>(
+                   SyncServiceFactory::GetForProfile(profile))
+             : nullptr;
 }
 
 }  // namespace
@@ -37,26 +41,26 @@ bool SeedDecryptionFailed(raw_ptr<brave_sync::Prefs> brave_sync_prefs) {
 // static
 void SyncCannotRunInfoBarDelegate::Create(
     infobars::ContentInfoBarManager* infobar_manager,
-    Profile* profile,
-    Browser* browser) {
-  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
-  if (brave_sync_prefs.IsFailedDecryptSeedNoticeDismissed()) {
+    BrowserWindowInterface* browser) {
+  BraveSyncServiceImpl* brave_sync_service =
+      GetSyncService(browser->GetProfile());
+  if (!brave_sync_service || !brave_sync_service->has_encryptor()) {
     return;
   }
 
-  if (!SeedDecryptionFailed(&brave_sync_prefs)) {
+  if (brave_sync_service->GetSeed().has_value()) {
     return;
   }
 
   infobar_manager->AddInfoBar(
       CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
-          new SyncCannotRunInfoBarDelegate(browser, profile))));
+          new SyncCannotRunInfoBarDelegate(browser))));
 }
 
 // Start class impl
-SyncCannotRunInfoBarDelegate::SyncCannotRunInfoBarDelegate(Browser* browser,
-                                                           Profile* profile)
-    : profile_(profile), browser_(browser) {}
+SyncCannotRunInfoBarDelegate::SyncCannotRunInfoBarDelegate(
+    BrowserWindowInterface* browser)
+    : browser_(browser) {}
 
 SyncCannotRunInfoBarDelegate::~SyncCannotRunInfoBarDelegate() = default;
 
@@ -107,7 +111,7 @@ bool SyncCannotRunInfoBarDelegate::Accept() {
 
 bool SyncCannotRunInfoBarDelegate::Cancel() {
   // "Don't show again" button
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(browser_->GetProfile()->GetPrefs());
   brave_sync_prefs.DismissFailedDecryptSeedNotice();
   return true;
 }

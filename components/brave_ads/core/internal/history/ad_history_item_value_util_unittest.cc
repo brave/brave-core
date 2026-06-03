@@ -89,47 +89,39 @@ class BraveAdsAdHistoryItemValueUtilTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromDict) {
   // Arrange
   const base::DictValue dict = base::test::ParseJsonDict(kAdHistoryItemAsJson);
 
-  // Act
-  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromValue(dict);
-
-  // Assert
-  EXPECT_EQ(ad_history_item,
-            test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
+  // Act & Assert
+  EXPECT_EQ(test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
                                      mojom::ConfirmationType::kViewedImpression,
-                                     /*use_random_uuids=*/false));
+                                     /*use_random_uuids=*/false),
+            AdHistoryItemFromDict(dict));
 }
 
-TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyValue) {
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyDict) {
   // Arrange
   const base::DictValue dict =
       base::test::ParseJsonDict(kLegacyAdHistoryItemAsJson);
 
-  // Act
-  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromValue(dict);
-
-  // Assert
-  EXPECT_EQ(ad_history_item,
-            test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
+  // Act & Assert
+  EXPECT_EQ(test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
                                      mojom::ConfirmationType::kViewedImpression,
-                                     /*use_random_uuids=*/false));
+                                     /*use_random_uuids=*/false),
+            AdHistoryItemFromDict(dict));
 }
 
-TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToValue) {
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToDict) {
   // Arrange
   const AdHistoryItemInfo ad_history_item =
       test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
                                mojom::ConfirmationType::kViewedImpression,
                                /*use_random_uuids=*/false);
 
-  // Act
-  const base::DictValue dict = AdHistoryItemToValue(ad_history_item);
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kAdHistoryItemAsJson), dict);
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(kAdHistoryItemAsJson),
+            AdHistoryItemToDict(ad_history_item));
 }
 
 }  // namespace brave_ads

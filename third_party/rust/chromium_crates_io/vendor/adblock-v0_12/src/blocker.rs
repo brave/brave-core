@@ -1,10 +1,10 @@
 //! Holds [`Blocker`], which handles all network-based adblocking queries.
 
 use memchr::{memchr as find_char, memrchr as find_char_reverse};
-use once_cell::sync::Lazy;
 use serde::Serialize;
 use std::collections::HashSet;
 use std::ops::DerefMut;
+use std::sync::OnceLock;
 
 use crate::filters::fb_network_builder::NetworkFilterListId;
 use crate::filters::filter_data_context::FilterDataContextRef;
@@ -63,7 +63,10 @@ pub struct BlockerResult {
 
 // only check for tags in tagged and exception rule buckets,
 // pass empty set for the rest
-static NO_TAGS: Lazy<HashSet<String>> = Lazy::new(HashSet::new);
+fn get_no_tags() -> &'static HashSet<String> {
+    static NO_TAGS: OnceLock<HashSet<String>> = OnceLock::new();
+    NO_TAGS.get_or_init(&HashSet::new)
+}
 
 /// Stores network filters for efficient querying.
 pub struct Blocker {
@@ -186,13 +189,16 @@ impl Blocker {
         // Always check important filters
         let important_filter = self
             .importants()
-            .check(request, &NO_TAGS, &mut regex_manager);
+            .check(request, get_no_tags(), &mut regex_manager);
 
         // only check the rest of the rules if not previously matched
         let filter = if important_filter.is_none() && !matched_rule {
             self.tagged_filters_all()
                 .check(request, &self.tags_enabled, &mut regex_manager)
-                .or_else(|| self.filters().check(request, &NO_TAGS, &mut regex_manager))
+                .or_else(|| {
+                    self.filters()
+                        .check(request, get_no_tags(), &mut regex_manager)
+                })
         } else {
             important_filter
         };
@@ -213,7 +219,7 @@ impl Blocker {
 
         let redirect_filters =
             self.redirects()
-                .check_all(request, &NO_TAGS, regex_manager.deref_mut());
+                .check_all(request, get_no_tags(), regex_manager.deref_mut());
 
         // Extract the highest priority redirect directive.
         // 1. Exceptions - can bail immediately if found
@@ -339,7 +345,7 @@ impl Blocker {
                 .map(|param| (param, true))
                 .collect();
 
-            let filters = removeparam_filters.check_all(request, &NO_TAGS, regex_manager);
+            let filters = removeparam_filters.check_all(request, get_no_tags(), regex_manager);
             let mut rewrite = false;
             for removeparam_filter in filters {
                 if let Some(removeparam) = &removeparam_filter.modifier_option {

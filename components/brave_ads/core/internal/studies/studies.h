@@ -6,9 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_STUDIES_STUDIES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_STUDIES_STUDIES_H_
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
+
+class AdsClient;
 
 class Studies final : public AdsClientNotifierObserver {
  public:
@@ -22,6 +25,9 @@ class Studies final : public AdsClientNotifierObserver {
  private:
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 };
 
 }  // namespace brave_ads

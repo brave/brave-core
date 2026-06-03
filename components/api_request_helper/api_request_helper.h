@@ -20,6 +20,7 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/api_request_helper/sse_parser.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
@@ -135,8 +136,7 @@ class APIRequestHelper {
     // If Cancel is needed even if url or data operations are in progress,
     // then call |APIRequestHelper::Cancel|.
     void MaybeSendResult();
-    void ParseSSE(std::string_view string_piece);
-    void ProcessSSELine(std::string_view line);
+    void OnSSEValueReceived(ValueOrError result);
 
     // network::SimpleURLLoaderStreamConsumer implementation:
     void OnDataReceived(std::string_view string_piece,
@@ -152,6 +152,17 @@ class APIRequestHelper {
     void OnParseJsonResponse(APIRequestResult result,
                              ValueOrError result_value);
 
+    void OnParseErrorBody(ValueOrError result_value);
+
+    // If response is non-2xx, appends string_piece to error_body_buffer_.
+    // Returns true if handled (caller should skip normal data dispatch).
+    bool MaybeAppendToErrorBodyBuffer(std::string_view string_piece);
+
+    // If response is non-2xx and error_body_buffer_ looks like JSON, kick off
+    // async parse into error_value_. Returns true if handled (caller should
+    // return).
+    bool MaybeParseErrorBody();
+
     std::unique_ptr<network::SimpleURLLoader> url_loader_;
     raw_ptr<APIRequestHelper> api_request_helper_;
 
@@ -161,14 +172,15 @@ class APIRequestHelper {
     ResponseConversionCallback conversion_callback_;
 
     bool is_sse_ = false;
+    std::optional<bool> is_response_fail_and_json_;
+    base::Value error_value_;
 
-    // Buffer for partial SSE lines across OnDataReceived calls.
-    std::string sse_line_buffer_;
+    SSEParser sse_parser_;
 
-    // Keep track of number of in-progress data decoding operations
-    // so that we can know if any are still in-progress when the request
-    // completes.
-    int current_decoding_operation_count_ = 0;
+    // Buffer for accumulating error response body chunks across OnDataReceived
+    // calls. Parsed in OnComplete via MaybeParseErrorBody.
+    std::string error_body_buffer_;
+
     bool request_is_finished_ = false;
 
     const scoped_refptr<base::SequencedTaskRunner> task_runner_;

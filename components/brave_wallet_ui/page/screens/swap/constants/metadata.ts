@@ -69,6 +69,7 @@ const SwapProviderMetadata = {
   [BraveWallet.SwapProvider.kNearIntents]: NearIntentsIcon,
   [BraveWallet.SwapProvider.kCowSwap]: CowSwapIcon,
   [BraveWallet.SwapProvider.kJupiterLegacy]: JupiterIcon,
+  [BraveWallet.SwapProvider.kZeroExLegacy]: ZeroXIcon,
 }
 
 type LPMetadataType = {

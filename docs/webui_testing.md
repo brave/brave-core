@@ -20,28 +20,28 @@ they can't be used to unit test Lit/Polymer functionality.
 Adding one of these tests is simple: Create a `<your-file>.test.ts` file next to
 the file you want to test.
 
-
 ```ts
 // <your-file>.test.ts
 import { add } from './your-file'
 
 describe('your file should work the way I want', () => {
-    it('should be able to add things', () => {
-        expect(add(1, 2)).toBe(3)
-    })
+  it('should be able to add things', () => {
+    expect(add(1, 2)).toBe(3)
+  })
 })
 ```
 
 You can run all tests with `npm run test-unit` or filter to a specific test with
-`npm run test-unit -- -t "should be able to add"`. The tests run quite quickly and
-you can run them in `watch` mode to automatically run tests affected by a change
-with `npm run test-unit -- --watch`.
+`npm run test-unit -- -t "should be able to add"`. The tests run quite quickly
+and you can run them in `watch` mode to automatically run tests affected by a
+change with `npm run test-unit -- --watch`.
 
 We use [Testing Library](https://testing-library.com/) for writing React unit
 tests. It can render React trees to a Jest DOM, allowing you to take snapshots
 and to check that things are rendering as expected.
 
 ### Additional Resources
+
 - https://jestjs.io/
 - https://testing-library.com/
 

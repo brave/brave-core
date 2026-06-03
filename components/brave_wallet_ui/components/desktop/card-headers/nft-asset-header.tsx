@@ -62,7 +62,12 @@ export const NftAssetHeader = ({
             name='arrow-left'
           />
         </MenuButton>
-        <HeaderTitle isMobileOrPanel={isMobileOrPanel}>{assetName}</HeaderTitle>
+        <HeaderTitle
+          variant={isMobileOrPanel ? 'large.semibold' : 'heading.h1'}
+          textColor='primary'
+        >
+          {assetName}
+        </HeaderTitle>
       </Row>
       {onSend && (
         <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>

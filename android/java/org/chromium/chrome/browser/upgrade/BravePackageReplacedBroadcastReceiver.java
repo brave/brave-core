@@ -10,10 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.util.BraveConstants;
 
 /**
  * Triggered when Brave's package is replaced (e.g. when it is

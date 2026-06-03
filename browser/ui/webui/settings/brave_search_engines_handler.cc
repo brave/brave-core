@@ -87,8 +87,8 @@ void BraveSearchEnginesHandler::RegisterMessages() {
           base::Unretained(this)));
 }
 
-void BraveSearchEnginesHandler::OnModelChanged() {
-  SearchEnginesHandler::OnModelChanged();
+void BraveSearchEnginesHandler::OnTemplateURLServiceChanged() {
+  SearchEnginesHandler::OnTemplateURLServiceChanged();
 
   brave::UpdateDefaultPrivateSearchProviderData(*profile_);
 
@@ -113,7 +113,7 @@ base::ListValue BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
   base::ListValue defaults;
 
   for (int i = 0; i < last_default_engine_index; ++i) {
-    const TemplateURL* template_url = list_controller_.GetTemplateURL(i);
+    TemplateURL* template_url = list_controller_.GetTemplateURLForIndex(i);
     // Don't show two brave search entries from settings to prevent confusion.
     // Hide brave search for tor entry from settings UI. User doesn't need to
     // select brave search tor entry for private profile.
@@ -122,13 +122,10 @@ base::ListValue BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
       continue;
     }
 
-    const std::string& default_private_search_provider_guid =
-        profile_->GetPrefs()->GetString(
-            prefs::kSyncedDefaultPrivateSearchProviderGUID);
-    const bool is_default =
-        default_private_search_provider_guid == template_url->sync_guid();
-
-    base::DictValue dict = CreateDictionaryForEngine(i, is_default);
+    base::DictValue dict = CreateDictionaryForEngine(template_url);
+    const std::string& default_private_guid = profile_->GetPrefs()->GetString(
+        prefs::kSyncedDefaultPrivateSearchProviderGUID);
+    dict.Set("default", default_private_guid == template_url->sync_guid());
     defaults.Append(std::move(dict));
   }
 
@@ -142,7 +139,7 @@ void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
   CHECK_EQ(1U, args.size());
   int index = args[0].GetInt();
   if (index < 0 || static_cast<size_t>(index) >=
-                       list_controller_.table_model()->RowCount()) {
+                       list_controller_.table_model()->engine_count()) {
     return;
   }
 
@@ -153,7 +150,7 @@ void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
       prefs::kSyncedDefaultPrivateSearchProviderGUID,
       template_url->sync_guid());
 
-  OnModelChanged();
+  OnTemplateURLServiceChanged();
 }
 
 base::DictValue BraveSearchEnginesHandler::GetSearchEnginesList() {

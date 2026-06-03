@@ -49,3 +49,22 @@
 # execution. No Brave modifications in chrome/browser/ui/waap/.
 # https://github.com/brave/brave-browser/issues/54031
 -InitialWebUIMetricsMappingBrowserTest.NormalRendererMetricsAreNotMapped
+
+# Upstream Chromium test. Stable upstream (0.2% flake rate over 30 days per
+# LUCI Analysis). The test captures a const reference to a
+# ServiceWorkerRunningInfo map entry, stops the service worker (removing the
+# entry from the map), then reads from the dangling reference. This
+# use-after-free is caught by MSan but does not crash in regular builds because
+# the freed memory typically still contains valid data. No Brave modifications
+# in chrome/browser/extensions/ for this test file.
+# https://github.com/brave/brave-browser/issues/54959
+-ServiceWorkerIdTrackingBrowserTest.WorkerNotStalledInStopping_RemovedByRenderStopNotificationFirst
+
+# Upstream Chromium test. Stable upstream (0.3% flake rate over 30 days per
+# LUCI Analysis). Same dangling reference bug as the sibling test above: the
+# test captures a const reference to a ServiceWorkerRunningInfo map entry,
+# stops the service worker (removing the entry from the map), then passes
+# the dangling sw_info.scope to OnStoppedSync(). Caught by MSan as
+# use-of-uninitialized-value but does not crash in regular builds.
+# https://github.com/brave/brave-browser/issues/55396
+-ServiceWorkerStopTrackingBrowserTest.OnStoppedUpdatesBrowserAndRendererState_AfterRenderStopNotification

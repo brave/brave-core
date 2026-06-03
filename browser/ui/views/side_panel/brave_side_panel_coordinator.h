@@ -9,8 +9,9 @@
 #include <memory>
 #include <optional>
 
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_helper.h"
 
 class BraveBrowserView;
 
@@ -28,8 +29,7 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   void Show(const UniqueKey& entry,
             std::optional<SidePanelOpenTrigger> open_trigger,
             bool suppress_animations) override;
-  void Close(SidePanelEntry::PanelType panel_type,
-             SidePanelEntryHideReason hide_reason,
+  void Close(SidePanelEntryHideReason hide_reason,
              bool suppress_animations) override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
@@ -52,6 +52,11 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   std::optional<SidePanelEntry::Key> GetLastActiveEntryKey() const;
   void UpdateToolbarButtonHighlight(bool side_panel_visible);
   BraveBrowserView* GetBraveBrowserView();
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // Returns true when we want to show brave panel header view for |entry|.
+  bool ShouldShowBraveHeader(SidePanelEntry* entry) const;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_

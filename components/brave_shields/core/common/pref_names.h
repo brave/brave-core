@@ -27,11 +27,14 @@ inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
 inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
 
-inline constexpr char kFBEmbedControlType[] = "brave.fb_embed_default";
+inline constexpr char kMigratedAdblockSocialMediaBlockingSettings[] =
+    "brave.migrated_adblock_social_media_blocking_settings";
+inline constexpr char kFBEmbedControlType[] = "brave.shields.fb_embed_default";
 inline constexpr char kTwitterEmbedControlType[] =
-    "brave.twitter_embed_default";
+    "brave.shields.twitter_embed_default";
 inline constexpr char kLinkedInEmbedControlType[] =
-    "brave.linkedin_embed_default";
+    "brave.shields.linkedin_embed_default";
+
 inline constexpr char kReduceLanguageEnabled[] = "brave.reduce_language";
 
 inline constexpr char kAdBlockOnlyModeEnabled[] =
@@ -43,6 +46,8 @@ inline constexpr char kAdBlockOnlyModePromptDismissed[] =
     "brave.shields.adblock_only_mode_prompt_dismissed";
 inline constexpr char kAllowElementBlockerInPrivateMode[] =
     "brave.allow_element_blocker_in_private_mode";
+inline constexpr char kShredBrowsingHistoryEnabled[] =
+    "brave.shields.shred_browsing_history";
 
 }  // namespace prefs
 }  // namespace brave_shields

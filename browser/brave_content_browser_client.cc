@@ -20,6 +20,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"
+#include "brave/browser/bluetooth/brave_bluetooth_delegate.h"
 #include "brave/browser/brave_account/brave_account_navigation_throttle.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
@@ -87,11 +88,8 @@
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
-#include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
-#include "brave/components/playlist/content/browser/playlist_media_handler.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
-#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
@@ -104,6 +102,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
+#include "chrome/browser/bluetooth/chrome_bluetooth_delegate_impl_client.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
 #include "chrome/browser/chrome_browser_main.h"
@@ -154,6 +153,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/hid/brave_hid_delegate.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
@@ -183,7 +183,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -291,18 +290,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
-#endif  //  BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
-
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -312,12 +303,24 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "components/omnibox/browser/searchbox.mojom.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
+#include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
+#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #endif
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
@@ -339,6 +342,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/email_aliases/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
+#endif
+#endif
+
 namespace {
 
 void BindCosmeticFiltersResourcesOnTaskRunner(
@@ -358,25 +368,6 @@ void BindCosmeticFiltersResources(
   g_brave_browser_process->ad_block_service()->AsyncCall(base::BindOnce(
       &BindCosmeticFiltersResourcesOnTaskRunner, std::move(receiver)));
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-void MaybeBindWalletP3A(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> receiver) {
-  auto* context = frame_host->GetBrowserContext();
-  if (brave_wallet::IsAllowedForContext(frame_host->GetBrowserContext())) {
-    brave_wallet::BraveWalletService* wallet_service =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
-    DCHECK(wallet_service);
-    wallet_service->GetBraveWalletP3A()->Bind(std::move(receiver));
-  } else {
-    // Dummy API to avoid reporting P3A for OTR contexts
-    mojo::MakeSelfOwnedReceiver(
-        std::make_unique<brave_wallet::BraveWalletP3APrivate>(),
-        std::move(receiver));
-  }
-}
-#endif
 
 void BindBraveSearchFallbackHost(
     content::ChildProcessId process_id,
@@ -606,10 +597,12 @@ void BraveContentBrowserClient::
           &render_frame_host));
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
       base::BindRepeating(
           &playlist::PlaylistMediaHandler::BindMediaResponderReceiver,
           &render_frame_host));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   associated_registry.AddInterface<
       cosmetic_filters::mojom::CosmeticFiltersHandler>(base::BindRepeating(
@@ -650,7 +643,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
-        .Add<email_aliases::mojom::EmailAliasesService>();
+        .Add<email_aliases::mojom::EmailAliasesService>()
+        .Add<email_aliases::mojom::EmailAliasesMetrics>();
   }
 #endif
   if (brave_account::features::IsBraveAccountEnabled()) {
@@ -695,22 +689,24 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>();
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  registry.ForWebUI<WalletPageUI>()
+  registry.ForWebUI<brave_wallet::WalletPageUI>()
       .Add<brave_wallet::mojom::PageHandlerFactory>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ;
+#if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ;
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
+#if !BUILDFLAG(IS_ANDROID)
   auto ntp_refresh_registration =
       registry.ForWebUI<BraveNewTabPageUI>()
           .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
@@ -750,8 +746,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #endif
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
-    ntp_refresh_registration.Add<searchbox::mojom::PageHandler>();
-    ntp_registration.Add<searchbox::mojom::PageHandler>();
+    ntp_refresh_registration.Add<searchbox::mojom::PageHandlerFactory>();
+    ntp_registration.Add<searchbox::mojom::PageHandlerFactory>();
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -789,6 +785,11 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_PSST)
+  registry.ForWebUI<psst::BravePsstDialogUI>()
+      .Add<psst::mojom::PsstConsentFactory>();
+#endif
 }
 
 void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
@@ -832,22 +833,32 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
     content::BrowserContext* browser_context) {
-  return WorkerGetBraveShieldSettings(url, browser_context)->farbling_level !=
-         brave_shields::mojom::FarblingLevel::MAXIMUM;
+  return WorkerGetBraveShieldSettings(url, browser_context, nullptr)
+             ->farbling_level != brave_shields::mojom::FarblingLevel::MAXIMUM;
 }
 
 brave_shields::mojom::ShieldsSettingsPtr
 BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
-    content::BrowserContext* browser_context) {
+    content::BrowserContext* browser_context,
+    const content::StoragePartitionConfig* storage_partition_config) {
   const brave_shields::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(
           HostContentSettingsMapFactory::GetForProfile(browser_context), url);
+  std::string additional_entropy;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (storage_partition_config &&
+      base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    additional_entropy =
+        std::string(containers::GetContainerIdFromStoragePartitionConfig(
+            *storage_partition_config));
+  }
+#endif
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
           ? brave_shields::GetFarblingToken(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
-                url)
+                url, base::as_byte_span(additional_entropy))
           : base::Token();
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
@@ -856,19 +867,6 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
       IsJsBlockingEnforced(browser_context, url));
-}
-
-content::ContentBrowserClient::AllowWebBluetoothResult
-BraveContentBrowserClient::AllowWebBluetooth(
-    content::BrowserContext* browser_context,
-    const url::Origin& requesting_origin,
-    const url::Origin& embedding_origin) {
-  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebBluetoothAPI)) {
-    return ContentBrowserClient::AllowWebBluetoothResult::
-        BLOCK_GLOBALLY_DISABLED;
-  }
-  return ChromeContentBrowserClient::AllowWebBluetooth(
-      browser_context, requesting_origin, embedding_origin);
 }
 
 bool BraveContentBrowserClient::CanCreateWindow(
@@ -935,8 +933,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  map->Add<brave_wallet::mojom::BraveWalletP3A>(
-      base::BindRepeating(&MaybeBindWalletP3A));
   if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
     map->Add<brave_wallet::mojom::EthereumProvider>(base::BindRepeating(
@@ -959,11 +955,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(
       base::BindRepeating(&MaybeBindBraveVpnImpl));
-#endif
-
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PageHandlerFactory, AndroidWalletPageUI>(map);
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1504,10 +1495,12 @@ void BraveContentBrowserClient::OverrideWebPreferences(
   PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
           web_contents)) {
     web_prefs->force_cosmetic_filtering = true;
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
@@ -1577,12 +1570,39 @@ bool BraveContentBrowserClient::ShouldInheritStoragePartition(
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
+bool BraveContentBrowserClient::ShouldUseDefaultHostZoomMapForStoragePartition(
+    const content::StoragePartitionConfig& partition_config) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  return base::FeatureList::IsEnabled(containers::features::kContainers) &&
+         containers::IsContainersStoragePartition(partition_config);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+}
+
 bool BraveContentBrowserClient::AllowSignedExchange(
     content::BrowserContext* context) {
   // This override has been introduced due to the deletion of the flag
   // `features::kSignedHTTPExchange`, which was being used to disable signed
   // exchanges.
   return false;
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+content::HidDelegate* BraveContentBrowserClient::GetHidDelegate() {
+  if (!brave_hid_delegate_) {
+    brave_hid_delegate_ = std::make_unique<BraveHidDelegate>();
+  }
+  return brave_hid_delegate_.get();
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+content::BluetoothDelegate* BraveContentBrowserClient::GetBluetoothDelegate() {
+  if (!bluetooth_delegate_) {
+    bluetooth_delegate_ = std::make_unique<BraveBluetoothDelegate>(
+        std::make_unique<ChromeBluetoothDelegateImplClient>());
+  }
+  return bluetooth_delegate_.get();
 }
 
 bool BraveContentBrowserClient::IsJitDisabledForSite(

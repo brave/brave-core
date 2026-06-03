@@ -10,7 +10,7 @@
 
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_types.h"
 
 namespace brave_ads {
 
@@ -25,8 +25,8 @@ struct ClientInfo final {
 
   ~ClientInfo();
 
-  base::DictValue ToValue() const;
-  [[nodiscard]] bool FromValue(const base::DictValue& dict);
+  base::DictValue ToDict() const;
+  [[nodiscard]] bool FromDict(const base::DictValue& dict);
 
   std::string ToJson() const;
   [[nodiscard]] bool FromJson(const std::string& json);

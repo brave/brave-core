@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/user_activity_permission_rule.h"
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util.h"
 
@@ -19,7 +19,7 @@ bool HasUserActivityPermission() {
     return true;
   }
 
-  if (PlatformHelper::GetInstance().GetType() == PlatformType::kIOS) {
+  if (OperatingSystem::GetInstance().GetType() == OperatingSystemType::kIOS) {
     return true;
   }
 

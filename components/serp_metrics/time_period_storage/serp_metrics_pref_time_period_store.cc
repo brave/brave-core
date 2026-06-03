@@ -5,9 +5,10 @@
 
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store.h"
 
+#include <string_view>
 #include <utility>
 
-#include "base/check.h"
+#include "base/values.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -15,52 +16,32 @@ namespace serp_metrics {
 
 SerpMetricsPrefTimePeriodStore::SerpMetricsPrefTimePeriodStore(
     PrefService* prefs,
-    const char* pref_name)
-    : prefs_(prefs), pref_name_(pref_name) {
-  CHECK(prefs);
-  CHECK(pref_name);
-}
-
-SerpMetricsPrefTimePeriodStore::SerpMetricsPrefTimePeriodStore(
-    PrefService* prefs,
-    const char* pref_name,
-    const char* dict_key)
-    : prefs_(prefs), pref_name_(pref_name), dict_key_(dict_key) {
-  CHECK(prefs);
-  CHECK(pref_name);
+    std::string_view pref_name,
+    std::string_view pref_key)
+    : prefs_(prefs), pref_name_(pref_name), pref_key_(pref_key) {
+  CHECK(!pref_name.empty());
+  CHECK(!pref_key.empty());
 }
 
 SerpMetricsPrefTimePeriodStore::~SerpMetricsPrefTimePeriodStore() = default;
 
 const base::ListValue* SerpMetricsPrefTimePeriodStore::Get() {
   const base::Value& pref_value = prefs_->GetValue(pref_name_);
-
-  const base::ListValue* list;
-  if (dict_key_) {
-    list = pref_value.GetDict().FindList(dict_key_);
-  } else {
-    list = pref_value.GetIfList();
+  const base::DictValue* const dict = pref_value.GetIfDict();
+  if (!dict) {
+    return nullptr;
   }
-
-  return list;
+  return dict->FindList(pref_key_);
 }
 
 void SerpMetricsPrefTimePeriodStore::Set(base::ListValue list) {
-  if (dict_key_) {
-    ScopedDictPrefUpdate update(prefs_, pref_name_);
-    update->Set(dict_key_, std::move(list));
-  } else {
-    prefs_->SetList(pref_name_, std::move(list));
-  }
+  ScopedDictPrefUpdate update(prefs_.get(), pref_name_);
+  update->Set(pref_key_, std::move(list));
 }
 
 void SerpMetricsPrefTimePeriodStore::Clear() {
-  if (dict_key_) {
-    ScopedDictPrefUpdate update(prefs_, pref_name_);
-    update->Remove(dict_key_);
-  } else {
-    prefs_->ClearPref(pref_name_);
-  }
+  ScopedDictPrefUpdate update(prefs_.get(), pref_name_);
+  update->Remove(pref_key_);
 }
 
 }  // namespace serp_metrics

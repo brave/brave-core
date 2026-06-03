@@ -20,11 +20,15 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
+namespace brave_ads {
+class ResourceComponentObserver;
+}  // namespace brave_ads
+
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 
-class ResourceComponent final : public ResourceComponentRegistrarDelegate {
+class ResourceComponent : public ResourceComponentRegistrarDelegate {
  public:
   explicit ResourceComponent(
       brave_component_updater::BraveComponent::Delegate* delegate);
@@ -37,8 +41,10 @@ class ResourceComponent final : public ResourceComponentRegistrarDelegate {
   void AddObserver(ResourceComponentObserver* observer);
   void RemoveObserver(ResourceComponentObserver* observer);
 
-  void RegisterComponentForCountryCode(const std::string& country_code);
-  void RegisterComponentForLanguageCode(const std::string& language_code);
+  virtual void RegisterCountryComponent(const std::string& country_code);
+  virtual void UnregisterCountryComponent();
+  virtual void RegisterLanguageComponent(const std::string& language_code);
+  virtual void UnregisterLanguageComponent();
 
   std::optional<base::FilePath> MaybeGetPath(const std::string& id,
                                              int version);

@@ -232,7 +232,9 @@ void PolkadotTransactionStatusTask::OnGetEvents(
   }
 
   auto pubkey = keyring_service_->GetPolkadotPubKey(sender_account_id_);
-  CHECK(pubkey);
+  if (!pubkey) {
+    return HandleError(WalletInternalErrorMessage());
+  }
 
   std::array<uint8_t, 16> fee_bytes = {};
 

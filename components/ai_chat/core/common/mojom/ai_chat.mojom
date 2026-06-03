@@ -39,6 +39,8 @@ const string kBraveNewsSearchToolName = "brave_news_search";
 const string kBraveWebSearchToolName = "brave_web_search";
 const string kBraveFaqsSearchToolName = "brave_faqs_search";
 const string kDeepResearchToolName = "deep_research";
+// Currently used for NEAR E2EE only
+const string kWebContextSearchToolName = "web_context_search";
 
 // Tool artifact types
 const string kLineChartArtifactType = "line_chart";
@@ -205,10 +207,6 @@ interface AIChatUIHandler {
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
   ShowSoftKeyboard();
-  // use_media_capture is used on Android only currently. It could
-  // be used on desktop as well in the future when a camera support is added.
-  UploadFile(bool use_media_capture)
-      => (array<UploadedFile>? uploaded_files);
 
   // Process image files using backend processing (resizing and sanitization)
   ProcessImageFile(array<uint8> file_data, string filename)
@@ -263,9 +261,6 @@ interface ChatUI {
   // if any.
   OnNewDefaultConversation(int32? content_id);
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
-  // Notifies that files are selected between AIChatUIHandler::UploadFile() is
-  // called and return of uploaded files after processed.
-  OnUploadFilesSelected();
 };
 
 struct ConversationState {
@@ -283,6 +278,7 @@ struct ConversationState {
 
   array<AssociatedContent> associated_content;
   APIError error;
+  APIErrorDetails? error_details;
   // Indicates whether the conversation is temporary which would be in-memory
   // only and not persisted in database.
   bool temporary = false;
@@ -291,6 +287,9 @@ struct ConversationState {
 
   // State of the current task (tool execution loop)
   TaskState tool_use_task_state = kNone;
+
+  // Which of the available capabilities are enabled for this conversation
+  array<ConversationCapability> capabilities_enabled;
 };
 
 // Browser-side handler for a Conversation
@@ -314,7 +313,8 @@ interface ConversationHandler {
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
-  SubmitHumanConversationEntryWithSkill(string input, string skill_id);
+  SubmitHumanConversationEntryWithSkill(
+      string input, string skill_id, array<UploadedFile>? uploaded_files);
 
   // Get associated page information. If there is none then |associated_content|
   // will be empty.
@@ -368,7 +368,7 @@ interface ConversationUI {
 
   OnAPIRequestInProgress(bool is_request_in_progress);
 
-  OnAPIResponseError(APIError error);
+  OnAPIResponseError(APIError api_error, APIErrorDetails? details);
 
   OnTaskStateChanged(TaskState task_state);
 

@@ -9,6 +9,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import useMediaQuery from '$web-common/useMediaQuery'
 import * as Mojom from '../../common/mojom'
 import { AIChatAPI } from '../api/ai_chat_api'
+import { initiallyTabAssociated } from './active_chat_context'
 
 export interface ConversationEntriesProps {
   /* Class to put on the element in order to customize scroll */
@@ -51,16 +52,19 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
   const { getConversationsData, isPlaceholderData: isConversationsLoading } =
     api.useGetConversations()
 
+  const isStandalone = api.useIsStandalone().data
+
   const store = {
     api: props.api,
-    initialized:
-      api.isStandalone.current !== undefined && !isConversationsLoading,
+    initialized: isStandalone !== undefined && !isConversationsLoading,
     isMobile: loadTimeData.getBoolean('isMobile'),
     isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
     isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean(
       'isAIChatAgentProfileFeatureEnabled',
     ),
     isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
+    isGlobalPanel:
+      !initiallyTabAssociated && api.isStandalone.current() === false,
 
     // TODO(https://github.com/brave/brave-browser/issues/52541): consumers
     // should consume directly from
@@ -92,7 +96,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
      */
     actionList: api.useGetActionMenuList().data,
 
-    isStandalone: api.useIsStandalone().data,
+    isStandalone,
 
     /**
      * @deprecated use api.useGetConversations() instead

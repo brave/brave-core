@@ -28,6 +28,7 @@
   width: 100%;
   border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-m);
+  margin-top: calc(var(--cr-section-padding) / 2);
   margin-bottom: calc(var(--cr-section-padding) / 2);
 }
 
@@ -48,7 +49,7 @@
   align-items: center;
   max-width: calc(100% - 90px);
   gap: var(--leo-spacing-xl);
-  font:var(--leo-font-default-regular);
+  font: var(--leo-font-default-regular);
 }
 
 .container .icon-and-label settings-brave-content-containers-icon {
@@ -82,7 +83,7 @@
      corners. */
   --cr-input-border-radius: var(--leo-radius-m);
 
-  /* Avoid a second bottom line on top of the full border. This doesn't 
+  /* Avoid a second bottom line on top of the full border. This doesn't
      highlight the focus highlight. */
   --cr-input-border-bottom: none;
 
@@ -107,3 +108,6 @@
   min-width: fit-content;
 }
 
+.containers-add-row {
+  padding-block-end: calc(var(--cr-section-padding) / 2);
+}

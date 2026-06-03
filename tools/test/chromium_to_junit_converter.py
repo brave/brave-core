@@ -52,8 +52,7 @@ class ChromiumToJUnitConverter:
         # Calculate totals
         total_passed = len(passed_tests)
         total_failed = len(failed_tests)
-        has_execution_error = bool(step_text
-                                   and 'TEST EXECUTE FAILED' in step_text)
+        has_execution_error = bool(step_text)
         total_tests = total_passed + total_failed + (1 if has_execution_error
                                                      else 0)
 

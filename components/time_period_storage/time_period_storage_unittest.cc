@@ -342,20 +342,8 @@ TEST_P(TimePeriodStorageTest, DstOffsetExpandsQueryRange) {
             expected_saving);
 }
 
-// The test is disabled on Windows because `ScopedTimezoneForTesting` relies
-// on `ScopedLibcTimezoneOverride`, which is a no-op for IANA timezone
-// identifiers on Windows, causing spurious failures.
-#if BUILDFLAG(IS_WIN)
-#define MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition \
-  DISABLED_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition
-#else
-#define MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition \
-  GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition
-#endif
-
-TEST_P(
-    TimePeriodStorageTest,
-    MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition) {
+TEST_P(TimePeriodStorageTest,
+       GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition) {
   // America/New_York DST starts in 2050 on March 13 (the second Sunday of
   // March). Clocks advance at 02:00 EST (07:00 UTC) to 03:00 EDT. These
   // dates are safely after the fixture's mock-time start of 2050-01-04.

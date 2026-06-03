@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_account/endpoints/verify_delete.h"
 
+#include <optional>
+
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
@@ -36,7 +38,6 @@ const VerifyDeleteTestCase* Success() {
        .expected_response = {.net_error = net::OK,
                              .status_code = net::HTTP_NO_CONTENT,
                              .body = std::nullopt}});
-
   return kSuccess.get();
 }
 
@@ -51,19 +52,36 @@ const VerifyDeleteTestCase* Success() {
 // - HTTP 5XX:
 //   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const VerifyDeleteTestCase* ApplicationJsonError() {
-  static const base::NoDestructor<VerifyDeleteTestCase> kApplicationJsonError(
-      {.test_name = "application_json_error",
-       .http_status_code = net::HTTP_BAD_REQUEST,
-       .raw_response_body =
-           R"({ "code": null,
-                "error": "Bad Request",
-                "status": 400 })",
-       .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_BAD_REQUEST,
-           .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
-  return kApplicationJsonError.get();
+const VerifyDeleteTestCase* ApplicationJsonErrorCodeIsNull() {
+  static const base::NoDestructor<VerifyDeleteTestCase>
+      kApplicationJsonErrorCodeIsNull(
+          {.test_name = "application_json_error_code_is_null",
+           .http_status_code = net::HTTP_BAD_REQUEST,
+           .raw_response_body =
+               R"({ "code": null,
+                    "error": "Bad Request",
+                    "status": 400 })",
+           .expected_response = {
+               .net_error = net::OK,
+               .status_code = net::HTTP_BAD_REQUEST,
+               .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
+  return kApplicationJsonErrorCodeIsNull.get();
+}
+
+const VerifyDeleteTestCase* ApplicationJsonErrorCodeIsNotNull() {
+  static const base::NoDestructor<VerifyDeleteTestCase>
+      kApplicationJsonErrorCodeIsNotNull(
+          {.test_name = "application_json_error_code_is_not_null",
+           .http_status_code = net::HTTP_BAD_REQUEST,
+           .raw_response_body =
+               R"({ "code": 13003,
+                    "error": "intent not allowed",
+                    "status": 400 })",
+           .expected_response = {
+               .net_error = net::OK,
+               .status_code = net::HTTP_BAD_REQUEST,
+               .body = base::unexpected(VerifyDelete::Response::ErrorBody())}});
+  return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
 // non-application/json errors:
@@ -92,7 +110,8 @@ TEST_P(VerifyDeleteTest, HandlesReplies) {
 INSTANTIATE_TEST_SUITE_P(VerifyDeleteTestCases,
                          VerifyDeleteTest,
                          testing::Values(Success(),
-                                         ApplicationJsonError(),
+                                         ApplicationJsonErrorCodeIsNull(),
+                                         ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
                          VerifyDeleteTest::kNameGenerator);
 

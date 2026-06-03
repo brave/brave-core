@@ -239,6 +239,38 @@ class DictValue;
 //          }
 //        ]
 //
+//  9. "[virtual]:feature=<feature_name>|is_overridden"
+//     - Returns "1" if the named feature flag has been explicitly overridden
+//       (via Griffin, a command-line switch, or a compile-time default
+//       override), or "0" otherwise. Any feature name is supported, including
+//       future ones not yet known at build time. For example, the following
+//       condition matcher will match when `NotificationAdFeature` is
+//       overridden:
+//
+//        "conditionMatchers": [
+//          {
+//            "condition": "1",
+//            "prefPath":
+//            "[virtual]:feature=NotificationAdFeature|is_overridden"
+//          }
+//        ]
+//
+//  10. "[virtual]:feature=<feature_name>|params|<param_name>"
+//      - Returns the string value of the named field trial param for the given
+//        feature, or does not match if the feature has no associated trial or
+//        the param does not exist. Combine with numerical operators to compare
+//        numeric param values. For example, the following condition matcher
+//        will match when the `version` param for `NotificationAdServing`
+//        equals 2:
+//
+//        "conditionMatchers": [
+//          {
+//            "condition": "[R=]:2",
+//            "prefPath":
+//            "[virtual]:feature=NotificationAdServing|params|version"
+//          }
+//        ]
+//
 //  NOTE: To identify condition matchers, first create a copy of your
 //  brave://local-state and `Default/Preferences` files. Next, change a
 //  brave://setting or enable a feature, quit the browser and then compare the

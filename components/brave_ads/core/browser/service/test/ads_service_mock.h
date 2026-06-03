@@ -29,6 +29,9 @@ class AdsServiceMock : public AdsService {
               AddBatAdsObserver,
               (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>));
 
+  MOCK_METHOD(bool, IsIneligibleToStart, (), (const));
+  MOCK_METHOD(bool, IsInitialized, (), (const));
+
   MOCK_METHOD(bool, IsBrowserUpgradeRequiredToServeAds, (), (const));
 
   MOCK_METHOD(int64_t, GetMaximumNotificationAdsPerHour, (), (const));

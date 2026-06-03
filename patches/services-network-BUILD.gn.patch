@@ -1,0 +1,12 @@
+diff --git a/services/network/BUILD.gn b/services/network/BUILD.gn
+index 9c439db5a86d0f08ce41c5586d48f3d32eda90d5..7748d9b3f854d0aba3c0d7ee627795898c9a226d 100644
+--- a/services/network/BUILD.gn
++++ b/services/network/BUILD.gn
+@@ -393,6 +393,7 @@ component("network_service") {
+     "//third_party/zstd:decompress",
+     "//url",
+   ]
++  import("//brave/services/network/sources.gni") deps += brave_services_network_deps
+ 
+   if (is_linux || is_chromeos) {
+     deps += [

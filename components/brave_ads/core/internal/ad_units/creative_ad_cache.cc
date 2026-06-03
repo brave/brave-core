@@ -35,12 +35,10 @@ std::optional<CreativeAdVariant> Clone(
 }  // namespace
 
 CreativeAdCache::CreativeAdCache() {
-  TabManager::GetInstance().AddObserver(this);
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-CreativeAdCache::~CreativeAdCache() {
-  TabManager::GetInstance().RemoveObserver(this);
-}
+CreativeAdCache::~CreativeAdCache() = default;
 
 void CreativeAdCache::MaybeAdd(const std::string& placement_id,
                                CreativeAdVariant creative_ad_variant) {

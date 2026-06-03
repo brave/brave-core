@@ -26,6 +26,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/types/optional_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -38,7 +39,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
-#include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
@@ -367,8 +367,6 @@ JsonRpcService::JsonRpcService(
   api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
       GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
 
-  nft_metadata_fetcher_ =
-      std::make_unique<NftMetadataFetcher>(url_loader_factory, this, prefs_);
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
 }
 
@@ -1611,9 +1609,7 @@ void JsonRpcService::OnEnsGetEthAddrTaskDone(
 void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                    SnsGetSolAddrCallback callback) {
   if (!IsValidSnsDomain(domain)) {
-    std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1627,47 +1623,29 @@ void JsonRpcService::SnsGetSolAddr(const std::string& domain,
                                       base::Unretained(this));
 
   sns_get_sol_addr_tasks_.AddTask(
-      std::make_unique<SnsResolverTask>(
-          std::move(done_callback), api_request_helper_.get(), domain,
-          NetworkManager::GetSnsRpcUrl(),
-          SnsResolverTask::TaskType::kResolveWalletAddress),
+      std::make_unique<SnsResolverTask>(std::move(done_callback),
+                                        api_request_helper_.get(), domain,
+                                        NetworkManager::GetSnsRpcUrl()),
       std::move(callback));
 }
 
 void JsonRpcService::OnSnsGetSolAddrTaskDone(
     SnsResolverTask* task,
-    std::optional<SnsResolverTaskResult> task_result,
-    std::optional<SnsResolverTaskError> task_error) {
+    base::expected<SolanaAddress, std::string> result) {
   auto callbacks = sns_get_sol_addr_tasks_.TaskDone(task);
-  if (callbacks.empty()) {
-    return;
-  }
 
-  std::string address;
-  mojom::SolanaProviderError error =
-      task_error ? task_error->error : mojom::SolanaProviderError::kSuccess;
-  std::string error_message = task_error ? task_error->error_message : "";
-
-  if (task_result) {
-    if (task_result->resolved_address.IsValid()) {
-      address = task_result->resolved_address.ToBase58();
-    } else {
-      error = mojom::SolanaProviderError::kInvalidParams;
-      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
-    }
-  }
+  auto string_result = result.transform(
+      [](const SolanaAddress& addr) { return addr.ToBase58(); });
 
   for (auto& cb : callbacks) {
-    std::move(cb).Run(address, error, error_message);
+    std::move(cb).Run(base::OptionalFromExpected(string_result));
   }
 }
 
 void JsonRpcService::SnsResolveHost(const std::string& domain,
                                     SnsResolveHostCallback callback) {
   if (!IsValidSnsDomain(domain)) {
-    std::move(callback).Run(
-        std::nullopt, mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1683,36 +1661,17 @@ void JsonRpcService::SnsResolveHost(const std::string& domain,
   sns_resolve_host_tasks_.AddTask(
       std::make_unique<SnsResolverTask>(std::move(done_callback),
                                         api_request_helper_.get(), domain,
-                                        NetworkManager::GetSnsRpcUrl(),
-                                        SnsResolverTask::TaskType::kResolveUrl),
+                                        NetworkManager::GetSnsRpcUrl()),
       std::move(callback));
 }
 
 void JsonRpcService::OnSnsResolveHostTaskDone(
     SnsResolverTask* task,
-    std::optional<SnsResolverTaskResult> task_result,
-    std::optional<SnsResolverTaskError> task_error) {
+    base::expected<GURL, std::string> result) {
   auto callbacks = sns_resolve_host_tasks_.TaskDone(task);
-  if (callbacks.empty()) {
-    return;
-  }
-
-  GURL url;
-  mojom::SolanaProviderError error =
-      task_error ? task_error->error : mojom::SolanaProviderError::kSuccess;
-  std::string error_message = task_error ? task_error->error_message : "";
-
-  if (task_result) {
-    if (task_result->resolved_url.is_valid()) {
-      url = task_result->resolved_url;
-    } else {
-      error = mojom::SolanaProviderError::kInternalError;
-      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-    }
-  }
 
   for (auto& cb : callbacks) {
-    std::move(cb).Run(url, error, error_message);
+    std::move(cb).Run(base::OptionalFromExpected(result));
   }
 }
 
@@ -2212,106 +2171,6 @@ void JsonRpcService::ContinueGetERC721TokenBalance(
   bool is_owner = owner_address == account_address;
   std::move(callback).Run(is_owner ? "0x1" : "0x0",
                           mojom::ProviderError::kSuccess, "");
-}
-
-void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
-                                       const std::string& token_id,
-                                       const std::string& chain_id,
-                                       GetERC721MetadataCallback callback) {
-  nft_metadata_fetcher_->GetEthTokenMetadata(
-      contract_address, token_id, chain_id, kERC721MetadataInterfaceId,
-      std::move(callback));
-}
-
-void JsonRpcService::GetERC1155Metadata(const std::string& contract_address,
-                                        const std::string& token_id,
-                                        const std::string& chain_id,
-                                        GetERC1155MetadataCallback callback) {
-  nft_metadata_fetcher_->GetEthTokenMetadata(
-      contract_address, token_id, chain_id, kERC1155MetadataInterfaceId,
-      std::move(callback));
-}
-
-void JsonRpcService::GetEthTokenUri(const std::string& chain_id,
-                                    const std::string& contract_address,
-                                    const std::string& token_id,
-                                    const std::string& interface_id,
-                                    GetEthTokenUriCallback callback) {
-  auto network_url = GetNetworkURL(chain_id, mojom::CoinType::ETH);
-  if (!network_url.is_valid()) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  if (!EthAddress::IsValidAddress(contract_address)) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  uint256_t token_id_uint = 0;
-  if (!HexValueToUint256(token_id, &token_id_uint)) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  std::string function_signature;
-  if (interface_id == kERC721MetadataInterfaceId) {
-    if (!erc721::TokenUri(token_id_uint, &function_signature)) {
-      std::move(callback).Run(
-          GURL(), mojom::ProviderError::kInvalidParams,
-          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-      return;
-    }
-  } else if (interface_id == kERC1155MetadataInterfaceId) {
-    if (!erc1155::Uri(token_id_uint, &function_signature)) {
-      std::move(callback).Run(
-          GURL(), mojom::ProviderError::kInvalidParams,
-          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-      return;
-    }
-  } else {
-    // Unknown inteface ID
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetEthTokenUri,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  RequestInternal(eth::GetCallPayload(contract_address, function_signature),
-                  true, network_url, std::move(internal_callback));
-}
-
-void JsonRpcService::OnGetEthTokenUri(GetEthTokenUriCallback callback,
-                                      APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-
-  // Parse response JSON that wraps the result
-  GURL url;
-  if (!eth::ParseTokenUri(api_request_result.value_body(), &url)) {
-    mojom::ProviderError error;
-    std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
-                                           &error, &error_message);
-    std::move(callback).Run(GURL(), error, error_message);
-    return;
-  }
-
-  std::move(callback).Run(url, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetERC1155TokenBalance(
@@ -2962,13 +2821,6 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
-                                         const std::string& token_mint_address,
-                                         GetSolTokenMetadataCallback callback) {
-  nft_metadata_fetcher_->GetSolTokenMetadata(chain_id, token_mint_address,
-                                             std::move(callback));
-}
-
 void JsonRpcService::GetNftMetadatas(
     std::vector<mojom::NftIdentifierPtr> nft_identifiers,
     GetNftMetadatasCallback callback) {
@@ -3572,25 +3424,13 @@ void JsonRpcService::GetSPLTokenProgramByMint(
     return;
   }
 
-  mojom::BlockchainTokenPtr user_asset;
-  if ((user_asset = GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id,
-                                 mint_address, "", false, false, false))) {
-    if (user_asset->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
-      std::move(callback).Run(user_asset->spl_token_program,
-                              mojom::SolanaProviderError::kSuccess, "");
-      return;
-    }
-  } else if (auto token = BlockchainRegistry::GetInstance()->GetTokenByAddress(
-                 chain_id, mojom::CoinType::SOL, mint_address)) {
-    // In theory token in registry won't have unknown value appears, but we let
-    // it fall through to fetch from network as it won't hurt if that does
-    // happen somehow.
-    if (token->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
-      std::move(callback).Run(token->spl_token_program,
-                              mojom::SolanaProviderError::kSuccess, "");
-      return;
-    }
-  }
+  // Always read the mint account's owner from the chain. Cached
+  // `spl_token_program` values in user assets or the token list can be wrong
+  // (e.g. SPL Token vs Token-2022). A wrong program derives the wrong ATA and
+  // balance checks then treat a missing account as 0.
+  mojom::BlockchainTokenPtr user_asset =
+      GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id, mint_address, "",
+                   false, false, false);
 
   auto internal_callback =
       base::BindOnce(&JsonRpcService::ContinueGetSPLTokenProgramByMint,

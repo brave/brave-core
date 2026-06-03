@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Update the two EXPECT_EQ pairs that assert thumbs up/down
+selections are reachable.
+
+Brave hides those buttons unconditionally on HISTORY_EMBEDDINGS matches
+(see omnibox_popup_selection.cc.toml), so the popup selection traversal
+wraps to (line=0, NORMAL) instead of stepping into a thumbs button.
+The surrounding test structure — including the third sub-block that
+starts from FOCUSED_BUTTON_THUMBS_DOWN and already expects (0, NORMAL)
+— is left intact, so the test continues to cover keyword-mode and
+state traversal end-to-end.
+
+The pattern only matches `EXPECT_EQ(next.line, 2u);` immediately
+followed by an `EXPECT_EQ(next.state, ...THUMBS_UP|THUMBS_DOWN);`, so
+it tolerates whitespace/line-wrap changes and is unaffected by edits
+to the surrounding `next = ...` assignments.
+'''
+re_pattern = 'EXPECT_EQ\(next\.line, 2u\);\s+EXPECT_EQ\(next\.state, LineState::FOCUSED_BUTTON_THUMBS_(?:UP|DOWN)\);'
+replace = '''EXPECT_EQ(next.line, 0u);
+  EXPECT_EQ(next.state, LineState::NORMAL);'''
+count = 2

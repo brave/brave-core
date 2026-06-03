@@ -14,7 +14,7 @@ import {
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const mockEmailAliasesPanelHandler: EmailAliasesPanelHandlerInterface = {
-  onAliaseCreated: jest.fn(),
+  onAliasCreated: jest.fn(),
   onManageAliases: jest.fn(),
   onCancelAliasCreation: jest.fn(),
 }

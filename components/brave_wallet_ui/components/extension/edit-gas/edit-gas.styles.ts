@@ -1,10 +1,13 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
+import { Text } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -27,46 +30,33 @@ export const FormColumn = styled.div`
   align-self: center;
 `
 
-export const InputLabel = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  color: ${(p) => p.theme.color.text02};
+export const InputLabel = styled(Text)`
   margin-bottom: 6px;
 `
 
 export const Input = styled.input<{
   hasError?: boolean
 }>`
+  font: ${leo.font.default.regular};
+
   box-sizing: border-box;
   outline: none;
   width: 100%;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   box-shadow: none;
   border-style: solid;
   border-width: 1px;
   border-color: ${(p) =>
-    p.hasError
-      ? leo.color.systemfeedback.errorIcon
-      : p.theme.color.interactive08};
+    p.hasError ? leo.color.systemfeedback.errorIcon : leo.color.neutral[30]};
   border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
+    color: ${leo.color.text.tertiary};
   }
   :focus {
     outline: none;
@@ -91,21 +81,12 @@ export const ButtonRow = styled.div`
   gap: 8px;
 `
 
-export const Description = styled.span`
+export const Description = styled(Text)`
   width: 100%;
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: flex-start;
-  color: ${(p) => p.theme.color.text02};
 `
 
-export const CurrentBaseText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+export const CurrentBaseText = styled(Text)`
   margin-bottom: 10px;
 `
 
@@ -115,16 +96,8 @@ export const CurrentBaseRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: 1px solid ${leo.color.divider.subtle};
   margin-bottom: 12px;
-`
-
-export const MaximumFeeText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.01em;
 `
 
 export const MaximumFeeRow = styled.div`
@@ -143,13 +116,7 @@ export const SliderWrapper = styled.div`
   width: 100%;
 `
 
-export const SliderValue = styled.span`
-  font-family: Poppins;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.01em;
+export const SliderValue = styled(Text)`
   margin-top: 6px;
   margin-bottom: 16px;
 `
@@ -180,7 +147,7 @@ export const GasSlider = styled.input`
   &::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
-    background: ${(p) => p.theme.color.interactive05};
+    background: ${leo.color.button.background};
     border-radius: 10px;
   }
   &::-webkit-slider-thumb {
@@ -188,12 +155,12 @@ export const GasSlider = styled.input`
     appearance: none;
     height: 24px;
     width: 24px;
-    background: ${(p) => p.theme.color.background01};
+    background: ${leo.color.page.background};
     border-radius: 100%;
-    border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+    border: 1px solid ${leo.color.neutral[30]};
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: ${(p) => makeLongShadow(p.theme.color.divider01, '-9px')};
+    box-shadow: ${makeLongShadow(leo.color.divider.subtle, '-9px')};
   }
   &::-webkit-progress-value {
     background: orange;
@@ -203,7 +170,7 @@ export const GasSlider = styled.input`
   &:hover,
   &:focus {
     &::-webkit-slider-thumb {
-      background: ${(p) => p.theme.color.background01};
+      background: ${leo.color.page.background};
     }
   }
 `
@@ -216,19 +183,7 @@ export const SliderLabelRow = styled.div`
   width: 100%;
 `
 
-export const SliderLabel = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
-  letter-spacing: 0.01em;
-`
-
-export const WarningText = styled.span`
-  font-family: Poppins;
-  letter-spacing: 0.01em;
-  font-size: 12px;
-  color: ${(p) => p.theme.color.errorText};
+export const WarningText = styled(Text)`
   word-break: break-word;
   margin-bottom: 12px;
 `

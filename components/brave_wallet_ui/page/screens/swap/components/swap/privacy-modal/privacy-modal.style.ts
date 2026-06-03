@@ -3,26 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { Column } from '../../shared-swap.styles'
 
 export const Section = styled(Column)`
-  background-color: ${(p) => p.theme.color.background01};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.page.background};
+  border: 1px solid ${leo.color.divider.subtle};
   border-radius: 8px;
 `
 
 export const Link = styled.a`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.default.regular};
+  color: ${leo.color.button.background};
   text-decoration: none;
   display: block;
   cursor: pointer;
-  @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.color.interactive06};
-  }
 `

@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blockerar inloggnings-, meny-, kommentars- och videoinformationselement på youtube.com.</translation>
 <translation id="8531835121131500698">Blockera YouTube Shorts</translation>
 <translation id="2167271714269158912">Blockerar Shorts-videor från sidan Hem, Populärt och sökresultaten på youtube.com.</translation>
+<translation id="2564435705466025309">Blockera YouTube-videor med automatisk dubbing</translation>
+<translation id="3603500459037204525">Blockerar automatiskt dubbade videor från att visas på youtube.com-startsidan &amp; sökresultaten.</translation>
+<translation id="4067265130987656010">Blockera YouTube-miniatyrer</translation>
+<translation id="3034711349887440574">Blockerar miniatyrer från att visas på youtube.com-startsidan &amp; sökresultaten.</translation>
+<translation id="8741919213635379855">Blockera YouTube Playables</translation>
+<translation id="2216551241986578034">Blockerar Playables från att visas på youtube.com-startsidan &amp; sökresultaten.</translation>
+<translation id="9038505474874975130">Blockera YouTube-videor endast för medlemmar</translation>
+<translation id="3084239516382196983">Blockerar videor endast för medlemmar från att visas på youtube.com-startsidan &amp; sökresultaten.</translation>
 <translation id="6052725679982758334">Blockering av sociala medier</translation>
 <translation id="7498695072878479744">Tillåt Googles inloggningsknappar på tredjepartssajter</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
@@ -186,20 +194,12 @@
 <translation id="6587448235155023666">Dina ändringar träder i kraft nästa gång du startar om Brave</translation>
 <translation id="8701563696941209024">STARTA OM NU</translation>
 <translation id="834487290629916192">SENARE</translation>
-<translation id="4117451092682672487">Sekretess har gjorts enkelt.</translation>
-<translation id="7909375417585209817">Om du gör Brave till standard öppnas alla länkar som du trycker på med Braves sekretesskydd.</translation>
 <translation id="763369711159699222">Hjälp till att göra Brave bättre</translation>
 <translation id="8025937231644975408">Låt oss veta vilka funktioner du gillar mest.</translation>
-<translation id="6718362830686703942">Skicka diagnostikrapporter om du upplever en krasch eller frysning.</translation>
-<translation id="8616157231067364693">Dela anonyma produktinsikter om vilka funktioner som Brave-användarna använder.</translation>
 <translation id="2888496576732880897">Hjälp Brave Sök att växa</translation>
 <translation id="7198716519700700181">Blockera avbrott när du streamar</translation>
 <translation id="7044431516245362795">Gå in på Web Discovery Project för att hjälpa till att utöka indexet och förbättra sökresultaten. <ph name="LEARN_MORE_START"/>Läs mer.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave-logotyp</translation>
-<translation id="1389386068457132299">Introduktionsbakgrund</translation>
-<translation id="5101985748360228609">Översta lövdekorationen</translation>
-<translation id="5270920361877570459">Nedersta lövdekorationen</translation>
-<translation id="4021716437419160885">Bläddra nedåt</translation>
 <translation id="4767173360729868049">Illustrationen Hjälp Brave Sök</translation>
 <translation id="8241918461631453498">Illustrationen Blockera avbrott</translation>
 <translation id="8213310572767907663">Illustrationen Gör Brave bättre</translation>
@@ -215,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> och andra annonser och spårare blockerades</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annonser och spårare har blockerats</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
-<translation id="6165508094623778733">Lär dig mer</translation>
 <translation id="986879628471635371">Felsökning onboarding</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Tjäna <ph name="TOKEN"/>s</translation>
@@ -365,7 +364,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="944340256927461196">Lämna inget spår på din enhet</translation>
 <translation id="2063044449012253966">Webbplatser som du besöker i privata fönster visas inte i din historik. Cookies, formulärdata och webbplatsdata försvinner när alla privata fönster är stängda.</translation>
 <translation id="7395764193745523646">Synlighet vid surfning</translation>
-<translation id="8670344404057978375">Observera att även i privata fönster kan din surfaktivitet fortfarande vara synlig för din Internetleverantör, nätverksobservatörer eller din arbetsgivare (om du använder en enhet/nätverk på jobbet).</translation>
+<translation id="8435098045013317895">Observera att även i privata fönster kan din surfaktivitet fortfarande vara synlig för din Internetleverantör, nätverksobservatörer eller din arbetsgivare (om du använder en enhet/nätverk på jobbet).</translation>
 <translation id="1413177583895309156">Brave VPN krypterar och skyddar allt du gör på nätet, även utanför Brave-webbläsaren.</translation>
 <translation id="3974348661685061050">Testa gratis i 7 dagar</translation>
 <translation id="5789441016350810005">Brave Ads skickas när webbläsaren är i bakgrunden</translation>
@@ -506,6 +505,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2718046830255553131">Data för integritetsrapporter har rensats.</translation>
 <translation id="8376263745431603066">Aktivera "Nattläge" (experimentellt)</translation>
 <translation id="1383876407941801731">Sök</translation>
+<translation id="6165508094623778733">Lär dig mer</translation>
 <translation id="13296465911709339">Din text har kopierats till urklipp.</translation>
 <translation id="2735834606413553397">Den offentliga adressen har kopierats till urklipp.</translation>
 <translation id="2977461003134694205">Sekretessstatistik</translation>
@@ -966,23 +966,24 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="7659483790930268440">Index för adressökningstabell:</translation>
 <translation id="5494920125229734069">Markera alla</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="2935698011275148880">Modigt ursprung</translation>
 <translation id="944736176598169208">Belöningar</translation>
-<translation id="4272190451231642425">Skicka automatiskt kraschrapporter</translation>
 <translation id="1199170151481311646">Integritetsskyddande analys</translation>
 <translation id="1706715315466634757">Aliasnamn för e-post</translation>
 <translation id="6709133671862442373">Nyheter</translation>
 <translation id="5990642573624858459">Rapportering av statistik</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Återställ till standardvärden</translation>
-<translation id="4922034974043704366">Denna funktion är aktiverad eftersom du har valt att använda den</translation>
 <translation id="2587535830241068901">Anpassa din webbläsare samtidigt som du stöder Brave</translation>
-<translation id="7235314227387539944">Brave Origin är en betald version av webbläsaren för användare som inte behöver alla funktioner som stöder Brave som en verksamhet, men som fortfarande vill ha den sekretess som bara Brave erbjuder. Origin-användare kommer att fortsätta att dra nytta av vår branschledande sekretess, annonsblockering och hastighet (via Skydd), samt regelbundna programuppdateringar, Chromium-patchar och säkerhets- och sekretesspärbättringar. Origin tar bort de flesta andra funktioner från webbläsaren.</translation>
-<translation id="7941943775131052130">Observera att ett köp av Brave Origin också kommer att inkludera åtkomst till Brave Sök Premium, eftersom Origin tar bort annonser från sökresultatsidan i Brave Sök.</translation>
+<translation id="123297831435065577">Brave Origin är en betald version av webbläsaren för användare som inte behöver alla funktioner som stöder Brave som en verksamhet, men som fortfarande vill ha den sekretess som bara Brave erbjuder. Origin-användare kommer att fortsätta att dra nytta av vår branschledande sekretess, annonsblockering och hastighet (via Skydd), samt regelbundna programuppdateringar, Chromium-patchar och säkerhets- och sekretessförbättringar.</translation>
 <translation id="2573819149217596923">Ändra Brave-funktioner</translation>
 <translation id="7415416427817229128">Aktivering eller inaktivering av en Brave-funktion kräver att webbläsaren startas om för att ändringar ska tillämpas. Vill du starta om nu?</translation>
 <translation id="2256115617011615191">Starta om nu</translation>
+<translation id="2160089182263405907">Inaktiverar funktioner</translation>
+<translation id="7530313002494358590">Aktivering eller inaktivering av en Brave-funktion kräver att webbläsaren startas om för att ändringar ska tillämpas. Tryck på <ph name="BEGIN_BOLD"/>Starta om nu<ph name="END_BOLD"/> när Brave Origin har slutat uppdateras.</translation>
+<translation id="1028940738207645746">Vill du återställa alla inställningar till standard?</translation>
+<translation id="5939518447894949180">Återställ</translation>
 <translation id="8554205386170195281">Köp</translation>
-<translation id="7071521146534760487">Hantera konto</translation>
 <translation id="8613144770663526433">Logga in med Brave Wallet</translation>
 <translation id="3696514931437952995">Du loggar in på <ph name="ORIGIN"/>. Brave wallet kommer att dela din plånboksadress med <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Visa information</translation>
@@ -1017,7 +1018,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1309636029062006520">Skapa spellistor med dina favoritljud och videor och spela upp dem när som helst, var som helst.</translation>
 <translation id="7899390017499980820">Lägg till Spellista-knapp</translation>
 <translation id="6901152954398668317">Visa eller dölj knappen "Lägg till i spellista" för snabb åtkomst till att lägga till eller ta bort media.</translation>
-<translation id="5939518447894949180">Återställ</translation>
 <translation id="8199028711686989861">Ta bort alla videor från spellistan, inklusive lagring i offlineläge.</translation>
 <translation id="4590997608186539865">Spellista</translation>
 <translation id="7525067979554623046">Skapa</translation>
@@ -1111,9 +1111,9 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6261139507111008244">Stödja vårt uppdrag &amp; arbete med öppen källkod</translation>
 <translation id="6073373503121903099">Minimalistiskt webbläsargränssnitt med fokus på Brave Skydd</translation>
 <translation id="2267973897341040743">Behåll kärnan adblock, integritet, &amp; hastighet</translation>
-<translation id="3339535734679532460">Engångsköp, ingen ytterligare prenumerationskostnad</translation>
-<translation id="2805615640226281689">Engångsköp</translation>
-<translation id="261433018299584676">Hämta en inloggningskod</translation>
+<translation id="4059093523966730868">Engångsköp kan aktiveras flera gånger på alla dina enheter</translation>
+<translation id="7006681677649762716">Engångsköp</translation>
+<translation id="8707617004598499947">Verifiera Brave Origin-köp</translation>
 <translation id="1943432128510653496">Spara lösenord</translation>
 <translation id="2100273922101894616">Automatisk inloggning</translation>
 <translation id="363596933471559332">Logga in automatiskt på webbplatser med hjälp av lagrade inloggningsuppgifter. När funktionen är inaktiverad måste du verifiera dina uppgifter varje gång du besöker webbplatsen innan du kan logga in.</translation>
@@ -1164,4 +1164,22 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1724977129262658800">Lås upp om du vill redigera lösenordet</translation>
 <translation id="5780792035410621042">Om du vill kunna kopiera lösenorden måste du först ställa in ett skärmlås på enheten</translation>
 <translation id="7986497153528221272">Om du vill kunna se lösenorden måste du först ställa in ett skärmlås på enheten</translation>
+<translation id="4882237634123415792">Anpassade sökmotorer</translation>
+<translation id="8364431224461158026">Lägg till anpassad sökmotor</translation>
+<translation id="7307935603426295341">Redigera anpassad sökmotor</translation>
+<translation id="4002066346123236978">Titel</translation>
+<translation id="3653110185270660915">Ange namn på sökmotorn</translation>
+<translation id="7400418766976504921">Webbadress</translation>
+<translation id="6410668567036790476">Lägg till sökmotor</translation>
+<translation id="6289878295410648689">Skriv sökadressen och ersätt frågan med <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="1298325705808878139">Till exempel: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8706939021136180678">URL är ogiltig.</translation>
+<translation id="5144960943371551167">Titeln kan endast innehålla bokstäver, siffror och mellanslag.</translation>
+<translation id="7361775378755455309">Det finns redan en sökmotor med det här nyckelordet.</translation>
+<translation id="463451857046640291">Det gick inte att lägga till sökmotorn.</translation>
+<translation id="1229671956956864948">Det gick inte att uppdatera sökmotorn.</translation>
+<translation id="1462771969120037152">Det gick inte att ta bort sökmotorn. Sökmotorn som du försöker ta bort kan vara inställd som standard.</translation>
+<translation id="1079140196216383600">Ta bort anpassad sökmotor</translation>
+<translation id="525276572490219787">Vill du ta bort "<ph name="SEARCH_ENGINE_NAME"/>"? Denna åtgärd kan inte ångras.</translation>
+<translation id="6406506848690869874">Synka</translation>
 </translationbundle>

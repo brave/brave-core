@@ -6,11 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_RESPONSE_HELPERS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_RESPONSE_HELPERS_H_
 
+#include <stdint.h>
+
 #include <memory>
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 
 namespace brave_wallet {
 

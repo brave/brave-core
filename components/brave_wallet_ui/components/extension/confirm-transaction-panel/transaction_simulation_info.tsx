@@ -35,8 +35,8 @@ import {
   TransactionChangeCollapse,
   TransactionChangeCollapseContainer,
   TransactionChangeCollapseContent,
-  TransactionChangeCollapseTitle,
 } from './confirm_simulated_tx_panel.styles'
+import { Text } from '../../shared/style'
 import { ChainInfo } from './common/view_on_explorer_button'
 import { StateChangeText } from './common/state_changes.styles'
 
@@ -150,9 +150,13 @@ export const TransactionSimulationInfo = ({
           isOpen={openedCategorySectionName === 'accountOwnership'}
           key='SOL-account-ownership-changes'
         >
-          <TransactionChangeCollapseTitle slot='title'>
+          <Text
+            variant='xSmall.semibold'
+            textColor='secondary'
+            slot='title'
+          >
             {getLocale('braveWalletOwnershipChange')}
-          </TransactionChangeCollapseTitle>
+          </Text>
           <TransactionChangeCollapseContent>
             <CollapseHeaderDivider key={'SolAccountOwnershipChanges-Divider'} />
             {svmChanges?.accountOwnerChangeData.map((approval, i, arr) =>
@@ -187,9 +191,13 @@ export const TransactionSimulationInfo = ({
           isOpen={openedCategorySectionName === 'transfers'}
           key={'transfers'}
         >
-          <TransactionChangeCollapseTitle slot='title'>
+          <Text
+            variant='xSmall.semibold'
+            textColor='secondary'
+            slot='title'
+          >
             {getLocale('braveWalletEstimatedBalanceChange')}
-          </TransactionChangeCollapseTitle>
+          </Text>
           <TransactionChangeCollapseContent>
             <CollapseHeaderDivider key={'Transfers-Divider'} />
 
@@ -231,9 +239,13 @@ export const TransactionSimulationInfo = ({
           isOpen={openedCategorySectionName === 'approvals'}
           key='approvals'
         >
-          <TransactionChangeCollapseTitle slot='title'>
+          <Text
+            variant='xSmall.semibold'
+            textColor='secondary'
+            slot='title'
+          >
             {getLocale('braveWalletApprovalDetails')}
-          </TransactionChangeCollapseTitle>
+          </Text>
           <TransactionChangeCollapseContent>
             <CollapseHeaderDivider key={'EVM-Approvals-Divider'} />
 
@@ -276,9 +288,13 @@ export const TransactionSimulationInfo = ({
           isOpen={openedCategorySectionName === 'solStakingAuthChanges'}
           key='SOL-staking-changes'
         >
-          <TransactionChangeCollapseTitle slot='title'>
+          <Text
+            variant='xSmall.semibold'
+            textColor='secondary'
+            slot='title'
+          >
             {getLocale('braveWalletAuthorityChange')}
-          </TransactionChangeCollapseTitle>
+          </Text>
           <TransactionChangeCollapseContent>
             <CollapseHeaderDivider key={'SolStakingAuthChanges-Divider'} />
             {svmChanges?.solStakeAuthorityChanges.map((approval, i, arr) =>
@@ -305,12 +321,19 @@ export const TransactionSimulationInfo = ({
           isOpen={true}
           key='No-changes'
         >
-          <TransactionChangeCollapseTitle slot='title'>
+          <Text
+            variant='xSmall.semibold'
+            textColor='secondary'
+            slot='title'
+          >
             {getLocale('braveWalletEstimatedBalanceChange')}
-          </TransactionChangeCollapseTitle>
+          </Text>
           <TransactionChangeCollapseContent>
             <CollapseHeaderDivider key={'NoChanges-Divider'} />
-            <StateChangeText>
+            <StateChangeText
+              textColor='secondary'
+              variant='small.regular'
+            >
               {getLocale('braveWalletNoChangesDetected')}
             </StateChangeText>
           </TransactionChangeCollapseContent>

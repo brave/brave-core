@@ -32,6 +32,7 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
   gfx::Rect GetBoundsForClientView() const override;
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
+  BoundsAndMargins GetCaptionButtonBounds() const override;
   int NonClientHitTest(const gfx::Point& point) override;
   void OnThemeChanged() override;
   bool ShouldHideTopUIInFullscreen() const override;

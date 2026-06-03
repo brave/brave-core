@@ -18,7 +18,7 @@ namespace brave_ads::cbr {
 
 // A `SignedToken` is the result of signing a `BlindedToken`.
 
-class SignedToken {
+class SignedToken final {
  public:
   SignedToken();
   explicit SignedToken(const std::string& signed_token_base64);

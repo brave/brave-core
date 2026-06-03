@@ -18,7 +18,7 @@ extension TabDataValues {
 }
 
 class ReaderModeTabHelper: TabObserver {
-  private let tab: any TabState
+  private weak var tab: (any TabState)?
   private(set) var readabilityResult: ReadabilityResult?
 
   init?(tab: some TabState) {
@@ -26,15 +26,15 @@ class ReaderModeTabHelper: TabObserver {
       return nil
     }
     self.tab = tab
-    self.tab.addObserver(self)
+    tab.addObserver(self)
   }
 
   deinit {
-    tab.removeObserver(self)
+    tab?.removeObserver(self)
   }
 
   var state: ReaderModeState {
-    if let url = tab.visibleURL.flatMap(InternalURL.init), url.isReaderModePage {
+    if let url = tab?.visibleURL.flatMap(InternalURL.init), url.isReaderModePage {
       return .active
     }
     return readabilityResult != nil ? .available : .unavailable
@@ -43,7 +43,7 @@ class ReaderModeTabHelper: TabObserver {
   /// Checks the web views readability then assigns `readabilityResult`
   @MainActor
   func checkReadability() async {
-    guard let url = tab.lastCommittedURL, url.isWebPage(includeDataURIs: false),
+    guard let tab, let url = tab.lastCommittedURL, url.isWebPage(includeDataURIs: false),
       let webView = BraveWebView.from(tab: tab)
     else {
       readabilityResult = nil
@@ -63,7 +63,7 @@ class ReaderModeTabHelper: TabObserver {
   }
 
   @MainActor func setStyle(_ style: ReaderModeStyle) {
-    guard state == .active, let webView = BraveWebView.from(tab: tab) else { return }
+    guard let tab, state == .active, let webView = BraveWebView.from(tab: tab) else { return }
     webView.setReaderModeTheme(
       style.theme.rawValue,
       fontType: style.fontType.rawValue,

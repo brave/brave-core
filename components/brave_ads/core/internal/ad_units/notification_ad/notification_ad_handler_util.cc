@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
@@ -18,11 +18,11 @@ bool ShouldServe() {
 }
 
 bool CanServeIfUserIsActive() {
-  return !PlatformHelper::GetInstance().IsMobile();
+  return !IsMobile();
 }
 
 bool CanServeAtRegularIntervals() {
-  return PlatformHelper::GetInstance().IsMobile();
+  return IsMobile();
 }
 
 bool ShouldServeAtRegularIntervals() {

@@ -34,6 +34,11 @@ export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
     name: 'braveWalletAccountsExport',
     icon: 'key',
   },
+  {
+    id: 'hide',
+    name: 'braveWalletAccountsHide',
+    icon: 'eye-off',
+  },
   DepositButtonOption,
   {
     id: 'remove',

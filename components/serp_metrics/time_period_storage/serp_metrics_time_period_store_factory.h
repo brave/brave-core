@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_TIME_PERIOD_STORE_FACTORY_H_
 
 #include <memory>
+#include <string_view>
 
 namespace serp_metrics {
 
@@ -19,7 +20,7 @@ class SerpMetricsTimePeriodStoreFactory {
   virtual ~SerpMetricsTimePeriodStoreFactory() = default;
 
   virtual std::unique_ptr<SerpMetricsTimePeriodStore> Build(
-      const char* metric_name) const = 0;
+      std::string_view pref_key) const = 0;
 };
 
 }  // namespace serp_metrics

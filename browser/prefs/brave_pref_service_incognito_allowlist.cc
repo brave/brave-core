@@ -53,6 +53,7 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kTabMinWidthMode,
       brave_tabs::kOneLinerTabsEnabled,
       brave_tabs::kScrollableHorizontalTabStrip,
+      brave_tabs::kShowHorizontalTabScrollButtons,
 #endif
 #if defined(TOOLKIT_VIEWS)
       sidebar::kSidePanelWidth,
