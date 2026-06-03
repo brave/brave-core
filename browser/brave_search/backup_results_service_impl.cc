@@ -84,6 +84,7 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
 
 constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
+constexpr base::TimeDelta kLoadAfterRestoreTimeout = base::Seconds(12);
 
 class BackupResultsWebContentsObserver
     : public content::WebContentsObserver,
@@ -131,6 +132,8 @@ BackupResultsServiceImpl::BackupResultsServiceImpl(Profile* profile)
       local_state_(g_browser_process->local_state()),
       backup_results_metrics_(local_state_) {
   profile_->AddObserver(this);
+  LOG(ERROR) << "BackupResultsServiceImpl: load_after_restore="
+             << features::kBackupResultsLoadAfterRestore.Get();
 }
 BackupResultsServiceImpl::~BackupResultsServiceImpl() = default;
 
@@ -204,10 +207,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
     SeedNavigationHistory(*web_contents, url);
 
-    if (features::IsBackupResultsFullRenderEnabled()) {
-      BackupResultsWebContentsObserver::CreateForWebContents(
-          web_contents.get(), weak_ptr_factory_.GetWeakPtr());
-    }
+    BackupResultsWebContentsObserver::CreateForWebContents(
+        web_contents.get(), weak_ptr_factory_.GetWeakPtr());
   }
 
   auto request = pending_requests_.emplace(pending_requests_.end(),
@@ -215,28 +216,18 @@ void BackupResultsServiceImpl::FetchBackupResults(
                                            otr_profile, std::move(callback));
 
   if (should_render) {
-    auto load_url_params = content::NavigationController::LoadURLParams(url);
-    load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;
-    // Disallow all downloads
-    for (size_t i = 0;
-         i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
-         i++) {
-      blink::NavigationDownloadType type =
-          static_cast<blink::NavigationDownloadType>(i);
-      load_url_params.download_policy.SetDisallowed(type);
+    const bool load_after_restore =
+        features::kBackupResultsLoadAfterRestore.Get();
+    request->target_url = url;
+    if (!load_after_restore) {
+      if (!LoadTargetUrl(request)) {
+        return;
+      }
     }
-    auto extra_headers = GetExtraHeaders(request->headers);
-    if (!extra_headers.IsEmpty()) {
-      load_url_params.extra_headers = extra_headers.ToString();
-    }
-    MaybeApplyUserAgentOverride(*request->web_contents, load_url_params);
-    if (!request->web_contents->GetController().LoadURLWithParams(
-            load_url_params)) {
-      CleanupAndDispatchResult(request, std::nullopt);
-      return;
-    }
+    const base::TimeDelta timeout =
+        load_after_restore ? kLoadAfterRestoreTimeout : kTimeout;
     request->timeout_timer.Start(
-        FROM_HERE, kTimeout,
+        FROM_HERE, timeout,
         base::BindOnce(&BackupResultsServiceImpl::CleanupAndDispatchResult,
                        base::Unretained(this), request, std::nullopt));
   } else {
@@ -285,6 +276,10 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
                features::kBackupResultsFullRenderMaxRequests.Get());
   }
   if (!pending_request->initial_request_started) {
+    if (features::kBackupResultsLoadAfterRestore.Get() &&
+        url != pending_request->target_url) {
+      return true;
+    }
     pending_request->initial_request_started = true;
     return true;
   }
@@ -310,14 +305,30 @@ void BackupResultsServiceImpl::HandleWebContentsDidFinishLoad(
     return;
   }
   pending_request->requests_loaded++;
-  if (pending_request->requests_loaded ==
-      static_cast<size_t>(
-          features::kBackupResultsFullRenderMaxRequests.Get())) {
+
+  if (features::IsBackupResultsFullRenderEnabled() &&
+      pending_request->requests_loaded ==
+          static_cast<size_t>(
+              features::kBackupResultsFullRenderMaxRequests.Get())) {
     content_extraction::GetInnerHtml(
         *pending_request->web_contents->GetPrimaryMainFrame(),
         base::BindOnce(
             &BackupResultsServiceImpl::HandleWebContentsContentExtraction,
             weak_ptr_factory_.GetWeakPtr(), pending_request));
+    return;
+  }
+
+  if (features::kBackupResultsLoadAfterRestore.Get() &&
+      pending_request->web_contents->GetLastCommittedURL() !=
+          pending_request->target_url) {
+    // Root page has loaded; schedule load of the actual target URL after a
+    // randomized delay.
+    const base::TimeDelta delay =
+        base::Milliseconds(base::RandIntInclusive(4000, 7000));
+    pending_request->load_after_restore_timer.Start(
+        FROM_HERE, delay,
+        base::BindOnce(&BackupResultsServiceImpl::OnLoadAfterRestoreTimer,
+                       base::Unretained(this), pending_request));
   }
 }
 
@@ -401,6 +412,10 @@ void BackupResultsServiceImpl::SeedNavigationHistory(
   entries.push_back(std::move(entry));
   web_contents.GetController().Restore(
       /*selected_navigation=*/0, content::RestoreType::kRestored, &entries);
+
+  if (features::kBackupResultsLoadAfterRestore.Get()) {
+    web_contents.GetController().LoadIfNecessary();
+  }
 }
 
 void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(
@@ -437,6 +452,39 @@ void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(
       base::BindOnce(&BackupResultsServiceImpl::HandleURLLoaderResponse,
                      base::Unretained(this), pending_request),
       kMaxResponseSize.InBytes());
+}
+
+void BackupResultsServiceImpl::OnLoadAfterRestoreTimer(
+    PendingRequestList::iterator pending_request) {
+  LoadTargetUrl(pending_request);
+}
+
+bool BackupResultsServiceImpl::LoadTargetUrl(
+    PendingRequestList::iterator pending_request) {
+  if (!pending_request->web_contents) {
+    return false;
+  }
+  auto load_url_params =
+      content::NavigationController::LoadURLParams(pending_request->target_url);
+  load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;
+  for (size_t i = 0;
+       i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
+       i++) {
+    blink::NavigationDownloadType type =
+        static_cast<blink::NavigationDownloadType>(i);
+    load_url_params.download_policy.SetDisallowed(type);
+  }
+  auto extra_headers = GetExtraHeaders(pending_request->headers);
+  if (!extra_headers.IsEmpty()) {
+    load_url_params.extra_headers = extra_headers.ToString();
+  }
+  MaybeApplyUserAgentOverride(*pending_request->web_contents, load_url_params);
+  if (!pending_request->web_contents->GetController().LoadURLWithParams(
+          load_url_params)) {
+    CleanupAndDispatchResult(pending_request, std::nullopt);
+    return false;
+  }
+  return true;
 }
 
 void BackupResultsServiceImpl::HandleURLLoaderResponse(

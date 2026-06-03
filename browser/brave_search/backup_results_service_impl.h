@@ -83,6 +83,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     BackupResultsCallback callback;
 
     std::unique_ptr<content::WebContents> web_contents;
+    GURL target_url;
 
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
@@ -92,6 +93,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     size_t requests_loaded = 0;
     int last_response_code = -1;
     base::OneShotTimer timeout_timer;
+    base::OneShotTimer load_after_restore_timer;
   };
   using PendingRequestList = std::list<PendingRequest>;
 
@@ -102,6 +104,8 @@ class BackupResultsServiceImpl : public BackupResultsService,
                                   const GURL& url);
   void HandleURLLoaderResponse(PendingRequestList::iterator pending_request,
                                std::optional<std::string> html);
+  bool LoadTargetUrl(PendingRequestList::iterator pending_request);
+  void OnLoadAfterRestoreTimer(PendingRequestList::iterator pending_request);
 
   void HandleWebContentsContentExtraction(
       PendingRequestList::iterator pending_request,

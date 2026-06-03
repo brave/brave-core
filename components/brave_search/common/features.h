@@ -44,6 +44,19 @@ extern const base::FeatureParam<std::string> kBackupResultsUAOverride;
 extern const base::FeatureParam<std::string> kBackupResultsUAMetadata;
 // Maximum number of backup results fetches allowed per day. -1 means no limit.
 extern const base::FeatureParam<int> kBackupResultsMaxDailyRequests;
+// If true, seeds navigation history and loads the root URL first, then
+// loads the actual target URL after a randomized delay following
+// the root page's load completion. Uses a 12-second timeout instead of 5.
+extern const base::FeatureParam<bool> kBackupResultsLoadAfterRestore;
+// If true, allows fetch-style requests made from the page through the URL
+// loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowFetches;
+// If true, allows cosmetic asset requests (images, fonts, icons, etc.)
+// through the URL loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowCosmeticAssets;
+// If true, allows requests that don't match any known category through
+// the URL loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowUnclassifiedRequests;
 
 }  // namespace features
 }  // namespace brave_search

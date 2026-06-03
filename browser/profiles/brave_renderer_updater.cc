@@ -143,8 +143,10 @@ void BraveRendererUpdater::InitializeRenderer(
   is_brave_wallet_available = is_wallet_allowed_for_context_;
 #endif
 
-  renderer_configuration->SetInitialConfiguration(profile->IsTor(),
-                                                  is_brave_wallet_available);
+  renderer_configuration->SetInitialConfiguration(
+      profile->IsTor(), is_brave_wallet_available,
+      profile->IsOffTheRecord() &&
+          profile->GetOTRProfileID().IsSearchBackupResults());
   UpdateRenderer(&renderer_configuration);
 }
 
