@@ -273,123 +273,284 @@ TEST(PolkadotChainMetadataUnitTest,
 TEST(PolkadotChainMetadataUnitTest, Security_V14NoStorage_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
-      "0x6d6574610e080000000000000400000104507472616e736665725f616c6c6f"
-      "775f6465617468000000000c1853797374656d00000008285353353850726566"
-      "697800082a00001c56657273696f6e005820706f6c6b61646f74106e6f646501"
-      "000000640000000000002042616c616e63657300010400000005485472616e73"
-      "616374696f6e5061796d656e74000000000003",
+      // RuntimeMetadataPrefixed: magic "meta", V14, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610e08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet has no storage; constants encode SS58Prefix=42 and
+      // Version.spec_version=100.
+      "0c1853797374656d00000008285353353850726566697800082a00001c56657273696f6e"
+      "005820706f6c6b61646f74106e6f64650100000064000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e63657300010400000005485472616e73616374696f6e5061796d656e7400"
+      "0000000003"
+      // Minimal V14 extrinsic metadata with no signed extensions.
+      "000400",
       &bytes));
   auto metadata = PolkadotChainMetadata::FromBytes(bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
-  EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
-  EXPECT_EQ(metadata->GetSpecVersion(), 100u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/3,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/100,
+      /*asset_tx_payment=*/false,
+      /*has_assets_pallet=*/false,
+      /*assets_pallet_index=*/0,
+      /*assets_transfer_all_call_index=*/0,
+      /*assets_transfer_keep_alive_call_index=*/0);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_V14MapStorageHasher0_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
-      "0x6d6574610e080000000000000400000104507472616e736665725f616c6c6f"
-      "775f6465617468000000000c1853797374656d011853797374656d041c416363"
-      "6f756e7400010000000000000008285353353850726566697800082a00001c56"
-      "657273696f6e005820706f6c6b61646f74106e6f646501000000640000000000"
-      "002042616c616e63657300010400000005485472616e73616374696f6e506179"
-      "6d656e74000000000003",
+      // RuntimeMetadataPrefixed: magic "meta", V14, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610e08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet includes Account map storage using StorageHasher
+      // discriminant 0; constants encode SS58Prefix=42 and spec_version=100.
+      "0c1853797374656d011853797374656d041c4163636f756e740001000000000000000828"
+      "5353353850726566697800082a00001c56657273696f6e005820706f6c6b61646f74106e"
+      "6f64650100000064000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e63657300010400000005485472616e73616374696f6e5061796d656e7400"
+      "0000000003"
+      // Minimal V14 extrinsic metadata with no signed extensions.
+      "000400",
       &bytes));
   auto metadata = PolkadotChainMetadata::FromBytes(bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
-  EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/3,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/100,
+      /*asset_tx_payment=*/false,
+      /*has_assets_pallet=*/false,
+      /*assets_pallet_index=*/0,
+      /*assets_transfer_all_call_index=*/0,
+      /*assets_transfer_keep_alive_call_index=*/0);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_V14MapStorageHasher1_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
-      "0x6d6574610e080000000000000400000104507472616e736665725f616c6c6f"
-      "775f6465617468000000000c1853797374656d011853797374656d041c416363"
-      "6f756e7400010100000000000008285353353850726566697800082a00001c56"
-      "657273696f6e005820706f6c6b61646f74106e6f646501000000640000000000"
-      "002042616c616e63657300010400000005485472616e73616374696f6e506179"
-      "6d656e74000000000003",
+      // RuntimeMetadataPrefixed: magic "meta", V14, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610e08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet includes Account map storage using StorageHasher
+      // discriminant 1; constants encode SS58Prefix=42 and spec_version=100.
+      "0c1853797374656d011853797374656d041c4163636f756e740001010000000000000828"
+      "5353353850726566697800082a00001c56657273696f6e005820706f6c6b61646f74106e"
+      "6f64650100000064000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e63657300010400000005485472616e73616374696f6e5061796d656e7400"
+      "0000000003"
+      // Minimal V14 extrinsic metadata with no signed extensions.
+      "000400",
       &bytes));
   auto metadata = PolkadotChainMetadata::FromBytes(bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
-  EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/3,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/100,
+      /*asset_tx_payment=*/false,
+      /*has_assets_pallet=*/false,
+      /*assets_pallet_index=*/0,
+      /*assets_transfer_all_call_index=*/0,
+      /*assets_transfer_keep_alive_call_index=*/0);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_V15MapStorageHasher1_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
-      "0x6d6574610f080000000000000400000104507472616e736665725f616c6c6f"
-      "775f6465617468000000000c1853797374656d011853797374656d041c416363"
-      "6f756e740001040100000000000008285353353850726566697800082a00001c"
-      "56657273696f6e005820706f6c6b61646f74106e6f6465010000006400000000"
-      "0000002042616c616e6365730001040000000500485472616e73616374696f6e"
-      "5061796d656e7400000000000300",
+      // RuntimeMetadataPrefixed: magic "meta", V15, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610f08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet includes Account map storage with one hasher
+      // (discriminant 1), empty pallet docs, SS58Prefix=42, and
+      // spec_version=100.
+      "0c1853797374656d011853797374656d041c4163636f756e740001040100000000000008"
+      "285353353850726566697800082a00001c56657273696f6e005820706f6c6b61646f7410"
+      "6e6f6465010000006400000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e6365730001040000000500485472616e73616374696f6e5061796d656e74"
+      "00000000000300"
+      // Minimal V15 extrinsic metadata with no signed extensions.
+      "040000000000",
       &bytes));
   auto metadata = PolkadotChainMetadata::FromBytes(bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
-  EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/3,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/100,
+      /*asset_tx_payment=*/false,
+      /*has_assets_pallet=*/false,
+      /*assets_pallet_index=*/0,
+      /*assets_transfer_all_call_index=*/0,
+      /*assets_transfer_keep_alive_call_index=*/0);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_SS58PrefixU16_ReturnsCorrectValue) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
-      "0x6d6574610f080000000000000400000104507472616e736665725f616c6c6f"
-      "775f6465617468000000000c1853797374656d00000008285353353850726566"
-      "697800082a00001c56657273696f6e005820706f6c6b61646f74106e6f646501"
-      "00000064000000000000002042616c616e636573000104000000050048547261"
-      "6e73616374696f6e5061796d656e7400000000000300",
+      // RuntimeMetadataPrefixed: magic "meta", V15, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610f08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet has no storage; SS58Prefix is encoded as fixed-width
+      // u16(42), with Version.spec_version=100.
+      "0c1853797374656d00000008285353353850726566697800082a00001c56657273696f6e"
+      "005820706f6c6b61646f74106e6f6465010000006400000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e6365730001040000000500485472616e73616374696f6e5061796d656e74"
+      "00000000000300"
+      // Minimal V15 extrinsic metadata with no signed extensions.
+      "040000000000",
       &bytes));
   auto metadata = PolkadotChainMetadata::FromBytes(bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/3,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/100,
+      /*asset_tx_payment=*/false,
+      /*has_assets_pallet=*/false,
+      /*assets_pallet_index=*/0,
+      /*assets_transfer_all_call_index=*/0,
+      /*assets_transfer_keep_alive_call_index=*/0);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_SS58PrefixCompact_ReturnsCorrectValue) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
-      "0x6d6574610f080000000000000400000104507472616e736665725f616c6c6f"
-      "775f6465617468000000000c1853797374656d00000008285353353850726566"
-      "69780004a8001c56657273696f6e005820706f6c6b61646f74106e6f64650100"
-      "000064000000000000002042616c616e6365730001040000000500485472616e"
-      "73616374696f6e5061796d656e7400000000000300",
+      // RuntimeMetadataPrefixed: magic "meta", V15, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610f08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet has no storage; SS58Prefix is encoded as
+      // Compact<u32>(42), with Version.spec_version=100.
+      "0c1853797374656d0000000828535335385072656669780004a8001c56657273696f6e00"
+      "5820706f6c6b61646f74106e6f6465010000006400000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e6365730001040000000500485472616e73616374696f6e5061796d656e74"
+      "00000000000300"
+      // Minimal V15 extrinsic metadata with no signed extensions.
+      "040000000000",
       &bytes));
   auto metadata = PolkadotChainMetadata::FromBytes(bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/3,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/100,
+      /*asset_tx_payment=*/false,
+      /*has_assets_pallet=*/false,
+      /*assets_pallet_index=*/0,
+      /*assets_transfer_all_call_index=*/0,
+      /*assets_transfer_keep_alive_call_index=*/0);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_TrailingBytesNotRejected_KnownLimitation) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
-      "0x6d6574610f080000000000000400000104507472616e736665725f616c6c6f"
-      "775f6465617468000000000c1853797374656d00000008285353353850726566"
-      "697800082a00001c56657273696f6e005820706f6c6b61646f74106e6f646501"
-      "00000064000000000000002042616c616e636573000104000000050048547261"
-      "6e73616374696f6e5061796d656e7400000000000300deadbeef",
+      // RuntimeMetadataPrefixed: magic "meta", V15, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610f08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet has no storage; constants encode SS58Prefix=42 and
+      // Version.spec_version=100.
+      "0c1853797374656d00000008285353353850726566697800082a00001c56657273696f6e"
+      "005820706f6c6b61646f74106e6f6465010000006400000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e6365730001040000000500485472616e73616374696f6e5061796d656e74"
+      "00000000000300"
+      // Minimal V15 extrinsic metadata with no signed extensions.
+      "040000000000"
+      // Extra bytes preserved for the trailing-bytes limitation check.
+      "deadbeef",
       &bytes));
   auto metadata = PolkadotChainMetadata::FromBytes(bytes);
   // Known limitation: trailing bytes are silently accepted. Cannot add a
-  // trailing-bytes check because real metadata has fields after the pallets
-  // section that this partial parser doesn't consume.
+  // trailing-bytes check because real metadata may include fields after the
+  // subset this partial parser consumes.
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
-  EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/3,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/100,
+      /*asset_tx_payment=*/false,
+      /*has_assets_pallet=*/false,
+      /*assets_pallet_index=*/0,
+      /*assets_transfer_all_call_index=*/0,
+      /*assets_transfer_keep_alive_call_index=*/0);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_HugeVecLength_RejectedByBoundsCheck) {
   std::vector<uint8_t> bytes;
-  ASSERT_TRUE(PrefixedHexStringToBytes("0x6d6574610f420d0300", &bytes));
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      // RuntimeMetadataPrefixed: magic "meta", V15, then an oversized
+      // PortableRegistry vector length rejected by bounds checks.
+      "0x6d6574610f420d0300", &bytes));
   EXPECT_FALSE(PolkadotChainMetadata::FromBytes(bytes));
 }
 
