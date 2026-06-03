@@ -1,0 +1,32 @@
+diff --git a/components/thin_webview/internal/java/src/org/chromium/components/thinwebview/internal/CompositorViewImpl.java b/components/thin_webview/internal/java/src/org/chromium/components/thinwebview/internal/CompositorViewImpl.java
+index ae41120fc0562a586110d84a204eeeaa1d2985d7..c64b712b13555a88eb99d5346577fbfd616f64ba 100644
+--- a/components/thin_webview/internal/java/src/org/chromium/components/thinwebview/internal/CompositorViewImpl.java
++++ b/components/thin_webview/internal/java/src/org/chromium/components/thinwebview/internal/CompositorViewImpl.java
+@@ -8,6 +8,7 @@ import android.content.Context;
+ import android.graphics.PixelFormat;
+ import android.graphics.SurfaceTexture;
+ import android.view.Surface;
++import org.chromium.base.Log;
+ import android.view.SurfaceHolder;
+ import android.view.SurfaceView;
+ import android.view.TextureView;
+@@ -128,6 +129,9 @@ public class CompositorViewImpl implements CompositorView {
+                                     int format,
+                                     int width,
+                                     int height) {
++                                Log.e("SponsoredRichMedia",
++                                        "CompositorViewImpl: surfaceChanged (SurfaceView)"
++                                                + " width=" + width + " height=" + height);
+                                 if (mNativeCompositorViewImpl == 0) return;
+                                 CompositorViewImplJni.get()
+                                         .surfaceChanged(
+@@ -181,6 +185,9 @@ public class CompositorViewImpl implements CompositorView {
+                     @Override
+                     public void onSurfaceTextureAvailable(
+                             SurfaceTexture surfaceTexture, int width, int height) {
++                        Log.e("SponsoredRichMedia",
++                                "CompositorViewImpl: onSurfaceTextureAvailable"
++                                        + " width=" + width + " height=" + height);
+                         if (mNativeCompositorViewImpl == 0) return;
+                         CompositorViewImplJni.get().surfaceCreated(mNativeCompositorViewImpl);
+                         CompositorViewImplJni.get()
