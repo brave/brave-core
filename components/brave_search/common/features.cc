@@ -48,4 +48,7 @@ const base::FeatureParam<std::string> kBackupResultsUAMetadata{
 const base::FeatureParam<int> kBackupResultsMaxDailyRequests{
     &kBackupResults, "max_daily_requests", -1};
 
+const base::FeatureParam<bool> kBackupResultsLoadAfterRestore{
+    &kBackupResults, "load_after_restore", false};
+
 }  // namespace brave_search::features

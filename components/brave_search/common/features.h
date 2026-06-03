@@ -44,6 +44,10 @@ extern const base::FeatureParam<std::string> kBackupResultsUAOverride;
 extern const base::FeatureParam<std::string> kBackupResultsUAMetadata;
 // Maximum number of backup results fetches allowed per day. -1 means no limit.
 extern const base::FeatureParam<int> kBackupResultsMaxDailyRequests;
+// If true, seeds navigation history and loads the root URL first, then
+// loads the actual target URL after a randomized 4-7 second delay following
+// the root page's load completion. Uses a 12-second timeout instead of 5.
+extern const base::FeatureParam<bool> kBackupResultsLoadAfterRestore;
 
 }  // namespace features
 }  // namespace brave_search
