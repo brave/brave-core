@@ -10,7 +10,7 @@
 
 @implementation PlaylistExclusionsFactory
 
-+ (id<PlaylistExclusions>)sharedPlaylistExclusions {
++ (id<PlaylistExclusionsBridge>)sharedPlaylistExclusions {
   return [[PlaylistExclusionsImpl alloc]
       initWithPlaylistExclusions:*playlist::PlaylistExclusions::GetInstance()];
 }

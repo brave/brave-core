@@ -14,8 +14,7 @@ class PlaylistExclusions;
 
 NS_ASSUME_NONNULL_BEGIN
 
-OBJC_EXPORT
-@interface PlaylistExclusionsImpl : NSObject <PlaylistExclusions>
+@interface PlaylistExclusionsImpl : NSObject <PlaylistExclusionsBridge>
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithPlaylistExclusions:

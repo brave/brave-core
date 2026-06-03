@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns whether `pageSrc` may be re-resolved later (e.g. via
 /// LivePlaylistWebLoader). Mirrors
 /// `PlaylistExclusions::CanResolvePageSrcLater`.
-@protocol PlaylistExclusions
+NS_SWIFT_NAME(PlaylistExclusions)
+@protocol PlaylistExclusionsBridge
 - (BOOL)canResolvePageSrcLater:(NSURL*)url;
 @end
 

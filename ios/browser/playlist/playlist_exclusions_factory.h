@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol PlaylistExclusions;
+@protocol PlaylistExclusionsBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-NS_SWIFT_NAME(PlaylistExclusionsFactory)
 @interface PlaylistExclusionsFactory : NSObject
 
-+ (id<PlaylistExclusions>)sharedPlaylistExclusions;
++ (id<PlaylistExclusionsBridge>)sharedPlaylistExclusions;
 
 - (instancetype)init NS_UNAVAILABLE;
 
