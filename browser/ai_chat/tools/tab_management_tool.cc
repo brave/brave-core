@@ -1087,26 +1087,42 @@ void TabManagementTool::HandleCloseTabs(UseToolCallback callback,
     return;
   }
 
-  std::vector<ResolvedTab> tabs_to_close = ResolveTabs(
-      HandleIdsFromList(*tab_ids), profile_, /*require_grouped=*/false);
+  // Resolve the requested tabs to unique handles, in request order. We must not
+  // retain the ResolvedTab entries across the close loop below: they hold
+  // raw_ptrs to the TabInterface/WebContents, and CloseWebContentsAt() can
+  // destroy a WebContents synchronously, which would leave those raw_ptrs
+  // dangling. The ResolvedTab vector is therefore consumed (and destroyed)
+  // here, before any tab is closed.
+  std::vector<tabs::TabHandle> handles;
+  base::flat_set<int32_t> seen_handles;
+  for (const ResolvedTab& tab :
+       ResolveTabs(HandleIdsFromList(*tab_ids), profile_,
+                   /*require_grouped=*/false)) {
+    tabs::TabHandle handle = tab.tab->GetHandle();
+    if (seen_handles.insert(handle.raw_value()).second) {
+      handles.push_back(handle);
+    }
+  }
 
   std::vector<tabs::TabHandle> handles_to_wait_for;
-  handles_to_wait_for.reserve(tabs_to_close.size());
-  // Track which handles we've already closed so a duplicated tab_id does not
-  // dereference a ResolvedTab whose WebContents an earlier close destroyed.
-  base::flat_set<int32_t> closed_handles;
-  for (const ResolvedTab& tab : tabs_to_close) {
-    tabs::TabHandle handle = tab.tab->GetHandle();
-    if (!closed_handles.insert(handle.raw_value()).second) {
+  handles_to_wait_for.reserve(handles.size());
+  for (tabs::TabHandle handle : handles) {
+    tabs::TabInterface* tab = handle.Get();
+    if (!tab) {
       continue;
     }
-    // Re-query the index against the current strip: closing an earlier tab in
-    // the same strip shifts the indices captured at resolution time.
-    int index = tab.tab_strip->GetIndexOfWebContents(tab.contents);
+    BrowserWindowInterface* browser = tab->GetBrowserWindowInterface();
+    if (!browser) {
+      continue;
+    }
+    TabStripModel* tab_strip = browser->GetTabStripModel();
+    // Re-query the index against the current strip each time: closing an
+    // earlier tab in the same strip shifts the indices of the remaining tabs.
+    int index = tab_strip->GetIndexOfWebContents(tab->GetContents());
     if (index == TabStripModel::kNoTab) {
       continue;
     }
-    tab.tab_strip->CloseWebContentsAt(index, TabCloseTypes::CLOSE_USER_GESTURE);
+    tab_strip->CloseWebContentsAt(index, TabCloseTypes::CLOSE_USER_GESTURE);
     handles_to_wait_for.push_back(handle);
   }
   const size_t closed_count = handles_to_wait_for.size();
