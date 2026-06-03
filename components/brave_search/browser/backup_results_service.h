@@ -51,7 +51,8 @@ class BackupResultsService : public KeyedService {
   virtual void FetchBackupResults(
       const GURL& url,
       std::optional<net::HttpRequestHeaders> headers,
-      BackupResultsCallback callback) = 0;
+      BackupResultsCallback callback,
+      bool low_latency_required = false) = 0;
 
   // Called by BackupResultsNavigationThrottle. Returns true if request should
   // continue.

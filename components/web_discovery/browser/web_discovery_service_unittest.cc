@@ -30,7 +30,8 @@ class WebDiscoveryServiceTest : public testing::Test {
     // Override virtual methods with empty implementations
     void FetchBackupResults(const GURL& url,
                             std::optional<net::HttpRequestHeaders> headers,
-                            BackupResultsCallback callback) override {}
+                            BackupResultsCallback callback,
+                            bool low_latency_required = false) override {}
 
     bool HandleWebContentsStartRequest(const content::WebContents* web_contents,
                                        const GURL& url) override {
