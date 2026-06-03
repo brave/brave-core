@@ -106,8 +106,9 @@ extension BrowserViewController: TabManagerDelegate {
       self.showReaderModeBar(animated: true)
       tab.showContent(true)
     }
-    tab.readerMode?.updateTranslateURLBar = { [weak self] tab, state in
-      self?.updateTranslateURLBar(tab: tab, state: state)
+    tab.readerMode?.onReaderModeToggled = { [weak self] tab in
+      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: tab.playlistItem)
+      self?.updateTranslateURLBar(tab: tab, state: tab.translationState)
     }
 
     tab.braveTalk = .init(tab: tab, coordinator: braveTalkJitsiCoordinator)

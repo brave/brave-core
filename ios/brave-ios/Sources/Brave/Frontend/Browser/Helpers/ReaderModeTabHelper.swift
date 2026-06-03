@@ -25,8 +25,7 @@ class ReaderModeTabHelper {
 
   var onStateChanged: (() -> Void)?
   var onReaderModeDisplayed: (() -> Void)?
-  var updateTranslateURLBar:
-    ((_ tab: TabState, _ state: TranslateURLBarButton.TranslateState) -> Void)?
+  var onReaderModeToggled: ((_ tab: TabState) -> Void)?
 
   init?(tab: some TabState, readerModeCache: any ReaderModeCache) {
     if !tab.isChromiumTab {
@@ -124,20 +123,9 @@ class ReaderModeTabHelper {
     }
   }
 
-  /// There are two ways we can enable reader mode. In the simplest case we open a URL to our internal reader mode
-  /// and be done with it. In the more complicated case, reader mode was already open for this page and we simply
-  /// navigated away from it. So we look to the left and right in the BackForwardList to see if a readerized version
-  /// of the current page is there. And if so, we go there.
-
   private func enableReaderMode() {
-    guard let tab, let backForwardList = tab.backForwardList else {
-      return
-    }
-
-    let backList = backForwardList.backList
-    let forwardList = backForwardList.forwardList
-
-    guard let currentURL = backForwardList.currentItem?.url,
+    guard let tab,
+      let currentURL = tab.lastCommittedURL,
       let headers = (tab.responses?[currentURL] as? HTTPURLResponse)?.allHeaderFields
         as? [String: String],
       let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode, headers: headers)
@@ -145,58 +133,25 @@ class ReaderModeTabHelper {
 
     Self.recordTimeBasedNumberReaderModeUsedP3A(activated: true)
 
-    let playlistItem = tab.playlistItem
-    let translationState = tab.translationState
-    if backList.count > 1 && backList.last?.url == readerModeURL {
-      tab.goToBackForwardListItem(backList.last!)
-      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-      self.updateTranslateURLBar?(tab, translationState)
-    } else if !forwardList.isEmpty && forwardList.first?.url == readerModeURL {
-      tab.goToBackForwardListItem(forwardList.first!)
-      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-      self.updateTranslateURLBar?(tab, translationState)
-    } else {
-      if let readabilityResult {
-        Task { @MainActor in
-          try? await readerModeCache.put(currentURL, readabilityResult)
-          tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
-          PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-          self.updateTranslateURLBar?(tab, translationState)
-        }
+    if let readabilityResult {
+      Task { @MainActor in
+        try? await readerModeCache.put(currentURL, readabilityResult)
+        tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
+        self.onReaderModeToggled?(tab)
       }
     }
   }
 
-  /// Disabling reader mode can mean two things. In the simplest case we were opened from the reading list, which
-  /// means that there is nothing in the BackForwardList except the internal url for the reader mode page. In that
-  /// case we simply open a new page with the original url. In the more complicated page, the non-readerized version
-  /// of the page is either to the left or right in the BackForwardList. If that is the case, we navigate there.
-
   private func disableReaderMode() {
-    if let tab, let backForwardList = tab.backForwardList {
-      let backList = backForwardList.backList
-      let forwardList = backForwardList.forwardList
-
-      if let currentURL = backForwardList.currentItem?.url {
-        if let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode) {
-          let playlistItem = tab.playlistItem
-          let translationState = tab.translationState
-          if backList.count > 1 && backList.last?.url == originalURL {
-            tab.goToBackForwardListItem(backList.last!)
-            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-            self.updateTranslateURLBar?(tab, translationState)
-          } else if !forwardList.isEmpty && forwardList.first?.url == originalURL {
-            tab.goToBackForwardListItem(forwardList.first!)
-            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-            self.updateTranslateURLBar?(tab, translationState)
-          } else {
-            tab.loadRequest(URLRequest(url: originalURL))
-            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-            self.updateTranslateURLBar?(tab, translationState)
-          }
-        }
-      }
+    guard let tab,
+      let currentURL = tab.visibleURL,
+      let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode)
+    else {
+      return
     }
+
+    tab.loadRequest(URLRequest(url: originalURL))
+    onReaderModeToggled?(tab)
   }
 }
 
