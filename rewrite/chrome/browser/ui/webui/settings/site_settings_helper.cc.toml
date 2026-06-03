@@ -1,0 +1,139 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Rename to `HasRegisteredGroupName_ChromiumImpl`
+
+This rename is done so our own version of `HasRegisteredGroupName` can be used
+wrap the Chromium function inside it.
+'''
+re_pattern = 'bool HasRegisteredGroupName(\([^)]*\)\s*\{)'
+re_flags = ['DOTALL']
+replace = 'bool HasRegisteredGroupName_ChromiumImpl\1'
+
+[[substitution]]
+description = '''Rename to `GetVisiblePermissionCategories_ChromiumImpl`
+
+Renaming the upstream function to be shadowed by ours, so we can wrap the
+upstream function insdie and add our own content settings types.
+'''
+re_pattern = 'std::vector<ContentSettingsType> GetVisiblePermissionCategories(\([^)]*\)\s*\{)'
+re_flags = ['DOTALL']
+replace = 'std::vector<ContentSettingsType> GetVisiblePermissionCategories_ChromiumImpl\1'
+
+[[substitution]]
+description = 'Map `SiteSettingSource::kRemoteList` to "remote-list" in `SiteSettingSourceToString`'
+pattern = 'case SiteSettingSource::kNumSources:'
+replace = '''case SiteSettingSource::kRemoteList:
+      return "remote-list";
+    case SiteSettingSource::kNumSources:'''
+
+[[substitution]]
+description = '''Append Brave entries to kContentSettingsTypeGroupNames
+
+The pattern ends `\1` at the last entry's closing `}` and consumes an optional
+trailing comma (without capturing it), so we can always emit our own comma
+ahead of the Brave entries whether upstream's last entry has a trailing comma or
+not.
+'''
+re_pattern = '(kContentSettingsTypeGroupNames\s*=.*?\}),?(\n\}\);)'
+re_flags = ['DOTALL']
+replace = '''\1,
+    {ContentSettingsType::BRAVE_ADS, nullptr},
+    {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},
+    {ContentSettingsType::BRAVE_TRACKERS, nullptr},
+    {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr},
+    {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},
+    {ContentSettingsType::BRAVE_SHIELDS, brave_shields::kBraveShields},
+    {ContentSettingsType::BRAVE_REFERRERS, nullptr},
+    {ContentSettingsType::BRAVE_COOKIES, nullptr},
+    {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},
+    {ContentSettingsType::BRAVE_SOLANA, "solana"},
+    {ContentSettingsType::BRAVE_CARDANO, "cardano"},
+#else
+    {ContentSettingsType::BRAVE_ETHEREUM, nullptr},
+    {ContentSettingsType::BRAVE_SOLANA, nullptr},
+    {ContentSettingsType::BRAVE_CARDANO, nullptr},
+#endif
+    {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},
+    {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},
+    {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},
+    {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},
+    {ContentSettingsType::BRAVE_AUTO_SHRED, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_FONT, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr},
+    {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr},
+    {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
+    {ContentSettingsType::BRAVE_PSST, nullptr},\2'''
+
+[[substitution]]
+description = 'Map "autoplay" group name to AUTOPLAY in `ContentSettingsTypeFromGroupName`'
+re_pattern = '(ContentSettingsTypeFromGroupName\([^)]*\)\s*\{)'
+re_flags = ['DOTALL']
+replace = '''\1
+  if (name == "autoplay") {
+    return ContentSettingsType::AUTOPLAY;
+  }'''
+
+[[substitution]]
+description = 'Map AUTOPLAY back to "autoplay" in `ContentSettingsTypeToGroupName`'
+re_pattern = '(ContentSettingsTypeToGroupName\([^)]*\)\s*\{)'
+re_flags = ['DOTALL']
+replace = '''\1
+  if (type == ContentSettingsType::AUTOPLAY) {
+    return "autoplay";
+  }'''
+
+[[substitution]]
+description = '''kRemoteListProvider case in `ProviderTypeToSiteSettingsSource`
+
+This adds the case entry as first in the list.
+'''
+re_pattern = '(ProviderTypeToSiteSettingsSource.*?switch.*?\{)'
+re_flags = ['DOTALL']
+replace = '''\1
+    case ProviderType::kRemoteListProvider:
+      return SiteSettingSource::kRemoteList;'''
+
+[[substitution]]
+description = '''\
+kRemoteListProvider case in `ProviderToDefaultSettingSourceString`
+
+This adds the case entry as first in the switch list.
+'''
+re_pattern = '(ProviderToDefaultSettingSourceString.*?switch.*?\{)'
+re_flags = ['DOTALL']
+replace = '''\1
+    case ProviderType::kRemoteListProvider:
+      return "remote_list";'''
+
+[[substitution]]
+description = '''Rename to `GetExceptionForPage_ChromiumImpl`
+
+Renaming the upstream function so the chromium_src shadow can provide its own
+`GetExceptionForPage` that wraps it and decorates the returned dict with
+Brave-specific cookie-type annotations.
+'''
+re_pattern = 'base::DictValue GetExceptionForPage(\([^)]*\)\s*\{)'
+re_flags = ['DOTALL']
+replace = 'base::DictValue GetExceptionForPage_ChromiumImpl\1'
