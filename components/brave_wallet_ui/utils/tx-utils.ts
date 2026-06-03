@@ -2088,6 +2088,54 @@ export const isCancelTransaction = (
   )
 }
 
+// keccak256("setApprovalForAll(address,bool)").slice(0, 4)
+const SET_APPROVAL_FOR_ALL_SELECTOR = [0xa2, 0x2c, 0xb4, 0x65]
+
+export function getEthereumTransactionCalldata(
+  tx: Pick<TransactionInfo, 'txDataUnion'>,
+): number[] {
+  const ethTxData1559 = tx.txDataUnion.ethTxData1559
+  const ethTxData = tx.txDataUnion.ethTxData
+
+  if (ethTxData1559) {
+    return ethTxData1559.baseData.data || []
+  }
+
+  if (ethTxData) {
+    return ethTxData.data || []
+  }
+
+  return []
+}
+
+function hasSetApprovalForAllSelector(data: number[]): boolean {
+  return (
+    data.length >= 4
+    && data[0] === SET_APPROVAL_FOR_ALL_SELECTOR[0]
+    && data[1] === SET_APPROVAL_FOR_ALL_SELECTOR[1]
+    && data[2] === SET_APPROVAL_FOR_ALL_SELECTOR[2]
+    && data[3] === SET_APPROVAL_FOR_ALL_SELECTOR[3]
+  )
+}
+
+/**
+ * Detects ERC-721/ERC-1155 setApprovalForAll transactions from calldata.
+ * These are classified as TransactionType.Other and can be misrouted to the
+ * send confirmation UI when transaction simulation is unavailable.
+ */
+export function isSetApprovalForAllTransaction(
+  tx: Pick<TransactionInfo, 'txDataUnion'>,
+): boolean {
+  const data = getEthereumTransactionCalldata(tx)
+  if (!hasSetApprovalForAllSelector(data)) {
+    return false
+  }
+
+  // setApprovalForAll(address operator, bool approved)
+  // Only flag granting approval, not revoking it.
+  return data.length >= 68 && data[67] === 1
+}
+
 export const parseTransactionWithPrices = ({
   accounts,
   tx,

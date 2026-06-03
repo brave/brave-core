@@ -1193,6 +1193,17 @@ provideStrings({
   braveWalletPreviousTransaction: 'Previous transaction',
   braveWalletRejectTransactions: 'Reject $1 transactions',
 
+  // Approval for all warning
+  braveWalletApprovalForAllWarningTitle: 'Set approval for all',
+  braveWalletApprovalForAllWarningDescription:
+    'This lets the spender below transfer every NFT you own in this collection, now and any you receive in the future.',
+  braveWalletWarning: 'Warning',
+  braveWalletApprovalForAllFinalWarningTitle:
+    'Give this site access to all your NFTs?',
+  braveWalletApprovalForAllFinalWarningDescription:
+    "You're about to let $1 transfer every NFT in this wallet, including any you receive later.",
+  braveWalletConfirmAnyway: 'Confirm anyway',
+
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
   braveWalletNFTDetailTokenStandard: 'Token standard',
