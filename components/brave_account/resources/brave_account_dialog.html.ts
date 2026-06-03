@@ -36,7 +36,6 @@ export function getHtml(this: BraveAccountDialogElement) {
       <div class="title-and-description">
         <div class="title">${this.dialogTitle}</div>
         <div class="description">${this.dialogDescription}</div>
-        <slot name="alert"></slot>
       </div>
       <slot name="inputs"></slot>
       <div class="action-buttons">

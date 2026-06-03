@@ -17,7 +17,6 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
       dialog-title="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE}"
       show-back-button
     >
-      <leo-alert slot="alert">$i18nRaw{BRAVE_ACCOUNT_ALERT_MESSAGE}</leo-alert>
       <div slot="inputs">
         <brave-account-email-input
           @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
