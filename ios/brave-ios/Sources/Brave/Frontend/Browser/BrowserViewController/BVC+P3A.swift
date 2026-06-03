@@ -435,9 +435,6 @@ extension P3ATimedStorage where Value == Int {
   fileprivate static var braveVPNDaysInMonthUsedStorage: Self {
     .init(name: "vpn-days-in-month-used", lifetimeInDays: 30)
   }
-  internal static var readerModeActivated: Self {
-    .init(name: "reader-mode-activated", lifetimeInDays: 7)
-  }
   fileprivate static var navigationActionPerformedStorage: Self {
     .init(name: "navigation-action-performed", lifetimeInDays: 7)
   }

@@ -239,6 +239,12 @@ extension ReaderModeTabHelper: ReaderModeScriptHandlerDelegate {
 
 // MARK: - P3A
 
+extension P3ATimedStorage where Value == Int {
+  fileprivate static var readerModeActivated: Self {
+    .init(name: "reader-mode-activated", lifetimeInDays: 7)
+  }
+}
+
 extension ReaderModeTabHelper {
   static func recordTimeBasedNumberReaderModeUsedP3A(activated: Bool) {
     var storage = P3ATimedStorage<Int>.readerModeActivated
