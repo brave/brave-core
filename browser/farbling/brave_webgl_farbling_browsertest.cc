@@ -9,6 +9,7 @@
 
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -55,6 +56,31 @@ bool IsFakeExtensionName(std::string_view name) {
       [&name](const auto& farbled_endings) {
         return name.ends_with(farbled_endings);
       });
+}
+
+void VerifyBalancedFarblingExtensions(const std::string& actual_off,
+                                      const std::string& actual_balanced,
+                                      bool expect_farbling) {
+  auto actual_extensions_list = base::SplitString(
+      actual_off, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::sort(actual_extensions_list.begin(), actual_extensions_list.end());
+  EXPECT_FALSE(actual_extensions_list.empty());
+
+  auto actual_balanced_extensions_list = base::SplitString(
+      actual_balanced, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::sort(actual_balanced_extensions_list.begin(),
+            actual_balanced_extensions_list.end());
+  std::vector<std::string> diff;
+  std::ranges::set_difference(actual_balanced_extensions_list,
+                              actual_extensions_list, std::back_inserter(diff));
+
+  if (expect_farbling) {
+    // This should contain one of the farbled values.
+    ASSERT_EQ(diff.size(), 1u);
+    EXPECT_TRUE(IsFakeExtensionName(diff[0])) << diff[0];
+  } else {
+    EXPECT_EQ(actual_balanced_extensions_list, actual_extensions_list);
+  }
 }
 
 }  // namespace
@@ -303,33 +329,13 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,
       EvalJs(contents(), kTitleScript).ExtractString();
   EXPECT_NE(actual_value_off, kSupportedExtensionsMax);
 
-  auto actual_extensions_list = base::SplitString(
-      actual_value_off, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-  // We sort this to compute a set difference later.
-  std::sort(actual_extensions_list.begin(), actual_extensions_list.end());
-  EXPECT_FALSE(actual_extensions_list.empty());
-
   // Farbling level: balanced (default)
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   const auto actual_balanced_value =
       EvalJs(contents(), kTitleScript).ExtractString();
-  auto actual_balanced_extensions_list = base::SplitString(
-      actual_balanced_value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::sort(actual_balanced_extensions_list.begin(),
-            actual_balanced_extensions_list.end());
-  std::vector<std::string> diff;
-  std::ranges::set_difference(actual_balanced_extensions_list,
-                              actual_extensions_list, std::back_inserter(diff));
-
-  if (GetParam()) {
-    // This should contain one of the farbled values.
-    ASSERT_EQ(diff.size(), 1u);
-    EXPECT_TRUE(IsFakeExtensionName(diff[0]));
-  } else {
-    // WebGL getSupportedExtensions is real when flag is off.
-    EXPECT_EQ(actual_balanced_extensions_list, actual_extensions_list);
-  }
+  VerifyBalancedFarblingExtensions(actual_value_off, actual_balanced_value,
+                                   GetParam());
 }
 
 IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest, FarbleGetExtension) {
@@ -347,14 +353,9 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest, FarbleGetExtension) {
   // WebGL getExtension returns real objects
   AllowFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  std::string actual_value = EvalJs(contents(), kTitleScript).ExtractString();
-  EXPECT_NE(actual_value, kExpectedExtensionListMax);
-
-  auto actual_extensions_list = base::SplitString(
-      actual_value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-  // We sort this to compute a set difference later.
-  std::sort(actual_extensions_list.begin(), actual_extensions_list.end());
-  EXPECT_FALSE(actual_extensions_list.empty());
+  std::string actual_value_off =
+      EvalJs(contents(), kTitleScript).ExtractString();
+  EXPECT_NE(actual_value_off, kExpectedExtensionListMax);
 
   // Farbling level: balanced (default)
   // WebGL getExtension returns real objects
@@ -362,20 +363,8 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest, FarbleGetExtension) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   const auto actual_balanced_value =
       EvalJs(contents(), kTitleScript).ExtractString();
-  auto actual_balanced_extensions_list = base::SplitString(
-      actual_balanced_value, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::sort(actual_balanced_extensions_list.begin(),
-            actual_balanced_extensions_list.end());
-  std::vector<std::string> diff;
-  std::ranges::set_difference(actual_balanced_extensions_list,
-                              actual_extensions_list, std::back_inserter(diff));
-  if (GetParam()) {
-    // This should contain one of the farbled values.
-    ASSERT_EQ(diff.size(), 1u);
-    EXPECT_TRUE(IsFakeExtensionName(diff[0]));
-  } else {
-    EXPECT_EQ(actual_balanced_extensions_list, actual_extensions_list);
-  }
+  VerifyBalancedFarblingExtensions(actual_value_off, actual_balanced_value,
+                                   GetParam());
 }
 
 IN_PROC_BROWSER_TEST_P(BraveWebGLExtensionFarblingTest,

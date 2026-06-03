@@ -106,6 +106,12 @@ class CORE_EXPORT BraveSessionCache final
   blink::WebGLFarbledExtensionHandler* GetWebGLFarbledExtensionHandler(
       const blink::Vector<blink::String>& supported_extensions);
 
+  // Returns a non owning reference to |webgl_farbled_extension_handler_| if
+  // it's already created. Callers must not delete it.
+  blink::WebGLFarbledExtensionHandler* get_webgl_farbled_extension_handler() {
+    return webgl_farbled_extension_handler_.get();
+  }
+
  private:
   void PerturbPixelsInternal(base::span<uint8_t> data);
 
