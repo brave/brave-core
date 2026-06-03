@@ -6,15 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_STATE_PREFS_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_STATE_PREFS_H_
 
-#include <concepts>
 #include <string>
-#include <utility>
 
-#include "base/check_deref.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
@@ -42,37 +38,17 @@ class AccountStatePrefs {
   void SetLoggedIn(const std::string& email,
                    const std::string& encrypted_authentication_token);
 
+  // Removes the verification slot from the current state without changing
+  // whether the user is logged in or out. No-op if no slot is present.
+  void ClearVerification();
+
   mojom::AccountStatePtr GetAccountState() const;
 
   std::string GetAuthenticationToken() const;
 
-  template <typename Intent>
-    requires std::same_as<Intent, mojom::LoggedOutVerificationIntent> ||
-             std::same_as<Intent, mojom::LoggedInVerificationIntent>
-  std::string GetVerificationToken(Intent intent) const {
-    const auto verification = [&] {
-      const auto account_state = GetAccountState();
-      if constexpr (std::same_as<Intent, mojom::LoggedOutVerificationIntent>) {
-        return account_state->is_logged_out()
-                   ? std::move(account_state->get_logged_out()->verification)
-                   : nullptr;
-      } else {
-        return account_state->is_logged_in()
-                   ? std::move(account_state->get_logged_in()->verification)
-                   : nullptr;
-      }
-    }();
-
-    if (!verification || verification->intent != intent) {
-      return "";
-    }
-
-    const auto* token =
-        CHECK_DEREF(pref_service_->GetDict(prefs::kBraveAccountState)
-                        .FindDict(prefs::keys::kVerification))
-            .FindString(prefs::keys::kVerificationToken);
-    return token ? *token : "";
-  }
+  // Returns the encrypted verification token if a verification matching
+  // `intent` is currently pending, or "" otherwise.
+  std::string GetVerificationToken(mojom::VerificationIntentPtr intent) const;
 
   std::string GetCachedServiceToken(const std::string& service_name) const;
 

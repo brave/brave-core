@@ -13,15 +13,15 @@ import './brave_account_sign_in_dialog.js'
 import { BraveAccountDialogsElement } from './brave_account_dialogs.js'
 
 export function getHtml(this: BraveAccountDialogsElement) {
-  switch (this.dialog) {
+  switch (this.dialog?.type) {
     case undefined:
       return nothing
 
     case 'ENTRY':
       return html`
         <brave-account-entry-dialog
-          @create-button-clicked=${() => (this.dialog = 'CREATE')}
-          @sign-in-button-clicked=${() => (this.dialog = 'SIGN_IN')}
+          @create-button-clicked=${() => (this.dialog = { type: 'CREATE' })}
+          @sign-in-button-clicked=${() => (this.dialog = { type: 'SIGN_IN' })}
         >
         </brave-account-entry-dialog>
       `
@@ -37,7 +37,7 @@ export function getHtml(this: BraveAccountDialogsElement) {
         <brave-account-sign-in-dialog
           .isCapsLockOn=${this.isCapsLockOn}
           @forgot-password-button-clicked=${() =>
-            (this.dialog = 'FORGOT_PASSWORD')}
+            (this.dialog = { type: 'FORGOT_PASSWORD' })}
         >
         </brave-account-sign-in-dialog>
       `
@@ -49,6 +49,9 @@ export function getHtml(this: BraveAccountDialogsElement) {
       `
 
     case 'OTP':
-      return html` <brave-account-otp-dialog> </brave-account-otp-dialog> `
+      return html`
+        <brave-account-otp-dialog .intent=${this.dialog.intent}>
+        </brave-account-otp-dialog>
+      `
   }
 }

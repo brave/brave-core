@@ -6,6 +6,7 @@
 import {
   AccountState,
   AccountStateFieldTags,
+  VerificationIntent,
   whichAccountState,
 } from './brave_account.mojom-webui.js'
 import { assert } from '//resources/js/assert.js'
@@ -21,7 +22,9 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_dialogs.html.js'
 
-export type Dialog = 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'OTP' | 'SIGN_IN'
+export type Dialog =
+  | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
+  | { type: 'OTP'; intent: VerificationIntent }
 
 export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
@@ -34,14 +37,16 @@ export class BraveAccountDialogsElement extends CrLitElement {
 
   static override get properties() {
     return {
-      dialog: { type: String },
+      dialog: { type: Object },
       isCapsLockOn: { type: Boolean, state: true },
     }
   }
 
   protected onBackButtonClicked() {
     assert(this.dialog)
-    this.dialog = this.dialog === 'FORGOT_PASSWORD' ? 'SIGN_IN' : 'ENTRY'
+    this.dialog = {
+      type: this.dialog.type === 'FORGOT_PASSWORD' ? 'SIGN_IN' : 'ENTRY',
+    }
   }
 
   protected onCloseDialog() {
@@ -77,9 +82,16 @@ export class BraveAccountDialogsElement extends CrLitElement {
       this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
         (state: AccountState) => {
           switch (whichAccountState(state)) {
-            case AccountStateFieldTags.LOGGED_OUT:
-              this.dialog = state.loggedOut!.verification ? 'OTP' : 'ENTRY'
+            case AccountStateFieldTags.LOGGED_OUT: {
+              const verification = state.loggedOut!.verification
+              this.dialog = verification
+                ? {
+                    type: 'OTP',
+                    intent: { loggedOutIntent: verification.intent },
+                  }
+                : { type: 'ENTRY' }
               break
+            }
             case AccountStateFieldTags.LOGGED_IN:
               this.onCloseDialog()
               break

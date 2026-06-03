@@ -38,7 +38,7 @@ namespace brave_account {
 
 struct AuthenticationObserverTestCase;
 struct AuthValidateTestCase;
-struct CancelRegistrationTestCase;
+struct CancelVerificationTestCase;
 struct GetServiceTokenTestCase;
 struct LoginFinalizeTestCase;
 struct LoginInitializeTestCase;
@@ -46,7 +46,7 @@ struct LogOutTestCase;
 struct RegisterFinalizeTestCase;
 struct RegisterInitializeTestCase;
 struct RegisterVerifyTestCase;
-struct ResendConfirmationEmailTestCase;
+struct ResendVerificationEmailTestCase;
 
 template <typename TestCase>
 class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
@@ -90,7 +90,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
     if constexpr (std::is_same_v<TestCase, RegisterInitializeTestCase> ||
                   std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
                   std::is_same_v<TestCase, RegisterVerifyTestCase> ||
-                  std::is_same_v<TestCase, ResendConfirmationEmailTestCase> ||
+                  std::is_same_v<TestCase, ResendVerificationEmailTestCase> ||
                   std::is_same_v<TestCase, LoginInitializeTestCase> ||
                   std::is_same_v<TestCase, LoginFinalizeTestCase> ||
                   std::is_same_v<TestCase, GetServiceTokenTestCase>) {
@@ -103,7 +103,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
                     CHECK_DEREF(brave_account_service_.get()));
     } else if constexpr (std::is_same_v<TestCase,
                                         AuthenticationObserverTestCase> ||
-                         std::is_same_v<TestCase, CancelRegistrationTestCase> ||
+                         std::is_same_v<TestCase, CancelVerificationTestCase> ||
                          std::is_same_v<TestCase, LogOutTestCase>) {
       TestCase::Run(test_case, pref_service_, authentication_);
     } else {

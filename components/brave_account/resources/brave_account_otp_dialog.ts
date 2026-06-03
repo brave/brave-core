@@ -17,6 +17,7 @@ import {
   RegisterError,
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
+  VerificationIntent,
 } from './brave_account.mojom-webui.js'
 
 export class BraveAccountOtpDialogElement extends CrLitElement {
@@ -30,6 +31,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
+      intent: { type: Object },
       code: { type: String },
       isCodeValid: { type: Boolean },
       isResendingConfirmationEmail: { type: Boolean, state: true },
@@ -62,7 +64,9 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     let error: ResendConfirmationEmailError | undefined
 
     try {
-      await this.browserProxy.authentication.resendConfirmationEmail()
+      await this.browserProxy.authentication.resendVerificationEmail(
+        this.intent,
+      )
     } catch (e) {
       if (e && typeof e === 'object') {
         error = e as ResendConfirmationEmailError
@@ -94,6 +98,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
+  protected accessor intent!: VerificationIntent
   protected accessor code = ''
   protected accessor isCodeValid = false
   protected accessor isResendingConfirmationEmail = false

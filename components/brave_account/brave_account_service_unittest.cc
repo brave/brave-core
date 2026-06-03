@@ -916,7 +916,8 @@ TEST_P(BraveAccountServiceRegisterFinalizeTest,
     EXPECT_EQ(state->get_logged_out()->verification->intent,
               mojom::LoggedOutVerificationIntent::kRegistration);
     EXPECT_EQ(account_state_prefs.GetVerificationToken(
-                  mojom::LoggedOutVerificationIntent::kRegistration),
+                  mojom::VerificationIntent::NewLoggedOutIntent(
+                      mojom::LoggedOutVerificationIntent::kRegistration)),
               test_case.encrypted_verification_token);
   }
 }
@@ -948,14 +949,16 @@ struct RegisterVerifyTestCase {
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     AccountStatePrefs(pref_service)
-        .SetLoggedOutWithVerification(
-            EncryptedVerificationToken(),
-            mojom::LoggedOutVerificationIntent::kRegistration);
+        .SetLoggedOutWithVerification(EncryptedVerificationToken(),
+                                      test_case.logged_out_verification_intent);
 
     authentication->RegisterVerify(
         test_case.code,
         std::move(callback).Then(base::BindOnce(
-            [](PrefService* pref_service, bool success) {
+            [](PrefService* pref_service,
+               mojom::LoggedOutVerificationIntent
+                   logged_out_verification_intent,
+               bool success) {
               AccountStatePrefs account_state_prefs(*pref_service);
               const auto state = account_state_prefs.GetAccountState();
               if (success) {
@@ -968,19 +971,21 @@ struct RegisterVerifyTestCase {
                 ASSERT_TRUE(state->is_logged_out());
                 ASSERT_TRUE(state->get_logged_out()->verification);
                 EXPECT_EQ(state->get_logged_out()->verification->intent,
-                          mojom::LoggedOutVerificationIntent::kRegistration);
-                EXPECT_EQ(
-                    account_state_prefs.GetVerificationToken(
-                        mojom::LoggedOutVerificationIntent::kRegistration),
-                    EncryptedVerificationToken());
+                          logged_out_verification_intent);
+                EXPECT_EQ(account_state_prefs.GetVerificationToken(
+                              mojom::VerificationIntent::NewLoggedOutIntent(
+                                  logged_out_verification_intent)),
+                          EncryptedVerificationToken());
               }
             },
             base::Unretained(&pref_service),
+            test_case.logged_out_verification_intent,
             test_case.mojo_expected.has_value())));
   }
 
   std::string test_name;
   std::string code;
+  mojom::LoggedOutVerificationIntent logged_out_verification_intent;
   bool fail_decryption;
   bool fail_encryption;
   std::optional<EndpointResponse> endpoint_response;
@@ -989,11 +994,31 @@ struct RegisterVerifyTestCase {
 
 namespace {
 
+const RegisterVerifyTestCase* RegisterVerifyVerificationTokenEmpty() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyVerificationTokenEmpty({
+          .test_name = "register_verify_verification_token_empty",
+          .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kResetPassword,
+          .fail_decryption = {},    // not used
+          .fail_encryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::kCalledInWrongState))),
+      });
+  return kRegisterVerifyVerificationTokenEmpty.get();
+}
+
 const RegisterVerifyTestCase* RegisterVerifyVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<RegisterVerifyTestCase>
       kRegisterVerifyVerificationTokenFailedToDecrypt({
           .test_name = "register_verify_verification_token_failed_to_decrypt",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = true,
           .fail_encryption = {},    // not used
           .endpoint_response = {},  // not used
@@ -1011,6 +1036,8 @@ const RegisterVerifyTestCase* RegisterVerifyNetworkError() {
       kRegisterVerifyNetworkError({
           .test_name = "register_verify_network_error",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
@@ -1030,6 +1057,8 @@ const RegisterVerifyTestCase* RegisterVerifyBodyMissingOrFailedToParse() {
       kRegisterVerifyBodyMissingOrFailedToParse({
           .test_name = "register_verify_body_missing_or_failed_to_parse",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1049,6 +1078,8 @@ const RegisterVerifyTestCase* RegisterVerifyErrorCodeIsNull() {
       kRegisterVerifyErrorCodeIsNull({
           .test_name = "register_verify_error_code_is_null",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1074,6 +1105,8 @@ RegisterVerifyVerificationNotFoundOrInvalidIdOrCode() {
           .test_name =
               "register_verify_verification_not_found_or_invalid_id_or_code",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1098,6 +1131,8 @@ const RegisterVerifyTestCase* RegisterVerifyEmailAlreadyVerified() {
       kRegisterVerifyEmailAlreadyVerified({
           .test_name = "register_verify_email_already_verified",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1123,6 +1158,8 @@ RegisterVerifyMaximumCodeVerificationAttemptsExceeded() {
           .test_name =
               "register_verify_maximum_code_verification_attempts_exceeded",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1147,6 +1184,8 @@ const RegisterVerifyTestCase* RegisterVerifyInvalidVerificationCode() {
       kRegisterVerifyInvalidVerificationCode({
           .test_name = "register_verify_invalid_verification_code",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1170,6 +1209,8 @@ const RegisterVerifyTestCase* RegisterVerifyServerError() {
       kRegisterVerifyServerError({
           .test_name = "register_verify_server_error",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1193,6 +1234,8 @@ const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
       kRegisterVerifyAuthTokenEmpty({
           .test_name = "register_verify_auth_token_empty",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1219,6 +1262,8 @@ const RegisterVerifyTestCase* RegisterVerifyEmailEmpty() {
       kRegisterVerifyEmailEmpty({
           .test_name = "register_verify_email_empty",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1246,6 +1291,8 @@ RegisterVerifyAuthenticationTokenEncryptionFailed() {
       kRegisterVerifyAuthenticationTokenEncryptionFailed({
           .test_name = "register_verify_authentication_token_encryption_failed",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = true,
           .endpoint_response = {{.net_error = net::OK,
@@ -1272,6 +1319,8 @@ const RegisterVerifyTestCase* RegisterVerifySuccess() {
       kRegisterVerifySuccess({
           .test_name = "register_verify_success",
           .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .fail_encryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1302,7 +1351,8 @@ TEST_P(BraveAccountServiceRegisterVerifyTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterVerifyTest,
-    testing::Values(RegisterVerifyVerificationTokenFailedToDecrypt(),
+    testing::Values(RegisterVerifyVerificationTokenEmpty(),
+                    RegisterVerifyVerificationTokenFailedToDecrypt(),
                     RegisterVerifyNetworkError(),
                     RegisterVerifyBodyMissingOrFailedToParse(),
                     RegisterVerifyErrorCodeIsNull(),
@@ -1317,26 +1367,29 @@ INSTANTIATE_TEST_SUITE_P(
                     RegisterVerifySuccess()),
     BraveAccountServiceRegisterVerifyTest::kNameGenerator);
 
-struct ResendConfirmationEmailTestCase {
+struct ResendVerificationEmailTestCase {
   using Endpoint = VerifyResend;
   using EndpointResponse = Endpoint::Response;
   using MojoExpected = base::expected<mojom::ResendConfirmationEmailResultPtr,
                                       mojom::ResendConfirmationEmailErrorPtr>;
 
-  static void Run(const ResendConfirmationEmailTestCase& test_case,
+  static void Run(const ResendVerificationEmailTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     AccountStatePrefs(pref_service)
-        .SetLoggedOutWithVerification(
-            EncryptedVerificationToken(),
-            mojom::LoggedOutVerificationIntent::kRegistration);
+        .SetLoggedOutWithVerification(EncryptedVerificationToken(),
+                                      test_case.logged_out_verification_intent);
 
-    authentication->ResendConfirmationEmail(std::move(callback));
+    authentication->ResendVerificationEmail(
+        mojom::VerificationIntent::NewLoggedOutIntent(
+            mojom::LoggedOutVerificationIntent::kRegistration),
+        std::move(callback));
   }
 
   std::string test_name;
+  mojom::LoggedOutVerificationIntent logged_out_verification_intent;
   bool fail_decryption;
   std::optional<EndpointResponse> endpoint_response;
   MojoExpected mojo_expected;
@@ -1344,12 +1397,32 @@ struct ResendConfirmationEmailTestCase {
 
 namespace {
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailVerificationTokenFailedToDecrypt({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailVerificationTokenEmpty() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailVerificationTokenEmpty({
+          .test_name = "resend_confirmation_email_verification_token_empty",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kResetPassword,
+          .fail_decryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewClientError(
+                  mojom::ResendConfirmationEmailClientError::New(
+                      mojom::ResendConfirmationEmailClientErrorCode::
+                          kCalledInWrongState))),
+      });
+  return kResendVerificationEmailVerificationTokenEmpty.get();
+}
+
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailVerificationTokenFailedToDecrypt() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailVerificationTokenFailedToDecrypt({
           .test_name =
               "resend_confirmation_email_verification_token_failed_to_decrypt",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = true,
           .endpoint_response = {},  // not used
           .mojo_expected = base::unexpected(
@@ -1358,26 +1431,30 @@ ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
                       mojom::ResendConfirmationEmailClientErrorCode::
                           kVerificationTokenDecryptionFailed))),
       });
-  return kResendConfirmationEmailVerificationTokenFailedToDecrypt.get();
+  return kResendVerificationEmailVerificationTokenFailedToDecrypt.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailSuccess() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailSuccess({
+const ResendVerificationEmailTestCase* ResendVerificationEmailSuccess() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailSuccess({
           .test_name = "resend_confirmation_email_success",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_NO_CONTENT,
                                  .body = std::nullopt}},
           .mojo_expected = mojom::ResendConfirmationEmailResult::New(),
       });
-  return kResendConfirmationEmailSuccess.get();
+  return kResendVerificationEmailSuccess.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailNetworkError({
+const ResendVerificationEmailTestCase* ResendVerificationEmailNetworkError() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailNetworkError({
           .test_name = "resend_confirmation_email_network_error",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
@@ -1389,15 +1466,17 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
                       mojom::ResendConfirmationEmailServerErrorCode::
                           kInvalidResponse))),
       });
-  return kResendConfirmationEmailNetworkError.get();
+  return kResendVerificationEmailNetworkError.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailBodyMissingOrFailedToParse() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailBodyMissingOrFailedToParse({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailBodyMissingOrFailedToParse() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailBodyMissingOrFailedToParse({
           .test_name =
               "resend_confirmation_email_body_missing_or_failed_to_parse",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1409,15 +1488,17 @@ ResendConfirmationEmailBodyMissingOrFailedToParse() {
                       mojom::ResendConfirmationEmailServerErrorCode::
                           kInvalidResponse))),
       });
-  return kResendConfirmationEmailBodyMissingOrFailedToParse.get();
+  return kResendVerificationEmailBodyMissingOrFailedToParse.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailBadRequestWithNullErrorCode() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailBadRequestWithNullErrorCode({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailBadRequestWithNullErrorCode() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailBadRequestWithNullErrorCode({
           .test_name =
               "resend_confirmation_email_bad_request_with_null_error_code",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1432,15 +1513,17 @@ ResendConfirmationEmailBadRequestWithNullErrorCode() {
                       net::HTTP_BAD_REQUEST,
                       mojom::ResendConfirmationEmailServerErrorCode::kNull))),
       });
-  return kResendConfirmationEmailBadRequestWithNullErrorCode.get();
+  return kResendVerificationEmailBadRequestWithNullErrorCode.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailMaximumEmailSendAttemptsExceeded({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailMaximumEmailSendAttemptsExceeded() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailMaximumEmailSendAttemptsExceeded({
           .test_name =
               "resend_confirmation_email_maximum_email_send_attempts_exceeded",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1456,14 +1539,16 @@ ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
                       mojom::ResendConfirmationEmailServerErrorCode::
                           kMaximumEmailSendAttemptsExceeded))),
       });
-  return kResendConfirmationEmailMaximumEmailSendAttemptsExceeded.get();
+  return kResendVerificationEmailMaximumEmailSendAttemptsExceeded.get();
 }
 
-const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailEmailAlreadyVerified() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailEmailAlreadyVerified({
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailEmailAlreadyVerified() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailEmailAlreadyVerified({
           .test_name = "resend_confirmation_email_email_already_verified",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1479,13 +1564,15 @@ ResendConfirmationEmailEmailAlreadyVerified() {
                       mojom::ResendConfirmationEmailServerErrorCode::
                           kEmailAlreadyVerified))),
       });
-  return kResendConfirmationEmailEmailAlreadyVerified.get();
+  return kResendVerificationEmailEmailAlreadyVerified.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailServerError({
+const ResendVerificationEmailTestCase* ResendVerificationEmailServerError() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailServerError({
           .test_name = "resend_confirmation_email_server_error",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1500,13 +1587,15 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
                       net::HTTP_INTERNAL_SERVER_ERROR,
                       mojom::ResendConfirmationEmailServerErrorCode::kNull))),
       });
-  return kResendConfirmationEmailServerError.get();
+  return kResendVerificationEmailServerError.get();
 }
 
-const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailUnknown({
+const ResendVerificationEmailTestCase* ResendVerificationEmailUnknown() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailUnknown({
           .test_name = "resend_confirmation_email_unknown",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_TOO_EARLY,
@@ -1522,32 +1611,33 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
                       mojom::ResendConfirmationEmailServerErrorCode::
                           kUnknown))),
       });
-  return kResendConfirmationEmailUnknown.get();
+  return kResendVerificationEmailUnknown.get();
 }
 
-using BraveAccountServiceResendConfirmationEmailTest =
-    BraveAccountServiceTest<ResendConfirmationEmailTestCase>;
+using BraveAccountServiceResendVerificationEmailTest =
+    BraveAccountServiceTest<ResendVerificationEmailTestCase>;
 
 }  // namespace
 
-TEST_P(BraveAccountServiceResendConfirmationEmailTest,
+TEST_P(BraveAccountServiceResendVerificationEmailTest,
        MapsEndpointExpectedToMojoExpected) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
-    BraveAccountServiceResendConfirmationEmailTest,
-    testing::Values(ResendConfirmationEmailVerificationTokenFailedToDecrypt(),
-                    ResendConfirmationEmailSuccess(),
-                    ResendConfirmationEmailNetworkError(),
-                    ResendConfirmationEmailBodyMissingOrFailedToParse(),
-                    ResendConfirmationEmailBadRequestWithNullErrorCode(),
-                    ResendConfirmationEmailMaximumEmailSendAttemptsExceeded(),
-                    ResendConfirmationEmailEmailAlreadyVerified(),
-                    ResendConfirmationEmailServerError(),
-                    ResendConfirmationEmailUnknown()),
-    BraveAccountServiceResendConfirmationEmailTest::kNameGenerator);
+    BraveAccountServiceResendVerificationEmailTest,
+    testing::Values(ResendVerificationEmailVerificationTokenEmpty(),
+                    ResendVerificationEmailVerificationTokenFailedToDecrypt(),
+                    ResendVerificationEmailSuccess(),
+                    ResendVerificationEmailNetworkError(),
+                    ResendVerificationEmailBodyMissingOrFailedToParse(),
+                    ResendVerificationEmailBadRequestWithNullErrorCode(),
+                    ResendVerificationEmailMaximumEmailSendAttemptsExceeded(),
+                    ResendVerificationEmailEmailAlreadyVerified(),
+                    ResendVerificationEmailServerError(),
+                    ResendVerificationEmailUnknown()),
+    BraveAccountServiceResendVerificationEmailTest::kNameGenerator);
 
 struct AuthValidateTestCase {
   using Endpoint = AuthValidate;
@@ -1743,15 +1833,17 @@ INSTANTIATE_TEST_SUITE_P(
                     AuthValidateInternalServerError()),
     BraveAccountServiceScheduleAuthValidateTest::kNameGenerator);
 
-struct CancelRegistrationTestCase {
-  static void Run(const CancelRegistrationTestCase& test_case,
+struct CancelVerificationTestCase {
+  static void Run(const CancelVerificationTestCase& test_case,
                   PrefService& pref_service,
                   mojo::Remote<mojom::Authentication>& authentication) {
     AccountStatePrefs account_state_prefs(pref_service);
     account_state_prefs.SetLoggedOutWithVerification(
         EncryptedVerificationToken(),
         mojom::LoggedOutVerificationIntent::kRegistration);
-    authentication->CancelRegistration();
+    authentication->CancelVerification(
+        mojom::VerificationIntent::NewLoggedOutIntent(
+            mojom::LoggedOutVerificationIntent::kRegistration));
     authentication.FlushForTesting();
     const auto state = account_state_prefs.GetAccountState();
     ASSERT_TRUE(state->is_logged_out());
@@ -1763,30 +1855,30 @@ struct CancelRegistrationTestCase {
 
 namespace {
 
-const CancelRegistrationTestCase*
-CancelRegistrationVerificationTokenNonEmpty() {
-  static const base::NoDestructor<CancelRegistrationTestCase>
-      kCancelRegistrationVerificationTokenNonEmpty({
+const CancelVerificationTestCase*
+CancelVerificationVerificationTokenNonEmpty() {
+  static const base::NoDestructor<CancelVerificationTestCase>
+      kCancelVerificationVerificationTokenNonEmpty({
           .test_name = "cancel_registration_verification_token_non_empty",
       });
-  return kCancelRegistrationVerificationTokenNonEmpty.get();
+  return kCancelVerificationVerificationTokenNonEmpty.get();
 }
 
-using BraveAccountServiceCancelRegistrationTest =
-    BraveAccountServiceTest<CancelRegistrationTestCase>;
+using BraveAccountServiceCancelVerificationTest =
+    BraveAccountServiceTest<CancelVerificationTestCase>;
 
 }  // namespace
 
-TEST_P(BraveAccountServiceCancelRegistrationTest,
-       HandlesCancelRegistrationOutcomes) {
+TEST_P(BraveAccountServiceCancelVerificationTest,
+       HandlesCancelVerificationOutcomes) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
-    BraveAccountServiceCancelRegistrationTest,
-    testing::Values(CancelRegistrationVerificationTokenNonEmpty()),
-    BraveAccountServiceCancelRegistrationTest::kNameGenerator);
+    BraveAccountServiceCancelVerificationTest,
+    testing::Values(CancelVerificationVerificationTokenNonEmpty()),
+    BraveAccountServiceCancelVerificationTest::kNameGenerator);
 
 struct LogOutTestCase {
   static void Run(const LogOutTestCase& test_case,
