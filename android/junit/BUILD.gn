@@ -217,10 +217,9 @@ if (is_android) {
       "src/org/chromium/chrome/browser/hub/BraveHubToolbarViewUnitTest.java",
     ]
 
-    deps = [ 
+    deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/hub/internal:java",
-      "//brave/browser/brave_shields/android:java",
     ]
   }
 }
