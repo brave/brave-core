@@ -18,9 +18,20 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/page_land/page_land_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_url_util.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 
 namespace brave_ads {
+
+namespace {
+
+bool DidSearchResultAdClickRedirectFail(const TabInfo& tab, const AdInfo& ad) {
+  CHECK(!tab.redirect_chain.empty());
+  return ad.type == mojom::AdType::kSearchResultAd &&
+         IsSearchResultAdRedirectUrl(tab.redirect_chain.back());
+}
+
+}  // namespace
 
 SiteVisit::SiteVisit() {
   browser_manager_observation_.Observe(&BrowserManager::GetInstance());
@@ -68,6 +79,12 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab, int http_status_code) {
   }
 
   if (!IsSuccessfulHttpStatusCode(http_status_code)) {
+    if (DidSearchResultAdClickRedirectFail(tab, ad)) {
+      return BLOG(1,
+                  "Navigation to the search result ad redirect URL failed "
+                  "without reaching the target page");
+    }
+
     // If the page did not load successfully, immediately land on the page.
     return LandedOnPage(tab.id, http_status_code, ad);
   }
