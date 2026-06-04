@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 18417167ff8ddd66e49285f6068ad59574f132ce..e59b1f72a45fe7951c63cd9feae1aaf7335fadfc 100644
+index 5527a9151cc47834725b82fa9a89309909bfafa0..acf06b28fccbebabc63fd07be14654a87d0fef3d 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -192,6 +192,7 @@ if (!is_android && !is_mac) {
@@ -68,7 +68,7 @@ index 18417167ff8ddd66e49285f6068ad59574f132ce..e59b1f72a45fe7951c63cd9feae1aaf7
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
-@@ -1233,6 +1241,7 @@ if (is_win) {
+@@ -1229,6 +1237,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
      ]
@@ -76,7 +76,7 @@ index 18417167ff8ddd66e49285f6068ad59574f132ce..e59b1f72a45fe7951c63cd9feae1aaf7
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1430,6 +1439,7 @@ if (is_win) {
+@@ -1426,6 +1435,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -84,7 +84,7 @@ index 18417167ff8ddd66e49285f6068ad59574f132ce..e59b1f72a45fe7951c63cd9feae1aaf7
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1476,7 +1486,7 @@ group("dependencies") {
+@@ -1472,7 +1482,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -93,7 +93,7 @@ index 18417167ff8ddd66e49285f6068ad59574f132ce..e59b1f72a45fe7951c63cd9feae1aaf7
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1525,6 +1535,7 @@ group("resources") {
+@@ -1521,6 +1531,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -101,11 +101,11 @@ index 18417167ff8ddd66e49285f6068ad59574f132ce..e59b1f72a45fe7951c63cd9feae1aaf7
    ]
  }
  
-@@ -1579,6 +1590,7 @@ if (!is_android) {
+@@ -1546,6 +1557,7 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]
 +      repack_allowlist = brave_allowlist_file deps += [ "//brave:merge_allowlists" ]
      }
- 
-     if (is_chrome_branded && !is_mac) {
+   }
+ }

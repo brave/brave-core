@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/page_action/action_ids.h b/chrome/browser/ui/page_action/action_ids.h
-index da4b739fa93eb62273a0beba4413d8413a6ad9f4..adc3c2c4640ce84811b720c430e3f00dd93ecd5e 100644
+index 0b098109f5e60377efbdd8f1169d7bca9620c42b..d0545217922e9f2bc2c3ae1f7ff226eaf82f3063 100644
 --- a/chrome/browser/ui/page_action/action_ids.h
 +++ b/chrome/browser/ui/page_action/action_ids.h
-@@ -16,6 +16,8 @@ namespace page_actions {
- // the array.
+@@ -21,6 +21,8 @@ namespace page_actions {
+ // consumed by the framework.
  inline constexpr auto kActionIds = std::to_array<actions::ActionId>({
      kActionAiMode,
 +    kActionShowPartitionedStorage,

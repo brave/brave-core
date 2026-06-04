@@ -1,11 +1,11 @@
 diff --git a/.rustfmt.toml b/.rustfmt.toml
-index 0f9d300d83a7c90f9c39506cad4b71c2662cb67b..c7c0cdf2e3fe0c2760e714e30ffec2d3a7624ea8 100644
+index 7b3b53017cd6421e5f3998a15165b3a09d985a4f..2dbcf71b6115bdb686850cf0a9890974e0fb56a3 100644
 --- a/.rustfmt.toml
 +++ b/.rustfmt.toml
-@@ -24,4 +24,8 @@ use_small_heuristics = "Max"
- ignore = [
-   "third_party/**",
-   "!third_party/blink/**",
+@@ -35,4 +35,8 @@ ignore = [
+   # Explicitly ignore third-party code vendored from crates.io.
+   # (This entry "wins" over the `!third_party/rust/**` one because it is last.)
+   "third_party/rust/chromium_crates_io/vendor/**",
 +  "brave/third_party/",
 +  "brave/tools/crates/vendor/",
 +  "brave/third_party/wasm/vendor/",

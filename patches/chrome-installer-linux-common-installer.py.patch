@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
-index a9bbec28188c9a86c892f604c28ce278e26a8515..caf37bbf8416715ff6404b6b10688bf6d126529e 100644
+index 75c54267e8f4170aaff32e2f9d9934870ee6f639..75a35e16482fe9fb70471bbb9d64d8f3591c8fb6 100644
 --- a/chrome/installer/linux/common/installer.py
 +++ b/chrome/installer/linux/common/installer.py
-@@ -193,6 +193,8 @@ def gen_changelog(config: "InstallerConfig",
+@@ -199,6 +199,8 @@ def gen_changelog(config: "InstallerConfig",
      gzlog_dir = (
          config.staging_dir /
          f"usr/share/doc/{config.info_vars['PACKAGE']}-{config.channel}")
@@ -11,15 +11,15 @@ index a9bbec28188c9a86c892f604c28ce278e26a8515..caf37bbf8416715ff6404b6b10688bf6
      gzlog_dir.mkdir(parents=True, exist_ok=True)
      gzlog = gzlog_dir / "changelog.gz"
  
-@@ -327,6 +329,7 @@ class InstallerConfig:
-     logo_resources_png: str = ""
+@@ -335,6 +337,7 @@ class InstallerConfig:
      uri_scheme: str = ""
      extra_desktop_entries: str = ""
+     startup_wm_class: str = ""
 +    package_and_channel: str = ""
  
      @classmethod
      def from_args(cls, args: argparse.Namespace,
-@@ -680,6 +683,7 @@ class InstallerConfig:
+@@ -700,6 +703,7 @@ class InstallerConfig:
                  icon_suffix = "_dev"
              elif self.channel == "canary":
                  icon_suffix = "_canary"
@@ -27,7 +27,7 @@ index a9bbec28188c9a86c892f604c28ce278e26a8515..caf37bbf8416715ff6404b6b10688bf6
  
          icon_sizes = [16, 24, 32, 48, 64, 128, 256]
          logo_resources_png = []
-@@ -1158,3 +1162,4 @@ class Installer:
+@@ -1178,3 +1182,4 @@ class Installer:
                          msg += f", but they were {oct(actual_perms)}"
                          print(msg, file=sys.stderr)
                          sys.exit(1)
