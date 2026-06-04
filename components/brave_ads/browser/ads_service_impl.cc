@@ -149,7 +149,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
-    ResourceComponent* resource_component,
+    ResourceComponent& resource_component,
     history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RewardsService* rewards_service,
@@ -183,8 +183,7 @@ AdsServiceImpl::AdsServiceImpl(
   CHECK(bat_ads_service_factory_);
   CHECK(policy_initialization_waiter_);
 
-  if (!http_client_ || !history_service_ || !host_content_settings_map_ ||
-      !resource_component_) {
+  if (!http_client_ || !history_service_ || !host_content_settings_map_) {
     CHECK_IS_TEST();
   }
 
@@ -235,10 +234,8 @@ void AdsServiceImpl::RegisterResourceComponents() {
 }
 
 void AdsServiceImpl::RegisterCountryResourceComponent() {
-  if (resource_component_) {
-    resource_component_->RegisterCountryComponent(
-        delegate_->GetVariationsCountryCode());
-  }
+  resource_component_->RegisterCountryComponent(
+      delegate_->GetVariationsCountryCode());
 }
 
 void AdsServiceImpl::UnregisterCountryResourceComponent() {
@@ -246,9 +243,7 @@ void AdsServiceImpl::UnregisterCountryResourceComponent() {
 }
 
 void AdsServiceImpl::RegisterLanguageResourceComponent() {
-  if (resource_component_) {
-    resource_component_->RegisterLanguageComponent(CurrentLanguageCode());
-  }
+  resource_component_->RegisterLanguageComponent(CurrentLanguageCode());
 }
 
 void AdsServiceImpl::UnregisterLanguageResourceComponent() {
@@ -459,9 +454,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   RegisterResourceComponents();
 
-  if (resource_component_) {
-    resource_component_observation_.Observe(resource_component_.get());
-  }
+  resource_component_observation_.Observe(&*resource_component_);
 
   if (host_content_settings_map_) {
     host_content_settings_map_observation_.Observe(
@@ -1549,10 +1542,6 @@ void AdsServiceImpl::LoadResourceComponent(
     const std::string& id,
     int version,
     LoadResourceComponentCallback callback) {
-  if (!resource_component_) {
-    return std::move(callback).Run({});
-  }
-
   std::optional<base::FilePath> file_path =
       resource_component_->MaybeGetPath(id, version);
   if (!file_path) {
