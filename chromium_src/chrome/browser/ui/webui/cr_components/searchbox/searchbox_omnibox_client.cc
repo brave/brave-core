@@ -7,13 +7,29 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/omnibox/browser/autocomplete_input.h"
+#include "components/omnibox/browser/autocomplete_match.h"
+#include "components/search_engines/template_url_service.h"
 #include "content/public/browser/page_navigator.h"
 #include "net/base/url_util.h"
 
 namespace {
 
-content::OpenURLParams MaybeOverrideURLParams(content::OpenURLParams params,
-                                              TemplateURL* template_url) {
+// When `match` is a keyword search against Brave Search, tag the destination
+// URL with `source=newtab` so Brave Search can distinguish NTP searchbox
+// traffic. Plumbing the source through upstream's `{source}` replacement isn't
+// viable: it only works for Google Search, and it can't tell the NTP realbox
+// and the omnibox apart. The accompanying plaster wraps the `OpenURL()` params
+// in `OnAutocompleteAccept()` with this helper.
+content::OpenURLParams MaybeOverrideURLParams(
+    content::OpenURLParams params,
+    const AutocompleteMatch& match,
+    TemplateURLService* template_url_service) {
+  if (match.keyword.empty()) {
+    return params;
+  }
+
+  const TemplateURL* template_url =
+      template_url_service->GetTemplateURLForKeyword(match.keyword);
   if (template_url &&
       template_url->prepopulate_id() ==
           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE) {
@@ -26,21 +42,4 @@ content::OpenURLParams MaybeOverrideURLParams(content::OpenURLParams params,
 
 }  // namespace
 
-// Unfortunately, plumbing through the source doesn't seem trivial - it looks
-// like it should be possible with the {source} part but it seems like it only
-// works with Google Search. Additionally, the {source} param treats the NTP
-// Realbox and the Omnibox the same, which isn't ideal, so we'd have to patch
-// the behavior there too. This seems like the patch of least changes:
-// 1. If this is a keyword search with Brave Search
-// 2. Then replace &source=desktop with &source=new_tab
-#define OpenURL(PARAMS, CALLBACK)                                              \
-  OpenURL(match.keyword.empty()                                                \
-              ? PARAMS                                                         \
-              : MaybeOverrideURLParams(                                        \
-                    PARAMS, GetTemplateURLService()->GetTemplateURLForKeyword( \
-                                match.keyword)),                               \
-          CALLBACK)
-
 #include <chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc>
-
-#undef OpenURL
