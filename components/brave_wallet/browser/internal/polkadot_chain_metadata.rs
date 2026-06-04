@@ -11,9 +11,15 @@ fn decode_scale<T: Decode>(input: &mut &[u8]) -> Result<T, Error> {
     T::decode(input).map_err(|_| Error::InvalidScale)
 }
 
+const MAX_VEC_LEN: usize = 10_000;
+
 fn decode_vec_len(input: &mut &[u8]) -> Result<usize, Error> {
     let len: Compact<u32> = decode_scale(input)?;
-    usize::try_from(len.0).map_err(|_| Error::InvalidLength)
+    let len = usize::try_from(len.0).map_err(|_| Error::InvalidLength)?;
+    if len > MAX_VEC_LEN {
+        return Err(Error::InvalidLength);
+    }
+    Ok(len)
 }
 
 fn decode_type_id(input: &mut &[u8]) -> Result<u32, Error> {
@@ -171,10 +177,15 @@ fn parse_storage_entry_type(input: &mut &[u8]) -> Result<(), Error> {
         }
         // Map { hashers, key, value }
         1 => {
-            let _ = decode_vec(input, |input| {
-                let _: u8 = decode_scale(input)?;
-                Ok(())
-            })?;
+            let saved = *input;
+            if decode_vec(input, decode_scale::<u8>).is_ok() {
+                let _: u32 = decode_type_id(input)?;
+                let _: u32 = decode_type_id(input)?;
+                return Ok(());
+            }
+            // Fallback: v14 spec defines a single StorageHasher byte.
+            *input = saved;
+            let _: u8 = decode_scale(input)?;
             let _: u32 = decode_type_id(input)?;
             let _: u32 = decode_type_id(input)?;
             Ok(())
@@ -239,8 +250,8 @@ fn parse_pallets(input: &mut &[u8], has_pallet_docs: bool) -> Result<Vec<PalletI
 }
 
 // SS58Prefix constant is SCALE-encoded but the concrete integer width varies
-// across runtimes (u8, u16, or u32). Try each width and accept the first that
-// consumes the entire buffer.
+// across runtimes (u8, u16, u32, or Compact<u32>). Try fixed-width first to
+// avoid misinterpreting multi-byte fixed-width encodings as compact.
 fn decode_ss58_prefix(raw: &[u8]) -> Option<u16> {
     let mut input = raw;
     if let Ok(v) = u16::decode(&mut input) {
@@ -250,6 +261,12 @@ fn decode_ss58_prefix(raw: &[u8]) -> Option<u16> {
     }
     let mut input = raw;
     if let Ok(v) = u32::decode(&mut input) {
+        if input.is_empty() {
+            return u16::try_from(v).ok();
+        }
+    }
+    let mut input = raw;
+    if let Ok(Compact(v)) = Compact::<u32>::decode(&mut input) {
         if input.is_empty() {
             return u16::try_from(v).ok();
         }
