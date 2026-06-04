@@ -12,12 +12,9 @@ substitutions:
       state (set before AddChildView in PopulateSidePanel) avoids the timing
       issue where coordinator->GetCurrentEntryId() still returns the previous
       entry when OnChildViewAdded fires.
-    re_pattern:
-      '(  gfx::RoundedCornersF GetRoundedCorners\(\)
-      \{)\n    ChromeDistanceMetric corner_radius ='
+    re_pattern: '(  gfx::RoundedCornersF GetRoundedCorners\(\) \{)'
     replace: |-
       \1
           return brave::GetPanelContentsRoundedCorners(
               browser_view_->GetProfile()->GetPrefs(),
               browser_view_->side_panel()->GetHeaderView<views::View>());
-          ChromeDistanceMetric corner_radius =
