@@ -34,18 +34,15 @@ namespace browsing_data {
 
 bool GetDeletionPreferenceFromDataType(
     BrowsingDataType data_type,
-    ClearBrowsingDataTab clear_browsing_data_tab,
     std::string* out_pref) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (clear_browsing_data_tab == ClearBrowsingDataTab::ADVANCED &&
-      data_type == BrowsingDataType::BRAVE_AI_CHAT) {
+  if (data_type == BrowsingDataType::BRAVE_AI_CHAT) {
     *out_pref = prefs::kDeleteBraveLeoHistory;
     return true;
   }
 #endif
 
-  return GetDeletionPreferenceFromDataType_ChromiumImpl(
-      data_type, clear_browsing_data_tab, out_pref);
+  return GetDeletionPreferenceFromDataType_ChromiumImpl(data_type, out_pref);
 }
 
 std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
