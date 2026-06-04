@@ -7,6 +7,17 @@ module misc_metrics.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 
+// The direction of a manual opening screen setting switch, used for
+// Brave.NTP.OpeningScreenSwitch.
+enum OpeningScreenSwitchType {
+  // Switched from "New tab after inactivity" to another setting.
+  kFromInactivity,
+  // Switched from another setting to "New tab after inactivity".
+  kToInactivity,
+  // Switched between two non-inactivity settings.
+  kOther,
+};
+
 // Handler for Android misc metric events from UI.
 interface MiscAndroidMetrics {
   // Records view of Privacy Hub report.
@@ -55,4 +66,7 @@ interface MiscAndroidMetrics {
   // Records a top site tile navigation from the NTP.
   // isCustom is true for pinned/custom-link tiles, false for frequented tiles.
   RecordTopSiteNavigation(bool isCustom);
+
+  // Records a manual switch of the NTP opening screen setting.
+  RecordOpeningScreenSettingSwitch(OpeningScreenSwitchType switchType);
 };

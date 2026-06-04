@@ -33,6 +33,8 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
+import org.chromium.misc_metrics.mojom.OpeningScreenSwitchType;
 
 /** Fragment to keep track of all the display related preferences. */
 @NullMarked
@@ -157,7 +159,10 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             } else if (mOpeningScreenPref != null) {
                 int currentValue =
                         ChromeSharedPreferences.getInstance()
-                                .readInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, 1);
+                                .readInt(
+                                        BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN,
+                                        BravePreferenceKeys
+                                                .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY);
                 mOpeningScreenPref.initialize(currentValue);
                 mOpeningScreenPref.setOnPreferenceChangeListener(this);
             }
@@ -191,9 +196,44 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             NtpUtil.setDisplayBraveStats((boolean) newValue);
         } else if (PREF_OPENING_SCREEN.equals(key)) {
             int option = (int) newValue;
+            int previousOption =
+                    ChromeSharedPreferences.getInstance()
+                            .readInt(
+                                    BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN,
+                                    BravePreferenceKeys
+                                            .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY);
             ChromeSharedPreferences.getInstance()
                     .writeInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, option);
+            recordOpeningScreenSwitch(previousOption, option);
         }
         return true;
+    }
+
+    private void recordOpeningScreenSwitch(int previousOption, int newOption) {
+        try {
+            MiscAndroidMetrics metrics = BraveActivity.getBraveActivity().getMiscAndroidMetrics();
+            if (metrics == null) return;
+
+            boolean previousIsInactivity =
+                    previousOption
+                            == BravePreferenceKeys
+                                    .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY;
+            boolean newIsInactivity =
+                    newOption
+                            == BravePreferenceKeys
+                                    .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY;
+
+            int switchType;
+            if (previousIsInactivity && !newIsInactivity) {
+                switchType = OpeningScreenSwitchType.FROM_INACTIVITY;
+            } else if (!previousIsInactivity && newIsInactivity) {
+                switchType = OpeningScreenSwitchType.TO_INACTIVITY;
+            } else {
+                switchType = OpeningScreenSwitchType.OTHER;
+            }
+            metrics.recordOpeningScreenSettingSwitch(switchType);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "recordOpeningScreenSwitch " + e);
+        }
     }
 }
