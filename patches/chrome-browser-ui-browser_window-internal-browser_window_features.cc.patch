@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index 77f5a0e8f494a09af68601bd55794bdfa1a28023..5c93a8529d4de36905072497f3626b57045c6c55 100644
+index f36a0d9d6b78dd1e346f199eed39f0e9e2ddb21a..dfd6088a746cff726d82a76d49292b6bdc88eaa2 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -267,7 +267,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -299,7 +299,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
            *browser, fullscreen_controller_.get(), app_browser_controller_.get(),
            browser->GetType(),
            browser->GetBrowserForMigrationOnly()->is_trusted_source(),
 -          browser->GetUnownedUserDataHost());
 +          browser->GetUnownedUserDataHost(), *browser);
  
-   immersive_mode_controller_ =
-       GetUserDataFactory()
+   side_panel_registry_ =
+       GetUserDataFactory().CreateInstance<SidePanelRegistry>(*browser, browser);

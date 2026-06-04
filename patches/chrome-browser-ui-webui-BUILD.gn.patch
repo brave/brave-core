@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 70818ce2da0e8e5fc9e79ac54fb2f1a37fdcd28b..bb747a98ff5cb3331d2515e9ca8f9022fa2af39f 100644
+index b1c6b05cb71b6c97215c3659775d8996ad2293c0..771943c8043b91c327b6f8b96c7e20aeb509a779 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -251,6 +251,8 @@ source_set("configs") {
-       "//chrome/browser/ui/webui/webui_gallery",
-     ]
+@@ -286,6 +286,8 @@ source_set("configs") {
+   if (enable_webui_ntp) {
+     deps += [ "//chrome/browser/ui/webui/ntp_microsoft_auth" ]
    }
 +  import("//brave/browser/ui/webui/sources.gni")
 +  deps += brave_browser_ui_webui_configs_deps
