@@ -704,6 +704,7 @@ export const SupportedTestNetworks = [
   BraveWallet.Z_CASH_TESTNET,
   BraveWallet.CARDANO_TESTNET,
   BraveWallet.POLKADOT_TESTNET,
+  BraveWallet.POLKADOT_TESTNET_ASSET_HUB,
 ]
 
 export const SupportedTestNetworkEntityIds: EntityId[] = [
@@ -721,6 +722,7 @@ export const SupportedTestNetworkEntityIds: EntityId[] = [
   BraveWallet.Z_CASH_TESTNET,
   BraveWallet.CARDANO_TESTNET,
   BraveWallet.POLKADOT_TESTNET,
+  BraveWallet.POLKADOT_TESTNET_ASSET_HUB,
 ]
 
 export const DAppSupportedCoinTypes = [
