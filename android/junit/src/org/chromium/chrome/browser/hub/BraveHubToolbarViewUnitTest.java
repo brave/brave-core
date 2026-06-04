@@ -21,46 +21,56 @@ import android.widget.FrameLayout;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.ui.base.TestActivity;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
+import org.chromium.chrome.browser.firstrun.FirstRunStatus;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
+import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 
 /** Unit tests for {@link BraveHubToolbarView}. */
 @RunWith(BaseRobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
+@CommandLineFlags.Add({
+    ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE,
+    ChromeSwitches.DISABLE_NATIVE_INITIALIZATION
+})
 public class BraveHubToolbarViewUnitTest {
-    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
     @Rule
-    public ActivityScenarioRule<TestActivity> mActivityScenarioRule =
-            new ActivityScenarioRule<>(TestActivity.class);
+    public ActivityScenarioRule<ChromeTabbedActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(ChromeTabbedActivity.class);
 
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Mock private Pane mPane;
-    @Mock private FirstPartyStorageCleanerInterface mFirstPartyStorageCleaner;
 
     private SettableMonotonicObservableSupplier<Pane> mFocusedPaneSupplier;
     private FrameLayout mToolbarContainer;
     private Button mShredButton;
     private PropertyModel mPropertyModel;
-    private Activity mActivity;
+    @Spy private Activity mActivity;
     private HubColorMixer mColorMixer;
     private HubToolbarView mHubToolbarView;
 
@@ -69,7 +79,11 @@ public class BraveHubToolbarViewUnitTest {
         mActivityScenarioRule.getScenario().onActivity(this::onActivity);
     }
 
-    private void onActivity(TestActivity activity) {
+    @After
+    public void tearDown() {
+    }
+
+    private void onActivity(ChromeTabbedActivity activity) {
         mPane = mock();
         mActivity = spy(activity);
         mActivity.setTheme(R.style.Theme_BrowserUI_DayNight);
@@ -101,14 +115,15 @@ public class BraveHubToolbarViewUnitTest {
     @Test
     @EnableFeatures({BraveFeatureList.BRAVE_SHRED})
     public void testHideManualShredButtonInIncognitoMode() {
-        when(mFirstPartyStorageCleaner.isShredButtonVisible()).thenReturn(true);
+        FirstPartyStorageCleanerInterface fpCleaner = (FirstPartyStorageCleanerInterface) mActivity;
+        when(fpCleaner.isShredButtonVisible()).thenReturn(true);
         assertEquals(View.VISIBLE, mShredButton.getVisibility());
 
-        when(mFirstPartyStorageCleaner.isShredButtonVisible()).thenReturn(false);
+        when(fpCleaner.isShredButtonVisible()).thenReturn(false);
         mPropertyModel.set(IS_INCOGNITO, true);
         assertEquals(View.INVISIBLE, mShredButton.getVisibility());
 
-        when(mFirstPartyStorageCleaner.isShredButtonVisible()).thenReturn(true);
+        when(fpCleaner.isShredButtonVisible()).thenReturn(true);
         mPropertyModel.set(IS_INCOGNITO, false);
         assertEquals(View.VISIBLE, mShredButton.getVisibility());
     }
@@ -116,12 +131,15 @@ public class BraveHubToolbarViewUnitTest {
     @Test
     @DisableFeatures({BraveFeatureList.BRAVE_SHRED})
     public void testHideManualShredButtonIfFeatureFlagDisabled() {
-       // when(mFirstPartyStorageCleaner.isShredButtonVisible()).thenReturn(false);
+        FirstPartyStorageCleanerInterface fpCleaner = (FirstPartyStorageCleanerInterface) mActivity;
+        when(fpCleaner.isShredButtonVisible()).thenReturn(true);
         assertEquals(View.VISIBLE, mShredButton.getVisibility());
 
+        when(fpCleaner.isShredButtonVisible()).thenReturn(false);
         mPropertyModel.set(IS_INCOGNITO, true);
         assertEquals(View.INVISIBLE, mShredButton.getVisibility());
 
+        when(fpCleaner.isShredButtonVisible()).thenReturn(true);
         mPropertyModel.set(IS_INCOGNITO, false);
         assertEquals(View.INVISIBLE, mShredButton.getVisibility());
     }

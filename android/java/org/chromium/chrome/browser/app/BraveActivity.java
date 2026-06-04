@@ -2843,11 +2843,17 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void setShredButtonVisibilityObserver(IncognitoReauthManager.IncognitoReauthCallback callback) {
+        if(mIncognitoReauthController == null) {
+            return;
+        }
         mIncognitoReauthController.addIncognitoReauthCallback(callback);
     }
     
     @Override
     public void removeShredButtonVisibilityObserver(IncognitoReauthManager.IncognitoReauthCallback callback) {
+        if(mIncognitoReauthController == null) {
+            return;
+        }
         mIncognitoReauthController.removeIncognitoReauthCallback(callback);
     }
 

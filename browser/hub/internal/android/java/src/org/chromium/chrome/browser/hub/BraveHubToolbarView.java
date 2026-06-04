@@ -147,6 +147,10 @@ public class BraveHubToolbarView extends HubToolbarView implements ApplicationSt
             }
         }
 
+        Log.i("SHRED", "[SHRED] updateButtonsVisibility \n\t\tmIsIncognitoSelected: " + mIsIncognitoSelected
+            + "\n\t\tisShredButtonVisible: " + (mFpCleaner != null ? mFpCleaner.isShredButtonVisible() : "null")
+            + "\n\t\tFeature: " + ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)
+        );
         final boolean isShredButtonVisible = (!mIsIncognitoSelected || (mFpCleaner != null ? mFpCleaner.isShredButtonVisible() : true));
         final boolean shouldShowShredButton =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED) && isShredButtonVisible;
