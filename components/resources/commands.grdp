@@ -421,6 +421,9 @@
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT">
     Toggle JavaScript
   </message>
+  <message name="IDS_IDC_UPDATE_ADBLOCK_FILTER_LISTS">
+    Update adblock lists
+  </message>
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble
   </message>
