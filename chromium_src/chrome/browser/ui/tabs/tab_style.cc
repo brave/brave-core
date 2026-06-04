@@ -54,13 +54,6 @@ class BraveTabStyle : public TabStyle {
     return tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
   }
 
-  int GetDragHandleExtension(int height) const override {
-    if (!tabs::HorizontalTabsUpdateEnabled()) {
-      return TabStyle::GetDragHandleExtension(height);
-    }
-    return tabs::GetDragHandleExtensionHeight();
-  }
-
   gfx::Size GetSeparatorSize() const override {
     return gfx::Size(1, GetLayoutConstant(LayoutConstant::kTabSeparatorHeight));
   }
