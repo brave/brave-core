@@ -13,15 +13,8 @@ provideStrings({
   // Search Text
   braveWalletSearchText: 'Search',
 
-  // Side Nav Buttons
-  braveWalletSideNavCrypto: 'Crypto',
-  braveWalletSideNavRewards: 'Rewards',
-  braveWalletSideNavCards: 'Cards',
-
   // Top Nav Tab Buttons
   braveWalletTopNavPortfolio: 'Portfolio',
-  braveWalletTopTabPrices: 'Prices',
-  braveWalletTopTabApps: 'Apps',
   braveWalletTopNavNFTS: 'NFTs',
   braveWalletTopNavAccounts: 'Accounts',
   braveWalletTopNavMarket: 'Market',
