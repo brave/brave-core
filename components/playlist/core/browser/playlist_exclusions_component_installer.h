@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSION_COMPONENT_INSTALLER_H_
-#define BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSION_COMPONENT_INSTALLER_H_
+#ifndef BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_COMPONENT_INSTALLER_H_
+#define BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_COMPONENT_INSTALLER_H_
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -12,9 +12,9 @@ class ComponentUpdateService;
 
 namespace playlist {
 
-void RegisterPlaylistExclusionsComponent(
+void MaybeRegisterPlaylistExclusionsComponent(
     component_updater::ComponentUpdateService* cus);
 
 }  // namespace playlist
 
-#endif  // BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSION_COMPONENT_INSTALLER_H_
+#endif  // BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_COMPONENT_INSTALLER_H_

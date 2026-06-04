@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/core/browser/playlist_exclusion_component_installer.h"
+#include "brave/components/playlist/core/browser/playlist_exclusions_component_installer.h"
 
 #include <stdint.h>
 
@@ -17,7 +17,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/playlist/core/browser/playlist_exclusion.h"
+#include "brave/components/playlist/core/browser/playlist_exclusions.h"
 #include "brave/components/playlist/core/common/constants.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "components/component_updater/component_installer.h"
@@ -94,7 +94,8 @@ void PlaylistExclusionsComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::DictValue manifest) {
-  PlaylistExclusions::GetInstance()->OnComponentReady(path);
+  PlaylistExclusions::GetInstance()->LoadPlaylistExclusions(
+      path.AppendASCII(kPlaylistExclusionsJsonFile));
 }
 
 bool PlaylistExclusionsComponentInstallerPolicy::VerifyInstallation(
@@ -129,7 +130,7 @@ bool PlaylistExclusionsComponentInstallerPolicy::IsBraveComponent() const {
 
 }  // namespace
 
-void RegisterPlaylistExclusionsComponent(
+void MaybeRegisterPlaylistExclusionsComponent(
     component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist) || !cus) {
     return;
