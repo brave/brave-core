@@ -258,6 +258,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     [
       BraveWallet.TransactionType.ETHSend,
       BraveWallet.TransactionType.ERC20Transfer,
+      BraveWallet.TransactionType.ERC721SetApprovalForAll,
       BraveWallet.TransactionType.SolanaSystemTransfer,
       BraveWallet.TransactionType.SolanaSPLTokenTransfer,
       BraveWallet.TransactionType

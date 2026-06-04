@@ -156,35 +156,15 @@ describe('ConfirmSendTransactionDApp', () => {
 })
 
 const mockNftContractAddress = '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd'
-
-const makeSetApprovalForAllCalldata = (
-  operatorAddress: string,
-  approved: boolean,
-) => {
-  const operatorBytes = operatorAddress
-    .replace('0x', '')
-    .match(/.{2}/g)!
-    .map((byte) => Number.parseInt(byte, 16))
-
-  return [
-    0xa2,
-    0x2c,
-    0xb4,
-    0x65,
-    ...new Array(12).fill(0),
-    ...operatorBytes,
-    ...new Array(31).fill(0),
-    approved ? 1 : 0,
-  ]
-}
+const mockOperatorAddress = mockEthAccount.accountId.address
 
 const mockSetApprovalForAllTransaction = {
   ...mockETHNativeTokenSendTransaction,
   id: 'set-approval-for-all-tx',
   originInfo: mockUniswapOriginInfo,
-  txType: BraveWallet.TransactionType.Other,
-  txArgs: [],
-  txParams: [],
+  txType: BraveWallet.TransactionType.ERC721SetApprovalForAll,
+  txArgs: [mockOperatorAddress, '0x1'],
+  txParams: ['address', 'bool'],
   effectiveRecipient: mockNftContractAddress,
   txDataUnion: {
     ethTxData1559: {
@@ -195,10 +175,7 @@ const mockSetApprovalForAllTransaction = {
         gasLimit: '0x5208',
         to: mockNftContractAddress,
         value: '0x0',
-        data: makeSetApprovalForAllCalldata(
-          mockEthAccount.accountId.address,
-          true,
-        ),
+        data: [],
         signOnly: false,
         signedTransaction: undefined,
       },

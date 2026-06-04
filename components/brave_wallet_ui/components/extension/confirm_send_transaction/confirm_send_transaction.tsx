@@ -21,6 +21,7 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
   getTransactionMemo,
+  getSetApprovalForAllOperator,
   isSetApprovalForAllTransaction,
 } from '../../../utils/tx-utils'
 
@@ -177,6 +178,14 @@ export function ConfirmSendTransaction() {
       return false
     }
     return isSetApprovalForAllTransaction(selectedPendingTransaction)
+  }, [selectedPendingTransaction])
+
+  // The operator (spender) being granted approval over the NFT collection
+  const approvalForAllOperator = React.useMemo(() => {
+    if (!selectedPendingTransaction) {
+      return ''
+    }
+    return getSetApprovalForAllOperator(selectedPendingTransaction)
   }, [selectedPendingTransaction])
 
   // Methods
@@ -458,7 +467,7 @@ export function ConfirmSendTransaction() {
         <ApprovalForAllWarning
           onConfirm={onConfirmAndCloseWarning}
           onReject={onReject}
-          address={transactionDetails.recipient}
+          address={approvalForAllOperator}
         />
       )}
     </>

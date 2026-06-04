@@ -56,6 +56,7 @@ import {
   getTransactionTransferredValue,
   getTransactionTypeName,
   isCancelTransaction,
+  getSetApprovalForAllOperator,
   isSetApprovalForAllTransaction,
   parseSwapInfo,
 } from './tx-utils'
@@ -1389,93 +1390,34 @@ describe('isCancelTransaction', () => {
 describe('isSetApprovalForAllTransaction', () => {
   const mockOperatorAddress = '0x1234567890123456789012345678901234567890'
 
-  const makeSetApprovalForAllCalldata = (
-    operatorAddress: string,
-    approved: boolean,
-  ) => {
-    const operatorBytes = operatorAddress
-      .replace('0x', '')
-      .match(/.{2}/g)!
-      .map((byte) => parseInt(byte, 16))
-
-    return [
-      0xa2,
-      0x2c,
-      0xb4,
-      0x65,
-      ...Array(12).fill(0),
-      ...operatorBytes,
-      ...Array(31).fill(0),
-      approved ? 1 : 0,
-    ]
-  }
+  const makeSetApprovalForAllTx = (operator: string, approved: boolean) => ({
+    ...mockEthSendTransaction,
+    txType: BraveWallet.TransactionType.ERC721SetApprovalForAll,
+    txArgs: [operator, approved ? '0x1' : '0x0'],
+  })
 
   test('should return true for setApprovalForAll with approved=true', () => {
-    const tx = {
-      ...mockEthSendTransaction,
-      txType: BraveWallet.TransactionType.Other,
-      txDataUnion: {
-        ethTxData1559: {
-          baseData: {
-            to: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
-            value: '0',
-            data: makeSetApprovalForAllCalldata(mockOperatorAddress, true),
-            nonce: '1',
-            gasPrice: '',
-            gasLimit: '',
-            signOnly: false,
-            signedTransaction: '',
-          },
-          chainId: '0x1',
-          maxPriorityFeePerGas: '0x0',
-          maxFeePerGas: '0x0',
-        },
-      },
-    }
-
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, true)
     expect(isSetApprovalForAllTransaction(tx)).toBe(true)
   })
 
   test('should return false for setApprovalForAll with approved=false', () => {
-    const tx = {
-      ...mockEthSendTransaction,
-      txType: BraveWallet.TransactionType.Other,
-      txDataUnion: {
-        ethTxData: {
-          to: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
-          value: '0',
-          data: makeSetApprovalForAllCalldata(mockOperatorAddress, false),
-          nonce: '1',
-          gasPrice: '',
-          gasLimit: '',
-          signOnly: false,
-          signedTransaction: '',
-        },
-      },
-    }
-
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, false)
     expect(isSetApprovalForAllTransaction(tx)).toBe(false)
   })
 
-  test('should return false for unrelated contract call data', () => {
+  test('should return false for other transaction types', () => {
     const tx = {
       ...mockEthSendTransaction,
       txType: BraveWallet.TransactionType.Other,
-      txDataUnion: {
-        ethTxData: {
-          to: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
-          value: '0',
-          data: [0xde, 0xad, 0xbe, 0xef],
-          nonce: '1',
-          gasPrice: '',
-          gasLimit: '',
-          signOnly: false,
-          signedTransaction: '',
-        },
-      },
+      txArgs: [],
     }
-
     expect(isSetApprovalForAllTransaction(tx)).toBe(false)
+  })
+
+  test('should expose the operator address as the granted spender', () => {
+    const tx = makeSetApprovalForAllTx(mockOperatorAddress, true)
+    expect(getSetApprovalForAllOperator(tx)).toBe(mockOperatorAddress)
   })
 })
 
