@@ -25,16 +25,17 @@
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/actions/actions.h"
 #include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/events/event_constants.h"
 #include "ui/gfx/text_elider.h"
+#include "ui/views/bubble/bubble_anchor.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/menu/menu_item_view.h"
 #include "ui/views/controls/menu/menu_model_adapter.h"
 #include "ui/views/controls/menu/menu_runner.h"
+#include "ui/views/view.h"
 
 namespace page_actions {
 
@@ -137,8 +138,10 @@ void PartitionedStoragePageActionController::ExecuteAction(
     return;
   }
 
-  IconLabelBubbleView* const anchor_view =
-      toolbar_button_provider->GetPageActionView(kActionShowPartitionedStorage);
+  views::View* const anchor_view =
+      toolbar_button_provider
+          ->GetPageActionBubbleAnchor(kActionShowPartitionedStorage)
+          .GetIfView();
   if (!anchor_view || !anchor_view->GetWidget()) {
     return;
   }

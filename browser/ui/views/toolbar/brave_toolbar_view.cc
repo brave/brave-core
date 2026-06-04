@@ -534,8 +534,11 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
     anchor_view = bookmark_;
   }
 
-  BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
-                                 browser_, url, already_bookmarked);
+  // Passing `nullptr` to `highlighted_button` as this argument only gets used
+  // by the legacy page action framework.
+  BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(),
+                                 /*highlighted_button=*/nullptr, browser_, url,
+                                 already_bookmarked);
 }
 
 void BraveToolbarView::VisibilityChanged(views::View* starting_from,

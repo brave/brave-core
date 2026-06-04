@@ -49,6 +49,7 @@ source_set("browser_tests") {
     "//brave/components/containers/core/mojom",
     "//chrome/browser",
     "//chrome/browser/browsing_data:constants",
+    "//chrome/browser/ui/views/page_action:page_action_test_support",
     "//chrome/browser/ui/zoom",
     "//chrome/test:test_support",
     "//content/public/browser",
