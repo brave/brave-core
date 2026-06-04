@@ -39,10 +39,22 @@
 #endif  // IS_WIN
 #endif  // ENABLE_BRAVE_VPN_V1
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2)
+#include "brave/components/brave_vpn/browser/v2/brave_vpn_service_impl.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2)
+
 namespace brave_vpn {
 namespace {
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2)
+
+std::unique_ptr<KeyedService> BuildVpnService_V2(
+    content::BrowserContext* context) {
+  // Return stub implementation.
+  return std::make_unique<v2::BraveVpnServiceImpl>();
+}
+
+#elif BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 
 std::unique_ptr<KeyedService> BuildVpnService_V1(
     content::BrowserContext* context) {
@@ -102,7 +114,9 @@ std::unique_ptr<KeyedService> BuildVpnService(
   if (!brave_vpn::IsAllowedForContext(context)) {
     return nullptr;
   }
-#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2)
+  return BuildVpnService_V2(context);
+#elif BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   return BuildVpnService_V1(context);
 #else
   NOTREACHED() << "No VPN implementation available";

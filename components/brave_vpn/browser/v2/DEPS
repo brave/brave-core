@@ -1,0 +1,10 @@
+include_rules = [
+  "-brave/components/brave_vpn/browser",
+  "-brave/components/brave_vpn/common",
+  "+brave/components/brave_vpn/browser/v2",
+  "+brave/components/brave_vpn/browser/brave_vpn_service.h",
+  "+brave/components/brave_vpn/common/brave_vpn_constants.h",
+  "+brave/components/brave_vpn/common/brave_vpn_utils.h",
+  "+brave/components/brave_vpn/common/buildflags",
+  "+brave/components/brave_vpn/common/mojom",
+]
