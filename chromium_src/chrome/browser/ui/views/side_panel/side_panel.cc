@@ -30,17 +30,23 @@
 namespace {
 
 // Applies the current rounded-corner values to every direct child of the
-// content wrapper. Used when the pref changes or the panel opens with
+// content parent view. Used when the pref changes or the panel opens with
 // existing content (so OnChildViewAdded never fired with the new values).
-void UpdateContentWrapperChildCorners(views::View* wrapper,
+void UpdateContentWrapperChildCorners(views::View* content_parent_view,
                                       PrefService* prefs,
                                       bool has_header) {
+  // ContentParentView hosts multiple content view and shows at once.
+  CHECK(content_parent_view->GetUseDefaultFillLayout());
+
   auto corners = brave::GetPanelContentsRoundedCorners(prefs, has_header);
-  for (views::View* child : wrapper->children()) {
+  for (views::View* child : content_parent_view->children()) {
+    // If the child is a WebView or paints to a layer, round its corners.
     if (views::IsViewClass<views::WebView>(child)) {
       views::AsViewClass<views::WebView>(child)->holder()->SetCornerRadii(
           corners);
     }
+    // Try to detect if the child is a views::View wrapper of a WebView. If so,
+    // round its corners.
     if (child->children().size() == 1 &&
         views::IsViewClass<views::WebView>(child->children()[0])) {
       views::AsViewClass<views::WebView>(child->children()[0])
