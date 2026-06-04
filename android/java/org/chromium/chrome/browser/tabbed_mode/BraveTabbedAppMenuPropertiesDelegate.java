@@ -786,7 +786,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
                             buildModelForStandardMenuItem(
-                                    R.id.universal_install, R.string.menu_add_to_homescreen, 0)));
+                                    R.id.universal_install,
+                                    R.string.menu_install_create_shortcut,
+                                    0)));
         }
 
         // RDS
