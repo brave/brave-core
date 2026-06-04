@@ -7,14 +7,14 @@ import {assert} from 'chrome://resources/js/assert.js';
 import {sanitizeInnerHtml} from 'chrome://resources/js/parse_html_subset.js';
 
 import {
-  SettingsClearBrowsingDataDialogV2Element,
+  SettingsClearBrowsingDataDialogElement,
   getDataTypePrefName,
   BrowsingDataTypeOption
-} from '../clear_browsing_data_dialog/clear_browsing_data_dialog_v2.js'
+} from '../clear_browsing_data_dialog/clear_browsing_data_dialog.js'
 
 import {
-  SettingsBraveClearBrowsingDataOnExitPageV2Element
-} from './brave_clear_browsing_data_on_exit_page_v2.js'
+  SettingsBraveClearBrowsingDataOnExitPageElement
+} from './brave_clear_browsing_data_on_exit_page.js'
 
 import {BrowsingDataType} from '../clear_browsing_data_dialog/clear_browsing_data_browser_proxy.js';
 import type {UpdateSyncStateEvent} from '../clear_browsing_data_dialog/clear_browsing_data_browser_proxy.js';
@@ -28,8 +28,8 @@ import {
 // Casts `this` through `unknown` to access private properties/methods from
 // parent class.
 // @ts-ignore overrides private method from parent class
-export class BraveSettingsClearBrowsingDataDialogV2Element
-  extends SettingsClearBrowsingDataDialogV2Element {
+export class BraveSettingsClearBrowsingDataDialogElement
+  extends SettingsClearBrowsingDataDialogElement {
   declare private braveRewardsEnabled_: boolean
   declare private tabsNames_: string[]
   declare private selectedTabIndex_: number
@@ -139,7 +139,7 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
 
     if (saveButton) {
       saveButton.disabled = !this.shadowRoot!.
-        querySelector<SettingsBraveClearBrowsingDataOnExitPageV2Element>(
+        querySelector<SettingsBraveClearBrowsingDataOnExitPageElement>(
           '#onExitTab')!.isModified_
     }
   }
@@ -206,7 +206,7 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
    */
   private saveOnExitSettings_ = () => {
     const changed = this.shadowRoot!.
-      querySelector<SettingsBraveClearBrowsingDataOnExitPageV2Element>(
+      querySelector<SettingsBraveClearBrowsingDataOnExitPageElement>(
         '#onExitTab')!.getChangedSettings()
     changed.forEach((change) => {
       this.set('prefs.' + change.key + '.value', change.value)
