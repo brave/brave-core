@@ -13,7 +13,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOrganicRepeatableQueries, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-BASE_FEATURE(kHistoryMoreSearchResults,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kHistoryMoreSearchResults, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace history

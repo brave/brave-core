@@ -177,6 +177,16 @@
 # suppress this Chrome-specific attribution.
 -AutocompleteControllerTest.UpdateMatchDestinationURLWithInvocationSource*
 
+# These tests assume the upstream 3-day significance/autocomplete age threshold
+# (kLowQualityMatchAgeLimitInDays). Brave raises that threshold to one year in
+# chromium_src/components/history/core/browser/url_database.cc when
+# history::kHistoryMoreSearchResults is enabled (the Brave default), so URLs the
+# tests seed as old-but-insignificant now qualify as significant.
+-BatchRecentVisitsTest.ExcludesInsignificantURLs
+-HistoryURLProviderTest.PromoteShorterURLs
+-InMemoryURLIndexTest.TitleSearch
+-URLDatabaseTest.EnumeratorForSignificant
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
