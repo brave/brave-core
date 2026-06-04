@@ -65,6 +65,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={true}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -101,6 +102,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={true}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -127,6 +129,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={false}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -161,6 +164,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={true}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -219,6 +223,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={true}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -262,6 +267,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={true}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -327,6 +333,7 @@ describe('AssistantTask', () => {
           assistantEntries={entriesWithInlineSearch}
           isActiveTask={false}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -357,6 +364,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={true}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -384,6 +392,7 @@ describe('AssistantTask', () => {
           assistantEntries={mockAssistantEntries}
           isActiveTask={false}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -455,6 +464,7 @@ describe('AssistantTask web sources', () => {
           assistantEntries={entriesWithSourcesInEarlierEntry}
           isActiveTask={false}
           isLeoModel={true}
+          allowedLinks={[]}
         />
       </MockContext>,
     )
@@ -473,6 +483,7 @@ describe('AssistantTask web sources', () => {
             assistantEntries={entriesWithSourcesInEarlierEntry}
             isActiveTask={false}
             isLeoModel={true}
+            allowedLinks={[]}
           />
         </ProgressBubbleContextProvider>
       </MockContext>,
@@ -507,6 +518,7 @@ describe('AssistantTask web sources', () => {
             assistantEntries={entriesWithSourcesInEarlierEntry}
             isActiveTask={false}
             isLeoModel={true}
+            allowedLinks={[]}
           />
         </ProgressBubbleContextProvider>
       </MockContext>,

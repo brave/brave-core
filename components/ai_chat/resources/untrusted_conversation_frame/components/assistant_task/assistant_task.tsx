@@ -26,6 +26,11 @@ interface Props {
 
   // Passes to AssistantResponse
   isLeoModel: boolean
+
+  // URLs the assistant's reply is allowed to render as anchors. Computed
+  // once per group by the caller so both the AssistantResponse and
+  // AssistantTask render paths see the same list.
+  allowedLinks: string[]
 }
 
 interface TabProps {
@@ -193,7 +198,7 @@ function Progress(props: Props & TabProps) {
             ]}
             isEntryInteractivityAllowed={false}
             isEntryInProgress={props.isGenerating}
-            allowedLinks={props.taskData.allowedLinks}
+            allowedLinks={props.allowedLinks}
             isLeoModel={props.isLeoModel}
             toolArtifacts={props.toolArtifacts}
           />
@@ -269,7 +274,7 @@ function Steps(props: Props & TabProps) {
           events={events}
           isEntryInteractivityAllowed={isRunnable}
           isEntryInProgress={isActive}
-          allowedLinks={props.taskData.allowedLinks}
+          allowedLinks={props.allowedLinks}
           isLeoModel={props.isLeoModel}
         />
       </div>

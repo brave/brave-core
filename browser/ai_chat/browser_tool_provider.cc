@@ -8,12 +8,15 @@
 #include <memory>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ai_chat/tools/code_execution_tool.h"
+#include "brave/browser/ai_chat/tools/history_search_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 
@@ -34,6 +37,9 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   if (code_execution_tool_) {
     tool_ptrs.push_back(code_execution_tool_->GetWeakPtr());
   }
+  if (history_search_tool_) {
+    tool_ptrs.push_back(history_search_tool_->GetWeakPtr());
+  }
 
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (tab_management_tool_) {
@@ -44,10 +50,19 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   return tool_ptrs;
 }
 
+HistorySearchTool* BrowserToolProvider::GetHistorySearchToolForTesting() {
+  CHECK_IS_TEST();
+  return history_search_tool_.get();
+}
+
 void BrowserToolProvider::CreateTools(
     content::BrowserContext* browser_context) {
   if (features::IsCodeExecutionToolEnabled()) {
     code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
+  }
+  if (history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+          Profile::FromBrowserContext(browser_context))) {
+    history_search_tool_ = std::make_unique<HistorySearchTool>(browser_context);
   }
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (base::FeatureList::IsEnabled(features::kTabManagementTool)) {

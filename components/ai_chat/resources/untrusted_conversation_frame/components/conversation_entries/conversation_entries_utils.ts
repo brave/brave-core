@@ -279,3 +279,58 @@ export function getToolArtifacts(
 
   return [...artifactsWithoutId, ...artifactsById.values()]
 }
+
+/**
+ * Collects every URL that should be permitted as an anchor in the assistant
+ * replies for this group, deduped. Combines:
+ *  - Web search citations from `sourcesEvent` (the "Sources" panel URLs).
+ *  - HTTPS URLs from `visited_links` artifacts on tool_use events --
+ *    client-side tools (e.g. semantic history search) emit these as a
+ *    sidechannel trust-list so the assistant's reply can render the tool's
+ *    URLs as anchors. Bad JSON or non-string array entries are skipped.
+ * Flattening across the whole group is required because a client-side tool
+ * call lives in a separate assistant entry from the follow-up response that
+ * references the tool's URLs.
+ */
+function parseVisitedLinksArtifact(artifact: Mojom.ToolArtifact): string[] {
+  if (artifact.type !== Mojom.VISITED_LINKS_ARTIFACT_TYPE) {
+    return []
+  }
+  try {
+    const parsed: unknown = JSON.parse(artifact.contentJson)
+    return Array.isArray(parsed)
+      ? parsed.filter((u): u is string => typeof u === 'string')
+      : []
+  } catch {
+    return []
+  }
+}
+
+function collectLinksFromEvent(
+  event: Mojom.ConversationEntryEvent,
+  links: Set<string>,
+) {
+  if (event.sourcesEvent) {
+    for (const source of event.sourcesEvent.sources) {
+      links.add(source.url.url)
+    }
+  }
+  for (const a of event.toolUseEvent?.artifacts ?? []) {
+    for (const url of parseVisitedLinksArtifact(a)) {
+      links.add(url)
+    }
+  }
+}
+
+export function getGroupAllowedLinks(
+  group: Mojom.ConversationTurn[],
+): string[] {
+  const links = new Set<string>()
+  for (const entry of group) {
+    const events = (entry.edits?.at(-1) ?? entry).events ?? []
+    for (const event of events) {
+      collectLinksFromEvent(event, links)
+    }
+  }
+  return Array.from(links)
+}

@@ -112,29 +112,39 @@ describe('ConversationEntries allowedLinks per response', () => {
     ])
   })
 
-  it('passes correct allowedLinks for a combined AssistantResponse group', () => {
-    render(
-      <MockContext
-        overrides={mockOverrides}
-        initialState={{
-          conversationHistory: [
-            humanTurn1,
-            assistantTurn1,
-            assistantTurn2,
-          ] as any,
-        }}
-      >
-        <ConversationEntries />
-      </MockContext>,
-    )
-    expect(assistantResponseMock).toHaveBeenCalledTimes(2)
-    expect(assistantResponseMock.mock.calls[0][0]?.allowedLinks).toEqual([
-      'https://a.com',
-    ])
-    expect(assistantResponseMock.mock.calls[1][0]?.allowedLinks).toEqual([
-      'https://b.com',
-    ])
-  })
+  it(
+    'passes the same group-wide allowedLinks to every AssistantResponse '
+      + 'in a combined group',
+    () => {
+      // A client-side tool call lives in a separate assistant entry from the
+      // follow-up response that references its URLs, so allowedLinks is
+      // computed per group (not per entry) and every entry in the group sees
+      // the union.
+      render(
+        <MockContext
+          overrides={mockOverrides}
+          initialState={{
+            conversationHistory: [
+              humanTurn1,
+              assistantTurn1,
+              assistantTurn2,
+            ] as any,
+          }}
+        >
+          <ConversationEntries />
+        </MockContext>,
+      )
+      expect(assistantResponseMock).toHaveBeenCalledTimes(2)
+      expect(assistantResponseMock.mock.calls[0][0]?.allowedLinks).toEqual([
+        'https://a.com',
+        'https://b.com',
+      ])
+      expect(assistantResponseMock.mock.calls[1][0]?.allowedLinks).toEqual([
+        'https://a.com',
+        'https://b.com',
+      ])
+    },
+  )
 })
 
 describe('conversation entries', () => {

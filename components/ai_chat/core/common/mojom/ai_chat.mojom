@@ -20,6 +20,7 @@ const string kUserChoiceToolName = "user_choice_tool";
 const string kAssistantDetailStorageToolName = "assistant_detail_storage";
 const string kMemoryStorageToolName = "memory_storage_tool";
 const string kCodeExecutionToolName = "code_execution_tool";
+const string kSemanticHistorySearchToolName = "semantic_history_search";
 
 [EnableIf=enable_ai_chat_tab_management_tool]
 const string kTabManagementToolName = "tab_management";
@@ -44,6 +45,13 @@ const string kWebContextSearchToolName = "web_context_search";
 
 // Tool artifact types
 const string kLineChartArtifactType = "line_chart";
+
+// Carries a JSON array of HTTPS URL strings that the tool's output
+// references -- typically pages from the user's local browsing history
+// that match the tool's query. The conversation UI uses this to permit
+// the assistant's reply to render those URLs as anchors. Not rendered
+// visually.
+const string kVisitedLinksArtifactType = "visited_links";
 
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
