@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
 
@@ -974,12 +975,12 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
         const std::string_view extrinsic_hash =
             submitted_extrinsic_hash_.empty() ? kDefaultSubmittedExtrinsicHash
                                               : submitted_extrinsic_hash_;
-        const std::string response = R"({
+        const std::string response = absl::StrFormat(R"({
           "jsonrpc": "2.0",
           "id": 1,
-          "result": ")" + extrinsic_hash +
-                                     R"("
-        })";
+          "result": "%s"
+        })",
+                                                     extrinsic_hash);
         url_loader_factory_->AddResponse(req.url.spec(), response);
       }
 
