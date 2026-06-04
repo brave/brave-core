@@ -43,7 +43,7 @@ extension Strings {
     public static let shortcutsEmptyState = NSLocalizedString(
       "widgets.shortcutsEmptyState",
       bundle: widgetBundle,
-      value: "No Shortcuts Selected",
+      value: "Your shortcuts will appear here",
       comment: "A label shown on the widget has no available shortcuts to display."
     )
 

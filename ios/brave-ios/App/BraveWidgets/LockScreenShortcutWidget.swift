@@ -109,6 +109,8 @@ struct LockScreenShortcutView: View {
   }
 }
 
+#if DEBUG
+
 #Preview(
   as: .accessoryCircular,
   widget: {
@@ -128,3 +130,5 @@ struct LockScreenShortcutView: View {
     LockScreenShortcutEntry(date: .now, widgetShortcut: nil)
   }
 )
+
+#endif

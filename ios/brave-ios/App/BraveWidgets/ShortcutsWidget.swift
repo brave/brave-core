@@ -233,15 +233,15 @@ private struct ShortcutsView: View {
             .padding(8)
             .foregroundColor(
               renderingMode == .accented
-                ? Color.white.opacity(0.6) : Color(braveSystemName: .textDisabled)
+                ? Color.white.opacity(0.7) : Color(braveSystemName: .textDisabled)
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay {
               ContainerRelativeShape()
                 .stroke(
                   renderingMode == .accented
-                    ? Color.white.opacity(0.3) : Color(braveSystemName: .dividerStrong),
-                  style: .init(lineWidth: 1, dash: [2, 3], dashPhase: 0)
+                    ? Color.white.opacity(0.2) : Color(braveSystemName: .dividerSubtle),
+                  style: .init(lineWidth: 1)
                 )
             }
         } else {
@@ -265,6 +265,8 @@ private struct ShortcutsView: View {
 
 // MARK: - Previews
 
+#if DEBUG
+
 #Preview(
   as: .systemMedium,
   widget: {
@@ -284,3 +286,5 @@ private struct ShortcutsView: View {
     ShortcutEntry(date: .now, shortcutSlots: [])
   }
 )
+
+#endif
