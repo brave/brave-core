@@ -7,7 +7,7 @@
 #include <string>
 
 #include "base/feature_list.h"
-#include "brave/browser/ui/tabs/tree_tab_session_observer.h"
+#include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -25,14 +25,14 @@ void MaybePopulateTreeTabExtraData(
     return;
   }
 
-  auto* tree_tab_session_observer =
-      browser.GetFeatures().GetTreeTabSessionObserver();
-  if (!tree_tab_session_observer) {
+  auto* tree_tab_session_manager =
+      browser.GetFeatures().GetTreeTabSessionManager();
+  if (!tree_tab_session_manager) {
     // Can be null if the browser isn't a normal browser.
     return;
   }
 
-  tree_tab_session_observer->MaybePopulateTreeTabExtraData(index, &extra_data);
+  tree_tab_session_manager->MaybePopulateTreeTabExtraData(index, &extra_data);
 }
 
 }  // namespace

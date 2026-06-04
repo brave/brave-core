@@ -148,10 +148,10 @@ if (!is_android) {
     ]
   }
 
-  source_set("tree_tab_session_observer") {
+  source_set("tree_tab_session_manager") {
     sources = [
-      "tree_tab_session_observer.cc",
-      "tree_tab_session_observer.h",
+      "tree_tab_session_manager.cc",
+      "tree_tab_session_manager.h",
     ]
 
     deps = [

@@ -214,7 +214,7 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
 
   // Returns the tree node id string for the tab at |index|, or an empty string
   // if the tab is not inside a tree node. Mirrors the GetTreeTabNodeCollection
-  // helper used by TreeTabSessionObserver.
+  // helper used by TreeTabSessionManager.
   std::string GetTreeNodeIdForTab(int index) {
     const tabs::TabInterface* tab =
         brave_tab_strip_model()->GetTabAtIndex(index);
@@ -545,7 +545,11 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
   const auto* collapsed =
       base::FindOrNull(restored_tab->extra_data, kBraveTreeNodeCollapsedKey);
   ASSERT_TRUE(collapsed);
-  EXPECT_TRUE(*collapsed == "0" || *collapsed == "1");
+  EXPECT_TRUE(*collapsed == "0" || *collapsed == "1")
+      << "tab extra data should contain kBraveTreeNodeCollapsedKey with value "
+         "0 "
+         "or 1, but was: "
+      << *collapsed;
 }
 
 // Verifies that closing a tab while the tree tab feature is enabled but the

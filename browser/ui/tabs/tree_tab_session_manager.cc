@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/tabs/tree_tab_session_observer.h"
+#include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 
+#include <map>
 #include <string>
 
 #include "base/check.h"
@@ -36,9 +37,9 @@ const tabs::TreeTabNodeTabCollection* GetTreeTabNodeCollection(
 
 }  // namespace
 
-TreeTabSessionObserver::TreeTabSessionObserver(Profile* profile,
-                                               TabStripModel* tab_strip_model,
-                                               SessionID session_id)
+TreeTabSessionManager::TreeTabSessionManager(Profile* profile,
+                                             TabStripModel* tab_strip_model,
+                                             SessionID session_id)
     : profile_(profile),
       tab_strip_model_(tab_strip_model),
       session_id_(session_id) {
@@ -47,9 +48,9 @@ TreeTabSessionObserver::TreeTabSessionObserver(Profile* profile,
   tab_strip_model_->AddObserver(this);
 }
 
-TreeTabSessionObserver::~TreeTabSessionObserver() = default;
+TreeTabSessionManager::~TreeTabSessionManager() = default;
 
-void TreeTabSessionObserver::MaybePopulateTreeTabExtraData(
+void TreeTabSessionManager::MaybePopulateTreeTabExtraData(
     int index,
     std::map<std::string, std::string>* extra_data) {
   auto* brave_tab_strip_model =
@@ -79,7 +80,7 @@ void TreeTabSessionObserver::MaybePopulateTreeTabExtraData(
       tree_collection->node().collapsed() ? "1" : "0";
 }
 
-void TreeTabSessionObserver::OnTreeTabChanged(const TreeTabChange& change) {
+void TreeTabSessionManager::OnTreeTabChanged(const TreeTabChange& change) {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
 
   switch (change.type) {
@@ -104,7 +105,7 @@ void TreeTabSessionObserver::OnTreeTabChanged(const TreeTabChange& change) {
   }
 }
 
-void TreeTabSessionObserver::UpdateTreeTabSessionDataForNode(
+void TreeTabSessionManager::UpdateTreeTabSessionDataForNode(
     const tabs::TreeTabNode& node) {
   SessionService* const session_service =
       SessionServiceFactory::GetForProfileIfExisting(profile_);
@@ -143,7 +144,7 @@ void TreeTabSessionObserver::UpdateTreeTabSessionDataForNode(
   }
 }
 
-void TreeTabSessionObserver::UpdateTreeTabCollapsedState(
+void TreeTabSessionManager::UpdateTreeTabCollapsedState(
     const tabs::TreeTabNode& node) {
   SessionService* const session_service =
       SessionServiceFactory::GetForProfileIfExisting(profile_);

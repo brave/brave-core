@@ -3,8 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_TABS_TREE_TAB_SESSION_OBSERVER_H_
-#define BRAVE_BROWSER_UI_TABS_TREE_TAB_SESSION_OBSERVER_H_
+#ifndef BRAVE_BROWSER_UI_TABS_TREE_TAB_SESSION_MANAGER_H_
+#define BRAVE_BROWSER_UI_TABS_TREE_TAB_SESSION_MANAGER_H_
+
+#include <map>
+#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -24,14 +27,14 @@ class TreeTabNode;
 // Mirrors the role of SessionServiceTabGroupSyncObserver for tab groups: it
 // translates per-window tree node changes into SessionService::AddTabExtraData
 // calls keyed on this browser's SessionID.
-class TreeTabSessionObserver : public TabStripModelObserver {
+class TreeTabSessionManager : public TabStripModelObserver {
  public:
-  TreeTabSessionObserver(Profile* profile,
-                         TabStripModel* tab_strip_model,
-                         SessionID session_id);
-  TreeTabSessionObserver(const TreeTabSessionObserver&) = delete;
-  TreeTabSessionObserver& operator=(const TreeTabSessionObserver&) = delete;
-  ~TreeTabSessionObserver() override;
+  TreeTabSessionManager(Profile* profile,
+                        TabStripModel* tab_strip_model,
+                        SessionID session_id);
+  TreeTabSessionManager(const TreeTabSessionManager&) = delete;
+  TreeTabSessionManager& operator=(const TreeTabSessionManager&) = delete;
+  ~TreeTabSessionManager() override;
 
   // Called from BrowserLiveTabContext::GetExtraDataForTab to record the
   // tree-tab position of the tab being closed. Writes kBraveTreeNodeIdKey and
@@ -58,4 +61,4 @@ class TreeTabSessionObserver : public TabStripModelObserver {
   const SessionID session_id_;
 };
 
-#endif  // BRAVE_BROWSER_UI_TABS_TREE_TAB_SESSION_OBSERVER_H_
+#endif  // BRAVE_BROWSER_UI_TABS_TREE_TAB_SESSION_MANAGER_H_
