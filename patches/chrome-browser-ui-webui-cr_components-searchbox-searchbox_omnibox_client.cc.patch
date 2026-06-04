@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
+index dbe4e6782fe2bdd72417b53ce68f31ee15b3fd0c..dcf31c7798cb26e41f8ea3f00cd3bed2b7753a05 100644
+--- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
++++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
+@@ -162,8 +162,8 @@ void SearchboxOmniboxClient::OnAutocompleteAccept(
+ #endif  // BUILDFLAG(ENABLE_EXTENSIONS) && BUILDFLAG(SAFE_BROWSING_AVAILABLE)
+ 
+   web_contents_->OpenURL(
+-      content::OpenURLParams(destination_url, content::Referrer(), disposition,
+-                             transition, false),
++      MaybeOverrideURLParams(content::OpenURLParams(destination_url, content::Referrer(), disposition,
++                             transition, false), match, GetTemplateURLService()),
+       /*navigation_handle_callback=*/{});
+ }
+ 
