@@ -210,6 +210,7 @@ enum ResendConfirmationEmailServerErrorCode {
   // - user-facing:
   kMaximumEmailSendAttemptsExceeded = 13008,
   kEmailAlreadyVerified             = 13009,
+  kTokenHasExpired                  = 14014,
 };
 
 struct ResendConfirmationEmailServerError {

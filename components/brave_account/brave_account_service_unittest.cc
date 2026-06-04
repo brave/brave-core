@@ -1567,6 +1567,31 @@ ResendVerificationEmailEmailAlreadyVerified() {
   return kResendVerificationEmailEmailAlreadyVerified.get();
 }
 
+const ResendVerificationEmailTestCase*
+ResendVerificationEmailTokenHasExpired() {
+  static const base::NoDestructor<ResendVerificationEmailTestCase>
+      kResendVerificationEmailTokenHasExpired({
+          .test_name = "resend_verification_email_token_has_expired",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   VerifyResend::Response::ErrorBody body;
+                                   body.code = base::Value(14014);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kTokenHasExpired))),
+      });
+  return kResendVerificationEmailTokenHasExpired.get();
+}
+
 const ResendVerificationEmailTestCase* ResendVerificationEmailServerError() {
   static const base::NoDestructor<ResendVerificationEmailTestCase>
       kResendVerificationEmailServerError({
@@ -1635,6 +1660,7 @@ INSTANTIATE_TEST_SUITE_P(
                     ResendVerificationEmailBadRequestWithNullErrorCode(),
                     ResendVerificationEmailMaximumEmailSendAttemptsExceeded(),
                     ResendVerificationEmailEmailAlreadyVerified(),
+                    ResendVerificationEmailTokenHasExpired(),
                     ResendVerificationEmailServerError(),
                     ResendVerificationEmailUnknown()),
     BraveAccountServiceResendVerificationEmailTest::kNameGenerator);

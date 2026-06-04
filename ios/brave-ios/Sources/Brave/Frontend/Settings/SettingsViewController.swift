@@ -579,6 +579,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
         .emailAlreadyVerified:
           .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
+        .tokenHasExpired:
+          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
       ]
 
     guard let failure else {

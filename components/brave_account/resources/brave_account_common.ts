@@ -96,6 +96,8 @@ const RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
   [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
+  [ResendConfirmationEmailServerErrorCode.kTokenHasExpired]:
+    BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
 }
 
 function getErrorMessageImpl<

@@ -47,7 +47,9 @@ public class BraveAccountSectionController
                     ResendConfirmationEmailServerErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
                     R.string.brave_account_resend_confirmation_email_maximum_send_attempts_exceeded,
                     ResendConfirmationEmailServerErrorCode.EMAIL_ALREADY_VERIFIED,
-                    R.string.brave_account_resend_confirmation_email_already_verified);
+                    R.string.brave_account_resend_confirmation_email_already_verified,
+                    ResendConfirmationEmailServerErrorCode.TOKEN_HAS_EXPIRED,
+                    R.string.brave_account_resend_confirmation_email_token_has_expired);
 
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_USER_INFO = "user_info";

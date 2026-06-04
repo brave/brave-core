@@ -217,4 +217,7 @@
   <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Email already verified.
   </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED" desc="Error message shown in an alert when the verification token has expired" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+    The verification code has expired. Cancel the verification and try again.
+  </message>
 </grit-part>
