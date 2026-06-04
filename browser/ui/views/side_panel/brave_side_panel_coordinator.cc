@@ -128,7 +128,14 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
                                                 visible);
 
   if (update_items_state) {
-    GetBraveBrowserView()->sidebar_container_view()->UpdateActiveItemState();
+    // Workaround to prevent crashing while window closing.
+    // See https://github.com/brave/brave-browser/issues/34334
+    auto* brave_browser_view = GetBraveBrowserView();
+    if (brave_browser_view && brave_browser_view->GetWidget() &&
+        !brave_browser_view->GetWidget()->IsClosed() &&
+        brave_browser_view->sidebar_container_view()) {
+      brave_browser_view->sidebar_container_view()->UpdateActiveItemState();
+    }
   }
 }
 
