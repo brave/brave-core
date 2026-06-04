@@ -1001,6 +1001,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/email_aliases/buildflags",
+    "//chrome/browser/ui/webui/bookmarks",
   ]
 
   if (enable_session_service) {
