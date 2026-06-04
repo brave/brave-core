@@ -405,28 +405,6 @@ TEST(CommonUtils, IsPolkadotRelayNetwork) {
   EXPECT_FALSE(IsPolkadotRelayNetwork("abc"));
 }
 
-TEST(CommonUtils, GetNetworkForPolkadotKeyring) {
-  EXPECT_EQ(mojom::kPolkadotMainnet,
-            GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotMainnet));
-  EXPECT_EQ(mojom::kPolkadotMainnet,
-            GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotImport));
-  EXPECT_EQ(mojom::kPolkadotTestnet,
-            GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotTestnet));
-  EXPECT_EQ(
-      mojom::kPolkadotTestnet,
-      GetNetworkForPolkadotKeyring(mojom::KeyringId::kPolkadotImportTestnet));
-}
-
-TEST(CommonUtils, GetNetworkForPolkadotAccount) {
-  EXPECT_EQ(mojom::kPolkadotMainnet,
-            GetNetworkForPolkadotAccount(MakeIndexBasedAccountId(
-                mojom::CoinType::DOT, mojom::KeyringId::kPolkadotMainnet,
-                mojom::AccountKind::kDerived, 123)));
-  EXPECT_EQ(mojom::kPolkadotTestnet,
-            GetNetworkForPolkadotAccount(MakeIndexBasedAccountId(
-                mojom::CoinType::DOT, mojom::KeyringId::kPolkadotTestnet,
-                mojom::AccountKind::kDerived, 123)));
-}
 
 TEST(CommonUtils, GetActiveEndpointUrl) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
@@ -646,8 +624,16 @@ TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
                                                   mojom::kPolkadotMainnet),
               ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
                                 mojom::KeyringId::kPolkadotImport}));
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(
+                  mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub),
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
+                                mojom::KeyringId::kPolkadotImport}));
   EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::DOT,
                                                   mojom::kPolkadotTestnet),
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
+                                mojom::KeyringId::kPolkadotImportTestnet}));
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(
+                  mojom::CoinType::DOT, mojom::kPolkadotTestnetAssetHub),
               ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
                                 mojom::KeyringId::kPolkadotImportTestnet}));
 

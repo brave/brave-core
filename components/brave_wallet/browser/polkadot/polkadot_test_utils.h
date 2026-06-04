@@ -57,6 +57,7 @@ struct PolkadotMockRpc {
   void SetSenderPubKey(
       base::span<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey);
   void SetExpectedExtrinsic(std::string extrinsic);
+  void SetSubmittedExtrinsicHash(std::string extrinsic_hash);
   void SetFinalizedBlockHeader(std::string_view json_str);
 
   // Used to map requests for a block hash given a block's number.
@@ -85,6 +86,8 @@ struct PolkadotMockRpc {
 
   // Convenience wrapper for the above Add* family of functions.
   void AddReqResPairs();
+  void AddWestendAssetHubReqResPairs();
+  void AddPolkadotAssetHubReqResPairs();
 
   // Must be called last. Sets the interceptor for the TestURLLoaderFactory and
   // ensures that the configured request-response mapping is used.
@@ -123,9 +126,14 @@ struct PolkadotMockRpc {
   base::flat_map<base::DictValue, std::string> req_res_pairs_;
   std::string testnet_url_;
   std::string mainnet_url_;
+  std::string westend_asset_hub_url_;
+  std::string polkadot_asset_hub_url_;
   std::optional<std::string> expected_extrinsic_;
+  std::string submitted_extrinsic_hash_;
+  std::string account_info_response_json_;
   std::string finalized_block_hash_;  // Hex-encoded, no leading 0x.
   std::string finalized_block_header_json_;
+  base::flat_map<std::string, std::string> block_header_map_;
   base::flat_map<uint32_t, std::string> block_hash_map_;
   base::flat_map<std::string, PolkadotBlock> block_map_;
   std::string bad_block_map_key_;

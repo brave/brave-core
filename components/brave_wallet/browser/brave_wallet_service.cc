@@ -1833,14 +1833,9 @@ void BraveWalletService::GenerateReceiveAddress(
   }
 
   if (account_id->coin == mojom::CoinType::DOT) {
-    if (!polkadot_wallet_service_) {
-      std::move(callback).Run("", WalletInternalErrorMessage());
-      return;
-    }
-
-    const auto chain_id = GetNetworkForPolkadotKeyring(account_id->keyring_id);
-    polkadot_wallet_service_->GetAddress(std::move(account_id), chain_id,
-                                         std::move(callback));
+    // TODO(https://github.com/brave/brave-browser/issues/55797): Implement
+    // custom modal for Polkadot.
+    std::move(callback).Run("", WalletInternalErrorMessage());
     return;
   }
 

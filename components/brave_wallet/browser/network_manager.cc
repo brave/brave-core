@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/switches.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_service.h"
@@ -86,8 +87,10 @@ constexpr auto kChainSubdomains =
 
             // Polkadot mainnet chains.
             {mojom::kPolkadotMainnet, "polkadot-mainnet"},
+            {mojom::kPolkadotMainnetAssetHub, "polkadot-asset-hub"},
             // Polkadot testnet chains.
             {mojom::kPolkadotTestnet, "polkadot-westend"},
+            {mojom::kPolkadotTestnetAssetHub, "westend-asset-hub"},
         },
         CaseInsensitiveCompare());
 
@@ -598,6 +601,16 @@ GURL PolkadotMainnetRpcUrl() {
   return GetURLForKnownChainId(mojom::kPolkadotMainnet).value();
 }
 
+GURL PolkadotMainnetAssetHubRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kPolkadotMainnetAssetHubRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kPolkadotMainnetAssetHub).value();
+}
+
 GURL PolkadotTestnetRpcUrl() {
   auto switch_url =
       GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
@@ -606,6 +619,16 @@ GURL PolkadotTestnetRpcUrl() {
     return switch_url;
   }
   return GetURLForKnownChainId(mojom::kPolkadotTestnet).value();
+}
+
+GURL PolkadotTestnetAssetHubRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kPolkadotTestnetAssetHubRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kPolkadotTestnetAssetHub).value();
 }
 
 const mojom::NetworkInfo* GetBitcoinMainnet() {
@@ -741,6 +764,25 @@ const mojom::NetworkInfo* GetPolkadotMainnet() {
   return network_info.get();
 }
 
+const mojom::NetworkInfo* GetPolkadotMainnetAssetHub() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kPolkadotMainnetAssetHub;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Polkadot Asset Hub",
+       {"https://assethub-polkadot.subscan.io/"},
+       {},
+       0,
+       {PolkadotMainnetAssetHubRpcUrl()},
+       "DOT",
+       "Polkadot",
+       10,
+       coin,
+       GetSupportedKeyringsForKnownNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
 const mojom::NetworkInfo* GetPolkadotTestnet() {
   const auto coin = mojom::CoinType::DOT;
   const auto* chain_id = mojom::kPolkadotTestnet;
@@ -752,6 +794,25 @@ const mojom::NetworkInfo* GetPolkadotTestnet() {
        {},
        0,
        {PolkadotTestnetRpcUrl()},
+       "WND",
+       "Westend",
+       12,
+       coin,
+       GetSupportedKeyringsForKnownNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetPolkadotTestnetAssetHub() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kPolkadotTestnetAssetHub;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Westend Asset Hub",
+       {"https://assethub-westend.subscan.io/"},
+       {},
+       0,
+       {PolkadotTestnetAssetHubRpcUrl()},
        "WND",
        "Westend",
        12,
@@ -791,13 +852,26 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownCardanoNetworks() {
 }
 
 const std::vector<const mojom::NetworkInfo*>& GetKnownPolkadotNetworks() {
-  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
-      // clang-format off
-      GetPolkadotMainnet(),
-      GetPolkadotTestnet(),
-      // clang-format on
-  });
-  return *networks.get();
+  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>>
+      relay_networks({
+          // clang-format off
+          GetPolkadotMainnet(),
+          GetPolkadotTestnet(),
+          // clang-format on
+      });
+
+  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>>
+      parachain_networks({
+          // clang-format off
+          GetPolkadotMainnet(),
+          GetPolkadotMainnetAssetHub(),
+          GetPolkadotTestnet(),
+          GetPolkadotTestnetAssetHub(),
+          // clang-format on
+      });
+
+  return features::kPolkadotParachainsEnabled.Get() ? *parachain_networks.get()
+                                                    : *relay_networks.get();
 }
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {

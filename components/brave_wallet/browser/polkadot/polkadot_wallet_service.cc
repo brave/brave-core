@@ -71,13 +71,6 @@ PolkadotSubstrateRpc* PolkadotWalletService::GetPolkadotRpc() {
   return &polkadot_substrate_rpc_;
 }
 
-void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
-                                           GetNetworkNameCallback callback) {
-  std::string chain_id = GetNetworkForPolkadotAccount(account_id);
-  polkadot_substrate_rpc_.GetChainName(std::move(chain_id),
-                                       std::move(callback));
-}
-
 void PolkadotWalletService::GetCompatibleNetworks(
     mojom::AccountIdPtr account_id,
     GetCompatibleNetworksCallback callback) {
