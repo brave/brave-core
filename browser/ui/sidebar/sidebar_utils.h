@@ -14,6 +14,7 @@
 #include "ui/views/bubble/bubble_border.h"
 
 class Browser;
+class BrowserWindowInterface;
 class GURL;
 class PrefService;
 enum class SidePanelEntryId;
@@ -35,7 +36,8 @@ std::optional<SidebarItem::BuiltInItemType> BuiltInItemTypeFromSidePanelId(
     SidePanelEntryId id);
 void SetLastUsedSidePanel(PrefService* prefs,
                           std::optional<SidePanelEntryId> id);
-std::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser);
+std::optional<SidePanelEntryId> GetLastUsedSidePanel(
+    BrowserWindowInterface* browser);
 
 // Return the added item if item for |id| is added.
 std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
