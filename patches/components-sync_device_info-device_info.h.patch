@@ -1,13 +1,13 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 0c7fcbeea979d4f9d8b6673f644123fffa8c4502..c9fdb27669ec4ab5679dcbcc0fc748fbcad54890 100644
+index 876b370516eb7c9002eb74f8d67d78c4d1620413..3997044c6239835e0238206a00ea29fb85b7c83f 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -206,11 +206,26 @@ class DeviceInfo {
-       bool desktop_to_ios_promo_receiving_enabled,
-       const MobilePromoOnDesktopPromoTypeSet&
-           desktop_to_ios_promo_receiving_types,
--      GlicExperimentalTriggeringState glic_experimental_triggering_state);
-+      GlicExperimentalTriggeringState glic_experimental_triggering_state,
+@@ -209,11 +209,26 @@ class DeviceInfo {
+                  desktop_to_ios_promo_receiving_types,
+              GlicExperimentalTriggeringState glic_experimental_triggering_state,
+              std::optional<int> glic_experimental_triggering_version,
+-             std::optional<std::string> android_os_build_fingerprint_prefix);
++             std::optional<std::string> android_os_build_fingerprint_prefix,
 +             SelfDeleteSupport self_delete_support =
 +                 SelfDeleteSupport::kNotSupported);
  
@@ -30,7 +30,7 @@ index 0c7fcbeea979d4f9d8b6673f644123fffa8c4502..c9fdb27669ec4ab5679dcbcc0fc748fb
  
    std::unique_ptr<DeviceInfo> DeepCopyForTesting() const;
  
-@@ -398,6 +413,7 @@ class DeviceInfo {
+@@ -420,6 +435,7 @@ class DeviceInfo {
    // NOTE: when adding a member, don't forget to update
    // |StoredDeviceInfoStillAccurate| in device_info_sync_bridge.cc or else
    // changes in that member might not trigger uploads of updated DeviceInfos.
