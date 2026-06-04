@@ -244,6 +244,8 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -357,6 +359,7 @@ public abstract class BraveActivity extends ChromeActivity
     private SearchWidgetPromoPanel mSearchWidgetPromoPanel;
 
     private ApplicationStateListener mApplicationStateListener;
+    private IncognitoReauthController mIncognitoReauthController;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -2461,6 +2464,7 @@ public abstract class BraveActivity extends ChromeActivity
             dbUtil.cleanUpDbOperationRequest();
         }
         super.performPreInflationStartup();
+        mRootUiCoordinator.getIncognitoReauthControllerSupplier().onAvailable(irc -> mIncognitoReauthController = irc);
     }
 
     @Override
@@ -2822,6 +2826,29 @@ public abstract class BraveActivity extends ChromeActivity
         if (currentTab != null) {
             shredData(currentTab);
         }
+    }
+
+    @Override
+    public boolean isShredButtonVisible() {
+        if (mIncognitoReauthController != null) {
+            Log.i("SHRED", "[SHRED] isShredButtonVisible, \n\t\tirc != null: " + (mIncognitoReauthController != null) 
+                + "\n\t\tisShredButtonVisible: " + mIncognitoReauthController.isReauthPageShowing()
+                + "\n\t\tisIncognitoReauthPending: " + mIncognitoReauthController.isIncognitoReauthPending()
+                );
+        } else {
+            Log.i("SHRED", "[SHRED] isShredButtonVisible, irc == null");
+        }
+        return mIncognitoReauthController == null ? true : !mIncognitoReauthController.isIncognitoReauthPending();
+    }
+
+    @Override
+    public void setShredButtonVisibilityObserver(IncognitoReauthManager.IncognitoReauthCallback callback) {
+        mIncognitoReauthController.addIncognitoReauthCallback(callback);
+    }
+    
+    @Override
+    public void removeShredButtonVisibilityObserver(IncognitoReauthManager.IncognitoReauthCallback callback) {
+        mIncognitoReauthController.removeIncognitoReauthCallback(callback);
     }
 
     private void shredData(Tab currentTab) {
