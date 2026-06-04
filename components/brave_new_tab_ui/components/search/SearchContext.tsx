@@ -96,6 +96,7 @@ class SearchPage implements PageInterface {
   updateAimPopupEligibility(eligible: boolean): void {}
   onEmbeddedPermissionPromptChanged(isShowing: boolean, promptSize: Size): void {}
   setRestoredTabIds(tabIds: number[]): void { }
+  setAimThreadRestoredTabs(tabs: TabInfo[]): void { }
 }
 
 export const search = new SearchPage()
