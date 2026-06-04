@@ -3324,6 +3324,7 @@ Možete da upravljate podešavanjima ovog naloga ako instalirate aplikaciju Fami
 <translation id="3289856944988573801">Da biste potražili ažuriranja, koristite eternet ili WiFi.</translation>
 <translation id="3290249595466894471">Šalje i mali uzorak stranica, preuzimanja, aktivnosti dodataka i informacija sistema da bi se otkrile nove pretnje</translation>
 <translation id="3292966601422448005">Dozvole koje odobrite za aplikaciju <ph name="APP_NAME"/> važiće i za instalirane aplikacije.</translation>
+<translation id="3293080634164207409">Dodajte kartice</translation>
 <translation id="3293181007446299124">Istorija pregledanja ostaje privatna na uređaju, a izveštaji se šalju sa kašnjenjem radi zaštite identiteta</translation>
 <translation id="329324683265785818">Pustite ili pauzirajte, tasterska prečica k</translation>
 <translation id="3293644607209440645">Pošalji ovu stranicu</translation>
@@ -6905,7 +6906,7 @@ Vodite računa da ne otkrijete nikakve osetljive informacije.</translation>
 <translation id="5811614940486072060">Ovaj fajl se ne preuzima često i može da bude opasan</translation>
 <translation id="5812674658566766066">Proširi sve</translation>
 <translation id="5814776875237242830">Da biste delili grupe kartica, pridruživali im se i sarađivali u njima, sinhronizujte grupe kartica u Podešavanjima</translation>
-<translation id="5815332505145266563">Radimo na vašem zadatku…</translation>
+<translation id="5815332505145266563">Radim na vašem zadatku…</translation>
 <translation id="5815645614496570556">X.400 adresa</translation>
 <translation id="5816434091619127343">Tražene izmene će učiniti štampač neupotrebljivim.</translation>
 <translation id="581659025233126501">Uključi sinhronizaciju</translation>
@@ -8603,6 +8604,7 @@ Imate još # ugroženih lozinki. Brave menadžer lozinki preporučuje da odmah p
 <translation id="6997553674029032185">Idi na sajt</translation>
 <translation id="6997642619627518301"><ph name="NAME_PH"/> – Evidencija aktivnosti</translation>
 <translation id="6997707937646349884">Na uređajima:</translation>
+<translation id="2147381817563201408">Dele se kartice sa Brave-om</translation>
 <translation id="6998793565256476099">Registruj uređaj za video pozive</translation>
 <translation id="6999956497249459195">Nova grupa</translation>
 <translation id="7000206553895739324">Štampač <ph name="PRINTER_NAME"/> je povezan, ali treba da se konfiguriše</translation>
@@ -9963,6 +9965,7 @@ Pritisnite dodeljeni prekidač ili taster da biste uklonili dodelu.</translation
 <translation id="7947962633355574091">K&amp;opiraj adresu videa</translation>
 <translation id="7947964080535614577">Sajtovi obično prikazuju oglase da bi mogli besplatno da pružaju sadržaj ili usluge. Ali, ima i sajtova koji prikazuju oglase koji ometaju aktivnosti ili obmanjujuće oglase.</translation>
 <translation id="7948407723851303488">Sve stranice sa <ph name="DOMAIN_NAME"/></translation>
+<translation id="7948579849190819732">Aktuelna kartica</translation>
 <translation id="7949038991703929816">Učitavanje istorije nije uspelo. Uverite se da fajlovi sadrže važeće evidencije programa za ažuriranje.</translation>
 <translation id="7950629216186736592">Razlog: LBS podržava samo http://, https:// i file:// URL-ove.</translation>
 <translation id="7950814699499457511">Uključeno • Ovaj dodatak nije objavio prakse privatnosti, na primer, kako prikuplja i koristi podatke</translation>
