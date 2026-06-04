@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_HELPER_H_
 
 #define PopulateGlobalEntries                                             \
-  PopulateGlobalEntries_ChromiumImpl(Browser* browser,                    \
+  PopulateGlobalEntries_ChromiumImpl(BrowserWindowInterface* browser,     \
                                      SidePanelRegistry* global_registry); \
   static void PopulateGlobalEntries
 
