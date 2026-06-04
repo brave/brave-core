@@ -2833,8 +2833,7 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public boolean isShredButtonVisible() {
         return mIncognitoReauthController == null
-                ? true
-                : !mIncognitoReauthController.isIncognitoReauthPending();
+                || !mIncognitoReauthController.isIncognitoReauthPending();
     }
 
     @Override

@@ -19,6 +19,7 @@ import androidx.annotation.VisibleForTesting;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
@@ -36,15 +37,10 @@ public class BraveHubToolbarView extends HubToolbarView
     private Button mShredButton;
     private FrameLayout mMenuButton;
     private boolean mIsIncognitoSelected = true;
-    private FirstPartyStorageCleanerInterface mFpCleaner;
+    private @Nullable FirstPartyStorageCleanerInterface mFpCleaner;
 
     public BraveHubToolbarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        if (context instanceof FirstPartyStorageCleanerInterface) {
-            mFpCleaner = (FirstPartyStorageCleanerInterface) context;
-            mFpCleaner.setShredButtonVisibilityObserver(this);
-        }
-        ApplicationStatus.registerTaskVisibilityListener(this);
     }
 
     @Override
@@ -61,6 +57,19 @@ public class BraveHubToolbarView extends HubToolbarView
                         mFpCleaner.shredSiteData();
                     }
                 });
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        Context context = getContext();
+        if (context instanceof FirstPartyStorageCleanerInterface) {
+            mFpCleaner = (FirstPartyStorageCleanerInterface) context;
+            mFpCleaner.setShredButtonVisibilityObserver(this);
+        }
+
+        ApplicationStatus.registerTaskVisibilityListener(this);
     }
 
     @Override
@@ -151,8 +160,7 @@ public class BraveHubToolbarView extends HubToolbarView
         }
 
         final boolean isShredButtonVisible =
-                (!mIsIncognitoSelected
-                        || (mFpCleaner != null ? mFpCleaner.isShredButtonVisible() : true));
+                !mIsIncognitoSelected || mFpCleaner == null || mFpCleaner.isShredButtonVisible();
         final boolean shouldShowShredButton =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED) && isShredButtonVisible;
         mShredButton.setVisibility(shouldShowShredButton ? View.VISIBLE : View.INVISIBLE);

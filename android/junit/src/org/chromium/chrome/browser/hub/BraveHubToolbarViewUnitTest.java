@@ -24,8 +24,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
@@ -58,13 +56,13 @@ public class BraveHubToolbarViewUnitTest {
             new ActivityScenarioRule<>(ChromeTabbedActivity.class);
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-    @Mock private Pane mPane;
 
+    private Pane mPane;
     private SettableMonotonicObservableSupplier<Pane> mFocusedPaneSupplier;
     private FrameLayout mToolbarContainer;
     private Button mShredButton;
     private PropertyModel mPropertyModel;
-    @Spy private BraveActivity mActivity;
+    private BraveActivity mActivity;
     private HubColorMixer mColorMixer;
     private BraveHubToolbarView mHubToolbarView;
 
