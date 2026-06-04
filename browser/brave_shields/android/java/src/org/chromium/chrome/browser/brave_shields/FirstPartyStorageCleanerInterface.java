@@ -11,7 +11,11 @@ import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 @NullMarked
 public interface FirstPartyStorageCleanerInterface {
     void shredSiteData();
-    boolean isShredButtonVisible(); 
+
+    boolean isShredButtonVisible();
+
     void setShredButtonVisibilityObserver(IncognitoReauthManager.IncognitoReauthCallback callback);
-    void removeShredButtonVisibilityObserver(IncognitoReauthManager.IncognitoReauthCallback callback);
+
+    void removeShredButtonVisibilityObserver(
+            IncognitoReauthManager.IncognitoReauthCallback callback);
 }
