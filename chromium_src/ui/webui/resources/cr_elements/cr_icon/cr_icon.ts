@@ -95,8 +95,20 @@ const iconMap: { [key: string]: string } = {
     'cr:file-download': 'download',
     'cr:search': 'search',
     'cr:print': 'print',
+    'cr:add': 'plus-add',
+    'cr:expand-more': 'carat-down',
+    'cr:chevron-right': 'carat-right',
+    'cr:arrow-back': 'browser-back',
+    'cr:more-vert': 'more-vertical',
+    'cr:clear': 'close',
+    'sp:filter-list': 'filter',
     'settings:download': 'download',
     'settings:performance': 'cpu-chip',
+    'bookmarks:delete': 'trash',
+    'bookmarks:move': 'folder-export',
+    'bookmarks:bookmarks-bar': 'window',
+    'bookmarks:visual-view': 'list-bullet-default',
+    'bookmarks:compact-view': 'content-compact',
     'tab-search:auto-tab-groups': 'product-brave-leo',  // tab organization
 }
 

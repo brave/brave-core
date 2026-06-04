@@ -3,29 +3,59 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { RegisterPolymerPrototypeModification } from '//resources/brave/polymer_overriding.js'
+import { RegisterPolymerPrototypeModification, RegisterStyleOverride, RegisterPolymerTemplateModifications } from '//resources/brave/polymer_overriding.js'
 import { PowerBookmarksService } from './power_bookmarks_service.js';
-import type {BookmarksTreeNode} from './bookmarks.mojom-webui.js';
+import type { BookmarksTreeNode } from './bookmarks.mojom-webui.js';
 
-export * from './power_bookmarks_list-chromium.js'
+import { PowerBookmarksListElement } from './power_bookmarks_list-chromium.js'
+import {
+  html
+} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+
+RegisterStyleOverride('power-bookmarks-list', html`<style>
+  :host {
+    --iron-icon-width: 16px;
+  }
+
+  .new-folder-row {
+    color: var(--leo-color-text-interactive);
+  }
+
+  .new-folder-icon-container {
+    --iron-icon-fill-color: var(--leo-color-icon-interactive);
+
+    border: 1px solid var(--leo-color-divider-interactive);
+    border-radius: var(--leo-radius-s);
+  }
+</style>`)
+
+RegisterPolymerTemplateModifications({
+  'power-bookmarks-list': template => {
+    // Change the icon of the add current tab button to the Brave one (without an outline).
+    const buttonIcon = template.querySelector('#addCurrentTabButton [slot=prefix-icon]')
+    if (!buttonIcon) throw new Error('buttonIcon not found')
+
+    buttonIcon.setAttribute('icon', 'plus-add')
+  }
+})
 
 const originalSortBookmarks = PowerBookmarksService.prototype.sortBookmarks
-PowerBookmarksService.prototype.sortBookmarks = function(
-    bookmarks: BookmarksTreeNode[],
-    activeSortIndex: number): boolean {
-    if (activeSortIndex === /* custom order */5) {
-      return false
-    }
-    return originalSortBookmarks.apply(this, [bookmarks, activeSortIndex])
+PowerBookmarksService.prototype.sortBookmarks = function (
+  bookmarks: BookmarksTreeNode[],
+  activeSortIndex: number): boolean {
+  if (activeSortIndex === /* custom order */5) {
+    return false
   }
+  return originalSortBookmarks.apply(this, [bookmarks, activeSortIndex])
+}
 
 RegisterPolymerPrototypeModification({
   'power-bookmarks-list': prototype => {
     const originalOnBookmarkMoved = prototype.onBookmarkMoved
     prototype.onBookmarkMoved = function (
-        bookmark: BookmarksTreeNode,
-        oldParent: BookmarksTreeNode,
-        newParent: BookmarksTreeNode) {
+      bookmark: BookmarksTreeNode,
+      oldParent: BookmarksTreeNode,
+      newParent: BookmarksTreeNode) {
       originalOnBookmarkMoved.apply(this, [bookmark, oldParent, newParent])
       const shouldShow = prototype.bookmarkShouldShow_.apply(this, [bookmark]);
       // Update if currently visible item is moved in the same directory,
@@ -33,9 +63,12 @@ RegisterPolymerPrototypeModification({
       // custom order. Moving in same direcotry doesn't affect with upstream's
       // sort orders.
       if (oldParent === newParent && shouldShow &&
-          this.activeSortIndex_ === /* customOrder */5) {
+        this.activeSortIndex_ === /* customOrder */5) {
         prototype.updateDisplayLists_.apply(this)
       }
     }
   }
 })
+
+export * from './power_bookmarks_list-chromium.js'
+customElements.define(PowerBookmarksListElement.is, PowerBookmarksListElement);
