@@ -11,7 +11,9 @@
 #include "base/functional/bind.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
@@ -32,6 +34,16 @@ constexpr int kSeparatorHorizontalSpacing = 12;
 BraveSidePanelHeader::BraveSidePanelHeader(std::unique_ptr<Delegate> delegate)
     : delegate_(std::move(delegate)) {
   CHECK(delegate_);
+
+  // Paint to a layer so the header composites above the layer-backed side-panel
+  // shadow overlay (BraveSidePanelShadowOverlayView). Without its own layer the
+  // header paints into the browser-view root layer, beneath the overlay, so the
+  // shadow's blur is drawn over the header instead of behind it. The content
+  // web view is already layer-backed for the same reason. FillsBoundsOpaquely
+  // is false because the background has rounded (transparent) top corners.
+  SetPaintToLayer();
+  layer()->SetFillsBoundsOpaquely(false);
+  layer()->SetIsFastRoundedCorner(true);
 
   UpdateHeader();
   SetLayoutManager(std::make_unique<views::FlexLayout>())
@@ -69,8 +81,15 @@ BraveSidePanelHeader::BraveSidePanelHeader(std::unique_ptr<Delegate> delegate)
 BraveSidePanelHeader::~BraveSidePanelHeader() = default;
 
 void BraveSidePanelHeader::UpdateHeader() {
-  SetBackground(views::CreateRoundedRectBackground(
-      nala::kColorPageBackground, delegate_->GetTopRadius(), 0, 0));
+  const int top_radius = delegate_->GetTopRadius();
+  SetBackground(views::CreateRoundedRectBackground(nala::kColorPageBackground,
+                                                   top_radius, 0, 0));
+  // Keep the layer clip in sync with the rounded background so the top corners
+  // match the panel and the shadow shows through them.
+  if (layer()) {
+    layer()->SetRoundedCornerRadius(
+        gfx::RoundedCornersF(top_radius, top_radius, 0, 0));
+  }
 }
 
 void BraveSidePanelHeader::Layout(PassKey) {

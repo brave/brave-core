@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/ui/sidebar/buildflags/buildflags.gni")
+
 source_set("frame") {
   sources = [
     "brave_contents_view_util.h",
@@ -12,6 +14,13 @@ source_set("frame") {
     "layout/brave_browser_view_tabbed_layout_impl.h",
     "tab_strip_placement_coordinator.h",
   ]
+
+  # The V2 side-panel shadow overlay is only used when upstream's SidePanel is
+  # active (enable_sidebar_v2). The header is consumed by brave_browser_view.cc
+  # under the same buildflag.
+  if (enable_sidebar_v2) {
+    sources += [ "brave_side_panel_shadow_overlay_view.h" ]
+  }
 
   public_deps = [
     "//base",
@@ -45,6 +54,14 @@ source_set("frame_impl") {
     "//components/split_tabs",
     "//components/tabs:public",
   ]
+
+  # See the matching `frame` target comment. brave_browser_view.h and
+  # view_shadow.h come from //brave/browser/ui:ui via its
+  # allow_circular_includes_from allowance for this target.
+  if (enable_sidebar_v2) {
+    sources += [ "brave_side_panel_shadow_overlay_view.cc" ]
+    deps += [ "//chrome/browser/ui/views/side_panel" ]
+  }
 }
 
 source_set("unit_tests") {
