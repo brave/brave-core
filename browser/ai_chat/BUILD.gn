@@ -434,6 +434,8 @@ source_set("browser_tests") {
       "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_001.json",
       "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_002.json",
       "//brave/test/data/leo/content_agent_form.html",
+      "//brave/test/data/leo/dummy.html",
+      "//brave/test/data/leo/web_mcp_tools.html",
     ]
 
     if (enable_brave_ai_chat_agent_profile) {

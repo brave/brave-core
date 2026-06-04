@@ -23,16 +23,19 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/blink/public/mojom/content_extraction/script_tools.mojom.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
 ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
                          content::WeakDocumentPtr rfh)
     : rfh_(std::move(rfh)), internal_tool_name_(script_tool.name) {
-  // Name of the ContentTool is {origin}_tool_name.
-  name_ = base::StrCat(
-      {rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL().host(), "_",
-       script_tool.name});
+  const GURL& url = rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL();
+
+  // Name of the ContentTool is {host}{path}_tool_name. The path is included
+  // (not just the host) so that tools with the same name registered on
+  // different pages of the same host don't collapse to the same tool name.
+  name_ = base::StrCat({url.host(), url.path(), "_", script_tool.name});
 
   // Toolnames only allow alphanumeric characters and underscores.
   std::replace_if(
@@ -42,8 +45,7 @@ ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
   // We add some additional information to the description of the content tool
   // to make it obvious the tool is coming from a website.
   description_ = base::StrCat(
-      {"Website-provided tool for the current page at ",
-       rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL().host(), ".",
+      {"Website-provided tool for the current page at ", url.spec(), ".",
        "Name: ", script_tool.name, ".",
        "Website-provided description: ", script_tool.description, ".",
        "Only use this tool when it is relevant to the user's request on this "
