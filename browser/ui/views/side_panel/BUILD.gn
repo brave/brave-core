@@ -13,6 +13,7 @@ source_set("side_panel") {
 
   public_deps = [
     "//base",
+    "//chrome/browser/ui/side_panel",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views/side_panel",
     "//components/prefs",
@@ -28,6 +29,7 @@ source_set("side_panel") {
       "brave_side_panel_header_controller.h",
       "brave_side_panel_resize_area.cc",
       "brave_side_panel_resize_area.h",
+      "side_panel_utils.h",
     ]
   }
 }
@@ -37,7 +39,10 @@ source_set("side_panel_impl") {
   deps = []
 
   if (enable_sidebar_v2) {
-    sources += [ "brave_side_panel_header_controller.cc" ]
+    sources += [
+      "brave_side_panel_header_controller.cc",
+      "side_panel_utils.cc",
+    ]
 
     deps += [
       ":side_panel",
@@ -49,6 +54,7 @@ source_set("side_panel_impl") {
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/color:mixers",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/browser/ui/views/side_panel",
       "//chrome/common",
       "//components/prefs",
       "//ui/base",
@@ -63,7 +69,10 @@ source_set("unit_tests") {
   deps = []
 
   if (enable_sidebar_v2) {
-    sources += [ "brave_side_panel_header_controller_unittest.cc" ]
+    sources += [
+      "brave_side_panel_header_controller_unittest.cc",
+      "side_panel_utils_unittest.cc",
+    ]
 
     deps += [
       ":side_panel",
@@ -73,10 +82,12 @@ source_set("unit_tests") {
       "//chrome/browser/ui/browser_window/test:test_support",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/browser/ui/views/side_panel",
       "//chrome/test:test_support",
       "//components/prefs",
       "//testing/gmock",
       "//testing/gtest",
+      "//ui/gfx",
       "//ui/views",
     ]
   }
