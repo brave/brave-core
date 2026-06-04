@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
+#include "chrome/browser/ui/window_metadata/window_metadata_controller.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/tabs/public/tab_group.h"
@@ -171,7 +172,8 @@ std::vector<WindowMatch> WindowsMatchingInput(
           return true;  // continue iterating
         }
         std::u16string title =
-            browser->GetWindowTitleForMaxWidth(kMaxTitleWidth);
+            WindowMetadataController::From(browser_window_interface)
+                ->GetWindowTitleForMaxWidth(kMaxTitleWidth);
         if (input.empty()) {
           WindowMatch match(browser, title, mru_score);
           results.push_back(std::move(match));
