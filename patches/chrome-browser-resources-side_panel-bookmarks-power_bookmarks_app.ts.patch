@@ -12,9 +12,3 @@ index d90ce1314e2645af0d78a7aa52125fee64f3b658..88afe66d9fb7aef0c0b6630472869c23
        },
  
        editing_: {
-@@ -1453,4 +1454,4 @@ declare global {
-   }
- }
- 
--customElements.define(PowerBookmarksListElement.is, PowerBookmarksListElement);
-+// customElements.define(PowerBookmarksListElement.is, PowerBookmarksListElement);
