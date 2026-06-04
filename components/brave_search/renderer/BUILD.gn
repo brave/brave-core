@@ -1,5 +1,7 @@
 source_set("renderer") {
   sources = [
+    "backup_results_url_loader_throttle.cc",
+    "backup_results_url_loader_throttle.h",
     "brave_search_default_js_handler.cc",
     "brave_search_default_js_handler.h",
     "brave_search_fallback_js_handler.cc",
@@ -18,9 +20,25 @@ source_set("renderer") {
     "//gin",
     "//mojo/public/cpp/bindings",
     "//net",
+    "//services/network/public/cpp",
     "//third_party/blink/public:blink",
     "//third_party/blink/public/common",
     "//third_party/blink/public/strings",
     "//v8",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "backup_results_url_loader_throttle_unittest.cc" ]
+
+  deps = [
+    ":renderer",
+    "//base/test:test_support",
+    "//brave/components/brave_search/common",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+    "//third_party/blink/public/common",
+    "//url",
   ]
 }

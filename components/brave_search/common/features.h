@@ -60,6 +60,15 @@ extern const base::FeatureParam<base::TimeDelta>
     kBackupResultsLoadAfterRestoreLowDelayMin;
 extern const base::FeatureParam<base::TimeDelta>
     kBackupResultsLoadAfterRestoreLowDelayMax;
+// If true, allows fetch-style requests made from the page through the URL
+// loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowFetches;
+// If true, allows cosmetic asset requests (images, fonts, icons, etc.)
+// through the URL loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowCosmeticAssets;
+// If true, allows requests that don't match any known category through
+// the URL loader throttle.
+extern const base::FeatureParam<bool> kBackupResultsAllowUnclassifiedRequests;
 
 }  // namespace features
 }  // namespace brave_search
