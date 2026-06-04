@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import 'chrome://resources/cr_elements/cr_tabs/cr_tabs.js'
-import '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page_v2.js'
+import '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js'
 
 import {
   RegisterPolymerComponentReplacement,
@@ -16,13 +16,13 @@ import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {
-  BraveSettingsClearBrowsingDataDialogV2Element
-} from '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_v2_behavior.js'
+  BraveSettingsClearBrowsingDataDialogElement
+} from '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 
 RegisterStyleOverride(
-  'settings-clear-browsing-data-dialog-v2',
+  'settings-clear-browsing-data-dialog',
   html`
     <style>
       :host {
@@ -162,12 +162,12 @@ RegisterStyleOverride(
 )
 
 RegisterPolymerComponentReplacement(
-  'settings-clear-browsing-data-dialog-v2',
-  BraveSettingsClearBrowsingDataDialogV2Element
+  'settings-clear-browsing-data-dialog',
+  BraveSettingsClearBrowsingDataDialogElement
 )
 
 RegisterPolymerTemplateModifications({
-  'settings-clear-browsing-data-dialog-v2': (templateContent) => {
+  'settings-clear-browsing-data-dialog': (templateContent) => {
     // Find the title element and add tabs after it
     const titleElement = templateContent.querySelector('div[slot="title"]')
     if (titleElement) {
@@ -197,7 +197,7 @@ RegisterPolymerTemplateModifications({
     const dialogBody = templateContent.querySelector('div[slot="body"]')
     if (!dialogBody) {
       console.error(
-        '[Settings] missing \'slot="body"\' in clear-browsing-data-dialog-v2')
+        '[Settings] missing \'slot="body"\' in clear-browsing-data-dialog')
       return
     }
 
@@ -216,10 +216,10 @@ RegisterPolymerTemplateModifications({
       getTrustedHTML`
         <div slot="body" id="onExitBody"
              hidden="[[!isTabSelected_(selectedTabIndex_, 1)]]">
-          <settings-brave-clear-browsing-data-on-exit-page-v2
+          <settings-brave-clear-browsing-data-on-exit-page
             id="onExitTab"
             prefs="{{prefs}}">
-          </settings-brave-clear-browsing-data-on-exit-page-v2>
+          </settings-brave-clear-browsing-data-on-exit-page>
         </div>
       `
     )
@@ -233,7 +233,7 @@ RegisterPolymerTemplateModifications({
     // Find button-container to insert custom container before it
     const buttonContainer = templateContent.querySelector('div[slot="button-container"]')
     if (!buttonContainer) {
-      console.error('[Settings] missing button-container in clear-browsing-data-dialog-v2')
+      console.error('[Settings] missing button-container in clear-browsing-data-dialog')
       return
     }
 
@@ -277,7 +277,7 @@ RegisterPolymerTemplateModifications({
     const confirmButtonElement = templateContent.querySelector('#deleteButton')
     if (!confirmButtonElement) {
       console.error(
-        '[Settings] missing #deleteButton in clear-browsing-data-dialog-v2')
+        '[Settings] missing #deleteButton in clear-browsing-data-dialog')
       return
     }
     confirmButtonElement.insertAdjacentHTML(
