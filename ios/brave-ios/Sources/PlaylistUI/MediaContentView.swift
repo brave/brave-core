@@ -58,16 +58,16 @@ struct MediaContentView: View {
         .ignoresSafeArea()
         .allowsHitTesting(false)
     }
-    .onChange(of: isFullScreen) { _, newValue in
+    .onChange(of: isFullScreen) {
       handleFullScreenOrientationChanges(
-        expectedFullScreen: newValue,
-        expectedOrientation: interfaceOrientation
+        isFullScreenModeChanging: true,
+        isOrientationChanging: false
       )
     }
-    .onChange(of: interfaceOrientation) { _, newValue in
+    .onChange(of: interfaceOrientation) {
       handleFullScreenOrientationChanges(
-        expectedFullScreen: isFullScreen,
-        expectedOrientation: newValue
+        isFullScreenModeChanging: false,
+        isOrientationChanging: true
       )
     }
     .persistentSystemOverlays(isFullScreen ? .hidden : .automatic)
@@ -76,8 +76,8 @@ struct MediaContentView: View {
   }
 
   private func handleFullScreenOrientationChanges(
-    expectedFullScreen: Bool,
-    expectedOrientation: UIInterfaceOrientation
+    isFullScreenModeChanging: Bool,
+    isOrientationChanging: Bool
   ) {
     if UIDevice.current.userInterfaceIdiom != .phone {
       // Full screen and orientations don't affect iPads
@@ -93,15 +93,13 @@ struct MediaContentView: View {
     }
 
     let isPortraitVideo = model.isPortraitVideo
-    let isFullScreenModeChanging = expectedFullScreen != isFullScreen
-    let isOrientationChanging = expectedOrientation != interfaceOrientation
 
     if !isFullScreenModeChanging && !isOrientationChanging {
       // Nothing to do
       return
     }
 
-    switch (expectedFullScreen, expectedOrientation.isLandscape) {
+    switch (isFullScreen, interfaceOrientation.isLandscape) {
     case (true, false):
       // When a user taps full screen mode we specifically want to shift into landscape orientation
       // Likewise if the user was in full screen mode already and is no longer in landscape
@@ -111,7 +109,7 @@ struct MediaContentView: View {
         ignoreFollowingFullScreenOrientationChange = true
         if isFullScreenModeChanging {
           requestGeometryUpdate(orientation: .landscapeLeft)
-        } else {  // isOrientationChanging
+        } else if isOrientationChanging {
           toggleFullScreen(explicitFullScreenMode: false)
         }
       }
@@ -121,7 +119,7 @@ struct MediaContentView: View {
       ignoreFollowingFullScreenOrientationChange = true
       if isFullScreenModeChanging {
         requestGeometryUpdate(orientation: .portrait)
-      } else {  // isOrientationChanging
+      } else if isOrientationChanging {
         toggleFullScreen(explicitFullScreenMode: true)
       }
     default:
