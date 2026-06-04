@@ -9,10 +9,10 @@ assert(enable_playlist)
 
 static_library("browser") {
   sources = [
-    "playlist_exclusion.cc",
-    "playlist_exclusion.h",
-    "playlist_exclusion_component_installer.cc",
-    "playlist_exclusion_component_installer.h",
+    "playlist_exclusions.cc",
+    "playlist_exclusions.h",
+    "playlist_exclusions_component_installer.cc",
+    "playlist_exclusions_component_installer.h",
     "utils.cc",
     "utils.h",
   ]

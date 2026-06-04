@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSION_H_
-#define BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSION_H_
+#ifndef BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_H_
+#define BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/json/json_value_converter.h"
 #include "base/memory/singleton.h"
@@ -61,34 +63,42 @@ class PlaylistExclusions {
 
   static PlaylistExclusions* GetInstance();
 
-  void OnComponentReady(const base::FilePath& component_dir);
+  // Reads and parses `exclusions_file_path` on a background thread pool task,
+  // then updates the in-memory rules on the calling sequence. Until the first
+  // successful parse, `CanResolvePageSrcLater` stays permissive. During
+  // reloads, the last valid rules stay in effect; a failed parse leaves them
+  // unchanged. `exclusions_file_path` must point to the component's
+  // `playlist_exclusions.json` file. `on_complete` runs on the calling sequence
+  // after the load attempt finishes.
+  void LoadPlaylistExclusions(const base::FilePath& exclusions_file_path,
+                              base::OnceClosure on_complete = {});
 
   // Returns true when `url` may be used for LivePlaylist-style reload /
-  // re-resolution. While the exclusions list is still loading or failed to
-  // load, returns true for all URLs to avoid blocking playlist behavior.
+  // re-resolution. Before the first successful load, returns true for all URLs
+  // to avoid blocking playlist behavior.
   bool CanResolvePageSrcLater(const GURL& url) const;
 
  private:
   friend struct base::DefaultSingletonTraits<PlaylistExclusions>;
   friend class PlaylistExclusionsUnitTest;
 
-  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, RulesBlockListedPaths);
   FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, NotReadyIsPermissive);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, EmptyContentsNotReady);
-  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, InvalidJsonNotReady);
   FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest,
-                           MissingRulesListNotReady);
+                           FailedLoadsLeaveRulesEmpty);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest,
+                           FailedReloadKeepsLastValidRules);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, RulesBlockListedPaths);
 
   PlaylistExclusions();
 
-  void OnPlaylistExclusionsLoaded(const std::string& contents);
+  void OnPlaylistExclusionsLoaded(
+      base::OnceClosure on_complete,
+      std::pair<bool, std::vector<PlaylistResolveRule>> result);
 
-  base::FilePath component_path_;
   std::vector<PlaylistResolveRule> rules_;
-  bool is_ready_ = false;
   base::WeakPtrFactory<PlaylistExclusions> weak_factory_{this};
 };
 
 }  // namespace playlist
 
-#endif  // BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSION_H_
+#endif  // BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_H_
