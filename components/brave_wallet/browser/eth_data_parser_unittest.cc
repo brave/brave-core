@@ -311,6 +311,61 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
   EXPECT_EQ(tx_args[2], "0xf");
 }
 
+TEST(EthDataParser, GetTransactionInfoFromDataERC721SetApprovalForAll) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+  std::vector<uint8_t> data;
+
+  // OK: well-formed setApprovalForAll granting approval.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &data));
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  EXPECT_FALSE(swap_info);
+  ASSERT_EQ(tx_params.size(), 2UL);
+  EXPECT_EQ(tx_params[0], "address");
+  EXPECT_EQ(tx_params[1], "bool");
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // OK: well-formed setApprovalForAll revoking approval.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x0");
+
+  // KO: non-canonical bool value (neither 0 nor 1).
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000002",
+      &data));
+  EXPECT_FALSE(GetTransactionInfoFromData(data));
+
+  // KO: missing the bool param.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      &data));
+  EXPECT_FALSE(GetTransactionInfoFromData(data));
+}
+
 TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
   std::vector<uint8_t> data;
   ASSERT_TRUE(PrefixedHexStringToBytes(

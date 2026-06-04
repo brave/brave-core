@@ -2305,6 +2305,7 @@ enum TransactionType {
   SolanaCompressedNftTransfer = 15,
   CardanoSendLovelace = 16,
   CardanoSendToken = 17,
+  ERC721SetApprovalForAll = 18,
 };
 
 struct FilTxData {
