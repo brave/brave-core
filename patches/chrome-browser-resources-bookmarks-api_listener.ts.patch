@@ -1,20 +1,20 @@
 diff --git a/chrome/browser/resources/bookmarks/api_listener.ts b/chrome/browser/resources/bookmarks/api_listener.ts
-index 9a11030816f0baeab6ca81fa08daaf1a6d19350d..87f461437bd0147ff67c9759110a14f2553e5347 100644
+index 4c762b2afa0ad00407049c8e161c138c6945bcc8..bb4c1774fbb6f49e95417716f37bee58c5f299db 100644
 --- a/chrome/browser/resources/bookmarks/api_listener.ts
 +++ b/chrome/browser/resources/bookmarks/api_listener.ts
-@@ -120,6 +120,7 @@ function onChildrenReordered(
-  */
+@@ -119,6 +119,7 @@ function onChildrenReordered(id: string, reorderInfo: {childIds: string[]}) {
  function onImportBegan() {
-   chrome.bookmarks.onCreated.removeListener(onBookmarkCreated);
-+  chrome.bookmarks.onMoved.removeListener(onBookmarkMoved);
+   BookmarksApiProxyImpl.getInstance().onCreated.removeListener(
+       onBookmarkCreated);
++  BookmarksApiProxyImpl.getInstance().onMoved.removeListener(onBookmarkMoved);
    document.dispatchEvent(new CustomEvent('import-began'));
  }
  
-@@ -128,6 +129,7 @@ function onImportEnded() {
-     dispatch(refreshNodes(normalizeNodes(results[0]!)));
+@@ -127,6 +128,7 @@ function onImportEnded() {
+     dispatch(refreshNodes(nodeMap));
    });
-   chrome.bookmarks.onCreated.addListener(onBookmarkCreated);
-+  chrome.bookmarks.onMoved.addListener(onBookmarkMoved);
+   BookmarksApiProxyImpl.getInstance().onCreated.addListener(onBookmarkCreated);
++  BookmarksApiProxyImpl.getInstance().onMoved.addListener(onBookmarkMoved);
    document.dispatchEvent(new CustomEvent('import-ended'));
  }
  

@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index a9cb72f653de57b912a411906906cb31cc92a4c7..8881e001e6be3dcaf64a92ec303ee95cca9f3054 100644
+index d040a04e2000bee95ee483d6ef04927d6735b635..d5715cec70eeefec50fe7fc4db48ff9a762d7c9c 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -19,6 +19,7 @@ js_files = [
@@ -10,15 +10,15 @@ index a9cb72f653de57b912a411906906cb31cc92a4c7..8881e001e6be3dcaf64a92ec303ee95c
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-a11y-keys/iron-a11y-keys.js",
-@@ -142,6 +143,7 @@ ts_library("library") {
-   }
+@@ -136,6 +137,7 @@ ts_library("library") {
+   ]
  
    if (is_chromeos) {
 +  } if (!is_android) {
      visibility += [
        "//ash/webui/*",
        "//chrome/browser/resources/ash/*",
-@@ -213,6 +215,7 @@ ts_library("library") {
+@@ -207,6 +209,7 @@ ts_library("library") {
    ]
  
    if (is_chromeos) {
@@ -26,7 +26,7 @@ index a9cb72f653de57b912a411906906cb31cc92a4c7..8881e001e6be3dcaf64a92ec303ee95c
      definitions += [
        "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
        "components-chromium/iron-a11y-keys/iron-a11y-keys.d.ts",
-@@ -256,4 +259,5 @@ ts_library("library") {
+@@ -250,4 +253,5 @@ ts_library("library") {
        "components-chromium/paper-tooltip/paper-tooltip.d.ts",
      ]
    }

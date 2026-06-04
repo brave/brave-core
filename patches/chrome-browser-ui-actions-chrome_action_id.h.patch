@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index fb93a1bc1e61639409a123d4012edbe4353a1d88..6c63084089b009d2e37d66d62770dbcd721274fe 100644
+index d20f3fbf17491d4202ff225044caba156c2827fc..0f2eb0d3e3a2755821edbb60190918d8416f738d 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
-@@ -567,6 +567,7 @@
+@@ -517,6 +517,7 @@
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
@@ -10,12 +10,12 @@ index fb93a1bc1e61639409a123d4012edbe4353a1d88..6c63084089b009d2e37d66d62770dbcd
    E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
    E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
    E(kActionSidePanelShowCustomizeChrome, IDC_SHOW_CUSTOMIZE_CHROME_SIDE_PANEL) \
-@@ -615,6 +616,8 @@
+@@ -565,6 +566,8 @@
    E(kActionCopyUrl, IDC_COPY_URL) \
-   E(kActionTabGroupsMenu, IDC_SAVED_TAB_GROUPS_MENU) \
+   E(kActionTabGroupsMenu, kSavedTabGroupsMenuId) \
    E(kActionTabSearch, IDC_TAB_SEARCH) \
 +  E(kActionShowPartitionedStorage) \
 +  E(kActionShowPsstIcon) \
-   E(kActionSplitTab, IDC_SPLIT_TAB) \
+   E(kActionSplitTab, IDC_NEW_SPLIT_TAB) \
    E(kActionFederation) \
    E(kActionGlicContextualCueing) \

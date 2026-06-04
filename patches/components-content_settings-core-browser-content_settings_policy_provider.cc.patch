@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 2aef90e19edb92cce2f745806af03573023a17c0..cd3cf971311e9dbfdd9cbea2bd0110282d6af68e 100644
+index 637e76ba55111213f1175ece3a1a17e7007e48dd..f8ae7b216b945deb4da5223389453d0d5f762e55 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
 @@ -51,6 +51,7 @@ struct PrefsForManagedContentSettingsMapEntry {
@@ -7,30 +7,30 @@ index 2aef90e19edb92cce2f745806af03573023a17c0..cd3cf971311e9dbfdd9cbea2bd011028
  constexpr PrefsForManagedContentSettingsMapEntry
      kPrefsForManagedContentSettingsMap[] = {
 +        BRAVE_MANAGED_CONTENT_SETTINGS
-         {prefs::kManagedAutomaticFullscreenAllowedForUrls,
-          ContentSettingsType::AUTOMATIC_FULLSCREEN, CONTENT_SETTING_ALLOW},
-         {prefs::kManagedAutomaticFullscreenBlockedForUrls,
-@@ -199,6 +200,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
+         {prefs::kManagedAutomaticDownloadsAllowedForUrls,
+          ContentSettingsType::AUTOMATIC_DOWNLOADS, CONTENT_SETTING_ALLOW},
+         {prefs::kManagedAutomaticDownloadsBlockedForUrls,
+@@ -203,6 +204,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
  };
  
  constexpr const char* kManagedPrefs[] = {
 +    BRAVE_MANAGED_PREFS
+     prefs::kManagedAutomaticDownloadsAllowedForUrls,
+     prefs::kManagedAutomaticDownloadsBlockedForUrls,
      prefs::kManagedAutomaticFullscreenAllowedForUrls,
-     prefs::kManagedAutomaticFullscreenBlockedForUrls,
-     prefs::kManagedAutoSelectCertificateForUrls,
-@@ -276,6 +278,7 @@ constexpr const char* kManagedPrefs[] = {
+@@ -282,6 +284,7 @@ constexpr const char* kManagedPrefs[] = {
  // the preference default content settings. If a default content settings type
  // is managed any user defined exceptions (patterns) for this type are ignored.
  constexpr const char* kManagedDefaultPrefs[] = {
 +    BRAVE_MANAGED_DEFAULT_PREFS
      prefs::kManagedDefaultAdsSetting,
+     prefs::kManagedDefaultAutomaticDownloadsSetting,
      prefs::kManagedDefaultClipboardSetting,
-     prefs::kManagedDefaultCookiesSetting,
-@@ -372,6 +375,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
+@@ -379,6 +382,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
  // static
  const PolicyProvider::PrefsForManagedDefaultMapEntry
      PolicyProvider::kPrefsForManagedDefault[] = {
 +        BRAVE_MANAGED_DEFAULT
          {ContentSettingsType::ADS, prefs::kManagedDefaultAdsSetting},
-         {ContentSettingsType::CLIPBOARD_READ_WRITE,
-          prefs::kManagedDefaultClipboardSetting},
+         {ContentSettingsType::AUTOMATIC_DOWNLOADS,
+          prefs::kManagedDefaultAutomaticDownloadsSetting},

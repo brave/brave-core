@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
-index 43890c72b27548c3e46b5c819c785fde149abe90..317f4584771b39ec1d6c72e1973b080363218566 100644
+index 051a60e11e11969d729c321134bded0c70e67171..e4517b196459a33a0b094d23c7361be78a3366be 100644
 --- a/chrome/browser/prefs/BUILD.gn
 +++ b/chrome/browser/prefs/BUILD.gn
-@@ -198,6 +198,7 @@ source_set("impl") {
+@@ -200,6 +200,7 @@ source_set("impl") {
      "//services/preferences/tracked:features",
      "//ui/webui:buildflags",
    ]
 +  import("//brave/browser/sources.gni") deps += brave_chrome_browser_prefs_impl_deps
  
    if (enable_print_preview) {
-     deps += [ "//chrome/browser/printing" ]
+     deps += [
