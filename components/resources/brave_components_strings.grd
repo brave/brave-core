@@ -206,6 +206,7 @@
     <file path="strings/brave_components_resources_az.xtb" lang="az" />
     <file path="strings/brave_components_resources_bg.xtb" lang="bg" />
     <file path="strings/brave_components_resources_bn.xtb" lang="bn" />
+    <file path="strings/brave_components_resources_bs.xtb" lang="bs" />
     <file path="strings/brave_components_resources_ca.xtb" lang="ca" />
     <file path="strings/brave_components_resources_cs.xtb" lang="cs" />
     <file path="strings/brave_components_resources_da.xtb" lang="da" />
