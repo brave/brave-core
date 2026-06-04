@@ -122,6 +122,14 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
     ads_service_->ProcessIdleState(idle_state, idle_time);
   }
 
+  void SimulateBraveAdsDisabledByPolicy() {
+    prefs_.SetManagedPref(prefs::kOptedInToNotificationAds, base::Value(false));
+    prefs_.SetManagedPref(prefs::kOptedInToSearchResultAds, base::Value(false));
+    prefs_.SetManagedPref(ntp_background_images::prefs::
+                              kNewTabPageShowSponsoredImagesBackgroundImage,
+                          base::Value(false));
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -243,6 +251,21 @@ TEST_F(BraveAdsAdsServiceImplTest, ServiceDoesNotStartAfterProfileShutdown) {
   // Act
   Shutdown();
   prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest, ServiceDoesNotStartWhenOptedOutOfAllAds) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, false);
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, false);
+  prefs_.SetBoolean(ntp_background_images::prefs::
+                        kNewTabPageShowSponsoredImagesBackgroundImage,
+                    false);
+
+  // Act
+  Startup();
 
   // Assert
   EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
@@ -390,6 +413,36 @@ TEST_F(
   EXPECT_EQ(0U, bat_ads_service_factory_->shutdown_count());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ServiceDoesNotStartForSearchResultAdsWhenAdsAreDisabledByPolicy) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  SimulateBraveAdsDisabledByPolicy();
+
+  // Act
+  Startup();
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ServiceDoesNotStartForNewTabPageAdsWhenAdsAreDisabledByPolicy) {
+  // Arrange
+  prefs_.SetBoolean(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+  prefs_.SetBoolean(ntp_background_images::prefs::
+                        kNewTabPageShowSponsoredImagesBackgroundImage,
+                    true);
+  SimulateBraveAdsDisabledByPolicy();
+
+  // Act
+  Startup();
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
 
 TEST_F(BraveAdsAdsServiceImplTest,
        ServiceDoesNotStartForSearchResultAdsWhenRewardsIsDisabledByPolicy) {

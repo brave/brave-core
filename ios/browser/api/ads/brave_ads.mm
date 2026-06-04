@@ -276,6 +276,15 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     return completion(/*success=*/false);
   }
 
+  // This will always be the regular profile (not private/OTR).
+  ProfileIOS* profile = [self getLastUsedProfile];
+  adsService = brave_ads::AdsServiceFactoryIOS::GetForProfile(profile);
+  CHECK(adsService);
+
+  if (adsService->IsIneligibleToStart()) {
+    return completion(/*success=*/false);
+  }
+
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
   auto cppBuildChannelInfo = buildChannelInfo
@@ -283,11 +292,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                                  : brave_ads::mojom::BuildChannelInfo::New();
   auto cppWalletInfo =
       walletInfo ? walletInfo.cppObjPtr : brave_ads::mojom::WalletInfoPtr();
-
-  // This will always be the regular profile (not private/OTR).
-  ProfileIOS* profile = [self getLastUsedProfile];
-  adsService = brave_ads::AdsServiceFactoryIOS::GetForProfile(profile);
-  CHECK(adsService);
 
   adsService->InitializeAds(
       base::SysNSStringToUTF8(self.storagePath),

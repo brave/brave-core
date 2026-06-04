@@ -125,6 +125,12 @@ bool IsSurveyPanelist(const PrefService& prefs) {
   if (prefs.GetBoolean(brave_rewards::prefs::kDisabledByPolicy)) {
     return false;
   }
+
+  if (!prefs.GetBoolean(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage)) {
+    return false;
+  }
+
   return prefs.GetBoolean(
       ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
 }

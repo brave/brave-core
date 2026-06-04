@@ -289,7 +289,7 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
   if (UserHasJoinedBraveRewards()) {
     // Always start the service to update brave://ads-internals,
     // brave://rewards, and brave://rewards-internals if the user has joined
-    // Brave Rewards, even if all ad units are opted out.
+    // Brave Rewards.
     return true;
   }
 
