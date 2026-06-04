@@ -20,7 +20,6 @@ import android.widget.FrameLayout;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -73,9 +72,6 @@ public class BraveHubToolbarViewUnitTest {
     public void setUp() throws Exception {
         mActivityScenarioRule.getScenario().onActivity(this::onActivity);
     }
-
-    @After
-    public void tearDown() {}
 
     private void onActivity(ChromeTabbedActivity activity) {
         mPane = mock();
