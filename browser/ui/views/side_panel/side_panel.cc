@@ -21,6 +21,7 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -81,6 +82,11 @@ SidePanel::SidePanel(BrowserView* browser_view)
               ? SidePanelType::kToolbar
               : SidePanelType::kContent)),
       browser_view_(browser_view) {
+  // Register with the element tracker so SidePanelCoordinator::GetSidePanel()
+  // can find this view via BrowserElementsViews::GetView(kSidePanelElementId).
+  // The upstream SidePanel does the same in its constructor.
+  SetProperty(views::kElementIdentifierKey, kSidePanelElementId);
+
   // Disable mirroring as this panel can have different margin per alignment.
   SetMirrored(false);
 
