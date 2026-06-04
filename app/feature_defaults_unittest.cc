@@ -144,7 +144,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
-      &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
