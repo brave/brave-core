@@ -56,7 +56,7 @@ hooks = [
     # Download hermetic xcode for goma
     'name': 'download_hermetic_xcode',
     'pattern': '.',
-    'condition': 'checkout_mac',
+    'condition': 'checkout_mac or checkout_ios',
     'action': ['vpython3', 'build/mac/download_hermetic_xcode.py'],
   },
   {
