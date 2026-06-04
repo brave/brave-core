@@ -15,6 +15,17 @@
 #define Init virtual Init
 #define Update virtual Update
 #define ShowBookmarkBubble virtual ShowBookmarkBubble
+
+// `app_menu_button_` has been made private in `ToolbarView`, as upstream is
+// abstracting it away due to the WebUI work, so we have to expose it as brave
+// still uses the concrete type.
+#define SetPaneFocusAndFocusAppMenu               \
+  SetPaneFocusAndFocusAppMenu_unused();           \
+  BrowserAppMenuButton* app_menu_button() const { \
+    return app_menu_button_;                      \
+  }                                               \
+  void SetPaneFocusAndFocusAppMenu
+
 #define LoadImages(...)                                                       \
   virtual LoadImages(__VA_ARGS__);                                            \
   friend class BraveToolbarView;                                              \
@@ -24,6 +35,7 @@
 #include <chrome/browser/ui/views/toolbar/toolbar_view.h>  // IWYU pragma: export
 
 #undef LoadImages
+#undef SetPaneFocusAndFocusAppMenu
 #undef ShowBookmarkBubble
 #undef Update
 #undef Init
