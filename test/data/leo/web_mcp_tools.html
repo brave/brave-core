@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- Registers two tools via navigator.modelContext. The feature is only
+     available on secure contexts when blink::features::kWebMCPTesting is
+     enabled (which implies kWebMCP). Used by web_mcp_browsertest.cc. -->
+<html><head><title>WebMCP test</title></head>
+<body>
+<script>
+  window.__webmcpRegisterError = null;
+  try {
+    navigator.modelContext.registerTool({
+      execute: async ({text}) => text,
+      name: "echo",
+      description: "Echo input back",
+      inputSchema: {
+        type: "object",
+        properties: {
+          text: { type: "string", description: "Value to echo" }
+        },
+        required: ["text"]
+      },
+    });
+    navigator.modelContext.registerTool({
+      execute: async () => "ok",
+      name: "ping",
+      description: "Returns ok",
+    });
+  } catch (e) {
+    window.__webmcpRegisterError = String(e);
+  }
+</script>
+</body></html>

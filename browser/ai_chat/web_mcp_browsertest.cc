@@ -6,6 +6,8 @@
 #include <set>
 #include <string>
 
+#include "base/files/file_path.h"
+#include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -16,6 +18,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -25,8 +28,6 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "net/test/embedded_test_server/http_request.h"
-#include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
@@ -35,42 +36,12 @@ namespace ai_chat {
 
 namespace {
 
-// HTML that registers two tools via navigator.modelContext. The feature is
-// only available on secure contexts when blink::features::kWebMCPTesting is
-// enabled (which implies kWebMCP).
-constexpr char kPageWithTools[] = R"HTML(
-<!doctype html>
-<html><head><title>WebMCP test</title></head>
-<body>
-<script>
-  window.__webmcpRegisterError = null;
-  try {
-    navigator.modelContext.registerTool({
-      execute: async ({text}) => text,
-      name: "echo",
-      description: "Echo input back",
-      inputSchema: {
-        type: "object",
-        properties: {
-          text: { type: "string", description: "Value to echo" }
-        },
-        required: ["text"]
-      },
-    });
-    navigator.modelContext.registerTool({
-      execute: async () => "ok",
-      name: "ping",
-      description: "Returns ok",
-    });
-  } catch (e) {
-    window.__webmcpRegisterError = String(e);
-  }
-</script>
-</body></html>)HTML";
-
-constexpr char kPageWithoutTools[] =
-    "<!doctype html><html><head><title>plain</title></head>"
-    "<body>no tools here</body></html>";
+// Test pages served from test/data/leo/. The tool-registering page uses
+// navigator.modelContext, which is only available on secure contexts when
+// blink::features::kWebMCPTesting is enabled (which implies kWebMCP).
+constexpr char kPageWithToolsPath[] = "/web_mcp_tools.html";
+// A basic existing page that registers no tools.
+constexpr char kPageWithoutToolsPath[] = "/dummy.html";
 
 }  // namespace
 
@@ -92,8 +63,9 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    https_server_.RegisterRequestHandler(base::BindRepeating(
-        &WebMcpBrowserTest::HandleRequest, base::Unretained(this)));
+    base::FilePath test_data_dir =
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+    https_server_.ServeFilesFromDirectory(test_data_dir.AppendASCII("leo"));
     ASSERT_TRUE(https_server_.Start());
   }
 
@@ -140,21 +112,6 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
  private:
-  std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
-      const net::test_server::HttpRequest& request) {
-    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-    response->set_code(net::HTTP_OK);
-    response->set_content_type("text/html");
-    if (request.relative_url == "/with-tools") {
-      response->set_content(kPageWithTools);
-    } else if (request.relative_url == "/no-tools") {
-      response->set_content(kPageWithoutTools);
-    } else {
-      return nullptr;
-    }
-    return response;
-  }
-
   base::test::ScopedFeatureList scoped_feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_;
@@ -168,7 +125,7 @@ class WebMcpBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
                        AssociatedWebContentsContent_DirectFetch) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server()->GetURL("a.com", "/with-tools")));
+      browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
   ASSERT_EQ(
       2, content::EvalJs(GetActiveWebContents(),
                          "navigator.modelContextTesting.listTools().length"));
@@ -184,7 +141,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
 IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
                        AssociatedContentManager_SeesRegisteredTools) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server()->GetURL("a.com", "/with-tools")));
+      browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
 
   // Make sure the WebMCP runtime feature is actually present in the renderer
   // and the page-side registration didn't throw; without this the rest of the
@@ -214,22 +171,26 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   auto tools = RefreshAndGetTools(manager);
   ASSERT_EQ(2u, tools.size());
 
-  // Names are prefixed with the sanitized host ("a.com" → "a_com") to
-  // disambiguate page-defined tools across origins.
+  // Names are prefixed with the sanitized host and path
+  // ("a.com/web_mcp_tools.html" → "a_com_web_mcp_tools_html") to disambiguate
+  // page-defined tools across origins and pages.
   std::set<std::string> tool_names;
   for (const auto& tool : tools) {
     ASSERT_TRUE(tool);
     tool_names.insert(std::string(tool->Name()));
   }
   EXPECT_THAT(tool_names,
-              ::testing::UnorderedElementsAre("a_com_echo", "a_com_ping"));
+              ::testing::UnorderedElementsAre("a_com_web_mcp_tools_html_echo",
+                                              "a_com_web_mcp_tools_html_ping"));
 
   // Sanity check on metadata for the richer tool.
   for (const auto& tool : tools) {
-    if (tool->Name() == "a_com_echo") {
-      // The description embeds the host and the page-provided description.
+    if (tool->Name() == "a_com_web_mcp_tools_html_echo") {
+      // The description embeds the full page URL and the page-provided
+      // description.
       std::string description(tool->Description());
       EXPECT_NE(description.find("a.com"), std::string::npos);
+      EXPECT_NE(description.find(kPageWithToolsPath), std::string::npos);
       EXPECT_NE(description.find("Echo input back"), std::string::npos);
       ASSERT_TRUE(tool->InputProperties().has_value());
       EXPECT_TRUE(tool->InputProperties()->contains("text"));
@@ -243,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
 IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
                        AssociatedContentManager_NoToolsWhenPageHasNone) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server()->GetURL("a.com", "/no-tools")));
+      browser(), https_server()->GetURL("a.com", kPageWithoutToolsPath)));
 
   auto* content = GetActiveContent();
   ASSERT_TRUE(content);
@@ -270,12 +231,12 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   auto* manager = conversation->associated_content_manager();
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server()->GetURL("a.com", "/with-tools")));
+      browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
   manager->AddContent(GetActiveContent());
   EXPECT_EQ(2u, RefreshAndGetTools(manager).size());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server()->GetURL("a.com", "/no-tools")));
+      browser(), https_server()->GetURL("a.com", kPageWithoutToolsPath)));
   EXPECT_TRUE(RefreshAndGetTools(manager).empty());
 }
 
