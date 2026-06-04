@@ -209,4 +209,10 @@ bool IsAIChatDeepResearchEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatDeepResearch);
 }
 
+BASE_FEATURE(kAIChatConversationExport, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatConversationExportEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatConversationExport);
+}
+
 }  // namespace ai_chat::features

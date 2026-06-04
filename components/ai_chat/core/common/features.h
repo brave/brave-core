@@ -167,6 +167,11 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatDeepResearch);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatDeepResearchEnabled();
 
+// Enables exporting a conversation to a JSON file from the conversation header.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatConversationExport);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatConversationExportEnabled();
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_
