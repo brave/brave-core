@@ -31,12 +31,20 @@ struct LockScreenShortcutWidget: Widget {
 
 struct LockScreenShortcutEntry: TimelineEntry {
   var date: Date
-  var widgetShortcut: WidgetShortcut
+  var widgetShortcut: WidgetShortcut?
 }
 
 struct LockScreenShortcutProvider: IntentTimelineProvider {
   typealias Intent = LockScreenShortcutConfigurationIntent
   typealias Entry = LockScreenShortcutEntry
+
+  private func shortcut(for configuration: Intent) async -> WidgetShortcut? {
+    let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
+    if disabledShortcuts.contains(configuration.shortcut) {
+      return nil
+    }
+    return configuration.shortcut
+  }
 
   func placeholder(in context: Context) -> Entry {
     .init(date: Date(), widgetShortcut: .bookmarks)
@@ -46,22 +54,28 @@ struct LockScreenShortcutProvider: IntentTimelineProvider {
     in context: Context,
     completion: @escaping (Entry) -> Void
   ) {
-    let entry = LockScreenShortcutEntry(
-      date: Date(),
-      widgetShortcut: configuration.shortcut
-    )
-    completion(entry)
+    Task {
+      let shortcut = await shortcut(for: configuration)
+      let entry = LockScreenShortcutEntry(
+        date: Date(),
+        widgetShortcut: shortcut
+      )
+      completion(entry)
+    }
   }
   func getTimeline(
     for configuration: Intent,
     in context: Context,
     completion: @escaping (Timeline<Entry>) -> Void
   ) {
-    let entry = LockScreenShortcutEntry(
-      date: Date(),
-      widgetShortcut: configuration.shortcut
-    )
-    completion(.init(entries: [entry], policy: .never))
+    Task {
+      let shortcut = await shortcut(for: configuration)
+      let entry = LockScreenShortcutEntry(
+        date: Date(),
+        widgetShortcut: shortcut
+      )
+      completion(.init(entries: [entry], policy: .never))
+    }
   }
 }
 
@@ -72,18 +86,45 @@ struct LockScreenShortcutView: View {
     ZStack {
       AccessoryWidgetBackground()
         .widgetBackground { EmptyView() }
-      entry.widgetShortcut.image
-        .imageScale(.large)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .font(.system(size: 20))
-        .widgetLabel(entry.widgetShortcut.displayString)
-        .accessibilityLabel(Text(entry.widgetShortcut.displayString))
-        .unredacted()
-        .widgetURL(
-          URL(
-            string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(entry.widgetShortcut.rawValue)"
-          )
-        )
+      Group {
+        if let widgetShortcut = entry.widgetShortcut {
+          widgetShortcut.image
+            .widgetLabel(widgetShortcut.displayString)
+            .accessibilityLabel(Text(widgetShortcut.displayString))
+            .widgetURL(
+              URL(
+                string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(widgetShortcut.rawValue)"
+              )
+            )
+        } else {
+          Image(systemName: "xmark.octagon")
+            .accessibilityLabel(Text(Strings.Widgets.shortcutsEmptyState))
+        }
+      }
+      .imageScale(.large)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .font(.system(size: 20))
+      .unredacted()
     }
   }
 }
+
+#Preview(
+  as: .accessoryCircular,
+  widget: {
+    LockScreenShortcutWidget()
+  },
+  timeline: {
+    LockScreenShortcutEntry(date: .now, widgetShortcut: .newTab)
+  }
+)
+
+#Preview(
+  as: .accessoryCircular,
+  widget: {
+    LockScreenShortcutWidget()
+  },
+  timeline: {
+    LockScreenShortcutEntry(date: .now, widgetShortcut: nil)
+  }
+)
