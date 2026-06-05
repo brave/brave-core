@@ -261,10 +261,15 @@ export class Config {
     this.rbeReadOnly = envConfig.getBoolean(['rbe_readonly'], false)
     this.use_libfuzzer = false
     this.androidAabToApk = false
-    this.useBraveHermeticToolchain = envConfig.getBoolean(
-      ['use_brave_hermetic_toolchain'],
-      this.rbeService.includes('.brave.com:'),
-    )
+    // TODO(https://github.com/brave/brave-browser/issues/55812): Experimenting
+    // re-enabling the hermetic toolchain on master. Revert this PR once the
+    // experiment is done.
+    this.useBraveHermeticToolchain =
+      isCI
+      || envConfig.getBoolean(
+        ['use_brave_hermetic_toolchain'],
+        this.rbeService.includes('.brave.com:'),
+      )
     this.braveIOSDeveloperOptionsCode = envConfig.getString([
       'brave_ios_developer_options_code',
     ])
