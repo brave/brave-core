@@ -1822,7 +1822,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         ModelList.class,
-                        Context.class));
+                        Context.class,
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
