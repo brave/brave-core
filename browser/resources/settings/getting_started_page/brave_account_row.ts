@@ -155,6 +155,9 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
       [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
         BraveAccountSettingsStrings
              .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
+      [ResendConfirmationEmailServerErrorCode.kTokenHasExpired]:
+        BraveAccountSettingsStrings
+             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
     }
 
     const errorLabel = this.i18n(
