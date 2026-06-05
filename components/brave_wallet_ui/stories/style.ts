@@ -38,14 +38,6 @@ export const StyledWelcomPanel = styled.div`
   height: 250px;
 `
 
-export const ChildComponentWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`
-
 export const LongWrapper = styled.div<{ padding?: string }>`
   display: flex;
   flex-direction: column;
@@ -80,33 +72,4 @@ export const ScrollContainer = styled.div`
   position: relative;
   padding: 0px 12px;
   box-sizing: border-box;
-`
-
-export const DesktopComponentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: ${leo.color.container.background};
-  padding: 20px;
-`
-
-export const LineChartWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  padding: 20px;
-  width: 80vw;
-`
-
-export const DesktopComponentWrapperRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: ${leo.color.container.background};
-  width: 800px;
-  padding: 20px;
 `

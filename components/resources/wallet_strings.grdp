@@ -49,11 +49,7 @@
   <message name="IDS_WALLET_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
   <message name="IDS_WALLET_NOT_AUTHED" desc="Method or account not authorized">The requested method and/or account has not been authorized by the user.</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_TEXT" desc="Search bar placeholder">Search</message>
-  <message name="IDS_BRAVE_WALLET_SIDE_NAV_CRYPTO" desc="Crypto side nav button">Crypto</message>
-  <message name="IDS_BRAVE_WALLET_SIDE_NAV_REWARDS" desc="Rewards side nav button">Rewards</message>
-  <message name="IDS_BRAVE_WALLET_SIDE_NAV_CARDS" desc="Cards side nave button">Cards</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_PORTFOLIO" desc="Portfolio top nav button">Portfolio</message>
-  <message name="IDS_BRAVE_WALLET_TOP_TAB_PRICES" desc="Prices top nav button">Prices</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nav button">NFTs</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS" desc="Accounts top nav button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_MARKET" desc="Accounts top nav button">Market</message>

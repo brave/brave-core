@@ -3,16 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-
-import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
-import { SideNav } from '../components/desktop/side-nav/index'
-import { TopTabNav } from '../components/desktop/top-tab-nav/index'
-import { NavTypes, TopTabNavTypes } from '../constants/types'
-import { NavOptions } from '../options/side-nav-options'
-import { TopNavOptions } from '../options/top-nav-options'
 import './locale'
 import { LoadingSkeleton } from '../components/shared/loading-skeleton/index'
-import { WalletNav } from '../components/desktop/wallet-nav/wallet-nav'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import { mockNetwork } from '../common/constants/mocks'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
@@ -37,51 +29,6 @@ export default {
   },
 }
 
-export const _DesktopSideNav = () => {
-  const [selectedButton, setSelectedButton] = React.useState<NavTypes>('crypto')
-
-  const navigateTo = (path: NavTypes) => {
-    setSelectedButton(path)
-  }
-
-  return (
-    <DesktopComponentWrapper>
-      <SideNav
-        navList={NavOptions()}
-        selectedButton={selectedButton}
-        onSubmit={navigateTo}
-      />
-    </DesktopComponentWrapper>
-  )
-}
-
-_DesktopSideNav.story = {
-  name: 'Side Nav',
-}
-
-export const _DesktopTopTabNav = () => {
-  const [selectedTab, setSelectedTab] =
-    React.useState<TopTabNavTypes>('portfolio')
-
-  const onSelectTab = (path: TopTabNavTypes) => {
-    setSelectedTab(path)
-  }
-
-  return (
-    <DesktopComponentWrapperRow>
-      <TopTabNav
-        tabList={TopNavOptions()}
-        selectedTab={selectedTab}
-        onSelectTab={onSelectTab}
-      />
-    </DesktopComponentWrapperRow>
-  )
-}
-
-_DesktopTopTabNav.story = {
-  name: 'Top Tab Nav',
-}
-
 export const _LoadingSkeleton = () => {
   return (
     <div
@@ -103,14 +50,6 @@ export const _LoadingSkeleton = () => {
 
 _LoadingSkeleton.story = {
   name: 'Loading Skeleton',
-}
-
-export const _BuySendSwapDeposit = () => {
-  return <WalletNav />
-}
-
-_BuySendSwapDeposit.story = {
-  name: 'Buy/Send/Swap/Deposit',
 }
 
 export const _NftsEmptyState = () => {
