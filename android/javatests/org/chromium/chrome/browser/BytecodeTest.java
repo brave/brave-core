@@ -43,6 +43,7 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -272,7 +273,11 @@ public class BytecodeTest {
     public void testClassesExist() throws Exception {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeApplicationImpl"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/MainSettings"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    Assert.assertTrue(
+                            classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
+                });
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
@@ -2041,12 +2046,15 @@ public class BytecodeTest {
                         BookmarkManagerOpener.class,
                         PriceDropNotificationManager.class,
                         Clipboard.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge",
-                        long.class,
-                        Profile.class));
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    Assert.assertTrue(
+                            constructorsMatch(
+                                    "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
+                                    "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge",
+                                    long.class,
+                                    Profile.class));
+                });
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkModel",
