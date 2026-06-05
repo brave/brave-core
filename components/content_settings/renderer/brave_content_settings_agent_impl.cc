@@ -243,10 +243,6 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
 
 blink::WebSecurityOrigin
 BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    return {};
-  }
-
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   if (!frame || IsFrameWithOpaqueOrigin(frame)) {

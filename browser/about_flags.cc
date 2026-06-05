@@ -1094,13 +1094,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               net::features::kBraveProvisionalTLDEphemeralLifetime),           \
       },                                                                       \
       {                                                                        \
-          "brave-ephemeral-storage",                                           \
-          "Enable Ephemeral Storage",                                          \
-          "Use ephemeral storage for third-party frames",                      \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage),           \
-      },                                                                       \
-      {                                                                        \
           "brave-ephemeral-storage-keep-alive",                                \
           "Ephemeral Storage Keep Alive",                                      \
           "Keep ephemeral storage partitions alive for a specified time "      \

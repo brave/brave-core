@@ -96,10 +96,6 @@ WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
 
 blink::WebSecurityOrigin
 WorkerContentSettingsClient_BraveImpl::GetEphemeralStorageOriginSync() {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    return {};
-  }
-
   if (is_unique_origin_) {
     return {};
   }

@@ -17,7 +17,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/permissions/features.h"
-#include "net/base/features.h"
 
 // static
 permissions::PermissionLifetimeManager*
@@ -50,13 +49,9 @@ PermissionLifetimeManagerFactory::BuildServiceInstanceForBrowserContext(
           permissions::features::kPermissionLifetime)) {
     return nullptr;
   }
-  std::unique_ptr<permissions::PermissionOriginLifetimeMonitor>
-      permission_origin_lifetime_monitor;
-  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    permission_origin_lifetime_monitor =
-        std::make_unique<permissions::PermissionOriginLifetimeMonitorImpl>(
-            context);
-  }
+  auto permission_origin_lifetime_monitor =
+      std::make_unique<permissions::PermissionOriginLifetimeMonitorImpl>(
+          context);
   auto* profile = Profile::FromBrowserContext(context);
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.

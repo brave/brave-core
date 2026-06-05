@@ -266,10 +266,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
-  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
-        web_contents);
-  }
+  ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+      web_contents);
 }
 
 }  // namespace brave
