@@ -9,22 +9,16 @@
 #include <optional>
 #include <string>
 
-#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/threading/sequence_bound.h"
 #include "base/types/expected.h"
-#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
-#include "brave/components/brave_ads/core/internal/ml/transformation/ml_types.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 
 class AdsClient;
-
-using ClassifyPageCallback =
-    base::OnceCallback<void(base::optional_ref<const ml::PredictionMap>)>;
 
 class TextClassificationResource final : public AdsClientNotifierObserver {
  public:
@@ -42,7 +36,9 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
     return manifest_version_;
   }
 
-  void ClassifyPage(const std::string& text, ClassifyPageCallback callback);
+  std::optional<base::SequenceBound<ml::pipeline::TextProcessing>>& get() {
+    return text_processing_pipeline_;
+  }
 
  private:
   void MaybeLoad();
