@@ -3,21 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {CrWebApi, gCrWeb} from '//ios/web/public/js_messaging/resources/gcrweb.js';
+import {
+  CrWebApi,
+  gCrWeb,
+} from '//ios/web/public/js_messaging/resources/gcrweb.js'
 
 interface Creative {
-  creativeInstanceId?: string;
-  placementId?: string;
-  creativeSetId?: string;
-  campaignId?: string;
-  advertiserId?: string;
-  landingPage?: string;
-  headlineText?: string;
-  description?: string;
-  rewardsValue?: string;
-  conversionUrlPatternValue?: string;
-  conversionAdvertiserPublicKeyValue?: string;
-  conversionObservationWindowValue?: string;
+  creativeInstanceId?: string
+  placementId?: string
+  creativeSetId?: string
+  campaignId?: string
+  advertiserId?: string
+  landingPage?: string
+  headlineText?: string
+  description?: string
+  rewardsValue?: string
+  conversionUrlPatternValue?: string
+  conversionAdvertiserPublicKeyValue?: string
+  conversionObservationWindowValue?: string
 }
 
 const creativeFieldNamesMapping: Record<string, keyof Creative> = {
@@ -35,37 +38,38 @@ const creativeFieldNamesMapping: Record<string, keyof Creative> = {
     'conversionAdvertiserPublicKeyValue',
   'data-conversion-observation-window-value':
     'conversionObservationWindowValue',
-};
+}
 
 function getCreatives(): string {
-  const creatives: Creative[] = [];
-  const scripts =
-    document.querySelectorAll('script[type="application/ld+json"]');
+  const creatives: Creative[] = []
+  const scripts = document.querySelectorAll(
+    'script[type="application/ld+json"]',
+  )
   try {
-    const jsonLdList =
-      Array.from(scripts).map(script => JSON.parse(script.textContent || ''));
+    const jsonLdList = Array.from(scripts).map((script) =>
+      JSON.parse(script.textContent || ''),
+    )
 
-    jsonLdList.forEach(jsonLd => {
+    jsonLdList.forEach((jsonLd) => {
       if (jsonLd['@type'] === 'Product' && jsonLd.creatives) {
         jsonLd.creatives.forEach((creative: Record<string, string>) => {
           if (creative['@type'] === 'SearchResultAd') {
-            const mapped: Creative = {};
+            const mapped: Creative = {}
             for (const key in creative) {
-              const mappedKey = creativeFieldNamesMapping[key];
+              const mappedKey = creativeFieldNamesMapping[key]
               if (mappedKey) {
-                mapped[mappedKey] = creative[key];
+                mapped[mappedKey] = creative[key]
               }
             }
-            creatives.push(mapped);
+            creatives.push(mapped)
           }
-        });
+        })
       }
-    });
-  } catch {
-  }
-  return JSON.stringify(creatives);
+    })
+  } catch {}
+  return JSON.stringify(creatives)
 }
 
-const braveSearchAdResultsApi = new CrWebApi('braveSearchAdResults');
-braveSearchAdResultsApi.addFunction('getCreatives', getCreatives);
-gCrWeb.registerApi(braveSearchAdResultsApi);
+const braveSearchAdResultsApi = new CrWebApi('braveSearchAdResults')
+braveSearchAdResultsApi.addFunction('getCreatives', getCreatives)
+gCrWeb.registerApi(braveSearchAdResultsApi)
