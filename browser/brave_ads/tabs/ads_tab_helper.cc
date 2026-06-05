@@ -20,6 +20,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
 #include "ui/base/page_transition_types.h"
@@ -350,7 +351,7 @@ void AdsTabHelper::DidFinishNavigation(
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  http_status_code_ = HttpStatusCode(navigation_handle).value_or(net::HTTP_OK);
+  http_status_code_ = HttpStatusCode(navigation_handle);
 
   MaybeNotifyUserGestureEventTriggered(navigation_handle);
 
@@ -358,6 +359,17 @@ void AdsTabHelper::DidFinishNavigation(
   // the tab has loaded, so that any listeners can process the tab changes
   // before the tab is considered loaded.
   MaybeNotifyTabDidChange();
+
+  if (!http_status_code_) {
+    if (navigation_handle->GetNetErrorCode() != net::OK) {
+      // No HTTP response was received due to a network-level error (e.g., no
+      // internet connection). Skip notifying the tab loaded to prevent an ad
+      // landing from being incorrectly recorded for network error pages.
+      return;
+    }
+    // No response headers but no net error — fall back to HTTP OK.
+    http_status_code_ = net::HTTP_OK;
+  }
 
   MaybeNotifyTabDidLoad();
 

@@ -522,6 +522,19 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   SimulateHttpStatusCodePage(net::HTTP_OK);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoNotNotifyTabDidLoadForNetErrorPage) {
+  // Navigate to a URL that fails with a network-level error (no HTTP response).
+  // Port 1 is not open, so the connection is refused, resulting in
+  // ERR_CONNECTION_REFUSED with no response headers. Verifies that no landing
+  // confirmation is recorded for network error pages (issue #42574).
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidLoad).Times(0);
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetActiveWebContents(), GURL("http://brave.com:1/"),
+      /*number_of_navigations=*/1,
+      /*ignore_uncommitted_navigations=*/true);
+}
+
 IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
     NotifyTabTextContentDidChangeForRewardsUserOptedInToNotificationAds) {
