@@ -38,7 +38,7 @@ void VerifyDepositForCreativeInstanceIdExpectation(
   database_table.GetForCreativeInstanceId(creative_instance_id,
                                           test_future.GetCallback());
   const auto [_, deposit] = test_future.Take();
-  EXPECT_EQ(deposit, std::nullopt);
+  EXPECT_FALSE(deposit);
 }
 
 void VerifyCreativeSetConversionExpectation(size_t expected_count) {

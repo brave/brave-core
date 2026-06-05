@@ -435,7 +435,7 @@ TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToMojomNewTabPageAdMetricType) {
   EXPECT_EQ(ToMojomNewTabPageAdMetricType("confirmation"),
             mojom::NewTabPageAdMetricType::kConfirmation);
 
-  EXPECT_EQ(ToMojomNewTabPageAdMetricType("foobar"), std::nullopt);
+  EXPECT_FALSE(ToMojomNewTabPageAdMetricType("foobar"));
 }
 
 TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToString) {
