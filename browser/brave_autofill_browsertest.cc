@@ -10,6 +10,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/autofill/content/browser/content_autofill_driver.h"
@@ -21,6 +22,12 @@
 
 class BraveAutofillBrowserTest : public InProcessBrowserTest {
  public:
+  BraveAutofillBrowserTest() {
+    // Test designed to use http server.
+    feature_list_.InitWithFeatures(
+        {}, {features::kHttpsUpgrades, features::kHttpsFirstModeIncognito});
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -59,6 +66,8 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(cross_driver);
     EXPECT_EQ(cross_driver->GetAutofillClient().IsAutofillEnabled(), enabled);
   }
+
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveAutofillBrowserTest,
