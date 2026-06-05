@@ -70,6 +70,7 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
     case 'ADA':
       return CardanoIcon
     case 'DOT':
+    case 'WND':
       return PolkadotIcon
   }
 
