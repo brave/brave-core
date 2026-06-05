@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_actions/page_action_properties_provider.cc b/chrome/browser/ui/page_actions/page_action_properties_provider.cc
-index b4fd39e8275f602013a12c852437ac9d7f8056bd..296c22880f3909c325528cbf6b37f841a3cb3a1f 100644
+index b4fd39e8275f602013a12c852437ac9d7f8056bd..0361e7fe5b470fc79eaaac0e9166e49c9d07a1ea 100644
 --- a/chrome/browser/ui/page_actions/page_action_properties_provider.cc
 +++ b/chrome/browser/ui/page_actions/page_action_properties_provider.cc
 @@ -215,6 +215,20 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
@@ -17,8 +17,8 @@ index b4fd39e8275f602013a12c852437ac9d7f8056bd..296c22880f3909c325528cbf6b37f841
 +        kActionShowPsstIcon,
 +        {
 +           .histogram_name = "PsstIcon",
-+                .type = brave::kPsstIconActionIconType,
-+            },
++           .type = brave::kPsstIconActionIconType,
++        },
 +    },
      {
          kActionVirtualCardEnroll,

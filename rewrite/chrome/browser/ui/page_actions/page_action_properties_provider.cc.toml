@@ -21,8 +21,8 @@ pattern = 'kActionVirtualCardEnroll,'
 replace = '''kActionShowPsstIcon,
         {
            .histogram_name = "PsstIcon",
-                .type = brave::kPsstIconActionIconType,
-            },
+           .type = brave::kPsstIconActionIconType,
+        },
     },
     {
         kActionVirtualCardEnroll,'''
