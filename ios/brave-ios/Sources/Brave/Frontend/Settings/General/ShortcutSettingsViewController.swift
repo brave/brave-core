@@ -6,6 +6,7 @@
 import BraveShared
 import BraveStrings
 import IntentsUI
+import OrderedCollections
 import SwiftUI
 
 struct ShortcutSettingsView: View {
@@ -26,9 +27,27 @@ struct ShortcutSettingsView: View {
   @State private var shortcutSheet: ShortcutSheet?
   @State private var isOpenSettingsAlertPresented: Bool = false
 
+  var isPlaylistAvailable: Bool
+  var isBraveVPNAvailable: Bool
+  var isBraveNewsAvailable: Bool
+
+  private var activityTypes: [ActivityType] {
+    var types = OrderedSet(ActivityType.allCases)
+    if !isPlaylistAvailable {
+      types.remove(.openPlayList)
+    }
+    if !isBraveVPNAvailable {
+      types.remove(.enableBraveVPN)
+    }
+    if !isBraveNewsAvailable {
+      types.remove(.openBraveNews)
+    }
+    return Array(types)
+  }
+
   var body: some View {
     Form {
-      ForEach(ActivityType.allCases, id: \.identifier) { activityType in
+      ForEach(activityTypes, id: \.identifier) { activityType in
         Section {
           Button {
             Task { @MainActor in
@@ -98,8 +117,18 @@ struct ShortcutSettingsView: View {
 }
 
 class ShortcutSettingsViewController: UIHostingController<ShortcutSettingsView> {
-  init() {
-    super.init(rootView: ShortcutSettingsView())
+  init(
+    isPlaylistAvailable: Bool,
+    isBraveVPNAvailable: Bool,
+    isBraveNewsAvailable: Bool,
+  ) {
+    super.init(
+      rootView: ShortcutSettingsView(
+        isPlaylistAvailable: isPlaylistAvailable,
+        isBraveVPNAvailable: isBraveVPNAvailable,
+        isBraveNewsAvailable: isBraveNewsAvailable
+      )
+    )
   }
 
   @available(*, unavailable)
