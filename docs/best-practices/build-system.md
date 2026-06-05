@@ -305,25 +305,42 @@ changes trigger rebuilds of large upstream targets.
 
 <a id="BS-021"></a>
 
-## ✅ Create Test Targets in Component BUILD.gn
+## ✅ Wire Component Unit Tests Through `components/BUILD.gn`
 
-**Unit test files should have a test target in the component's `BUILD.gn`, not
-be individually listed in the top-level `test/BUILD.gn`.** The top-level test
-target should depend on the component's test target.
+**Unit test files should have a `unit_tests` target in the component's own
+`BUILD.gn`, not be individually listed in a top-level test target. For code
+under `//brave/components/...`, default to wiring that `:unit_tests` target into
+the aggregate `brave_components_unittests` target in `components/BUILD.gn`.**
+Only add it to `brave_unit_tests` in `test/BUILD.gn` when the test genuinely
+requires the heavier chrome/browser-layer test support (e.g. `//chrome/...`,
+profile/browser-process scaffolding) that `brave_components_unittests` does not
+provide.
 
 ```gn
-# ❌ WRONG - individual test files in top-level test/BUILD.gn
+# ❌ WRONG - individual test files listed in a top-level test target
 sources += [ "//brave/components/ai_chat/core/credential_manager_unittest.cc" ]
 
-# ✅ CORRECT - test target in component BUILD.gn
-# components/ai_chat/core/BUILD.gn
+# ❌ WRONG - component :unit_tests dep added to brave_unit_tests in test/BUILD.gn
+#            when it doesn't need chrome/browser-layer test support
+# test/BUILD.gn -> test("brave_unit_tests")
+deps += [ "//brave/components/brave_vpn/browser/v2:unit_tests" ]
+
+# ✅ CORRECT - test target lives in the component's own BUILD.gn
+# components/brave_vpn/browser/v2/BUILD.gn
 source_set("unit_tests") {
-  sources = [ "credential_manager_unittest.cc" ]
+  testonly = true
+  sources = [ "..._unittest.cc" ]
   deps = [ ... ]
 }
-# test/BUILD.gn
-deps += [ "//brave/components/ai_chat/core:unit_tests" ]
+
+# ✅ CORRECT - aggregated by brave_components_unittests in components/BUILD.gn
+# components/BUILD.gn -> test("brave_components_unittests")
+deps += [ "//brave/components/brave_vpn/browser/v2:unit_tests" ]
 ```
+
+Note: many component `:unit_tests` targets currently live in `brave_unit_tests`
+for historical reasons; the rule above is the target state, not a license to
+flag every existing dep there as a violation.
 
 ---
 
