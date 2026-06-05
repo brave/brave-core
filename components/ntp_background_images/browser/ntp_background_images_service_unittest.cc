@@ -9,13 +9,17 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "build/build_config.h"
+#include "components/component_updater/mock_component_updater_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -352,6 +356,7 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
   using NTPBackgroundImagesService::NTPBackgroundImagesService;
 
   void RegisterSponsoredImagesComponent() override {
+    sponsored_component_ready = false;
     NTPBackgroundImagesService::RegisterSponsoredImagesComponent();
     sponsored_images_component_started = true;
   }
@@ -361,12 +366,19 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
     background_images_component_started = true;
   }
 
-  std::string GetCountryCode() const override { return "US"; }
+  std::string GetCountryCode() const override {
+    return country_code_for_testing_;
+  }
+
+  void set_country_code_for_testing(std::string country_code) {
+    country_code_for_testing_ = std::move(country_code);
+  }
 
   void OnSponsoredComponentReady(
       const base::FilePath& /*installed_dir*/) override {
     NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
         cached_json_for_testing_);
+    sponsored_component_ready = true;
   }
 
   // Pre-sets the already-loaded state so tests can call
@@ -384,9 +396,11 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
   bool background_images_component_started = false;
   bool mapping_table_requested = false;
   bool referral_promo_code_change_monitored = false;
+  bool sponsored_component_ready = false;
 
  private:
   std::string cached_json_for_testing_;
+  std::string country_code_for_testing_ = "US";
 };
 
 class NTPBackgroundImagesServiceTest : public testing::Test {
@@ -413,9 +427,27 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
     service_->AddObserver(&observer_);
   }
 
+  component_updater::MockComponentUpdateService& component_update_service() {
+    return *component_update_service_;
+  }
+
+  void InitWithComponentUpdateService() {
+    component_update_service_ =
+        std::make_unique<component_updater::MockComponentUpdateService>();
+    ON_CALL(component_update_service(), RegisterComponent)
+        .WillByDefault(testing::Return(true));
+    service_ = std::make_unique<NTPBackgroundImagesServiceForTesting>(
+        /*variations_service=*/nullptr, component_update_service_.get(),
+        &pref_service_);
+    service_->Init();
+    service_->AddObserver(&observer_);
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
+  std::unique_ptr<component_updater::MockComponentUpdateService>
+      component_update_service_;
   std::unique_ptr<NTPBackgroundImagesServiceForTesting> service_;
   ObserverMock observer_;
 };
@@ -725,6 +757,79 @@ TEST_F(NTPBackgroundImagesServiceTest,
   EXPECT_NE(nullptr, second_observer.sponsored_images_data);
 
   service_->RemoveObserver(&second_observer);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       ReRegisterSponsoredImagesComponentWhenCountryChanges) {
+  const std::optional<SponsoredImagesComponentInfo> us_component =
+      GetSponsoredImagesComponent("US");
+  ASSERT_TRUE(us_component.has_value());
+  const std::optional<SponsoredImagesComponentInfo> gb_component =
+      GetSponsoredImagesComponent("GB");
+  ASSERT_TRUE(gb_component.has_value());
+
+  InitWithComponentUpdateService();
+  service_->SetSponsoredImagesLoadedForTesting(std::string(us_component->id),
+                                               kTestSponsoredImages);
+  EXPECT_FALSE(service_->sponsored_images_component_started);
+  EXPECT_TRUE(observer_.on_sponsored_images_updated);
+  observer_.on_sponsored_images_updated = false;
+
+  // Change country to GB
+  brave_component_updater::MockOnDemandUpdater on_demand_updater;
+  EXPECT_CALL(on_demand_updater, OnDemandUpdate(std::string(gb_component->id),
+                                                testing::_, testing::_))
+      .WillOnce([this](auto, auto, auto callback) {
+        std::move(callback).Run(update_client::Error::NONE);
+        service_->OnSponsoredComponentReady(base::FilePath());
+      });
+  EXPECT_CALL(component_update_service(),
+              UnregisterComponent(std::string(us_component->id)))
+      .WillOnce(testing::Return(true));
+
+  service_->set_country_code_for_testing("GB");
+  service_->OnVariationsCountryPrefChanged();
+
+  EXPECT_TRUE(service_->sponsored_images_component_started);
+  EXPECT_THAT(service_->sponsored_images_component_id_,
+              testing::Optional(std::string(gb_component->id)));
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [this]() { return service_->sponsored_component_ready; }));
+  EXPECT_TRUE(observer_.on_sponsored_images_updated);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       ServesDataFromOldSponsoredImagesComponentAfterNewComponentFailedToLoad) {
+  const std::optional<SponsoredImagesComponentInfo> us_component =
+      GetSponsoredImagesComponent("US");
+  ASSERT_TRUE(us_component.has_value());
+
+  InitWithComponentUpdateService();
+  service_->SetSponsoredImagesLoadedForTesting(std::string(us_component->id),
+                                               kTestSponsoredImages);
+  EXPECT_TRUE(observer_.on_sponsored_images_updated);
+  observer_.on_sponsored_images_updated = false;
+
+  EXPECT_CALL(component_update_service(),
+              UnregisterComponent(std::string(us_component->id)))
+      .Times(0);
+
+  // Simulate GB sponsored images component installation failure when it is
+  // registered but its JSON never delivered.
+  service_->set_country_code_for_testing("GB");
+  service_->RegisterSponsoredImagesComponent();
+
+  EXPECT_THAT(service_->pending_unregister_old_component_id_,
+              testing::Optional(std::string(us_component->id)));
+  EXPECT_TRUE(service_->sponsored_images_installed_dir_.empty());
+
+  NTPSponsoredImagesData* const data =
+      service_->GetSponsoredImagesData(/*supports_rich_media=*/true);
+  ASSERT_TRUE(data);
+  EXPECT_TRUE(data->IsValid());
+
+  EXPECT_FALSE(observer_.on_sponsored_images_updated);
 }
 
 }  // namespace ntp_background_images

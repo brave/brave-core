@@ -238,12 +238,11 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
     return;
   }
 
-  if (sponsored_images_component_id_) {
-    // Unregister previous component.
-    component_update_service_->UnregisterComponent(
-        *sponsored_images_component_id_);
-  }
+  // Unregistration of the old component is pending until the new one is ready.
+  pending_unregister_old_component_id_ = sponsored_images_component_id_;
+
   sponsored_images_component_id_ = sponsored_images_component->id;
+  sponsored_images_installed_dir_ = base::FilePath();
 
   VLOG(0) << "Registering NTP Sponsored Images component for "
           << variations_country_code << " with ID "
@@ -387,6 +386,13 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
 
   for (auto& observer : observers_) {
     observer.OnSponsoredImagesDataDidUpdate(sponsored_images_data_.get());
+  }
+
+  if (pending_unregister_old_component_id_ && component_update_service_) {
+    // Unregister previous component.
+    component_update_service_->UnregisterComponent(
+        *pending_unregister_old_component_id_);
+    pending_unregister_old_component_id_.reset();
   }
 }
 

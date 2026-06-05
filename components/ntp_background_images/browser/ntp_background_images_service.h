@@ -106,6 +106,12 @@ class NTPBackgroundImagesService {
       DoNotGetSponsoredRichMediaContentIfWallpaperRelativeUrlReferencesParent);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            SponsoredImageWithMissingImageUrlTest);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      ReRegisterSponsoredImagesComponentWhenCountryChanges);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      ServesDataFromOldSponsoredImagesComponentAfterNewComponentFailedToLoad);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest1);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
@@ -165,6 +171,7 @@ class NTPBackgroundImagesService {
   base::WallClockTimer sponsored_images_update_check_timer_;
   base::RepeatingClosure sponsored_images_update_check_callback_;
   std::optional<std::string> sponsored_images_component_id_;
+  std::optional<std::string> pending_unregister_old_component_id_;
   base::FilePath sponsored_images_installed_dir_;
   std::unique_ptr<NTPSponsoredImagesData> sponsored_images_data_;
   std::unique_ptr<NTPSponsoredImagesData>
