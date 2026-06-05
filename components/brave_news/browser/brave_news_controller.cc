@@ -35,6 +35,7 @@
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/browser/brave_news_sync_bridge.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/network.h"
@@ -48,6 +49,8 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/sync/model/data_type_local_change_processor.h"
+#include "components/sync/model/forwarding_data_type_controller_delegate.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -103,7 +106,8 @@ BraveNewsController::BraveNewsController(
         policy_initialization_waiter,
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
+    std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate,
+    syncer::OnceDataTypeStoreFactory sync_store_factory)
     :
 #if BUILDFLAG(IS_ANDROID)
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
@@ -131,6 +135,13 @@ BraveNewsController::BraveNewsController(
               base::Unretained(this))) {
   CHECK(policy_initialization_waiter_);
 
+  // Set up syncing of Brave News prefs (syncer::BRAVE_NEWS). No factory is
+  // provided in tests, in which case syncing is simply disabled.
+  if (sync_store_factory) {
+    sync_bridge_ =
+        BraveNewsSyncBridge::CreateBridge(prefs, std::move(sync_store_factory));
+  }
+
   ResetEngine();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 
@@ -152,6 +163,15 @@ BraveNewsController::BraveNewsController(
 
 BraveNewsController::~BraveNewsController() {
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
+}
+
+std::unique_ptr<syncer::DataTypeControllerDelegate>
+BraveNewsController::GetSyncControllerDelegate() {
+  if (!sync_bridge_) {
+    return nullptr;
+  }
+  return std::make_unique<syncer::ForwardingDataTypeControllerDelegate>(
+      sync_bridge_->change_processor()->GetControllerDelegate().get());
 }
 
 void BraveNewsController::Bind(

@@ -1,0 +1,17 @@
+diff --git a/components/sync/service/data_type_controller.cc b/components/sync/service/data_type_controller.cc
+index 4cd97a1c4f3d066fa83b927722fffa83feb85145..9191105e0c7320e4690cd5f12628b1f42a9c9850 100644
+--- a/components/sync/service/data_type_controller.cc
++++ b/components/sync/service/data_type_controller.cc
+@@ -142,7 +142,11 @@ void DataTypeController::InitDataTypeController(
+                                                  HISTORY,
+                                                  PRINTERS_AUTHORIZATION_SERVERS,
+                                                  NIGORI,
+-                                                 COOKIES};
++                                                 COOKIES,
++                                                 // Brave sync always runs in
++                                                 // full-sync mode (sync chain),
++                                                 // never transport mode.
++                                                 BRAVE_NEWS};
+     CHECK(kLegacyTypes.Has(type()))
+         << DataTypeToDebugString(type())
+         << " must support running in transport mode!";

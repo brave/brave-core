@@ -1,0 +1,33 @@
+diff --git a/components/sync/service/sync_prefs.cc b/components/sync/service/sync_prefs.cc
+index 3762eb20577941b07e32fb068490a00271717d57..60e85514a020759f7cacc1711be4fa9a727d9c90 100644
+--- a/components/sync/service/sync_prefs.cc
++++ b/components/sync/service/sync_prefs.cc
+@@ -693,6 +693,8 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
+       return prefs::internal::kSyncProductComparison;
+     case UserSelectableType::kCookies:
+       return prefs::internal::kSyncCookies;
++    case UserSelectableType::kBraveNews:
++      return prefs::internal::kSyncBraveNews;
+   }
+   NOTREACHED();
+ }
+@@ -775,6 +777,9 @@ bool SyncPrefs::IsTypeSupportedInTransportMode(UserSelectableType type) {
+     case UserSelectableType::kCookies:
+       // `kCookies` is not supported in transport mode (ChromeOS-only type).
+       return false;
++    case UserSelectableType::kBraveNews:
++      // Brave News syncs only in full-sync mode (Brave's sync-chain model).
++      return false;
+   }
+   NOTREACHED();
+ }
+@@ -1165,6 +1170,9 @@ bool SyncPrefs::IsTypeSelectedByDefaultInTransportMode(
+       // All other types are always enabled by default with
+       // kReplaceSyncPromosWithSignInPromos.
+       return IsReplaceSyncPromosWithSignInPromosEnabled();
++    case UserSelectableType::kBraveNews:
++      // Brave News syncs only in full-sync mode, never transport mode.
++      return false;
+   }
+   NOTREACHED();
+ }

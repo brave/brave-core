@@ -1,0 +1,27 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+syntax = "proto2";
+
+option java_multiple_files = true;
+option java_package = "org.chromium.components.sync.protocol";
+
+option optimize_for = LITE_RUNTIME;
+
+package sync_pb;
+
+// One entity per synced Brave News preference. `name` is the pref name and
+// doubles as the client tag / storage key. The value is carried untyped: bool
+// prefs use `bool_value`, dictionary prefs use `dict_value` (the JSON
+// serialization of the pref's base::Value::Dict). The bridge never interprets
+// the News data; it only round-trips pref values, so this proto deliberately
+// stays dumb.
+message BraveNewsSpecifics {
+  optional string name = 1;
+  oneof value {
+    bool bool_value = 2;
+    string dict_value = 3;
+  }
+}
