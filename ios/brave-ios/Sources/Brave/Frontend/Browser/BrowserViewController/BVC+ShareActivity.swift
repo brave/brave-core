@@ -7,20 +7,32 @@ import BraveCore
 import BraveNews
 import Web
 
-extension BrowserViewController: ShareActivityProvider {
-  var shareSelectedTab: (any TabState)? { tabManager.selectedTab }
-  var shareProfileController: BraveProfileController { profileController }
-  var shareIsPrivateBrowsing: Bool { privateBrowsingManager.isPrivateBrowsing }
-  var shareFeedDataSource: FeedDataSource? { feedDataSource }
-  var shareCanAddSearchEngine: Bool {
-    guard let tab = tabManager.selectedTab else { return false }
-    return evaluateWebsiteSupportOpenSearchEngine(in: tab)
+extension BrowserViewController {
+  func presentActivityViewController(
+    _ url: URL,
+    tab: (any TabState)? = nil,
+    source: SharePopoverSource
+  ) {
+    presentShareActivity(
+      url: url,
+      tab: tab,
+      syncAPI: profileController.syncAPI,
+      sendTabAPI: profileController.sendTabAPI,
+      feedDataSource: feedDataSource,
+      isBraveNewsAvailable: profileController.profile.prefs.isBraveNewsAvailable,
+      source: source,
+      callbacks: .init(
+        onToggleReaderMode: { [weak self] in self?.toggleReaderMode() },
+        onDisplayPageZoom: { [weak self] in self?.displayPageZoomDialog() },
+        onAddSearchEngine: { [weak self] in
+          guard let self, let tab else { return }
+          self.evaluateWebsiteSupportOpenSearchEngine(in: tab)
+          self.addCustomSearchEngineForFocusedElement()
+        },
+        onDisplayCertificate: { [weak self] in self?.displayPageCertificateInfo() },
+        onShowSubmitReport: { [weak self] url in self?.showSubmitReportView(for: url) },
+        onCleanUp: { [weak self] in self?.showQueuedAlertIfAvailable() }
+      )
+    )
   }
-
-  func shareShowSubmitReport(for url: URL) { showSubmitReportView(for: url) }
-  func shareToggleReaderMode() { toggleReaderMode() }
-  func shareDisplayPageZoom() { displayPageZoomDialog() }
-  func shareAddSearchEngine() { addCustomSearchEngineForFocusedElement() }
-  func shareDisplayCertificate() { displayPageCertificateInfo() }
-  func shareCleanUp() { showQueuedAlertIfAvailable() }
 }

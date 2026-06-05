@@ -13,46 +13,31 @@ import UIKit
 import Web
 import os.log
 
-/// Groups the three popover-positioning values into one argument to reduce repetition
-/// across makeShareActivities and presentActivityViewController call sites.
 struct SharePopoverSource {
   let view: UIView?
   let rect: CGRect
   let arrowDirection: UIPopoverArrowDirection
 }
 
-protocol ShareActivityProvider: AnyObject, UIAdaptivePresentationControllerDelegate {
-  var shareSelectedTab: (any TabState)? { get }
-  var shareProfileController: BraveProfileController { get }
-  var shareIsPrivateBrowsing: Bool { get }
-  var shareFeedDataSource: FeedDataSource? { get }
-  var shareCanAddSearchEngine: Bool { get }
-
-  func shareShowSubmitReport(for url: URL)
-  func shareToggleReaderMode()
-  func shareDisplayPageZoom()
-  func shareAddSearchEngine()
-  func shareDisplayCertificate()
-  func shareCleanUp()
+struct ShareActivityCallbacks {
+  var onToggleReaderMode: (() -> Void)?
+  var onDisplayPageZoom: (() -> Void)?
+  var onAddSearchEngine: (() -> Void)?
+  var onDisplayCertificate: (() -> Void)?
+  var onShowSubmitReport: ((URL) -> Void)?
+  var onCleanUp: (() -> Void)?
 }
 
-extension ShareActivityProvider where Self: UIViewController {
-  var shareFeedDataSource: FeedDataSource? { nil }
-  var shareCanAddSearchEngine: Bool { false }
-  var shareCanDisplayPageZoom: Bool { true }
-  var shareCanDisplayCertificate: Bool { true }
-  func shareToggleReaderMode() {}
-  func shareDisplayPageZoom() {}
-  func shareAddSearchEngine() {}
-  func shareDisplayCertificate() {}
-  func shareCleanUp() {}
-}
-
-extension ShareActivityProvider where Self: UIViewController {
+extension UIViewController {
   func makeShareActivities(
-    for url: URL,
+    url: URL,
     tab: (any TabState)?,
-    source: SharePopoverSource
+    syncAPI: BraveSyncAPI,
+    sendTabAPI: BraveSendTabAPI,
+    feedDataSource: FeedDataSource?,
+    isBraveNewsAvailable: Bool,
+    source: SharePopoverSource,
+    callbacks: ShareActivityCallbacks
   ) -> [UIActivity] {
 
     var activities = [UIActivity]()
@@ -75,7 +60,8 @@ extension ShareActivityProvider where Self: UIViewController {
     }
 
     // Send Tab To Self Activity - Show device selection screen
-    if shareProfileController.syncAPI.isSendTabToSelfVisible, !shareIsPrivateBrowsing,
+    if let tab, !tab.isPrivate,
+      syncAPI.isSendTabToSelfVisible,
       !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode)
     {
       activities.append(
@@ -84,15 +70,15 @@ extension ShareActivityProvider where Self: UIViewController {
           callback: { [weak self] in
             guard let self = self else { return }
 
-            let deviceList = self.shareProfileController.sendTabAPI.getListOfSyncedDevices()
+            let deviceList = sendTabAPI.getListOfSyncedDevices()
             let dataSource = SendableTabInfoDataSource(
               with: deviceList,
-              displayTitle: tab?.displayTitle ?? "",
+              displayTitle: tab.displayTitle,
               sendableURL: url
             )
 
             let controller = SendTabToSelfController(
-              sendTabAPI: self.shareProfileController.sendTabAPI,
+              sendTabAPI: sendTabAPI,
               dataSource: dataSource
             )
 
@@ -103,7 +89,7 @@ extension ShareActivityProvider where Self: UIViewController {
                 SendTabProcessController(
                   type: .progress,
                   data: dataSource,
-                  sendTabAPI: self.shareProfileController.sendTabAPI
+                  sendTabAPI: sendTabAPI
                 ),
                 animated: true,
                 completion: nil
@@ -116,13 +102,14 @@ extension ShareActivityProvider where Self: UIViewController {
     }
 
     // Toogle Reader Mode Activity
-    if let tab = shareSelectedTab, tab.readerModeAvailableOrActive == true {
+    if let tab,
+      tab.readerModeAvailableOrActive == true,
+      let onToggleReaderMode = callbacks.onToggleReaderMode
+    {
       activities.append(
         BasicMenuActivity(
           activityType: .toggleReaderMode,
-          callback: { [weak self] in
-            self?.shareToggleReaderMode()
-          }
+          callback: onToggleReaderMode
         )
       )
     }
@@ -161,22 +148,18 @@ extension ShareActivityProvider where Self: UIViewController {
     activities.append(
       BasicMenuActivity(
         activityType: .findInPage,
-        callback: { [weak tab] in
-          guard let tab else { return }
-          tab.presentFindInteraction(with: "")
+        callback: {
+          tab?.presentFindInteraction(with: "")
         }
       )
     )
 
     // Page Zoom Activity
-    if shareCanDisplayPageZoom {
+    if let onDisplayPageZoom = callbacks.onDisplayPageZoom {
       activities.append(
         BasicMenuActivity(
           activityType: .pageZoom,
-          callback: { [weak self] in
-            guard let self = self else { return }
-            self.shareDisplayPageZoom()
-          }
+          callback: onDisplayPageZoom
         )
       )
     }
@@ -219,35 +202,34 @@ extension ShareActivityProvider where Self: UIViewController {
       )
 
       // Add Feed To Brave News Activity
-      if let feedDS = shareFeedDataSource {
-        if shareProfileController.profile.prefs.isBraveNewsAvailable,
-          Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadataHelper?.metadata,
-          !metadata.feeds.isEmpty
-        {
-          let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
-            guard let url = URL(string: feed.href) else { return nil }
-            return RSSFeedLocation(title: feed.title, url: url)
-          }
-          if !feeds.isEmpty {
-            activities.append(
-              BasicMenuActivity(
-                activityType: .addSourceNews,
-                callback: { [weak self] in
-                  guard let self = self else { return }
-                  let controller = BraveNewsAddSourceResultsViewController(
-                    dataSource: feedDS,
-                    searchedURL: url,
-                    rssFeedLocations: feeds,
-                    sourcesAdded: nil
-                  )
-                  let container = UINavigationController(rootViewController: controller)
-                  let idiom = UIDevice.current.userInterfaceIdiom
-                  container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-                  self.present(container, animated: true)
-                }
-              )
+      if let feedDataSource, isBraveNewsAvailable,
+        Preferences.BraveNews.isEnabled.value,
+        let metadata = tab?.pageMetadataHelper?.metadata,
+        !metadata.feeds.isEmpty
+      {
+        let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
+          guard let url = URL(string: feed.href) else { return nil }
+          return RSSFeedLocation(title: feed.title, url: url)
+        }
+        if !feeds.isEmpty {
+          activities.append(
+            BasicMenuActivity(
+              activityType: .addSourceNews,
+              callback: { [weak self] in
+                guard let self = self else { return }
+                let controller = BraveNewsAddSourceResultsViewController(
+                  dataSource: feedDataSource,
+                  searchedURL: url,
+                  rssFeedLocations: feeds,
+                  sourcesAdded: nil
+                )
+                let container = UINavigationController(rootViewController: controller)
+                let idiom = UIDevice.current.userInterfaceIdiom
+                container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+                self.present(container, animated: true)
+              }
             )
-          }
+          )
         }
       }
 
@@ -256,7 +238,8 @@ extension ShareActivityProvider where Self: UIViewController {
         activities.append(
           BasicMenuActivity(
             activityType: .createPDF,
-            callback: {
+            callback: { [weak self] in
+              guard let self else { return }
               Task { @MainActor in
                 do {
                   guard let pdfData = try await tab.createFullPagePDF() else {
@@ -279,7 +262,8 @@ extension ShareActivityProvider where Self: UIViewController {
                       activityItems: [url],
                       applicationActivities: nil
                     )
-                    pdfActivityController.presentationController?.delegate = self
+                    pdfActivityController.presentationController?.delegate =
+                      self as? UIAdaptivePresentationControllerDelegate
                     if let popoverPresentationController = pdfActivityController
                       .popoverPresentationController
                     {
@@ -306,13 +290,11 @@ extension ShareActivityProvider where Self: UIViewController {
     } else {
       // Add Feed To Brave News Activity
       // Check if it's a feed, url is a temp document file URL
-      if let feedDS = shareFeedDataSource,
-        let selectedTab = shareSelectedTab,
-        selectedTab.contentsMimeType == "application/xml"
-          || selectedTab.contentsMimeType == "application/json",
-        let tabURL = selectedTab.url
+      if let feedDataSource, let tab,
+        tab.contentsMimeType == "application/xml"
+          || tab.contentsMimeType == "application/json",
+        let tabURL = tab.visibleURL
       {
-
         let parser = FeedParser(URL: url)
         if case .success(let feed) = parser.parse() {
           activities.append(
@@ -321,7 +303,7 @@ extension ShareActivityProvider where Self: UIViewController {
               callback: { [weak self] in
                 guard let self = self else { return }
                 let controller = BraveNewsAddSourceResultsViewController(
-                  dataSource: feedDS,
+                  dataSource: feedDataSource,
                   searchedURL: tabURL,
                   rssFeedLocations: [.init(title: feed.title, url: tabURL)],
                   sourcesAdded: nil
@@ -338,63 +320,71 @@ extension ShareActivityProvider where Self: UIViewController {
     }
 
     // Add Search Engine Activity
-    if shareCanAddSearchEngine {
+    if let onAddSearchEngine = callbacks.onAddSearchEngine,
+      tab?.pageMetadataHelper?.metadata?.search != nil,
+      tab?.visibleURL?.isSecureWebPage() == true
+    {
       activities.append(
         BasicMenuActivity(
           activityType: .addSearchEngine,
-          callback: { [weak self] in
-            self?.shareAddSearchEngine()
-          }
+          callback: onAddSearchEngine
         )
       )
     }
 
     // Display Certificate Activity
-    if shareCanDisplayCertificate, shareSelectedTab?.serverTrust != nil {
+    if let onDisplayCertificate = callbacks.onDisplayCertificate, tab?.serverTrust != nil {
       activities.append(
         BasicMenuActivity(
-          activityType: .displaySecurityCertificate
-        ) { [weak self] in
-          self?.shareDisplayCertificate()
-        }
+          activityType: .displaySecurityCertificate,
+          callback: onDisplayCertificate
+        )
       )
     }
 
     // Report Web-compat Issue Activity
-    activities.append(
-      BasicMenuActivity(
-        activityType: .reportBrokenSite
-      ) { [weak self] in
-        self?.shareShowSubmitReport(for: url)
-      }
-    )
+    if let onShowSubmitReport = callbacks.onShowSubmitReport {
+      activities.append(
+        BasicMenuActivity(
+          activityType: .reportBrokenSite
+        ) { onShowSubmitReport(url) }
+      )
+    }
 
     return activities
   }
 
-  func presentActivityViewController(
-    _ url: URL,
-    tab: (any TabState)? = nil,
-    source: SharePopoverSource
+  func presentShareActivity(
+    url: URL,
+    tab: (any TabState)?,
+    syncAPI: BraveSyncAPI,
+    sendTabAPI: BraveSendTabAPI,
+    feedDataSource: FeedDataSource?,
+    isBraveNewsAvailable: Bool,
+    source: SharePopoverSource,
+    callbacks: ShareActivityCallbacks
   ) {
-
-    let shareExtesionHelper = ShareExtensionHelper(url: url, tab: tab)
-    let activities: [UIActivity] = makeShareActivities(for: url, tab: tab, source: source)
-    let controller = shareExtesionHelper.createActivityViewController(
-      applicationActivities: activities
+    let activities = makeShareActivities(
+      url: url,
+      tab: tab,
+      syncAPI: syncAPI,
+      sendTabAPI: sendTabAPI,
+      feedDataSource: feedDataSource,
+      isBraveNewsAvailable: isBraveNewsAvailable,
+      source: source,
+      callbacks: callbacks
     )
-
-    controller.completionWithItemsHandler = { [weak self] _, _, _, _ in
-      self?.shareCleanUp()
+    let controller = ShareExtensionHelper(url: url, tab: tab)
+      .createActivityViewController(applicationActivities: activities)
+    controller.completionWithItemsHandler = { _, _, _, _ in
+      callbacks.onCleanUp?()
     }
-
-    controller.presentationController?.delegate = self
-    if let popoverPresentationController = controller.popoverPresentationController {
-      popoverPresentationController.sourceView = source.view
-      popoverPresentationController.sourceRect = source.rect
-      popoverPresentationController.permittedArrowDirections = source.arrowDirection
+    controller.presentationController?.delegate = self as? UIAdaptivePresentationControllerDelegate
+    if let popover = controller.popoverPresentationController {
+      popover.sourceView = source.view
+      popover.sourceRect = source.rect
+      popover.permittedArrowDirections = source.arrowDirection
     }
-
     present(controller, animated: true, completion: nil)
   }
 }

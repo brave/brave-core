@@ -2699,6 +2699,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
         dismiss(animated: true) {
           self.presentActivityViewController(
             url,
+            tab: self.tabManager.selectedTab,
             source: .init(
               view: self.view,
               rect: self.view.convert(
@@ -2710,8 +2711,9 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
           )
         }
       } else {
-        presentActivityViewController(
+        self.presentActivityViewController(
           url,
+          tab: self.tabManager.selectedTab,
           source: .init(
             view: self.view,
             rect: self.view.convert(
