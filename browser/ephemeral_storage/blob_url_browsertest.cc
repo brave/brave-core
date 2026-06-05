@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -254,6 +255,7 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
                        BlobsAreAccessibleFromExtension) {
+  extensions::ScopedTestMV2Enabler mv2_enabler;
   FramesWithRegisteredBlobs a_com_registered_blobs =
       RegisterBlobs(a_site_ephemeral_storage_url_);
 

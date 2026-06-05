@@ -13,6 +13,7 @@
 #include "base/run_loop.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/install_tracker_factory.h"
+#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -132,6 +133,7 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
                        CrxVerificationWithoutPublisherProof) {
+  extensions::ScopedTestMV2Enabler mv2_enabler;
   // Generate CRX without the publisher proof (only standard developer's
   // signature).
   const auto crx_path = CreateTestCrx();
@@ -144,6 +146,7 @@ IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
 // with a valid publisher proof.
 IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
                        CrxVerificationWithPublisherProof) {
+  extensions::ScopedTestMV2Enabler mv2_enabler;
   base::ScopedAllowBlockingForTesting allow_blocking;
   {
     // Generate CRX without publisher proof.
