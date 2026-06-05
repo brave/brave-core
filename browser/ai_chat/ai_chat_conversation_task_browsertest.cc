@@ -431,17 +431,19 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
 
+  // The tool will execute and a response sent - we need to set up the new
+  // expectation *before* pumping the loop below. The real navigate tool
+  // completes asynchronously and can trigger the next assistant response while
+  // we wait for the running state, which would otherwise over-saturate the
+  // previous expectation.
+  auto generate_future = SetupMockGenerateAssistantResponse();
+
   EXPECT_TRUE(base::test::RunUntil([this]() {
     return GetConversationState()->tool_use_task_state ==
            mojom::TaskState::kRunning;
   }));
 
-  // The tool will execute and response sent - we need to set up a new
-  // expectation so the previous one is not triggered.
-  {
-    auto generate_future = SetupMockGenerateAssistantResponse();
-    std::ignore = generate_future->Take();
-  }
+  std::ignore = generate_future->Take();
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
@@ -645,6 +647,15 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
+
+  // The first response's WillOnce is now consumed. The real navigate tool
+  // completes asynchronously and triggers a follow-up assistant response that
+  // this test intentionally does not drive (it only verifies UI state while the
+  // task is running). Absorb any such calls so they don't over-saturate the
+  // previous expectation. This must be installed before pumping the loop below.
+  EXPECT_CALL(*mock_engine_, GenerateAssistantResponse)
+      .Times(testing::AnyNumber());
+
   ASSERT_TRUE(base::test::RunUntil([this]() {
     return GetConversationState()->tool_use_task_state ==
            mojom::TaskState::kRunning;
