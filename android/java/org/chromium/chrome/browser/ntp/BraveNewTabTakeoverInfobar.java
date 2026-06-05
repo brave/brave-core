@@ -7,22 +7,34 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 
+import androidx.core.content.ContextCompat;
+
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
-import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.messages.DismissReason;
+import org.chromium.components.messages.MessageBannerProperties;
+import org.chromium.components.messages.MessageDispatcher;
+import org.chromium.components.messages.MessageDispatcherProvider;
+import org.chromium.components.messages.MessageIdentifier;
+import org.chromium.components.messages.MessageScopeType;
+import org.chromium.components.messages.PrimaryActionClickBehavior;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modelutil.PropertyModel;
 
+// The legacy Android infobar UI was removed upstream
+// (https://chromium-review.googlesource.com/c/chromium/src/+/7887741); this notice is now
+// shown with the Messages framework. The inline "learn more / opt out choices" link of the old
+// infobar becomes the message's primary button.
 @NullMarked
 public class BraveNewTabTakeoverInfobar {
-    private static final String TAG = "NewTabTakeover";
     private static final String LEARN_MORE_URL =
             "https://support.brave.app/hc/en-us/articles/35182999599501";
     private final Profile mProfile;
@@ -35,41 +47,63 @@ public class BraveNewTabTakeoverInfobar {
         if (!shouldDisplayInfobar()) {
             return;
         }
+
+        WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
+        if (windowAndroid == null) return;
+        MessageDispatcher messageDispatcher = MessageDispatcherProvider.from(windowAndroid);
+        if (messageDispatcher == null) return;
+
         recordInfobarWasDisplayed();
 
-        BraveSimpleConfirmInfoBarBuilder.create(
-                webContents,
-                new SimpleConfirmInfoBarBuilder.Listener() {
-                    @Override
-                    public void onInfoBarDismissed() {
-                        suppressInfobar();
-                    }
+        final int iconColor =
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                        ? ContextCompat.getColor(
+                                activity, R.color.brave_informer_dark_theme_icon_color)
+                        : ContextCompat.getColor(
+                                activity, R.color.brave_informer_light_theme_icon_color);
 
-                    @Override
-                    public boolean onInfoBarButtonClicked(boolean isPrimary) {
-                        suppressInfobar();
-                        return false;
-                    }
+        PropertyModel message =
+                new PropertyModel.Builder(MessageBannerProperties.ALL_KEYS)
+                        .with(
+                                MessageBannerProperties.MESSAGE_IDENTIFIER,
+                                MessageIdentifier.INVALID_MESSAGE)
+                        .with(MessageBannerProperties.DISMISSAL_DURATION, Integer.MAX_VALUE)
+                        .with(
+                                MessageBannerProperties.ICON_RESOURCE_ID,
+                                R.drawable.ic_warning_circle)
+                        .with(MessageBannerProperties.ICON_TINT_COLOR, iconColor)
+                        .with(
+                                MessageBannerProperties.DESCRIPTION,
+                                activity.getString(R.string.new_tab_takeover_infobar_message))
+                        .with(
+                                MessageBannerProperties.PRIMARY_BUTTON_TEXT,
+                                activity.getString(
+                                        R.string
+                                                .new_tab_takeover_infobar_learn_more_opt_out_choices))
+                        .with(
+                                MessageBannerProperties.ON_PRIMARY_ACTION,
+                                () -> {
+                                    // Pressing `Learn more / opt out choices` opens the support
+                                    // page. The infobar is suppressed below via ON_DISMISSED, which
+                                    // the framework invokes with DismissReason.PRIMARY_ACTION.
+                                    TabUtils.openUrlInNewTab(
+                                            /* isIncognito= */ false, LEARN_MORE_URL);
+                                    return PrimaryActionClickBehavior.DISMISS_IMMEDIATELY;
+                                })
+                        .with(
+                                MessageBannerProperties.ON_DISMISSED,
+                                (dismissReason) -> {
+                                    // Suppress on any explicit user action (button, swipe, close).
+                                    // Automatic dismissals (timer, navigation, ...) only consume
+                                    // one of the remaining displays, decremented above.
+                                    if (isUserInitiatedDismiss(dismissReason)) {
+                                        suppressInfobar();
+                                    }
+                                })
+                        .build();
 
-                    @Override
-                    public boolean onInfoBarLinkClicked() {
-                        suppressInfobar();
-                        TabUtils.openUrlInNewTab(/* isIncognito= */ false, LEARN_MORE_URL);
-                        // Return false to immediately close the infobar. This is different
-                        // from ConfirmInfoBarDelegate where we return true to close the
-                        // infobar.
-                        return false;
-                    }
-                },
-                BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE,
-                activity,
-                /* drawableId= */ 0,
-                activity.getString(R.string.new_tab_takeover_infobar_message, ""),
-                /* primaryText= */ "",
-                /* secondaryText= */ "",
-                activity.getString(
-                        R.string.new_tab_takeover_infobar_learn_more_opt_out_choices, ""),
-                /* autoExpire= */ true);
+        messageDispatcher.enqueueMessage(
+                message, webContents, MessageScopeType.NAVIGATION, /* highPriority */ false);
     }
 
     private boolean shouldDisplayInfobar() {
@@ -95,5 +129,12 @@ public class BraveNewTabTakeoverInfobar {
     private void suppressInfobar() {
         PrefService prefService = UserPrefs.get(mProfile);
         prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT, 0);
+    }
+
+    private static boolean isUserInitiatedDismiss(@DismissReason int dismissReason) {
+        return dismissReason == DismissReason.PRIMARY_ACTION
+                || dismissReason == DismissReason.SECONDARY_ACTION
+                || dismissReason == DismissReason.GESTURE
+                || dismissReason == DismissReason.CLOSE_BUTTON;
     }
 }
