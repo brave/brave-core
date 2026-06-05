@@ -1695,6 +1695,7 @@ Kako biste promijenili tu postavku, <ph name="BEGIN_LINK"/>izbrišite podatke Br
 <translation id="8281886186245836920">Preskoči</translation>
 <translation id="8282297628636750033">Primijeni tamnu temu na web-lokacije, kad je moguće</translation>
 <translation id="8282950411412455249">Otvorite sigurnosne postavke</translation>
+<translation id="922970047082941203">{NUM_WINDOWS,plural, =1{Zatvori 1 anonimni prozor}one{Zatvori # anonimni prozor}few{Zatvori # anonimna prozora}other{Zatvori # anonimnih prozora}}</translation>
 <translation id="8313599942510782709">Vaš je zadatak još u tijeku</translation>
 <translation id="8317318757008452355">Otvaranje opcija za ispis</translation>
 <translation id="8320212361750431956">Nedavna aktivnost</translation>
@@ -1937,7 +1938,7 @@ Kako biste promijenili tu postavku, <ph name="BEGIN_LINK"/>izbrišite podatke Br
 <translation id="8810805383611013660">Otvori u Privatnoj kartici</translation>
 <translation id="5556722972306334687">Otvori u Privatnom prozoru</translation>
 <translation id="3110967157686007724">Kartica Privatno</translation>
-<translation id="1961291599064731706">Posjećene mrežne stranice ne ’t spremaju se u privatnom načinu rada</translation>
+<translation id="1961291599064731706">Posjećene mrežne stranice ne spremaju se u privatnom načinu rada</translation>
 <translation id="3442126301004443274">Za brisanje privatne povijesti pregledavanja sa svog uređaja zatvorite sve privatne kartice.</translation>
 <translation id="4526803704855831732">Kartice Privatno</translation>
 <translation id="5248610748197335423">Zatvori sve Privatne kartice</translation>
@@ -1951,10 +1952,6 @@ Kako biste promijenili tu postavku, <ph name="BEGIN_LINK"/>izbrišite podatke Br
 <translation id="8120164982795455341">Nova Privatna kartica</translation>
 <translation id="3377025655491224618">Privatna kartica</translation>
 <translation id="8428257636009471988">Posjeti web-trgovinu</translation>
-<translation id="922970047082941203">{NUM_WINDOWS, plural,
-          =1 {Close 1 Private window}
-          few {Close # Private windows}
-          other {Close # Private windows}}</translation>
 <translation id="4968908871398201967">Privatni način</translation>
 <translation id="8448127664493413656">Pristupi Privatnom načinu</translation>
 <translation id="6484416399492735324">Napusti Privatni način</translation>
