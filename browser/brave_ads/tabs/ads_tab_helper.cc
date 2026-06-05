@@ -456,6 +456,10 @@ void AdsTabHelper::OnVisibilityChanged(const content::Visibility visibility) {
 void AdsTabHelper::WebContentsDestroyed() {
   MaybeNotifyTabdidClose();
 
+#if !BUILDFLAG(IS_ANDROID)
+  BrowserList::RemoveObserver(this);
+#endif
+
   ads_service_ = nullptr;
 }
 
