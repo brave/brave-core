@@ -1,0 +1,84 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//media/media_options.gni")
+import("//third_party/ffmpeg/ffmpeg_options.gni")
+
+# Linux ships without a working hardware HEVC decode path: VA-API is disabled
+# on NVIDIA, and Chromium's hardware decode pipeline can't consume frames from
+# nvidia-vaapi-driver. To cover those users we compile the FFmpeg HEVC software
+# decoder in, gated behind the upstream `enable_hevc_parser_and_hw_decoder`
+# build arg so it can be turned off via `gn args` if anything goes wrong.
+enable_ffmpeg_hevc_support =
+    is_linux && enable_hevc_parser_and_hw_decoder && ffmpeg_branding == "Chrome"
+
+brave_third_party_ffmpeg_c_sources = []
+brave_third_party_ffmpeg_asm_sources = []
+brave_third_party_ffmpeg_asm_deps = []
+brave_third_party_ffmpeg_gas_sources = []
+
+if (enable_ffmpeg_hevc_support) {
+  brave_third_party_ffmpeg_c_sources += [
+    # Byte-swap DSP (renamed to avoid duplicate object name with x86/bswapdsp.asm)
+    "//brave/third_party/ffmpeg/libavcodec/libavcodec_bswapdsp.c",
+
+    # HEVC core decoder
+    "//brave/third_party/ffmpeg/libavcodec/hevc/libavcodec_hevc_cabac.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/libavcodec_hevc_parse.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/libavcodec_hevc_parser.c",
+    "libavcodec/hevc/data.c",
+    "libavcodec/hevc/dsp.c",
+    "libavcodec/hevc/filter.c",
+    "libavcodec/hevc/hevcdec.c",
+    "libavcodec/hevc/mvs.c",
+    "libavcodec/hevc/pred.c",
+    "libavcodec/hevc/ps.c",
+    "libavcodec/hevc/refs.c",
+    "libavcodec/hevc/sei.c",
+
+    # Film grain and Dolby Vision RPU support for HEVC streams
+    "libavcodec/aom_film_grain.c",
+    "libavcodec/dovi_rpu.c",
+    "libavcodec/dovi_rpudec.c",
+  ]
+
+  # HEVC x86_64 optimizations.
+  if (current_cpu == "x64") {
+    brave_third_party_ffmpeg_c_sources += [
+      "libavcodec/x86/bswapdsp_init.c",
+      "libavcodec/x86/h26x/h2656dsp.c",
+      "libavcodec/x86/hevc/dsp_init.c",
+    ]
+    brave_third_party_ffmpeg_asm_sources += [
+      "libavcodec/x86/bswapdsp.asm",
+      "libavcodec/x86/h26x/h2656_inter.asm",
+      "libavcodec/x86/hevc/add_res.asm",
+      "libavcodec/x86/hevc/deblock.asm",
+      "libavcodec/x86/hevc/dequant.asm",
+      "libavcodec/x86/hevc/idct.asm",
+      "libavcodec/x86/hevc/mc.asm",
+      "libavcodec/x86/hevc/sao.asm",
+      "libavcodec/x86/hevc/sao_10bit.asm",
+    ]
+    brave_third_party_ffmpeg_asm_deps += [
+      "libavcodec/x86/h26x/h2656_sao.asm",
+      "libavcodec/x86/h26x/h2656_sao_10bit.asm",
+    ]
+  }
+
+  # HEVC arm64 NEON optimizations.
+  if (current_cpu == "arm64") {
+    brave_third_party_ffmpeg_c_sources +=
+        [ "libavcodec/aarch64/hevcdsp_init_aarch64.c" ]
+    brave_third_party_ffmpeg_gas_sources += [
+      "libavcodec/aarch64/h26x/epel_neon.S",
+      "libavcodec/aarch64/h26x/qpel_neon.S",
+      "libavcodec/aarch64/h26x/sao_neon.S",
+      "libavcodec/aarch64/hevcdsp_deblock_neon.S",
+      "libavcodec/aarch64/hevcdsp_dequant_neon.S",
+      "libavcodec/aarch64/hevcdsp_idct_neon.S",
+    ]
+  }
+}

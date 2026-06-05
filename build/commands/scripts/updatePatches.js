@@ -72,6 +72,7 @@ export default function RunCommand(filePaths, options) {
     'search_engines_data',
     'resources',
   )
+  const ffmpegDir = path.join(config.srcDir, 'third_party', 'ffmpeg')
   const patchDir = path.join(config.braveCoreDir, 'patches')
   const v8PatchDir = path.join(patchDir, 'v8')
   const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
@@ -87,6 +88,7 @@ export default function RunCommand(filePaths, options) {
     'search_engines_data',
     'resources',
   )
+  const ffmpegPatchDir = path.join(patchDir, 'third_party', 'ffmpeg')
 
   Promise.all([
     // chromium
@@ -99,6 +101,8 @@ export default function RunCommand(filePaths, options) {
     updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir, filePaths),
     // third_party/search_engines_data
     updatePatches(searchEngineDataDir, searchEngineDataPatchDir, filePaths),
+    // third_party/ffmpeg
+    updatePatches(ffmpegDir, ffmpegPatchDir, filePaths),
   ])
     .then(() => {
       console.log('Done.')
