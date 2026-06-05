@@ -10,9 +10,14 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "components/search_engines/search_engines_pref_names.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/pref_names.h"
@@ -34,6 +39,9 @@ enum {
 #endif
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   kEmailAliasesNotes = 1003,
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  kBraveAIChatSkills = 1004,
 #endif
 };
 }  // namespace brave_syncable_prefs_ids
@@ -78,6 +86,20 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
             MergeBehavior::kNone,
+        },
+    },
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    {
+        ai_chat::prefs::kBraveAIChatSkills,
+        {
+            brave_syncable_prefs_ids::kBraveAIChatSkills,
+            syncer::PREFERENCES,
+            sync_preferences::PrefSensitivity::kNone,
+            // Skills are a dictionary keyed by a unique id, so merge per-entry
+            // across devices rather than letting the last writer clobber the
+            // whole collection.
+            MergeBehavior::kMergeableDict,
         },
     },
 #endif
