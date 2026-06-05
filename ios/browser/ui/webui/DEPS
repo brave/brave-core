@@ -4,6 +4,7 @@ include_rules = [
   "+brave/components/brave_ads",
   "+brave/components/brave_private_cdn",
   "+brave/components/brave_rewards",
+  "+brave/components/brave_wallet/browser",
   "+brave/components/brave_wallet/common",
   "+brave/components/constants",
   "+brave/components/webui",

@@ -13,15 +13,10 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -42,6 +37,16 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #endif
 
 using web::WebUIIOS;
@@ -87,6 +92,19 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS<AIChatUI>(WebUIIOS* web_ui,
 }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+template <>
+std::unique_ptr<WebUIIOSController> NewWebUIIOS<WalletPageUI>(WebUIIOS* web_ui,
+                                                              const GURL& url) {
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
+  if (profile->IsOffTheRecord() ||
+      !brave_wallet::IsAllowed(profile->GetPrefs())) {
+    return nullptr;
+  }
+  return std::make_unique<WalletPageUI>(web_ui, url);
+}
+#endif
+
 template <class T>
 std::unique_ptr<WebUIIOSController> NewRegularProfileOnlyWebUIIOS(
     WebUIIOS* web_ui,
@@ -99,7 +117,7 @@ std::unique_ptr<WebUIIOSController> NewRegularProfileOnlyWebUIIOS(
 
 WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   DCHECK(url.SchemeIs(kChromeUIUntrustedScheme));
-  const std::string_view url_host = url.host();
+  [[maybe_unused]] const std::string_view url_host = url.host();
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (url_host == kAIChatUntrustedConversationUIHost &&
@@ -108,6 +126,7 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsWalletWebUIEnabled()) {
     if (url_host == kUntrustedNftHost) {
       return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
@@ -117,6 +136,7 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
       return &NewRegularProfileOnlyWebUIIOS<line_chart::UntrustedLineChartUI>;
     }
   }
+#endif
 
   return nullptr;
 }
@@ -151,9 +171,11 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
              ai_chat::features::IsAIChatWebUIEnabled()) {
     return &NewWebUIIOS<AIChatUI>;
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   } else if (url_host == kWalletPageHost &&
              brave_wallet::IsWalletWebUIEnabled()) {
-    return &NewRegularProfileOnlyWebUIIOS<WalletPageUI>;
+    return &NewWebUIIOS<WalletPageUI>;
+#endif
   }
   return nullptr;
 }
