@@ -500,6 +500,11 @@ void AdEvents::GetVirtualPrefs(const base::flat_set<std::string>& ids,
 }
 
 void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
+  GetUnexpired(base::Days(90), std::move(callback));
+}
+
+void AdEvents::GetUnexpired(base::TimeDelta time_window,
+                            GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
@@ -529,7 +534,8 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
             OR created_at > $2
           ORDER BY
             created_at ASC)",
-      {kTableName, TimeToSqlValueAsString(base::Time::Now() - base::Days(90))},
+      {kTableName,
+       TimeToSqlValueAsString(base::Time::Now() - time_window)},
       nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
