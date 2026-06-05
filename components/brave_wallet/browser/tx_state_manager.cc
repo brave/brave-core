@@ -264,13 +264,16 @@ void TxStateManager::RetireTxByStatus(base::DictValue& txs,
       (status == mojom::TransactionStatus::Confirmed ? "confirmed_time"
                                                      : "created_time");
 
-  const std::string* oldest_tx_meta_id = nullptr;
+  // Points into `txs`; left at end() until we find a candidate to retire.
+  auto oldest_it = txs.end();
   uint64_t num_txs = 0;
 
   // Everything is smaller than this.
   base::Time oldest_time = base::Time::Max();
 
-  for (const auto [tx_meta_id, value] : txs) {
+  for (auto it = txs.begin(); it != txs.end(); ++it) {
+    const auto& value = it->second;
+
     const auto* dict = value.GetIfDict();
     if (!dict) {
       continue;
@@ -304,12 +307,12 @@ void TxStateManager::RetireTxByStatus(base::DictValue& txs,
     }
 
     oldest_time = *t;
-    oldest_tx_meta_id = &tx_meta_id;
+    oldest_it = it;
   }
 
   if (num_txs > max_num) {
-    CHECK(oldest_tx_meta_id);
-    txs.Remove(*oldest_tx_meta_id);
+    CHECK(oldest_it != txs.end());
+    txs.erase(oldest_it);
   }
 }
 
