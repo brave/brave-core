@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Adjusts IsExtensionAffected single parameter overload to pass extension id
+      to the 4-parameter overload so that the extension can be checked against
+      Brave-hosted list.
+    re_pattern: '(IsExtensionAffected\()(extension\.manifest_version)'
+    replace: |-
+      \1extension.id(),
+                                   \2
+  - description: |-
+      Adjusts IsExtensionAffected 3-parameter overload to take an additional
+      parameter - extension id - so that the extension can be checked against
+      Brave-hosted list.
+    re_pattern: '(IsExtensionAffected\(\s+)(int\smanifest_version,)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1const ExtensionId& extension_id,
+          \2
+  - description: |-
+      Checks the extension id against Brave-hosted list in IsExtensionAffected.
+    re_pattern: '(\s+//\sabout\sit.\s+)return\strue;\s+(})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1return !IsBraveHostedExtension(extension_id);
+      \2
