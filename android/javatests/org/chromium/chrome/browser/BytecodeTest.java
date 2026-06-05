@@ -1452,7 +1452,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         PageZoomManager.class,
                         OneshotSupplier.class,
-                        OpenInAppMenuItemProvider.class));
+                        OpenInAppMenuItemProvider.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
