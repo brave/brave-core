@@ -9,6 +9,7 @@
 #include <limits>
 #include <string>
 
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -70,7 +71,7 @@ base::TimeDelta TimeDeltaSinceEpoch(int64_t timestamp) {
 std::optional<base::TimeDelta> MaybeParseTimeDelta(std::string_view value) {
   double timestamp;
   if (base::StringToDouble(value, &timestamp)) {
-    return TimeDeltaSinceEpoch(static_cast<int64_t>(timestamp));
+    return TimeDeltaSinceEpoch(base::saturated_cast<int64_t>(timestamp));
   }
 
   base::Time time;

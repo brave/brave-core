@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <utility>
 
+#include "base/check.h"
 #include "third_party/zlib/zlib.h"
 
 namespace brave_ads::ml {
@@ -49,6 +50,7 @@ int HashVectorizer::GetBucketCount() const {
 std::map<uint32_t, double> HashVectorizer::GetFrequencies(
     const std::string& html) const {
   std::string data = html;
+  CHECK(bucket_count_ > 0);
   std::map<uint32_t, double> frequencies;
   if (data.length() > kMaximumHtmlLengthToClassify) {
     data = data.substr(0, kMaximumHtmlLengthToClassify);

@@ -9,6 +9,7 @@
 #include <iterator>
 #include <optional>
 
+#include "base/numerics/safe_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_summary_util.h"
@@ -74,7 +75,7 @@ int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
   const base::Time from_time = LocalTimeAtBeginningOfThisMonth();
   const base::Time to_time = LocalTimeAtEndOfThisMonth();
 
-  return static_cast<int32_t>(
+  return base::checked_cast<int32_t>(
       GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
