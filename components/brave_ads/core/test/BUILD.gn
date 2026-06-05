@@ -28,6 +28,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/test/confirmation_queue_item_test_util.cc",
