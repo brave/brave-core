@@ -63,6 +63,7 @@ class BraveVpnService : public mojom::ServiceHandler, public KeyedService {
   virtual bool IsConnected() const = 0;
   virtual void ToggleConnection() = 0;
   virtual mojom::ConnectionState GetConnectionState() const = 0;
+  virtual std::string GetLastConnectionError() const = 0;
   virtual void RecordWidgetUsageMetrics(bool new_usage) = 0;
 #else   //  !BUILDFLAG(IS_ANDROID)
   // Public interface for Android native worker.
