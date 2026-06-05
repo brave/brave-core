@@ -29,6 +29,7 @@ namespace brave {
 
 namespace {
 
+constexpr char kBraveServiceSignatureHeader[] = "BraveServiceSignature";
 constexpr auto kSearchDomains = base::MakeFixedFlatSet<std::string_view>(
     {"search.brave.com", "search.brave.software"});
 
@@ -63,10 +64,10 @@ int OnBeforeStartTransaction_BraveServiceKey(
                          BUILDFLAG(BRAVE_SERVICES_KEY));
     }
     if (is_search_domain) {
-      const auto authorization = brave_service_keys::GetAuthorizationHeader(
+      const auto [_, signature] = brave_service_keys::GetAuthorizationHeader(
           BUILDFLAG(SERVICE_KEY_SEARCH), /*headers=*/{}, url, ctx->method(),
           {"(request-target)"});
-      headers->SetHeader(authorization.first, authorization.second);
+      headers->SetHeader(kBraveServiceSignatureHeader, signature);
     }
   }
   return net::OK;

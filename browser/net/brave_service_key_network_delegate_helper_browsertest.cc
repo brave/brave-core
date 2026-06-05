@@ -40,7 +40,7 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
     header_result_ = request.headers.contains("BraveServiceKey");
     const std::string* auth =
-        base::FindOrNull(request.headers, "Authorization");
+        base::FindOrNull(request.headers, "BraveServiceSignature");
     authorization_header_ = auth ? *auth : std::string();
   }
 
