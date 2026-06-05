@@ -54,7 +54,11 @@
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "brave/ios/browser/brave_ads/virtual_pref_provider_delegate_ios.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/variations/pref_names.h"
+#include "components/variations/service/variations_service.h"
+#include "components/variations/service/variations_service_utils.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
@@ -100,6 +104,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
   std::unique_ptr<brave_ads::HttpClient> httpClient;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
+  PrefChangeRegistrar variationsCountryRegistrar;
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33730): Unify Brave Ads
@@ -350,6 +355,22 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)initLocalStatePrefService {
   _localStatePrefService = GetApplicationContext()->GetLocalState();
   CHECK(_localStatePrefService);
+
+  // Re-register resources when the GeoIP country changes so that
+  // anti-targeting, conversion, and purchase-intent components are
+  // updated without requiring a browser restart.
+  variationsCountryRegistrar.Init(_localStatePrefService);
+  const auto __weak weakSelf = self;
+  variationsCountryRegistrar.Add(
+      variations::prefs::kVariationsCountry, base::BindRepeating(^{
+        const auto strongSelf = weakSelf;
+        if (!strongSelf) {
+          return;
+        }
+        [strongSelf
+            registerAdsResourcesForCountryCode:[strongSelf
+                                                   variationsCountryCode]];
+      }));
 }
 
 #pragma mark - Component updater
@@ -445,6 +466,22 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return YES;
 }
 
+- (NSString*)variationsCountryCode {
+  variations::VariationsService* const variationsService =
+      GetApplicationContext()->GetVariationsService();
+
+  std::string countryCode;
+  if (variationsService) {
+    countryCode = variationsService->GetLatestCountry();
+  }
+
+  if (countryCode.empty()) {
+    countryCode = variations::GetCurrentCountryCode(variationsService);
+  }
+
+  return base::SysUTF8ToNSString(base::ToUpperASCII(countryCode));
+}
+
 - (BOOL)registerAdsResourcesForCountryCode:(NSString*)countryCode {
   if (!countryCode) {
     return NO;
@@ -490,9 +527,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
          currentLocale.languageCode);
   }
 
-  if (![self registerAdsResourcesForCountryCode:currentLocale.countryCode]) {
-    BLOG(1, @"%@ not supported for ads resource installer",
-         currentLocale.countryCode);
+  NSString* const countryCode = [self variationsCountryCode];
+  if (![self registerAdsResourcesForCountryCode:countryCode]) {
+    BLOG(1, @"%@ not supported for ads resource installer", countryCode);
   }
 }
 
@@ -537,8 +574,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   const auto currentLocale = [NSLocale currentLocale];
   NSString* isoLanguageCode = [@"iso_639_1_"
       stringByAppendingString:[currentLocale.languageCode lowercaseString]];
-  NSString* isoCountryCode = [@"iso_3166_1_"
-      stringByAppendingString:[currentLocale.countryCode lowercaseString]];
+  NSString* const countryCode = [self variationsCountryCode];
+  NSString* isoCountryCode =
+      [@"iso_3166_1_" stringByAppendingString:[countryCode lowercaseString]];
 
   for (NSString* key in @[ isoLanguageCode, isoCountryCode ]) {
     BLOG(1, @"Checking %@ ads resource for updates", key);
