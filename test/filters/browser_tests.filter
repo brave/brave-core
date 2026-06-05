@@ -1257,6 +1257,10 @@
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/RegularRefreshedUIDarkMode
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/RegularUsePrimaryAndTonalButtons
 
+# These tests fail because we are modifying the HttpsUpgrades feature.
+# See, chromium_src\chrome\browser\ui\navigator\browser_navigator_params_utils.cc for details.
+HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgrades/*
+
 # This test fails with multiple errors. Likely has to do with HTTPS upgrade:
 # "Mixed Content: The page at 'https://a.com:51799/set-header?Content-Security-Policy:%20frame-src%20*;'
 # was loaded over HTTPS, but requested an insecure frame 'http://example.com/'.
