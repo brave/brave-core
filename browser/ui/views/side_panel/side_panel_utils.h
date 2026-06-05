@@ -9,16 +9,19 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
-class PrefService;
+class BrowserWindowInterface;
 
 namespace brave {
 
 // Returns the rounded corners for the web content hosted inside the side panel.
 // Returns empty corners when Brave's rounded corners are disabled. When
 // `has_header` is true the Brave header owns the top rounding, so the
-// content's top corners are flattened to avoid double-rounding.
-gfx::RoundedCornersF GetPanelContentsRoundedCorners(PrefService* prefs,
-                                                    bool has_header);
+// content's top corners are flattened to avoid double-rounding. The bottom
+// inner corner uses the window-corner radius when the sidebar is hidden (the
+// panel is flush with the window edge) and the regular radius otherwise.
+gfx::RoundedCornersF GetPanelContentsRoundedCorners(
+    BrowserWindowInterface* browser_window_interface,
+    bool has_header);
 
 // Returns true when the entry with `id` should show Brave's custom side panel
 // header view.

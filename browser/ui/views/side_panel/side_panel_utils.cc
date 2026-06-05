@@ -5,10 +5,17 @@
 
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/common/pref_names.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/views/layout/layout_provider.h"
+
+using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
+using views::ShapeContextTokensOverride::
+    kRoundedCornersBorderRadiusAtWindowCorner;
 
 namespace brave {
 
@@ -17,25 +24,54 @@ bool ShouldShowSidePanelHeader(SidePanelEntryId id) {
          id == SidePanelEntryId::kBookmarks;
 }
 
-gfx::RoundedCornersF GetPanelContentsRoundedCorners(PrefService* prefs,
-                                                    bool has_header) {
-  // When Brave's rounded corners are off, the panel has no rounded border, so
-  // the content shouldn't be rounded either.
-  if (!prefs->GetBoolean(kWebViewRoundedCorners)) {
+gfx::RoundedCornersF GetPanelContentsRoundedCorners(
+    BrowserWindowInterface* browser_window_interface,
+    bool has_header) {
+  auto* prefs = browser_window_interface->GetProfile()->GetPrefs();
+  auto* browser_view = BraveBrowserView::From(
+      BrowserView::GetBrowserViewForBrowser(browser_window_interface));
+
+  // Can null during the startup.
+  if (!browser_view || !prefs->GetBoolean(kWebViewRoundedCorners)) {
     return gfx::RoundedCornersF();
   }
 
-  gfx::RoundedCornersF radii(views::LayoutProvider::Get()->GetDistanceMetric(
-      ChromeDistanceMetric::DISTANCE_SIDE_PANEL_CONTENT_RADIUS));
+  auto* layout_provider = views::LayoutProvider::Get();
+  gfx::RoundedCornersF rounded_corners(
+      layout_provider->GetCornerRadiusMetric(kRoundedCornersBorderRadius));
 
   // When a Brave header is attached it paints the rounded top, so flatten the
   // content's top corners to avoid double-rounding.
   if (has_header) {
-    radii.set_upper_left(0);
-    radii.set_upper_right(0);
+    rounded_corners.set_upper_left(0);
+    rounded_corners.set_upper_right(0);
   }
 
-  return radii;
+  // When the sidebar is visible it sits between the panel and the window edge,
+  // so the panel's bottom corner is not a window corner — use regular radius.
+  if (browser_view->IsSidebarVisible()) {
+    return rounded_corners;
+  }
+
+  // When the sidebar is hidden the panel touches the window edge directly. The
+  // inner bottom corner (lower-right for a right-aligned panel, lower-left for
+  // a left-aligned panel) is the window corner and must use the larger
+  // window-corner radius.
+  const auto rounded_corners_border_radius_at_window_corner =
+      layout_provider->GetCornerRadiusMetric(
+          kRoundedCornersBorderRadiusAtWindowCorner);
+
+  const bool panel_on_right =
+      prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment);
+  if (panel_on_right) {
+    rounded_corners.set_lower_right(
+        rounded_corners_border_radius_at_window_corner);
+  } else {
+    rounded_corners.set_lower_left(
+        rounded_corners_border_radius_at_window_corner);
+  }
+
+  return rounded_corners;
 }
 
 }  // namespace brave

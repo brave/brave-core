@@ -368,6 +368,14 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
           AddChildView(std::make_unique<SidebarContainerView>(
               browser_, SidePanelCoordinator::From(browser_), nullptr));
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
+      // Recompute the panel's content corners whenever the sidebar UI shows or
+      // hides, since the bottom corner radius depends on sidebar visibility.
+      // Unretained() is safe: `this` owns `sidebar_container_view_` (added via
+      // AddChildView), so the container cannot outlive the callback target.
+      sidebar_container_view_->SetSidebarVisibilityChangedCallback(
+          base::BindRepeating(&BraveBrowserView::OnSidebarVisibilityChanged,
+                              base::Unretained(this)));
+
       side_panel_->SetResizeArea(
           std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
 
@@ -1134,6 +1142,7 @@ void BraveBrowserView::UpdateSidebarBorder() {
   if (side_panel_) {
     side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
+    side_panel_->UpdateBorder();
   }
   if (side_panel_shadow_overlay_) {
     side_panel_shadow_overlay_->UpdateShadowVisibility();
@@ -1150,6 +1159,15 @@ void BraveBrowserView::UpdateSidebarBorder() {
 }
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
+void BraveBrowserView::OnSidebarVisibilityChanged() {
+  // The panel's content corner radii depend on whether the sidebar UI is
+  // visible (see brave::GetPanelContentsRoundedCorners()), so re-apply the
+  // border to recompute them.
+  if (side_panel_) {
+    side_panel_->UpdateBorder();
+  }
+}
+
 views::View* BraveBrowserView::side_panel_shadow_overlay_for_testing() {
   return side_panel_shadow_overlay_.get();
 }

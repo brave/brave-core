@@ -203,6 +203,17 @@ bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
 }
 
+void SidebarContainerView::SetSidebarVisibilityChangedCallback(
+    base::RepeatingClosure callback) {
+  sidebar_visibility_changed_callback_ = std::move(callback);
+}
+
+void SidebarContainerView::ChildVisibilityChanged(views::View* child) {
+  if (child == sidebar_control_view_ && sidebar_visibility_changed_callback_) {
+    sidebar_visibility_changed_callback_.Run();
+  }
+}
+
 void SidebarContainerView::ShowSidebarOnMouseOver(
     const gfx::PointF& point_in_screen) {
   if (IsSidebarVisible()) {
