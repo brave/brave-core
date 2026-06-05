@@ -16,13 +16,14 @@ import org.chromium.chrome.browser.settings.BraveOriginPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 
 /**
- * Opens the Brave Origin settings screen from native when a purchase is first detected, so the user
- * can restart to apply the newly enforced policies.
+ * Opens the Brave Origin settings screen when a purchase is first detected (from native for web
+ * purchases, or from Java when a Play Store purchase is auto-restored), so the user can restart to
+ * apply the newly enforced policies.
  */
 @NullMarked
 public class BraveOriginSettingsLauncherHelper {
     @CalledByNative
-    private static void showOriginSettingsForRestart() {
+    public static void showOriginSettingsForRestart() {
         Activity activity = ApplicationStatus.getLastTrackedFocusedActivity();
         if (activity == null) {
             return;
