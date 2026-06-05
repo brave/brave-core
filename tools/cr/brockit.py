@@ -210,6 +210,24 @@ running.
 tools/cr/brockit.py gen-rust-toolchain @latest-canary --watch
 ```
 
+### `brockit.py update-rust-wasm-toolchain`
+This command repins the Rust/WASM toolchain objects in
+`tools/cr/toolchains/install_extra_deps.py` to the latest published archives for
+a given Chromium tag's Rust+Clang revision, and commits the change. The tag's
+`tools/rust/update_rust.py` and `tools/clang/scripts/update.py` are read to
+identify the toolchain to pin.
+
+```sh
+tools/cr/brockit.py update-rust-wasm-toolchain --to=150.0.7850.1
+```
+
+The `--to` expects a Chromium referecence, and this includes reference labels
+(e.g. `@latest-tag`, etc).
+
+Pass `--culprit=<hash>` to reference a specific Chromium commit in the commit
+body. If none is provided, `brockit` uses the last Chromium commit that has
+changed the versioning of the rust toolchain.
+
 ### `brockit.py reassign`
 This command is used to change the authorship of a given commit in the branch.
 It generates an empty commit with the message `reassign! {original_subject}`
@@ -236,6 +254,7 @@ authorship.
 from __future__ import annotations
 
 import argparse
+import ast
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 import json
@@ -267,6 +286,7 @@ import repository
 from repository import Repository
 from terminal import (IncendiaryErrorHandler, Task as BaseTask, console,
                       is_verbose, terminal)
+from toolchains import build_rust_toolchain
 import versioning
 from versioning import Version
 from vpython_utils import VPYTHON3_PATH
@@ -2899,6 +2919,228 @@ class GenRustToolchain(Task):
                                     (0, 4)))
 
 
+# Installer whose `EXTRA_DEPS` rust-toolchain entry is repinned by
+# `update-rust-wasm-toolchain` (relative to repository.brave.root).
+INSTALL_EXTRA_DEPS_FILE = Path('tools/cr/toolchains/install_extra_deps.py')
+
+# Chromium-side scripts that pin the Rust/Clang revision the toolchain is built
+# from, and the constants in them that identify it. `update-rust-wasm-toolchain`
+# pickaxes these scripts for the commit that introduced the current values to
+# attribute the toolchain update (the same constants `_check_rust_toolchain`
+# reads).
+RUST_REVISION_FILES = ('tools/rust/update_rust.py',
+                       'tools/clang/scripts/update.py')
+RUST_REVISION_KEYS = ('RUST_REVISION', 'RUST_SUB_REVISION', 'CLANG_REVISION')
+
+
+def _render_py_literal(value: object, indent: int = 0) -> str:
+    """Render a str/bool/dict/list literal as multi-line Python source.
+
+    Matches the layout `install_extra_deps.py` already uses -- 4-space
+    indent steps, single-quoted strings, trailing commas -- so re-rendering
+    `EXTRA_DEPS` round-trips through yapf unchanged.
+    """
+    pad = ' ' * indent
+    child = ' ' * (indent + 4)
+    if isinstance(value, dict):
+        if not value:
+            return '{}'
+        items = ''.join(f'{child}{_render_py_literal(key)}: '
+                        f'{_render_py_literal(val, indent + 4)},\n'
+                        for key, val in value.items())
+        return f'{{\n{items}{pad}}}'
+    if isinstance(value, list):
+        if not value:
+            return '[]'
+        items = ''.join(f'{child}{_render_py_literal(item, indent + 4)},\n'
+                        for item in value)
+        return f'[\n{items}{pad}]'
+    if isinstance(value, bool):
+        return 'True' if value else 'False'
+    if isinstance(value, str):
+        # Single-quoted to match the file. Values here never contain a single
+        # quote or backslash; fall back to repr only defensively.
+        if "'" in value or '\\' in value:
+            return repr(value)
+        return f"'{value}'"
+    return repr(value)
+
+
+class UpdateRustWasmToolchain(Task):
+    """Updates the rust WASM entry in `install_extra_deps.py`.
+
+    This task is used to update the Rust/WASM toolchain pins to be used during
+    checkout of Brave. This is a very simple helper, and all it does is take
+    care to retrieve the details for the latest published Rust/WASM toolchain
+    matching the version currently selected in Chromium, and with that it
+    rewrites the `EXTRA_DEPS` details for the rust-toolchain entry in
+    `install_extra_deps.py`.
+
+    After the file for the deps is updated, the tasks also commits a change with
+    a culprit.
+    """
+
+    def status_message(self):
+        return "Updating Rust/WASM toolchain pins..."
+
+    @staticmethod
+    def _load_extra_deps(source: str) -> tuple[ast.Assign, dict]:
+        """Return the `EXTRA_DEPS = {...}` assignment node and its dict value.
+
+        The value is read with `ast.literal_eval`, so the installer is parsed
+        as data rather than imported (importing it pulls in gclient).
+        """
+        for node in ast.parse(source).body:
+            if (isinstance(node, ast.Assign) and len(node.targets) == 1
+                    and isinstance(node.targets[0], ast.Name)
+                    and node.targets[0].id == 'EXTRA_DEPS'):
+                return node, ast.literal_eval(node.value)
+        raise InvalidInputException(
+            f'No EXTRA_DEPS assignment found in {INSTALL_EXTRA_DEPS_FILE}.')
+
+    @staticmethod
+    def _upstream_stem(text: str) -> str:
+        """Build the upstream toolchain package stem from the revision scripts.
+
+        Matches `package_rust.RUST_TOOLCHAIN_PACKAGE_NAME` minus the `.tar.xz`
+        suffix --
+        `rust-toolchain-<RUST_REVISION>-<RUST_SUB_REVISION>-<CLANG_REVISION>` --
+        built from the scripts' source so brockit needn't import `package_rust`
+        (which pulls in gclient). Value patterns mirror
+        `tools/clang/scripts/upload_revision.py`: quoted strings, bare-integer
+        sub-revision.
+        """
+
+        def read(key: str, value: str) -> str:
+            match = re.search(rf'{key} = {value}', text)
+            if not match:
+                raise InvalidInputException(
+                    f'{key} not found in {", ".join(RUST_REVISION_FILES)}.')
+            return match.group(1)
+
+        quoted, integer = r"'([0-9a-z-]+)'", r'([0-9]+)'
+        return ('rust-toolchain-'
+                f'{read("RUST_REVISION", quoted)}-'
+                f'{read("RUST_SUB_REVISION", integer)}-'
+                f'{read("CLANG_REVISION", quoted)}')
+
+    @staticmethod
+    def _resolve_chromium_culprit(text: str, ref: str) -> str:
+        """Finds the commit that updated the Rust toolchain in Chromium.
+
+        This function determines which commit is reponsible for the current
+        rust toolchain versionin in Chromium, using `ref` as a starting point..
+        """
+
+        def assignment_pattern(name: str) -> str:
+            match = re.search(rf'(?m)^{name} = (.+)$', text)
+            if not match:
+                raise InvalidInputException(
+                    f'Could not read {name} from '
+                    f'{", ".join(RUST_REVISION_FILES)}.')
+            value = match.group(1).split('#', 1)[0].strip()
+            return f'{name} = {re.escape(value)}'
+
+        regex = '|'.join(
+            assignment_pattern(name) for name in RUST_REVISION_KEYS)
+        commit_hash = repository.chromium.run_git('log', '--extended-regexp',
+                                                  '-G', regex, '--pretty=%H',
+                                                  '-1', ref, '--',
+                                                  *RUST_REVISION_FILES)
+        if not commit_hash:
+            raise InvalidInputException(
+                'Could not find a Chromium commit pinning the Rust/Clang '
+                f'revision at {ref}. Pass [bold cyan]--culprit[/] to point '
+                'at it explicitly.')
+        return commit_hash
+
+    @staticmethod
+    def _commit_title(new_entry: dict) -> str:
+        """Build a commit subject naming the exact toolchain build being pinned.
+
+        We build the title to show the new toolchain's relevant details, being
+        the rust version, and the clang revision it was built with. The
+        trailing `sub` is the upstream rust sub revision (RUST_SUB_REVISION),
+        not Brave's respin counter. The result is something like this:
+
+          Rust/WASM toolchain (4c4205163abc-5, llvmorg-23-init-10931-g20b6ec77, sub 5)
+
+        The values in the title are extracted form the tarball's name.
+        """
+        object_name = next(iter(
+            new_entry.values()))['objects'][0]['object_name']
+        name = object_name.removesuffix('.tar.xz')
+        match = re.search(
+            r'rust-toolchain-(?P<rust>[0-9a-f]+)-(?P<sub>\d+)-'
+            r'(?P<clang>llvmorg-.+)-(?P<brave>\d+)$', name)
+        if not match:
+            return f'Rust/WASM toolchain {name}'
+        return (f'Rust/WASM toolchain ({match["rust"][:12]}-{match["sub"]}, '
+                f'{match["clang"]}, sub {match["sub"]})')
+
+    def execute(self, chromium_ref: str, culprit: str | None):
+        status = GitStatus()
+        if status.has_staged_files():
+            raise InvalidInputException(
+                'Staged files detected. Please commit or unstage changes '
+                'before generating a toolchain update:\n%s' %
+                '\n'.join(status.get_all_staged_entries()))
+
+        # Resolve to a concrete Chromium tag (supports the @latest-* labels),
+        # then read both revision scripts at that ref in a single `git show`.
+        version = _fetch_chromium_tag(chromium_ref)
+        ref = str(version)
+        revision_text = repository.chromium.read_file(*RUST_REVISION_FILES,
+                                                      commit=ref)
+        upstream_stem = self._upstream_stem(revision_text)
+
+        terminal.log_task(
+            f'Resolving the published Rust/WASM toolchain for Chromium '
+            f'{version}...')
+        try:
+            new_entry = build_rust_toolchain.rust_toolchain_extra_dep(
+                upstream_stem)
+        except RuntimeError as e:
+            raise BadOutcomeException(str(e)) from e
+
+        for entry in new_entry.values():
+            for obj in entry['objects']:
+                console.log(Padding(f'✔️ {obj["object_name"]}', (0, 4)))
+
+        path = repository.brave.root / INSTALL_EXTRA_DEPS_FILE
+        source = path.read_bytes().decode('utf-8')
+        node, extra_deps = self._load_extra_deps(source)
+
+        # Replace the rust-toolchain entry (in place, preserving key order),
+        # then re-render the whole EXTRA_DEPS assignment.
+        extra_deps.update(new_entry)
+        rendered = f'EXTRA_DEPS = {_render_py_literal(extra_deps)}\n'
+        lines = source.splitlines(keepends=True)
+        new_source = (''.join(lines[:node.lineno - 1]) + rendered +
+                      ''.join(lines[node.end_lineno:]))
+
+        if new_source == source:
+            terminal.log_task(
+                f'{INSTALL_EXTRA_DEPS_FILE} is already up to date; '
+                'nothing to commit.')
+            return
+
+        path.write_text(new_source, encoding='utf-8', newline='')
+
+        commit_hash = culprit or self._resolve_chromium_culprit(
+            revision_text, ref)
+        repository.brave.run_git('add', INSTALL_EXTRA_DEPS_FILE)
+        repository.brave.git_commit(self._commit_title(new_entry),
+                                    env={
+                                        **os.environ,
+                                        'tags': 'toolchain',
+                                        'culprit': commit_hash,
+                                    })
+        terminal.log_task(
+            f'Committed the Rust/WASM toolchain update (culprit {commit_hash}).'
+        )
+
+
 def fetch_chromium_dash_version(channel: str) -> Version:
     """Fetches the highest latest version across all platforms for a channel.
 
@@ -3204,6 +3446,31 @@ def main():
         "pipeline's\nstage and status until all finish. Press Ctrl+C to stop "
         'watching;\nthe builds keep running.')
 
+    update_rust_parser = subparsers.add_parser(
+        'update-rust-wasm-toolchain',
+        parents=[global_parser],
+        formatter_class=argparse.RawTextHelpFormatter,
+        help='Repins the Rust/WASM toolchain objects in '
+        'tools/cr/toolchains/install_extra_deps.py to the latest published '
+        'archives for a Chromium tag\'s Rust+Clang revision, and commits the '
+        'change.')
+    update_rust_parser.add_argument(
+        '--to',
+        required=True,
+        dest='to',
+        help=(
+            'The Chromium version whose Rust+Clang revision to repin against\n'
+            '(e.g. 150.0.7850.1), or one of the @latest-* labels accepted by\n'
+            '`lift --to` (e.g. @latest-canary, @latest-m150,\n'
+            '@latest-for-branch, @latest-tag).'))
+    update_rust_parser.add_argument(
+        '--culprit',
+        default=None,
+        help='Chromium commit hash to reference in the commit body. Defaults '
+        'to the last Chromium commit touching the Rust/Clang revision '
+        '(tools/rust/update_rust.py, tools/clang/scripts/update.py).',
+        dest='culprit')
+
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')
     args = parser.parse_args()
@@ -3271,6 +3538,9 @@ def main():
                 task.run_watching(tag=args.tag)
             else:
                 task.run(tag=args.tag)
+        if args.command == 'update-rust-wasm-toolchain':
+            UpdateRustWasmToolchain().run(chromium_ref=args.to,
+                                          culprit=args.culprit)
         if args.command == 'reference':
             console.print(Markdown(__doc__))
         if args.command == 'show':
