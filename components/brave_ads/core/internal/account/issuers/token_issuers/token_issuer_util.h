@@ -6,27 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_TOKEN_ISSUERS_TOKEN_ISSUER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_TOKEN_ISSUERS_TOKEN_ISSUER_UTIL_H_
 
-#include <optional>
-
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
-
 namespace brave_ads {
-
-struct IssuersInfo;
-struct TokenIssuerInfo;
 
 namespace cbr {
 class PublicKey;
 }  // namespace cbr
 
-bool TokenIssuerExistsForType(TokenIssuerType token_issuer_type);
+bool ConfirmationTokenIssuerExists();
+bool PaymentTokenIssuerExists();
 
-std::optional<TokenIssuerInfo> GetTokenIssuerForType(
-    const IssuersInfo& issuers,
-    TokenIssuerType token_issuer_type);
-
-bool TokenIssuerPublicKeyExistsForType(TokenIssuerType token_issuer_type,
-                                       const cbr::PublicKey& public_key);
+bool ConfirmationTokenIssuerPublicKeyExists(const cbr::PublicKey& public_key);
+bool PaymentTokenIssuerPublicKeyExists(const cbr::PublicKey& public_key);
 
 }  // namespace brave_ads
 
