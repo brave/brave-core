@@ -48,21 +48,19 @@ const pageCallbackRouter = new AdsInternalsMojo.AdsInternalsPageCallbackRouter()
 
 const CONVERSION_URL_PATTERN_URL_PATTERN_TABLE_COLUMN = 'URL Pattern';
 const CONVERSION_URL_PATTERN_EXPIRES_AT_TABLE_COLUMN = 'Expires At';
-interface ConversionUrlPattern {
-  CONVERSION_URL_PATTERN_URL_PATTERN_TABLE_COLUMN: string
-  CONVERSION_URL_PATTERN_EXPIRES_AT_TABLE_COLUMN: number
-}
+type ConversionUrlPattern =
+  Record<typeof CONVERSION_URL_PATTERN_URL_PATTERN_TABLE_COLUMN, string> &
+  Record<typeof CONVERSION_URL_PATTERN_EXPIRES_AT_TABLE_COLUMN, number>
 
 const AD_EVENT_TARGET_URL_TABLE_COLUMN = 'Target URL';
 const AD_EVENT_AD_TYPE_TABLE_COLUMN = 'Ad Type';
 const AD_EVENT_EVENT_TYPE_TABLE_COLUMN = 'Event Type';
 const AD_EVENT_CREATED_AT_TABLE_COLUMN = 'Created At';
-interface AdEvent {
-  AD_EVENT_TARGET_URL_TABLE_COLUMN: string
-  AD_EVENT_AD_TYPE_TABLE_COLUMN: string
-  AD_EVENT_EVENT_TYPE_TABLE_COLUMN: string
-  AD_EVENT_CREATED_AT_TABLE_COLUMN: number
-}
+type AdEvent =
+  Record<typeof AD_EVENT_TARGET_URL_TABLE_COLUMN, string> &
+  Record<typeof AD_EVENT_AD_TYPE_TABLE_COLUMN, string> &
+  Record<typeof AD_EVENT_EVENT_TYPE_TABLE_COLUMN, string> &
+  Record<typeof AD_EVENT_CREATED_AT_TABLE_COLUMN, number>
 
 const App: React.FC = () => {
   const [conversionUrlPatterns, setConversionUrlPatterns] = React.useState<ConversionUrlPattern[]>([]);
