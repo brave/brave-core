@@ -771,16 +771,12 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
     return ShutdownAdsService();
   }
 
-  if (bat_ads_service_remote_.is_bound() &&
-      path == prefs::kOptedInToNotificationAds) {
-    if (UserHasOptedInToNotificationAds()) {
-      // Register now that the user has opted in.
-      RegisterLanguageResourceComponent();
+  if (path == prefs::kOptedInToNotificationAds &&
+      bat_ads_service_remote_.is_bound()) {
+    RegisterOrUnregisterLanguageResourceComponent();
 
+    if (UserHasOptedInToNotificationAds()) {
       delegate_->MaybeInitNotificationHelper();
-    } else {
-      // Unregister now that the user has opted out.
-      UnregisterLanguageResourceComponent();
     }
   }
 
@@ -944,6 +940,16 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 
   prefs_->SetList(prefs::kNotificationAds, {});
+}
+
+void AdsServiceImpl::RegisterOrUnregisterLanguageResourceComponent() {
+  if (UserHasOptedInToNotificationAds()) {
+    // Only utilized for text classification, which requires the user to have
+    // joined Brave Rewards and opted into notification ads.
+    RegisterLanguageResourceComponent();
+  } else {
+    UnregisterLanguageResourceComponent();
+  }
 }
 
 void AdsServiceImpl::MaybeOpenNewTabWithAd() {
