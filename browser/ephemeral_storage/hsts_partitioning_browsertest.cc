@@ -543,11 +543,12 @@ class HSTSSameDomainPartitionUsesOldFormatBrowserTest
  public:
   HSTSSameDomainPartitionUsesOldFormatBrowserTest() {
     if (IsPreTest()) {
-      scoped_feature_list_.InitAndDisableFeature(
-          net::features::kBravePartitionHSTS);
+      // Disable kHttpsUpgrades because tests designed to use http pages.
+      scoped_feature_list_.InitWithFeatures(
+          {}, {net::features::kBravePartitionHSTS, features::kHttpsUpgrades});
     } else {
-      scoped_feature_list_.InitAndEnableFeature(
-          net::features::kBravePartitionHSTS);
+      scoped_feature_list_.InitWithFeatures(
+          {net::features::kBravePartitionHSTS}, {features::kHttpsUpgrades});
     }
   }
 
@@ -619,8 +620,9 @@ class HSTSPartitioningDisabledBrowserTest
     : public HSTSPartitioningBrowserTestBase {
  public:
   HSTSPartitioningDisabledBrowserTest() {
-    scoped_feature_list_.InitAndDisableFeature(
-        net::features::kBravePartitionHSTS);
+    // Disable kHttpsUpgrades because tests designed to use http pages.
+    scoped_feature_list_.InitWithFeatures(
+        {}, {net::features::kBravePartitionHSTS, features::kHttpsUpgrades});
   }
 
  private:
