@@ -831,8 +831,9 @@ void AdsServiceImpl::CheckIdleStateAfterDelay() {
 
 void AdsServiceImpl::CheckIdleState() {
   const int64_t idle_threshold = kUserIdleDetectionThreshold.Get().InSeconds();
-  ProcessIdleState(ui::CalculateIdleState(static_cast<int>(idle_threshold)),
-                   last_idle_time_);
+  ProcessIdleState(
+      ui::CalculateIdleState(base::saturated_cast<int>(idle_threshold)),
+      last_idle_time_);
   last_idle_time_ = base::Seconds(ui::CalculateIdleTime());
 }
 

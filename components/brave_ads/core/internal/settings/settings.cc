@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -48,7 +49,7 @@ bool UserHasOptedInToNotificationAds() {
 }
 
 int GetMaximumNotificationAdsPerHour() {
-  const int ads_per_hour = static_cast<int>(
+  const int ads_per_hour = base::saturated_cast<int>(
       GetProfileInt64Pref(prefs::kMaximumNotificationAdsPerHour));
 
   return ads_per_hour > 0 ? ads_per_hour : kDefaultNotificationAdsPerHour.Get();

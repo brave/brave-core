@@ -15,6 +15,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/numerics/safe_conversions.h"
 
 namespace brave_ads::ml {
 
@@ -92,7 +93,7 @@ VectorData::VectorData(size_t dimension_count,
   size_t i = 0;
   for (auto iter = data.cbegin(); iter != data.cend(); iter++, i++) {
     points[i] = iter->first;
-    values[i] = static_cast<float>(iter->second);
+    values[i] = base::saturated_cast<float>(iter->second);
   }
   storage_ = std::make_unique<VectorDataStorage>(
       dimension_count, std::move(points), std::move(values));
@@ -183,13 +184,13 @@ void VectorData::DivideByScalar(float scalar) {
 }
 
 float VectorData::GetSum() const {
-  return static_cast<float>(std::accumulate(
+  return base::saturated_cast<float>(std::accumulate(
       storage_->values().cbegin(), storage_->values().cend(), 0.0,
       [](float lhs, float rhs) -> float { return lhs + rhs; }));
 }
 
 float VectorData::GetNorm() const {
-  return static_cast<float>(sqrt(std::accumulate(
+  return base::saturated_cast<float>(sqrt(std::accumulate(
       storage_->values().cbegin(), storage_->values().cend(), 0.0,
       [](float lhs, float rhs) -> float { return lhs + rhs * rhs; })));
 }
