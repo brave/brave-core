@@ -751,12 +751,27 @@ TEST_F(BraveAdsAdsServiceImplTest, ProcessIdleStateDoesNotNotifyActiveTwice) {
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       DoesNotClearNotificationAdsPrefOnShutdownIfNotificationAdsAreDisabled) {
+       ClearsNotificationAdsPrefWhenNotificationAdsAreDisabled) {
   // Arrange
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
   prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
 
   // Act
-  Shutdown();
+  prefs_.SetBoolean(prefs::kNotificationsEnabled, false);
+
+  // Assert
+  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds), testing::IsEmpty());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       DoesNotClearNotificationAdsPrefWhenNotificationAdsAreEnabled) {
+  // Arrange
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
+
+  // Act
+  prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
 
   // Assert
   EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds),
@@ -764,41 +779,10 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ClearsNotificationAdsPrefOnShutdownIfNotificationAdsAreEnabled) {
-  // Arrange
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
-  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
-
-  // Act
-  Shutdown();
-
-  // Assert
-  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds), testing::IsEmpty());
-}
-
-TEST_F(
-    BraveAdsAdsServiceImplTest,
-    DoesNotClearNotificationAdsPrefOnBrowserWillShutdownIfNotificationAdsAreDisabled) {
-  // Arrange
-  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
-
-  // Act
-  NotifyBrowserWillShutdown();
-
-  // Assert
-  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds),
-              testing::Not(testing::IsEmpty()));
-}
-
-TEST_F(
-    BraveAdsAdsServiceImplTest,
-    ClearsNotificationAdsPrefOnBrowserWillShutdownIfNotificationAdsAreEnabled) {
+       ClearsNotificationAdsPrefOnBrowserWillShutdown) {
   // Arrange: the browser can start quitting well before `Shutdown()` runs for
   // this profile, so notification ads must be closed as soon as
   // `OnBrowserWillShutdown()` fires rather than only at `Shutdown()`.
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
   prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
 
   // Act

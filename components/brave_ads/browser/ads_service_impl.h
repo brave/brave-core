@@ -227,6 +227,7 @@ class AdsServiceImpl : public AdsService,
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
   void NotificationAdTimedOut(const std::string& placement_id);
   void CloseAllNotificationAds();
+  void MaybeCloseAllNotificationAds();
   void RegisterOrUnregisterLanguageResourceComponent();
 
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
