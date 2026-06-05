@@ -63,9 +63,6 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
     MetaMask(const MetaMask&) = delete;
     MetaMask& operator=(const MetaMask&) = delete;
 
-    // content::RenderFrameObserver:
-    void OnDestruct() override;
-
     // gin::WrappableBase
     gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
         v8::Isolate* isolate) override;
@@ -73,11 +70,19 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
     v8::Local<v8::Promise> IsUnlocked(v8::Isolate* isolate);
 
    private:
+    void Cleanup();
+
+    // content::RenderFrameObserver:
+    void OnDestruct() override;
+    void WillReleaseScriptContext(v8::Local<v8::Context> context,
+                                  int32_t world_id) override;
+
     void OnIsUnlocked(v8::Global<v8::Context> global_context,
                       v8::Global<v8::Promise::Resolver> promise_resolver,
                       v8::Isolate* isolate,
                       bool locked);
     mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
+    base::WeakPtrFactory<MetaMask> weak_ptr_factory_{this};
   };
 
   // content::RenderFrameObserver
