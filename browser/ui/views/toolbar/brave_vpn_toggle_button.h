@@ -18,7 +18,7 @@ class BraveVpnService;
 class Browser;
 
 class BraveVPNToggleButton : public views::ToggleButton,
-                             public brave_vpn::BraveVPNServiceObserver {
+                             public brave_vpn::BraveVpnServiceObserver {
   METADATA_HEADER(BraveVPNToggleButton, views::ToggleButton)
  public:
   explicit BraveVPNToggleButton(Browser* browser);
@@ -28,7 +28,7 @@ class BraveVPNToggleButton : public views::ToggleButton,
   BraveVPNToggleButton& operator=(const BraveVPNToggleButton&) = delete;
 
  private:
-  // BraveVPNServiceObserver overrides:
+  // BraveVpnServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
 

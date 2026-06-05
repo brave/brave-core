@@ -18,7 +18,7 @@ class BraveVpnService;
 class Browser;
 
 class BraveVPNStatusLabel : public views::Label,
-                            public brave_vpn::BraveVPNServiceObserver {
+                            public brave_vpn::BraveVpnServiceObserver {
   METADATA_HEADER(BraveVPNStatusLabel, views::Label)
  public:
   explicit BraveVPNStatusLabel(Browser* browser);
@@ -28,7 +28,7 @@ class BraveVPNStatusLabel : public views::Label,
   BraveVPNStatusLabel& operator=(const BraveVPNStatusLabel&) = delete;
 
  private:
-  // brave_vpn::BraveVPNServiceObserver overrides:
+  // brave_vpn::BraveVpnServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
 

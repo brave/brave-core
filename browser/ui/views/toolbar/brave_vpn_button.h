@@ -28,7 +28,7 @@ class Border;
 class Browser;
 
 class BraveVPNButton : public ToolbarButton,
-                       public brave_vpn::BraveVPNServiceObserver {
+                       public brave_vpn::BraveVpnServiceObserver {
   METADATA_HEADER(BraveVPNButton, ToolbarButton)
  public:
 
@@ -38,7 +38,7 @@ class BraveVPNButton : public ToolbarButton,
   BraveVPNButton(const BraveVPNButton&) = delete;
   BraveVPNButton& operator=(const BraveVPNButton&) = delete;
 
-  // BraveVPNServiceObserver overrides:
+  // BraveVpnServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
   void OnPurchasedStateChanged(

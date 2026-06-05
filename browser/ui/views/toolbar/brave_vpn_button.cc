@@ -70,7 +70,7 @@ class ConnectErrorIconBackground : public views::Background {
 
 class VPNButtonMenuModel : public ui::SimpleMenuModel,
                            public ui::SimpleMenuModel::Delegate,
-                           public brave_vpn::BraveVPNServiceObserver {
+                           public brave_vpn::BraveVpnServiceObserver {
  public:
   explicit VPNButtonMenuModel(Browser* browser)
       : SimpleMenuModel(this),
@@ -92,7 +92,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
     chrome::ExecuteCommand(browser_, command_id);
   }
 
-  // BraveVPNServiceObserver overrides:
+  // BraveVpnServiceObserver overrides:
   void OnPurchasedStateChanged(
       brave_vpn::mojom::PurchasedState state,
       const std::optional<std::string>& description) override {
