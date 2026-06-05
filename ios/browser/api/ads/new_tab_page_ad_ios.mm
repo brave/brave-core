@@ -6,7 +6,7 @@
 #import "brave/ios/browser/api/ads/new_tab_page_ad_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 @interface NewTabPageAdIOS ()
 @property(nonatomic, copy) NSString* placementID;
@@ -23,7 +23,7 @@
 @implementation NewTabPageAdIOS
 
 - (instancetype)initWithNewTabPageAdInfo:
-    (const brave_ads::NewTabPageAdInfo&)ad {
+    (const brave_ads::mojom::NewTabPageAdInfo&)ad {
   if ((self = [super init])) {
     self.placementID = base::SysUTF8ToNSString(ad.placement_id);
     self.creativeInstanceID = base::SysUTF8ToNSString(ad.creative_instance_id);

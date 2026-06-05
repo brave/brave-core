@@ -31,8 +31,6 @@
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -105,7 +103,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 @interface NewTabPageAdIOS ()
 - (instancetype)initWithNewTabPageAdInfo:
-    (const brave_ads::NewTabPageAdInfo&)info;
+    (const brave_ads::mojom::NewTabPageAdInfo&)info;
 @end
 
 @interface BraveAds () <AdsClientBridge> {
@@ -1486,13 +1484,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
           return completion(/*newTabPageAd=*/nil);
         }
 
-        const auto ad = brave_ads::FromMojom(mojom_ad);
-        if (!ad) {
-          return completion(/*newTabPageAd=*/nil);
-        }
-
         const auto newTabPageAd =
-            [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*ad];
+            [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*mojom_ad];
         completion(newTabPageAd);
       }));
 }
