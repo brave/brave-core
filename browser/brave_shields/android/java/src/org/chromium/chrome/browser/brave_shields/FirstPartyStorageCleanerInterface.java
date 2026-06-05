@@ -6,8 +6,16 @@
 package org.chromium.chrome.browser.brave_shields;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 
 @NullMarked
 public interface FirstPartyStorageCleanerInterface {
     void shredSiteData();
+
+    boolean isShredButtonVisible();
+
+    void setShredButtonVisibilityObserver(IncognitoReauthManager.IncognitoReauthCallback callback);
+
+    void removeShredButtonVisibilityObserver(
+            IncognitoReauthManager.IncognitoReauthCallback callback);
 }

@@ -14,10 +14,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import androidx.annotation.VisibleForTesting;
+
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 
@@ -25,10 +30,14 @@ import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
  * Brave's extension for {@link HubToolbarView}. Here we control what elements should be visible in
  * tab switcher mode when bottom toolbar is visible.
  */
-public class BraveHubToolbarView extends HubToolbarView {
+public class BraveHubToolbarView extends HubToolbarView
+        implements ApplicationStatus.TaskVisibilityListener,
+                IncognitoReauthManager.IncognitoReauthCallback {
     private Button mActionButton;
     private Button mShredButton;
     private FrameLayout mMenuButton;
+    private boolean mIsIncognitoSelected = true;
+    private @Nullable FirstPartyStorageCleanerInterface mFpCleaner;
 
     public BraveHubToolbarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -37,7 +46,6 @@ public class BraveHubToolbarView extends HubToolbarView {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
         mActionButton = findViewById(R.id.toolbar_action_button);
         mShredButton =
                 findViewById(org.chromium.chrome.browser.brave_shields.R.id.shred_data_button);
@@ -45,13 +53,32 @@ public class BraveHubToolbarView extends HubToolbarView {
 
         mShredButton.setOnClickListener(
                 v -> {
-                    Context context = getContext();
-                    if (context instanceof FirstPartyStorageCleanerInterface) {
-                        FirstPartyStorageCleanerInterface fpCleaner =
-                                (FirstPartyStorageCleanerInterface) context;
-                        fpCleaner.shredSiteData();
+                    if (mFpCleaner != null) {
+                        mFpCleaner.shredSiteData();
                     }
                 });
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        Context context = getContext();
+        if (context instanceof FirstPartyStorageCleanerInterface) {
+            mFpCleaner = (FirstPartyStorageCleanerInterface) context;
+            mFpCleaner.setShredButtonVisibilityObserver(this);
+        }
+
+        ApplicationStatus.registerTaskVisibilityListener(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        ApplicationStatus.unregisterTaskVisibilityListener(this);
+        if (mFpCleaner != null) {
+            mFpCleaner.removeShredButtonVisibilityObserver(this);
+        }
     }
 
     @Override
@@ -59,6 +86,13 @@ public class BraveHubToolbarView extends HubToolbarView {
         super.setPaneSwitcherIndex(index);
 
         // Update visibility of action and menu buttons based on the switching panes.
+        updateButtonsVisibility();
+    }
+
+    @Override
+    void updateIncognitoElements(boolean isIncognito) {
+        super.updateIncognitoElements(isIncognito);
+        mIsIncognitoSelected = isIncognito;
         updateButtonsVisibility();
     }
 
@@ -76,8 +110,29 @@ public class BraveHubToolbarView extends HubToolbarView {
     @Override
     void setMenuButtonVisible(boolean visible) {
         super.setMenuButtonVisible(visible);
-
         updateButtonsVisibility();
+    }
+
+    @Override
+    public void onIncognitoReauthSuccess() {
+        updateButtonsVisibility();
+    }
+
+    @Override
+    public void onIncognitoReauthNotPossible() {}
+
+    @Override
+    public void onIncognitoReauthFailure() {}
+
+    @Override
+    public void onTaskVisibilityChanged(int taskId, boolean isVisible) {
+        updateButtonsVisibility();
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public void setFirstPartyStorageCleanerForTesting(
+            FirstPartyStorageCleanerInterface firstPartyStorageCleaner) {
+        mFpCleaner = firstPartyStorageCleaner;
     }
 
     private void updateButtonsVisibility() {
@@ -104,8 +159,10 @@ public class BraveHubToolbarView extends HubToolbarView {
             }
         }
 
+        final boolean isShredButtonVisible =
+                !mIsIncognitoSelected || mFpCleaner == null || mFpCleaner.isShredButtonVisible();
         final boolean shouldShowShredButton =
-                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED) && isShredButtonVisible;
         mShredButton.setVisibility(shouldShowShredButton ? View.VISIBLE : View.INVISIBLE);
     }
 }
