@@ -264,7 +264,7 @@ void TxStateManager::RetireTxByStatus(base::DictValue& txs,
       (status == mojom::TransactionStatus::Confirmed ? "confirmed_time"
                                                      : "created_time");
 
-  const std::string* oldest_tx_meta_id;
+  const std::string* oldest_tx_meta_id = nullptr;
   uint64_t num_txs = 0;
 
   // Everything is smaller than this.
