@@ -86,7 +86,6 @@ import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.HubShowPaneHelper;
 import org.chromium.chrome.browser.hub.PaneListBuilder;
-import org.chromium.chrome.browser.infobar.InfoBarContainerView;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
@@ -2309,15 +2308,6 @@ public class BytecodeTest {
                         MultiWindowModeStateDispatcher.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/infobar/InfoBarContainerView",
-                        "org/chromium/chrome/browser/infobar/BraveInfoBarContainerView",
-                        Context.class,
-                        InfoBarContainerView.ContainerViewObserver.class,
-                        BrowserControlsStateProvider.class,
-                        MonotonicObservableSupplier.class,
-                        boolean.class));
-        Assert.assertTrue(
-                constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarLongPressMenuHandler",
                         "org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler",
                         Context.class,
@@ -2827,10 +2817,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
                         "mParams"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/infobar/InfoBarContainerView",
-                        "mEdgeToEdgeSupplier"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/hub/HubManagerImpl", "mEdgeToEdgeSupplier"));
