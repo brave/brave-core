@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_vpn/browser/test/fake_brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -24,110 +25,6 @@
 namespace brave_vpn {
 
 namespace {
-
-// Concrete test subclass providing stub implementations for BraveVpnService's
-// pure virtual methods. Allows exercising the base-class behavior (observer
-// management, notification dispatch, shutdown, mojo binding) in isolation.
-class TestBraveVpnService : public BraveVpnService {
- public:
-  TestBraveVpnService() = default;
-  ~TestBraveVpnService() override = default;
-
-  // BraveVpnService:
-  bool IsBraveVPNEnabled() const override { return true; }
-  bool IsPurchased() const override { return true; }
-  void ReloadPurchasedState() override {}
-  std::string GetCurrentEnvironment() const override { return "production"; }
-
-#if !BUILDFLAG(IS_ANDROID)
-  bool IsConnected() const override { return false; }
-  void ToggleConnection() override {}
-  mojom::ConnectionState GetConnectionState() const override {
-    return mojom::ConnectionState::DISCONNECTED;
-  }
-  std::string GetLastConnectionError() const override { return {}; }
-  void RecordWidgetUsageMetrics(bool new_usage) override {}
-#else
-  void GetTimezonesForRegions(ResponseCallback callback) override {}
-  void GetHostnamesForRegion(ResponseCallback callback,
-                             const std::string& region,
-                             const std::string& region_precision) override {}
-  void GetProfileCredentials(ResponseCallback callback,
-                             const std::string& subscriber_credential,
-                             const std::string& hostname) override {}
-  void GetWireguardProfileCredentials(ResponseCallback callback,
-                                      const std::string& subscriber_credential,
-                                      const std::string& public_key,
-                                      const std::string& hostname) override {}
-  void VerifyCredentials(ResponseCallback callback,
-                         const std::string& hostname,
-                         const std::string& client_id,
-                         const std::string& subscriber_credential,
-                         const std::string& api_auth_token) override {}
-  void InvalidateCredentials(ResponseCallback callback,
-                             const std::string& hostname,
-                             const std::string& client_id,
-                             const std::string& subscriber_credential,
-                             const std::string& api_auth_token) override {}
-  void VerifyPurchaseToken(ResponseCallback callback,
-                           const std::string& purchase_token,
-                           const std::string& product_id,
-                           const std::string& product_type,
-                           const std::string& bundle_id) override {}
-  void GetSubscriberCredential(ResponseCallback callback,
-                               const std::string& product_type,
-                               const std::string& product_id,
-                               const std::string& validation_method,
-                               const std::string& purchase_token,
-                               const std::string& bundle_id) override {}
-  void GetSubscriberCredentialV12(ResponseCallback callback) override {}
-  void RecordAllMetrics() override {}
-  void RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
-                                  int64_t session_end_time_ms) override {}
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-  void SetConnectionStateForTesting(mojom::ConnectionState state) override {}
-  void SetPurchasedStateForTesting(const std::string& env,
-                                   mojom::PurchasedState state) override {}
-#endif
-
-  // Re-expose the protected notification helpers and Shutdown for tests.
-  using BraveVpnService::NotifyPurchasedStateChanged;
-  using BraveVpnService::Shutdown;
-#if !BUILDFLAG(IS_ANDROID)
-  using BraveVpnService::NotifyConnectionStateChanged;
-  using BraveVpnService::NotifySelectedRegionChanged;
-  using BraveVpnService::NotifySmartProxyRoutingStateChanged;
-#endif
-
-  // mojom::ServiceHandler
-  void GetPurchasedState(GetPurchasedStateCallback callback) override {}
-  void LoadPurchasedState(const std::string& domain) override {}
-  void GetAllRegions(GetAllRegionsCallback callback) override {}
-#if !BUILDFLAG(IS_ANDROID)
-  void GetConnectionState(GetConnectionStateCallback callback) override {}
-  void Connect() override {}
-  void Disconnect() override {}
-  void GetSelectedRegion(GetSelectedRegionCallback callback) override {}
-  void SetSelectedRegion(mojom::RegionPtr region) override {}
-  void ClearSelectedRegion() override {}
-  void GetProductUrls(GetProductUrlsCallback callback) override {}
-  void CreateSupportTicket(const std::string& email,
-                           const std::string& subject,
-                           const std::string& body,
-                           CreateSupportTicketCallback callback) override {}
-  void GetSupportData(GetSupportDataCallback callback) override {}
-  void ResetConnectionState() override {}
-  void EnableOnDemand(bool enable) override {}
-  void GetOnDemandState(GetOnDemandStateCallback callback) override {}
-  void EnableSmartProxyRouting(bool enable) override {}
-  void GetSmartProxyRoutingState(
-      GetSmartProxyRoutingStateCallback callback) override {}
-#else   // !BUILDFLAG(IS_ANDROID)
-  void GetPurchaseToken(GetPurchaseTokenCallback callback) override {}
-#endif  // !BUILDFLAG(IS_ANDROID)
-};
 
 // Test observer that records all callbacks delivered over the mojo pipe and
 // optionally fires a one-shot closure for synchronization with RunLoop.
@@ -243,15 +140,15 @@ class BraveVpnServiceTest : public testing::Test {
   BraveVpnServiceTest() = default;
   ~BraveVpnServiceTest() override = default;
 
-  void SetUp() override { service_ = std::make_unique<TestBraveVpnService>(); }
+  void SetUp() override { service_ = std::make_unique<FakeBraveVpnService>(); }
 
   void TearDown() override { service_.reset(); }
 
-  TestBraveVpnService* service() { return service_.get(); }
+  FakeBraveVpnService* service() { return service_.get(); }
 
  protected:
   base::test::SingleThreadTaskEnvironment task_environment_;
-  std::unique_ptr<TestBraveVpnService> service_;
+  std::unique_ptr<FakeBraveVpnService> service_;
 };
 
 // AddObserver should register the observer such that subsequent
