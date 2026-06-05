@@ -126,6 +126,18 @@ struct CreativeSetConversionInfo {
   mojo_base.mojom.TimeDelta observation_window;
 };
 
+struct NotificationAdInfo {
+  string placement_id;
+  string creative_instance_id;
+  string creative_set_id;
+  string campaign_id;
+  string advertiser_id;
+  string segment;
+  url.mojom.Url target_url;
+  string title;
+  string body;
+};
+
 enum NotificationAdEventType {
   kServedImpression = 0,
   kViewedImpression,

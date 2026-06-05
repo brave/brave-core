@@ -20,8 +20,8 @@ class RewardsNotification: NSObject, BraveNotification {
 
   var view: UIView
   var dismissAction: (() -> Void)?
-  var id: String { ad.placementID }
-  let ad: NotificationAd
+  var id: String { ad.placementId }
+  let ad: BraveAds.NotificationAdInfo
   var dismissPolicy: DismissPolicy {
     guard view is AdView else { return .automatic() }
 
@@ -42,7 +42,7 @@ class RewardsNotification: NSObject, BraveNotification {
   }
 
   init(
-    ad: NotificationAd,
+    ad: BraveAds.NotificationAdInfo,
     handler: @escaping (Action) -> Void
   ) {
     self.ad = ad
@@ -75,19 +75,14 @@ extension RewardsNotification {
     on presentingController: UIViewController,
     completion: @escaping (RewardsNotification.Action, URL) -> Void
   ) {
-    let notification = NotificationAd.customAd(
+    let notification = BraveAds.NotificationAdInfo.customAd(
       title: Strings.Ads.myFirstAdTitle,
       body: Strings.Ads.myFirstAdBody,
       url: "https://brave.com/my-first-ad"
     )
 
-    guard let targetURL = URL(string: notification.targetURL) else {
-      assertionFailure("My First Ad URL is not valid: \(notification.targetURL)")
-      return
-    }
-
     let rewardsNotification = RewardsNotification(ad: notification) { action in
-      completion(action, targetURL)
+      completion(action, notification.targetUrl)
     }
     presenter.display(notification: rewardsNotification, from: presentingController)
   }
