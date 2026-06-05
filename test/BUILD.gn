@@ -1025,7 +1025,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/email_aliases/buildflags",
-    "//chrome/browser/ui/webui/bookmarks",
   ]
 
   if (enable_session_service) {
@@ -1211,6 +1210,7 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/frame",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/browser/ui/webui/bookmarks",
     ]
   }
 
