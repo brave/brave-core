@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/page_actions/page_action_properties_provider.cc b/chrome/browser/ui/page_actions/page_action_properties_provider.cc
-index b4fd39e8275f602013a12c852437ac9d7f8056bd..ddb7e1f74ad8162e0e4b949b23a11a0377ce55b7 100644
+index b4fd39e8275f602013a12c852437ac9d7f8056bd..296c22880f3909c325528cbf6b37f841a3cb3a1f 100644
 --- a/chrome/browser/ui/page_actions/page_action_properties_provider.cc
 +++ b/chrome/browser/ui/page_actions/page_action_properties_provider.cc
-@@ -216,7 +216,21 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
+@@ -215,6 +215,20 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
+             .element_identifier = kAutofillAddressPageActionElementId,
          },
      },
-     {
--        kActionVirtualCardEnroll,
++    {
 +        kActionShowPartitionedStorage,
 +        {
 +            .histogram_name = "PartitionedStorage",
@@ -15,13 +15,11 @@ index b4fd39e8275f602013a12c852437ac9d7f8056bd..ddb7e1f74ad8162e0e4b949b23a11a03
 +    },
 +    {
 +        kActionShowPsstIcon,
-+            {
-+                .histogram_name = "PsstIcon",
++        {
++           .histogram_name = "PsstIcon",
 +                .type = brave::kPsstIconActionIconType,
 +            },
-+        },
-+        {
-+            kActionVirtualCardEnroll,
++    },
+     {
+         kActionVirtualCardEnroll,
          {
-             .histogram_name = "VirtualCardEnroll",
-             .type = PageActionIconType::kVirtualCardEnroll,
