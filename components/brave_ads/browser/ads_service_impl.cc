@@ -1335,7 +1335,7 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   bat_ads_associated_remote_->TriggerSearchResultAdEvent(

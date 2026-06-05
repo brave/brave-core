@@ -295,6 +295,36 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       SearchResultAdClickedWithInvalidCreativeAd) {
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
+
+  content::WebContents* web_contents =
+      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
+
+  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
+      .WillOnce([](const std::string& /*placement_id*/,
+                   MaybeGetSearchResultAdCallback callback) {
+        std::move(callback).Run(/*mojom_creative_ad=*/{});
+      });
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
+      .WillOnce(
+          [&run_loop](mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                      mojom::SearchResultAdEventType mojom_ad_event_type,
+                      ResultCallback /*callback*/) {
+            EXPECT_FALSE(mojom_creative_ad);
+            EXPECT_EQ(mojom_ad_event_type,
+                      mojom::SearchResultAdEventType::kClicked);
+            run_loop.Quit();
+          });
+
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              "document.getElementById('ad_link_1').click();"));
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInSameTab) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 

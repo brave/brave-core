@@ -77,6 +77,14 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
 }
 
 TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
+       DoNotTriggerEventForMissingCreativeAd) {
+  // Act & Assert
+  TriggerSearchResultAdEventAndVerifyExpectations(
+      /*mojom_creative_ad=*/nullptr, mojom::SearchResultAdEventType::kClicked,
+      /*should_fire_event=*/false);
+}
+
+TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
        TriggerClickedEvent) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
