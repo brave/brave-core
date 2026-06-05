@@ -34,6 +34,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
+import org.chromium.chrome.browser.RecentlyClosedEntriesManager;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
@@ -241,7 +242,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             MonotonicObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             PageZoomManager pageZoomManager,
             OneshotSupplier<HubManager> hubManagerSupplier,
-            @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider) {
+            @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider,
+            Supplier<RecentlyClosedEntriesManager> recentlyClosedEntriesManagerSupplier) {
         super(
                 context,
                 activityTabProvider,
@@ -258,7 +260,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 readAloudControllerSupplier,
                 pageZoomManager,
                 hubManagerSupplier,
-                openInAppMenuItemProvider);
+                openInAppMenuItemProvider,
+                recentlyClosedEntriesManagerSupplier);
 
         mBraveAppMenuDelegate = appMenuDelegate;
         mBraveContext = context;

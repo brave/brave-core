@@ -45,6 +45,7 @@ import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.RecentlyClosedEntriesManager;
 import org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl.MenuGroup;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.PowerBookmarkUtils;
@@ -53,6 +54,8 @@ import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtils;
 import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtilsJni;
 import org.chromium.chrome.browser.feed.FeedFeatures;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.glic.GlicEnabling;
+import org.chromium.chrome.browser.glic.GlicEnablingJni;
 import org.chromium.chrome.browser.hub.HubManager;
 import org.chromium.chrome.browser.hub.Pane;
 import org.chromium.chrome.browser.hub.PaneId;
@@ -168,6 +171,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private HubManager mHubManager;
     @Mock private PaneManager mPaneManager;
     @Mock private Pane mPane;
+    @Mock private RecentlyClosedEntriesManager mRecentlyClosedEntriesManager;
+    @Mock private GlicEnabling.Natives mGlicEnablingJniMock;
 
     private ShadowPackageManager mShadowPackageManager;
 
@@ -245,6 +250,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
         IncognitoUtilsJni.setInstanceForTesting(mIncognitoUtilsJniMock);
 
+        GlicEnablingJni.setInstanceForTesting(mGlicEnablingJniMock);
+
         TranslateBridgeJni.setInstanceForTesting(mTranslateBridgeJniMock);
         Mockito.when(mTranslateBridgeJniMock.canManuallyTranslate(any(), anyBoolean()))
                 .thenReturn(false);
@@ -274,7 +281,9 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mReadAloudControllerSupplier,
                         mPageZoomManagerMock,
                         mHubManagerSupplier,
-                        /* openInAppMenuItemProvider= */ null);
+                        /* openInAppMenuItemProvider= */ null,
+                        /* recentlyClosedEntriesManagerSupplier= */ () ->
+                                mRecentlyClosedEntriesManager);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
