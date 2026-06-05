@@ -13,7 +13,9 @@ import {
   BitcoinTestnetKeyringIds,
   ZCashTestnetKeyringIds,
   CardanoTestnetKeyringIds,
+  PolkadotMainnetKeyringIds,
   PolkadotTestnetKeyringIds,
+  SupportedTestNetworks,
 } from '../constants/types'
 
 // constants
@@ -291,6 +293,17 @@ export const getAccountsForNetwork = (
     return accounts.filter(
       (account) =>
         account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet,
+    )
+  }
+  // Polkadot accounts are portable across every parachain and the relay chain,
+  // so an account belongs to a network purely by its keyring (mainnet vs
+  // testnet) rather than by chainId.
+  if (network.coin === BraveWallet.CoinType.DOT) {
+    const polkadotKeyringIds = SupportedTestNetworks.includes(network.chainId)
+      ? PolkadotTestnetKeyringIds
+      : PolkadotMainnetKeyringIds
+    return accounts.filter((account) =>
+      polkadotKeyringIds.includes(account.accountId.keyringId),
     )
   }
   return accounts.filter((account) => account.accountId.coin === network.coin)

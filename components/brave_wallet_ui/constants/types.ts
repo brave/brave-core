@@ -709,6 +709,11 @@ export const ZCashTestnetKeyringIds = [BraveWallet.KeyringId.kZCashTestnet]
 
 export const CardanoTestnetKeyringIds = [BraveWallet.KeyringId.kCardanoTestnet]
 
+export const PolkadotMainnetKeyringIds = [
+  BraveWallet.KeyringId.kPolkadotMainnet,
+  BraveWallet.KeyringId.kPolkadotImport,
+]
+
 export const PolkadotTestnetKeyringIds = [
   BraveWallet.KeyringId.kPolkadotTestnet,
   BraveWallet.KeyringId.kPolkadotImportTestnet,

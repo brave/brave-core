@@ -5,6 +5,7 @@
 
 // utils
 import { getLocale } from '../../common/locale'
+import { getAccountsForNetwork } from './account-utils'
 
 // types
 import { BraveWallet, SupportedTestNetworks } from '../constants/types'
@@ -70,9 +71,13 @@ export const suggestNewAccountName = (
   accounts: BraveWallet.AccountInfo[],
   network: Pick<BraveWallet.NetworkInfo, 'coin' | 'symbolName' | 'chainId'>,
 ) => {
-  const accountTypeLength =
-    accounts.filter((account) => account.accountId.coin === network.coin).length
-    + 1
+  // Polkadot accounts are scoped by keyring (mainnet vs testnet), not coin, so
+  // defer to getAccountsForNetwork for keyring-aware counting.
+  const matchingAccounts =
+    network.coin === BraveWallet.CoinType.DOT
+      ? getAccountsForNetwork(network, accounts)
+      : accounts.filter((account) => account.accountId.coin === network.coin)
+  const accountTypeLength = matchingAccounts.length + 1
   return `${network.symbolName} ${getLocale(
     SupportedTestNetworks.includes(network.chainId)
       ? 'braveWalletTestNetworkAccount'
