@@ -42,6 +42,8 @@ enum {
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   kBraveAIChatSkills = 1004,
+  kBraveAIChatUserCustomizations = 1005,
+  kBraveAIChatUserMemories = 1006,
 #endif
 };
 }  // namespace brave_syncable_prefs_ids
@@ -100,6 +102,29 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             // across devices rather than letting the last writer clobber the
             // whole collection.
             MergeBehavior::kMergeableDict,
+        },
+    },
+    {
+        ai_chat::prefs::kBraveAIChatUserCustomizations,
+        {
+            brave_syncable_prefs_ids::kBraveAIChatUserCustomizations,
+            syncer::PREFERENCES,
+            sync_preferences::PrefSensitivity::kNone,
+            // Customizations is a dictionary of independent fields (name, job,
+            // tone, other), so merge per-field rather than losing a field that
+            // was only set on another device.
+            MergeBehavior::kMergeableDict,
+        },
+    },
+    {
+        ai_chat::prefs::kBraveAIChatUserMemories,
+        {
+            brave_syncable_prefs_ids::kBraveAIChatUserMemories,
+            syncer::PREFERENCES,
+            sync_preferences::PrefSensitivity::kNone,
+            // Memories is a set-like list of strings, so union and de-duplicate
+            // entries across devices.
+            MergeBehavior::kMergeableListWithRewriteOnUpdate,
         },
     },
 #endif

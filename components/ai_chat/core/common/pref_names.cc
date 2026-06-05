@@ -45,8 +45,11 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                  kChatAutomaticModelKey);
     registry->RegisterBooleanPref(kBraveAIChatUserCustomizationEnabled, true);
     registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
-    registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
-    registry->RegisterListPref(kBraveAIChatUserMemories);
+    registry->RegisterDictionaryPref(
+        kBraveAIChatUserCustomizations,
+        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+    registry->RegisterListPref(kBraveAIChatUserMemories,
+                               user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
     registry->RegisterDictionaryPref(
         kBraveAIChatSkills, user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
     registry->RegisterBooleanPref(kBraveAIChatOllamaFetchEnabled, false);
