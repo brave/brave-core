@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
@@ -55,8 +56,10 @@ void TextClassificationProcessor::Process(const std::string& text) {
         kTraceEventCategory, "TextClassificationProcessor::Process",
         TRACE_ID_WITH_SCOPE("TextClassificationProcessor", trace_id));
 
-    resource_->ClassifyPage(
-        text, base::BindOnce(&TextClassificationProcessor::ClassifyPageCallback,
+    resource_->GetTextProcessingPipeline()
+        ->AsyncCall(&ml::pipeline::TextProcessing::ClassifyPage)
+        .WithArgs(text)
+        .Then(base::BindOnce(&TextClassificationProcessor::ClassifyPageCallback,
                              weak_factory_.GetWeakPtr(), trace_id));
   }
 }
