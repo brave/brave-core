@@ -117,9 +117,9 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
 
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
-      /*confirmation_token_issuer_public_keys=*/
-      {{"qiy6l/i2WXc8AkDFt/QDxXoT0XKgL0xRSZ3Db+k2u3A=", 0.0},
-       {"hKjGQd7WAXs0lcdf+SCHCTKsBLWtKaEubwlK4YA1NkA=", 0.0}},
+      /*confirmation_public_keys=*/
+      {"qiy6l/i2WXc8AkDFt/QDxXoT0XKgL0xRSZ3Db+k2u3A=",
+       "hKjGQd7WAXs0lcdf+SCHCTKsBLWtKaEubwlK4YA1NkA="},
       /*payment_token_issuer_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
