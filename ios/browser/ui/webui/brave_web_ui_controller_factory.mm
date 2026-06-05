@@ -12,11 +12,11 @@
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
@@ -27,11 +27,17 @@
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/web_state.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
+#endif
 
 using web::WebUIIOS;
 using web::WebUIIOSController;
@@ -48,6 +54,20 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
                                                 const GURL& url) {
   return std::make_unique<T>(web_ui, url);
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+template <>
+std::unique_ptr<WebUIIOSController> NewWebUIIOS<AdsInternalsUI>(
+    WebUIIOS* web_ui,
+    const GURL& url) {
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
+  if (profile->GetPrefs()->GetBoolean(
+          brave_rewards::prefs::kDisabledByPolicy)) {
+    return nullptr;
+  }
+  return std::make_unique<AdsInternalsUI>(web_ui, url);
+}
+#endif
 
 template <class T>
 std::unique_ptr<WebUIIOSController> NewRegularProfileOnlyWebUIIOS(
@@ -95,10 +115,14 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   }
 
   std::string_view url_host = url.host();
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
-  } else if (url_host == kBraveAccountHost &&
-             brave_account::features::IsBraveAccountEnabled()) {
+  }
+#endif
+  if (url_host == kBraveAccountHost &&
+      brave_account::features::IsBraveAccountEnabled()) {
     return &NewWebUIIOS<BraveAccountUIIOS>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
