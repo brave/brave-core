@@ -42,6 +42,28 @@ extension WidgetShortcut {
     return options
   }
 
+  /// The set of shortcuts that are currently unavailable and should be hidden from the Shortcuts
+  /// widgets (for example, disabled by a Brave Origin or enterprise policy).
+  static func disabledWidgetShortcuts(
+    prefs: any PrefService,
+    isWalletAvailable: Bool
+  ) -> Set<WidgetShortcut> {
+    var disabled: Set<WidgetShortcut> = []
+    if !prefs.isPlaylistAvailable {
+      disabled.insert(.playlist)
+    }
+    if !prefs.isBraveNewsAvailable {
+      disabled.insert(.braveNews)
+    }
+    if !isWalletAvailable {
+      disabled.insert(.wallet)
+    }
+    if !AIChatUtils.isAIChatEnabled(for: prefs) {
+      disabled.insert(.braveLeo)
+    }
+    return disabled
+  }
+
   var displayString: String {
     switch self {
     case .unknown:
