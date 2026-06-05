@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
+#include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -81,9 +82,10 @@ void Conversions::GetCreativeSetConversionsCallback(
 void Conversions::GetAdEvents(
     const std::vector<GURL>& redirect_chain,
     const CreativeSetConversionList& creative_set_conversions) {
-  ad_events_database_table_.GetUnexpired(base::BindOnce(
-      &Conversions::GetAdEventsCallback, weak_factory_.GetWeakPtr(),
-      redirect_chain, creative_set_conversions));
+  ad_events_database_table_.GetUnexpired(
+      base::Days(30), base::BindOnce(&Conversions::GetAdEventsCallback,
+                                     weak_factory_.GetWeakPtr(), redirect_chain,
+                                     creative_set_conversions));
 }
 
 void Conversions::GetAdEventsCallback(
