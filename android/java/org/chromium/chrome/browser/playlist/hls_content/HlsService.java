@@ -5,10 +5,12 @@
 
 package org.chromium.chrome.browser.playlist.hls_content;
 
+import org.chromium.base.SplitCompatService;
 import org.chromium.build.annotations.IdentifierNameString;
-import org.chromium.chrome.browser.base.SplitCompatService;
+import org.chromium.build.annotations.NullMarked;
 
 /** See {@link HlsServiceImpl}. */
+@NullMarked
 public class HlsService extends SplitCompatService {
     @SuppressWarnings("FieldCanBeFinal") // @IdentifierNameString requires non-final
     private static @IdentifierNameString String sImplClassName =
