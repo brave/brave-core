@@ -1045,3 +1045,44 @@ only headers listed in `public` can be `#include`d by dependent targets.
 New endpoints must be added to both the pins `"entries"` list and the HSTS
 `"entries"` list in that file. This applies to all new endpoints regardless of
 whether they require user opt-in.
+
+---
+
+<a id="BS-057"></a>
+
+## ❌ Don't Add New Source Files to `browser/ui/BUILD.gn`
+
+**Don't add new `sources` entries to the `source_set("ui")` target in
+`brave/browser/ui/BUILD.gn`.** Adding source files here is flagged in review
+because `//chrome/browser/ui` is prone to circular dependencies, and Brave
+should avoid adding to that problem. Place the new files in a more specific,
+lower-level target instead.
+
+```gn
+# ❌ WRONG - new source files added to source_set("ui") in brave/browser/ui/BUILD.gn
+source_set("ui") {
+  sources = [
+    ...
+    "webui/history/brave_history_embeddings_page_handler.cc",
+    "webui/history/brave_history_embeddings_page_handler.h",
+  ]
+}
+
+# ✅ CORRECT - put the files in a feature-specific lower-level target
+# e.g. brave/browser/ui/webui/history/BUILD.gn
+source_set("history") {
+  sources = [
+    "brave_history_embeddings_page_handler.cc",
+    "brave_history_embeddings_page_handler.h",
+  ]
+  deps = [ ... ]
+}
+```
+
+Break circular dependencies using the interface/impl pattern (public headers in
+the direct dependency, implementation pulled into a higher-level target like
+`//brave/browser`), dependency inversion, or the templated-subclass technique.
+Only fall back to `brave_chrome_browser_ui_allow_circular_includes_from` /
+`sources.gni` as a temporary last resort, and never use `check_includes = false`
+to suppress circular include errors. See [`gni_sources.md`](../gni_sources.md)
+(Circular dependencies).
