@@ -12,6 +12,10 @@ namespace prefs {
 inline constexpr char kMediaBackgroundingEnabled[] =
     "brave.media_backgrounding_enabled";
 
+// Whether or not to block all cookies and access to local storage
+inline constexpr char kBlockAllCookiesEnabled[] =
+    "brave.block_all_cookies_enabled";
+
 }  // namespace prefs
 
 #endif  // BRAVE_IOS_BROWSER_SHARED_PREFS_PREF_NAMES_H_

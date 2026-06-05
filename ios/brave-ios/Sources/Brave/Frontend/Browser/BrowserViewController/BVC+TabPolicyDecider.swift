@@ -367,7 +367,7 @@ extension BrowserViewController: TabPolicyDecider {
       // Cookie Blocking code below
       tab.browserData?.setScript(
         script: .cookieBlocking,
-        enabled: Preferences.Privacy.blockAllCookies.value
+        enabled: tab.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled)
       )
 
       // Reset the block alert bool on new host.

@@ -404,14 +404,16 @@ import os
     }
   }
 
-  /// Get all required rule lists for the given domain
+  /// Get all required rule lists for the given domain and prefs
   public func ruleLists(
     isBraveShieldsEnabled: Bool,
-    shieldLevel: ShieldLevel
+    shieldLevel: ShieldLevel,
+    isBlockAllCookiesEnabled: Bool
   ) async -> Set<WKContentRuleList> {
     let validBlocklistTypes = self.validBlocklistTypes(
       isBraveShieldsEnabled: isBraveShieldsEnabled,
-      shieldLevel: shieldLevel
+      shieldLevel: shieldLevel,
+      isBlockAllCookiesEnabled: isBlockAllCookiesEnabled
     )
 
     return await Set(
@@ -433,14 +435,16 @@ import os
   /// A list of all valid (enabled) blocklist types for the given domain
   private func validBlocklistTypes(
     isBraveShieldsEnabled: Bool,
-    shieldLevel: ShieldLevel
+    shieldLevel: ShieldLevel,
+    isBlockAllCookiesEnabled: Bool
   ) -> Set<(ContentBlockerManager.BlocklistType)> {
     guard isBraveShieldsEnabled else { return [] }
 
     // 1. Get the generic types
     let genericTypes = contentBlockerManager.validGenericTypes(
       isShieldsEnabled: isBraveShieldsEnabled,
-      isAdBlockEnabled: shieldLevel.isEnabled
+      isAdBlockEnabled: shieldLevel.isEnabled,
+      isBlockAllCookiesEnabled: isBlockAllCookiesEnabled
     ).filter { type in
       switch type {
       case .blockAds:

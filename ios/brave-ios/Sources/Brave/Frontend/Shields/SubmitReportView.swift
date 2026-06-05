@@ -225,7 +225,8 @@ struct SubmitReportView: View {
         category: selectedCategory?.value,
         details: additionalDetails,
         contact: contactDetails,
-        cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : nil,
+        cookiePolicy: tab?.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled) == true
+          ? "block" : nil,
         blockScripts: String(isBlockScriptsEnabled),
         adBlockComponentsVersion: nil,
         screenshotPng: nil,

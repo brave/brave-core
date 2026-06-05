@@ -41,12 +41,12 @@ struct OtherPrivacySettingsSectionView: View {
         toggle: $settings.isGPCEnabled
       )
       if showBlockAllCookies || FeatureList.kBlockAllCookiesToggle.enabled
-        || Preferences.Privacy.blockAllCookies.value
+        || settings.isBlockAllCookiesEnabled
       {
-        OptionToggleView(
+        ToggleView(
           title: Strings.blockAllCookies,
           subtitle: Strings.blockAllCookiesDescription,
-          option: Preferences.Privacy.blockAllCookies,
+          toggle: $settings.isBlockAllCookiesEnabled,
           onChange: { newValue in
             if newValue {
               cookieAlertType = .confirm
@@ -74,7 +74,7 @@ struct OtherPrivacySettingsSectionView: View {
               secondaryButton: .cancel(
                 Text(Strings.cancelButtonTitle),
                 action: {
-                  Preferences.Privacy.blockAllCookies.value = false
+                  settings.isBlockAllCookiesEnabled = false
                 }
               )
             )
@@ -187,7 +187,7 @@ struct OtherPrivacySettingsSectionView: View {
       Text(Strings.otherPrivacySettingsSection)
     }
     .onAppear {
-      showBlockAllCookies = Preferences.Privacy.blockAllCookies.value
+      showBlockAllCookies = settings.isBlockAllCookiesEnabled
     }
   }
 
@@ -196,8 +196,8 @@ struct OtherPrivacySettingsSectionView: View {
       try await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: status)
       try await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: status)
 
-      if Preferences.Privacy.blockAllCookies.value != status {
-        Preferences.Privacy.blockAllCookies.value = status
+      if settings.isBlockAllCookiesEnabled != status {
+        settings.isBlockAllCookiesEnabled = status
       }
     } catch {
       Logger.module.error("Failed to change web data access to \(status)")
@@ -206,8 +206,8 @@ struct OtherPrivacySettingsSectionView: View {
         try? await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: false)
         try? await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: false)
 
-        if Preferences.Privacy.blockAllCookies.value != false {
-          Preferences.Privacy.blockAllCookies.value = false
+        if settings.isBlockAllCookiesEnabled != false {
+          settings.isBlockAllCookiesEnabled = false
         }
 
         cookieAlertType = .failed

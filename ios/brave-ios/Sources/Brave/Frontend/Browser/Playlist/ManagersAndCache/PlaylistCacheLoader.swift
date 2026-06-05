@@ -351,7 +351,8 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
       {
         let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
           isBraveShieldsEnabled: true,
-          shieldLevel: .aggressive
+          shieldLevel: .aggressive,
+          isBlockAllCookiesEnabled: tab.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled)
         )
         tab.contentBlocker?.set(ruleLists: ruleLists)
       }
@@ -359,7 +360,7 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
       // Cookie Blocking code below
       tab.browserData?.setScript(
         script: .cookieBlocking,
-        enabled: Preferences.Privacy.blockAllCookies.value
+        enabled: tab.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled)
       )
     }
     return .allow

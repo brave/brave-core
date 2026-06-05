@@ -10,3 +10,6 @@
 
 NSString* const kMediaBackgroundingEnabled =
     base::SysUTF8ToNSString(prefs::kMediaBackgroundingEnabled);
+
+NSString* const kBlockAllCookiesEnabled =
+    base::SysUTF8ToNSString(prefs::kBlockAllCookiesEnabled);

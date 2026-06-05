@@ -30,6 +30,7 @@ public class BraveProfileMigrations {
     migrateYouTubeQualityPreference()
     migrateGPCPreference()
     migrateMediaBackgroundingPreference()
+    migrateBlockAllCookiesPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -124,6 +125,12 @@ public class BraveProfileMigrations {
   private func migrateMediaBackgroundingPreference() {
     Preferences.DeprecatedPreferences.mediaAutoBackgrounding.migrate { value in
       profileController.profile.prefs.set(value, forPath: kMediaBackgroundingEnabled)
+    }
+  }
+
+  private func migrateBlockAllCookiesPreference() {
+    Preferences.DeprecatedPreferences.blockAllCookies.migrate { value in
+      profileController.profile.prefs.set(value, forPath: kBlockAllCookiesEnabled)
     }
   }
 }
@@ -369,6 +376,12 @@ extension Preferences {
     /// Controls whether or not media should continue playing in the background
     static let mediaAutoBackgrounding = Option<Bool>(
       key: "general.media-auto-backgrounding",
+      default: false
+    )
+
+    /// Blocks all cookies and access to local storage
+    static let blockAllCookies = Option<Bool>(
+      key: "privacy.block-all-cookies",
       default: false
     )
   }
