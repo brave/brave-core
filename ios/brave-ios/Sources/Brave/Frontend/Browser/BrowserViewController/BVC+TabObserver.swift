@@ -72,6 +72,7 @@ extension BrowserViewController: TabObserver {
         // dismiss wallet notification (e.g. after redirect to different origin)
         removeWalletNotificationAndClearOrigin()
       } else if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
+        profileController.braveWalletAPI.isAllowed,
         let selectedTabVisibleURL = selectedTab.visibleURL,
         selectedTabVisibleURL.isWalletWebUIURL
       {
