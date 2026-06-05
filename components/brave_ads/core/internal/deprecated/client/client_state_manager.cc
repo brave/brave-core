@@ -47,7 +47,7 @@ void ClientStateManager::LoadState(ResultCallback callback) {
 
   database::table::PurchaseIntentSignalHistory
       purchase_intent_signal_history_database_table;
-  purchase_intent_signal_history_database_table.GetAll(base::BindOnce(
+  purchase_intent_signal_history_database_table.Load(base::BindOnce(
       &ClientStateManager::GetAllPurchaseIntentSignalHistoryCallback,
       weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -132,7 +132,7 @@ void ClientStateManager::GetAllPurchaseIntentSignalHistoryCallback(
 
   database::table::TextClassificationProbabilities
       text_classification_probabilities_database_table;
-  text_classification_probabilities_database_table.GetAll(base::BindOnce(
+  text_classification_probabilities_database_table.Load(base::BindOnce(
       &ClientStateManager::GetAllTextClassificationProbabilitiesCallback,
       weak_factory_.GetWeakPtr(), std::move(callback)));
 }

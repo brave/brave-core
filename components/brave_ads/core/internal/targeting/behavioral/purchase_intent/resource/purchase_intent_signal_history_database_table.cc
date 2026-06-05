@@ -57,7 +57,7 @@ size_t BindColumns(
   return row_count;
 }
 
-void GetAllCallback(
+void LoadCallback(
     GetPurchaseIntentSignalHistoryCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
@@ -170,7 +170,7 @@ void PurchaseIntentSignalHistory::DeleteAll(ResultCallback callback) {
                  std::move(callback));
 }
 
-void PurchaseIntentSignalHistory::GetAll(
+void PurchaseIntentSignalHistory::Load(
     GetPurchaseIntentSignalHistoryCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
@@ -189,7 +189,7 @@ void PurchaseIntentSignalHistory::GetAll(
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                 base::BindOnce(&GetAllCallback, std::move(callback)));
+                 base::BindOnce(&LoadCallback, std::move(callback)));
 }
 
 void PurchaseIntentSignalHistory::Create(

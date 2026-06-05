@@ -1245,8 +1245,16 @@ source_set("test_support") {
   ]
 
   sources = [
+    "account/tokens/confirmation_tokens/confirmation_tokens_database_table_test_util.cc",
+    "account/tokens/confirmation_tokens/confirmation_tokens_database_table_test_util.h",
     "common/locale/test/fake_locale.cc",
     "common/locale/test/fake_locale.h",
+    "targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table_test_util.cc",
+    "targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table_test_util.h",
+    "targeting/contextual/text_classification/resource/text_classification_probabilities_database_table_test_util.cc",
+    "targeting/contextual/text_classification/resource/text_classification_probabilities_database_table_test_util.h",
+    "user_engagement/ad_events/ad_events_database_table_test_util.cc",
+    "user_engagement/ad_events/ad_events_database_table_test_util.h",
   ]
 
   public_deps = [ ":internal" ]

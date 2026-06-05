@@ -7,6 +7,7 @@
 
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_database_table_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -29,7 +30,7 @@ TEST_F(BraveAdsConfirmationTokensDatabaseTableTest,
 
   // Assert
   base::test::TestFuture<bool, ConfirmationTokenList> get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, confirmation_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -45,7 +46,7 @@ TEST_F(BraveAdsConfirmationTokensDatabaseTableTest, SaveConfirmationTokens) {
 
   // Assert
   base::test::TestFuture<bool, ConfirmationTokenList> get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, confirmation_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -68,7 +69,7 @@ TEST_F(BraveAdsConfirmationTokensDatabaseTableTest,
 
   // Assert
   base::test::TestFuture<bool, ConfirmationTokenList> get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, confirmation_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -90,7 +91,7 @@ TEST_F(BraveAdsConfirmationTokensDatabaseTableTest, DeleteConfirmationToken) {
 
   // Assert
   base::test::TestFuture<bool, ConfirmationTokenList> get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, confirmation_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -115,7 +116,7 @@ TEST_F(BraveAdsConfirmationTokensDatabaseTableTest,
 
   // Assert
   base::test::TestFuture<bool, ConfirmationTokenList> get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, confirmation_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
@@ -137,7 +138,7 @@ TEST_F(BraveAdsConfirmationTokensDatabaseTableTest,
 
   // Assert
   base::test::TestFuture<bool, ConfirmationTokenList> get_all_test_future;
-  database_table_.GetAll(
+  test::GetAll(
       get_all_test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, confirmation_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);

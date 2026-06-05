@@ -9,8 +9,8 @@
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table_test_util.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table_test_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -27,7 +27,7 @@ constexpr char kClientWithNoDataJsonFilename[] = "client_with_no_data.json";
 
 size_t GetPurchaseIntentSignalHistorySegmentCount() {
   base::test::TestFuture<bool, PurchaseIntentSignalHistoryMap> test_future;
-  database::table::PurchaseIntentSignalHistory().GetAll(
+  test::GetAll(
       test_future.GetCallback<bool, const PurchaseIntentSignalHistoryMap&>());
   const auto [success, purchase_intent_signal_history] = test_future.Take();
   EXPECT_TRUE(success);
@@ -36,7 +36,7 @@ size_t GetPurchaseIntentSignalHistorySegmentCount() {
 
 TextClassificationProbabilityList GetTextClassificationProbabilitiesHistory() {
   base::test::TestFuture<bool, TextClassificationProbabilityList> test_future;
-  database::table::TextClassificationProbabilities().GetAll(
+  test::GetAll(
       test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] = test_future.Take();
