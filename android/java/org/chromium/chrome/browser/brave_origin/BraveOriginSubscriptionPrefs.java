@@ -145,6 +145,13 @@ public class BraveOriginSubscriptionPrefs {
                         setOriginPackageName(profile);
                         setOriginProductId(profile, activePurchaseModel.getProductId());
                         setOriginPurchaseToken(profile, activePurchaseModel.getPurchaseToken());
+                        // We only reach verifyPurchase() while the subscription pref is inactive
+                        // (see the BraveActivity guard), so a found purchase means a prior Play
+                        // Store purchase is being auto-restored. setOriginPurchaseToken() above
+                        // already started the credential fetch, so open the Origin settings screen:
+                        // it shows the spinner while credentials are fetched and prompts a restart
+                        // once the policies are enforced.
+                        BraveOriginSettingsLauncherHelper.showOriginSettingsForRestart();
                     } else {
                         setOriginProductId(profile, "");
                         setOriginPurchaseToken(profile, "");
