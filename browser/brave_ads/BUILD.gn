@@ -96,13 +96,6 @@ source_set("impl") {
     deps += [ "//ui/aura" ]
   }
 
-  if (ozone_platform_x11) {
-    deps += [
-      "//ui/base/x",
-      "//ui/gfx/x",
-    ]
-  }
-
   if (is_android) {
     sources += [
       "application_state/application_state_monitor/application_state_monitor_android.cc",
