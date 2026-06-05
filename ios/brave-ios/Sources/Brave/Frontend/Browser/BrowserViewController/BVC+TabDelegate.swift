@@ -143,6 +143,7 @@ extension BrowserViewController: TabDelegate {
           // - Add custom "Save to file" functionality (needs investigation).
           self.presentActivityViewController(
             url,
+            tab: self.tabManager.selectedTab,
             source: .init(
               view: self.view,
               rect: self.view.convert(
