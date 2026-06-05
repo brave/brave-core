@@ -8,7 +8,6 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/confirmation_token_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/payment_token_issuer_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_value_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
@@ -20,7 +19,8 @@ void SetIssuers(const IssuersInfo& issuers) {
   SetProfileIntegerPref(prefs::kIssuerPing, issuers.ping);
 
   SetProfileListPref(prefs::kIssuers,
-                     TokenIssuersToList(issuers.token_issuers));
+                     TokenIssuersToList(issuers.confirmation_token_issuer,
+                                        issuers.payment_token_issuer));
 }
 
 std::optional<IssuersInfo> GetIssuers() {
@@ -29,7 +29,7 @@ std::optional<IssuersInfo> GetIssuers() {
     return std::nullopt;
   }
 
-  std::optional<TokenIssuerList> token_issuers =
+  std::optional<TokenIssuersInfo> token_issuers =
       MaybeBuildTokenIssuersFromList(*list);
   if (!token_issuers) {
     return std::nullopt;
@@ -37,7 +37,8 @@ std::optional<IssuersInfo> GetIssuers() {
 
   IssuersInfo issuers;
   issuers.ping = GetProfileIntegerPref(prefs::kIssuerPing);
-  issuers.token_issuers = *token_issuers;
+  issuers.confirmation_token_issuer = std::move(token_issuers->confirmation);
+  issuers.payment_token_issuer = std::move(token_issuers->payment);
 
   return issuers;
 }
@@ -48,8 +49,7 @@ bool IsIssuersValid(const IssuersInfo& issuers) {
 }
 
 bool HasIssuers() {
-  return TokenIssuerExistsForType(TokenIssuerType::kConfirmations) &&
-         TokenIssuerExistsForType(TokenIssuerType::kPayments);
+  return ConfirmationTokenIssuerExists() && PaymentTokenIssuerExists();
 }
 
 bool HasIssuersChanged(const IssuersInfo& other) {
