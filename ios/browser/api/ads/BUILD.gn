@@ -38,6 +38,7 @@ source_set("ads") {
     "//brave/ios/browser/api/common",
     "//brave/ios/browser/brave_ads",
     "//components/prefs",
+    "//components/variations",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//net",
