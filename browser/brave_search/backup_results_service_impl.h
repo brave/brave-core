@@ -54,7 +54,8 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   void FetchBackupResults(const GURL& url,
                           std::optional<net::HttpRequestHeaders> headers,
-                          BackupResultsCallback callback) override;
+                          BackupResultsCallback callback,
+                          bool low_latency_required = false) override;
 
   bool HandleWebContentsStartRequest(const content::WebContents* web_contents,
                                      const GURL& url) override;
@@ -76,13 +77,16 @@ class BackupResultsServiceImpl : public BackupResultsService,
     PendingRequest(std::unique_ptr<content::WebContents> web_contents,
                    std::optional<net::HttpRequestHeaders> headers,
                    Profile* otr_profile,
+                   bool low_latency_required,
                    BackupResultsCallback callback);
     ~PendingRequest();
 
     std::optional<net::HttpRequestHeaders> headers;
     BackupResultsCallback callback;
 
+    bool low_latency_required;
     std::unique_ptr<content::WebContents> web_contents;
+    GURL target_url;
 
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
@@ -92,6 +96,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     size_t requests_loaded = 0;
     int last_response_code = -1;
     base::OneShotTimer timeout_timer;
+    base::OneShotTimer load_after_restore_timer;
   };
   using PendingRequestList = std::list<PendingRequest>;
 
@@ -102,6 +107,8 @@ class BackupResultsServiceImpl : public BackupResultsService,
                                   const GURL& url);
   void HandleURLLoaderResponse(PendingRequestList::iterator pending_request,
                                std::optional<std::string> html);
+  bool LoadTargetUrl(PendingRequestList::iterator pending_request);
+  void OnLoadAfterRestoreTimer(PendingRequestList::iterator pending_request);
 
   void HandleWebContentsContentExtraction(
       PendingRequestList::iterator pending_request,
