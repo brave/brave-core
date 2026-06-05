@@ -58,6 +58,8 @@ class SiteVisit final : public BrowserManagerObserver,
   // Returns true if the tab is currently landing on a page.
   bool IsLandingOnPage(int32_t tab_id) const;
 
+  std::optional<AdInfo> MaybeGetLastClickedAdIfAllowedToLandOnPage();
+
   void MaybeLandOnPage(const TabInfo& tab, int http_status_code);
   void MaybeLandOnPageAfter(const TabInfo& tab,
                             int http_status_code,
@@ -99,6 +101,7 @@ class SiteVisit final : public BrowserManagerObserver,
   void OnTabDidChangeFocus(int32_t tab_id) override;
   void OnTabDidChange(const TabInfo& tab) override;
   void OnTabDidLoad(const TabInfo& tab, int http_status_code) override;
+  void OnTabDidFailToLoad(const TabInfo& tab) override;
   void OnDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<SiteVisitObserver> observers_;

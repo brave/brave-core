@@ -61,7 +61,7 @@ std::optional<int> HttpStatusCode(
   return std::nullopt;
 }
 
-bool IsErrorPage(int http_status_code) {
+bool IsHttpErrorStatusCode(int http_status_code) {
   const int http_status_code_class = http_status_code / 100;
   return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
          http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
@@ -228,15 +228,22 @@ void AdsTabHelper::MaybeNotifyTabDidLoad() {
                                  *http_status_code_);
 }
 
+void AdsTabHelper::MaybeNotifyTabDidFailToLoad() {
+  if (ads_service_) {
+    ads_service_->NotifyTabDidFailToLoad(/*tab_id=*/session_id_.id());
+  }
+}
+
 bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
   // are still loading, or an error page was displayed. `http_status_code_` can
-  // be `std::nullopt` if the navigation never finishes which can occur if the
-  // user constantly refreshes the page.
+  // be `std::nullopt` if the navigation never finishes, which can occur if the
+  // user constantly refreshes the page, or if the committed navigation was a
+  // network error page.
   return ads_service_ && !was_restored_ && is_new_navigation_ &&
          !redirect_chain_.empty() && http_status_code_ &&
-         !IsErrorPage(*http_status_code_);
+         !IsHttpErrorStatusCode(*http_status_code_);
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
@@ -350,14 +357,35 @@ void AdsTabHelper::DidFinishNavigation(
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  http_status_code_ = HttpStatusCode(navigation_handle).value_or(net::HTTP_OK);
+  http_status_code_ = HttpStatusCode(navigation_handle);
 
   MaybeNotifyUserGestureEventTriggered(navigation_handle);
 
   // Notify of tab changes after navigation completes but before notifying that
   // the tab has loaded, so that any listeners can process the tab changes
-  // before the tab is considered loaded.
+  // before the tab is considered loaded. This must also happen before
+  // `MaybeNotifyTabDidFailToLoad()` below, as `TabManager` only knows about a
+  // tab once it has observed a tab change for it, and looks up the tab by id
+  // to include its details in the fail-to-load notification.
   MaybeNotifyTabDidChange();
+
+  if (navigation_handle->IsErrorPage()) {
+    // Reset `http_status_code_` as the page failed to load, even if response
+    // headers with a non-error status code were received before the network
+    // error occurred.
+    http_status_code_.reset();
+
+    // Notify the tab failed to load, instead of the tab loaded, to prevent an
+    // ad landing from being incorrectly recorded for network error pages.
+    MaybeNotifyTabDidFailToLoad();
+    return;
+  }
+
+  if (!http_status_code_) {
+    // No response headers were received, but the navigation did not commit an
+    // error page, so treat it as HTTP OK.
+    http_status_code_ = net::HTTP_OK;
+  }
 
   MaybeNotifyTabDidLoad();
 

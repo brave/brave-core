@@ -46,6 +46,20 @@ void TabHelper::NavigateToUrl(int32_t tab_id,
   ads_client_notifier_->NotifyTabDidLoad(tab_id, http_status_code);
 }
 
+void TabHelper::FailToLoadUrl(int32_t tab_id,
+                              const std::vector<GURL>& redirect_chain) {
+  CHECK(redirect_chains_.contains(tab_id)) << "Tab does not exist";
+
+  redirect_chains_[tab_id] = redirect_chain;
+
+  const bool is_visible = tab_id == visible_tab_id_;
+
+  ads_client_notifier_->NotifyTabDidChange(tab_id, redirect_chain,
+                                           /*is_new_navigation=*/true,
+                                           /*is_restoring=*/false, is_visible);
+  ads_client_notifier_->NotifyTabDidFailToLoad(tab_id);
+}
+
 void TabHelper::SelectTab(int32_t tab_id) {
   CHECK(redirect_chains_.contains(tab_id)) << "Tab does not exist";
 

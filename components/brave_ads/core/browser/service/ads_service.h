@@ -239,6 +239,9 @@ class AdsService : public KeyedService {
   // the HTTP status code.
   virtual void NotifyTabDidLoad(int32_t tab_id, int http_status_code) = 0;
 
+  // Called when a browser tab failed to load, e.g., due to a network error.
+  virtual void NotifyTabDidFailToLoad(int32_t tab_id) = 0;
+
   // Called when a browser tab with the specified `tab_id` is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
 

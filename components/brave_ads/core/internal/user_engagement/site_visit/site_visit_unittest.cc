@@ -749,6 +749,121 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   tab_helper_.CloseTab(/*tab_id=*/1);
 }
 
+TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfNavigationFailsToLoad) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  tab_helper_.OpenTab(/*tab_id=*/1,
+                      /*redirect_chain=*/{GURL("https://brave.com")},
+                      net::HTTP_OK);
+  site_visit_->set_last_clicked_ad(ad);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidNotLandOnPage(/*tab_id=*/1, ad));
+  tab_helper_.FailToLoadUrl(/*tab_id=*/1,
+                            /*redirect_chain=*/{ad.target_url});
+}
+
+TEST_F(BraveAdsSiteVisitTest,
+       DoNotNotifyDidNotLandOnPageIfNavigationFailsToLoadForNonRewardsUser) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  test::DisableBraveRewards();
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  tab_helper_.OpenTab(/*tab_id=*/1,
+                      /*redirect_chain=*/{GURL("https://brave.com")},
+                      net::HTTP_OK);
+  site_visit_->set_last_clicked_ad(ad);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidNotLandOnPage).Times(0);
+  tab_helper_.FailToLoadUrl(/*tab_id=*/1,
+                            /*redirect_chain=*/{ad.target_url});
+}
+
+TEST_F(BraveAdsSiteVisitTest,
+       DoNotLandOnUnrelatedPageAfterNavigationFailsToLoad) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  tab_helper_.OpenTab(/*tab_id=*/1,
+                      /*redirect_chain=*/{GURL("https://brave.com")},
+                      net::HTTP_OK);
+  site_visit_->set_last_clicked_ad(ad);
+
+  EXPECT_CALL(site_visit_observer_mock_, OnDidNotLandOnPage(/*tab_id=*/1, ad));
+  tab_helper_.FailToLoadUrl(/*tab_id=*/1,
+                            /*redirect_chain=*/{ad.target_url});
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
+  tab_helper_.NavigateToUrl(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      net::HTTP_OK);
+  FastForwardClockBy(kPageLandAfter.Get());
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    DoNotNotifyDidNotLandOnPageWhenSearchResultAdRedirectFailsToLoad) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                  /*use_random_uuids=*/true);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1")},
+      net::HTTP_OK);
+  site_visit_->set_last_clicked_ad(ad);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidNotLandOnPage).Times(0);
+  tab_helper_.FailToLoadUrl(
+      /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1")});
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    DoNotNotifyDidNotLandOnPageIfAlreadyLandingWhenAnotherNavigationFailsToLoad) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
+                                    /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnMaybeLandOnPage(ad_1, /*after=*/kPageLandAfter.Get()));
+  SimulateClickingAd(ad_1, /*tab_id=*/1,
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
+  const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNotificationAd,
+                                    /*use_random_uuids=*/true);
+  site_visit_->set_last_clicked_ad(ad_2);
+
+  // Act
+  EXPECT_CALL(site_visit_observer_mock_, OnDidNotLandOnPage).Times(0);
+  tab_helper_.FailToLoadUrl(/*tab_id=*/1,
+                            /*redirect_chain=*/{GURL("https://brave.com")});
+
+  // Assert
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnDidLandOnPage(/*tab_id=*/1, net::HTTP_OK, ad_1));
+  FastForwardClockBy(kPageLandAfter.Get());
+}
+
 TEST_F(BraveAdsSiteVisitTest,
        PageLandIsNotRecordedWhenNavigationCommitsBeforeLastClickedAdIsSet) {
   // Arrange

@@ -50,6 +50,7 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
               OnNotifyTabDidChange,
               (int32_t, const std::vector<GURL>&, bool, bool, bool));
   MOCK_METHOD(void, OnNotifyTabDidLoad, (int32_t, int));
+  MOCK_METHOD(void, OnNotifyTabDidFailToLoad, (int32_t));
   MOCK_METHOD(void, OnNotifyDidCloseTab, (int32_t));
 
   MOCK_METHOD(void, OnNotifyUserGestureEventTriggered, (ui::PageTransition));
