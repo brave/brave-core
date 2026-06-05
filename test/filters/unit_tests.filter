@@ -59,6 +59,13 @@
 -MV2/ExtensionProtocolsTest.MetadataFolder/0
 -MV3/ExtensionProtocolsTest.MetadataFolder/0
 
+# These tests fail because we allow installation of MV2 extensions
+-ManifestV2ExperimentManagerUnitTest.MV2ExtensionsCannotBeEnabled
+-ManifestV2ExperimentManagerUnitTest.ProfileMetrics_ExtensionLocationsAreProperlyGrouped
+-ManifestV2ExperimentManagerUnitTest.ProfileMetrics_ExtensionsThatAreDisabledForOtherReasonsEmitOther
+-ManifestV2ExperimentManagerUnitTest.ShouldBlockInstallation_UserInstalledExtensions
+-ExtensionInstallStatusTest.UnsupportedManifestVersion
+
 # These tests fail because sync_helper::IsSyncable(extension) returns false
 # due to UPDATER_DEV_ENDPOINT being empty and not matching expected store URL.
 -ExtensionSyncServiceCustomGalleryTest.ProcessSyncDataDeferredEnable
