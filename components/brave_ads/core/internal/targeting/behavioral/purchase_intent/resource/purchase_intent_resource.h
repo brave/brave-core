@@ -33,7 +33,7 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
     return manifest_version_;
   }
 
-  const std::optional<PurchaseIntentResourceInfo>& get() const {
+  const std::optional<PurchaseIntentResourceInfo>& GetPurchaseIntent() const {
     return resource_;
   }
 
