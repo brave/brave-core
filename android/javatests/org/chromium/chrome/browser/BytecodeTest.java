@@ -1662,7 +1662,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         WindowAndroid.class,
-                        MenuButtonCoordinator.SetFocusFunction.class,
+                        Runnable.class,
                         Runnable.class,
                         boolean.class,
                         Supplier.class,
