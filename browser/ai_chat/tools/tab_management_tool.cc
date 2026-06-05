@@ -17,6 +17,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/json/json_reader.h"
@@ -76,23 +77,16 @@ std::vector<int> MakeSortedUniqueValidIndices(base::span<const int> indices,
   CHECK(tab_strip);
   const int tab_count = tab_strip->count();
 
-  // The incoming values are positions within |tab_strip|, so they are bounded
-  // by [0, tab_count). Marking the valid ones in a bitmap keyed on the index
-  // and then reading them back in order filters, de-duplicates, and sorts in a
-  // single linear pass, with no comparison sort.
-  std::vector<bool> is_valid_index(tab_count, false);
+  std::vector<int> result;
+  result.reserve(indices.size());
   for (int index : indices) {
     if (index >= 0 && index < tab_count) {
-      is_valid_index[index] = true;
+      result.push_back(index);
     }
   }
 
-  std::vector<int> result;
-  for (int i = 0; i < tab_count; ++i) {
-    if (is_valid_index[i]) {
-      result.push_back(i);
-    }
-  }
+  std::ranges::sort(result);
+  result.erase(std::ranges::unique(result).begin(), result.end());
   return result;
 }
 
@@ -110,9 +104,8 @@ std::optional<tab_groups::TabGroupColorId> GetTabGroupColorId(
            {"cyan", tab_groups::TabGroupColorId::kCyan},
            {"orange", tab_groups::TabGroupColorId::kOrange}});
 
-  const auto it = kColorNameToId.find(group_color);
-  if (it != kColorNameToId.end()) {
-    return it->second;
+  if (const auto* id = base::FindOrNull(kColorNameToId, group_color)) {
+    return *id;
   }
   return std::nullopt;
 }
