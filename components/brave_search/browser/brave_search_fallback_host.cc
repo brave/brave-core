@@ -88,7 +88,8 @@ void BraveSearchFallbackHost::FetchBackupResults(
   backup_results_service_->FetchBackupResults(
       url, headers,
       base::BindOnce(&BraveSearchFallbackHost::OnResultsAvailable,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
+      /*low_latency_required=*/true);
 }
 
 void BraveSearchFallbackHost::OnResultsAvailable(
