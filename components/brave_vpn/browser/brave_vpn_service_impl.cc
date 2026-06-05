@@ -122,6 +122,11 @@ std::string BraveVpnServiceImpl::GetCurrentEnvironment() const {
 }
 
 #if !BUILDFLAG(IS_ANDROID)
+std::string BraveVpnServiceImpl::GetLastConnectionError() const {
+  CHECK(connection_manager_);
+  return connection_manager_->GetLastConnectionError();
+}
+
 void BraveVpnServiceImpl::RecordWidgetUsageMetrics(bool new_usage) {
   brave_vpn_metrics_.RecordWidgetUsage(new_usage);
 }

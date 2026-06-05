@@ -37,6 +37,7 @@ class BraveVpnServiceImpl : public BraveVpnService {
   bool IsConnected() const override;
   void ToggleConnection() override;
   mojom::ConnectionState GetConnectionState() const override;
+  std::string GetLastConnectionError() const override;
   void RecordWidgetUsageMetrics(bool new_usage) override;
 
   // mojom::ServiceHandler overrides:

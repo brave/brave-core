@@ -42,10 +42,6 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
-#endif
-
 namespace {
 
 void SaveSkusStateToFile(const base::FilePath& path,
@@ -231,10 +227,12 @@ void SkusInternalsUI::FileSelectionCanceled() {
 
 std::string SkusInternalsUI::GetLastVPNConnectionError() const {
   std::string error;
-#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
-  auto* manager = g_brave_browser_process->brave_vpn_connection_manager();
-  CHECK(manager);
-  error = manager->GetLastConnectionError();
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  auto* profile = Profile::FromWebUI(web_ui());
+  if (auto* service =
+          brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
+    error = service->GetLastConnectionError();
+  }
 #endif
   return error;
 }

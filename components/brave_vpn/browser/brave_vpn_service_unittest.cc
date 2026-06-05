@@ -45,6 +45,7 @@ class TestBraveVpnService : public BraveVpnService {
   mojom::ConnectionState GetConnectionState() const override {
     return mojom::ConnectionState::DISCONNECTED;
   }
+  std::string GetLastConnectionError() const override { return {}; }
   void RecordWidgetUsageMetrics(bool new_usage) override {}
 #else
   void GetTimezonesForRegions(ResponseCallback callback) override {}

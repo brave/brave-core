@@ -26,6 +26,11 @@ mojom::ConnectionState BraveVpnServiceImpl::GetConnectionState() const {
   return connection_state_;
 }
 
+std::string BraveVpnServiceImpl::GetLastConnectionError() const {
+  NOTIMPLEMENTED();
+  return std::string();
+}
+
 void BraveVpnServiceImpl::RecordWidgetUsageMetrics(bool new_usage) {
   NOTIMPLEMENTED();
 }
