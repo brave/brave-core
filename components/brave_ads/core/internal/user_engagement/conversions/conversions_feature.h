@@ -11,6 +11,10 @@
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 
+namespace base {
+class TimeDelta;
+}  // namespace base
+
 namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kConversionsFeature);
@@ -26,6 +30,11 @@ inline constexpr base::FeatureParam<std::string>
 // Set to 0 to never cap creative set conversions.
 inline constexpr base::FeatureParam<size_t> kCreativeSetConversionCap{
     &kConversionsFeature, "creative_set_conversion_cap", 0};
+
+// The maximum time to look back when fetching ad events for potential
+// conversions.
+inline constexpr base::FeatureParam<base::TimeDelta> kAdEventsTimeWindow{
+    &kConversionsFeature, "ad_events_time_window", base::Days(30)};
 
 }  // namespace brave_ads
 
