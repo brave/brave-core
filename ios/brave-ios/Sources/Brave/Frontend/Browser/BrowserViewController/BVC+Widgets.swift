@@ -16,6 +16,19 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
     updateWidgetFavoritesData()
   }
 
+  /// Writes the set of shortcuts that are currently unavailable (e.g. disabled
+  /// by a Brave Origin policy) to shared storage so the Shortcuts widgets can
+  /// hide them from both the configuration picker and installed widgets.
+  func updateWidgetShortcutsData() {
+    let disabled = WidgetShortcut.disabledWidgetShortcuts(
+      prefs: profileController.profile.prefs,
+      isWalletAvailable: profileController.braveWalletAPI.isAllowed
+    )
+    Task {
+      await DisabledShortcutsWidgetData.updateDisabledShortcuts(disabled)
+    }
+  }
+
   func updateWidgetFavoritesData() {
     guard let frc = widgetBookmarksFRC else { return }
     try? frc.performFetch()

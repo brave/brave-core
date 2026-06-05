@@ -527,6 +527,7 @@ public class BrowserViewController: UIViewController {
     try? widgetBookmarksFRC?.performFetch()
 
     updateWidgetFavoritesData()
+    updateWidgetShortcutsData()
 
     // Eliminate the older usage days
     // Used in App Rating criteria
