@@ -3199,7 +3199,16 @@ public class BytecodeTest {
 
     private Class getClassForPath(String path) {
         try {
-            Class c = Class.forName(path.replace("/", "."));
+            // Load the class without running its static initializers. This test only
+            // inspects class structure via reflection, and initializing some classes off
+            // the UI thread now trips thread-assertions (e.g. BookmarkBridge eagerly
+            // creates a OneshotSupplierImpl/Promise that asserts it is not constructed on
+            // the instrumentation thread).
+            Class c =
+                    Class.forName(
+                            path.replace("/", "."),
+                            /* initialize= */ false,
+                            getClass().getClassLoader());
             return c;
         } catch (ClassNotFoundException e) {
             return null;
