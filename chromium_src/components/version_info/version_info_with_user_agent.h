@@ -6,22 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_VERSION_INFO_WITH_USER_AGENT_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_VERSION_INFO_WITH_USER_AGENT_H_
 
-#include <string>
-
+// Defines the BRAVE_CHROMIUM_VERSION macro substituted into
+// GetProductNameAndVersionForUserAgent() by
+// rewrite/.../version_info_with_user_agent.h.yaml.
 #include "brave/components/version_info/version_info_values.h"
 
-#define GetProductNameAndVersionForUserAgent \
-  GetProductNameAndVersionForUserAgent_Unused
-
 #include <components/version_info/version_info_with_user_agent.h>  // IWYU pragma: export
-#undef GetProductNameAndVersionForUserAgent
-
-namespace version_info {
-
-constexpr std::string GetProductNameAndVersionForUserAgent() {
-  return "Chrome/" + std::string(constants::kBraveChromiumVersion);
-}
-
-}  // namespace version_info
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_VERSION_INFO_VERSION_INFO_WITH_USER_AGENT_H_

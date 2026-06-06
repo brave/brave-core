@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Report Brave's Chromium version in the User-Agent product string by
+      swapping Chromium's PRODUCT_VERSION for our BRAVE_CHROMIUM_VERSION.
+    re_pattern: '\bPRODUCT_VERSION\b'
+    replace: 'BRAVE_CHROMIUM_VERSION'
