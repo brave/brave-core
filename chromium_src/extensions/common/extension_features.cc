@@ -7,14 +7,6 @@
 
 #include <extensions/common/extension_features.cc>
 
-namespace extensions_features {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kExtensionManifestV2ExceptionList, base::FEATURE_ENABLED_BY_DEFAULT},
-}});
-
-}  // namespace extensions_features
-
 // Adds Brave's MV2 extension features here so that we don't have to patch
 // upstream GN files with dependencies.
 namespace extensions_mv2::features {

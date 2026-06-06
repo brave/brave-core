@@ -86,7 +86,6 @@
 #include "components/device_signals/core/common/signals_features.h"
 #include "components/enterprise/connectors/core/features.h"
 #include "components/translate/core/common/translate_util.h"
-#include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
 #endif
 
@@ -284,9 +283,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
-#if !BUILDFLAG(IS_ANDROID)
-      &extensions_features::kExtensionManifestV2ExceptionList,
-#endif
       &features::kBookmarkTriggerForPrerender2KillSwitch,
       &features::kCertificateTransparencyAskBeforeEnabling,
       &features::kDesktopPWAsTabStripSettings,
