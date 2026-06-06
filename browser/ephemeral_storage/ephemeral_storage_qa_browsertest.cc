@@ -322,7 +322,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
-    chrome::NewTab(browser());
+    chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
     ASSERT_EQ(2, tabs_->count());
     ASSERT_EQ(1, tabs_->active_index());
 
@@ -365,7 +365,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
-    chrome::NewTab(browser());
+    chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
     ASSERT_EQ(2, tabs_->count());
     ASSERT_EQ(1, tabs_->active_index());
 
@@ -390,7 +390,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
-    chrome::NewTab(browser());
+    chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
     ASSERT_EQ(2, tabs_->count());
     ASSERT_EQ(1, tabs_->active_index());
 
