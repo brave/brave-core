@@ -106,6 +106,8 @@ source_set("impl") {
     sources += [
       "application_state/application_state_monitor/application_state_monitor_android.cc",
       "application_state/application_state_monitor/application_state_monitor_android.h",
+      "application_state/application_state_util_android.cc",
+      "application_state/application_state_util_android.h",
       "application_state/notification_helper/notification_helper_impl_android.cc",
       "application_state/notification_helper/notification_helper_impl_android.h",
     ]

@@ -7,8 +7,9 @@
 
 #include <windows.h>
 
+#include <memory>
+
 #include "base/functional/bind.h"
-#include "base/no_destructor.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
@@ -18,9 +19,8 @@
 namespace brave_ads {
 
 // static
-ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
-  static base::NoDestructor<ApplicationStateMonitorWin> instance;
-  return instance.get();
+std::unique_ptr<ApplicationStateMonitor> ApplicationStateMonitor::Create() {
+  return std::make_unique<ApplicationStateMonitorWin>();
 }
 
 ApplicationStateMonitorWin::ApplicationStateMonitorWin() {

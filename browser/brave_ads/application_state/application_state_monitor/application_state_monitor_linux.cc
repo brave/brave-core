@@ -17,8 +17,9 @@
 #include "ui/base/x/x11_util.h"
 // clang-format on
 
+#include <memory>
+
 #include "base/functional/bind.h"
-#include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -31,9 +32,8 @@
 namespace brave_ads {
 
 // static
-ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
-  static base::NoDestructor<ApplicationStateMonitorLinux> instance;
-  return instance.get();
+std::unique_ptr<ApplicationStateMonitor> ApplicationStateMonitor::Create() {
+  return std::make_unique<ApplicationStateMonitorLinux>();
 }
 
 ApplicationStateMonitorLinux::ApplicationStateMonitorLinux() {
@@ -88,10 +88,6 @@ void ApplicationStateMonitorLinux::OnBrowserDeactivated(
       base::BindOnce(
           &ApplicationStateMonitorLinux::NotifyBrowserDidResignActive,
           weak_ptr_factory_.GetWeakPtr()));
-}
-
-void ApplicationStateMonitorLinux::Reset() {
-  browser_collection_observation_.Reset();
 }
 
 }  // namespace brave_ads

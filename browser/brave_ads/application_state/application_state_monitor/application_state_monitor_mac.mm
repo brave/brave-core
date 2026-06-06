@@ -7,11 +7,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include <memory>
+
 #include "base/apple/foundation_util.h"
 #include "base/apple/osstatus_logging.h"
 #include "base/mac/mac_util.h"
 #include "base/memory/raw_ptr.h"
-#include "base/no_destructor.h"
 
 @interface ApplicationStateMonitorDelegateMac : NSObject {
  @private
@@ -71,9 +72,8 @@ class ApplicationStateMonitorMac::Delegate {
 };
 
 // static
-ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
-  static base::NoDestructor<ApplicationStateMonitorMac> instance;
-  return instance.get();
+std::unique_ptr<ApplicationStateMonitor> ApplicationStateMonitor::Create() {
+  return std::make_unique<ApplicationStateMonitorMac>();
 }
 
 ApplicationStateMonitorMac::ApplicationStateMonitorMac() {

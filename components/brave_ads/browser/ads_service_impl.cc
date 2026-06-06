@@ -149,6 +149,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
+    std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
     ResourceComponent& resource_component,
     history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -177,10 +178,12 @@ AdsServiceImpl::AdsServiceImpl(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       rewards_service_(rewards_service),
 #endif
+      application_state_monitor_(std::move(application_state_monitor)),
       policy_initialization_waiter_(std::move(policy_initialization_waiter)),
       bat_ads_client_associated_receiver_(this) {
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
+  CHECK(application_state_monitor_);
   CHECK(policy_initialization_waiter_);
 
   if (!http_client_ || !history_service_ || !host_content_settings_map_) {
@@ -468,7 +471,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 #endif
 
   application_state_monitor_observation_.Observe(
-      ApplicationStateMonitor::GetInstance());
+      application_state_monitor_.get());
 
   MaybeShowOnboardingNotification();
 
@@ -1087,11 +1090,6 @@ void AdsServiceImpl::Shutdown() {
   policy_initialization_waiter_.reset();
 
   ShutdownAdsService();
-
-  // ApplicationStateMonitor is only used by this service, it needs to be reset
-  // to let go of the BrowserCollectionObserver before GlobalFeatures object is
-  // destoryed.
-  ApplicationStateMonitor::GetInstance()->Reset();
 }
 
 void AdsServiceImpl::AddBatAdsObserver(
@@ -1438,8 +1436,7 @@ void AdsServiceImpl::IsNetworkConnectionAvailable(
 }
 
 void AdsServiceImpl::IsBrowserActive(IsBrowserActiveCallback callback) {
-  std::move(callback).Run(
-      ApplicationStateMonitor::GetInstance()->IsBrowserActive());
+  std::move(callback).Run(application_state_monitor_->IsBrowserActive());
 }
 
 void AdsServiceImpl::IsBrowserInFullScreenMode(
