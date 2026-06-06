@@ -277,9 +277,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
-#if !BUILDFLAG(IS_ANDROID)
-      &extensions_features::kExtensionManifestV2ExceptionList,
-#endif
       &features::kBookmarkTriggerForPrerender2KillSwitch,
       &features::kCertificateTransparencyAskBeforeEnabling,
       &features::kDesktopPWAsTabStripSettings,
