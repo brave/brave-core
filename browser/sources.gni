@@ -696,15 +696,6 @@ if (is_win || is_android) {
   ]
 }
 
-if (is_win && is_official_build) {
-  brave_chrome_browser_sources += [
-    "//chrome/browser/google/google_update_win.cc",
-    "//chrome/browser/google/google_update_win.h",
-    "//chrome/browser/google/switches.cc",
-    "//chrome/browser/google/switches.h",
-  ]
-}
-
 brave_chrome_browser_public_deps = [
   "//brave/app/vector_icons",
   "//brave/browser:browser_process",
