@@ -7,9 +7,12 @@
 
 #include <utility>
 
-// The bubble delegate doesn't allow to open popups and we use
-// the Browser window delegate to redirect opening new popup content
-// to the Browser delegate instead of default one.
+#include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+
+// The bubble doesn't allow opening popups, so we redirect new popup content to
+// the browser window via chrome::AddWebContents() (forcing NEW_POPUP), causing
+// it to open as a separate popup window instead of being suppressed.
 // In order to close all popups we also save tab ids of each opened popup window
 // and close all with the bubble together.
 
@@ -17,9 +20,9 @@
 #include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc>
 #undef AddNewContents
 
-void WebUIContentsWrapper::SetWebContentsAddNewContentsDelegate(
-    base::WeakPtr<content::WebContentsDelegate> browser_delegate) {
-  browser_delegate_ = std::move(browser_delegate);
+void WebUIContentsWrapper::SetWebContentsAddNewContentsBrowser(
+    base::WeakPtr<BrowserWindowInterface> browser) {
+  browser_ = std::move(browser);
 }
 
 void WebUIContentsWrapper::CloseTrackedPopups() {
@@ -52,16 +55,16 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  if (!browser_delegate_) {
+  if (!browser_) {
     return host_ ? host_->AddNewContents(
                        source, std::move(new_contents), target_url, disposition,
                        window_features, user_gesture, was_blocked)
                  : nullptr;
   }
-  auto* contents = browser_delegate_->AddNewContents(
-      source, std::move(new_contents), target_url,
-      WindowOpenDisposition::NEW_POPUP, window_features, user_gesture,
-      was_blocked);
+  auto* contents = chrome::AddWebContents(
+      browser_.get(), source, std::move(new_contents), target_url,
+      WindowOpenDisposition::NEW_POPUP, window_features,
+      NavigateParams::WindowAction::kShowWindow, user_gesture);
   if (!contents) {
     return nullptr;
   }

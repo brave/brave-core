@@ -11,10 +11,11 @@
 #include "base/values.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog_delegate.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "content/public/browser/web_ui.h"
@@ -24,7 +25,7 @@
 
 FullDiskAccessConfirmDialogDelegate::FullDiskAccessConfirmDialogDelegate(
     content::WebContents* web_contents,
-    Browser* browser)
+    BrowserWindowInterface* browser)
     : TabModalConfirmDialogDelegate(web_contents), browser_(browser) {}
 
 FullDiskAccessConfirmDialogDelegate::~FullDiskAccessConfirmDialogDelegate() =
@@ -57,7 +58,7 @@ void FullDiskAccessConfirmDialogDelegate::OnAccepted() {
 
 void FullDiskAccessConfirmDialogDelegate::OnLinkClicked(
     WindowOpenDisposition disposition) {
-  const int target_index = browser_->tab_strip_model()->active_index() + 1;
+  const int target_index = browser_->GetTabStripModel()->active_index() + 1;
   // Add import help tab right after current settings tab.
   chrome::AddTabAt(browser_, GURL(kImportDataHelpURL), target_index,
                    true /* foreground */);
