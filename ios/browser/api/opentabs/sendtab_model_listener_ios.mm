@@ -38,11 +38,10 @@ SendTabToSelfModelListenerIOS::~SendTabToSelfModelListenerIOS() {
 }
 
 void SendTabToSelfModelListenerIOS::OnEntriesAddedRemotely(
-    const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
-        new_entries) {
+    base::span<const send_tab_to_self::SendTabToSelfEntry* const> new_entries) {
   NSMutableArray<IOSOpenDistantTab*>* entries = [[NSMutableArray alloc] init];
 
-  for (const send_tab_to_self::SendTabToSelfEntry* entry : new_entries) {
+  for (const send_tab_to_self::SendTabToSelfEntry* const entry : new_entries) {
     IOSOpenDistantTab* distantTab = [[IOSOpenDistantTab alloc]
         initWithURL:net::NSURLWithGURL(entry->GetURL())
               title:base::SysUTF8ToNSString(entry->GetTitle())
@@ -58,7 +57,7 @@ void SendTabToSelfModelListenerIOS::OnEntriesAddedRemotely(
 }
 
 void SendTabToSelfModelListenerIOS::OnEntriesRemovedRemotely(
-    const std::vector<std::string>& guids) {
+    base::span<const std::string> guids) {
   if ([observer_
           respondsToSelector:@selector(sendTabToSelfEntriesRemovedRemotely)]) {
     [observer_ sendTabToSelfEntriesRemovedRemotely];
@@ -66,7 +65,7 @@ void SendTabToSelfModelListenerIOS::OnEntriesRemovedRemotely(
 }
 
 void SendTabToSelfModelListenerIOS::OnEntriesOpenedRemotely(
-    const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
+    base::span<const send_tab_to_self::SendTabToSelfEntry* const>
         opened_entries) {
   if ([observer_
           respondsToSelector:@selector(sendTabToSelfEntriesOpenedRemotely)]) {
