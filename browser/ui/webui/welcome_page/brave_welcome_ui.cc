@@ -120,6 +120,10 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
       network::mojom::CSPDirectiveName::WorkerSrc,
       "worker-src blob: chrome://resources 'self';");
 
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      "trusted-types static-types lottie-worker-script-loader;");
+
   web_ui->AddMessageHandler(
       std::make_unique<WelcomeDOMHandler>(Profile::FromWebUI(web_ui)));
   web_ui->AddMessageHandler(
