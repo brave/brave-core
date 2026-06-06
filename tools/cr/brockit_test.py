@@ -711,5 +711,52 @@ class BrockitTest(unittest.TestCase):
         self.assertNotIn('not_l10n.txt', committed_files)
 
 
+class MarkChangeTaskTest(unittest.TestCase):
+    """Tests for the `reassign` and `drop` change-marking commands."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        self.brave = self.fake_chromium_src.brave
+
+    def _git(self, *args: str) -> str:
+        return self.fake_chromium_src._run_git_command(list(args), self.brave)
+
+    def _make_target(self, subject: str) -> str:
+        """Commits a change with `subject` and returns its `%h` short hash."""
+        self.fake_chromium_src.write_and_stage_file('foo.txt', 'content',
+                                                    self.brave)
+        self.fake_chromium_src.commit(subject, self.brave)
+        return self._git('log', '-1', '--format=%h')
+
+    def _assert_marks_change(self, task, prefix: str) -> None:
+        """Runs `task` over a fresh target and asserts it produced an empty
+        `<prefix><hash>! <subject>` commit on top."""
+        short_hash = self._make_target('A change to mark')
+
+        task.execute(change='HEAD')
+
+        self.assertEqual(self._git('log', '-1', '--format=%s'),
+                         f'{prefix}{short_hash}! A change to mark')
+        # The marking commit must be empty: no diff against its parent.
+        self.assertEqual(self._git('diff', '--name-only', 'HEAD~1', 'HEAD'),
+                         '')
+
+    def test_reassign_creates_empty_reassign_commit(self):
+        self._assert_marks_change(brockit.Reassign(), 'reassign!')
+
+    def test_drop_creates_empty_drop_commit(self):
+        self._assert_marks_change(brockit.Drop(), 'drop!')
+
+    def test_drop_rejects_staged_files(self):
+        """Marking refuses to run while there are staged changes."""
+        self._make_target('A change to mark')
+        self.fake_chromium_src.write_and_stage_file('staged.txt', 'wip',
+                                                    self.brave)
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Drop().execute(change='HEAD')
+
+
 if __name__ == '__main__':
     unittest.main()
