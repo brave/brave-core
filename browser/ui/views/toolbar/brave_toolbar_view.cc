@@ -56,6 +56,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
+#include "ui/views/bubble/bubble_anchor.h"
 #include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/window/hit_test_utils.h"
@@ -582,9 +583,9 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
 
   // Passing `nullptr` to `highlighted_button` as this argument only gets used
   // by the legacy page action framework.
-  BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(),
-                                 /*highlighted_button=*/nullptr, browser_, url,
-                                 already_bookmarked);
+  BookmarkBubbleView::ShowBubble(
+      views::BubbleAnchor(anchor_view), GetWebContents(),
+      /*highlighted_button=*/nullptr, browser_, url, already_bookmarked);
 }
 
 void BraveToolbarView::VisibilityChanged(views::View* starting_from,
