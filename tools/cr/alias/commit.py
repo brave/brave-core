@@ -15,6 +15,7 @@ Usage
 
   git cr commit -m "Fix login button alignment"
   git cr commit --tagged WIP -m "Work in progress"
+  git cr commit --fixup=reassign:<ref>   # shortcut for `brockit.py reassign`
 
   Custom flags (forwarded to the commit-msg hook via environment variables):
     --tagged    Comma-separated tags            → $tags
@@ -31,6 +32,8 @@ import os
 import platform
 import stat
 import subprocess
+from dataclasses import dataclass
+from typing import ClassVar, NoReturn
 
 import _boot  # noqa: F401
 from alias.base import (HOOK_DEST, WINDOWS_SHIM, UserValidationError,
@@ -78,8 +81,99 @@ def _run_commit(
                           env=env).returncode
 
 
+class _LenientArgumentParser(argparse.ArgumentParser):
+    """An `ArgumentParser` that raises instead of terminating on error.
+
+    This class is useful when parsing shortcuts, as we just bail out when the
+    arguments don't match.
+    """
+
+    def error(self, message: str) -> NoReturn:
+        raise ValueError(message)
+
+
+@dataclass(frozen=True)
+class _ReassignShortcut:
+    """The `git cr commit --fixup=reassign:<ref>` shortcut.
+
+    This is a convenience shortcut for brockit's `reassign` task. It can be used
+    either as:
+      git cr commit --fixup=reassign:HEAD
+
+    or
+      git cr commit --fixup reassign:HEAD
+
+    `from_args` is the entry point: it returns a ready-to-run instance when
+    the shortcut is present and valid, or None when the args are an ordinary
+    commit.
+    """
+
+    # Value prefix that selects this mode, mirroring git's own `amend:` /
+    # `reword:` fixup modes.
+    _PREFIX: ClassVar[str] = 'reassign:'
+
+    # The commit reference whose authorship is being reassigned.
+    target: str
+
+    @staticmethod
+    def from_args(args: list[str]) -> _ReassignShortcut | None:
+        """Build the shortcut from *args*, or return None when it isn't used.
+
+        This function checks for the presence of the reassign shortcut use that
+        we are interested in, and if found, parses out the args provided,
+        strictly looking only for `--fixup` and validating the format used for
+        its value.
+        """
+        if not any(_ReassignShortcut._PREFIX in arg for arg in args):
+            return None
+
+        parser = _LenientArgumentParser(add_help=False)
+        parser.add_argument('--fixup')
+        try:
+            parsed, other_args = parser.parse_known_args(args)
+        except ValueError:
+            return None
+
+        fixup = parsed.fixup
+        if fixup is None or not fixup.startswith(_ReassignShortcut._PREFIX):
+            return None
+        if other_args:
+            raise UserValidationError(
+                'git_cr: --fixup=reassign:<ref> cannot be combined with '
+                f'other arguments; remove: {" ".join(other_args)}')
+        target = fixup[len(_ReassignShortcut._PREFIX):]
+        if not target:
+            raise UserValidationError(
+                'git_cr: --fixup=reassign: requires a commit reference, '
+                'e.g. --fixup=reassign:HEAD~2')
+        return _ReassignShortcut(target)
+
+    def run(self) -> int:
+        """Run brockit's `Reassign` task for the captured target.
+
+        The commit-msg hook is irrelevant (brockit commits with --no-verify),
+        so it is not checked.
+        """
+        # Imported lazily: brockit is a heavy module, so we only import it when
+        # needed.
+        import brockit
+        try:
+            brockit.Reassign().run(change=self.target)
+        except (brockit.InvalidInputException, brockit.BadOutcomeException,
+                brockit.ActionNeededException):
+            # Handling brockit exceptions as failures to create the reassingment
+            # commit.
+            return 1
+        return 0
+
+
 def cmd_commit(args: list[str]) -> int:
     """Parse commit flags and invoke git commit with injected environment."""
+    # Let's try first to check for the reassignment shortcut being used.
+    reassign = _ReassignShortcut.from_args(args)
+    if reassign is not None:
+        return reassign.run()
+
     parser = argparse.ArgumentParser(
         prog='git cr commit',
         description='git commit wrapper with brave-core hook flags',
