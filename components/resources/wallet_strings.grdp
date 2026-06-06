@@ -630,6 +630,7 @@
   <message name="IDS_BRAVE_WALLET_WARNING" desc="Warning label">Warning</message>
   <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_TITLE" desc="Approval for all final warning title">Give this site access to all your NFTs?</message>
   <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_DESCRIPTION" desc="Approval for all final warning description">You're about to let <ph name="ADDRESS">$1<ex>0xfdafdsfa</ex></ph> transfer every NFT in this wallet, including any you receive later.</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_DESCRIPTION_MULTIPLE" desc="Approval for all final warning description">The following operators can transfer every NFT in this wallet, including future ones:</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_ANYWAY" desc="Confirm anyway button text">Confirm anyway</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN" desc="NFT detail screen blockchain category">Blockchain</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category">Token standard</message>
