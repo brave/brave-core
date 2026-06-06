@@ -65,6 +65,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#endif
+
 using content::StoragePartition;
 using testing::Contains;
 using testing::ElementsAre;
@@ -2565,6 +2569,12 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
+#if BUILDFLAG(IS_MAC)
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   histogram_tester_->ExpectBucketCount(
       kBraveWalletNewUserReturningHistogramName, 0, 1);
   GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
@@ -2585,6 +2595,12 @@ TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
+#if BUILDFLAG(IS_MAC)
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 
   task_environment_.RunUntilIdle();
@@ -2603,6 +2619,12 @@ TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, LastUsageTimeMetric) {
+#if BUILDFLAG(IS_MAC)
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   histogram_tester_->ExpectTotalCount(kBraveWalletLastUsageTimeHistogramName,
                                       0);
 
@@ -2681,6 +2703,12 @@ TEST_F(BraveWalletServiceUnitTest, SetPrivateWindowsEnabled) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
+#if BUILDFLAG(IS_MAC)
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   histogram_tester_->ExpectTotalCount(kBraveWalletMonthlyHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kBraveWalletWeeklyHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kBraveWalletDailyHistogramName, 0);
