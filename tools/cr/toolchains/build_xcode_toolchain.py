@@ -124,11 +124,9 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from rich.console import Console
 from rich.progress import (BarColumn, DownloadColumn, Progress,
                            TaskProgressColumn, TextColumn, TimeRemainingColumn,
                            TransferSpeedColumn)
-from rich.syntax import Syntax
 
 # Gitiles raw-text endpoint for `build/xcode_binaries.yaml` at a given
 # Chromium tag.
@@ -445,6 +443,27 @@ class MacSdkInfo:
     # Product build number for that SDK, e.g. `25F70`.
     product_build_version: str
 
+    @staticmethod
+    def from_gni(mac_sdk_gni_text: str) -> MacSdkInfo:
+        """Parse the macOS SDK pin out of `build/config/mac/mac_sdk.gni`.
+
+        `mac_sdk_gni_text` is the verbatim file contents. gn auto-formats these
+        assignments as `key = "value"`, so a simple regex recovers each value.
+
+        Raises:
+            RuntimeError: if either expected assignment is missing.
+        """
+
+        def gn_value(key: str) -> str:
+            match = re.search(rf'{key} = "([^"]+)"', mac_sdk_gni_text)
+            if not match:
+                raise RuntimeError(f'{key} not found in mac_sdk.gni')
+            return match.group(1)
+
+        return MacSdkInfo(
+            sdk_version=gn_value('mac_sdk_official_version'),
+            product_build_version=gn_value('mac_sdk_official_build_version'))
+
 
 @dataclasses.dataclass(frozen=True)
 class XcodeInfo:
@@ -480,6 +499,46 @@ class XcodeRelease:
     # field, used to verify the download. `None` if the catalog entry lists no
     # checksum, which `_resolve_xcode_release` rejects as unverifiable.
     sha1: str | None
+
+
+def toolchain_archive_name(sdk_info: MacSdkInfo) -> str:
+    """`xcode-hermetic-toolchain-<sdk-version>-<sdk-build>.tar.gz` for an SDK.
+
+    The deployed Xcode always ships the exact SDK pinned in `mac_sdk.gni`, so
+    this pair alone uniquely identifies the toolchain archive.
+    """
+    return (f'xcode-hermetic-toolchain-{sdk_info.sdk_version}'
+            f'-{sdk_info.product_build_version}.tar.gz')
+
+
+def toolchain_index_name(sdk_info: MacSdkInfo) -> str:
+    """The sibling YAML index name sharing the archive's name stem."""
+    return toolchain_archive_name(sdk_info).removesuffix('.tar.gz') + '.yaml'
+
+
+def fetch_published_index(sdk_info: MacSdkInfo) -> dict:
+    """Download and parse the published toolchain index for an SDK pin.
+
+    Resolves the sibling YAML index for `sdk_info` on the public download
+    bucket, parses it, and returns it verbatim -- the mapping `_write_index`
+    published (`url`, `sha256sum`, `xcode_version`, `xcode_build`,
+    `metal_build`, ...). This is the entry point brockit's
+    `update-xcode-toolchain` consumes, mirroring how
+    `build_rust_toolchain.rust_toolchain_extra_dep` serves the Rust toolchain.
+
+    Raises:
+        RuntimeError: if the index cannot be fetched.
+    """
+    index_url = PACKAGE_DOWNLOAD_URL_BASE + toolchain_index_name(sdk_info)
+    logging.debug('Fetching hermetic Xcode toolchain index %s', index_url)
+    try:
+        with urllib.request.urlopen(
+                index_url, timeout=HTTP_FETCH_TIMEOUT_SECS) as response:
+            return yaml.safe_load(response)
+    except urllib.error.URLError as e:
+        raise RuntimeError(
+            f'Failed to fetch hermetic Xcode toolchain index {index_url}: {e}'
+        ) from e
 
 
 class ToolchainBuilder:
@@ -573,11 +632,8 @@ class ToolchainBuilder:
         if self._upstream_mac_sdk_info is None:
             raise RuntimeError(
                 '_load_upstream_mac_sdk_info() must run before _archive_path')
-        return self._out_dir / (
-            'xcode-hermetic-toolchain'
-            f'-{self._upstream_mac_sdk_info.sdk_version}'
-            f'-{self._upstream_mac_sdk_info.product_build_version}'
-            '.tar.gz')
+        return self._out_dir / toolchain_archive_name(
+            self._upstream_mac_sdk_info)
 
     @property
     def _index_path(self) -> Path:
@@ -743,18 +799,8 @@ class ToolchainBuilder:
         from these sources, storing them in their corresponding fields.
         """
         url = MAC_SDK_GNI_URL_TEMPLATE.format(tag=self._chromium_tag)
-        text = _fetch_gitiles_raw(url)
-
-        def gn_value(key: str) -> str:
-            # gn auto-formats assignments as `key = "value"`.
-            match = re.search(rf'{key} = "([^"]+)"', text)
-            if not match:
-                raise RuntimeError(f'{key} not found in {url}')
-            return match.group(1)
-
-        self._upstream_mac_sdk_info = MacSdkInfo(
-            sdk_version=gn_value('mac_sdk_official_version'),
-            product_build_version=gn_value('mac_sdk_official_build_version'))
+        self._upstream_mac_sdk_info = MacSdkInfo.from_gni(
+            _fetch_gitiles_raw(url))
         logging.info('Upstream macOS SDK version: %s (build %s)',
                      self._upstream_mac_sdk_info.sdk_version,
                      self._upstream_mac_sdk_info.product_build_version)
@@ -1103,8 +1149,7 @@ class ToolchainBuilder:
                               encoding='utf-8',
                               newline='')
         logging.info('Wrote toolchain index %s:', index_path)
-        Console().print(Syntax(index_path.read_bytes().decode('utf-8'),
-                               'yaml'))
+        print(index_path.read_bytes().decode('utf-8'))
 
     def run(self, clear: bool = False, force_overwrite: bool = False) -> None:
         """Execute the full inspect-stage-read-pack pipeline.

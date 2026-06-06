@@ -5,64 +5,84 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Tests for `brockit.UpdateXcodeToolchain`.
 
-The file is split in two layers, matching `rebase_v2_test.py`'s shape:
+The file is split into layers, matching `update_rust_wasm_toolchain_test.py`'s
+shape:
 
-* `ReplaceConstantTest` exercises the pure file-content transform used to
-  rewrite `build/mac/download_hermetic_xcode.py`. No git involved.
+* `ProvenanceCommentTest` exercises the pure provenance-comment transform used
+  to rewrite `build/mac/download_hermetic_xcode.py`. No git or network involved.
 
-* `UpdateXcodeToolchainExecuteTest` drives
-  `UpdateXcodeToolchain.execute` end-to-end against a `FakeChromiumRepo`,
-  with the commit-msg hook installed so the `tags=toolchain` /
-  `culprit=<hash>` env wiring is validated through the same pipeline that
-  ships in production.
+* `UpdateXcodeToolchainExecuteTest` drives `UpdateXcodeToolchain.execute`
+  end-to-end against a `FakeChromiumRepo` (the published-index fetch is faked,
+  so no network), with the commit-msg hook installed so the `tags=toolchain` /
+  `culprit=<hash>` env wiring is validated through the same pipeline that ships
+  in production.
 """
 
 from __future__ import annotations
 
 import shutil
 import stat
-import subprocess
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import brockit
-import repository
 from test.fake_chromium_repo import FakeChromiumRepo
 
-# Source of the commit-msg hook. The integration tests symlink this into
+# Source of the commit-msg hook. The integration tests copy this into
 # `.git/hooks/commit-msg` so the `tags` / `culprit` env vars are interpreted
 # exactly the way they are in production.
 HOOK_SOURCE: Path = (Path(__file__).resolve().parent / 'alias' /
                      'commit-msg.py')
 
-# A representative archive URL emitted by
-# `tools/cr/toolchains/build_xcode_toolchain.py`. The six dash-separated tokens
-# in the filename are what `UpdateXcodeToolchain.execute` consumes.
-TOOLCHAIN_URL = (
-    'https://example.invalid/xcode-hermetic-toolchain/'
-    'xcode-hermetic-toolchain-26.5-17F42-26.5-25F70-for-upstream-26.5-25F70'
-    '.tar.gz')
+# The Chromium tag `execute` resolves `--to` against; the mac_sdk.gni bump
+# commit is tagged with it so the SDK pin can be read at the ref.
+CHROMIUM_TAG = '150.0.7850.1'
 
-# The starting on-disk content of `build/mac/download_hermetic_xcode.py`
-# before the bump. Kept minimal -- the six constants are the only thing
-# `UpdateXcodeToolchain.execute` rewrites.
+# What the faked `build_xcode_toolchain.fetch_published_index` returns -- the
+# published index for the bumped SDK (26.5 / 25F70). The SDK version/build are
+# carried by the index `url`/name; the fields below are what brockit pins and
+# titles the commit from.
+FAKE_INDEX = {
+    'url': ('https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.'
+            'on.aws/xcode-hermetic-toolchain/'
+            'xcode-hermetic-toolchain-26.5-25F70.tar.gz'),
+    'sha256sum': 'b' * 64,
+    'xcode_version': '26.5',
+    'xcode_build': '17F42',
+    'metal_build': '17E188',
+    'chromium_tag': CHROMIUM_TAG,
+}
+
+# The starting on-disk content of `build/mac/download_hermetic_xcode.py` before
+# the bump. The archive hash, the two SDK constants, the provenance comment, and
+# the `MAC_MINIMUM_OS_VERSION` block are what `UpdateXcodeToolchain.execute`
+# rewrites; everything else must survive untouched.
 HERMETIC_XCODE_SCRIPT_INITIAL = """\
 # Sample header.
 
-XCODE_VERSION = '26.4'
-XCODE_BUILD_VERSION = '17E192'
+MAC_BINARIES_HASH = 'oldhash'
 
+# This contains binaries from Xcode 26.4 (17E202) along with the macOS 26.4 SDK
+# (25E251) and the Metal toolchain (17E150).
 MAC_SDK_OFFICIAL_VERSION = '26.4'
-MAC_SDK_OFFICIAL_BUILD_VERSION = '25E236'
+MAC_SDK_OFFICIAL_BUILD_VERSION = '25E251'
+XCODE_TOOLCHAIN_DOWNLOAD_URL = (
+    'https://example.invalid/xcode-hermetic-toolchain/xcode-hermetic-toolchain-'
+    f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}.tar.gz')
 
-MAC_SDK_UPSTREAM_VERSION = '26.4'
-MAC_SDK_UPSTREAM_BUILD_VERSION = '25E236'
+# The toolchain will not be downloaded if the minimum OS version is not met. 19
+# is the Darwin major version number for macOS 10.15. Xcode 26.4 17E202 only
+# runs on macOS 26.1 and newer, but some bots are still running older OS
+# versions. macOS 10.15.4, the OS minimum through Xcode 12.4, still seems to
+# work.
+MAC_MINIMUM_OS_VERSION = [19, 4]
 """
 
-# The starting content of `build/config/mac/mac_sdk.gni` on the chromium
-# side, before the upstream switch. The first commit that introduces the
-# matching upstream build number is what `_resolve_chromium_commit`'s
-# pickaxe is supposed to find.
+# The starting content of `build/config/mac/mac_sdk.gni` on the chromium side,
+# before the upstream switch. The first commit that introduces the matching
+# upstream build number is what `_resolve_chromium_culprit`'s pickaxe is
+# supposed to find.
 MAC_SDK_GNI_INITIAL = """\
 mac_sdk_official_version = "26.4"
 mac_sdk_official_build_version = "25E236"
@@ -73,58 +93,62 @@ mac_sdk_official_version = "26.5"
 mac_sdk_official_build_version = "25F70"
 """
 
+# Chromium's `build/mac_toolchain.py` at the bumped ref. Its
+# `MAC_MINIMUM_OS_VERSION` block (a distinct comment and a bumped `[20, 0]`
+# value) is what `execute` lifts verbatim into the downloader. The surrounding
+# lines exist so the extraction regex has to isolate just the block.
+MAC_TOOLCHAIN_PY = """\
+# Upstream header.
+MAC_BINARIES_TAG = 'sometag'
 
-class ReplaceConstantTest(unittest.TestCase):
-    """Tests for `UpdateXcodeToolchain._replace_constant`."""
+# The toolchain will not be downloaded if the minimum OS version is not met. 19
+# is the Darwin major version number for macOS 10.15. Xcode 26.5 17F42 only
+# runs on macOS 26.3 and newer, but some bots are still running older OS
+# versions. macOS 10.15.4, the OS minimum through Xcode 12.4, still seems to
+# work.
+MAC_MINIMUM_OS_VERSION = [20, 0]
 
-    SAMPLE = ("XCODE_VERSION = '26.4'\n"
-              "XCODE_BUILD_VERSION = '17E192'\n"
-              'MAC_SDK_OFFICIAL_VERSION = "26.4"\n')
+OTHER_CONSTANT = 1
+"""
 
-    def test_rewrites_single_quoted_value(self):
-        result = brockit.UpdateXcodeToolchain._replace_constant(
-            self.SAMPLE, 'XCODE_VERSION', '26.5')
-        self.assertIn("XCODE_VERSION = '26.5'", result)
-        # Untouched lines pass through unchanged.
-        self.assertIn("XCODE_BUILD_VERSION = '17E192'", result)
-        self.assertIn('MAC_SDK_OFFICIAL_VERSION = "26.4"', result)
 
-    def test_rewrites_double_quoted_value(self):
-        """Double-quoted assignments are matched and normalised to
-        single-quoted output (matching the script's existing style)."""
-        result = brockit.UpdateXcodeToolchain._replace_constant(
-            self.SAMPLE, 'MAC_SDK_OFFICIAL_VERSION', '26.5')
-        self.assertIn("MAC_SDK_OFFICIAL_VERSION = '26.5'", result)
+class ProvenanceCommentTest(unittest.TestCase):
+    """Tests for `UpdateXcodeToolchain._provenance_comment`."""
 
-    def test_replaces_only_first_occurrence(self):
-        """The pattern is anchored at line start with `count=1`. A bare
-        substring match elsewhere in the file (e.g. a comment that
-        mentions `XCODE_VERSION`) does not get rewritten."""
-        text = ("# XCODE_VERSION = '???' is the constant below.\n"
-                "XCODE_VERSION = '26.4'\n")
-        result = brockit.UpdateXcodeToolchain._replace_constant(
-            text, 'XCODE_VERSION', '26.5')
+    SDK_INFO = brockit.build_xcode_toolchain.MacSdkInfo(
+        sdk_version='26.5', product_build_version='25F70')
+
+    def test_records_xcode_sdk_and_metal(self):
+        comment = brockit.UpdateXcodeToolchain._provenance_comment(
+            self.SDK_INFO, FAKE_INDEX)
+        # Every line is a comment, stays within the column budget, and the
+        # joined prose names each component the archive bundles.
+        lines = comment.splitlines()
+        self.assertTrue(all(line.startswith('# ') for line in lines))
+        self.assertTrue(all(len(line) <= 79 for line in lines))
+        prose = ' '.join(line[2:] for line in lines)
         self.assertEqual(
-            result, "# XCODE_VERSION = '???' is the constant below.\n"
-            "XCODE_VERSION = '26.5'\n")
+            prose, 'This contains binaries from Xcode 26.5 (17F42) along with '
+            'the macOS 26.5 SDK (25F70) and the Metal toolchain (17E188).')
 
-    def test_missing_constant_raises(self):
-        """A constant that doesn't exist in the file at all surfaces as an
-        `InvalidInputException` rather than silently leaving the file
-        unchanged."""
-        with self.assertRaises(brockit.InvalidInputException):
-            brockit.UpdateXcodeToolchain._replace_constant(
-                self.SAMPLE, 'NOT_A_REAL_CONSTANT', '26.5')
+    def test_missing_metal_build_falls_back_to_unknown(self):
+        comment = brockit.UpdateXcodeToolchain._provenance_comment(
+            self.SDK_INFO, {
+                **FAKE_INDEX, 'metal_build': None
+            })
+        self.assertIn('Metal toolchain (unknown)',
+                      comment.replace('\n# ', ' '))
 
 
 class UpdateXcodeToolchainExecuteTest(unittest.TestCase):
     """End-to-end tests for `UpdateXcodeToolchain.execute`.
 
     Each test seeds the fake brave repo with a starting
-    `build/mac/download_hermetic_xcode.py`, optionally seeds the fake
-    chromium repo with a `build/config/mac/mac_sdk.gni` bump, installs the
-    commit-msg hook so the env-var plumbing is exercised end-to-end, and
-    then drives `UpdateXcodeToolchain.execute` directly.
+    `build/mac/download_hermetic_xcode.py`, seeds the fake chromium repo with a
+    `build/config/mac/mac_sdk.gni` bump tagged as `CHROMIUM_TAG`, fakes the
+    published-index fetch, installs the commit-msg hook so the env-var plumbing
+    is exercised end-to-end, and then drives `UpdateXcodeToolchain.execute`
+    directly.
     """
 
     def setUp(self):
@@ -133,6 +157,13 @@ class UpdateXcodeToolchainExecuteTest(unittest.TestCase):
         self.addCleanup(self.repo.cleanup)
         self._checkout_cr_branch()
         self._install_commit_msg_hook()
+        self._seed_hermetic_xcode_script()
+
+        patcher = patch.object(brockit.build_xcode_toolchain,
+                               'fetch_published_index',
+                               return_value=FAKE_INDEX)
+        self.fetch_index = patcher.start()
+        self.addCleanup(patcher.stop)
 
     # -- fixture helpers ----------------------------------------------------
 
@@ -140,20 +171,14 @@ class UpdateXcodeToolchainExecuteTest(unittest.TestCase):
         """Switches the fake brave repo onto a `cr{N}` branch.
 
         The commit-msg hook keys off the current branch name to inject the
-        `[cr{N}]` prefix into the final commit message, so every
-        integration test runs on a branch that matches that pattern.
+        `[cr{N}]` prefix into the final commit message, so every integration
+        test runs on a branch that matches that pattern.
         """
         self.repo._run_git_command(['checkout', '-b', name], self.repo.brave)
 
     def _install_commit_msg_hook(self) -> None:
         """Copies `tools/cr/alias/commit-msg.py` into the fake brave repo's
-        `.git/hooks/commit-msg` and marks it executable.
-
-        Using a copy (rather than a symlink) keeps the fixture
-        self-contained -- the hook keeps working even after the source
-        worktree the test was launched from has been wiped by other test
-        cleanup.
-        """
+        `.git/hooks/commit-msg` and marks it executable."""
         hooks_dir = self.repo.brave / '.git' / 'hooks'
         hooks_dir.mkdir(exist_ok=True)
         dest = hooks_dir / 'commit-msg'
@@ -165,13 +190,9 @@ class UpdateXcodeToolchainExecuteTest(unittest.TestCase):
 
     def _seed_hermetic_xcode_script(
             self, content: str = HERMETIC_XCODE_SCRIPT_INITIAL) -> None:
-        """Writes `build/mac/download_hermetic_xcode.py` into fake brave
-        with the supplied content and commits it.
-
-        Commits via the hook-bypass path (`--no-verify`) so this fixture
-        commit doesn't try to invoke the hook before we've seeded any
-        culprit history.
-        """
+        """Writes `build/mac/download_hermetic_xcode.py` into fake brave with
+        the supplied content and commits it (hook-bypassed via `--no-verify`,
+        since no culprit history is seeded yet)."""
         script_path = self.repo.brave / brockit.HERMETIC_XCODE_SCRIPT
         script_path.parent.mkdir(parents=True, exist_ok=True)
         script_path.write_text(content, encoding='utf-8', newline='')
@@ -181,39 +202,39 @@ class UpdateXcodeToolchainExecuteTest(unittest.TestCase):
             self.repo.brave)
 
     def _seed_mac_sdk_bump(self,
-                           initial: str = MAC_SDK_GNI_INITIAL,
-                           bumped: str | None = MAC_SDK_GNI_BUMPED) -> str:
-        """Lays down `build/config/mac/mac_sdk.gni` on fake chromium with
-        two commits: the initial pin, then the bump.
+                           mac_toolchain_py: str = MAC_TOOLCHAIN_PY) -> str:
+        """Lays down `build/config/mac/mac_sdk.gni` on fake chromium with two
+        commits -- the initial pin then the bump to 26.5/25F70 -- writes
+        `build/mac_toolchain.py` alongside the bump, and tags the bump commit as
+        `CHROMIUM_TAG`.
 
-        Returns the hash of the *bump* commit -- that's what the pickaxe
-        in `_resolve_chromium_commit` is supposed to find. When `bumped`
-        is `None`, only the initial commit is created (used to test the
-        unresolvable-commit failure path).
+        Returns the bump commit hash: the ref `execute` reads the SDK pin and
+        the minimum-OS block from, and what `_resolve_chromium_culprit`'s
+        pickaxe should attribute the update to.
         """
         gni = self.repo.chromium / 'build' / 'config' / 'mac' / 'mac_sdk.gni'
         gni.parent.mkdir(parents=True, exist_ok=True)
-        gni.write_text(initial, encoding='utf-8', newline='')
+        gni.write_text(MAC_SDK_GNI_INITIAL, encoding='utf-8', newline='')
         self.repo._run_git_command(['add', str(gni)], self.repo.chromium)
         self.repo._run_git_command(['commit', '-m', 'mac: initial SDK pin'],
                                    self.repo.chromium)
 
-        if bumped is None:
-            return ''
-
-        gni.write_text(bumped, encoding='utf-8', newline='')
-        self.repo._run_git_command(['add', str(gni)], self.repo.chromium)
-        self.repo._run_git_command(['commit', '-m', 'mac: Switch to SDK 26.5'],
+        gni.write_text(MAC_SDK_GNI_BUMPED, encoding='utf-8', newline='')
+        toolchain = self.repo.chromium / 'build' / 'mac_toolchain.py'
+        toolchain.write_text(mac_toolchain_py, encoding='utf-8', newline='')
+        self.repo._run_git_command(
+            ['add', str(gni), str(toolchain)], self.repo.chromium)
+        culprit = self.repo.commit('mac: Switch to SDK 26.5',
                                    self.repo.chromium)
-        return self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                          self.repo.chromium)
+        self.repo._run_git_command(['tag', CHROMIUM_TAG], self.repo.chromium)
+        return culprit
 
     def _last_brave_commit_message(self) -> str:
         return self.repo._run_git_command(['log', '-1', '--format=%B'],
                                           self.repo.brave)
 
-    def _last_brave_subject(self) -> str:
-        return self.repo._run_git_command(['log', '-1', '--format=%s'],
+    def _brave_head(self) -> str:
+        return self.repo._run_git_command(['rev-parse', 'HEAD'],
                                           self.repo.brave)
 
     def _read_hermetic_xcode_script(self) -> str:
@@ -223,35 +244,51 @@ class UpdateXcodeToolchainExecuteTest(unittest.TestCase):
     # -- tests --------------------------------------------------------------
 
     def test_constants_rewritten_and_committed(self):
-        """Happy path: every constant takes its value from the URL, the
-        edit lands on disk, and the commit-msg hook stamps the final
-        message with `[cr150][toolchain]` plus the chromium culprit
-        body."""
-        self._seed_hermetic_xcode_script()
+        """Happy path: the archive hash and SDK constants take their values
+        from the index/SDK pin, the provenance comment is regenerated, the edit
+        lands on disk, and the commit-msg hook stamps the final message with
+        `[cr150][toolchain]` plus the chromium culprit body."""
         culprit = self._seed_mac_sdk_bump()
 
-        brockit.UpdateXcodeToolchain().execute(url=TOOLCHAIN_URL, culprit=None)
+        brockit.UpdateXcodeToolchain().execute(chromium_ref=CHROMIUM_TAG,
+                                               culprit=None)
 
         script = self._read_hermetic_xcode_script()
-        self.assertIn("XCODE_VERSION = '26.5'", script)
-        self.assertIn("XCODE_BUILD_VERSION = '17F42'", script)
+        self.assertIn(f"MAC_BINARIES_HASH = '{FAKE_INDEX['sha256sum']}'",
+                      script)
         self.assertIn("MAC_SDK_OFFICIAL_VERSION = '26.5'", script)
         self.assertIn("MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'", script)
-        self.assertIn("MAC_SDK_UPSTREAM_VERSION = '26.5'", script)
-        self.assertIn("MAC_SDK_UPSTREAM_BUILD_VERSION = '25F70'", script)
+        self.assertNotIn("'oldhash'", script)
+        # The provenance comment was regenerated from the resolved toolchain.
+        sdk_info = brockit.build_xcode_toolchain.MacSdkInfo(
+            sdk_version='26.5', product_build_version='25F70')
+        self.assertIn(
+            brockit.UpdateXcodeToolchain._provenance_comment(
+                sdk_info, FAKE_INDEX), script)
+        # The MAC_MINIMUM_OS_VERSION block was lifted verbatim from upstream
+        # (bumped value + its distinct comment), replacing the old block.
+        self.assertIn('MAC_MINIMUM_OS_VERSION = [20, 0]', script)
+        self.assertIn('runs on macOS 26.3 and newer', script)
+        self.assertNotIn('MAC_MINIMUM_OS_VERSION = [19, 4]', script)
+        self.assertNotIn('runs on macOS 26.1 and newer', script)
+        # The unrelated upstream lines were not dragged along with the block.
+        self.assertNotIn('OTHER_CONSTANT', script)
+        self.assertNotIn('MAC_BINARIES_TAG', script)
+
+        # The index was resolved for the SDK read from mac_sdk.gni at the ref.
+        self.assertEqual(self.fetch_index.call_args.args[0], sdk_info)
 
         message = self._last_brave_commit_message()
         # The hook must have stamped both tags. The relative order between
         # `[cr150]` and `[toolchain]` comes from set iteration in
-        # `commit-msg.py`, so just assert both are present in the
-        # subject.
+        # `commit-msg.py`, so just assert both are present in the subject.
         subject = message.splitlines()[0]
         self.assertIn('[cr150]', subject)
         self.assertIn('[toolchain]', subject)
         self.assertIn('Switch to Xcode 26.5 17F42', subject)
 
-        # The culprit body the hook appends includes the link and the
-        # full `git log -1 <hash>` payload from chromium.
+        # The culprit body the hook appends includes the link and the full
+        # `git log -1 <hash>` payload from chromium.
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{culprit}',
             message)
@@ -259,90 +296,81 @@ class UpdateXcodeToolchainExecuteTest(unittest.TestCase):
 
     def test_culprit_override_skips_auto_detection(self):
         """An explicit `culprit=<hash>` bypasses the mac_sdk.gni pickaxe
-        entirely. We prove this by passing a hash that the auto-detector
-        would never have produced -- a commit on the chromium master
-        branch that doesn't touch `mac_sdk.gni` at all."""
-        self._seed_hermetic_xcode_script()
-        # Seed an unrelated chromium commit so we have a real hash to
-        # reference.
+        entirely. We prove this by passing a hash that the auto-detector would
+        never have produced -- an unrelated chromium commit -- and asserting
+        the auto-detected bump hash is absent from the message."""
+        autodetect = self._seed_mac_sdk_bump()
         self.repo.write_and_stage_file('docs/unrelated.txt', 'noise\n',
                                        self.repo.chromium)
-        override_hash = self.repo.commit('Unrelated chromium change',
-                                         self.repo.chromium)
-        # Seed mac_sdk.gni only with the initial state; a successful run
-        # here means the auto-detector was never asked.
-        self._seed_mac_sdk_bump(bumped=None)
+        override = self.repo.commit('Unrelated chromium change',
+                                    self.repo.chromium)
 
-        brockit.UpdateXcodeToolchain().execute(url=TOOLCHAIN_URL,
-                                               culprit=override_hash)
+        brockit.UpdateXcodeToolchain().execute(chromium_ref=CHROMIUM_TAG,
+                                               culprit=override)
 
         message = self._last_brave_commit_message()
         self.assertIn(
-            f'https://chromium.googlesource.com/chromium/src/+/{override_hash}',
+            f'https://chromium.googlesource.com/chromium/src/+/{override}',
             message)
         self.assertIn('Unrelated chromium change', message)
+        self.assertNotIn(autodetect, message)
 
-    def test_already_pinned_raises(self):
-        """When `build/mac/download_hermetic_xcode.py` already carries the
-        URL's six tokens, the regex substitutions are all no-ops and the
-        task aborts instead of producing an empty commit."""
-        self._seed_hermetic_xcode_script(
-            content=("XCODE_VERSION = '26.5'\n"
-                     "XCODE_BUILD_VERSION = '17F42'\n"
-                     "MAC_SDK_OFFICIAL_VERSION = '26.5'\n"
-                     "MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'\n"
-                     "MAC_SDK_UPSTREAM_VERSION = '26.5'\n"
-                     "MAC_SDK_UPSTREAM_BUILD_VERSION = '25F70'\n"))
+    def test_already_pinned_second_run_raises(self):
+        """A second run over an already-pinned file is a byte-identical no-op:
+        nothing is rewritten, the task aborts instead of producing an empty
+        commit, and HEAD is unchanged."""
         self._seed_mac_sdk_bump()
-        head_before = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                                 self.repo.brave)
+        toolchain = brockit.UpdateXcodeToolchain()
+
+        toolchain.execute(chromium_ref=CHROMIUM_TAG, culprit=None)
+        head_after_first = self._brave_head()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.UpdateXcodeToolchain().execute(url=TOOLCHAIN_URL,
-                                                   culprit=None)
+            toolchain.execute(chromium_ref=CHROMIUM_TAG, culprit=None)
+        self.assertEqual(self._brave_head(), head_after_first)
 
-        # No commit was produced.
-        head_after = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                                self.repo.brave)
-        self.assertEqual(head_before, head_after)
-
-    def test_bad_url_raises(self):
-        """A URL whose filename doesn't fit the
-        `xcode-hermetic-toolchain-<...>.tar.gz` shape is rejected before
-        any disk state is touched."""
-        self._seed_hermetic_xcode_script()
+    def test_index_fetch_failure_raises(self):
+        """A failure resolving the published index surfaces as a
+        `BadOutcomeException` and produces no commit."""
         self._seed_mac_sdk_bump()
-        original = self._read_hermetic_xcode_script()
+        self.fetch_index.side_effect = RuntimeError('index not found')
+        head_before = self._brave_head()
 
-        with self.assertRaises(brockit.InvalidInputException):
-            brockit.UpdateXcodeToolchain().execute(
-                url='https://example.invalid/some-other-archive.tar.gz',
-                culprit=None)
-
-        self.assertEqual(self._read_hermetic_xcode_script(), original)
-
-    def test_unresolvable_chromium_commit_raises(self):
-        """When `mac_sdk.gni` has never carried the URL's upstream build
-        number, the pickaxe returns nothing and the task points the user
-        at `--culprit` to recover."""
-        self._seed_hermetic_xcode_script()
-        # Seed mac_sdk.gni without ever introducing the URL's build
-        # number, so `git log -S 25F70 -- build/config/mac/mac_sdk.gni`
-        # comes back empty.
-        self._seed_mac_sdk_bump(bumped=None)
-        head_before = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                                 self.repo.brave)
-
-        with self.assertRaises(brockit.InvalidInputException):
-            brockit.UpdateXcodeToolchain().execute(url=TOOLCHAIN_URL,
+        with self.assertRaises(brockit.BadOutcomeException):
+            brockit.UpdateXcodeToolchain().execute(chromium_ref=CHROMIUM_TAG,
                                                    culprit=None)
+        self.assertEqual(self._brave_head(), head_before)
 
-        # The script edit happens before the chromium lookup, so the
-        # working tree may be dirty. What we care about here is that no
-        # commit slipped through.
-        head_after = self.repo._run_git_command(['rev-parse', 'HEAD'],
-                                                self.repo.brave)
-        self.assertEqual(head_before, head_after)
+    def test_missing_upstream_min_os_block_raises(self):
+        """When Chromium's `build/mac_toolchain.py` carries no
+        `MAC_MINIMUM_OS_VERSION` block, the task aborts (there is nothing to
+        mirror) and produces no commit."""
+        self._seed_mac_sdk_bump(
+            mac_toolchain_py='# upstream with no min-os block\nFOO = 1\n')
+        head_before = self._brave_head()
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.UpdateXcodeToolchain().execute(chromium_ref=CHROMIUM_TAG,
+                                                   culprit=None)
+        self.assertEqual(self._brave_head(), head_before)
+
+    def test_unresolvable_culprit_raises(self):
+        """`_resolve_chromium_culprit` raises when no commit up to the ref set
+        the SDK being pinned, steering the user at `--culprit` to recover."""
+        ref = self._seed_mac_sdk_bump()
+        # An SDK pair that mac_sdk.gni never carried in its history: the
+        # pickaxe comes back empty.
+        phantom = brockit.build_xcode_toolchain.MacSdkInfo(
+            sdk_version='99.9', product_build_version='Z9Z9')
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.UpdateXcodeToolchain()._resolve_chromium_culprit(
+                phantom, ref)
+
+    def test_staged_files_block_the_update(self):
+        self.repo.write_and_stage_file('staged.txt', 'wip\n', self.repo.brave)
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.UpdateXcodeToolchain().execute(chromium_ref=CHROMIUM_TAG,
+                                                   culprit='deadbeef')
 
 
 if __name__ == '__main__':
