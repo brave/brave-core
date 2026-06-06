@@ -31,8 +31,7 @@
 #include "chrome/browser/android/tab_web_contents_delegate_android.h"  // nogncheck crbug.com/40147906
 #include "content/public/browser/web_contents.h"
 #else
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #endif
@@ -294,7 +293,8 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
       /*navigation_handle_callback=*/{});
 #else
-  auto* browser = chrome::FindBrowserWithTab(web_ui()->GetWebContents());
+  auto* browser = GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+      web_ui()->GetWebContents());
   ShowSingletonTabOverwritingNTP(browser, file_url);
 #endif
 }
