@@ -25,7 +25,7 @@
 #include "base/files/file_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ui/webui/settings/brave_full_disk_access_confirm_dialog_delegate.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #endif  // BUILDFLAG(IS_MAC)
 
@@ -212,7 +212,9 @@ void BraveImportDataHandler::DidStopLoading() {
   auto* web_contents = web_ui()->GetWebContents();
   TabModalConfirmDialog::Create(
       std::make_unique<FullDiskAccessConfirmDialogDelegate>(
-          web_contents, chrome::FindBrowserWithTab(web_contents)),
+          web_contents,
+          GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+              web_contents)),
       web_contents);
 }
 #endif
