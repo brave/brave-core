@@ -237,6 +237,10 @@ where the author is the person running the command.
 tools/cr/brockit.py reassign <commit_hash>
 ```
 
+As a shortcut, `git cr commit --fixup=reassign:<commit_hash>` runs this exact
+command. This mirrors git's native `--fixup=amend:` / `--fixup=reword:` modes,
+adding a brave-core `reassign:` mode to the same family.
+
 This commit acts similarly to a `fixup!` commit but works in tandem with
 `brockit.py rebase`. When `brockit.py rebase` is run, the rebase process detects
 the `reassign! ` commit. It moves this commit directly above the original target

@@ -37,6 +37,21 @@ git cr commit --culprit abc123,def456 -m "Adjust to upstream API change"
 [commit-msg hook behaviour](#commit-msg-hook-behaviour) section below for more
 details.
 
+#### `--fixup=reassign:<ref>`
+
+Git understands `--fixup=<ref>`, `--fixup=amend:<ref>`, and
+`--fixup=reword:<ref>`. `git cr commit` extends this family with a brave-core
+`reassign:` mode, which is a shortcut for `brockit.py reassign <ref>`:
+
+```sh
+git cr commit --fixup=reassign:HEAD~2
+```
+
+This creates the empty `reassign!<hash>!` commit that `brockit rebase` later
+squashes onto its target to swap authorship. Because brockit owns the resulting
+commit, this mode must stand alone — combining it with any other argument is an
+error.
+
 ### `git cr mv`
 
 Move a file or directory inside `brave-core` and repair every artefact that
