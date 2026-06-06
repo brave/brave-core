@@ -35,20 +35,20 @@ sys.path.append(str(Path(__file__).resolve().parents[2] / 'script'))
 import deps  # pylint: disable=wrong-import-position
 
 # The hash sum for the archive expected to be downloaded.
-MAC_BINARIES_HASH = '710798910d2a458bcb41fc0f5181f472bf899d20bfdcb28dcd40efef556cd590'
+MAC_BINARIES_HASH = '0e1a4db4cb6fc9ca78cc71872ff57f837226f1004a7fbf6ce73a5cd89345c289'
 
-# This contains binaries from Xcode 26.4.1 (17E202) along with the macOS 26.4
-# SDK (25E251) and the Metal toolchain (17E188).
-MAC_SDK_OFFICIAL_VERSION = '26.4'
-MAC_SDK_OFFICIAL_BUILD_VERSION = '25E251'
+# This contains binaries from Xcode 26.5 (17F42) along with the macOS 26.5 SDK
+# (25F70) and the Metal toolchain (17F42).
+MAC_SDK_OFFICIAL_VERSION = '26.5'
+MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'
 XCODE_TOOLCHAIN_DOWNLOAD_URL = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
     '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-'
     f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
-# is the Darwin major version number for macOS 10.15. Xcode 26.0 17A324 only
-# runs on macOS 15.6 and newer, but some bots are still running older OS
+# is the Darwin major version number for macOS 10.15. Xcode 26.4 17E192 only
+# runs on macOS 26.2 and newer, but some bots are still running older OS
 # versions. macOS 10.15.4, the OS minimum through Xcode 12.4, still seems to
 # work.
 MAC_MINIMUM_OS_VERSION = [19, 4]
