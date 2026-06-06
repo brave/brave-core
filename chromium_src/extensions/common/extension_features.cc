@@ -11,7 +11,6 @@ namespace extensions_features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kExtensionManifestV2ExceptionList, base::FEATURE_ENABLED_BY_DEFAULT},
-    {kExtensionsManifestV3Only, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace extensions_features
