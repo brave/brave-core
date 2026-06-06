@@ -146,7 +146,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
-      &extensions_features::kExtensionsManifestV3Only,
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHAutofillAccountNameEmailSuggestionFeature,
