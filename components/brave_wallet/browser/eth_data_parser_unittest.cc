@@ -350,20 +350,168 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721SetApprovalForAll) {
   EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
   EXPECT_EQ(tx_args[1], "0x0");
 
-  // KO: non-canonical bool value (neither 0 nor 1).
+  // OK (fail-safe): a non-canonical truthy `approved` value (neither 0 nor 1)
+  // still grants approval on permissive contracts, so it must be detected and
+  // surfaced as a grant rather than silently dropped (which would suppress the
+  // warning).
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0xa22cb465"
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000000000000000000002",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x1");
 
-  // KO: missing the bool param.
+  // OK (fail-safe): a `approved` word with dirty high bytes (max uint256) is
+  // also non-zero and must be treated as granting.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      &data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // OK: an all-zero `approved` word with dirty high bytes cleared is still a
+  // revoke (only an exact zero value).
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  EXPECT_EQ(tx_args[1], "0x0");
+
+  // KO: missing the approved param.
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0xa22cb465"
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       &data));
   EXPECT_FALSE(GetTransactionInfoFromData(data));
+}
+
+TEST(EthDataParser, GetTransactionInfoFromDataNestedSetApprovalForAll) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+
+  // Encodes a multicall(bytes[]) wrapping the given inner calls. A
+  // setApprovalForAll buried inside such a multicall (when the target is itself
+  // the NFT contract) still grants approval because the inner call runs via
+  // delegatecall, so the warning must not be bypassed.
+  auto encode_multicall = [](const std::vector<std::vector<uint8_t>>& calls) {
+    std::vector<uint8_t> out = {0xac, 0x96, 0x50, 0xd8};  // multicall(bytes[])
+    auto append_word = [&](uint64_t value) {
+      std::vector<uint8_t> word(32, 0);
+      for (int i = 0; i < 8; ++i) {
+        word[31 - i] = static_cast<uint8_t>((value >> (8 * i)) & 0xff);
+      }
+      out.insert(out.end(), word.begin(), word.end());
+    };
+    append_word(0x20);                   // offset to the bytes[] array
+    append_word(calls.size());           // array length
+    size_t running = calls.size() * 32;  // offsets are after the offset words
+    for (const auto& call : calls) {
+      append_word(running);
+      running += 32 + ((call.size() + 31) / 32) * 32;
+    }
+    for (const auto& call : calls) {
+      append_word(call.size());
+      out.insert(out.end(), call.begin(), call.end());
+      out.insert(out.end(), (((call.size() + 31) / 32) * 32) - call.size(), 0);
+    }
+    return out;
+  };
+
+  std::vector<uint8_t> grant;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &grant));
+
+  // setApprovalForAll grant wrapped in a single multicall is detected.
+  auto tx_info = GetTransactionInfoFromData(encode_multicall({grant}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // Nested multicalls are unwrapped recursively.
+  tx_info =
+      GetTransactionInfoFromData(encode_multicall({encode_multicall({grant})}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+
+  // A revoke wrapped in a multicall is not a grant: no warning.
+  std::vector<uint8_t> revoke;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &revoke));
+  tx_info = GetTransactionInfoFromData(encode_multicall({revoke}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  EXPECT_EQ(tx_type, mojom::TransactionType::Other);
+
+  // A multicall containing no setApprovalForAll keeps its Other classification.
+  std::vector<uint8_t> erc20_transfer;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa9059cbb"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000064",
+      &erc20_transfer));
+  tx_info = GetTransactionInfoFromData(encode_multicall({erc20_transfer}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  EXPECT_EQ(tx_type, mojom::TransactionType::Other);
+
+  // Two grants in one multicall: both operator addresses are returned,
+  // comma-separated.
+  std::vector<uint8_t> grant2;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000aAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaA"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &grant2));
+  tx_info = GetTransactionInfoFromData(encode_multicall({grant, grant2}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0],
+            "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f,"
+            "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+  // kMaxMulticallDepth is 1022 (to match the EVM callstack limit), so a
+  // setApprovalForAll at nesting depth 10 is still detected.
+  std::vector<uint8_t> nested = grant;
+  for (int i = 0; i < 10; ++i) {
+    nested = encode_multicall({nested});
+  }
+  tx_info = GetTransactionInfoFromData(nested);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {

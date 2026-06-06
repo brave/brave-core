@@ -11,6 +11,7 @@
 
 #include "base/check_op.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -28,6 +29,31 @@ constexpr char kERC721TransferFromSelector[] = "0x23b872dd";
 constexpr char kERC721SafeTransferFromSelector[] = "0x42842e0e";
 constexpr char kERC721SetApprovalForAllSelector[] = "0xa22cb465";
 constexpr char kERC1155SafeTransferFromSelector[] = "0xf242432a";
+constexpr char kMulticallSelector[] = "0xac9650d8";
+constexpr char kMulticallWithDeadlineSelector[] = "0x5ae401dc";
+constexpr char kMulticallWithPreviousBlockHashSelector[] = "0x1f0464d1";
+
+struct MulticallVariant {
+  std::optional<eth_abi::Type> leading_type;
+};
+
+std::optional<MulticallVariant> MulticallVariantForSelector(
+    std::string_view selector) {
+  if (selector == kMulticallSelector) {
+    return MulticallVariant{std::nullopt};
+  }
+  if (selector == kMulticallWithDeadlineSelector) {
+    return MulticallVariant{eth_abi::Uint(256)};
+  }
+  if (selector == kMulticallWithPreviousBlockHashSelector) {
+    return MulticallVariant{eth_abi::Bytes(32)};
+  }
+  return std::nullopt;
+}
+
+// 1022 = EVM limit of 1024 frames minus one for the EOA call and one for the
+// leaf.
+constexpr size_t kMaxMulticallDepth = 1022;
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
 
@@ -537,6 +563,73 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
   };
 }
 
+// Returns all operator addresses from granting setApprovalForAll calls in
+// `data`, unwrapping multicalls.
+std::vector<std::string> FindAllNestedSetApprovalForAll(
+    base::span<const uint8_t> data,
+    size_t depth) {
+  if (data.size() < 4) {
+    return {};
+  }
+
+  auto [selector_span, calldata] = data.split_at<4>();
+  std::string selector = ToHex(selector_span);
+
+  // Leaf: a direct setApprovalForAll. Any non-zero `approved` is a grant.
+  if (selector == kERC721SetApprovalForAllSelector) {
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
+    // Skip revokes (approved == 0); return the operator address for grants.
+    if (!decoded || decoded->size() < 2 ||
+        decoded.value()[1].GetString() == "0x0") {
+      return {};
+    }
+    return {decoded.value()[0].GetString()};
+  }
+
+  if (depth >= kMaxMulticallDepth) {
+    return {};
+  }
+
+  // Wrapper: unwrap a multicall and scan each inner call.
+  auto variant = MulticallVariantForSelector(selector);
+  if (!variant) {
+    return {};
+  }
+
+  auto tuple_builder = eth_abi::Tuple();
+  size_t array_index = 0;
+  if (variant->leading_type) {
+    tuple_builder.AddTupleType(std::move(*variant->leading_type));
+    array_index = 1;
+  }
+  tuple_builder.AddTupleType(
+      eth_abi::Array().SetArrayType(eth_abi::Bytes()).build());
+
+  auto decoded = ABIDecode(tuple_builder.build(), calldata);
+  if (!decoded || decoded->size() <= array_index ||
+      !decoded.value()[array_index].is_list()) {
+    return {};
+  }
+
+  std::vector<std::string> result;
+  for (const auto& inner_call : decoded.value()[array_index].GetList()) {
+    auto inner_bytes = PrefixedHexStringToBytes(inner_call.GetString());
+    if (!inner_bytes) {
+      continue;
+    }
+    auto found =
+        FindAllNestedSetApprovalForAll(base::span(*inner_bytes), depth + 1);
+    result.insert(result.end(), std::make_move_iterator(found.begin()),
+                  std::make_move_iterator(found.end()));
+  }
+
+  return result;
+}
+
 }  // namespace
 
 std::optional<std::tuple<mojom::TransactionType,    // tx_type
@@ -646,21 +739,24 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                  decoded.value()[2].GetString()},
         nullptr);
   } else if (selector == kERC721SetApprovalForAllSelector) {
+    // Decode approved as uint256: non-canonical encodings (e.g. 2, dirty high
+    // bytes) still grant on permissive contracts.
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::Bool())
+                    .AddTupleType(eth_abi::Uint(256))
                     .build();
     auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
 
+    const bool approved = decoded.value()[1].GetString() != "0x0";
     return std::make_tuple(
         mojom::TransactionType::ERC721SetApprovalForAll,
         std::vector<std::string>{"address",  // operator
                                  "bool"},    // approved
         std::vector<std::string>{decoded.value()[0].GetString(),
-                                 decoded.value()[1].GetBool() ? "0x1" : "0x0"},
+                                 approved ? "0x1" : "0x0"},
         nullptr);
   } else if (selector == kSellEthForTokenToUniswapV3Selector) {
     // Function:
@@ -1419,6 +1515,21 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
             decoded.value()[2].GetString(), decoded.value()[3].GetString(),
             decoded.value()[4].GetString()},
         nullptr);
+  } else if (MulticallVariantForSelector(selector)) {
+    // Surface a nested setApprovalForAll; multicalls without one stay Other.
+    auto operators =
+        FindAllNestedSetApprovalForAll(base::span(data), /*depth=*/0);
+    if (!operators.empty()) {
+      return std::make_tuple(
+          mojom::TransactionType::ERC721SetApprovalForAll,
+          std::vector<std::string>{"address",  // operator
+                                   "bool"},    // approved
+          std::vector<std::string>{base::JoinString(operators, ","), "0x1"},
+          nullptr);
+    }
+    return std::make_tuple(mojom::TransactionType::Other,
+                           std::vector<std::string>(),
+                           std::vector<std::string>(), nullptr);
   } else {
     return std::make_tuple(mojom::TransactionType::Other,
                            std::vector<std::string>(),

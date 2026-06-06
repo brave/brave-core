@@ -1202,6 +1202,8 @@ provideStrings({
     'Give this site access to all your NFTs?',
   braveWalletApprovalForAllFinalWarningDescription:
     "You're about to let $1 transfer every NFT in this wallet, including any you receive later.",
+  braveWalletApprovalForAllFinalWarningDescriptionMultiple:
+    'The following operators can transfer every NFT in this wallet, including future ones:',
   braveWalletConfirmAnyway: 'Confirm anyway',
 
   // NFT Details Page

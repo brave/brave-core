@@ -1122,6 +1122,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_TITLE},
     {"braveWalletApprovalForAllFinalWarningDescription",
      IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_DESCRIPTION},
+    {"braveWalletApprovalForAllFinalWarningDescriptionMultiple",
+     IDS_BRAVE_WALLET_APPROVAL_FOR_ALL_FINAL_WARNING_DESCRIPTION_MULTIPLE},
     {"braveWalletConfirmAnyway", IDS_BRAVE_WALLET_CONFIRM_ANYWAY},
     {"braveWalletNFTDetailBlockchain", IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN},
     {"braveWalletNFTDetailTokenStandard",

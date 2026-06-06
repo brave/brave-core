@@ -30,12 +30,27 @@ interface Props {
 export function ApprovalForAllWarning(props: Props) {
   const { onConfirm, onReject, address } = props
 
-  const description = formatLocale(
-    'braveWalletApprovalForAllFinalWarningDescription',
-    {
-      $1: <b>{reduceAddress(address)}</b>,
-    },
-  )
+  const operators = address.split(',').filter(Boolean)
+
+  const description = React.useMemo(() => {
+    if (operators.length === 1) {
+      return formatLocale('braveWalletApprovalForAllFinalWarningDescription', {
+        $1: <b>{reduceAddress(operators[0])}</b>,
+      })
+    }
+    return (
+      <>
+        {getLocale('braveWalletApprovalForAllFinalWarningDescriptionMultiple')}
+        <ul>
+          {operators.map((op) => (
+            <li key={op}>
+              <b>{reduceAddress(op)}</b>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }, [operators])
 
   return (
     <Backdrop>
