@@ -5,13 +5,17 @@
 
 substitutions:
   - description: |
-      Mark `ECDSA_SHA384` as unsupported in `SelectAlgorithm` and `GenerateSigningKeySlowly`.
+      Mark `ECDSA_SHA384` as an unsupported algorithm.
 
-      Both switch statements fall through to RSA_PSS_SHA256's `continue` since the
-      software provider does not support ECDSA_SHA384 key generation.
+      The software provider does not support `ECDSA_SHA384` key generation, so
+      it must fall through to the `continue;  // Not supported` arm in each
+      `switch (algo)`. This adds the missing `case` to all three switches
+      (`SelectAlgorithm`, `GenerateSigningKeySlowly` and
+      `GenerateAttestationKeySlowly`), grouping it with `RSA_PSS_SHA256` which
+      already takes that path.
     re_pattern: '(switch\s*\(algo\).*?)(\n\s*continue;\s*// Not supported)'
     re_flags: [DOTALL]
-    count: 2
+    count: 3
     replace: |-
       \1
               case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2
