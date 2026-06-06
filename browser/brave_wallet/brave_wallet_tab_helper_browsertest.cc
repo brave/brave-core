@@ -178,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
   std::move(close_dialog_callback).Run();
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(tab_helper->IsShowingBubble());
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());
 }
@@ -201,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
       contents, std::make_unique<FakeUsbChooserController>(1));
   std::move(close_dialog_callback).Run();
   base::RunLoop().RunUntilIdle();
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());
 }
@@ -230,7 +230,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
   EXPECT_TRUE(popup1);
   EXPECT_TRUE(popup2);
   EXPECT_TRUE(tab_helper->IsShowingBubble());
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());
 
