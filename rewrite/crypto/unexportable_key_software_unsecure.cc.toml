@@ -11,6 +11,6 @@ software provider does not support ECDSA_SHA384 key generation.
 '''
 re_pattern = '(switch\s*\(algo\).*?)(\n\s*continue;\s*// Not supported)'
 re_flags = ['DOTALL']
-count = 2
+count = 3
 replace = '''\1
         case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2'''
