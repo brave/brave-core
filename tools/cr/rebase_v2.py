@@ -12,7 +12,7 @@ file-in / file-out transforms that brockit hooks into git via the
 * `rewrite_plan(todo_file, …)` -- reorders the rebase TODO produced by
   `GIT_SEQUENCE_EDITOR`. Pinned commits get grouped to the top, recyclable
   commits get optionally evicted, reassign commits get placed next to
-  their target.
+  their target, and drop commits remove themselves along with their target.
 * `MessageWriter.parse(todo_file)` + `rewrite_with_last_message()` --
   composes the squash commit message produced by `GIT_EDITOR`, picking
   whichever surviving message corresponds to the kind of squash being
@@ -50,6 +50,9 @@ Commit categories formalised here (see `EntryType`):
 * REASSIGNMENT -- `reassign!<hash>!` commits authored by
   `brockit reassign`. Repositioned next to their target when
   `pinned_squashed=True`.
+* DROP -- `drop!<hash>!` commits authored by `brockit drop`. Both the
+  marker and its target are removed from the plan when
+  `pinned_squashed=True`.
 * DEFAULT -- everything else.
 """
 
@@ -65,8 +68,10 @@ from pathlib import Path
 
 from terminal import terminal
 
-# Brockit-specific prefix for commit messages, similar to `fixup!`.
+# Brockit-specific prefixes for commit messages, similar to `fixup!`. Each
+# marks an empty `<prefix><hash>!` commit that `brockit rebase` acts on.
 REASSIGN_COMMIT_MSG_PREFIX = 'reassign!'
+DROP_COMMIT_MSG_PREFIX = 'drop!'
 
 # Strips one or more leading bracketed tags whose first token starts with
 # `cr` followed by digits -- e.g. `[cr149] `, `[cr149][ios] `. Leaves
@@ -180,6 +185,8 @@ def get_entry_type_for_subject(subject: str) -> 'EntryType':
     into one of the four `EntryType` variants."""
     if subject.startswith(REASSIGN_COMMIT_MSG_PREFIX):
         return EntryType.REASSIGNMENT
+    if subject.startswith(DROP_COMMIT_MSG_PREFIX):
+        return EntryType.DROP
     if get_pinned_group_for_subject(subject) is not None:
         return EntryType.PINNED
     if is_recyclable(subject):
@@ -250,6 +257,8 @@ class EntryType(enum.Enum):
     * `RECYCLABLE`   -- subject matches one of `RECYCLABLE_PATTERNS`.
     * `REASSIGNMENT` -- subject (or autosquash subcommand) starts with
                         `reassign!`.
+    * `DROP`         -- subject (or autosquash subcommand) starts with
+                        `drop!`.
     * `DEFAULT`      -- none of the above; produced only by `EntryLine`.
                         `MessageWriter.parse` never returns this value
                         -- it raises `EditorRecoverableFailure` instead.
@@ -257,6 +266,7 @@ class EntryType(enum.Enum):
     PINNED = 'pinned'
     RECYCLABLE = 'recyclable'
     REASSIGNMENT = 'reassignment'
+    DROP = 'drop'
     DEFAULT = 'default'
 
 
@@ -325,6 +335,8 @@ class EntryLine:
         self._entry_type: EntryType = EntryType.DEFAULT
         if self._subcommand and self._subcommand[0] == 'reassign':
             self._entry_type = EntryType.REASSIGNMENT
+        elif self._subcommand and self._subcommand[0] == 'drop':
+            self._entry_type = EntryType.DROP
         elif is_recyclable(self._message):
             self._entry_type = EntryType.RECYCLABLE
         else:
@@ -376,6 +388,10 @@ class EntryLine:
         return self._entry_type is EntryType.REASSIGNMENT
 
     @property
+    def is_drop(self) -> bool:
+        return self._entry_type is EntryType.DROP
+
+    @property
     def reassign_target_hash(self) -> str | None:
         """The target hash carried in the `reassign!<hash>!` prefix --
         or `None` if the prefix has no hash. Raises
@@ -385,9 +401,17 @@ class EntryLine:
             raise NotImplementedError(
                 'reassign_target_hash is only defined for reassignment '
                 'commits')
-        if self._subcommand and len(self._subcommand) >= 2:
-            return self._subcommand[1]
-        return None
+        return self._subcommand_target_hash()
+
+    @property
+    def drop_target_hash(self) -> str | None:
+        """The target hash carried in the `drop!<hash>!` prefix -- or
+        `None` if the prefix has no hash. Raises `NotImplementedError`
+        on a non-drop commit (callers should gate on `is_drop` first)."""
+        if not self.is_drop:
+            raise NotImplementedError(
+                'drop_target_hash is only defined for drop commits')
+        return self._subcommand_target_hash()
 
     # ----- the one mutable property -----------------------------------------
 
@@ -454,6 +478,14 @@ class EntryLine:
 
     # ----- private helpers --------------------------------------------------
 
+    def _subcommand_target_hash(self) -> str | None:
+        """Returns the hash token of a `<marker>!<hash>!` subcommand prefix
+        (e.g. the `<hash>` in `reassign!<hash>!` / `drop!<hash>!`), or `None`
+        when the marker carries no hash."""
+        if self._subcommand and len(self._subcommand) >= 2:
+            return self._subcommand[1]
+        return None
+
     def _refresh_out(self) -> None:
         """Regenerates `_out` from the current field values in the
         canonical `<command> <hash> # [<sub1>!<sub2>! ]<message>[ # <note>]`
@@ -485,7 +517,8 @@ def rewrite_plan(*,
             commit in each group stays `pick`; subsequent ones become
             `squash`. Reassign commits are repositioned to sit
             immediately above their target (with the target rewritten
-            to `squash`). Defaults to `False`.
+            to `squash`). Drop commits remove themselves together with
+            their target. Defaults to `False`.
         discard_recyclable: When `True`, drop recyclable commits from
             the plan entirely. Defaults to `False`.
 
@@ -502,37 +535,40 @@ def rewrite_plan(*,
     pinned_groups = {group: [] for group, _ in PINNED_GROUPS}
     all_others = []
 
-    def add_reassign_before_target(reassign: EntryLine) -> None:
-        """Looks for `reassign`'s target in `all_others` and, if found,
-        inserts `reassign` immediately above it while rewriting the
-        target to `squash`. Reassignment targets are required to be
-        regular commits -- pinned and recyclable commits aren't
-        supported, so a reassign whose target is pinned (or got dropped
-        as recyclable) ends up orphaned and silently discarded."""
+    def find_marker_target(
+            marker: EntryLine,
+            target_hash: str | None) -> tuple[EntryLine | None, int | None]:
+        """Locates a `reassign!`/`drop!` marker's target among the entries
+        seen so far (`all_others`), returning it with its index, or
+        `(None, None)` when the marker is orphaned.
 
-        def find_target(predicate) -> tuple[EntryLine | None, int | None]:
-            """Walks `all_others` in reverse order and returns the first
-            entry that satisfies `predicate`, paired with its index. The
-            reverse walk is a small optimisation: a reassign's target is
-            usually the immediately-preceding entry_line, so the typical hit
-            is on the first iteration. Returns `(None, None)` when no
-            entry matches."""
+        The lookup is by `target_hash` first, then falls back to matching the
+        commit subject. `all_others` is walked in reverse -- a marker's target
+        is usually the immediately-preceding entry, so the typical hit is on
+        the first iteration. Pinned and recyclable targets aren't in
+        `all_others`, so a marker pointing at one ends up orphaned."""
+
+        def find(predicate) -> tuple[EntryLine | None, int | None]:
             return next(((c, i) for c, i in zip(
                 reversed(all_others), range(len(all_others) - 1, -1, -1))
                          if predicate(c)), (None, None))
 
-        target, target_idx = None, None
-        if reassign.reassign_target_hash is not None:
-            target, target_idx = find_target(
-                lambda c: c.hash == reassign.reassign_target_hash)
-
+        target, target_idx = (None, None)
+        if target_hash is not None:
+            target, target_idx = find(lambda c: c.hash == target_hash)
         if target is None:
             # Fallback search by commit message. This is allowed.
-            target, target_idx = find_target(
-                lambda c: c.message == reassign.message)
+            target, target_idx = find(lambda c: c.message == marker.message)
+        return target, target_idx
 
+    def add_reassign_before_target(reassign: EntryLine) -> None:
+        """Inserts `reassign` immediately above its target while rewriting the
+        target to `squash`, so the target's content is absorbed into the
+        (empty) reassign commit and adopts its authorship. An orphaned
+        reassign is silently discarded."""
+        target, target_idx = find_marker_target(reassign,
+                                                reassign.reassign_target_hash)
         if target is None:
-            # Reassignment is orphaned -- drop it and do nothing.
             logging.warning('Dropping orphaned reassignment: %s',
                             reassign.out.strip())
             return
@@ -543,6 +579,17 @@ def rewrite_plan(*,
         # `out` in sync automatically.
         target.command = 'squash'
         all_others.insert(target_idx, reassign)
+
+    def drop_with_target(drop: EntryLine) -> None:
+        """Removes the `drop` marker's target from the plan. The marker itself
+        is dropped by the caller -- it's never appended to `all_others`. An
+        orphaned drop is silently discarded, leaving the plan untouched."""
+        target, target_idx = find_marker_target(drop, drop.drop_target_hash)
+        if target is None:
+            logging.warning('Dropping orphaned drop: %s', drop.out.strip())
+            return
+
+        del all_others[target_idx]
 
     for line in todo_file.read_bytes().decode('utf-8').splitlines():
         entry_line = EntryLine.parse(line)
@@ -557,6 +604,9 @@ def rewrite_plan(*,
         if pinned_squashed:
             if entry_line.is_reassignment:
                 add_reassign_before_target(entry_line)
+                continue
+            if entry_line.is_drop:
+                drop_with_target(entry_line)
                 continue
             if entry_line.pinned_group is not None:
                 # First commit in the group becomes `pick`; subsequent

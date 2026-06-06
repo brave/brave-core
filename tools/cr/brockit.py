@@ -253,6 +253,15 @@ squashed commit message by removing the `reassign! ` line and preserving the
 original commit's subject and body. Because the original commit is squashed into
 the reassignment commit, the resulting commit adopts the reassignment commit's
 authorship.
+
+### `brockit.py drop`
+This is the counterpart to `reassign`. It generates an empty commit with the
+message `drop! {original_subject}`, marking the referenced change to be dropped
+by `brockit.py rebase`.
+
+```sh
+tools/cr/brockit.py drop <commit_hash>
+```
 """
 
 from __future__ import annotations
@@ -285,7 +294,7 @@ from patchfile import Patchfile
 import plaster
 from plaster import PlasterFile, PlasterFileNeedsRegen
 import rebase_v2
-from rebase_v2 import REASSIGN_COMMIT_MSG_PREFIX
+from rebase_v2 import DROP_COMMIT_MSG_PREFIX, REASSIGN_COMMIT_MSG_PREFIX
 import repository
 from repository import Repository
 from terminal import (IncendiaryErrorHandler, Task as BaseTask, console,
@@ -2101,7 +2110,7 @@ class Rebase(Task):
         # line starting with `pick ` that matches the commit message, then
         # moving the reassign commit above it, and changing the pick line under
         # it to a `squash` line.
-        # Orphaned `reassing!` commits get intentionally silently dropped at
+        # Orphaned `reassign!` commits get intentionally silently dropped at
         # this point.
         for reassign_line in reassign:
             command, comment = [
@@ -2110,7 +2119,7 @@ class Rebase(Task):
 
             # The format of the commit reassign commit will always be:
             #
-            # reassign!ae3724d6603! [brockit] Authorship reassingment
+            # reassign!ae3724d6603! [brockit] Authorship reassignment
             #
             # The first part can be ignored. The hash is the second part, and
             # the remainder is the commit message.
@@ -2314,48 +2323,69 @@ class Rebase(Task):
             raise InvalidInputException('Rebase failed.') from e
 
 
-class Reassign(Task):
-    """Creates a reassignment commit for a given change in the branch.
+class _MarkChangeTask(Task):
+    """Base for tasks that mark a change with an empty `<prefix><hash>!` commit.
 
-    This task is used for cases where the authorship of a given change should be
-    reassigned to a different author. This class is responsible for creating an
-    empty commit whose author is the person calling this command. This commit is
-    similar to a `fixup!` commit, being called `reassign!`, followed by the
-    short hash for the change being reassigned. This change is then picked up
-    by the brockit's `rebase` command, and squashed as the base commit for the
-    original change, resulting in a change of authorship.
+    This class creates an empty commit with a subcommand that is understood by
+    brockit's `rebase` command to mark a change in the branch.
     """
 
+    # Abstract base: instantiated only through its concrete subclasses.
+    # pylint: disable=abstract-method
+
+    def __init__(self, prefix: str):
+        # The `<prefix>` placed before the target hash (e.g. `reassign!`).
+        self._prefix = prefix
+
     def status_message(self):
-        return "Creating reassignment commit..."
+        # Derive the action word from the prefix, e.g. `drop!` → "drop".
+        return f"Creating {self._prefix.rstrip('!')} commit..."
 
     def execute(self, change: str):
-        """Creates the reassignment commit.
-
-    This function creates an empty commit with the message
-    `reassign! {change}`, and the author being the user calling this
-    command.
+        """Creates the empty `<prefix><hash>! <subject>` commit.
 
     Args:
         change:
-            The change for which the authorship should be reassigned. This is
-            any valid git reference that resolves to a single commit.
+            The change to mark. This is any valid git reference that resolves
+            to a single commit.
         """
-
         status = GitStatus()
         if status.has_staged_files():
             raise InvalidInputException(
                 'Staged files detected. Please commit or unstage changes '
-                'before reassigning:\n%s' %
+                'before marking the change:\n%s' %
                 '\n'.join(status.get_all_staged_entries()))
 
         commit, message = repository.brave.run_git('log', '-1', change, '-s',
                                                    '--format=%h %s').split(
                                                        ' ', 1)
-        repository.brave.git_commit(
-            f"{REASSIGN_COMMIT_MSG_PREFIX}{commit}! {message}",
-            allows_empty=True,
-            no_verify=True)
+        repository.brave.git_commit(f"{self._prefix}{commit}! {message}",
+                                    allows_empty=True,
+                                    no_verify=True)
+
+
+class Reassign(_MarkChangeTask):
+    """Creates a reassignment commit for a given change in the branch.
+
+    This task is used for cases where the authorship of a given change should be
+    reassigned to a different author. The empty `reassign!` commit it creates is
+    picked up by brockit's `rebase` command and squashed as the base commit for
+    the original change, resulting in a change of authorship.
+    """
+
+    def __init__(self):
+        super().__init__(REASSIGN_COMMIT_MSG_PREFIX)
+
+
+class Drop(_MarkChangeTask):
+    """Creates a drop commit for a given change in the branch.
+
+    This task is used to create a `drop!` commit, which gets picked up by the
+    rebase engine, and causes the target change to be dropped during rebase.
+    """
+
+    def __init__(self):
+        super().__init__(DROP_COMMIT_MSG_PREFIX)
 
 
 class UpdateXcodeToolchain(Task):
@@ -3412,6 +3442,14 @@ def main():
         'change',
         help='The commit reference to reassign (hash, HEAD~N, etc.).')
 
+    drop_parser = subparsers.add_parser(
+        'drop',
+        parents=[global_parser],
+        help=(f'Creates a {DROP_COMMIT_MSG_PREFIX} commit marking a given '
+              'change to be dropped during rebase.'))
+    drop_parser.add_argument(
+        'change', help='The commit reference to drop (hash, HEAD~N, etc.).')
+
     update_xcode_parser = subparsers.add_parser(
         'update-xcode-toolchain',
         parents=[global_parser],
@@ -3532,6 +3570,8 @@ def main():
             GitHubIssue(resolve_version_with_from_ref_arg()).run()
         if args.command == 'reassign':
             Reassign().run(change=args.change)
+        if args.command == 'drop':
+            Drop().run(change=args.change)
         if args.command == 'update-xcode-toolchain':
             UpdateXcodeToolchain().run(url=args.url, culprit=args.culprit)
         if args.command == 'gen-rust-toolchain':

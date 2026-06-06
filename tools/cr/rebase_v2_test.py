@@ -148,6 +148,28 @@ class EntryLineParseTest(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             _ = regular.reassign_target_hash
 
+    def test_drop_classification_and_target_hash(self):
+        """`drop!<hash>!` commits classify as DROP, expose `is_drop`, and
+        carry their target hash in `drop_target_hash` -- mirroring the
+        reassign equivalents."""
+        EntryType = rebase_v2.EntryType
+
+        drop = rebase_v2.EntryLine.parse(
+            'pick zzz # drop!bbb! [cr148] Feature B\n')
+        self.assertIs(drop.entry_type, EntryType.DROP)
+        self.assertTrue(drop.is_drop)
+        self.assertFalse(drop.is_reassignment)
+        self.assertEqual(drop.drop_target_hash, 'bbb')
+
+        no_hash = rebase_v2.EntryLine.parse(
+            'pick zzz # drop! [cr148] Feature B\n')
+        self.assertTrue(no_hash.is_drop)
+        self.assertIsNone(no_hash.drop_target_hash)
+
+        regular = rebase_v2.EntryLine.parse('pick aaa # [cr148] Feature A\n')
+        with self.assertRaises(NotImplementedError):
+            _ = regular.drop_target_hash
+
     def test_fixup_of_pinned_classified_as_pinned(self):
         """A `fixup -C` whose `amend!` subject is pinned still ends up
         `entry_type=PINNED` with the right `pinned_group`. The
@@ -628,6 +650,67 @@ class RewritePlanTest(unittest.TestCase):
             path.read_text(), 'pick aaa # [cr148] Feature A\n'
             'pick zzz # reassign!xxx! [cr148] Feature B # empty\n'
             'squash bbb # [cr148] Feature B\n')
+
+    # ----- pinned_squashed=True, drop! markers ------------------------------
+
+    def test_squashed_drop_removes_target_and_marker(self):
+        """A `drop!<hash>!` removes both its target (matched by hash) and
+        itself from the plan."""
+        path = self._todo('pick aaa # [cr148] Feature A\n'
+                          'pick bbb # [cr148] Feature B\n'
+                          'pick zzz # drop!bbb! [cr148] Feature B\n')
+
+        rebase_v2.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
+
+    def test_squashed_drop_falls_back_to_message_match(self):
+        """A non-matching hash falls back to dropping the commit whose
+        subject matches the drop's message."""
+        path = self._todo('pick aaa # [cr148] Feature A\n'
+                          'pick bbb # [cr148] Feature B\n'
+                          'pick zzz # drop!xxx! [cr148] Feature B\n')
+
+        rebase_v2.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
+
+    def test_squashed_orphan_drop_left_untouched(self):
+        """A drop whose hash and subject both miss is silently discarded
+        (its marker line is removed), leaving the rest of the plan alone."""
+        path = self._todo(
+            'pick aaa # [cr148] Feature A\n'
+            'pick zzz # drop!xxx! [cr148] Completely unrelated subject\n')
+
+        rebase_v2.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
+
+    def test_squashed_drop_with_empty_suffix(self):
+        """The ` # empty` suffix on a drop is stripped before the
+        message-based lookup, just like reassign."""
+        path = self._todo('pick aaa # [cr148] Feature A\n'
+                          'pick bbb # [cr148] Feature B\n'
+                          'pick zzz # drop!xxx! [cr148] Feature B # empty\n')
+
+        rebase_v2.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(path.read_text(), 'pick aaa # [cr148] Feature A\n')
+
+    def test_squashed_drop_not_processed_without_pinned_squashed(self):
+        """Like reassign, drop markers are only acted on under
+        `pinned_squashed`. With only `discard_recyclable`, the marker and its
+        target are left in place."""
+        path = self._todo('pick aaa # [cr148] Feature A\n'
+                          'pick bbb # [cr148] Feature B\n'
+                          'pick zzz # drop!bbb! [cr148] Feature B\n')
+
+        rebase_v2.rewrite_plan(todo_file=path, discard_recyclable=True)
+
+        self.assertEqual(
+            path.read_text(), 'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr148] Feature B\n'
+            'pick zzz # drop!bbb! [cr148] Feature B\n')
 
     # ----- pinned_squashed=True, discard_recyclable=True --------------------
 
