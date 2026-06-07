@@ -142,21 +142,33 @@ export class BraveAccountOtpInputElement extends CrLitElement {
     }
   }
 
+  // Handle backspace manually instead of relying on native deletion.
+  // Native backspace removes the character to the left of the caret,
+  // so it no-ops whenever the caret sits before a character (position 0),
+  // a state users can reach themselves by repositioning the caret.
+  // Clearing explicitly makes backspace caret-independent.
   private handleBackspaceKey(e: KeyboardEvent, index: number) {
     const input = this.getInput(index)
-    if (!input || input.value) {
-      // No-op: no field or let native backspace handle current value.
+    if (!input) {
       return
     }
 
-    const previousInput = this.getInput(index - 1)
-    if (!previousInput) {
-      return
+    if (input.value) {
+      // Clear the current slot, keeping focus on it.
+      e.preventDefault()
+      input.value = ''
+    } else {
+      // Already empty: clear the previous slot and move focus to it.
+      const previousInput = this.getInput(index - 1)
+      if (!previousInput) {
+        return
+      }
+
+      e.preventDefault()
+      previousInput.value = ''
+      this.focusInput(index - 1)
     }
 
-    e.preventDefault()
-    previousInput.value = ''
-    this.focusInput(index - 1)
     this.emitCode()
   }
 
