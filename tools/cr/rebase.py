@@ -2,9 +2,9 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Rebase v2 -- an alternative `brockit rebase` code path.
+"""The `brockit rebase` engine.
 
-Wired behind `brockit.py rebase --v2`. The module exposes two
+This module is the implementation behind `brockit.py rebase`. It exposes two
 file-in / file-out transforms that brockit hooks into git via the
 `GIT_SEQUENCE_EDITOR` and `GIT_EDITOR` env vars during a
 `git rebase --interactive`:
@@ -195,7 +195,7 @@ def get_entry_type_for_subject(subject: str) -> 'EntryType':
 
 
 def get_git_editor(primary_env: str = 'GIT_EDITOR') -> str:
-    """Returns the editor brockit should fall back to when a v2 rebase
+    """Returns the editor brockit should fall back to when a rebase
     step can't transform the file it was handed. Resolution order:
 
     Must be called BEFORE the caller overrides `GIT_SEQUENCE_EDITOR` /
