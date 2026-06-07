@@ -18,6 +18,7 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
@@ -1324,36 +1325,58 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   }
 
   if (event) {
+    // Set when a completion delta is merged into an existing completion event
+    // rather than appended, so it isn't also pushed as a separate event below.
+    bool merged_completion = false;
     if (event->is_completion_event()) {
-      if (!engine_->SupportsDeltaTextResponses() ||
-          entry->events->size() == 0 ||
-          !entry->events->back()->is_completion_event()) {
+      // Continue the previous completion event if the only thing separating it
+      // from this delta is inline search results. Inline search events are
+      // rendered inline within the completion text (matched by query), so they
+      // must not split one response into multiple completion events, which
+      // would fragment the answer into separate task steps and render only the
+      // trailing fragment as the final response. Any other event type (e.g.
+      // tool use) is a genuine boundary that still starts a new completion
+      // event, preserving per-step "thinking" alongside tool use.
+      mojom::ConversationEntryEvent* existing_completion = nullptr;
+      for (auto& existing : base::Reversed(*entry->events)) {
+        if (existing->is_inline_search_event()) {
+          continue;
+        }
+        if (existing->is_completion_event()) {
+          existing_completion = existing.get();
+        }
+        break;
+      }
+
+      if (!engine_->SupportsDeltaTextResponses() || !existing_completion) {
         // The start of completion responses needs whitespace trim
         // TODO(petemill): This should happen server-side?
         event->get_completion_event()->completion = base::TrimWhitespaceASCII(
             event->get_completion_event()->completion, base::TRIM_LEADING);
       }
 
-      // Optimize by merging with previous completion events if delta updates
-      // are supported or otherwise replacing the previous event.
-      if (entry->events->size() > 0) {
-        auto& last_event = entry->events->back();
-        if (last_event->is_completion_event()) {
-          // Merge completion events
-          if (engine_->SupportsDeltaTextResponses()) {
-            event->get_completion_event()->completion =
-                base::StrCat({last_event->get_completion_event()->completion,
-                              event->get_completion_event()->completion});
-          }
-          // Remove the last event because we'll replace in both delta and
-          // non-delta cases
-          entry->events->pop_back();
+      // Merge into the existing completion event if delta updates are
+      // supported, or otherwise replace its content, so inline-search-separated
+      // deltas form a single completion event.
+      if (existing_completion) {
+        if (engine_->SupportsDeltaTextResponses()) {
+          existing_completion->get_completion_event()->completion =
+              base::StrCat(
+                  {existing_completion->get_completion_event()->completion,
+                   event->get_completion_event()->completion});
+        } else {
+          existing_completion->get_completion_event()->completion =
+              event->get_completion_event()->completion;
         }
+        // The merged completion stays in place; don't append `event` below.
+        merged_completion = true;
       }
 
       // TODO(petemill): Remove ConversationTurn.text backwards compatibility
       // when all UI is updated to instead use ConversationEntryEvent items.
-      entry->text = event->get_completion_event()->completion;
+      entry->text = (existing_completion ? existing_completion : event.get())
+                        ->get_completion_event()
+                        ->completion;
     }
 
     if (event->is_tool_use_event() && entry->events->size() > 0) {
@@ -1437,7 +1460,11 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
       return;
     }
 
-    entry->events->push_back(std::move(event));
+    // A merged completion delta updated an existing event in place; don't also
+    // append it as a separate event.
+    if (!merged_completion) {
+      entry->events->push_back(std::move(event));
+    }
   }
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
