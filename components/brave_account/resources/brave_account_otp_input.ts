@@ -40,15 +40,40 @@ export class BraveAccountOtpInputElement extends CrLitElement {
 
   protected onPaste(e: ClipboardEvent) {
     e.preventDefault()
+    this.distribute(e.clipboardData?.getData('text') || '')
+  }
 
+  // Handle direct text input by overwriting the slots.
+  // Done in `beforeinput` to bypass native insertion (caret-dependent),
+  // ensuring consistent behavior.
+  // Real validation happens on the backend, so characters are passed as-is.
+  //
+  // A single keystroke inserts one character at the focused slot. The Android
+  // on-screen keyboard's paste affordance, however, does not dispatch a
+  // `paste`/`ClipboardEvent` (unlike long-press paste), it inserts the whole
+  // clipboard text as a single `insertText` edit, surfacing here with
+  // multi-character `e.data`. Distributing handles both uniformly - one
+  // character per slot starting at the focused one.
+  protected onBeforeInput(e: InputEvent, index: number) {
+    if (e.inputType === 'insertText') {
+      e.preventDefault()
+      this.distribute(e.data ?? '', index)
+    }
+  }
+
+  // Distribute a multi-character string across the slots, one character per
+  // slot, starting at `startIndex` (defaults to the currently focused slot).
+  private distribute(text: string, startIndex?: number) {
     const inputs = this.getInputs()
-    const activeElement = getDeepActiveElement()
-    const startIndex = Math.max(
-      0,
-      inputs.findIndex((input) => input.shadowRoot?.contains(activeElement)),
-    )
+    if (startIndex === undefined) {
+      const activeElement = getDeepActiveElement()
+      startIndex = Math.max(
+        0,
+        inputs.findIndex((input) => input.shadowRoot?.contains(activeElement)),
+      )
+    }
 
-    const chars = (e.clipboardData?.getData('text') || '').toUpperCase()
+    const chars = text.toUpperCase()
     for (const [offset, char] of [...chars].entries()) {
       const input = inputs[startIndex + offset]
       if (!input) {
@@ -58,36 +83,6 @@ export class BraveAccountOtpInputElement extends CrLitElement {
     }
 
     this.focusInput(Math.min(startIndex + chars.length, this.length - 1))
-    this.emitCode()
-  }
-
-  // Handle direct text input by overwriting the slot.
-  // Done in `beforeinput` to bypass native insertion (caret-dependent),
-  // ensuring consistent single-character behavior.
-  // Real validation happens on the backend, so characters are passed as-is.
-  protected onBeforeInput(e: InputEvent, index: number) {
-    if (e.inputType !== 'insertText') {
-      return
-    }
-
-    const char = e.data?.toUpperCase() ?? ''
-    if (char.length !== 1) {
-      e.preventDefault()
-      return
-    }
-
-    const input = this.getInput(index)
-    if (!input) {
-      return
-    }
-
-    e.preventDefault()
-    input.value = char
-
-    if (index < this.length - 1) {
-      this.focusInput(index + 1)
-    }
-
     this.emitCode()
   }
 
