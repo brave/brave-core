@@ -1258,7 +1258,8 @@
 
 # These tests fail because we are modifying the HttpsUpgrades feature.
 # See, chromium_src\chrome\browser\ui\navigator\browser_navigator_params_utils.cc for details.
-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgrades/*
+-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgrades/*
+-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/*
 
 # This test fails with multiple errors. Likely has to do with HTTPS upgrade:
 # "Mixed Content: The page at 'https://a.com:51799/set-header?Content-Security-Policy:%20frame-src%20*;'
