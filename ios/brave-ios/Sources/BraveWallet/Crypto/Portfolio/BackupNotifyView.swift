@@ -28,7 +28,7 @@ struct BackupNotifyView: View {
     }
     .padding(12)
     .frame(maxWidth: .infinity)
-    .background(Color(.braveErrorBackground))
+    .background(Color(braveSystemName: .systemfeedbackErrorBackground))
     .hoverEffect()
     .clipShape(backgroundShape)
     .overlay(alignment: .topTrailing) {

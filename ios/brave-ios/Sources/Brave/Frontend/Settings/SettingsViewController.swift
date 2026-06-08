@@ -1259,7 +1259,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       if Preferences.VPN.vpnReceiptStatus.value
         == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
       {
-        return (Strings.VPN.updateActionCellTitle, .braveErrorLabel)
+        return (
+          Strings.VPN.updateActionCellTitle, UIColor(braveSystemName: .systemfeedbackErrorText)
+        )
       }
 
       switch BraveVPN.vpnState {
@@ -1269,10 +1271,12 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         if enabled {
           return (Strings.VPN.settingsVPNEnabled, .braveSuccessLabel)
         } else {
-          return (Strings.VPN.settingsVPNDisabled, .braveErrorLabel)
+          return (
+            Strings.VPN.settingsVPNDisabled, UIColor(braveSystemName: .systemfeedbackErrorText)
+          )
         }
       case .expired:
-        return (Strings.VPN.settingsVPNExpired, .braveErrorLabel)
+        return (Strings.VPN.settingsVPNExpired, UIColor(braveSystemName: .systemfeedbackErrorText))
       }
     }()
 
@@ -1310,7 +1314,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
         ? UIImage(braveSystemNamed: "leo.warning.triangle-filled")?
           .withRenderingMode(.alwaysOriginal)
-          .withTintColor(.braveErrorLabel)
+          .withTintColor(UIColor(braveSystemName: .systemfeedbackErrorText))
         : UIImage(braveSystemNamed: "leo.product.vpn"),
       accessory: .disclosureIndicator,
       cellClass: ColoredDetailCell.self,

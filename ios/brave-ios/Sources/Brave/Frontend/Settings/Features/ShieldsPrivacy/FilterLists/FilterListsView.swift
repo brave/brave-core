@@ -182,7 +182,7 @@ struct FilterListsView: View {
       .disabled(status == .updating)
       if let error {
         Text(error.localizedDescription)
-          .foregroundStyle(Color(.braveErrorLabel))
+          .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
           .font(.caption)
       }
     }
@@ -212,7 +212,7 @@ struct FilterListsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         } else if let error = rulesError {
           Text(error.localizedDescription)
-            .foregroundStyle(Color(.braveErrorLabel))
+            .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
             .font(.subheadline)
             .frame(maxWidth: .infinity, alignment: .leading)
         } else {
@@ -308,7 +308,7 @@ struct FilterListsView: View {
               case .failure:
                 Text(Strings.Shields.filterListsDownloadFailed)
                   .font(.caption)
-                  .foregroundColor(Color(.braveErrorLabel))
+                  .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
               case .pending:
                 Text(Strings.Shields.filterListsDownloadPending)
                   .font(.caption)

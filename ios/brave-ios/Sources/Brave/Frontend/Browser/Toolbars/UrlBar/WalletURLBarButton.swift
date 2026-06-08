@@ -54,7 +54,7 @@ class WalletURLBarButton: UIButton {
   func addBadgeIfNeeded() {
     guard badgeView.superview == nil else { return }
 
-    badgeView.backgroundColor = .braveErrorBorder
+    badgeView.backgroundColor = UIColor(braveSystemName: .systemfeedbackErrorIcon)
     badgeView.layer.cornerRadius = badgeView.frame.height / 2
     badgeView.layer.masksToBounds = true
     addSubview(badgeView)

@@ -42,7 +42,7 @@ struct NetworkTextField: View {
           )
         )
         .font(.footnote)
-        .foregroundColor(Color(.braveErrorLabel))
+        .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
       }
     }
   }

@@ -77,7 +77,7 @@ struct VerifyRecoveryPhraseView: View {
         }
         .padding(12)
         .background(
-          Color(.braveErrorBackground)
+          Color(braveSystemName: .systemfeedbackErrorBackground)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         )
         .hidden(isHidden: !isShowingError)
