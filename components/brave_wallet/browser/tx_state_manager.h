@@ -16,13 +16,13 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
 class AccountResolverDelegate;
 class TxMeta;
-class TxStorage;
 
 class TxStateManager {
  public:
@@ -66,7 +66,8 @@ class TxStateManager {
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
 
-  void RetireTxByStatus(const std::string& chain_id,
+  void RetireTxByStatus(TxStorage::ScopedTxsUpdate& update,
+                        const std::string& chain_id,
                         mojom::TransactionStatus status,
                         size_t max_num);
 

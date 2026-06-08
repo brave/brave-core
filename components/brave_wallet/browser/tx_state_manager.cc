@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/json/values_util.h"
+#include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -148,22 +149,26 @@ bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
     auto update = tx_storage_->CreateScopedTxsUpdate();
     is_add = update->Find(meta.id()) == nullptr;
     update->Set(meta.id(), meta.ToValue());
-  }
-  if (!is_add) {
-    for (auto& observer : observers_) {
-      observer.OnTransactionStatusChanged(meta.ToTransactionInfo());
+    if (is_add) {
+      // We only keep most recent 1k confirmed plus rejected tx metas per
+      // network
+      RetireTxByStatus(update, meta.chain_id(),
+                       mojom::TransactionStatus::Confirmed, kMaxConfirmedTxNum);
+      RetireTxByStatus(update, meta.chain_id(),
+                       mojom::TransactionStatus::Rejected, kMaxRejectedTxNum);
     }
-  } else {
+  }
+
+  if (is_add) {
     for (auto& observer : observers_) {
       observer.OnNewUnapprovedTx(meta.ToTransactionInfo());
     }
-
-    // We only keep most recent 1k confirmed plus rejected tx metas per network
-    RetireTxByStatus(meta.chain_id(), mojom::TransactionStatus::Confirmed,
-                     kMaxConfirmedTxNum);
-    RetireTxByStatus(meta.chain_id(), mojom::TransactionStatus::Rejected,
-                     kMaxRejectedTxNum);
+  } else {
+    for (auto& observer : observers_) {
+      observer.OnTransactionStatusChanged(meta.ToTransactionInfo());
+    }
   }
+
   return true;
 }
 
@@ -239,7 +244,8 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
   return result;
 }
 
-void TxStateManager::RetireTxByStatus(const std::string& chain_id,
+void TxStateManager::RetireTxByStatus(TxStorage::ScopedTxsUpdate& update,
+                                      const std::string& chain_id,
                                       mojom::TransactionStatus status,
                                       size_t max_num) {
   if (no_retire_for_testing_) {
@@ -250,24 +256,65 @@ void TxStateManager::RetireTxByStatus(const std::string& chain_id,
       status != mojom::TransactionStatus::Rejected) {
     return;
   }
-  auto tx_metas = GetTransactionsByStatus(chain_id, status, std::nullopt);
-  if (tx_metas.size() > max_num) {
-    TxMeta* oldest_meta = nullptr;
-    for (const auto& tx_meta : tx_metas) {
-      if (!oldest_meta) {
-        oldest_meta = tx_meta.get();
-      } else {
-        if (tx_meta->status() == mojom::TransactionStatus::Confirmed &&
-            tx_meta->confirmed_time() < oldest_meta->confirmed_time()) {
-          oldest_meta = tx_meta.get();
-        } else if (tx_meta->status() == mojom::TransactionStatus::Rejected &&
-                   tx_meta->created_time() < oldest_meta->created_time()) {
-          oldest_meta = tx_meta.get();
-        }
-      }
+
+  base::DictValue& txs = *update;
+
+  auto const status_type = static_cast<int>(status);
+  auto const coin_type = static_cast<int>(GetCoinType());
+
+  const char* time_key =
+      (status == mojom::TransactionStatus::Confirmed ? "confirmed_time"
+                                                     : "created_time");
+
+  // Points into `txs`; left at end() until we find a candidate to retire.
+  auto oldest_it = txs.end();
+  uint64_t num_txs = 0;
+
+  // Everything is smaller than this.
+  base::Time oldest_time = base::Time::Max();
+
+  for (auto it = txs.begin(); it != txs.end(); ++it) {
+    const auto& value = it->second;
+
+    const auto* dict = value.GetIfDict();
+    if (!dict) {
+      continue;
     }
-    DCHECK(oldest_meta);
-    DeleteTx(oldest_meta->id());
+
+    const auto coin = dict->FindInt("coin");
+    if (!coin || coin.value() != coin_type) {
+      continue;
+    }
+
+    const auto* tx_chain_id = dict->FindString("chain_id");
+    if (!tx_chain_id || *tx_chain_id != chain_id) {
+      continue;
+    }
+
+    const auto tx_status = dict->FindInt("status");
+    if (!tx_status || tx_status.value() != status_type) {
+      continue;
+    }
+
+    ++num_txs;
+
+    const auto* time_val = dict->Find(time_key);
+    if (!time_val) {
+      continue;
+    }
+
+    auto t = base::ValueToTime(time_val);
+    if (!t || *t >= oldest_time) {
+      continue;
+    }
+
+    oldest_time = *t;
+    oldest_it = it;
+  }
+
+  if (num_txs > max_num) {
+    CHECK(oldest_it != txs.end());
+    txs.erase(oldest_it);
   }
 }
 
