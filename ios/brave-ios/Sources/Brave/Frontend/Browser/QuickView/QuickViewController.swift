@@ -339,13 +339,39 @@ extension QuickViewController: TabObserver {
     ) {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
     }
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.readerMode = .init(tab: tab)
+    } else {
+      let handler = ReaderModeScriptHandler()
+      readerModeHandler = handler
+      tab.browserData?.addContentScript(
+        handler,
+        name: ReaderModeScriptHandler.scriptName,
+        contentWorld: ReaderModeScriptHandler.scriptSandbox
+      )
+      readerModeHandler?.delegate = toolbarViewModel
+    }
+  }
+
+  func tabDidFinishNavigation(_ tab: some TabState) {
+    checkReaderMode(for: tab)
+  }
+
+  func tabDidTitleChange(_ tab: some TabState) {
+    checkReaderMode(for: tab)
   }
 
   func tabDidUpdateURL(_ tab: some TabState) {
     refreshShieldStatus(url: tab.visibleURL ?? url)
+    checkReaderMode(for: tab)
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
+  }
+
+  func tab(_ tab: some TabState, frameDidBecomeAvailable frame: WebFrame) {
+    guard frame.isMainFrame else { return }
+    checkReaderMode(for: tab)
   }
 }
