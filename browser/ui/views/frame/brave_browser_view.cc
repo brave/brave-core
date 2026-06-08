@@ -120,6 +120,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "brave/browser/ui/views/frame/brave_side_panel_shadow_overlay_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #endif
 
@@ -369,6 +370,13 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
       side_panel_->SetResizeArea(
           std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
+
+      side_panel_shadow_overlay_ = AddChildView(
+          std::make_unique<BraveSidePanelShadowOverlayView>(*this));
+      // Render the overlay just below `side_panel_` so the panel covers the
+      // inner part of the shadow (a higher child index paints on top).
+      ReorderChildView(side_panel_shadow_overlay_,
+                       GetIndexOf(side_panel_).value());
 #endif
     } else {
       // V1: wrap chromium's side panel inside SidebarContainerView.
@@ -1127,6 +1135,9 @@ void BraveBrowserView::UpdateSidebarBorder() {
     side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
   }
+  if (side_panel_shadow_overlay_) {
+    side_panel_shadow_overlay_->UpdateShadowVisibility();
+  }
 #else
   if (side_panel_) {
     side_panel_->UpdateBorder();
@@ -1137,6 +1148,12 @@ void BraveBrowserView::UpdateSidebarBorder() {
     sidebar_container_view_->UpdateBorder();
   }
 }
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+views::View* BraveBrowserView::side_panel_shadow_overlay_for_testing() {
+  return side_panel_shadow_overlay_.get();
+}
+#endif
 
 // PWA and omnibox Shields share kShieldsActionIcon; the PWA build uses
 // BraveShieldsToolbarButton with that id.

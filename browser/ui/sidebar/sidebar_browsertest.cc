@@ -87,6 +87,7 @@
 #include "ui/events/test/event_generator.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/widget/widget_utils.h"
@@ -337,6 +338,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     auto const iter =
         std::ranges::find(items, false, &SidebarItem::open_in_panel);
     return std::distance(items.cbegin(), iter);
+  }
+
+  BraveBrowserView* browser_view() {
+    return BraveBrowserView::From(
+        BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
   // ===== V2-aware helpers =====
@@ -928,11 +934,6 @@ class SidebarBrowserWithWebPanelTest
 
   BraveMultiContentsView* GetBraveMultiContentsView() {
     return browser_view()->GetBraveMultiContentsView();
-  }
-
-  BraveBrowserView* browser_view() {
-    return BraveBrowserView::From(
-        BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
   bool IsWebPanelEnabled() const {
@@ -2659,6 +2660,88 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ToolbarButtonPinning) {
       << "Toolbar button must be hidden again under kShowAlways";
   EXPECT_FALSE(controller()->sidebar_pinned())
       << "Pinned state must remain false after returning to kShowAlways";
+}
+
+// Exercises the V2 side-panel drop shadow (BraveSidePanelShadowOverlayView):
+//   * it is shown only while the panel is open AND rounded corners are enabled,
+//   * it stacks directly below the panel (so the panel paints over its inner
+//     part),
+//   * it paints into a clipped, non-opaque layer clamped to the browser view,
+//     and
+//   * its shadow shape tracks the panel's visible (inset) rounded area.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelShadow) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* side_panel = browser_view()->side_panel();
+  side_panel->DisableAnimationsForTesting();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  views::View* overlay =
+      browser_view()->side_panel_shadow_overlay_for_testing();
+  ASSERT_TRUE(overlay) << "Overlay should be created for the V2 sidebar";
+
+  // Hidden while the panel is closed.
+  EXPECT_FALSE(overlay->GetVisible());
+
+  // Open the panel with rounded corners on: the shadow shows.
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
+  RunScheduledLayouts();
+  ASSERT_TRUE(overlay->GetVisible())
+      << "Shadow should show when the panel is open and corners are rounded";
+
+  // It stacks directly below the panel; both are children of the browser view.
+  const auto overlay_index = browser_view()->GetIndexOf(overlay);
+  const auto panel_index = browser_view()->GetIndexOf(side_panel);
+  ASSERT_TRUE(overlay_index.has_value());
+  ASSERT_TRUE(panel_index.has_value());
+  EXPECT_EQ(overlay_index.value() + 1, panel_index.value())
+      << "overlay must be the child directly below the side panel";
+
+  // It paints into a clipped, non-opaque layer clamped to the browser view, so
+  // the blurred shadow never draws outside the window.
+  ASSERT_TRUE(overlay->layer());
+  EXPECT_FALSE(overlay->layer()->fills_bounds_opaquely());
+  EXPECT_TRUE(overlay->layer()->GetMasksToBounds());
+  EXPECT_TRUE(browser_view()->GetLocalBounds().Contains(overlay->bounds()))
+      << "overlay " << overlay->bounds().ToString() << " should fit within "
+      << browser_view()->GetLocalBounds().ToString();
+
+  // The shadow shape (the overlay's sole child view) hugs the panel's *visible*
+  // rounded area: inset by the panel's border insets on the content/outer/
+  // bottom edges, but flush with the panel's top since the header shares the
+  // rounded top. side_panel and the overlay are both children of the browser
+  // view, so convert the shape into that shared coordinate space.
+  ASSERT_EQ(1u, overlay->children().size());
+  gfx::Rect shape_bounds = overlay->children()[0]->bounds();
+  shape_bounds.Offset(overlay->bounds().OffsetFromOrigin());
+  gfx::Insets shape_insets = side_panel->GetInsets();
+  shape_insets.set_top(0);
+  gfx::Rect expected_shape = side_panel->bounds();
+  expected_shape.Inset(shape_insets);
+  EXPECT_EQ(shape_bounds, expected_shape)
+      << "shadow shape " << shape_bounds.ToString()
+      << " should match the panel's visible area " << expected_shape.ToString();
+
+  // Disabling rounded corners hides the shadow even while the panel is open.
+  // This drives the pref callback -> UpdateRoundedCornersUI() ->
+  // UpdateSidebarBorder() -> UpdateShadowVisibility() path.
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  EXPECT_FALSE(overlay->GetVisible())
+      << "Shadow should hide when rounded corners are disabled";
+
+  // Re-enable corners, then close the panel: the shadow hides again (driven by
+  // the panel-visibility observer).
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  ASSERT_TRUE(overlay->GetVisible());
+  panel_ui->Toggle();
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !side_panel->GetVisible(); }));
+  RunScheduledLayouts();
+  EXPECT_FALSE(overlay->GetVisible())
+      << "Shadow should hide when the panel is closed";
 }
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)

@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -65,6 +66,7 @@ class Widget;
 }  // namespace views
 
 class BraveBrowser;
+class BraveSidePanelShadowOverlayView;
 class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
@@ -177,6 +179,10 @@ class BraveBrowserView : public BrowserView,
   views::View* top_container_separator_for_testing() const {
     return top_container_separator_;
   }
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  views::View* side_panel_shadow_overlay_for_testing();
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Returns the PWA Shields toolbar button, if it exists. Note that this
@@ -306,6 +312,12 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // Sibling of `side_panel_` that renders the panel's drop shadow without
+  // drawing outside the browser view. Tracks the panel by observing it.
+  raw_ptr<BraveSidePanelShadowOverlayView> side_panel_shadow_overlay_ = nullptr;
+#endif
 
   PrefChangeRegistrar pref_change_registrar_;
   BooleanPrefMember compact_horizontal_tabs_;
