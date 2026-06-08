@@ -201,6 +201,12 @@ export function ConfirmSendTransaction() {
     onConfirm()
   }, [onConfirm])
 
+  // Reset the warning overlay whenever the queued transaction changes so it
+  // doesn't carry over to the next pending transaction.
+  React.useEffect(() => {
+    setShowApprovalForAllWarning(false)
+  }, [selectedPendingTransaction?.id])
+
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
   }
@@ -414,6 +420,7 @@ export function ConfirmSendTransaction() {
 
         {/* Confirm and reject buttons */}
         <ConfirmRejectButtons
+          key={showApprovalForAllWarning ? 1 : 0}
           onConfirm={onConfirmOrMaybeShowWarning}
           onReject={onReject}
           isConfirmButtonDisabled={isConfirmButtonDisabled}
@@ -466,6 +473,7 @@ export function ConfirmSendTransaction() {
           onConfirm={onConfirmAndCloseWarning}
           onReject={onReject}
           address={approvalForAllOperator}
+          network={transactionsNetwork}
         />
       )}
     </>
