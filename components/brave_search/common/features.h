@@ -8,6 +8,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 
 namespace brave_search {
 namespace features {
@@ -44,6 +45,21 @@ extern const base::FeatureParam<std::string> kBackupResultsUAOverride;
 extern const base::FeatureParam<std::string> kBackupResultsUAMetadata;
 // Maximum number of backup results fetches allowed per day. -1 means no limit.
 extern const base::FeatureParam<int> kBackupResultsMaxDailyRequests;
+// If true, seeds navigation history and loads the root URL first, then
+// loads the actual target URL after a randomized delay following
+// the root page's load completion.
+extern const base::FeatureParam<bool> kBackupResultsLoadAfterRestore;
+// Randomized delay range before loading the target URL after root page restore.
+// Used when low_latency_required is false.
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreDelayMin;
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreDelayMax;
+// Randomized delay range used when low_latency_required is true.
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreLowDelayMin;
+extern const base::FeatureParam<base::TimeDelta>
+    kBackupResultsLoadAfterRestoreLowDelayMax;
 
 }  // namespace features
 }  // namespace brave_search
