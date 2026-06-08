@@ -50,6 +50,7 @@ source_set("android_browser_process") {
     "//components/content_settings/core/browser",
     "//components/content_settings/core/browser:cookie_settings",
     "//components/ntp_tiles",
+    "//components/prefs",
     "//components/sync",
     "//components/translate/core/browser",
     "//components/unified_consent",
