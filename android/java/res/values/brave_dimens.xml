@@ -11,9 +11,6 @@
 
     <!-- Onboarding dimens -->
     <dimen name="onboarding_text_size">16sp</dimen>
-    <dimen name="onboarding_bottom_sheet_height">250dp</dimen>
-    <dimen name="onboarding_counter_layout_height">350dp</dimen>
-    <dimen name="onboarding_counter_height">250dp</dimen>
 
     <dimen name="onboarding_2_title_size">22sp</dimen>
     <dimen name="onboarding_2_text_size">16sp</dimen>
