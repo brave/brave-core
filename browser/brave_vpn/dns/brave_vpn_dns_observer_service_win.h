@@ -20,7 +20,7 @@ class PrefService;
 
 namespace brave_vpn {
 
-class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
+class BraveVpnDnsObserverService : public brave_vpn::BraveVpnServiceObserver,
                                    public KeyedService {
  public:
   explicit BraveVpnDnsObserverService(PrefService* local_state,
@@ -30,7 +30,7 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
   BraveVpnDnsObserverService operator=(const BraveVpnDnsObserverService&) =
       delete;
 
-  // brave_vpn::BraveVPNServiceObserver
+  // brave_vpn::BraveVpnServiceObserver
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
 

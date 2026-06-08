@@ -15,7 +15,7 @@
 namespace brave_vpn {
 
 class BraveVpnWireguardObserverService
-    : public brave_vpn::BraveVPNServiceObserver,
+    : public brave_vpn::BraveVpnServiceObserver,
       public KeyedService {
  public:
   BraveVpnWireguardObserverService();
@@ -25,7 +25,7 @@ class BraveVpnWireguardObserverService
   BraveVpnWireguardObserverService operator=(
       const BraveVpnWireguardObserverService&) = delete;
 
-  // brave_vpn::BraveVPNServiceObserver
+  // brave_vpn::BraveVpnServiceObserver
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
 

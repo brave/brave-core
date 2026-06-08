@@ -16,7 +16,7 @@
 #include "components/prefs/pref_change_registrar.h"
 
 class BraveVpnHandler : public settings::SettingsPageUIHandler,
-                        public brave_vpn::BraveVPNServiceObserver {
+                        public brave_vpn::BraveVpnServiceObserver {
  public:
   explicit BraveVpnHandler(Profile* profile);
   ~BraveVpnHandler() override;
@@ -34,7 +34,7 @@ class BraveVpnHandler : public settings::SettingsPageUIHandler,
   void SetShowInSystemTray(const base::ListValue& args);
 #endif
 
-  // brave_vpn::BraveVPNServiceObserver
+  // brave_vpn::BraveVpnServiceObserver
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
   void OnProtocolChanged();

@@ -17,12 +17,12 @@ namespace brave_vpn {
 
 class BraveVpnService;
 
-class BraveVPNServiceObserver : public mojom::ServiceObserver {
+class BraveVpnServiceObserver : public mojom::ServiceObserver {
  public:
-  BraveVPNServiceObserver();
-  ~BraveVPNServiceObserver() override;
-  BraveVPNServiceObserver(const BraveVPNServiceObserver&) = delete;
-  BraveVPNServiceObserver& operator=(const BraveVPNServiceObserver&) = delete;
+  BraveVpnServiceObserver();
+  ~BraveVpnServiceObserver() override;
+  BraveVpnServiceObserver(const BraveVpnServiceObserver&) = delete;
+  BraveVpnServiceObserver& operator=(const BraveVpnServiceObserver&) = delete;
 
   void Observe(BraveVpnService* service);
 
