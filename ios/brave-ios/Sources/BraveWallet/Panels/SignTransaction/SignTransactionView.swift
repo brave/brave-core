@@ -187,7 +187,7 @@ struct SignTransactionView: View {
             if let network = self.network {
               Text(network.chainName)
                 .font(.callout)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             Spacer()
             if requests.count > 1 {
@@ -218,17 +218,17 @@ struct SignTransactionView: View {
             AddressView(address: account.address) {
               Text(account.name)
             }
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.callout)
             Text(originInfo: currentRequestOriginInfo)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.subheadline)
               .multilineTextAlignment(.center)
           }
           .accessibilityElement(children: .combine)
           Text(Strings.Wallet.signatureRequestSubtitle)
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
         .padding(.horizontal, 8)
         if showWarning {
@@ -360,7 +360,7 @@ struct SignTransactionView: View {
     VStack {
       Text(Strings.Wallet.solanaSignTransactionDetails)
         .font(.subheadline.weight(.semibold))
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       HStack {
         LinearGradient(braveGradient: colorScheme == .dark ? .darkGradient02 : .lightGradient02)
       }

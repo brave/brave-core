@@ -48,7 +48,7 @@ struct AccountPrivateKeyView: View {
           "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.accountPrivateKeyDisplayWarning)"
         )
         .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .padding(12)
         .background(
           Color(.braveWarningBackground)

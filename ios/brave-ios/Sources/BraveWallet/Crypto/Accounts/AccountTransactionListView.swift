@@ -23,7 +23,7 @@ struct AccountTransactionListView: View {
       .font(.footnote.weight(.medium))
       .frame(maxWidth: .infinity)
       .multilineTextAlignment(.center)
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
   }
 
   var body: some View {

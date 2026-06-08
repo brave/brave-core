@@ -92,7 +92,7 @@ struct SaferSignTransactionView: View {
       )
       Text(display)
         .font(.callout)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     }
   }
 
@@ -101,7 +101,7 @@ struct SaferSignTransactionView: View {
       HStack {
         Text(Strings.Wallet.swapConfirmationYouSpend)
           .fontWeight(.medium)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         Spacer()
         AddressView(address: fromAddress ?? "") {
           HStack(spacing: 2) {
@@ -139,7 +139,7 @@ struct SaferSignTransactionView: View {
       HStack {
         Text(Strings.Wallet.swapConfirmationYoullReceive)
           .fontWeight(.medium)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         Spacer()
         if let receiverAddress {
           AddressView(address: receiverAddress) {

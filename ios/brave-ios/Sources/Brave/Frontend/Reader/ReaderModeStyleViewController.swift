@@ -165,7 +165,7 @@ class ReaderModeStyleViewController: UIViewController {
     let brightnessMinImageView = UIImageView(
       image: UIImage(named: "brightnessMin", in: .module, compatibleWith: nil)!.template
     )
-    brightnessMinImageView.tintColor = .braveLabel
+    brightnessMinImageView.tintColor = UIColor(braveSystemName: .textPrimary)
     brightnessRow.addSubview(brightnessMinImageView)
 
     brightnessMinImageView.snp.makeConstraints { (make) -> Void in
@@ -176,7 +176,7 @@ class ReaderModeStyleViewController: UIViewController {
     let brightnessMaxImageView = UIImageView(
       image: UIImage(named: "brightnessMax", in: .module, compatibleWith: nil)!.template
     )
-    brightnessMaxImageView.tintColor = .braveLabel
+    brightnessMaxImageView.tintColor = UIColor(braveSystemName: .textPrimary)
     brightnessRow.addSubview(brightnessMaxImageView)
 
     brightnessMaxImageView.snp.makeConstraints { (make) -> Void in
@@ -285,8 +285,8 @@ class FontTypeButton: UIButton {
     self.init(frame: .zero)
     self.fontType = fontType
 
-    setTitleColor(.braveLabel, for: .selected)
-    setTitleColor(.secondaryBraveLabel, for: [])
+    setTitleColor(UIColor(braveSystemName: .textPrimary), for: .selected)
+    setTitleColor(UIColor(braveSystemName: .textSecondary), for: [])
     backgroundColor = .braveBackground
     accessibilityHint = Strings.readerModeFontTypeButtonAccessibilityHint
 
@@ -322,7 +322,7 @@ class FontSizeButton: UIButton {
     self.init(frame: .zero)
     self.fontSizeAction = fontSizeAction
 
-    setTitleColor(.bravePrimary, for: .normal)
+    setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     setTitleColor(.braveDisabled, for: .disabled)
 
     switch fontSizeAction {

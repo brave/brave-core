@@ -250,8 +250,8 @@ private class TwoLineCellHelper {
       self.container?.backgroundColor = .clear
     }
 
-    textLabel.textColor = .braveLabel
-    detailTextLabel.textColor = .secondaryBraveLabel
+    textLabel.textColor = UIColor(braveSystemName: .textPrimary)
+    detailTextLabel.textColor = UIColor(braveSystemName: .textSecondary)
     setupDynamicFonts()
 
     imageView.contentMode = .scaleAspectFill

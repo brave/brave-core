@@ -127,15 +127,15 @@ struct SendTokenView: View {
         VStack(alignment: .leading) {
           Text(sendTokenStore.selectedSendToken?.symbol ?? "")
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(networkStore.defaultSelectedChain.chainName)
             .font(.caption)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         Spacer()
         Text(sendTokenBalanceDisplay)
           .font(.title3.weight(.semibold))
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .padding(.vertical, 8)
     }
@@ -262,11 +262,11 @@ struct SendTokenView: View {
                   Text(Strings.Wallet.ensOffchainGatewayTitle)
                     .font(.body)
                     .fontWeight(.bold)
-                    .foregroundColor(Color(.braveLabel))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                     .fixedSize(horizontal: false, vertical: true)
                   Text(Strings.Wallet.ensOffchainGatewayDesc)
                     .font(.body)
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     .fixedSize(horizontal: false, vertical: true)
                   Button {
                     openURL(WalletConstants.braveWalletENSOffchainURL)
@@ -283,7 +283,7 @@ struct SendTokenView: View {
                 AddressView(address: resolvedAddress) {
                   Text(resolvedAddress)
                     .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                 }
               }
             }

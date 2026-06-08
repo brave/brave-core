@@ -80,7 +80,7 @@ struct SubmitReportView: View {
                   }
                   Spacer()
                   Image(systemName: "chevron.up.chevron.down")
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                 }
               }
             )

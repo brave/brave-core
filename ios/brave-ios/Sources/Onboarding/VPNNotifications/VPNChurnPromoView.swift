@@ -145,7 +145,7 @@ public struct VPNChurnPromoView: View {
       } label: {
         Image(braveSystemName: "leo.close")
           .renderingMode(.template)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
       .padding([.top, .trailing], 10)
@@ -189,7 +189,7 @@ public struct VPNChurnPromoView: View {
               .frame(alignment: .leading)
             Text(itemDescription)
               .multilineTextAlignment(.leading)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .fixedSize(horizontal: false, vertical: true)
           }
         }
@@ -218,11 +218,11 @@ public struct VPNChurnPromoView: View {
       HStack(spacing: 8) {
         Text(Strings.VPN.poweredBy)
           .font(.footnote)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .multilineTextAlignment(.center)
         Image(sharedName: "vpn_brand")
           .renderingMode(.template)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
       }
       .padding(.bottom, 16)
     }

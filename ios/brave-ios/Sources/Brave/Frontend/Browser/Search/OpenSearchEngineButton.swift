@@ -89,7 +89,7 @@ class OpenSearchEngineButton: BraveButton {
     }
 
     loaderView = LoaderView(size: .small).then {
-      $0.tintColor = .braveLabel
+      $0.tintColor = UIColor(braveSystemName: .textPrimary)
     }
   }
 }

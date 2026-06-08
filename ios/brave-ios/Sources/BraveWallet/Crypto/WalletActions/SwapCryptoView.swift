@@ -39,7 +39,7 @@ struct ShortcutAmountGrid: View {
             .minimumScaleFactor(0.75)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .background(WalletActionsGridBackgroundView())
             .padding(.top, 8)
         }
@@ -93,7 +93,10 @@ struct SlippageGrid: View {
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .foregroundColor(
-              Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel)
+              Color(
+                isPredefinedOptionSelected(option.id)
+                  ? .white : UIColor(braveSystemName: .textSecondary)
+              )
             )
             .background(
               WalletActionsGridBackgroundView(
@@ -127,7 +130,9 @@ struct SlippageGrid: View {
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
         .accentColor(customSlippage != nil ? .white : nil)
-        .foregroundColor(Color(customSlippage != nil ? .white : .secondaryBraveLabel))
+        .foregroundColor(
+          Color(customSlippage != nil ? .white : UIColor(braveSystemName: .textSecondary))
+        )
         .background(
           WalletActionsGridBackgroundView(
             backgroundColor: Color(
@@ -168,7 +173,7 @@ struct MarketPriceView: View {
             swapTokenStore.selectedFromToken?.symbol ?? ""
           )
         )
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .font(.subheadline)
         Text(swapTokenStore.selectedFromTokenPrice)
           .font(.title3.weight(.semibold))
@@ -257,7 +262,7 @@ struct SwapCryptoView: View {
           )
         )
         .font(.subheadline)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
       }
       .padding(.vertical, 6.0)
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -326,11 +331,11 @@ struct SwapCryptoView: View {
           }
           Text(swapTokensStore.selectedFromToken?.symbol ?? "")
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Spacer()
           Text(swapTokensStore.selectedFromTokenBalance?.decimalDescription ?? "0.0000")
             .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .padding(.vertical, 8)
       }
@@ -360,7 +365,7 @@ struct SwapCryptoView: View {
             Label(Strings.Wallet.swapSelectedTokens, systemImage: "chevron.up.chevron.down")
               .labelStyle(.iconOnly)
               .font(.body)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .padding(.horizontal, 20)
               .padding(.vertical, 5)
               .background(
@@ -408,11 +413,11 @@ struct SwapCryptoView: View {
           }
           Text(swapTokensStore.selectedToToken?.symbol ?? "")
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Spacer()
           Text(swapTokensStore.selectedToTokenBalance?.decimalDescription ?? "0.0000")
             .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .padding(.vertical, 8)
       }
@@ -487,12 +492,12 @@ struct SwapCryptoView: View {
             .font(.subheadline)
           Spacer()
           Text(formatSlippage)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .font(.subheadline.weight(.semibold))
           Image("wallet-dismiss", bundle: .module)
             .renderingMode(.template)
             .resizable()
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .frame(width: 12, height: 6)
             .rotationEffect(.degrees(hideSlippage ? 0 : 180))
             .animation(.default, value: hideSlippage)
@@ -538,7 +543,7 @@ struct SwapCryptoView: View {
         HStack {
           Text(dexAggregator.swapDexAggrigatorNote)
             .multilineTextAlignment(.center)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Image(braveSystemName: "leo.info.ios-only")
             .foregroundColor(Color(.braveBlurpleTint))
             .accessibilityHidden(true)
@@ -582,7 +587,7 @@ struct SwapCryptoView: View {
         }
       }
       .font(.footnote)
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
     }
   }
 

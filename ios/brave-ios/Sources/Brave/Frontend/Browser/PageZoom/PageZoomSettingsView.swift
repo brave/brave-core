@@ -35,7 +35,7 @@ struct PageZoomSettingsView: View {
         Section(
           header: Text(Strings.PageZoom.specificWebsitesZoomLevelsSectionTitle)
             .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         ) {
           ForEach(domains) { domain in
             HStack {
@@ -44,13 +44,13 @@ struct PageZoomSettingsView: View {
 
               Text(url)
                 .font(.system(.body).weight(.medium))
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
 
               Spacer()
 
               Text(NSNumber(value: zoomLevel), formatter: PageZoomView.percentFormatter)
                 .font(.system(.body).weight(.medium))
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .multilineTextAlignment(.trailing)
             }
           }
@@ -66,7 +66,7 @@ struct PageZoomSettingsView: View {
             : Strings.PageZoom.otherWebsiteZoomLevelSectionTitle
         )
         .font(.subheadline)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
       ) {
         ForEach(PageZoomHandler.steps, id: \.self) { step in
           Button(
@@ -77,7 +77,7 @@ struct PageZoomSettingsView: View {
               HStack(spacing: 0.0) {
                 Text(NSNumber(value: step), formatter: PageZoomView.percentFormatter)
                   .font(.system(.body).weight(.medium))
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .multilineTextAlignment(.trailing)
 
                 Spacer()
@@ -100,7 +100,7 @@ struct PageZoomSettingsView: View {
         Section(
           header: Text(Strings.PageZoom.resetAllDescription)
             .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         ) {
           Button(
             action: {

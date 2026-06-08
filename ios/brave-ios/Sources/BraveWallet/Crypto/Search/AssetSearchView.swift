@@ -88,7 +88,7 @@ struct AssetSearchView: View {
       } emptyStateView: {
         Text(Strings.Wallet.assetSearchEmpty)
           .font(.footnote)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
       } content: { viewModel in
@@ -233,7 +233,7 @@ struct SearchAssetView<ImageView: View>: View {
         Text(title)
           .font(.footnote)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Text(
           String.localizedStringWithFormat(
             Strings.Wallet.userAssetSymbolNetworkDesc,
@@ -242,7 +242,7 @@ struct SearchAssetView<ImageView: View>: View {
           )
         )
         .font(.caption)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       Spacer()
       Image(systemName: "chevron.right")

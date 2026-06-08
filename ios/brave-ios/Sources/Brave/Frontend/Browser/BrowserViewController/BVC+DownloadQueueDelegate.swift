@@ -24,7 +24,7 @@ extension BrowserViewController: DownloadQueueDelegate {
 
             let downloadCancelledToast = ButtonToast(
               labelText: Strings.downloadCancelledToastLabelText,
-              backgroundColor: UIColor.braveLabel,
+              backgroundColor: UIColor(braveSystemName: .textPrimary),
               textAlignment: .center
             )
 
@@ -87,7 +87,7 @@ extension BrowserViewController: DownloadQueueDelegate {
       } else {
         let downloadFailedToast = ButtonToast(
           labelText: Strings.downloadFailedToastLabelText,
-          backgroundColor: UIColor.braveLabel,
+          backgroundColor: UIColor(braveSystemName: .textPrimary),
           textAlignment: .center
         )
 

@@ -149,7 +149,7 @@ struct AddAccountView: View {
             Picker(selection: $accountNetwork) {
               ForEach(selectedCoinNetworks) { network in
                 Text(network.chainName)
-                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
                   .tag(network)
               }
             } label: {
@@ -159,13 +159,13 @@ struct AddAccountView: View {
           label: {
             HStack {
               Text(Strings.Wallet.transactionDetailsNetworkTitle)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               Spacer()
               Group {
                 Text(accountNetwork.chainName)
                 Image(systemName: "chevron.up.chevron.down")
               }
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
         )
@@ -237,11 +237,11 @@ struct AddAccountView: View {
                 .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               VStack(alignment: .leading, spacing: 3) {
                 Text(coin.localizedTitle)
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .font(.headline)
                   .multilineTextAlignment(.leading)
                 Text(coin.localizedDescription)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .font(.footnote)
                   .multilineTextAlignment(.leading)
               }
@@ -316,7 +316,7 @@ struct AddAccountView: View {
         WalletListHeaderView(
           title: Text(Strings.Wallet.accountDetailsNameTitle)
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         )
       },
       footer: {
@@ -337,7 +337,7 @@ struct AddAccountView: View {
       header: WalletListHeaderView(
         title: Text(Strings.Wallet.importAccountOriginPasswordTitle)
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       )
     ) {
       SecureField(Strings.Wallet.passwordPlaceholder, text: $originPassword)
@@ -355,7 +355,7 @@ struct AddAccountView: View {
       header: WalletListHeaderView(
         title: Text(Strings.Wallet.importAccountSectionTitle)
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       )
     ) {
       if self.selectedCoin == .btc || self.preSelectedCoin == .btc {

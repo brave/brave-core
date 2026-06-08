@@ -65,7 +65,7 @@ struct AccountDetailsView: View {
             WalletListHeaderView(
               title: Text(Strings.Wallet.accountDetailsNameTitle)
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             )
           },
           footer: {
@@ -171,10 +171,10 @@ struct AccountDetailsHeaderView: View {
       } label: {
         HStack {
           Text(account.address)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
           Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "leo.copy.plain-text")
             .labelStyle(.iconOnly)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
       }
       .buttonStyle(.plain)

@@ -44,7 +44,7 @@ struct SignMessageRequestContentView: View {
       for: UIFont.systemFont(ofSize: desc.pointSize, weight: .regular)
     )
     let regularAttributes: [NSAttributedString.Key: Any] = [
-      .font: regularFont, .foregroundColor: UIColor.braveLabel,
+      .font: regularFont, .foregroundColor: UIColor(braveSystemName: .textPrimary),
     ]
     if requestDomain.isEmpty {
       // if we don't show domain, we don't need the titles so we
@@ -53,7 +53,7 @@ struct SignMessageRequestContentView: View {
     }
     let boldFont = metrics.scaledFont(for: UIFont.systemFont(ofSize: desc.pointSize, weight: .bold))
     let boldAttributes: [NSAttributedString.Key: Any] = [
-      .font: boldFont, .foregroundColor: UIColor.braveLabel,
+      .font: boldFont, .foregroundColor: UIColor(braveSystemName: .textPrimary),
     ]
 
     let domainTitle = NSAttributedString(
@@ -213,7 +213,7 @@ private struct MessageWarningView: View {
           "\(Image(braveSystemName: "leo.warning.triangle-filled")) \(Strings.Wallet.signMessageConsecutiveNewlineWarning)"
         )
         .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
       }
       if hasUnknownUnicode {
@@ -221,7 +221,7 @@ private struct MessageWarningView: View {
           "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.signMessageRequestUnknownUnicodeWarning)"
         )
         .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
       }
       Button {

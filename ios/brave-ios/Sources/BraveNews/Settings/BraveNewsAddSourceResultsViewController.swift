@@ -117,7 +117,7 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
         .applyingSymbolConfiguration(
           .init(font: .preferredFont(for: .body, weight: .semibold), scale: .small)
         ) : UIImage(named: "insecure-site-icon", in: .module, compatibleWith: nil)!
-    cell.imageView?.tintColor = .braveLabel
+    cell.imageView?.tintColor = UIColor(braveSystemName: .textPrimary)
     cell.textLabel?.text = location.title
     cell.detailTextLabel?.text = location.url.absoluteString
     cell.accessoryType = selectedLocations.contains(location) ? .checkmark : .none

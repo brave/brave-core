@@ -63,7 +63,7 @@ struct SignInWithEthereumView: View {
       Text(verbatim: originInfo.eTldPlusOne)
       Text(originInfo: originInfo)
         .font(.caption)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
     }
   }

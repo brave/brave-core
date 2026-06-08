@@ -60,7 +60,7 @@ struct AssetDetailView: View {
             .shimmer(assetDetailStore.isLoadingAccountBalances)
         } else {
           Text("\(assetDetailStore.totalBalance) \(assetDetailStore.assetDetailToken.symbol)")
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
       }
 
@@ -85,12 +85,12 @@ struct AssetDetailView: View {
                 : "\(viewModel.balance) \(assetDetailStore.assetDetailToken.symbol)"
             )
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .redacted(reason: showBalancePlaceholder ? .placeholder : [])
             .shimmer(assetDetailStore.isLoadingAccountBalances)
             Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
               .font(.footnote)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .redacted(reason: showFiatPlaceholder ? .placeholder : [])
               .shimmer(assetDetailStore.isLoadingPrice)
           }
@@ -99,7 +99,7 @@ struct AssetDetailView: View {
         }
       }
       .font(.footnote)
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
     }
   }
 
@@ -186,10 +186,10 @@ struct AssetDetailView: View {
           VStack(spacing: 4) {
             Text(item.value)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(item.title)
               .font(.caption2)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .frame(maxWidth: .infinity)
           .padding(.vertical, 16)
@@ -357,7 +357,7 @@ struct AssetDetailView: View {
           Text(Strings.Wallet.coinGeckoDisclaimer)
             .multilineTextAlignment(.center)
             .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .frame(maxWidth: .infinity)
             .padding(.bottom, 12)
         }
@@ -367,7 +367,7 @@ struct AssetDetailView: View {
         Text(Strings.Wallet.coinGeckoDisclaimer)
           .multilineTextAlignment(.center)
           .font(.footnote)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .frame(maxWidth: .infinity)
           .padding(.bottom, 12)
       }
@@ -494,12 +494,12 @@ struct AssetDetailView: View {
           VStack(spacing: 16) {
             Text(Strings.Wallet.auroraBridgeAlertTitle)
               .font(.body.weight(.medium))
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .multilineTextAlignment(.center)
             Text(Strings.Wallet.auroraBridgeAlertDescription)
               .multilineTextAlignment(.center)
               .font(.footnote)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Button {
               isShowingAuroraBridgeAlert = false
               if let link = WalletConstants.auroraBridgeOverviewLink {
@@ -527,7 +527,7 @@ struct AssetDetailView: View {
             HStack(alignment: .top, spacing: 8) {
               WalletCheckbox(isChecked: $isDoNotShowCheckboxChecked)
               Text(Strings.Wallet.auroraPopupDontShowAgain)
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .font(.subheadline)
               Spacer()
             }

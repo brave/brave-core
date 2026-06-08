@@ -34,7 +34,7 @@ struct FollowToggle: View {
         }
       } label: {
         configuration.label
-          .foregroundColor(isFollowing ? Color(.secondaryBraveLabel) : Color.white)
+          .foregroundColor(isFollowing ? Color(braveSystemName: .textSecondary) : Color.white)
           .font(.footnote.bold())
           .padding(.horizontal, 12)
           .padding(.vertical, 4)

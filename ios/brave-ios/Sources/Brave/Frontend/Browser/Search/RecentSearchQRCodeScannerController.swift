@@ -143,14 +143,14 @@ extension RecentSearchQRCodeScannerController {
       $0.text = Strings.recentSearchScannerDescriptionTitle
       $0.font = .systemFont(ofSize: 17, weight: .semibold)
       $0.numberOfLines = 0
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
     }
 
     private let bodyLabel = UILabel().then {
       $0.text = Strings.recentSearchScannerDescriptionBody
       $0.font = .systemFont(ofSize: 17)
       $0.numberOfLines = 0
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
     }
 
     var scannedText: String? {

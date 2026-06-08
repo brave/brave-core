@@ -34,8 +34,10 @@ extension UIView {
       let appearance: UINavigationBarAppearance = {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor(braveSystemName: .textPrimary)]
+        appearance.largeTitleTextAttributes = [
+          .foregroundColor: UIColor(braveSystemName: .textPrimary)
+        ]
         appearance.backgroundColor = .braveBackground
         appearance.backgroundEffect = nil
         return appearance
@@ -60,11 +62,13 @@ extension UIView {
       $0.backgroundColor = tableSecondaryColor
     }
 
-    UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = .braveLabel
+    UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor(
+      braveSystemName: .textPrimary
+    )
     UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self])
-      .textColor = .braveLabel
+      .textColor = UIColor(braveSystemName: .textPrimary)
 
-    UITextField.appearance().textColor = .braveLabel
+    UITextField.appearance().textColor = UIColor(braveSystemName: .textPrimary)
 
     UISegmentedControl.appearance().do {
       $0.selectedSegmentTintColor = .init(dynamicProvider: {
@@ -74,8 +78,14 @@ extension UIView {
         return .white
       })
       $0.backgroundColor = .secondaryBraveBackground
-      $0.setTitleTextAttributes([.foregroundColor: UIColor.bravePrimary], for: .selected)
-      $0.setTitleTextAttributes([.foregroundColor: UIColor.braveLabel], for: .normal)
+      $0.setTitleTextAttributes(
+        [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
+        for: .selected
+      )
+      $0.setTitleTextAttributes(
+        [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
+        for: .normal
+      )
     }
   }
 }

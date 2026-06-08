@@ -126,12 +126,12 @@ extension OnboardingRewardsAgreementViewController {
     private let titleLabel = OnboardingCommon.Views.primaryText(Strings.OBRewardsAgreementTitle)
       .then {
         $0.numberOfLines = 0
-        $0.textColor = .braveLabel
+        $0.textColor = UIColor(braveSystemName: .textPrimary)
       }
 
     private let subtitleLabel = OnboardingCommon.Views.secondaryText(Strings.OBRewardsDetail).then {
       $0.numberOfLines = 0
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
     }
 
     private lazy var descriptionLabel = UITextView().then {
@@ -172,7 +172,7 @@ extension OnboardingRewardsAgreementViewController {
           string: Strings.OBRewardsAgreementDetail,
           attributes: [
             .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-            .foregroundColor: UIColor.braveLabel,
+            .foregroundColor: UIColor(braveSystemName: .textPrimary),
           ]
         )
 
@@ -181,7 +181,7 @@ extension OnboardingRewardsAgreementViewController {
             string: " ",
             attributes: [
               .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-              .foregroundColor: UIColor.braveLabel,
+              .foregroundColor: UIColor(braveSystemName: .textPrimary),
             ]
           )
         )
@@ -202,7 +202,7 @@ extension OnboardingRewardsAgreementViewController {
             string: " \(Strings.OBRewardsAgreementDetailsAnd) ",
             attributes: [
               .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-              .foregroundColor: UIColor.braveLabel,
+              .foregroundColor: UIColor(braveSystemName: .textPrimary),
             ]
           )
         )
@@ -241,7 +241,7 @@ extension OnboardingRewardsAgreementViewController {
       let subTitle = text.boldWords(with: self.subtitleLabel.font, amount: boldWords)
       subTitle.addAttribute(
         .foregroundColor,
-        value: UIColor.braveLabel,
+        value: UIColor(braveSystemName: .textPrimary),
         range: NSRange(location: 0, length: subTitle.length)
       )
       self.subtitleLabel.attributedText = subTitle

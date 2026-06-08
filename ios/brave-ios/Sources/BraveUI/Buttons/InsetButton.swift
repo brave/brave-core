@@ -42,7 +42,7 @@ public class SelectedInsetButton: InsetButton {
   public override var isSelected: Bool {
     didSet {
       backgroundColor = isSelected ? selectedBackgroundColor : .clear
-      setTitleColor(isSelected ? .white : .braveLabel, for: .normal)
+      setTitleColor(isSelected ? .white : UIColor(braveSystemName: .textPrimary), for: .normal)
     }
   }
 
@@ -61,7 +61,7 @@ public class SelectedInsetButton: InsetButton {
     layer.cornerRadius = 4.0
     layer.cornerCurve = .continuous
 
-    setTitleColor(.braveLabel, for: .normal)
+    setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     selectedBackgroundColor = .braveBlurpleTint
   }
 

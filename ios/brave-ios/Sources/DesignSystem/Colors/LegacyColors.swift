@@ -11,10 +11,6 @@ enum LegacyDesignSystemColor: String {
   case background02
   case background03
 
-  case text01
-  case text02
-  case text03
-
   case interactive01
   case interactive02
   case interactive03
@@ -87,15 +83,6 @@ extension UIColor {
   }
   public static var tertiaryBraveGroupedBackground: UIColor {
     LegacyDesignSystemColor.background01.color
-  }
-  public static var braveLabel: UIColor {
-    LegacyDesignSystemColor.text02.color
-  }
-  public static var secondaryBraveLabel: UIColor {
-    LegacyDesignSystemColor.text03.color
-  }
-  public static var bravePrimary: UIColor {
-    LegacyDesignSystemColor.text01.color
   }
   public static var braveLighterOrange: UIColor {
     LegacyDesignSystemColor.interactive03.color

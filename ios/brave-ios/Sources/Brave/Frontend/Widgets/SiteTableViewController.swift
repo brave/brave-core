@@ -24,7 +24,7 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
     super.init(reuseIdentifier: reuseIdentifier)
 
     titleLabel.font = DynamicFontHelper.defaultHelper.deviceFontMediumBold
-    titleLabel.textColor = .braveLabel
+    titleLabel.textColor = UIColor(braveSystemName: .textPrimary)
 
     contentView.addSubview(titleLabel)
 

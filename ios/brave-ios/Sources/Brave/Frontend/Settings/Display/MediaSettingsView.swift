@@ -45,7 +45,7 @@ struct MediaSettingsView: View {
             Text(Strings.Settings.highestQualityPlayback)
             Text(Strings.Settings.highestQualityPlaybackDetail)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         Toggle(isOn: $youtubeRecommendationsBlocking) {
@@ -53,7 +53,7 @@ struct MediaSettingsView: View {
             Text(Strings.Settings.blockYoutubeRecommendationsTitle)
             Text(Strings.Settings.blockYoutubeRecommendationsDesc)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -62,7 +62,7 @@ struct MediaSettingsView: View {
             Text(Strings.Settings.blockYouTubeDistractingElementsTitle)
             Text(Strings.Settings.blockYouTubeDistractingElementsDesc)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -71,7 +71,7 @@ struct MediaSettingsView: View {
             Text(Strings.Settings.blockYouTubeShortsTitle)
             Text(Strings.Settings.blockYouTubeShortsDesc)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -190,7 +190,7 @@ private struct QualitySettingsView: View {
   func qualityOption(preference: YoutubeHighQualityPreference) -> some View {
     HStack {
       Text(preference.displayString)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       Spacer()
       if prefs.integer(forPath: kYouTubeAutoQualityMode) == preference.rawValue {
         Image(braveSystemName: "leo.check.normal")

@@ -26,7 +26,7 @@ struct NetworkTextField: View {
       TextField(placeholder, text: $item.input)
         .autocapitalization(.none)
         .disableAutocorrection(true)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       if let error = item.error {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
           Image(braveSystemName: "leo.warning.circle-filled")
@@ -532,7 +532,7 @@ struct NetworkDetailsView: View {
       }
       if isDisabled {
         Text(item.wrappedValue.input)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .contextMenu {
             Button {
               UIPasteboard.general.string = item.wrappedValue.input

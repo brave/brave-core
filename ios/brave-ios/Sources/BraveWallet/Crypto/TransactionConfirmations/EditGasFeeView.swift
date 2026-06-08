@@ -87,7 +87,7 @@ struct EditGasFeeView: View {
       ) {
         TextField("", text: $perGasPrice)
           .keyboardType(.numberPad)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
@@ -95,7 +95,7 @@ struct EditGasFeeView: View {
       ) {
         TextField("", text: $gasLimit)
           .keyboardType(.numberPad)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {

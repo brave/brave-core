@@ -22,7 +22,7 @@ struct DefaultShieldsSectionView: View {
       FormPicker(selection: $settings.adBlockAndTrackingPreventionLevel) {
         ForEach(ShieldLevel.allCases) { level in
           Text(level.localizedTitle)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .tag(level)
         }
       } label: {
@@ -36,7 +36,7 @@ struct DefaultShieldsSectionView: View {
         FormPicker(selection: $settings.httpsUpgradeLevel) {
           ForEach(HTTPSUpgradeLevel.allCases) { level in
             Text(level.localizedTitle)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .tag(level)
           }
         } label: {

@@ -120,7 +120,7 @@ struct SearchResultsView: View {
       Group {
         if results.isEmpty, urlQuery == nil {
           Text(Strings.BraveNews.noResultsFound)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
       }
     )

@@ -136,7 +136,7 @@ private struct ProviderView: View {
           }
           VStack(alignment: .leading, spacing: 4) {
             Text(provider.name ?? "")
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.headline)
               .multilineTextAlignment(.leading)
             if let sourceAmount = quote.sourceAmount,
@@ -148,7 +148,7 @@ private struct ProviderView: View {
               Text(
                 "\(sourceAmount) \(sourceCurrencyCode) ≈ \(destinationAmountBDouble.decimalDescription.trimmingTrailingZeros) \(destinationCurrencyCode)"
               )
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.footnote)
               .multilineTextAlignment(.leading)
             }

@@ -111,7 +111,7 @@ struct AddCustomAssetView: View {
               )
               .foregroundColor(
                 networkSelectionStore.networkSelectionInForm == nil
-                  ? Color(braveSystemName: .textDisabled) : Color(.braveLabel)
+                  ? Color(braveSystemName: .textDisabled) : Color(braveSystemName: .textPrimary)
               )
             }
             Spacer()
@@ -222,7 +222,7 @@ struct AddCustomAssetView: View {
                   Image("wallet-dismiss", bundle: .module)
                     .renderingMode(.template)
                     .resizable()
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     .frame(width: 12, height: 6)
                     .rotationEffect(.degrees(showAdvanced ? 180 : 0))
                     .animation(.default, value: showAdvanced)

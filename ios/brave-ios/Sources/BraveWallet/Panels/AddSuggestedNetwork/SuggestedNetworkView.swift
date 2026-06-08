@@ -115,7 +115,7 @@ struct SuggestedNetworkView: View {
       .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
       Text(originInfo: originInfo)
         .font(.subheadline)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
     }
     .accessibilityElement(children: .combine)
@@ -154,11 +154,11 @@ struct SuggestedNetworkView: View {
         faviconAndOrigin
         Text(headerTitle)
           .font(.headline)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
         Text(headerDescription)
           .font(.subheadline)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
         if case .addNetwork = mode {
           Button {

@@ -78,13 +78,13 @@ struct RecentlyClosedTabsView: View {
               VStack(alignment: .leading) {
                 Text(recentlyClosed.title ?? "")
                   .font(.footnote.weight(.semibold))
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .lineLimit(1)
                 Text(
                   "\(URLFormatter.formatURL(recentlyClosed.url, formatTypes: [], unescapeOptions: []))"
                 )
                 .font(.caption)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .lineLimit(1)
               }
               Spacer()
@@ -128,7 +128,7 @@ struct RecentlyClosedTabsView: View {
             Text(Strings.RecentlyClosed.recentlyClosedEmptyListTitle)
               .font(.headline.weight(.bold))
               .multilineTextAlignment(.center)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .padding(.horizontal, 20)
           } else {
             websitesList

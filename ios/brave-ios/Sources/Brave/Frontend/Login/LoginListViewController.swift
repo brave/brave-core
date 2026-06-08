@@ -460,7 +460,7 @@ private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
 
   let imageIconView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
   }
 
   let labelStackView = UIStackView().then {
@@ -470,12 +470,12 @@ private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
   }
 
   let titleLabel = UILabel().then {
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.font = .preferredFont(forTextStyle: .footnote)
   }
 
   let descriptionLabel = UILabel().then {
-    $0.textColor = .secondaryBraveLabel
+    $0.textColor = UIColor(braveSystemName: .textSecondary)
     $0.font = .preferredFont(forTextStyle: .subheadline)
   }
 

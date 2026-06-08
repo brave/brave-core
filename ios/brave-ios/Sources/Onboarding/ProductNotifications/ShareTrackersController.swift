@@ -143,13 +143,13 @@ private class ShareTrackersView: UIView {
     $0.backgroundColor = .clear
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.numberOfLines = 0
-    $0.textColor = .bravePrimary
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 
   private let subtitleLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 16)
     $0.numberOfLines = 0
-    $0.textColor = .bravePrimary
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 
   private lazy var actionButton: InsetButton = {

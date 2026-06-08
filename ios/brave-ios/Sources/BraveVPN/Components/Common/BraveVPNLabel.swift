@@ -24,7 +24,7 @@ struct BraveVPNLabelView: View {
     VStack(alignment: .leading, spacing: 4) {
       HStack {
         Text(title)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         if let titleAccessory = titleAccessory {
           Image(uiImage: titleAccessory)
             .resizable()
@@ -41,7 +41,7 @@ struct BraveVPNLabelView: View {
       }
       if let subtitle = subtitle {
         Text(LocalizedStringKey(subtitle))
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.caption)
       }
     }

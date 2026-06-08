@@ -31,7 +31,7 @@ struct NFTView: View {
     VStack(alignment: .center, spacing: 10) {
       Text(nftStore.displayType.emptyTitle)
         .font(.headline.weight(.semibold))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       if let description = nftStore.displayType.emptyDescription {
         Text(description)
           .font(.subheadline.weight(.semibold))
@@ -107,7 +107,7 @@ struct NFTView: View {
         Picker("", selection: $nftStore.displayType) {
           ForEach(NFTStore.NFTDisplayType.allCases) { type in
             Text(type.dropdownTitle)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .tag(type)
           }
         }
@@ -161,7 +161,7 @@ struct NFTView: View {
     let attributedString = NSMutableAttributedString(
       string: Strings.Wallet.nftDiscoveryCalloutDescription,
       attributes: [
-        .foregroundColor: UIColor.secondaryBraveLabel,
+        .foregroundColor: UIColor(braveSystemName: .textSecondary),
         .font: UIFont.preferredFont(for: .subheadline, weight: .regular),
       ]
     )
@@ -197,12 +197,12 @@ struct NFTView: View {
               .padding(.bottom, 8)
             Text(nft.token.nftTokenTitle)
               .font(.callout.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .multilineTextAlignment(.leading)
             if !nft.token.symbol.isEmpty {
               Text(nft.token.symbol)
                 .font(.caption)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
                 .multilineTextAlignment(.leading)
             }
           }
@@ -423,10 +423,10 @@ struct NFTView: View {
           VStack(spacing: 16) {
             Text(Strings.Wallet.nftRemoveFromWalletAlertTitle)
               .font(.headline)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(Strings.Wallet.nftRemoveFromWalletAlertDescription)
               .font(.footnote)
-              .foregroundStyle(Color(.secondaryBraveLabel))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
           .multilineTextAlignment(.center)
           .padding(.bottom, 24)

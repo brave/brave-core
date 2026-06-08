@@ -17,10 +17,10 @@ public struct LabelView: View {
   public var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       Text(title)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       if let subtitle = subtitle {
         Text(LocalizedStringKey(subtitle))
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.caption)
       }
     }

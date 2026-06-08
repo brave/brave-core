@@ -27,10 +27,10 @@ struct AddSuggestedTokenView: View {
         VStack(spacing: 8) {
           Text(Strings.Wallet.addSuggestedTokenSubtitle)
             .font(.headline)
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(originInfo: originInfo)
             .font(.footnote)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
         .padding(.top)
         VStack {
@@ -42,7 +42,7 @@ struct AddSuggestedTokenView: View {
             )
             Text(token.symbol)
               .font(.headline)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .accessibilityElement(children: .combine)
           Button {

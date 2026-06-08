@@ -33,7 +33,7 @@ extension PrivacyReportsView {
         Text(header.uppercased())
           .font(.caption)
           .frame(maxWidth: .infinity, alignment: .leading)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .unredacted()
 
         if let entity = trackerOrWebsite {
@@ -42,14 +42,14 @@ extension PrivacyReportsView {
               .font(.subheadline)
             Text(String.localizedStringWithFormat(countableLabel, entity.count))
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
         } else {
           Text(Strings.PrivacyHub.noDataToShow)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
       }
       .frame(maxWidth: .infinity)
@@ -113,10 +113,10 @@ extension PrivacyReportsView {
         }
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .overlay(
           RoundedRectangle(cornerRadius: 25)
-            .stroke(Color(.braveLabel), lineWidth: pixelLength)
+            .stroke(Color(braveSystemName: .textPrimary), lineWidth: pixelLength)
         )
       }
       .fixedSize(horizontal: false, vertical: true)

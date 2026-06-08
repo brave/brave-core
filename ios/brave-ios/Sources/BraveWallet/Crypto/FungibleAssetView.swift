@@ -129,7 +129,7 @@ struct FungibleAssetView: View {
           }
         }
         .font(.footnote)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       }
     )
     .accessibilityLabel("\(title), \(balance) \(symbol), \(fiat)")
@@ -174,7 +174,7 @@ struct NFTAssetView: View {
       accessoryContent: {
         Text(quantity)
           .font(.footnote)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
     )
     .accessibilityLabel("\(title), \(quantity) \(symbol)")
@@ -212,7 +212,7 @@ struct AssetView<ImageView: View, AccessoryContent: View>: View {
         Text(title)
           .font(.footnote)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Text(
           String.localizedStringWithFormat(
             Strings.Wallet.userAssetSymbolNetworkDesc,
@@ -221,7 +221,7 @@ struct AssetView<ImageView: View, AccessoryContent: View>: View {
           )
         )
         .font(.caption)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .multilineTextAlignment(.leading)
       Spacer()

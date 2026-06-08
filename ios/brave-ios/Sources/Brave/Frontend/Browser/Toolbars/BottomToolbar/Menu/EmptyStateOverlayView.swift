@@ -26,19 +26,19 @@ class EmptyStateOverlayView: UIView {
 
   private let iconImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
   }
 
   private let informationLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   private let descriptionLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
   }
 
@@ -53,7 +53,7 @@ class EmptyStateOverlayView: UIView {
 
   private let actionDescriptionLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
   }
 

@@ -49,8 +49,12 @@ class LoginInfoTableViewCell: UITableViewCell, TableViewReusable {
     didSet {
       descriptionTextField.isUserInteractionEnabled = isEditingFieldData
 
-      highlightedLabel.textColor = isEditingFieldData ? .bravePrimary : .secondaryBraveLabel
-      descriptionTextField.textColor = isEditingFieldData ? .bravePrimary : .braveLabel
+      highlightedLabel.textColor =
+        isEditingFieldData
+        ? UIColor(braveSystemName: .textPrimary) : UIColor(braveSystemName: .textSecondary)
+      descriptionTextField.textColor =
+        isEditingFieldData
+        ? UIColor(braveSystemName: .textPrimary) : UIColor(braveSystemName: .textPrimary)
     }
   }
 
@@ -104,7 +108,7 @@ class LoginInfoTableViewCell: UITableViewCell, TableViewReusable {
     separatorInset = .zero
 
     descriptionTextField.do {
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
       $0.font = .preferredFont(forTextStyle: .callout)
       $0.adjustsFontForContentSizeCategory = true
       $0.isUserInteractionEnabled = false
@@ -119,7 +123,7 @@ class LoginInfoTableViewCell: UITableViewCell, TableViewReusable {
     highlightedLabel.do {
       $0.font = .preferredFont(forTextStyle: .footnote)
       $0.adjustsFontForContentSizeCategory = true
-      $0.textColor = .secondaryBraveLabel
+      $0.textColor = UIColor(braveSystemName: .textSecondary)
       $0.numberOfLines = 1
     }
   }

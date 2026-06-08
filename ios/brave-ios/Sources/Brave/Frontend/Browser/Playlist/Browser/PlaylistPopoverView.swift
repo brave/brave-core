@@ -41,7 +41,7 @@ struct PlaylistPopoverView: View {
   var body: some View {
     containerView {
       Text(String.localizedStringWithFormat(Strings.PlayList.addedToPlaylistMessage, folderName))
-        .foregroundStyle(Color(.braveLabel))
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
         .font(.callout)
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)

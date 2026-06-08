@@ -23,7 +23,7 @@ struct AccountsHeaderView: View {
       } label: {
         HStack {
           Image(braveSystemName: "leo.safe")
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(Strings.Wallet.accountBackup)
             .font(.subheadline.weight(.medium))
             .foregroundColor(Color(.braveBlurpleTint))
@@ -48,7 +48,7 @@ struct AccountsHeaderView: View {
             .labelStyle(.iconOnly)
         }
       }
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
     }
     .padding(.top)
   }

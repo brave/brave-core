@@ -117,7 +117,7 @@ struct SaferSignTransactionContainerView: View {
         .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
         Text(originInfo: originInfo)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.subheadline)
           .multilineTextAlignment(.center)
           .padding(.top, 8)
@@ -130,11 +130,11 @@ struct SaferSignTransactionContainerView: View {
       HStack {
         Text(Strings.Wallet.swapConfirmationNetworkFee)
           .fontWeight(.medium)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         Spacer()
         Button(action: advancedSettingsTapped) {
           Image(braveSystemName: "leo.settings")
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .buttonStyle(.plain)
       }
@@ -154,7 +154,7 @@ struct SaferSignTransactionContainerView: View {
           height: min(assetNetworkIconSize, maxAssetNetworkIconSize)
         )
         Text(gasFee?.fiat ?? "")
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Button(action: editGasFeeTapped) {
           Text(Strings.Wallet.editButtonTitle)
             .fontWeight(.semibold)

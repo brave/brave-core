@@ -184,7 +184,7 @@ private struct NetworkRowView: View {
     }
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(isSelected ? [.isSelected] : [])
-    .foregroundColor(Color(.braveLabel))
+    .foregroundColor(Color(braveSystemName: .textPrimary))
     .padding(.horizontal)
     .padding(.vertical, 12)
     .contentShape(Rectangle())

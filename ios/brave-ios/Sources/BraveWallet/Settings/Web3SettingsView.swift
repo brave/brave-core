@@ -135,17 +135,17 @@ private struct WalletSettingsView: View {
   @ViewBuilder private var sections: some View {
     Section(
       footer: Text(Strings.Wallet.autoLockFooter)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     ) {
       FormPicker(selection: $settingsStore.autoLockInterval) {
         ForEach(autoLockIntervals) { interval in
           Text(interval.label)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .tag(interval)
         }
       } label: {
         Text(Strings.Wallet.autoLockTitle)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.vertical, 4)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -154,12 +154,12 @@ private struct WalletSettingsView: View {
       FormPicker(selection: $settingsStore.currencyCode) {
         ForEach(CurrencyCode.allCodes) { currencyCode in
           Text(currencyCode.code)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .tag(currencyCode)
         }
       } label: {
         Text(Strings.Wallet.settingsDefaultBaseCurrencyTitle)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.vertical, 4)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -167,7 +167,7 @@ private struct WalletSettingsView: View {
     if settingsStore.isBiometricsAvailable, keyringStore.isWalletCreated {
       Section(
         footer: Text(Strings.Wallet.settingsEnableBiometricsFooter)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
       ) {
         Toggle(
           Strings.Wallet.settingsEnableBiometricsTitle,
@@ -176,7 +176,7 @@ private struct WalletSettingsView: View {
             set: { toggledBiometricsUnlock($0) }
           )
         )
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -190,30 +190,30 @@ private struct WalletSettingsView: View {
           )
         )
       )
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
       .tint(Color(.braveBlurpleTint))
     ) {
       Toggle(
         Strings.Wallet.web3SettingsEnableNFTDiscovery,
         isOn: $settingsStore.isNFTDiscoveryEnabled
       )
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
       .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       footer: Text(Strings.Wallet.networkFooter)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     ) {
       NavigationLink(destination: NetworkListView(networkStore: networkStore)) {
         Text(Strings.Wallet.settingsNetworkButtonTitle)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       header: Text(Strings.Wallet.web3PreferencesSectionTitle)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     ) {
       Group {
         ForEach(WalletConstants.supportedCoinTypes(.dapps)) { coin in
@@ -230,21 +230,21 @@ private struct WalletSettingsView: View {
               }
           ) {
             Text(coin.localizedTitle)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
         Toggle(
           Strings.Wallet.web3PreferencesDisplayWeb3Notifications,
           isOn: $displayDappsNotifications.value
         )
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       footer: Text(Strings.Wallet.settingsResetTransactionFooter)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     ) {
       Button {
         isShowingResetTransactionAlert = true
@@ -318,12 +318,12 @@ private struct Web3DomainSettingsView: View {
     FormPicker(selection: $settingsStore.ensResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .tag(option)
       }
     } label: {
       Text(Strings.Wallet.ensResolveMethodTitle)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .padding(.vertical, 4)
     }
   }
@@ -332,13 +332,13 @@ private struct Web3DomainSettingsView: View {
     FormPicker(selection: $settingsStore.ensOffchainResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .tag(option)
       }
     } label: {
       VStack(alignment: .leading, spacing: 6) {
         Text(Strings.Wallet.ensOffchainResolveMethodTitle)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Text(
           LocalizedStringKey(
             String.localizedStringWithFormat(
@@ -347,7 +347,7 @@ private struct Web3DomainSettingsView: View {
             )
           )
         )
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .tint(Color(.braveBlurpleTint))
         .font(.footnote)
       }
@@ -359,12 +359,12 @@ private struct Web3DomainSettingsView: View {
     FormPicker(selection: $settingsStore.snsResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .tag(option)
       }
     } label: {
       Text(Strings.Wallet.snsResolveMethodTitle)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .padding(.vertical, 4)
     }
   }
@@ -373,13 +373,13 @@ private struct Web3DomainSettingsView: View {
     FormPicker(selection: $settingsStore.udResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .tag(option)
       }
     } label: {
       VStack(alignment: .leading, spacing: 6) {
         Text(Strings.Wallet.udResolveMethodTitle)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Text(
           LocalizedStringKey(
             String.localizedStringWithFormat(
@@ -388,7 +388,7 @@ private struct Web3DomainSettingsView: View {
             )
           )
         )
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .tint(Color(.braveBlurpleTint))
         .font(.footnote)
       }

@@ -210,7 +210,7 @@ extension SendTabToSelfContentController {
         $0.setLines(device.deviceName, detailText: device.lastUpdatedTime.formattedActivePeriodDate)
         $0.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
         $0.imageView?.contentMode = .scaleAspectFit
-        $0.imageView?.tintColor = .braveLabel
+        $0.imageView?.tintColor = UIColor(braveSystemName: .textPrimary)
         $0.imageView?.image = deviceTypeImage?.template
       }
     }

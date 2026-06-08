@@ -53,7 +53,7 @@ struct NetworkListView: View {
       HStack {
         VStack(alignment: .leading, spacing: 4) {
           Text(network.chainName)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.callout.weight(isDefaultNetwork(network) ? .bold : .regular))
           Group {
             Text(network.chainId)
@@ -63,7 +63,7 @@ struct NetworkListView: View {
               Text(rpcEndpoint)
             }
           }
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .font(.footnote)
         }
         Spacer()
@@ -92,7 +92,7 @@ struct NetworkListView: View {
             .font(.callout.weight(.semibold))
             .foregroundColor(
               isDefaultNetwork(network)
-                ? Color(.braveDisabled) : Color(.braveLabel)
+                ? Color(.braveDisabled) : Color(braveSystemName: .textPrimary)
             )
           }
           .disabled(isDefaultNetwork(network))
@@ -130,13 +130,13 @@ struct NetworkListView: View {
                 }
               }
             }
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           } label: {
             Image(
               braveSystemName: "leo.more.vertical"
             )
             .font(.callout.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
       }

@@ -36,7 +36,7 @@ public struct SpeechToTextInputView: View {
           dismissView()
         } label: {
           Image(braveSystemName: "leo.close")
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.system(.body))
         }
       }
@@ -44,7 +44,7 @@ public struct SpeechToTextInputView: View {
       Text(disclaimer)
         .font(.footnote)
         .multilineTextAlignment(.center)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .padding(.horizontal, 25)
         .padding(.bottom, 25)
     }

@@ -37,7 +37,7 @@ struct SelectAccountTokenView: View {
       } else if store.accountSections.isEmpty && !store.isLoadingBalances {
         Text(Strings.Wallet.selectTokenToSendNoTokens)
           .font(.headline.weight(.semibold))
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity)
           .padding(.vertical, 60)
@@ -240,7 +240,7 @@ struct SelectAccountTokenAssetView<ImageView: View>: View {
             .shimmer(isLoadingPrice)
         }
         .font(.footnote)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       }
     )
     .accessibilityLabel("\(title), \(quantity) \(symbol), \(price)")
@@ -257,7 +257,7 @@ struct SkeletonLoadingAssetView: View {
       image: {
         Circle()
           .aspectRatio(contentMode: .fit)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .frame(
             width: min(assetLogoLength, maxAssetLogoLength),
             height: min(assetLogoLength, maxAssetLogoLength)

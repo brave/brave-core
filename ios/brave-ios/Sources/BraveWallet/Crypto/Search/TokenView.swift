@@ -31,9 +31,9 @@ struct TokenView<ImageView: View>: View {
       VStack(alignment: .leading) {
         Text(token.name)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Text(token.symbol.uppercased())
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
       }
       .font(.footnote)
       Spacer()
