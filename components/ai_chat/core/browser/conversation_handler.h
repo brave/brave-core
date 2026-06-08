@@ -81,29 +81,29 @@ class ConversationHandler : public mojom::ConversationHandler,
    public:
     // Called when the conversation history changess
     virtual void OnRequestInProgressChanged(ConversationHandler* handler,
-                                            bool in_progress) = 0;
+                                            bool in_progress) {}
     virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
         mojom::ConversationTurnPtr& entry,
-        std::optional<PageContents> associated_content_value) = 0;
+        std::optional<PageContents> associated_content_value) {}
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
-                                            const std::string& turn_uuid) = 0;
+                                            const std::string& turn_uuid) {}
 
     virtual void OnToolUseEventOutput(ConversationHandler* handler,
                                       const std::string& entry_uuid,
                                       size_t event_order,
-                                      mojom::ToolUseEventPtr tool_use) = 0;
+                                      mojom::ToolUseEventPtr tool_use) {}
 
     // Called when a mojo client connects or disconnects
-    virtual void OnClientConnectionChanged(ConversationHandler* handler) = 0;
+    virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
     virtual void OnConversationTitleChanged(
         const std::string& conversation_uuid,
-        const std::string& title) = 0;
+        const std::string& title) {}
     virtual void OnConversationTokenInfoChanged(
         const std::string& conversation_uuid,
         uint64_t total_tokens,
-        uint64_t trimmed_tokens) = 0;
-    virtual void OnAssociatedContentUpdated(ConversationHandler* handler) = 0;
+        uint64_t trimmed_tokens) {}
+    virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
   };
 
   struct Suggestion {
