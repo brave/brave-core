@@ -15,11 +15,7 @@ type MockResponseType = LedgerFrameResponse | LedgerBridgeErrorCodes
 export class MockLedgerTransport extends LedgerTrustedMessagingTransport {
   sendCommandResponses: MockResponseType[] // queue
 
-  constructor(
-    targetWindow: Window,
-    targetUrl: string,
-    onAuthorized?: () => void,
-  ) {
+  constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
     this.sendCommandResponses = []
   }

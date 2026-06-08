@@ -28,7 +28,6 @@ let trezorHardwareKeyring: TrezorBridgeKeyring
 export async function getHardwareKeyring(
   vendor: BraveWallet.HardwareVendor,
   coin: BraveWallet.CoinType,
-  onAuthorized?: () => void,
 ): Promise<
   | EthereumLedgerBridgeKeyring
   | HWInterfaces.TrezorKeyring
@@ -38,13 +37,13 @@ export async function getHardwareKeyring(
 > {
   if (vendor === BraveWallet.HardwareVendor.kLedger) {
     if (coin === BraveWallet.CoinType.ETH) {
-      return getLedgerEthereumHardwareKeyring(onAuthorized)
+      return getLedgerEthereumHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.FIL) {
-      return getLedgerFilecoinHardwareKeyring(onAuthorized)
+      return getLedgerFilecoinHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.SOL) {
-      return getLedgerSolanaHardwareKeyring(onAuthorized)
+      return getLedgerSolanaHardwareKeyring()
     } else if (coin === BraveWallet.CoinType.BTC) {
-      return getLedgerBitcoinHardwareKeyring(onAuthorized)
+      return getLedgerBitcoinHardwareKeyring()
     }
   } else if (vendor === BraveWallet.HardwareVendor.kTrezor) {
     if (coin === BraveWallet.CoinType.ETH) {
@@ -55,38 +54,30 @@ export async function getHardwareKeyring(
   assertNotReached(`Unsupported coin ${coin} and vendor ${vendor}`)
 }
 
-export function getLedgerEthereumHardwareKeyring(
-  onAuthorized?: () => void,
-): EthereumLedgerBridgeKeyring {
+export function getLedgerEthereumHardwareKeyring(): EthereumLedgerBridgeKeyring {
   if (!ethereumHardwareKeyring) {
-    ethereumHardwareKeyring = new EthereumLedgerBridgeKeyring(onAuthorized)
+    ethereumHardwareKeyring = new EthereumLedgerBridgeKeyring()
   }
   return ethereumHardwareKeyring
 }
 
-export function getLedgerFilecoinHardwareKeyring(
-  onAuthorized?: () => void,
-): FilecoinLedgerBridgeKeyring {
+export function getLedgerFilecoinHardwareKeyring(): FilecoinLedgerBridgeKeyring {
   if (!filecoinHardwareKeyring) {
-    filecoinHardwareKeyring = new FilecoinLedgerBridgeKeyring(onAuthorized)
+    filecoinHardwareKeyring = new FilecoinLedgerBridgeKeyring()
   }
   return filecoinHardwareKeyring
 }
 
-export function getLedgerSolanaHardwareKeyring(
-  onAuthorized?: () => void,
-): SolanaLedgerBridgeKeyring {
+export function getLedgerSolanaHardwareKeyring(): SolanaLedgerBridgeKeyring {
   if (!solanaHardwareKeyring) {
-    solanaHardwareKeyring = new SolanaLedgerBridgeKeyring(onAuthorized)
+    solanaHardwareKeyring = new SolanaLedgerBridgeKeyring()
   }
   return solanaHardwareKeyring
 }
 
-export function getLedgerBitcoinHardwareKeyring(
-  onAuthorized?: () => void,
-): BitcoinLedgerBridgeKeyring {
+export function getLedgerBitcoinHardwareKeyring(): BitcoinLedgerBridgeKeyring {
   if (!bitcoinHardwareKeyring) {
-    bitcoinHardwareKeyring = new BitcoinLedgerBridgeKeyring(onAuthorized)
+    bitcoinHardwareKeyring = new BitcoinLedgerBridgeKeyring()
   }
   return bitcoinHardwareKeyring
 }

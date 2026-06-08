@@ -42,7 +42,6 @@ export type HardwareWalletResponseCodeType =
   | 'deviceBusy'
   | 'openLedgerApp'
   | 'transactionRejected'
-  | 'unauthorized'
 
 export type TokenPriceHistory = {
   date: SerializableTimeDelta

@@ -62,25 +62,6 @@ test('unlock ledger error', async () => {
   expect(result).toEqual(expectedResult)
 })
 
-test('unlock unauthorized error', async () => {
-  const { keyring, transport } = createKeyring()
-
-  const sendCommandResponse: UnlockResponse = {
-    id: LedgerCommand.Unlock,
-    origin: window.origin,
-    command: LedgerCommand.Unlock,
-    payload: {
-      success: false,
-      error: 'unauthorized',
-      code: undefined,
-    },
-  }
-  transport.addSendCommandResponse(sendCommandResponse)
-  const result: HardwareOperationResult = await keyring.unlock()
-  const expectedResult: HardwareOperationResult = sendCommandResponse.payload
-  expect(result).toEqual(expectedResult)
-})
-
 test('unlock bridge error123', async () => {
   const { keyring, transport } = createKeyring()
 
