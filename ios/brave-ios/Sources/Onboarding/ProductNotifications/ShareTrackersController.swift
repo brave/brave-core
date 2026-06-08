@@ -77,7 +77,7 @@ public class ShareTrackersController: UIViewController, PopoverContentComponent 
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .braveBackground
+    view.backgroundColor = UIColor(braveSystemName: .containerBackground)
 
     shareTrackersView.actionHandler = { [weak self] action in
       guard let self = self else { return }

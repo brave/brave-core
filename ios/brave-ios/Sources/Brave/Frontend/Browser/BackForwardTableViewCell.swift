@@ -22,7 +22,7 @@ class BackForwardTableViewCell: UITableViewCell {
 
   lazy var faviconView: UIImageView = {
     let faviconView = UIImageView(image: UIImage(sharedNamed: "brave.logo"))
-    faviconView.backgroundColor = .braveBackground
+    faviconView.backgroundColor = UIColor(braveSystemName: .containerBackground)
     faviconView.layer.cornerRadius = 6
     faviconView.layer.cornerCurve = .continuous
     faviconView.layer.borderWidth = 0.5

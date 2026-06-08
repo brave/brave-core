@@ -94,7 +94,7 @@ struct AccountPrivateKeyView: View {
       }
       .padding()
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .navigationTitle(Strings.Wallet.accountPrivateKey)
     .navigationBarTitleDisplayMode(.inline)
     .onReceive(

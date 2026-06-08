@@ -215,7 +215,7 @@ extension LoginListViewController {
         $0.setLines(loginInfo.displayURLString, detailText: loginInfo.usernameValue)
         $0.selectionStyle = .none
         $0.accessoryType = .disclosureIndicator
-        $0.backgroundColor = .braveBackground
+        $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
       }
 
       cell.imageIconView.do {

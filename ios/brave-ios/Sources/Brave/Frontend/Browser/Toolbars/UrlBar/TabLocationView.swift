@@ -625,7 +625,10 @@ private class DisplayURLLabel: UILabel {
   let pathPadding: CGFloat = 5.0
 
   let clippingFade = GradientView(
-    colors: [.braveBackground, .braveBackground.withAlphaComponent(0.0)],
+    colors: [
+      UIColor(braveSystemName: .containerBackground),
+      UIColor(braveSystemName: .containerBackground).withAlphaComponent(0.0),
+    ],
     positions: [0, 1],
     startPoint: .init(x: 0, y: 0.5),
     endPoint: .init(x: 1, y: 0.5)

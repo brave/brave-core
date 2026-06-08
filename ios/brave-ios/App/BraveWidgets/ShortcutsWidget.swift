@@ -113,7 +113,8 @@ private struct ShortcutLink<Content: View>: View {
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(
-            renderingMode == .accented ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+            renderingMode == .accented
+              ? Color.white.opacity(0.1) : Color(UIColor(braveSystemName: .containerBackground)),
             in: .containerRelative
           )
         }
@@ -221,7 +222,7 @@ private struct ShortcutsView: View {
             .frame(height: 44)
             .background(
               renderingMode == .accented
-                ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+                ? Color.white.opacity(0.1) : Color(UIColor(braveSystemName: .containerBackground)),
               in: .containerRelative
             )
           }
@@ -259,7 +260,7 @@ private struct ShortcutsView: View {
       .frame(maxHeight: .infinity)
     }
     .padding(8)
-    .widgetBackground { Color(UIColor(braveSystemName: .pageBackground)) }
+    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 

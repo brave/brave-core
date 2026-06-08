@@ -62,7 +62,7 @@ struct PlaylistPopoverView: View {
       .foregroundColor(Color(.braveBlurpleTint))
       .layoutPriority(1)
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .accessibilityAction(named: Strings.PlayList.openInPlaylistButtonTitle) {
       action?(.openPlaylist)
     }

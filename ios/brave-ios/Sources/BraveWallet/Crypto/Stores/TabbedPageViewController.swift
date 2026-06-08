@@ -88,7 +88,7 @@ class TabbedPageViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .braveBackground
+    view.backgroundColor = UIColor(braveSystemName: .containerBackground)
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
     view.addSubview(pageViewController.view)
@@ -386,7 +386,7 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .braveBackground
+    backgroundColor = UIColor(braveSystemName: .containerBackground)
 
     addSubview(collectionView)
     addSubview(shadowView)

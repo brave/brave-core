@@ -34,8 +34,8 @@ public class FixedHeightHostingPanModalController<Content: View>: UIViewControll
     addChild(hostingController)
     hostingController.didMove(toParent: self)
     view.addSubview(hostingController.view)
-    view.backgroundColor = .braveBackground
-    hostingController.view.backgroundColor = .braveBackground
+    view.backgroundColor = UIColor(braveSystemName: .containerBackground)
+    hostingController.view.backgroundColor = UIColor(braveSystemName: .containerBackground)
     hostingController.view.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
     }

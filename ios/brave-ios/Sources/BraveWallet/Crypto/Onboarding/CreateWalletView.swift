@@ -211,7 +211,7 @@ struct CreateWalletView: View {
       .padding(.horizontal, 20)
       .padding(.bottom, 20)
     }
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .background(
       NavigationLink(
         destination: BackupRecoveryPhraseView(

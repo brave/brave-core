@@ -46,7 +46,7 @@ extension View {
           appearance.largeTitleTextAttributes = [
             .foregroundColor: UIColor(braveSystemName: .textPrimary)
           ]
-          appearance.backgroundColor = .braveBackground
+          appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
           return appearance
         }()
         $0.standardAppearance = appearance

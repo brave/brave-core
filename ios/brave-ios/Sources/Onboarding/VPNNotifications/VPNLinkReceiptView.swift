@@ -52,7 +52,7 @@ public struct VPNLinkReceiptView: View {
     }
     .frame(maxWidth: BraveUX.baseDimensionValue)
     .padding(32)
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .dynamicTypeSize(dynamicTypeRange)
     .overlay {
       Button {

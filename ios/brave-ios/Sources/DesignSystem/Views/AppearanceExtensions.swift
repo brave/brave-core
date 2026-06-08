@@ -20,7 +20,7 @@ extension UIView {
       let appearance: UIToolbarAppearance = {
         let appearance = UIToolbarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .braveBackground
+        appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
         appearance.backgroundEffect = nil
         return appearance
       }()
@@ -38,7 +38,7 @@ extension UIView {
         appearance.largeTitleTextAttributes = [
           .foregroundColor: UIColor(braveSystemName: .textPrimary)
         ]
-        appearance.backgroundColor = .braveBackground
+        appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
         appearance.backgroundEffect = nil
         return appearance
       }()

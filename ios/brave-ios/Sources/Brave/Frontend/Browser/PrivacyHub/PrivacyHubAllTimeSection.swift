@@ -55,7 +55,7 @@ extension PrivacyReportsView {
       .frame(maxWidth: .infinity)
       .padding(.horizontal)
       .padding(.vertical, 8)
-      .background(Color(.braveBackground))
+      .background(Color(braveSystemName: .containerBackground))
       .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 

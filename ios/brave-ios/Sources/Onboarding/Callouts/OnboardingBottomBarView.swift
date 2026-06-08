@@ -65,7 +65,7 @@ public struct OnboardingBottomBarView: View {
     }
     .frame(maxWidth: BraveUX.baseDimensionValue)
     .padding()
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .accessibilityEmbedInScrollView()
   }
 }

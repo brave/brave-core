@@ -40,7 +40,7 @@ extension BraveRewardsViewController {
     override init(frame: CGRect) {
       super.init(frame: frame)
 
-      backgroundColor = .braveBackground
+      backgroundColor = UIColor(braveSystemName: .containerBackground)
 
       addSubview(stackView)
       stackView.snp.makeConstraints {

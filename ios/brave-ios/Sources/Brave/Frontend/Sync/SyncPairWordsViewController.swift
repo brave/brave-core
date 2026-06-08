@@ -16,7 +16,7 @@ class SyncPairWordsViewController: SyncViewController {
   }
   private let containerView = UIView().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.backgroundColor = .braveBackground
+    $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
     $0.layer.shadowColor = UIColor(braveSystemName: .dividerStrong).cgColor
     $0.layer.shadowRadius = 0
     $0.layer.shadowOpacity = 1.0

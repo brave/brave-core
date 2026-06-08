@@ -166,7 +166,7 @@ struct SubmitReportView: View {
           ProgressView()
             .progressViewStyle(.braveCircular(size: .normal, tint: .braveBlurpleTint))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.braveBackground).opacity(0.5).ignoresSafeArea())
+            .background(Color(braveSystemName: .containerBackground).opacity(0.5).ignoresSafeArea())
             .transition(.opacity.animation(.default))
         }
       }

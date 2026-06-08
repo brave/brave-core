@@ -86,7 +86,7 @@ extension PrivacyReportsView {
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color(.braveBackground))
+        .background(Color(braveSystemName: .containerBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .redacted(reason: mostFrequentTrackerLoading ? .placeholder : [])
 
@@ -120,7 +120,7 @@ extension PrivacyReportsView {
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color(.braveBackground))
+        .background(Color(braveSystemName: .containerBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .redacted(reason: riskiestWebsiteLoading ? .placeholder : [])
       }

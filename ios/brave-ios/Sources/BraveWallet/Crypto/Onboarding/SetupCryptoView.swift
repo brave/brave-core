@@ -51,7 +51,7 @@ struct SetupCryptoView: View {
               Spacer()
             }
             .padding(28)
-            .background(Color(.braveBackground))
+            .background(Color(braveSystemName: .containerBackground))
             .cornerRadius(16)
             .frame(maxWidth: .infinity)
           }
@@ -92,7 +92,7 @@ struct SetupCryptoView: View {
               Spacer()
             }
             .padding(28)
-            .background(Color(.braveBackground))
+            .background(Color(braveSystemName: .containerBackground))
             .cornerRadius(16)
           }
         }

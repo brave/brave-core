@@ -39,7 +39,7 @@ struct FollowToggle: View {
           .padding(.horizontal, 12)
           .padding(.vertical, 4)
           .background(
-            (isFollowing ? Color(.braveBackground) : Color(.braveBlurpleTint))
+            (isFollowing ? Color(braveSystemName: .containerBackground) : Color(.braveBlurpleTint))
               .clipShape(Capsule())
           )
           .overlay(

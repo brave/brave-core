@@ -102,7 +102,7 @@ extension PrivacyReportsView {
     private func cell(for alert: BraveVPNAlert) -> some View {
       VPNAlertCell(vpnAlert: alert)
         .listRowInsets(.init())
-        .background(Color(.braveBackground))
+        .background(Color(braveSystemName: .containerBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .padding(.vertical, 4)
     }

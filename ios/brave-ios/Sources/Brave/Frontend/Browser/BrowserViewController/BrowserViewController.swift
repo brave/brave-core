@@ -850,7 +850,7 @@ public class BrowserViewController: UIViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .braveBackground
+    view.backgroundColor = UIColor(braveSystemName: .containerBackground)
 
     // Add layout guides
     view.addLayoutGuide(pageOverlayLayoutGuide)

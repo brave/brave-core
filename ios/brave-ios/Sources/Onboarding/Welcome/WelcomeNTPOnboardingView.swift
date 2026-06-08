@@ -108,7 +108,7 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
 
   func maskedPointerView(icon: UIImage, tint: UIColor?) -> UIView {
     let view = UIView().then {
-      $0.backgroundColor = .braveBackground
+      $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
       $0.layer.masksToBounds = true
       $0.layer.cornerCurve = .continuous
     }

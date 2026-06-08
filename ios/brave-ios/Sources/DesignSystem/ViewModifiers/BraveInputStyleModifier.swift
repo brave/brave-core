@@ -27,7 +27,7 @@ struct BraveInputStyleModifier: ViewModifier {
           .stroke(strokeColor ?? Color(.secondaryButtonTint), lineWidth: 2 * (lineWidthFactor ?? 1))
       )
       .background(
-        backgroundColor ?? Color(.braveBackground)
+        backgroundColor ?? Color(braveSystemName: .containerBackground)
       )
       .clipShape(borderShape)
   }

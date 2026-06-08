@@ -134,7 +134,7 @@ struct PageZoomView: View {
       .padding(.vertical, 6.0)
       .hoverEffect()
     }
-    .background(Color(UIColor.braveBackground))
+    .background(Color(UIColor(braveSystemName: .containerBackground)))
     .ignoresSafeArea()
   }
 

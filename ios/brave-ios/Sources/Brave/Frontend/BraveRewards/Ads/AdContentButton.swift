@@ -28,7 +28,8 @@ class AdContentButton: UIControl {
   private let backgroundView: UIVisualEffectView = {
     let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
     backgroundView.isUserInteractionEnabled = false
-    backgroundView.contentView.backgroundColor = UIColor.braveBackground.withAlphaComponent(0.5)
+    backgroundView.contentView.backgroundColor = UIColor(braveSystemName: .containerBackground)
+      .withAlphaComponent(0.5)
     backgroundView.layer.cornerRadius = 10
     backgroundView.layer.cornerCurve = .continuous
     backgroundView.layer.masksToBounds = true
