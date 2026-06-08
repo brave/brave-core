@@ -44,6 +44,10 @@ BraveSidePanelShadowOverlayView::BraveSidePanelShadowOverlayView(
   layer()->SetMasksToBounds(true);
   SetVisible(false);
 
+  auto* panel = browser_view_->side_panel();
+  CHECK(panel);
+  panel_observation_.Observe(panel);
+
   panel_shape_ = AddChildView(std::make_unique<views::View>());
 
   const int radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
@@ -53,24 +57,9 @@ BraveSidePanelShadowOverlayView::BraveSidePanelShadowOverlayView(
   shadow_->SetVisible(false);
 }
 
-BraveSidePanelShadowOverlayView::~BraveSidePanelShadowOverlayView() {
-  if (observed_panel_) {
-    observed_panel_->RemoveObserver(this);
-    observed_panel_ = nullptr;
-  }
-}
+BraveSidePanelShadowOverlayView::~BraveSidePanelShadowOverlayView() = default;
 
 void BraveSidePanelShadowOverlayView::UpdateShadowVisibility() {
-  SyncToSidePanel();
-}
-
-void BraveSidePanelShadowOverlayView::AddedToWidget() {
-  if (!observed_panel_) {
-    if (auto* panel = browser_view_->side_panel()) {
-      observed_panel_ = panel;
-      observed_panel_->AddObserver(this);
-    }
-  }
   SyncToSidePanel();
 }
 
@@ -88,14 +77,13 @@ void BraveSidePanelShadowOverlayView::OnViewVisibilityChanged(
 
 void BraveSidePanelShadowOverlayView::OnViewIsDeleting(
     views::View* observed_view) {
-  observed_view->RemoveObserver(this);
-  if (observed_view == observed_panel_) {
-    observed_panel_ = nullptr;
-  }
+  auto* panel = panel_observation_.GetSource();
+  CHECK_EQ(panel, observed_view);
+  panel_observation_.Reset();
 }
 
 void BraveSidePanelShadowOverlayView::SyncToSidePanel() {
-  auto* panel = browser_view_->side_panel();
+  auto* panel = panel_observation_.GetSource();
   const bool rounded_corners =
       BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser());

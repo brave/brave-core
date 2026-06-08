@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/scoped_observation.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
@@ -47,9 +48,6 @@ class BraveSidePanelShadowOverlayView : public views::View,
   void UpdateShadowVisibility();
 
  private:
-  // views::View:
-  void AddedToWidget() override;
-
   // views::ViewObserver:
   void OnViewBoundsChanged(views::View* observed_view) override;
   void OnViewVisibilityChanged(views::View* observed_view,
@@ -62,7 +60,8 @@ class BraveSidePanelShadowOverlayView : public views::View,
   void SyncToSidePanel();
 
   const raw_ref<BrowserView> browser_view_;
-  raw_ptr<views::View> observed_panel_ = nullptr;
+  base::ScopedObservation<views::View, views::ViewObserver> panel_observation_{
+      this};
   // Transparent child sized exactly to the side panel. `shadow_` renders the
   // drop shadow around its rounded-rect shape.
   raw_ptr<views::View> panel_shape_ = nullptr;
