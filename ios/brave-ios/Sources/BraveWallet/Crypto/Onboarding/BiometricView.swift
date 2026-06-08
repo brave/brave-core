@@ -53,10 +53,11 @@ struct BiometricView: View {
         VStack {
           ZStack {
             Circle()
-              .strokeBorder(Color(.braveInfoBorder).opacity(0.3))
               .background(
                 Circle()
-                  .foregroundColor(Color(.braveInfoBackground).opacity(0.5))
+                  .foregroundColor(
+                    Color(braveSystemName: .systemfeedbackInfoBackground).opacity(0.5)
+                  )
               )
               .frame(width: 240, height: 240)
             Rectangle()
@@ -68,7 +69,7 @@ struct BiometricView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 52, height: 52)
-                .foregroundColor(Color(.braveInfoLabel))
+                .foregroundColor(Color(braveSystemName: .systemfeedbackInfoIcon))
             }
           }
           Group {
