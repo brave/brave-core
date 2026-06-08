@@ -77,7 +77,7 @@ interface BatAdsClient {
   CanShowNotificationAds() => (bool can_show);
   [Sync]
   CanShowNotificationAdsWhileBrowserIsBackgrounded() => (bool can_show);
-  ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
+  ShowNotificationAd(brave_ads.mojom.NotificationAdInfo notification_ad);
   CloseNotificationAd(string placement_id);
 
   GetSiteHistory(int32 max_count, int32 days_ago) =>
@@ -161,7 +161,7 @@ interface BatAds {
           (bool success);
 
   MaybeGetNotificationAd(string placement_id) =>
-      (mojo_base.mojom.DictionaryValue? value);
+      (brave_ads.mojom.NotificationAdInfo? notification_ad);
   TriggerNotificationAdEvent(
       string placement_id,
       brave_ads.mojom.NotificationAdEventType mojom_ad_event_type) =>

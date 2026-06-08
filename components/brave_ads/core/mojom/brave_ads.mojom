@@ -152,6 +152,19 @@ struct NewTabPageAdInfo {
   string alt;
 };
 
+struct NotificationAdInfo {
+  AdType type;
+  string placement_id;
+  string creative_instance_id;
+  string creative_set_id;
+  string campaign_id;
+  string advertiser_id;
+  string segment;
+  string title;
+  string body;
+  url.mojom.Url target_url;
+};
+
 enum NewTabPageAdEventType {
   kServedImpression = 0,
   kViewedImpression,

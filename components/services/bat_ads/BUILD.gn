@@ -25,6 +25,7 @@ static_library("lib") {
     "bat_ads_observer.h",
     "bat_ads_service_impl.cc",
     "bat_ads_service_impl.h",
+    "notification_ad_mojom_util.h",
   ]
 
   public_deps = [
