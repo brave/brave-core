@@ -113,7 +113,7 @@ struct SaferSignTransactionView: View {
           .padding(4)
           .overlay(
             RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
-              .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+              .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
           )
         }
       }
@@ -152,7 +152,7 @@ struct SaferSignTransactionView: View {
             .padding(4)
             .overlay(
               RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
-                .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+                .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
             )
           }
         }
@@ -176,7 +176,7 @@ struct SaferSignTransactionView: View {
 
   private var arrowView: some View {
     Circle()
-      .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+      .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
       .background(Color(.secondaryBraveGroupedBackground))
       .frame(width: 32, height: 32)
       .overlay(
@@ -230,7 +230,7 @@ private struct TokenRow: View {
         )
       } else {
         Circle()
-          .stroke(Color(.braveSeparator))
+          .stroke(Color(braveSystemName: .dividerStrong))
           .frame(width: assetIconSize, height: assetIconSize)
           .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
       }

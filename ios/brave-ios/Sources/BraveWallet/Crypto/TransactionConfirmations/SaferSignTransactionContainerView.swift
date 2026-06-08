@@ -106,7 +106,7 @@ struct SaferSignTransactionContainerView: View {
                     .scaledToFit()
                 } else {
                   Circle()
-                    .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+                    .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
                 }
               }
               .background(Color(braveSystemName: .neutral20))
@@ -145,7 +145,7 @@ struct SaferSignTransactionContainerView: View {
               .resizable()
           } else {
             Circle()
-              .stroke(Color(.braveSeparator))
+              .stroke(Color(braveSystemName: .dividerStrong))
               .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
           }
         }

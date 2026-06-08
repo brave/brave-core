@@ -17,7 +17,7 @@ class SyncPairWordsViewController: SyncViewController {
   private let containerView = UIView().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.backgroundColor = .braveBackground
-    $0.layer.shadowColor = UIColor.braveSeparator.cgColor
+    $0.layer.shadowColor = UIColor(braveSystemName: .dividerStrong).cgColor
     $0.layer.shadowRadius = 0
     $0.layer.shadowOpacity = 1.0
     $0.layer.shadowOffset = CGSize(width: 0, height: 0.5)
@@ -74,7 +74,7 @@ class SyncPairWordsViewController: SyncViewController {
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
-    containerView.layer.shadowColor = UIColor.braveSeparator.cgColor
+    containerView.layer.shadowColor = UIColor(braveSystemName: .dividerStrong).cgColor
   }
 
   override func viewDidLoad() {

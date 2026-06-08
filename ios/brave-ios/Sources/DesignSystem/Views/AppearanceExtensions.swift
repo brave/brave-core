@@ -55,7 +55,7 @@ extension UIView {
     let tableSecondaryColor = UIColor.secondaryBraveGroupedBackground
 
     UITableView.appearance().backgroundColor = tablePrimaryColor
-    UITableView.appearance().separatorColor = .braveSeparator
+    UITableView.appearance().separatorColor = UIColor(braveSystemName: .dividerStrong)
 
     UITableViewCell.appearance().do {
       $0.tintColor = .braveBlurpleTint

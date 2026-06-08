@@ -142,7 +142,7 @@ struct SaferSignMessageRequestContainerView: View {
                   .scaledToFit()
               } else {
                 Circle()
-                  .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+                  .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
               }
             }
             .background(Color(braveSystemName: .neutral20))
@@ -173,7 +173,7 @@ struct SaferSignMessageRequestContainerView: View {
                 NetworkIcon(network: network)
               } else {
                 Circle()
-                  .stroke(Color(.braveSeparator))
+                  .stroke(Color(braveSystemName: .dividerStrong))
                   .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
               }
             }

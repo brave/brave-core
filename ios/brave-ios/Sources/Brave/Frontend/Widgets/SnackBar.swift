@@ -46,7 +46,7 @@ class SnackButton: UIButton {
 
   func drawSeparator() {
     let separator = UIView()
-    separator.backgroundColor = .braveSeparator
+    separator.backgroundColor = UIColor(braveSystemName: .dividerStrong)
     self.addSubview(separator)
     separator.snp.makeConstraints { make in
       make.leading.equalTo(self)
@@ -115,7 +115,7 @@ class SnackBar: UIView {
     titleView.addArrangedSubview(textLabel)
 
     let separator = UIView()
-    separator.backgroundColor = .braveSeparator
+    separator.backgroundColor = UIColor(braveSystemName: .dividerStrong)
 
     addSubview(titleView)
     addSubview(separator)
@@ -141,7 +141,8 @@ class SnackBar: UIView {
 
     backgroundColor = .clear
     layer.borderWidth = SnackBarUX.borderWidth
-    layer.borderColor = UIColor.braveSeparator.resolvedColor(with: traitCollection).cgColor
+    layer.borderColor =
+      UIColor(braveSystemName: .dividerStrong).resolvedColor(with: traitCollection).cgColor
     layer.cornerRadius = 6
     layer.cornerCurve = .continuous
     clipsToBounds = true
@@ -150,7 +151,8 @@ class SnackBar: UIView {
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
-    self.layer.borderColor = UIColor.braveSeparator.resolvedColor(with: traitCollection).cgColor
+    self.layer.borderColor =
+      UIColor(braveSystemName: .dividerStrong).resolvedColor(with: traitCollection).cgColor
   }
 
   required init?(coder aDecoder: NSCoder) {

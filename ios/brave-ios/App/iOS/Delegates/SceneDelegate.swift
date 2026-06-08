@@ -82,10 +82,10 @@ private struct LaunchScreen: View {
       Color.clear
         .frame(height: 44)
         .background(Color(uiColor: .systemGray6))
-      Color(uiColor: .braveSeparator)
+      Color(braveSystemName: .dividerStrong)
         .frame(height: 1)
       Spacer()
-      Color(uiColor: .braveSeparator)
+      Color(braveSystemName: .dividerStrong)
         .frame(height: 1)
       Color.clear
         .frame(height: 44)
