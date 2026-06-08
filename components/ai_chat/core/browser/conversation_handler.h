@@ -79,33 +79,31 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   class Observer : public base::CheckedObserver {
    public:
-    ~Observer() override {}
-
     // Called when the conversation history changess
     virtual void OnRequestInProgressChanged(ConversationHandler* handler,
-                                            bool in_progress) {}
+                                            bool in_progress) = 0;
     virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
         mojom::ConversationTurnPtr& entry,
-        std::optional<PageContents> associated_content_value) {}
+        std::optional<PageContents> associated_content_value) = 0;
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
-                                            std::string turn_uuid) {}
+                                            const std::string& turn_uuid) = 0;
 
     virtual void OnToolUseEventOutput(ConversationHandler* handler,
-                                      std::string_view entry_uuid,
+                                      const std::string& entry_uuid,
                                       size_t event_order,
-                                      mojom::ToolUseEventPtr tool_use) {}
+                                      mojom::ToolUseEventPtr tool_use) = 0;
 
     // Called when a mojo client connects or disconnects
-    virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+    virtual void OnClientConnectionChanged(ConversationHandler* handler) = 0;
     virtual void OnConversationTitleChanged(
         const std::string& conversation_uuid,
-        const std::string& title) {}
+        const std::string& title) = 0;
     virtual void OnConversationTokenInfoChanged(
         const std::string& conversation_uuid,
         uint64_t total_tokens,
-        uint64_t trimmed_tokens) {}
-    virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
+        uint64_t trimmed_tokens) = 0;
+    virtual void OnAssociatedContentUpdated(ConversationHandler* handler) = 0;
   };
 
   struct Suggestion {

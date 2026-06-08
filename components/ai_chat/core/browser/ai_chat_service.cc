@@ -998,7 +998,7 @@ void AIChatService::HandleNewEntry(
 }
 
 void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
-                                               std::string entry_uuid) {
+                                               const std::string& entry_uuid) {
   // Persist the removal
   if (ai_chat_db_ && !handler->GetIsTemporary()) {
     ai_chat_db_
@@ -1008,7 +1008,7 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
 }
 
 void AIChatService::OnToolUseEventOutput(ConversationHandler* handler,
-                                         std::string_view entry_uuid,
+                                         const std::string& entry_uuid,
                                          size_t event_order,
                                          mojom::ToolUseEventPtr tool_use) {
   // Persist the tool use event
