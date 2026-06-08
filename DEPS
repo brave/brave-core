@@ -198,9 +198,11 @@ hooks = [
     'action': ['build/mac/cross-compile/build-libdmg-hfsplus.py', 'third_party/libdmg-hfsplus']
   },
   {
-    'name': 'download_rust_toolchain_aux',
+    'name': 'download_rust_wasm_toolchain',
     'pattern': '.',
-    'action': ['python3', 'build/rust/download_rust_toolchain_aux.py']
+    'action': ['vpython3',
+               'tools/cr/toolchains/install_extra_deps.py',
+               'src/third_party/rust-toolchain']
   },
 ]
 
