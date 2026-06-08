@@ -428,7 +428,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
 
     auto networks = future.Take();
     ASSERT_TRUE(networks.has_value());
-    EXPECT_EQ(networks->size(), 3u);
+    ASSERT_EQ(networks->size(), 3u);
     EXPECT_EQ((*networks)[0]->chain_id, mojom::kPolkadotTestnet);
     EXPECT_EQ((*networks)[0]->coin, mojom::CoinType::DOT);
     EXPECT_EQ((*networks)[1]->chain_id, mojom::kPolkadotTestnetAssetHub);
