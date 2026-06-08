@@ -149,8 +149,8 @@ absl::Status ObliviousHttpChunkProcessor::OnFinalResponseHeader(
 }
 
 absl::Status ObliviousHttpChunkProcessor::OnFinalResponseHeadersDone() {
-  net::HttpResponseHeaders::Builder builder(
-      net::HttpVersion(1, 1), base::NumberToString(inner_status_code_));
+  const std::string status_str = base::NumberToString(inner_status_code_);
+  net::HttpResponseHeaders::Builder builder(net::HttpVersion(1, 1), status_str);
   for (const auto& [name, value] : pending_headers_) {
     builder.AddHeader(name, value);
   }
