@@ -762,3 +762,77 @@ pointing to string literals (if they may point to heap-allocated objects, use
 Blink renderer code using Oilpan, and any other code whose objects are allocated
 outside PartitionAlloc (V8 heap, Java heap, etc.), cannot use `raw_ptr<T>` or
 `raw_ref<T>`.
+
+---
+
+<a id="CSM-037"></a>
+
+## ❌ Don't Bind Unowned View Types into Callbacks
+
+**`base::Bind*` already rejects the unsafe raw-pointer and reference cases at
+compile time (it forces `base::Unretained`, refuses raw pointers to
+ref-counted types, etc.), but it does _not_ catch non-owning "view" types like
+`std::string_view` and `base::span<T>`.** `base::BindOnce` /
+`base::BindRepeating` copy bound arguments by value, and copying a view copies
+only its pointer and length — not the underlying data. If nothing keeps the
+backing storage alive until the callback runs, the view dangles and you get a
+use-after-free. Bind an owning copy (`std::string`, `std::vector<T>`) instead.
+
+```cpp
+// ❌ WRONG - string_view bound into a posted task; backing buffer may be gone
+void Schedule(std::string_view name) {
+  task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&MyClass::OnReady, weak_factory_.GetWeakPtr(), name));
+  // `name`'s underlying storage can be freed before OnReady() runs.
+}
+
+// ✅ CORRECT - bind an owning copy
+void Schedule(std::string_view name) {
+  task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&MyClass::OnReady, weak_factory_.GetWeakPtr(),
+                     std::string(name)));  // owns its bytes
+}
+```
+
+The same applies to `base::span<T>` — bind an owning container
+(`std::vector<T>`) rather than the span. Prefer making the callback target take
+an owning type (`const std::string&`, `std::vector<T>`) so the bound copy is
+forced to own its data.
+
+**Exception:** Binding a span-like view is acceptable in two cases:
+
+1. **Use [`base::raw_span<T>`](https://source.chromium.org/chromium/chromium/src/+/main:base/memory/raw_span.h)
+   instead of a naked `base::span<T>`.** Like `raw_ptr`, `raw_span` carries
+   dangling-pointer protection for the stored view, so a use-after-free is
+   detected rather than silently exploited.
+2. **The backing storage is static** — a `base::span` over a static/`constexpr`
+   array, or a `std::string_view` of a string literal. Static storage outlives
+   any callback, so the view can never dangle.
+
+```cpp
+// ✅ ALSO CORRECT - bind a base::raw_span (not a naked span), which has
+// dangling-pointer protection for the stored view. Here `buffer_` is an owned
+// member and the bound WeakPtr ensures Decode() only runs while `this` (and
+// therefore `buffer_`) is alive. No copy needed.
+class Decoder {
+ public:
+  void Start() {
+    task_runner_->PostTask(
+        FROM_HERE,
+        base::BindOnce(&Decoder::Decode, weak_factory_.GetWeakPtr(),
+                       base::raw_span<const uint8_t>(buffer_)));
+  }
+
+ private:
+  void Decode(base::span<const uint8_t> chunk);
+
+  std::vector<uint8_t> buffer_;  // owned; outlives the posted task
+  base::WeakPtrFactory<Decoder> weak_factory_{this};
+};
+
+// ✅ ALSO CORRECT - static storage, so the view can never dangle.
+constexpr auto kMagic = std::to_array<uint8_t>({0x7f, 'E', 'L', 'F'});
+base::BindOnce(&Validate, base::span(kMagic));
+```
