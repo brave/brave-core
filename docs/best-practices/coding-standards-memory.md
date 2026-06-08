@@ -770,8 +770,8 @@ outside PartitionAlloc (V8 heap, Java heap, etc.), cannot use `raw_ptr<T>` or
 ## ❌ Don't Bind Unowned View Types into Callbacks
 
 **`base::Bind*` already rejects the unsafe raw-pointer and reference cases at
-compile time (it forces `base::Unretained`, refuses raw pointers to
-ref-counted types, etc.), but it does _not_ catch non-owning "view" types like
+compile time (it forces `base::Unretained`, refuses raw pointers to ref-counted
+types, etc.), but it does _not_ catch non-owning "view" types like
 `std::string_view` and `base::span<T>`.** `base::BindOnce` /
 `base::BindRepeating` copy bound arguments by value, and copying a view copies
 only its pointer and length — not the underlying data. If nothing keeps the
@@ -803,7 +803,8 @@ forced to own its data.
 
 **Exception:** Binding a span-like view is acceptable in two cases:
 
-1. **Use [`base::raw_span<T>`](https://source.chromium.org/chromium/chromium/src/+/main:base/memory/raw_span.h)
+1. **Use
+   [`base::raw_span<T>`](https://source.chromium.org/chromium/chromium/src/+/main:base/memory/raw_span.h)
    instead of a naked `base::span<T>`.** Like `raw_ptr`, `raw_span` carries
    dangling-pointer protection for the stored view, so a use-after-free is
    detected rather than silently exploited.
