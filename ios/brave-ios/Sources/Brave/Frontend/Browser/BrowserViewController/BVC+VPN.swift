@@ -33,6 +33,10 @@ extension BrowserViewController {
 
   /// Shows a vpn screen based on vpn state.
   public func presentCorrespondingVPNViewController() {
+    if !profileController.profile.prefs.isBraveVPNAvailable {
+      return
+    }
+
     if BraveVPN.isSkusCredentialSessionExpired {
       let alert = vpnSessionExpiredStateAlert(loginCallback: { [unowned self] _ in
         self.openURLInNewTab(
