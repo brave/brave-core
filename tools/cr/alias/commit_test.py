@@ -19,7 +19,7 @@ import unittest
 
 import _boot  # noqa: F401
 from cmd_test import (CMD_SCRIPT, _GIT_ENV_OVERRIDES, _Sandbox)
-from alias.commit import _ReassignShortcut
+from alias.commit import _MarkChangeShortcut
 
 # ---------------------------------------------------------------------------
 # Tests: flag pass-through
@@ -283,6 +283,18 @@ class TestReassignFixup(unittest.TestCase):
         self.assertTrue(
             self._sandbox.last_commit_message().startswith('reassign!'))
 
+    def test_drop_verb_creates_drop_commit(self) -> None:
+        """--fixup=drop:HEAD adds an empty drop! commit via brockit drop."""
+        before = self._commit_count()
+        result = self._sandbox.run_gc(['commit', '--fixup=drop:HEAD'])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertEqual(self._commit_count(), before + 1)
+        msg = self._sandbox.last_commit_message()
+        # brockit formats the subject as `drop!<hash>! <original subject>`.
+        self.assertTrue(msg.startswith('drop!'),
+                        msg=f'unexpected message: {msg!r}')
+        self.assertIn('Add file.txt', msg)
+
     def test_empty_ref_is_rejected(self) -> None:
         """--fixup=reassign: with no ref errors out without committing."""
         before = self._commit_count()
@@ -327,40 +339,50 @@ class TestReassignFixup(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# Tests: _ReassignShortcut.from_args detection and leniency (unit)
+# Tests: _MarkChangeShortcut.from_args detection and leniency (unit)
 # ---------------------------------------------------------------------------
 
 
-class TestReassignShortcutParsing(unittest.TestCase):
+class TestMarkChangeShortcutParsing(unittest.TestCase):
     """Unit checks for the lenient arg detection in from_args."""
 
     def test_detects_joined_and_split_forms(self) -> None:
         """Both `--fixup=reassign:X` and `--fixup reassign:X` are recognised."""
+        joined = _MarkChangeShortcut.from_args(['--fixup=reassign:HEAD'])
+        self.assertIsNotNone(joined)
+        self.assertEqual(joined.verb, 'reassign')
+        self.assertEqual(joined.target, 'HEAD')
         self.assertIsNotNone(
-            _ReassignShortcut.from_args(['--fixup=reassign:HEAD']))
-        self.assertIsNotNone(
-            _ReassignShortcut.from_args(['--fixup', 'reassign:HEAD']))
+            _MarkChangeShortcut.from_args(['--fixup', 'reassign:HEAD']))
 
-    def test_absent_when_no_reassign_marker(self) -> None:
+    def test_detects_drop_verb(self) -> None:
+        """The `drop:` verb is recognised alongside `reassign:`."""
+        for form in (['--fixup=drop:HEAD'], ['--fixup', 'drop:HEAD']):
+            shortcut = _MarkChangeShortcut.from_args(form)
+            self.assertIsNotNone(shortcut, msg=f'not detected: {form}')
+            self.assertEqual(shortcut.verb, 'drop')
+            self.assertEqual(shortcut.target, 'HEAD')
+
+    def test_absent_when_no_marker(self) -> None:
         """Ordinary commits and git's native fixup modes are not claimed."""
-        self.assertIsNone(_ReassignShortcut.from_args(['--fixup=HEAD']))
-        self.assertIsNone(_ReassignShortcut.from_args(['-m', 'a message']))
+        self.assertIsNone(_MarkChangeShortcut.from_args(['--fixup=HEAD']))
+        self.assertIsNone(_MarkChangeShortcut.from_args(['--fixup=amend:HEAD'
+                                                         ]))
+        self.assertIsNone(_MarkChangeShortcut.from_args(['-m', 'a message']))
 
     def test_marker_outside_fixup_is_not_the_shortcut(self) -> None:
-        """`reassign:` only in a commit message is not the shortcut."""
+        """A verb token only in a commit message is not the shortcut."""
         self.assertIsNone(
-            _ReassignShortcut.from_args(['-m', 'fix reassign: bug']))
+            _MarkChangeShortcut.from_args(['-m', 'fix reassign: bug']))
 
     def test_malformed_fixup_does_not_terminate(self) -> None:
         """A `--fixup` with no value must not exit the process.
 
         A strict ArgumentParser would call sys.exit() here; the lenient parser
-        instead reports "not the shortcut" so the caller falls back to the
-        normal commit path. `reassign:` appears in another token so the cheap
-        pre-check passes and the parse is actually attempted.
+        instead raises, so from_args reports "not the shortcut" and the caller
+        falls back to the normal commit path.
         """
-        self.assertIsNone(
-            _ReassignShortcut.from_args(['reassign:x', '--fixup']))
+        self.assertIsNone(_MarkChangeShortcut.from_args(['--fixup']))
 
 
 # ---------------------------------------------------------------------------

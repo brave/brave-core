@@ -16,6 +16,7 @@ Usage
   git cr commit -m "Fix login button alignment"
   git cr commit --tagged WIP -m "Work in progress"
   git cr commit --fixup=reassign:<ref>   # shortcut for `brockit.py reassign`
+  git cr commit --fixup=drop:<ref>       # shortcut for `brockit.py drop`
 
   Custom flags (forwarded to the commit-msg hook via environment variables):
     --tagged    Comma-separated tags            → $tags
@@ -93,14 +94,17 @@ class _LenientArgumentParser(argparse.ArgumentParser):
 
 
 @dataclass(frozen=True)
-class _ReassignShortcut:
-    """The `git cr commit --fixup=reassign:<ref>` shortcut.
+class _MarkChangeShortcut:
+    """The `git cr commit --fixup=<verb>:<ref>` shortcut.
 
-    This is a convenience shortcut for brockit's `reassign` task. It can be used
-    either as:
+    This is a convenience shortcut for brockit's change-marking tasks. Each
+    supported `<verb>` maps to a brockit task that drops an empty marker commit
+    (e.g. `reassign!`/`drop!`) which brockit's `rebase` command later acts on.
+    It can be used either as:
       git cr commit --fixup=reassign:HEAD
+      git cr commit --fixup=drop:HEAD
 
-    or
+    or with the split spelling:
       git cr commit --fixup reassign:HEAD
 
     `from_args` is the entry point: it returns a ready-to-run instance when
@@ -108,25 +112,30 @@ class _ReassignShortcut:
     commit.
     """
 
-    # Value prefix that selects this mode, mirroring git's own `amend:` /
-    # `reword:` fixup modes.
-    _PREFIX: ClassVar[str] = 'reassign:'
+    # Maps each supported `<verb>:` value -- mirroring git's own `amend:` /
+    # `reword:` fixup modes -- to the name of the brockit task that implements
+    # it. The task is resolved lazily in `run` so brockit stays unimported on
+    # the ordinary commit path.
+    _TASKS: ClassVar[dict[str, str]] = {
+        'reassign': 'Reassign',
+        'drop': 'Drop',
+    }
 
-    # The commit reference whose authorship is being reassigned.
+    # The verb selecting the brockit task, e.g. `reassign` or `drop`.
+    verb: str
+    # The commit reference being marked.
     target: str
 
     @staticmethod
-    def from_args(args: list[str]) -> _ReassignShortcut | None:
+    def from_args(args: list[str]) -> _MarkChangeShortcut | None:
         """Build the shortcut from *args*, or return None when it isn't used.
 
-        This function checks for the presence of the reassign shortcut use that
-        we are interested in, and if found, parses out the args provided,
-        strictly looking only for `--fixup` and validating the format used for
-        its value.
+        Parses *args* strictly looking only for `--fixup`, then validates its
+        value. Anything that isn't one of our `<verb>:<ref>` shortcuts -- an
+        ordinary commit, a malformed `--fixup`, or git's own fixup modes
+        (`amend:` / `reword:`) -- silently bails out as None so the caller falls
+        back to the normal commit path.
         """
-        if not any(_ReassignShortcut._PREFIX in arg for arg in args):
-            return None
-
         parser = _LenientArgumentParser(add_help=False)
         parser.add_argument('--fixup')
         try:
@@ -135,21 +144,24 @@ class _ReassignShortcut:
             return None
 
         fixup = parsed.fixup
-        if fixup is None or not fixup.startswith(_ReassignShortcut._PREFIX):
+        if fixup is None or ':' not in fixup:
+            return None
+        verb, target = fixup.split(':', 1)
+        # Leave git's own fixup modes (and anything unrecognised) untouched.
+        if verb not in _MarkChangeShortcut._TASKS:
             return None
         if other_args:
             raise UserValidationError(
-                'git_cr: --fixup=reassign:<ref> cannot be combined with '
+                f'git_cr: --fixup={verb}:<ref> cannot be combined with '
                 f'other arguments; remove: {" ".join(other_args)}')
-        target = fixup[len(_ReassignShortcut._PREFIX):]
         if not target:
             raise UserValidationError(
-                'git_cr: --fixup=reassign: requires a commit reference, '
-                'e.g. --fixup=reassign:HEAD~2')
-        return _ReassignShortcut(target)
+                f'git_cr: --fixup={verb}: requires a commit reference, '
+                f'e.g. --fixup={verb}:HEAD~2')
+        return _MarkChangeShortcut(verb, target)
 
     def run(self) -> int:
-        """Run brockit's `Reassign` task for the captured target.
+        """Run the selected brockit change-marking task for the target.
 
         The commit-msg hook is irrelevant (brockit commits with --no-verify),
         so it is not checked.
@@ -157,11 +169,12 @@ class _ReassignShortcut:
         # Imported lazily: brockit is a heavy module, so we only import it when
         # needed.
         import brockit
+        task = getattr(brockit, _MarkChangeShortcut._TASKS[self.verb])
         try:
-            brockit.Reassign().run(change=self.target)
+            task().run(change=self.target)
         except (brockit.InvalidInputException, brockit.BadOutcomeException,
                 brockit.ActionNeededException):
-            # Handling brockit exceptions as failures to create the reassingment
+            # Handling brockit exceptions as failures to create the marker
             # commit.
             return 1
         return 0
@@ -169,10 +182,10 @@ class _ReassignShortcut:
 
 def cmd_commit(args: list[str]) -> int:
     """Parse commit flags and invoke git commit with injected environment."""
-    # Let's try first to check for the reassignment shortcut being used.
-    reassign = _ReassignShortcut.from_args(args)
-    if reassign is not None:
-        return reassign.run()
+    # Let's try first to check for a change-marking shortcut being used.
+    mark_change = _MarkChangeShortcut.from_args(args)
+    if mark_change is not None:
+        return mark_change.run()
 
     parser = argparse.ArgumentParser(
         prog='git cr commit',
