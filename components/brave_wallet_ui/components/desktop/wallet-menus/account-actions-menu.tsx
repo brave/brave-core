@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -14,12 +16,8 @@ import {
   AccountButtonOptionsObjectType,
 } from '../../../constants/types'
 
-// Components
-import { MenuWrapper } from './menu_wrapper'
-
 // Styled Components
-import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
-import { VerticalDivider, VerticalSpace } from '../../shared/style'
+import { ButtonMenu } from './wellet-menus.style'
 
 export interface Props {
   options: AccountButtonOptionsObjectType[]
@@ -35,36 +33,44 @@ export const AccountActionsMenu = (props: Props) => {
     : undefined
 
   return (
-    <MenuWrapper yPosition={26}>
+    <ButtonMenu
+      placement='bottom-end'
+      minWidth={minButtonWidth}
+    >
+      <Button
+        fab
+        slot='anchor-content'
+        kind='plain-faint'
+        size='large'
+      >
+        <Icon name='more-vertical' />
+      </Button>
       {options.slice(0, 2).map((option) => (
-        <PopupButton
+        <leo-menu-item
           key={option.id}
           onClick={() => onClick(option.id)}
-          minWidth={minButtonWidth}
         >
-          <ButtonIcon
+          <Icon
             name={option.icon}
             id={option.id}
           />
-          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-        </PopupButton>
+          {getLocale(option.name)}
+        </leo-menu-item>
       ))}
-      <VerticalDivider />
-      <VerticalSpace space='8px' />
+      <hr />
       {options.slice(2).map((option) => (
-        <PopupButton
+        <leo-menu-item
           key={option.id}
           onClick={() => onClick(option.id)}
-          minWidth={minButtonWidth}
         >
-          <ButtonIcon
+          <Icon
             name={option.icon}
             id={option.id}
           />
-          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-        </PopupButton>
+          {getLocale(option.name)}
+        </leo-menu-item>
       ))}
-    </MenuWrapper>
+    </ButtonMenu>
   )
 }
 

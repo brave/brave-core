@@ -4,14 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 import { getLocale } from '../../../../common/locale'
 
-// Components
-import { MenuWrapper } from './menu_wrapper'
-
 // Styled Components
-import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
+import { ButtonMenu } from './wellet-menus.style'
 
 interface Props {
   onClickDeposit: () => void
@@ -23,27 +22,31 @@ export const PortfolioAccountMenu = (props: Props) => {
   const { onClickSell, onClickViewOnExplorer, onClickDeposit } = props
 
   return (
-    <MenuWrapper yPosition={42}>
+    <ButtonMenu placement='bottom-end'>
+      <Button
+        fab
+        slot='anchor-content'
+        kind='plain-faint'
+        size='large'
+      >
+        <Icon name='more-vertical' />
+      </Button>
       {onClickSell && (
-        <PopupButton onClick={onClickSell}>
-          <ButtonIcon name='usd-circle' />
-          <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
-        </PopupButton>
+        <leo-menu-item onClick={onClickSell}>
+          <Icon name='usd-circle' />
+          {getLocale('braveWalletSell')}
+        </leo-menu-item>
       )}
       {onClickViewOnExplorer && (
-        <PopupButton onClick={onClickViewOnExplorer}>
-          <ButtonIcon name='launch' />
-          <PopupButtonText>
-            {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
-          </PopupButtonText>
-        </PopupButton>
+        <leo-menu-item onClick={onClickViewOnExplorer}>
+          <Icon name='launch' />
+          {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+        </leo-menu-item>
       )}
-      <PopupButton onClick={onClickDeposit}>
-        <ButtonIcon name='money-bag-coins' />
-        <PopupButtonText>
-          {getLocale('braveWalletDepositCryptoButton')}
-        </PopupButtonText>
-      </PopupButton>
-    </MenuWrapper>
+      <leo-menu-item onClick={onClickDeposit}>
+        <Icon name='money-bag-coins' />
+        {getLocale('braveWalletDepositCryptoButton')}
+      </leo-menu-item>
+    </ButtonMenu>
   )
 }

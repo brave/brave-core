@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div<{
@@ -25,28 +24,6 @@ export const StyledWrapper = styled.div<{
     background-color: ${(p) =>
       p.isRewardsAccount ? 'transparent' : leo.color.page.background};
   }
-`
-
-export const AccountMenuWrapper = styled.div`
-  position: relative;
-`
-
-export const AccountMenuButton = styled(WalletButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  pointer-events: auto;
-  border: none;
-`
-
-export const AccountMenuIcon = styled(Icon).attrs({
-  name: 'more-vertical',
-})`
-  --leo-icon-size: 24px;
-  color: ${leo.color.icon.default};
 `
 
 export const AccountButton = styled(WalletButton)`

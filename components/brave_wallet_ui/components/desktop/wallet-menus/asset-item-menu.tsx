@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
@@ -51,11 +53,9 @@ import {
 import {
   SellAssetModal, //
 } from '../popup-modals/sell-asset-modal/sell-asset-modal'
-import { MenuWrapper } from './menu_wrapper'
 
 // Styled Components
-import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
-import { VerticalDivider } from '../../shared/style'
+import { ButtonMenu } from './wellet-menus.style'
 
 interface Props {
   asset: BraveWallet.BlockchainToken
@@ -221,79 +221,79 @@ export const AssetItemMenu = (props: Props) => {
   ])
 
   return (
-    <MenuWrapper yPosition={42}>
-      {foundMeldBuyToken && (
-        <PopupButton onClick={onClickBuy}>
-          <ButtonIcon name='coins-alt1' />
-          <PopupButtonText>{getLocale('braveWalletBuy')}</PopupButtonText>
-        </PopupButton>
-      )}
-      {!isAssetsBalanceZero && (
-        <PopupButton onClick={onClickSend}>
-          <ButtonIcon name='send' />
-          <PopupButtonText>{getLocale('braveWalletSend')}</PopupButtonText>
-        </PopupButton>
-      )}
-      {isSwapSupported && (
-        <PopupButton onClick={() => onClickSwapOrBridge('swap')}>
-          <ButtonIcon name='currency-exchange' />
-          <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
-        </PopupButton>
-      )}
-      {!isIOS && isBridgeSupported && (
-        <PopupButton onClick={() => onClickSwapOrBridge('bridge')}>
-          <ButtonIcon name='web3-bridge' />
-          <PopupButtonText>{getLocale('braveWalletBridge')}</PopupButtonText>
-        </PopupButton>
-      )}
-      <PopupButton onClick={onClickDeposit}>
-        <ButtonIcon name='money-bag-coins' />
-        <PopupButtonText>
+    <>
+      <ButtonMenu placement='bottom-end'>
+        <Button
+          fab
+          slot='anchor-content'
+          kind='plain-faint'
+          size='large'
+        >
+          <Icon name='more-vertical' />
+        </Button>
+        {foundMeldBuyToken && (
+          <leo-menu-item onClick={onClickBuy}>
+            <Icon name='coins-alt1' />
+            {getLocale('braveWalletBuy')}
+          </leo-menu-item>
+        )}
+        {!isAssetsBalanceZero && (
+          <leo-menu-item onClick={onClickSend}>
+            <Icon name='send' />
+            {getLocale('braveWalletSend')}
+          </leo-menu-item>
+        )}
+        {isSwapSupported && (
+          <leo-menu-item onClick={() => onClickSwapOrBridge('swap')}>
+            <Icon name='currency-exchange' />
+            {getLocale('braveWalletSwap')}
+          </leo-menu-item>
+        )}
+        {!isIOS && isBridgeSupported && (
+          <leo-menu-item onClick={() => onClickSwapOrBridge('bridge')}>
+            <Icon name='web3-bridge' />
+            {getLocale('braveWalletBridge')}
+          </leo-menu-item>
+        )}
+        <leo-menu-item onClick={onClickDeposit}>
+          <Icon name='money-bag-coins' />
           {getLocale('braveWalletAccountsDeposit')}
-        </PopupButtonText>
-      </PopupButton>
-      {isSellSupported && (
-        <PopupButton onClick={onClickSell}>
-          <ButtonIcon name='usd-circle' />
-          <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
-        </PopupButton>
-      )}
-      {onClickEditToken && (
-        <PopupButton onClick={onClickEditToken}>
-          <ButtonIcon name='edit-pencil' />
-          <PopupButtonText>
+        </leo-menu-item>
+        {isSellSupported && (
+          <leo-menu-item onClick={onClickSell}>
+            <Icon name='usd-circle' />
+            {getLocale('braveWalletSell')}
+          </leo-menu-item>
+        )}
+        {onClickEditToken && (
+          <leo-menu-item onClick={onClickEditToken}>
+            <Icon name='edit-pencil' />
             {getLocale('braveWalletAllowSpendEditButton')}
-          </PopupButtonText>
-        </PopupButton>
-      )}
-      <PopupButton onClick={onClickHide}>
-        <ButtonIcon name='eye-off' />
-        <PopupButtonText>
+          </leo-menu-item>
+        )}
+        <leo-menu-item onClick={onClickHide}>
+          <Icon name='eye-off' />
           {getLocale('braveWalletConfirmHidingToken')}
-        </PopupButtonText>
-      </PopupButton>
-      {canShieldFunds && (
-        <>
-          <VerticalDivider margin='0px 0px 8px 0px' />
-          <PopupButton onClick={onClickShieldFunds}>
-            <ButtonIcon name='shield-done' />
-            <PopupButtonText>
+        </leo-menu-item>
+        {canShieldFunds && (
+          <>
+            <hr />
+            <leo-menu-item onClick={onClickShieldFunds}>
+              <Icon name='shield-done' />
               {getLocale('braveWalletShieldFunds')}
-            </PopupButtonText>
-          </PopupButton>
-        </>
-      )}
-      {canUnshieldFunds && (
-        <>
-          <VerticalDivider margin='0px 0px 8px 0px' />
-          <PopupButton onClick={onClickUnshieldFunds}>
-            <ButtonIcon name='shield-disable' />
-            <PopupButtonText>
+            </leo-menu-item>
+          </>
+        )}
+        {canUnshieldFunds && (
+          <>
+            <hr />
+            <leo-menu-item onClick={onClickUnshieldFunds}>
+              <Icon name='shield-disable' />
               {getLocale('braveWalletUnshieldFunds')}
-            </PopupButtonText>
-          </PopupButton>
-        </>
-      )}
+            </leo-menu-item>
+          </>
+        )}
+      </ButtonMenu>
       {showSellModal && selectedSellAsset && (
         <SellAssetModal
           selectedAsset={selectedSellAsset}
@@ -306,6 +306,6 @@ export const AssetItemMenu = (props: Props) => {
           sellAssetBalance={assetBalance}
         />
       )}
-    </MenuWrapper>
+    </>
   )
 }
