@@ -49,17 +49,8 @@ extension UIView {
 
     UISwitch.appearance().onTintColor = UIColor.braveBlurpleTint
 
-    // Used as color a table will use as the base (e.g. background)
-    let tablePrimaryColor = UIColor.braveGroupedBackground
-    // Used to augment `tablePrimaryColor` above
-    let tableSecondaryColor = UIColor.secondaryBraveGroupedBackground
-
-    UITableView.appearance().backgroundColor = tablePrimaryColor
-    UITableView.appearance().separatorColor = UIColor(braveSystemName: .dividerStrong)
-
     UITableViewCell.appearance().do {
       $0.tintColor = .braveBlurpleTint
-      $0.backgroundColor = tableSecondaryColor
     }
 
     UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor(

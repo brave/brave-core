@@ -170,7 +170,6 @@ struct AddAccountView: View {
           }
         )
         .disabled(preSelectedAccountNetwork != nil)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       accountNameSection
       if isJSONImported {
@@ -181,8 +180,6 @@ struct AddAccountView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(navigationTitle)
     .navigationBarItems(
@@ -248,13 +245,10 @@ struct AddAccountView: View {
             }
             .padding(.vertical, 10)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
   }
@@ -310,7 +304,6 @@ struct AddAccountView: View {
     Section(
       content: {
         TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name, axis: .vertical)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       },
       header: {
         WalletListHeaderView(
@@ -341,7 +334,6 @@ struct AddAccountView: View {
       )
     ) {
       SecureField(Strings.Wallet.passwordPlaceholder, text: $originPassword)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
 
@@ -416,7 +408,6 @@ struct AddAccountView: View {
           .disabled(isLoadingFile)
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listRowSeparator(.hidden)
   }

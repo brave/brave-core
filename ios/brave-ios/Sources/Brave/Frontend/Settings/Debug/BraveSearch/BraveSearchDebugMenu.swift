@@ -44,8 +44,6 @@ struct BraveSearchDebugMenu: View {
         Text(String(describing: storageTypes))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .onAppear(perform: loadRecords)
   }
 

@@ -19,7 +19,6 @@ struct WebsiteRedirectsSettingsView: View {
           Text("reddit.com \(Image(systemName: "arrow.right")) old.reddit.com")
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.redditRedirectFooter)
       }
@@ -29,14 +28,11 @@ struct WebsiteRedirectsSettingsView: View {
           Text("npr.org \(Image(systemName: "arrow.right")) text.npr.org")
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.nprRedirectFooter)
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.urlRedirectsSettings)
   }
 }

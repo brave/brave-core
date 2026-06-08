@@ -393,7 +393,7 @@ struct AdblockRuleExclusionView: View {
               }
             )
             .background(
-              Color(.secondaryBraveGroupedBackground),
+              Color(.secondarySystemGroupedBackground),
               in: RoundedRectangle(cornerRadius: 12, style: .continuous)
             )
         },

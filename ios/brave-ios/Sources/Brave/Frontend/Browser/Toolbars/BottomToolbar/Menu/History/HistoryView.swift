@@ -93,7 +93,6 @@ private struct RecentlyClosedTabsSection: View {
           }
           .padding(.vertical, 4)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         if isExpanded {
           ForEach(recentlyClosedTabs, id: \RecentlyClosed.objectID) { tab in
             if let url = URL(string: tab.url) {
@@ -102,7 +101,6 @@ private struct RecentlyClosedTabsSection: View {
               } label: {
                 HistoryItemView(title: tab.title, url: url, dateAdded: tab.dateAdded)
               }
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
           }
           .onDelete { indexSet in
@@ -151,7 +149,6 @@ struct HistoryView: View {
               } label: {
                 HistoryItemView(title: node.title, url: node.url, dateAdded: node.dateAdded)
               }
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
               .contextMenu {
                 Section {
                   Button {
@@ -206,8 +203,6 @@ struct HistoryView: View {
         }
       }
       .animation(.default, value: model.items)
-      .scrollContentBackground(.hidden)
-      .background(Color(.braveGroupedBackground))
       .listStyle(.insetGrouped)
       .overlay {
         if model.items.isEmpty {

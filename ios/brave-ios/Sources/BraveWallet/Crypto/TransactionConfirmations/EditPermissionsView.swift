@@ -140,11 +140,8 @@ struct EditPermissionsView: View {
       .disabled(customAllowance.isEmpty)
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)
-      .listRowBackground(Color(.braveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.editPermissionsTitle)
     .alert(isPresented: $isShowingAlert) {

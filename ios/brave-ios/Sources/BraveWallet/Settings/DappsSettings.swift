@@ -98,7 +98,6 @@ struct DappsSettings: View {
             .foregroundColor(Color(braveSystemName: .textPrimary))
             .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: Text(Strings.Wallet.dappsSettingsConnectedSitesSectionTitle)
@@ -141,12 +140,9 @@ struct DappsSettings: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(
       String.localizedStringWithFormat(Strings.Wallet.dappsSettingsNavTitle, coin.localizedTitle)
     )
@@ -295,12 +291,9 @@ private struct SiteConnectionDetailView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .principal) {

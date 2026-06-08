@@ -68,12 +68,9 @@ struct BuyProviderSelectionView: View {
                 )
               }
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
         .listStyle(InsetGroupedListStyle())
-        .scrollContentBackground(.hidden)
-        .background(Color(UIColor.braveGroupedBackground))
       }
     }
     .navigationBarTitleDisplayMode(.inline)
@@ -123,14 +120,14 @@ private struct ProviderView: View {
                   .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               } else {
                 Rectangle()
-                  .foregroundColor(Color(.tertiaryBraveGroupedBackground))
+                  .foregroundColor(Color(.tertiarySystemGroupedBackground))
                   .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
                   .shimmer(true)
               }
             }
           } else {
             Rectangle()
-              .foregroundColor(Color(.tertiaryBraveGroupedBackground))
+              .foregroundColor(Color(.tertiarySystemGroupedBackground))
               .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               .shimmer(true)
           }

@@ -104,7 +104,6 @@ struct FilterListsView: View {
           description: Strings.Shields.addCustomFilterListDescription
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .toggleStyle(SwitchToggleStyle(tint: .accentColor))
 
       if searchText.isEmpty {
@@ -116,7 +115,6 @@ struct FilterListsView: View {
             description: Strings.Shields.customFiltersDescription
           )
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       Section {
@@ -135,7 +133,7 @@ struct FilterListsView: View {
           title: Strings.Shields.defaultFilterLists,
           description: Strings.Shields.filterListsDescription
         )
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
     }
     .fullScreenCover(
       isPresented: $showingCustomFiltersSheet,
@@ -148,8 +146,6 @@ struct FilterListsView: View {
     .searchable(text: $searchText)
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.Shields.contentFiltering)
     .toolbar {

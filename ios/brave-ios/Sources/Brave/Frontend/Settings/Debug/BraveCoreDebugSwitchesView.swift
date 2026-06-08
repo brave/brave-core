@@ -80,7 +80,6 @@ private struct BasicStringInputView: View {
         TextField(coreSwitch.displayString, text: $text)
           .disableAutocorrection(true)
           .autocapitalization(.none)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         if let hint = hint {
           Text(hint)
@@ -88,8 +87,6 @@ private struct BasicStringInputView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(coreSwitch.displayString)
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -142,8 +139,6 @@ private struct BasicPickerInputView: View {
       .pickerStyle(.inline)
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(coreSwitch.displayString)
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -191,7 +186,6 @@ private struct CustomSwitchInputView: View {
         TextField("Key", text: $key)
           .disableAutocorrection(true)
           .autocapitalization(.none)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text("Enter the key. Format: --")
           + Text("**Key**")
@@ -203,7 +197,6 @@ private struct CustomSwitchInputView: View {
         TextField("Value", text: $value)
           .disableAutocorrection(true)
           .autocapitalization(.none)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text("Enter the value. Format: --Key=")
           + Text("**Value**")
@@ -211,8 +204,6 @@ private struct CustomSwitchInputView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Custom Switch")
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -314,7 +305,6 @@ struct BraveCoreDebugSwitchesView: View {
           .frame(maxWidth: .infinity)
           .font(.footnote)
           .foregroundColor(Color(braveSystemName: .textPrimary))
-          .listRowBackground(Color(.braveGroupedBackground))
           .listRowInsets(.zero)
       }
       Section {
@@ -374,7 +364,6 @@ struct BraveCoreDebugSwitchesView: View {
             SwitchContainer(.servicesEnvironment)
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {
         Group {
@@ -415,7 +404,6 @@ struct BraveCoreDebugSwitchesView: View {
             SwitchContainer(.p3aExpressRotationIntervalSeconds)
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text("P3A")
       }
@@ -454,7 +442,6 @@ struct BraveCoreDebugSwitchesView: View {
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text("Custom Switches")
         }
@@ -466,7 +453,6 @@ struct BraveCoreDebugSwitchesView: View {
         } label: {
           Text("Add Custom Switch")
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       Section {
@@ -475,12 +461,9 @@ struct BraveCoreDebugSwitchesView: View {
             activeSwitches.value = []
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitle("BraveCore Switches")
   }
 }

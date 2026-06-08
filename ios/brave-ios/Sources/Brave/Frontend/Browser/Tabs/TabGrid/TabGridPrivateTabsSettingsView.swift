@@ -63,7 +63,6 @@ struct TabGridPrivateTabsSettings: View {
           }
         }
         .tint(Color.accentColor)
-        .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
 
         if let authenticationKind {
           Toggle(isOn: privateBrowsingLockBinding) {
@@ -106,11 +105,8 @@ struct TabGridPrivateTabsSettings: View {
             }
           }
           .tint(Color.accentColor)
-          .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(uiColor: .braveGroupedBackground))
       .navigationTitle(Strings.TabGrid.privateTabsSettingsTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

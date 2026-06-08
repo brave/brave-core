@@ -48,8 +48,6 @@ public struct Web3SettingsView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.web3)
     .navigationBarTitleDisplayMode(.inline)
     .background(
@@ -148,7 +146,6 @@ private struct WalletSettingsView: View {
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.vertical, 4)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section {
       FormPicker(selection: $settingsStore.currencyCode) {
@@ -162,7 +159,6 @@ private struct WalletSettingsView: View {
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.vertical, 4)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     if settingsStore.isBiometricsAvailable, keyringStore.isWalletCreated {
       Section(
@@ -178,7 +174,6 @@ private struct WalletSettingsView: View {
         )
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     Section(
@@ -199,7 +194,6 @@ private struct WalletSettingsView: View {
       )
       .foregroundColor(Color(braveSystemName: .textPrimary))
       .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       footer: Text(Strings.Wallet.networkFooter)
@@ -209,7 +203,6 @@ private struct WalletSettingsView: View {
         Text(Strings.Wallet.settingsNetworkButtonTitle)
           .foregroundColor(Color(braveSystemName: .textPrimary))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       header: Text(Strings.Wallet.web3PreferencesSectionTitle)
@@ -240,7 +233,6 @@ private struct WalletSettingsView: View {
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       footer: Text(Strings.Wallet.settingsResetTransactionFooter)
@@ -252,7 +244,6 @@ private struct WalletSettingsView: View {
         Text(Strings.Wallet.settingsResetTransactionTitle)
           .foregroundColor(Color(.braveBlurpleTint))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section {
       Button {
@@ -262,7 +253,6 @@ private struct WalletSettingsView: View {
           .foregroundColor(.red)
       }  // iOS 15: .role(.destructive)
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 
   private func toggledBiometricsUnlock(_ enabled: Bool) {
@@ -310,7 +300,6 @@ private struct Web3DomainSettingsView: View {
         ensOffchainResolveMethodPreference
         udResolveMethodPreference
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
 

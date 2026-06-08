@@ -168,12 +168,12 @@ struct SignMessageRequestContentView: View {
       .frame(maxWidth: .infinity)
       .frame(height: staticTextViewHeight)
       .background(
-        Color(.tertiaryBraveGroupedBackground),
+        Color(.tertiarySystemGroupedBackground),
         in: RoundedRectangle(cornerRadius: 5, style: .continuous)
       )
       .padding()
       .background(
-        Color(.secondaryBraveGroupedBackground),
+        Color(.secondarySystemGroupedBackground),
         in: RoundedRectangle(cornerRadius: 10, style: .continuous)
       )
       .introspectTextView { textView in

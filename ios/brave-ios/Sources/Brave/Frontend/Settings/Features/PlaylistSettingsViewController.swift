@@ -26,7 +26,6 @@ struct PlaylistSettingsView: View {
       Section {
         Toggle(Strings.PlayList.urlBarButtonOptionTitle, isOn: $enablePlaylistURLBarButton.value)
           .tint(Color(braveSystemName: .primary40))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.PlayList.urlBarButtonOptionFooter)
       }
@@ -36,14 +35,12 @@ struct PlaylistSettingsView: View {
           isOn: $enableLongPressAddToPlaylist.value
         )
         .tint(Color(braveSystemName: .primary40))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.PlayList.playlistLongPressSettingsOptionFooterText)
       }
       Section {
         Toggle(Strings.PlayList.playlistAutoPlaySettingsOptionTitle, isOn: $firstLoadAutoPlay.value)
           .tint(Color(braveSystemName: .primary40))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.PlayList.playlistAutoPlaySettingsOptionFooterText)
       }
@@ -61,7 +58,6 @@ struct PlaylistSettingsView: View {
               .tag(PlayListDownloadType.wifi.rawValue)
           }
           .pickerStyle(.navigationLink)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } footer: {
           VStack(alignment: .leading, spacing: 4) {
             Text(Strings.PlayList.playlistAutoSaveSettingsFooterText)
@@ -75,7 +71,6 @@ struct PlaylistSettingsView: View {
           isOn: $playbackLeftOff.value
         )
         .tint(Color(braveSystemName: .primary40))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.PlayList.playlistStartPlaybackSettingsFooterText)
       }
@@ -87,7 +82,6 @@ struct PlaylistSettingsView: View {
             .foregroundStyle(Color(braveSystemName: .textInteractive))
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .confirmationDialog(
           Strings.PlayList.playlistResetAlertTitle,
           isPresented: $isResetConfirmationDialogPresented,
@@ -106,8 +100,6 @@ struct PlaylistSettingsView: View {
         Text(Strings.PlayList.playlistResetPlaylistOptionFooterText)
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
   }
 }
 

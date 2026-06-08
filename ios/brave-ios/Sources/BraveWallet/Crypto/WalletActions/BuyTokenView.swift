@@ -98,14 +98,12 @@ struct BuyTokenView: View {
             }
             .padding(.vertical, 8)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.meldAccountHeaderTitle))
         ) {
           accountPickerView
             .padding(.vertical, 8)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.enterAmount))
@@ -138,7 +136,6 @@ struct BuyTokenView: View {
               .keyboardType(.decimalPad)
           }
           .padding(.vertical, 8)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.meldCountryHeaderTitle))
@@ -166,7 +163,6 @@ struct BuyTokenView: View {
             }
           }
           .padding(.vertical, 8)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.meldPaymentMethodHeaderTitle))
@@ -194,7 +190,6 @@ struct BuyTokenView: View {
             }
           }
           .padding(.vertical, 8)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: HStack {
@@ -218,8 +213,6 @@ struct BuyTokenView: View {
       }
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.buy)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

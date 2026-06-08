@@ -194,7 +194,7 @@ public struct AIChatAdvancedSettingsView: View {
             subtitle: model.models.first(where: { $0.key == model.defaultAIModelKey })?.displayName
               ?? model.currentModel?.displayName
           )
-        }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
       } header: {
         Text(Strings.AIChat.advancedSettingsHeaderTitle)
           .textCase(nil)
@@ -209,26 +209,21 @@ public struct AIChatAdvancedSettingsView: View {
               title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
               detail: subscriptionStatusTitle
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
               detail: expirationDateTitle
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           } else {
             // Subscription information is loading
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
               detail: nil
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
               detail: nil
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
 
           // Check subscription is activated with in-app purchase
@@ -246,8 +241,6 @@ public struct AIChatAdvancedSettingsView: View {
               }
             )
             .buttonStyle(.plain)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
             if viewModel.isDevReceiptLinkingAvailable {
               Button(
                 action: {
@@ -261,8 +254,6 @@ public struct AIChatAdvancedSettingsView: View {
                 }
               )
               .buttonStyle(.plain)
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
               Button(
                 action: {
                   openURL(.brave.braveLeoLinkReceiptDev)
@@ -275,7 +266,6 @@ public struct AIChatAdvancedSettingsView: View {
                 }
               )
               .buttonStyle(.plain)
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
 
             Button(
@@ -295,7 +285,6 @@ public struct AIChatAdvancedSettingsView: View {
               }
             )
             .buttonStyle(.plain)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         } else {
           Button(
@@ -312,7 +301,6 @@ public struct AIChatAdvancedSettingsView: View {
             }
           )
           .buttonStyle(.plain)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .sheet(isPresented: $isPaywallPresented) {
             AIChatPaywallView(
               premiumUpgrageSuccessful: { _ in
@@ -346,7 +334,7 @@ public struct AIChatAdvancedSettingsView: View {
             StoreKitReceiptSimpleView()
           } label: {
             LabelView(title: Strings.AIChat.advancedSettingsViewReceiptTitle)
-          }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
         }
       } header: {
         Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())
@@ -364,7 +352,6 @@ public struct AIChatAdvancedSettingsView: View {
               .contentShape(Rectangle())
           }
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .buttonStyle(.plain)
         .alert(isPresented: $resetAndClearAlertErrorPresented) {
           Alert(
@@ -380,8 +367,6 @@ public struct AIChatAdvancedSettingsView: View {
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
   }
 

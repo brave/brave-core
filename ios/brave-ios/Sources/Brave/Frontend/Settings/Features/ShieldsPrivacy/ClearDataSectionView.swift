@@ -26,7 +26,7 @@ struct ClearDataSectionView: View {
       clearPrivateDataButton
     } header: {
       Text(Strings.clearPrivateData)
-    }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
   }
 
   private var clearPrivateDataButton: some View {

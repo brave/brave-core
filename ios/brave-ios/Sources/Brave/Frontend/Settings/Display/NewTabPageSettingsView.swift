@@ -25,7 +25,6 @@ struct NewTabPageSettingsView: View {
     Form {
       Section {
         Toggle(Strings.NTP.settingsBackgroundImages, isOn: $backgroundImages.value)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         if backgroundImages.value, isSponsoredBackgroundsSupported {
           NavigationLink {
             BackgroundMediaTypePicker(
@@ -60,16 +59,13 @@ struct NewTabPageSettingsView: View {
               Text(Strings.NTP.settingsBackgroundImageSubMenu)
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         Text(Strings.NTP.settingsBackgroundImages)
       }
       Section {
         Toggle(Strings.PrivacyHub.privacyReportsTitle, isOn: $showNewTabPrivacyHub.value)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(Strings.Widgets.favoritesWidgetTitle, isOn: $showNewTabFavourites.value)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Widgets.widgetTitle)
       }
@@ -77,8 +73,6 @@ struct NewTabPageSettingsView: View {
     .tint(Color(braveSystemName: .primary40))
     .navigationTitle(Strings.NTP.settingsTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
   }
 
   private struct BackgroundMediaTypePicker: View {
@@ -104,7 +98,6 @@ struct NewTabPageSettingsView: View {
             )
             .tag(BackgroundMediaType.sponsoredImagesAndVideos)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .pickerStyle(.inline)
           .labelsHidden()
           .onChange(of: selection, initial: false) {
@@ -120,8 +113,6 @@ struct NewTabPageSettingsView: View {
       }
       .navigationTitle(Strings.NTP.settingsBackgroundImageSubMenu)
       .navigationBarTitleDisplayMode(.inline)
-      .scrollContentBackground(.hidden)
-      .background(Color(.braveGroupedBackground))
     }
   }
 }

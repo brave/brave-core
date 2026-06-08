@@ -56,29 +56,22 @@ struct VPNContactFormView: View {
     Form {
       Section {
         Toggle(Strings.VPN.contactFormHostname, isOn: $includes.hostname)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $includes.tunnelProtocol) {
           LabeledContent(Strings.VPN.protocolPickerTitle, value: tunnelProtocol)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $includes.subscriptionType) {
           LabeledContent(Strings.VPN.contactFormSubscriptionType, value: BraveVPN.subscriptionName)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(Strings.VPN.contactFormAppStoreReceipt, isOn: $includes.receipt)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $includes.appVersion) {
           LabeledContent(Strings.VPN.contactFormAppVersion, value: AppInfo.appVersion)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $includes.timezone) {
           LabeledContent(Strings.VPN.contactFormTimezone, value: TimeZone.current.description)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $includes.networkType) {
           LabeledContent(Strings.VPN.contactFormNetworkType, value: networkType)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $includes.cellularCarrier) {
           LabeledContent(
             Strings.VPN.contactFormCarrier,
@@ -86,15 +79,12 @@ struct VPNContactFormView: View {
               .first?.value.carrierName ?? "-"
           )
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(Strings.VPN.contactFormLogs, isOn: $includes.logs)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {
         NavigationLink(Strings.VPN.contactFormSendButton) {
           IssuePicker(issueType: $issueType)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(
           "\(Strings.VPN.contactFormFooterSharedWithGuardian)\n\n\(Strings.VPN.contactFormFooter)"
@@ -230,7 +220,6 @@ struct VPNContactFormView: View {
               Text(issue.displayString)
                 .foregroundStyle(Color(braveSystemName: .textPrimary))
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         } header: {
           Text(Strings.VPN.contactFormIssue)
@@ -238,8 +227,6 @@ struct VPNContactFormView: View {
           Text(Strings.VPN.contactFormIssueDescription)
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(.braveGroupedBackground))
     }
   }
 }

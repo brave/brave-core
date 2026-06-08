@@ -208,7 +208,6 @@ public struct NewsSettingsView: View {
       Section {
         if isNewsEnabled.value {
           destinations
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         showBraveNewsToggle
@@ -218,8 +217,6 @@ public struct NewsSettingsView: View {
     }
     .listStyle(.insetGrouped)
     .animation(.default, value: searchDelegate.isEditing)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.BraveNews.braveNews)
     .navigationBarTitleDisplayMode(.inline)
     .onChange(of: searchDelegate.query) { _, query in

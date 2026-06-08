@@ -45,7 +45,6 @@ struct AccountDetailsView: View {
           AccountDetailsHeaderView(account: account)
             .frame(maxWidth: .infinity)
             .listRowInsets(.zero)
-            .listRowBackground(Color(.braveGroupedBackground))
         }
         Section(
           content: {
@@ -59,7 +58,6 @@ struct AccountDetailsView: View {
                 isFieldFocused = tf.becomeFirstResponder()
               }
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           },
           header: {
             WalletListHeaderView(
@@ -86,7 +84,6 @@ struct AccountDetailsView: View {
             ) {
               Text(Strings.Wallet.accountPrivateKey)
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
         if account.isImported {
@@ -108,13 +105,10 @@ struct AccountDetailsView: View {
                 )
               }
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
       }
       .listStyle(InsetGroupedListStyle())
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {

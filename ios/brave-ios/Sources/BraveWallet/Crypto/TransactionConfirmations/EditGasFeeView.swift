@@ -88,7 +88,6 @@ struct EditGasFeeView: View {
         TextField("", text: $perGasPrice)
           .keyboardType(.numberPad)
           .foregroundColor(Color(braveSystemName: .textPrimary))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.gasAmountLimit))
@@ -96,7 +95,6 @@ struct EditGasFeeView: View {
         TextField("", text: $gasLimit)
           .keyboardType(.numberPad)
           .foregroundColor(Color(braveSystemName: .textPrimary))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {
         Button(action: save) {
@@ -106,12 +104,9 @@ struct EditGasFeeView: View {
         .frame(maxWidth: .infinity)
         .disabled(isSaveButtonDisabled)
         .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.editGasTitle)
     .alert(isPresented: $isShowingAlert) {

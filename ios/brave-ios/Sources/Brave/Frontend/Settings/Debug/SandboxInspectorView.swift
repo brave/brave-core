@@ -107,7 +107,6 @@ struct SandboxInspectorView: View {
           Text(total)
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         if isLoading && nodes.isEmpty {
           ProgressView()
@@ -140,10 +139,7 @@ struct SandboxInspectorView: View {
           }
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Sandbox Inspector")
     .navigationBarTitleDisplayMode(.inline)
     .onAppear(perform: getNodes)

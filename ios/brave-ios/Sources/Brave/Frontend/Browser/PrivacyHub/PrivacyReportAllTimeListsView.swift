@@ -110,11 +110,8 @@ struct PrivacyReportAllTimeListsView: View {
           .padding(.vertical, 8)
           .font(.footnote)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 
   private var websitesList: some View {
@@ -135,11 +132,8 @@ struct PrivacyReportAllTimeListsView: View {
           .listRowInsets(.init())
           .padding(.vertical, 8)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 
   var body: some View {
@@ -164,7 +158,7 @@ struct PrivacyReportAllTimeListsView: View {
         }
       }
     }
-    .background(Color(.braveGroupedBackground).ignoresSafeArea())
+    .background(Color(uiColor: .systemGroupedBackground))
     .ignoresSafeArea(.container, edges: .bottom)
     .navigationTitle(Strings.PrivacyHub.allTimeListsButtonText)
     .toolbar {

@@ -59,10 +59,8 @@ struct ShredSiteSettingsView: View {
         Text(
           viewModel.visibleURL?.displayURL?.baseDomain ?? viewModel.visibleURL?.absoluteString ?? ""
         )
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
     .navigationTitle(Strings.Shields.shredSiteData)
     .toolbar(.visible)
   }

@@ -39,7 +39,7 @@ struct FilterListAddURLView: View {
             VStack(alignment: .leading) {
               textField
                 .submitLabel(SubmitLabel.done)
-            }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+            }
           },
           header: {
             Text(Strings.Shields.customFilterListURL)
@@ -59,8 +59,6 @@ struct FilterListAddURLView: View {
         )
       }
       .animation(.easeInOut, value: errorMessage)
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .listStyle(.insetGrouped)
       .navigationTitle(Strings.Shields.customFilterList)
       .navigationBarTitleDisplayMode(.inline)

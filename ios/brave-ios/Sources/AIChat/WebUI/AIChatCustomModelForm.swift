@@ -91,7 +91,6 @@ struct CustomModelForm: View {
             .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorText))
         }
         .labeledContentStyle(.formInput)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.AIChat.customModelFormLabelFieldFooter)
       }
@@ -112,7 +111,6 @@ struct CustomModelForm: View {
             .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorText))
         }
         .labeledContentStyle(.formInput)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.AIChat.customModelFormRequestNameFieldFooter)
       }
@@ -150,7 +148,6 @@ struct CustomModelForm: View {
             .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorText))
         }
         .labeledContentStyle(.formInput)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         // Contains Markdown
         Text(LocalizedStringKey(Strings.AIChat.customModelFormServerEndpointFieldFooter))
@@ -170,7 +167,6 @@ struct CustomModelForm: View {
           Text(Strings.AIChat.customModelFormContextSizeFieldTitle)
         }
         .labeledContentStyle(.formInput)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.AIChat.customModelFormContextSizeFieldFooter)
       }
@@ -189,7 +185,6 @@ struct CustomModelForm: View {
           Text(Strings.AIChat.customModelFormApiKeyFieldTitle)
         }
         .labeledContentStyle(.formInput)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.AIChat.customModelFormApiKeyFieldFooter)
       }
@@ -200,13 +195,11 @@ struct CustomModelForm: View {
           Text(Strings.AIChat.customModelFormVisionSupportFieldDescription)
         }
         .tint(Color(braveSystemName: .primary40))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $data.supportsTools) {
           Text(Strings.AIChat.customModelFormSupportsToolsFieldTitle)
           Text(Strings.AIChat.customModelFormSupportsToolsFieldDescription)
         }
         .tint(Color(braveSystemName: .primary40))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       Section {
@@ -223,13 +216,10 @@ struct CustomModelForm: View {
           Text(Strings.AIChat.customModelFormSystemPromptFieldTitle)
         }
         .labeledContentStyle(.formInput)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.AIChat.customModelFormSystemPromptFieldFooter)
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
     .onSubmit(of: .text) {
       guard let focus, let currentIndex = Field.allCases.firstIndex(of: focus) else {
         return

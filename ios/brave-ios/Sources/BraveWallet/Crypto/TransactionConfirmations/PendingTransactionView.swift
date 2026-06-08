@@ -460,7 +460,7 @@ struct PendingTransactionView: View {
               StaticTextView(text: confirmationStore.transactionDetails)
                 .frame(maxWidth: .infinity)
                 .frame(height: 200)
-                .background(Color(.tertiaryBraveGroupedBackground))
+                .background(Color(.tertiarySystemGroupedBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
             }
             .padding()
@@ -468,7 +468,7 @@ struct PendingTransactionView: View {
         }
         .frame(maxWidth: .infinity)
         .background(
-          Color(.secondaryBraveGroupedBackground)
+          Color(.secondarySystemGroupedBackground)
         )
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
       }
@@ -592,9 +592,9 @@ struct PendingTransactionView: View {
             .background(
               LinearGradient(
                 stops: [
-                  .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                  .init(color: Color(.systemGroupedBackground).opacity(0), location: 0),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 0.05),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 1),
                 ],
                 startPoint: .top,
                 endPoint: .bottom

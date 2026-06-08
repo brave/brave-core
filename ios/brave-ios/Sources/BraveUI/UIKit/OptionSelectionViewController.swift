@@ -104,7 +104,7 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .braveGroupedBackground
+    view.backgroundColor = .systemGroupedBackground
     view.tintColor = .braveBlurpleTint
   }
 

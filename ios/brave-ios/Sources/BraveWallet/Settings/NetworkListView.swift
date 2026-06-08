@@ -151,9 +151,6 @@ struct NetworkListView: View {
           ForEach(networks) { network in
             networkRow(network)
               .padding(.vertical, 6)
-              .listRowBackground(
-                Color(.secondaryBraveGroupedBackground)
-              )
           }
         } header: {
           Text(coin.localizedTitle)
@@ -161,8 +158,6 @@ struct NetworkListView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.transactionDetailsNetworkTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

@@ -172,12 +172,9 @@ struct MarketView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .background(
       NavigationLink(
         isActive: Binding(

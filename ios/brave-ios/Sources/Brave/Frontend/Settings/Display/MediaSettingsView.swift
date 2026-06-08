@@ -33,8 +33,6 @@ struct MediaSettingsView: View {
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
       Section(header: Text(Strings.Settings.youtube)) {
         Toggle(isOn: $keepYouTubeInBrave.value) {
           Text(Strings.Settings.openYouTubeInBrave)
@@ -76,11 +74,9 @@ struct MediaSettingsView: View {
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.Settings.mediaRootSetting)
     .navigationBarTitleDisplayMode(.inline)
-    .background(Color(UIColor.braveGroupedBackground))
     .task {
       // Update the enabled state filter lists
       self.youtubeDistractingElementsBlocking = FilterListStorage.shared.isEnabled(
@@ -181,10 +177,8 @@ private struct QualitySettingsView: View {
           }
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.Settings.highestQualityPlayback)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 
   func qualityOption(preference: YoutubeHighQualityPreference) -> some View {

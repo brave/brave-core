@@ -109,7 +109,6 @@ struct CustomizeMenuView: View {
           .onMove { source, destination in
             moveRow(from: source, to: destination)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.BrowserMenu.visibleActionsTitle)
         }
@@ -136,7 +135,6 @@ struct CustomizeMenuView: View {
             }
             .id("Hidden-\(id.id)")
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.BrowserMenu.hiddenActionsTitle)
         }
@@ -148,11 +146,8 @@ struct CustomizeMenuView: View {
             Text(Strings.BrowserMenu.resetToDefault)
               .frame(maxWidth: .infinity)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(.braveGroupedBackground))
       .environment(\.editMode, .constant(EditMode.active))
       .toolbar {
         ToolbarItemGroup(placement: .confirmationAction) {

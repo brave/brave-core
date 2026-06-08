@@ -63,7 +63,6 @@ struct ManagePasswordsView: View {
       if !isSearchActive {
         Toggle(Strings.Autofill.managePasswordsOfferToSavePasswords, isOn: $saveLogins.value)
           .tint(Color(braveSystemName: .primary40))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       if !viewModel.filteredAllowedGroups.isEmpty {
@@ -123,8 +122,6 @@ struct ManagePasswordsView: View {
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background((Color(.braveGroupedBackground)))
     .accessibilityHidden(isPrivacyOverlayActive)
     .searchable(
       text: $viewModel.searchText,
@@ -139,7 +136,7 @@ struct ManagePasswordsView: View {
       }
     }
     .overlay {
-      if isPrivacyOverlayActive { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if isPrivacyOverlayActive { Color(uiColor: .systemGroupedBackground).ignoresSafeArea() }
     }
     .environment(\.redactionReasons, effectiveRedactionReasons)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
@@ -302,6 +299,5 @@ private struct ManagePasswordListRow: View {
           .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
       }
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 }

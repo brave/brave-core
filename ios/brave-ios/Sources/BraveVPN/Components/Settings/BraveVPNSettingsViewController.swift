@@ -242,7 +242,6 @@ public struct VPNSettingsView: View {
     Form {
       Section {
         Toggle(Strings.VPN.settingsVPNEnabled, isOn: $viewModel.isVPNEnabled)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isSmartProxyRoutingEnabled) {
           VStack(alignment: .leading) {
             HStack {
@@ -263,7 +262,6 @@ public struct VPNSettingsView: View {
           }
           .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isKillSwitchEnabled) {
           VStack(alignment: .leading) {
             Text(Strings.VPN.settingsVPNKillSwitchTitle)
@@ -282,7 +280,6 @@ public struct VPNSettingsView: View {
         }
       }
       .disabled(viewModel.isConfigurationResetting)
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       SubscriptionSection(viewModel: viewModel)
       Section {
         NavigationLink {
@@ -311,7 +308,6 @@ public struct VPNSettingsView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         NavigationLink {
           UIKitController(BraveVPNProtocolPickerViewController())
         } label: {
@@ -319,7 +315,6 @@ public struct VPNSettingsView: View {
             Text(viewModel.selectedTransportProtocol)
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Button {
           isResetDialogPresented = true
         } label: {
@@ -333,7 +328,6 @@ public struct VPNSettingsView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .confirmationDialog(
           Strings.VPN.vpnResetAlertTitle,
           isPresented: $isResetDialogPresented,
@@ -354,11 +348,9 @@ public struct VPNSettingsView: View {
         NavigationLink(Strings.VPN.settingsContactSupport) {
           VPNContactFormView()
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Button(Strings.VPN.settingsFAQ) {
           openURL(.brave.braveVPNFaq)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .foregroundStyle(Color(braveSystemName: .textInteractive))
       } header: {
         Text(Strings.support)
@@ -367,8 +359,6 @@ public struct VPNSettingsView: View {
     .tint(Color(braveSystemName: .primary40))
     .navigationTitle(Strings.VPN.vpnName)
     .navigationBarTitleDisplayMode(.inline)
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
     .alert(
       resetConfigurationResult == .success
         ? Strings.VPN.resetVPNSuccessTitle : Strings.VPN.resetVPNErrorTitle,
@@ -419,12 +409,10 @@ public struct VPNSettingsView: View {
             Text(details.status)
               .foregroundStyle(Color(details.statusColor))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           LabeledContent(
             Strings.VPN.settingsSubscriptionExpiration,
             value: details.expirationDate
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           Button {
             if let url = URL.apple.manageSubscriptions, UIApplication.shared.canOpenURL(url) {
               UIApplication.shared.open(url, options: [:])
@@ -433,14 +421,12 @@ public struct VPNSettingsView: View {
             Text(Strings.VPN.settingsManageSubscription)
           }
           .foregroundStyle(Color(braveSystemName: .textInteractive))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           Button {
             SKPaymentQueue.default().presentCodeRedemptionSheet()
           } label: {
             Text(Strings.VPN.settingsRedeemOfferCode)
           }
           .foregroundStyle(Color(braveSystemName: .textInteractive))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           Button {
             Task {
               try await BraveVPNInAppPurchaseObserver.refreshReceipt()
@@ -450,7 +436,6 @@ public struct VPNSettingsView: View {
             Text(Strings.VPN.settingsLinkReceipt)
           }
           .foregroundStyle(Color(braveSystemName: .textInteractive))
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           if viewModel.isDevReceiptLinkingAvailable {
             Button {
               Task {
@@ -461,7 +446,6 @@ public struct VPNSettingsView: View {
               Text("[Staging] Link Receipt")
             }
             .foregroundStyle(Color(braveSystemName: .textInteractive))
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
             Button {
               Task {
                 try await BraveVPNInAppPurchaseObserver.refreshReceipt()
@@ -471,7 +455,6 @@ public struct VPNSettingsView: View {
               Text("[Dev] Link Receipt")
             }
             .foregroundStyle(Color(braveSystemName: .textInteractive))
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
 
           if viewModel.isAppStoreReceiptAvailable {
@@ -480,12 +463,10 @@ public struct VPNSettingsView: View {
             } label: {
               Text(Strings.VPN.settingsViewReceipt)
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         } else {
           ProgressView()
             .progressViewStyle(.circular)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         Text(Strings.VPN.settingsSubscriptionSection)

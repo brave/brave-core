@@ -178,7 +178,6 @@ struct SendTokenView: View {
               .listRowInsets(.init(top: 0, leading: 8, bottom: 8, trailing: 8))
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .listRowSpacing(0)
           .listRowSeparator(.hidden)
         }
@@ -208,7 +207,6 @@ struct SendTokenView: View {
               text: $sendTokenStore.sendAmount
             )
             .keyboardType(.numbersAndPunctuation)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
         Section(
@@ -289,7 +287,6 @@ struct SendTokenView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         if sendTokenStore.selectedSendToken?.coin == .btc {
           Section {
@@ -337,8 +334,6 @@ struct SendTokenView: View {
         ) {
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
       .alert(isPresented: $isShowingError) {

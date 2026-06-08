@@ -36,13 +36,10 @@ struct ShortcutButtonPickerView: View {
       .pickerStyle(.inline)
       .tint(Color(braveSystemName: .iconDefault))
       .foregroundStyle(Color(braveSystemName: .textPrimary))
-      .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
     }
     .onChange(of: selectedShortcut.value) { _, newValue in
       dismiss()
     }
     .navigationTitle(Strings.ShortcutButton.shortcutButtonTitle)
-    .scrollContentBackground(.hidden)
-    .background(Color(uiColor: .braveGroupedBackground))
   }
 }

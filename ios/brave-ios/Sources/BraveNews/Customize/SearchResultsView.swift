@@ -37,7 +37,6 @@ struct SearchResultsView: View {
               isFollowing: dataSource.isFollowingChannelBinding(channel: channel)
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.BraveNews.channelsHeaderTitle)
         }
@@ -50,7 +49,6 @@ struct SearchResultsView: View {
               isFollowing: dataSource.isFollowingSourceBinding(source: source)
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.BraveNews.sourcesHeaderTitle)
         }
@@ -60,7 +58,6 @@ struct SearchResultsView: View {
           ForEach(results.rssFeeds) { feed in
             RSSFeedLabel(feed: feed, isFollowing: dataSource.isFollowingRSSFeedBinding(feed: feed))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.BraveNews.userSourcesHeaderTitle)
         }
@@ -114,8 +111,6 @@ struct SearchResultsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .overlay(
       Group {
         if results.isEmpty, urlQuery == nil {

@@ -137,11 +137,11 @@ struct EncryptionView: View {
       }
       .frame(maxWidth: .infinity)
       .frame(height: 200)
-      .background(Color(.tertiaryBraveGroupedBackground))
+      .background(Color(.tertiarySystemGroupedBackground))
       .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
       .padding()
       .background(
-        Color(.secondaryBraveGroupedBackground)
+        Color(.secondarySystemGroupedBackground)
       )
       .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 
@@ -160,9 +160,9 @@ struct EncryptionView: View {
             .background(
               LinearGradient(
                 stops: [
-                  .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                  .init(color: Color(.systemGroupedBackground).opacity(0), location: 0),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 0.05),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 1),
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -178,7 +178,7 @@ struct EncryptionView: View {
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .foregroundColor(Color(braveSystemName: .textPrimary))
-    .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
         Button {

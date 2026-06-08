@@ -49,7 +49,6 @@ struct FollowingListView: View {
             subtitle: shouldShowRegionSubtitle ? channel.localeDescription : nil,
             isFollowing: isFollowingChannel(channel)
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .padding(.vertical, 4)
         }
       }
@@ -57,17 +56,13 @@ struct FollowingListView: View {
         ForEach(followedSources) { source in
           SourceLabel(source: source, isFollowing: isFollowingSource(source))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if !followedRSSFeeds.isEmpty {
         ForEach(followedRSSFeeds) { feed in
           RSSFeedLabel(feed: feed, isFollowing: isFollowingRSSFeed(feed))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.grouped)
     .environment(\.defaultMinListRowHeight, 0)
     .navigationTitle(Strings.BraveNews.followingTitle)

@@ -184,7 +184,6 @@ struct EditSiteConnectionView: View {
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Group {
             if sizeCategory.isAccessibilityCategory {
@@ -202,8 +201,6 @@ struct EditSiteConnectionView: View {
           .padding(.vertical)
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.editSiteConnectionScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

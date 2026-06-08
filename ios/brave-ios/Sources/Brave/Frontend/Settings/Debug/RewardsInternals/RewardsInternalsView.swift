@@ -27,7 +27,6 @@ struct RewardsInternalsView: View {
               .font(.subheadline)
               .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section {
           LabeledContent(
@@ -35,18 +34,15 @@ struct RewardsInternalsView: View {
             value:
               "\(info.isKeyInfoSeedValid ? Strings.RewardsInternals.valid : Strings.RewardsInternals.invalid)"
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           LabeledContent(Strings.RewardsInternals.walletPaymentID) {
             Text(info.paymentId)
               .textSelection(.enabled)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           LabeledContent(
             Strings.RewardsInternals.walletCreationDate,
             value: Date(timeIntervalSince1970: TimeInterval(info.bootStamp)),
             format: .dateTime.year().month().day()
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.RewardsInternals.walletInfoHeader)
         }
@@ -56,13 +52,11 @@ struct RewardsInternalsView: View {
             value: DCDevice.current.isSupported
               ? Strings.RewardsInternals.supported : Strings.RewardsInternals.notSupported
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           LabeledContent(
             Strings.RewardsInternals.enrollmentState,
             value: DeviceCheckClient.isDeviceEnrolled()
               ? Strings.RewardsInternals.enrolled : Strings.RewardsInternals.notEnrolled
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.RewardsInternals.deviceInfoHeader)
         }
@@ -86,8 +80,6 @@ struct RewardsInternalsView: View {
     .sheet(isPresented: $isSharePresented) {
       RewardsInternalsShareRepresentable(rewardsAPI: rewardsAPI)
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
   }
 }
 
