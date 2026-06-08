@@ -96,7 +96,7 @@ private struct TopNewsListView: View {
           .aspectRatio(contentMode: .fit)
           .frame(width: 16, height: 16)
         Text(Strings.Widgets.braveNews)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.system(size: 14, weight: .bold, design: .rounded))
       }
       Spacer()

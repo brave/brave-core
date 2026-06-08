@@ -73,12 +73,12 @@ struct DappsSettings: View {
     List {
       Section(
         header: Text(Strings.Wallet.dappsSettingsGeneralSectionTitle)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
       ) {
         Group {
           HStack {
             Text(defaultWalletTitle)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Spacer()
             Menu {
               Picker("", selection: $defaultWallet.value) {
@@ -95,7 +95,7 @@ struct DappsSettings: View {
             }
           }
           Toggle(allowProviderAccessTitle, isOn: $allowProviderAccess.value)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -106,7 +106,7 @@ struct DappsSettings: View {
         Group {
           if visibleSiteConnections.isEmpty {
             Text(Strings.Wallet.dappsSettingsConnectedSitesSectionEmpty)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .font(.footnote)
               .multilineTextAlignment(.leading)
               .padding(.vertical, 6)
@@ -215,12 +215,12 @@ private struct SiteRow: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       Text(verbatim: siteConnection.url)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.headline)
       HStack {
         Text(connectedAddresses)
           .font(.subheadline)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         accountBlockies
       }
       .frame(maxWidth: .infinity, alignment: .leading)

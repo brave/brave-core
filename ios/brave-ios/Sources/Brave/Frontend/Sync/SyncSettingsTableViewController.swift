@@ -504,7 +504,7 @@ extension SyncSettingsTableViewController {
       let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.Sync.thisDevice))" : name
 
       cell.textLabel?.text = deviceName
-      cell.textLabel?.textColor = .braveLabel
+      cell.textLabel?.textColor = UIColor(braveSystemName: .textPrimary)
     case Sections.otherActions.rawValue:
       configureButtonCell(cell, atIndexPath: indexPath)
     case Sections.syncTypes.rawValue:

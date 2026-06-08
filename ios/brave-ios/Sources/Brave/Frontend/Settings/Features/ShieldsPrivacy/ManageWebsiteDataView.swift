@@ -108,10 +108,10 @@ struct ManageWebsiteDataView: View {
                   record.dataTypes.compactMap(localizedStringForDataRecordType)
                 ).sorted()
                 Text(record.displayName)
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                 if !types.isEmpty {
                   Text(ListFormatter.localizedString(byJoining: types))
-                    .foregroundColor(Color(.braveLabel))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                     .font(.footnote)
                 }
               }
@@ -141,7 +141,7 @@ struct ManageWebsiteDataView: View {
           if !isLoading && visibleRecords.isEmpty {
             Text(Strings.noSavedWebsiteData)
               .font(.headline)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
       )

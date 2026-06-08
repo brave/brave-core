@@ -127,7 +127,7 @@ struct PendingTransactionView: View {
 
         Text(originInfo: originInfo)
           .font(.subheadline)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
       }
     }
@@ -147,7 +147,7 @@ struct PendingTransactionView: View {
             )
           )
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(
             String.localizedStringWithFormat(
               Strings.Wallet.confirmationViewAllowSpendSubtitle,
@@ -322,10 +322,10 @@ struct PendingTransactionView: View {
                 if let gasLimit = confirmationStore.filTxGasLimit {
                   HStack {
                     Text("Gas Limit")
-                      .foregroundColor(Color(.bravePrimary))
+                      .foregroundColor(Color(braveSystemName: .textPrimary))
                     Spacer()
                     Text("\(gasLimit) \(confirmationStore.gasSymbol)")
-                      .foregroundColor(Color(.bravePrimary))
+                      .foregroundColor(Color(braveSystemName: .textPrimary))
                       .multilineTextAlignment(.trailing)
                   }
                   .padding()
@@ -335,10 +335,10 @@ struct PendingTransactionView: View {
                 if let gasPremium = confirmationStore.filTxGasPremium {
                   HStack {
                     Text("Gas Premium")
-                      .foregroundColor(Color(.bravePrimary))
+                      .foregroundColor(Color(braveSystemName: .textPrimary))
                     Spacer()
                     Text("\(gasPremium) \(confirmationStore.gasSymbol)")
-                      .foregroundColor(Color(.bravePrimary))
+                      .foregroundColor(Color(braveSystemName: .textPrimary))
                       .multilineTextAlignment(.trailing)
                   }
                   .padding()
@@ -348,10 +348,10 @@ struct PendingTransactionView: View {
                 if let gasFeeCap = confirmationStore.filTxGasFeeCap {
                   HStack {
                     Text("Gas Fee Cap")
-                      .foregroundColor(Color(.bravePrimary))
+                      .foregroundColor(Color(braveSystemName: .textPrimary))
                     Spacer()
                     Text("\(gasFeeCap) \(confirmationStore.gasSymbol)")
-                      .foregroundColor(Color(.bravePrimary))
+                      .foregroundColor(Color(braveSystemName: .textPrimary))
                       .multilineTextAlignment(.trailing)
                   }
                   .padding()
@@ -366,7 +366,7 @@ struct PendingTransactionView: View {
                       || confirmationStore.activeParsedTransaction.coin == .btc
                       ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee
                   )
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   if confirmationStore.activeParsedTransaction.coin == .eth {
                     editGasFeeButton
                   }
@@ -374,7 +374,7 @@ struct PendingTransactionView: View {
                 Spacer()
                 VStack(alignment: .trailing) {
                   Text("\(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
-                    .foregroundColor(Color(.bravePrimary))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                     .multilineTextAlignment(.trailing)
                   Text(confirmationStore.gasFiat)
                     .font(.footnote)
@@ -407,11 +407,11 @@ struct PendingTransactionView: View {
                   .accessibilityElement(children: .contain)
                 }
                 .font(.callout)
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               } else {
                 HStack {
                   Text(Strings.Wallet.total)
-                    .foregroundColor(Color(.bravePrimary))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                     .font(.callout)
                     .accessibility(sortPriority: 1)
                   Spacer()
@@ -422,11 +422,11 @@ struct PendingTransactionView: View {
                         ? Strings.Wallet.amountAndFee : Strings.Wallet.amountAndGas
                     )
                     .font(.footnote)
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     Text(
                       "\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)"
                     )
-                    .foregroundColor(Color(.bravePrimary))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                     .multilineTextAlignment(.trailing)
                     HStack(spacing: 4) {
                       if !confirmationStore.isBalanceSufficient {
@@ -436,7 +436,7 @@ struct PendingTransactionView: View {
                       Text(confirmationStore.totalFiat)
                         .foregroundColor(
                           confirmationStore.isBalanceSufficient
-                            ? Color(.braveLabel) : Color(.braveErrorLabel)
+                            ? Color(braveSystemName: .textPrimary) : Color(.braveErrorLabel)
                         )
                     }
                     .accessibilityElement(children: .contain)

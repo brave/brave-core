@@ -112,7 +112,7 @@ struct SaferSignMessageRequestContainerView: View {
       if let network {
         Text(network.chainName)
           .font(.callout)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       Spacer()
       if requestCount > 1 {
@@ -153,7 +153,7 @@ struct SaferSignMessageRequestContainerView: View {
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
       Text(originInfo: request.originInfo)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.subheadline)
         .multilineTextAlignment(.center)
         .padding(.top, 8)
@@ -166,7 +166,7 @@ struct SaferSignMessageRequestContainerView: View {
         VStack(alignment: .leading, spacing: 4) {
           Text(Strings.Wallet.swapConfirmationNetworkFee)
             .fontWeight(.medium)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
           HStack {
             Group {
               if let network {
@@ -182,7 +182,7 @@ struct SaferSignMessageRequestContainerView: View {
               height: min(assetNetworkIconSize, maxAssetNetworkIconSize)
             )
             Text(Strings.Wallet.braveSwapFree)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .frame(maxWidth: .infinity, alignment: .leading)
         }

@@ -64,7 +64,7 @@ extension PrivacyReportsView {
           VStack(alignment: .leading) {
             Text(Strings.PrivacyHub.mostFrequentTrackerAndAdTitle.uppercased())
               .font(.caption)
-              .foregroundColor(.init(.secondaryBraveLabel))
+              .foregroundColor(.init(UIColor(braveSystemName: .textSecondary)))
               .unredacted()
             if let mostFrequentTracker = mostFrequentTracker {
               Text(
@@ -79,7 +79,7 @@ extension PrivacyReportsView {
               .font(.callout)
             } else {
               Text(Strings.PrivacyHub.noDataToShow)
-                .foregroundColor(.init(.secondaryBraveLabel))
+                .foregroundColor(.init(UIColor(braveSystemName: .textSecondary)))
             }
           }
           Spacer()
@@ -96,7 +96,7 @@ extension PrivacyReportsView {
           VStack(alignment: .leading) {
             Text(Strings.PrivacyHub.riskiestWebsiteTitle.uppercased())
               .font(.caption)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .unredacted()
 
             if let riskiestWebsite = riskiestWebsite {
@@ -112,7 +112,7 @@ extension PrivacyReportsView {
               .font(.callout)
             } else {
               Text(Strings.PrivacyHub.noDataToShow)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
 

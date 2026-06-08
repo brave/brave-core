@@ -207,7 +207,7 @@ struct FilterListsView: View {
           Text(customRules)
             .lineLimit(2)
             .multilineTextAlignment(.leading)
-            .foregroundStyle(Color(.braveLabel))
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
             .font(.system(size: 14, weight: .regular, design: .monospaced))
             .frame(maxWidth: .infinity, alignment: .leading)
         } else if let error = rulesError {
@@ -217,7 +217,7 @@ struct FilterListsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         } else {
           Text(Strings.Shields.customFiltersPlaceholder)
-            .foregroundStyle(Color(.secondaryBraveLabel))
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
             .font(.subheadline)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -247,7 +247,7 @@ struct FilterListsView: View {
 
     Toggle(isOn: allEnabled) {
       VStack(alignment: .leading) {
-        Text("All").foregroundColor(Color(.bravePrimary))
+        Text("All").foregroundColor(Color(braveSystemName: .textPrimary))
       }
     }
     #endif
@@ -257,10 +257,10 @@ struct FilterListsView: View {
         Toggle(isOn: $filterList.isEnabled) {
           VStack(alignment: .leading) {
             Text(filterList.entry.title)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(filterList.entry.desc)
               .font(.caption)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
       }
@@ -291,7 +291,7 @@ struct FilterListsView: View {
           ) {
             VStack(alignment: .leading, spacing: 4) {
               Text(filterListURL.title)
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .truncationMode(.middle)
                 .lineLimit(1)
 
@@ -304,7 +304,7 @@ struct FilterListsView: View {
                   )
                 )
                 .font(.caption)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               case .failure:
                 Text(Strings.Shields.filterListsDownloadFailed)
                   .font(.caption)
@@ -312,14 +312,14 @@ struct FilterListsView: View {
               case .pending:
                 Text(Strings.Shields.filterListsDownloadPending)
                   .font(.caption)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
               }
             }
           }
 
           Text(filterListURL.setting.externalURL.absoluteDisplayString)
             .font(.caption)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .allowsTightening(true)
         }
       }

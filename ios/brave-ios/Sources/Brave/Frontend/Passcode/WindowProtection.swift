@@ -26,7 +26,7 @@ public class WindowProtection {
     let titleLabel = UILabel().then {
       $0.font = .preferredFont(for: .title3, weight: .semibold)
       $0.adjustsFontForContentSizeCategory = true
-      $0.textColor = .bravePrimary
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
       $0.numberOfLines = 0
       $0.textAlignment = .center
     }
@@ -42,7 +42,7 @@ public class WindowProtection {
       $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
       $0.titleLabel?.adjustsFontForContentSizeCategory = true
       $0.setTitle(Strings.cancelButtonTitle, for: .normal)
-      $0.tintColor = .braveLabel
+      $0.tintColor = UIColor(braveSystemName: .textPrimary)
       $0.isHidden = true
     }
 

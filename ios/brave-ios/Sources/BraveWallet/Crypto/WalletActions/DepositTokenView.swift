@@ -112,7 +112,7 @@ struct DepositTokenView: View {
                   Text(viewModel.token.name)
                     .font(.footnote)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(.bravePrimary))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                   Text(
                     String.localizedStringWithFormat(
                       Strings.Wallet.userAssetSymbolNetworkDesc,
@@ -121,7 +121,7 @@ struct DepositTokenView: View {
                     )
                   )
                   .font(.caption)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -275,7 +275,7 @@ private struct DepositDetailsView: View {
         .frame(width: avatarSize, height: avatarSize)
       Text(selectedAccount?.name ?? "")
         .fontWeight(.semibold)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.leading)
         .font(.body)
       Image(braveSystemName: "leo.arrow.small-down")
@@ -300,27 +300,27 @@ private struct DepositDetailsView: View {
       case .eth:
         Text(Strings.Wallet.ethAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: supportedNetworks, maxIcons: 8)
       case .sol:
         Text(Strings.Wallet.solAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: supportedNetworks)
       case .fil:
         Text(Strings.Wallet.filAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: supportedNetworks)
       case .btc:
         Text(Strings.Wallet.btcAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .btc }))
       case .zec:
         Text(Strings.Wallet.zecAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .zec }))
       case .ada:
         EmptyView()
@@ -358,7 +358,7 @@ private struct DepositDetailsView: View {
         .multilineTextAlignment(.center)
       Text(viewModel.address)
         .font(.subheadline)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .multilineTextAlignment(.center)
       HStack {
         Button {
@@ -401,7 +401,7 @@ private struct DepositDetailsView: View {
   @ViewBuilder private var ethDisclosureView: some View {
     Text(String.localizedStringWithFormat(Strings.Wallet.depositEthDisclosure, ethNetworksCombined))
       .font(.caption2)
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
       .multilineTextAlignment(.center)
   }
 

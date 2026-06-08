@@ -24,7 +24,7 @@ struct NFTDetailView: View {
 
   @ViewBuilder private var noImageView: some View {
     Text(Strings.Wallet.nftDetailImageNotAvailable)
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
       .frame(maxWidth: .infinity, minHeight: 300)
   }
 
@@ -103,9 +103,9 @@ struct NFTDetailView: View {
           VStack(alignment: .leading, spacing: 8) {
             Text(nftDetailStore.nft.nftDetailTitle)
               .font(.title3.weight(.semibold))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(nftDetailStore.nft.name)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         .transaction { transaction in
@@ -124,7 +124,7 @@ struct NFTDetailView: View {
                   Text(owner.name)
                     .foregroundColor(Color(.braveBlurpleTint))
                   Text(owner.address.truncatedAddress)
-                    .foregroundColor(Color(.braveLabel))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                 }
                 .font(.subheadline)
               }
@@ -136,7 +136,7 @@ struct NFTDetailView: View {
             NFTDetailRow(title: Strings.Wallet.nftDetailTokenID) {
               Text("\(tokenId)")
                 .font(.subheadline)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
           }
           NFTDetailRow(
@@ -160,7 +160,7 @@ struct NFTDetailView: View {
             NFTDetailRow(title: Strings.Wallet.nftDetailBlockchain) {
               Text(networkInfo.chainName)
                 .font(.subheadline)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
           }
           NFTDetailRow(title: Strings.Wallet.nftDetailTokenStandard) {
@@ -169,7 +169,7 @@ struct NFTDetailView: View {
                 ? Strings.Wallet.nftDetailERC721 : Strings.Wallet.nftDetailSPL
             )
             .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -182,7 +182,7 @@ struct NFTDetailView: View {
         Section {
           Text(nftMetadata.desc)
             .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
             .listRowInsets(
               horizontalSizeClass == .regular
@@ -199,7 +199,7 @@ struct NFTDetailView: View {
               NFTDetailRow(title: attribute.traitType) {
                 Text(attribute.value)
                   .font(.subheadline)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
               }
             }
           }
@@ -308,10 +308,10 @@ struct NFTDetailView: View {
           VStack(spacing: 16) {
             Text(Strings.Wallet.nftRemoveFromWalletAlertTitle)
               .font(.headline)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(Strings.Wallet.nftRemoveFromWalletAlertDescription)
               .font(.footnote)
-              .foregroundStyle(Color(.secondaryBraveLabel))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
           .padding(.bottom, 28)
         }

@@ -128,7 +128,7 @@ struct RestoreWalletView: View {
                 .customPrivacySensitive()
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               } else {
                 SecureField(
                   String.localizedStringWithFormat(
@@ -179,7 +179,7 @@ struct RestoreWalletView: View {
               isRevealRecoveryWords.toggle()
             } label: {
               Image(braveSystemName: isRevealRecoveryWords ? "leo.eye.off" : "leo.eye.on")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
           }
           if !isTwelvePhrase {

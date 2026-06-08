@@ -40,10 +40,10 @@ extension PrivacyReportsView {
         }
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .overlay(
           RoundedRectangle(cornerRadius: 25)
-            .stroke(Color(.braveLabel), lineWidth: pixelLength)
+            .stroke(Color(braveSystemName: .textPrimary), lineWidth: pixelLength)
         )
       }
     }

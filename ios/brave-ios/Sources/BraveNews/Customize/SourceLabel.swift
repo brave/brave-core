@@ -83,7 +83,7 @@ struct SourceLabel: View {
         VStack(alignment: .leading, spacing: 2) {
           Text(source.name)
             .font(.footnote.bold())
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .frame(maxWidth: .infinity, alignment: .leading)
           if let similarSource {
             Text(
@@ -93,13 +93,13 @@ struct SourceLabel: View {
               )
             )
             .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         .padding(.vertical, 6)
       } icon: {
         SourceImageView(source: source)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .labelStyle(NewsLabelStyle())
     }

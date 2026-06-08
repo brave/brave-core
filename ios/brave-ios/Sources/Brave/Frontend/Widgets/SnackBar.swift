@@ -32,7 +32,7 @@ class SnackButton: UIButton {
     setTitle(title, for: .normal)
     titleLabel?.font = DynamicFontHelper.defaultHelper.defaultMediumFont
     setTitleColor(.braveBlurpleTint, for: .highlighted)
-    setTitleColor(.braveLabel, for: .normal)
+    setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     addTarget(self, action: #selector(onClick), for: .touchUpInside)
     self.accessibilityIdentifier = accessibilityIdentifier
   }
@@ -79,7 +79,7 @@ class SnackBar: UIView {
     label.setContentCompressionResistancePriority(.required, for: .horizontal)
     label.backgroundColor = nil
     label.numberOfLines = 0
-    label.textColor = .braveLabel
+    label.textColor = UIColor(braveSystemName: .textPrimary)
     label.backgroundColor = .clear
     return label
   }()

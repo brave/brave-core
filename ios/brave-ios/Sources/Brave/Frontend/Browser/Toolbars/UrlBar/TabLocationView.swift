@@ -255,7 +255,7 @@ class TabLocationView: UIView {
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.browser.refresh", compatibleWith: nil), for: .normal)
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
     $0.addTarget(self, action: #selector(didTapStopReloadButton), for: .touchUpInside)
   }
 
@@ -264,7 +264,7 @@ class TabLocationView: UIView {
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
     $0.addTarget(self, action: #selector(didTapVoiceSearchButton), for: .touchUpInside)
   }
 

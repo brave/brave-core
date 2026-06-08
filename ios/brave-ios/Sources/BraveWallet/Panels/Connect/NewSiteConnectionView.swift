@@ -66,7 +66,7 @@ public struct NewSiteConnectionView: View {
     }
     Text(urlOrigin: urlOrigin)
       .font(.subheadline)
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
       .multilineTextAlignment(.center)
   }
 
@@ -76,7 +76,7 @@ public struct NewSiteConnectionView: View {
         .accessibilityElement(children: .combine)
       Text(Strings.Wallet.newSiteConnectMessage)
         .font(.headline)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
     }
     .frame(maxWidth: .infinity)
@@ -86,7 +86,7 @@ public struct NewSiteConnectionView: View {
     Text(Strings.Wallet.newSiteConnectFooter)
       .frame(maxWidth: .infinity)
       .padding(.top)
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
       .multilineTextAlignment(.center)
   }
 
@@ -222,7 +222,7 @@ public struct NewSiteConnectionView: View {
           Text(accountsAddressesToConfirm)
             .multilineTextAlignment(.center)
             .font(.footnote)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
         .listRowBackground(Color(.braveGroupedBackground))
       }
@@ -233,7 +233,7 @@ public struct NewSiteConnectionView: View {
           Text(Strings.Wallet.newSiteConnectConfirmationMessage)
             .multilineTextAlignment(.leading)
         }
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
         .listRowBackground(Color(.braveGroupedBackground))

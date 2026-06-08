@@ -180,7 +180,7 @@ class VPNSettingsViewModel {
     if BraveVPN.vpnState == .expired {
       return (Strings.VPN.subscriptionStatusExpired, .braveErrorLabel)
     } else {
-      return (BraveVPN.subscriptionName, .braveLabel)
+      return (BraveVPN.subscriptionName, UIColor(braveSystemName: .textPrimary))
     }
   }
 

@@ -26,7 +26,7 @@ class SyncPairWordsViewController: SyncViewController {
   private lazy var wordCountLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
-    label.textColor = .braveLabel
+    label.textColor = UIColor(braveSystemName: .textPrimary)
     label.text = String(format: Strings.Sync.wordCount, 0)
     return label
   }()
@@ -38,14 +38,14 @@ class SyncPairWordsViewController: SyncViewController {
       for: .normal
     )
     button.addTarget(self, action: #selector(pasteButtonPressed), for: .touchUpInside)
-    button.tintColor = .braveLabel
+    button.tintColor = UIColor(braveSystemName: .textPrimary)
     return button
   }()
 
   private lazy var useCameraButton = UIButton().then {
     $0.setTitle(Strings.Sync.switchBackToCameraButton, for: .normal)
     $0.addTarget(self, action: #selector(useCameraButtonTapped), for: .touchDown)
-    $0.setTitleColor(.braveLabel, for: .normal)
+    $0.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
   }
 

@@ -68,17 +68,17 @@ struct BackupWalletView: View {
         VStack(spacing: 14) {
           Text(Strings.Wallet.backupWalletTitle)
             .font(.headline)
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(Strings.Wallet.backupWalletSubtitle)
             .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
         .multilineTextAlignment(.center)
 
         Toggle(Strings.Wallet.backupWalletDisclaimer, isOn: $acknowledgedWarning)
           .font(.footnote)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.horizontal, 20)
           .padding(.vertical, 10)
 
@@ -105,7 +105,7 @@ struct BackupWalletView: View {
           } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
       }

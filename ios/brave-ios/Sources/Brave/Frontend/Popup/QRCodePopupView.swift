@@ -16,7 +16,7 @@ class QRCodePopupView: UIKitPopupView {
 
   private let title = UILabel().then {
     $0.text = Strings.themeQRCodeShareTitle
-    $0.textColor = .bravePrimary
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
     $0.font = UIFont.systemFont(ofSize: 16, weight: .medium)
   }
@@ -56,7 +56,7 @@ class QRCodePopupView: UIKitPopupView {
       UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template,
       for: .normal
     )
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
   }
 
   public init(url: URL) {

@@ -85,7 +85,7 @@ struct BiometricView: View {
               )
             )
             .font(.body)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
           }
           .fixedSize(horizontal: false, vertical: true)
           .multilineTextAlignment(.center)
@@ -118,7 +118,7 @@ struct BiometricView: View {
           } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .padding(.top, 20)
         }

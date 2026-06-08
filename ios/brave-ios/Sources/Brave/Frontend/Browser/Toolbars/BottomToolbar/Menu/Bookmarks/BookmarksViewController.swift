@@ -422,7 +422,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
       cell.imageView?.layer.cornerRadius = 6
       cell.imageView?.layer.cornerCurve = .continuous
       cell.imageView?.layer.masksToBounds = true
-      cell.imageView?.tintColor = .braveLabel
+      cell.imageView?.tintColor = UIColor(braveSystemName: .textPrimary)
 
       if let image = image {
         // folder or preset icon

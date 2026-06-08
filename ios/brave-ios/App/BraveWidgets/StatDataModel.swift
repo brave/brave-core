@@ -12,7 +12,7 @@ import UIKit
 struct StatData {
   var name: String
   var value: String
-  var color: UIColor = .braveLabel
+  var color: UIColor = UIColor(braveSystemName: .textPrimary)
 }
 
 extension StatKind {
@@ -23,12 +23,12 @@ extension StatKind {
     case .dataSaved:
       return UIColor(rgb: 0xA0A5EB)
     case .timeSaved:
-      return .braveLabel
+      return UIColor(braveSystemName: .textPrimary)
     case .unknown:
-      return .braveLabel
+      return UIColor(braveSystemName: .textPrimary)
     @unknown default:
       assertionFailure()
-      return .braveLabel
+      return UIColor(braveSystemName: .textPrimary)
     }
   }
 

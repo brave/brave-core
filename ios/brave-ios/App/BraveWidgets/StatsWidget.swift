@@ -60,7 +60,7 @@ private struct StatsView: View {
       HStack {
         Image("brave.shields.done")
         Text(Strings.Widgets.shieldStatsWidgetTitle)
-          .foregroundColor(Color(UIColor.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.system(size: 13, weight: .semibold))
         Spacer()
         Image("brave-icon-no-bg")
@@ -99,7 +99,7 @@ private struct StatsView: View {
     .padding(.vertical, 12)
     .padding(.horizontal, 16)
     .widgetBackground { Color(UIColor.secondaryBraveBackground) }
-    .foregroundColor(Color(UIColor.braveLabel))
+    .foregroundColor(Color(braveSystemName: .textPrimary))
   }
 }
 

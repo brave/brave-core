@@ -47,14 +47,17 @@ struct PlaylistChangeFoldersView: View {
             HStack {
               Image(braveSystemName: "leo.folder.open")
                 .foregroundColor(
-                  Color(folder.id == selectedFolderID ? .braveBlurpleTint : .braveLabel)
+                  Color(
+                    folder.id == selectedFolderID
+                      ? .braveBlurpleTint : UIColor(braveSystemName: .textPrimary)
+                  )
                 )
                 .frame(width: iconSize)
               VStack(alignment: .leading) {
                 Text(folder.title ?? "")
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                 Text(folderCountLabel(folder.playlistItems?.count ?? 0))
-                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
                   .font(.subheadline)
               }
               Spacer()

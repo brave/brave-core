@@ -29,7 +29,7 @@ struct NFTsGridView: View {
     VStack(alignment: .center, spacing: 10) {
       Text(Strings.Wallet.nftPageEmptyTitle)
         .font(.headline.weight(.semibold))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
     }
     .multilineTextAlignment(.center)
     .frame(maxWidth: .infinity)
@@ -52,12 +52,12 @@ struct NFTsGridView: View {
               .padding(.bottom, 8)
             Text(nft.token.nftTokenTitle)
               .font(.callout.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .multilineTextAlignment(.leading)
             if !nft.token.symbol.isEmpty {
               Text(nft.token.symbol)
                 .font(.caption)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
                 .multilineTextAlignment(.leading)
             }
           }

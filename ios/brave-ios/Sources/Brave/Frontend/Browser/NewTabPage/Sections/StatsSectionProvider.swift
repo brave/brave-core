@@ -272,7 +272,7 @@ class BraveShieldStatsView: SpringButton {
 }
 
 private class StatView: UIView {
-  var color: UIColor = .braveLabel {
+  var color: UIColor = UIColor(braveSystemName: .textPrimary) {
     didSet {
       statLabel.textColor = color
     }

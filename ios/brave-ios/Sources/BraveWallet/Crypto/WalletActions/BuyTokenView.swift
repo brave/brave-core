@@ -44,11 +44,11 @@ struct BuyTokenView: View {
               .frame(width: avatarSize, height: avatarSize)
             Text(account.name)
               .font(.title3.weight(.semibold))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Spacer()
             Image(systemName: "chevron.down")
               .imageScale(.small)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
           Text(buyTokenStore.selectedAccountAddress)
             .padding(4)
@@ -94,7 +94,7 @@ struct BuyTokenView: View {
                 buyTokenStore.selectedBuyToken.name ?? buyTokenStore.selectedBuyToken.displaySymbol
               )
               .font(.title3.weight(.semibold))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             .padding(.vertical, 8)
           }
@@ -117,7 +117,7 @@ struct BuyTokenView: View {
                 content: {
                   ForEach(buyTokenStore.supportedFiatCurrencies, id: \.currencyCode) { currency in
                     Text(currency.name ?? "")
-                      .foregroundColor(Color(.secondaryBraveLabel))
+                      .foregroundColor(Color(braveSystemName: .textSecondary))
                       .tag(currency)
                   }
                 },
@@ -128,10 +128,10 @@ struct BuyTokenView: View {
               HStack(spacing: 4) {
                 Text(buyTokenStore.selectedFiatCurrency.currencyCode)
                   .font(.title2.weight(.bold))
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                 Image(systemName: "chevron.down")
                   .imageScale(.small)
-                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
               }
             }
             TextField("0", text: $buyTokenStore.buyAmount)
@@ -149,7 +149,7 @@ struct BuyTokenView: View {
               content: {
                 ForEach(buyTokenStore.supportedCountries, id: \.countryCode) { country in
                   Text(country.name ?? "")
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     .tag(country)
                 }
               },
@@ -159,10 +159,10 @@ struct BuyTokenView: View {
           } label: {
             HStack(spacing: 4) {
               Text(buyTokenStore.selectedCountry.name ?? "")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               Image(systemName: "chevron.down")
                 .imageScale(.small)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
           .padding(.vertical, 8)
@@ -177,7 +177,7 @@ struct BuyTokenView: View {
               content: {
                 ForEach(buyTokenStore.supportedPaymentTypes, id: \.paymentMethod) { type in
                   Text(type.name ?? "")
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     .tag(type)
                 }
               },
@@ -187,10 +187,10 @@ struct BuyTokenView: View {
           } label: {
             HStack(spacing: 4) {
               Text(buyTokenStore.selectedPaymentType.name ?? "")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               Image(systemName: "chevron.down")
                 .imageScale(.small)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
           .padding(.vertical, 8)

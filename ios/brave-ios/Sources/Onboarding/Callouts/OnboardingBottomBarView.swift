@@ -21,7 +21,7 @@ public struct OnboardingBottomBarView: View {
       } label: {
         Image(braveSystemName: "leo.close")
           .renderingMode(.template)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .frame(maxWidth: .infinity, alignment: .trailing)
       VStack(spacing: 24) {
@@ -29,12 +29,12 @@ public struct OnboardingBottomBarView: View {
           .aspectRatio(contentMode: .fit)
         Text(Strings.Callout.bottomBarCalloutTitle)
           .font(.title2.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
         Text(Strings.Callout.bottomBarCalloutDescription)
           .font(.body)
           .multilineTextAlignment(.center)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.horizontal, 16)
       }
       .padding(.bottom, 16)
@@ -57,7 +57,7 @@ public struct OnboardingBottomBarView: View {
         Text(Strings.Callout.bottomBarCalloutDismissButtonTitle)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .font(.title3.weight(.medium))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .frame(height: 44)
       .background(Color(.clear))

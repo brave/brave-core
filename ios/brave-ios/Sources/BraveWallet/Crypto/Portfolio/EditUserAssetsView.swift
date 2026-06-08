@@ -51,7 +51,7 @@ private struct EditTokenView: View {
         VStack(alignment: .leading) {
           Text(tokenName)
             .fontWeight(.semibold)
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(
             String.localizedStringWithFormat(
               Strings.Wallet.userAssetSymbolNetworkDesc,
@@ -59,7 +59,7 @@ private struct EditTokenView: View {
               assetStore.network.chainName
             )
           )
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .font(.footnote)
         Spacer()
@@ -136,7 +136,7 @@ struct EditUserAssetsView: View {
             if tokens.isEmpty {
               Text(Strings.Wallet.assetSearchEmpty)
                 .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
             } else {

@@ -133,7 +133,7 @@ private struct BasicPickerInputView: View {
     Form {
       Picker("", selection: $selectedItem) {
         Text("Default")
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .tag("")
         ForEach(options, id: \.self) { option in
           Text(option.capitalized).tag(option)
@@ -290,12 +290,13 @@ struct BraveCoreDebugSwitchesView: View {
           VStack(alignment: .leading, spacing: 4) {
             Text(coreSwitch.rawValue)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
             if let value = switchValues.value[coreSwitch.rawValue], !value.isEmpty {
               Text("\(Image(systemName: "equal.square.fill")) \(value)")
                 .font(.caption)
                 .foregroundColor(
-                  binding.wrappedValue ? Color(.braveBlurpleTint) : Color(.secondaryBraveLabel)
+                  binding.wrappedValue
+                    ? Color(.braveBlurpleTint) : Color(braveSystemName: .textSecondary)
                 )
                 .lineLimit(1)
             }
@@ -312,7 +313,7 @@ struct BraveCoreDebugSwitchesView: View {
         Text("Switches only affect fresh launches")
           .frame(maxWidth: .infinity)
           .font(.footnote)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .listRowBackground(Color(.braveGroupedBackground))
           .listRowInsets(.zero)
       }
@@ -435,7 +436,7 @@ struct BraveCoreDebugSwitchesView: View {
                     Text("--\(switchKey)=\(value)")
                       .font(.caption)
                       .foregroundColor(
-                        Color(.secondaryBraveLabel)
+                        Color(braveSystemName: .textSecondary)
                       )
                       .lineLimit(1)
                   }

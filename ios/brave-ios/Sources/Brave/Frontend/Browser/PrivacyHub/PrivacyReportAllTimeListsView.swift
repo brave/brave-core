@@ -76,21 +76,21 @@ struct PrivacyReportAllTimeListsView: View {
               VStack(alignment: .leading, spacing: 0) {
                 Text(item.name)
                   .font(.callout)
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
               }
 
               Group {
                 if sizeCategory.isAccessibilityCategory {
                   VStack(alignment: .leading, spacing: 4) {
                     Text(Strings.PrivacyHub.blockedBy)
-                      .foregroundColor(Color(.secondaryBraveLabel))
+                      .foregroundColor(Color(braveSystemName: .textSecondary))
 
                     blockedLabels(by: item.source)
                   }
                 } else {
                   HStack(spacing: 4) {
                     Text(Strings.PrivacyHub.blockedBy)
-                      .foregroundColor(Color(.secondaryBraveLabel))
+                      .foregroundColor(Color(braveSystemName: .textSecondary))
 
                     blockedLabels(by: item.source)
                   }

@@ -17,7 +17,7 @@ class BackForwardTableViewCell: UITableViewCell {
     static let borderBold = 5
     static let iconSize = 23
     static let fontSize: CGFloat = 12.0
-    static let textColor: UIColor = .braveLabel
+    static let textColor: UIColor = UIColor(braveSystemName: .textPrimary)
   }
 
   lazy var faviconView: UIImageView = {

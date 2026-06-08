@@ -31,9 +31,9 @@ public struct AIChatSettingsView: View {
         Toggle(isOn: $leoInQuickSearchBarEnabled.value) {
           VStack(alignment: .leading, spacing: 4) {
             Text(Strings.AIChat.advancedSettingsShowInQSEBarTitle)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(LocalizedStringKey(Strings.AIChat.advancedSettingsShowInQSEBarDescription))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.caption)
           }
         }
@@ -47,10 +47,10 @@ public struct AIChatSettingsView: View {
         } label: {
           VStack(alignment: .leading, spacing: 4) {
             Text(Strings.AIChat.advancedSettingsDefaultModelTitle)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             if let defaultModelWithSubtitle = viewModel.defaultModelWithSubtitle {
               Text(defaultModelWithSubtitle.model.displayName)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .font(.caption)
             }
           }

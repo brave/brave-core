@@ -102,14 +102,14 @@ private struct OptionButtonStyle: ButtonStyle {
 
   private var backgroundShape: some View {
     RoundedRectangle(cornerRadius: 6, style: .continuous)
-      .fill(Color(.secondaryBraveLabel))
+      .fill(Color(braveSystemName: .textSecondary))
   }
 
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .foregroundColor(.white)
       // To animate text color
-      .colorMultiply(isSelected ? Color(.braveBackground) : Color(.secondaryBraveLabel))
+      .colorMultiply(isSelected ? Color(.braveBackground) : Color(braveSystemName: .textSecondary))
       .padding(.horizontal, 6)
       .padding(.vertical, 4)
       .background(

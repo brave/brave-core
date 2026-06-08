@@ -99,7 +99,7 @@ struct TransactionConfirmationView: View {
     }
     .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .foregroundColor(Color(.braveLabel))
+    .foregroundColor(Color(braveSystemName: .textPrimary))
     .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
     .onChange(of: confirmationStore.activeTransactionId) { _, newValue in
       // we are looking for `activeTransactionId` value

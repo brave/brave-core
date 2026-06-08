@@ -50,7 +50,7 @@ struct OnboardingCommon {
         $0.text = text
         $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.bold)
         $0.textAlignment = .center
-        $0.textColor = .braveLabel
+        $0.textColor = UIColor(braveSystemName: .textPrimary)
       }
 
       return label
@@ -62,7 +62,7 @@ struct OnboardingCommon {
         $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular)
         $0.textAlignment = .center
         $0.numberOfLines = 0
-        $0.textColor = .braveLabel
+        $0.textColor = UIColor(braveSystemName: .textPrimary)
       }
 
       return label

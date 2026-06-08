@@ -142,7 +142,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     }
 
     UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor =
-      .braveLabel
+      UIColor(braveSystemName: .textPrimary)
   }
 
   deinit {
@@ -1465,7 +1465,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     )
     let titleLabel = UITableViewHeaderFooterView().then {
       $0.textLabel?.text = Strings.about.uppercased()
-      $0.textLabel?.textColor = .braveLabel
+      $0.textLabel?.textColor = UIColor(braveSystemName: .textPrimary)
       $0.isUserInteractionEnabled = true
       $0.addGestureRecognizer(
         UITapGestureRecognizer(target: self, action: #selector(tappedAboutHeader))
@@ -2021,7 +2021,7 @@ private final class BraveAccountIconCell: UITableViewCell, Cell {
 
     content.secondaryText = row.detailText
     content.secondaryTextProperties.numberOfLines = 0
-    content.secondaryTextProperties.color = .secondaryBraveLabel
+    content.secondaryTextProperties.color = UIColor(braveSystemName: .textSecondary)
 
     contentConfiguration = content
     accessoryType = row.accessory.type

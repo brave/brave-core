@@ -254,7 +254,7 @@ extension LoginInfoViewController {
           format: Strings.Login.loginInfoCreatedHeaderTitle,
           formattedCreationDate
         )
-        $0.tintColor = .secondaryBraveLabel
+        $0.tintColor = UIColor(braveSystemName: .textSecondary)
         $0.selectionStyle = .none
         $0.backgroundColor = .secondaryBraveBackground
       }

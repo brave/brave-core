@@ -141,7 +141,9 @@ public class WelcomeOmniBoxOnboardingController: UIViewController, PopoverConten
   }
 
   private let titleLabel = UILabel().then {
-    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.textColor = UIColor(braveSystemName: .textPrimary).resolvedColor(
+      with: .init(userInterfaceStyle: .dark)
+    )
     $0.numberOfLines = 0
     $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -151,7 +153,9 @@ public class WelcomeOmniBoxOnboardingController: UIViewController, PopoverConten
   }
 
   private let textLabel = UILabel().then {
-    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.textColor = UIColor(braveSystemName: .textPrimary).resolvedColor(
+      with: .init(userInterfaceStyle: .dark)
+    )
     $0.numberOfLines = 0
     $0.font = UIFont.preferredFont(forTextStyle: .title2)
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)

@@ -80,21 +80,21 @@ struct EncryptionView: View {
             VStack(spacing: 4) {
               Text(account.name)
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               Text(account.address.truncatedAddress)
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
           Text(originInfo: request.originInfo)
             .font(.caption)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .multilineTextAlignment(.center)
         }
         .accessibilityElement(children: .combine)
         Text(subtitle)
           .font(.headline)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .padding(.vertical, 32)
       .multilineTextAlignment(.center)
@@ -177,7 +177,7 @@ struct EncryptionView: View {
     .frame(maxWidth: .infinity)
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .foregroundColor(Color(.braveLabel))
+    .foregroundColor(Color(braveSystemName: .textPrimary))
     .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {

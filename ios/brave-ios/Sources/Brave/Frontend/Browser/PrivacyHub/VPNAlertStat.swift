@@ -28,7 +28,7 @@ extension PrivacyReportsView {
         if compact {
           VStack(alignment: .leading) {
             Text(title)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .font(.caption.weight(.semibold))
               .unredacted()
             Text("\(count)")

@@ -148,11 +148,11 @@ struct EditSiteConnectionView: View {
     VStack(alignment: sizeCategory.isAccessibilityCategory ? .center : .leading, spacing: 2) {
       Text(urlOrigin: urlOrigin)
         .font(.subheadline)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       Text(connectedAddresses)
         .font(.footnote)
         .multilineTextAlignment(.center)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
     }
   }
 

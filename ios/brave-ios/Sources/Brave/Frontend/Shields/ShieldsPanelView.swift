@@ -66,7 +66,7 @@ struct ShieldsPanelView: View {
           shieldsReportView
           Text(Strings.Shields.siteBroken)
             .font(.caption)
-            .foregroundStyle(Color(.secondaryBraveLabel))
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
             .multilineTextAlignment(.leading)
             .padding(.horizontal)
             .padding(.bottom, viewModel.advancedControlsEnabled ? nil : 16)
@@ -75,7 +75,7 @@ struct ShieldsPanelView: View {
               advancedShieldsSection
             } label: {
               Text(Strings.Shields.advancedControls)
-                .foregroundStyle(Color(.braveLabel))
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
             }.disclosureGroupStyle(ShieldsPanelDisclosureStyle())
           }
@@ -99,7 +99,7 @@ struct ShieldsPanelView: View {
         )
         URLElidedText(text: displayHost)
           .font(.title2)
-          .foregroundStyle(Color(.bravePrimary))
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
       }
       .frame(minWidth: .zero, alignment: .center)
 
@@ -118,7 +118,7 @@ struct ShieldsPanelView: View {
           + Text(shieldsEnabledAccessibiltyLabel.uppercased()).bold()
       }
       .font(.footnote)
-      .foregroundStyle(Color(.secondaryBraveLabel))
+      .foregroundStyle(Color(braveSystemName: .textSecondary))
       .padding(.bottom, 8)
     }.padding(.horizontal)
   }
@@ -128,11 +128,11 @@ struct ShieldsPanelView: View {
       HStack {
         Text(verbatim: "\(viewModel.stats.total)")
           .frame(minWidth: 30, alignment: .center)
-          .foregroundStyle(Color(.bravePrimary))
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
           .font(.title)
           .padding(0)
         Text(Strings.Shields.blockedCountLabel)
-          .foregroundStyle(Color(.braveLabel))
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
           .font(.caption)
           .lineLimit(4)
           .padding(0)
@@ -152,7 +152,7 @@ struct ShieldsPanelView: View {
         .padding()
         .contentShape(RoundedRectangle(cornerRadius: 8))
       }
-      .foregroundStyle(Color(.bravePrimary))
+      .foregroundStyle(Color(braveSystemName: .textPrimary))
       .frame(maxHeight: .infinity, alignment: .center)
       .background(Color(.secondaryBraveBackground).cornerRadius(8))
 
@@ -166,7 +166,7 @@ struct ShieldsPanelView: View {
         .padding()
         .contentShape(RoundedRectangle(cornerRadius: 8))
       }
-      .foregroundStyle(Color(.bravePrimary))
+      .foregroundStyle(Color(braveSystemName: .textPrimary))
       .buttonStyle(.plain)
       .frame(maxHeight: .infinity, alignment: .center)
       .background(Color(.secondaryBraveBackground).cornerRadius(8))
@@ -178,13 +178,13 @@ struct ShieldsPanelView: View {
     VStack(alignment: .center, spacing: 16) {
       Text(Strings.Shields.shieldsDownDisclaimer)
         .font(.caption)
-        .foregroundStyle(Color(.secondaryBraveLabel))
+        .foregroundStyle(Color(braveSystemName: .textSecondary))
         .multilineTextAlignment(.leading)
       Button {
         actionCallback(.navigate(.reportBrokenSite, dismiss: true))
       } label: {
         Text(Strings.Shields.reportABrokenSite)
-          .foregroundStyle(Color(.braveLabel))
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
       }
       .buttonStyle(BraveOutlineButtonStyle(size: .normal))
       .frame(maxWidth: .infinity, alignment: .center)
@@ -208,7 +208,7 @@ struct ShieldsPanelView: View {
     ShieldSettingRow {
       HStack {
         Text(Strings.Shields.trackersAndAdsBlocking)
-          .foregroundStyle(Color(.bravePrimary))
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
           .frame(maxWidth: .infinity, alignment: .leading)
 
         Picker(selection: $viewModel.blockAdsAndTrackingLevel) {
@@ -219,7 +219,7 @@ struct ShieldsPanelView: View {
           // The label will not show outside of a form or list
           Text(Strings.Shields.trackersAndAdsBlocking)
         }
-        .tint(Color(.secondaryBraveLabel))
+        .tint(Color(braveSystemName: .textSecondary))
         .buttonStyle(.plain)
         .padding(.horizontal, -10)
         .onChange(of: viewModel.blockAdsAndTrackingLevel) { _, newValue in
@@ -259,11 +259,11 @@ struct ShieldsPanelView: View {
               Text(Strings.Shields.shredSiteData)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .multilineTextAlignment(.leading)
-                .foregroundStyle(Color(.bravePrimary))
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
               Text(viewModel.autoShredLevel.localizedTitle)
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .multilineTextAlignment(.trailing)
-                .foregroundStyle(Color(.secondaryBraveLabel))
+                .foregroundStyle(Color(braveSystemName: .textSecondary))
             }
           }
         }
@@ -285,7 +285,7 @@ struct ShieldsPanelView: View {
               .multilineTextAlignment(.leading)
           }
         }
-        .foregroundStyle(Color(.bravePrimary))
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 4)
       }
@@ -305,7 +305,7 @@ struct ShieldsPanelView: View {
           )
           .frame(maxWidth: .infinity, alignment: .leading)
           .multilineTextAlignment(.leading)
-          .foregroundStyle(Color(.bravePrimary))
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
           .labelStyle(.titleAndIcon)
         }
       }
@@ -340,7 +340,7 @@ private struct ShieldSettingsNavigationWrapper<Contents>: View where Contents: V
       Image(systemName: "chevron.right")
         .font(.footnote)
         .fontWeight(.medium)
-        .foregroundStyle(Color(.secondaryBraveLabel))
+        .foregroundStyle(Color(braveSystemName: .textSecondary))
     }.contentShape(Rectangle())
   }
 }
@@ -352,7 +352,7 @@ private struct ShieldSettingSectionHeader: View {
     VStack(alignment: .leading, spacing: 8) {
       URLElidedText(text: title)
         .font(.footnote)
-        .foregroundStyle(Color(.secondaryBraveLabel))
+        .foregroundStyle(Color(braveSystemName: .textSecondary))
         .textCase(.uppercase)
         .padding(.horizontal)
         .padding(.top, 8)
@@ -412,7 +412,7 @@ private struct ShieldsPanelDisclosureStyle: DisclosureGroupStyle {
                 Image(systemName: "chevron.right")
               }
             }
-            .foregroundStyle(Color(.secondaryBraveLabel))
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
             .font(.body)
           }
           .frame(maxWidth: .infinity, alignment: .center)

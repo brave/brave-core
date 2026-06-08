@@ -321,7 +321,7 @@ class SearchSettingsViewController: UITableViewController {
         ).then {
           $0.textLabel?.text = Strings.searchSettingBrowserSuggestionCellTitle
           $0.detailTextLabel?.numberOfLines = 0
-          $0.detailTextLabel?.textColor = .secondaryBraveLabel
+          $0.detailTextLabel?.textColor = UIColor(braveSystemName: .textSecondary)
           $0.detailTextLabel?.text = Strings.searchSettingBrowserSuggestionCellDescription
           $0.accessoryView = toggle
           $0.selectionStyle = .none

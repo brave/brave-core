@@ -38,18 +38,18 @@ struct RSSFeedLabel: View {
           if let title = feed.title {
             Text(title)
               .font(.footnote.bold())
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           Text(feed.url.absoluteString)
             .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
       } icon: {
         Group {
           Text("\((feed.title ?? feed.url.host ?? "").first?.uppercased() ?? "")")
             .font(.callout.weight(.medium))
         }
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(width: imageSize, height: imageSize)
         .background(Color(.secondaryBraveBackground).clipShape(Circle()))
       }

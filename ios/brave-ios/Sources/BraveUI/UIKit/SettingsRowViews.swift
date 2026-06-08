@@ -136,7 +136,7 @@ open class MultilineSubtitleCell: SubtitleCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.numberOfLines = 0
     detailTextLabel?.numberOfLines = 0
-    detailTextLabel?.textColor = .secondaryBraveLabel
+    detailTextLabel?.textColor = UIColor(braveSystemName: .textSecondary)
   }
 
   public required init?(coder aDecoder: NSCoder) {

@@ -42,11 +42,11 @@ public struct VPNLinkReceiptView: View {
       HStack(spacing: 8) {
         Text(Strings.VPN.poweredBy)
           .font(.footnote)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
         Image(sharedName: "vpn_brand")
           .renderingMode(.template)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .accessibilityHidden(true)
       }
     }
@@ -61,7 +61,7 @@ public struct VPNLinkReceiptView: View {
         Image(braveSystemName: "leo.close")
           .renderingMode(.template)
           .dynamicTypeSize(dynamicTypeRange)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
       .padding([.top, .trailing], 20)

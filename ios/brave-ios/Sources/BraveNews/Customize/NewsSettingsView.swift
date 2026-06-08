@@ -137,7 +137,7 @@ public struct NewsSettingsView: View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
       Text(Strings.BraveNews.isEnabledToggleLabel)
         .font(.headline)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
@@ -194,7 +194,7 @@ public struct NewsSettingsView: View {
                 .padding(.vertical, 1)
                 .padding(.horizontal, 6)
                 .background(Capsule().stroke(Color(.secondaryButtonTint), lineWidth: 1))
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           },
           subtitle: Strings.BraveNews.followingButtonSubtitle
@@ -314,17 +314,17 @@ private struct DestinationLabel<Title: View>: View {
   var body: some View {
     HStack(spacing: 12) {
       image
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(width: imageSize, height: imageSize)
         .background(Color(.secondaryBraveBackground).clipShape(Circle()))
       VStack(alignment: .leading, spacing: 2) {
         title
           .font(.headline)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         if let subtitle {
           Text(subtitle)
             .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
       }
     }

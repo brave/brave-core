@@ -28,7 +28,7 @@ class BraveRewardsPublisherView: UIStackView {
     $0.font = .systemFont(ofSize: UX.hostLabelFontSize)
     $0.textAlignment = .center
     $0.numberOfLines = 0
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     // Stop it from becoming like 10 lines with 1 letter per line
     $0.setContentCompressionResistancePriority(.init(999), for: .horizontal)
   }
@@ -38,7 +38,7 @@ class BraveRewardsPublisherView: UIStackView {
     $0.numberOfLines = 0
     $0.textAlignment = .center
     $0.font = .systemFont(ofSize: 16)
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 
   let learnMoreButton = BraveButton(type: .system).then {

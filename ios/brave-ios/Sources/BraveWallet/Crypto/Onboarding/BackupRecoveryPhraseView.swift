@@ -111,7 +111,7 @@ struct BackupRecoveryPhraseView: View {
           } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .padding(.top, 16)
         }

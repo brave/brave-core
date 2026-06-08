@@ -98,7 +98,7 @@ struct SetupCryptoView: View {
         }
         Text(Strings.Wallet.setupCryptoDisclaimer)
           .font(.caption2)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .multilineTextAlignment(.center)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)

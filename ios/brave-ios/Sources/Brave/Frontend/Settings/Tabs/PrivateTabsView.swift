@@ -109,7 +109,7 @@ struct PrivateTabsView: View {
           Toggle(isOn: .constant(false)) {
             VStack(alignment: .leading, spacing: 4) {
               Text(browsingLockTitle)
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             .opacity(0.25)
           }
