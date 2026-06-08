@@ -17,19 +17,20 @@ substitutions:
 
       It suppresses the "addresses not encrypted" warning, which is not
       applicable to Brave's sync model.
-    re_pattern:
-      '(onPreferenceChange\(Preference preference, Object newValue\) \{)\n(
-      *)(if \(mSyncService\.isUsingExplicitPassphrase\(\))'
+    re_pattern: |-
+      (onPreferenceChange\(Preference preference, Object newValue\) \{)\n( *)(if \(mSyncService\.isUsingExplicitPassphrase\(\))
     replace: |-
       \1
       \2if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
       \2\3
 
   - description: |-
-      Force the signed-in account name to empty in updateSyncPreferences so the
-      following Google-account check is always skipped for Brave.
+      Use an empty AccountInfo for primaryAccount in updateSyncPreferences
+
+      This forces the signed-in account name passed to
+      onGoogleActivityControlsClicked to be empty, keeping Brave's Google
+      account details out of the activity controls flow.
     re_pattern:
-      '(String signedInAccountName =\n)( *)(CoreAccountInfo\.getEmailFrom\()'
+      'primaryAccount = getIdentityManager\(\)\.getPrimaryAccountInfo\(\)'
     replace: |-
-      \1\2mGoogleActivityControls != null ? "" : // We want the next `if` to be always false.
-      \2\3
+      primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("")).build()
