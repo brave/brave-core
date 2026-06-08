@@ -547,34 +547,20 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, HttpAllowlistIsolation) {
   EXPECT_TRUE(tor_state->IsHttpAllowedForHost(host3, tor_storage_partition));
 }
 
-class BraveTorBrowserTest_EnableTorHttpsOnlyFlag
-    : public BraveTorBrowserTest,
-      public ::testing::WithParamInterface<bool> {
+class BraveTorBrowserTest_EnableTorHttpsOnlyFlag : public BraveTorBrowserTest {
  public:
   BraveTorBrowserTest_EnableTorHttpsOnlyFlag() {
-    if (IsBraveHttpsByDefaultEnabled()) {
-      std::vector<base::test::FeatureRef> enabled_features{
-          net::features::kBraveTorWindowsHttpsOnly};
-      std::vector<base::test::FeatureRef> disabled_features;
-      if (IsBraveHttpsByDefaultEnabled()) {
-        enabled_features.push_back(net::features::kBraveHttpsByDefault);
-      } else {
-        disabled_features.push_back(net::features::kBraveHttpsByDefault);
-      }
-      scoped_feature_list_.InitWithFeatures(enabled_features,
-                                            disabled_features);
-    }
+    scoped_feature_list_.InitWithFeatures(
+        {net::features::kBraveTorWindowsHttpsOnly}, {});
   }
 
   ~BraveTorBrowserTest_EnableTorHttpsOnlyFlag() override = default;
-
-  bool IsBraveHttpsByDefaultEnabled() { return GetParam(); }
 
  protected:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
                        TorWindowHttpsOnly) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
@@ -584,10 +570,6 @@ IN_PROC_BROWSER_TEST_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
   // Check that HTTPS-Only Mode has been enabled for the Tor window.
   EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
 }
-
-INSTANTIATE_TEST_SUITE_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
-                         BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
-                         ::testing::Bool());
 
 // Test that Tor settings are visible when Tor is disabled by user preference
 // but not by admin policy.

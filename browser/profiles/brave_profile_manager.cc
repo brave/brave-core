@@ -75,35 +75,6 @@ using ntp_background_images::prefs::
 
 namespace {
 
-// Checks if the user previously had HTTPS-Only Mode enabled. If so,
-// set the HttpsUpgrade default setting to strict.
-void MigrateHttpsUpgradeSettings(Profile* profile) {
-  // If user flips the HTTPS by Default feature flag
-  auto* prefs = profile->GetPrefs();
-  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
-  // the System Profile.
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
-  if (!map) {
-    return;
-  }
-  if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
-    // Migrate forwards from HTTPS-Only Mode to HTTPS Upgrade Strict setting.
-    if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {
-      brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK,
-                                                GURL());
-      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
-    }
-  } else {
-    // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
-    if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
-        ControlType::BLOCK) {
-      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
-      brave_shields::SetHttpsUpgradeControlType(
-          map, ControlType::BLOCK_THIRD_PARTY, GURL());
-    }
-  }
-}
-
 void RecordInitialP3AValues(Profile* profile) {
   // Preference is unregistered for some reason in profile_manager_unittest
   // TODO(bsclifton): create a proper testing profile
@@ -186,9 +157,6 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   // TODO(https://github.com/brave/brave-browser/issues/50822)
   // Move RecordInitialP3AValues from here
   RecordInitialP3AValues(profile);
-  // TODO(https://github.com/brave/brave-browser/issues/50823)
-  // Move MigrateHttpsUpgradeSettings from here as well
-  MigrateHttpsUpgradeSettings(profile);
 
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   if (!do_final_services_init_) {

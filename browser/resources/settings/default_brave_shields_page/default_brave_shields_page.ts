@@ -35,7 +35,6 @@ interface BraveShieldsPage {
     fingerprintingToggleControlType: SettingsToggleButtonElement,
     fingerprintingSelectControlType: HTMLSelectElement,
     forgetFirstPartyStorageControlType: SettingsToggleButtonElement,
-    httpsUpgradeControlType: HTMLSelectElement,
     noScriptControlToggle: SettingsToggleButtonElement,
     setContactInfoSaveFlagToggle: SettingsToggleButtonElement,
     allowElementBlockerInPrivateModeToggle: SettingsToggleButtonElement,
@@ -105,20 +104,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
             ]
           }
       },
-      httpsUpgradeControlTypes_: {
-          readOnly: true,
-          type: Array,
-          value: function () {
-            return [
-                { value: 'block',
-                  name: loadTimeData.getString('strictHttpsUpgrade') },
-                { value: 'block_third_party',
-                  name: loadTimeData.getString('standardHttpsUpgrade') },
-                { value: 'allow',
-                  name: loadTimeData.getString('disabledHttpsUpgrade') }
-            ]
-          }
-      },
       adControlType_: String,
       cookieControlTypes_: Array,
       cookieControlType_: {
@@ -126,7 +111,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         value: 'block_third_party'
       },
       fingerprintingControlType_: String,
-      httpsUpgradeControlType_: String,
       isAdBlockRoute_: {
         type: Boolean,
         value: false
@@ -199,7 +183,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare isAdBlockRoute_: boolean
   private declare cookieControlTypes_: ControlType[]
   private declare cookieControlType_: string
-  private declare httpsUpgradeControlType_: string
   private declare noScriptControlType_: chrome.settingsPrivate.PrefObject<boolean>
   private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
@@ -210,7 +193,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     settingsPrivate.PrefObject<boolean>
   private declare fingerprintingControlTypes_: ControlType[]
   private declare fingerprintingControlType_: string
-  private declare httpsUpgradeControlTypes_: ControlType[]
   private declare isHttpsByDefaultEnabled_: boolean
   private declare showStrictFingerprintingMode_: boolean
   private declare isBlockElementFeatureEnabled_: boolean
@@ -289,10 +271,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       }
     })
 
-    this.browserProxy_.getHttpsUpgradeControlType().then(value => {
-      this.httpsUpgradeControlType_ = value
-    })
-
     this.browserProxy_.getNoScriptControlType().then(value => {
       this.noScriptControlType_ = {
         key: '',
@@ -345,11 +323,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   onFingerprintingToggleControlChange_ () {
     this.browserProxy_.setFingerprintingBlockEnabled(
       this.$.fingerprintingToggleControlType.checked)
-  }
-
-  onHttpsUpgradeControlChange_ () {
-    this.browserProxy_.setHttpsUpgradeControlType(
-      this.$.httpsUpgradeControlType.value)
   }
 
   onNoScriptControlChange_ () {

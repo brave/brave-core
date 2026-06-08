@@ -224,7 +224,6 @@ brave_chrome_browser_deps = [
   "//brave/components/email_aliases/buildflags",
   "//brave/components/global_privacy_control",
   "//brave/components/google_sign_in_permission",
-  "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/ipfs",
   "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",

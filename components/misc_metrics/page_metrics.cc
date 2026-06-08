@@ -271,6 +271,8 @@ void PageMetrics::ReportPagesLoaded() {
 }
 
 void PageMetrics::ReportFailedHTTPSUpgrades() {
+  /*
+  TODO
   brave_shields::ControlType https_upgrade_settings =
       brave_shields::GetHttpsUpgradeControlType(host_content_settings_map_,
                                                 GURL());
@@ -288,7 +290,7 @@ void PageMetrics::ReportFailedHTTPSUpgrades() {
     }
     // Don't report metric if HTTPS-First or HTTPS-Only mode is not enabled.
     return;
-  }
+  }*/
 
   if (!local_state_->HasPrefPath(
           kMiscMetricsFailedHTTPSUpgradeMetricAddedTime)) {
