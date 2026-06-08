@@ -256,7 +256,7 @@ extension LoginInfoViewController {
         )
         $0.tintColor = UIColor(braveSystemName: .textSecondary)
         $0.selectionStyle = .none
-        $0.backgroundColor = .secondaryBraveBackground
+        $0.backgroundColor = UIColor(braveSystemName: .pageBackground)
       }
       return cell
     case Section.delete.rawValue:

@@ -134,7 +134,7 @@ struct PrivacyReportsView: View {
           }
         }
       }
-      .background(Color(.secondaryBraveBackground).ignoresSafeArea())
+      .background(Color(braveSystemName: .pageBackground).ignoresSafeArea())
     }
     .navigationViewStyle(.stack)
     .environment(\.managedObjectContext, DataController.swiftUIContext)

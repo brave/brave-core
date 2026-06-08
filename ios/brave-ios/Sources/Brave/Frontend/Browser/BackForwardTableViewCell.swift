@@ -61,7 +61,7 @@ class BackForwardTableViewCell: UITableViewCell {
     didSet {
       if isCurrentTab {
         label.font = UIFont(name: "HelveticaNeue-Bold", size: BackForwardViewCellUX.fontSize)
-        contentView.backgroundColor = .secondaryBraveBackground
+        contentView.backgroundColor = UIColor(braveSystemName: .pageBackground)
       }
     }
   }

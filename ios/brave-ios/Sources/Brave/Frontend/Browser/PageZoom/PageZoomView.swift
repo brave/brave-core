@@ -57,7 +57,7 @@ private struct ZoomView: View {
     }
     .padding(.vertical, 8.0)
     .fixedSize(horizontal: false, vertical: true)
-    .background(Color(UIColor.secondaryBraveBackground))
+    .background(Color(UIColor(braveSystemName: .pageBackground)))
     .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
   }
 

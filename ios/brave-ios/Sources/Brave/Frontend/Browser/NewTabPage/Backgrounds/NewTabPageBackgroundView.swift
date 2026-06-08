@@ -48,7 +48,7 @@ class NewTabPageBackgroundView: UIView {
     clipsToBounds = true
     backgroundColor = .init {
       if $0.userInterfaceStyle == .dark {
-        return .secondaryBraveBackground
+        return UIColor(braveSystemName: .pageBackground)
       }
       // We use a special color here unfortunately when there is no background because
       // favorite cells have white text

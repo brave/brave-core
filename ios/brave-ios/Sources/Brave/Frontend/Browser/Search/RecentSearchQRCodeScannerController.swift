@@ -212,7 +212,7 @@ extension RecentSearchQRCodeScannerController {
     override init(frame: CGRect) {
       super.init(frame: frame)
 
-      backgroundColor = .secondaryBraveBackground
+      backgroundColor = UIColor(braveSystemName: .pageBackground)
 
       addSubview(cameraView)
       addSubview(scannedDisplayButton)

@@ -68,7 +68,7 @@ extension UIView {
         }
         return .white
       })
-      $0.backgroundColor = .secondaryBraveBackground
+      $0.backgroundColor = UIColor(braveSystemName: .pageBackground)
       $0.setTitleTextAttributes(
         [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
         for: .selected

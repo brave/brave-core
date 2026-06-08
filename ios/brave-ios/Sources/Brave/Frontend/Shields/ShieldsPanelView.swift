@@ -140,7 +140,7 @@ struct ShieldsPanelView: View {
       }
       .padding()
       .frame(maxWidth: .infinity, alignment: .center)
-      .background(Color(.secondaryBraveBackground).cornerRadius(8))
+      .background(Color(braveSystemName: .pageBackground).cornerRadius(8))
 
       NavigationLink {
         AboutBraveShieldsView()
@@ -154,7 +154,7 @@ struct ShieldsPanelView: View {
       }
       .foregroundStyle(Color(braveSystemName: .textPrimary))
       .frame(maxHeight: .infinity, alignment: .center)
-      .background(Color(.secondaryBraveBackground).cornerRadius(8))
+      .background(Color(braveSystemName: .pageBackground).cornerRadius(8))
 
       Button {
         actionCallback(.navigate(.shareStats, dismiss: false))
@@ -169,7 +169,7 @@ struct ShieldsPanelView: View {
       .foregroundStyle(Color(braveSystemName: .textPrimary))
       .buttonStyle(.plain)
       .frame(maxHeight: .infinity, alignment: .center)
-      .background(Color(.secondaryBraveBackground).cornerRadius(8))
+      .background(Color(braveSystemName: .pageBackground).cornerRadius(8))
     }
     .padding(.horizontal)
   }
@@ -423,7 +423,7 @@ private struct ShieldsPanelDisclosureStyle: DisclosureGroupStyle {
       .padding(0)
       .buttonStyle(.plain)
       .frame(maxWidth: .infinity, alignment: .center)
-      .background(Color(.secondaryBraveBackground))
+      .background(Color(braveSystemName: .pageBackground))
       .hoverEffect()
 
       if configuration.isExpanded {

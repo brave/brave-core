@@ -76,7 +76,7 @@ class BraveRewardsStatusView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = UIColor(braveSystemName: .pageBackground)
 
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
