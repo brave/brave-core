@@ -173,7 +173,7 @@ Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</transl
 <translation id="2841525013647267359">Përkthe nga</translation>
 <translation id="2846251086934905009">Gabim gjatë instalimit: Instaluesi nuk përfundoi. Instalimi është ndërprerë.</translation>
 <translation id="777113543093865885">Hiqe nga Brave...</translation>
-<translation id="5265419033369521352">Të mban të sigurt në Brave dhe mund të përdoret për të përmirësuar sigurinë tënde në aplikacionet e tjera të Brave kur je identifikuar</translation>
+<translation id="5265419033369521352">Të mban të sigurt në Brave dhe mund të përdoret për të përmirësuar sigurinë tënde në aplikacionet e tjera të Brave kur je i identifikuar</translation>
 <translation id="2885378588091291677">Menaxheri i detyrave</translation>
 <translation id="2176825726964012531">Rreth &amp;Brave</translation>
 <translation id="2915996080311180594">Rinise më vonë</translation>
@@ -224,7 +224,7 @@ Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</transl
 <translation id="2339258256897053758">Çelësat API të Brave mungojnë. Disa funksione të Brave do të çaktivizohen.</translation>
 <translation id="8926637909431618259">Vazhdo funksionimin e aplikacioneve në sfond kur Brave është i mbyllur</translation>
 <translation id="518125528057094977">Brave do të të paralajmërojë para se të ngarkojë një sajt duke përdorur një lidhje të pasigurt</translation>
-<translation id="8652321858775514885">Do të dalësh nga shumica e sajteve kur të mbyllësh të gjitha dritaret e Brave, përveçse nga "Llogaria jote e Brave" nëse je identifikuar në Brave. Për t'i lejuar sajtet që të të kujtojnë, <ph name="SETTINGS_LINK"/>.</translation>
+<translation id="8652321858775514885">Do të dalësh nga shumica e sajteve kur të mbyllësh të gjitha dritaret e Brave, përveçse nga "Llogaria jote e Brave" nëse je i identifikuar në Brave. Për t'i lejuar sajtet që të të kujtojnë, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">këndi lart djathtas i zonës së kërkimit: djathtas <ph name="RIGHT"/>%, lart<ph name="TOP"/>%</translation>
 <translation id="7261356974224431851">Të dhënat e Brave në llogarinë tënde</translation>
 <translation id="3369405342922656244">Kërko në këtë faqe me "Kërkimin e imazheve"</translation>
@@ -239,7 +239,7 @@ Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</transl
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> mund të kalojë nga një profil i Brave te një tjetër</translation>
 <translation id="8703492925273919597">Mbyll të gjitha dritaret e Brave dhe provo sërish.</translation>
 <translation id="599091950194451698">Për të ndarë dritaren tënde, lejo regjistrimin e ekranit për Brave te "Cilësimet e sistemit"</translation>
-<translation id="1447863765638888625"><ph name="EXISTING_USER"/> është identifikuar tashmë. Për ta mbajtur shfletimin tënd të ndarë, identifikohu në Brave në profilin tënd si <ph name="USER_EMAIL_ADDRESS"/>.</translation>
+<translation id="1447863765638888625"><ph name="EXISTING_USER"/> është i identifikuar tashmë. Për ta mbajtur shfletimin tënd të ndarë, identifikohu në Brave në profilin tënd si <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="7624624622436403494">Kodi QR për të shkarkuar shfletuesin Brave në pajisjet celulare</translation>
 <translation id="8981774130895723211">Për të ndarë ekranin, lejo regjistrimin e ekranit për Brave te "Cilësimet e sistemit".</translation>
 <translation id="2981961446160697133">Mbrojtja e përmirësuar e çaktivizon optimizimin e JavaScript për sajtet që Brave nuk i njeh</translation>
@@ -298,7 +298,7 @@ Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</transl
 <translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - identifikimi në rrjet - Brave Origin</translation>
 <translation id="2871190378186459992">Zbulo aplikacione, lojëra, shtesa dhe tema të mrekullueshme për Brave.</translation>
 <translation id="462105622535258178">Për të marrë këtë shtesë dhe më shumë në të gjithë kompjuterët e tu, identifikohu në Brave</translation>
-<translation id="6670140629169983459">Për të qëndruar më i sigurt online me zgjedhjet e prindit tënd, kalo te profili yt i Brave ku je identifikuar tashmë si <ph name="USER_EMAIL_ADDRESS"/></translation>
+<translation id="6670140629169983459">Për të qëndruar më i sigurt online me zgjedhjet e prindit tënd, kalo te profili yt i Brave ku je i identifikuar tashmë si <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="4222932583846282852">Po e anulon...</translation>
 <translation id="4224210481850767180">Instalimi është anuluar.</translation>
 <translation id="1853997773668795891">Të lidhen të dhënat e tua të Brave me këtë llogari?</translation>
@@ -330,7 +330,7 @@ Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</transl
 <translation id="8594994021633965927">Kjo shtesë nuk i ka publikuar praktikat e privatësisë, si p.sh. se si i mbledh dhe i përdor të dhënat. Brave rekomandon që ta heqësh atë.</translation>
 <translation id="770557926599450702">Mirë se erdhe në Brave Origin. U hap një dritare e re e shfletuesit</translation>
 <translation id="137732229629632648">Brave ka nevojë për leje për të krijuar një hartë të ambientit rrethues dhe për të ndjekur duart e tua</translation>
-<translation id="5036046007335188949">Je identifikuar tashmë si <ph name="USER_EMAIL_ADDRESS"/> në një profil tjetër të Brave</translation>
+<translation id="5036046007335188949">Je i identifikuar tashmë si <ph name="USER_EMAIL_ADDRESS"/> në një profil tjetër të Brave</translation>
 <translation id="1878185978731985193">Brave i ngarkon paraprakisht faqet, gjë që e bën më të shpejtë shfletimin dhe kërkimin. <ph name="BEGIN_LINK"/>Mëso më shumë për ngarkimin paraprak të faqeve<ph name="END_LINK"/></translation>
 <translation id="4549180975214802957">Përmirëso sigurinë online për të gjithë kur raporton një sajt që mendon se është i dëmshëm.</translation>
 <translation id="8669339108356170796">Brave e bllokoi këtë shkarkim sepse ke çaktivizuar "Shfletimin e sigurt" dhe skedari nuk mund të verifikohet</translation>
@@ -342,7 +342,7 @@ Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</transl
 <translation id="2182657378556811785">Pothuajse i përditësuar! Hape përsëri Brave për të përfunduar përditësimin.</translation>
 <translation id="6311668361877328515">Shpejton sajtet me motorin V8 të Brave, por e bën Brave disi më pak rezistent ndaj sulmeve</translation>
 <translation id="7402642357351265733">Nëse ndan edhe raportet e përdorimit të Brave, ato raporte përfshijnë URL-të që ti viziton</translation>
-<translation id="8142245354207161805">Profili duket të jetë në përdorim nga një tjetër proces i Brave (<ph name="PROCESS_ID"/>) në një tjetër kompjuter (<ph name="HOST_NAME"/>). Brave ka kyçur profilin që të mos dëmtohet. Nëse je i sigurt që asnjë proces tjetër nuk po e përdor këtë profil, mund të shkyçësh profilin dhe ta rinisësh Brave.</translation>
+<translation id="8142245354207161805">Profili duket të jetë në përdorim nga një tjetër proces i Brave (<ph name="PROCESS_ID"/>) në një tjetër kompjuter (<ph name="HOST_NAME"/>). Brave ka kyçur profilin që të mos dëmtohet. Nëse je i sigurt që asnjë proces tjetër nuk po e përdor këtë profil, mund të shkyçësh profilin dhe ta nisësh sërish Brave.</translation>
 <translation id="4680828127924988555">Anulo instalimin</translation>
 <translation id="2014343159590733363">Disa nga të dhënat e tua të Brave nuk janë ruajtur ende në "Llogarinë tënde të Brave". Provo të presësh për disa minuta para se të dalësh nga ajo. Nëse del tani, këto të dhëna do të fshihen.</translation>
 <translation id="2408746614080689238">Kur je i identifikuar, mund të përdorësh fjalëkalimet dhe më shumë nga "Llogaria jote e Brave" në Brave. <ph name="SHORTCUT"/> mund të ndryshojë cilësimet e shërbimeve të tua të Brave.</translation>
@@ -456,7 +456,7 @@ Nëse kjo faqe nuk funksionon siç pritet, provo të lejosh optimizimin.</transl
 <translation id="5739368447874065758">Pastro të dhënat e Brave në llogarinë tënde</translation>
 <translation id="6685697979743742605">Ky skedar mund të jetë i rrezikshëm<ph name="LINE_BREAK"/>Brave mund ta kontrollojë këtë shkarkim për ty nëse ti jep fjalëkalimin. Informacionet për skedarin dërgohen te "Shfletimi i sigurt i Brave", por përmbajtjet dhe fjalëkalimi i skedarit qëndrojnë në pajisjen tënde.</translation>
 <translation id="6182736845697986886">Instalimi dështoi për shkak të një gabimi të brendshëm të serverit të përditësimit.</translation>
-<translation id="4368341489795135329">Sigurohu që të jesh identifikuar në Brave në pajisjen tënde <ph name="TARGET_DEVICE_NAME"/> dhe më pas provo ta dërgosh përsëri.</translation>
+<translation id="4368341489795135329">Sigurohu që të jesh i identifikuar në Brave në pajisjen tënde <ph name="TARGET_DEVICE_NAME"/> dhe më pas provo ta dërgosh përsëri.</translation>
 <translation id="3038354906709778538">Një program tjetër në kompjuterin tënd shtoi një aplikacion që mund të ndryshojë mënyrën se si funksionon Brave.
 
 <ph name="EXTENSION_NAME"/></translation>
@@ -595,7 +595,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="5296583608321648908">Për të marrë përditësimet e ardhshme të Brave, do të të duhet Windows 10 ose një version i mëvonshëm. Ky kompjuter përdor Windows 7.</translation>
 <translation id="3962395975456095331">Të niset sërish Brave?</translation>
 <translation id="2619516027171717873">Nuk mund të instalohet i njëjti version i Brave që po ekzekutohet aktualisht. Mbylle Brave dhe provo përsëri.</translation>
-<translation id="5337027666828618338">Sajtet ndoshta do të punojnë siç pritet. Do të dalësh nga shumica e sajteve kur të mbyllësh të gjitha dritaret e Brave, përveçse nga "Llogaria jote e Brave" nëse je identifikuar në Brave.</translation>
+<translation id="5337027666828618338">Sajtet ndoshta do të punojnë siç pritet. Do të dalësh nga shumica e sajteve kur të mbyllësh të gjitha dritaret e Brave, përveçse nga "Llogaria jote e Brave" nëse je i identifikuar në Brave.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave do të hapet përsëri për 1 minutë}other{Brave do të hapet përsëri për # minuta}}</translation>
 <translation id="552342471964912391">Për të mbrojtur të dhënat e tua, lejo që Brave të heqë lejet nga sajtet që nuk i ke vizituar së fundi.</translation>
 <translation id="3826701455067637694">Nis Brave automatikisht për të filluar të shfletosh menjëherë.</translation>
@@ -631,7 +631,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="7877212753140190672">Pyet "Rreth këtij imazhi"</translation>
 <translation id="5687542525349822727">Cakto Brave si parazgjedhje</translation>
 <translation id="6396151137840491551">Brave i përmirëson lidhjet e pasigurta automatikisht në HTTPS kur është e mundur</translation>
-<translation id="2925193881330501265">Je identifikuar në Brave si <ph name="USER_EMAIL_ADDRESS"/>. Përdor të njëjtën llogari për t'u identifikuar sërish.</translation>
+<translation id="2925193881330501265">Je i identifikuar në Brave si <ph name="USER_EMAIL_ADDRESS"/>. Përdor të njëjtën llogari për t'u identifikuar sërish.</translation>
 <translation id="6915252145142862992">Ky është instalim dytësor i Brave dhe nuk mund të bëhet shfletuesi yt i parazgjedhur.</translation>
 <translation id="8004582292198964060">Shfletuesi</translation>
 <translation id="8010081455002666927">Zbulo automatikisht</translation>
