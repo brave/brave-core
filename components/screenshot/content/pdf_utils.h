@@ -3,14 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/screenshot/pdf_utils.h"
+#ifndef BRAVE_COMPONENTS_SCREENSHOT_CONTENT_PDF_UTILS_H_
+#define BRAVE_COMPONENTS_SCREENSHOT_CONTENT_PDF_UTILS_H_
 
-#include "content/public/browser/web_contents.h"
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace screenshot {
 
-bool IsPdf(content::WebContents* web_contents) {
-  return web_contents->GetContentsMimeType() == "application/pdf";
-}
+bool IsPdf(content::WebContents* web_contents);
 
 }  // namespace screenshot
+
+#endif  // BRAVE_COMPONENTS_SCREENSHOT_CONTENT_PDF_UTILS_H_

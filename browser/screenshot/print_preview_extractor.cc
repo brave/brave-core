@@ -12,7 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/browser/screenshot/pdf_utils.h"
+#include "brave/components/screenshot/content/pdf_utils.h"
 #include "printing/buildflags/buildflags.h"
 
 namespace screenshot {
