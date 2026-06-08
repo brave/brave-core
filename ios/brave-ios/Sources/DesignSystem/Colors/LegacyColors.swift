@@ -25,10 +25,6 @@ enum LegacyDesignSystemColor: String {
 
   case divider01
 
-  case warningBackground = "warning-background"
-  case warningBorder = "warning-border"
-  case warningText = "warning-text"
-
   case infoBackground = "info-background"
   case infoBorder = "info-border"
   case infoText = "info-text"
@@ -108,15 +104,6 @@ extension UIColor {
   }
   public static var braveSeparator: UIColor {
     LegacyDesignSystemColor.divider01.color
-  }
-  public static var braveWarningLabel: UIColor {
-    LegacyDesignSystemColor.warningText.color
-  }
-  public static var braveWarningBorder: UIColor {
-    LegacyDesignSystemColor.warningBorder.color
-  }
-  public static var braveWarningBackground: UIColor {
-    LegacyDesignSystemColor.warningBackground.color
   }
   public static var braveInfoLabel: UIColor {
     LegacyDesignSystemColor.infoText.color

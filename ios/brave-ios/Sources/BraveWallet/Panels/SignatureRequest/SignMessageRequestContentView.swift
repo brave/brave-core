@@ -239,11 +239,7 @@ private struct MessageWarningView: View {
     .padding(12)
     .frame(maxWidth: .infinity)
     .background(
-      Color(.braveWarningBackground)
-        .overlay(
-          RoundedRectangle(cornerRadius: 10, style: .continuous)
-            .strokeBorder(Color(.braveWarningBorder), style: StrokeStyle(lineWidth: pixelLength))
-        )
+      Color(braveSystemName: .systemfeedbackWarningBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
   }
