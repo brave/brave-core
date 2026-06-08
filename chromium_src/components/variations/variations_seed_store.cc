@@ -5,36 +5,39 @@
 
 #include "components/variations/variations_seed_store.h"
 
+#include <ranges>
+
 #include "base/check_is_test.h"
 #include "base/check_op.h"
-#include "crypto/signature_verifier.h"
+#include "base/no_destructor.h"
+#include "crypto/sign.h"
 
 namespace variations {
 
 // A non-anonymous class to friend with base::CurrentTestVendor.
 class PublicKeyWrapper {
  public:
-  static base::span<const uint8_t> GetPublicKey(
-      base::span<const uint8_t> public_key);
+  static const crypto::keypair::PublicKey& GetPublicKey(
+      const crypto::keypair::PublicKey& public_key);
 };
 
 }  // namespace variations
 
-#define VerifyInit(signature_algorithm, signature, public_key_info) \
-  VerifyInit(signature_algorithm, signature,                        \
-             PublicKeyWrapper::GetPublicKey(public_key_info))
+#define Verify(signature_algorithm, public_key, seed_bytes, signature)    \
+  Verify(signature_algorithm, PublicKeyWrapper::GetPublicKey(public_key), \
+         seed_bytes, signature)
 
 #include <components/variations/variations_seed_store.cc>
 
-#undef VerifyInit
+#undef Verify
 
 namespace variations {
 
 // static
-base::span<const uint8_t> PublicKeyWrapper::GetPublicKey(
-    base::span<const uint8_t> public_key) {
+const crypto::keypair::PublicKey& PublicKeyWrapper::GetPublicKey(
+    const crypto::keypair::PublicKey& public_key) {
   // Only kPublicKey should be passed here. This is a sanity check.
-  DCHECK(public_key == kPublicKey);
+  DCHECK(std::ranges::equal(public_key.ToSubjectPublicKeyInfo(), kPublicKey));
 
   // If we are in a Chromium test, return the original public key to let those
   // tests check everything they need.
@@ -42,7 +45,7 @@ base::span<const uint8_t> PublicKeyWrapper::GetPublicKey(
     return public_key;
   }
 
-  static constexpr uint8_t kBravePublicKey[] = {
+  static constexpr uint8_t kBravePublicKeyBytes[] = {
       0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x02,
       0x01, 0x06, 0x08, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07, 0x03,
       0x42, 0x00, 0x04, 0xbb, 0x6e, 0xed, 0x61, 0xf1, 0xfb, 0xf5, 0x4c, 0xfe,
@@ -53,7 +56,16 @@ base::span<const uint8_t> PublicKeyWrapper::GetPublicKey(
       0x88, 0xf9, 0xa1, 0x60, 0xc2, 0x6f, 0x84,
   };
 
-  return kBravePublicKey;
+  static const base::NoDestructor<crypto::keypair::PublicKey> kBravePublicKey(
+      [] {
+        auto brave_public_key =
+            crypto::keypair::PublicKey::FromSubjectPublicKeyInfo(
+                kBravePublicKeyBytes);
+        DCHECK(brave_public_key);
+        return std::move(*brave_public_key);
+      }());
+
+  return *kBravePublicKey;
 }
 
 }  // namespace variations
