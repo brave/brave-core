@@ -39,13 +39,13 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
 
   MOCK_METHOD(void,
               OnConversationEntryRemoved,
-              (ConversationHandler*, std::string),
+              (ConversationHandler*, const std::string&),
               (override));
 
   MOCK_METHOD(void,
               OnToolUseEventOutput,
               (ConversationHandler*,
-               std::string_view entry_uuid,
+               const std::string& entry_uuid,
                size_t event_order,
                mojom::ToolUseEventPtr tool_use),
               (override));
@@ -63,6 +63,11 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
   MOCK_METHOD(void,
               OnConversationTokenInfoChanged,
               (const std::string&, uint64_t, uint64_t),
+              (override));
+
+  MOCK_METHOD(void,
+              OnAssociatedContentUpdated,
+              (ConversationHandler*),
               (override));
 
  private:
