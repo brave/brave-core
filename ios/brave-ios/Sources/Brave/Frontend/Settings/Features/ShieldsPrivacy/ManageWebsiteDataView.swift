@@ -130,11 +130,8 @@ struct ManageWebsiteDataView: View {
             }
           }
         }
-        .listRowBackground(Color(.braveBackground))
       }
       .listStyle(.plain)
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.editMode, $editMode)
       .overlay(
         Group {

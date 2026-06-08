@@ -605,7 +605,7 @@ struct WalletPanelView: View {
     }
     .foregroundColor(.white)
     .background(
-      Color(.braveGroupedBackground)
+      Color(.systemGroupedBackground)
         .ignoresSafeArea()
     )
     .onChange(of: cryptoStore.selectedTab) { _, tab in

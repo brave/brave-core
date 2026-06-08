@@ -114,16 +114,12 @@ struct PrivateTabsView: View {
             .opacity(0.25)
           }
           .disabled(true)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.TabsSettings.privateTabsSettingsTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 }
 

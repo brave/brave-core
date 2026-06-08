@@ -177,7 +177,7 @@ struct SaferSignTransactionView: View {
   private var arrowView: some View {
     Circle()
       .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
-      .background(Color(.secondaryBraveGroupedBackground))
+      .background(Color(.secondarySystemGroupedBackground))
       .frame(width: 32, height: 32)
       .overlay(
         Image(systemName: "arrow.down")
@@ -198,7 +198,7 @@ struct SaferSignTransactionView: View {
       toTokenView
         .padding(.init(top: 10, leading: 15, bottom: 20, trailing: 10))
     }
-    .background(Color(.secondaryBraveGroupedBackground).cornerRadius(10))
+    .background(Color(.secondarySystemGroupedBackground).cornerRadius(10))
   }
 }
 
@@ -309,7 +309,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
             minBuyAmount: "0.994798"
           )
         }
-        .background(Color(.braveGroupedBackground).ignoresSafeArea())
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .preferredColorScheme(colorScheme)
       }
     }

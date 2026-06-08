@@ -38,7 +38,6 @@ public struct AIChatSettingsView: View {
           }
         }
         .tint(.accentColor)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         NavigationLink {
           ModelListPicker(
             modelsWithSubtitles: viewModel.modelsWithSubtitles,
@@ -55,7 +54,6 @@ public struct AIChatSettingsView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.AIChat.advancedSettingsHeaderTitle)
           .textCase(nil)
@@ -69,7 +67,6 @@ public struct AIChatSettingsView: View {
         } label: {
           Text(Strings.AIChat.resetLeoDataActionTitle)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .confirmationDialog(
           Strings.AIChat.resetLeoDataErrorTitle,
           isPresented: $isResetConfirmationDialogPresented
@@ -90,7 +87,6 @@ public struct AIChatSettingsView: View {
               .font(.subheadline.weight(.regular))
               .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         ForEach(viewModel.customModels, id: \.key) { model in
           NavigationLink {
@@ -107,7 +103,6 @@ public struct AIChatSettingsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         .onDelete { indexSet in
           guard let index = indexSet.first else { return }
@@ -120,7 +115,6 @@ public struct AIChatSettingsView: View {
         } label: {
           Text(Strings.AIChat.byomAddNewModelButtonTitle)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .sheet(isPresented: $isNewCustomModelFormPresented) {
           NavigationStack {
             CustomModelForm(helper: viewModel.helper)
@@ -138,8 +132,6 @@ public struct AIChatSettingsView: View {
     .navigationTitle(Strings.AIChat.leoNavigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .animation(.default, value: viewModel.premiumStatus)
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
   }
 
   private struct ModelListPicker: View {
@@ -192,12 +184,9 @@ public struct AIChatSettingsView: View {
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       .navigationTitle(Strings.AIChat.advancedSettingsDefaultModelTitle)
-      .scrollContentBackground(.hidden)
-      .background(Color(.braveGroupedBackground))
     }
   }
 
@@ -230,14 +219,11 @@ public struct AIChatSettingsView: View {
               }
             }()
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
           if let expirationDate = activePremiumDetails.expirationDate {
             LabeledContent(
               Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
               value: expirationDate.formatted(date: .numeric, time: .omitted)
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
           if activePremiumDetails.isSubscriptionLinkable {
             Button {
@@ -250,8 +236,6 @@ public struct AIChatSettingsView: View {
               .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
             if viewModel.isDevReceiptLinkingAvailable {
               Button {
                 openURL(.brave.braveLeoLinkReceiptStaging)
@@ -262,8 +246,6 @@ public struct AIChatSettingsView: View {
                 .contentShape(Rectangle())
               }
               .buttonStyle(.plain)
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
               Button {
                 openURL(.brave.braveLeoLinkReceiptDev)
               } label: {
@@ -273,7 +255,6 @@ public struct AIChatSettingsView: View {
                 .contentShape(Rectangle())
               }
               .buttonStyle(.plain)
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
 
             Button {
@@ -291,7 +272,6 @@ public struct AIChatSettingsView: View {
               .contentShape(.rect)
             }
             .buttonStyle(.plain)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         case .inactive(let productsLoaded):
           Button {
@@ -310,7 +290,6 @@ public struct AIChatSettingsView: View {
             .contentShape(.rect)
           }
           .buttonStyle(.plain)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .sheet(isPresented: $isPaywallPresented) {
             AIChatPaywallView(
               premiumUpgrageSuccessful: { _ in
@@ -343,7 +322,7 @@ public struct AIChatSettingsView: View {
             StoreKitReceiptSimpleView()
           } label: {
             LabelView(title: Strings.AIChat.advancedSettingsViewReceiptTitle)
-          }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
         }
       } header: {
         Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())

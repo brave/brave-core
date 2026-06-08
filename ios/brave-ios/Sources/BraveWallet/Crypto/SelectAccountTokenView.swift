@@ -33,7 +33,6 @@ struct SelectAccountTokenView: View {
       if !store.isSetup {
         // Fetching accounts & assets. Typically won't see this.
         ProgressView()
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } else if store.accountSections.isEmpty && !store.isLoadingBalances {
         Text(Strings.Wallet.selectTokenToSendNoTokens)
           .font(.headline.weight(.semibold))
@@ -47,8 +46,6 @@ struct SelectAccountTokenView: View {
         accountSections
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .searchable(
       text: $store.query,
       placement: .navigationBarDrawer(displayMode: .always)
@@ -132,7 +129,6 @@ struct SelectAccountTokenView: View {
             }
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           } else {
             buildAccountSection(accountSection)
           }
@@ -198,7 +194,6 @@ struct SelectAccountTokenView: View {
           )
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
 }

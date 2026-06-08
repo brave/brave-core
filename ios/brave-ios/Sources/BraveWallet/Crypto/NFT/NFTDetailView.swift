@@ -172,7 +172,6 @@ struct NFTDetailView: View {
             .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Wallet.nftDetailOverview)
       }
@@ -183,7 +182,6 @@ struct NFTDetailView: View {
           Text(nftMetadata.desc)
             .font(.subheadline)
             .foregroundColor(Color(braveSystemName: .textPrimary))
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
             .listRowInsets(
               horizontalSizeClass == .regular
                 ? EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16) : nil
@@ -203,14 +201,11 @@ struct NFTDetailView: View {
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.Wallet.nftDetailProperties)
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .onChange(of: nftDetailStore.nftMetadata) { _, newValue in
       if let newMetadata = newValue {
         onNFTMetadataRefreshed?(newMetadata)
@@ -222,7 +217,7 @@ struct NFTDetailView: View {
         isPresentingRemoveAlert = false
       }
     }
-    .background(Color(UIColor.braveGroupedBackground).ignoresSafeArea())
+    .background(Color(UIColor.systemGroupedBackground).ignoresSafeArea())
     .navigationBarTitle(nftDetailStore.nft.nftDetailTitle)
     .toolbar {
       ToolbarItemGroup(placement: .navigationBarTrailing) {

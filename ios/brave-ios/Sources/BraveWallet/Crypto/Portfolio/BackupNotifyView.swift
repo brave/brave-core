@@ -48,7 +48,7 @@ struct BackupNotifyView_Previews: PreviewProvider {
   static var previews: some View {
     BackupNotifyView(action: {}, onDismiss: {})
       .padding()
-      .background(Color(.braveGroupedBackground))
+      .background(Color(.systemGroupedBackground))
       .previewLayout(.sizeThatFits)
       .previewColorSchemes()
   }

@@ -71,7 +71,7 @@ private struct CertificateSectionView<ContentView>: View where ContentView: View
     ) {
 
       ForEach(values, id: \.self) {
-        $0.listRowBackground(Color(.secondaryBraveGroupedBackground))
+        $0
       }
     }
   }
@@ -91,13 +91,10 @@ private struct CertificateView: View {
             isRootCertificate: model.isRootCertificate,
             evaluationError: evaluationError
           )
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         content
       }
       .listStyle(InsetGroupedListStyle())
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .toolbar {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
           Button(Strings.done) {

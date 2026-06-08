@@ -208,7 +208,6 @@ struct EditPriorityFeeView: View {
         .accentColor(Color(.braveBlurpleTint))
         .pickerStyle(.inline)
         .foregroundColor(Color(braveSystemName: .textPrimary))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if gasFeeKind == .custom {
         Section(
@@ -254,7 +253,6 @@ struct EditPriorityFeeView: View {
             }
             .padding(.vertical, 6)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       Section {
@@ -268,7 +266,6 @@ struct EditPriorityFeeView: View {
         .font(.headline)
         .frame(maxWidth: .infinity)
         .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
       Section {
         Button(action: save) {
@@ -278,12 +275,9 @@ struct EditPriorityFeeView: View {
         .frame(maxWidth: .infinity)
         .disabled(isSaveButtonDisabled)
         .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.maxPriorityFeeTitle)
     .alert(isPresented: $isShowingAlert) {

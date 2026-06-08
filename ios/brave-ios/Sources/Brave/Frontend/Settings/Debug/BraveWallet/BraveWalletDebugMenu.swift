@@ -22,8 +22,6 @@ struct BraveWalletDebugMenu: View {
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Brave Wallet Debug")
     .navigationBarTitleDisplayMode(.inline)
   }

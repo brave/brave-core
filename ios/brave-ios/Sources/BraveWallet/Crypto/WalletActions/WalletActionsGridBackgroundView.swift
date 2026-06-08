@@ -8,7 +8,7 @@ import SwiftUI
 struct WalletActionsGridBackgroundView: View {
   @Environment(\.sizeCategory) private var sizeCategory
 
-  var backgroundColor: Color = Color(.secondaryBraveGroupedBackground)
+  var backgroundColor: Color = Color(.secondarySystemGroupedBackground)
 
   private var backgroundShape: some InsettableShape {
     RoundedRectangle(cornerRadius: 10, style: .continuous)

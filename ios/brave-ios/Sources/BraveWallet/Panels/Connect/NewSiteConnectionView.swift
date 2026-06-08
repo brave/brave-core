@@ -95,7 +95,6 @@ public struct NewSiteConnectionView: View {
       List {
         Section {
           headerView
-            .listRowBackground(Color(.braveGroupedBackground))
         }
         Section {
           ForEach(accountInfos) { account in
@@ -137,7 +136,6 @@ public struct NewSiteConnectionView: View {
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
         } footer: {
@@ -165,12 +163,9 @@ public struct NewSiteConnectionView: View {
             )
             .hidden()
           )
-          .listRowBackground(Color(.braveGroupedBackground))
         }
       }
       .listStyle(InsetGroupedListStyle())
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
       .toolbar {
@@ -224,7 +219,6 @@ public struct NewSiteConnectionView: View {
             .font(.footnote)
             .foregroundColor(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.braveGroupedBackground))
       }
       Section {
         HStack(spacing: 12) {
@@ -236,7 +230,6 @@ public struct NewSiteConnectionView: View {
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
-        .listRowBackground(Color(.braveGroupedBackground))
       } footer: {
         cautionFooterView
       }
@@ -252,12 +245,9 @@ public struct NewSiteConnectionView: View {
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
         .frame(maxWidth: .infinity)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
     .navigationBarTitleDisplayMode(.inline)
   }

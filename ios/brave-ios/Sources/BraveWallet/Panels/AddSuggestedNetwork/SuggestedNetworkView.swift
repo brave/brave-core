@@ -206,7 +206,6 @@ struct SuggestedNetworkView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         headerView
       }
@@ -215,15 +214,12 @@ struct SuggestedNetworkView: View {
       Section {
         actionButtonContainer
           .frame(maxWidth: .infinity)
-          .listRowBackground(Color(.braveGroupedBackground))
       }
       .listRowInsets(.zero)
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .overlay(
@@ -235,9 +231,9 @@ struct SuggestedNetworkView: View {
             .background(
               LinearGradient(
                 stops: [
-                  .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                  .init(color: Color(.systemGroupedBackground).opacity(0), location: 0),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 0.05),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 1),
                 ],
                 startPoint: .top,
                 endPoint: .bottom

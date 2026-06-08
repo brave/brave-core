@@ -30,7 +30,6 @@ public struct ToggleView: View {
     Toggle(isOn: $toggle) {
       LabelView(title: title, subtitle: subtitle)
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .onChange(of: toggle) { _, newValue in
       onChange?(newValue)

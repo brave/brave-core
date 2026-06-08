@@ -56,7 +56,6 @@ struct PageZoomSettingsView: View {
           }
           .onDelete(perform: resetItemZoomLevel)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       Section(
@@ -94,8 +93,6 @@ struct PageZoomSettingsView: View {
           )
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
       if !domains.isEmpty {
         Section(
           header: Text(Strings.PageZoom.resetAllDescription)
@@ -119,11 +116,8 @@ struct PageZoomSettingsView: View {
             }
           )
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .listStyle(.insetGrouped)
   }

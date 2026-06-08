@@ -351,7 +351,6 @@ struct NetworkDetailsView: View {
           isDisabled: isChainIdInputDisabled
         )
         .keyboardType(.numberPad)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkChainNameTitle))
@@ -361,7 +360,6 @@ struct NetworkDetailsView: View {
           item: $model.networkName,
           isDisabled: model.mode.isViewMode
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolNameTitle))
@@ -371,7 +369,6 @@ struct NetworkDetailsView: View {
           item: $model.networkSymbolName,
           isDisabled: model.mode.isViewMode
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolTitle))
@@ -381,7 +378,6 @@ struct NetworkDetailsView: View {
           item: $model.networkSymbol,
           isDisabled: model.mode.isViewMode
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkCurrencyDecimalTitle))
@@ -392,7 +388,6 @@ struct NetworkDetailsView: View {
           isDisabled: model.mode.isViewMode
         )
         .keyboardType(.numberPad)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if !model.rpcUrls.isEmpty {
         Section(
@@ -406,7 +401,6 @@ struct NetworkDetailsView: View {
               isDisabled: model.mode.isViewMode
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       if !model.iconUrls.isEmpty {
@@ -420,7 +414,6 @@ struct NetworkDetailsView: View {
               isDisabled: model.mode.isViewMode
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       if !model.blockUrls.isEmpty {
@@ -436,12 +429,9 @@ struct NetworkDetailsView: View {
               isDisabled: model.mode.isViewMode
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

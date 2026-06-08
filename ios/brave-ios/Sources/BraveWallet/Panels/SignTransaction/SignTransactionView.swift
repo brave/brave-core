@@ -242,7 +242,7 @@ struct SignTransactionView: View {
               .padding(.vertical, 8)
             SignTxRequestStaticTextView(text: instructionsDisplayString())
               .background(
-                Color(.secondaryBraveGroupedBackground),
+                Color(.secondarySystemGroupedBackground),
                 in: .rect(cornerRadius: 10, style: .continuous)
               )
           case .cardano(let signCardanoTransactionRequest):
@@ -267,7 +267,7 @@ struct SignTransactionView: View {
               }
               .frame(maxWidth: .infinity)
               .background(
-                Color(.secondaryBraveGroupedBackground),
+                Color(.secondarySystemGroupedBackground),
                 in: .rect(cornerRadius: 10, style: .continuous)
               )
             }
@@ -282,7 +282,7 @@ struct SignTransactionView: View {
     }
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Text(navigationTitle))
-    .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
   }
 
   @ViewBuilder private var buttonsContainer: some View {
@@ -416,7 +416,7 @@ struct SignTxRequestStaticTextView: View {
       StaticTextView(text: text)
         .frame(maxWidth: .infinity)
         .frame(height: 200)
-        .background(Color(.tertiaryBraveGroupedBackground))
+        .background(Color(.tertiarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
     }
     .padding()

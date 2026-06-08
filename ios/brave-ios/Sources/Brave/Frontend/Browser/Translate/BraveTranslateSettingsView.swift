@@ -20,13 +20,11 @@ struct BraveTranslateSettingsView: View {
           Text(Strings.BraveTranslate.settingsTranslateEnabledOptionTitle)
         }
         .tint(Color.accentColor)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.BraveTranslate.settingsTranslateEnabledOptionDescription)
       }
     }
     .listStyle(.insetGrouped)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.BraveTranslate.settingsScreenTitle)
   }
 }

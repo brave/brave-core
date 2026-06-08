@@ -229,7 +229,7 @@ struct FilterListEditor: UIViewRepresentable {
       textView.autocorrectionType = .no
       textView.autocapitalizationType = .none
       textView.keyboardType = .alphabet
-      textView.backgroundColor = .secondaryBraveGroupedBackground
+      textView.backgroundColor = .secondarySystemGroupedBackground
       textView.textContainerInset = UIEdgeInsets(
         vertical: 16,
         horizontal: 12

@@ -65,11 +65,8 @@ private struct SourceSuggestionsView: View {
           isFollowing: isFollowing(suggestion.source)
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .environment(\.defaultMinListRowHeight, 44)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.grouped)
     .navigationTitle(Strings.BraveNews.suggestedTitle)
     .navigationBarTitleDisplayMode(.inline)

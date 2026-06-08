@@ -105,12 +105,9 @@ struct RecentlyClosedTabsView: View {
           }
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .environment(\.defaultMinListHeaderHeight, 0)
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 
   init(tabManager: TabManager? = nil) {
@@ -136,7 +133,7 @@ struct RecentlyClosedTabsView: View {
         }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(.braveGroupedBackground).ignoresSafeArea())
+      .background(Color(.systemGroupedBackground))
       .navigationTitle(Strings.RecentlyClosed.recentlyClosedTabsScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

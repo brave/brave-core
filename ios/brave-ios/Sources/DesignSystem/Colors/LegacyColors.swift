@@ -47,15 +47,6 @@ extension UIColor {
   public static var tertiaryBraveBackground: UIColor {
     LegacyDesignSystemColor.background03.color
   }
-  public static var braveGroupedBackground: UIColor {
-    LegacyDesignSystemColor.background01.color
-  }
-  public static var secondaryBraveGroupedBackground: UIColor {
-    LegacyDesignSystemColor.background02.color
-  }
-  public static var tertiaryBraveGroupedBackground: UIColor {
-    LegacyDesignSystemColor.background01.color
-  }
   public static var braveLighterOrange: UIColor {
     LegacyDesignSystemColor.interactive03.color
   }

@@ -78,7 +78,6 @@ struct BraveRewardsSettingsView: View {
           }
         }
         .tint(Color(braveSystemName: .primary50))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if model.isWalletInitialized, let rewardsAPI = model.rewards.rewardsAPI {
         Section {
@@ -87,12 +86,9 @@ struct BraveRewardsSettingsView: View {
           } label: {
             Text(Strings.RewardsInternals.title)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
   }
 }
 

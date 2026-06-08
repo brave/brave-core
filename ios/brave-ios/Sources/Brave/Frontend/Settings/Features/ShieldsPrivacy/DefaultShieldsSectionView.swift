@@ -117,7 +117,6 @@ struct DefaultShieldsSectionView: View {
     } footer: {
       Text(Strings.shieldsDefaultsFooter)
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 }
 

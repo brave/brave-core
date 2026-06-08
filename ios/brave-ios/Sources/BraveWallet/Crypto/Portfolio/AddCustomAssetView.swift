@@ -118,7 +118,6 @@ struct AddCustomAssetView: View {
             Image(systemName: "chevron.down.circle")
               .foregroundColor(Color(.braveBlurpleTint))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(
@@ -155,7 +154,6 @@ struct AddCustomAssetView: View {
             .autocapitalization(.none)
             .autocorrectionDisabled()
             .disabled(userAssetStore.isSearchingToken)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenName))
@@ -169,7 +167,6 @@ struct AddCustomAssetView: View {
               ProgressView()
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenSymbol))
@@ -183,7 +180,6 @@ struct AddCustomAssetView: View {
               ProgressView()
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         switch selectedTokenType {
         case .token:
@@ -201,7 +197,6 @@ struct AddCustomAssetView: View {
                 ProgressView()
               }
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
 
           if showDuplicationTokenError {
@@ -234,7 +229,6 @@ struct AddCustomAssetView: View {
             .buttonStyle(.plain)
             .accessibilityLabel(Strings.Wallet.addCustomTokenAdvanced)
             .accessibility(addTraits: .isButton)
-            .listRowBackground(Color(UIColor.braveGroupedBackground))
             .resetListHeaderStyle()
           }
           if showAdvanced {
@@ -246,7 +240,6 @@ struct AddCustomAssetView: View {
                   .autocapitalization(.none)
                   .autocorrectionDisabled()
               }
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
             Section(
               header: WalletListHeaderView(title: Text(Strings.Wallet.addCustomTokenCoingeckoId))
@@ -256,7 +249,6 @@ struct AddCustomAssetView: View {
                   .autocapitalization(.none)
                   .autocorrectionDisabled()
               }
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
           }
         case .nft:
@@ -281,7 +273,6 @@ struct AddCustomAssetView: View {
                     }
                   }
               }
-              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
           }
 
@@ -290,8 +281,6 @@ struct AddCustomAssetView: View {
           }
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .onChange(of: selectedTokenType) { _, _ in
         guard tokenNeedsTokenId == nil else { return }
         resignFirstResponder()
