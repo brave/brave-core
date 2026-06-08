@@ -47,16 +47,19 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
     tab.addPolicyDecider(self)
 
     // for now we need to attach the entire browser data for shields to work
-    let browserData = TabBrowserData(tab: tab)
-    tab.browserData = browserData
-    let privacyRelatedScripts: [TabContentScript] = [
+    if tab.browserData == nil {
+      tab.browserData = TabBrowserData(tab: tab)
+    }
+    var privacyRelatedScripts: [TabContentScript] = [
       RequestBlockingContentScriptHandler(),
       SiteStateListenerScriptHandler(),
       CosmeticFiltersScriptHandler(),
-      browserData.contentBlocker,
     ]
+    if let contentBlocker = tab.browserData?.contentBlocker {
+      privacyRelatedScripts.append(contentBlocker)
+    }
     for script in privacyRelatedScripts {
-      browserData.addContentScript(
+      tab.browserData?.addContentScript(
         script,
         name: type(of: script).scriptName,
         contentWorld: type(of: script).scriptSandbox
