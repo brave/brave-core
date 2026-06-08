@@ -126,7 +126,7 @@ public struct NewSiteConnectionView: View {
                 Group {
                   if selectedAccounts.contains(account.id) {
                     Image(braveSystemName: "leo.check.circle-filled")
-                      .foregroundColor(Color(.braveSuccessLabel))
+                      .foregroundColor(Color(braveSystemName: .systemfeedbackSuccessText))
                   } else {
                     Image(systemName: "circle")
                       .foregroundColor(Color(.secondaryButtonTint))

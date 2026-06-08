@@ -70,7 +70,7 @@ struct BackupRecoveryPhraseView: View {
               "\(Strings.Wallet.copiedToPasteboard)  \(Image(braveSystemName: "leo.check.normal"))"
             )
             .font(.subheadline.bold())
-            .foregroundColor(Color(.braveSuccessLabel))
+            .foregroundColor(Color(braveSystemName: .systemfeedbackSuccessText))
           } else {
             Text(Strings.Wallet.copyToPasteboard)
               .font(.subheadline.bold())

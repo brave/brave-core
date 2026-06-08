@@ -59,7 +59,7 @@ class PlaylistURLBarButton: UIButton {
                 item?.playlistFolder?.title ?? "Playlist"
               ),
               image: UIImage(braveSystemNamed: "leo.check.circle-filled")?.withTintColor(
-                .braveSuccessLabel
+                .init(braveSystemName: .systemfeedbackSuccessIcon)
               ).withRenderingMode(.alwaysOriginal),
               attributes: .disabled,
               handler: { _ in }
@@ -120,7 +120,7 @@ class PlaylistURLBarButton: UIButton {
                 item?.playlistFolder?.title ?? "Playlist"
               ),
               image: UIImage(braveSystemNamed: "leo.check.circle-filled")?.withTintColor(
-                .braveSuccessLabel
+                .init(braveSystemName: .systemfeedbackSuccessIcon)
               ).withRenderingMode(.alwaysOriginal),
               attributes: .disabled,
               handler: { _ in }

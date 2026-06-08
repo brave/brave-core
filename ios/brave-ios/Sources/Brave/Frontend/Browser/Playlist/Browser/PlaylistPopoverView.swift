@@ -27,7 +27,7 @@ struct PlaylistPopoverView: View {
   ) -> some View {
     HStack(spacing: dynamicTypeSize.isAccessibilitySize ? 0 : 10) {
       Image(braveSystemName: "leo.check.circle-filled")
-        .foregroundStyle(Color(.braveSuccessLabel))
+        .foregroundStyle(Color(braveSystemName: .systemfeedbackSuccessText))
         .accessibilityHidden(true)
       if dynamicTypeSize.isAccessibilitySize {
         VStack(alignment: .leading, content: content)
