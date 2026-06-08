@@ -1952,9 +1952,9 @@ Da promijenite ovu postavku, <ph name="BEGIN_LINK"/>izbrišite podatke Bravea na
 <translation id="3377025655491224618">Privatna kartica</translation>
 <translation id="8428257636009471988">Posjeti web-trgovinu</translation>
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
-          =1 {Close 1 Private window}
-          few {Close # Private windows}
-          other {Close # Private windows}}</translation>
+          =1 {Zatvori 1 Privatni prozor}
+          few {Zatvori # Privatni prozori}
+          other {Zatvori # Privatni prozori}}</translation>
 <translation id="4968908871398201967">Privatni način</translation>
 <translation id="8448127664493413656">Pristupi Privatnom načinu</translation>
 <translation id="6484416399492735324">Napusti Privatni način</translation>
