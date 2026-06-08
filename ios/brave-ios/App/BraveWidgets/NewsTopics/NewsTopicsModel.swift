@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveWidgetsModels
 import CodableHelpers
 import Foundation
 import OrderedCollections
@@ -10,6 +11,7 @@ import UIKit
 
 /// Handles fetching Brave News Topics for widgets
 struct NewsTopicsModel {
+  var isNewsAvailable: @Sendable () async -> Bool
   var fetchNewsTopics: @Sendable (Locale) async -> [NewsTopic]
   var fetchImageThumbnailsForTopics:
     @Sendable ([NewsTopic], CGSize) async -> [NewsTopic.ID: UIImage]
@@ -24,6 +26,9 @@ extension NewsTopicsModel {
   /// from there.
   static var live: Self {
     .init(
+      isNewsAvailable: {
+        return await DisabledShortcutsWidgetData.loadDisabledShortcuts().contains(.braveNews)
+      },
       fetchNewsTopics: { currentLocale in
         do {
           let supportedLocales = [
@@ -102,7 +107,7 @@ extension NewsTopicsModel {
 }
 
 extension NewsTopicsModel {
-  static var mock: Self {
+  static func mock(isAvailable: Bool = true) -> Self {
     let data = try! Data(
       contentsOf: Bundle.main.url(
         forResource: "topics_news.en_US",
@@ -111,6 +116,9 @@ extension NewsTopicsModel {
       )!
     )
     return .init(
+      isNewsAvailable: {
+        return isAvailable
+      },
       fetchNewsTopics: { _ in
         do {
           let topics = Dictionary(
