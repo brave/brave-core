@@ -25,10 +25,6 @@ enum LegacyDesignSystemColor: String {
 
   case divider01
 
-  case successBackground = "success-background"
-  case successBorder = "success-border"
-  case successText = "success-text"
-
   case gradient01_step0 = "gradient01-step0"
   case gradient01_step1 = "gradient01-step1"
 
@@ -100,12 +96,6 @@ extension UIColor {
   }
   public static var braveSeparator: UIColor {
     LegacyDesignSystemColor.divider01.color
-  }
-  public static var braveSuccessLabel: UIColor {
-    LegacyDesignSystemColor.successText.color
-  }
-  public static var braveSuccessBackground: UIColor {
-    LegacyDesignSystemColor.successBackground.color
   }
   public static var braveDisabled: UIColor {
     LegacyDesignSystemColor.disabled.color

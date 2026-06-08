@@ -58,7 +58,7 @@ struct FilterListsView: View {
     var forgroundColor: Color {
       switch self {
       case .unknown: Color(.braveBlurpleTint)
-      case .updated: Color(.braveSuccessLabel)
+      case .updated: Color(braveSystemName: .systemfeedbackSuccessText)
       case .updating: Color(.braveDisabled)
       }
     }

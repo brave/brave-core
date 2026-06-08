@@ -1269,7 +1269,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         return ("", UIColor.black)
       case .purchased(let enabled):
         if enabled {
-          return (Strings.VPN.settingsVPNEnabled, .braveSuccessLabel)
+          return (
+            Strings.VPN.settingsVPNEnabled, UIColor(braveSystemName: .systemfeedbackSuccessText)
+          )
         } else {
           return (
             Strings.VPN.settingsVPNDisabled, UIColor(braveSystemName: .systemfeedbackErrorText)

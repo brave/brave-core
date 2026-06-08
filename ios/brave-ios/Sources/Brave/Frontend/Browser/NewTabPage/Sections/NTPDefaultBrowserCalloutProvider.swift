@@ -141,7 +141,7 @@ private class DefaultBrowserCalloutView: SpringButton {
     clipsToBounds = true
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
-    backgroundColor = .braveSuccessBackground
+    backgroundColor = UIColor(braveSystemName: .systemfeedbackSuccessBackground)
 
     addSubview(label)
     addSubview(closeButton)
