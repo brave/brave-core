@@ -1201,14 +1201,19 @@ public abstract class BraveActivity extends ChromeActivity
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
-        // Restore Origin purchase from Google Play if the local pref is not set
-        // (e.g. after device change). This ensures prefs are populated before the user
-        // taps the Origin menu.
         Profile profile = mTabModelProfileSupplier.get();
-        if (profile != null
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)
-                && !BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)) {
-            BraveOriginSubscriptionPrefs.verifyPurchase(profile);
+        if (profile != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+            if (!BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)) {
+                // Restore Origin purchase from Google Play if the local pref is not set
+                // (e.g. after device change). This ensures prefs are populated before the user
+                // taps the Origin menu.
+                BraveOriginSubscriptionPrefs.verifyPurchase(profile);
+            } else {
+                // The subscription is active locally. If a prior session was killed mid-fetch
+                // (order ID never written), restart the credential fetch so the user isn't left
+                // permanently stuck on the "Disabling features" spinner.
+                BraveOriginSubscriptionPrefs.resumeCredentialFetchIfNeeded(profile);
+            }
         }
 
         BraveHelper.maybeMigrateSettings();
