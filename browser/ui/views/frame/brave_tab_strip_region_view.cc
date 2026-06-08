@@ -258,18 +258,14 @@ void BraveHorizontalTabStripRegionView::UpdateScrollButtonsVisibility() {
   if (!HaveScrollButtons()) {
     return;
   }
-  auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_);
-  CHECK(strip);
-  BraveTabContainer* container = strip->GetBraveTabContainer();
-  if (!container) {
-    // Can be null if the container isn't yet created.
-    return;
-  }
-  const bool show = container->ShouldShowHorizontalScrollButton() &&
-                    *show_horizontal_tab_scroll_buttons_;
+  const bool show = ShouldShowHorizontalScrollButton();
   tab_scroll_previous_button_->SetVisible(show);
   tab_scroll_next_button_->SetVisible(show);
   if (show) {
+    auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_);
+    CHECK(strip);
+    BraveTabContainer* container = strip->GetBraveTabContainer();
+    CHECK(container);
     tab_scroll_previous_button_->SetEnabled(container->CanScrollTabsStart());
     tab_scroll_next_button_->SetEnabled(container->CanScrollTabsEnd());
   }
@@ -293,6 +289,23 @@ void BraveHorizontalTabStripRegionView::OnScrollNextPressed() {
 
 bool BraveHorizontalTabStripRegionView::HaveScrollButtons() const {
   return tab_scroll_previous_button_ && tab_scroll_next_button_;
+}
+
+bool BraveHorizontalTabStripRegionView::ShouldShowHorizontalScrollButton()
+    const {
+  if (!HaveScrollButtons()) {
+    return false;
+  }
+
+  auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_);
+  CHECK(strip);
+  BraveTabContainer* container = strip->GetBraveTabContainer();
+  if (!container) {
+    // Can be null if the container isn't yet created.
+    return false;
+  }
+  return container->ShouldShowHorizontalScrollButton() &&
+         *show_horizontal_tab_scroll_buttons_;
 }
 
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
@@ -342,6 +355,12 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   if (!tabs::utils::ShouldShowBraveVerticalTabs(
           tab_strip_->GetBrowserWindowInterface())) {
     LayoutSuperclass<HorizontalTabStripRegionView>(this);
+    // After layout, scroll button's visibility may need to be updated based on
+    // the overflow state of tab container. In this case, schedule layout.
+    if (HaveScrollButtons() && ShouldShowHorizontalScrollButton() !=
+                                   tab_scroll_next_button_->GetVisible()) {
+      InvalidateLayout();
+    }
 
     // NTB is ignored by flex (`kViewIgnoredByLayoutKey`) and positioned
     // manually by `HorizontalTabStripRegionView::Layout` relative to the tab
