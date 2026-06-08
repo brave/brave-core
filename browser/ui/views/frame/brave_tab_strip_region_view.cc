@@ -29,6 +29,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/image_model.h"
 #include "ui/events/event.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/button/button.h"
@@ -59,6 +60,7 @@ class BraveTabStripScrollButton : public TabStripControlButton {
   bool IsRepeatingForTesting() const;
 
   // TabStripControlButton:
+  void UpdateIcon() override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
   void OnMouseReleased(const ui::MouseEvent& event) override;
   void OnMouseCaptureLost() override;
@@ -70,6 +72,7 @@ class BraveTabStripScrollButton : public TabStripControlButton {
 
   base::RepeatingClosure scroll_action_;
   views::RepeatController repeater_;
+  raw_ref<const gfx::VectorIcon> icon_;
 };
 
 BraveTabStripScrollButton::BraveTabStripScrollButton(
@@ -83,7 +86,8 @@ BraveTabStripScrollButton::BraveTabStripScrollButton(
                             Edge::kNone),
       scroll_action_(std::move(scroll_action)),
       repeater_(base::BindRepeating(&BraveTabStripScrollButton::OnRepeaterFired,
-                                    base::Unretained(this))) {
+                                    base::Unretained(this))),
+      icon_(icon) {
   button_controller()->set_notify_action(
       views::ButtonController::NotifyAction::kOnPress);
 }
@@ -98,6 +102,19 @@ bool BraveTabStripScrollButton::IsRepeatingForTesting() const {
 
 void BraveTabStripScrollButton::OnRepeaterFired() {
   scroll_action_.Run();
+}
+
+void BraveTabStripScrollButton::UpdateIcon() {
+  TabStripControlButton::UpdateIcon();
+
+  auto* cp = GetColorProvider();
+  CHECK(cp);
+
+  SetImageModel(
+      STATE_DISABLED,
+      ui::ImageModel::FromVectorIcon(
+          icon_.get(),
+          cp->GetColor(kColorNewTabButtonCRForegroundFrameInactive), 16));
 }
 
 bool BraveTabStripScrollButton::OnMousePressed(const ui::MouseEvent& event) {
