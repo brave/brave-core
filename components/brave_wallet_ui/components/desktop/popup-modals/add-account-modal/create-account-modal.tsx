@@ -12,7 +12,10 @@ import { showAlert } from '@brave/leo/react/alertCenter'
 
 // utils
 import { getLocale } from '$web-common/locale'
-import { keyringIdForNewAccount } from '../../../../utils/account-utils'
+import {
+  getAccountsForNetwork,
+  keyringIdForNewAccount,
+} from '../../../../utils/account-utils'
 
 // options
 import { CreateAccountOptions } from '../../../../options/create-account-options'
@@ -113,10 +116,22 @@ export const CreateAccountModal = () => {
 
   const suggestedAccountName = React.useMemo(() => {
     const allAccounts = [...accounts, ...hiddenAccounts]
-    const accountTypeLength =
-      allAccounts.filter(
-        (account) => account.accountId.coin === selectedAccountType?.coin,
-      ).length + 1
+    // Polkadot accounts are scoped by keyring (mainnet vs testnet), not coin,
+    // so defer to getAccountsForNetwork for keyring-aware counting.
+    const matchingAccounts =
+      selectedAccountType?.coin === BraveWallet.CoinType.DOT
+      && selectedAccountType.fixedNetwork
+        ? getAccountsForNetwork(
+            {
+              coin: selectedAccountType.coin,
+              chainId: selectedAccountType.fixedNetwork,
+            },
+            allAccounts,
+          )
+        : allAccounts.filter(
+            (account) => account.accountId.coin === selectedAccountType?.coin,
+          )
+    const accountTypeLength = matchingAccounts.length + 1
     return `${
       selectedAccountType?.name //
     } ${getLocale('braveWalletSubviewAccount')} ${
