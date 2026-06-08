@@ -152,9 +152,9 @@ bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
     if (is_add) {
       // We only keep most recent 1k confirmed plus rejected tx metas per
       // network
-      RetireTxByStatus(*update, meta.chain_id(),
+      RetireTxByStatus(update, meta.chain_id(),
                        mojom::TransactionStatus::Confirmed, kMaxConfirmedTxNum);
-      RetireTxByStatus(*update, meta.chain_id(),
+      RetireTxByStatus(update, meta.chain_id(),
                        mojom::TransactionStatus::Rejected, kMaxRejectedTxNum);
     }
   }
@@ -244,7 +244,7 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
   return result;
 }
 
-void TxStateManager::RetireTxByStatus(base::DictValue& txs,
+void TxStateManager::RetireTxByStatus(TxStorage::ScopedTxsUpdate& update,
                                       const std::string& chain_id,
                                       mojom::TransactionStatus status,
                                       size_t max_num) {
@@ -256,6 +256,8 @@ void TxStateManager::RetireTxByStatus(base::DictValue& txs,
       status != mojom::TransactionStatus::Rejected) {
     return;
   }
+
+  base::DictValue& txs = *update;
 
   auto const status_type = static_cast<int>(status);
   auto const coin_type = static_cast<int>(GetCoinType());
