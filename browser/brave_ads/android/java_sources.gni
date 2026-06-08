@@ -8,5 +8,4 @@ brave_ads_java_sources = [
   "../../brave/browser/brave_ads/android/java/org/chromium/chrome/browser/device_id/DeviceIdImplAndroid.java",
   "../../brave/browser/brave_ads/android/java/org/chromium/chrome/browser/dialogs/BraveAdsSignupDialog.java",
   "../../brave/browser/brave_ads/android/java/org/chromium/chrome/browser/notifications/BraveAds.java",
-  "../../brave/browser/brave_ads/android/java/org/chromium/chrome/browser/onboarding/BraveAdsOnboardingFragment.java",
 ]
