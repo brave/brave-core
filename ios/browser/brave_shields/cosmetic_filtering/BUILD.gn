@@ -9,6 +9,9 @@ static_library("cosmetic_filtering") {
   sources = [
     "cosmetic_filtering_javascript_feature.h",
     "cosmetic_filtering_javascript_feature.mm",
+    "cosmetic_filtering_tab_helper.h",
+    "cosmetic_filtering_tab_helper.mm",
+    "cosmetic_filtering_tab_helper_bridge.h",
   ]
   deps = [
     ":cosmetic_filtering_js",
