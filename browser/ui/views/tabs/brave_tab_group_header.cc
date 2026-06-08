@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
@@ -24,8 +25,14 @@
 #include "ui/views/background.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
+
+BraveTabGroupHeader::BraveTabGroupHeader(TabSlotController& tab_slot_controller,
+                                         const tab_groups::TabGroupId& group,
+                                         const TabGroupStyle& style)
+    : TabGroupHeader(tab_slot_controller, group, style) {}
 
 BraveTabGroupHeader::~BraveTabGroupHeader() = default;
 
@@ -98,9 +105,50 @@ void BraveTabGroupHeader::Layout(PassKey) {
   }
 }
 
+void BraveTabGroupHeader::ShowContextMenuForViewImpl(
+    views::View* source,
+    const gfx::Point& point,
+    ui::mojom::MenuSourceType source_type) {
+  TabGroupHeader::ShowContextMenuForViewImpl(source, point, source_type);
+  KeepVerticalTabStripExpandedWhileBubbleIsOpen();
+}
+
+void BraveTabGroupHeader::OnWidgetDestroying(views::Widget* widget) {
+  bubble_widget_observation_.Reset();
+  vertical_tab_state_.reset();
+}
+
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowBraveVerticalTabs(
       tab_slot_controller_->GetBrowserWindowInterface());
+}
+
+void BraveTabGroupHeader::KeepVerticalTabStripExpandedWhileBubbleIsOpen() {
+  if (!ShouldShowVerticalTabs() || !editor_bubble_tracker_.is_open()) {
+    return;
+  }
+
+  auto* bubble_widget = editor_bubble_tracker_.widget();
+  if (!bubble_widget ||
+      bubble_widget_observation_.IsObservingSource(bubble_widget)) {
+    return;
+  }
+
+  BraveVerticalTabStripRegionView* region_view = nullptr;
+  for (auto* ancestor = parent(); ancestor; ancestor = ancestor->parent()) {
+    if ((region_view =
+             views::AsViewClass<BraveVerticalTabStripRegionView>(ancestor))) {
+      break;
+    }
+  }
+
+  if (!region_view) {
+    return;
+  }
+
+  vertical_tab_state_ = region_view->ExpandTabStripForDragging();
+  bubble_widget_observation_.Reset();
+  bubble_widget_observation_.Observe(bubble_widget);
 }
 
 void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
