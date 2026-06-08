@@ -10,6 +10,13 @@ import Icon from '@brave/leo/react/icon'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { formatLocale, getLocale } from '../../../../common/locale'
 
+// Components
+import { Tooltip } from '../../shared/tooltip/index'
+import {
+  ChainInfo,
+  InlineViewOnBlockExplorerIconButton,
+} from '../confirm-transaction-panel/common/view_on_explorer_button'
+
 // Styled Components
 import {
   Header,
@@ -25,17 +32,40 @@ interface Props {
   onConfirm: () => void
   onReject: () => void
   address: string
+  network?: ChainInfo | null
 }
 
 export function ApprovalForAllWarning(props: Props) {
-  const { onConfirm, onReject, address } = props
+  const { onConfirm, onReject, address, network } = props
 
   const operators = address.split(',').filter(Boolean)
 
   const description = React.useMemo(() => {
+    const operatorRow = (op: string) => (
+      <Row
+        justifyContent='flex-start'
+        gap='4px'
+      >
+        <Tooltip
+          text={op}
+          isAddress
+          verticalPosition='above'
+        >
+          <b>{reduceAddress(op)}</b>
+        </Tooltip>
+        {network && (
+          <InlineViewOnBlockExplorerIconButton
+            address={op}
+            network={network}
+            urlType='address'
+          />
+        )}
+      </Row>
+    )
+
     if (operators.length === 1) {
       return formatLocale('braveWalletApprovalForAllFinalWarningDescription', {
-        $1: <b>{reduceAddress(operators[0])}</b>,
+        $1: operatorRow(operators[0]),
       })
     }
     return (
@@ -43,14 +73,12 @@ export function ApprovalForAllWarning(props: Props) {
         {getLocale('braveWalletApprovalForAllFinalWarningDescriptionMultiple')}
         <ul>
           {operators.map((op) => (
-            <li key={op}>
-              <b>{reduceAddress(op)}</b>
-            </li>
+            <li key={op}>{operatorRow(op)}</li>
           ))}
         </ul>
       </>
     )
-  }, [operators])
+  }, [operators, network])
 
   return (
     <Backdrop>
@@ -82,7 +110,7 @@ export function ApprovalForAllWarning(props: Props) {
           </Button>
           <Button
             onClick={onConfirm}
-            kind='plain-faint'
+            kind='plain'
           >
             {getLocale('braveWalletConfirmAnyway')}
           </Button>

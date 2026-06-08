@@ -23,6 +23,12 @@ export const Title = styled(Text)`
 export const Description = styled(Text)`
   font: ${leo.font.default.regular};
   letter-spacing: ${leo.typography.letterSpacing.default};
+  width: 100%;
+
+  ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
 `
 
 export const Backdrop = styled.div`
