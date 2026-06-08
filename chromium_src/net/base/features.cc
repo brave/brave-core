@@ -18,9 +18,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kWaitForFirstPartySetsInit, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-BASE_FEATURE(kBraveEphemeralStorage,
-             "EphemeralStorage",
-             base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveEphemeralStorageKeepAlive,
              base::FEATURE_ENABLED_BY_DEFAULT);
 

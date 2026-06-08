@@ -8,7 +8,6 @@
 
 #include "base/check_op.h"
 #include "base/containers/span.h"
-#include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
@@ -141,11 +140,7 @@ std::string AsString(StorageType t) {
 class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
  public:
   EphemeralStorageQaBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    std::vector<base::test::FeatureRef> disabled_features;
-    feature_list_.InitWithFeatures({net::features::kBraveEphemeralStorage},
-                                   disabled_features);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -437,7 +432,6 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
-  base::test::ScopedFeatureList feature_list_;
 
  private:
   raw_ptr<TabStripModel> tabs_ = nullptr;

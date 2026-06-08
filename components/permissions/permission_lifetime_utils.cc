@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -19,7 +18,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/features.h"
 #include "components/permissions/permission_request.h"
-#include "net/base/features.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -51,15 +49,11 @@ std::optional<PermissionLifetimeOption> GetTestSecondsOption() {
 
 std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
   std::vector<PermissionLifetimeOption> options;
-  const size_t kOptionsCount = 4;
-  options.reserve(kOptionsCount);
-
-  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    options.emplace_back(
-        l10n_util::GetStringUTF16(
-            IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION),
-        base::TimeDelta());
-  }
+  options.reserve(4);
+  options.emplace_back(
+      l10n_util::GetStringUTF16(
+          IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION),
+      base::TimeDelta());
   options.emplace_back(l10n_util::GetStringUTF16(
                            IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION),
                        base::Hours(24));
@@ -69,7 +63,6 @@ std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
   options.emplace_back(
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
       std::nullopt);
-  DCHECK_LE(options.size(), kOptionsCount);
 
   // This is strictly for manual testing.
   if (auto test_seconds_option = GetTestSecondsOption()) {

@@ -12,7 +12,6 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "components/permissions/request_type.h"
-#include "net/base/features.h"
 #include "net/base/url_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -23,9 +22,7 @@ namespace permissions {
 
 PermissionOriginLifetimeMonitorImpl::PermissionOriginLifetimeMonitorImpl(
     content::BrowserContext* browser_context)
-    : browser_context_(browser_context) {
-  DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
-}
+    : browser_context_(browser_context) {}
 
 PermissionOriginLifetimeMonitorImpl::~PermissionOriginLifetimeMonitorImpl() =
     default;

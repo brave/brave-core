@@ -80,9 +80,6 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     base::optional_ref<const url::Origin> top_frame_origin) const {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return false;
-
   const GURL first_party_url =
       GetFirstPartyURL(site_for_cookies, top_frame_origin.as_ptr());
 

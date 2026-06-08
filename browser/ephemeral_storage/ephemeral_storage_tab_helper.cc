@@ -5,7 +5,6 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
-#include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -97,7 +96,6 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
           web_contents->GetBrowserContext())),
       cookie_settings_(CookieSettingsFactory::GetForProfile(
           Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
-  DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 #if BUILDFLAG(IS_ANDROID)
   registered_tab_model_ = AddTabModelObserver(web_contents, this);
 #endif

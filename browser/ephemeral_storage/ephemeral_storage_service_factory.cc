@@ -81,8 +81,7 @@ void EphemeralStorageServiceFactory::RegisterProfilePrefs(
 std::unique_ptr<KeyedService>
 EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage) &&
-      !base::FeatureList::IsEnabled(
+  if (!base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage) &&
       !base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage)) {
