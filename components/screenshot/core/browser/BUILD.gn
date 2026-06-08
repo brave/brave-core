@@ -3,11 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("content") {
+static_library("browser") {
   sources = [
-    "pdf_utils.cc",
-    "pdf_utils.h",
+    "utils.cc",
+    "utils.h",
   ]
 
-  deps = [ "//content/public/browser" ]
+  deps = [ "//skia" ]
 }

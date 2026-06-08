@@ -39,6 +39,7 @@ static_library("screenshot_internal") {
   ]
   deps = [
     ":screenshot",
+    "//brave/components/screenshot/core/browser",
     "//brave/components/text_recognition/common/buildflags",
     "//chrome/browser/pdf",
     "//chrome/browser/pdf:pdf_pref_names",

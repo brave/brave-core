@@ -15,7 +15,7 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/screenshot/core/browser/utils.h"
 #include "components/paint_preview/browser/compositor_utils.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
 #include "components/paint_preview/common/recording_map.h"
@@ -231,7 +231,8 @@ void FullScreenshotter::OnBitmapReceived(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&FullScreenshotter::EncodeBitmap, ScaleDownBitmap(bitmap)),
+      base::BindOnce(&FullScreenshotter::EncodeBitmap,
+                     screenshot::ScaleDownBitmap(bitmap)),
       base::BindOnce(&FullScreenshotter::OnBitmapEncoded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(pending),
                      index));

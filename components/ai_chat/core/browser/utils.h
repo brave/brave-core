@@ -51,10 +51,6 @@ const std::string& GetActionTypeQuestion(mojom::ActionType action_type);
 EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
     ConversationHandler::GeneratedTextCallback callback);
 
-// Only scales down to target dimension when input bitmap is larger than
-// 1024x768
-SkBitmap ScaleDownBitmap(const SkBitmap& bitmap);
-
 GURL GetEndpointUrl(bool premium, const std::string& path);
 
 // Builds the standard Brave AI Chat relay request headers: the Leo premium SKU
