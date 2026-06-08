@@ -69,6 +69,19 @@ static_library("v1_utils") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_brave_vpn_service.cc",
+    "test/fake_brave_vpn_service.h",
+  ]
+
+  public_deps = [ ":browser" ]
+
+  deps = [ "//brave/components/skus/browser" ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -83,6 +96,7 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    ":test_support",
     "//base",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
