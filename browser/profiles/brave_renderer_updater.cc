@@ -89,6 +89,13 @@ BraveRendererUpdater::BraveRendererUpdater(
       brave_wallet::kDefaultCardanoWallet,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+  // The wallet can be disabled at runtime by policy (e.g. via Brave Origin).
+  // When that happens the renderers must stop installing the provider objects
+  // so they don't request interface binders the browser no longer registers.
+  pref_change_registrar_.Add(
+      brave_wallet::kBraveWalletDisabledByPolicy,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
 #endif
   pref_change_registrar_.Add(
       de_amp::kDeAmpPrefEnabled,
@@ -222,6 +229,15 @@ void BraveRendererUpdater::UpdateRenderer(
 #else
   bool has_installed_metamask = false;
 #endif
+
+  // Recompute whether the wallet is allowed for this context on every update.
+  // This can change at runtime (e.g. when the BraveWalletDisabled policy is
+  // toggled via Brave Origin) and the renderers must be told to stop installing
+  // the provider objects. Otherwise a renderer keeps a stale `true` value,
+  // installs `window.ethereum`/`window.solana`/`window.cardano`, and the
+  // browser kills the renderer with a "No binder found" bad message because the
+  // matching interface binder is no longer registered.
+  is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile_);
 
   bool should_ignore_brave_wallet_for_eth =
       !is_wallet_created_ || has_installed_metamask;
