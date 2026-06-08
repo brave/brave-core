@@ -95,9 +95,20 @@ extension BrowserViewController: TabManagerDelegate {
     tab.addPolicyDecider(braveShieldsHelper)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
     tab.nightMode = .init(tab: tab)
-
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      tab.readerMode = .init(tab: tab)
+    // reader mode
+    tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
+    tab.readerMode?.onStateChanged = { [weak self] in
+      guard let self, self.tabManager.selectedTab === tab else { return }
+      self.topToolbar.updateReaderModeState(tab.readerMode?.state ?? .unavailable)
+    }
+    tab.readerMode?.onReaderModeDisplayed = { [weak self, weak tab] in
+      guard let self, let tab else { return }
+      self.showReaderModeBar(animated: true)
+      tab.showContent(true)
+    }
+    tab.readerMode?.onReaderModeToggled = { [weak self] tab in
+      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: tab.playlistItem)
+      self?.updateTranslateURLBar(tab: tab, state: tab.translationState)
     }
 
     tab.braveTalk = .init(tab: tab, coordinator: braveTalkJitsiCoordinator)
@@ -244,14 +255,7 @@ extension BrowserViewController: TabManagerDelegate {
     let shouldShowPlaylistURLBarButton = selected?.visibleURL?.isPlaylistSupportedSiteURL == true
 
     if !shouldShowPlaylistURLBarButton {
-      let readerModeState: ReaderModeState?
-      if FeatureList.kUseProfileWebViewConfiguration.enabled {
-        readerModeState = selected?.readerMode?.state
-      } else {
-        readerModeState =
-          (selected?.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
-          as? ReaderModeScriptHandler)?.state
-      }
+      let readerModeState = selected?.readerMode?.state
       if let readerModeState {
         topToolbar.updateReaderModeState(readerModeState)
         if readerModeState == .active {

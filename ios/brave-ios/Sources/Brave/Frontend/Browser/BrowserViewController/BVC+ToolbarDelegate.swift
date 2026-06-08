@@ -148,7 +148,7 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView) {
-    toggleReaderMode()
+    tabManager.selectedTab?.readerMode?.toggleReaderMode()
   }
 
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView) {

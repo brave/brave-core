@@ -86,9 +86,7 @@ extension BrowserViewController {
       activities.append(
         BasicMenuActivity(
           activityType: .toggleReaderMode,
-          callback: { [weak self] in
-            self?.toggleReaderMode()
-          }
+          callback: { tab.readerMode?.toggleReaderMode() }
         )
       )
     }
