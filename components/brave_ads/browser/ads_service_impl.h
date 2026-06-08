@@ -228,7 +228,8 @@ class AdsServiceImpl : public AdsService,
   // new tab with ad business logic.
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
-  void OpenNewTabWithAdCallback(std::optional<base::DictValue> dict);
+  void OpenNewTabWithAdCallback(
+      brave_ads::mojom::NotificationAdInfoPtr notification_ad);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
   void OpenNewTabWithUrl(const GURL& url);
 
@@ -332,7 +333,8 @@ class AdsServiceImpl : public AdsService,
   void CanShowNotificationAdsWhileBrowserIsBackgrounded(
       CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback)
       override;
-  void ShowNotificationAd(base::DictValue dict) override;
+  void ShowNotificationAd(
+      brave_ads::mojom::NotificationAdInfoPtr notification_ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void GetSiteHistory(int max_count,
