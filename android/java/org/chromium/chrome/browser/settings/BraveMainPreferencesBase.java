@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
@@ -38,6 +39,7 @@ import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialog;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
+import org.chromium.chrome.browser.policy.PolicyServiceFactory;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -60,6 +62,7 @@ import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase;
 import org.chromium.components.browser_ui.site_settings.SiteSettings;
+import org.chromium.components.policy.PolicyService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -80,13 +83,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_ABOUT_SECTION = "about_section";
 
     // prefs
-    private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
+    @VisibleForTesting static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
             "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
-    private static final String PREF_BRAVE_NEWS_V2 = "brave_news_v2";
+    @VisibleForTesting static final String PREF_BRAVE_NEWS_V2 = "brave_news_v2";
     private static final String PREF_BRAVE_PLAYLIST = "brave_playlist";
     private static final String PREF_SYNC = "brave_sync_layout";
     private static final String PREF_PASSWORDS = "passwords";
@@ -102,9 +105,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
-    private static final String PREF_BRAVE_WALLET = "brave_wallet";
-    private static final String PREF_BRAVE_VPN = "brave_vpn";
-    private static final String PREF_BRAVE_LEO = "brave_leo";
+    @VisibleForTesting static final String PREF_BRAVE_WALLET = "brave_wallet";
+    @VisibleForTesting static final String PREF_BRAVE_VPN = "brave_vpn";
+    @VisibleForTesting static final String PREF_BRAVE_LEO = "brave_leo";
     private static final String PREF_BRAVE_ORIGIN = "brave_origin";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
@@ -119,6 +122,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private @Nullable BraveAccountSectionController mAccountController;
     private @Nullable VpnCalloutPreference mVpnCalloutPreference;
     private boolean mNotificationClicked;
+
+    // Observes the profile policy service so we can defer the policy-controlled feature rows
+    // until Brave Origin policies are merged into the managed pref store. See
+    // updateFeaturePolicyPreferences().
+    private @Nullable PolicyService mFeaturePolicyService;
+    private PolicyService.@Nullable Observer mFeaturePolicyServiceObserver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -158,11 +167,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Prevents timing issues where preferences might not be fully initialized yet.
         PostTask.postTask(TaskTraits.UI_DEFAULT, this::prepareBravePreferences);
 
-        // Check if features are disabled by policy
-        checkLeoPolicyAndUpdatePreference();
-        checkNewsPolicyAndUpdatePreference();
-        checkVpnPolicyAndUpdatePreference();
-        checkWalletPolicyAndUpdatePreference();
+        // Hide the policy-controlled features until Brave Origin policies have been applied,
+        // then evaluate their real policy state.
+        updateFeaturePolicyPreferences();
 
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
@@ -190,6 +197,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        removeFeaturePolicyServiceObserver();
 
         if (mAccountController != null) {
             mAccountController.destroy();
@@ -680,6 +689,98 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (BraveWalletPolicy.isDisabledByPolicy(getProfile())) {
             removePreferenceIfPresent(PREF_BRAVE_WALLET);
         }
+    }
+
+    /**
+     * Hides the policy-controlled feature rows (VPN/Rewards-News/Wallet/Leo and the VPN promo
+     * callout) for Brave Origin subscribers until the profile policy service has finished applying
+     * Brave Origin policies, then evaluates their real policy state.
+     *
+     * <p>Brave Origin merges its feature policies into the managed pref store as part of profile
+     * policy initialization. In the brief window before that completes -- most visibly when the
+     * Settings screen is recreated by the app-language-change restart -- managed prefs still read
+     * as unset, so {@code isDisabledByPolicy()} returns false and the disabled features (plus the
+     * VPN promo) would momentarily appear until the screen is reopened
+     * (https://github.com/brave/brave-browser/issues/56156).
+     *
+     * <p>This mirrors the native {@code brave_policy::PolicyInitializationWaiter} pattern used by
+     * the Ads/Rewards/News services: gate on {@link PolicyService#isInitializationComplete()},
+     * which Brave's profile policy provider reports incomplete until Brave Origin policies are
+     * merged. Non-Origin users have no feature policies to wait for, so they evaluate immediately
+     * and never observe the policy service.
+     */
+    private void updateFeaturePolicyPreferences() {
+        // Non-Origin users: nothing to wait for, keep today's behavior (no hide, no observer).
+        if (!BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
+            applyFeaturePolicies();
+            return;
+        }
+
+        PolicyService policyService = PolicyServiceFactory.getProfilePolicyService(getProfile());
+        if (!policyService.isInitializationComplete()) {
+            // Fail safe: keep the policy-controlled features hidden until policies are applied.
+            setPolicyControlledPreferencesVisible(false);
+            if (mFeaturePolicyServiceObserver == null) {
+                mFeaturePolicyService = policyService;
+                mFeaturePolicyServiceObserver =
+                        new PolicyService.Observer() {
+                            @Override
+                            public void onPolicyServiceInitialized() {
+                                removeFeaturePolicyServiceObserver();
+                                // Posted to mirror the native PolicyInitializationWaiter, which
+                                // avoids re-entrancy from the policy-service notification.
+                                PostTask.postTask(
+                                        TaskTraits.UI_DEFAULT,
+                                        () -> {
+                                            if (isAdded()) {
+                                                updateFeaturePolicyPreferences();
+                                            }
+                                        });
+                            }
+                        };
+                policyService.addObserver(mFeaturePolicyServiceObserver);
+            }
+            return;
+        }
+
+        removeFeaturePolicyServiceObserver();
+        // Policies are applied: remove the features actually disabled by policy while they are
+        // still hidden, then reveal the ones that remain. Removing before revealing means a
+        // disabled row is never made visible, so it cannot flash.
+        applyFeaturePolicies();
+        setPolicyControlledPreferencesVisible(true);
+    }
+
+    /** Removes the policy-controlled feature rows that are disabled by policy. */
+    private void applyFeaturePolicies() {
+        checkLeoPolicyAndUpdatePreference();
+        checkNewsPolicyAndUpdatePreference();
+        checkVpnPolicyAndUpdatePreference();
+        checkWalletPolicyAndUpdatePreference();
+    }
+
+    /** Toggles visibility of every policy-controlled feature surface still on the screen. */
+    private void setPolicyControlledPreferencesVisible(boolean visible) {
+        setPreferenceVisibleIfPresent(PREF_BRAVE_LEO, visible);
+        setPreferenceVisibleIfPresent(PREF_BRAVE_NEWS_V2, visible);
+        setPreferenceVisibleIfPresent(PREF_BRAVE_VPN, visible);
+        setPreferenceVisibleIfPresent(PREF_BRAVE_WALLET, visible);
+        setPreferenceVisibleIfPresent(PREF_BRAVE_VPN_CALLOUT, visible);
+    }
+
+    private void setPreferenceVisibleIfPresent(String key, boolean visible) {
+        Preference preference = getPreferenceScreen().findPreference(key);
+        if (preference != null) {
+            preference.setVisible(visible);
+        }
+    }
+
+    private void removeFeaturePolicyServiceObserver() {
+        if (mFeaturePolicyService != null && mFeaturePolicyServiceObserver != null) {
+            mFeaturePolicyService.removeObserver(mFeaturePolicyServiceObserver);
+        }
+        mFeaturePolicyService = null;
+        mFeaturePolicyServiceObserver = null;
     }
 
     // Wraps MainSettings.SEARCH_INDEX_DATA_PROVIDER and additionally removes upstream preferences
