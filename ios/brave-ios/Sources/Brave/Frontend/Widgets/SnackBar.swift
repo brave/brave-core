@@ -13,7 +13,6 @@ import Web
 class SnackBarUX {
   static var maxWidth: CGFloat = 400
   static let borderWidth: CGFloat = 1.0 / UIScreen.main.scale
-  static let highlightColor = UIColor.braveInfoBorder.withAlphaComponent(0.9)
 }
 
 /// A specialized version of UIButton for use in SnackBars. These are displayed evenly
