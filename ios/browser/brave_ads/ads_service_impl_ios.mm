@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
+#include "brave/components/brave_rewards/core/rewards_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -60,6 +61,12 @@ bool AdsServiceImplIOS::IsIneligibleToStart() const {
   return false;
 }
 
+bool AdsServiceImplIOS::CanStartBatAdsService() const {
+  // Never start if Rewards is disabled by policy, feature flag, or
+  // unsupported region, regardless of which ad unit the user has opted into.
+  return brave_rewards::IsSupported(&*prefs_);
+}
+
 bool AdsServiceImplIOS::IsInitialized() const {
   return !!ads_;
 }
@@ -71,7 +78,7 @@ void AdsServiceImplIOS::InitializeAds(
     mojom::BuildChannelInfoPtr mojom_build_channel,
     mojom::WalletInfoPtr mojom_wallet,
     ResultCallback callback) {
-  if (IsInitialized()) {
+  if (IsInitialized() || !CanStartBatAdsService()) {
     return std::move(callback).Run(/*success=*/false);
   }
 

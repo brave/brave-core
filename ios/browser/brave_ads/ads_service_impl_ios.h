@@ -146,6 +146,7 @@ class AdsServiceImplIOS : public AdsService {
   // KeyedService:
   void Shutdown() override;
 
+  bool CanStartBatAdsService() const;
   void InitializeAds(ResultCallback callback);
   void InitializeAdsCallback(ResultCallback callback, bool success);
 
