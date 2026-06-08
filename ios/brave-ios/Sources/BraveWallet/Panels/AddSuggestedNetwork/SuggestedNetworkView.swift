@@ -92,7 +92,7 @@ struct SuggestedNetworkView: View {
       .resizable()
       .aspectRatio(contentMode: .fit)
       .padding(8)
-      .background(Color(.braveDisabled))
+      .background(Color(braveSystemName: .neutral20))
   }
 
   @ViewBuilder private var faviconAndOrigin: some View {

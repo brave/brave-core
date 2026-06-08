@@ -703,7 +703,9 @@ struct NetworkRadioButton: View {
   var body: some View {
     Image(braveSystemName: checked ? "leo.check.circle-outline" : "leo.radio.unchecked")
       .renderingMode(.template)
-      .foregroundColor(Color((checked && !isDisabled) ? .braveBlurpleTint : .braveDisabled))
+      .foregroundColor(
+        Color((checked && !isDisabled) ? .braveBlurpleTint : UIColor(braveSystemName: .neutral20))
+      )
       .font(.title3)
       .onTapGesture {
         if !self.isDisabled && !checked {

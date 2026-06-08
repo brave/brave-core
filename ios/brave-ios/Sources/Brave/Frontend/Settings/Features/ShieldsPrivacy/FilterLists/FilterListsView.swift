@@ -59,7 +59,7 @@ struct FilterListsView: View {
       switch self {
       case .unknown: Color(.braveBlurpleTint)
       case .updated: Color(braveSystemName: .systemfeedbackSuccessText)
-      case .updating: Color(.braveDisabled)
+      case .updating: Color(braveSystemName: .neutral20)
       }
     }
   }

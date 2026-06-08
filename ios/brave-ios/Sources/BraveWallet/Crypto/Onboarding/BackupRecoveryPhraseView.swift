@@ -59,7 +59,7 @@ struct BackupRecoveryPhraseView: View {
             .padding(8)
             .overlay(
               RoundedRectangle(cornerRadius: 4)
-                .stroke(Color(.braveDisabled), lineWidth: 1)
+                .stroke(Color(braveSystemName: .neutral20), lineWidth: 1)
             )
         }
         Button {

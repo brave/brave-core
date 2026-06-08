@@ -137,7 +137,7 @@ struct EditSiteConnectionView: View {
           Image(uiImage: image)
             .resizable()
             .scaledToFit()
-            .background(Color(.braveDisabled))
+            .background(Color(braveSystemName: .neutral20))
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         } else {
           ProgressView()

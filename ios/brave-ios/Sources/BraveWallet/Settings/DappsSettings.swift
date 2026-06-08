@@ -164,7 +164,8 @@ struct DappsSettings: View {
         } label: {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
             .foregroundColor(
-              siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red
+              siteConnectionStore.siteConnections.isEmpty
+                ? Color(braveSystemName: .neutral20) : .red
             )
         }
         .disabled(siteConnectionStore.siteConnections.isEmpty)
@@ -320,7 +321,8 @@ private struct SiteConnectionDetailView: View {
         } label: {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
             .foregroundColor(
-              siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red
+              siteConnectionStore.siteConnections.isEmpty
+                ? Color(braveSystemName: .neutral20) : .red
             )
         }
       }

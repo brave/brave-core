@@ -31,7 +31,7 @@ class OpenSearchEngineButton: BraveButton {
           ),
           for: .normal
         )
-        tintColor = .braveDisabled
+        tintColor = UIColor(braveSystemName: .neutral20)
         isUserInteractionEnabled = false
       case .enabled:
         isLoading = false

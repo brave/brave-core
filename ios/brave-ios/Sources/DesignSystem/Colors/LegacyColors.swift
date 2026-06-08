@@ -20,8 +20,6 @@ enum LegacyDesignSystemColor: String {
   case interactive07
   case interactive08
 
-  case disabled
-
   case divider01
 
   case gradient01_step0 = "gradient01-step0"
@@ -88,9 +86,6 @@ extension UIColor {
   }
   public static var braveSeparator: UIColor {
     LegacyDesignSystemColor.divider01.color
-  }
-  public static var braveDisabled: UIColor {
-    LegacyDesignSystemColor.disabled.color
   }
   public static var primaryButtonTint: UIColor {
     LegacyDesignSystemColor.interactive07.color

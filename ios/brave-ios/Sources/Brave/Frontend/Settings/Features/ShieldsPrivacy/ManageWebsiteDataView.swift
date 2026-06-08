@@ -165,7 +165,8 @@ struct ManageWebsiteDataView: View {
           } label: {
             Text(editMode.isEditing ? Strings.done : Strings.edit)
               .foregroundColor(
-                visibleRecords.isEmpty ? Color(.braveDisabled) : Color(.braveBlurpleTint)
+                visibleRecords.isEmpty
+                  ? Color(braveSystemName: .neutral20) : Color(.braveBlurpleTint)
               )
           }
           .disabled(visibleRecords.isEmpty)
@@ -180,7 +181,7 @@ struct ManageWebsiteDataView: View {
             }
           } label: {
             Text(removeButtonTitle(visibleRecords: visibleRecords))
-              .foregroundColor(visibleRecords.isEmpty ? Color(.braveDisabled) : .red)
+              .foregroundColor(visibleRecords.isEmpty ? Color(braveSystemName: .neutral20) : .red)
               .animation(nil, value: isEditMode)
           }
           .disabled(visibleRecords.isEmpty)
