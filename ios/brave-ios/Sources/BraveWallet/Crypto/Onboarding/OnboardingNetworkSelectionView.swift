@@ -357,7 +357,7 @@ private struct SelectableGridItemView<Content: View, Item: Identifiable & Equata
             didSelect(item.model)
           }
         ),
-        colorOverride: isSelectable ? nil : UIColor.braveDisabled
+        colorOverride: isSelectable ? nil : UIColor(braveSystemName: .neutral20)
       )
       .padding(.top, 8)
       .padding(.trailing, 8)

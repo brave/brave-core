@@ -92,7 +92,7 @@ struct NetworkListView: View {
             .font(.callout.weight(.semibold))
             .foregroundColor(
               isDefaultNetwork(network)
-                ? Color(.braveDisabled) : Color(braveSystemName: .textPrimary)
+                ? Color(braveSystemName: .neutral20) : Color(braveSystemName: .textPrimary)
             )
           }
           .disabled(isDefaultNetwork(network))

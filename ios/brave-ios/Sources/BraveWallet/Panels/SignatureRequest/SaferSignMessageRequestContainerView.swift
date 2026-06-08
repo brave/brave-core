@@ -145,7 +145,7 @@ struct SaferSignMessageRequestContainerView: View {
                   .stroke(Color(.braveSeparator), lineWidth: pixelLength)
               }
             }
-            .background(Color(.braveDisabled))
+            .background(Color(braveSystemName: .neutral20))
             .clipShape(RoundedRectangle(cornerRadius: 4))
           }
         }

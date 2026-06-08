@@ -323,7 +323,7 @@ class FontSizeButton: UIButton {
     self.fontSizeAction = fontSizeAction
 
     setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
-    setTitleColor(.braveDisabled, for: .disabled)
+    setTitleColor(UIColor(braveSystemName: .neutral20), for: .disabled)
 
     switch fontSizeAction {
     case .smaller:

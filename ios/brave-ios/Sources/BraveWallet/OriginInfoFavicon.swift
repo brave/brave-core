@@ -23,7 +23,7 @@ struct OriginInfoFavicon: View {
           .aspectRatio(contentMode: .fit)
           .padding(4)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(Color(.braveDisabled))
+          .background(Color(braveSystemName: .neutral20))
       } else {
         if let url = URL(string: originInfo.originSpec) {
           FaviconReader(url: url) { image in
@@ -48,6 +48,6 @@ struct OriginInfoFavicon: View {
       .resizable()
       .aspectRatio(contentMode: .fit)
       .padding(8)
-      .background(Color(.braveDisabled))
+      .background(Color(braveSystemName: .neutral20))
   }
 }

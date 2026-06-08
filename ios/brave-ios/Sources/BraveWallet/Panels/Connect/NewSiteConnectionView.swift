@@ -56,7 +56,7 @@ public struct NewSiteConnectionView: View {
           Image(uiImage: image)
             .resizable()
             .scaledToFit()
-            .background(Color(.braveDisabled))
+            .background(Color(braveSystemName: .neutral20))
             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
         } else {
           ProgressView()
