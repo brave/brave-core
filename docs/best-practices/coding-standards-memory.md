@@ -836,3 +836,79 @@ class Decoder {
 constexpr auto kMagic = std::to_array<uint8_t>({0x7f, 'E', 'L', 'F'});
 base::BindOnce(&Validate, base::span(kMagic));
 ```
+
+---
+
+<a id="CSM-038"></a>
+
+## ✅ Choose Parameter Types by Ownership; Use `T&&` to Force a Move
+
+**Pick a function parameter type from what the function does with the argument,
+and never take a plain by-value copyable owning type like `std::string` —
+by-value hides intent and permits a silent copy.** For a `std::string`
+argument, the choice is one of three:
+
+| Intent                                          | Parameter type       |
+| ----------------------------------------------- | -------------------- |
+| Read-only (default)                             | `std::string_view`   |
+| Read-only, needs a null-terminated `const char*`| `base::cstring_view` |
+| Read-only, but downstream needs a `std::string` | `const std::string&` |
+| Take ownership (transfer)                       | `std::string&&`      |
+
+**`std::string_view` is the default for read-only parameters.** When a
+`string_view` won't do, two narrower non-owning options exist before you fall
+back to borrowing an owning `std::string`:
+
+- **Passing to a C API that wants a null-terminated `const char*`.** A plain
+  `std::string_view` is not guaranteed null-terminated, so its `data()` cannot be
+  handed to a C API. Use
+  [`base::cstring_view`](https://source.chromium.org/chromium/chromium/src/+/main:base/strings/cstring_view.h)
+  — a non-owning, bounds-safe view of a NUL-terminated string. It is the intended
+  replacement for `const char*`, exposes `.c_str()`, and avoids forcing the caller
+  to own a `std::string`. Prefer it over `const std::string&` for this case.
+- **A downstream API forces a `std::string`.** When the value is handed to a
+  mojo-generated API, or to existing code that already takes `const std::string&`
+  / `std::string`, converting a `string_view` back into a `std::string` would
+  copy. Take `const std::string&` to borrow the caller's existing `std::string`
+  and avoid the copy.
+
+When none of these apply, prefer `std::string_view`.
+
+When you want ownership, take an rvalue reference (`std::string&&`). The `&&`
+**forces the caller to `std::move` (or pass a temporary)**, so the transfer is
+explicit at the call site and a silent copy is impossible.
+
+```cpp
+// ❌ WRONG - plain by-value owning type hides intent and invites a silent copy
+void SetName(std::string name);          // copy or move? the caller can't tell
+
+// ✅ CORRECT - pick by intent
+void LogName(std::string_view name);          // read-only (default)
+void OpenPath(base::cstring_view path);       // read-only, needs const char* for a C API
+void StoreViaMojo(const std::string& name);   // read-only, but mojo/legacy needs a std::string
+void SetName(std::string&& name);             // take ownership — caller must move
+
+// Ownership transfer is explicit and enforced at the call site:
+SetName(std::move(name_));               // ok - move
+SetName(BuildName());                    // ok - temporary
+SetName(name_);                          // won't compile — forces a conscious copy
+
+// Store the moved-from parameter in the member:
+void Widget::SetName(std::string&& name) { name_ = std::move(name); }
+```
+
+**This applies to any copyable movable owning type, not just strings** — use the
+same `view` / `const&` / `&&` split for `std::vector<T>`, `base::Value`, etc.:
+
+```cpp
+void Consume(std::vector<Item>&& items);  // transfer a vector
+void Attach(base::Value&& value);         // transfer a Value
+```
+
+**Exception — move-only types:** Pass move-only types like
+`std::unique_ptr<T>`, `mojo::Remote<T>`, or `base::OnceCallback` **by value**.
+The type itself prevents a silent copy, so by-value *is* the idiomatic
+ownership-transfer signature and the caller still must `std::move`. Do not flag
+`std::unique_ptr<T>` by value as needing `&&`. See also CSM-031 (don't pass
+smart pointers by const reference) and CSM-037 (don't bind unowned view types
+into callbacks).
