@@ -164,10 +164,10 @@ struct PendingTransactionView: View {
           systemImage: "exclamationmark.triangle"
         )
         .padding(12)
-        .foregroundColor(Color(.braveErrorLabel))
+        .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
         .font(.subheadline)
         .background(
-          Color(.braveErrorBackground)
+          Color(braveSystemName: .systemfeedbackErrorBackground)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         )
       }
@@ -267,7 +267,7 @@ struct PendingTransactionView: View {
       if confirmationStore.isSolTokenTransferWithAssociatedTokenAccountCreation {
         VStack(alignment: .leading, spacing: 8) {
           Text(Strings.Wallet.confirmationViewSolSplTokenAccountCreationWarning)
-            .foregroundColor(Color(.braveErrorLabel))
+            .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
             .font(.subheadline.weight(.medium))
           Button {
             openWalletURL(WalletConstants.splTokenAccountCreationLink)
@@ -280,7 +280,7 @@ struct PendingTransactionView: View {
         .padding(.horizontal, 24)
         .padding(.vertical, 20)
         .background(
-          Color(.braveErrorBackground)
+          Color(braveSystemName: .systemfeedbackErrorBackground)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         )
       }
@@ -431,12 +431,15 @@ struct PendingTransactionView: View {
                     HStack(spacing: 4) {
                       if !confirmationStore.isBalanceSufficient {
                         Text(Strings.Wallet.insufficientBalance)
-                          .foregroundColor(Color(.braveErrorLabel))
+                          .foregroundColor(
+                            Color(UIColor(braveSystemName: .systemfeedbackErrorText))
+                          )
                       }
                       Text(confirmationStore.totalFiat)
                         .foregroundColor(
                           confirmationStore.isBalanceSufficient
-                            ? Color(braveSystemName: .textPrimary) : Color(.braveErrorLabel)
+                            ? Color(braveSystemName: .textPrimary)
+                            : Color(UIColor(braveSystemName: .systemfeedbackErrorText))
                         )
                     }
                     .accessibilityElement(children: .contain)

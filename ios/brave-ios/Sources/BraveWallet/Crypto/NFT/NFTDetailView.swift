@@ -69,11 +69,11 @@ struct NFTDetailView: View {
                   Text(Strings.Wallet.nftSpam)
                     .padding(.vertical, 4)
                     .padding(.leading, 6)
-                    .foregroundColor(Color(.braveErrorLabel))
+                    .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
                   Image(braveSystemName: "leo.warning.triangle-outline")
                     .padding(.vertical, 4)
                     .padding(.trailing, 6)
-                    .foregroundColor(Color(.braveErrorBorder))
+                    .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
                 }
                 .font(.system(size: 13).weight(.semibold))
                 .background(

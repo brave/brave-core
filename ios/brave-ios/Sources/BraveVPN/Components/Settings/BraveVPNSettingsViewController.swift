@@ -174,11 +174,16 @@ class VPNSettingsViewModel {
     if Preferences.VPN.vpnReceiptStatus.value
       == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
     {
-      return (Strings.VPN.vpnActionUpdatePaymentMethodSettingsText, .braveErrorLabel)
+      return (
+        Strings.VPN.vpnActionUpdatePaymentMethodSettingsText,
+        UIColor(braveSystemName: .systemfeedbackErrorText)
+      )
     }
 
     if BraveVPN.vpnState == .expired {
-      return (Strings.VPN.subscriptionStatusExpired, .braveErrorLabel)
+      return (
+        Strings.VPN.subscriptionStatusExpired, UIColor(braveSystemName: .systemfeedbackErrorText)
+      )
     } else {
       return (BraveVPN.subscriptionName, UIColor(braveSystemName: .textPrimary))
     }

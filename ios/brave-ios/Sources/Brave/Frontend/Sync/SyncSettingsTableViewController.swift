@@ -530,7 +530,7 @@ extension SyncSettingsTableViewController {
         cell.accessoryType = .disclosureIndicator
       } else if indexPath.row == 1 {
         cell.textLabel?.text = Strings.Sync.deleteAccount
-        cell.textLabel?.textColor = .braveErrorLabel
+        cell.textLabel?.textColor = UIColor(braveSystemName: .systemfeedbackErrorText)
       }
     default:
       return

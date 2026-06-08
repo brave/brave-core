@@ -28,7 +28,7 @@ public struct SectionFooterErrorView: View {
         )
       )
       .font(.footnote)
-      .foregroundColor(Color(.braveErrorLabel))
+      .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
       .padding(.bottom)
     } else {
       // SwiftUI will add/remove this Section footer when addressError

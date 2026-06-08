@@ -385,11 +385,11 @@ struct SignMessageWarningView: View {
       Group {
         Label(Strings.Wallet.signTransactionSignRisk, systemImage: "exclamationmark.triangle")
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.braveErrorLabel))
+          .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
           .padding(.top, 12)
         Text(Strings.Wallet.solanaSignTransactionWarning)
           .font(.subheadline)
-          .foregroundColor(Color(.braveErrorLabel))
+          .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
         Button {
           openWalletURL(WalletConstants.signTransactionRiskLink)
         } label: {
@@ -402,7 +402,7 @@ struct SignMessageWarningView: View {
       .padding(.horizontal, 12)
     }
     .background(
-      Color(.braveErrorBackground)
+      Color(braveSystemName: .systemfeedbackErrorBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
   }

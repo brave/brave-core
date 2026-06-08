@@ -79,9 +79,11 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
       configuration
         .modifier(
           BraveInputStyleModifier(
-            strokeColor: error != nil ? Color(.braveErrorBorder) : nil,
+            strokeColor: error != nil
+              ? Color(braveSystemName: .systemfeedbackErrorIcon) : nil,
             lineWidthFactor: error != nil ? 2 : nil,
-            backgroundColor: error != nil ? Color(.braveErrorBackground) : nil
+            backgroundColor: error != nil
+              ? Color(braveSystemName: .systemfeedbackErrorBackground) : nil
           )
         )
       if let error = error {
@@ -99,7 +101,7 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
           )
         )
         .font(.footnote)
-        .foregroundColor(Color(.braveErrorLabel))
+        .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
         .padding(.leading, 8)
       }
     }
