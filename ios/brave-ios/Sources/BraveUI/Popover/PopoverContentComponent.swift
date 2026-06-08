@@ -51,7 +51,7 @@ extension PopoverContentComponent {
   }
 
   public var popoverBackgroundColor: UIColor {
-    .braveBackground
+    UIColor(braveSystemName: .containerBackground)
   }
 }
 

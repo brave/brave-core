@@ -90,7 +90,7 @@ private struct FavoritesView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .widgetBackground { Color(UIColor(braveSystemName: .pageBackground)) }
+    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 
@@ -154,12 +154,16 @@ private struct FavoritesGridView: View {
                     .font(.system(size: 36))
                     .aspectRatio(1.0, contentMode: .fit)
                     .clipped()
-                    .background(Color(UIColor.braveBackground))
+                    .background(Color(UIColor(braveSystemName: .containerBackground)))
                     .foregroundColor(Color(braveSystemName: .textPrimary))
                 }
               }
               .clipShape(itemShape)
-              .background(Color(UIColor.braveBackground).opacity(0.05).clipShape(itemShape))
+              .background(
+                Color(UIColor(braveSystemName: .containerBackground)).opacity(0.05).clipShape(
+                  itemShape
+                )
+              )
               .overlay(
                 itemShape
                   .strokeBorder(

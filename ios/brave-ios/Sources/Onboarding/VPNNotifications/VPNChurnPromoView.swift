@@ -137,7 +137,7 @@ public struct VPNChurnPromoView: View {
       }
       .padding(.horizontal, 32)
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .frame(maxWidth: BraveUX.baseDimensionValue, maxHeight: height)
     .overlay {
       Button {

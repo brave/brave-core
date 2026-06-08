@@ -62,7 +62,7 @@ struct BiometricView: View {
               .frame(width: 240, height: 240)
             Rectangle()
               .frame(width: 96, height: 96)
-              .foregroundColor(Color(.braveBackground))
+              .foregroundColor(Color(braveSystemName: .containerBackground))
               .cornerRadius(20)
             if let biometricsIcon {
               biometricsIcon

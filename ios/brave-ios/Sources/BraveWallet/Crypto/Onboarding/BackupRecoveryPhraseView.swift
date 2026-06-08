@@ -122,7 +122,7 @@ struct BackupRecoveryPhraseView: View {
       backButtonTitle: Strings.Wallet.backupRecoveryPhraseBackButtonTitle,
       backButtonDisplayMode: .generic
     )
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .alertOnScreenshot {
       Alert(
         title: Text(Strings.Wallet.screenshotDetectedTitle),

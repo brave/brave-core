@@ -90,7 +90,7 @@ public class AlertPopupView: UIKitPopupView {
 
     setPopupContentView(view: containerView)
     setStyle(popupStyle: .dialog)
-    setDialogColor(color: .tertiaryBraveBackground)
+    setDialogColor(color: UIColor(braveSystemName: .containerHighlight))
   }
 
   func update(title: String) {

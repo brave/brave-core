@@ -120,7 +120,7 @@ struct BackupWalletView: View {
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
     .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .background(
       NavigationLink(
         isActive: Binding(

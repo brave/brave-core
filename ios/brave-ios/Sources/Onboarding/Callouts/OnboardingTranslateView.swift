@@ -36,7 +36,7 @@ public struct OnboardingTranslateView: View {
 
 extension OnboardingTranslateView: PopoverContentComponent {
   public var popoverBackgroundColor: UIColor {
-    .braveBackground
+    UIColor(braveSystemName: .containerBackground)
   }
 }
 

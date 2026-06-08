@@ -109,7 +109,10 @@ private struct OptionButtonStyle: ButtonStyle {
     configuration.label
       .foregroundColor(.white)
       // To animate text color
-      .colorMultiply(isSelected ? Color(.braveBackground) : Color(braveSystemName: .textSecondary))
+      .colorMultiply(
+        isSelected
+          ? Color(braveSystemName: .containerBackground) : Color(braveSystemName: .textSecondary)
+      )
       .padding(.horizontal, 6)
       .padding(.vertical, 4)
       .background(

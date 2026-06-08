@@ -212,7 +212,7 @@ struct RestoreWalletView: View {
     }
     .navigationBarBackButtonHidden(isShowingCreatingWallet)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .overlay {
       if isShowingCreatingWallet {
         CreatingWalletView()

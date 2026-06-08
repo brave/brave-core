@@ -86,7 +86,7 @@ extension PrivacyReportsView {
         }
         Spacer()
       }
-      .background(Color(.braveBackground))
+      .background(Color(braveSystemName: .containerBackground))
       .frame(maxWidth: .infinity)
       .fixedSize(horizontal: false, vertical: true)
       .padding(.horizontal)

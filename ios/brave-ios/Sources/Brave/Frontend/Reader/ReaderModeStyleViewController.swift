@@ -21,7 +21,7 @@ class ReaderModeStyleViewController: UIViewController {
     static let height = 4 * rowHeight
     static let rowHeight = 50
 
-    static let fontTypeRowBackground = UIColor.braveBackground
+    static let fontTypeRowBackground = UIColor(braveSystemName: .containerBackground)
     static let fontSizeRowBackground = UIColor(braveSystemName: .pageBackground)
 
     static let brightnessSliderWidth = 140
@@ -287,7 +287,7 @@ class FontTypeButton: UIButton {
 
     setTitleColor(UIColor(braveSystemName: .textPrimary), for: .selected)
     setTitleColor(UIColor(braveSystemName: .textSecondary), for: [])
-    backgroundColor = .braveBackground
+    backgroundColor = UIColor(braveSystemName: .containerBackground)
     accessibilityHint = Strings.readerModeFontTypeButtonAccessibilityHint
 
     switch fontType {

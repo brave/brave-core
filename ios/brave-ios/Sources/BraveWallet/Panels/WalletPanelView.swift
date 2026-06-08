@@ -77,7 +77,7 @@ public struct WalletPanelContainerView: View {
     .padding()
     .padding()
     .frame(maxWidth: .infinity)
-    .background(Color(.braveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
   }
 
   private var setupView: some View {
@@ -103,7 +103,7 @@ public struct WalletPanelContainerView: View {
       .padding()
     }
     .frame(maxWidth: .infinity)
-    .background(Color(.braveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
   }
 
   public var body: some View {

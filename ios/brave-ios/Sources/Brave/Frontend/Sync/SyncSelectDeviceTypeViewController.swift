@@ -38,7 +38,7 @@ class SyncDeviceTypeButton: UIControl {
   convenience init(image: String, title: String, type: SyncDeviceType) {
     self.init(frame: CGRect.zero)
 
-    backgroundColor = .braveBackground
+    backgroundColor = UIColor(braveSystemName: .containerBackground)
     clipsToBounds = false
     layer.cornerRadius = 12
     layer.cornerCurve = .continuous

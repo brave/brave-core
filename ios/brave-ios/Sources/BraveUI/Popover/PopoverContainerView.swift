@@ -10,7 +10,7 @@ import UIKit
 extension PopoverController {
 
   struct PopoverUX {
-    static let backgroundColor: UIColor = .braveBackground
+    static let backgroundColor: UIColor = UIColor(braveSystemName: .containerBackground)
     static let arrowSize = CGSize(width: 14.0, height: 8.0)
     static let cornerRadius: CGFloat = 10.0
     static let shadowOffset = CGSize(width: 0, height: 2.0)

@@ -7,10 +7,6 @@
 import UIKit
 
 enum LegacyDesignSystemColor: String {
-  case background01
-  case background02
-  case background03
-
   case interactive01
   case interactive02
   case interactive03
@@ -38,15 +34,6 @@ enum LegacyDesignSystemColor: String {
 // MARK: - Design System Colors
 
 extension UIColor {
-  public static var braveBackground: UIColor {
-    LegacyDesignSystemColor.background02.color
-  }
-  public static var secondaryBraveBackground: UIColor {
-    LegacyDesignSystemColor.background01.color
-  }
-  public static var tertiaryBraveBackground: UIColor {
-    LegacyDesignSystemColor.background03.color
-  }
   public static var braveLighterOrange: UIColor {
     LegacyDesignSystemColor.interactive03.color
   }

@@ -193,7 +193,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
               Circle()
                 .strokeBorder(Color(.braveBlurpleTint), style: .init(lineWidth: 2))
                 .frame(width: 12, height: 12)
-                .background(Color(.braveBackground).clipShape(Circle()))
+                .background(Color(braveSystemName: .containerBackground).clipShape(Circle()))
                 .position(x: dragContext.location.x, y: dragContext.location.y)
             }
           }

@@ -285,7 +285,7 @@ public struct NewsSettingsView: View {
         tappedOptInLearnMore?()
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(.braveBackground).ignoresSafeArea())
+      .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
       .transition(.opacity.animation(.default))
     }
   }

@@ -85,7 +85,7 @@ struct ShieldsPanelView: View {
       }
       .padding(.top)
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .frame(idealWidth: 360, alignment: .center)
     .toolbar(.hidden)
   }

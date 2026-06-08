@@ -15,7 +15,7 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
     textView.inlinePredictionType = .no
     textView.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.medium)
     textView.textColor = UIColor(braveSystemName: .textPrimary)
-    textView.backgroundColor = .braveBackground
+    textView.backgroundColor = UIColor(braveSystemName: .containerBackground)
     return textView
   }()
 

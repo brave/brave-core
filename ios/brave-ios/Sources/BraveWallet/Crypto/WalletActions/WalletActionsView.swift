@@ -47,7 +47,7 @@ struct WalletActionsView: View {
       }
     }
     .padding(.vertical, 20)
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
   }
 }
 

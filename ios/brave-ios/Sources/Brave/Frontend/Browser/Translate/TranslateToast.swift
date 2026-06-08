@@ -339,7 +339,7 @@ struct TranslateToast: View {
 
 extension TranslateToast: PopoverContentComponent {
   public var popoverBackgroundColor: UIColor {
-    .braveBackground
+    UIColor(braveSystemName: .containerBackground)
   }
 }
 

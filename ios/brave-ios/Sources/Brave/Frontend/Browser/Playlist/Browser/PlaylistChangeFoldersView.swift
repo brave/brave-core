@@ -76,7 +76,7 @@ struct PlaylistChangeFoldersView: View {
         }
       }
     }
-    .background(Color(.braveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
     .navigationTitle(Strings.PlaylistFolders.playlistChangeFoldersTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -161,7 +161,7 @@ private struct CreateFolderView: View {
       }
       .padding()
     }
-    .background(Color(.braveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
     .navigationTitle(Strings.PlaylistFolders.playlistNewFolderScreenTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -187,7 +187,7 @@ struct PlaylistChangeFoldersContainerView: View {
       DispatchQueue.main.async {
         let appearance = UIToolbarAppearance()
         appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = .braveBackground
+        appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
         nc.toolbar.standardAppearance = appearance
         nc.toolbar.scrollEdgeAppearance = appearance
         nc.toolbar.compactAppearance = appearance

@@ -125,7 +125,7 @@ private struct TopNewsListView: View {
           headerView
             .background(
               widgetRenderingMode == .accented
-                ? Color.white.opacity(0.1) : Color(.braveGroupedBackground)
+                ? Color.white.opacity(0.1) : Color(braveSystemName: .containerHighlight)
             )
           VStack(alignment: .leading, spacing: 8) {
             ForEach(topics.prefix(widgetFamily == .systemLarge ? 5 : 2)) { topic in
@@ -195,7 +195,10 @@ private struct TopNewsListView: View {
           headerView
             .background {
               LinearGradient(
-                colors: [Color(.braveBackground), Color(.braveBackground).opacity(0.0)],
+                colors: [
+                  Color(braveSystemName: .containerBackground),
+                  Color(braveSystemName: .containerBackground).opacity(0.0),
+                ],
                 startPoint: .top,
                 endPoint: .bottom
               )
@@ -204,7 +207,7 @@ private struct TopNewsListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
       }
     }
-    .widgetBackground { Color(.braveBackground) }
+    .widgetBackground { Color(braveSystemName: .containerBackground) }
   }
 }
 

@@ -90,7 +90,7 @@ struct LegalView: View {
       )
     )
     .accessibilityEmbedInScrollView()
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .transparentNavigationBar(
       backButtonTitle: Strings.Wallet.web3DomainInterstitialPageTAndU.capitalizeFirstLetter,
       backButtonDisplayMode: .generic
