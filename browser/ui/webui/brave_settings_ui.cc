@@ -264,12 +264,18 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           ai_chat::features::IsAIChatHistoryEnabled());
 #endif
 
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Survey Panelist is tied to Brave Rewards, which is compiled out of Brave
+  // Origin branded builds, so the setting is never available there.
+  html_source->AddBoolean("isSurveyPanelistAllowed", false);
+#else
   html_source->AddBoolean("isSurveyPanelistAllowed",
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
                                   kBraveNTPBrandedWallpaperSurveyPanelist) &&
                               !profile->GetPrefs()->GetBoolean(
                                   brave_rewards::prefs::kDisabledByPolicy));
+#endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
       "isPlaylistFeatureEnabled",
