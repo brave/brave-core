@@ -14,9 +14,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
 
-namespace print_preview_extractor {
+namespace screenshot {
 
-std::unique_ptr<PrintPreviewExtractor> CreateDefaultPrintPreviewExtractor(
+std::unique_ptr<PrintPreviewExtractor> CreatePrintPreviewExtractor(
     content::WebContents* web_contents,
     base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>
         id_map_callback,
@@ -40,4 +40,4 @@ std::unique_ptr<PrintPreviewExtractor> CreateDefaultPrintPreviewExtractor(
           std::move(id_map_callback), std::move(request_id_map_callback)));
 }
 
-}  // namespace print_preview_extractor
+}  // namespace screenshot

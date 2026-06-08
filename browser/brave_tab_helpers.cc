@@ -161,13 +161,12 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
         std::make_unique<ai_chat::PrintPreviewExtractionDelegateImpl>(
             web_contents,
-            print_preview_extractor::CreateDefaultPrintPreviewExtractor(
+            screenshot::CreatePrintPreviewExtractor(
                 web_contents,
                 base::BindRepeating(
                     []() -> base::IDMap<printing::mojom::PrintPreviewUI*>& {
                       return printing::PrintPreviewUI::GetPrintPreviewUIIdMap();
                     }),
-
                 base::BindRepeating([]() -> base::flat_map<int, int>& {
                   return printing::PrintPreviewUI::
                       GetPrintPreviewUIRequestIdMap();

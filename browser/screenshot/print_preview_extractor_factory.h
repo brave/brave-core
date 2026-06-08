@@ -19,20 +19,20 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace print_preview_extractor {
+namespace screenshot {
 
 // Constructs a PrintPreviewExtractor wired up with the default Extractor
 // factory used in production (PrintPreviewExtractorInternal).
 // Deps to callbacks are injected from the caller to avoid circular dependencies
 // between this module and the `chrome/browser/ui/` target. See
 // brave_tab_helpers.cc.
-std::unique_ptr<PrintPreviewExtractor> CreateDefaultPrintPreviewExtractor(
+std::unique_ptr<PrintPreviewExtractor> CreatePrintPreviewExtractor(
     content::WebContents* web_contents,
     base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>
         id_map_callback,
     base::RepeatingCallback<base::flat_map<int, int>&()>
         request_id_map_callback);
 
-}  // namespace print_preview_extractor
+}  // namespace screenshot
 
 #endif  // BRAVE_BROWSER_SCREENSHOT_PRINT_PREVIEW_EXTRACTOR_FACTORY_H_
