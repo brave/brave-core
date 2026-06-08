@@ -35,13 +35,6 @@ export class LedgerUntrustedMessagingTransport //
     )
   }
 
-  promptAuthorization = async () => {
-    if (await this.authorizationNeeded()) {
-      const transport = await TransportWebHID.create()
-      await transport.close()
-    }
-  }
-
   private fillDeviceNameImpl = async (): Promise<void> => {
     try {
       const transport = await TransportWebHID.create()
@@ -70,18 +63,6 @@ export class LedgerUntrustedMessagingTransport //
   protected handleUnlock = async (
     command: UnlockCommand,
   ): Promise<UnlockResponse> => {
-    const isAuthNeeded = await this.authorizationNeeded()
-    if (isAuthNeeded) {
-      return {
-        ...command,
-        payload: {
-          success: false,
-          error: 'unauthorized',
-          code: 'unauthorized',
-        },
-      }
-    }
-
     await this.fillDeviceNameImpl()
 
     return {
@@ -90,9 +71,5 @@ export class LedgerUntrustedMessagingTransport //
         success: true,
       },
     }
-  }
-
-  protected authorizationNeeded = async (): Promise<boolean> => {
-    return (await TransportWebHID.list()).length === 0
   }
 }

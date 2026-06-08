@@ -507,24 +507,9 @@ export const transactionEndpoints = ({
               info.vendor,
               info.path,
               Buffer.from(rawMessage),
-              () => {
-                // dismiss hardware connect screen
-                store.dispatch(PanelActions.navigateToMain())
-              },
             )
 
             if (!signed.success) {
-              if (signed.code && signed.code === 'unauthorized') {
-                store.dispatch(
-                  PanelActions.setHardwareWalletInteractionError(signed.code),
-                )
-                return {
-                  data: {
-                    success: false,
-                    errorCode: signed.code,
-                  },
-                }
-              }
               payload.approved = false
               payload.hwSignatures = []
               payload.error = signed.error
@@ -1268,15 +1253,6 @@ export const transactionEndpoints = ({
             const { error, code } = result
 
             if (code !== undefined) {
-              if (code === 'unauthorized') {
-                store.dispatch(
-                  PanelActions.setHardwareWalletInteractionError(code),
-                )
-                return {
-                  error: code,
-                }
-              }
-
               const deviceError = dialogErrorFromLedgerErrorCode(code)
               if (deviceError === 'transactionRejected') {
                 await apiProxy.txService.rejectTransaction(
