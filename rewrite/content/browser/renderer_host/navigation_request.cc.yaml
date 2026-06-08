@@ -1,0 +1,47 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Call `MaybeHideReferrer` on redirect in
+      `NavigationRequest::OnRequestRedirected`, after the redirect's new
+      referrer has been written to `common_params_->referrer->url` and
+      before `Referrer::SanitizeForRequest` runs on it.
+
+      The injected call relies on the `browser_context` local defined
+      earlier in the same function, and on `GetTopDocumentGURL` defined
+      in the chromium_src shadow file's anonymous namespace.
+    re_pattern:
+      '(common_params_->referrer->url = GURL\(redirect_info\.new_referrer\);\n)'
+    replace: |
+      \1  GetContentClient()->browser()->MaybeHideReferrer(
+            frame_tree_node_->navigator().controller().GetBrowserContext(),
+            common_params_->url, GetTopDocumentGURL(frame_tree_node_),
+            &common_params_->referrer);
+
+  - description: |
+      Call `MaybeHideReferrer` from
+      `NavigationRequest::OnStartChecksComplete`, after the embedder
+      header merge and before the navigation params are cloned.
+
+      Anchored on the two-line embedder-header merge sequence
+      (`headers.MergeFrom(TakeModifiedRequestHeaders());` followed by
+      `begin_params_->headers = headers.ToString();`). That pair is
+      unique to this location and conveys the intent of the injection —
+      run our referrer hiding right after upstream finishes computing
+      the outgoing headers. Both lines are matched at their current
+      2-space indent; an earlier shape of upstream wrapped this block in
+      an `if`, but that has since been flattened.
+
+      `GetTopDocumentGURL` comes from the chromium_src shadow file's
+      anonymous namespace.
+    re_pattern:
+      '(headers\.MergeFrom\(TakeModifiedRequestHeaders\(\)\);\n  begin_params_->headers
+      = headers\.ToString\(\);\n)'
+    replace: |
+      \1  GetContentClient()->browser()->MaybeHideReferrer(
+            frame_tree_node_->navigator().controller().GetBrowserContext(),
+            common_params_->url, GetTopDocumentGURL(frame_tree_node_),
+            &common_params_->referrer);
