@@ -133,8 +133,9 @@ namespace {
 // supported extensions. The true list is needed to create the appropriate
 // handler.
 template <typename T>
-blink::WebGLFarbledExtensionHandler* GetValidHandler(ExecutionContext* context,
-                                                     T&& get_real_extensions) {
+WebGLFarbledExtensionHandler* CreateOrGetValidWebGLExtensionHandler(
+    ExecutionContext* context,
+    T&& get_real_extensions) {
   // Check if we have a valid handler for the current context.
   WebGLFarbledExtensionHandler* handler =
       brave::BraveSessionCache::From(*context)
@@ -150,20 +151,18 @@ blink::WebGLFarbledExtensionHandler* GetValidHandler(ExecutionContext* context,
       return nullptr;
     }
     handler = brave::BraveSessionCache::From(*context)
-                  .GetWebGLFarbledExtensionHandler(real_extensions.value());
+                  .CreateWebGLFarbledExtensionHandler(real_extensions.value());
   }
   return handler;
 }
 
 }  // namespace
 
-// This method returns the supported WebGL extensions. The returned list of
-// extensions may not correspond to the real ones if fingerprinting
-// protections are enabled.
+// This method returns the supported WebGL extensions. If fingerprinting
+// protections are enabled then the list may include farbled values.
 std::optional<Vector<String>>
 WebGLRenderingContextBase::getSupportedExtensions() {
-  // Check if we have a valid handler for the current context.
-  WebGLFarbledExtensionHandler* handler = GetValidHandler(
+  WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
       Host()->GetTopExecutionContext(),
       [this]() { return getSupportedExtensions_ChromiumImpl(); });
 
@@ -172,18 +171,16 @@ WebGLRenderingContextBase::getSupportedExtensions() {
     return std::nullopt;
   }
 
-  // Return the final list of WebGL extensions which may have been farbled.
   return handler->GetSupportedExtensions();
 }
 
 // This method return the underlying extension ScriptObject for the given
 // extension |name|. The returned ScriptObject may hold a null value if
-// the |name| does not correspond to the list of supported extensions. It may
-// also hold a dummy value if the |name| was farbled.
+// the |name| does not correspond to the list of supported extensions. It could
+// also represent a farbled object if the extension |name| was farbled.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
-  // Check if we have a valid handler for the current context.
-  WebGLFarbledExtensionHandler* handler = GetValidHandler(
+  WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
       Host()->GetTopExecutionContext(),
       [this]() { return getSupportedExtensions_ChromiumImpl(); });
 
