@@ -96,6 +96,11 @@ public class CustomizeBraveMenu {
     // settings screen when launched from Settings search, where no live app-menu context exists.
     private static @Nullable Bundle sLastKnownBundle;
 
+    @VisibleForTesting
+    public static void setLastKnownBundleForTesting(@Nullable Bundle bundle) {
+        sLastKnownBundle = bundle;
+    }
+
     /**
      * Static mapping of menu item IDs to their corresponding drawable resource IDs. Uses
      * SparseIntArray for optimal performance and memory efficiency on Android when mapping resource

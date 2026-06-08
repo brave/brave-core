@@ -16,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +24,11 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.annotation.Config;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.brave.browser.customize_menu.R;
@@ -150,6 +153,51 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
                     // Fragment should be created successfully even with null bundle.
                     assertNotNull(fragment);
                 });
+    }
+
+    @Test
+    @DisableFeatures(BraveFeatureList.BRAVE_SHRED)
+    public void testGetExtras_NoCachedBundle_ReturnsEmptyBundle() {
+        CustomizeBraveMenu.setLastKnownBundleForTesting(null);
+
+        Bundle extras = BraveCustomizeMenuPreferenceFragment.getSearchExtrasForTesting();
+
+        assertNotNull(extras);
+        assertTrue(extras.isEmpty());
+    }
+
+    @Test
+    @DisableFeatures(BraveFeatureList.BRAVE_SHRED)
+    public void testFallback_WhenBundleHasStringValues_UsesLastKnownBundle() {
+        // Prime sLastKnownBundle (simulates a prior populateBundle call).
+        CustomizeBraveMenu.setLastKnownBundleForTesting(mTestBundle);
+
+        // Simulate JSON round-trip: SettingsIndexData serializes extras via RecentSearchQueue
+        // which only supports simple types — Parcelable ArrayLists become Strings.
+        Bundle corruptedBundle = new Bundle();
+        corruptedBundle.putString(CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST, "[stringified]");
+        corruptedBundle.putString(CustomizeBraveMenu.KEY_PAGE_ACTION_ITEM_LIST, "[stringified]");
+
+        FragmentScenario<BraveCustomizeMenuPreferenceFragment> scenario =
+                FragmentScenario.launchInContainer(
+                        BraveCustomizeMenuPreferenceFragment.class,
+                        corruptedBundle,
+                        R.style.Theme_Chromium_Settings);
+
+        scenario.onFragment(
+                fragment -> {
+                    PreferenceCategory mainSection = fragment.findPreference("main_menu_section");
+                    PreferenceCategory pageActionsSection =
+                            fragment.findPreference("page_actions_section");
+                    assertNotNull(mainSection);
+                    assertNotNull(pageActionsSection);
+                    // mTestBundle has 2 main menu items and 2 page action items.
+                    // page_actions_section also has 1 static summary Preference from XML.
+                    assertEquals(2, mainSection.getPreferenceCount());
+                    assertEquals(3, pageActionsSection.getPreferenceCount());
+                });
+
+        CustomizeBraveMenu.setLastKnownBundleForTesting(null);
     }
 
     @Test
