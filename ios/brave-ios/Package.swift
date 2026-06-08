@@ -389,7 +389,7 @@ var package = Package(
       dependencies: ["FaviconModels"],
       sources: [
         "BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift",
-        "FavoritesWidgetData.swift",
+        "FavoritesWidgetData.swift", "DisabledShortcutsWidgetData.swift",
       ],
       plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
     ),
