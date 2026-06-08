@@ -27,13 +27,11 @@ const randomUUID = () =>
 // LedgerBridgeKeyring is the parent class for the various BridgeKeyrings, e.g.
 // SolanaLedgerBridgeKeyring
 export default class LedgerBridgeKeyring {
-  protected onAuthorized?: () => void
   protected transport?: LedgerTrustedMessagingTransport
   protected bridge?: HTMLIFrameElement
   protected readonly frameId: string
 
-  constructor(onAuthorized?: () => void) {
-    this.onAuthorized = onAuthorized
+  constructor() {
     this.frameId = randomUUID()
   }
 
@@ -102,7 +100,6 @@ export default class LedgerBridgeKeyring {
       this.transport = new LedgerTrustedMessagingTransport(
         this.bridge.contentWindow,
         LEDGER_BRIDGE_URL,
-        this.onAuthorized,
       )
     }
     return this.transport.sendCommand(command)

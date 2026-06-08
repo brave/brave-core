@@ -23,8 +23,8 @@ export default class FilecoinLedgerBridgeKeyring
   extends LedgerBridgeKeyring
   implements LedgerFilecoinKeyring
 {
-  constructor(onAuthorized?: () => void) {
-    super(onAuthorized)
+  constructor() {
+    super()
   }
 
   bridgeType = (): BridgeType => {

@@ -37,15 +37,11 @@ import {
   useSignMessageHardwareMutation,
 } from '../../../common/slices/api.slice'
 
-// components
-import { AuthorizeHardwareDeviceIFrame } from '../../shared/authorize-hardware-device/authorize-hardware-device'
-
 // style
 import {
   StyledWrapper,
   Title,
   IconWrapper,
-  EmptySpace,
 } from './connect_hardware_wallet_panel.style'
 import { Row, Column } from '../../shared/style'
 
@@ -115,10 +111,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
 
   // memos
   const isConnected = React.useMemo((): boolean => {
-    return (
-      hardwareWalletCode !== 'deviceNotConnected'
-      && hardwareWalletCode !== 'unauthorized'
-    )
+    return hardwareWalletCode !== 'deviceNotConnected'
   }, [hardwareWalletCode])
 
   const title = React.useMemo(() => {
@@ -133,10 +126,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
       return getLocale('braveWalletConnectHardwarePanelConfirmation')
     }
 
-    if (
-      hardwareWalletCode === 'deviceNotConnected'
-      || hardwareWalletCode === 'unauthorized'
-    ) {
+    if (hardwareWalletCode === 'deviceNotConnected') {
       return getLocale('braveWalletConnectHardwarePanelConnect').replace(
         '$1',
         account.name,
@@ -291,11 +281,6 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
         padding='16px'
         gap='16px'
       >
-        {hardwareWalletCode === 'unauthorized' ? (
-          <AuthorizeHardwareDeviceIFrame coinType={account.accountId.coin} />
-        ) : (
-          <EmptySpace />
-        )}
         <Row>
           <Button
             kind='outline'
