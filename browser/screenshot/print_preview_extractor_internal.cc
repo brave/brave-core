@@ -60,7 +60,7 @@ static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 using printing::PrintCompositeClient;
 using printing::mojom::PrintPreviewUI;
 
-using ImageCallback = PrintPreviewExtractor::CaptureImagesCallback;
+using ImageCallback = screenshot::PrintPreviewExtractor::CaptureImagesCallback;
 
 namespace {
 
@@ -127,6 +127,8 @@ content::RenderFrameHost* GetRenderFrameHostToUse(
 }
 
 }  // namespace
+
+namespace screenshot {
 
 PreviewPageImageExtractor::PreviewPageImageExtractor() = default;
 
@@ -595,3 +597,5 @@ void PrintPreviewExtractorInternal::OnCaptureBitmapResult(
     SendError(result.error());
   }
 }
+
+}  // namespace screenshot

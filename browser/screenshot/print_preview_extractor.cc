@@ -15,6 +15,8 @@
 #include "brave/browser/screenshot/pdf_utils.h"
 #include "printing/buildflags/buildflags.h"
 
+namespace screenshot {
+
 PrintPreviewExtractor::PrintPreviewExtractor(content::WebContents* web_contents,
                                              CreateExtractorCallback callback)
     : create_extractor_callback_(std::move(callback)),
@@ -38,3 +40,5 @@ void PrintPreviewExtractor::OnComplete(
   extractor_.reset();
   std::move(callback).Run(std::move(result));
 }
+
+}  // namespace screenshot

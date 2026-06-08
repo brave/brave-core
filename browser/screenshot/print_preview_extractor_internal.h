@@ -35,6 +35,8 @@
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
+namespace screenshot {
+
 class PreviewPageImageExtractor {
  public:
   PreviewPageImageExtractor();
@@ -180,5 +182,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
   base::WeakPtrFactory<PrintPreviewExtractorInternal> weak_ptr_factory_{this};
 };
+
+}  // namespace screenshot
 
 #endif  // BRAVE_BROWSER_SCREENSHOT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_

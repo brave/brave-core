@@ -40,6 +40,8 @@
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
+namespace screenshot {
+
 namespace {
 
 base::MappedReadOnlyRegion CreatePageRegion(size_t size) {
@@ -678,3 +680,5 @@ TEST_F(PreviewPageImageExtractorTest, CaptureImages) {
   // Test with even more pages
   RunCaptureImageTest(25);
 }
+
+}  // namespace screenshot

@@ -28,7 +28,7 @@ class PrintPreviewExtractionDelegateImpl
  public:
   PrintPreviewExtractionDelegateImpl(
       content::WebContents* web_contents,
-      std::unique_ptr<PrintPreviewExtractor> extractor);
+      std::unique_ptr<screenshot::PrintPreviewExtractor> extractor);
   ~PrintPreviewExtractionDelegateImpl() override;
 
   PrintPreviewExtractionDelegateImpl(
@@ -41,7 +41,7 @@ class PrintPreviewExtractionDelegateImpl
 
  private:
   raw_ptr<content::WebContents> web_contents_;
-  std::unique_ptr<PrintPreviewExtractor> extractor_;
+  std::unique_ptr<screenshot::PrintPreviewExtractor> extractor_;
 };
 
 }  // namespace ai_chat

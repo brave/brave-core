@@ -21,6 +21,8 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace screenshot {
+
 class PrintPreviewExtractor {
  public:
   // Result is image data of pages or error
@@ -61,5 +63,7 @@ class PrintPreviewExtractor {
 
   base::WeakPtrFactory<PrintPreviewExtractor> weak_ptr_factory_{this};
 };
+
+}  // namespace screenshot
 
 #endif  // BRAVE_BROWSER_SCREENSHOT_PRINT_PREVIEW_EXTRACTOR_H_
