@@ -95,7 +95,7 @@ private struct StatView: View {
         .unredacted()
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
+    .widgetBackground { Color(UIColor(braveSystemName: .pageBackground)) }
     .foregroundColor(Color(braveSystemName: .textPrimary))
   }
 }

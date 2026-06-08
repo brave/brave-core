@@ -43,7 +43,7 @@ struct SensitiveTextView: View {
     }
     .padding(20)
     .background(
-      Color(.secondaryBraveBackground).clipShape(
+      Color(braveSystemName: .pageBackground).clipShape(
         RoundedRectangle(cornerRadius: 10, style: .continuous)
       )
     )

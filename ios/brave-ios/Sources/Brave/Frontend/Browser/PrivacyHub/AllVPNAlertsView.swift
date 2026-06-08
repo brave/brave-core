@@ -127,7 +127,7 @@ extension PrivacyReportsView {
         Spacer()
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(.secondaryBraveBackground).ignoresSafeArea())
+      .background(Color(braveSystemName: .pageBackground).ignoresSafeArea())
       .ignoresSafeArea(.container, edges: .bottom)
       .navigationTitle(Strings.PrivacyHub.allVPNAlertsButtonText)
       .toolbar {

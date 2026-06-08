@@ -90,7 +90,7 @@ private struct FavoritesView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
+    .widgetBackground { Color(UIColor(braveSystemName: .pageBackground)) }
   }
 }
 

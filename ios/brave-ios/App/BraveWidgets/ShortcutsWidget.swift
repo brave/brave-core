@@ -259,7 +259,7 @@ private struct ShortcutsView: View {
       .frame(maxHeight: .infinity)
     }
     .padding(8)
-    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
+    .widgetBackground { Color(UIColor(braveSystemName: .pageBackground)) }
   }
 }
 

@@ -79,7 +79,7 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
       $0.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
       $0.layoutMargins = .zero
       $0.keyboardDismissMode = .onDrag
-      $0.backgroundColor = .secondaryBraveBackground
+      $0.backgroundColor = UIColor(braveSystemName: .pageBackground)
       $0.separatorColor = UIColor(braveSystemName: .dividerStrong)
       $0.accessibilityIdentifier = "SiteTable"
       $0.cellLayoutMarginsFollowReadableWidth = false

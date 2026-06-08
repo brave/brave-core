@@ -76,7 +76,7 @@ class SendTabProcessController: SendTabTransitioningController {
 
     super.init()
 
-    containerView.backgroundColor = .secondaryBraveBackground
+    containerView.backgroundColor = UIColor(braveSystemName: .pageBackground)
   }
 
   @available(*, unavailable)

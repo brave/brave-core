@@ -287,7 +287,7 @@ private struct DepositDetailsView: View {
     .padding(.vertical, 8)
     .background {
       RoundedRectangle(cornerRadius: 8)
-        .fill(Color(.secondaryBraveBackground))
+        .fill(Color(braveSystemName: .pageBackground))
     }
   }
 

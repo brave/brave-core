@@ -313,7 +313,7 @@ private struct DestinationLabel<Title: View>: View {
       image
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(width: imageSize, height: imageSize)
-        .background(Color(.secondaryBraveBackground).clipShape(Circle()))
+        .background(Color(braveSystemName: .pageBackground).clipShape(Circle()))
       VStack(alignment: .leading, spacing: 2) {
         title
           .font(.headline)

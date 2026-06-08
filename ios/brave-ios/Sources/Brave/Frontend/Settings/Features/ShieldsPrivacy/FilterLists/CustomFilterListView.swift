@@ -137,7 +137,7 @@ struct CustomFilterListView: View {
       .scrollContentBackground(.hidden)
       .scrollDismissesKeyboard(.interactively)
       .background(
-        Color(.secondaryBraveBackground)
+        Color(braveSystemName: .pageBackground)
           .edgesIgnoringSafeArea(.all)
       )
       .navigationTitle(Text(Strings.Shields.customFilters))

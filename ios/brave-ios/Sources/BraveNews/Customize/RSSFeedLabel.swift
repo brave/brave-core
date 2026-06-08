@@ -51,7 +51,7 @@ struct RSSFeedLabel: View {
         }
         .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(width: imageSize, height: imageSize)
-        .background(Color(.secondaryBraveBackground).clipShape(Circle()))
+        .background(Color(braveSystemName: .pageBackground).clipShape(Circle()))
       }
       .labelStyle(NewsLabelStyle())
     }

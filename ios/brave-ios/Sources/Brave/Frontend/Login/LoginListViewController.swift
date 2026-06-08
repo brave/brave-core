@@ -151,7 +151,7 @@ class LoginListViewController: LoginAuthViewController {
       $0.hidesNavigationBarDuringPresentation = true
     }
 
-    navigationController?.view.backgroundColor = .secondaryBraveBackground
+    navigationController?.view.backgroundColor = UIColor(braveSystemName: .pageBackground)
   }
 }
 

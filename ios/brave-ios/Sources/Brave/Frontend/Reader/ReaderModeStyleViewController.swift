@@ -22,7 +22,7 @@ class ReaderModeStyleViewController: UIViewController {
     static let rowHeight = 50
 
     static let fontTypeRowBackground = UIColor.braveBackground
-    static let fontSizeRowBackground = UIColor.secondaryBraveBackground
+    static let fontSizeRowBackground = UIColor(braveSystemName: .pageBackground)
 
     static let brightnessSliderWidth = 140
     static let brightnessIconOffset = 10
@@ -143,7 +143,7 @@ class ReaderModeStyleViewController: UIViewController {
 
     let brightnessRow = UIView()
     view.addSubview(brightnessRow)
-    brightnessRow.backgroundColor = .secondaryBraveBackground
+    brightnessRow.backgroundColor = UIColor(braveSystemName: .pageBackground)
 
     brightnessRow.snp.makeConstraints { (make) -> Void in
       make.top.equalTo(themeRow.snp.bottom)

@@ -55,7 +55,7 @@ public struct SpeechToTextInputView: View {
       speechModel.stopTranscribing()
     }
     .padding()
-    .background(Color(.secondaryBraveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .pageBackground).ignoresSafeArea())
   }
 
   private var transcriptView: some View {
