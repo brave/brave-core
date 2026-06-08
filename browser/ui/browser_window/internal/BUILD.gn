@@ -40,7 +40,7 @@ source_set("internal") {
     deps += [
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/tabs:tab_menu",
-      "//brave/browser/ui/tabs:tree_tab_session_observer",
+      "//brave/browser/ui/tabs:tree_tab_session_manager",
       "//brave/browser/ui/views/page_info",
       "//chrome/browser/ui/tabs:features",
     ]

@@ -16,7 +16,7 @@ class BraveNonClientHitTestHelper;
 class BraveVPNController;
 class FocusModeController;
 class PlaylistSidePanelCoordinator;
-class TreeTabSessionObserver;
+class TreeTabSessionManager;
 
 namespace brave_rewards {
 class RewardsPanelCoordinator;
@@ -82,6 +82,12 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return brave_non_client_hit_test_helper_.get();
   }
 
+  // Can be null when the browser isn't a normal browser or when the tree tab
+  // feature is disabled.
+  TreeTabSessionManager* GetTreeTabSessionManager() {
+    return tree_tab_session_manager_.get();
+  }
+
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
@@ -99,7 +105,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<BraveShieldsUIContentsCache> brave_shields_ui_contents_cache_;
   std::unique_ptr<BraveNonClientHitTestHelper>
       brave_non_client_hit_test_helper_;
-  std::unique_ptr<TreeTabSessionObserver> tree_tab_session_observer_;
+  std::unique_ptr<TreeTabSessionManager> tree_tab_session_manager_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

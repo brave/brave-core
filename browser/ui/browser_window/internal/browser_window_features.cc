@@ -14,7 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
-#include "brave/browser/ui/tabs/tree_tab_session_observer.h"
+#include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -105,7 +105,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
       browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
-    tree_tab_session_observer_ = std::make_unique<TreeTabSessionObserver>(
+    tree_tab_session_manager_ = std::make_unique<TreeTabSessionManager>(
         profile, browser->GetTabStripModel(), browser->GetSessionID());
   }
 }

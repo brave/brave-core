@@ -3,13 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/tabs/tree_tab_session_observer.h"
+#include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 
+#include <map>
 #include <string>
 
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/sessions/brave_session_keys.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/sessions/session_service.h"
@@ -35,9 +37,9 @@ const tabs::TreeTabNodeTabCollection* GetTreeTabNodeCollection(
 
 }  // namespace
 
-TreeTabSessionObserver::TreeTabSessionObserver(Profile* profile,
-                                               TabStripModel* tab_strip_model,
-                                               SessionID session_id)
+TreeTabSessionManager::TreeTabSessionManager(Profile* profile,
+                                             TabStripModel* tab_strip_model,
+                                             SessionID session_id)
     : profile_(profile),
       tab_strip_model_(tab_strip_model),
       session_id_(session_id) {
@@ -46,9 +48,39 @@ TreeTabSessionObserver::TreeTabSessionObserver(Profile* profile,
   tab_strip_model_->AddObserver(this);
 }
 
-TreeTabSessionObserver::~TreeTabSessionObserver() = default;
+TreeTabSessionManager::~TreeTabSessionManager() = default;
 
-void TreeTabSessionObserver::OnTreeTabChanged(const TreeTabChange& change) {
+void TreeTabSessionManager::MaybePopulateTreeTabExtraData(
+    int index,
+    std::map<std::string, std::string>* extra_data) {
+  auto* brave_tab_strip_model =
+      static_cast<BraveTabStripModel*>(tab_strip_model_);
+  if (!brave_tab_strip_model->tree_model()) {
+    // Can be null if current tab strip doesn't show tab strip as tree
+    // structure.
+    return;
+  }
+
+  auto* tab_interface = brave_tab_strip_model->GetTabAtIndex(index);
+  CHECK(tab_interface);
+
+  const auto* tree_collection = GetTreeTabNodeCollection(tab_interface);
+  if (!tree_collection) {
+    // In case the tab is under group or split, tree_collection can be null.
+    // TODO(https://github.com/brave/brave-browser/issues/49792): Add support
+    // for tabs in groups or splits.
+    return;
+  }
+
+  (*extra_data)[kBraveTreeNodeIdKey] = tree_collection->node().id().ToString();
+  auto parent_id = tree_collection->node().GetParentTreeNodeId();
+  (*extra_data)[kBraveTreeParentNodeIdKey] =
+      parent_id ? parent_id->ToString() : "";
+  (*extra_data)[kBraveTreeNodeCollapsedKey] =
+      tree_collection->node().collapsed() ? "1" : "0";
+}
+
+void TreeTabSessionManager::OnTreeTabChanged(const TreeTabChange& change) {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
 
   switch (change.type) {
@@ -73,7 +105,7 @@ void TreeTabSessionObserver::OnTreeTabChanged(const TreeTabChange& change) {
   }
 }
 
-void TreeTabSessionObserver::UpdateTreeTabSessionDataForNode(
+void TreeTabSessionManager::UpdateTreeTabSessionDataForNode(
     const tabs::TreeTabNode& node) {
   SessionService* const session_service =
       SessionServiceFactory::GetForProfileIfExisting(profile_);
@@ -112,7 +144,7 @@ void TreeTabSessionObserver::UpdateTreeTabSessionDataForNode(
   }
 }
 
-void TreeTabSessionObserver::UpdateTreeTabCollapsedState(
+void TreeTabSessionManager::UpdateTreeTabCollapsedState(
     const tabs::TreeTabNode& node) {
   SessionService* const session_service =
       SessionServiceFactory::GetForProfileIfExisting(profile_);
