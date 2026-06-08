@@ -74,6 +74,15 @@ public class BraveOriginSubscriptionPrefs {
     @Nullable private static Callback<Boolean> sCredentialsFetchedCallback;
 
     /**
+     * True while a {@link #createFetchOrder} chain is running. The fetch lives entirely in memory,
+     * so this guards {@link #resumeCredentialFetchIfNeeded} from starting a second, concurrent
+     * fetch when both the startup hook and the settings screen detect the same interrupted state.
+     * Reset in {@link #notifyCredentialsFetched}, which every terminal path of the fetch routes
+     * through.
+     */
+    private static boolean sFetchInProgress;
+
+    /**
      * Registers a one-shot callback that will be invoked on the UI thread when
      * fetchOrderCredentials finishes. Any previously registered callback is replaced.
      *
@@ -108,11 +117,40 @@ public class BraveOriginSubscriptionPrefs {
     }
 
     /**
+     * Resumes an interrupted post-purchase credential fetch left over from a prior session.
+     *
+     * <p>The fetch ({@link #createFetchOrder}) runs entirely in memory: if the browser is killed
+     * before {@link #fetchOrderCredentials} writes the order ID, the prefs stay in the "fetching"
+     * state ({@link #isFetchingCredentials} stays true) but no fetch is running. Nothing else
+     * re-triggers it on the next launch - the Play Store {@link #verifyPurchase} restore is skipped
+     * while the subscription pref is already active - so the Origin settings screen would otherwise
+     * show the "Disabling features" spinner forever. Call this on startup to restart the fetch from
+     * the persisted purchase token. Unlike {@link #verifyPurchase} it issues no Play Store billing
+     * query and never clears local state, so a transient billing outage cannot un-enroll the user.
+     *
+     * @param profile The profile to use for the operation.
+     */
+    public static void resumeCredentialFetchIfNeeded(@Nullable Profile profile) {
+        if (profile == null || sFetchInProgress || !isFetchingCredentials(profile)) {
+            return;
+        }
+        // isFetchingCredentials() already guarantees the purchase token is non-empty.
+        String purchaseToken =
+                UserPrefs.get(profile).getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID);
+        createFetchOrder(profile, purchaseToken);
+        // Mirror verifyPurchase(): open the Origin settings screen so the user sees the spinner
+        // while credentials finish fetching and is then prompted to restart, since the enforced
+        // policies only take effect after a restart.
+        BraveOriginSettingsLauncherHelper.showOriginSettingsForRestart();
+    }
+
+    /**
      * Fires the one-shot credentials-fetched callback, if registered.
      *
      * @param success Whether the credential fetch succeeded.
      */
     private static void notifyCredentialsFetched(boolean success) {
+        sFetchInProgress = false;
         Callback<Boolean> callback = sCredentialsFetchedCallback;
         sCredentialsFetchedCallback = null;
         if (callback != null) {
@@ -290,6 +328,7 @@ public class BraveOriginSubscriptionPrefs {
      * @param purchaseToken The purchase token to use for the operation
      */
     private static void createFetchOrder(Profile profile, String purchaseToken) {
+        sFetchInProgress = true;
         PrefService prefService = UserPrefs.get(profile);
         String packageName = prefService.getString(BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID);
         String productId = prefService.getString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID);
