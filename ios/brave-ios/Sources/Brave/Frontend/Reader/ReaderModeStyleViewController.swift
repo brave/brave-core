@@ -394,7 +394,8 @@ class ThemeButton: UIButton {
   private func themeBorders() {
     layer.borderWidth = isSelected ? 2 : 1
     layer.borderColor =
-      isSelected ? UIColor.braveBlurpleTint.cgColor : UIColor.braveSeparator.cgColor
+      isSelected
+      ? UIColor.braveBlurpleTint.cgColor : UIColor(braveSystemName: .dividerStrong).cgColor
   }
 
   override var isSelected: Bool {

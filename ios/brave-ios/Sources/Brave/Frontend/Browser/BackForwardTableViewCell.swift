@@ -33,7 +33,7 @@ class BackForwardTableViewCell: UITableViewCell {
   }()
 
   let line = UIView().then {
-    $0.backgroundColor = .braveSeparator
+    $0.backgroundColor = UIColor(braveSystemName: .dividerStrong)
   }
 
   lazy var label: UILabel = {
