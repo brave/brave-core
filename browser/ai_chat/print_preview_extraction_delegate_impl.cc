@@ -7,14 +7,11 @@
 
 #include <utility>
 
-#include "content/public/browser/web_contents.h"
-
 namespace ai_chat {
 
 PrintPreviewExtractionDelegateImpl::PrintPreviewExtractionDelegateImpl(
-    content::WebContents* web_contents,
     std::unique_ptr<screenshot::PrintPreviewExtractor> extractor)
-    : web_contents_(web_contents), extractor_(std::move(extractor)) {}
+    : extractor_(std::move(extractor)) {}
 
 PrintPreviewExtractionDelegateImpl::~PrintPreviewExtractionDelegateImpl() =
     default;

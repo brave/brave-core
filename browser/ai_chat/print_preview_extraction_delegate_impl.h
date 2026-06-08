@@ -26,8 +26,7 @@ namespace ai_chat {
 class PrintPreviewExtractionDelegateImpl
     : public AssociatedWebContentsContent::PrintPreviewExtractionDelegate {
  public:
-  PrintPreviewExtractionDelegateImpl(
-      content::WebContents* web_contents,
+  explicit PrintPreviewExtractionDelegateImpl(
       std::unique_ptr<screenshot::PrintPreviewExtractor> extractor);
   ~PrintPreviewExtractionDelegateImpl() override;
 
@@ -40,7 +39,6 @@ class PrintPreviewExtractionDelegateImpl
   void CaptureImages(CaptureImagesCallback callback) override;
 
  private:
-  raw_ptr<content::WebContents> web_contents_;
   std::unique_ptr<screenshot::PrintPreviewExtractor> extractor_;
 };
 

@@ -160,7 +160,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
         web_contents,
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
         std::make_unique<ai_chat::PrintPreviewExtractionDelegateImpl>(
-            web_contents,
             screenshot::CreatePrintPreviewExtractor(
                 web_contents,
                 base::BindRepeating(
