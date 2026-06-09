@@ -249,9 +249,7 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Returns the user preference for application launch count
-     */
+    /** Returns the user preference for application launch count */
     public int launchCount() {
         return mSharedPreferences.getInt(PREF_APP_LAUNCH_COUNT, 0);
     }
