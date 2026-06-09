@@ -42,7 +42,6 @@ public class BravePrivacySettingsTest {
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_HTTPS_FIRST_MODE_LEGACY = "https_first_mode_legacy";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
-    private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_SURVEY_PANELIST = "survey_panelist";
@@ -82,7 +81,6 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_DO_NOT_TRACK);
         checkPreferenceExists(PREF_HTTPS_FIRST_MODE_LEGACY);
         checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
-        checkPreferenceExists(PREF_HTTPS_UPGRADE);
         checkPreferenceExists(PREF_FORGET_FIRST_PARTY_STORAGE);
         checkPreferenceExists(PREF_SAFE_BROWSING);
         checkPreferenceExists(PREF_SECURE_DNS);
