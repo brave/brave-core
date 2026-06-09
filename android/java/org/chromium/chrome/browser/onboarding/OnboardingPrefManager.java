@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
+ * Copyright (c) 2019 The Brave Authors. All rights reserved. This Source Code Form is subject to
+ * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
+ * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-
 package org.chromium.chrome.browser.onboarding;
 
 import android.content.SharedPreferences;
@@ -101,18 +99,14 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Sets the user preference for whether the onboarding is shown.
-     */
+    /** Sets the user preference for whether the onboarding is shown. */
     public void setP3aOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_P3A_ONBOARDING, isShown);
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Sets the user preference for whether the onboarding is shown.
-     */
+    /** Sets the user preference for whether the onboarding is shown. */
     public void setNewOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_V2, isShown);
@@ -261,5 +255,4 @@ public class OnboardingPrefManager {
     public int launchCount() {
         return mSharedPreferences.getInt(PREF_APP_LAUNCH_COUNT, 0);
     }
-
 }
