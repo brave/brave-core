@@ -147,7 +147,11 @@ PsstUiDesktopPresenter::PsstUiDesktopPresenter(
   CHECK(psst_action_controller_);
   psst_action_controller_->SetMenuModelObserver(this);
 }
-PsstUiDesktopPresenter::~PsstUiDesktopPresenter() = default;
+PsstUiDesktopPresenter::~PsstUiDesktopPresenter() {
+  if (psst_action_controller_) {
+    psst_action_controller_->SetMenuModelObserver(nullptr);
+  }
+}
 
 void PsstUiDesktopPresenter::SetLocationBarIconStatus(
     LocationBarIconStatus status,
