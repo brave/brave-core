@@ -401,6 +401,10 @@
 # model
 -AppMenuModelTest.ModelHasIcons
 
+# This test fails because we use our own preferences for showing the bookmarks
+# bar
+-BookmarkBarTabGroupsTest.SavedTabGroupsRespectPrefOnNTP
+
 # These tests fail because we disable
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChangePasswordFormFillingSubmissionHelperTest.*
@@ -627,6 +631,7 @@
 # because it depends on PageEmbeddingsService being created and that service is
 # not created because we disable kHistoryEmbeddings.
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SkipsLensInputs_InToolModes
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
 -ContextualTasksEligibilityManagerTest.*

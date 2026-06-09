@@ -176,6 +176,7 @@
 -BoundSessionOAuthMultiloginStandardWithPrototypeFallbackTest.StartsNewBoundSession
 
 # Read anything is disabled
+-All/ContextMenuBrowserTestMenuSimplification.OpenInReadingMode/*
 -All/ReadAnythingEntryPointControllerOmniboxBrowserTest.*
 -All/ReadAnythingEntryPointControllerTabCloseBrowserTest.*/*
 -All/ReadAnythingOmniboxControllerBrowserTest.*/*
@@ -1134,6 +1135,8 @@
 -IndigoBrowserTest.CloseResetsReplacements
 -IndigoBrowserTest.ShowToolbarWhileInactiveDeferred
 -IndigoBrowserTest.TabSwitchPreservesToolbarState
+-MultistepFilterBrowserTest.ClearHistoryDeletesSuggestions
+-MultistepFilterBrowserTest.ExecuteSettingsCommandOpensAiPage
 -MultistepFilterBrowserTest.ExtractsAnnotationAndGeneratesSuggestionOnNavigation
 -MultistepFilterBrowserTest.NoExtractionOrSuggestionWhenNotSignedIn
 -MultistepFilterDisabledBrowserTest.ServiceNotCreatedWhenFeatureDisabled
@@ -1572,6 +1575,8 @@
 -PictureInPicturePixelComparisonBrowserTest.VideoPlay
 
 # These tests fail because we disable lens::features::kLensStandalone
+-All/ContextMenuBrowserTestMenuSimplification.ContextMenuForVideoWithReadableFrame/*
+-All/ContextMenuBrowserTestMenuSimplification.ContextMenuForVideoWithoutReadableFrame/*
 -ContextMenuBrowserTest.SaveLinkAsEntryIsDisabledForBlockedUrls
 -ContextMenuBrowserTest.ContextMenuForVideoWithReadableFrame
 -ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame
@@ -1629,6 +1634,8 @@
 -ControlledFrameNotAvailableChannels/ControlledFrameNotAvailableChannelTest.*
 -ExtensionApiTabsIwaMoveTest.*
 -ExtensionWindowCreateIwaTest.*
+-FileHandlerLaunchDialogIwaTest.LaunchIwaShowsVersionLabel
+-FileHandlerLaunchDialogIwaTest.LaunchSubAppShowsParentAppNameLabel
 -GarbageCollectStoragePartitionsCommandBrowserTest.UninstalledAppsHaveStoragePartitionsCleanedUp
 -GetIsolatedWebApp*.*
 -IWACaptivePortalBrowserTest.*
@@ -1640,6 +1647,8 @@
 -IsolatedWebApp*.*
 -IsolatedWebApp*.*/*
 -IwaPermissionsPolicyCacheBrowserTest.*
+-ProtocolHandlerLaunchDialogIwaTest.LaunchIwaShowsVersionLabel
+-ProtocolHandlerLaunchDialogIwaTest.LaunchSubAppShowsParentAppNameLabel
 -SubAppsPermissionsPolicyBrowserTest.*
 -SubAppsServiceImplBrowserTest.*
 -SubAppsServiceImplLimitBrowserTest.AddFailExceedsLimit
@@ -1652,6 +1661,8 @@
 -WebAppInternalsIwaInstallationBrowserTest.*
 -WebAppMenuBrowserTest.InvokeUi_main_isolated
 -WebAppTagIsolatedWebApp*.*
+-WebAppUninstallDialogViewIwaBrowserTest.UninstallIwaShowsIsolatedWebAppIdentityView
+-WebAppUninstallDialogViewIwaBrowserTest.UninstallSubAppShowsSubAppIdentityView
 -WebAuthnAffiliationCheck/WebAuthnIWARemoteDesktopOverrideBrowserTest.IWAsPolicyAndPrefsSetDifferentRp_id/Affiliated
 -WebAuthnAffiliationCheck/WebAuthnIWARemoteDesktopOverrideBrowserTest.IWAsPolicyAndPrefsSetDifferentRp_id/NotAffiliated
 -WebAuthnIWABrowserTest.MissingPermissionsPolicyYieldsNotAllowedError
@@ -2109,8 +2120,11 @@
 # Temporarily commented out while we add support for features::kWebUILocationBar
 # and related features (see https://github.com/brave/brave-browser/issues/54461)
 -All/WebUIToolbarWebViewPermissionBrowserTest.PermissionChipE2E/*
+-WebUIAppMenuBrowserTest.AppMenuState
 -WebUILocationBarBrowserTest.*
 -WebUIPinnedToolbarActionsBrowserTest.*
+-WebUIToolbarLifecyclePrewarmedBrowserTest.*
+-WebUIToolbarLifecycleNonPrewarmedBrowserTest.DynamicLoad
 -WebUIToolbarWebViewContentSettingsBrowserTest.ExplanatoryTextAndAnimation
 -WebUIToolbarWebViewContentSettingsBrowserTest.IconVisibilityAndState
 -WebUIToolbarWebViewContentSettingsBrowserTest.MultipleIcons
