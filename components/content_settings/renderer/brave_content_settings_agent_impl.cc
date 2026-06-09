@@ -153,7 +153,7 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
 }
 
 bool BraveContentSettingsAgentImpl::
-    RequireTransientActivationForHidRequestDevice() {
+    AllowHidRequestDeviceWithoutTransientActivation() {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Calls to `navigator.hid.requestDevice()` from
   // chrome-untrusted://ledger-bridge subframe dont't require transient user
@@ -163,13 +163,13 @@ bool BraveContentSettingsAgentImpl::
     auto origin = render_frame()->GetWebFrame()->GetSecurityOrigin();
     if (origin.Protocol() == content::kChromeUIUntrustedScheme &&
         (origin.Host() == kUntrustedLedgerHost)) {
-      return false;
+      return true;
     }
   }
 #endif
 
   return ContentSettingsAgentImpl::
-      RequireTransientActivationForHidRequestDevice();
+      AllowHidRequestDeviceWithoutTransientActivation();
 }
 
 bool BraveContentSettingsAgentImpl::IsJsBlockingEnforced() const {

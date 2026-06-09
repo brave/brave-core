@@ -11,21 +11,16 @@
 namespace blink {
 namespace {
 
-bool RequireTransientActivationForHidRequestDevice(LocalFrame* frame) {
+bool AllowHidRequestDeviceWithoutTransientActivation(LocalFrame* frame) {
   if (frame && frame->GetContentSettingsClient()) {
     return frame->GetContentSettingsClient()
-        ->RequireTransientActivationForHidRequestDevice();
+        ->AllowHidRequestDeviceWithoutTransientActivation();
   }
 
-  return true;
+  return false;
 }
 
 }  // namespace
 }  // namespace blink
 
-#define BRAVE_REQUIRE_TRANSIENT_ACTIVATION_FOR_HID_REQUEST_DEVICE(window) \
-  RequireTransientActivationForHidRequestDevice(window)
-
 #include <third_party/blink/renderer/modules/hid/hid.cc>
-
-#undef BRAVE_REQUIRE_TRANSIENT_ACTIVATION_FOR_HID_REQUEST_DEVICE
