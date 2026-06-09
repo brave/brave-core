@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_farbled_extension_handler.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
@@ -104,8 +105,6 @@ blink::ScriptValue GetWebGLDebugInfoValue(
     precision = 0;                                          \
   }
 
-// TODO(https://github.com/brave/brave-browser/issues/55445): Add fingerprinting
-// protections for GL_RENDERER and GL_VENDOR
 #define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER                 \
   if (ExtensionEnabled(kWebGLDebugRendererInfoName))                \
     return GetWebGLDebugInfoValue(                                  \
@@ -126,35 +125,75 @@ blink::ScriptValue GetWebGLDebugInfoValue(
 
 namespace blink {
 
-// If fingerprinting is disallowed, claim that the only supported
-// extension is WebGLDebugRendererInfo.
-std::optional<Vector<String>>
-WebGLRenderingContextBase::getSupportedExtensions() {
-  std::optional<Vector<String>> real_extensions =
-      getSupportedExtensions_ChromiumImpl();
-  if (real_extensions == std::nullopt) {
-    return real_extensions;
-  }
-  if (AllowFingerprintingForHost(Host())) {
-    return real_extensions;
-  }
+namespace {
 
-  Vector<String> fake_extensions;
-  fake_extensions.push_back(WebGLDebugRendererInfo::ExtensionName());
-  return fake_extensions;
+// An opaque method to get a valid WebGL extension handler. If the handler
+// does not exist it will create a new one.
+// |get_real_extensions| is a lambda which when invoked returns the true list of
+// supported extensions. The true list is needed to create the appropriate
+// handler.
+template <typename T>
+WebGLFarbledExtensionHandler* CreateOrGetValidWebGLExtensionHandler(
+    ExecutionContext* context,
+    T&& get_real_extensions) {
+  // Check if we have a valid handler for the current context.
+  WebGLFarbledExtensionHandler* handler =
+      brave::BraveSessionCache::From(*context)
+          .get_webgl_farbled_extension_handler();
+
+  // No valid handler found so create a new one which will be re-used until the
+  // lifetime of this context.
+  if (!handler) {
+    // Get the real list of supported WebGL extensions.
+    std::optional<Vector<String>> real_extensions =
+        std::forward<T>(get_real_extensions)();
+    if (real_extensions == std::nullopt) {
+      return nullptr;
+    }
+    handler = brave::BraveSessionCache::From(*context)
+                  .CreateWebGLFarbledExtensionHandler(real_extensions.value());
+  }
+  return handler;
 }
 
-// If fingerprinting is disallowed and they're asking for information
-// about any extension other than WebGLDebugRendererInfo, don't give it to
-// them.
+}  // namespace
+
+// This method returns the supported WebGL extensions. If fingerprinting
+// protections are enabled then the list may include farbled values.
+std::optional<Vector<String>>
+WebGLRenderingContextBase::getSupportedExtensions() {
+  WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
+      Host()->GetTopExecutionContext(),
+      [this]() { return getSupportedExtensions_ChromiumImpl(); });
+
+  // Handler can be null when if there were no supported extensions found.
+  if (!handler) {
+    return std::nullopt;
+  }
+
+  return handler->GetSupportedExtensions();
+}
+
+// This method return the underlying extension ScriptObject for the given
+// extension |name|. The returned ScriptObject may hold a null value if
+// the |name| does not correspond to the list of supported extensions. It could
+// also represent a farbled object if the extension |name| was farbled.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
-  if (!AllowFingerprintingForHost(Host())) {
-    if (name != WebGLDebugRendererInfo::ExtensionName()) {
-      return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
-    }
+  WebGLFarbledExtensionHandler* handler = CreateOrGetValidWebGLExtensionHandler(
+      Host()->GetTopExecutionContext(),
+      [this]() { return getSupportedExtensions_ChromiumImpl(); });
+
+  if (!handler) {
+    return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
   }
-  return getExtension_ChromiumImpl(script_state, name);
+
+  // Upstream takes care of returning nullable ScriptObject for invalid names.
+  const ScriptObject real_extension =
+      getExtension_ChromiumImpl(script_state, name);
+  // Handler would apply farbling on valid extension name. If not valid it would
+  // return real_extension.
+  return handler->GetExtension(script_state, name, &real_extension);
 }
 
 }  // namespace blink

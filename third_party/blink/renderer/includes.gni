@@ -36,8 +36,10 @@ brave_blink_renderer_core_sources = [
   "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.h",
 ]
 
-brave_blink_renderer_core_deps =
-    [ "//brave/components/brave_shields/core/common/" ]
+brave_blink_renderer_core_deps = [
+  "//brave/components/brave_shields/core/common:mojom",
+  "//brave/components/brave_shields/core/common/",
+]
 
 if (!is_android && !is_ios) {
   brave_blink_renderer_core_deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission_blink" ]

@@ -74,7 +74,6 @@ static_library("browser") {
     "//components/user_prefs",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
-    "//third_party/abseil-cpp:absl",
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//url",
   ]

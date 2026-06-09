@@ -13,7 +13,12 @@
       for (const [i, name] of Object.entries(gl.getSupportedExtensions())) {
         ext_list = ext_list.concat(gl.getExtension(name) ? name : null);
       }
-      document.title = ext_list.join("");
+      document.title = ext_list.join(",");
+
+      function getExtensionWithInvalidName() {
+        document.title = gl.getExtension("INVALID_EXTENSION_NAME_666");
+      }
+
     </script>
   </body>
 </html>
