@@ -137,7 +137,6 @@ public class BravePrivacySettings extends PrivacySettings {
             "block_all_cross_site_cookies_learn_more";
     private static final String PREF_SHIELDS_SUMMARY = "shields_summary";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
-    private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
     private static final String PREF_AUTO_SHRED_STORAGE = "auto_shred_storage";
     private static final String PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS =
@@ -149,7 +148,6 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_BLOCK_TRACKERS_ADS,
         PREF_DE_AMP,
         PREF_DEBOUNCE,
-        PREF_HTTPS_UPGRADE,
         PREF_HTTPS_FIRST_MODE_LEGACY,
         PREF_HTTPS_FIRST_MODE,
         PREF_BLOCK_SCRIPTS,
@@ -214,7 +212,6 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mDebouncePref;
     private @Nullable ChromeSwitchPreference mHttpsFirstModePrefLegacy;
     private @Nullable Preference mHttpsFirstModePref;
-    private BraveDialogPreference mHttpsUpgradePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mFingerprintingProtection2Pref;
     private BraveDialogPreference mRequestOtrPref;
@@ -294,11 +291,6 @@ public class BravePrivacySettings extends PrivacySettings {
             mHttpsFirstModePref = (Preference) findPreference(PREF_HTTPS_FIRST_MODE);
             mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
         }
-
-        mHttpsUpgradePref = (BraveDialogPreference) findPreference(PREF_HTTPS_UPGRADE);
-        mHttpsUpgradePref.setOnPreferenceChangeListener(this);
-
-        mHttpsUpgradePref.setVisible(httpsByDefaultIsEnabled);
 
         mCanMakePayment = (ChromeSwitchPreference) findPreference(PREF_CAN_MAKE_PAYMENT);
         mCanMakePayment.setOnPreferenceChangeListener(this);
@@ -549,32 +541,7 @@ public class BravePrivacySettings extends PrivacySettings {
         if (PREF_HTTPS_FIRST_MODE.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, (boolean) newValue);
-        } else if (PREF_HTTPS_UPGRADE.equals(key)) {
-            switch ((int) newValue) {
-                case STRICT:
-                    BraveShieldsContentSettings.setHttpsUpgradePref(
-                            BraveShieldsContentSettings.BLOCK_RESOURCE);
-                    mHttpsUpgradePref.setSummary(getActivity().getResources().getString(
-                            R.string.https_upgrade_option_1));
-                    mHttpsUpgradePref.setCheckedIndex(0);
-                    break;
-                case STANDARD:
-                    BraveShieldsContentSettings.setHttpsUpgradePref(
-                            BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
-                    mHttpsUpgradePref.setSummary(getActivity().getResources().getString(
-                            R.string.https_upgrade_option_2));
-                    mHttpsUpgradePref.setCheckedIndex(1);
-                    break;
-                case ALLOW:
-                default:
-                    BraveShieldsContentSettings.setHttpsUpgradePref(
-                            BraveShieldsContentSettings.ALLOW_RESOURCE);
-                    mHttpsUpgradePref.setSummary(getActivity().getResources().getString(
-                            R.string.https_upgrade_option_3));
-                    mHttpsUpgradePref.setCheckedIndex(2);
-                    break;
-            }
-        } else if (PREF_DE_AMP.equals(key)) {
+        }  else if (PREF_DE_AMP.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.DE_AMP_PREF_ENABLED, (boolean) newValue);
         } else if (PREF_DEBOUNCE.equals(key)) {
@@ -769,7 +736,6 @@ public class BravePrivacySettings extends PrivacySettings {
         String blockAdTrackersPref = BraveShieldsContentSettings.getTrackersPref();
         int cookiesBlockPref = preferencesManager.readInt(PREF_BLOCK_CROSS_SITE_COOKIES, 1);
         String fingerprintingPref = BraveShieldsContentSettings.getFingerprintingPref();
-        String httpsUpgradePref = BraveShieldsContentSettings.getHttpsUpgradePref();
 
         mBlockScriptsPref.setChecked(BraveShieldsContentSettings.getJavascriptPref());
 
@@ -835,20 +801,6 @@ public class BravePrivacySettings extends PrivacySettings {
             mFingerprintingProtectionPref.setSummary(
                     getActivity().getResources().getString(R.string.block_fingerprinting_option_3));
             mFingerprintingProtection2Pref.setChecked(false);
-        }
-
-        if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-            mHttpsUpgradePref.setCheckedIndex(0);
-            mHttpsUpgradePref.setSummary(
-                    getActivity().getResources().getString(R.string.https_upgrade_option_1));
-        } else if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
-            mHttpsUpgradePref.setCheckedIndex(1);
-            mHttpsUpgradePref.setSummary(
-                    getActivity().getResources().getString(R.string.https_upgrade_option_2));
-        } else if (httpsUpgradePref.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
-            mHttpsUpgradePref.setCheckedIndex(2);
-            mHttpsUpgradePref.setSummary(
-                    getActivity().getResources().getString(R.string.https_upgrade_option_3));
         }
 
         mForgetFirstPartyStoragePref.setChecked(
@@ -1047,12 +999,6 @@ public class BravePrivacySettings extends PrivacySettings {
                         indexData.removeEntryForKey(frag, PREF_FINGERPRINTING_PROTECTION2);
                     }
 
-                    boolean httpsByDefault =
-                            ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
-                    if (!httpsByDefault) {
-                        indexData.removeEntryForKey(frag, PREF_HTTPS_UPGRADE);
-                    }
-
                     // Policy-based removals
                     if (BraveWalletPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntryForKey(frag, PREF_UNSTOPPABLE_DOMAINS);
@@ -1104,19 +1050,6 @@ public class BravePrivacySettings extends PrivacySettings {
                         }
                         indexData.updateEntrySummaryForKey(
                                 frag, PREF_FINGERPRINTING_PROTECTION, fpSummaryId);
-                    }
-
-                    if (httpsByDefault) {
-                        String httpsUpgradePref = BraveShieldsContentSettings.getHttpsUpgradePref();
-                        int httpsSummaryId = R.string.https_upgrade_option_2;
-                        if (httpsUpgradePref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-                            httpsSummaryId = R.string.https_upgrade_option_1;
-                        } else if (httpsUpgradePref.equals(
-                                BraveShieldsContentSettings.ALLOW_RESOURCE)) {
-                            httpsSummaryId = R.string.https_upgrade_option_3;
-                        }
-                        indexData.updateEntrySummaryForKey(
-                                frag, PREF_HTTPS_UPGRADE, httpsSummaryId);
                     }
 
                     if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
