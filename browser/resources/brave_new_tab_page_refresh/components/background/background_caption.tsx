@@ -48,13 +48,14 @@ function BraveBackgroundCredits(props: BraveBackgroundCreditsProps) {
     return null
   }
   return (
-    <Link
-      className='photo-credits'
-      url={link}
-      theme='dark'
-    >
-      {formatString(getString(S.NEW_TAB_PHOTO_CREDITS_TEXT), [author])}
-    </Link>
+    <div data-theme='dark'>
+      <Link
+        className='photo-credits'
+        url={link}
+      >
+        {formatString(getString(S.NEW_TAB_PHOTO_CREDITS_TEXT), [author])}
+      </Link>
+    </div>
   )
 }
 
