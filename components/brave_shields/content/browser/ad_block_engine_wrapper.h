@@ -64,8 +64,6 @@ class AdBlockEngineWrapper {
       const std::string& tab_host);
 
   void UseResources(const adblock::BraveCoreResourceStorage& storage);
-  void EnableTag(const std::string& tag, bool enabled);
-  bool TagExists(const std::string& tag);
 
   std::pair<base::DictValue, base::DictValue> GetDebugInfo();
   void DiscardRegex(uint64_t regex_id);

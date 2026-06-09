@@ -203,18 +203,6 @@ class AdblockEngineBox final {
   return [NSData dataWithBytes:result.data() length:result.size()];
 }
 
-- (void)addTag:(NSString*)tag {
-  adblock_engine->enable_tag(base::SysNSStringToUTF8(tag));
-}
-
-- (void)removeTag:(NSString*)tag {
-  adblock_engine->disable_tag(base::SysNSStringToUTF8(tag));
-}
-
-- (bool)tagExists:(NSString*)tag {
-  return adblock_engine->tag_exists(base::SysNSStringToUTF8(tag));
-}
-
 - (bool)useResources:(NSString*)resources {
   // TODO(https://github.com/brave/brave-browser/issues/51103):
   // Reuse the once created storage for the both engines.

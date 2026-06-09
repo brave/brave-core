@@ -50,26 +50,47 @@ namespace brave_shields {
 
 namespace {
 
-typedef struct ListDefaultOverrideConstants {
+struct ListDefaultOverrideFeature {
   RAW_PTR_EXCLUSION const base::Feature& feature;
   std::string_view list_uuid;
-} ListDefaultOverrideConstants;
+};
 
-constexpr ListDefaultOverrideConstants kCookieListConstants{
+constexpr ListDefaultOverrideFeature kCookieListConstants{
     .feature = kBraveAdblockCookieListDefault,
     .list_uuid = kCookieListUuid};
 
-constexpr ListDefaultOverrideConstants kMobileNotificationsListConstants{
+constexpr ListDefaultOverrideFeature kMobileNotificationsListConstants{
     .feature = kBraveAdblockMobileNotificationsListDefault,
     .list_uuid = kMobileNotificationsListUuid};
 
-constexpr ListDefaultOverrideConstants kExperimentalListConstants{
+constexpr ListDefaultOverrideFeature kExperimentalListConstants{
     .feature = kBraveAdblockExperimentalListDefault,
     .list_uuid = kExperimentalListUuid};
 
-constexpr ListDefaultOverrideConstants kOverrideConstants[] = {
+constexpr ListDefaultOverrideFeature kFeatureOverrideConstants[] = {
     kCookieListConstants, kMobileNotificationsListConstants,
     kExperimentalListConstants};
+
+struct ListDefaultOverridePref {
+  const char* pref_name;
+  std::string_view list_uuid;
+};
+
+constexpr ListDefaultOverridePref kFacebookEmbedListConstants{
+    .pref_name = prefs::kFBEmbedControlType,
+    .list_uuid = "A5E6EC21-F01F-4547-9F0A-1EE1C3F2AE8D"};
+
+constexpr ListDefaultOverridePref kTwitterEmbedListConstants{
+    .pref_name = prefs::kTwitterEmbedControlType,
+    .list_uuid = "84960ADD-1CC1-419F-81FC-9F116F5205CC"};
+
+constexpr ListDefaultOverridePref kLinkedInEmbedListConstants{
+    .pref_name = prefs::kLinkedInEmbedControlType,
+    .list_uuid = "FB626316-6CC8-4447-884B-F5A37C29B0AE"};
+
+constexpr ListDefaultOverridePref kPrefOverrideConstants[] = {
+    kFacebookEmbedListConstants, kTwitterEmbedListConstants,
+    kLinkedInEmbedListConstants};
 
 bool IsAdBlockOnlyModeFilterList(const std::string& uuid) {
   return kAdblockOnlyModeFilterListUUIDs.contains(uuid);
@@ -153,9 +174,8 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     local_state_change_registrar_->Init(local_state_);
     local_state_change_registrar_->Add(
         prefs::kAdBlockOnlyModeEnabled,
-        base::BindRepeating(
-            &AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged,
-            base::Unretained(this)));
+        base::BindRepeating(&AdBlockComponentServiceManager::ResetProviders,
+                            base::Unretained(this)));
   }
 }
 
@@ -190,7 +210,7 @@ bool AdBlockComponentServiceManager::NeedsLocaleListsMigration(
   return true;
 }
 
-void AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged() {
+void AdBlockComponentServiceManager::ResetProviders() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   component_filters_providers_.clear();
   LoadComponentFiltersProviders();
@@ -333,9 +353,17 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   const bool list_touched = user_pref_dict;
 
   // Apply feature overrides from Griffin without overriding user preference
-  for (const auto& constants : kOverrideConstants) {
+  for (const auto& constants : kFeatureOverrideConstants) {
     if (uuid == constants.list_uuid &&
         base::FeatureList::IsEnabled(constants.feature) && !list_touched) {
+      return true;
+    }
+  }
+
+  // Apply feature overrides from settings pages
+  for (const auto& constants : kPrefOverrideConstants) {
+    if (uuid == constants.list_uuid &&
+        local_state_->GetBoolean(constants.pref_name)) {
       return true;
     }
   }

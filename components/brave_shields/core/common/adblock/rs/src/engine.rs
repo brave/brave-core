@@ -124,18 +124,6 @@ where
 }
 
 impl Engine {
-    pub fn enable_tag(&mut self, tag: &CxxString) {
-        self.engine.enable_tags(&[tag.to_str().unwrap()])
-    }
-
-    pub fn disable_tag(&mut self, tag: &CxxString) {
-        self.engine.disable_tags(&[tag.to_str().unwrap()])
-    }
-
-    pub fn tag_exists(&self, key: &CxxString) -> bool {
-        self.engine.tag_exists(key.to_str().unwrap())
-    }
-
     pub fn matches(
         &self,
         url: &CxxString,
