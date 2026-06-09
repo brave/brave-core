@@ -8,7 +8,7 @@
 #include "base/logging.h"
 #include "base/logging/logging_settings.h"
 #include "base/process/memory.h"
-#include "brave/components/brave_vpn/app/v2/agent/agent_app.h"
+#include "brave/components/brave_vpn/app/v2/helper/helper_app.h"
 #include "brave/components/brave_vpn/app/v2/shared/app_utils.h"
 #include "build/build_config.h"
 
@@ -34,6 +34,6 @@ int main(int argc, char* argv[]) {
 
   brave_vpn::v2::app_utils::InitLogging(command_line);
 
-  brave_vpn::v2::AgentApp agent_app;
-  return agent_app.Run();
+  brave_vpn::v2::HelperApp helper_app;
+  return helper_app.Run();
 }

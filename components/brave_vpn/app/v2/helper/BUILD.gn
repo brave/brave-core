@@ -1,0 +1,78 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+if (is_mac) {
+  import("//build/config/mac/rules.gni")
+  import("//build/util/branding.gni")
+}
+if (is_win) {
+  import("//chrome/process_version_rc_template.gni")
+}
+
+assert(enable_brave_vpn_v2)
+
+source_set("core") {
+  sources = [
+    "helper_app.cc",
+    "helper_app.h",
+  ]
+
+  public_deps = [ "//base" ]
+}
+
+if (is_win) {
+  process_version_rc_template("version_resources") {
+    sources = [ "win/helper.ver" ]
+    output = "$target_gen_dir/brave_vpn_helper_app.rc"
+  }
+}
+
+executable("helper") {
+  output_name = "brave_vpn_helper_app"
+
+  sources = [ "main.cc" ]
+  deps = [
+    ":core",
+    "//base",
+    "//base:base_static",
+    "//brave/components/brave_vpn/app/v2/shared",
+  ]
+
+  if (is_win) {
+    deps += [
+      ":version_resources",
+      "//build/win:default_exe_manifest",
+    ]
+  }
+}
+
+if (is_mac) {
+  vpn_helper_product_full_name = "$chrome_product_full_name VPN Helper"
+  vpn_helper_bundle_id = "$chrome_mac_bundle_id.vpn.helper"
+
+  # Assembles the helper executable and Info.plist into an app bundle.
+  mac_app_bundle("brave_vpn_helper_bundle") {
+    info_plist = "mac/Info.plist"
+    output_name = vpn_helper_product_full_name
+    extra_substitutions = [ "MAC_BUNDLE_IDENTIFIER=$vpn_helper_bundle_id" ]
+
+    sources = [ "main.cc" ]
+
+    deps = [
+      ":core",
+      "//base",
+      "//base:base_static",
+      "//brave/components/brave_vpn/app/v2/shared",
+    ]
+  }
+
+  # Drops the assembled app into the browser framework's Helpers directory.
+  bundle_data("brave_vpn_helper_bundle_data") {
+    sources = [ "$root_out_dir/$vpn_helper_product_full_name.app" ]
+    outputs = [ "{{bundle_contents_dir}}/Helpers/{{source_file_part}}" ]
+    public_deps = [ ":brave_vpn_helper_bundle" ]
+  }
+}

@@ -150,7 +150,10 @@ group("all") {
 
 if (enable_brave_vpn_v2) {
   group("brave_vpn_data_deps") {
-    data_deps = [ "//brave/components/brave_vpn/app/v2/agent" ]
+    data_deps = [
+      "//brave/components/brave_vpn/app/v2/agent",
+      "//brave/components/brave_vpn/app/v2/helper",
+    ]
   }
 }
 
@@ -332,6 +335,7 @@ if (is_mac) {
     group("vpn_apps_bundle_data") {
       deps = [
         "//brave/components/brave_vpn/app/v2/agent:brave_vpn_agent_bundle_data",
+        "//brave/components/brave_vpn/app/v2/helper:brave_vpn_helper_bundle_data",
       ]
     }
   }
