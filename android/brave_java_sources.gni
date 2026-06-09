@@ -292,7 +292,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/styles/BraveOmniboxResourceProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediatorBase.java",
-  "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnViewPagerAction.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingPrefManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/HighlightDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/HighlightItem.java",
