@@ -59,4 +59,28 @@
   <message name="IDS_BRAVE_ORIGIN_STARTUP_LINUX_FREE_BUTTON" desc="Button label to proceed with Origin for free on Linux" formatter_data="webui=BraveOriginStartup">
     Proceed with Origin for free on Linux
   </message>
+
+  <!-- The IDS_BRAVE_ORIGIN_STARTUP_ERROR_* messages are returned to the UI
+       through the mojo VerifyPurchaseId callback and localized in C++ via
+       l10n_util, so they are intentionally excluded from the WebUI JS bundle
+       (no formatter_data="webui=BraveOriginStartup"). -->
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_ERROR_SKUS_CONNECTION" desc="Error message shown when the browser cannot connect to the purchase service while verifying a Brave Origin purchase ID">
+    Unable to connect to SKU service
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_ERROR_EMPTY_PURCHASE_ID" desc="Error message shown when the user submits an empty purchase ID in the Brave Origin restore dialog">
+    Purchase ID is empty
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_ERROR_INVALID_PURCHASE_ID" desc="Error message shown when the entered Brave Origin purchase ID is not valid">
+    Invalid purchase ID
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_ERROR_FETCH_CREDENTIALS" desc="Error message shown when fetching the credentials for a Brave Origin purchase fails">
+    Failed to fetch credentials
+  </message>
+
+  <message name="IDS_BRAVE_ORIGIN_STARTUP_ERROR_PURCHASE_NOT_FOUND" desc="Error message shown when no Brave Origin purchase is found for the entered purchase ID">
+    Purchase not found
+  </message>
 </grit-part>
