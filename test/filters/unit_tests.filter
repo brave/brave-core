@@ -97,6 +97,7 @@
 
 # Disabling signin promo tests as Brave does not support them.
 -ShowSigninPromoTest*.*
+-SigninPromoTabHelperTest.*
 
 # This test crashes due to invalid memory access as described in the comment in
 # PrefChangeRegistrar::~PrefChangeRegistrar:
@@ -277,6 +278,7 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.ExtensionSyncDisabledWhileSignedIn
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+-ActorTaskListBubbleControllerTest.ShowBubble*
 -All/DiceResponseHandlerParamTest.Signin*/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
@@ -288,6 +290,7 @@
 -ContextualTasksEligibilityManagerTest.*
 -ContextualTasksUiServiceTest.PrefetchOnEligibilityChange
 -ContextualTasksUiServiceTest.PrefetchOnStartupIfAlreadyEligible
+-ContextualTasksWebContentsUserDataTest.GetOrCreateInputStateModel_IdentityFallback_DefaultTrue
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadAfterSignOut
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadWithFullSync
 -DeveloperPrivateApiTransportModeUnitTest.ExtensionUploadableOnSignIn
@@ -305,6 +308,7 @@
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
 -OpportunisticKeyRetrievalEnclaveManagerTest.StoringOpportunisticallyRetrievedKeyAfterSignInOfMatchingAccount
+-PeopleHandlerDiceTest.RecordSigninOffered
 -PeopleHandlerDiceTest.StoredAccountsList
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
@@ -318,6 +322,7 @@
 -ChromeBrowserFieldTrialsTest.SamplingTrials
 
 # These tests fail because we are modifying the HttpsUpgrades feature.
+-HttpsFirstModeSettingsTrackerTest.BalancedModeEnabledForEsbUsers
 -HttpsFirstModeSettingsTrackerTest.ImplicitTransition_EsbToggled
 -HttpsFirstModeSettingsTrackerTest.StartupDetailedState_EnabledBalancedEsbPairing
 
@@ -360,7 +365,6 @@
 -GeneratedSafeBrowsingPrefTest.OnSettingsBundleChanged_PrefChangedExternally
 -GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
--HttpsFirstModeSettingsTrackerTest.BalancedModeEnabledForEsbUsers
 -NotificationTelemetryServiceTest.OnPushEventFinished/*
 -NotificationTelemetryServiceTest.SendsTelemetryReport/*
 -NotificationTelemetryServiceTest.ServiceWorkerSubscriptionSendsServiceWorkerBehavior/*
@@ -402,6 +406,10 @@
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
 -AppMenuModelTest.ModelHasIcons
+
+# This test fails because we use our own preferences for showing the bookmarks
+# bar
+-BookmarkBarTabGroupsTest.SavedTabGroupsRespectPrefOnNTP
 
 # These tests fail because we disable
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
@@ -630,6 +638,7 @@
 # not created because we disable kHistoryEmbeddings.
 -ContextualSearchboxHandlerTest.DriveDisclaimerControllerDoesNotCrashForIncognito
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SkipsLensInputs_InToolModes
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
 -ContextualTasksEligibilityManagerTest.*
@@ -731,6 +740,17 @@
 # return false.
 -TabStripPrefsTest.MigrateTabSearchPref_ExperimentEnabled_Pinned
 -TabStripPrefsTest.MigrateTabSearchPref_ExperimentEnabled_Unpinned
+
+# These tests crash because we make ~BrowserActions() virtual (see
+# chrome-browser-ui-browser_actions.h.patch) so BraveBrowserActions can be
+# deleted through a BrowserActions*. The added vtable pointer shifts
+# BrowserActions::root_action_item_ off offset 0, but the test fakes the
+# BrowserActions layout with a plain (vtable-less) struct FakeBrowserActions and
+# reinterpret_casts it. root_action_item() then reads past the fake struct and
+# returns a garbage pointer, which ActionManager::FindAction dereferences and
+# crashes. The reinterpret_cast hack in the upstream test is incompatible with
+# our layout and the test can't be fixed without patching upstream.
+-ContextualTasksUtilsTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

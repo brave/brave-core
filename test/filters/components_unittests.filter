@@ -134,6 +134,7 @@
 
 # This tests fails because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
+-ClientSideDetectionServiceBaseTest.AtPhishingReportLimitESB
 -GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
 -RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
 -RealTimeUrlLookupServiceTest.TestFillLlamaForcedTriggerCapability
