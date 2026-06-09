@@ -33,7 +33,7 @@ struct RecentlyClosedTabsView: View {
       }
     )
     .accessibility(label: Text(Strings.RecentlyClosed.recentlyClosedClearActionConfirmation))
-    .foregroundColor(Color(.braveBlurpleTint))
+    .foregroundColor(Color(braveSystemName: .textInteractive))
     .actionSheet(isPresented: $showClearDataPrompt) {
       .init(
         title: Text(Strings.RecentlyClosed.recentlyClosedClearActionConfirmation),
@@ -59,7 +59,7 @@ struct RecentlyClosedTabsView: View {
         dismissView()
       }
     )
-    .foregroundColor(Color(.braveBlurpleTint))
+    .foregroundColor(Color(braveSystemName: .textInteractive))
   }
 
   private var websitesList: some View {

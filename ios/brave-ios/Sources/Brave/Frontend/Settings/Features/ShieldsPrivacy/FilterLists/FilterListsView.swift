@@ -57,7 +57,7 @@ struct FilterListsView: View {
 
     var forgroundColor: Color {
       switch self {
-      case .unknown: Color(.braveBlurpleTint)
+      case .unknown: Color(braveSystemName: .textInteractive)
       case .updated: Color(braveSystemName: .systemfeedbackSuccessText)
       case .updating: Color(braveSystemName: .neutral20)
       }
@@ -327,7 +327,7 @@ struct FilterListsView: View {
         showingAddSheet = true
       } label: {
         Text(Strings.Shields.addFilterByURL)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
       .disabled(editMode?.wrappedValue.isEditing == true)
       .popover(

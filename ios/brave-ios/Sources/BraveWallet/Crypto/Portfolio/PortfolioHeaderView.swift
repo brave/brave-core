@@ -80,7 +80,7 @@ struct PortfolioHeaderView: View {
         )
       }
       .environment(\.modalPresentationMode, $isPresentingBackup)
-      .accentColor(Color(.braveBlurpleTint))
+      .accentColor(Color(braveSystemName: .primitivePrimary40))
     }
   }
 
@@ -153,7 +153,8 @@ struct PortfolioHeaderView: View {
       ) {
         LinearGradient(
           gradient: Gradient(colors: [
-            Color(.braveBlurpleTint).opacity(colourScheme == .dark ? 0.5 : 0.2), .clear,
+            Color(braveSystemName: .primitivePrimary40).opacity(colourScheme == .dark ? 0.5 : 0.2),
+            .clear,
           ]),
           startPoint: .top,
           endPoint: .bottom

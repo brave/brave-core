@@ -154,7 +154,7 @@ struct BackupWalletView: View {
                 presentationMode.dismiss()
               } label: {
                 Text(Strings.cancelButtonTitle)
-                  .foregroundColor(Color(.braveBlurpleTint))
+                  .foregroundColor(Color(braveSystemName: .textInteractive))
               }
             }
           }

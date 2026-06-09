@@ -91,12 +91,12 @@ struct DappsSettings: View {
             } label: {
               let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
               Text(wallet.name)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
           Toggle(allowProviderAccessTitle, isOn: $allowProviderAccess.value)
             .foregroundColor(Color(braveSystemName: .textPrimary))
-            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+            .tint(Color(braveSystemName: .primitivePrimary40))
         }
       }
       Section(

@@ -233,7 +233,7 @@ private struct MessageWarningView: View {
             : Strings.Wallet.signMessageShowOriginalMessage
         )
         .font(.subheadline)
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
     .padding(12)

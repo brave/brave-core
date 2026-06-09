@@ -58,7 +58,7 @@ struct AddSuggestedTokenView: View {
               Image(systemName: "arrow.up.forward.square")
             }
             .font(.subheadline)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
           }
           .accessibilityLabel(Strings.Wallet.contractAddressAccessibilityLabel)
           .accessibilityValue(token.contractAddress.truncatedAddress)

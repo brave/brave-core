@@ -164,7 +164,13 @@ struct SubmitReportView: View {
       .overlay {
         if isSubmittingReport {
           ProgressView()
-            .progressViewStyle(.braveCircular(size: .normal, tint: .braveBlurpleTint))
+            .progressViewStyle(
+              .braveCircular(
+                size: .normal,
+                tint:
+                  UIColor(braveSystemName: .iconInteractive)
+              )
+            )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(braveSystemName: .containerBackground).opacity(0.5).ignoresSafeArea())
             .transition(.opacity.animation(.default))

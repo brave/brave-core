@@ -16,7 +16,7 @@ extension UIView {
   /// - warning: Be careful adjusting colors here, and make sure impact is well known
   public static func applyAppearanceDefaults() {
     UIToolbar.appearance().do {
-      $0.tintColor = .braveBlurpleTint
+      $0.tintColor = UIColor(braveSystemName: .iconInteractive)
       let appearance: UIToolbarAppearance = {
         let appearance = UIToolbarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -30,7 +30,7 @@ extension UIView {
     }
 
     UINavigationBar.appearance().do {
-      $0.tintColor = .braveBlurpleTint
+      $0.tintColor = UIColor(braveSystemName: .textInteractive)
       let appearance: UINavigationBarAppearance = {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -47,10 +47,10 @@ extension UIView {
       $0.scrollEdgeAppearance = appearance
     }
 
-    UISwitch.appearance().onTintColor = UIColor.braveBlurpleTint
+    UISwitch.appearance().onTintColor = UIColor(braveSystemName: .primitivePrimary40)
 
     UITableViewCell.appearance().do {
-      $0.tintColor = .braveBlurpleTint
+      $0.tintColor = UIColor(braveSystemName: .textInteractive)
     }
 
     UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor(

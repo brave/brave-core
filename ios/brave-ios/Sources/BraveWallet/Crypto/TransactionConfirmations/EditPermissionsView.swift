@@ -113,7 +113,7 @@ struct EditPermissionsView: View {
               resignFirstResponder()
             } label: {
               Text(Strings.Wallet.editPermissionsSetUnlimited)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
                 .font(.footnote)
             }
           }

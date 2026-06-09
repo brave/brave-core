@@ -47,8 +47,8 @@ public struct OnboardingBottomBarView: View {
           .padding()
       }
       .frame(height: 44)
-      .background(Color(.braveBlurple))
-      .accentColor(Color(.white))
+      .background(Color(braveSystemName: .buttonBackground))
+      .accentColor(Color(braveSystemName: .schemesOnPrimary))
       .clipShape(Capsule())
       .padding(.horizontal, 16)
       Button {

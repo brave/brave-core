@@ -56,7 +56,7 @@ struct SelectAccountTokenView: View {
           presentationMode.dismiss()
         } label: {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
       ToolbarItemGroup(placement: .bottomBar) {
@@ -70,7 +70,7 @@ struct SelectAccountTokenView: View {
               ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances
           )
           .font(.footnote.weight(.medium))
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         .transaction {
           $0.disablesAnimations = true
@@ -88,7 +88,7 @@ struct SelectAccountTokenView: View {
     } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
         .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {

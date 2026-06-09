@@ -10,7 +10,7 @@ struct RecoveryPhrasePager: View {
   var activePagerWidth: CGFloat = 20
   var pagerWidth: CGFloat = 14
   var pagerHeight: CGFloat = 8
-  var activePagerColor: Color = Color(.braveBlurpleTint)
+  var activePagerColor: Color = Color(braveSystemName: .iconInteractive)
   var inactivePagerColor: Color = Color(braveSystemName: .neutral20)
 
   @Binding var activeIndex: Int

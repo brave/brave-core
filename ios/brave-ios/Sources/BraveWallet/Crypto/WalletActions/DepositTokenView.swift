@@ -140,7 +140,7 @@ struct DepositTokenView: View {
               } label: {
                 Image(braveSystemName: "leo.tune")
                   .font(.footnote.weight(.medium))
-                  .foregroundColor(Color(.braveBlurpleTint))
+                  .foregroundColor(Color(braveSystemName: .iconInteractive))
                   .clipShape(Rectangle())
               }
               Spacer()
@@ -157,7 +157,7 @@ struct DepositTokenView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }
@@ -369,7 +369,7 @@ private struct DepositDetailsView: View {
             Text(Strings.Wallet.depositAddressCopy)
               .font(.footnote.weight(.semibold))
           }
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         .buttonStyle(BraveOutlineButtonStyle(size: .normal))
         Button {
@@ -380,7 +380,7 @@ private struct DepositDetailsView: View {
             Text(Strings.share)
               .font(.footnote.weight(.semibold))
           }
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         .buttonStyle(BraveOutlineButtonStyle(size: .normal))
       }

@@ -57,7 +57,7 @@ struct LegalView: View {
             )
           )
           .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
-          .tint(Color(.braveBlurpleTint))
+          .tint(Color(braveSystemName: .textInteractive))
           .font(.subheadline)
           .frame(maxWidth: .infinity, alignment: .leading)
           .onTapGesture {

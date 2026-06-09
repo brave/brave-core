@@ -51,7 +51,7 @@ struct PrivacyReportsView: View {
       }
     )
     .accessibility(label: Text(Strings.PrivacyHub.clearAllDataAccessibility))
-    .foregroundColor(Color(.braveBlurpleTint))
+    .foregroundColor(Color(braveSystemName: .iconInteractive))
     .actionSheet(isPresented: $showClearDataPrompt) {
       // Currently .actionSheet does not allow you leave empty title for the sheet.
       // This could get converted to .confirmationPrompt or Menu with destructive buttons
@@ -75,7 +75,7 @@ struct PrivacyReportsView: View {
 
   private var doneButton: some View {
     Button(Strings.done, action: dismissView)
-      .foregroundColor(Color(.braveBlurpleTint))
+      .foregroundColor(Color(braveSystemName: .textInteractive))
   }
 
   var body: some View {

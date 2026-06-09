@@ -276,7 +276,7 @@ struct FiltersDisplaySettingsView: View {
         )
       )
     }
-    .tint(Color(.braveBlurpleTint))
+    .tint(Color(braveSystemName: .primitivePrimary40))
   }
 
   private var hideUnownedNFTs: some View {
@@ -290,7 +290,7 @@ struct FiltersDisplaySettingsView: View {
         )
       )
     }
-    .tint(Color(.braveBlurpleTint))
+    .tint(Color(braveSystemName: .primitivePrimary40))
     .disabled(isHidingUnownedNFTsDisabled)
   }
 
@@ -305,7 +305,7 @@ struct FiltersDisplaySettingsView: View {
         )
       )
     }
-    .tint(Color(.braveBlurpleTint))
+    .tint(Color(braveSystemName: .primitivePrimary40))
   }
 
   private var accountFilters: some View {

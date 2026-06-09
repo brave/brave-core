@@ -154,7 +154,7 @@ class ReaderModeStyleViewController: UIViewController {
     let slider = UISlider()
     brightnessRow.addSubview(slider)
     slider.accessibilityLabel = Strings.readerModeBrightSliderAccessibilityLabel
-    slider.tintColor = .braveBlurpleTint
+    slider.tintColor = UIColor(braveSystemName: .iconInteractive)
     slider.addTarget(self, action: #selector(changeBrightness), for: .valueChanged)
 
     slider.snp.makeConstraints { make in
@@ -395,7 +395,8 @@ class ThemeButton: UIButton {
     layer.borderWidth = isSelected ? 2 : 1
     layer.borderColor =
       isSelected
-      ? UIColor.braveBlurpleTint.cgColor : UIColor(braveSystemName: .dividerStrong).cgColor
+      ? UIColor(braveSystemName: .dividerInteractive).cgColor
+      : UIColor(braveSystemName: .dividerStrong).cgColor
   }
 
   override var isSelected: Bool {

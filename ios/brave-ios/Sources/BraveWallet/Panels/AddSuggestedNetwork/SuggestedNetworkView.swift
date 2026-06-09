@@ -165,7 +165,7 @@ struct SuggestedNetworkView: View {
             openWalletURL(.brave.support)
           } label: {
             Text(Strings.Wallet.learnMoreButton)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }
@@ -202,7 +202,7 @@ struct SuggestedNetworkView: View {
               )
             } label: {
               Text(Strings.Wallet.viewDetails)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
         }

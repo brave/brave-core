@@ -69,7 +69,7 @@ struct PendingTransactionView: View {
         Button(action: confirmationStore.nextTransaction) {
           Text(Strings.Wallet.next)
             .fontWeight(.semibold)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }
@@ -181,7 +181,7 @@ struct PendingTransactionView: View {
       ) {
         Text(Strings.Wallet.confirmationViewEditPermissions)
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
     .padding(.horizontal)
@@ -191,7 +191,7 @@ struct PendingTransactionView: View {
   @ViewBuilder private var editGasFeeButton: some View {
     let titleView = Text(Strings.Wallet.editButtonTitle)
       .fontWeight(.semibold)
-      .foregroundColor(Color(.braveBlurpleTint))
+      .foregroundColor(Color(braveSystemName: .textInteractive))
     Group {
       if let gasEstimation = confirmationStore.eip1559GasEstimation {
         NavigationLink(
@@ -226,10 +226,10 @@ struct PendingTransactionView: View {
     ) {
       HStack {
         Image(braveSystemName: "leo.settings")
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .iconInteractive))
         Text(Strings.Wallet.advancedSettingsTransaction)
           .frame(maxWidth: .infinity, alignment: .leading)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         Spacer()
         Image(systemName: "chevron.right")
       }
@@ -273,7 +273,7 @@ struct PendingTransactionView: View {
             openWalletURL(WalletConstants.splTokenAccountCreationLink)
           } label: {
             Text(Strings.Wallet.learnMoreButton)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
               .font(.subheadline)
           }
         }
@@ -572,7 +572,7 @@ struct PendingTransactionView: View {
               )
             )
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
           }
           .padding(.top, 8)
         }

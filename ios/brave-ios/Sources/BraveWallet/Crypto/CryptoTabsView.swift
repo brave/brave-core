@@ -156,7 +156,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
               .foregroundColor(.white)
               .frame(width: 36, height: 36)
               .background(
-                Color(uiColor: .braveBlurpleTint)
+                Color(braveSystemName: .iconInteractive)
                   .clipShape(Circle())
               )
           }
@@ -232,7 +232,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
             }
             .navigationViewStyle(.stack)
             .environment(\.modalPresentationMode, $isShowingBackup)
-            .accentColor(Color(.braveBlurpleTint))
+            .accentColor(Color(braveSystemName: .primitivePrimary40))
           }
       )
       .background(
@@ -273,7 +273,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         } label: {
           Label(Strings.Wallet.searchTitle, systemImage: "magnifyingglass")
             .labelStyle(.iconOnly)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .iconInteractive))
         }
       }
       Button {
@@ -284,7 +284,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
           braveSystemImage: "leo.more.horizontal"
         )
         .labelStyle(.iconOnly)
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
       }
       .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
     }

@@ -185,7 +185,7 @@ struct EncryptionView: View {
           onDismiss()
         } label: {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }

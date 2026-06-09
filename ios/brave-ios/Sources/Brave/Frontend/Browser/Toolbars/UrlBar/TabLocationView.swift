@@ -321,7 +321,10 @@ class TabLocationView: UIView {
 
   private(set) lazy var progressBar = GradientProgressBar().then {
     $0.clipsToBounds = false
-    $0.setGradientColors(startColor: .braveBlurpleTint, endColor: .braveBlurpleTint)
+    $0.setGradientColors(
+      startColor: UIColor(braveSystemName: .primitivePrimary40),
+      endColor: UIColor(braveSystemName: .primitivePrimary40)
+    )
   }
 
   init(speechRecognizer: SpeechRecognizer, privateBrowsingManager: PrivateBrowsingManager) {

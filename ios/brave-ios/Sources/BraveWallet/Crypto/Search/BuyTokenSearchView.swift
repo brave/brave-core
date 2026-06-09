@@ -25,7 +25,7 @@ struct BuyTokenSearchView: View {
     } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
         .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {

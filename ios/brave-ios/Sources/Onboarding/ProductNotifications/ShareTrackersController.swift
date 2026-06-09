@@ -156,7 +156,7 @@ private class ShareTrackersView: UIView {
     let actionButton = InsetButton().then {
       $0.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
 
-      $0.backgroundColor = .braveDarkerBlurple
+      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.contentEdgeInsets = UX.actionButtonInsets
       $0.layer.cornerRadius = 20
       $0.layer.cornerCurve = .continuous

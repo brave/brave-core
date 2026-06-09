@@ -130,7 +130,7 @@ struct NFTView: View {
           Image(braveSystemName: "leo.carat.down")
             .font(.subheadline.weight(.semibold))
         }
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .textInteractive))
       }
       if nftStore.isLoadingDiscoverAssets && isNFTDiscoveryEnabled {
         ProgressView()

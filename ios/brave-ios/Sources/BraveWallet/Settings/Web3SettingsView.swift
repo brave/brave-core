@@ -173,7 +173,7 @@ private struct WalletSettingsView: View {
           )
         )
         .foregroundColor(Color(braveSystemName: .textPrimary))
-        .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+        .tint(Color(braveSystemName: .primitivePrimary40))
       }
     }
     Section(
@@ -186,14 +186,14 @@ private struct WalletSettingsView: View {
         )
       )
       .foregroundColor(Color(braveSystemName: .textSecondary))
-      .tint(Color(.braveBlurpleTint))
+      .tint(Color(braveSystemName: .textInteractive))
     ) {
       Toggle(
         Strings.Wallet.web3SettingsEnableNFTDiscovery,
         isOn: $settingsStore.isNFTDiscoveryEnabled
       )
       .foregroundColor(Color(braveSystemName: .textPrimary))
-      .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+      .tint(Color(braveSystemName: .primitivePrimary40))
     }
     Section(
       footer: Text(Strings.Wallet.networkFooter)
@@ -231,7 +231,7 @@ private struct WalletSettingsView: View {
           isOn: $displayDappsNotifications.value
         )
         .foregroundColor(Color(braveSystemName: .textPrimary))
-        .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+        .tint(Color(braveSystemName: .primitivePrimary40))
       }
     }
     Section(
@@ -242,7 +242,7 @@ private struct WalletSettingsView: View {
         isShowingResetTransactionAlert = true
       } label: {
         Text(Strings.Wallet.settingsResetTransactionTitle)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
     Section {
@@ -337,7 +337,7 @@ private struct Web3DomainSettingsView: View {
           )
         )
         .foregroundColor(Color(braveSystemName: .textSecondary))
-        .tint(Color(.braveBlurpleTint))
+        .tint(Color(braveSystemName: .textInteractive))
         .font(.footnote)
       }
       .padding(.vertical, 4)
@@ -378,7 +378,7 @@ private struct Web3DomainSettingsView: View {
           )
         )
         .foregroundColor(Color(braveSystemName: .textSecondary))
-        .tint(Color(.braveBlurpleTint))
+        .tint(Color(braveSystemName: .textInteractive))
         .font(.footnote)
       }
       .padding(.vertical, 4)

@@ -53,7 +53,7 @@ struct OptInView: View {
         Button(action: tappedLearnMore) {
           Text(Strings.BraveNews.learnMoreTitle)
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }

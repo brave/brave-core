@@ -204,7 +204,7 @@ struct SignTransactionView: View {
                 Button(action: next) {
                   Text(Strings.Wallet.next)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(.braveBlurpleTint))
+                    .foregroundColor(Color(braveSystemName: .textInteractive))
                 }
               }
             }
@@ -395,7 +395,7 @@ struct SignMessageWarningView: View {
         } label: {
           Text(Strings.Wallet.learnMoreButton)
             .font(.subheadline)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         .padding(.bottom, 12)
       }

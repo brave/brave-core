@@ -166,7 +166,7 @@ struct NetworkListView: View {
           isPresentingNetworkDetails = .init()
         } label: {
           Label(Strings.Wallet.addCustomNetworkBarItemTitle, systemImage: "plus")
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }

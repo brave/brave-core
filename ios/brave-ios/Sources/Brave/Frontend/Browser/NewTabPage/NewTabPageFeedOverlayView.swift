@@ -108,12 +108,12 @@ class NewContentAvailableButton: SpringButton {
     $0.textAlignment = .center
     $0.text = Strings.BraveNews.contentAvailableButtonTitle
     $0.numberOfLines = 0
-    $0.textColor = .white
+    $0.textColor = UIColor(braveSystemName: .schemesOnPrimary)
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
   }
 
   private let loaderView = LoaderView(size: .small).then {
-    $0.tintColor = .white
+    $0.tintColor = UIColor(braveSystemName: .schemesOnPrimary)
     $0.alpha = 0.0
   }
 
@@ -157,7 +157,7 @@ class NewContentAvailableButton: SpringButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .braveBlurpleTint
+    backgroundColor = UIColor(braveSystemName: .buttonBackground)
     layer.cornerCurve = .continuous
 
     clipsToBounds = true

@@ -263,7 +263,7 @@ extension LoginInfoViewController {
       let cell = tableView.dequeueReusableCell(for: indexPath) as CenteredButtonCell
       cell.do {
         $0.textLabel?.text = Strings.delete
-        $0.tintColor = .braveBlurpleTint
+        $0.tintColor = UIColor(braveSystemName: .textInteractive)
       }
       return cell
     default:

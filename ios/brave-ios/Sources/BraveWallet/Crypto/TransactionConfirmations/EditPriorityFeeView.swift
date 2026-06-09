@@ -205,7 +205,7 @@ struct EditPriorityFeeView: View {
         } label: {
           EmptyView()
         }
-        .accentColor(Color(.braveBlurpleTint))
+        .accentColor(Color(braveSystemName: .primitivePrimary40))
         .pickerStyle(.inline)
         .foregroundColor(Color(braveSystemName: .textPrimary))
       }

@@ -125,7 +125,7 @@ struct EditSiteConnectionView: View {
       }
     } label: {
       Text(action.title)
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .textInteractive))
         .font(.footnote.weight(.semibold))
     }
   }
@@ -209,7 +209,7 @@ struct EditSiteConnectionView: View {
             onDismiss(permittedAccounts)
           } label: {
             Text(Strings.done)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }

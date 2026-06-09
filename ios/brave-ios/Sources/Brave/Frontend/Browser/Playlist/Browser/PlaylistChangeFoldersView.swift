@@ -47,10 +47,9 @@ struct PlaylistChangeFoldersView: View {
             HStack {
               Image(braveSystemName: "leo.folder.open")
                 .foregroundColor(
-                  Color(
-                    folder.id == selectedFolderID
-                      ? .braveBlurpleTint : UIColor(braveSystemName: .textPrimary)
-                  )
+                  folder.id == selectedFolderID
+                    ? Color(braveSystemName: .iconInteractive)
+                    : Color(braveSystemName: .textPrimary)
                 )
                 .frame(width: iconSize)
               VStack(alignment: .leading) {
@@ -63,7 +62,7 @@ struct PlaylistChangeFoldersView: View {
               Spacer()
               if folder.id == selectedFolderID {
                 Image(braveSystemName: "leo.check.normal")
-                  .foregroundStyle(Color(.braveBlurpleTint))
+                  .foregroundStyle(Color(braveSystemName: .iconInteractive))
               }
             }
             .padding(.horizontal)
@@ -91,7 +90,7 @@ struct PlaylistChangeFoldersView: View {
         } label: {
           Text(Strings.PlaylistFolders.playlistNewFolderButtonTitle)
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 2)
         }

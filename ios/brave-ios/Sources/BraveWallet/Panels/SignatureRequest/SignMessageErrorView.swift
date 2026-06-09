@@ -65,7 +65,7 @@ struct SignMessageErrorView: View {
       } label: {
         Text(Strings.Wallet.next)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
     .frame(maxWidth: .infinity, alignment: .trailing)

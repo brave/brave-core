@@ -37,7 +37,7 @@ struct SensitiveTextView: View {
             "\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "leo.copy.plain-text"))"
           )
           .font(.subheadline)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }

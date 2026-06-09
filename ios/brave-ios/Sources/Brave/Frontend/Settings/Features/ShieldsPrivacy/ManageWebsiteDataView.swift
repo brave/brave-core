@@ -148,7 +148,7 @@ struct ManageWebsiteDataView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.done)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         ToolbarItemGroup(placement: .bottomBar) {
@@ -163,7 +163,7 @@ struct ManageWebsiteDataView: View {
             Text(editMode.isEditing ? Strings.done : Strings.edit)
               .foregroundColor(
                 visibleRecords.isEmpty
-                  ? Color(braveSystemName: .neutral20) : Color(.braveBlurpleTint)
+                  ? Color(braveSystemName: .neutral20) : Color(braveSystemName: .textInteractive)
               )
           }
           .disabled(visibleRecords.isEmpty)

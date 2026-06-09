@@ -34,12 +34,17 @@ struct FollowToggle: View {
         }
       } label: {
         configuration.label
-          .foregroundColor(isFollowing ? Color(braveSystemName: .textSecondary) : Color.white)
+          .foregroundColor(
+            isFollowing
+              ? Color(braveSystemName: .textSecondary) : Color(braveSystemName: .schemesOnPrimary)
+          )
           .font(.footnote.bold())
           .padding(.horizontal, 12)
           .padding(.vertical, 4)
           .background(
-            (isFollowing ? Color(braveSystemName: .containerBackground) : Color(.braveBlurpleTint))
+            (isFollowing
+              ? Color(braveSystemName: .containerBackground)
+              : Color(braveSystemName: .buttonBackground))
               .clipShape(Capsule())
           )
           .overlay(

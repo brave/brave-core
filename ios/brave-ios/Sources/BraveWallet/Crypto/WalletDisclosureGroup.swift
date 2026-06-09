@@ -17,7 +17,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
       Spacer()
       Image(braveSystemName: "leo.carat.down")
         .rotationEffect(.degrees(isExpanded ? 180 : 0))
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
         .animation(.default, value: isExpanded)
     }
     .padding(.horizontal)

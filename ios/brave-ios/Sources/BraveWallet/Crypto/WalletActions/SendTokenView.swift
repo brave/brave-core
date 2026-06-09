@@ -270,7 +270,7 @@ struct SendTokenView: View {
                     openURL(WalletConstants.braveWalletENSOffchainURL)
                   } label: {
                     Text(Strings.Wallet.learnMoreButton)
-                      .foregroundColor(Color(.braveBlurpleTint))
+                      .foregroundColor(Color(braveSystemName: .textInteractive))
                   }
                 }
                 .font(.subheadline)
@@ -387,7 +387,7 @@ struct SendTokenView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }
