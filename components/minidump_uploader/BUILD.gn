@@ -16,5 +16,8 @@ robolectric_library("junit") {
     "//third_party/androidx:androidx_test_runner_java",
     "//third_party/junit",
   ]
-  sources = [ "android/javatests/src/org/chromium/components/minidump_uploader/BraveHttpURLConnectionFactoryImplTest.java" ]
+  sources = [
+    "android/javatests/src/org/chromium/components/minidump_uploader/BraveHttpURLConnectionFactoryImplTest.java",
+    "android/javatests/src/org/chromium/components/minidump_uploader/BraveMinidumpUploaderTest.java",
+  ]
 }
