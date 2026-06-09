@@ -68,7 +68,10 @@ source_set("browser_tests") {
   if (!is_android) {
     testonly = true
 
-    sources = [ "settings_secure_dns_handler_browsertest.cc" ]
+    sources = [
+      "brave_manage_profile_browsertest.cc",
+      "settings_secure_dns_handler_browsertest.cc",
+    ]
 
     deps = [
       "//chrome/browser/ui/",
