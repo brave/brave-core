@@ -43,26 +43,26 @@ bool GetPathPrefixesFromValue(const base::Value* value,
   return true;
 }
 
-std::pair<bool, std::vector<PlaylistResolveRule>>
-LoadPlaylistExclusionsFromFile(const base::FilePath& exclusions_file_path) {
+std::optional<std::vector<PlaylistResolveRule>> LoadPlaylistExclusionsFromFile(
+    const base::FilePath& exclusions_file_path) {
   const std::string contents =
       brave_component_updater::GetDATFileAsString(exclusions_file_path);
   // Bail out if the component file was not loaded.
   if (contents.empty()) {
-    return {false, {}};
+    return std::nullopt;
   }
 
   std::optional<base::DictValue> root =
       base::JSONReader::ReadDict(contents, base::JSON_PARSE_RFC);
   // Skip malformed JSON payloads.
   if (!root) {
-    return {false, {}};
+    return std::nullopt;
   }
 
   const base::ListValue* rules_list = root->FindList(kRules);
   // Skip payloads without a rules list.
   if (!rules_list) {
-    return {false, {}};
+    return std::nullopt;
   }
 
   std::vector<PlaylistResolveRule> rules;
@@ -75,7 +75,7 @@ LoadPlaylistExclusionsFromFile(const base::FilePath& exclusions_file_path) {
     }
   }
 
-  return {true, std::move(rules)};
+  return rules;
 }
 
 }  // namespace
@@ -162,9 +162,9 @@ PlaylistExclusions::PlaylistExclusions() = default;
 
 void PlaylistExclusions::OnPlaylistExclusionsLoaded(
     base::OnceClosure on_complete,
-    std::pair<bool, std::vector<PlaylistResolveRule>> result) {
-  if (result.first) {
-    rules_ = std::move(result.second);
+    std::optional<std::vector<PlaylistResolveRule>> rules) {
+  if (rules) {
+    rules_ = std::move(*rules);
   }
   if (!on_complete.is_null()) {
     std::move(on_complete).Run();
