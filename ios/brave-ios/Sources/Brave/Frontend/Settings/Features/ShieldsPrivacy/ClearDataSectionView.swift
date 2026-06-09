@@ -35,7 +35,7 @@ struct ClearDataSectionView: View {
     } label: {
       VStack(alignment: .center) {
         Text(Strings.clearDataNow)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
     .frame(maxWidth: .infinity)

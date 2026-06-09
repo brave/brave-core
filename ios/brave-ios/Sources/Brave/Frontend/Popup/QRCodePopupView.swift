@@ -44,7 +44,7 @@ class QRCodePopupView: UIKitPopupView {
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
     $0.layer.borderWidth = 1
     $0.snp.makeConstraints { $0.height.equalTo(44) }
-    $0.tintColor = .braveBlurpleTint
+    $0.tintColor = UIColor(braveSystemName: .iconInteractive)
     $0.setImage(UIImage(named: "nav-share", in: .module, compatibleWith: nil)!, for: .normal)
     $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -18, bottom: 0, right: 0)
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
@@ -68,7 +68,7 @@ class QRCodePopupView: UIKitPopupView {
     }
 
     shareButton.layer.borderColor =
-      UIColor.braveBlurpleTint
+      UIColor(braveSystemName: .dividerInteractive)
       .resolvedColor(with: traitCollection).cgColor
 
     [qrCodeImage, title, shareButton, closeButton].forEach(contentView.addSubview(_:))
@@ -127,7 +127,7 @@ class QRCodePopupView: UIKitPopupView {
     super.traitCollectionDidChange(previousTraitCollection)
     if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
       shareButton.layer.borderColor =
-        UIColor.braveBlurpleTint
+        UIColor(braveSystemName: .dividerInteractive)
         .resolvedColor(with: traitCollection).cgColor
     }
   }

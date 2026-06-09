@@ -116,7 +116,7 @@ struct AccountDetailsView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         ToolbarItemGroup(placement: .confirmationAction) {
@@ -127,7 +127,8 @@ struct AccountDetailsView: View {
         }
       }
     }
-    .accentColor(Color(.braveBlurpleTint))  // needed for navigation bar back button(s)
+    // needed for navigation bar back button(s)
+    .accentColor(Color(braveSystemName: .primitivePrimary40))
     .onAppear {
       if name.isEmpty {
         // Wait until next runloop pass to fix bug where body isn't recomputed based on state change

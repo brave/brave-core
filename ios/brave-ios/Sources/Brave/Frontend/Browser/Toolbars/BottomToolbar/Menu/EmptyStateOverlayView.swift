@@ -43,12 +43,12 @@ class EmptyStateOverlayView: UIView {
   }
 
   private let actionButton = UIButton().then {
-    $0.setTitleColor(.white, for: .normal)
+    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
     $0.layer.cornerCurve = .continuous
     $0.layer.cornerRadius = UX.buttonHeight / 2.0
     $0.titleEdgeInsets = UX.titleEdgeInsets
     $0.contentEdgeInsets = UX.contentEdgeInsets
-    $0.backgroundColor = .braveBlurpleTint
+    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
   }
 
   private let actionDescriptionLabel = UILabel().then {

@@ -74,7 +74,7 @@ struct BackupRecoveryPhraseView: View {
           } else {
             Text(Strings.Wallet.copyToPasteboard)
               .font(.subheadline.bold())
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         .padding(.top, 20)

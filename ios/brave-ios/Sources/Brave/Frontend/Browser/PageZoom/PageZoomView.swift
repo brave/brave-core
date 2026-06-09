@@ -125,7 +125,7 @@ struct PageZoomView: View {
           dismiss?()
         } label: {
           Image(braveSystemName: "leo.close")
-            .foregroundColor(Color(UIColor.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .iconInteractive))
             .font(.system(.footnote).weight(.medium))
         }
         .frame(maxWidth: .infinity, alignment: .trailing)

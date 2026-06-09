@@ -81,7 +81,7 @@ private struct AccountListRowView: View {
       .resizable()
       .aspectRatio(contentMode: .fit)
       .hidden(isHidden: !isSelected)
-      .foregroundColor(Color(.braveBlurpleTint))
+      .foregroundColor(Color(braveSystemName: .iconInteractive))
       .frame(width: 14, height: 14)
       .transition(.identity)
       .animation(nil, value: isSelected)

@@ -137,7 +137,8 @@ struct AssetDetailHeaderView: View {
       LineChartView(data: data, numberOfColumns: data.count, selectedDataPoint: $selectedCandle) {
         LinearGradient(
           gradient: Gradient(colors: [
-            Color(.braveBlurpleTint).opacity(colourScheme == .dark ? 0.5 : 0.2), .clear,
+            Color(braveSystemName: .primitivePrimary40).opacity(colourScheme == .dark ? 0.5 : 0.2),
+            .clear,
           ]),
           startPoint: .top,
           endPoint: .bottom

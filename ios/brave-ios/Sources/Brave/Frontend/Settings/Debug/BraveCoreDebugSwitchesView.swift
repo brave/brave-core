@@ -109,7 +109,7 @@ private struct BasicStringInputView: View {
           dismiss()
         } label: {
           Text("Save")
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }
@@ -161,7 +161,7 @@ private struct BasicPickerInputView: View {
           dismiss()
         } label: {
           Text("Save")
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }
@@ -222,7 +222,8 @@ private struct CustomSwitchInputView: View {
         } label: {
           Text("Save")
             .foregroundColor(
-              !key.isEmpty ? Color(.braveBlurpleTint) : Color(braveSystemName: .buttonDisabled)
+              !key.isEmpty
+                ? Color(braveSystemName: .textInteractive) : Color(braveSystemName: .textDisabled)
             )
         }
         .disabled(key.isEmpty)
@@ -271,7 +272,7 @@ struct BraveCoreDebugSwitchesView: View {
     var body: some View {
       HStack(spacing: 16) {
         Toggle(coreSwitch.displayString, isOn: binding)
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+          .tint(Color(braveSystemName: .primitivePrimary40))
           .labelsHidden()
         VStack(alignment: .leading) {
           HStack {
@@ -287,7 +288,8 @@ struct BraveCoreDebugSwitchesView: View {
                 .font(.caption)
                 .foregroundColor(
                   binding.wrappedValue
-                    ? Color(.braveBlurpleTint) : Color(braveSystemName: .textSecondary)
+                    ? Color(braveSystemName: .textInteractive)
+                    : Color(braveSystemName: .textSecondary)
                 )
                 .lineLimit(1)
             }

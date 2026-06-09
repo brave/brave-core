@@ -58,7 +58,7 @@ struct MultipleCircleIconView<IconView: View, Model>: View {
               RoundedRectangle(cornerRadius: 4)
             }
           }
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .primitivePrimary40))
           .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
           .overlay(
             HStack(spacing: 1) {

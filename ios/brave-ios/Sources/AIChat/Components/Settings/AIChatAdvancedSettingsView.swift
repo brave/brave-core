@@ -347,7 +347,7 @@ public struct AIChatAdvancedSettingsView: View {
           },
           label: {
             Text(Strings.AIChat.resetLeoDataActionTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
               .frame(maxWidth: .infinity)
               .contentShape(Rectangle())
           }

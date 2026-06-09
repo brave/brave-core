@@ -172,7 +172,7 @@ struct RestoreWalletView: View {
                   : Strings.Wallet.restoreWalletImportFromTwentyFourPhrases
               )
               .fontWeight(.medium)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
             }
             Spacer()
             Button {
@@ -186,9 +186,9 @@ struct RestoreWalletView: View {
             Toggle(isOn: $isLegacyEthSeedFormat) {
               Text(Strings.Wallet.restoreLegacyBraveWalletToggleLabel)
                 .fontWeight(.medium)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
-            .tint(Color(.braveBlurpleTint))
+            .tint(Color(braveSystemName: .primitivePrimary40))
           }
         }
         .padding(.horizontal, 16)
@@ -226,7 +226,7 @@ struct RestoreWalletView: View {
           Button(action: dismissAction) {  // dismiss all of wallet
             Image("wallet-dismiss", bundle: .module)
               .renderingMode(.template)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .iconInteractive))
           }
         }
       }

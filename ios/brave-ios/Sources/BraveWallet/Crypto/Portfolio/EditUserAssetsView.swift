@@ -107,7 +107,7 @@ struct EditUserAssetsView: View {
     } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
         .clipShape(Rectangle())
     }
   }
@@ -180,7 +180,7 @@ struct EditUserAssetsView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.done)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }  // List

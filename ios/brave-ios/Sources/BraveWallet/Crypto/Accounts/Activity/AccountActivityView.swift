@@ -89,7 +89,7 @@ struct AccountActivityView: View {
                   isPresentingExportAccount = false
                 } label: {
                   Text(Strings.cancelButtonTitle)
-                    .foregroundColor(Color(.braveBlurpleTint))
+                    .foregroundColor(Color(braveSystemName: .textInteractive))
                 }
               }
             }

@@ -25,7 +25,7 @@ class WalletConnectionView: UIControl {
 
   private let iconImageView: UIImageView = {
     let result = UIImageView(image: UIImage(braveSystemNamed: "leo.lock.open")!)
-    result.tintColor = .white
+    result.tintColor = UIColor(braveSystemName: .schemesOnPrimary)
     result.contentMode = .scaleAspectFit
     result.setContentHuggingPriority(.required, for: .horizontal)
     result.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -35,7 +35,7 @@ class WalletConnectionView: UIControl {
 
   private let titleLabel: UILabel = {
     let result = UILabel()
-    result.textColor = .white
+    result.textColor = UIColor(braveSystemName: .schemesOnPrimary)
     result.font = .preferredFont(for: .subheadline, weight: .regular)
     result.adjustsFontForContentSizeCategory = false
     result.numberOfLines = 0
@@ -87,7 +87,7 @@ class WalletConnectionView: UIControl {
       $0.height.equalTo(stackView).inset(-contentInset).priority(.low)
     }
 
-    layer.backgroundColor = UIColor.braveBlurpleTint.cgColor
+    layer.backgroundColor = UIColor(braveSystemName: .buttonBackground).cgColor
     layer.cornerRadius = 10
 
     titleLabel.attributedText = titleText(for: origin)

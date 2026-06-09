@@ -86,7 +86,7 @@ struct PageZoomSettingsView: View {
                 if preferredZoomLevel == zoomLevel {
                   Image(braveSystemName: "leo.check.normal")
                     .font(.system(.body).weight(.medium))
-                    .foregroundColor(Color(.braveBlurpleTint))
+                    .foregroundColor(Color(braveSystemName: .iconInteractive))
                 }
               }
             }

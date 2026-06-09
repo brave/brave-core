@@ -133,7 +133,7 @@ extension PrivacyReportsView {
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button(Strings.done, action: onDismiss)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
       .onAppear {

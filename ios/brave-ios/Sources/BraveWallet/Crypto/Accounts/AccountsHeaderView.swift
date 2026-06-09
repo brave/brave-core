@@ -26,7 +26,7 @@ struct AccountsHeaderView: View {
             .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(Strings.Wallet.accountBackup)
             .font(.subheadline.weight(.medium))
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
       Spacer()

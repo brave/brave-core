@@ -101,7 +101,8 @@ struct SlippageGrid: View {
             .background(
               WalletActionsGridBackgroundView(
                 backgroundColor: Color(
-                  isSelected ? .braveBlurpleTint : .secondarySystemGroupedBackground
+                  isSelected
+                    ? UIColor(braveSystemName: .textInteractive) : .secondarySystemGroupedBackground
                 )
               )
             )
@@ -136,7 +137,8 @@ struct SlippageGrid: View {
         .background(
           WalletActionsGridBackgroundView(
             backgroundColor: Color(
-              customSlippage != nil ? .braveBlurpleTint : .secondarySystemGroupedBackground
+              customSlippage != nil
+                ? UIColor(braveSystemName: .textInteractive) : .secondarySystemGroupedBackground
             )
           )
         )
@@ -185,7 +187,7 @@ struct MarketPriceView: View {
       } label: {
         Label(Strings.Wallet.refreshMarketPriceLabel, braveSystemImage: "leo.refresh")
           .labelStyle(.iconOnly)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .iconInteractive))
           .font(.title3)
       }
       .buttonStyle(.plain)
@@ -538,7 +540,7 @@ struct SwapCryptoView: View {
             .multilineTextAlignment(.center)
             .foregroundColor(Color(braveSystemName: .textPrimary))
           Image(braveSystemName: "leo.info.ios-only")
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .iconInteractive))
             .accessibilityHidden(true)
         }
       }
@@ -614,7 +616,7 @@ struct SwapCryptoView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }

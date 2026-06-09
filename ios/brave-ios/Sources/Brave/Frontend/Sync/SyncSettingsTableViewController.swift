@@ -521,12 +521,12 @@ extension SyncSettingsTableViewController {
     switch indexPath.section {
     case Sections.deviceList.rawValue:
       cell.textLabel?.text = Strings.Sync.addAnotherDevice
-      cell.textLabel?.textColor = .braveBlurpleTint
+      cell.textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
       cell.accessoryType = .disclosureIndicator
     case Sections.otherActions.rawValue:
       if indexPath.row == 0 {
         cell.textLabel?.text = Strings.Sync.internalsTitle
-        cell.textLabel?.textColor = .braveBlurpleTint
+        cell.textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
         cell.accessoryType = .disclosureIndicator
       } else if indexPath.row == 1 {
         cell.textLabel?.text = Strings.Sync.deleteAccount

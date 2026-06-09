@@ -452,7 +452,7 @@ struct NetworkDetailsView: View {
               }
             } label: {
               Text(Strings.Wallet.saveButtonTitle)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
         }
@@ -462,7 +462,7 @@ struct NetworkDetailsView: View {
           presentationMode.dismiss()
         } label: {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }
@@ -694,7 +694,8 @@ struct NetworkRadioButton: View {
     Image(braveSystemName: checked ? "leo.check.circle-outline" : "leo.radio.unchecked")
       .renderingMode(.template)
       .foregroundColor(
-        Color((checked && !isDisabled) ? .braveBlurpleTint : UIColor(braveSystemName: .neutral20))
+        (checked && !isDisabled)
+          ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .neutral20)
       )
       .font(.title3)
       .onTapGesture {

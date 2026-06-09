@@ -108,7 +108,7 @@ private struct TopNewsListView: View {
           )!
         ) {
           Text(Strings.Widgets.newsClusteringReadMoreButtonTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
             .font(.system(size: 13, weight: .semibold, design: .rounded))
         }
       }

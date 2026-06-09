@@ -197,7 +197,7 @@ struct NextIndexButton: View {
       } label: {
         Text(Strings.Wallet.next)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
   }

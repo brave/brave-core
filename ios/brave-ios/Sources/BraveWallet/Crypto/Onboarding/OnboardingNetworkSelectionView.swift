@@ -316,7 +316,7 @@ struct OnboardingNetworkSelectionView: View {
       }
     )
   }
-  .accentColor(Color(.braveBlurple))
+  .accentColor(Color(braveSystemName: .primitivePrimary40))
 }
 #endif
 

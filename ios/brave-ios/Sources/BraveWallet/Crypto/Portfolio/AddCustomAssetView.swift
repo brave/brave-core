@@ -116,7 +116,7 @@ struct AddCustomAssetView: View {
             }
             Spacer()
             Image(systemName: "chevron.down.circle")
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .iconInteractive))
           }
         }
         Section(
@@ -294,7 +294,7 @@ struct AddCustomAssetView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         if userAssetStore.isAddingAsset {
@@ -338,7 +338,7 @@ struct AddCustomAssetView: View {
                 networkSelectionType: .addCustomAsset
               )
             }
-            .accentColor(Color(.braveBlurpleTint))
+            .accentColor(Color(braveSystemName: .primitivePrimary40))
             .navigationViewStyle(.stack)
           }
       )

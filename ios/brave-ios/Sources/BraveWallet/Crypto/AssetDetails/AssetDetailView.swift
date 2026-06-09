@@ -508,7 +508,7 @@ struct AssetDetailView: View {
             } label: {
               Text(Strings.Wallet.auroraBridgeLearnMore)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
                 .font(.footnote.weight(.semibold))
                 .padding(8)
             }
@@ -520,7 +520,7 @@ struct AssetDetailView: View {
             } label: {
               Text(Strings.Wallet.auroraBridgeRisk)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
                 .font(.footnote.weight(.semibold))
                 .padding(8)
             }

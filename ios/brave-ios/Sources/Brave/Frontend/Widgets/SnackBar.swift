@@ -30,7 +30,7 @@ class SnackButton: UIButton {
 
     setTitle(title, for: .normal)
     titleLabel?.font = DynamicFontHelper.defaultHelper.defaultMediumFont
-    setTitleColor(.braveBlurpleTint, for: .highlighted)
+    setTitleColor(UIColor(braveSystemName: .textInteractive), for: .highlighted)
     setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     addTarget(self, action: #selector(onClick), for: .touchUpInside)
     self.accessibilityIdentifier = accessibilityIdentifier

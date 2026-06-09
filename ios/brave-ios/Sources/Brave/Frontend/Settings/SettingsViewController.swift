@@ -166,7 +166,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 
     view.backgroundColor = .systemGroupedBackground
-    view.tintColor = .braveBlurpleTint
+    view.tintColor = UIColor(braveSystemName: .primitivePrimary40)
     navigationController?.view.backgroundColor = .systemGroupedBackground
 
     setUpSections()

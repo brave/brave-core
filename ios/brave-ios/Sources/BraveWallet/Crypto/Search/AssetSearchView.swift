@@ -56,7 +56,7 @@ struct AssetSearchView: View {
     } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
         .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {
@@ -168,7 +168,7 @@ struct AssetSearchView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         ToolbarItemGroup(placement: .bottomBar) {

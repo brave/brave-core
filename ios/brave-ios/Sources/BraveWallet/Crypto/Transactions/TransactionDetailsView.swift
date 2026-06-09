@@ -183,7 +183,7 @@ struct TransactionDetailsView: View {
               label: {
                 Text(TransactionFollowUpAction.cancel.buttonTitle)
                   .multilineTextAlignment(.center)
-                  .foregroundColor(Color(.braveBlurple))
+                  .foregroundColor(Color(braveSystemName: .textInteractive))
                   .font(BraveButtonSize.large.font)
                   .frame(maxWidth: .infinity)
               }

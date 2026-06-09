@@ -7,10 +7,6 @@
 import UIKit
 
 enum LegacyDesignSystemColor: String {
-  case interactive04
-  case interactive05
-  case interactive06
-
   case gradient01_step0 = "gradient01-step0"
   case gradient01_step1 = "gradient01-step1"
 
@@ -26,24 +22,3 @@ enum LegacyDesignSystemColor: String {
   }
 }
 
-// MARK: - Design System Colors
-
-extension UIColor {
-  public static var braveLighterBlurple: UIColor {
-    LegacyDesignSystemColor.interactive06.color
-  }
-  public static var braveBlurple: UIColor {
-    LegacyDesignSystemColor.interactive05.color
-  }
-  public static var braveDarkerBlurple: UIColor {
-    LegacyDesignSystemColor.interactive04.color
-  }
-  public static var braveBlurpleTint: UIColor {
-    .init {
-      if $0.userInterfaceStyle == .dark {
-        return .braveLighterBlurple
-      }
-      return .braveBlurple
-    }
-  }
-}

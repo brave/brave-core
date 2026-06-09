@@ -157,7 +157,7 @@ struct SaferSignTransactionContainerView: View {
         Button(action: editGasFeeTapped) {
           Text(Strings.Wallet.editButtonTitle)
             .fontWeight(.semibold)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         Spacer()
       }

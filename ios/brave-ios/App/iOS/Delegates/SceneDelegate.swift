@@ -128,7 +128,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let window = UIWindow(windowScene: windowScene).then {
       $0.backgroundColor = UIColor(braveSystemName: .iosBrowserChromeBackgroundIos)
       $0.overrideUserInterfaceStyle = expectedThemeOverride(for: windowScene)
-      $0.tintColor = .braveBlurpleTint
+      $0.tintColor = UIColor(braveSystemName: .primary40)
     }
     window.rootViewController = UIHostingController(rootView: LaunchScreen())
     window.makeKeyAndVisible()

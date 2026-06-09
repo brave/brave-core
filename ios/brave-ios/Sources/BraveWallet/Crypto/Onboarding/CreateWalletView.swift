@@ -244,7 +244,7 @@ struct CreateWalletView: View {
           Button(action: dismissAction) {  // dismiss all of wallet
             Image("wallet-dismiss", bundle: .module)
               .renderingMode(.template)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .iconInteractive))
           }
         }
       }
@@ -283,7 +283,9 @@ struct CreatingWalletView: View {
     VStack(spacing: 24) {
       Spacer()
       ProgressView()
-        .progressViewStyle(.braveCircular(size: .normal, tint: .braveBlurpleTint))
+        .progressViewStyle(
+          .braveCircular(size: .normal, tint: UIColor(braveSystemName: .primitivePrimary40))
+        )
       Text(Strings.Wallet.creatingWallet)
         .font(.title)
       Spacer()

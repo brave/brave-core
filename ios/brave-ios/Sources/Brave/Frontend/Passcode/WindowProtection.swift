@@ -32,9 +32,10 @@ public class WindowProtection {
     }
     let unlockButton = FilledActionButton(type: .system).then {
       $0.setTitle(Strings.unlockButtonTitle, for: .normal)
+      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
       $0.titleLabel?.adjustsFontForContentSizeCategory = true
-      $0.backgroundColor = .braveBlurpleTint
+      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.isHidden = true
     }
     let cancelButton = ActionButton(type: .system).then {

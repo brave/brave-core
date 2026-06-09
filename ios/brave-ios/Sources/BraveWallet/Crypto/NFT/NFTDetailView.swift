@@ -122,7 +122,7 @@ struct NFTDetailView: View {
               AddressView(address: owner.address) {
                 HStack {
                   Text(owner.name)
-                    .foregroundColor(Color(.braveBlurpleTint))
+                    .foregroundColor(Color(braveSystemName: .textInteractive))
                   Text(owner.address.truncatedAddress)
                     .foregroundColor(Color(braveSystemName: .textPrimary))
                 }
@@ -153,7 +153,7 @@ struct NFTDetailView: View {
                 Image(braveSystemName: "leo.arrow.diagonal-up-right")
               }
               .font(.subheadline)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
           if let networkInfo = nftDetailStore.networkInfo {
@@ -271,7 +271,7 @@ struct NFTDetailView: View {
             braveSystemImage: "leo.more.horizontal"
           )
           .labelStyle(.iconOnly)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .iconInteractive))
         }
       }
     }

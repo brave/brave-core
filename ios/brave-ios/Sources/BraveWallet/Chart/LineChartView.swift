@@ -177,7 +177,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
         fill
           .clipShape(LineChartShape(points: points, closed: true))
         LineChartShape(points: points)
-          .stroke(Color(.braveBlurpleTint), lineWidth: 2)
+          .stroke(Color(braveSystemName: .primitivePrimary40), lineWidth: 2)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
       .overlay(
@@ -185,13 +185,16 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
           if let dragContext = dragContext {
             ZStack {
               Rectangle()
-                .fill(Color(.braveBlurpleTint))
+                .fill(Color(braveSystemName: .primitivePrimary40))
                 .frame(width: 2)
                 .frame(maxHeight: .infinity)
                 .padding(.vertical, -10)
                 .position(x: dragContext.location.x, y: dragContext.size.height / 2)
               Circle()
-                .strokeBorder(Color(.braveBlurpleTint), style: .init(lineWidth: 2))
+                .strokeBorder(
+                  Color(braveSystemName: .primitivePrimary40),
+                  style: .init(lineWidth: 2)
+                )
                 .frame(width: 12, height: 12)
                 .background(Color(braveSystemName: .containerBackground).clipShape(Circle()))
                 .position(x: dragContext.location.x, y: dragContext.location.y)

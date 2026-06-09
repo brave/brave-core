@@ -59,7 +59,7 @@ struct PlaylistPopoverView: View {
       }
       .padding(dynamicTypeSize.isAccessibilitySize ? .horizontal : .vertical)
       .font(.subheadline.weight(.semibold))
-      .foregroundColor(Color(.braveBlurpleTint))
+      .foregroundColor(Color(braveSystemName: .textInteractive))
       .layoutPriority(1)
     }
     .background(Color(braveSystemName: .containerBackground))

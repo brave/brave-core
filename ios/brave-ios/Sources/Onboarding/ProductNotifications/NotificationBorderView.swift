@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import DesignSystem
 import UIKit
 
 public class NotificationBorderView: UIView {
@@ -17,7 +18,9 @@ public class NotificationBorderView: UIView {
   ) {
     let borderLayer = CAShapeLayer().then {
       let frame = frame.with { $0.origin = .zero }
-      $0.strokeColor = colouredBorder ? UIColor.braveLighterBlurple.cgColor : UIColor.white.cgColor
+      $0.strokeColor =
+        colouredBorder
+        ? UIColor(braveSystemName: .primitivePrimary70).cgColor : UIColor.white.cgColor
       $0.fillColor = UIColor.clear.cgColor
       $0.lineWidth = lineWidth
       $0.strokeEnd = 1.0
