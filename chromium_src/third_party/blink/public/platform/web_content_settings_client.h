@@ -40,8 +40,8 @@
                                      const blink::WebURL& script_url) {     \
     return enabled_per_settings;                                            \
   }                                                                         \
-  virtual bool RequireTransientActivationForHidRequestDevice() {            \
-    return true;                                                            \
+  virtual bool AllowHidRequestDeviceWithoutTransientActivation() {          \
+    return false;                                                           \
   }                                                                         \
   virtual bool AllowStorageAccessSync
 
