@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/features.h"
@@ -133,12 +134,20 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
 #endif
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // P3A and usage ping (stats reporting) are disabled for Brave Origin branded
+  // builds. Hide their settings unconditionally so they don't briefly appear on
+  // first launch before the disabling policy is applied (brave-browser#56166).
+  data_source->AddBoolean("isStatsReportingEnabledManaged", true);
+  data_source->AddBoolean("isP3AEnabledManaged", true);
+#else
   auto* local_state = g_browser_process->local_state();
   data_source->AddBoolean(
       "isStatsReportingEnabledManaged",
       local_state->IsManagedPreference(kStatsReportingEnabled));
   data_source->AddBoolean("isP3AEnabledManaged",
                           local_state->IsManagedPreference(p3a::kP3AEnabled));
+#endif
 
 #if BUILDFLAG(IS_WIN)
   {
