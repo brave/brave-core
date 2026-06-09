@@ -27,7 +27,9 @@ extension NewsTopicsModel {
   static var live: Self {
     .init(
       isNewsAvailable: {
-        return await DisabledShortcutsWidgetData.loadDisabledShortcuts().contains(.braveNews)
+        let isDisabledByPolicy = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
+          .contains(.braveNews)
+        return !isDisabledByPolicy
       },
       fetchNewsTopics: { currentLocale in
         do {
