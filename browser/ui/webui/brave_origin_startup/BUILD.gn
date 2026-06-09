@@ -48,6 +48,7 @@ source_set("unit_tests") {
     ":brave_origin_startup",
     "//base/test:test_support",
     "//brave/components/brave_origin:pref_names",
+    "//brave/components/resources:strings_grit",
     "//brave/components/skus/browser:test_support",
     "//components/prefs:test_support",
     "//content/test:test_support",

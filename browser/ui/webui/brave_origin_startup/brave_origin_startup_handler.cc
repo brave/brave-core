@@ -13,7 +13,9 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -82,7 +84,9 @@ void BraveOriginStartupHandler::VerifyPurchaseId(
     const std::string& purchase_id,
     VerifyPurchaseIdCallback callback) {
   if (!EnsureSkusConnected()) {
-    std::move(callback).Run(false, "Unable to connect to SKU service");
+    std::move(callback).Run(
+        false, l10n_util::GetStringUTF8(
+                   IDS_BRAVE_ORIGIN_STARTUP_ERROR_SKUS_CONNECTION));
     return;
   }
 
@@ -91,7 +95,9 @@ void BraveOriginStartupHandler::VerifyPurchaseId(
   base::TrimWhitespaceASCII(purchase_id, base::TrimPositions::TRIM_ALL,
                             &trimmed_id);
   if (trimmed_id.empty()) {
-    std::move(callback).Run(false, "Purchase ID is empty");
+    std::move(callback).Run(
+        false, l10n_util::GetStringUTF8(
+                   IDS_BRAVE_ORIGIN_STARTUP_ERROR_EMPTY_PURCHASE_ID));
     return;
   }
 
@@ -167,7 +173,9 @@ void BraveOriginStartupHandler::OnRefreshOrder(
   if (result->code != skus::mojom::SkusResultCode::Ok) {
     VLOG(1) << "RefreshOrder failed with code: "
             << static_cast<int>(result->code);
-    std::move(callback).Run(false, "Invalid purchase ID");
+    std::move(callback).Run(
+        false, l10n_util::GetStringUTF8(
+                   IDS_BRAVE_ORIGIN_STARTUP_ERROR_INVALID_PURCHASE_ID));
     return;
   }
 
@@ -183,7 +191,9 @@ void BraveOriginStartupHandler::OnFetchOrderCredentials(
   if (result->code != skus::mojom::SkusResultCode::Ok) {
     VLOG(1) << "FetchOrderCredentials failed with code: "
             << static_cast<int>(result->code);
-    std::move(callback).Run(false, "Failed to fetch credentials");
+    std::move(callback).Run(
+        false, l10n_util::GetStringUTF8(
+                   IDS_BRAVE_ORIGIN_STARTUP_ERROR_FETCH_CREDENTIALS));
     return;
   }
 
@@ -203,5 +213,9 @@ void BraveOriginStartupHandler::OnVerifyCredentialSummary(
     local_state_->SetBoolean(brave_origin::kOriginPurchaseValidated, true);
   }
 
-  std::move(callback).Run(purchased, purchased ? "" : "Purchase not found");
+  std::move(callback).Run(
+      purchased, purchased
+                     ? std::string()
+                     : l10n_util::GetStringUTF8(
+                           IDS_BRAVE_ORIGIN_STARTUP_ERROR_PURCHASE_NOT_FOUND));
 }

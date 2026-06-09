@@ -14,10 +14,12 @@
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/test/fake_skus_service.h"
 #include "build/build_config.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 class BraveOriginStartupHandlerTest : public testing::Test {
  public:
@@ -112,7 +114,8 @@ TEST_F(BraveOriginStartupHandlerTest,
 
   auto [success, error] = future.Get();
   EXPECT_FALSE(success);
-  EXPECT_FALSE(error.empty());
+  EXPECT_EQ(error, l10n_util::GetStringUTF8(
+                       IDS_BRAVE_ORIGIN_STARTUP_ERROR_SKUS_CONNECTION));
 }
 
 TEST_F(BraveOriginStartupHandlerTest, PrefDefaultIsFalse) {
@@ -200,7 +203,8 @@ TEST_F(BraveOriginStartupHandlerTest, VerifyPurchaseIdFailsWithNoCredentials) {
 
   auto [success, error] = future.Get();
   EXPECT_FALSE(success);
-  EXPECT_FALSE(error.empty());
+  EXPECT_EQ(error, l10n_util::GetStringUTF8(
+                       IDS_BRAVE_ORIGIN_STARTUP_ERROR_PURCHASE_NOT_FOUND));
   EXPECT_FALSE(local_state_.GetBoolean(brave_origin::kOriginPurchaseValidated));
 }
 
@@ -213,7 +217,8 @@ TEST_F(BraveOriginStartupHandlerTest,
 
   auto [success, error] = future.Get();
   EXPECT_FALSE(success);
-  EXPECT_EQ(error, "Purchase ID is empty");
+  EXPECT_EQ(error, l10n_util::GetStringUTF8(
+                       IDS_BRAVE_ORIGIN_STARTUP_ERROR_EMPTY_PURCHASE_ID));
 }
 
 TEST_F(BraveOriginStartupHandlerTest,
@@ -225,7 +230,8 @@ TEST_F(BraveOriginStartupHandlerTest,
 
   auto [success, error] = future.Get();
   EXPECT_FALSE(success);
-  EXPECT_EQ(error, "Purchase ID is empty");
+  EXPECT_EQ(error, l10n_util::GetStringUTF8(
+                       IDS_BRAVE_ORIGIN_STARTUP_ERROR_EMPTY_PURCHASE_ID));
 }
 
 #if BUILDFLAG(IS_LINUX)
