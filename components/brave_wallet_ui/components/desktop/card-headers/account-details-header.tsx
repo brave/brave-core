@@ -54,9 +54,6 @@ import {
 } from '../../../common/slices/entities/token-balance.entity'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
-// Hooks
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
-
 // Components
 import {
   CreateAccountIcon, //
@@ -76,7 +73,6 @@ import {
 import {
   MenuButton,
   MenuButtonIcon,
-  MenuWrapper,
   HorizontalDivider,
 } from './shared-card-headers.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
@@ -109,20 +105,6 @@ export const AccountDetailsHeader = (props: Props) => {
   const { data: canHideAccount = false } = useCanHideAccountQuery({
     accountId: account.accountId,
   })
-
-  // state
-  const [showAccountDetailsMenu, setShowAccountDetailsMenu] =
-    React.useState<boolean>(false)
-
-  // refs
-  const accountDetailsMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(
-    accountDetailsMenuRef,
-    () => setShowAccountDetailsMenu(false),
-    showAccountDetailsMenu,
-  )
 
   // Memos
   const accountsFungibleTokens = React.useMemo(() => {
@@ -337,25 +319,20 @@ export const AccountDetailsHeader = (props: Props) => {
             <HorizontalSpace space='16px' />
           </>
         )}
-        <MenuWrapper ref={accountDetailsMenuRef}>
+        <AccountDetailsMenu
+          options={menuOptions}
+          onClickMenuOption={onClickMenuOption}
+        >
           {isMobileOrPanel ? (
-            <Button onClick={() => setShowAccountDetailsMenu((prev) => !prev)}>
+            <Button slot='anchor-content'>
               <ButtonIcon name='more-vertical' />
             </Button>
           ) : (
-            <MenuButton
-              onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
-            >
+            <MenuButton slot='anchor-content'>
               <MenuButtonIcon name='more-vertical' />
             </MenuButton>
           )}
-          {showAccountDetailsMenu && (
-            <AccountDetailsMenu
-              options={menuOptions}
-              onClickMenuOption={onClickMenuOption}
-            />
-          )}
-        </MenuWrapper>
+        </AccountDetailsMenu>
       </Row>
     </Row>
   )
