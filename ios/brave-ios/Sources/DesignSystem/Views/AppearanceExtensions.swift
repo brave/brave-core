@@ -46,23 +46,5 @@ extension UIView {
       $0.compactAppearance = appearance
       $0.scrollEdgeAppearance = appearance
     }
-
-    UISegmentedControl.appearance().do {
-      $0.selectedSegmentTintColor = .init(dynamicProvider: {
-        if $0.userInterfaceStyle == .dark {
-          return UIColor(braveSystemName: .neutral30)
-        }
-        return .white
-      })
-      $0.backgroundColor = UIColor(braveSystemName: .pageBackground)
-      $0.setTitleTextAttributes(
-        [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
-        for: .selected
-      )
-      $0.setTitleTextAttributes(
-        [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
-        for: .normal
-      )
-    }
   }
 }
