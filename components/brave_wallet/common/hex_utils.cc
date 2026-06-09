@@ -129,15 +129,14 @@ bool HexValueToUint256(std::string_view hex_input, uint256_t* out) {
   if (!IsValidHexString(hex_input)) {
     return false;
   }
+  auto hex_string = hex_input.substr(2);
+  if (hex_string.length() > 64) {
+    return false;
+  }
   *out = 0;
-  uint256_t last_val = 0;  // Used to check overflows
-  for (char c : hex_input.substr(2)) {
+  for (char c : hex_string) {
     (*out) <<= 4;
     (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
-    if (last_val > *out) {
-      return false;
-    }
-    last_val = *out;
   }
   return true;
 }
