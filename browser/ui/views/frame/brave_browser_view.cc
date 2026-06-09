@@ -368,13 +368,15 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
           AddChildView(std::make_unique<SidebarContainerView>(
               browser_, SidePanelCoordinator::From(browser_), nullptr));
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-      // Recompute the panel's content corners whenever the sidebar UI shows or
-      // hides, since the bottom corner radius depends on sidebar visibility.
-      // Unretained() is safe: `this` owns `sidebar_container_view_` (added via
-      // AddChildView), so the container cannot outlive the callback target.
-      sidebar_container_view_->SetSidebarVisibilityChangedCallback(
-          base::BindRepeating(&BraveBrowserView::OnSidebarVisibilityChanged,
-                              base::Unretained(this)));
+      // Recompute the panel's content corners whenever the sidebar control view
+      // shows or hides, since the bottom corner radius depends on sidebar
+      // control view visibility. Unretained() is safe: `this` owns
+      // `sidebar_container_view_` (added via AddChildView), so the container
+      // cannot outlive the callback target.
+      sidebar_container_view_->SetSidebarControlViewVisibilityChangedCallback(
+          base::BindRepeating(
+              &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
+              base::Unretained(this)));
 
       side_panel_->SetResizeArea(
           std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
@@ -1159,9 +1161,9 @@ void BraveBrowserView::UpdateSidebarBorder() {
 }
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-void BraveBrowserView::OnSidebarVisibilityChanged() {
-  // The panel's content corner radii depend on whether the sidebar UI is
-  // visible (see brave::GetPanelContentsRoundedCorners()), so re-apply the
+void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {
+  // The panel's content corner radii depend on whether the sidebar control view
+  // is visible (see brave::GetPanelContentsRoundedCorners()), so re-apply the
   // border to recompute them.
   if (side_panel_) {
     side_panel_->UpdateBorder();
