@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveUI
 import CoreData
 import CoreServices
 import Data
@@ -148,18 +149,11 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     navigationItem.do {
       $0.searchController = bookmarksSearchController
       $0.hidesSearchBarWhenScrolling = false
-      $0.rightBarButtonItem = UIBarButtonItem(
-        barButtonSystemItem: .done,
+      $0.rightBarButtonItem = .doneButton(
         target: self,
         action: #selector(tappedDone)
       )
     }
-
-    navigationItem.rightBarButtonItem = UIBarButtonItem(
-      barButtonSystemItem: .done,
-      target: self,
-      action: #selector(tappedDone)
-    )
 
     tableView.do {
       $0.allowsSelectionDuringEditing = true

@@ -289,12 +289,9 @@ extension BrowserViewController {
         onDismiss: {}
       )
     )
-    controller.navigationItem.rightBarButtonItem = .init(
-      systemItem: .done,
-      primaryAction: .init(handler: { [unowned self] _ in
-        dismiss(animated: true)
-      })
-    )
+    controller.navigationItem.rightBarButtonItem = .doneButton { [unowned self] in
+      dismiss(animated: true)
+    }
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
   }

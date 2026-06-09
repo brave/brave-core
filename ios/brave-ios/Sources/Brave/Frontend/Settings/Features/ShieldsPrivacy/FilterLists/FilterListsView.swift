@@ -104,7 +104,6 @@ struct FilterListsView: View {
           description: Strings.Shields.addCustomFilterListDescription
         )
       }
-      .toggleStyle(SwitchToggleStyle(tint: .accentColor))
 
       if searchText.isEmpty {
         Section {
@@ -134,6 +133,7 @@ struct FilterListsView: View {
           description: Strings.Shields.filterListsDescription
         )
       }
+      .tint(Color(braveSystemName: .primitivePrimary40))
     }
     .fullScreenCover(
       isPresented: $showingCustomFiltersSheet,
@@ -144,7 +144,6 @@ struct FilterListsView: View {
       }
     )
     .searchable(text: $searchText)
-    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.Shields.contentFiltering)
@@ -203,7 +202,6 @@ struct FilterListsView: View {
           Text(customRules)
             .lineLimit(2)
             .multilineTextAlignment(.leading)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
             .font(.system(size: 14, weight: .regular, design: .monospaced))
             .frame(maxWidth: .infinity, alignment: .leading)
         } else if let error = rulesError {
@@ -213,7 +211,7 @@ struct FilterListsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         } else {
           Text(Strings.Shields.customFiltersPlaceholder)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            .foregroundStyle(.secondary)
             .font(.subheadline)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -243,7 +241,7 @@ struct FilterListsView: View {
 
     Toggle(isOn: allEnabled) {
       VStack(alignment: .leading) {
-        Text("All").foregroundColor(Color(braveSystemName: .textPrimary))
+        Text("All")
       }
     }
     #endif
@@ -253,10 +251,9 @@ struct FilterListsView: View {
         Toggle(isOn: $filterList.isEnabled) {
           VStack(alignment: .leading) {
             Text(filterList.entry.title)
-              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(filterList.entry.desc)
               .font(.caption)
-              .foregroundColor(Color(braveSystemName: .textSecondary))
+              .foregroundColor(.secondary)
           }
         }
       }
@@ -287,7 +284,6 @@ struct FilterListsView: View {
           ) {
             VStack(alignment: .leading, spacing: 4) {
               Text(filterListURL.title)
-                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .truncationMode(.middle)
                 .lineLimit(1)
 
@@ -300,7 +296,6 @@ struct FilterListsView: View {
                   )
                 )
                 .font(.caption)
-                .foregroundColor(Color(braveSystemName: .textPrimary))
               case .failure:
                 Text(Strings.Shields.filterListsDownloadFailed)
                   .font(.caption)
@@ -308,14 +303,14 @@ struct FilterListsView: View {
               case .pending:
                 Text(Strings.Shields.filterListsDownloadPending)
                   .font(.caption)
-                  .foregroundColor(Color(braveSystemName: .textPrimary))
               }
             }
           }
+          .tint(Color(braveSystemName: .primitivePrimary40))
 
           Text(filterListURL.setting.externalURL.absoluteDisplayString)
             .font(.caption)
-            .foregroundColor(Color(braveSystemName: .textSecondary))
+            .foregroundColor(.secondary)
             .allowsTightening(true)
         }
       }

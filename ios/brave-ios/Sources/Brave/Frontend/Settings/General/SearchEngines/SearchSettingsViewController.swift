@@ -106,7 +106,7 @@ class SearchSettingsViewController: UITableViewController {
   init(profile: LegacyBrowserProfile) {
     self.profile = profile
     self.searchEngines = profile.searchEngines
-    super.init(nibName: nil, bundle: nil)
+    super.init(style: .insetGrouped)
   }
 
   required init?(coder: NSCoder) {
@@ -285,6 +285,7 @@ class SearchSettingsViewController: UITableViewController {
         let toggle = UISwitch().then {
           $0.addTarget(self, action: #selector(didToggleSearchSuggestions), for: .valueChanged)
           $0.isOn = searchEngines.shouldShowSearchSuggestions
+          $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
         }
 
         cell = tableView.dequeueReusableCell(
@@ -299,6 +300,7 @@ class SearchSettingsViewController: UITableViewController {
         let toggle = UISwitch().then {
           $0.addTarget(self, action: #selector(didToggleRecentSearches), for: .valueChanged)
           $0.isOn = searchEngines.shouldShowRecentSearches
+          $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
         }
 
         cell = tableView.dequeueReusableCell(
@@ -313,6 +315,7 @@ class SearchSettingsViewController: UITableViewController {
         let toggle = UISwitch().then {
           $0.addTarget(self, action: #selector(didToggleBrowserSuggestions), for: .valueChanged)
           $0.isOn = searchEngines.shouldShowBrowserSuggestions
+          $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
         }
 
         cell = UITableViewCell(
@@ -321,7 +324,7 @@ class SearchSettingsViewController: UITableViewController {
         ).then {
           $0.textLabel?.text = Strings.searchSettingBrowserSuggestionCellTitle
           $0.detailTextLabel?.numberOfLines = 0
-          $0.detailTextLabel?.textColor = UIColor(braveSystemName: .textSecondary)
+          $0.detailTextLabel?.textColor = UIColor.secondaryLabel
           $0.detailTextLabel?.text = Strings.searchSettingBrowserSuggestionCellDescription
           $0.accessoryView = toggle
           $0.selectionStyle = .none
@@ -361,21 +364,14 @@ class SearchSettingsViewController: UITableViewController {
     }
 
     guard let tableViewCell = cell else { return UITableViewCell() }
-    tableViewCell.separatorInset = .zero
 
     return tableViewCell
   }
 
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
   {
-    let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
-
-    let sectionTitle =
-      section == Section.current.rawValue
+    return section == Section.current.rawValue
       ? Strings.currentlyUsedSearchEngines : Strings.customSearchEngines
-
-    headerView.titleLabel.text = sectionTitle
-    return headerView
   }
 }
 

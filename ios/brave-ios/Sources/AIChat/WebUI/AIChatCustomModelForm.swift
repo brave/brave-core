@@ -364,7 +364,6 @@ private struct CustomModelFormInputLabeledContentStyle: LabeledContentStyle {
     VStack(alignment: .leading) {
       HStack {
         configuration.label
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
           .fontWeight(.medium)
       }
       .font(.footnote)

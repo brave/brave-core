@@ -144,8 +144,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     if isModallyPresented {
       navigationController?.interactivePopGestureRecognizer?.isEnabled = false
       navigationItem.setHidesBackButton(true, animated: false)
-      navigationItem.leftBarButtonItem = UIBarButtonItem(
-        barButtonSystemItem: .done,
+      navigationItem.leftBarButtonItem = .doneButton(
         target: self,
         action: #selector(doneTapped)
       )
@@ -541,6 +540,7 @@ extension SyncSettingsTableViewController {
     let toggle = UISwitch().then {
       $0.addTarget(self, action: #selector(didToggleSyncType), for: .valueChanged)
       $0.isOn = isOn(syncType: syncType)
+      $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
       $0.tag = syncType.rawValue
     }
 

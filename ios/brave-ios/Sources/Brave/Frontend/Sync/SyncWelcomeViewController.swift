@@ -230,8 +230,7 @@ class SyncWelcomeViewController: SyncViewController {
     )
 
     if isModallyPresented {
-      navigationItem.leftBarButtonItem = UIBarButtonItem(
-        barButtonSystemItem: .done,
+      navigationItem.leftBarButtonItem = .doneButton(
         target: self,
         action: #selector(doneTapped)
       )

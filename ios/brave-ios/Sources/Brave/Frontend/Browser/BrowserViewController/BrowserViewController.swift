@@ -2035,8 +2035,7 @@ public class BrowserViewController: UIViewController {
     settingsNavigationController.modalPresentationStyle =
       UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
     settingsNavigationController.navigationBar.topItem?.leftBarButtonItem =
-      UIBarButtonItem(
-        barButtonSystemItem: .done,
+      .doneButton(
         target: settingsNavigationController,
         action: #selector(settingsNavigationController.done)
       )

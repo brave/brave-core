@@ -92,6 +92,7 @@ private struct CompileContentBlockersSectionView: View {
         }
       } else {
         Button("Start", action: startCompiling)
+          .foregroundStyle(Color(braveSystemName: .textInteractive))
           .disabled(selection == nil)
       }
     } header: {
@@ -229,6 +230,7 @@ private struct CorruptCacheSectionView: View {
     Section {
       Button(action: corruptAdblockDATCache) {
         Text("Corrupt Adblock Engine DAT Caches")
+          .foregroundStyle(Color(braveSystemName: .textInteractive))
       }
     }
     .alert(item: $corruptCacheResult) { corruptCacheResult in
@@ -366,7 +368,6 @@ struct AdblockRuleExclusionView: View {
         content: {
           TextEditor(text: $rulesToExclude)
             .font(.system(size: editorFontSize, weight: .regular).monospaced())
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
             .frame(height: 400)
             .overlay(
               alignment: isLoading ? .center : .topLeading,

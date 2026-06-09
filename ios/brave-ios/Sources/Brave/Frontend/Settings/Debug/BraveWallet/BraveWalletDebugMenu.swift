@@ -17,9 +17,9 @@ struct BraveWalletDebugMenu: View {
     Form {
       Section {
         Toggle("Enable Bitcoin Testnet", isOn: $enableBitcoinTestnet.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
         Toggle("Enable Zcash Testnet", isOn: $enableZcashTestnet.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
       }
     }
     .navigationTitle("Brave Wallet Debug")

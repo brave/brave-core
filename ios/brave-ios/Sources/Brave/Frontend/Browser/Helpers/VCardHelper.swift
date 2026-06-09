@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import Contacts
 import ContactsUI
 import Foundation
@@ -43,8 +44,7 @@ class VCardHelper: NSObject {
 
     let navigationController = UINavigationController(rootViewController: contactViewController)
 
-    let doneButton = UIBarButtonItem(
-      barButtonSystemItem: .done,
+    let doneButton = UIBarButtonItem.doneButton(
       target: self,
       action: #selector(dismissButtonTapped)
     )

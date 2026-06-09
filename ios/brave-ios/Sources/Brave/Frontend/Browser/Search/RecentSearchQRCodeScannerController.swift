@@ -6,6 +6,7 @@
 import AVFoundation
 import BraveCore
 import BraveShared
+import BraveUI
 import Foundation
 import Shared
 import UIKit
@@ -47,8 +48,7 @@ class RecentSearchQRCodeScannerController: UIViewController {
     super.viewDidLoad()
 
     title = Strings.recentSearchScannerTitle
-    navigationItem.rightBarButtonItem = UIBarButtonItem(
-      barButtonSystemItem: .done,
+    navigationItem.rightBarButtonItem = .doneButton(
       target: self,
       action: #selector(tappedDone)
     )

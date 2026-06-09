@@ -47,7 +47,7 @@ struct RewardsDebugSettingsView: View {
         }
       }
       Section {
-        Button("Reset Rewards") {
+        Button("Reset Rewards", role: .destructive) {
           Task {
             await rewards.reset()
             isResetRewardsAlertVisible = true

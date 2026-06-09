@@ -62,7 +62,7 @@ struct TabGridPrivateTabsSettings: View {
               .foregroundStyle(Color(braveSystemName: .iconDefault))
           }
         }
-        .tint(Color.accentColor)
+        .tint(Color(braveSystemName: .primitivePrimary40))
 
         if let authenticationKind {
           Toggle(isOn: privateBrowsingLockBinding) {
@@ -104,7 +104,7 @@ struct TabGridPrivateTabsSettings: View {
               .foregroundStyle(Color(braveSystemName: .iconDefault))
             }
           }
-          .tint(Color.accentColor)
+          .tint(Color(braveSystemName: .primitivePrimary40))
         }
       }
       .navigationTitle(Strings.TabGrid.privateTabsSettingsTitle)

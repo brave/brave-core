@@ -299,7 +299,7 @@ struct SendTokenView: View {
                   .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
               }
             }
-            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+            .tint(Color(braveSystemName: .primitivePrimary40))
           }
           .listRowBackground(Color(braveSystemName: .systemfeedbackWarningBackground))
         }

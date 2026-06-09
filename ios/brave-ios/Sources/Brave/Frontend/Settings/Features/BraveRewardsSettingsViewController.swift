@@ -73,7 +73,7 @@ struct BraveRewardsSettingsView: View {
           VStack(alignment: .leading) {
             Text(Strings.Rewards.settingsToggleTitle)
             Text(Strings.Rewards.settingsToggleMessage)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
               .font(.footnote)
           }
         }
