@@ -280,7 +280,7 @@ private struct DepositDetailsView: View {
         .font(.body)
       Image(braveSystemName: "leo.arrow.small-down")
         .font(.callout.weight(.medium))
-        .foregroundColor(Color(.primaryButtonTint))
+        .foregroundColor(Color(braveSystemName: .neutral70))
         .padding(.leading, 48)
     }
     .padding(.horizontal, 12)
@@ -338,7 +338,7 @@ private struct DepositDetailsView: View {
   @ViewBuilder private func qrCodeView(_ viewModel: QRCodeViewModel) -> some View {
     VStack(spacing: 12) {
       RoundedRectangle(cornerRadius: 20, style: .continuous)
-        .stroke(Color(.secondaryButtonTint).opacity(0.5), lineWidth: 1)
+        .stroke(Color(braveSystemName: .neutral30).opacity(0.5), lineWidth: 1)
         .frame(width: 184, height: 184)
         .overlay(
           Group {

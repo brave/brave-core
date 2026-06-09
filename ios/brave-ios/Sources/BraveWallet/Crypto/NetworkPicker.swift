@@ -16,7 +16,7 @@ struct NetworkPicker: View {
 
     static let `default` = Style(
       textColor: UIColor(braveSystemName: .textPrimary),
-      borderColor: .secondaryButtonTint
+      borderColor: UIColor(braveSystemName: .neutral30)
     )
   }
 

@@ -24,7 +24,10 @@ struct BraveInputStyleModifier: ViewModifier {
       .overlay(
         borderShape
           // * 2 + clipShape below = pixel perfect hairline border
-          .stroke(strokeColor ?? Color(.secondaryButtonTint), lineWidth: 2 * (lineWidthFactor ?? 1))
+          .stroke(
+            strokeColor ?? Color(braveSystemName: .neutral30),
+            lineWidth: 2 * (lineWidthFactor ?? 1)
+          )
       )
       .background(
         backgroundColor ?? Color(braveSystemName: .containerBackground)

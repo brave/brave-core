@@ -128,7 +128,7 @@ public struct NewSiteConnectionView: View {
                       .foregroundColor(Color(braveSystemName: .systemfeedbackSuccessText))
                   } else {
                     Image(systemName: "circle")
-                      .foregroundColor(Color(.secondaryButtonTint))
+                      .foregroundColor(Color(braveSystemName: .neutral30))
                   }
                 }
                 .imageScale(.large)

@@ -340,7 +340,7 @@ struct WalletPanelView: View {
       .font(.caption.weight(.semibold))
       .padding(.init(top: 6, leading: 12, bottom: 6, trailing: 12))
       .background(
-        Color(.secondaryButtonTint)
+        Color(braveSystemName: .neutral30)
           .clipShape(Capsule().inset(by: 0.5).stroke())
       )
       .clipShape(Capsule())
@@ -352,7 +352,7 @@ struct WalletPanelView: View {
     NetworkPicker(
       style: .init(
         textColor: UIColor(braveSystemName: .textPrimary),
-        borderColor: .secondaryButtonTint
+        borderColor: UIColor(braveSystemName: .neutral30)
       ),
       isForOrigin: true,
       keyringStore: keyringStore,

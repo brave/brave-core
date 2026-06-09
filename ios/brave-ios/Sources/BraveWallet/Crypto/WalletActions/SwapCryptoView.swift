@@ -367,7 +367,7 @@ struct SwapCryptoView: View {
               .padding(.horizontal, 20)
               .padding(.vertical, 5)
               .background(
-                Color(.secondaryButtonTint)
+                Color(braveSystemName: .neutral30)
                   .clipShape(Capsule().inset(by: 0.5).stroke())
               )
               .clipShape(Capsule())
