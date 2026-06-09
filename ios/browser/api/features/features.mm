@@ -26,6 +26,7 @@
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -396,4 +397,10 @@
 + (Feature*)kSerpMetricsFeature {
   return [[Feature alloc] initWithFeature:&serp_metrics::kSerpMetricsFeature];
 }
+
++ (Feature*)kPlaylistOfflineCacheEnabled {
+  return [[Feature alloc]
+      initWithFeature:&playlist::features::kPlaylistOfflineCacheEnabled];
+}
+
 @end
