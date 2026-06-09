@@ -18,6 +18,7 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,6 +65,11 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
                 CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST, mainMenuItems);
         mTestBundle.putParcelableArrayList(
                 CustomizeBraveMenu.KEY_PAGE_ACTION_ITEM_LIST, pageActionItems);
+    }
+
+    @After
+    public void tearDown() {
+        CustomizeBraveMenu.setLastKnownBundleForTesting(null);
     }
 
     @Test
@@ -196,8 +202,6 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
                     assertEquals(2, mainSection.getPreferenceCount());
                     assertEquals(3, pageActionsSection.getPreferenceCount());
                 });
-
-        CustomizeBraveMenu.setLastKnownBundleForTesting(null);
     }
 
     @Test
