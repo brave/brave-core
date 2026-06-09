@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
@@ -29,6 +30,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.ui.base.ViewUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,7 +79,23 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         if (menuSection == null) {
             return;
         }
-        final List<MenuItemData> menuItems = bundle.getParcelableArrayList(keyMenuItemList);
+        // Check the type first: SettingsIndexData's JSON serialization (via RecentSearchQueue)
+        // stores Parcelable ArrayLists as Strings. Calling getParcelableArrayList on a String
+        // value returns null on real Android (with a warning) but throws ClassCastException in
+        // Robolectric. The instanceof guard avoids both.
+        List<MenuItemData> menuItems =
+                bundle.get(keyMenuItemList) instanceof ArrayList
+                        ? bundle.getParcelableArrayList(keyMenuItemList)
+                        : null;
+        if (menuItems == null) {
+            // SettingsIndexData serializes extras to JSON via RecentSearchQueue, which only
+            // supports simple types — Parcelable ArrayLists are stringified and lost. Fall back
+            // to the last live bundle from populateBundle.
+            Bundle fallback = CustomizeBraveMenu.getBundleForSearchResults();
+            if (fallback != null) {
+                menuItems = fallback.getParcelableArrayList(keyMenuItemList);
+            }
+        }
         if (menuItems != null) {
             for (MenuItemData menuItem : menuItems) {
                 ChromeSwitchPreference switchPreference = getSwitchPreference(menuItem);
@@ -136,10 +154,23 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         return true;
     }
 
-    // All menu item switches are added programmatically from a bundle; there are no static
-    // preferences to index.
+    @VisibleForTesting
+    public static Bundle getSearchExtrasForTesting() {
+        return SEARCH_INDEX_DATA_PROVIDER.getExtras();
+    }
+
+    // All menu item switches are added programmatically; there are no static preferences to index.
+    // This fragment is surfaced in search via BraveMainPreferencesBase.SEARCH_INDEX_DATA_PROVIDER.
+    // getExtras() returns the last live bundle so that if this provider is ever consulted directly,
+    // the correct extras are available.
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(
                     BraveCustomizeMenuPreferenceFragment.class.getName(),
-                    BaseSearchIndexProvider.INDEX_OPT_OUT);
+                    BaseSearchIndexProvider.INDEX_OPT_OUT) {
+                @Override
+                public Bundle getExtras() {
+                    Bundle bundle = CustomizeBraveMenu.getBundleForSearchResults();
+                    return bundle != null ? bundle : new Bundle();
+                }
+            };
 }

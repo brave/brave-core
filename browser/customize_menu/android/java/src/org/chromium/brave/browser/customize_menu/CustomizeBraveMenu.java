@@ -92,6 +92,15 @@ public class CustomizeBraveMenu {
     // Menu items initialized as hidden unless an explicit user preference already exists.
     private static final int[] MENU_IDS_INVISIBLE_BY_DEFAULT = {R.id.exit_id};
 
+    // Cached bundle from the last time the app menu was opened. Used to populate the Customize Menu
+    // settings screen when launched from Settings search, where no live app-menu context exists.
+    private static @Nullable Bundle sLastKnownBundle;
+
+    @VisibleForTesting
+    public static void setLastKnownBundleForTesting(@Nullable Bundle bundle) {
+        sLastKnownBundle = bundle;
+    }
+
     /**
      * Static mapping of menu item IDs to their corresponding drawable resource IDs. Uses
      * SparseIntArray for optimal performance and memory efficiency on Android when mapping resource
@@ -272,6 +281,7 @@ public class CustomizeBraveMenu {
         // Add data list to fragment bundle.
         bundle.putParcelableArrayList(KEY_MAIN_MENU_ITEM_LIST, menuItemDataList);
         bundle.putParcelableArrayList(KEY_PAGE_ACTION_ITEM_LIST, pageActionDataList);
+        sLastKnownBundle = bundle;
         return bundle;
     }
 
@@ -491,5 +501,28 @@ public class CustomizeBraveMenu {
                             KEY_PAGE_ACTION_ITEM_LIST,
                             bundle.getParcelableArrayList(KEY_PAGE_ACTION_ITEM_LIST));
         }
+    }
+
+    /** Returns a copy of the last live bundle, or null if no app-menu session has occurred yet. */
+    public static @Nullable Bundle getBundleForSearchResults() {
+        return getBundleForSearchResults(sLastKnownBundle);
+    }
+
+    private static @Nullable Bundle getBundleForSearchResults(@Nullable final Bundle bundle) {
+        if (bundle == null) {
+            return null;
+        }
+        Bundle bundleForSearchResults = new Bundle();
+        if (bundle.containsKey(KEY_MAIN_MENU_ITEM_LIST)) {
+            bundleForSearchResults.putParcelableArrayList(
+                    KEY_MAIN_MENU_ITEM_LIST,
+                    bundle.getParcelableArrayList(KEY_MAIN_MENU_ITEM_LIST));
+        }
+        if (bundle.containsKey(KEY_PAGE_ACTION_ITEM_LIST)) {
+            bundleForSearchResults.putParcelableArrayList(
+                    KEY_PAGE_ACTION_ITEM_LIST,
+                    bundle.getParcelableArrayList(KEY_PAGE_ACTION_ITEM_LIST));
+        }
+        return bundleForSearchResults;
     }
 }
