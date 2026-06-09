@@ -8,6 +8,7 @@
 #if !BUILDFLAG(IS_CHROMEOS)
 
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -105,8 +106,6 @@ content::EvalJsResult WaitForManageProfilePickerLayout(
                          ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-}  // namespace
-
 class BraveManageProfileBrowserTest : public InProcessBrowserTest {
  public:
   BraveManageProfileBrowserTest() = default;
@@ -127,5 +126,7 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileBrowserTest,
 
   ASSERT_EQ("ready", WaitForManageProfilePickerLayout(web_contents));
 }
+
+}  // namespace
 
 #endif  // !BUILDFLAG(IS_CHROMEOS)
