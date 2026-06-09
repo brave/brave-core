@@ -45,8 +45,6 @@ public class OnboardingPrefManager {
 
     public static final String SHOULD_SHOW_SEARCH_WIDGET_PROMO = "should_show_search_widget_promo";
 
-    private static final String PREF_APP_LAUNCH_COUNT = "APP_LAUNCH_COUNT";
-
     private static OnboardingPrefManager sInstance;
 
     private final SharedPreferences mSharedPreferences;
@@ -247,10 +245,5 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.putBoolean(
                 PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG_FROM_SETTING, isShown);
         sharedPreferencesEditor.apply();
-    }
-
-    /** Returns the user preference for application launch count */
-    public int launchCount() {
-        return mSharedPreferences.getInt(PREF_APP_LAUNCH_COUNT, 0);
     }
 }
