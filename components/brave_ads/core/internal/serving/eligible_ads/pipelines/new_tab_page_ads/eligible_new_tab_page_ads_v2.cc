@@ -272,6 +272,10 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAdCallback(
 
     PaceCreativeAds(creative_ad_bucket);
 
+    if (creative_ad_bucket.empty()) {
+      continue;
+    }
+
     std::optional<CreativeNewTabPageAdInfo> predicted_creative_ad =
         MaybePredictCreativeAd(creative_ad_bucket, user_model, ad_events);
     if (!predicted_creative_ad) {
