@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/test/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -698,6 +699,36 @@ TEST_F(
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_1));
   }
+}
+
+TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
+       FallThroughToLowerPriorityBucketWhenPacingDrainsHigherPriorityBucket) {
+  // Arrange: `creative_ad_1` (priority 1) has a zero pass-through rate so
+  // pacing always removes it, leaving an empty bucket. The pipeline must fall
+  // through to `creative_ad_2` (priority 2).
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_1.priority = 1;
+  creative_ad_1.pass_through_rate = 0.0;
+
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_2.priority = 2;
+  creative_ad_2.pass_through_rate = 1.0;
+
+  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
+
+  const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.5);
+
+  // Act & Assert
+  base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+  eligible_ads_->GetForUserModel(
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{}},
+      test_future.GetCallback());
+  EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_2));
 }
 
 }  // namespace brave_ads
