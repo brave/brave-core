@@ -28,9 +28,6 @@
         <action android:name="disconnect_vpn" />
     </intent-filter>
 </receiver>
-<activity
-    android:name="org.chromium.chrome.browser.onboarding.OnboardingActivity"
-    android:theme="@style/Theme.Chromium.Activity.Fullscreen"/>
 
 <activity
     android:name="org.chromium.chrome.browser.firstrun.WelcomeOnboardingActivity"

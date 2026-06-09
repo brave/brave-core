@@ -108,15 +108,9 @@
     <color name="onboarding_gray">#84889c</color>
     <color name="onboarding_black">#1e2029</color>
 
-    <color name="onboarding_timer_color">#4f30ab</color>
-
     <color name="onboarding_text_color">@color/onboarding_black</color>
     <color name="onboarding_bg_color">@android:color/white</color>
 
-    <color name="onboarding_progressbar_secondary_bg">#ced4da</color>
-    <color name="onboarding_progress_start_color">#FA7250</color>
-    <color name="onboarding_progress_mid_color">#FF1893</color>
-    <color name="onboarding_progress_end_color">#4F30AB</color>
     <color name="onboarding_indicator_selected_color">#FF7654</color>
     <color name="onboarding_indicator_default_color">#C2C4CF</color>
 

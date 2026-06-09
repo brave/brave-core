@@ -7,7 +7,4 @@
 
 <resources>
     <dimen name="onboarding_text_size">18sp</dimen>
-    <dimen name="onboarding_bottom_sheet_height">245dp</dimen>
-    <dimen name="onboarding_counter_layout_height">350dp</dimen>
-    <dimen name="onboarding_counter_height">250dp</dimen>
 </resources>

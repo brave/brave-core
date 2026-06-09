@@ -1,14 +1,9 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.onboarding;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
@@ -39,31 +34,20 @@ public class OnboardingPrefManager {
     public static final String FROM_STATS = "from_stats";
     public static final String ONE_TIME_NOTIFICATION = "one_time_notification";
     public static final String DORMANT_USERS_NOTIFICATION = "dormant_users_notification";
-    public static final String SHOW_BADGE_ANIMATION = "show_badge_animation";
     public static final String PREF_DORMANT_USERS_ENGAGEMENT = "dormant_users_engagement";
     private static final String PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN =
             "p3a_crash_reporting_message_shown";
-    private static final String PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG =
-            "notification_permission_enabling_dialog";
 
     private static final String PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG_FROM_SETTING =
             "notification_permission_enabling_dialog_from_setting";
 
     public static final String SHOULD_SHOW_SEARCH_WIDGET_PROMO = "should_show_search_widget_promo";
 
-    private static final String PREF_APP_LAUNCH_COUNT = "APP_LAUNCH_COUNT";
-
     private static OnboardingPrefManager sInstance;
 
     private final SharedPreferences mSharedPreferences;
 
-    public static final int NEW_USER_ONBOARDING = 0;
-    public static final int EXISTING_USER_REWARDS_OFF_ONBOARDING = 1;
-    public static final int EXISTING_USER_REWARDS_ON_ONBOARDING = 2;
-
     private static boolean sIsOnboardingNotificationShown;
-
-    public static boolean isNotification;
 
     public static final String BRAVE = "Brave";
     public static final String YANDEX = "Yandex";
@@ -109,32 +93,14 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Returns the user preference for whether the onboarding is shown.
-     */
-    public boolean isP3aOnboardingShown() {
-        return mSharedPreferences.getBoolean(PREF_P3A_ONBOARDING, false);
-    }
-
-    /**
-     * Sets the user preference for whether the onboarding is shown.
-     */
+    /** Sets the user preference for whether the onboarding is shown. */
     public void setP3aOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_P3A_ONBOARDING, isShown);
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Returns the user preference for whether the onboarding is shown.
-     */
-    public boolean isNewOnboardingShown() {
-        return mSharedPreferences.getBoolean(PREF_ONBOARDING_V2, false);
-    }
-
-    /**
-     * Sets the user preference for whether the onboarding is shown.
-     */
+    /** Sets the user preference for whether the onboarding is shown. */
     public void setNewOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_V2, isShown);
@@ -173,12 +139,6 @@ public class OnboardingPrefManager {
     public boolean isAdsAvailable() {
         return BraveAdsNativeHelper.nativeIsSupportedRegion(
                 ProfileManager.getLastUsedRegularProfile());
-    }
-
-    public void showOnboarding(Context context) {
-        Intent intent = new Intent(context, OnboardingActivity.class);
-        intent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(intent);
     }
 
     public boolean isOnboardingNotificationShown() {
@@ -241,16 +201,6 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public boolean shouldShowBadgeAnimation() {
-        return mSharedPreferences.getBoolean(SHOW_BADGE_ANIMATION, true);
-    }
-
-    public void setShowBadgeAnimation(boolean shouldShowBadgeAnimation) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(SHOW_BADGE_ANIMATION, shouldShowBadgeAnimation);
-        sharedPreferencesEditor.apply();
-    }
-
     public void setDormantUsersPrefs() {
         setDormantUsersNotificationTime(
                 RetentionNotificationUtil.DORMANT_USERS_DAY_14, setTimeInMillis(14 * 24 * 60));
@@ -270,22 +220,6 @@ public class OnboardingPrefManager {
     }
 
     /**
-     * Returns the user preference for whether the Notification Permission Enabling dialog is shown.
-     */
-    public boolean isNotificationPermissionEnablingDialogShown() {
-        return mSharedPreferences.getBoolean(PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG, false);
-    }
-
-    /**
-     * Sets the user preference for whether the Notification Permission Enabling dialog is shown.
-     */
-    public void setNotificationPermissionEnablingDialogShown(boolean isShown) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG, isShown);
-        sharedPreferencesEditor.apply();
-    }
-
-    /**
      * Returns the user preference for whether the Notification Permission Enabling dialog is shown
      * From setting.
      */
@@ -302,22 +236,6 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(
                 PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG_FROM_SETTING, isShown);
-        sharedPreferencesEditor.apply();
-    }
-
-    /**
-     * Returns the user preference for application launch count
-     */
-    public int launchCount() {
-        return mSharedPreferences.getInt(PREF_APP_LAUNCH_COUNT, 0);
-    }
-
-    /**
-     * Sets the user preference for application launch count
-     */
-    public void updateLaunchCount() {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putInt(PREF_APP_LAUNCH_COUNT, launchCount() + 1);
         sharedPreferencesEditor.apply();
     }
 }

@@ -889,23 +889,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SKIP" desc="Text for skip button in onboarding">
         Skip
       </message>
-      <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
-        Troubleshooting onboarding
-      </message>
       <message name="IDS_BRAVE_SHIELDS_ONBOARDING_TITLE" desc="Title for brave shield page">
         Brave Shields
-      </message>
-      <message name="IDS_EARN_TOKENS" desc="Partial Text for brave rewards page">
-        Earn <ph name="TOKEN">%1$s<ex>token</ex></ph>s
-      </message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TITLE" desc="Title for brave rewards page">
-        Brave Rewards
-      </message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT" desc="Text for brave rewards page">
-        by viewing privacy-respecting ads and support your favorite sites and creators by default.
-      </message>
-      <message name="IDS_TERMS_TEXT" desc="Text for terms of service page">
-        By tapping Start using Brave Rewards, you agree to the
       </message>
       <message name="IDS_TERMS_OF_SERVICE" desc="Text for terms of service">
         Terms of Service
@@ -913,23 +898,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_START_BROWSING" desc="Text for start browsing button">
         Start browsing
       </message>
-      <message name="IDS_I_DIDNT_SEE" desc="Text for i didt see it button">
-        I didn&apos;t see an ad
-      </message>
-      <message name="IDS_BRAVE_ADS_ONBOARDING_TITLE" desc="Title for brave ads page">
-        Brave will show your first ad in
-      </message>
-      <message name="IDS_BRAVE_ADS_ONBOARDING_TEXT" desc="Text for brave ads page">
-        Now you'll earn token from Brave Ads.
-      </message>
       <message name="IDS_THIS_IS_YOUR_FIRST_AD" desc="Text brave rewards notification.">
         This is your first Brave ad. Tap to learn more.
-      </message>
-      <message name="IDS_EARN_AND_GIVE" desc="Button text for rewards onboarding.">
-        Start using Brave Rewards
-      </message>
-      <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
-        Continue to wallet
       </message>
       <message name="IDS_RECOVERY_PHRASE_12" desc="12-word recovery phrase Wallet button">
         I have a 12-word recovery phrase
@@ -1335,9 +1305,6 @@ Are you sure you want to do this?
       <!-- <message name="IDS_CLEAR_DOWNLOADS_TITLE" desc="Title for Clear download in Clear Browsing Data dialog">
         Download history
       </message> -->
-      <message name="IDS_TOKEN" desc="Text for token">
-        token
-      </message>
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page
       </message>
