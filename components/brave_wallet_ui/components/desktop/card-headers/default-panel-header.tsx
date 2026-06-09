@@ -14,9 +14,6 @@ import { UISelectors } from '../../../common/selectors'
 // Types
 import { WalletRoutes } from '../../../constants/types'
 
-// Hooks
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
-
 // Utils
 import { openWalletRouteTab } from '../../../utils/routes-utils'
 
@@ -28,9 +25,8 @@ import {
   Button,
   ButtonIcon,
   LeftRightContainer,
-  ClickAwayArea,
 } from './shared-panel-headers.style'
-import { HeaderTitle, MenuWrapper } from './shared-card-headers.style'
+import { HeaderTitle } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
 interface Props {
@@ -45,19 +41,6 @@ export const DefaultPanelHeader = (props: Props) => {
 
   // UI Selectors (safe)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
-
-  // State
-  const [showSettingsMenu, setShowSettingsMenu] = React.useState<boolean>(false)
-
-  // Refs
-  const settingsMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // Hooks
-  useOnClickOutside(
-    settingsMenuRef,
-    () => setShowSettingsMenu(false),
-    showSettingsMenu,
-  )
 
   // Methods
   const onClickExpand = React.useCallback(() => {
@@ -98,14 +81,12 @@ export const DefaultPanelHeader = (props: Props) => {
             <ButtonIcon name={actionIconName} />
           </Button>
         )}
-        <MenuWrapper ref={settingsMenuRef}>
-          <Button onClick={() => setShowSettingsMenu((prev) => !prev)}>
+        <WalletSettingsMenu>
+          <Button slot='anchor-content'>
             <ButtonIcon name='more-vertical' />
           </Button>
-          {showSettingsMenu && <WalletSettingsMenu />}
-        </MenuWrapper>
+        </WalletSettingsMenu>
       </LeftRightContainer>
-      {showSettingsMenu && <ClickAwayArea />}
     </Row>
   )
 }

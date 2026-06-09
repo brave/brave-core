@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import './leo-menu-elements'
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import Toggle from '@brave/leo/react/toggle'
+import Icon from '@brave/leo/react/icon'
 
 // Page API Proxy
 import getWalletPageApiProxy from '../../../page/wallet_page_api_proxy'
@@ -39,26 +41,18 @@ import { openWalletSettings } from '../../../utils/routes-utils'
 import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-  ToggleRow,
-  SectionLabel,
-} from './wellet-menus.style'
-import { VerticalDivider, Row, Column } from '../../shared/style'
+import { ButtonMenu } from './wellet-menus.style'
+import { Row } from '../../shared/style'
 
 export interface Props {
-  onClosePopup?: () => void
-  yPosition?: number
+  children: React.ReactNode
 }
 
 const HELP_CENTER_URL =
   'https://support.brave.app/hc/categories/360001062531-Wallet'
 
 export const WalletSettingsMenu = (props: Props) => {
-  const { onClosePopup, yPosition } = props
+  const { children } = props
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -117,12 +111,9 @@ export const WalletSettingsMenu = (props: Props) => {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-    if (onClosePopup) {
-      onClosePopup()
-    }
-  }, [selectedNetwork, onClosePopup])
+  }, [selectedNetwork])
 
-  const onClickHelpCenter = React.useCallback(() => {
+  const onClickHelpCenter = () => {
     if (chrome.tabs !== undefined) {
       chrome.tabs.create(
         {
@@ -140,18 +131,7 @@ export const WalletSettingsMenu = (props: Props) => {
       // Tabs.create is desktop specific. Using window.open for mobile
       window.open(HELP_CENTER_URL, '_blank', 'noopener noreferrer')
     }
-
-    if (onClosePopup) {
-      onClosePopup()
-    }
-  }, [onClosePopup])
-
-  const onClickSettings = React.useCallback(() => {
-    openWalletSettings()
-    if (onClosePopup) {
-      onClosePopup()
-    }
-  }, [onClosePopup])
+  }
 
   // Methods
   const onToggleHideGraph = React.useCallback(() => {
@@ -222,159 +202,140 @@ export const WalletSettingsMenu = (props: Props) => {
   }, [isMobile])
 
   return (
-    <StyledWrapper
-      yPosition={yPosition}
-      padding='0px'
-    >
-      <Column
-        fullWidth={true}
-        padding='8px 8px 0px 8px'
+    <ButtonMenu placement='bottom-end'>
+      {children}
+      <leo-menu-item
+        onClick={async () => {
+          await lockWallet()
+        }}
       >
-        <PopupButton
-          onClick={async () => {
-            await lockWallet()
-          }}
-        >
-          <ButtonIcon name='lock' />
-          <PopupButtonText>
-            {getLocale('braveWalletWalletPopupLock')}
-          </PopupButtonText>
-        </PopupButton>
+        <Icon name='lock' />
+        {getLocale('braveWalletWalletPopupLock')}
+      </leo-menu-item>
 
-        <PopupButton onClick={onClickBackup}>
-          <ButtonIcon name='safe' />
-          <PopupButtonText>
-            {getLocale('braveWalletWalletPopupBackup')}
-          </PopupButtonText>
-        </PopupButton>
+      <leo-menu-item onClick={onClickBackup}>
+        <Icon name='safe' />
+        {getLocale('braveWalletWalletPopupBackup')}
+      </leo-menu-item>
 
-        {(selectedNetwork?.coin === BraveWallet.CoinType.ETH
-          || selectedNetwork?.coin === BraveWallet.CoinType.SOL)
-          && !isMobile && (
-            <PopupButton onClick={onClickConnectedSites}>
-              <ButtonIcon name='link-normal' />
-              <PopupButtonText>
-                {getLocale('braveWalletWalletPopupConnectedSites')}
-              </PopupButtonText>
-            </PopupButton>
-          )}
-
-        {!isMobile && (
-          <PopupButton onClick={onClickSettings}>
-            <ButtonIcon name='settings' />
-            <PopupButtonText>
-              {getLocale('braveWalletWalletPopupSettings')}
-            </PopupButtonText>
-          </PopupButton>
+      {(selectedNetwork?.coin === BraveWallet.CoinType.ETH
+        || selectedNetwork?.coin === BraveWallet.CoinType.SOL)
+        && !isMobile && (
+          <leo-menu-item onClick={onClickConnectedSites}>
+            <Icon name='link-normal' />
+            {getLocale('braveWalletWalletPopupConnectedSites')}
+          </leo-menu-item>
         )}
-      </Column>
+
+      {!isMobile && (
+        <leo-menu-item onClick={openWalletSettings}>
+          <Icon name='settings' />
+          {getLocale('braveWalletWalletPopupSettings')}
+        </leo-menu-item>
+      )}
 
       {(walletLocation === WalletRoutes.PortfolioNFTs
         || walletLocation === WalletRoutes.PortfolioAssets
         || walletLocation === WalletRoutes.PortfolioActivity) && (
         <>
-          <SectionLabel justifyContent='flex-start'>
-            {getLocale('braveWalletPortfolioSettings')}
-          </SectionLabel>
-          <Column
-            fullWidth={true}
-            padding='8px 8px 0px 8px'
+          <leo-title>{getLocale('braveWalletPortfolioSettings')}</leo-title>
+          <leo-menu-item
+            id='toggle'
+            onClick={onToggleHideBalances}
+            data-is-interactive='true'
           >
-            <ToggleRow onClick={onToggleHideBalances}>
-              <Row>
-                <ButtonIcon name='eye-on' />
-                <PopupButtonText>
-                  {getLocale('braveWalletWalletPopupHideBalances')}
-                </PopupButtonText>
-                <Toggle
-                  checked={!hidePortfolioBalances}
-                  onChange={onToggleHideBalances}
-                  size='small'
-                />
-              </Row>
-            </ToggleRow>
+            <Row
+              gap='16px'
+              width='unset'
+            >
+              <Icon name='eye-on' />
+              {getLocale('braveWalletWalletPopupHideBalances')}
+            </Row>
+            <Toggle
+              checked={!hidePortfolioBalances}
+              onChange={onToggleHideBalances}
+              size='small'
+            />
+          </leo-menu-item>
 
-            <ToggleRow onClick={onToggleHideGraph}>
-              <Row>
-                <ButtonIcon name='graph' />
-                <PopupButtonText>
-                  {getLocale('braveWalletWalletPopupShowGraph')}
-                </PopupButtonText>
-              </Row>
-              <Toggle
-                checked={!hidePortfolioGraph}
-                onChange={onToggleHideGraph}
-                size='small'
-              />
-            </ToggleRow>
+          <leo-menu-item
+            id='toggle'
+            onClick={onToggleHideGraph}
+            data-is-interactive='true'
+          >
+            <Row
+              gap='16px'
+              width='unset'
+            >
+              <Icon name='graph' />
+              {getLocale('braveWalletWalletPopupShowGraph')}
+            </Row>
+            <Toggle
+              checked={!hidePortfolioGraph}
+              onChange={onToggleHideGraph}
+              size='small'
+            />
+          </leo-menu-item>
 
-            <ToggleRow onClick={onToggleHideDistribution}>
-              <Row>
-                <ButtonIcon name='pie-chart-2' />
-                <PopupButtonText>
-                  {getLocale('braveWalletDistribution')}
-                </PopupButtonText>
-              </Row>
-              <Toggle
-                checked={!hidePortfolioDistribution}
-                onChange={onToggleHideDistribution}
-                size='small'
-              />
-            </ToggleRow>
+          <leo-menu-item
+            id='toggle'
+            onClick={onToggleHideDistribution}
+            data-is-interactive='true'
+          >
+            <Row
+              gap='16px'
+              width='unset'
+            >
+              <Icon name='pie-chart-2' />
+              {getLocale('braveWalletDistribution')}
+            </Row>
+            <Toggle
+              checked={!hidePortfolioDistribution}
+              onChange={onToggleHideDistribution}
+              size='small'
+            />
+          </leo-menu-item>
 
-            <ToggleRow onClick={onToggleHideNFTsTab}>
-              <Row>
-                <ButtonIcon name='nft' />
-                <PopupButtonText>
-                  {getLocale('braveWalletWalletNFTsTab')}
-                </PopupButtonText>
-              </Row>
-              <Toggle
-                checked={!hidePortfolioNFTsTab}
-                onChange={onToggleHideNFTsTab}
-                size='small'
-              />
-            </ToggleRow>
-          </Column>
+          <leo-menu-item
+            id='toggle'
+            onClick={onToggleHideNFTsTab}
+            data-is-interactive='true'
+          >
+            <Row
+              gap='16px'
+              width='unset'
+            >
+              <Icon name='nft' />
+              {getLocale('braveWalletWalletNFTsTab')}
+            </Row>
+            <Toggle
+              checked={!hidePortfolioNFTsTab}
+              onChange={onToggleHideNFTsTab}
+              size='small'
+            />
+          </leo-menu-item>
         </>
       )}
 
       {walletLocation === WalletRoutes.Accounts && isMobileOrPanel && (
         <>
-          <SectionLabel justifyContent='flex-start'>
-            {getLocale('braveWalletAccountSettings')}
-          </SectionLabel>
-          <Column
-            fullWidth={true}
-            padding='8px 8px 0px 8px'
-          >
-            {accountSettingsOptions.map((option) => (
-              <PopupButton
-                key={option.name}
-                onClick={() => onClickRoute(option.route)}
-                minWidth={240}
-              >
-                <ButtonIcon name={option.icon} />
-                <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-              </PopupButton>
-            ))}
-          </Column>
+          <leo-title>{getLocale('braveWalletAccountSettings')}</leo-title>
+          {accountSettingsOptions.map((option) => (
+            <leo-menu-item
+              key={option.name}
+              onClick={() => onClickRoute(option.route)}
+            >
+              <Icon name={option.icon} />
+              {getLocale(option.name)}
+            </leo-menu-item>
+          ))}
         </>
       )}
-
-      <VerticalDivider />
-
-      <Column
-        fullWidth={true}
-        padding='8px 8px 0px 8px'
-      >
-        <PopupButton onClick={onClickHelpCenter}>
-          <ButtonIcon name='help-outline' />
-          <PopupButtonText>
-            {getLocale('braveWalletHelpCenter')}
-          </PopupButtonText>
-        </PopupButton>
-      </Column>
-    </StyledWrapper>
+      <hr />
+      <leo-menu-item onClick={onClickHelpCenter}>
+        <Icon name='help-outline' />
+        {getLocale('braveWalletHelpCenter')}
+      </leo-menu-item>
+    </ButtonMenu>
   )
 }
