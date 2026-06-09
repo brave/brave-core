@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 6e9f9afd8e1c3af26217f85e70134c5e1fb2f612..feec2188bb8898cfa0ee9238297157f7f9517b6b 100644
+index d188b263eebebbcb9ed917712971a89c7f2a71ae..72e4e6cd815d488ab0a15324b52ccbc8ea05d207 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -1912,7 +1912,7 @@ public class ToolbarManager
+@@ -1913,7 +1913,7 @@ public class ToolbarManager
          return mOmniboxFocusStateSupplier.get()
                  || (mToolbarPositionController != null
                          && mToolbarPositionController.doesPrefMismatchPosition())
