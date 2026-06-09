@@ -30,6 +30,9 @@ import {
 // Hooks
 import { useExplorer } from '../../../../common/hooks/explorer'
 import { useSwapTransactionParser } from '../../../../common/hooks/use-swap-tx-parser'
+import {
+  usePolkadotTransactionAddresses, //
+} from '../../../../common/hooks/use_polkadot_transaction_addresses'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import {
   useGate3SwapStatus, //
@@ -376,7 +379,13 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       : ''
 
   const { txStatus, isRetriable } = transaction
-  const fromAddress = account?.address
+
+  const polkadotAddressesByUniqueKey =
+    usePolkadotTransactionAddresses(transaction)
+
+  const fromAddress =
+    polkadotAddressesByUniqueKey[transaction.fromAccountId.uniqueKey]
+    ?? account?.address
 
   const showCancelSpeedupButtons =
     isEthereumTx && cancelSpeedupTxTypes.includes(transaction.txStatus)
@@ -397,7 +406,11 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     ? sendToken.symbol
     : formattedSendFiatValue
 
-  const recipientLabel = getAddressLabel(recipient, accountInfosRegistry)
+  const recipientLabel = getAddressLabel(
+    recipient,
+    accountInfosRegistry,
+    polkadotAddressesByUniqueKey,
+  )
 
   const senderLabel = getAccountLabel(
     transaction.fromAccountId,

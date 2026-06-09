@@ -20,7 +20,9 @@ import {
 import {
   isHardwareAccount,
   findAccountByAddress,
+  findAccountByPolkadotAddress,
   getAccountTypeDescription,
+  getAddressLabel,
   findAccountByAccountId,
   isFVMAccount,
 } from './account-utils'
@@ -110,6 +112,85 @@ describe('Account Utils', () => {
         ).toBe(account)
       },
     )
+  })
+
+  describe('findAccountByPolkadotAddress', () => {
+    // The keyring-default encoding stored in `account.address` differs from the
+    // chain-correct encoding when a parachain uses a different ss58 prefix.
+    const keyringDefaultAddress = '1keyringDefaultDotAddress'
+    const chainCorrectAddress = '5chainCorrectDotAddress'
+
+    const mockPolkadotAccount: AccountInfoEntity = {
+      ...mockAccount,
+      accountId: {
+        ...mockAccount.accountId,
+        coin: BraveWallet.CoinType.DOT,
+        uniqueKey: 'dot_unique_key',
+        address: keyringDefaultAddress,
+      },
+      address: keyringDefaultAddress,
+    }
+
+    const registryWithDot = accountInfoEntityAdaptor.setAll(
+      accountInfoEntityAdaptor.getInitialState(),
+      [...mockAccounts, mockPolkadotAccount],
+    )
+
+    const polkadotAddressesByUniqueKey = {
+      [mockPolkadotAccount.accountId.uniqueKey]: chainCorrectAddress,
+    }
+
+    it('matches a recipient by its chain-correct address', () => {
+      expect(
+        findAccountByPolkadotAddress(
+          chainCorrectAddress,
+          registryWithDot,
+          polkadotAddressesByUniqueKey,
+        ),
+      ).toBe(mockPolkadotAccount)
+    })
+
+    it('matches case-insensitively', () => {
+      expect(
+        findAccountByPolkadotAddress(
+          chainCorrectAddress.toUpperCase(),
+          registryWithDot,
+          polkadotAddressesByUniqueKey,
+        ),
+      ).toBe(mockPolkadotAccount)
+    })
+
+    it('does not match the keyring-default address', () => {
+      // The recipient on-chain is always the chain-correct encoding; the stale
+      // keyring-default encoding should not falsely resolve to the account.
+      expect(
+        findAccountByPolkadotAddress(
+          keyringDefaultAddress,
+          registryWithDot,
+          polkadotAddressesByUniqueKey,
+        ),
+      ).toBeUndefined()
+    })
+
+    it('returns undefined when no chain address matches', () => {
+      expect(
+        findAccountByPolkadotAddress(
+          'unknownAddress',
+          registryWithDot,
+          polkadotAddressesByUniqueKey,
+        ),
+      ).toBeUndefined()
+    })
+
+    it('getAddressLabel resolves the matched account name', () => {
+      expect(
+        getAddressLabel(
+          chainCorrectAddress,
+          registryWithDot,
+          polkadotAddressesByUniqueKey,
+        ),
+      ).toBe(mockPolkadotAccount.name)
+    })
   })
 })
 
