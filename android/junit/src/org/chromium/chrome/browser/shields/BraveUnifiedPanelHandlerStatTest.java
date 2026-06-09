@@ -6,18 +6,27 @@
 package org.chromium.chrome.browser.shields;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.tab.Tab;
 
 import java.util.ArrayList;
 
@@ -32,11 +41,14 @@ public class BraveUnifiedPanelHandlerStatTest {
     private static final int TAB_ID = 42;
     private static final int UNKNOWN_TAB_ID = 999;
 
+    @Mock private Tab mIncognitoTab;
+
     private BraveUnifiedPanelHandler mHandler;
 
     @Before
     public void setUp() {
-        mHandler = new BraveUnifiedPanelHandler(ContextUtils.getApplicationContext());
+        mHandler = spy(new BraveUnifiedPanelHandler(ContextUtils.getApplicationContext()));
+        mHandler.setCurrentTabForTesting(mIncognitoTab);
     }
 
     @Test
@@ -165,6 +177,48 @@ public class BraveUnifiedPanelHandlerStatTest {
         assertEquals(0, mHandler.getTrackersBlockedCount(UNKNOWN_TAB_ID));
         assertEquals(0, mHandler.getTotalBlockedCount(UNKNOWN_TAB_ID));
         assertTrue(mHandler.getBlockedUrls(UNKNOWN_TAB_ID).isEmpty());
+    }
+
+    @Test
+    @EnableFeatures(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
+    public void shouldShowElementBlocker_normalTab_featureEnabled_shown() {
+        when(mIncognitoTab.isIncognito()).thenReturn(false);
+        // Shouldn't matter but set it to false anyway.
+        doReturn(false).when(mHandler).getElementBlockerPrivateModeEnabled();
+        assertTrue(mHandler.shouldShowElementBlocker());
+    }
+
+    @Test
+    @DisableFeatures(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
+    public void shouldShowElementBlocker_normalTab_featureDisabled_shown() {
+        when(mIncognitoTab.isIncognito()).thenReturn(false);
+        // Ditto previous test, but inverse.
+        doReturn(true).when(mHandler).getElementBlockerPrivateModeEnabled();
+        assertFalse(mHandler.shouldShowElementBlocker());
+    }
+
+    @Test
+    @EnableFeatures(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
+    public void shouldShowElementBlocker_privateTab_privatePrefEnabled_shown() {
+        when(mIncognitoTab.isIncognito()).thenReturn(true);
+        doReturn(true).when(mHandler).getElementBlockerPrivateModeEnabled();
+        assertTrue(mHandler.shouldShowElementBlocker());
+    }
+
+    @Test
+    @EnableFeatures(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
+    public void shouldShowElementBlocker_privateTab_privatePrefDisabled_notShown() {
+        when(mIncognitoTab.isIncognito()).thenReturn(true);
+        doReturn(false).when(mHandler).getElementBlockerPrivateModeEnabled();
+        assertFalse(mHandler.shouldShowElementBlocker());
+    }
+
+    @Test
+    @DisableFeatures(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
+    public void shouldShowElementBlocker_privateTab_featureDisabled_notShown() {
+        when(mIncognitoTab.isIncognito()).thenReturn(true);
+        doReturn(true).when(mHandler).getElementBlockerPrivateModeEnabled();
+        assertFalse(mHandler.shouldShowElementBlocker());
     }
 
     @Test

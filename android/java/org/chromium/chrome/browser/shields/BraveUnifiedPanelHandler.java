@@ -48,6 +48,7 @@ import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRadioButton;
@@ -553,11 +554,8 @@ public class BraveUnifiedPanelHandler {
 
         View blockElementItem = mAdvancedOptionsContent.findViewById(R.id.block_element_item);
         if (blockElementItem != null) {
-            boolean isPrivateWindow = mCurrentTab != null && mCurrentTab.isIncognito();
-            boolean isFeatureEnabled =
-                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER);
 
-            if (!isPrivateWindow && isFeatureEnabled) {
+            if (shouldShowElementBlocker()) {
                 blockElementItem.setVisibility(View.VISIBLE);
                 blockElementItem.setOnClickListener(
                         v -> {
@@ -666,6 +664,25 @@ public class BraveUnifiedPanelHandler {
 
     private void applyToggleState(boolean isOn) {
         mShieldsToggleSwitch.setChecked(isOn);
+    }
+
+    @VisibleForTesting
+    boolean shouldShowElementBlocker() {
+        boolean isPrivateWindow = mCurrentTab != null && mCurrentTab.isIncognito();
+        boolean isEnabledForPrivate = getElementBlockerPrivateModeEnabled();
+        boolean isFeatureEnabled =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER);
+        return (!isPrivateWindow || isEnabledForPrivate) && isFeatureEnabled;
+    }
+
+    @VisibleForTesting
+    void setCurrentTabForTesting(@Nullable Tab tab) {
+        mCurrentTab = tab;
+    }
+
+    @VisibleForTesting
+    protected boolean getElementBlockerPrivateModeEnabled() {
+        return BraveShieldsContentSettings.getAllowElementBlockerInPrivateModeEnabledPref();
     }
 
     private void onShieldsToggleChanged(boolean isChecked) {
