@@ -1100,6 +1100,16 @@ class ToolchainBuilder:
                     'build_rust.py on Windows. Please install Git for Windows '
                     'and ensure its bin/ directory is on PATH.')
 
+        # `bootstrap` tool is cauing a linking warning on apple machines, that
+        # becomes a hard error, because the build binds to the node's Homebrew
+        # `liblzma.dylib` which targets a newer macOS than our deployment
+        # target. For this reason, we force `lzma-sys` to compile and statically
+        # link its bundled liblzma to avoid this warning. Upstream already does
+        # this on Linux, but they have not hit this issue on macOS, as their
+        # nodes don't have homebrew installed.
+        if sys.platform == 'darwin':
+            os.environ['LZMA_API_STATIC'] = '1'
+
         with self._temporary_config_toml_template_edits():
             self._prepare_run_xpy()
             self._run_xpy()
