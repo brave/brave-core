@@ -47,7 +47,7 @@ struct RestoreWalletView: View {
     HStack(spacing: 12) {
       Image(braveSystemName: "leo.warning.circle-filled")
         .renderingMode(.template)
-        .foregroundColor(Color(.braveLighterOrange))
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
       Text(Strings.Wallet.restoreWalletPhraseInvalidError)
         .multilineTextAlignment(.leading)
         .font(.callout)

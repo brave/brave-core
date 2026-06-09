@@ -196,7 +196,7 @@ private struct WidgetTopNewsView: View {
           Image(braveSystemName: "leo.brave.icon-monochrome")
             .font(.footnote)
             .imageScale(.large)
-            .foregroundColor(Color(.braveOrange))
+            .foregroundColor(Color(braveSystemName: .primitiveBrandsRorange2))
             .padding(4)
             .background(
               Color(.white).clipShape(Circle()).shadow(color: .black.opacity(0.2), radius: 2, y: 1)
@@ -243,7 +243,7 @@ private struct WidgetTopNewsView: View {
         Image(braveSystemName: "leo.brave.icon-monochrome")
           .font(.footnote)
           .imageScale(.large)
-          .foregroundColor(Color(.braveOrange))
+          .foregroundColor(Color(braveSystemName: .primitiveBrandsRorange2))
           .padding(4)
           .background(
             Color(.white).clipShape(Circle()).shadow(color: .black.opacity(0.2), radius: 2, y: 1)
