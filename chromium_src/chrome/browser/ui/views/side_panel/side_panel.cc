@@ -33,12 +33,11 @@ namespace {
 // content parent view. Used when the pref changes or the panel opens with
 // existing content (so OnChildViewAdded never fired with the new values).
 void UpdateContentWrapperChildCorners(views::View* content_parent_view,
-                                      PrefService* prefs,
-                                      bool has_header) {
+                                      BrowserView* browser_view) {
   // ContentParentView hosts multiple content view and shows at once.
   CHECK(content_parent_view->GetUseDefaultFillLayout());
 
-  auto corners = brave::GetPanelContentsRoundedCorners(prefs, has_header);
+  auto corners = brave::GetPanelContentsRoundedCorners(browser_view);
   for (views::View* child : content_parent_view->children()) {
     // If the child is a WebView or paints to a layer, round its corners.
     if (views::IsViewClass<views::WebView>(child)) {
@@ -90,9 +89,7 @@ void SidePanel::UpdateBorder() {
   UpdateHorizontalAlignment();
 
   // Re-apply corners to existing content: the pref or header state changed.
-  UpdateContentWrapperChildCorners(GetContentParentView(),
-                                   browser_view_->GetProfile()->GetPrefs(),
-                                   GetHeaderView<views::View>());
+  UpdateContentWrapperChildCorners(GetContentParentView(), browser_view_);
 
   const int header_top_inset =
       header_view_ ? header_view_->GetPreferredSize().height() : 0;

@@ -168,6 +168,13 @@ class BraveBrowserView : public BrowserView,
   void UpdateVerticalTabStripBorder();
   void UpdateSidebarBorder();
 
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // Re-applies the side panel border so the content corner radii track the
+  // sidebar control view's visibility. Wired as SidebarContainerView's
+  // control-view-visibility-changed callback.
+  void OnSidebarControlViewVisibilityChanged();
+#endif
+
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
   }

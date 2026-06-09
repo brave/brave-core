@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
@@ -86,6 +87,12 @@ class SidebarContainerView : public sidebar::Sidebar,
   bool IsFullscreenForCurrentEntry() const;
   void UpdateBorder();
 
+  // Runs `callback` whenever the sidebar control view's visibility changes, so
+  // the side panel can recompute its content corner radii (which depend on
+  // sidebar control view visibility — see GetPanelContentsRoundedCorners()).
+  void SetSidebarControlViewVisibilityChangedCallback(
+      base::RepeatingClosure callback);
+
   void set_operation_from_active_tab_change(bool tab_change) {
     operation_from_active_tab_change_ = tab_change;
   }
@@ -100,6 +107,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   void MenuClosed() override;
 
   // views::View overrides:
+  void ChildVisibilityChanged(views::View* child) override;
   void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
@@ -216,6 +224,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
+  base::RepeatingClosure sidebar_control_view_visibility_changed_callback_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_

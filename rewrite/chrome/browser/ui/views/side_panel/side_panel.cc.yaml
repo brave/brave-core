@@ -7,14 +7,14 @@ substitutions:
   - description: |
       Route ContentParentView::GetRoundedCorners() through Brave's corner helper.
 
-      Calls brave::GetPanelContentsRoundedCorners() with the current prefs and
-      whether the side panel has a Brave header attached.  Reading header_view_
-      state (set before AddChildView in PopulateSidePanel) avoids the timing
-      issue where coordinator->GetCurrentEntryId() still returns the previous
-      entry when OnChildViewAdded fires.
+      Passes the BrowserView; the helper reads the prefs and the side panel's
+      header state from it (and downcasts it to BraveBrowserView) to adjust the
+      bottom-corner radius based on sidebar visibility and panel alignment. The
+      helper reads header_view_ directly (set before AddChildView in
+      PopulateSidePanel), avoiding the timing issue where
+      coordinator->GetCurrentEntryId() still returns the previous entry when
+      OnChildViewAdded fires.
     re_pattern: '(  gfx::RoundedCornersF GetRoundedCorners\(\) \{)'
     replace: |-
       \1
-          return brave::GetPanelContentsRoundedCorners(
-              browser_view_->GetProfile()->GetPrefs(),
-              browser_view_->side_panel()->GetHeaderView<views::View>());
+          return brave::GetPanelContentsRoundedCorners(browser_view_);
