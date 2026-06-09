@@ -91,8 +91,6 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
         switch state {
         case .none:
           browser.topToolbar.updatePlaylistButtonState(.none)
-          browser.topToolbar.menuButton.removeBadge(.playlist, animated: true)
-          browser.toolbar?.menuButton.removeBadge(.playlist, animated: true)
         case .newItem:
           browser.topToolbar.updatePlaylistButtonState(
             shouldShowPlaylistURLBarButton ? .addToPlaylist : .none
@@ -101,85 +99,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
           browser.topToolbar.updatePlaylistButtonState(
             shouldShowPlaylistURLBarButton ? .addedToPlaylist(item) : .none
           )
-          browser.topToolbar.menuButton.removeBadge(.playlist, animated: true)
-          browser.toolbar?.menuButton.removeBadge(.playlist, animated: true)
         }
       }
-    }
-  }
-
-  func showPlaylistPopover(tab: (any TabState)?) {
-  }
-
-  func showPlaylistToast(tab: (any TabState)?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
-    updatePlaylistURLBar(tab: tab, state: state, item: item)
-
-    guard let selectedTab = tabManager.selectedTab,
-      selectedTab === tab,
-      selectedTab.visibleURL?.isPlaylistSupportedSiteURL == true
-    else {
-      return
-    }
-
-    if let toast = pendingToast as? PlaylistToast {
-      toast.item = item
-      return
-    }
-
-    pendingToast = PlaylistToast(
-      item: item,
-      state: state,
-      completion: { [weak self] buttonPressed in
-        guard let self = self,
-          let item = (self.pendingToast as? PlaylistToast)?.item
-        else { return }
-
-        switch state {
-        // Item requires user action to add it to playlists
-        case .none:
-          if buttonPressed {
-            // Update playlist with new items..
-            self.addToPlaylist(item: item) { [weak self] didAddItem in
-              guard let self = self else { return }
-
-              Logger.module.debug("Playlist Item Added")
-              self.pendingToast = nil
-
-              if didAddItem {
-                self.showPlaylistToast(tab: tab, state: .existingItem, item: item)
-                UIImpactFeedbackGenerator(style: .medium).vibrate()
-              }
-            }
-          } else {
-            self.pendingToast = nil
-          }
-
-        // Item already exists in playlist, so ask them if they want to view it there
-        // Item was added to playlist by the user, so ask them if they want to view it there
-        case .newItem, .existingItem:
-          if buttonPressed {
-            UIImpactFeedbackGenerator(style: .medium).vibrate()
-
-            DispatchQueue.main.async {
-              if let tab {
-                PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
-                  [weak self] currentTime in
-                  self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
-                }
-              } else {
-                self.openPlaylist(tab: tab, item: item, playbackOffset: 0.0)
-              }
-            }
-          }
-
-          self.pendingToast = nil
-        }
-      }
-    )
-
-    if let pendingToast = pendingToast {
-      let duration = state == .none ? 10 : 5
-      show(toast: pendingToast, afterWaiting: .milliseconds(250), duration: .seconds(duration))
     }
   }
 
@@ -206,7 +127,12 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
             UIImpactFeedbackGenerator(style: .medium).vibrate()
 
             if addedToPlaylist {
-              self.showPlaylistToast(tab: tab, state: .existingItem, item: item)
+              DispatchQueue.main.async { [self] in
+                self.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
+
+                let popover = self.createPlaylistPopover(item: item, tab: tab)
+                popover.present(from: self.topToolbar.locationView.playlistButton, on: self)
+              }
             }
           }
         }

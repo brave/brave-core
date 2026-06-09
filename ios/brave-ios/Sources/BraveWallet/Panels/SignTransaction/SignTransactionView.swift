@@ -362,7 +362,7 @@ struct SignTransactionView: View {
         .font(.subheadline.weight(.semibold))
         .foregroundColor(Color(braveSystemName: .textPrimary))
       HStack {
-        LinearGradient(braveGradient: colorScheme == .dark ? .darkGradient02 : .lightGradient02)
+        LinearGradient(braveSystemName: .toolbarBackground)
       }
       .frame(height: 4)
     }
