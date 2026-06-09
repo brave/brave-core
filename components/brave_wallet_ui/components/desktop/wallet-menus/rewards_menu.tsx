@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 // Queries
 import {
@@ -15,12 +17,7 @@ import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
+import { ButtonMenu } from './wellet-menus.style'
 
 const onClickRewardsSettings = () => {
   chrome.tabs.create(
@@ -67,17 +64,23 @@ export const RewardsMenu = () => {
   }
 
   return (
-    <StyledWrapper yPosition={26}>
-      <PopupButton onClick={onClickOnProviderAccount}>
-        <ButtonIcon name='launch' />
-        <PopupButtonText>{providerButtonText}</PopupButtonText>
-      </PopupButton>
-      <PopupButton onClick={onClickRewardsSettings}>
-        <ButtonIcon name='product-bat-outline' />
-        <PopupButtonText>
-          {getLocale('braveWalletRewardsSettings')}
-        </PopupButtonText>
-      </PopupButton>
-    </StyledWrapper>
+    <ButtonMenu placement='bottom-end'>
+      <Button
+        fab
+        slot='anchor-content'
+        kind='plain-faint'
+        size='large'
+      >
+        <Icon name='more-vertical' />
+      </Button>
+      <leo-menu-item onClick={onClickOnProviderAccount}>
+        <Icon name='launch' />
+        {providerButtonText}
+      </leo-menu-item>
+      <leo-menu-item onClick={onClickRewardsSettings}>
+        <Icon name='product-bat-outline' />
+        {getLocale('braveWalletRewardsSettings')}
+      </leo-menu-item>
+    </ButtonMenu>
   )
 }

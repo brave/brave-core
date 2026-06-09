@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { css } from 'styled-components'
+import LeoButtonMenu from '@brave/leo/react/buttonMenu'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
@@ -162,4 +163,24 @@ export const SectionLabel = styled(Row)`
   font: ${leo.font.components.label};
   text-transform: capitalize;
   color: ${leo.color.text.tertiary};
+`
+
+export const ButtonMenu = styled(LeoButtonMenu)<{
+  minWidth?: number
+}>`
+  color: ${leo.color.icon.default};
+  leo-menu-item {
+    --leo-icon-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    color: ${leo.color.text.primary};
+    font: ${leo.font.default.regular};
+    min-width: ${(p) => p.minWidth ?? 220}px;
+    padding: 12px;
+  }
+  leo-menu-item #shield {
+    --leo-icon-color: ${leo.color.systemfeedback.successIcon};
+  }
 `
