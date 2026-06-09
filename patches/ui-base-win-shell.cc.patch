@@ -1,0 +1,13 @@
+diff --git a/ui/base/win/shell.cc b/ui/base/win/shell.cc
+index f29a55e0864d22e5242cfad7f032675265c55892..ce284a860b2c83389ed39bf3fccac0558c8f908d 100644
+--- a/ui/base/win/shell.cc
++++ b/ui/base/win/shell.cc
+@@ -37,7 +37,7 @@ namespace {
+ 
+ // If this feature is enabled, then the COM interface on explorer will be used
+ // to ShellExecute, rather than calling it directly.
+-BASE_FEATURE(kLaunchShellExecuteViaExplorer, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_FEATURE(kLaunchShellExecuteViaExplorer, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Default ShellExecuteEx flags used with "openas", "explore", and default
+ // verbs.
