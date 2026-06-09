@@ -254,9 +254,8 @@ extension LoginInfoViewController {
           format: Strings.Login.loginInfoCreatedHeaderTitle,
           formattedCreationDate
         )
-        $0.tintColor = UIColor(braveSystemName: .textSecondary)
+        $0.tintColor = .secondaryLabel
         $0.selectionStyle = .none
-        $0.backgroundColor = UIColor(braveSystemName: .pageBackground)
       }
       return cell
     case Section.delete.rawValue:

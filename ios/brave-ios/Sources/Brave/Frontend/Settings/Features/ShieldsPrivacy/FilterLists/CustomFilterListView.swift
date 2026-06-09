@@ -225,7 +225,6 @@ struct FilterListEditor: UIViewRepresentable {
     lazy var textView: UITextView = {
       let textView = UITextView()
       textView.font = UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)
-      textView.textColor = UIColor(braveSystemName: .textPrimary)
       textView.autocorrectionType = .no
       textView.autocapitalizationType = .none
       textView.keyboardType = .alphabet

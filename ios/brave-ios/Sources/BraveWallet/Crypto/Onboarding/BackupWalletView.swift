@@ -77,7 +77,7 @@ struct BackupWalletView: View {
 
         Toggle(Strings.Wallet.backupWalletDisclaimer, isOn: $acknowledgedWarning)
           .font(.footnote)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.horizontal, 20)
           .padding(.vertical, 10)

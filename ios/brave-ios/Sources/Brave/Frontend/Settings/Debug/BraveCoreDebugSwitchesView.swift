@@ -130,7 +130,7 @@ private struct BasicPickerInputView: View {
     Form {
       Picker("", selection: $selectedItem) {
         Text("Default")
-          .foregroundColor(Color(braveSystemName: .textSecondary))
+          .foregroundColor(.secondary)
           .tag("")
         ForEach(options, id: \.self) { option in
           Text(option.capitalized).tag(option)
@@ -282,14 +282,14 @@ struct BraveCoreDebugSwitchesView: View {
           VStack(alignment: .leading, spacing: 4) {
             Text(coreSwitch.rawValue)
               .font(.footnote)
-              .foregroundColor(Color(braveSystemName: .textSecondary))
+              .foregroundColor(.secondary)
             if let value = switchValues.value[coreSwitch.rawValue], !value.isEmpty {
               Text("\(Image(systemName: "equal.square.fill")) \(value)")
                 .font(.caption)
                 .foregroundColor(
                   binding.wrappedValue
                     ? Color(braveSystemName: .textInteractive)
-                    : Color(braveSystemName: .textSecondary)
+                    : .secondary
                 )
                 .lineLimit(1)
             }
@@ -306,7 +306,6 @@ struct BraveCoreDebugSwitchesView: View {
         Text("Switches only affect fresh launches")
           .frame(maxWidth: .infinity)
           .font(.footnote)
-          .foregroundColor(Color(braveSystemName: .textPrimary))
           .listRowInsets(.zero)
       }
       Section {
@@ -426,7 +425,7 @@ struct BraveCoreDebugSwitchesView: View {
                     Text("--\(switchKey)=\(value)")
                       .font(.caption)
                       .foregroundColor(
-                        Color(braveSystemName: .textSecondary)
+                        .secondary
                       )
                       .lineLimit(1)
                   }
@@ -458,7 +457,7 @@ struct BraveCoreDebugSwitchesView: View {
       }
 
       Section {
-        Button("Disable All") {
+        Button("Disable All", role: .destructive) {
           withAnimation {
             activeSwitches.value = []
           }

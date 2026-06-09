@@ -310,7 +310,7 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
     forSection section: Int
   ) {
     guard let footerView = view as? UITableViewHeaderFooterView else { return }
-    footerView.textLabel?.textColor = UIColor(braveSystemName: .textSecondary)
+    footerView.textLabel?.textColor = UIColor.secondaryLabel
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

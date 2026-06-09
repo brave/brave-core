@@ -28,7 +28,7 @@ struct ShredSiteSettingsView: View {
         FormPicker(selection: $viewModel.autoShredLevel) {
           ForEach(SiteShredLevel.allCases) { level in
             Text(level.localizedTitle)
-              .foregroundColor(Color(braveSystemName: .textSecondary))
+              .foregroundColor(.secondary)
               .tag(level)
           }
         } label: {

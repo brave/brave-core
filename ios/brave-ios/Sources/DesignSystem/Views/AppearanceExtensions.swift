@@ -47,20 +47,6 @@ extension UIView {
       $0.scrollEdgeAppearance = appearance
     }
 
-    UISwitch.appearance().onTintColor = UIColor(braveSystemName: .primitivePrimary40)
-
-    UITableViewCell.appearance().do {
-      $0.tintColor = UIColor(braveSystemName: .textInteractive)
-    }
-
-    UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor(
-      braveSystemName: .textPrimary
-    )
-    UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self])
-      .textColor = UIColor(braveSystemName: .textPrimary)
-
-    UITextField.appearance().textColor = UIColor(braveSystemName: .textPrimary)
-
     UISegmentedControl.appearance().do {
       $0.selectedSegmentTintColor = .init(dynamicProvider: {
         if $0.userInterfaceStyle == .dark {

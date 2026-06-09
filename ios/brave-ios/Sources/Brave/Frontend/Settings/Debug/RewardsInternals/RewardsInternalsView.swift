@@ -22,10 +22,9 @@ struct RewardsInternalsView: View {
           VStack(alignment: .leading) {
             Text(Strings.RewardsInternals.sharingWarningTitle)
               .font(.headline)
-              .foregroundStyle(Color(braveSystemName: .textPrimary))
             Text(Strings.RewardsInternals.sharingWarningMessage)
               .font(.subheadline)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
           }
         }
         Section {

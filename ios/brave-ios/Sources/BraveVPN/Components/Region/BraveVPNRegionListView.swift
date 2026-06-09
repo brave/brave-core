@@ -242,7 +242,7 @@ public struct BraveVPNRegionListView: View {
     }
     .disabled(isLoading)
     .foregroundStyle(Color(braveSystemName: .textPrimary))
-    .tint(.accentColor)
+    .tint(Color(braveSystemName: .primitivePrimary40))
     .listRowBackground(Color(braveSystemName: .iosBrowserElevatedIos))
   }
 

@@ -150,8 +150,6 @@ class LoginListViewController: LoginAuthViewController {
       $0.delegate = self
       $0.hidesNavigationBarDuringPresentation = true
     }
-
-    navigationController?.view.backgroundColor = UIColor(braveSystemName: .pageBackground)
   }
 }
 
@@ -187,6 +185,7 @@ extension LoginListViewController {
     func createSaveToggleCell() -> UITableViewCell {
       let toggle = UISwitch().then {
         $0.addTarget(self, action: #selector(didToggleSaveLogins), for: .valueChanged)
+        $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
         $0.isOn = Preferences.General.saveLogins.value
       }
 
@@ -215,7 +214,6 @@ extension LoginListViewController {
         $0.setLines(loginInfo.displayURLString, detailText: loginInfo.usernameValue)
         $0.selectionStyle = .none
         $0.accessoryType = .disclosureIndicator
-        $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
       }
 
       cell.imageIconView.do {

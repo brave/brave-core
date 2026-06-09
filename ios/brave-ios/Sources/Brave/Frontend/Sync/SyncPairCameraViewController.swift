@@ -114,6 +114,7 @@ class SyncPairCameraViewController: SyncViewController {
     enterWordsButton = RoundInterfaceButton(type: .roundedRect)
     enterWordsButton.translatesAutoresizingMaskIntoConstraints = false
     enterWordsButton.setTitle(Strings.Sync.enterCodeWords, for: .normal)
+    enterWordsButton.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
     enterWordsButton.titleLabel?.font = UIFont.systemFont(
       ofSize: 15,
       weight: UIFont.Weight.semibold

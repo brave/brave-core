@@ -31,13 +31,12 @@ public struct AIChatSettingsView: View {
         Toggle(isOn: $leoInQuickSearchBarEnabled.value) {
           VStack(alignment: .leading, spacing: 4) {
             Text(Strings.AIChat.advancedSettingsShowInQSEBarTitle)
-              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(LocalizedStringKey(Strings.AIChat.advancedSettingsShowInQSEBarDescription))
-              .foregroundColor(Color(braveSystemName: .textPrimary))
+              .foregroundStyle(.secondary)
               .font(.caption)
           }
+          .tint(Color(braveSystemName: .primitivePrimary40))
         }
-        .tint(.accentColor)
         NavigationLink {
           ModelListPicker(
             modelsWithSubtitles: viewModel.modelsWithSubtitles,
@@ -46,10 +45,9 @@ public struct AIChatSettingsView: View {
         } label: {
           VStack(alignment: .leading, spacing: 4) {
             Text(Strings.AIChat.advancedSettingsDefaultModelTitle)
-              .foregroundColor(Color(braveSystemName: .textPrimary))
             if let defaultModelWithSubtitle = viewModel.defaultModelWithSubtitle {
               Text(defaultModelWithSubtitle.model.displayName)
-                .foregroundColor(Color(braveSystemName: .textPrimary))
+                .foregroundStyle(.secondary)
                 .font(.caption)
             }
           }
@@ -85,7 +83,7 @@ public struct AIChatSettingsView: View {
             Text(Strings.AIChat.byomEmptyStateTitle)
             Text(Strings.AIChat.byomEmptyStateDescription)
               .font(.subheadline.weight(.regular))
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
           }
         }
         ForEach(viewModel.customModels, id: \.key) { model in
@@ -94,11 +92,10 @@ public struct AIChatSettingsView: View {
           } label: {
             VStack(alignment: .leading) {
               Text(model.displayName)
-                .foregroundStyle(Color(braveSystemName: .textPrimary))
               if let requestName = model.options.customModelOptions?.modelRequestName {
                 Text(requestName)
                   .font(.subheadline.weight(.regular))
-                  .foregroundStyle(Color(braveSystemName: .textSecondary))
+                  .foregroundStyle(.secondary)
               }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -114,6 +111,7 @@ public struct AIChatSettingsView: View {
           isNewCustomModelFormPresented = true
         } label: {
           Text(Strings.AIChat.byomAddNewModelButtonTitle)
+            .foregroundStyle(Color(braveSystemName: .textInteractive))
         }
         .sheet(isPresented: $isNewCustomModelFormPresented) {
           NavigationStack {
@@ -126,6 +124,7 @@ public struct AIChatSettingsView: View {
           // Contains markdown
           Text(LocalizedStringKey(Strings.AIChat.byomSectionHeaderDescription))
             .textCase(.none)
+            .tint(Color(braveSystemName: .textInteractive))
         }
       }
     }
@@ -152,7 +151,6 @@ public struct AIChatSettingsView: View {
               HStack {
                 VStack(alignment: .leading) {
                   Text(model.displayName)
-                    .foregroundStyle(Color(braveSystemName: .textPrimary))
                   Group {
                     if let customModelOptions = model.options.customModelOptions {
                       Text(customModelOptions.modelRequestName)
@@ -335,10 +333,9 @@ public struct AIChatSettingsView: View {
     func makeBody(configuration: Configuration) -> some View {
       HStack {
         configuration.label
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
         Spacer()
         configuration.content
-          .foregroundStyle(Color(braveSystemName: .textTertiary))
+          .foregroundStyle(.secondary)
       }
     }
   }

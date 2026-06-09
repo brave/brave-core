@@ -105,7 +105,7 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
     super.viewDidLoad()
 
     view.backgroundColor = .systemGroupedBackground
-    view.tintColor = UIColor(braveSystemName: .primitivePrimary40)
+    view.tintColor = UIColor(braveSystemName: .textInteractive)
   }
 
   @available(*, unavailable)

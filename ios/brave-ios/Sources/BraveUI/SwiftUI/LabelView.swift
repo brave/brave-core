@@ -21,6 +21,7 @@ public struct LabelView: View {
       if let subtitle = subtitle {
         Text(LocalizedStringKey(subtitle))
           .foregroundColor(Color(braveSystemName: .textPrimary))
+          .tint(Color(braveSystemName: .textInteractive))
           .font(.caption)
       }
     }

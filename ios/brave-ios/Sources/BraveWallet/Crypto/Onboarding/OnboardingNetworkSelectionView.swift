@@ -94,7 +94,7 @@ struct OnboardingNetworkSelectionView: View {
             Text(Strings.Wallet.showTestnets)
           }
         )
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
         .fixedSize(horizontal: true, vertical: false)
         .frame(maxWidth: .infinity, alignment: .trailing)
         LazyVGrid(

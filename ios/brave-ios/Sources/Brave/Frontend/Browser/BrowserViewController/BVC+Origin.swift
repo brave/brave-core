@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveStore
+import BraveUI
 import Onboarding
 import Origin
 import Preferences
@@ -58,12 +59,9 @@ extension BrowserViewController {
           )
         )
         controller.title = Strings.Origin.originProductName  // Not Translated
-        controller.navigationItem.rightBarButtonItem = .init(
-          systemItem: .done,
-          primaryAction: .init(handler: { [unowned self] _ in
-            dismiss(animated: true)
-          })
-        )
+        controller.navigationItem.rightBarButtonItem = .doneButton { [unowned self] in
+          dismiss(animated: true)
+        }
         return UINavigationController(rootViewController: controller)
       }
       if isPurchased {

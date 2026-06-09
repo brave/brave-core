@@ -48,7 +48,7 @@ private struct AppIconView: View {
         }
       HStack {
         Text(altIcon.map(\.displayName) ?? Strings.AltAppIcon.defaultAppIcon)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .foregroundStyle(Color(uiColor: UIColor.label))
         Spacer()
         if isSelected {
           Image(braveSystemName: "leo.check.circle-filled")
@@ -95,5 +95,12 @@ struct AltIconsView: View {
     .alert(Strings.AltAppIcon.errorTitle, isPresented: $isErrorPresented) {
       Button(Strings.OKString) {}
     }
+    .tint(Color(braveSystemName: .textInteractive))
   }
 }
+
+#if DEBUG
+#Preview {
+  AltIconsView(model: .init())
+}
+#endif

@@ -18,7 +18,7 @@ struct WebsiteRedirectsSettingsView: View {
         Toggle(isOn: $reddit.value) {
           Text("reddit.com \(Image(systemName: "arrow.right")) old.reddit.com")
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
       } footer: {
         Text(Strings.redditRedirectFooter)
       }
@@ -27,7 +27,7 @@ struct WebsiteRedirectsSettingsView: View {
         Toggle(isOn: $npr.value) {
           Text("npr.org \(Image(systemName: "arrow.right")) text.npr.org")
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
       } footer: {
         Text(Strings.nprRedirectFooter)
       }

@@ -35,8 +35,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
     defer { isControllerSetUp = true }
 
     if navigationController?.viewControllers.first === self {
-      navigationItem.rightBarButtonItem = .init(
-        barButtonSystemItem: .done,
+      navigationItem.rightBarButtonItem = .doneButton(
         target: self,
         action: #selector(tappedDone)
       )
