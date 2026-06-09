@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [[substitution]]
-description = 'Insert kActionShowPartitionedStorage before kActionVirtualCardEnroll'
+description = 'Insert kActionShowPartitionedStorage and kActionShowPsstIcon before kActionVirtualCardEnroll'
 pattern = 'kActionVirtualCardEnroll,'
 replace = '''kActionShowPartitionedStorage,
         {
@@ -13,12 +13,7 @@ replace = '''kActionShowPartitionedStorage,
         },
     },
     {
-        kActionVirtualCardEnroll,'''
-
-[[substitution]]
-description = 'Insert kActionShowPsstIcon before kActionVirtualCardEnroll'
-pattern = 'kActionVirtualCardEnroll,'
-replace = '''kActionShowPsstIcon,
+        kActionShowPsstIcon,
         {
            .histogram_name = "PsstIcon",
            .type = brave::kPsstIconActionIconType,

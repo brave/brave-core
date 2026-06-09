@@ -18,9 +18,7 @@
   case CommandBringAllTabsToThisWindow: \
   case CommandCloseDuplicateTabs:       \
   case CommandOpenInContainer:          \
-  case CommandRenameTab:                \
-  case CommandPsstDontShowThisSite:     \
-  case CommandPsstDisablePrivacySettingsTuning
+  case CommandRenameTab
 
 #define DraggingTabsSession DraggingTabsSessionChromium
 

@@ -16,11 +16,10 @@
 //   CommandCloseDuplicateTabs - Closes duplicate tabs with the same URL
 //   CommandOpenInContainer - Container submenu
 //   CommandRenameTab - Allows renaming a tab with custom title
-#define CommandLast                                                         \
-  CommandRestoreTab, CommandBookmarkAllTabs, CommandShowVerticalTabs,       \
-      CommandToggleTabMuted, CommandBringAllTabsToThisWindow,               \
-      CommandCloseDuplicateTabs, CommandOpenInContainer, CommandRenameTab,  \
-      CommandPsstDontShowThisSite, CommandPsstDisablePrivacySettingsTuning, \
+#define CommandLast                                                        \
+  CommandRestoreTab, CommandBookmarkAllTabs, CommandShowVerticalTabs,      \
+      CommandToggleTabMuted, CommandBringAllTabsToThisWindow,              \
+      CommandCloseDuplicateTabs, CommandOpenInContainer, CommandRenameTab, \
       CommandLast
 
 #define SelectRelativeTab(...)            \

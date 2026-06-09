@@ -4,13 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [[substitution]]
-description = 'Add kActionShowPartitionedStorage as the second entry of kActionIds'
+description = 'Add kActionShowPartitionedStorage and kActionShowPsstIcon as the second entry of kActionIds'
 re_pattern = '(kActionIds = std::to_array<actions::ActionId>\(\{\n[ \t]*\w+,\n)'
 replace = '''\1    kActionShowPartitionedStorage,
-'''
-
-[[substitution]]
-description = 'Add kActionShowPsstIcon as second entry of kActionIds'
-re_pattern = '(kActionIds = std::to_array<actions::ActionId>\(\{\n[ \t]*\w+,\n)'
-replace = '''\1    kActionShowPsstIcon,
+    kActionShowPsstIcon,
 '''

@@ -228,11 +228,6 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
     return true;
   }
 
-  if (command_id == TabStripModel::CommandPsstDontShowThisSite ||
-      command_id == TabStripModel::CommandPsstDisablePrivacySettingsTuning) {
-    return true;
-  }
-
   return BrowserTabStripController::IsContextMenuCommandEnabled(index,
                                                                 command_id);
 }

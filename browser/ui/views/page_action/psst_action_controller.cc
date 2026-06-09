@@ -171,7 +171,7 @@ void PsstActionController::UpdatePageAction() {
     page_action_controller_->OverrideImage(
         kActionShowPsstIcon,
         ui::ImageModel::FromVectorIcon(kLeoPsstIcon, kColorToolbarButtonIcon,
-                                      kIconSize));
+                                       kIconSize));
     return;
   }
   content::WebContents* const contents = tab_->GetContents();
