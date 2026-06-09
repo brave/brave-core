@@ -237,6 +237,7 @@
     "events": "3.3.0",
     "history": "4.10.1",
     "jszip": "3.8.0",
+    "onnxruntime-web": "1.26.0",
     "prettier-bytes": "1.0.4",
     "qr-image": "3.2.0",
     "react-json-view-lite": "0.9.5",
