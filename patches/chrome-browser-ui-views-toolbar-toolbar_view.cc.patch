@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 0089be5050e114497955bd70591676460d6b17bf..80040bf6503c9bd8798c5bf4ec25f392649524c1 100644
+index 9bdbc454ec0be7cef5fb98738abf1a5b9983f4ad..adbf8f2bdb0da3e210c21337934021ad89a08d42 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -576,6 +576,7 @@ void ToolbarView::Init() {
+@@ -579,6 +579,7 @@ void ToolbarView::Init() {
    }
  
    if (!features::IsWebUIAvatarButtonEnabled()) {
