@@ -254,6 +254,12 @@ CardanoTxDecoder::SerializableTxBody::operator=(SerializableTxBody&&) = default;
 CardanoTxDecoder::SerializableVkeyWitness::SerializableVkeyWitness() = default;
 CardanoTxDecoder::SerializableVkeyWitness::~SerializableVkeyWitness() = default;
 CardanoTxDecoder::SerializableVkeyWitness::SerializableVkeyWitness(
+    base::span<const uint8_t, kCardanoSignatureSize> signature_bytes_arg,
+    base::span<const uint8_t, kCardanoPubKeySize> public_key_arg) {
+  base::span(signature_bytes).copy_from_nonoverlapping(signature_bytes_arg);
+  base::span(public_key).copy_from_nonoverlapping(public_key_arg);
+}
+CardanoTxDecoder::SerializableVkeyWitness::SerializableVkeyWitness(
     const SerializableVkeyWitness&) = default;
 CardanoTxDecoder::SerializableVkeyWitness&
 CardanoTxDecoder::SerializableVkeyWitness::operator=(
@@ -389,11 +395,9 @@ std::optional<CardanoTxDecoder::DecodedTx> CardanoTxDecoder::DecodeTransaction(
 }
 
 // static
-std::optional<std::vector<uint8_t>> CardanoTxDecoder::AddWitnessesToTransaction(
-    const std::vector<uint8_t>& unsigned_tx_bytes,
+std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeWitness(
     const SerializableTxWitness& witness) {
-  auto result = apply_signatures(base::SpanToRustSlice(unsigned_tx_bytes),
-                                 ToRust(witness));
+  auto result = encode_cardano_witness(ToRust(witness));
 
   if (!result->is_ok()) {
     return std::nullopt;

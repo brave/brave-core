@@ -71,6 +71,9 @@ class CardanoTxDecoder {
 
   struct SerializableVkeyWitness {
     SerializableVkeyWitness();
+    SerializableVkeyWitness(
+        base::span<const uint8_t, kCardanoSignatureSize> signature_bytes,
+        base::span<const uint8_t, kCardanoPubKeySize> public_key);
     ~SerializableVkeyWitness();
     SerializableVkeyWitness(const SerializableVkeyWitness&);
     SerializableVkeyWitness& operator=(const SerializableVkeyWitness&);
@@ -151,10 +154,8 @@ class CardanoTxDecoder {
   static std::optional<DecodedTx> DecodeTransaction(
       base::span<const uint8_t> cbor_bytes);
 
-  // Decodes tx into a cbor value, then adds vk witnesses into it. Returns cbor
-  // encoded tx with added witnesses. Need this for dApp signing.
-  static std::optional<std::vector<uint8_t>> AddWitnessesToTransaction(
-      const std::vector<uint8_t>& unsigned_tx_bytes,
+  // Encodes transaction witnesses.
+  static std::optional<std::vector<uint8_t>> EncodeWitness(
       const SerializableTxWitness& witness);
 };
 

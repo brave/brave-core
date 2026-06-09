@@ -40,6 +40,8 @@ use crate::ffi::CxxSerializableVkeyWitness;
 // https://github.com/IntersectMBO/cardano-ledger/blob/30d293d7166561d47bccf56b7e1473cdab84714d/eras/conway/impl/cddl/data/conway.cddl
 const CARDANO_TX_HASH_SIZE: usize = 32;
 const CARDANO_SCRIPT_HASH_SIZE: usize = 28;
+const CARDANO_PUBKEY_SIZE: usize = 32;
+const CARDANO_SIGNATURE_SIZE: usize = 64;
 const TRANSACTION_BODY_INDEX: usize = 0;
 const WITNESS_SET_INDEX: usize = 1;
 const INPUTS_KEY: u8 = 0;
@@ -47,6 +49,8 @@ const OUTPUTS_KEY: u8 = 1;
 const FEE_KEY: u8 = 2;
 const TTL_KEY: u8 = 3;
 const VK_WITNESS_KEY: u8 = 0;
+const BABBAGE_OUTPUT_ADDRESS_KEY: u8 = 0;
+const BABBAGE_OUTPUT_VALUE_KEY: u8 = 1;
 const SET_TAG: u64 = 258;
 
 // Global variable to control whether SET_TAG is used (for testing purposes)
@@ -99,6 +103,39 @@ fn decode_bytes_vector(value: &CborValue) -> Result<Vec<u8>, ()> {
         CborValue::Bytes(bytes) => Ok(bytes.clone()),
         _ => Err(()),
     }
+}
+
+fn decode_array(value: &CborValue) -> Result<&Vec<CborValue>, ()> {
+    match value {
+        CborValue::Array(arr) => Ok(arr),
+        _ => Err(()),
+    }
+}
+
+// Cardano CDDL for nonempty_set supports both bare arrays and tagged sets as
+// `#6.258([...])` (CBOR tag 258).
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L544
+fn decode_nonempty_set(value: &CborValue) -> Result<&Vec<CborValue>, ()> {
+    let arr = match value {
+        CborValue::Array(arr) => arr,
+        CborValue::Tag(SET_TAG, tagged) => {
+            let CborValue::Array(arr) = tagged.as_ref() else {
+                return Err(());
+            };
+            arr
+        }
+        _ => return Err(()),
+    };
+    Ok(arr)
+}
+
+/// Helper function to find a value in a CBOR map by integer key
+fn find_map_value(map: &[(CborValue, CborValue)], key: u8) -> Option<&CborValue> {
+    map.iter()
+        .find(|(k, _)| {
+            matches!(k, CborValue::Integer(i) if *i == ciborium::value::Integer::from(key))
+        })
+        .map(|(_, v)| v)
 }
 
 /// CXX bridge module for FFI with C++
@@ -161,7 +198,7 @@ mod ffi {
         type CxxEncodedCardanoCoinValueResult;
         type CxxDecodedCardanoCoinValueResult;
         type CxxDecodedCardanoTransactionResult;
-        type CxxSignedCardanoTransactionResult;
+        type CxxEncodedWitnessResult;
 
         fn use_set_tag_for_testing(enable: bool);
 
@@ -181,10 +218,9 @@ mod ffi {
         ) -> Box<CxxEncodedCardanoUtxoResult>;
         fn get_cardano_transaction_hash(tx: &CxxSerializableTx) -> [u8; 32]; // CARDANO_TX_HASH_SIZE
         fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult>;
-        fn apply_signatures(
-            bytes: &[u8],
+        fn encode_cardano_witness(
             witnesses: CxxSerializableTxWitness,
-        ) -> Box<CxxSignedCardanoTransactionResult>;
+        ) -> Box<CxxEncodedWitnessResult>;
 
         fn is_ok(self: &CxxEncodedCardanoTransactionResult) -> bool;
         fn bytes(self: &CxxEncodedCardanoTransactionResult) -> Vec<u8>;
@@ -206,8 +242,8 @@ mod ffi {
         fn raw_body(self: &CxxDecodedCardanoTransactionResult) -> Vec<u8>;
         fn raw_tx(self: &CxxDecodedCardanoTransactionResult) -> Vec<u8>;
 
-        fn is_ok(self: &CxxSignedCardanoTransactionResult) -> bool;
-        fn bytes(self: &CxxSignedCardanoTransactionResult) -> Vec<u8>;
+        fn is_ok(self: &CxxEncodedWitnessResult) -> bool;
+        fn bytes(self: &CxxEncodedWitnessResult) -> Vec<u8>;
     }
 }
 
@@ -237,8 +273,8 @@ struct CxxDecodedCardanoTransaction {
     raw_tx: Vec<u8>,
 }
 
-struct CxxSignedCardanoTransaction {
-    signed_bytes: Vec<u8>,
+struct CxxEncodedWitness {
+    witness_bytes: Vec<u8>,
 }
 
 pub struct CxxEncodedCardanoTransactionResult(Result<CxxEncodedCardanoTransaction, ()>);
@@ -247,7 +283,7 @@ pub struct CxxDecodedCardanoCoinValueResult(Result<CxxDecodedCardanoCoinValue, (
 pub struct CxxEncodedCardanoTransactionOutputResult(Result<CxxEncodedCardanoTransactionOutput, ()>);
 pub struct CxxEncodedCardanoUtxoResult(Result<CxxEncodedCardanoUtxo, ()>);
 pub struct CxxDecodedCardanoTransactionResult(Result<CxxDecodedCardanoTransaction, ()>);
-pub struct CxxSignedCardanoTransactionResult(Result<CxxSignedCardanoTransaction, ()>);
+pub struct CxxEncodedWitnessResult(Result<CxxEncodedWitness, ()>);
 
 impl_result!(CxxEncodedCardanoTransactionResult);
 impl_result!(CxxEncodedCardanoCoinValueResult);
@@ -255,7 +291,7 @@ impl_result!(CxxDecodedCardanoCoinValueResult);
 impl_result!(CxxEncodedCardanoTransactionOutputResult);
 impl_result!(CxxEncodedCardanoUtxoResult);
 impl_result!(CxxDecodedCardanoTransactionResult);
-impl_result!(CxxSignedCardanoTransactionResult);
+impl_result!(CxxEncodedWitnessResult);
 
 impl CxxEncodedCardanoTransactionResult {
     fn bytes(self: &CxxEncodedCardanoTransactionResult) -> Vec<u8> {
@@ -550,12 +586,9 @@ pub fn get_cardano_transaction_hash(tx: &CxxSerializableTx) -> [u8; CARDANO_TX_H
 /// Extracts the transaction body from a Cardano transaction CBOR
 /// https://github.com/IntersectMBO/cardano-ledger/blob/master/eras/conway/impl/cddl-files/conway.cddl#L17-L18
 fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody, Vec<u8>), ()> {
-    let transaction_array = match cbor_value {
-        CborValue::Array(arr) => arr,
-        _ => return Err(()),
-    };
+    let transaction_array = decode_array(cbor_value)?;
 
-    if TRANSACTION_BODY_INDEX >= transaction_array.len() {
+    if transaction_array.len() <= TRANSACTION_BODY_INDEX {
         return Err(());
     };
 
@@ -567,21 +600,17 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody
 
     // Extract inputs and outputs
     let inputs = extract_inputs(body_map)?;
-    let outputs = extract_outputs(body_map)?;
+    let outputs = decode_outputs(body_map)?;
 
     // Extract fee
-    let fee: u64 = match find_map_value(body_map, FEE_KEY)? {
+    let fee: u64 = match find_map_value(body_map, FEE_KEY) {
         Some(val) => decode_u64(val)?,
         _ => return Err(()),
     };
 
     // Extract ttl (optional)
-    let (has_ttl, ttl) = match find_map_value(body_map, TTL_KEY)? {
-        Some(val) => {
-            let ttl_val: u64 = decode_u64(val)?;
-            (true, ttl_val)
-        }
-
+    let (has_ttl, ttl) = match find_map_value(body_map, TTL_KEY) {
+        Some(val) => (true, decode_u64(val)?),
         None => (false, 0),
     };
 
@@ -592,40 +621,63 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody
     Ok((CxxSerializableTxBody { inputs, outputs, fee, has_ttl, ttl }, raw_body))
 }
 
-fn extract_witness(_cbor_value: &CborValue) -> Result<CxxSerializableTxWitness, ()> {
-    // Don't support extracting witness from the transaction yet.
-    Ok(CxxSerializableTxWitness { vkey_witness_set: Vec::new() })
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L699
+fn decode_tx_vkey_witness(witness_value: &CborValue) -> Result<CxxSerializableVkeyWitness, ()> {
+    let witness_array = decode_array(witness_value)?;
+
+    if witness_array.len() != 2 {
+        return Err(());
+    }
+
+    let pubkey: [u8; CARDANO_PUBKEY_SIZE] = decode_bytes_array(&witness_array[0])?;
+    let signature: [u8; CARDANO_SIGNATURE_SIZE] = decode_bytes_array(&witness_array[1])?;
+
+    Ok(CxxSerializableVkeyWitness { pubkey, signature })
+}
+
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L687
+fn decode_witness(cbor_value: &CborValue) -> Result<CxxSerializableTxWitness, ()> {
+    let transaction_array = decode_array(cbor_value)?;
+
+    if transaction_array.len() <= WITNESS_SET_INDEX {
+        return Err(());
+    }
+
+    let CborValue::Map(witness_map) = &transaction_array[WITNESS_SET_INDEX] else {
+        return Err(());
+    };
+
+    let vk_witness_value = match find_map_value(witness_map, VK_WITNESS_KEY) {
+        Some(val) => val,
+        None => return Ok(CxxSerializableTxWitness { vkey_witness_set: Vec::new() }),
+    };
+    let vk_witness_array = decode_nonempty_set(vk_witness_value)?;
+    let vkey_witness_set = vk_witness_array
+        .iter()
+        .map(|witness| decode_tx_vkey_witness(witness))
+        .collect::<Result<Vec<_>, _>>()?;
+
+    Ok(CxxSerializableTxWitness { vkey_witness_set })
 }
 
 fn extract_inputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializableTxInput>, ()> {
-    let inputs_value = find_map_value(body_map, INPUTS_KEY)?;
-    // Inputs are stored directly in an array value or in a tag value wrapping an
-    // array.
-    let inputs_array: &Vec<_> = match inputs_value {
-        Some(CborValue::Array(arr)) => arr,
-        Some(CborValue::Tag(SET_TAG, tagged_array)) => match &**tagged_array {
-            CborValue::Array(arr) => arr,
-            _ => return Err(()),
-        },
-        Some(_) => return Err(()),
+    let inputs_value = find_map_value(body_map, INPUTS_KEY);
+
+    let inputs_array = match inputs_value {
+        Some(value) => decode_nonempty_set(value)?,
         None => return Ok(Vec::new()), // No inputs
     };
 
     let mut inputs = Vec::with_capacity(inputs_array.len());
     for input_value in inputs_array {
-        let input_array = match input_value {
-            CborValue::Array(arr) => {
-                if arr.len() != 2 {
-                    return Err(());
-                }
-                arr
-            }
-            _ => return Err(()),
-        };
+        let input_array = decode_array(input_value)?;
+
+        if input_array.len() != 2 {
+            return Err(());
+        }
 
         // Extract transaction hash and index
         let tx_hash = decode_bytes_array(&input_array[0])?;
-
         let index = decode_u32(&input_array[1])?;
 
         inputs.push(CxxSerializableTxInput { tx_hash, index });
@@ -644,10 +696,7 @@ fn extract_tokens(multiasset: &CborValue) -> Result<Vec<CxxSerializableTxOutputT
         return asset_map
             .iter()
             .map(|(asset_name_val, amount_val)| {
-                let asset_name = match asset_name_val {
-                    CborValue::Bytes(bytes) => bytes.clone(),
-                    _ => return Err(()),
-                };
+                let asset_name = decode_bytes_vector(asset_name_val)?;
                 let token_amount = decode_u64(amount_val)?;
                 Ok((asset_name, token_amount))
             })
@@ -675,44 +724,63 @@ fn extract_tokens(multiasset: &CborValue) -> Result<Vec<CxxSerializableTxOutputT
     Ok(tokens)
 }
 
-fn extract_outputs(
-    body_map: &[(CborValue, CborValue)],
-) -> Result<Vec<CxxSerializableTxOutput>, ()> {
-    let outputs_value = find_map_value(body_map, OUTPUTS_KEY)?;
-    let outputs_array = match outputs_value {
-        Some(CborValue::Array(arr)) => arr,
-        Some(_) => return Err(()),
-        None => return Ok(Vec::new()), // No outputs
+// alonzo_transaction_output = [address, amount : value, ? datum_hash : hash32]
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L146
+fn parse_alonzo_transaction_output(
+    output_array: &[CborValue],
+) -> Result<CxxSerializableTxOutput, ()> {
+    if output_array.len() < 2 {
+        return Err(());
+    }
+
+    let addr_bytes = decode_bytes_vector(&output_array[0])?;
+    let coin_value = decode_coin_value(&output_array[1])?;
+
+    Ok(CxxSerializableTxOutput { addr: addr_bytes, coin_value })
+}
+
+// babbage_transaction_output = { 0 : address, 1 : value, ? 2 : datum_option, ?
+// 3 : script_ref }
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L213
+fn parse_babbage_transaction_output(
+    output_map: &[(CborValue, CborValue)],
+) -> Result<CxxSerializableTxOutput, ()> {
+    let address = find_map_value(output_map, BABBAGE_OUTPUT_ADDRESS_KEY).ok_or(())?;
+    let value = find_map_value(output_map, BABBAGE_OUTPUT_VALUE_KEY).ok_or(())?;
+
+    let addr_bytes = decode_bytes_vector(address)?;
+    let coin_value = decode_coin_value(value)?;
+
+    Ok(CxxSerializableTxOutput { addr: addr_bytes, coin_value })
+}
+
+// Decode array of transaction outputs from the transaction body.
+// 1  : [* transaction_output]
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L114
+fn decode_outputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializableTxOutput>, ()> {
+    let outputs_value = find_map_value(body_map, OUTPUTS_KEY);
+    let Some(outputs_value) = outputs_value else {
+        return Ok(Vec::new()); // No outputs
     };
+
+    let outputs_array = decode_array(outputs_value)?;
 
     let mut outputs = Vec::with_capacity(outputs_array.len());
     for output_value in outputs_array {
-        let output_array = match output_value {
+        // Each item might be an alonzo or babbage transaction output.
+        // https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L144
+        match output_value {
             CborValue::Array(arr) => {
-                if arr.len() < 2 {
-                    return Err(());
-                }
-                arr
+                outputs.push(parse_alonzo_transaction_output(&arr)?);
+            }
+            CborValue::Map(output_map) => {
+                outputs.push(parse_babbage_transaction_output(output_map)?);
             }
             _ => return Err(()),
-        };
-
-        let addr_bytes = decode_bytes_vector(&output_array[0])?;
-        let coin_value = decode_coin_value(&output_array[1])?;
-
-        outputs.push(CxxSerializableTxOutput { addr: addr_bytes, coin_value });
+        }
     }
 
     Ok(outputs)
-}
-
-/// Helper function to find a value in a CBOR map by integer key
-fn find_map_value(map: &[(CborValue, CborValue)], key: u8) -> Result<Option<&CborValue>, ()> {
-    Ok(map.iter()
-        .find(|(k, _)| {
-            matches!(k, CborValue::Integer(i) if *i == ciborium::value::Integer::from(key))
-        })
-        .map(|(_, v)| v))
 }
 
 pub fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult> {
@@ -724,7 +792,7 @@ fn decode_cardano_transaction_impl(bytes: &[u8]) -> Result<CxxDecodedCardanoTran
 
     let (body, raw_body) = extract_cardano_body(&cbor_value)?;
 
-    let witness = extract_witness(&cbor_value)?;
+    let witness = decode_witness(&cbor_value)?;
 
     Ok(CxxDecodedCardanoTransaction {
         tx: CxxSerializableTx { body, witness },
@@ -747,87 +815,23 @@ impl CxxDecodedCardanoTransactionResult {
     }
 }
 
-pub fn apply_signatures(
-    bytes: &[u8],
-    witnesses: CxxSerializableTxWitness,
-) -> Box<CxxSignedCardanoTransactionResult> {
-    Box::new(CxxSignedCardanoTransactionResult(apply_signatures_impl(bytes, witnesses)))
+fn encode_cardano_witness_impl(
+    witnesses: &CxxSerializableTxWitness,
+) -> Result<CxxEncodedWitness, ()> {
+    let witness_value = encode_tx_witness(witnesses);
+
+    let mut witness_bytes = Vec::new();
+    ciborium::ser::into_writer(&witness_value, &mut witness_bytes).map_err(|_| ())?;
+
+    Ok(CxxEncodedWitness { witness_bytes })
 }
 
-/// Applies signatures to an unsigned Cardano transaction
-///
-/// This function preserves existing witnesses and adds new signatures.
-/// The vk_witness set follows the Cardano format: {0: [[pubkey1, signature1],
-/// ...]}
-fn apply_signatures_impl(
-    bytes: &[u8],
-    witnesses: CxxSerializableTxWitness,
-) -> Result<CxxSignedCardanoTransaction, ()> {
-    let mut cbor_value: CborValue = from_reader(bytes).map_err(|_| ())?;
-
-    let transaction_array = match &mut cbor_value {
-        CborValue::Array(arr) => arr,
-        _ => return Err(()),
-    };
-
-    if WITNESS_SET_INDEX >= transaction_array.len() {
-        return Err(());
-    };
-
-    let CborValue::Map(witness_map) = &mut transaction_array[WITNESS_SET_INDEX] else {
-        return Err(());
-    };
-
-    let vk_witness_entry = {
-        // If not found, insert a SET_TAG entry with an empty array so it will be found
-        // below
-        if !witness_map.iter().any(|(k, _)| {
-                matches!(k, CborValue::Integer(i) if *i == ciborium::value::Integer::from(VK_WITNESS_KEY))
-            }) {
-                witness_map.push((
-                    CborValue::Integer(ciborium::value::Integer::from(VK_WITNESS_KEY)),
-                    CborValue::Tag(SET_TAG, Box::new(CborValue::Array(Vec::new()))),
-                ));
-            }
-        witness_map.iter_mut()
-                .find(|(k, _)| {
-                    matches!(k, CborValue::Integer(i) if *i == ciborium::value::Integer::from(VK_WITNESS_KEY))
-                })
-    };
-
-    // Get vk_witness array(possible tagged) and append witness items.
-    let Some((_, vk_witness_value)) = vk_witness_entry else {
-        return Err(());
-    };
-    let vk_witness_array = match vk_witness_value {
-        CborValue::Array(arr) => arr,
-        CborValue::Tag(SET_TAG, tagged_array) => match &mut **tagged_array {
-            CborValue::Array(arr) => arr,
-            _ => {
-                return Err(());
-            }
-        },
-        _ => {
-            return Err(());
-        }
-    };
-
-    for witness in &witnesses.vkey_witness_set {
-        vk_witness_array.push(CborValue::Array(vec![
-            CborValue::Bytes(witness.pubkey.to_vec()),
-            CborValue::Bytes(witness.signature.to_vec()),
-        ]));
-    }
-
-    // Serialize the signed transaction
-    let mut signed_bytes = Vec::new();
-    ciborium::ser::into_writer(&cbor_value, &mut signed_bytes).map_err(|_| ())?;
-
-    Ok(CxxSignedCardanoTransaction { signed_bytes })
+pub fn encode_cardano_witness(witnesses: CxxSerializableTxWitness) -> Box<CxxEncodedWitnessResult> {
+    Box::new(CxxEncodedWitnessResult(encode_cardano_witness_impl(&witnesses)))
 }
 
-impl CxxSignedCardanoTransactionResult {
-    fn bytes(self: &CxxSignedCardanoTransactionResult) -> Vec<u8> {
-        unwrap_or_panic(&self.0).signed_bytes.clone()
+impl CxxEncodedWitnessResult {
+    fn bytes(self: &CxxEncodedWitnessResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).witness_bytes.clone()
     }
 }
