@@ -298,8 +298,8 @@ from git_status import GitStatus
 from patchfile import Patchfile
 import plaster
 from plaster import PlasterFile, PlasterFileNeedsRegen
-import rebase_v2
-from rebase_v2 import DROP_COMMIT_MSG_PREFIX, REASSIGN_COMMIT_MSG_PREFIX
+import rebase
+from rebase import DROP_COMMIT_MSG_PREFIX, REASSIGN_COMMIT_MSG_PREFIX
 import repository
 from repository import Repository
 from terminal import (IncendiaryErrorHandler, Task as BaseTask, console,
@@ -2037,23 +2037,6 @@ class Rebase(Task):
         return "Rebasing current branch..."
 
     @staticmethod
-    def discard_regen_changes_from_rebase_plan(todo_file: Path):
-        """Removes regen changes from the rebase plan.
-
-    This function removes all lines that contain the string `Update patches`
-    or `Updated strings` from the rebase plan file, and saves the changes to
-    the file.
-        """
-        lines = todo_file.read_bytes().decode('utf-8').splitlines(
-            keepends=True)
-        todo_file.write_text(
-            ''.join(line for line in lines
-                    if 'Update patches from Chromium ' not in line
-                    and 'Updated strings for Chromium ' not in line),
-            encoding='utf-8',
-            newline='')
-
-    @staticmethod
     def recommit_in_rebase_plan(todo_file: Path):
         """Recommits the first commit in the rebase plan.
 
@@ -2065,179 +2048,8 @@ class Rebase(Task):
                              encoding='utf-8',
                              newline='')
 
-    @staticmethod
-    def squash_minor_bumps_from_rebase_plan(todo_file: Path):
-        """Squashes minor bumps from the rebase plan.
-
-    This function groups all commmit lines that start with "Update from
-    Chromium" into a single commit on top, and does the same for commits
-    that start with "Conflict-resolved patches from Chromium"
-    """
-        lines = todo_file.read_bytes().decode('utf-8').splitlines(
-            keepends=True)
-
-        version = []
-        conflict = []
-        gnrt = []
-        iwyu = []
-        others = []
-        plaster_reruns = []
-        reassign = []
-        for line in lines:
-            # Empty lines and comment lines are not interesting when doing the
-            # rebase todo file.
-            if line.startswith('#') or line.strip() == '':
-                continue
-
-            # We are breaking down the lines into command|commit columns. The
-            # split below works on lines that are supposed to look like this:
-            #
-            # pick 7aab77cbd1a # [cr148] Args plumbed into context menu
-            # pick 7765fb6198b # [cr148] `TabCardView` created
-            # pick d97c4b4ee81 # [cr148] `AtomicString::LowerASCII` deleted
-            # pick 1b7e261baed # [cr148] Tab strip model shadow files moved
-            #
-            # The left side of before the (#) comment marker represent the
-            # rebase interactive command, while the right side has the commit
-            # description. As the right side is obviously a comment, it goes
-            # without saying that the right side is not necessarily required by
-            # `git rebase --interactive` to work, and one shouldn't rely on it,
-            # however for the way brockit works, we can always rely on these
-            # comments to be present and providing accurate data for us to
-            # scrape. This makes the split below safe to do.
-            _, comment = [part.lstrip() for part in line.split('#', 1)]
-
-            if comment.startswith('Update from Chromium '):
-                version.append(
-                    line if not version else line.replace('pick', 'squash'))
-            elif comment.startswith('Apply-fixed 🩹 patches from Chromium '):
-                plaster_reruns.append(line if not plaster_reruns else line.
-                                      replace('pick', 'squash'))
-            elif comment.startswith(
-                    'Conflict-resolved patches from Chromium '):
-                conflict.append(
-                    line if not conflict else line.replace('pick', 'squash'))
-            elif comment.startswith(REASSIGN_COMMIT_MSG_PREFIX):
-                reassign.append(line)
-            elif '`gnrt` run for Chromium ' in comment:
-                gnrt.append(
-                    line if not gnrt else line.replace('pick', 'squash'))
-            elif '] IWYU fixes.' in comment:
-                iwyu.append(
-                    line if not iwyu else line.replace('pick', 'squash'))
-            else:
-                others.append(line)
-
-        # Merging all categories in the desired order.
-        new_todo_file = (version + plaster_reruns + conflict + gnrt + iwyu +
-                         others)
-
-        # Looking for every occurrence of lines starting with `reassign! `,
-        # taking the commit message after it, and looking for the the first
-        # line starting with `pick ` that matches the commit message, then
-        # moving the reassign commit above it, and changing the pick line under
-        # it to a `squash` line.
-        # Orphaned `reassign!` commits get intentionally silently dropped at
-        # this point.
-        for reassign_line in reassign:
-            command, comment = [
-                part.lstrip() for part in reassign_line.split('#', 1)
-            ]
-
-            # The format of the commit reassign commit will always be:
-            #
-            # reassign!ae3724d6603! [brockit] Authorship reassignment
-            #
-            # The first part can be ignored. The hash is the second part, and
-            # the remainder is the commit message.
-            _, commit, reassign_message = comment.strip().split('!', 2)
-            # the commit message has a trailing comment for empty commits.
-            reassign_message = (
-                reassign_message.strip().removesuffix(' # empty'))
-
-            # Looking first for a line with the exact hash mentioned in the
-            # reassign message. (This should be enough, however a hash is not
-            # guaranteed to match the one in the reassignment commit, if any
-            # rebase took place that didn't carry out this process first, for
-            # by a previous call of `brockit rebase` without
-            # `--squash-minor-bumps`.)
-            target_index = None
-            for i, line in enumerate(new_todo_file):
-                if line.startswith(f'pick {commit}'):
-                    target_index = i
-                    break
-
-            # if no line for the provided hash is found, then falling back to
-            # looking for a line with the same commit message.
-            if target_index is None:
-                for i, line in enumerate(new_todo_file):
-                    if line.strip().endswith(f' # {reassign_message}'
-                                             ) and line.startswith('pick '):
-                        target_index = i
-                        break
-
-            if target_index is not None:
-                new_todo_file.insert(target_index, f'{command} # {comment}')
-                new_todo_file[target_index +
-                              1] = new_todo_file[target_index + 1].replace(
-                                  'pick', 'squash', 1)
-
-        todo_file.write_text(''.join(new_todo_file),
-                             encoding='utf-8',
-                             newline='')
-
-    @staticmethod
-    def fix_squash_commit_messages(todo_file: Path):
-        """Fixes the commit messages during rebase squash.
-
-    This function handles rebase squashes to correct the commit messages. It
-    does two things:
-
-    For authorship reassignments, it removes the `reassign!` line, and restore
-    the original commit message, resulting in the original author being swapped
-    with the author of the reassignment.
-
-    For minor bumps, it keeps the message of the last minor bump, which is the
-    one that should be retained.
-        """
-        lines = todo_file.read_bytes().decode('utf-8').splitlines(
-            keepends=True)
-
-        # Filter out empty lines and comments once to make searching easier
-        # We keep the original index to reference back to 'lines' if needed
-        valid_entries = [(i, line) for i, line in enumerate(lines)
-                         if line.strip() and not line.lstrip().startswith('#')]
-
-        if not valid_entries:
-            sys.exit("Error: No valid content found in commit message.")
-
-        _, first_line = valid_entries[0]
-
-        # Handle "reassign!" logic
-        if first_line.startswith(REASSIGN_COMMIT_MSG_PREFIX):
-            if len(valid_entries) > 1:
-                # Get the index of the very next valid line
-                next_valid_idx = valid_entries[1][0]
-                content_to_write = lines[next_valid_idx:]
-            else:
-                sys.exit("Error: No valid content found in reassign squash.")
-
-        else:
-            # Standard squash: Keep only the last valid line
-            _, last_line = valid_entries[-1]
-            content_to_write = [last_line]
-
-        todo_file.write_text(''.join(content_to_write),
-                             encoding='utf-8',
-                             newline='')
-
-    def execute(self,
-                from_ref: str | None,
-                to_ref: str | None,
-                recommit: bool,
-                discard_regen_changes: bool,
-                squash_minor_bumps: bool,
-                v2: bool = False) -> bool:
+    def execute(self, from_ref: str | None, to_ref: str | None, recommit: bool,
+                discard_regen_changes: bool, squash_minor_bumps: bool) -> bool:
         """Rebases the current branch onto the provided ref.
 
     This function rebases the current branch onto the provided branch. It is
@@ -2288,45 +2100,35 @@ class Rebase(Task):
         # special internal flags.
         env = os.environ.copy()
         # Capture the user's preferred editors BEFORE we override
-        # `GIT_SEQUENCE_EDITOR` / `GIT_EDITOR` below -- v2's editor
-        # fallback flows through `--internal-rebase-crash-*-editor` and
-        # needs to know what the user originally configured.
-        crash_seq_editor = rebase_v2.get_git_editor('GIT_SEQUENCE_EDITOR')
-        crash_msg_editor = rebase_v2.get_git_editor()
+        # `GIT_SEQUENCE_EDITOR` / `GIT_EDITOR` below -- the editor fallback
+        # flows through `--internal-rebase-crash-*-editor` and needs to know
+        # what the user originally configured.
+        crash_seq_editor = rebase.get_git_editor('GIT_SEQUENCE_EDITOR')
+        crash_msg_editor = rebase.get_git_editor()
         editor = [str(VPYTHON3_PATH), __file__]
-        # v2 plan-rewriting flags share the `--internal-rebase-v2-plan-`
-        # prefix so the dispatch can detect them with one check and
-        # consolidate both into a single `rewrite_plan` call.
-        discard_flag = ('--internal-rebase-v2-plan-discard-recyclable'
-                        if v2 else '--internal-rebase-remove-regen-changes')
-        squash_plan_flag = ('--internal-rebase-v2-plan-squash-pinned'
-                            if v2 else '--internal-rebase-squash-minor-bumps')
-        squash_msg_flag = ('--internal-rebase-v2-fix-message' if v2 else
-                           '--internal-rebase-squash-commit-message')
+        # The plan-rewriting flags share the `--internal-rebase-plan-` prefix
+        # so the dispatch can detect them with one check and consolidate both
+        # into a single `rewrite_plan` call.
         if discard_regen_changes:
-            editor.append(discard_flag)
+            editor.append('--internal-rebase-plan-discard-recyclable')
         if recommit:
             editor.append('--internal-rebase-recommit')
         if squash_minor_bumps:
-            editor.append(squash_plan_flag)
+            editor.append('--internal-rebase-plan-squash-pinned')
 
             # Squashes will cause `GIT_EDITOR` also to open for the commit
             # message, so we need to handle those too.
-            msg_editor_cmd = (
-                f'{str(VPYTHON3_PATH)} {__file__} {squash_msg_flag}')
-            if v2:
-                msg_editor_cmd += (
-                    f' --internal-rebase-crash-msg-editor={crash_msg_editor}')
-            env["GIT_EDITOR"] = msg_editor_cmd
+            env["GIT_EDITOR"] = (
+                f'{str(VPYTHON3_PATH)} {__file__} '
+                '--internal-rebase-fix-message '
+                f'--internal-rebase-crash-msg-editor={crash_msg_editor}')
 
-        if v2 and len(editor) > 2:
-            # Pass the captured sequence-editor fallback alongside the
-            # v2 plan flags so the subprocess can hand off to it when
+        if len(editor) > 2:
+            # Pass the captured sequence-editor fallback alongside the plan
+            # flags so the subprocess can hand off to it when
             # `EditorRecoverableFailure` fires.
             editor.append(
                 f'--internal-rebase-crash-sequence-editor={crash_seq_editor}')
-
-        if len(editor) > 2:
             env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
         else:
             # If there are no internal operation, we can just return always
@@ -3464,10 +3266,6 @@ def main():
         help=
         'Squashes all the minor bumps in-between the the last version and the '
         'previous upstream ref.')
-    rebase_parser.add_argument(
-        '--v2',
-        action='store_true',
-        help='Use the Rebase v2 code path (rebase_v2.py).')
 
     subparsers.add_parser(
         'update-version-issue',
@@ -3627,8 +3425,7 @@ def main():
                          to_ref=args.to_ref,
                          recommit=args.recommit,
                          discard_regen_changes=args.discard_regen_changes,
-                         squash_minor_bumps=args.squash_minor_bumps,
-                         v2=args.v2)
+                         squash_minor_bumps=args.squash_minor_bumps)
         if args.command == 'regen':
             Regen(
                 resolve_version_with_from_ref_arg()).run(dry_run=args.dry_run)
@@ -3666,21 +3463,15 @@ if __name__ == '__main__':
     if any(arg.startswith("--internal-rebase") for arg in sys.argv):
         # Special flags used to carry out some of the rebase tasks fed by git
         # during rebase --interactive mode.
-        if '--internal-rebase-remove-regen-changes' in sys.argv:
-            Rebase.discard_regen_changes_from_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-recommit' in sys.argv:
             Rebase.recommit_in_rebase_plan(Path(sys.argv[-1]))
-        if '--internal-rebase-squash-minor-bumps' in sys.argv:
-            Rebase.squash_minor_bumps_from_rebase_plan(Path(sys.argv[-1]))
-        if '--internal-rebase-squash-commit-message' in sys.argv:
-            Rebase.fix_squash_commit_messages(Path(sys.argv[-1]))
 
         def _crash_editor_from_argv(flag_prefix: str) -> str:
             """Pulls a `--<flag_prefix>=<editor>` value out of `sys.argv`.
 
             Raises `NotImplementedError` when the flag is absent or its
             value is empty -- `Rebase.execute` appends this flag
-            unconditionally for v2 rebase steps, so a missing value
+            unconditionally for these rebase steps, so a missing value
             means a wiring bug rather than something recoverable at
             runtime.
             """
@@ -3694,35 +3485,35 @@ if __name__ == '__main__':
             raise NotImplementedError(
                 f'Expected --{flag_prefix}=<editor> in sys.argv but '
                 f'none was found (or it was empty). `Rebase.execute` '
-                f'should have appended it for this v2 dispatch.')
+                f'should have appended it for this dispatch.')
 
-        if any(a.startswith('--internal-rebase-v2-plan-') for a in sys.argv):
+        if any(a.startswith('--internal-rebase-plan-') for a in sys.argv):
             editor_path = Path(sys.argv[-1])
             crash_editor = _crash_editor_from_argv(
                 '--internal-rebase-crash-sequence-editor')
             try:
-                rebase_v2.rewrite_plan(
+                rebase.rewrite_plan(
                     todo_file=editor_path,
                     discard_recyclable=(
-                        '--internal-rebase-v2-plan-discard-recyclable'
+                        '--internal-rebase-plan-discard-recyclable'
                         in sys.argv),
-                    pinned_squashed=('--internal-rebase-v2-plan-squash-pinned'
+                    pinned_squashed=('--internal-rebase-plan-squash-pinned'
                                      in sys.argv))
-            except rebase_v2.EditorRecoverableFailure as e:
-                rebase_v2.hand_off_to_editor(editor_path,
-                                             reason=str(e),
-                                             editor=crash_editor)
-        if '--internal-rebase-v2-fix-message' in sys.argv:
+            except rebase.EditorRecoverableFailure as e:
+                rebase.hand_off_to_editor(editor_path,
+                                          reason=str(e),
+                                          editor=crash_editor)
+        if '--internal-rebase-fix-message' in sys.argv:
             editor_path = Path(sys.argv[-1])
             crash_editor = _crash_editor_from_argv(
                 '--internal-rebase-crash-msg-editor')
             try:
-                writer = rebase_v2.MessageWriter.parse(editor_path)
+                writer = rebase.MessageWriter.parse(editor_path)
                 writer.rewrite_with_last_message()
-            except rebase_v2.EditorRecoverableFailure as e:
-                rebase_v2.hand_off_to_editor(editor_path,
-                                             reason=str(e),
-                                             editor=crash_editor)
+            except rebase.EditorRecoverableFailure as e:
+                rebase.hand_off_to_editor(editor_path,
+                                          reason=str(e),
+                                          editor=crash_editor)
         sys.exit(0)
 
     sys.exit(main())
