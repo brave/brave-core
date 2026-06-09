@@ -970,7 +970,7 @@ extension BrowserViewController: TopToolbarDelegate {
           arrowDirection: .up
         ),
         callbacks: .init(
-          onToggleReaderMode: { [weak self] in self?.toggleReaderMode() },
+          onToggleReaderMode: { tab.readerMode?.toggleReaderMode() },
           onDisplayPageZoom: { [weak self] in self?.displayPageZoomDialog() },
           onAddSearchEngine: { [weak self] in
             guard let self else { return }
