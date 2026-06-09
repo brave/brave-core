@@ -293,9 +293,6 @@ if (is_android) {
     sources = [
       "//brave/LICENSE.html",
       "//brave/android/java/org/chromium/chrome/browser/ntp/ntp_news_optin_icon_animation.json",
-      "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_ads.json",
-      "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_ads_notification.json",
-      "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_rewards.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/privacy_protection.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/save_data_and_battery.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/website_loads_faster.json",
