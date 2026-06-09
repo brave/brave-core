@@ -77,9 +77,14 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
      * safe to call multiple times. If the popup is already dismissed, it will be a no-op.
      */
     public void dismiss() {
-        if (mPopupWindow != null) {
-            mPopupWindow.dismiss();
-            mPopupWindow = null;
+        try {
+            if (mPopupWindow != null) {
+                mPopupWindow.dismiss();
+                mPopupWindow = null;
+            }
+        } catch (Exception ignored) {
+            // Intentional no-op: we try to catch a NPE
+            // when dismissing the popup window.
         }
     }
 }
