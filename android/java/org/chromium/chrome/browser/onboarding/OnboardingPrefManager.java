@@ -51,8 +51,6 @@ public class OnboardingPrefManager {
 
     private static boolean sIsOnboardingNotificationShown;
 
-    public static boolean isNotification;
-
     public static final String BRAVE = "Brave";
     public static final String YANDEX = "Yandex";
     public static final String YAHOO_JP = "Yahoo! JAPAN";
