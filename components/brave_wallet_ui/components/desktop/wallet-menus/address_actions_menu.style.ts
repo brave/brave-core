@@ -10,13 +10,6 @@ import {
   layoutPanelWidth, //
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const AddressMenuWrapper = styled.div`
-  flex: 1;
-  position: relative;
-  display: flex;
-  height: 100%;
-`
-
 export const Button = styled.button`
   flex: 1;
   display: flex;

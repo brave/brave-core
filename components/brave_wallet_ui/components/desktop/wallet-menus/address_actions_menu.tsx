@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { showAlert } from '@brave/leo/react/alertCenter'
+import Icon from '@brave/leo/react/icon'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -12,12 +13,6 @@ import { BraveWallet } from '../../../constants/types'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-
-// Selectors
-import {
-  useSafeUISelector, //
-} from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
 
 // Hooks
 import {
@@ -32,11 +27,10 @@ import {
   ViewOnBlockExplorerModal, //
 } from '../popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
 import { PopupModal } from '../popup-modals'
-import { MenuWrapper } from './menu_wrapper'
 
 // Styled Components
-import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
-import { AddressMenuWrapper, Button } from './address_actions_menu.style'
+import { ButtonMenu } from './wellet-menus.style'
+import { Button } from './address_actions_menu.style'
 import { VerticalDivider, Column } from '../../shared/style'
 
 export interface Props {
@@ -47,22 +41,16 @@ export interface Props {
 export const AddressActionsMenu = (props: Props) => {
   const { account, children } = props
 
-  const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isMobile = useSafeUISelector(UISelectors.isMobile)
-
   // State
-  const [showMenu, setShowMenu] = React.useState(false)
   const [showDepositModal, setShowDepositModal] = React.useState(false)
   const [showViewOnExplorerModal, setShowViewOnExplorerModal] =
     React.useState(false)
 
   // Refs
-  const menuRef = React.useRef<HTMLDivElement>(null)
   const depositModalRef = React.useRef<HTMLDivElement>(null)
   const viewOnExplorerModalRef = React.useRef<HTMLDivElement>(null)
 
   // Hooks
-  useOnClickOutside(menuRef, () => setShowMenu(false), showMenu)
   useOnClickOutside(
     depositModalRef,
     () => setShowDepositModal(false),
@@ -75,7 +63,6 @@ export const AddressActionsMenu = (props: Props) => {
   )
 
   const handleCopyAddress = () => {
-    setShowMenu(false)
     copyToClipboard(account.address)
     showAlert({
       type: 'success',
@@ -86,44 +73,21 @@ export const AddressActionsMenu = (props: Props) => {
 
   return (
     <>
-      <AddressMenuWrapper ref={menuRef}>
-        <Button onClick={() => setShowMenu((prev) => !prev)}>{children}</Button>
-        {showMenu && (
-          <MenuWrapper
-            yPosition={isPanel || isMobile ? 26 : 46}
-            left={0}
-          >
-            <PopupButton onClick={handleCopyAddress}>
-              <ButtonIcon name='copy' />
-              <PopupButtonText>
-                {getLocale('braveWalletButtonCopy')}
-              </PopupButtonText>
-            </PopupButton>
-            <PopupButton
-              onClick={() => {
-                setShowDepositModal(true)
-                setShowMenu(false)
-              }}
-            >
-              <ButtonIcon name='qr-code-alternative' />
-              <PopupButtonText>
-                {getLocale('braveWalletDepositCryptoButton')}
-              </PopupButtonText>
-            </PopupButton>
-            <PopupButton
-              onClick={() => {
-                setShowViewOnExplorerModal(true)
-                setShowMenu(false)
-              }}
-            >
-              <ButtonIcon name='web3-blockexplorer' />
-              <PopupButtonText>
-                {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
-              </PopupButtonText>
-            </PopupButton>
-          </MenuWrapper>
-        )}
-      </AddressMenuWrapper>
+      <ButtonMenu placement='bottom-start'>
+        <Button slot='anchor-content'>{children}</Button>
+        <leo-menu-item onClick={handleCopyAddress}>
+          <Icon name='copy' />
+          {getLocale('braveWalletButtonCopy')}
+        </leo-menu-item>
+        <leo-menu-item onClick={() => setShowDepositModal(true)}>
+          <Icon name='qr-code-alternative' />
+          {getLocale('braveWalletDepositCryptoButton')}
+        </leo-menu-item>
+        <leo-menu-item onClick={() => setShowViewOnExplorerModal(true)}>
+          <Icon name='web3-blockexplorer' />
+          {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+        </leo-menu-item>
+      </ButtonMenu>
       {showDepositModal && (
         <PopupModal
           title={getLocale('braveWalletDepositCryptoButton')}
