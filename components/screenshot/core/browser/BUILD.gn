@@ -11,3 +11,15 @@ static_library("browser") {
 
   deps = [ "//skia" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "utils_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/screenshot/core/browser",
+    "//testing/gtest",
+    "//ui/gfx:test_support",
+  ]
+}
