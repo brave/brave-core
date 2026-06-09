@@ -2190,14 +2190,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2BraveHeaderTest) {
 
 namespace {
 
-// Returns the corners that GetRoundedCorners() inside ContentParentView would
-// compute for the panel's current header and browser state.
-gfx::RoundedCornersF ExpectedContentCorners(SidePanel* panel,
-                                            BrowserWindowInterface* browser) {
-  return brave::GetPanelContentsRoundedCorners(
-      browser, panel->GetHeaderView<views::View>() != nullptr);
-}
-
 // Asserts layer-backed content children carry the expected corner radii.
 // Children without compositor layers (the typical WebView holder path) are
 // silently skipped; their corners can't be observed via public API.
@@ -2247,33 +2239,33 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   wait_for_entry(SidePanelEntryId::kBookmarks);
   EXPECT_NE(nullptr, side_panel->GetHeaderView<views::View>());
-  EXPECT_EQ(flat_top, ExpectedContentCorners(side_panel, browser()));
+  EXPECT_EQ(flat_top, brave::GetPanelContentsRoundedCorners(browser_view()));
   ExpectContentChildLayerCorners(side_panel, flat_top);
 
   // CustomizeChrome has no Brave header → all corners must be round.
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
   wait_for_entry(SidePanelEntryId::kCustomizeChrome);
   EXPECT_EQ(nullptr, side_panel->GetHeaderView<views::View>());
-  EXPECT_EQ(all_round, ExpectedContentCorners(side_panel, browser()));
+  EXPECT_EQ(all_round, brave::GetPanelContentsRoundedCorners(browser_view()));
   ExpectContentChildLayerCorners(side_panel, all_round);
 
   // Back to bookmarks → flat top again.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   wait_for_entry(SidePanelEntryId::kBookmarks);
   EXPECT_NE(nullptr, side_panel->GetHeaderView<views::View>());
-  EXPECT_EQ(flat_top, ExpectedContentCorners(side_panel, browser()));
+  EXPECT_EQ(flat_top, brave::GetPanelContentsRoundedCorners(browser_view()));
   ExpectContentChildLayerCorners(side_panel, flat_top);
 
   // (b) Pref change while panel is open ---------------------------------
 
   // Pref OFF: no corners regardless of header (UpdateBorder() path).
   prefs->SetBoolean(kWebViewRoundedCorners, false);
-  EXPECT_EQ(none, ExpectedContentCorners(side_panel, browser()));
+  EXPECT_EQ(none, brave::GetPanelContentsRoundedCorners(browser_view()));
   ExpectContentChildLayerCorners(side_panel, none);
 
   // Pref ON again: flat top (bookmarks has header).
   prefs->SetBoolean(kWebViewRoundedCorners, true);
-  EXPECT_EQ(flat_top, ExpectedContentCorners(side_panel, browser()));
+  EXPECT_EQ(flat_top, brave::GetPanelContentsRoundedCorners(browser_view()));
   ExpectContentChildLayerCorners(side_panel, flat_top);
 
   // (c) Panel reopened after pref changed while closed ------------------
@@ -2288,69 +2280,20 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   // Reopen — Open() must re-apply corners with the new pref value.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   wait_for_entry(SidePanelEntryId::kBookmarks);
-  EXPECT_EQ(none, ExpectedContentCorners(side_panel, browser()));
+  EXPECT_EQ(none, brave::GetPanelContentsRoundedCorners(browser_view()));
   ExpectContentChildLayerCorners(side_panel, none);
-}
-
-// Verifies GetPanelContentsRoundedCorners() across all four conditions
-// introduced by the commit that added sidebar-visibility and alignment logic:
-//   - Pref disabled → always empty.
-//   - Sidebar visible → regular radius (sidebar sits between panel and window).
-//   - Sidebar hidden, panel right → lower-right gets window-corner radius.
-//   - Sidebar hidden, panel left  → lower-left  gets window-corner radius.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
-                       SidebarV2GetPanelContentsRoundedCorners) {
-  auto* prefs = browser()->profile()->GetPrefs();
-  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
-
-  const int r = views::LayoutProvider::Get()->GetCornerRadiusMetric(
-      kRoundedCornersBorderRadius);
-  const int rw = views::LayoutProvider::Get()->GetCornerRadiusMetric(
-      kRoundedCornersBorderRadiusAtWindowCorner);
-
-  // Pref disabled → always empty regardless of sidebar state.
-  prefs->SetBoolean(kWebViewRoundedCorners, false);
-  EXPECT_EQ(gfx::RoundedCornersF(),
-            brave::GetPanelContentsRoundedCorners(browser(), false));
-  EXPECT_EQ(gfx::RoundedCornersF(),
-            brave::GetPanelContentsRoundedCorners(browser(), true));
-
-  // Sidebar visible (kShowAlways from PreRunTestOnMainThread): regular radius.
-  prefs->SetBoolean(kWebViewRoundedCorners, true);
-  ASSERT_TRUE(browser_view()->IsSidebarVisible());
-  EXPECT_EQ(gfx::RoundedCornersF(r),
-            brave::GetPanelContentsRoundedCorners(browser(), false));
-  EXPECT_EQ(gfx::RoundedCornersF(0, 0, r, r),
-            brave::GetPanelContentsRoundedCorners(browser(), true));
-
-  // Sidebar hidden: panel is flush with the window edge.
-  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser_view()->IsSidebarVisible(); }));
-
-  // Panel on right (default): lower-right corner is the window corner.
-  ASSERT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-  EXPECT_EQ(gfx::RoundedCornersF(r, r, rw, r),
-            brave::GetPanelContentsRoundedCorners(browser(), false));
-  EXPECT_EQ(gfx::RoundedCornersF(0, 0, rw, r),
-            brave::GetPanelContentsRoundedCorners(browser(), true));
-
-  // Panel on left: lower-left corner is the window corner.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  EXPECT_EQ(gfx::RoundedCornersF(r, r, r, rw),
-            brave::GetPanelContentsRoundedCorners(browser(), false));
-  EXPECT_EQ(gfx::RoundedCornersF(0, 0, r, rw),
-            brave::GetPanelContentsRoundedCorners(browser(), true));
 }
 
 // Verify that toggling the sidebar UI's visibility while a panel is open
 // re-applies the panel's content corners. SidebarContainerView runs a
 // visibility-changed callback (wired to BraveBrowserView::UpdateBorder() on the
-// panel), so the bottom inner corner flips between the regular radius (sidebar
+// panel), so the inner bottom corner flips between the regular radius (sidebar
 // visible) and the window-corner radius (sidebar hidden, panel flush with the
-// window edge) without any other trigger. Between assertions only the sidebar
-// visibility changes — pref, header, and alignment stay fixed — so a corner
-// change proves the callback path fired.
+// window edge) without any other trigger. The inner bottom corner is the
+// lower-right for a right-aligned panel and the lower-left for a left-aligned
+// panel, so the cycle is exercised under both alignments. Each step checks both
+// the helper's computed corners and the corners actually applied to the content
+// child layers.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        SidebarV2ContentCornersFollowSidebarVisibility) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
@@ -2365,31 +2308,61 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   const int rw = views::LayoutProvider::Get()->GetCornerRadiusMetric(
       kRoundedCornersBorderRadiusAtWindowCorner);
 
-  // Open a panel with a Brave header (top corners flat). Default right-aligned,
-  // so the lower-right corner is the one affected by sidebar visibility.
-  ASSERT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  // Open a panel with a Brave header, so the top corners are flat and only the
+  // inner bottom corner varies with sidebar visibility.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return panel_ui->IsSidePanelEntryShowing(
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
 
-  // Sidebar visible (kShowAlways default): lower-right uses the regular radius.
-  ASSERT_TRUE(browser_view()->IsSidebarVisible());
-  ExpectContentChildLayerCorners(side_panel, gfx::RoundedCornersF(0, 0, r, r));
+  // Asserts both the computed corners and the corners applied to content layers.
+  auto expect_corners = [&](const gfx::RoundedCornersF& expected,
+                            const base::Location& loc = FROM_HERE) {
+    SCOPED_TRACE(loc.ToString());
+    EXPECT_EQ(expected,
+              brave::GetPanelContentsRoundedCorners(browser_view()));
+    ExpectContentChildLayerCorners(side_panel, expected);
+  };
 
-  // Hide the sidebar UI: the callback must drive UpdateBorder() so the panel's
-  // lower-right corner becomes the window-corner radius.
-  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser_view()->IsSidebarVisible(); }));
-  ExpectContentChildLayerCorners(side_panel, gfx::RoundedCornersF(0, 0, rw, r));
+  // Sidebar visible: the inner bottom corner uses the regular radius regardless
+  // of alignment.
+  const gfx::RoundedCornersF visible(0, 0, r, r);
+  struct Case {
+    bool right_aligned;
+    gfx::RoundedCornersF hidden;  // inner bottom corner is the window corner.
+  };
+  const Case cases[] = {
+      {true, gfx::RoundedCornersF(0, 0, rw, r)},   // right → lower-right.
+      {false, gfx::RoundedCornersF(0, 0, r, rw)},  // left  → lower-left.
+  };
 
-  // Show the sidebar UI again: lower-right returns to the regular radius.
-  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowAlways);
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return browser_view()->IsSidebarVisible(); }));
-  ExpectContentChildLayerCorners(side_panel, gfx::RoundedCornersF(0, 0, r, r));
+  for (const auto& c : cases) {
+    SCOPED_TRACE(c.right_aligned ? "right-aligned" : "left-aligned");
+    prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, c.right_aligned);
+
+    // Sidebar visible (kShowAlways): regular radius.
+    service->SetSidebarShowOption(
+        SidebarService::ShowSidebarOption::kShowAlways);
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return browser_view()->IsSidebarVisible(); }));
+    expect_corners(visible);
+
+    // Hide the sidebar UI: the callback must drive UpdateBorder() so the inner
+    // bottom corner becomes the window-corner radius.
+    service->SetSidebarShowOption(
+        SidebarService::ShowSidebarOption::kShowNever);
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return !browser_view()->IsSidebarVisible(); }));
+    expect_corners(c.hidden);
+
+    // Show the sidebar UI again: back to the regular radius.
+    service->SetSidebarShowOption(
+        SidebarService::ShowSidebarOption::kShowAlways);
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return browser_view()->IsSidebarVisible(); }));
+    expect_corners(visible);
+  }
 }
 
 // Verify that the resize area is positioned correctly for both border states.

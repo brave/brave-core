@@ -7,11 +7,11 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/common/pref_names.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/views/layout/layout_provider.h"
+#include "ui/views/view.h"
 
 using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 using views::ShapeContextTokensOverride::
@@ -24,15 +24,16 @@ bool ShouldShowSidePanelHeader(SidePanelEntryId id) {
          id == SidePanelEntryId::kBookmarks;
 }
 
-gfx::RoundedCornersF GetPanelContentsRoundedCorners(
-    BrowserWindowInterface* browser_window_interface,
-    bool has_header) {
-  auto* prefs = browser_window_interface->GetProfile()->GetPrefs();
-  auto* browser_view = BraveBrowserView::From(
-      BrowserView::GetBrowserViewForBrowser(browser_window_interface));
+gfx::RoundedCornersF GetPanelContentsRoundedCorners(BrowserView* browser_view) {
+  auto* brave_browser_view = BraveBrowserView::From(browser_view);
+  CHECK(brave_browser_view);
+  auto* prefs = brave_browser_view->GetProfile()->GetPrefs();
+  const bool has_header =
+      browser_view->side_panel()->GetHeaderView<views::View>() != nullptr;
 
-  // Can null during the startup.
-  if (!browser_view || !prefs->GetBoolean(kWebViewRoundedCorners)) {
+  // When Brave's rounded corners are off, the panel has no rounded border, so
+  // the content shouldn't be rounded either.
+  if (!prefs->GetBoolean(kWebViewRoundedCorners)) {
     return gfx::RoundedCornersF();
   }
 
@@ -49,7 +50,7 @@ gfx::RoundedCornersF GetPanelContentsRoundedCorners(
 
   // When the sidebar is visible it sits between the panel and the window edge,
   // so the panel's bottom corner is not a window corner — use regular radius.
-  if (browser_view->IsSidebarVisible()) {
+  if (brave_browser_view->IsSidebarVisible()) {
     return rounded_corners;
   }
 
@@ -57,7 +58,7 @@ gfx::RoundedCornersF GetPanelContentsRoundedCorners(
   // inner bottom corner (lower-right for a right-aligned panel, lower-left for
   // a left-aligned panel) is the window corner and must use the larger
   // window-corner radius.
-  const auto rounded_corners_border_radius_at_window_corner =
+  const int rounded_corners_border_radius_at_window_corner =
       layout_provider->GetCornerRadiusMetric(
           kRoundedCornersBorderRadiusAtWindowCorner);
 
