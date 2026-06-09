@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list_types.h"
 #include "chrome/browser/ui/page_actions/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/menus/simple_menu_model.h"
@@ -25,13 +24,10 @@ namespace page_actions {
 class PsstActionController : public ui::SimpleMenuModel::Delegate {
  public:
   // Observes selections made in the PSST page action menu.
-  class Observer : public base::CheckedObserver {
+  class Observer {
    public:
     virtual void OnDontShowThisSiteSelected() = 0;
     virtual void OnDisablePrivacySettingsTuningSelected() = 0;
-
-   protected:
-    ~Observer() override = default;
   };
 
   PsstActionController(

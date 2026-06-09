@@ -1300,9 +1300,6 @@ void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
     DVLOG(1) << "Browser window is not valid";
     return;
   }
-#if !defined(TOOLKIT_VIEWS)
-  return;
-#else
   BrowserView* const browser_view =
       BrowserView::GetBrowserViewForBrowser(browser_window);
   if (!browser_view || !browser_view->toolbar_button_provider()) {
@@ -1324,9 +1321,7 @@ void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
       brave_tab_features->psst_page_action_controller();
   CHECK(controller);
   controller->ExecuteAction(browser_view->toolbar_button_provider(), item);
-#endif
 }
-
 #endif  // BUILDFLAG(ENABLE_PSST)
 
 }  // namespace brave
