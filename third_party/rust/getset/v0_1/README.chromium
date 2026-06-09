@@ -1,0 +1,12 @@
+Name: getset
+URL: https://crates.io/crates/getset
+Version: 0.1.6
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/getset-v0_1/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Getset, we're ready to go!
+
+A procedural macro for generating the most basic getters and setters on fields.
+

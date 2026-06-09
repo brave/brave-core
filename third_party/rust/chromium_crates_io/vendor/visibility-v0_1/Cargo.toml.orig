@@ -1,0 +1,44 @@
+[lib]
+proc-macro = true
+
+[package]
+name = "visibility"
+version = "0.1.1"
+authors = [
+    "Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>",
+]
+edition = "2021"
+
+license = "Zlib OR MIT OR Apache-2.0"
+
+documentation = "https://docs.rs/visibility"
+repository = "https://github.com/danielhenrymantilla/visibility.rs"
+homepage = "https://crates.io/crates/visibility"
+
+readme = "README.md"
+
+description = "Attribute to override the visibility of items (useful in conjunction with cfg_attr)"
+keywords = [
+    "visibility",
+    "pub",
+    "override",
+    "conditional",
+    "compilation",
+]
+
+categories = [
+    "rust-patterns",
+]
+
+[dependencies]
+syn = { version = "2.0.0", features = ["full"] }
+quote = "1.0.26"
+proc-macro2 = "1.0.60"
+
+[features]
+nightly = []
+
+[package.metadata.docs.rs]
+features = ["nightly"]
+
+[workspace]

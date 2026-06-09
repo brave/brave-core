@@ -1,0 +1,9 @@
+Name: proc-macro-error-attr2
+URL: https://crates.io/crates/proc-macro-error-attr2
+Version: 2.0.0
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Attribute macro for the proc-macro-error2 crate

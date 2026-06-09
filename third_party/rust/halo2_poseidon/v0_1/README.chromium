@@ -1,0 +1,10 @@
+Name: halo2_poseidon
+URL: https://crates.io/crates/halo2_poseidon
+Version: 0.1.0
+Revision: f066ace1f234d7fe1908851ed86b1801e0b1ffea
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: The Poseidon algebraic hash function for Halo 2
