@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
 
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -15,6 +16,13 @@
 #include "brave/components/misc_metrics/quick_search_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
 #include "url/gurl.h"
+
+namespace {
+
+constexpr char kOpeningScreenSwitchHistogramName[] =
+    "Brave.NTP.OpeningScreenSwitch";
+
+}  // namespace
 
 namespace misc_metrics {
 
@@ -126,6 +134,11 @@ void MiscAndroidMetrics::RecordTopSiteNavigation(bool is_custom) {
     return;
   }
   navigation_source_metrics_->RecordTopSiteNavigation(is_custom);
+}
+
+void MiscAndroidMetrics::RecordOpeningScreenSettingSwitch(
+    mojom::OpeningScreenSwitchType switch_type) {
+  UMA_HISTOGRAM_ENUMERATION(kOpeningScreenSwitchHistogramName, switch_type);
 }
 
 }  // namespace misc_metrics
