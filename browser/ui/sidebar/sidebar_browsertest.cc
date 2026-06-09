@@ -2316,12 +2316,12 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
 
-  // Asserts both the computed corners and the corners applied to content layers.
+  // Asserts both the computed corners and the corners applied to content
+  // layers.
   auto expect_corners = [&](const gfx::RoundedCornersF& expected,
                             const base::Location& loc = FROM_HERE) {
     SCOPED_TRACE(loc.ToString());
-    EXPECT_EQ(expected,
-              brave::GetPanelContentsRoundedCorners(browser_view()));
+    EXPECT_EQ(expected, brave::GetPanelContentsRoundedCorners(browser_view()));
     ExpectContentChildLayerCorners(side_panel, expected);
   };
 
