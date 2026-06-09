@@ -35,7 +35,6 @@ public class OnboardingPrefManager {
     public static final String FROM_STATS = "from_stats";
     public static final String ONE_TIME_NOTIFICATION = "one_time_notification";
     public static final String DORMANT_USERS_NOTIFICATION = "dormant_users_notification";
-    public static final String SHOW_BADGE_ANIMATION = "show_badge_animation";
     public static final String PREF_DORMANT_USERS_ENGAGEMENT = "dormant_users_engagement";
     private static final String PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN =
             "p3a_crash_reporting_message_shown";
@@ -201,10 +200,6 @@ public class OnboardingPrefManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putLong(notificationType, timeInMilliseconds);
         sharedPreferencesEditor.apply();
-    }
-
-    public boolean shouldShowBadgeAnimation() {
-        return mSharedPreferences.getBoolean(SHOW_BADGE_ANIMATION, true);
     }
 
     public void setDormantUsersPrefs() {

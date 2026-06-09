@@ -248,10 +248,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             ((BraveActivity) mActivity).showOnboardingV2(false);
             OnboardingPrefManager.getInstance().setFromNotification(false);
         }
-        if (mBadgeAnimationView != null
-                && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
-            mBadgeAnimationView.setVisibility(View.INVISIBLE);
-        }
 
         mIsDisplayNewsOptin = BraveNewsUtils.shouldDisplayNewsOptin(mProfile);
         mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed(mProfile);
