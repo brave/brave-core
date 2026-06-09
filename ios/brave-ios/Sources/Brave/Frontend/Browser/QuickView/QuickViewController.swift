@@ -101,8 +101,39 @@ class QuickViewController: UIViewController {
         self?.presentBraveShieldsView()
       case .readerMode:
         self?.currentTab?.readerMode?.toggleReaderMode()
-      case .refresh, .playlist,
-        .translate, .share, .openTab:
+      case .refresh:
+        guard let currentTab = self?.currentTab else { return }
+        currentTab.reload()
+      case .openTab:
+        guard let currentTab = self?.currentTab,
+          let visibleURL = currentTab.visibleURL
+        else { return }
+        self?.dismiss(animated: true) {
+          self?.onOpenInNewTab?(URLRequest(url: visibleURL))
+        }
+      case .share:
+        guard let self, let visibleURL = self.currentTab?.visibleURL
+        else { return }
+        let anchorView = self.toolbarHostingController.rootView.shareBackgroundView.uiView
+        self.presentShareActivity(
+          url: visibleURL,
+          tab: currentTab,
+          syncAPI: profileController.syncAPI,
+          sendTabAPI: profileController.sendTabAPI,
+          feedDataSource: nil,
+          isBraveNewsAvailable: false,
+          source: .init(
+            view: anchorView,
+            rect: anchorView.bounds,
+            arrowDirection: [.down]
+          ),
+          callbacks: .init(
+            onShowSubmitReport: { [weak self] url in
+              self?.showSubmitReportView(for: url)
+            }
+          )
+        )
+      case .playlist, .translate:
         break
       }
     }
