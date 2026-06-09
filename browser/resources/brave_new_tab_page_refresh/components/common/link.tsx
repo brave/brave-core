@@ -13,27 +13,18 @@ interface Props {
   onClick?: () => void
   onContextMenu?: React.MouseEventHandler<HTMLAnchorElement>
   openInNewTab?: boolean
-  theme?: 'dark' | 'light'
   children: React.ReactNode
 }
 
 export function Link(props: Props) {
   const sanitizedURL = sanitizeExternalURL(props.url)
   if (!sanitizedURL) {
-    return (
-      <span
-        className={props.className}
-        data-theme={props.theme}
-      >
-        {props.children}
-      </span>
-    )
+    return <span className={props.className}>{props.children}</span>
   }
   return (
     <a
       href={sanitizedURL}
       className={props.className}
-      data-theme={props.theme}
       rel='noopener noreferrer'
       target={props.openInNewTab ? '_blank' : '_self'}
       onClick={props.onClick}
