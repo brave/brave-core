@@ -56,6 +56,8 @@ class MiscAndroidMetrics : public mojom::MiscAndroidMetrics {
   void RecordOmniboxHistoryNavigation() override;
   void RecordOmniboxBookmarkNavigation() override;
   void RecordTopSiteNavigation(bool is_custom) override;
+  void RecordOpeningScreenSettingSwitch(
+      mojom::OpeningScreenSwitchType switch_type) override;
 
  private:
   raw_ptr<ProcessMiscMetrics> misc_metrics_;
