@@ -63,6 +63,7 @@ if (enable_brave_news) {
       "//base",
       "//brave/components/l10n/common",
       "//brave/components/p3a_utils",
+      "//components/pref_registry",
       "//components/prefs",
       "//url",
     ]
