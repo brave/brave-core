@@ -129,6 +129,12 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       brave_shields::prefs::kAdBlockCheckedAllDefaultRegions, false);
   registry->RegisterBooleanPref(
       brave_shields::prefs::kAdBlockCheckedDefaultRegion, false);
+  registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
+                                true);
+  registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,
+                                true);
+  registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
+                                false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
