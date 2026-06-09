@@ -234,7 +234,7 @@ private struct WidgetTopNewsView: View {
               )
             )
         } else {
-          LinearGradient(braveGradient: .darkGradient01)
+          LinearGradient(braveSystemName: .primaryGradient)
         }
       }
       .widgetURL(topic.url)
@@ -264,7 +264,7 @@ private struct WidgetTopNewsView: View {
       .padding()
       .widgetBackground {
         if !entry.isDisabledByPolicy {
-          LinearGradient(braveGradient: .darkGradient01)
+          LinearGradient(braveSystemName: .primaryGradient)
             .mask {
               Image("brave-today-error")
                 .renderingMode(.template)
@@ -322,6 +322,29 @@ struct TopNewsView_PreviewProvider: PreviewProvider {
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }
+
+#Preview(
+  as: .systemSmall,
+  widget: {
+    TopNewsWidget()
+  },
+  timeline: {
+    TopNewsEntry(
+      date: .now,
+      isDisabledByPolicy: false,
+      topic: .init(
+        topicIndex: 0,
+        title: "Test",
+        url: URL(string: "https://example.com")!,
+        publisherName: "Example",
+        date: .now,
+        score: 0,
+        category: "test"
+      ),
+      image: nil
+    )
+  }
+)
 
 #Preview(
   as: .systemSmall,

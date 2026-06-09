@@ -394,18 +394,7 @@ extension OnboardingPlaylistView {
         .frame(maxWidth: .infinity, alignment: .leading)
       } icon: {
         Image(braveSystemName: braveSystemName)
-          .foregroundStyle(
-            LinearGradient(
-              braveGradient: .init(
-                stops: [
-                  .init(color: UIColor(rgb: 0xFA7250), position: 0.0),
-                  .init(color: UIColor(rgb: 0xFF1893), position: 0.43),
-                  .init(color: UIColor(rgb: 0xA78AFF), position: 1.0),
-                ],
-                angle: .figmaDegrees(314.42)
-              )
-            )
-          )
+          .foregroundStyle(LinearGradient(braveSystemName: .iconsActive))
           .frame(width: bulletPointIconSize, height: bulletPointIconSize)
           .background(Color.white.clipShape(Ellipse()))
       }
@@ -548,7 +537,7 @@ private struct PlaylistButtonStyle: ButtonStyle {
 #if DEBUG
 struct OnboardingPlaylistView_PreviewProvider: PreviewProvider {
   static var previews: some View {
-    let model = OnboardingPlaylistModel(initialStep: .completed(folderName: "Play Later"))
+    let model = OnboardingPlaylistModel(initialStep: .details)
     OnboardingPlaylistView(
       model: model
     )

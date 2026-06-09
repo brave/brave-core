@@ -114,7 +114,7 @@ extension PrivacyReportsView {
         }
         .padding()
         .foregroundColor(Color.white)
-        .background(LinearGradient(braveGradient: .gradient05))
+        .background(LinearGradient(braveSystemName: .panelBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
       }
     }

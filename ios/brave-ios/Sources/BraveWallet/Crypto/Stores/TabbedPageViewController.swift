@@ -352,12 +352,11 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
     $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
   }
 
-  let selectionIndicatorView: BraveGradientView = .init { traitCollection in
-    if traitCollection.userInterfaceStyle == .dark {
-      return BraveGradient.darkGradient02
-    }
-    return BraveGradient.lightGradient02
-  }
+  let selectionIndicatorView: UIView = {
+    let view = UIView()
+    view.backgroundColor = UIColor(braveSystemName: .iconInteractive)
+    return view
+  }()
 
   let collectionView = UICollectionView(
     frame: .zero,
