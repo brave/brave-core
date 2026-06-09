@@ -14,6 +14,9 @@ pub use floor_planner::single_pass::SimpleFloorPlanner;
 
 pub mod layouter;
 
+mod table_layouter;
+pub use table_layouter::TableLayouter;
+
 /// A chip implements a set of instructions that can be used by gadgets.
 ///
 /// The chip stores state that is required at circuit synthesis time in
@@ -131,6 +134,16 @@ impl<F: Field> AssignedCell<Assigned<F>, F> {
         AssignedCell {
             value: self.value.evaluate(),
             cell: self.cell,
+            _marker: Default::default(),
+        }
+    }
+}
+
+impl<F: Field> From<AssignedCell<F, F>> for AssignedCell<Assigned<F>, F> {
+    fn from(ac: AssignedCell<F, F>) -> Self {
+        AssignedCell {
+            value: ac.value.map(|a| a.into()),
+            cell: ac.cell,
             _marker: Default::default(),
         }
     }
@@ -365,11 +378,11 @@ impl<'r, F: Field> Region<'r, F> {
 /// A lookup table in the circuit.
 #[derive(Debug)]
 pub struct Table<'r, F: Field> {
-    table: &'r mut dyn layouter::TableLayouter<F>,
+    table: &'r mut dyn TableLayouter<F>,
 }
 
-impl<'r, F: Field> From<&'r mut dyn layouter::TableLayouter<F>> for Table<'r, F> {
-    fn from(table: &'r mut dyn layouter::TableLayouter<F>) -> Self {
+impl<'r, F: Field> From<&'r mut dyn TableLayouter<F>> for Table<'r, F> {
+    fn from(table: &'r mut dyn TableLayouter<F>) -> Self {
         Table { table }
     }
 }

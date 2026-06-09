@@ -80,7 +80,7 @@ impl<C: CurveAffine> Params<C> {
         }
         let mut g_lagrange_projective = g_projective;
         best_fft(&mut g_lagrange_projective, alpha_inv, k);
-        let minv = C::Scalar::TWO_INV.pow_vartime([k as u64, 0, 0, 0]);
+        let minv = C::Scalar::TWO_INV.pow_vartime([k as u64]);
         parallelize(&mut g_lagrange_projective, |g, _| {
             for g in g.iter_mut() {
                 *g *= minv;
@@ -158,6 +158,11 @@ impl<C: CurveAffine> Params<C> {
     /// Getter for g generators
     pub fn get_g(&self) -> Vec<C> {
         self.g.clone()
+    }
+
+    /// Get the circuit size parameter k
+    pub fn k(&self) -> u32 {
+        self.k
     }
 
     /// Writes params to a buffer.

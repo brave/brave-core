@@ -132,7 +132,7 @@ impl Assembly {
         }
 
         // Pre-compute commitments for the URS.
-        let mut commitments = vec![];
+        let mut commitments = Vec::with_capacity(p.columns.len());
         for i in 0..p.columns.len() {
             // Computes the permutation polynomial based on the permutation
             // description in the assembly.

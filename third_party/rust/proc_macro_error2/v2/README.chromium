@@ -1,0 +1,9 @@
+Name: proc-macro-error2
+URL: https://crates.io/crates/proc-macro-error2
+Version: 2.0.1
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Almost drop-in replacement to panics in proc-macros
