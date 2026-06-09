@@ -19,9 +19,9 @@ extension StatKind {
   var valueColor: UIColor {
     switch self {
     case .adsBlocked:
-      return UIColor(rgb: 0xFB542B)
+      return UIColor(braveSystemName: .primitiveOrange70)
     case .dataSaved:
-      return UIColor(rgb: 0xA0A5EB)
+      return UIColor(braveSystemName: .primitiveBlurple70)
     case .timeSaved:
       return UIColor(braveSystemName: .textPrimary)
     case .unknown:

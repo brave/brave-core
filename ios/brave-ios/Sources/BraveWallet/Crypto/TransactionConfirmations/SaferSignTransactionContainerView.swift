@@ -96,7 +96,6 @@ struct SaferSignTransactionContainerView: View {
             Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .foregroundColor(Color(.braveOrange))
           } else {
             if let url = URL(string: originInfo.originSpec) {
               FaviconReader(url: url) { image in

@@ -124,7 +124,7 @@ struct CreateWalletView: View {
     HStack(spacing: 12) {
       Image(braveSystemName: "leo.warning.circle-filled")
         .renderingMode(.template)
-        .foregroundColor(Color(.braveLighterOrange))
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
       Text(error?.errorDescription ?? "")
         .multilineTextAlignment(.leading)
         .font(.callout)

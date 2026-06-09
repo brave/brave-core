@@ -132,7 +132,6 @@ struct SaferSignMessageRequestContainerView: View {
           Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .foregroundColor(Color(.braveOrange))
         } else {
           if let url = URL(string: request.originInfo.originSpec) {
             FaviconReader(url: url) { image in
