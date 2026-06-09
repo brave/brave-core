@@ -41,10 +41,6 @@ export const BraveLogo = styled(StyledDiv)`
   }
 `
 
-export const SettingsWrapper = styled(StyledDiv)`
-  position: relative;
-`
-
 export const SettingsButton = styled(StyledButton)`
   background-color: ${leo.color.container.background};
   border-radius: ${leo.radius.full};

@@ -12,7 +12,7 @@ import Icon from '@brave/leo/react/icon'
 import { AccountModalTypes } from '../../../constants/types'
 
 // Shared Styles
-import { Text, WalletButton, Row } from '../../shared/style'
+import { Text, WalletButton } from '../../shared/style'
 import {
   layoutPanelWidth,
   layoutSmallWidth,
@@ -125,17 +125,6 @@ export const ButtonIcon = styled(Icon)<{ id?: AccountModalTypes }>`
   margin-right: 16px;
 `
 
-export const ToggleRow = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  width: 220px;
-  padding: 12px 8px;
-  margin: 0px 0px 8px 0px;
-  background-color: transparent;
-`
-
 export const LineChartWrapper = styled(StyledWrapper)`
   padding: 4px;
   gap: 4px;
@@ -157,14 +146,6 @@ export const LineChartButton = styled(PopupButton)`
   }
 `
 
-export const SectionLabel = styled(Row)`
-  background-color: ${leo.color.page.background};
-  padding: 4px 8px;
-  font: ${leo.font.components.label};
-  text-transform: capitalize;
-  color: ${leo.color.text.tertiary};
-`
-
 export const ButtonMenu = styled(LeoButtonMenu)<{
   minWidth?: number
 }>`
@@ -182,5 +163,8 @@ export const ButtonMenu = styled(LeoButtonMenu)<{
   }
   leo-menu-item #shield {
     --leo-icon-color: ${leo.color.systemfeedback.successIcon};
+  }
+  leo-menu-item#toggle {
+    justify-content: space-between;
   }
 `
