@@ -349,6 +349,15 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       UpdateOrCreateLastAssistantEntry_ToolUseSplitsCompletion);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_CompletionMergesAcrossNonSplitting);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_ToolUseArgsMergeAcrossNonSplitting);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_CompletionSplitsToolUse);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            OnGetStagedEntriesFromContent);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,

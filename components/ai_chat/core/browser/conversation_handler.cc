@@ -73,6 +73,69 @@ using ai_chat::mojom::ConversationTurn;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
 
+// Determines whether recieving an event of this type should trigger a new
+// streamed event. For example, an inline-search event shouldn't trigger a
+// new completion event (the completion before the inline search should be
+// modified).
+bool IsNonSplittingEvent(
+    mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag
+        event_tag) {
+  // Note: This list is exhaustive, so when adding new events we make a decision
+  // about whether they should be splitting or not.
+  switch (event_tag) {
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kInlineSearchEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kSearchQueriesEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kSourcesEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kSearchStatusEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kConversationTitleEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kContentReceiptEvent:
+      return true;
+
+    // Receiving one of these events will trigger a new streamed event, if the
+    // previous non-splitting event not of the same type.
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kCompletionEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kToolUseEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kDeepResearchEvent:
+      return false;
+  }
+}
+
+// If the previous non-splitting event is the same type as the current one, we
+// should join them instead of creating a new one. Otherwise, completions and
+// tool uses could be split (i.e. by an inline search event).
+mojom::ConversationEntryEvent* GetExistingEvent(
+    mojom::ConversationEntryEvent* current,
+    const std::vector<mojom::ConversationEntryEventPtr>& events) {
+  CHECK(current);
+  CHECK(current->which() == mojom::ConversationEntryEvent::Data_::
+                                ConversationEntryEvent_Tag::kCompletionEvent ||
+        current->which() == mojom::ConversationEntryEvent::Data_::
+                                ConversationEntryEvent_Tag::kToolUseEvent)
+      << "Only completions and tool use events can be split across multiple "
+         "events.";
+  for (const auto& event : base::Reversed(events)) {
+    if (IsNonSplittingEvent(event->which())) {
+      continue;
+    }
+
+    if (event->which() == current->which()) {
+      return event.get();
+    }
+    break;
+  }
+
+  return nullptr;
+}
+
 bool HasUploadedImageOrScreenshot(
     const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files) {
   if (!uploaded_files || uploaded_files->empty()) {
@@ -1325,9 +1388,6 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   }
 
   if (event) {
-    // Set when a completion delta is merged into an existing completion event
-    // rather than appended, so it isn't also pushed as a separate event below.
-    bool merged_completion = false;
     if (event->is_completion_event()) {
       // Continue the previous completion event if the only thing separating it
       // from this delta is inline search results. Inline search events are
@@ -1337,16 +1397,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
       // trailing fragment as the final response. Any other event type (e.g.
       // tool use) is a genuine boundary that still starts a new completion
       // event, preserving per-step "thinking" alongside tool use.
-      mojom::ConversationEntryEvent* existing_completion = nullptr;
-      for (auto& existing : base::Reversed(*entry->events)) {
-        if (existing->is_inline_search_event()) {
-          continue;
-        }
-        if (existing->is_completion_event()) {
-          existing_completion = existing.get();
-        }
-        break;
-      }
+      auto* existing_completion = GetExistingEvent(event.get(), *entry->events);
 
       if (!engine_->SupportsDeltaTextResponses() || !existing_completion) {
         // The start of completion responses needs whitespace trim
@@ -1357,7 +1408,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
       // Merge into the existing completion event if delta updates are
       // supported, or otherwise replace its content, so inline-search-separated
-      // deltas form a single completion event.
+      // deltas form a single completion event. The merged event stays in place,
+      // so update it and return rather than appending a new event below.
       if (existing_completion) {
         if (engine_->SupportsDeltaTextResponses()) {
           existing_completion->get_completion_event()->completion =
@@ -1368,21 +1420,24 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
           existing_completion->get_completion_event()->completion =
               event->get_completion_event()->completion;
         }
-        // The merged completion stays in place; don't append `event` below.
-        merged_completion = true;
+
+        entry->text = existing_completion->get_completion_event()->completion;
+
+        // Update clients for partial entries but not observers, who will get
+        // notified when we know this is a complete entry.
+        OnHistoryUpdate(entry.Clone());
+        return;
       }
 
       // TODO(petemill): Remove ConversationTurn.text backwards compatibility
       // when all UI is updated to instead use ConversationEntryEvent items.
-      entry->text = (existing_completion ? existing_completion : event.get())
-                        ->get_completion_event()
-                        ->completion;
+      entry->text = event->get_completion_event()->completion;
     }
 
     if (event->is_tool_use_event() && entry->events->size() > 0) {
       // Tool use events can be partial and may need to be combined with the
       // previous event.
-      auto& last_event = entry->events->back();
+      auto* last_event = GetExistingEvent(event.get(), *entry->events);
       auto& tool_use_event = event->get_tool_use_event();
 
       DVLOG(2) << __func__
@@ -1392,7 +1447,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
       // Accumulate streamed arguments_json from tool requests in the existing
       // tool use event.
-      if (last_event->is_tool_use_event() &&
+      if (last_event && last_event->is_tool_use_event() &&
           tool_use_event->tool_name.empty() &&
           !tool_use_event->output.has_value()) {
         last_event->get_tool_use_event()->arguments_json =
@@ -1460,11 +1515,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
       return;
     }
 
-    // A merged completion delta updated an existing event in place; don't also
-    // append it as a separate event.
-    if (!merged_completion) {
-      entry->events->push_back(std::move(event));
-    }
+    entry->events->push_back(std::move(event));
   }
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
