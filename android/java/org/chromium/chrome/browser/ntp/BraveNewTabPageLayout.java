@@ -40,7 +40,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 
 import org.chromium.base.BravePreferenceKeys;
@@ -130,7 +129,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     // Whether to show sponsored image on NTP based on experiment variant
     private boolean mShouldShowSponsoredImage;
     private @Nullable NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private @Nullable LottieAnimationView mBadgeAnimationView;
 
     private @Nullable Tab mTab;
     private Activity mActivity;
