@@ -231,7 +231,7 @@ struct SendTokenView: View {
               } label: {
                 Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "leo.copy.plain-text")
                   .labelStyle(.iconOnly)
-                  .foregroundColor(Color(.primaryButtonTint))
+                  .foregroundColor(Color(braveSystemName: .neutral70))
                   .font(.body)
               }
               .buttonStyle(PlainButtonStyle())
@@ -244,7 +244,7 @@ struct SendTokenView: View {
                     braveSystemImage: "leo.qr.code"
                   )
                   .labelStyle(.iconOnly)
-                  .foregroundColor(Color(.primaryButtonTint))
+                  .foregroundColor(Color(braveSystemName: .neutral70))
                   .font(.body)
                 }
                 .buttonStyle(PlainButtonStyle())

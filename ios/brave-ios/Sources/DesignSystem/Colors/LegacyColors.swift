@@ -10,8 +10,6 @@ enum LegacyDesignSystemColor: String {
   case interactive04
   case interactive05
   case interactive06
-  case interactive07
-  case interactive08
 
   case gradient01_step0 = "gradient01-step0"
   case gradient01_step1 = "gradient01-step1"
@@ -47,11 +45,5 @@ extension UIColor {
       }
       return .braveBlurple
     }
-  }
-  public static var primaryButtonTint: UIColor {
-    LegacyDesignSystemColor.interactive07.color
-  }
-  public static var secondaryButtonTint: UIColor {
-    LegacyDesignSystemColor.interactive08.color
   }
 }

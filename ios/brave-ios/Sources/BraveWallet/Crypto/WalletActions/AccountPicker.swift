@@ -61,7 +61,7 @@ struct AccountPicker: View {
       .font(.caption)
       Image(systemName: "chevron.down.circle")
         .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.primaryButtonTint))
+        .foregroundColor(Color(braveSystemName: .neutral70))
     }
     .padding(.vertical, 6)
   }

@@ -44,7 +44,7 @@ struct FollowToggle: View {
           )
           .overlay(
             Capsule()
-              .strokeBorder(Color(.secondaryButtonTint).opacity(0.2), lineWidth: pixelLength)
+              .strokeBorder(Color(braveSystemName: .neutral30).opacity(0.2), lineWidth: pixelLength)
               .opacity(isFollowing ? 1 : 0)
           )
       }

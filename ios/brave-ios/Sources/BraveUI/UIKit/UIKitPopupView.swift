@@ -58,7 +58,7 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
       case .primary:
         return .braveBlurpleTint
       case .secondary:
-        return .secondaryButtonTint
+        return UIColor(braveSystemName: .neutral30)
       case .destructive:
         return UIColor(braveSystemName: .systemfeedbackErrorText)
       case .link:

@@ -64,7 +64,7 @@ extension UIView {
     UISegmentedControl.appearance().do {
       $0.selectedSegmentTintColor = .init(dynamicProvider: {
         if $0.userInterfaceStyle == .dark {
-          return .secondaryButtonTint
+          return UIColor(braveSystemName: .neutral30)
         }
         return .white
       })

@@ -193,7 +193,7 @@ public struct NewsSettingsView: View {
                 .font(.caption)
                 .padding(.vertical, 1)
                 .padding(.horizontal, 6)
-                .background(Capsule().stroke(Color(.secondaryButtonTint), lineWidth: 1))
+                .background(Capsule().stroke(Color(braveSystemName: .neutral30), lineWidth: 1))
                 .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           },

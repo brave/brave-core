@@ -36,7 +36,7 @@ struct SetupCryptoView: View {
             HStack(alignment: .top, spacing: 16) {
               Image(braveSystemName: "leo.plus.add")
                 .frame(width: 32, height: 32)
-                .background(Color(.secondaryButtonTint).opacity(0.3))
+                .background(Color(braveSystemName: .neutral30).opacity(0.3))
                 .clipShape(Circle())
               VStack(alignment: .leading, spacing: 12) {
                 Text(Strings.Wallet.setupCryptoCreateNewTitle)
@@ -61,7 +61,7 @@ struct SetupCryptoView: View {
             HStack(alignment: .top, spacing: 16) {
               Image(braveSystemName: "leo.import.arrow")
                 .frame(width: 32, height: 32)
-                .background(Color(.secondaryButtonTint).opacity(0.3))
+                .background(Color(braveSystemName: .neutral30).opacity(0.3))
                 .clipShape(Circle())
               VStack(alignment: .leading, spacing: 12) {
                 Group {
