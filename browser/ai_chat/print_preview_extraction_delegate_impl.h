@@ -15,10 +15,6 @@
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 namespace ai_chat {
 
 // Adapts the browser-layer PrintPreviewExtractor to the AI Chat
