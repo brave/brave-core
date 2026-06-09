@@ -35,15 +35,16 @@ sys.path.append(str(Path(__file__).resolve().parents[2] / 'script'))
 import deps  # pylint: disable=wrong-import-position
 
 # The hash sum for the archive expected to be downloaded.
-MAC_BINARIES_HASH = '79993cddfb0405fd39c582c88f3982f91f92c1b14c5881649bfa07aea873d1e4'
+MAC_BINARIES_HASH = '710798910d2a458bcb41fc0f5181f472bf899d20bfdcb28dcd40efef556cd590'
 
-# This contains binaries from Xcode 26.4 (17E202) along with the macOS 26.4 SDK
-# (25E251) and the Metal toolchain (17E188).
-XCODE_VERSION = '26.4.1'
+# This contains binaries from Xcode 26.4.1 (17E202) along with the macOS 26.4
+# SDK (25E251) and the Metal toolchain (17E188).
+MAC_SDK_OFFICIAL_VERSION = '26.4'
+MAC_SDK_OFFICIAL_BUILD_VERSION = '25E251'
 XCODE_TOOLCHAIN_DOWNLOAD_URL = (
-    f'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
-    f'/xcode-hermetic-toolchain/xcode-hermetic-toolchain-{XCODE_VERSION}.tar.gz'
-)
+    'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
+    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-'
+    f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the Darwin major version number for macOS 10.15. Xcode 26.0 17A324 only
@@ -139,29 +140,7 @@ class SdkInstaller:
 def _install_xcode_binaries() -> int:
     """Installs the Xcode binaries needed to build Brave and accepts the
     license."""
-    sdk_installer = SdkInstaller()
-    if not sdk_installer.install():
-        print(f'Hermetic Xcode {XCODE_VERSION} already installed')
-
-    on_disk_version = _get_hermetic_xcode_version()
-    license_info_path = (MAC_BINARIES_ROOT /
-                         'Contents/Resources/LicenseInfo.plist')
-    on_disk_license = (_load_plist(license_info_path).get(
-        'licenseID', '(missing)') if license_info_path.exists() else
-                       '(LicenseInfo.plist not present)')
-    print(f'  on-disk hermetic version:    {on_disk_version}')
-    print(f'  on-disk hermetic licenseID:  {on_disk_license}')
-    current_license_path = Path(
-        '/Library/Preferences/com.apple.dt.Xcode.plist')
-    if current_license_path.exists():
-        sys_plist = _load_plist(current_license_path)
-        sys_version = sys_plist.get('IDEXcodeVersionForAgreedToGMLicense',
-                                    '(missing)')
-        sys_license = sys_plist.get('IDELastGMLicenseAgreedTo', '(missing)')
-    else:
-        sys_version = sys_license = '(plist not present)'
-    print(f'  system recorded version:     {sys_version}')
-    print(f'  system recorded licenseID:   {sys_license}')
+    SdkInstaller().install()
 
     if sys.platform != 'darwin':
         return 0
