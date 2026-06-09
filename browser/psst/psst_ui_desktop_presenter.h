@@ -9,13 +9,9 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
-#include "brave/browser/ui/psst/psst_menu_model.h"
+#include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "chrome/browser/ui/dialogs/browser_dialogs.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
-
-namespace page_actions {
-class PsstActionController;
-}  // namespace page_actions
 
 namespace content {
 class WebContents;
@@ -26,8 +22,9 @@ class ConstrainedWebDialogDelegate;
 namespace psst {
 
 // Implementation of PsstUiPresenter for desktop platforms
-class PsstUiDesktopPresenter : public PsstUiPresenter,
-                               public PsstMenuModel::Observer {
+class PsstUiDesktopPresenter
+    : public PsstUiPresenter,
+      public page_actions::PsstActionController::Observer {
  public:
   class PsstUiDesktopDelegate : public ui::WebDialogDelegate {
    public:
@@ -77,7 +74,7 @@ class PsstUiDesktopPresenter : public PsstUiPresenter,
   bool IsDialogShown() const override;
 
  private:
-  // PsstMenuModel::Observer overrides
+  // page_actions::PsstActionController::Observer:
   void OnDontShowThisSiteSelected() override;
   void OnDisablePrivacySettingsTuningSelected() override;
 

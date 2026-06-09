@@ -977,7 +977,6 @@ source_set("ui") {
 
   if (enable_psst) {
     deps += [
-      "//brave/browser/ui/psst",
       "//brave/components/psst/browser/core",
       "//brave/components/psst/buildflags",
       "//brave/components/psst/common",

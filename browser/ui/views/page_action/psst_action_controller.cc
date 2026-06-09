@@ -7,6 +7,7 @@
 
 #include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/psst/common/features.h"
@@ -18,6 +19,7 @@
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/events/event_constants.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/canvas_image_source.h"
@@ -71,8 +73,7 @@ PsstActionController::PsstActionController(
 
 PsstActionController::~PsstActionController() = default;
 
-void PsstActionController::SetMenuModelObserver(
-    psst::PsstMenuModel::Observer* observer) {
+void PsstActionController::SetMenuModelObserver(Observer* observer) {
   psst_menu_model_observer_ = observer;
 }
 
@@ -113,8 +114,8 @@ void PsstActionController::ExecuteAction(
     return;
   }
 
-  psst_menu_model_ = std::make_unique<psst::PsstMenuModel>();
-  psst_menu_model_->AddObserver(psst_menu_model_observer_);
+  psst_menu_model_ = std::make_unique<ui::SimpleMenuModel>(this);
+  BuildMenuItems();
 
   menu_anchor_view_tracker_.SetView(anchor_view);
 
@@ -134,6 +135,28 @@ void PsstActionController::ExecuteAction(
       views::MenuAnchorPosition::kTopLeft, ui::mojom::MenuSourceType::kMouse);
 }
 
+void PsstActionController::ExecuteCommand(int command_id, int event_flags) {
+  CHECK(psst_menu_model_observer_);
+  if (command_id == IDC_PSST_DONT_SHOW_FOR_THIS_SITE) {
+    psst_menu_model_observer_->OnDontShowThisSiteSelected();
+  } else if (command_id == IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING) {
+    psst_menu_model_observer_->OnDisablePrivacySettingsTuningSelected();
+  }
+}
+
+bool PsstActionController::IsCommandIdEnabled(int command_id) const {
+  return true;
+}
+
+void PsstActionController::BuildMenuItems() {
+  psst_menu_model_->AddItem(
+      IDC_PSST_DONT_SHOW_FOR_THIS_SITE,
+      l10n_util::GetStringUTF16(IDS_IDC_PSST_DONT_SHOW_FOR_THIS_SITE));
+  psst_menu_model_->AddItem(
+      IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING,
+      l10n_util::GetStringUTF16(IDS_IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING));
+}
+
 void PsstActionController::UpdatePageAction() {
   const std::u16string name =
       l10n_util::GetStringUTF16(IDS_IDC_PSST_LOCATION_BAR_BTN_TOOLTIP);
@@ -144,17 +167,19 @@ void PsstActionController::UpdatePageAction() {
 
   page_action_controller_->SetOverrideTriggerableEvent(
       kActionShowPsstIcon, ui::EF_RIGHT_MOUSE_BUTTON);
-  SkColor color = SK_ColorWHITE;
-  if (content::WebContents* contents = tab_->GetContents()) {
-    color = contents->GetColorProvider().GetColor(kColorToolbarButtonIcon);
-  }
   if (!show_badge_) {
     page_action_controller_->OverrideImage(
         kActionShowPsstIcon,
-        ui::ImageModel::FromImageSkia(
-            gfx::CreateVectorIcon(kLeoPsstIcon, kIconSize, color)));
+        ui::ImageModel::FromVectorIcon(kLeoPsstIcon, kColorToolbarButtonIcon,
+                                      kIconSize));
     return;
   }
+  content::WebContents* const contents = tab_->GetContents();
+  if (!contents) {
+    return;
+  }
+  const SkColor color =
+      contents->GetColorProvider().GetColor(kColorToolbarButtonIcon);
   gfx::IconDescription icon_description(kLeoPsstIcon, kIconSize, color);
   gfx::ImageSkia icon_image(
       std::make_unique<PsstIconImageSource>(icon_description),

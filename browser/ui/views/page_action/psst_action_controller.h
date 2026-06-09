@@ -6,11 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_PSST_ACTION_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_PSST_ACTION_CONTROLLER_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/psst/psst_menu_model.h"
+#include "base/observer_list_types.h"
 #include "chrome/browser/ui/page_actions/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/menus/simple_menu_model.h"
 #include "ui/views/controls/menu/menu_model_adapter.h"
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/view_tracker.h"
@@ -19,16 +22,26 @@ class ToolbarButtonProvider;
 
 namespace page_actions {
 
-class PsstActionController {
+class PsstActionController : public ui::SimpleMenuModel::Delegate {
  public:
+  // Observes selections made in the PSST page action menu.
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnDontShowThisSiteSelected() = 0;
+    virtual void OnDisablePrivacySettingsTuningSelected() = 0;
+
+   protected:
+    ~Observer() override = default;
+  };
+
   PsstActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller);
   PsstActionController(const PsstActionController&) = delete;
   PsstActionController& operator=(const PsstActionController&) = delete;
-  ~PsstActionController();
+  ~PsstActionController() override;
 
-  void SetMenuModelObserver(psst::PsstMenuModel::Observer* observer);
+  void SetMenuModelObserver(Observer* observer);
   void SetVisible(bool visible);
   void SetShowBadge(bool show);
 
@@ -38,6 +51,11 @@ class PsstActionController {
                      actions::ActionItem* item);
 
  private:
+  // ui::SimpleMenuModel::Delegate:
+  void ExecuteCommand(int command_id, int event_flags) override;
+  bool IsCommandIdEnabled(int command_id) const override;
+
+  void BuildMenuItems();
   void UpdatePageAction();
   void OnPsstMenuClosed();
 
@@ -47,10 +65,12 @@ class PsstActionController {
   const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;
   base::CallbackListSubscription did_activate_subscription_;
 
-  raw_ptr<psst::PsstMenuModel::Observer> psst_menu_model_observer_ = nullptr;
-  std::unique_ptr<psst::PsstMenuModel> psst_menu_model_;
+  std::unique_ptr<ui::SimpleMenuModel> psst_menu_model_;
   std::unique_ptr<views::MenuModelAdapter> menu_model_adapter_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
+
+  // not owned
+  raw_ptr<Observer> psst_menu_model_observer_ = nullptr;
   raw_ptr<actions::ActionItem> action_item_for_menu_ = nullptr;
 
   // Clears if the page action `View` is destroyed while a menu is open
