@@ -422,7 +422,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/history/ad_history_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/ad_history_item_value_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/ad_history_manager_unittest.cc",
-    "//brave/components/brave_ads/core/internal/history/ad_history_value_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/test/ad_history_manager_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/history/test/ad_history_manager_observer_mock.h",
     "//brave/components/brave_ads/core/internal/history/test/ad_history_test_util.cc",
