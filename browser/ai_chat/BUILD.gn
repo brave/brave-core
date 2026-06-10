@@ -139,13 +139,15 @@ static_library("ai_chat") {
     ]
   }
 
-  deps += [ "//brave//components/screenshot/content" ]
   if (enable_print_preview) {
     sources += [
       "print_preview_extraction_delegate_impl.cc",
       "print_preview_extraction_delegate_impl.h",
     ]
-    deps += [ "//brave/browser/screenshot" ]
+    deps += [
+      "//brave/browser/screenshot",
+      "//brave/components/screenshot/content",
+    ]
   }
 }
 
