@@ -36,7 +36,6 @@ import {
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Hooks
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import useExplorer from '../../../common/hooks/explorer'
 
 // Components
@@ -49,7 +48,6 @@ import { ShieldedLabel } from '../../shared/shielded_label/shielded_label'
 import {
   MenuButton,
   MenuButtonIcon,
-  MenuWrapper,
   HorizontalDivider,
 } from './shared-card-headers.style'
 import {
@@ -99,40 +97,9 @@ export const AssetDetailsHeader = (props: Props) => {
     useGetNetworkQuery(selectedAsset ?? skipToken)
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  // state
-  const [showAssetDetailsMenu, setShowAssetDetailsMenu] =
-    React.useState<boolean>(false)
-
-  // refs
-  const assetDetailsMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(
-    assetDetailsMenuRef,
-    () => setShowAssetDetailsMenu(false),
-    showAssetDetailsMenu,
-  )
-
   const openExplorer = useExplorer(selectedAssetsNetwork)
 
   // methods
-  const handleOnClickHideToken = React.useCallback(() => {
-    setShowAssetDetailsMenu(false)
-    onClickHideToken()
-  }, [onClickHideToken])
-
-  const handleOnClickTokenDetails = React.useCallback(() => {
-    setShowAssetDetailsMenu(false)
-    onClickTokenDetails()
-  }, [onClickTokenDetails])
-
-  const handleOnClickEditToken = React.useCallback(() => {
-    if (onClickEditToken) {
-      setShowAssetDetailsMenu(false)
-      onClickEditToken()
-    }
-  }, [onClickEditToken])
-
   const onClickViewOnExplorer = React.useCallback(() => {
     if (selectedAsset) {
       openExplorer('token', selectedAsset.contractAddress)()
@@ -321,30 +288,23 @@ export const AssetDetailsHeader = (props: Props) => {
                   <HorizontalSpace space='16px' />
                 </>
               )}
-              <MenuWrapper ref={assetDetailsMenuRef}>
+              <AssetDetailsMenu
+                assetSymbol={selectedAsset?.symbol ?? ''}
+                onClickHideToken={onClickHideToken}
+                onClickTokenDetails={onClickTokenDetails}
+                onClickViewOnExplorer={onClickViewOnExplorer}
+                onClickEditToken={onClickEditToken}
+              >
                 {isMobileOrPanel ? (
-                  <Button
-                    onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
-                  >
+                  <Button slot='anchor-content'>
                     <ButtonIcon name='more-vertical' />
                   </Button>
                 ) : (
-                  <MenuButton
-                    onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
-                  >
+                  <MenuButton slot='anchor-content'>
                     <MenuButtonIcon name='more-vertical' />
                   </MenuButton>
                 )}
-                {showAssetDetailsMenu && (
-                  <AssetDetailsMenu
-                    assetSymbol={selectedAsset?.symbol ?? ''}
-                    onClickHideToken={handleOnClickHideToken}
-                    onClickTokenDetails={handleOnClickTokenDetails}
-                    onClickViewOnExplorer={onClickViewOnExplorer}
-                    onClickEditToken={handleOnClickEditToken}
-                  />
-                )}
-              </MenuWrapper>
+              </AssetDetailsMenu>
             </>
           )}
       </Row>

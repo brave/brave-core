@@ -4,18 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
+import { ButtonMenu } from './wellet-menus.style'
 
 interface Props {
+  children: React.ReactNode
   assetSymbol: string
   onClickTokenDetails: () => void
   onClickViewOnExplorer: () => void
@@ -25,6 +22,7 @@ interface Props {
 
 export const AssetDetailsMenu = (props: Props) => {
   const {
+    children,
     assetSymbol,
     onClickTokenDetails,
     onClickViewOnExplorer,
@@ -33,36 +31,29 @@ export const AssetDetailsMenu = (props: Props) => {
   } = props
 
   return (
-    <StyledWrapper yPosition={42}>
-      <PopupButton onClick={onClickTokenDetails}>
-        <ButtonIcon name='info-outline' />
-        <PopupButtonText>
-          {getLocale('braveWalletPortfolioTokenDetailsMenuLabel')}
-        </PopupButtonText>
-      </PopupButton>
+    <ButtonMenu placement='bottom-end'>
+      {children}
+      <leo-menu-item onClick={onClickTokenDetails}>
+        <Icon name='info-outline' />
+        {getLocale('braveWalletPortfolioTokenDetailsMenuLabel')}
+      </leo-menu-item>
       {onClickEditToken && (
-        <PopupButton onClick={onClickEditToken}>
-          <ButtonIcon name='edit-pencil' />
-          <PopupButtonText>
-            {getLocale('braveWalletAllowSpendEditButton')}
-          </PopupButtonText>
-        </PopupButton>
+        <leo-menu-item onClick={onClickEditToken}>
+          <Icon name='edit-pencil' />
+          {getLocale('braveWalletAllowSpendEditButton')}
+        </leo-menu-item>
       )}
-      <PopupButton onClick={onClickViewOnExplorer}>
-        <ButtonIcon name='launch' />
-        <PopupButtonText>
-          {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
-        </PopupButtonText>
-      </PopupButton>
-      <PopupButton onClick={onClickHideToken}>
-        <ButtonIcon name='trash' />
-        <PopupButtonText>
-          {getLocale('braveWalletPortfolioHideTokenMenuLabel').replace(
-            '$1',
-            assetSymbol,
-          )}
-        </PopupButtonText>
-      </PopupButton>
-    </StyledWrapper>
+      <leo-menu-item onClick={onClickViewOnExplorer}>
+        <Icon name='launch' />
+        {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+      </leo-menu-item>
+      <leo-menu-item onClick={onClickHideToken}>
+        <Icon name='trash' />
+        {getLocale('braveWalletPortfolioHideTokenMenuLabel').replace(
+          '$1',
+          assetSymbol,
+        )}
+      </leo-menu-item>
+    </ButtonMenu>
   )
 }
