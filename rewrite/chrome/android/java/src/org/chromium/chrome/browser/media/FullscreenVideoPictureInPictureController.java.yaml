@@ -4,7 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Notify Brave that a YouTube PiP session is being attempted
+  - description: |-
+      Notify Brave that a YouTube PiP session is being attempted
     re_pattern:
       '(\s+if \(!allowed\) return;\n\n\s+final WebContents webContents =
       getWebContents\(\);\n\s+assert webContents != null;\n)'
@@ -12,7 +13,8 @@ substitutions:
       \1        BraveFullscreenVideoPictureInPictureController.class.cast(this)
                       .onYouTubePictureInPictureAttempt(mActivity, webContents);
 
-  - description: Notify Brave when manual PiP entry returns false
+  - description: |-
+      Notify Brave when manual PiP entry returns false
     re_pattern:
       'if \(!mActivity\.enterPictureInPictureMode\(builder\.build\(\)\)\)
       return;'
@@ -23,14 +25,15 @@ substitutions:
                       return;
                   }
 
-  - description: Notify Brave when manual PiP entry throws
+  - description: |-
+      Notify Brave when manual PiP entry throws
     re_pattern:
       '(\s+Log\.e\(TAG, "Error entering PiP with bounds %s", bounds, e\);\n)'
     replace: |
       \1            BraveFullscreenVideoPictureInPictureController.class.cast(this)
                           .onYouTubePictureInPictureEnterFailed();
 
-  - description:
+  - description: |-
       Let Brave handle YouTube PiP dismiss signals using upstream enum names
     re_pattern:
       '(\s+private void dismissActivityIfNeeded\(Activity activity,

@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
+  - description: |-
       Check at the top of the method if exiting fullscreen should be skipped to
       preserve the state while Brave-managed YouTube PiP is active when a tab is
       hidden
@@ -18,7 +18,7 @@ substitutions:
                                   return;
                               }
 
-  - description:
+  - description: |-
       Add a PiP-specific persistent fullscreen exit entry point,
       exitPersistentFullscreenModeForPictureInPicture, that tears down the
       browser fullscreen UI while preserving the WebContents (DOM) fullscreen
@@ -40,7 +40,7 @@ substitutions:
           }
           \1
 
-  - description:
+  - description: |-
       Skip the WebContents (DOM) fullscreen exit for the Brave-managed PiP path
       by prepending the mSkipWebContentsExitFullscreenForPip flag (set by
       exitPersistentFullscreenModeForPictureInPicture) to the existing guard.
@@ -55,7 +55,7 @@ substitutions:
       '\1!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip
       && \2'
 
-  - description:
+  - description: |-
       Insert an early return at the top of the ActivityState.STOPPED branch of
       onActivityStateChange so the fullscreen teardown
       (mFullscreenManagerDelegate.onExitFullscreen(null)) is skipped while a
