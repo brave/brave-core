@@ -1,8 +1,8 @@
 diff --git a/components/webapps/browser/BUILD.gn b/components/webapps/browser/BUILD.gn
-index 29c38033a783f96e26fea6097ed08f394efc37a5..e0128eefaaf9735424a538c109d9981317247e9d 100644
+index e13bcbab82ebd521e023431b7eaba00b9c83c4e9..5534525ca01d1a42296bdc17f1a2f09abcda3689 100644
 --- a/components/webapps/browser/BUILD.gn
 +++ b/components/webapps/browser/BUILD.gn
-@@ -191,6 +191,7 @@ source_set("browser") {
+@@ -193,6 +193,7 @@ source_set("browser") {
        "//ui/gfx",
      ]
    }

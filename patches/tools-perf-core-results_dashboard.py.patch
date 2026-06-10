@@ -1,8 +1,8 @@
 diff --git a/tools/perf/core/results_dashboard.py b/tools/perf/core/results_dashboard.py
-index 90c7292dfedd240cb5f06c63e18f3078c9fda343..ecf9bd1b6e2abae74c42d4241275d47535b01278 100755
+index 28a6bf3d642bff072d3626e32f12fee725c99f83..75804e571f683eaa93a2beff74710d25faa316a6 100755
 --- a/tools/perf/core/results_dashboard.py
 +++ b/tools/perf/core/results_dashboard.py
-@@ -507,3 +507,4 @@ def _SendHistogramJson(url, histogramset_json, token_generator_callback):
+@@ -496,3 +496,4 @@ def _SendHistogramJson(url, histogramset_json, token_generator_callback):
        logging.info('Upload completion token created. Token id: %s' % token)
    except Exception as e:  # pylint: disable=broad-except
      logging.warning('Error fetching upload completion token: %s' % e)

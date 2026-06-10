@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.cc b/chrome/browser/ui/tabs/split_tab_menu_model.cc
-index 1ca280cab1c6350d69f83146176f92eb5d3d9bd7..ebe2827578f9f9c3ea8c25cd954e5e3c2d78d65d 100644
+index 0a051d645f45bb8e04f065d99010ee211f97622d..eb383c3dede997c253356afbdef26e3509556bb0 100644
 --- a/chrome/browser/ui/tabs/split_tab_menu_model.cc
 +++ b/chrome/browser/ui/tabs/split_tab_menu_model.cc
 @@ -83,6 +83,7 @@ std::string_view GetMetricsSuffixForCommand(

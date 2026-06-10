@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/manifest_v2_experiment_manager.cc b/extensions/browser/manifest_v2_experiment_manager.cc
-index 59ab81aa13dffcc69fc0fb556b96753f1139bf00..3dcd91d9afbd0b530795887a9e482b3effc62458 100644
+index 13ed81f555b1811d45b688167d45ed9973d9b8fb..43f86d474b74ca5d42b4bab90d92d0a98014c07a 100644
 --- a/extensions/browser/manifest_v2_experiment_manager.cc
 +++ b/extensions/browser/manifest_v2_experiment_manager.cc
-@@ -126,6 +126,9 @@ bool ManifestV2ExperimentManagerFactory::ServiceIsCreatedWithBrowserContext()
+@@ -124,6 +124,9 @@ bool ManifestV2ExperimentManagerFactory::ServiceIsCreatedWithBrowserContext()
  // Returns true if legacy extensions should be disabled, looking at both
  // experiment stage and global state.
  bool ShouldDisableLegacyExtensions() {

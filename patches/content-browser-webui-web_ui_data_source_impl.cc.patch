@@ -1,5 +1,5 @@
 diff --git a/content/browser/webui/web_ui_data_source_impl.cc b/content/browser/webui/web_ui_data_source_impl.cc
-index 42955f79fe8f60b4b7554167e85b1b369610cec7..fea89197c7f76657ecb0cec9bbc56a6c0cbda025 100644
+index 12070c8e35454098e813db2b8f6ded0dbae80706..749f6193901abed211b06a52da02d025c6ce710b 100644
 --- a/content/browser/webui/web_ui_data_source_impl.cc
 +++ b/content/browser/webui/web_ui_data_source_impl.cc
 @@ -315,7 +315,7 @@ bool WebUIDataSourceImpl::IsWebUIDataSourceImpl() const {

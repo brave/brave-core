@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 3f1de29defa3a56bdead5d9d3c8d3474b6971278..ace9bf8fb9b62a6388717ddfdf6a35413945c4be 100644
+index 470c88ca82b498c94619147d304090a6a6e48fab..672398d446d80ca5c593d562d746aa7e04adc83d 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -262,7 +262,7 @@ class AiOverlayDialogController;
+@@ -266,7 +266,7 @@ class AiOverlayDialogController;
  class BrowserWindowFeatures {
   public:
    BrowserWindowFeatures();

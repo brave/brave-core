@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 77b9dc2f4012ae8f63a2cf4d2f0a53f2b2389982..5919bdc07748b0c609cfe61fae247cb7d2611ab1 100644
+index ba08d270ca788ee3feab5877486c8a118f5fa39a..b51f4a1abb724dcee54e17a1e3ce8109a2e1314b 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -369,6 +369,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -372,6 +372,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
    void OnAxObjectCreated(bool is_ignored);
  
