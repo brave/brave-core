@@ -107,11 +107,11 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
       SetNotificationAdsPerHourCallback callback) override;
   void SetAdsSubdivision(const std::string& subdivision,
                          SetAdsSubdivisionCallback callback) override;
-  void ToggleAdLike(const std::string& history_item,
+  void ToggleAdLike(brave_ads::mojom::ReactionInfoPtr reaction,
                     ToggleAdLikeCallback callback) override;
-  void ToggleAdDislike(const std::string& history_item,
+  void ToggleAdDislike(brave_ads::mojom::ReactionInfoPtr reaction,
                        ToggleAdDislikeCallback callback) override;
-  void ToggleAdInappropriate(const std::string& history_item,
+  void ToggleAdInappropriate(brave_ads::mojom::ReactionInfoPtr reaction,
                              ToggleAdInappropriateCallback callback) override;
   void GetRewardsNotifications(
       GetRewardsNotificationsCallback callback) override;

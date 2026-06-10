@@ -3,133 +3,108 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { AdsHistoryItem, AdLikeStatus, AdType } from '../lib/app_store'
+import { AdsHistoryItem, AdLikeStatus } from '../lib/app_store'
+import * as mojom from './mojom'
+import { adTypeFromMojom, convertMojoTime } from './mojom_helpers'
 
-// Currently, the Ads service provides Ads history data as untyped `base::Value`
-// (JSON) data. In order to interact with these history items, the caller must
-// provide the original JSON data for the item with the Ads service method call.
-// This module provides an adapter that coverts the raw JSON data into front-end
-// TS interfaces, and allows retrieval of the raw JSON data when an update is
-// required.
-
-interface MapValue {
-  createdAt: number
-  detail: any
-}
-
-function createMap(data: any[]) {
-  const map = new Map<string, MapValue>()
-  for (const group of data) {
-    const createdAt = Number(group.timestampInMilliseconds) || 0
-    for (const detail of group.adDetailRows) {
-      if (detail && typeof detail === 'object') {
-        map.set(map.size.toString(), { createdAt, detail })
-      }
-    }
-  }
-  return map
-}
-
-function convertLikeAction(likeAction: number) {
-  switch (likeAction) {
-    case 1:
+function likeStatusFromReactionType(
+  reaction: mojom.ReactionType,
+): AdLikeStatus {
+  switch (reaction) {
+    case mojom.ReactionType.kLiked:
       return 'liked'
-    case 2:
+    case mojom.ReactionType.kDisliked:
       return 'disliked'
     default:
       return ''
   }
 }
 
-function convertMapValue(id: string, value: MapValue): AdsHistoryItem | null {
-  const { detail } = value
-  const { adContent } = detail
-  const type = convertAdType(String(adContent.adType || ''))
+function reactionTypeFromLikeStatus(status: AdLikeStatus): mojom.ReactionType {
+  switch (status) {
+    case 'liked':
+      return mojom.ReactionType.kLiked
+    case 'disliked':
+      return mojom.ReactionType.kDisliked
+    default:
+      return mojom.ReactionType.kNeutral
+  }
+}
+
+function convertItem(
+  id: string,
+  item: mojom.AdHistoryItemInfo,
+): AdsHistoryItem | null {
+  const type = adTypeFromMojom(item.type)
   if (!type) {
     return null
   }
-  const item: AdsHistoryItem = {
-    id,
-    type,
-    createdAt: value.createdAt,
-    name: String(adContent.brand || ''),
-    text: String(adContent.brandInfo || ''),
-    domain: String(adContent.brandDisplayUrl || ''),
-    url: String(adContent.brandUrl || ''),
-    likeStatus: convertLikeAction(adContent.likeAction),
-    inappropriate: Boolean(adContent.flaggedAd),
-  }
-  if (!item.name || !item.domain || !item.url) {
-    console.error('Unexpected Ad history data', detail)
+  const url = item.targetUrl.url
+  if (!item.title || !url) {
+    console.error('Unexpected Ad history item', item)
     return null
   }
-  return item
-}
-
-function convertAdType(typeString: string): AdType | null {
-  switch (typeString) {
-    case 'ad_notification':
-      return 'notification'
-    case 'new_tab_page_ad':
-      return 'new-tab-page'
-    default:
-      return null
+  return {
+    id,
+    type,
+    createdAt: convertMojoTime(item.createdAt),
+    name: item.title,
+    text: item.description,
+    domain: new URL(url).hostname,
+    url,
+    likeStatus: likeStatusFromReactionType(item.likeAdReaction),
+    inappropriate: item.isFlagged,
   }
 }
 
 class AdsHistoryAdapter {
-  map_ = new Map<string, MapValue>()
+  private items_ = new Map<string, mojom.AdHistoryItemInfo>()
 
-  parseData(data: string) {
-    this.map_ = createMap(JSON.parse(data))
+  setItems(items: mojom.AdHistoryItemInfo[]) {
+    this.items_.clear()
+    for (const item of items) {
+      this.items_.set(this.items_.size.toString(), item)
+    }
   }
 
-  getRawDetail(id: string) {
-    return JSON.stringify(this.map_.get(id)?.detail || '{}')
-  }
-
-  getItem(id: string) {
-    const value = this.map_.get(id)
-    if (!value) {
+  getReaction(id: string): mojom.ReactionInfo | null {
+    const item = this.items_.get(id)
+    if (!item) {
       return null
     }
-    return convertMapValue(id, value)
+    return {
+      mojomAdType: item.type,
+      creativeInstanceId: item.creativeInstanceId,
+      creativeSetId: item.creativeSetId,
+      campaignId: item.campaignId,
+      advertiserId: item.advertiserId,
+      segment: item.segment,
+    }
   }
 
   setAdLikeStatus(id: string, status: AdLikeStatus): AdLikeStatus {
-    const value = this.map_.get(id)
-    if (!value) {
+    const item = this.items_.get(id)
+    if (!item) {
       return ''
     }
-    let action = 0
-    switch (status) {
-      case 'liked':
-        action = 1
-        break
-      case 'disliked':
-        action = 2
-        break
-    }
-    const { adContent } = value.detail
-    const previous = convertLikeAction(adContent.likeAction)
-    adContent.likeAction = action
+    const previous = likeStatusFromReactionType(item.likeAdReaction)
+    item.likeAdReaction = reactionTypeFromLikeStatus(status)
     return previous
   }
 
   setInappropriate(id: string, inappropriate: boolean) {
-    const value = this.map_.get(id)
-    if (value) {
-      const { adContent } = value.detail
-      adContent.flaggedAd = inappropriate
+    const item = this.items_.get(id)
+    if (item) {
+      item.isFlagged = inappropriate
     }
   }
 
-  getItems() {
+  getItems(): AdsHistoryItem[] {
     const items: AdsHistoryItem[] = []
-    for (const [key, value] of this.map_.entries()) {
-      const item = convertMapValue(key, value)
-      if (item) {
-        items.push(item)
+    for (const [id, item] of this.items_) {
+      const converted = convertItem(id, item)
+      if (converted) {
+        items.push(converted)
       }
     }
     return items

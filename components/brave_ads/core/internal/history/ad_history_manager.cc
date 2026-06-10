@@ -11,12 +11,13 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -106,7 +107,35 @@ void AdHistoryManager::GetForUICallback(
     return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
 
-  std::move(callback).Run(AdHistoryToList(*ad_history));
+  const Reactions& reactions = GetReactions();
+
+  std::vector<mojom::AdHistoryItemInfoPtr> mojom_items;
+  mojom_items.reserve(ad_history->size());
+  for (const AdHistoryItemInfo& item : *ad_history) {
+    auto mojom_item = mojom::AdHistoryItemInfo::New();
+    mojom_item->created_at = item.created_at;
+    mojom_item->type = item.type;
+    mojom_item->confirmation_type = item.confirmation_type;
+    mojom_item->placement_id = item.placement_id;
+    mojom_item->creative_instance_id = item.creative_instance_id;
+    mojom_item->creative_set_id = item.creative_set_id;
+    mojom_item->campaign_id = item.campaign_id;
+    mojom_item->advertiser_id = item.advertiser_id;
+    mojom_item->segment = item.segment;
+    mojom_item->title = item.title;
+    mojom_item->description = item.description;
+    mojom_item->target_url = item.target_url;
+    mojom_item->like_ad_reaction =
+        reactions.AdReactionTypeForId(item.advertiser_id);
+    mojom_item->is_saved = reactions.IsAdSaved(item.creative_instance_id);
+    mojom_item->is_flagged =
+        reactions.IsAdMarkedAsInappropriate(item.creative_set_id);
+    mojom_item->like_segment_reaction =
+        reactions.SegmentReactionTypeForId(item.segment);
+    mojom_items.push_back(std::move(mojom_item));
+  }
+
+  std::move(callback).Run(std::move(mojom_items));
 }
 
 void AdHistoryManager::NotifyDidAddAdHistoryItem(

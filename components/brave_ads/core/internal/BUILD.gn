@@ -650,8 +650,6 @@ static_library("internal") {
     "history/ad_history_manager.cc",
     "history/ad_history_manager.h",
     "history/ad_history_manager_observer.h",
-    "history/ad_history_value_util.cc",
-    "history/ad_history_value_util.h",
     "history/ad_history_value_util_internal.cc",
     "history/ad_history_value_util_internal.h",
     "legacy_migration/client/legacy_client_migration.cc",

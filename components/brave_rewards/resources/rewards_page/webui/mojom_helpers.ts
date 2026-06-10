@@ -73,6 +73,18 @@ export function convertAdType(adType: AdType) {
   }
 }
 
+// Converts a mojo AdType enum value into an AdType string.
+export function adTypeFromMojom(type: mojom.AdType): AdType | null {
+  switch (type) {
+    case mojom.AdType.kNotificationAd:
+      return 'notification'
+    case mojom.AdType.kNewTabPageAd:
+      return 'new-tab-page'
+    default:
+      return null
+  }
+}
+
 // Converts a mojo PublisherStatus to a list of wallet providers.
 export function walletProvidersFromPublisherStatus(
   value: number,
