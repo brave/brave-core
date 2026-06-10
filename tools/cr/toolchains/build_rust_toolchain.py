@@ -967,35 +967,6 @@ class ToolchainBuilder:
 
     def _clone_chromium(self):
         """Clone a fresh Chromium checkout under `self._chromium_src.parent`."""
-        if sys.platform == 'win32':
-            # Setting up global git user.name and user.email is required to
-            # avoid issues when building the rust toolchain on Windows, as it
-            # is not uncommon for the WASM scripts to perform git operations
-            # that fail if these are not set. As this can be surprisingly
-            # disruptive, and mostly intended for CI, we guard this behind a
-            # check for the presence of a user email, which indicates a
-            # machine is not already set up as a developer environment.
-            has_user_email = subprocess.run(
-                ['git', 'config', '--global', '--get', 'user.email'],
-                check=False,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL).returncode == 0
-            if not has_user_email:
-                logging.warning('Setting global git user.name and user.email '
-                                'to avoid clone failure on Windows. THIS WILL '
-                                'OVERRIDE ANY PRE-EXISTING SETTINGS.')
-                _check_call('git', 'config', '--global', 'user.name', 'Devops')
-                _check_call('git', 'config', '--global', 'user.email',
-                            'devops@brave.com')
-                _check_call('git', 'config', '--global', 'core.autocrlf',
-                            'false')
-                _check_call('git', 'config', '--global', 'core.filemode',
-                            'false')
-                _check_call('git', 'config', '--global', 'core.preloadindex',
-                            'true')
-                _check_call('git', 'config', '--global', 'core.fscache',
-                            'true')
-
         self._chromium_src.parent.mkdir(parents=True, exist_ok=True)
         _check_call('fetch',
                     '--nohooks',
