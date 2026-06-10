@@ -31,16 +31,16 @@ struct QuickViewToolbarView: View {
       Label {
         Text(Strings.quickViewShieldAccessibilityLabel)
       } icon: {
-        viewModel.state(for: .shield) == .disabled
-          ? Image(sharedName: "brave.logo.greyscale") : Image(sharedName: "brave.logo")
+        viewModel.isShieldEnabled
+          ? Image(sharedName: "brave.logo") : Image(sharedName: "brave.logo.greyscale")
       }
     }
+    .disabled(viewModel.readerModeState == .active)
   }
 
   @ViewBuilder
   private var secondaryTopButtonView: some View {
     if let button = viewModel.secondaryTopButton {
-      let isActive = viewModel.state(for: button) == .active
       switch button {
       case .playlist:
         Button {
@@ -51,7 +51,7 @@ struct QuickViewToolbarView: View {
             braveSystemImage: "leo.product.playlist-add"
           )
           .tint(
-            isActive
+            viewModel.isPlaylistEnabled
               ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .iconDefault)
           )
         }
@@ -64,7 +64,7 @@ struct QuickViewToolbarView: View {
             braveSystemImage: "leo.product.speedreader"
           )
           .tint(
-            isActive
+            viewModel.readerModeState == .active
               ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .iconDefault)
           )
         }
@@ -77,7 +77,7 @@ struct QuickViewToolbarView: View {
             braveSystemImage: "leo.product.translate"
           )
           .tint(
-            isActive
+            viewModel.isTranslateEnabled
               ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .iconDefault)
           )
         }
@@ -146,7 +146,7 @@ struct QuickViewToolbarView: View {
     } label: {
       Label(Strings.quickViewBackAccessibilityLabel, braveSystemImage: "leo.browser.back")
     }
-    .disabled(viewModel.state(for: .back) == .disabled)
+    .disabled(!viewModel.canGoBack)
   }
 
   private var forwardButton: some View {
@@ -187,7 +187,7 @@ struct QuickViewToolbarView: View {
 
       Spacer()
 
-      if viewModel.state(for: .forward) == .disabled {
+      if viewModel.canGoForward {
         shareButton
       } else {
         forwardButton

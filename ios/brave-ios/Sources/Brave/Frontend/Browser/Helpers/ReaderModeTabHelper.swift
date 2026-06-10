@@ -124,11 +124,12 @@ class ReaderModeTabHelper {
   }
 
   private func enableReaderMode() {
-    guard let tab,
-      let currentURL = tab.lastCommittedURL,
-      let headers = (tab.responses?[currentURL] as? HTTPURLResponse)?.allHeaderFields
-        as? [String: String],
-      let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode, headers: headers)
+    guard let tab, let currentURL = tab.lastCommittedURL,
+      let readerModeURL = currentURL.encodeEmbeddedInternalURL(
+        for: .readermode,
+        headers: (tab.responses?[currentURL] as? HTTPURLResponse)?.allHeaderFields
+          as? [String: String]
+      )
     else { return }
 
     Self.recordTimeBasedNumberReaderModeUsedP3A(activated: true)

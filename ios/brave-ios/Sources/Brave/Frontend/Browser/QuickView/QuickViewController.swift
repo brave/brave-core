@@ -7,6 +7,7 @@ import BraveCore
 import BraveShields
 import BraveUI
 import Data
+import Preferences
 import Shared
 import SnapKit
 import SwiftUI
@@ -20,10 +21,15 @@ class QuickViewController: UIViewController {
   private var profileController: BraveProfileController
   private var profile: any Profile { profileController.profile }
   private let toolbarViewModel: QuickViewToolbarModel
-  private var readerModeHandler: ReaderModeScriptHandler?
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
   )
+  private var readerModeBar: ReaderModeBarView?
+  private lazy var privateBrowsingManager: PrivateBrowsingManager = {
+    let manager = PrivateBrowsingManager()
+    manager.isPrivateBrowsing = profile.isOffTheRecord
+    return manager
+  }()
   private let onOpenInNewTab: ((URLRequest) -> Void)?
 
   init(
@@ -56,6 +62,14 @@ class QuickViewController: UIViewController {
     )
     tab.addObserver(toolbarViewModel)
     tab.addObserver(self)
+    tab.browserData = TabBrowserData(tab: tab)
+    tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
+    tab.readerMode?.onStateChanged = { [weak self] in
+      self?.toolbarViewModel.readerModeState = tab.readerMode?.state ?? .unavailable
+    }
+    tab.readerMode?.onReaderModeDisplayed = { [weak self] in
+      self?.showReaderModeBar()
+    }
     tab.createWebView()
     tab.delegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
@@ -86,7 +100,7 @@ class QuickViewController: UIViewController {
       case .shield:
         self?.presentBraveShieldsView()
       case .readerMode:
-        self?.toggleReaderMode()
+        self?.currentTab?.readerMode?.toggleReaderMode()
       case .refresh, .playlist,
         .translate, .share, .openTab:
         break
@@ -230,87 +244,35 @@ class QuickViewController: UIViewController {
 
   private func refreshShieldStatus(url: URL) {
     let isShieldsEnabled = currentTab?.braveShieldsHelper?.isBraveShieldsEnabled(for: url) ?? false
-    toolbarViewModel.updateShieldingState(isShieldsEnabled)
+    toolbarViewModel.isShieldEnabled = isShieldsEnabled
   }
 
-  private func toggleReaderMode() {
-    guard let tab = currentTab else { return }
-    let isActive: Bool
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      isActive = tab.readerMode?.state == .active
-    } else {
-      isActive = readerModeHandler?.state == .active
+  private func showReaderModeBar() {
+    guard readerModeBar == nil, let currentTab else { return }
+    let bar = ReaderModeBarView(privateBrowsingManager: privateBrowsingManager)
+    bar.delegate = self
+    view.insertSubview(bar, aboveSubview: currentTab.view)
+    readerModeBar = bar
+    bar.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+      $0.leading.trailing.equalTo(view)
+      $0.height.equalTo(UIConstants.toolbarHeight)
     }
-    isActive ? disableReaderMode() : enableReaderMode()
-  }
-
-  private func enableReaderMode() {
-    guard let tab = currentTab,
-      let backForwardList = tab.backForwardList,
-      let currentURL = backForwardList.currentItem?.url,
-      !InternalURL.isValid(url: currentURL)
-    else { return }
-
-    let headers =
-      (tab.responses?[currentURL] as? HTTPURLResponse)?.allHeaderFields as? [String: String]
-    guard
-      let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode, headers: headers)
-    else { return }
-
-    let readerModeCache = ReaderModeScriptHandler.cache(for: tab)
-
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      if let readabilityResult = tab.readerMode?.readabilityResult {
-        Task { @MainActor in
-          try? await readerModeCache.put(currentURL, readabilityResult)
-          tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
-        }
-      }
-    } else {
-      tab.evaluateJavaScript(
-        functionName: "\(readerModeNamespace).readerize",
-        contentWorld: ReaderModeScriptHandler.scriptSandbox
-      ) { [weak tab] (object, error) in
-        guard let tab else { return }
-        if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
-          Task { @MainActor in
-            try? await readerModeCache.put(currentURL, readabilityResult)
-            tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
-          }
-        }
-      }
+    currentTab.view.snp.remakeConstraints {
+      $0.top.equalTo(bar.snp.bottom)
+      $0.leading.trailing.equalTo(view)
+      $0.bottom.equalTo(toolbarHostingController.view.snp.top)
     }
   }
 
-  private func disableReaderMode() {
-    guard let tab = currentTab,
-      let backForwardList = tab.backForwardList,
-      let currentURL = backForwardList.currentItem?.url,
-      let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode)
-    else { return }
-
-    tab.loadRequest(URLRequest(url: originalURL))
-  }
-
-  private func checkReaderMode(for tab: some TabState) {
-    guard let url = tab.visibleURL,
-      !url.isNewTabURL,
-      !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode),
-      !url.isFileURL
-    else { return }
-
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      if let readerMode = tab.readerMode {
-        Task { @MainActor [weak self] in
-          await readerMode.checkReadability()
-          self?.toolbarViewModel.updateReaderModeState(readerMode.state)
-        }
-      }
-    } else {
-      tab.evaluateJavaScript(
-        functionName: "\(readerModeNamespace).checkReadability",
-        contentWorld: ReaderModeScriptHandler.scriptSandbox
-      )
+  private func hideReaderModeBar() {
+    guard let bar = readerModeBar, let currentTab else { return }
+    bar.removeFromSuperview()
+    readerModeBar = nil
+    currentTab.view.snp.remakeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+      $0.leading.trailing.equalTo(view)
+      $0.bottom.equalTo(toolbarHostingController.view.snp.top)
     }
   }
 }
@@ -328,6 +290,12 @@ extension QuickViewController: TabDelegate {
     }
     return nil
   }
+
+  func tabDidStartNavigation(_ tab: some TabState) {
+    if tab.visibleURL?.isInternalURL(for: .readermode) != true {
+      hideReaderModeBar()
+    }
+  }
 }
 
 // MARK: - TabObserver
@@ -339,39 +307,63 @@ extension QuickViewController: TabObserver {
     ) {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
     }
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      tab.readerMode = .init(tab: tab)
-    } else {
-      let handler = ReaderModeScriptHandler()
-      readerModeHandler = handler
-      tab.browserData?.addContentScript(
-        handler,
-        name: ReaderModeScriptHandler.scriptName,
-        contentWorld: ReaderModeScriptHandler.scriptSandbox
-      )
-      readerModeHandler?.delegate = toolbarViewModel
-    }
-  }
-
-  func tabDidFinishNavigation(_ tab: some TabState) {
-    checkReaderMode(for: tab)
-  }
-
-  func tabDidTitleChange(_ tab: some TabState) {
-    checkReaderMode(for: tab)
   }
 
   func tabDidUpdateURL(_ tab: some TabState) {
     refreshShieldStatus(url: tab.visibleURL ?? url)
-    checkReaderMode(for: tab)
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
   }
+}
 
-  func tab(_ tab: some TabState, frameDidBecomeAvailable frame: WebFrame) {
-    guard frame.isMainFrame else { return }
-    checkReaderMode(for: tab)
+// MARK: - ReaderModeBarViewDelegate
+extension QuickViewController: ReaderModeBarViewDelegate {
+  func readerModeSettingsTapped(_ view: UIView) {
+    var readerModeStyle = defaultReaderModeStyle
+    if let encodedString = Preferences.ReaderMode.style.value,
+      let style = ReaderModeStyle(encodedString: encodedString)
+    {
+      readerModeStyle = style
+    }
+    let vc = ReaderModeStyleViewController(selectedStyle: readerModeStyle)
+    vc.delegate = self
+    vc.modalPresentationStyle = .popover
+    vc.presentationController?.delegate = self
+    if let popover = vc.popoverPresentationController {
+      popover.backgroundColor = .white
+      popover.sourceView = view
+      popover.sourceRect = CGRect(
+        x: view.bounds.width / 2,
+        y: UIConstants.toolbarHeight / 2,
+        width: 0,
+        height: 0
+      )
+      popover.permittedArrowDirections = .up
+    }
+    present(vc, animated: true)
+  }
+}
+
+// MARK: - ReaderModeStyleViewControllerDelegate
+extension QuickViewController: ReaderModeStyleViewControllerDelegate {
+  func readerModeStyleViewController(
+    _ readerModeStyleViewController: ReaderModeStyleViewController,
+    didConfigureStyle style: ReaderModeStyle
+  ) {
+    Preferences.ReaderMode.style.value = style.encode()
+    currentTab?.readerMode?.setStyle(style)
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension QuickViewController: UIAdaptivePresentationControllerDelegate {
+  public func adaptivePresentationStyle(
+    for controller: UIPresentationController,
+    traitCollection: UITraitCollection
+  ) -> UIModalPresentationStyle {
+    return .none
   }
 }
