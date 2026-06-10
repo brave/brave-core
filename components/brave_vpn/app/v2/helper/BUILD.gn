@@ -41,6 +41,8 @@ executable("helper") {
     "//brave/components/brave_vpn/app/v2/shared",
   ]
 
+  data_deps = [ "//brave/third_party/boringtun" ]
+
   if (is_win) {
     deps += [
       ":version_resources",
@@ -62,11 +64,19 @@ if (is_mac) {
     sources = [ "main.cc" ]
 
     deps = [
+      ":boringtun_bundle_data",
       ":core",
       "//base",
       "//base:base_static",
       "//brave/components/brave_vpn/app/v2/shared",
     ]
+  }
+
+  # Drops boringtun shared object into the helper's bundle.
+  bundle_data("boringtun_bundle_data") {
+    sources = [ "$root_out_dir/libboringtun.dylib" ]
+    outputs = [ "{{bundle_contents_dir}}/Frameworks/{{source_file_part}}" ]
+    public_deps = [ "//brave/third_party/boringtun" ]
   }
 
   # Drops the assembled app into the browser framework's Helpers directory.
