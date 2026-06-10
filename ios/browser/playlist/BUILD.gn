@@ -22,3 +22,11 @@ source_set("playlist") {
   ]
   frameworks = [ "Foundation.framework" ]
 }
+
+source_set("features") {
+  sources = [
+    "features.h",
+    "features.mm",
+  ]
+  public_deps = [ "//base" ]
+}
