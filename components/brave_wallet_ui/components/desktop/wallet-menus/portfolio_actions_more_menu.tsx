@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 // Types
 import { NavOption } from '../../../constants/types'
@@ -22,36 +23,36 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
+import { ButtonMenu } from './wellet-menus.style'
 
 interface Props {
+  children: React.ReactNode
   onClick: (option: NavOption) => void
 }
 
-export const PortfolioAccountMenu = (props: Props) => {
+export const PortfolioActionsMoreMenu = (props: Props) => {
+  const { onClick, children } = props
+
+  // selectors
   const isIOS = useSafeUISelector(UISelectors.isIOS)
+
+  // computed
   const options = isIOS
     ? BuySendSwapDepositIOSOptions
     : BuySendSwapDepositOptions
 
-  const { onClick } = props
-
   return (
-    <StyledWrapper yPosition={56}>
+    <ButtonMenu placement='bottom-end'>
+      {children}
       {options.slice(3).map((option) => (
-        <PopupButton
+        <leo-menu-item
           key={option.id}
           onClick={() => onClick(option)}
         >
-          <ButtonIcon name={option.icon} />
-          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-        </PopupButton>
+          <Icon name={option.icon} />
+          {getLocale(option.name)}
+        </leo-menu-item>
       ))}
-    </StyledWrapper>
+    </ButtonMenu>
   )
 }
