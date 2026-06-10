@@ -82,13 +82,14 @@ class BraveSanitizedImageSourceTest : public testing::Test {
 
               const auto user_agent = request.headers.GetHeader(
                   net::HttpRequestHeaders::kUserAgent);
-              ASSERT_TRUE(user_agent.has_value());
-              EXPECT_TRUE(user_agent->empty());
+
+              const bool is_pcdn = url.host() == "pcdn.brave.com";
+
+              ASSERT_EQ(user_agent.has_value(), is_pcdn);
 
               const auto accept_language = request.headers.GetHeader(
                   net::HttpRequestHeaders::kAcceptLanguage);
-              ASSERT_TRUE(accept_language.has_value());
-              EXPECT_TRUE(accept_language->empty());
+              ASSERT_EQ(accept_language.has_value(), is_pcdn);
             });
     test_url_loader_factory_.SetInterceptor(std::move(interceptor));
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
