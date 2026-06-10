@@ -37,12 +37,24 @@ class SafeBuiltins {
     message: object | string,
   ) => any | null
 
+  // Whether or not the window.location has a web scheme (http/https/data)
+  readonly windowHasWebScheme: () => boolean
+
   constructor() {
     // Setup private refs to capture in safe builtin functions
     const webkitMessageHandlers = window.webkit.messageHandlers
     const windowPrompt = window.prompt.bind(window)
     const jsonStringify = JSON.stringify.bind(JSON)
     const jsonParse = JSON.parse.bind(JSON)
+    const windowProtocol = window.location.protocol
+
+    this.windowHasWebScheme = () => {
+      return (
+        windowProtocol === 'https:'
+        || windowProtocol === 'http:'
+        || windowProtocol === 'data:'
+      )
+    }
 
     this.sendWebKitMessage = (handlerName, message) => {
       webkitMessageHandlers[handlerName].postMessage(message)
@@ -52,7 +64,13 @@ class SafeBuiltins {
       return webkitMessageHandlers[handlerName].postMessage(message)
     }
 
+    const windowHasWebScheme = this.windowHasWebScheme
     this.sendWebKitMessageSynchronously = (handlerName, message) => {
+      // Drop the request immediately if not running on a web page scheme.
+      // WebUI reserves its use of window.prompt for Mojo.
+      if (!windowHasWebScheme()) {
+        return null
+      }
       const response = windowPrompt(
         jsonStringify({
           handler: handlerName,
@@ -75,6 +93,7 @@ class SafeBuiltins {
       this.$Function,
       this.$Array,
       this.$,
+      this.windowHasWebScheme,
       this.sendWebKitMessage,
       this.sendWebKitMessageWithReply,
     ]) {
