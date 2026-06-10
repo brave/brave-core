@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 
 source_set("page_action") {
   # TODO(https://github.com/brave/brave-browser/issues/52829)
@@ -32,6 +33,24 @@ source_set("page_action") {
       "//chrome/browser/ui/views/page_action",
       "//components/tabs:public",
       "//ui/views",
+    ]
+  }
+
+  if (enable_psst) {
+    sources += [
+      "psst_action_controller.cc",
+      "psst_action_controller.h",
+    ]
+
+    deps += [
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/app:command_ids",
+      "//brave/components/psst/browser/content",
+      "//brave/components/psst/common",
+      "//brave/components/vector_icons",
+      "//chrome/browser/ui/color:mixers",
+      "//ui/base",
+      "//ui/menus",
     ]
   }
 }

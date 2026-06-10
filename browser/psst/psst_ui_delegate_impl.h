@@ -38,17 +38,15 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
   PsstUiDelegateImpl& operator=(const PsstUiDelegateImpl&) = delete;
 
+  // PsstUiDelegate overrides
   void Show(url::Origin origin,
             PsstWebsiteSettings dialog_data,
             std::optional<UserScriptResult> user_script_result,
             PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
       override;
-
-  // PsstUiDelegate overrides
   void UpdateTasks(long progress,
                    const std::vector<PolicyTask>& performed_tasks,
                    const mojom::PsstStatus status) override;
-
   std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
       const url::Origin& origin,
       const std::string& user_id) override;
@@ -63,6 +61,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
 
  private:
   void OnUserAcceptedInfobar(const bool is_accepted);
+  void OnDontShowForThisSite();
+  void OnDisablePrivacySettingsTuning();
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;

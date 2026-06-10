@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -34,6 +35,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/browser/utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/common/features.h"
 #endif
 
 namespace {
@@ -126,4 +131,20 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 #endif
+
+#if BUILDFLAG(ENABLE_PSST)
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  brave::OpenPsstMenuOnPageActionView(bwi, item);
+                },
+                bwi))
+            .SetActionId(kActionShowPsstIcon)
+            .SetEnabled(true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_PSST)
 }

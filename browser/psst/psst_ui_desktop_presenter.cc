@@ -6,11 +6,13 @@
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
 
 #include "brave/browser/psst/psst_infobar_delegate.h"
+#include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "brave/components/psst/common/constants.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
 #include "content/public/browser/web_contents.h"
-
 namespace {
 
 constexpr int kDialogMinHeight = 100;
@@ -137,9 +139,36 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog() {
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(
-    base::WeakPtr<content::WebContents> web_contents)
-    : web_contents_(std::move(web_contents)) {}
-PsstUiDesktopPresenter::~PsstUiDesktopPresenter() = default;
+    base::WeakPtr<content::WebContents> web_contents,
+    base::WeakPtr<page_actions::PsstActionController> psst_action_controller)
+    : web_contents_(std::move(web_contents)),
+      psst_action_controller_(std::move(psst_action_controller)) {
+  CHECK(web_contents_);
+  CHECK(psst_action_controller_);
+  psst_action_controller_->SetMenuModelDelegate(this);
+}
+PsstUiDesktopPresenter::~PsstUiDesktopPresenter() {
+  if (psst_action_controller_) {
+    psst_action_controller_->SetMenuModelDelegate(nullptr);
+  }
+}
+
+void PsstUiDesktopPresenter::SetLocationBarIconStatus(
+    LocationBarIconStatus status,
+    LocationBarMenuCallback on_dont_show_this_site_callback,
+    LocationBarMenuCallback on_disable_privacy_settings_tuning_callback) {
+  if (!psst_action_controller_) {
+    return;
+  }
+
+  on_dont_show_this_site_callback_ = std::move(on_dont_show_this_site_callback);
+  on_disable_privacy_settings_tuning_callback_ =
+      std::move(on_disable_privacy_settings_tuning_callback);
+
+  psst_action_controller_->SetVisible(status != LocationBarIconStatus::kHidden);
+  psst_action_controller_->SetShowBadge(status ==
+                                        LocationBarIconStatus::kIconWithBadge);
+}
 
 void PsstUiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
   if (!web_contents_) {
@@ -153,6 +182,33 @@ void PsstUiDesktopPresenter::ShowInfoBar(InfoBarCallback on_accept_callback) {
   }
 
   PsstInfoBarDelegate::Create(infobar_manager, std::move(on_accept_callback));
+}
+
+void PsstUiDesktopPresenter::HideInfoBar() {
+  if (!web_contents_) {
+    return;
+  }
+
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents_.get());
+  if (!infobar_manager) {
+    return;
+  }
+
+  const auto it =
+      std::ranges::find(infobar_manager->infobars(),
+                        infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE,
+                        &infobars::InfoBar::GetIdentifier);
+  if (it == infobar_manager->infobars().cend()) {
+    return;
+  }
+
+  if (auto* psst_infobar_delegate =
+          static_cast<PsstInfoBarDelegate*>((*it)->delegate())) {
+    psst_infobar_delegate->DisableCallback();
+  }
+
+  infobar_manager->RemoveInfoBar(it->get());
 }
 
 void PsstUiDesktopPresenter::ShowConsentDialog() {
@@ -169,6 +225,18 @@ bool PsstUiDesktopPresenter::IsDialogShown() const {
   }
 
   return dialog_delegate_->IsDialogShown();
+}
+
+void PsstUiDesktopPresenter::OnDontShowThisSiteSelected() {
+  if (on_dont_show_this_site_callback_) {
+    std::move(on_dont_show_this_site_callback_).Run();
+  }
+}
+
+void PsstUiDesktopPresenter::OnDisablePrivacySettingsTuningSelected() {
+  if (on_disable_privacy_settings_tuning_callback_) {
+    std::move(on_disable_privacy_settings_tuning_callback_).Run();
+  }
 }
 
 }  // namespace psst

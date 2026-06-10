@@ -9,6 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
+#include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "chrome/browser/ui/dialogs/browser_dialogs.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 
@@ -21,7 +22,9 @@ class ConstrainedWebDialogDelegate;
 namespace psst {
 
 // Implementation of PsstUiPresenter for desktop platforms
-class PsstUiDesktopPresenter : public PsstUiPresenter {
+class PsstUiDesktopPresenter
+    : public PsstUiPresenter,
+      public page_actions::PsstActionController::Delegate {
  public:
   class PsstUiDesktopDelegate : public ui::WebDialogDelegate {
    public:
@@ -53,19 +56,34 @@ class PsstUiDesktopPresenter : public PsstUiPresenter {
   };
 
   explicit PsstUiDesktopPresenter(
-      base::WeakPtr<content::WebContents> web_contents);
+      base::WeakPtr<content::WebContents> web_contents,
+      base::WeakPtr<page_actions::PsstActionController> psst_action_controller);
   ~PsstUiDesktopPresenter() override;
 
+  void SetLocationBarIconStatus(
+      LocationBarIconStatus status,
+      LocationBarMenuCallback on_dont_show_this_site_callback,
+      LocationBarMenuCallback on_disable_privacy_settings_tuning_callback)
+      override;
+
   void ShowInfoBar(InfoBarCallback on_accept_callback) override;
+  void HideInfoBar() override;
 
   void ShowConsentDialog() override;
 
   bool IsDialogShown() const override;
 
  private:
+  // page_actions::PsstActionController::Observer:
+  void OnDontShowThisSiteSelected() override;
+  void OnDisablePrivacySettingsTuningSelected() override;
+
   base::WeakPtr<content::WebContents> web_contents_;
+  base::WeakPtr<page_actions::PsstActionController> psst_action_controller_;
   base::WeakPtr<psst::PsstUiDesktopPresenter::PsstUiDesktopDelegate>
       dialog_delegate_;
+  LocationBarMenuCallback on_dont_show_this_site_callback_;
+  LocationBarMenuCallback on_disable_privacy_settings_tuning_callback_;
 };
 
 }  // namespace psst

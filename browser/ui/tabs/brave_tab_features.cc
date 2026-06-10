@@ -65,6 +65,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
 #if BUILDFLAG(ENABLE_PSST)
   if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    psst_action_controller_ =
+        std::make_unique<page_actions::PsstActionController>(
+            tab, *page_action_controller());
     psst_web_contents_observer_ =
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab.GetContents(), profile,
@@ -72,7 +75,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
                 PsstSettingsServiceFactory::GetForProfile(profile),
                 profile->GetPrefs(),
                 std::make_unique<psst::PsstUiDesktopPresenter>(
-                    tab.GetContents()->GetWeakPtr())),
+                    tab.GetContents()->GetWeakPtr(),
+                    psst_action_controller_->AsWeakPtr())),
             profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif

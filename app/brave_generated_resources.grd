@@ -1475,6 +1475,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS" desc="Button label for the infobar action that starts the review of Privacy Settings Suggestion Tool (PSST) recommendations.">
         Review Suggestions
       </message>
+      <message name="IDS_IDC_PSST_LOCATION_BAR_BTN_TOOLTIP" desc="Privacy Settings Suggestion Tool (PSST) location bar's button tooltip text.">
+          Privacy Settings Suggestion Tool
+      </message>
+      <message name="IDS_IDC_PSST_DONT_SHOW_FOR_THIS_SITE" desc="Menu item label for the PSST action menu for the current site, if pressed, disables the Privacy Settings Suggestion Tool (PSST) from showing suggestions for the current site.">
+          Don't show for this site
+      </message>
+      <message name="IDS_IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING" desc="Menu item label for the PSST action menu for the current site, if pressed, disables the Privacy Settings Suggestion Tool (PSST) from tuning privacy settings.">
+          Disable Privacy settings tuning
+      </message>
 
       <!-- Brave policy -->
       <message name="IDS_BRAVE_CONTROLLED_SETTING_POLICY" desc="Text displayed in the controlled settings bubble when a setting's value is managed by policy.">

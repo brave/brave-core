@@ -22,6 +22,10 @@ void PsstInfoBarDelegate::Create(infobars::InfoBarManager* infobar_manager,
           new PsstInfoBarDelegate(std::move(on_accept_callback)))));
 }
 
+void PsstInfoBarDelegate::DisableCallback() {
+  on_accept_callback_.Reset();
+}
+
 PsstInfoBarDelegate::PsstInfoBarDelegate(AcceptCallback on_accept_callback)
     : on_accept_callback_(std::move(on_accept_callback)) {}
 

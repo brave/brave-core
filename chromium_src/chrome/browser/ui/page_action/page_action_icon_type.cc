@@ -18,5 +18,11 @@ bool IsPageActionMigrated(PageActionIconType page_action) {
     return true;
   }
 
+  if (page_action == brave::kPsstIconActionIconType) {
+    // PSST page action is based on the new framework
+    // for page action.
+    return true;
+  }
+
   return IsPageActionMigrated_Chromium(page_action);
 }
