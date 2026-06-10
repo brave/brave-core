@@ -1,0 +1,14 @@
+diff --git a/components/history_embeddings/core/sql_database.h b/components/history_embeddings/core/sql_database.h
+index 0c9e524d6a7cbc903fb6ce4b5195f4608332d7e2..2e7d105ac63d7c2f60758f90841e658f70ea16ba 100644
+--- a/components/history_embeddings/core/sql_database.h
++++ b/components/history_embeddings/core/sql_database.h
+@@ -70,7 +70,8 @@ class SqlDatabase : public VectorDatabase {
+   size_t GetEmbeddingDimensions() const override;
+   bool AddUrlData(UrlData url_data) override;
+   std::unique_ptr<UrlDataIterator> MakeUrlDataIterator(
+-      std::optional<base::Time> time_range_start) override;
++      std::optional<base::Time> time_range_start,
++      const std::vector<history::URLID>& url_id_filter) override;
+ 
+   // These three methods are used to keep the on-disk persistence in sync with
+   // History deletions, either from user action or time-based expiration.

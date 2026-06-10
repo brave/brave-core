@@ -249,7 +249,7 @@ void HistorySearchTool::UseTool(const std::string& input_json,
   // theoretical case of more than one fire.
   service->Search(
       /*previous_search_result=*/nullptr, *query, time_range_start, count,
-      /*skip_answering=*/true,
+      /*skip_answering=*/true, /*url_id_filter=*/{},
       base::BindRepeating(
           &HistorySearchTool::OnSearchResult, weak_ptr_factory_.GetWeakPtr(),
           base::Owned(std::make_unique<UseToolCallback>(std::move(callback))),
