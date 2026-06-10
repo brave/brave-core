@@ -7,6 +7,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 if (is_mac) {
   import("//build/config/mac/rules.gni")
   import("//build/util/branding.gni")
+  import("//build/util/process_version.gni")
 }
 if (is_win) {
   import("//chrome/process_version_rc_template.gni")
@@ -74,5 +75,28 @@ if (is_mac) {
     sources = [ "$root_out_dir/$vpn_helper_product_full_name.app" ]
     outputs = [ "{{bundle_contents_dir}}/Helpers/{{source_file_part}}" ]
     public_deps = [ ":brave_vpn_helper_bundle" ]
+  }
+
+  # Generates the LaunchDaemon plist with channel-specific substitutions.
+  process_version("brave_vpn_helper_launchd_plist") {
+    extra_args = [
+      "-e",
+      "VPN_HELPER_BUNDLE_ID=\"$vpn_helper_bundle_id\"",
+      "-e",
+      "VPN_HELPER_NAME=\"$vpn_helper_product_full_name\"",
+      "-e",
+      "FRAMEWORK_NAME=\"$chrome_product_full_name Framework\"",
+    ]
+    process_only = true
+    template_file = "mac/launchd.plist"
+    output = "$target_gen_dir/$vpn_helper_bundle_id.plist"
+  }
+
+  # Drops the LaunchDaemon plist into the browser bundle.
+  bundle_data("brave_vpn_helper_launchd_plist_data") {
+    sources = [ "$target_gen_dir/$vpn_helper_bundle_id.plist" ]
+    outputs =
+        [ "{{bundle_contents_dir}}/Library/LaunchDaemons/{{source_file_part}}" ]
+    public_deps = [ ":brave_vpn_helper_launchd_plist" ]
   }
 }
