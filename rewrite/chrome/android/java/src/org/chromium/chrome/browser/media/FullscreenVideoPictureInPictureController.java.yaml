@@ -5,7 +5,11 @@
 
 substitutions:
   - description: |-
-      Notify Brave that a YouTube PiP session is being attempted
+      Notify Brave when a YouTube PiP session is attempted.
+
+      After upstream confirms PiP is allowed and resolves the WebContents in
+      attemptPictureInPicture(), calls onYouTubePictureInPictureAttempt() so
+      Brave can start tracking the session that is about to begin.
     re_pattern:
       '(\s+if \(!allowed\) return;\n\n\s+final WebContents webContents =
       getWebContents\(\);\n\s+assert webContents != null;\n)'
@@ -14,7 +18,11 @@ substitutions:
                       .onYouTubePictureInPictureAttempt(mActivity, webContents);
 
   - description: |-
-      Notify Brave when manual PiP entry returns false
+      Notify Brave when PiP entry is refused by the system.
+
+      When mActivity.enterPictureInPictureMode() returns false (the framework
+      declined to enter PiP), calls onYouTubePictureInPictureEnterFailed() before
+      returning so Brave can reset any pending session state.
     re_pattern:
       'if \(!mActivity\.enterPictureInPictureMode\(builder\.build\(\)\)\)
       return;'
@@ -26,7 +34,11 @@ substitutions:
                   }
 
   - description: |-
-      Notify Brave when manual PiP entry throws
+      Notify Brave when PiP entry throws.
+
+      In the catch block of attemptPictureInPicture() (after upstream logs the
+      error), also calls onYouTubePictureInPictureEnterFailed() so a thrown entry
+      is handled the same way as a refused one.
     re_pattern:
       '(\s+Log\.e\(TAG, "Error entering PiP with bounds %s", bounds, e\);\n)'
     replace: |
@@ -34,7 +46,13 @@ substitutions:
                           .onYouTubePictureInPictureEnterFailed();
 
   - description: |-
-      Let Brave handle YouTube PiP dismiss signals using upstream enum names
+      Let Brave intercept YouTube PiP dismiss signals.
+
+      At the top of dismissActivityIfNeeded(), gives Brave a chance to handle the
+      dismiss via maybeHandleDismissActivityForYouTubePictureInPicture(),
+      translating the upstream MetricsEndReason enum into individual boolean
+      flags so Brave does not depend on the enum directly. Returns early when
+      Brave handles it.
     re_pattern:
       '(\s+private void dismissActivityIfNeeded\(.*\) \{\n)'
     replace: |

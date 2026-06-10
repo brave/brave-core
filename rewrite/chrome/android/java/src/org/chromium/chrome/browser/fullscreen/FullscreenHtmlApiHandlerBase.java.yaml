@@ -5,9 +5,13 @@
 
 substitutions:
   - description: |-
-      Check at the top of the method if exiting fullscreen should be skipped to
-      preserve the state while Brave-managed YouTube PiP is active when a tab is
-      hidden
+      Skip the tab-hidden fullscreen teardown while YouTube PiP is active.
+
+      Inserts an early return at the top of the TabObserver onHidden hook so the
+      persistent fullscreen state is preserved when a tab is hidden while a
+      Brave-managed YouTube Picture-in-Picture session is active.
+      maybeSkipExitFullscreenOnTabHidden also records whether the tab was hidden
+      by a tab switch before deciding whether to skip.
     re_pattern:
       '(public void onHidden\(.*\)\s+\{)'
     replace: |-
@@ -19,13 +23,14 @@ substitutions:
                               }
 
   - description: |-
-      Add a PiP-specific persistent fullscreen exit entry point,
-      exitPersistentFullscreenModeForPictureInPicture, that tears down the
-      browser fullscreen UI while preserving the WebContents (DOM) fullscreen
-      state. It sets mSkipWebContentsExitFullscreenForPip on the Brave
+      Add the PiP-specific persistent fullscreen exit entry point.
+
+      Adds exitPersistentFullscreenModeForPictureInPicture(), which tears down
+      the browser fullscreen UI while preserving the WebContents (DOM)
+      fullscreen state. It sets mSkipWebContentsExitFullscreenForPip on the Brave
       superclass for the duration of a single synchronous
-      exitPersistentFullscreenMode() call and clears it in a finally block so
-      the flag never leaks beyond that call.
+      exitPersistentFullscreenMode() call and clears it in a finally block so the
+      flag never leaks beyond that call.
     re_pattern:
       '(@Override\n\s+public void exitPersistentFullscreenMode\(\)\s+\{\n)'
     replace: |-
@@ -41,12 +46,13 @@ substitutions:
           \1
 
   - description: |-
-      Skip the WebContents (DOM) fullscreen exit for the Brave-managed PiP path
-      by prepending the mSkipWebContentsExitFullscreenForPip flag (set by
-      exitPersistentFullscreenModeForPictureInPicture) to the existing guard.
-      The pattern only locates the if statement that calls
-      webContents.exitFullscreen() and inserts at the start of its condition, so
-      it does not depend on what the rest of that condition checks.
+      Skip the WebContents (DOM) fullscreen exit for the Brave-managed PiP path.
+
+      Prepends the mSkipWebContentsExitFullscreenForPip flag (set by
+      exitPersistentFullscreenModeForPictureInPicture) to the existing guard. The
+      pattern only locates the if statement that calls webContents.exitFullscreen()
+      and inserts at the start of its condition, so it does not depend on what the
+      rest of that condition checks.
     re_pattern:
       '(private void exitFullscreen\(WebContents webContents, View
       contentView\)[\s\S]+?\n\s+if \()([^\n]*?\)
@@ -56,7 +62,9 @@ substitutions:
       && \2'
 
   - description: |-
-      Insert an early return at the top of the ActivityState.STOPPED branch of
+      Preserve fullscreen across transient activity stops while YouTube PiP is active.
+
+      Inserts an early return at the top of the ActivityState.STOPPED branch of
       onActivityStateChange so the fullscreen teardown
       (mFullscreenManagerDelegate.onExitFullscreen(null)) is skipped while a
       Brave-managed YouTube Picture-in-Picture session is active. This keeps the
