@@ -221,6 +221,10 @@ void BraveLocationBarView::OnOmniboxBlurred() {
   }
 #endif
   LocationBarView::OnOmniboxBlurred();
+
+  if (is_temporarily_visible_in_fullscreen_) {
+    SetTemporaryVisibilityInFullscreen(false);
+  }
 }
 
 void BraveLocationBarView::Layout(PassKey) {
@@ -472,6 +476,37 @@ ContentSettingImageView*
 BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
+}
+
+void BraveLocationBarView::SetTemporaryVisibilityInFullscreen(bool visible) {
+  if (!browser_ || !browser_->window() || !browser_->window()->IsFullscreen())
+    return;
+
+  is_temporarily_visible_in_fullscreen_ = visible;
+
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  if (!browser_view)
+    return;
+
+  ToolbarView* toolbar = browser_view->toolbar();
+  if (!toolbar)
+    return;
+
+  // In fullscreen mode, toolbar visibility is managed temporarily here
+  // to allow omnibox interaction without changing fullscreen state.
+  // This is safe because:
+  // 1. Visibility is only changed when explicitly in fullscreen
+  // 2. Toolbar is automatically hidden on blur (OnOmniboxBlurred)
+  // 3. Does not interfere with normal fullscreen controller behavior
+  if (visible) {
+    toolbar->SetVisible(true);
+    toolbar->Layout();
+  } else {
+    toolbar->SetVisible(false);
+    is_temporarily_visible_in_fullscreen_ = false;
+  }
+
+  browser_view->Layout();
 }
 
 BEGIN_METADATA(BraveLocationBarView)
