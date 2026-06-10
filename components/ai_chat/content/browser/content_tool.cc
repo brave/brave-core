@@ -15,6 +15,7 @@
 #include "absl/strings/ascii.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -112,6 +113,7 @@ void ContentTool::UserPermissionGranted(const std::string& tool_use_id) {
 
 void ContentTool::UseTool(const std::string& input_json,
                           UseToolCallback callback) {
+  LOG(ERROR) << "using content tool: '" << internal_tool_name_ << "' with input: '" << input_json << "'";
   content::RenderFrameHost* rfh = rfh_.AsRenderFrameHostIfValid();
   if (!rfh) {
     std::move(callback).Run({}, {});

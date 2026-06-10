@@ -347,6 +347,9 @@ void PageContentExtractor::ExecuteContentTool(
     const std::string& name,
     const std::string& input_json,
     mojom::PageContentExtractor::ExecuteContentToolCallback callback) {
+  std::string real_input = input_json.empty() ? "{}" : input_json;
+  LOG(ERROR) << "executing content tool: '" << name << "' with input: '"
+             << input_json << "'";
   blink::WebDocument document = render_frame()->GetWebFrame()->GetDocument();
   // If WebDocument drops the callback without calling it (no model context →
   // nullopt return value), WrapCallbackWithDefaultInvokeIfNotRun ensures the
@@ -362,9 +365,12 @@ void PageContentExtractor::ExecuteContentTool(
              base::expected<blink::WebString, blink::WebScriptToolError>
                  result) {
             if (result.has_value()) {
+              LOG(ERROR) << "result: " << result->Utf8();
               std::move(cb).Run(result->Utf8());
             } else {
-              std::move(cb).Run(std::nullopt);
+              auto error = result.error().message.Utf8();
+              LOG(ERROR) << "failed: " << error;
+              std::move(cb).Run(error);
             }
           },
           std::move(wrapped)));

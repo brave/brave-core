@@ -41,7 +41,7 @@ class ContentTool : public Tool {
                UseToolCallback callback) override;
 
  private:
-  bool user_permission_granted_ = false;
+  bool user_permission_granted_ = true;
 
   content::WeakDocumentPtr rfh_;
   std::string internal_tool_name_;

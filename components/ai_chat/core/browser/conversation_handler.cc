@@ -1119,6 +1119,13 @@ void ConversationHandler::RespondToToolUseRequest(
                          << " (" << tool_use_id << ")";
 
   DVLOG(0) << "got output for tool: " << tool_use->tool_name;
+  for (const auto& artifact : output) {
+    if (!artifact->is_text_content_block()) {
+      DVLOG(0) << "artifact is not a text content block: " << static_cast<uint32_t>(artifact->which());
+      continue;
+    }
+    DVLOG(0) << "artifact: " << artifact->get_text_content_block()->text;
+  } 
 
   tool_use->output = std::move(output);
   tool_use->artifacts = std::move(artifacts);
