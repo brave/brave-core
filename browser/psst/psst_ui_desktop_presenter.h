@@ -75,6 +75,7 @@ class PsstUiDesktopPresenter
 
  private:
   // page_actions::PsstActionController::Observer:
+  void OnShowConsentDialogSelected() override;
   void OnDontShowThisSiteSelected() override;
   void OnDisablePrivacySettingsTuningSelected() override;
 

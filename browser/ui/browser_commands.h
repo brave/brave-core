@@ -29,6 +29,11 @@ class ActionItem;
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PSST)
+#include "ui/events/event_constants.h"
+#endif
+
+
 class Browser;
 class BrowserWindowInterface;
 class Profile;
@@ -197,7 +202,7 @@ void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
 
 #if BUILDFLAG(ENABLE_PSST)
 void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
-                                  actions::ActionItem* item);
+                                  actions::ActionItem* item, int event_flags = ui::EF_NONE);
 #endif
 
 }  // namespace brave

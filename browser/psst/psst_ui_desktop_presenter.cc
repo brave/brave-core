@@ -216,6 +216,10 @@ void PsstUiDesktopPresenter::ShowConsentDialog() {
     return;
   }
 
+  HideInfoBar();
+
+  psst_action_controller_->SetShowBadge(false);
+
   dialog_delegate_ = OpenPsstDialog(web_contents_.get());
 }
 
@@ -225,6 +229,10 @@ bool PsstUiDesktopPresenter::IsDialogShown() const {
   }
 
   return dialog_delegate_->IsDialogShown();
+}
+
+void PsstUiDesktopPresenter::OnShowConsentDialogSelected() {
+  ShowConsentDialog();
 }
 
 void PsstUiDesktopPresenter::OnDontShowThisSiteSelected() {
