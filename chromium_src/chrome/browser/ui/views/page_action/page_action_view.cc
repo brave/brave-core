@@ -15,6 +15,17 @@
 #include "ui/views/style/platform_style.h"
 #include "ui/views/view_class_properties.h"
 
+namespace {
+
+void MaybeOverrideBorder(const page_actions::PageActionModelInterface* source,
+                         gfx::Insets& border_insets) {
+  if (source && source->GetOverrideBorder().has_value()) {
+    border_insets = source->GetOverrideBorder().value();
+  }
+}
+
+}  // namespace
+
 #define GetMinimumSize GetMinimumSize_Chromium
 #define OnNewActiveController OnNewActiveController_Chromium
 #define OnPageActionModelChanged OnPageActionModelChanged_Chromium
@@ -71,6 +82,8 @@ void PageActionView::OnPageActionModelVisualRefresh(
   } else {
     ClearProperty(views::kCrossAxisAlignmentKey);
   }
+
+  UpdateBorder();
 }
 
 gfx::Size PageActionView::GetSizeForLabelWidth(int label_width) const {
@@ -153,6 +166,7 @@ void PageActionView::OnPageActionModelChanged(
     SetTriggerableEventFlags(source->GetOverrideTriggerableEvent().value_or(
         ui::EF_LEFT_MOUSE_BUTTON));
   }
+  UpdateBorder();
 }
 
 }  // namespace page_actions

@@ -7,3 +7,13 @@
 description = 'Adding code to force show the label if it should be always shown in OnPageActionModelChanged()'
 re_pattern = 'else if \((model.ShouldShowSuggestionChip\(\))\)'
 replace = 'else if (\1 || model.GetAlwaysShowLabel())'
+
+[[substitution]]
+description = '''
+Call MaybeOverrideBorder() in UpdateBorder() right before the SetBorder() call
+in it.
+'''
+re_pattern = '(void PageActionView::UpdateBorder\(\).*?)(SetBorder\()'
+re_flags = ['DOTALL']
+replace = '''\1MaybeOverrideBorder(observation_.GetSource(), border_insets);
+  \2'''
