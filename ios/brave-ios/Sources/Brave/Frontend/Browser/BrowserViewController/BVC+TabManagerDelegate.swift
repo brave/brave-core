@@ -111,6 +111,10 @@ extension BrowserViewController: TabManagerDelegate {
       self?.updateTranslateURLBar(tab: tab, state: tab.translationState)
     }
 
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.requestBlockingTabHelper = .init(tab: tab)
+    }
+
     tab.braveTalk = .init(tab: tab, coordinator: braveTalkJitsiCoordinator)
     tab.braveTalk?.onExitCall = { [weak self] in
       guard let self = self else { return }
