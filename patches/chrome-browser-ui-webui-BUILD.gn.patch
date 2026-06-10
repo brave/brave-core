@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index b8099c5064df789ecb481ff40c40091504f91354..df0ee6e1bd7aa4c31cfef15a4cd9c9c9cfd08501 100644
+index 70818ce2da0e8e5fc9e79ac54fb2f1a37fdcd28b..50eb0b5f434fcf08b4c4e852010d0bf111c3b47e 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index b8099c5064df789ecb481ff40c40091504f91354..df0ee6e1bd7aa4c31cfef15a4cd9c9c9
  import("//chrome/common/features.gni")
  import("//chromeos/dbus/config/use_real_dbus_clients.gni")
  import("//components/enterprise/buildflags/buildflags.gni")
-@@ -90,6 +91,7 @@ source_set("configs") {
+@@ -104,6 +105,7 @@ source_set("configs") {
      "//third_party/abseil-cpp:absl",
      "//ui/webui:buildflags",
    ]

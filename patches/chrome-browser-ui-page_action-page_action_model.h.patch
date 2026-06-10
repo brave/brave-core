@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
-index bea88558bf05a7ebbd6c3bc13ef3dedcdd5f460a..5df133150275c30339d5805797ec9054960afd07 100644
+index 077c3c6f6d5686c707fc3f32281c1e872cd50ef9..93b0a83107bac19cc764e4b0f6dcfc3443d818c3 100644
 --- a/chrome/browser/ui/page_action/page_action_model.h
 +++ b/chrome/browser/ui/page_action/page_action_model.h
-@@ -123,9 +123,28 @@ class PageActionModelInterface {
+@@ -127,9 +127,28 @@ class PageActionModelInterface {
    virtual PageActionColorSource GetColorSource() const = 0;
  
    virtual bool IsEphemeral() const = 0;
@@ -31,7 +31,7 @@ index bea88558bf05a7ebbd6c3bc13ef3dedcdd5f460a..5df133150275c30339d5805797ec9054
  class PageActionModel : public PageActionModelInterface {
   public:
    explicit PageActionModel(actions::ActionId action_id,
-@@ -229,6 +248,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -238,6 +257,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -39,7 +39,7 @@ index bea88558bf05a7ebbd6c3bc13ef3dedcdd5f460a..5df133150275c30339d5805797ec9054
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -252,7 +272,12 @@ class PageActionModel : public PageActionModelInterface {
+@@ -261,7 +281,12 @@ class PageActionModel : public PageActionModelInterface {
      kIsAnchoredMessageShowing,
      kAnchoredMessageIcon,
      kAnchoredMessageExpandableContent,
@@ -53,7 +53,7 @@ index bea88558bf05a7ebbd6c3bc13ef3dedcdd5f460a..5df133150275c30339d5805797ec9054
    };
    using PropertySet =
        base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;
-@@ -356,6 +381,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -369,6 +394,7 @@ class PageActionModel : public PageActionModelInterface {
  
    base::ObserverList<PageActionModelObserver> observer_list_;
  };

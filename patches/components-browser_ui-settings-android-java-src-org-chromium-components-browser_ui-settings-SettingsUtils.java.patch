@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java b/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
-index a92d2866e67f635264ee16d5af0d17ef74d96eab..e196372510e09518d7a8cdc614f87b098fda8210 100644
+index 64cf197cf8879254890030542de04626749becee..10f98317a4d7200e3b6d7611d881432ddc30a485 100644
 --- a/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
 +++ b/components/browser_ui/settings/android/java/src/org/chromium/components/browser_ui/settings/SettingsUtils.java
-@@ -148,7 +148,7 @@ public class SettingsUtils {
+@@ -145,7 +145,7 @@ public class SettingsUtils {
       * @param preference The preference to start from.
       * @param visiblePreferences The list to add visible preferences to.
       */

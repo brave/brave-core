@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
-index 5a0e31d053a9089367f957426e4b4f95db4ab7ca..e71c6c7370d891757815bcbac023b1168d2f068e 100644
+index cc4bc16ff02486ecf7f141fcdf48c97effdaaeae..7517438e233e729c8dd79c8d77a19768cf92614e 100644
 --- a/chrome/browser/ui/tabs/tab_model.cc
 +++ b/chrome/browser/ui/tabs/tab_model.cc
-@@ -56,7 +56,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
+@@ -57,7 +57,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
    // TODO(https://crbug.com/362038317): Tab-helpers should be created in exactly
    // one place, which is here.
    TabHelpers::AttachTabHelpers(contents_);

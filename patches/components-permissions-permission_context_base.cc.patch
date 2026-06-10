@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_context_base.cc b/components/permissions/permission_context_base.cc
-index 7777d58ad1b8600a35de9d80ed1e305b231b7917..0e108e0b8a1fe9c6a9eda02f09aca116617bea57 100644
+index cdc99a5f1844ba45111a6b0f79fdffb80e18e3cd..03c6200ca03d12eec1ca85c675fbd14ddc93e7a3 100644
 --- a/components/permissions/permission_context_base.cc
 +++ b/components/permissions/permission_context_base.cc
-@@ -75,7 +75,7 @@
+@@ -76,7 +76,7 @@
  #include "ui/android/window_android.h"
  #endif
  
@@ -11,7 +11,7 @@ index 7777d58ad1b8600a35de9d80ed1e305b231b7917..0e108e0b8a1fe9c6a9eda02f09aca116
  namespace {
  
  using PermissionStatus = blink::mojom::PermissionStatus;
-@@ -528,7 +528,7 @@ bool PermissionContextBase::IsPermissionAvailableToOrigins(
+@@ -513,7 +513,7 @@ bool PermissionContextBase::IsPermissionAvailableToOrigins(
      // possible as this corresponds to the requirements of the secure contexts
      // spec and matches what is implemented in blink. Right now we just check
      // the top level and requesting origins.
@@ -20,7 +20,7 @@ index 7777d58ad1b8600a35de9d80ed1e305b231b7917..0e108e0b8a1fe9c6a9eda02f09aca116
              requesting_origin, embedding_origin) &&
          !network::IsUrlPotentiallyTrustworthy(embedding_origin)) {
        return false;
-@@ -644,7 +644,7 @@ void PermissionContextBase::DecidePermission(
+@@ -629,7 +629,7 @@ void PermissionContextBase::DecidePermission(
    // origin displayed in the prompt should never differ from the top-level
    // origin. Storage access API requests are excluded as they are expected to
    // request permissions from the frame origin needing access.
@@ -29,7 +29,7 @@ index 7777d58ad1b8600a35de9d80ed1e305b231b7917..0e108e0b8a1fe9c6a9eda02f09aca116
               request_data->requesting_origin, request_data->embedding_origin) ||
           request_data->requesting_origin == request_data->embedding_origin ||
           content_settings_type_ == ContentSettingsType::STORAGE_ACCESS);
-@@ -938,4 +938,4 @@ void PermissionContextBase::NotifyObservers(
+@@ -931,4 +931,4 @@ void PermissionContextBase::NotifyObservers(
    }
  }
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_prefs.cc b/chrome/browser/ui/tabs/tab_strip_prefs.cc
-index c0d39dedda0be57221eebd98b1806e82a3b6733d..166b1b9bf97d236b73dc378a8bc425c001448df6 100644
+index b0d357c347745dc16244d9bb1a4b30360abd55b3..f894ba26575961e50c8d1bbda82f3e5d3bf2d953 100644
 --- a/chrome/browser/ui/tabs/tab_strip_prefs.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_prefs.cc
-@@ -28,6 +28,7 @@ std::optional<bool> g_tab_search_trailing_tabstrip_at_startup = std::nullopt;
+@@ -28,6 +28,7 @@ std::optional<bool> g_tab_search_trailing_tabstrip_at_startup;
  namespace tabs {
  
  bool GetDefaultTabSearchRightAligned() {

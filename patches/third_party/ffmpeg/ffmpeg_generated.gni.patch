@@ -1,5 +1,5 @@
 diff --git a/ffmpeg_generated.gni b/ffmpeg_generated.gni
-index 447e27212b68d771505098c3f5d3795b98467192..6a18ba0deb3f9573629e19a468a28faaa321cae2 100644
+index 145ceba51b680b5ccbf223a82dfec48c53fb518d..e60b0927cbdc07c9d3e363d86faea8368fd47ea6 100644
 --- a/ffmpeg_generated.gni
 +++ b/ffmpeg_generated.gni
 @@ -15,6 +15,11 @@ ffmpeg_asm_include_dirs = []
