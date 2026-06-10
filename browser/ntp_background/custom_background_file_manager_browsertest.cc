@@ -9,6 +9,8 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/location.h"
+#include "base/logging.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -21,12 +23,17 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/skia/include/core/SkBitmap.h"
+#include "third_party/skia/include/core/SkPixmap.h"
+#include "ui/gfx/codec/png_codec.h"
 
 // CustomBackgroundFileManager requires data decoder which can't be initialized
 // in unit tests.
 class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
  public:
   static constexpr char kTestImageName[] = "background.jpg";
+  static constexpr char kTestHighResolutionImageName[] =
+      "high_resolution_background.png";
 
   CustomBackgroundFileManagerBrowserTest() = default;
   ~CustomBackgroundFileManagerBrowserTest() override = default;
@@ -57,6 +64,33 @@ class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
  protected:
   base::FilePath test_file() const {
     return profile()->GetPath().AppendASCII(kTestImageName);
+  }
+
+  void CreateHighResolutionTestImage(
+      base::FilePath* image_path_out,
+      const base::Location& location = FROM_HERE) const {
+    SCOPED_TRACE(location.ToString());
+
+    constexpr int kWidth = 9216;
+    constexpr int kHeight = 5184;
+
+    SkBitmap bitmap;
+    ASSERT_TRUE(bitmap.tryAllocN32Pixels(kWidth, kHeight));
+    bitmap.eraseColor(SK_ColorRED);
+
+    SkPixmap pixmap;
+    ASSERT_TRUE(bitmap.peekPixels(&pixmap));
+
+    // Encode the generated bitmap into a valid PNG image so it can be written
+    // to disk and used during the browser test.
+    std::optional<std::vector<uint8_t>> encoded_png =
+        gfx::PNGCodec::EncodeBGRASkBitmap(bitmap,
+                                          /*discard_transparency=*/false);
+    ASSERT_TRUE(encoded_png.has_value());
+
+    *image_path_out =
+        profile()->GetPath().AppendASCII(kTestHighResolutionImageName);
+    ASSERT_TRUE(base::WriteFile(*image_path_out, *encoded_png));
   }
 
   Profile* profile() { return browser()->profile(); }
@@ -110,6 +144,29 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
       custom_file_manager().GetCustomBackgroundDirectory().AppendASCII(
           kTestImageName)));
   EXPECT_TRUE(base::PathExists(test_file()));
+}
+
+// Verifies that high-resolution images whose decoded bitmap would exceed the
+// Mojo IPC message size limit can still be saved after being scaled down by the
+// data decoder. See https://github.com/brave/brave-browser/issues/55551
+IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
+                       SaveHighResolutionImageToCustomBackgroundDir) {
+  base::ScopedAllowBlockingForTesting allow_blocking_call;
+
+  base::FilePath image_path;
+  CreateHighResolutionTestImage(&image_path);
+  ASSERT_TRUE(base::PathExists(image_path));
+
+  auto check_result = base::BindOnce([](const base::FilePath& path) {
+                        EXPECT_FALSE(path.empty());
+                      }).Then(run_loop_quit_closure());
+
+  custom_file_manager().SaveImage(image_path, std::move(check_result));
+  Wait();
+
+  EXPECT_TRUE(base::PathExists(
+      custom_file_manager().GetCustomBackgroundDirectory().AppendASCII(
+          kTestHighResolutionImageName)));
 }
 
 IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
