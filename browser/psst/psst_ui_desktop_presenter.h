@@ -24,7 +24,7 @@ namespace psst {
 // Implementation of PsstUiPresenter for desktop platforms
 class PsstUiDesktopPresenter
     : public PsstUiPresenter,
-      public page_actions::PsstActionController::Observer {
+      public page_actions::PsstActionController::Delegate {
  public:
   class PsstUiDesktopDelegate : public ui::WebDialogDelegate {
    public:

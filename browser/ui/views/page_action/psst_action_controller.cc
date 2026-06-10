@@ -73,8 +73,8 @@ PsstActionController::PsstActionController(
 
 PsstActionController::~PsstActionController() = default;
 
-void PsstActionController::SetMenuModelObserver(Observer* observer) {
-  psst_menu_model_observer_ = observer;
+void PsstActionController::SetMenuModelDelegate(Delegate* delegate) {
+  psst_menu_model_delegate_ = delegate;
 }
 
 void PsstActionController::SetVisible(bool visible) {
@@ -134,13 +134,13 @@ void PsstActionController::ExecuteAction(
 }
 
 void PsstActionController::ExecuteCommand(int command_id, int event_flags) {
-  if (!psst_menu_model_observer_) {
+  if (!psst_menu_model_delegate_) {
     return;
   }
   if (command_id == IDC_PSST_DONT_SHOW_FOR_THIS_SITE) {
-    psst_menu_model_observer_->OnDontShowThisSiteSelected();
+    psst_menu_model_delegate_->OnDontShowThisSiteSelected();
   } else if (command_id == IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING) {
-    psst_menu_model_observer_->OnDisablePrivacySettingsTuningSelected();
+    psst_menu_model_delegate_->OnDisablePrivacySettingsTuningSelected();
   }
 }
 

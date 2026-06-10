@@ -145,11 +145,11 @@ PsstUiDesktopPresenter::PsstUiDesktopPresenter(
       psst_action_controller_(std::move(psst_action_controller)) {
   CHECK(web_contents_);
   CHECK(psst_action_controller_);
-  psst_action_controller_->SetMenuModelObserver(this);
+  psst_action_controller_->SetMenuModelDelegate(this);
 }
 PsstUiDesktopPresenter::~PsstUiDesktopPresenter() {
   if (psst_action_controller_) {
-    psst_action_controller_->SetMenuModelObserver(nullptr);
+    psst_action_controller_->SetMenuModelDelegate(nullptr);
   }
 }
 

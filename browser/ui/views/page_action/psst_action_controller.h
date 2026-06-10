@@ -23,8 +23,8 @@ namespace page_actions {
 
 class PsstActionController : public ui::SimpleMenuModel::Delegate {
  public:
-  // Observes selections made in the PSST page action menu.
-  class Observer {
+  // PSST page action menu delegate.
+  class Delegate {
    public:
     virtual void OnDontShowThisSiteSelected() = 0;
     virtual void OnDisablePrivacySettingsTuningSelected() = 0;
@@ -37,7 +37,7 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   PsstActionController& operator=(const PsstActionController&) = delete;
   ~PsstActionController() override;
 
-  void SetMenuModelObserver(Observer* observer);
+  void SetMenuModelDelegate(Delegate* delegate);
   void SetVisible(bool visible);
   void SetShowBadge(bool show);
 
@@ -66,7 +66,7 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   std::unique_ptr<views::MenuRunner> menu_runner_;
 
   // not owned
-  raw_ptr<Observer> psst_menu_model_observer_ = nullptr;
+  raw_ptr<Delegate> psst_menu_model_delegate_ = nullptr;
   raw_ptr<actions::ActionItem> action_item_for_menu_ = nullptr;
 
   // Clears if the page action `View` is destroyed while a menu is open
