@@ -3,6 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Based on Chromium code subject to the following license:
+// Copyright 2021 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 #include "brave/browser/brave_news/rss_links_fetcher.h"
 
 #include <utility>
