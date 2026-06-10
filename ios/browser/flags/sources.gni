@@ -16,6 +16,7 @@ brave_flags_deps = [
   "//brave/components/brave_wallet/common",
   "//brave/components/de_amp/common",
   "//brave/components/debounce/core/common",
+  "//brave/components/playlist/core/common",
   "//brave/components/skus/common",
   "//brave/ios/browser/brave_wallet",
   "//brave/ios/browser/ui/quick_view:features",

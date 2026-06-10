@@ -8,5 +8,6 @@ include_rules = [
   "+brave/components/brave_user_agent/common/features.h",
   "+brave/components/de_amp/common/features.h",
   "+brave/components/debounce/core/common/features.h",
+  "+brave/components/playlist/core/common/features.h",
   "+brave/components/skus/common/features.h",
 ]

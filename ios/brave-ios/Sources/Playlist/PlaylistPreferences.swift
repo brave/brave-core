@@ -25,7 +25,7 @@ extension PrefService {
     let isDisabledByPolicy =
       isManagedPreference(forPath: kPlaylistEnabledPrefName)
       && !boolean(forPath: kPlaylistEnabledPrefName)
-    return !isDisabledByPolicy
+    return FeatureList.kPlaylist.enabled && !isDisabledByPolicy
   }
 }
 
