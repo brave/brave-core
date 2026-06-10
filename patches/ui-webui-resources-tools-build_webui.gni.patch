@@ -1,24 +1,42 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index 4b2eaadc7f4b268f1c8102a318be3bc2137a0160..c749676aa17856ba6ed67d7a6e00fa5bdd437d23 100644
+index 0bf652db13ee7ba2b7416566c5db3a45d220cc64..0158e7bb0d390ccd5e2074ebc2698284213a6b80 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
-@@ -225,6 +225,7 @@ template("build_webui") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/resources/brave_grit.gni")
+ import("//build/config/features.gni")
+ import(
+     "//tools/code_coverage/js_source_maps/create_js_source_maps/create_js_source_maps.gni")
+@@ -225,6 +226,12 @@ template("build_webui") {
          enable_removal_comments = enable_source_maps
        }
        in_files = all_ts_files
-+      if (defined(invoker.exclude_ts_preprocess_files)) { in_files -= invoker.exclude_ts_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
++      if (defined(invoker.exclude_ts_preprocess_files)) {
++        in_files -= invoker.exclude_ts_preprocess_files
++      }
++      if (defined(invoker.preprocess_deps)) {
++        public_deps = invoker.preprocess_deps
++      }
      }
    }
  
-@@ -276,6 +277,7 @@ template("build_webui") {
+@@ -275,6 +282,12 @@ template("build_webui") {
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
        }
-+      if (defined(invoker.exclude_html_css_preprocess_files)) { in_files -= invoker.exclude_html_css_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
++      if (defined(invoker.exclude_html_css_preprocess_files)) {
++        in_files -= invoker.exclude_html_css_preprocess_files
++      }
++      if (defined(invoker.preprocess_deps)) {
++        public_deps = invoker.preprocess_deps
++      }
      }
    }
  
-@@ -542,7 +544,7 @@ template("build_webui") {
+@@ -541,7 +554,7 @@ template("build_webui") {
        }
  
        # Enable by default on non-Ash WebUIs.
@@ -27,20 +45,21 @@ index 4b2eaadc7f4b268f1c8102a318be3bc2137a0160..c749676aa17856ba6ed67d7a6e00fa5b
        if (is_ash_webui) {
          enable_web_component_missing_deps = false
        }
-@@ -630,6 +632,7 @@ template("build_webui") {
-         "//ui/webui/resources/cr_components/searchbox",
+@@ -626,6 +639,7 @@ template("build_webui") {
          "//ui/webui/resources/cr_elements",
          "//ui/webui/resources/js",
-+        "//brave/ui/webui/resources",
        ]
++      no_explicit_any_exceptions += [ "//brave/ui/webui/resources" ]
  
        if (is_android) {
-@@ -854,7 +857,7 @@ template("build_webui") {
+         no_explicit_any_exceptions +=
+@@ -849,7 +863,8 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {
 -    grit("resources") {
-+    import("//brave/resources/brave_grit.gni") forward_variables_from(invoker, [ "use_brave_grit" ]) brave_or_default_grit("resources") {
++    forward_variables_from(invoker, [ "use_brave_grit" ])
++    brave_or_default_grit("resources") {
        # These arguments are needed since the grd is generated at build time.
        enable_input_discovery_for_gn_analyze = false
        source = "$target_gen_dir/resources.grd"

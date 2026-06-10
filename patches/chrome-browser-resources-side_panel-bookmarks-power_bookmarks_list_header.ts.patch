@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
+index ab8f97747d2b18b07c046b0e70285a1c022c22c8..1a2cc046f237db7eb254bcbb8f70e3133d0d707b 100644
+--- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
++++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
+@@ -96,6 +96,7 @@ export class PowerBookmarksListHeaderElement extends CrLitElement {
+       label: loadTimeData.getString('sortReverseAlphabetically'),
+       lowerLabel: loadTimeData.getString('sortReverseAlphabetically'),
+     },
++    { sortOrder: SortOrder.kCustom, label: loadTimeData.getString('sortCustom'), lowerLabel: loadTimeData.getString('sortCustomLower'), },
+   ];
+   private bookmarksService_: PowerBookmarksService =
+       PowerBookmarksService.getInstance();

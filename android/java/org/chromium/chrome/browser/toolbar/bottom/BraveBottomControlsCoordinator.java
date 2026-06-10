@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.bottom;
 
 import android.app.Activity;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.overlay_panel.PanelState;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -76,12 +79,13 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            NullableObservableSupplier<Tab> tabSupplier,
             ScrollingBottomViewResourceFrameLayout root,
             @LayerType int layerType,
             @DimenRes int heightResId,
             OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
             TabObscuringHandler tabObscuringHandler,
-            NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            NonNullObservableSupplier<@PanelState Integer> overlayPanelStateSupplier,
             NullableObservableSupplier<@BrowserControlsState Integer> constraintsSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
         super(
@@ -92,12 +96,13 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                 browserControlsVisibilityDelegate,
                 fullscreenManager,
                 edgeToEdgeControllerSupplier,
+                tabSupplier,
                 root,
                 layerType,
                 heightResId,
                 contentDelegateSupplier,
                 tabObscuringHandler,
-                overlayPanelVisibilitySupplier,
+                overlayPanelStateSupplier,
                 constraintsSupplier,
                 readAloudRestoringSupplier);
 
@@ -198,5 +203,12 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     public boolean isInTabSwitcherMode() {
         return mBottomToolbarCoordinator != null && mBottomToolbarCoordinator.isInTabSwitcherMode();
+    }
+
+    /** Returns the bottom toolbar menu button view, or null if not available. */
+    public @Nullable View getMenuButtonView() {
+        return mBottomToolbarCoordinator != null
+                ? mBottomToolbarCoordinator.getMenuButtonView()
+                : null;
     }
 }

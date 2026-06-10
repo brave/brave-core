@@ -673,7 +673,7 @@ public class BravePrivacySettings extends PrivacySettings {
             BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, (boolean) newValue);
             BraveLocalState.commitPendingWrite();
         } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
-            UmaSessionStats.changeMetricsReportingConsent(
+            UmaSessionStats.changeMetricsReportingState(
                     (boolean) newValue, ChangeMetricsReportingStateCalledFrom.UI_SETTINGS);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.STATS_REPORTING_ENABLED, (boolean) newValue);

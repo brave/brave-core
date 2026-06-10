@@ -64,8 +64,10 @@ action("sign_app") {
     "--unsigned-apk-paths",
     rebase_path(target_sign_app_path, root_out_dir),
 
-    # Sign the final output file as well as there is no garantee that copy will happen after the sign.
-    # Ideally we should combine `brave`, `sign_app` and `sign_app_convert_aab_to_apk` into one action and do what we need in the script depending on the flags.
+    # Sign the final output file as well as there is no garantee that copy will
+    # happen after the sign. Ideally we should combine `brave`, `sign_app` and
+    # `sign_app_convert_aab_to_apk` into one action and do what we need in the
+    # script depending on the flags.
     rebase_path(brave_android_output, root_out_dir),
     "--key-path=$brave_android_keystore_path",
     "--key-passwd=$brave_android_keystore_password",
@@ -94,13 +96,8 @@ if (needs_mapping_rename) {
     sources = []
     outputs = []
 
-    dep_suffix = ""
-    if (enable_r8_tracerefs) {
-      dep_suffix = "__r8"
-    }
-
     if (target_android_output_format == "aab") {
-      deps += [ "//chrome/android:chrome_public_bundle__dex${dep_suffix}" ]
+      deps += [ "//chrome/android:chrome_public_bundle__dex" ]
       if (target_cpu == "arm64" || target_cpu == "x64") {
         sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
         outputs += [ "$root_out_dir/apks/MonochromePublic64.aab.mapping" ]
@@ -109,7 +106,7 @@ if (needs_mapping_rename) {
         outputs += [ "$root_out_dir/apks/MonochromePublic.aab.mapping" ]
       }
     } else {
-      deps += [ "//chrome/android:chrome_public_apk__final_dex${dep_suffix}" ]
+      deps += [ "//chrome/android:chrome_public_apk__final_dex" ]
       sources += [ "$root_out_dir/apks/ChromePublic.apk.mapping" ]
       outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
     }

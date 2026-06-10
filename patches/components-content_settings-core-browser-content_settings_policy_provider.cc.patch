@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 06db486e228d3ebe39a641486c0e1196a093ff37..ed44906dffec7229a29ab9d9bfeb1c8b7ae67020 100644
+index 2aef90e19edb92cce2f745806af03573023a17c0..cd3cf971311e9dbfdd9cbea2bd0110282d6af68e 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
 @@ -51,6 +51,7 @@ struct PrefsForManagedContentSettingsMapEntry {
@@ -18,7 +18,7 @@ index 06db486e228d3ebe39a641486c0e1196a093ff37..ed44906dffec7229a29ab9d9bfeb1c8b
      prefs::kManagedAutomaticFullscreenAllowedForUrls,
      prefs::kManagedAutomaticFullscreenBlockedForUrls,
      prefs::kManagedAutoSelectCertificateForUrls,
-@@ -274,6 +276,7 @@ constexpr const char* kManagedPrefs[] = {
+@@ -276,6 +278,7 @@ constexpr const char* kManagedPrefs[] = {
  // the preference default content settings. If a default content settings type
  // is managed any user defined exceptions (patterns) for this type are ignored.
  constexpr const char* kManagedDefaultPrefs[] = {
@@ -26,7 +26,7 @@ index 06db486e228d3ebe39a641486c0e1196a093ff37..ed44906dffec7229a29ab9d9bfeb1c8b
      prefs::kManagedDefaultAdsSetting,
      prefs::kManagedDefaultClipboardSetting,
      prefs::kManagedDefaultCookiesSetting,
-@@ -369,6 +372,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
+@@ -372,6 +375,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
  // static
  const PolicyProvider::PrefsForManagedDefaultMapEntry
      PolicyProvider::kPrefsForManagedDefault[] = {

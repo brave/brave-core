@@ -21,7 +21,6 @@
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
-#include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace views {
@@ -42,8 +41,7 @@ class ContainersService;
 class BraveTab : public Tab
 #if BUILDFLAG(ENABLE_CONTAINERS)
     ,
-                 public containers::ContainersServiceObserver,
-                 public FullscreenObserver
+                 public containers::ContainersServiceObserver
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 {
   METADATA_HEADER(BraveTab, Tab)
@@ -199,8 +197,7 @@ class BraveTab : public Tab
   // containers::ContainersServiceObserver:
   void OnContainersListChanged() override;
 
-  // FullscreenObserver:
-  void OnFullscreenStateChanged() override;
+  void OnFullscreenStateChanged();
 
   // Starts observing fullscreen changes if not already observing.
   void MaybeStartObservingFullscreenChanges();
@@ -218,8 +215,8 @@ class BraveTab : public Tab
   base::ScopedObservation<containers::ContainersService,
                           containers::ContainersServiceObserver>
       containers_service_observation_{this};
-  base::ScopedObservation<FullscreenController, FullscreenObserver>
-      fullscreen_observation_{this};
+  // Subscription to be notified when the browser window enters fullscreen.
+  base::CallbackListSubscription fullscreen_subscription_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   base::WeakPtrFactory<BraveTab> weak_factory_{this};

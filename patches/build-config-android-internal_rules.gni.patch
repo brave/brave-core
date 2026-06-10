@@ -1,16 +1,16 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 4cf41b78179a1b54faf9ea6de5ce40af82931841..76fa6d1b90cb8bef7f3b1e2ca3d9bd1fee794e9d 100644
+index cfda3802b25a25d30a18e2178a7bf23d09e4ae8f..8128a4dc3fd753b37c398121af742eca72e3ff85 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -3650,6 +3650,7 @@ if (enable_java_templates) {
-           # Filter directly in compile_java.py when no other processing is required.
+@@ -3640,6 +3640,7 @@ if (enable_java_templates) {
+           # required.
            _processed_jar_path = _javac_jar_path
          }
 +        foreach(bytecode_jar, brave_bytecode_jars) { if (rebase_path(_javac_jar_path, root_build_dir) == bytecode_jar) { _processed_jar_path = "$target_out_dir/$target_name.bytecode-rewritten.jar" } }
        }
  
        if (_build_device_jar) {
-@@ -3857,6 +3858,7 @@ if (enable_java_templates) {
+@@ -3841,6 +3842,7 @@ if (enable_java_templates) {
        if (defined(_enable_bytecode_checks) && _enable_bytecode_checks) {
          enable_bytecode_checks = _enable_bytecode_checks
        }
@@ -18,7 +18,7 @@ index 4cf41b78179a1b54faf9ea6de5ce40af82931841..76fa6d1b90cb8bef7f3b1e2ca3d9bd1f
  
        # Specifically avoid passing in invoker.base_module_target as one of the
        # possible_config_deps.
-@@ -4246,6 +4248,7 @@ if (enable_java_templates) {
+@@ -4238,6 +4240,7 @@ if (enable_java_templates) {
        } else {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }

@@ -73,7 +73,6 @@ import org.chromium.chrome.browser.signin.services.IdentityServicesProvider;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tabmodel.TabGroupModelFilter;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
@@ -153,7 +152,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private SigninManager mSigninManager;
     @Mock private IdentityManager mIdentityManager;
     @Mock private IdentityServicesProvider mIdentityService;
-    @Mock private TabGroupModelFilter mTabGroupModelFilter;
     @Mock private IncognitoUtils.Natives mIncognitoUtilsJniMock;
     @Mock public WebsitePreferenceBridge.Natives mWebsitePreferenceBridgeJniMock;
     @Mock private IncognitoReauthController mIncognitoReauthControllerMock;
@@ -217,8 +215,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mTabModelSelector.getModel(true)).thenReturn(mIncognitoTabModel);
         when(mTabModel.isIncognito()).thenReturn(false);
         when(mIncognitoTabModel.isIncognito()).thenReturn(true);
-        when(mTabModelSelector.getCurrentTabGroupModelFilter()).thenReturn(mTabGroupModelFilter);
-        when(mTabGroupModelFilter.getTabModel()).thenReturn(mTabModel);
         when(mTabModel.getProfile()).thenReturn(mProfile);
         ManagedBrowserUtilsJni.setInstanceForTesting(mManagedBrowserUtilsJniMock);
         ProfileManager.setLastUsedProfileForTesting(mProfile);
@@ -335,8 +331,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
-            R.id.info_menu_id,
-            R.id.page_info_divider_line_id,
+            // info_menu_id and page_info_divider_line_id are not shown on NTP
+            // (shouldShowPageInfoItem returns false for NTP pages).
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             R.id.brave_wallet_id,
@@ -373,8 +369,12 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
-        expectedItems.add(R.id.info_menu_id);
-        expectedItems.add(R.id.page_info_divider_line_id);
+        // Page info items only appear when ANDROID_PAGE_INFO_AS_APP_MENU_ITEM or
+        // THREE_DOT_MENU_BACK_BUTTON is enabled; both are disabled at class level.
+        if (ChromeFeatureList.sThreeDotMenuBackButton.isEnabled()) {
+            expectedItems.add(R.id.info_menu_id);
+            expectedItems.add(R.id.page_info_divider_line_id);
+        }
         expectedItems.add(R.id.downloads_menu_id);
         expectedItems.add(R.id.all_bookmarks_menu_id);
         expectedItems.add(R.id.brave_wallet_id);
@@ -439,8 +439,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
-            R.id.info_menu_id,
-            R.id.page_info_divider_line_id,
+            // info_menu_id and page_info_divider_line_id are not shown on NTP
+            // (shouldShowPageInfoItem returns false for NTP pages).
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             // R.id.brave_wallet_id is NOT included - disabled by policy

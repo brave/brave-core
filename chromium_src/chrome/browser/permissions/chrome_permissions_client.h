@@ -14,10 +14,11 @@
                                      const GURL& embedding_origin) override; \
   bool CanBypassEmbeddingOriginCheck
 
-#define MaybeCreateMessageUI                                        \
-  MaybeCreateMessageUI_ChromiumImpl(                                \
-      content::WebContents* web_contents, ContentSettingsType type, \
-      base::WeakPtr<permissions::PermissionPromptAndroid> prompt);  \
+#define MaybeCreateMessageUI                                       \
+  MaybeCreateMessageUI_ChromiumImpl(                               \
+      content::WebContents* web_contents,                          \
+      const permissions::PermissionRequest& request,               \
+      base::WeakPtr<permissions::PermissionPromptAndroid> prompt); \
   std::unique_ptr<PermissionMessageDelegate> MaybeCreateMessageUI
 #include <chrome/browser/permissions/chrome_permissions_client.h>  // IWYU pragma: export
 #undef MaybeCreateMessageUI

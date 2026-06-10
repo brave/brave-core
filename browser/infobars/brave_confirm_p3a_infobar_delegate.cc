@@ -53,7 +53,7 @@ BraveConfirmP3AInfoBarDelegate::GetIdentifier() const {
 }
 
 const gfx::VectorIcon& BraveConfirmP3AInfoBarDelegate::GetVectorIcon() const {
-  return views::kInfoIcon;
+  return views::kInfoOldIcon;
 }
 
 bool BraveConfirmP3AInfoBarDelegate::ShouldExpire(

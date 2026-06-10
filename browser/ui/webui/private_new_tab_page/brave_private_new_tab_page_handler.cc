@@ -15,7 +15,8 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -148,9 +149,10 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
 
   content::WebContents* web_contents = nullptr;
 
-  Browser* browser = chrome::FindBrowserWithProfile(profile);
-  if (browser && browser->tab_strip_model()) {
-    web_contents = browser->tab_strip_model()->GetActiveWebContents();
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile)->GetLastActiveBrowser();
+  if (browser && browser->GetTabStripModel()) {
+    web_contents = browser->GetTabStripModel()->GetActiveWebContents();
   }
 
   if (!web_contents)

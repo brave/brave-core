@@ -23,19 +23,12 @@ public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
         makePublicMethod(sIntentHandlerClassName, "getUrlForWebapp");
         changeMethodOwner(sBraveIntentHandlerClassName, "getUrlForWebapp", sIntentHandlerClassName);
 
-        makePublicMethod(sIntentHandlerClassName, "isJavascriptSchemeOrInvalidUrl");
-        changeMethodOwner(sBraveIntentHandlerClassName, "isJavascriptSchemeOrInvalidUrl",
-                sIntentHandlerClassName);
-
         changeMethodOwner(
                 sIntentHandlerClassName, "extractUrlFromIntent", sBraveIntentHandlerClassName);
 
-        makePublicMethod(sIntentHandlerClassName, "intentHasUnsafeUrl");
+        makePublicMethod(sIntentHandlerClassName, "isUrlUnsafe");
+        changeMethodOwner(sIntentHandlerClassName, "isUrlUnsafe", sBraveIntentHandlerClassName);
         changeMethodOwner(
-                sIntentHandlerClassName, "intentHasUnsafeUrl", sBraveIntentHandlerClassName);
-        changeMethodOwner(
-                sBraveIntentHandlerInternalClassName,
-                "intentHasUnsafeUrl",
-                sIntentHandlerClassName);
+                sBraveIntentHandlerInternalClassName, "isUrlUnsafe", sIntentHandlerClassName);
     }
 }

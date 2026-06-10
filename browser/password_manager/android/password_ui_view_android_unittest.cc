@@ -34,6 +34,7 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/password_manager/core/browser/export/password_csv_writer.h"
 #include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/password_store/test_password_store.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
 #include "content/public/test/browser_task_environment.h"
@@ -74,7 +75,7 @@ class PasswordUiViewAndroidTest : public ::testing::Test {
     profiles::SetLastUsedProfile(testing_profile_->GetBaseName());
 
     store_ = CreateAndUseTestPasswordStore(testing_profile_);
-    store_->Init(/*affiliated_match_helper=*/nullptr);
+    store_->Init();
     ASSERT_TRUE(temp_dir().CreateUniqueTempDir());
   }
 
@@ -91,7 +92,7 @@ class PasswordUiViewAndroidTest : public ::testing::Test {
     form.signon_realm = origin;
     form.username_value = base::UTF8ToUTF16(username);
     form.password_value = base::UTF8ToUTF16(password);
-    store_->AddLogin(form);
+    store_->AddLogin(password_manager::FromPasswordForm(form));
     RunUntilIdle();
     return form;
   }

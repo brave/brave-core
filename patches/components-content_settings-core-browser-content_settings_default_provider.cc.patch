@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 06cb7371d3f0480748fbfcca2859fe5fe841e787..90ed5fd28574b1459177361b8bc641204e705743 100644
+index 08437660caa320c1565fbff78106648a4a4472e6..c465ba7b421e12149ad3335cf8bdf84799f039af 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -390,6 +390,7 @@ void DefaultProvider::OnPreferenceChanged(const std::string& name) {
+@@ -386,6 +386,7 @@ void DefaultProvider::OnPreferenceChanged(const std::string& name) {
  
  base::Value DefaultProvider::ReadFromPref(ContentSettingsType content_type) {
    const base::Value& value = prefs_->GetValue(GetPrefName(content_type));
@@ -10,7 +10,7 @@ index 06cb7371d3f0480748fbfcca2859fe5fe841e787..90ed5fd28574b1459177361b8bc64120
    // Validate settings.
    if (value.is_int()) {
      return ContentSettingToValue(IntToContentSetting(value.GetInt()));
-@@ -433,6 +434,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -429,6 +430,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    // TODO(https://crbug.com/367181093): clean this up.
    prefs_->ClearPref(kBug364820109AlreadyWorkedAroundPref);
  #endif  // !BUILDFLAG(IS_IOS)

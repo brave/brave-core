@@ -53,11 +53,11 @@ replace = '''\1
     case RequestType::kBraveCardano:
     case RequestType::kBraveGoogleSignInPermission:
     case RequestType::kBraveOpenAIChat:
-      return vector_icons::kExtensionIcon;\2'''
+      return vector_icons::kExtensionOldIcon;\2'''
 
 [[substitution]]
 description = 'Brave mappings for `RequestType` -> `ContentSettingsType`'
-re_pattern = '(RequestTypeToContentSettingsType\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*default:)'
+re_pattern = '(RequestTypeToContentSettingsType\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*// Not associated with a ContentSettingsType\..*?)(\n\s*return std::nullopt;)'
 re_flags = ['DOTALL']
 replace = '''\1
     case RequestType::kBraveGoogleSignInPermission:
@@ -71,7 +71,13 @@ replace = '''\1
       return ContentSettingsType::BRAVE_CARDANO;
 #endif
     case RequestType::kBraveOpenAIChat:
-      return ContentSettingsType::BRAVE_OPEN_AI_CHAT;\2'''
+      return ContentSettingsType::BRAVE_OPEN_AI_CHAT;\2
+    case RequestType::kWidevine:
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case RequestType::kBraveEthereum:
+    case RequestType::kBraveSolana:
+    case RequestType::kBraveCardano:
+#endif\3'''
 
 [[substitution]]
 description = 'Brave mappings for `RequestType` to permission key'

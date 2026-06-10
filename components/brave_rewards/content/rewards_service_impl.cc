@@ -2036,12 +2036,12 @@ void RewardsServiceImpl::EncryptString(const std::string& value,
                                        EncryptStringCallback callback) {
   auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
                            std::string value, EncryptStringCallback callback,
-                           os_crypt_async::Encryptor encryptor) {
+                           scoped_refptr<os_crypt_async::Encryptor> encryptor) {
     if (!self) {
       return;
     }
     std::optional<std::string> encrypted;
-    if (auto result = encryptor.EncryptString(value)) {
+    if (auto result = encryptor->EncryptString(value)) {
       encrypted = std::string(base::as_string_view(result.value()));
     }
     std::move(callback).Run(std::move(encrypted));
@@ -2055,11 +2055,11 @@ void RewardsServiceImpl::DecryptString(const std::string& value,
                                        DecryptStringCallback callback) {
   auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
                            std::string value, DecryptStringCallback callback,
-                           os_crypt_async::Encryptor encryptor) {
+                           scoped_refptr<os_crypt_async::Encryptor> encryptor) {
     if (!self) {
       return;
     }
-    std::move(callback).Run(encryptor.DecryptData(base::as_byte_span(value)));
+    std::move(callback).Run(encryptor->DecryptData(base::as_byte_span(value)));
   };
 
   os_crypt_->GetInstance(

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Add a DELETE_LOCAL_FILE quick action after OPEN_WHEN_COMPLETE.
+
+DELETE_LOCAL_FILE is a Brave-only extension of DownloadCommands::Command, and
+the matching "Delete" quick action is shown alongside the upstream
+OPEN_WHEN_COMPLETE entry whenever the download can be opened.
+'''
+re_pattern = '(QuickActionsForDownload\([^)]*\)\s*\{[\s\S]*?Command::OPEN_WHEN_COMPLETE,[\s\S]*?\);)'
+re_flags = ['DOTALL']
+replace = '''\1
+    AddDeleteLocalFileQuickAction(actions);'''

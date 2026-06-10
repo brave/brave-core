@@ -33,8 +33,12 @@
 #include "content/public/browser/browsing_data_remover.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "base/containers/flat_set.h"
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/containers/used_container_storage_partitions.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -67,8 +71,12 @@ class ContentSettingsDefaultsKeeper {
       ContentSettingsForOneType settings =
           map->GetSettingsForOneType(content_type);
       for (const auto& setting : settings) {
-        if (setting.source !=
-                content_settings::ProviderType::kDefaultProvider &&
+        // Only preserve user-level wildcard rules. Snapshotting (and then
+        // re-applying via the user pref store) rules from other providers --
+        // notably `kPolicyProvider` for AdBlockOnlyMode defaults -- would
+        // outlive their source and leave stale user-level overrides once the
+        // policy is gone.
+        if (setting.source == content_settings::ProviderType::kPrefProvider &&
             setting.primary_pattern.MatchesAllHosts()) {
           defaults_[content_type].push_back(setting);
         }
@@ -157,8 +165,23 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     // Only clear the storage when the remove mask covers data types that live
     // on a storage partition.
     if (container_remove_mask) {
+      // Skip orphaned containers (locally used but no longer in the synced
+      // list). Their on-disk data is wiped wholesale by
+      // ContainersService::ScheduleOrphanedContainersCleanup; issuing a
+      // RemoveWithFilter here would instantiate the storage partition
+      // (can_create=true inside BrowsingDataRemoverImpl) and let its backends
+      // lazily recreate the directory we are trying to delete.
+      base::flat_set<std::string> synced_ids;
+      if (auto* service = ContainersServiceFactory::GetForProfile(profile_)) {
+        for (const auto& container : service->GetContainers()) {
+          synced_ids.insert(container->id);
+        }
+      }
       for (const content::StoragePartitionConfig& config :
            containers::GetUsedContainerStoragePartitionConfigs(profile_)) {
+        if (!synced_ids.contains(config.partition_name())) {
+          continue;
+        }
         std::unique_ptr<content::BrowsingDataFilterBuilder> partition_filter =
             filter_builder->Copy();
         partition_filter->SetStoragePartitionConfig(config);

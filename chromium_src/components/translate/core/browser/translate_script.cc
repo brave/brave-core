@@ -42,13 +42,15 @@ GURL ChromiumTranslateScript::AddHostLocaleToUrl(const GURL& url) {
   return result;
 }
 
-void TranslateScript::Request(RequestCallback callback, bool is_incognito) {
+void TranslateScript::Request(RequestCallback callback,
+                              bool is_incognito,
+                              PrefService* prefs) {
   if (!IsBraveTranslateGoAvailable()) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback), false));
     return;
   }
-  ChromiumTranslateScript::Request(std::move(callback), is_incognito);
+  ChromiumTranslateScript::Request(std::move(callback), is_incognito, prefs);
 }
 
 void TranslateScript::OnScriptFetchComplete(bool success,

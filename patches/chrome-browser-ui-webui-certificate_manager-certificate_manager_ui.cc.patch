@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc b/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc
+index 58f903eb4708afabdcefefcbe62127077ee6dfe2..f752bf822eb77905d866f5f9f3dba5ded5d4c55a 100644
+--- a/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc
++++ b/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc
+@@ -30,8 +30,7 @@
+ namespace {
+ 
+ const char kCRSLearnMoreLink[] =
+-    "https://chromium.googlesource.com/chromium/src/+/main/net/data/ssl/"
+-    "chrome_root_store/faq.md";
++    "https://github.com/brave/brave-browser/wiki/TLS-Policy#root-store";
+ 
+ void AddCertificateManagerV2Strings(content::WebUIDataSource* html_source) {
+   static constexpr webui::LocalizedString kLocalizedStrings[] = {

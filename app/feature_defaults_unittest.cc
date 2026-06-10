@@ -87,6 +87,10 @@
 #include "services/device/public/cpp/device_features.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "chrome/browser/startup/startup_features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
 #include "chrome/browser/media/webrtc/display_media_access_handler.h"
 #endif
@@ -99,6 +103,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillAiServerModel,
       &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
+      &autofill::features::kYourSavedInfoSettingsPage,
       &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
@@ -122,6 +127,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
+#if BUILDFLAG(IS_ANDROID)
+      &chrome::android::kAndroidPageInfoAsAppMenuItem,
+#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
@@ -136,7 +144,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
-      &extensions_features::kExtensionManifestV2Disabled,
       &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
 #endif
@@ -169,7 +176,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
       &features::kIndigo,
-      &features::kInfobarRefresh,
+#if BUILDFLAG(IS_WIN)
+      &features::kLaunchOnStartup,
+#endif
       &features::kNewTabPageTriggerForPrerender2,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
       &features::kPdfInfoBar,
@@ -236,7 +245,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
-      &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
 #if !BUILDFLAG(IS_ANDROID)
       &private_ai::kPrivateAi,

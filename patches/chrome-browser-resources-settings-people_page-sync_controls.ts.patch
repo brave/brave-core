@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index f3074049c1f3a37b679f2571b74f827cb796c1bc..e110dae96b16ccfef52f6953dd59581b65e7d389 100644
+index 19d037da1ed8d050f500fbcf297840ca210ffec4..78783f7f1412914bd2848876e26467af9ffe1a22 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
-@@ -176,7 +176,7 @@ export class SettingsSyncControlsElement extends
+@@ -167,7 +167,7 @@ export class SettingsSyncControlsElement extends
  
      const router = Router.getInstance();
      const currentRoute = router.getCurrentRoute();
@@ -10,8 +10,8 @@ index f3074049c1f3a37b679f2571b74f827cb796c1bc..e110dae96b16ccfef52f6953dd59581b
 +    if (currentRoute === routes.BRAVE_SYNC_SETUP) {
        this.syncBrowserProxy_.didNavigateToSyncPage();
      }
-     // <if expr="not is_chromeos">
-@@ -371,6 +371,7 @@ export class SettingsSyncControlsElement extends
+     if (loadTimeData.getBoolean('replaceSyncPromosWithSignInPromos') &&
+@@ -362,6 +362,7 @@ export class SettingsSyncControlsElement extends
    private disableTypeCheckBox_(
        syncStatus: SyncStatus, syncAllDataTypes: boolean,
        dataTypeManaged: boolean): boolean {

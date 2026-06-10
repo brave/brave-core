@@ -20,8 +20,8 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/simple_message_box.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/branded_strings.h"
@@ -48,7 +48,7 @@ void SkipDNSDialog(PrefService* prefs, bool checked) {
 }
 
 gfx::NativeWindow GetAnchorBrowserWindow() {
-  auto* browser = chrome::FindLastActive();
+  auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   return browser ? browser->GetWindow()->GetNativeWindow()
                  : gfx::NativeWindow();
 }
@@ -94,7 +94,8 @@ void BraveVpnDnsObserverService::ShowVpnDnsSettingsNotificationDialog() {
     dialog_callback_.Run();
     return;
   }
-  BraveVpnDnsSettingsNotificiationDialogView::Show(chrome::FindLastActive());
+  BraveVpnDnsSettingsNotificiationDialogView::Show(
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile());
 }
 
 void BraveVpnDnsObserverService::UnlockDNS() {

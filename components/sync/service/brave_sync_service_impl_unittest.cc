@@ -35,9 +35,10 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
 #include "components/sync/base/data_type.h"
-#include "components/sync/engine/nigori/key_derivation_params.h"
-#include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
+#include "components/sync/nigori/key_derivation_params.h"
+#include "components/sync/nigori/nigori.h"
+#include "components/sync/nigori/required_passphrase_verifier_impl.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/service/glue/sync_transport_data_prefs.h"
 #include "components/sync/test/data_type_manager_mock.h"
@@ -77,8 +78,8 @@ constexpr char kValidSyncCode[] =
 sync_pb::EncryptedData MakeEncryptedData(
     const std::string& passphrase,
     const KeyDerivationParams& derivation_params) {
-  std::unique_ptr<Nigori> nigori =
-      Nigori::CreateByDerivation(derivation_params, passphrase);
+  std::unique_ptr<Nigori> nigori = Nigori::CreateByDerivation(
+      syncer::NigoriPassKey::ForTesting(), derivation_params, passphrase);
 
   std::string nigori_name = nigori->GetKeyName();
   const std::string unencrypted = "test";
@@ -302,8 +303,9 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   std::string wrong_seed = "123";
   std::string encrypted_wrong_seed;
   os_crypt_async_->GetInstance(base::BindLambdaForTesting(
-      [&wrong_seed, &encrypted_wrong_seed](os_crypt_async::Encryptor e) {
-        EXPECT_TRUE(e.EncryptString(wrong_seed, &encrypted_wrong_seed));
+      [&wrong_seed,
+       &encrypted_wrong_seed](scoped_refptr<os_crypt_async::Encryptor> e) {
+        EXPECT_TRUE(e->EncryptString(wrong_seed, &encrypted_wrong_seed));
       }));
 
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
@@ -339,9 +341,10 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // supplying the encrypted portion of data, as it is done in
   // sync_service_crypto_unittest.cc
   brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
-      KeyDerivationParams::CreateForPbkdf2(),
-      MakeEncryptedData(kValidSyncCode,
-                        KeyDerivationParams::CreateForPbkdf2()));
+      std::make_unique<RequiredPassphraseVerifierImpl>(
+          KeyDerivationParams::CreateForPbkdf2(),
+          MakeEncryptedData(kValidSyncCode,
+                            KeyDerivationParams::CreateForPbkdf2())));
 
   EXPECT_TRUE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
@@ -370,9 +373,10 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
 
   brave_sync_service_impl()->GetCryptoForTesting()->Reset();
   brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
-      KeyDerivationParams::CreateForPbkdf2(),
-      MakeEncryptedData(kValidSyncCode,
-                        KeyDerivationParams::CreateForPbkdf2()));
+      std::make_unique<RequiredPassphraseVerifierImpl>(
+          KeyDerivationParams::CreateForPbkdf2(),
+          MakeEncryptedData(kValidSyncCode,
+                            KeyDerivationParams::CreateForPbkdf2())));
   brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
       KEEP_METADATA);
 
@@ -470,12 +474,12 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
 
   // Valid encrypted data but for a different key (e.g. key rotation or data
   // from another machine) must fail decryption.
-  std::unique_ptr<os_crypt_async::Encryptor> original_encryptor =
+  scoped_refptr<os_crypt_async::Encryptor> original_encryptor =
       brave_sync_service_impl()->SetEncryptorForTesting(
           os_crypt_async::GetTestEncryptorForTesting());
   ASSERT_TRUE(brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode));
   brave_sync_service_impl()->SetEncryptorForTesting(
-      std::move(*original_encryptor));
+      std::move(original_encryptor));
 
   EXPECT_FALSE(brave_sync_service_impl()->GetSeed().has_value());
   EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),
@@ -958,8 +962,6 @@ class BraveSyncServiceImplGACookiesTest
 };
 
 TEST_P(BraveSyncServiceImplGACookiesTest, CacheGuidIsNotWiped) {
-  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
-
   SyncTransportDataPrefs sync_transport_data_prefs(
       pref_service(), signin::GaiaIdHash::FromGaiaId(GaiaId("user_gaia_id")));
 

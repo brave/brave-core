@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h
+index 8be26323ee2c23f64045b76619363100162d2fa4..6a1e26d269a85b28bfbd5bef27abf158c5f5958b 100644
+--- a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h
++++ b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h
+@@ -48,6 +48,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
+   void DoPostLayoutCleanup() override;
+ 
+  private:
++  friend class BraveBrowserViewTabbedLayoutImpl;
+   struct HorizontalLayout;
+   struct SeparatorInfo;
+   struct TransientLayoutData;
+@@ -74,7 +75,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
+       const BrowserLayoutParams& params) const;
+ 
+   // Returns the leading margin for the horizontal tab strip region.
+-  int GetHorizontalTabStripLeadingMargin(
++  virtual int GetHorizontalTabStripLeadingMargin(
+       const BrowserLayoutParams& params) const;
+ 
+   // Returns whether to make small adjustments to avoid visual "cracking" due to
+@@ -94,7 +95,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
+   HorizontalLayout CalculateHorizontalLayout(BrowserLayoutParams& params) const;
+   VerticalTabStripAnimation CalculateVerticalTabStripAnimation();
+   int GetCollapsedVerticalTabStripRelativeTop() const;
+-  SeparatorInfo CalculateSeparatorInfo() const;
++  virtual SeparatorInfo CalculateSeparatorInfo() const;
+ 
+   std::unique_ptr<TransientLayoutData> layout_data_;
+ 

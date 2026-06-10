@@ -13,6 +13,15 @@
     <message name="IDS_GEOLOCATION_APPROXIMATE_INFOBAR_TEXT" desc="Mobile: Text requesting permission for a site to access the user's approximate location">
       <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your approximate location
     </message>
+    <message name="IDS_GEOLOCATION_UPGRADE_INFOBAR_TEXT" desc="Mobile: Text requesting to upgrade location access from approximate to precise.">
+      <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to change location access from approximate to precise
+    </message>
+    <message name="IDS_GEOLOCATION_UPGRADE_CHANGE_TO_PRECISE" desc="Label on button to upgrade location access from approximate to precise.">
+      Change to precise
+    </message>
+    <message name="IDS_GEOLOCATION_UPGRADE_KEEP_APPROXIMATE" desc="Label on button to keep approximate location access instead of upgrading to precise.">
+      Keep approximate location
+    </message>
     <message name="IDS_ACCESSIBILITY_EVENTS_INFOBAR_TEXT" desc="Text requesting permission for a site to listen to accessibility events, for example if the user has a screen reader or braille device enabled">
       <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to respond to accessibility events
     </message>
@@ -33,9 +42,6 @@
     </message>
     <message name="IDS_IDLE_DETECTION_INFOBAR_TEXT" desc="Text requesting permission for a site to know when the user is idle.">
       <ph name="URL">$1<ex>google.com</ex></ph> wants to know when you're actively using this device
-    </message>
-    <message name="IDS_LOCAL_NETWORK_ACCESS_INFOBAR_TEXT" desc="Text requesting permission for a site to access the user's local network.">
-      <ph name="URL">$1<ex>google.com</ex></ph> wants to look for and connect to any device on your local network
     </message>
     <message name="IDS_LOCAL_NETWORK_INFOBAR_TEXT" desc="Text requesting permission for a site to access devices on the user's local network.">
       <ph name="URL">$1<ex>google.com</ex></ph> wants to access other devices on your local network
@@ -216,9 +222,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
   </message>
   <message name="IDS_WEB_APP_INSTALLATION_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests to install a web app.">
     Be able to install web apps
-  </message>
-  <message name="IDS_LOCAL_NETWORK_ACCESS_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests to access the devices on the user's local network.">
-    Look for and connect to any device on your local network
   </message>
   <message name="IDS_LOCAL_NETWORK_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests to access other devices on the user's local network.">
     Access other devices on your local network

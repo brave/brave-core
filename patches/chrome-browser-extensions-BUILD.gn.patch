@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 616f08e5a5074624c5353168c25844eb7603d9af..373f0e0e17f841da58eb0bdb7e7b29aaf80374c8 100644
+index e0eeeb2cafba597d921598d2c209e07e115c8040..81a32821a7174c1a5cfef743532a13b3985eb0c1 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1558,6 +1558,7 @@ source_set("extensions") {
-       "api/tabs/app_window_helper.h",
-     ]
-   }
-+  deps += brave_extensions_resources
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- static_library("test_support") {
++import("//brave/browser/extensions/resources.gni")
+ import("//build/config/chromebox_for_meetings/buildflags.gni")
+ import("//build/config/features.gni")
+ import("//build/config/ozone.gni")
+@@ -636,6 +637,7 @@ source_set("extensions") {
+     "//ui/native_window_tracker",
+     "//ui/shell_dialogs",
+   ]
++  deps += brave_extensions_resources
+   public_deps = [
+     "//chrome/browser/extensions/api/messaging",
+     "//chrome/browser/media/webrtc",

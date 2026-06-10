@@ -87,7 +87,6 @@ import java.util.function.Supplier;
 @NullMarked
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private final AppMenuDelegate mBraveAppMenuDelegate;
-    private final NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private final Context mBraveContext;
     private boolean mJunitIsTesting;
 
@@ -262,7 +261,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 openInAppMenuItemProvider);
 
         mBraveAppMenuDelegate = appMenuDelegate;
-        mBookmarkModelSupplier = bookmarkModelSupplier;
         mBraveContext = context;
     }
 
@@ -788,7 +786,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
                             buildModelForStandardMenuItem(
-                                    R.id.universal_install, R.string.menu_add_to_homescreen, 0)));
+                                    R.id.universal_install,
+                                    R.string.menu_install_create_shortcut,
+                                    0)));
         }
 
         // RDS

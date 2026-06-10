@@ -43,9 +43,6 @@ class BraveBrowser : public Browser {
       const base::RepeatingCallback<void(bool)>& on_close_confirmed) override;
   void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
   void ResetTryToCloseWindow() override;
-  bool NormalBrowserSupportsWindowFeature(
-      WindowFeature feature,
-      bool check_can_support) const override;
   content::WebContents* AddNewContents(
       content::WebContents* source,
       std::unique_ptr<content::WebContents> new_contents,
@@ -55,7 +52,8 @@ class BraveBrowser : public Browser {
       bool user_gesture,
       bool* was_blocked) override;
 
-  void OnTabClosing(content::WebContents* contents) override;
+  void OnTabClosing(tabs::TabInterface* tab,
+                    bool* had_active_modal_dialog) override;
   void TabStripEmpty() override;
 
   void RunFileChooser(content::RenderFrameHost* render_frame_host,

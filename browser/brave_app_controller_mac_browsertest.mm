@@ -27,8 +27,9 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/cocoa/bookmarks/bookmark_menu_bridge.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
@@ -87,7 +88,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   ASSERT_TRUE(embedded_test_server()->Start());
   GURL url = embedded_test_server()->GetURL(kTestingPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
   BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
       BraveBrowserView::GetBrowserViewForBrowser(browser()));
@@ -119,7 +120,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   ASSERT_TRUE(embedded_test_server()->Start());
   GURL url = embedded_test_server()->GetURL(kTestingPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
   BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
       BraveBrowserView::GetBrowserViewForBrowser(browser()));
@@ -151,7 +152,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
-  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
   OmniboxView* omnibox_view =
       browser()->window()->GetLocationBar()->GetOmniboxView();
   omnibox_view->SetUserText(u"any text");
@@ -182,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   ASSERT_TRUE(embedded_test_server()->Start());
   GURL url = embedded_test_server()->GetURL(kTestingPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
   BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
       BraveBrowserView::GetBrowserViewForBrowser(browser()));
@@ -275,7 +276,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorItemEnabled) {
   [ac executeCommand:tor_menu withProfile:browser()->profile()];
   base::RunLoop().RunUntilIdle();
 
-  BrowserWindowInterface* tor_window = chrome::FindLastActive();
+  BrowserWindowInterface* tor_window =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   EXPECT_TRUE(tor_window);
   EXPECT_TRUE(tor_window->GetProfile()->IsTor());
 }

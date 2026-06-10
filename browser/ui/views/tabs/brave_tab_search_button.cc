@@ -40,7 +40,7 @@ void BraveTabSearchButton::UpdateColors() {
   // Use a custom icon for tab search.
   constexpr int kIconSize = 18;
   const ui::ImageModel icon_image_model = ui::ImageModel::FromVectorIcon(
-      vector_icons::kCaretDownIcon, GetForegroundColor(), kIconSize);
+      vector_icons::kCaretDownOldIcon, GetForegroundColor(), kIconSize);
   SetImageModel(views::Button::STATE_NORMAL, icon_image_model);
   SetImageModel(views::Button::STATE_HOVERED, icon_image_model);
   SetImageModel(views::Button::STATE_PRESSED, icon_image_model);

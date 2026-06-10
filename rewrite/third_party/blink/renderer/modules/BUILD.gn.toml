@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Extend the file-scope modules visibility with brave entries.
+'''
+re_pattern = '(^visibility = \[.*?\])'
+re_flags = ['DOTALL', 'MULTILINE']
+replace = '\1\nvisibility += brave_blink_renderer_modules_visibility'
+
+[[substitution]]
+description = '''brave_blink_sub_modules add to `component("modules")`.
+
+Anchored right after the initial `sub_modules = [ ... ]` assignment so that
+the brave entries are always part of `sub_modules` before it is consumed
+(via `public_deps = sub_modules` and `allow_circular_includes_from =
+sub_modules`), regardless of the order in which those consumers appear.
+Without this, brave sub modules never become public_deps of
+`component("modules")` and their symbols fail to link into
+libblink_modules.so.
+'''
+re_pattern = '(component\("modules"\) \{.*?sub_modules = \[.*?\])'
+re_flags = ['DOTALL']
+replace = '''\1
+  sub_modules += brave_blink_sub_modules'''

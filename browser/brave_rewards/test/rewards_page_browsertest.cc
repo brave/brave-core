@@ -65,9 +65,9 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   }
 
   std::optional<std::string> EncryptPrefString(const std::string& value) {
-    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    base::test::TestFuture<scoped_refptr<os_crypt_async::Encryptor>> future;
     g_browser_process->os_crypt_async()->GetInstance(future.GetCallback());
-    if (auto result = future.Get<0>().EncryptString(value)) {
+    if (auto result = future.Get<0>()->EncryptString(value)) {
       return base::Base64Encode(base::as_string_view(result.value()));
     }
     return std::nullopt;

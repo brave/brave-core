@@ -4,11 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Add fields to StartupTab'
-    pattern: |-
-      Type type;
+  - description: 'Append Brave members at the end of struct StartupTab'
+    re_pattern: '(struct StartupTab \{.*?)(\n\};)'
+    re_flags: [DOTALL]
     replace: |-
-      Type type;
+      \1
+
       #if BUILDFLAG(ENABLE_CONTAINERS)
         containers::ContainerSpecifier container;
       #endif
@@ -16,4 +17,4 @@ substitutions:
         StartupTab(const StartupTab&);
         StartupTab& operator=(const StartupTab&);
         StartupTab(StartupTab&&) noexcept;
-        StartupTab& operator=(StartupTab&&) noexcept;
+        StartupTab& operator=(StartupTab&&) noexcept;\2

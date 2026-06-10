@@ -344,11 +344,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." formatter_data="android_java">
         Brave Enterprise logo
       </message>
-      <if expr="is_win">
-        <message name="IDS_SHORTCUT_NEW_WINDOW" desc="The text label of the New window shortcut context menu entry as of Windows 8">
-          New window
-        </message>
-      </if>
       <if expr="is_macosx or is_chromeos">
         <message name="IDS_TASK_MANAGER_TITLE" desc="The title of the Task Manager window">
           Task Manager
@@ -587,12 +582,30 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
           Uninstall Brave
         </message>
       </if>
+      <!-- Default Browser messages -->
       <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER" desc="Default browser checkbox label">
         Make Brave the default browser
       </message>
       <message name="IDS_DEFAULT_BROWSER_CHANGED_MESSAGE" desc="Body of the notification shown when Brave is no longer the default browser.">
         Brave is no longer your default browser. Make Brave the default browser?
       </message>
+      <if expr="is_win">
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_PAGE_TITLE" desc="Title of the default browser visual guided setter page.">
+          Set Brave as your default browser
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_HEADER_TITLE" desc="Header text of the default browser visual guided setter.">
+          Use Brave recommended browser settings
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_CONTENT_TITLE" desc="Content title of the default browser visual guided setter.">
+          Set Brave as your default browser
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_CONTENT_DESCRIPTION" desc="Body text of the default browser visual guided setter.">
+          Get easy access to the features you know, love, and trust by setting Brave as your default browser.
+        </message>
+        <message name="IDS_DEFAULT_BROWSER_VISUAL_GUIDED_SETTER_INSTRUCTION_STEP_2" desc="Instruction step 2 of the default browser visual guided setter. $1 is the bold button name.">
+          Click <ph name="BEGIN_BOLD">&lt;strong&gt;</ph>Yes<ph name="END_BOLD">&lt;/strong&gt;</ph> in the Windows notification to pin Brave to your taskbar for quick access.
+        </message>
+      </if>
       <if expr="use_titlecase">
         <message name="IDS_STATUS_TRAY_KEEP_CHROME_RUNNING_IN_BACKGROUND" desc="In Title Case: The checkbox in the status tray context menu that controls whether chrome keeps running in the background after the last window is closed">
           Let Brave Run in the Background
@@ -790,6 +803,9 @@ Brave is unable to recover your settings.
         <message name="IDS_DEFAULT_BROWSER_BUBBLE_DIALOG_BODY" desc="Main explanatory text in the default browser dialog.">
           Get easy access to the features you know, love, and trust by setting Brave as your default browser.
         </message>
+        <message name="IDS_DEFAULT_BROWSER_SUCCESS_TOAST_BODY" desc="Body text of the toast shown when Brave is successfully set as the default browser.">
+          Brave is now your default browser
+        </message>
         <message name="IDS_DEFAULT_BROWSER_BUBBLE_DIALOG_STEPS_PINNED_COMBINED" desc="Numbered instructions. $1, $2 and $3 are the bold button names.">
           1. Click <ph name="BUTTON_LABEL">$1<ex>Open settings</ex></ph> below
 2. Click <ph name="BUTTON_2">$2<ex>Set default</ex></ph> in your Windows settings
@@ -799,6 +815,11 @@ Brave is unable to recover your settings.
       <if expr="is_win or is_macosx">
         <message name="IDS_PDF_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the default PDF viewer.">
           Set Brave as your default PDF viewer
+        </message>
+      </if>
+      <if expr="enable_pdf">
+        <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT" desc="Text of the In Product Help message shown for the button to summarize PDF.">
+          Get a quick overview of this document and ask questions with Gemini in Brave
         </message>
       </if>
       <!-- Download Bubble Items -->
@@ -998,6 +1019,11 @@ Brave is unable to recover your settings.
           To make Brave safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
         </message>
       </if>
+
+      <!-- Anchored Message-->
+      <message name="IDS_ANCHORED_MESSAGE_MENU_TOOLTIP" desc="Tooltip for the anchored message menu.">
+        More options
+      </message>
 
       <!-- Main Brave menu -->
       <message name="IDS_APPMENU_TOOLTIP" desc="The tooltip to show for the browser menu">
@@ -1354,15 +1380,6 @@ Brave is unable to recover your settings.
         <message name="IDS_CLOSE_WARNING_FOR_CLEAR_COOKIES_ON_EXIT_TEXT" desc="Body of a notice displayed when closing the last Brave window, to inform the user about a change in the way the 'Clear cookie on exit' setting works.">
           You’ll be signed out of most sites when you close all Brave windows, except your Brave sync chain if you’re signed in to Brave. To let sites remember you, <ph name="SETTINGS_LINK">$1<ex>go to settings</ex></ph>.
         </message>
-        <message name="IDS_SYNC_PASSPHRASE_DIALOG_FOOTER" desc="Dialog footer of the passphrase dialog.">
-          If you forgot your passphrase or want to change this setting, <ph name="SETTINGS_LINK">$1<ex>clear</ex></ph> the Brave data in your account
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_DIALOG_FOOTER_LINK_ACC" desc="Accessibility label for the link in the footer of the sync passhprase dialog">
-          Clear the Brave data in your account
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_DIALOG_BODY" desc="Body of the sync passphrase dialog.">
-          Your data is encrypted with your passphrase. Enter it to use and save Brave data in your Brave sync chain.
-        </message>
         <message name="IDS_AVATAR_BUTTON_INTERCEPT_BUBBLE_CHROME_SIGNIN_ACCESSIBILITY_LABEL" desc="Accessibility label (read by the accessibility tools) of the avatar button when the Brave Signin bubble is shown. The text implies that the expanded bubble underneath the button is closable by clicking on the button. The actual text is 'Sign in to Brave?' with a bubble shown under it.">
           Click to close the Brave sign-in dialog
         </message>
@@ -1378,6 +1395,16 @@ Brave is unable to recover your settings.
           To get your addresses and more on all your devices, sign in to Brave. This address will be saved in your Brave sync chain after you sign in.
         </message>
       </if>
+
+      <message name="IDS_SYNC_PASSPHRASE_DIALOG_FOOTER" desc="Dialog footer of the passphrase dialog.">
+        If you forgot your passphrase or want to change this setting, <ph name="SETTINGS_LINK">$1<ex>clear</ex></ph> the Brave data in your account
+      </message>
+      <message name="IDS_SYNC_PASSPHRASE_DIALOG_FOOTER_LINK_ACC" desc="Accessibility label for the link in the footer of the sync passphrase dialog">
+        Clear the Brave data in your account
+      </message>
+      <message name="IDS_SYNC_PASSPHRASE_DIALOG_BODY" desc="Body of the sync passphrase dialog.">
+        Your data is encrypted with your passphrase. Enter it to use and save Brave data in your Brave sync chain.
+      </message>
 
       <if expr="not is_chromeos and not is_android">
         <!-- Profile Customization Web UI -->
@@ -1397,11 +1424,26 @@ Brave is unable to recover your settings.
         <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error notification when the user's sign-in credentials are out of date.">
           ChromeOS could not sync your data because your account sign-in details are out of date.
         </message>
+        <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE_2" desc="Message in the sign-in error notification when the user's sign-in credentials are out of date.">
+          ChromeOS could not save Brave data in your Brave sync chain because your account sign-in details are out of date
+        </message>
         <message name="IDS_SYNC_UNAVAILABLE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error notification when sync is not available for their domain.">
           ChromeOS could not sync your data because Sync is not available for your domain.
         </message>
         <message name="IDS_SYNC_OTHER_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error notification when there's an error signing in.">
           ChromeOS could not sync your data due to an error signing in.
+        </message>
+        <message name="IDS_SYNC_OTHER_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE_2" desc="Message in the sign-in error notification when there's an error signing in.">
+          ChromeOS could not save Brave data in your Brave sync chain due to an error signing in
+        </message>
+        <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_MESSAGE_2" desc="Message in the sync error bubble view when the user needs to enter their sync passphrase.">
+          To use and save Brave data in your Brave sync chain, enter your passphrase
+        </message>
+        <message name="IDS_SYNC_NEEDS_KEYS_FOR_EVERYTHING_ERROR_BUBBLE_VIEW_MESSAGE_2" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys and resume sync.">
+          To use and save Brave data in your Brave sync chain, verify it's you
+        </message>
+        <message name="IDS_SYNC_RECOVERABILITY_DEGRADED_FOR_EVERYTHING_ERROR_BUBBLE_VIEW_MESSAGE_2" desc="Message in the sync error notification when the user needs to reauth to add recovery options, affecting all sync data.">
+          To make sure you can always use and save Brave data in your Brave sync chain, verify it's you
         </message>
       </if>
 
@@ -1466,13 +1508,6 @@ Brave is unable to recover your settings.
       <if expr="is_win">
         <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Brave Origin Beta Apps</message>
         <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Brave Origin Dev Apps</message>
-      </if>
-
-      <!-- ChromeOS OOBE Terms of Service screen-->
-      <if expr="is_chromeos">
-        <message name="IDS_TERMS_OF_SERVICE_SCREEN_SUBHEADING" desc="Subheading at the top of the Terms of Service screen. MANAGER can be a domain or an email address.">
-          <ph name="MANAGER">$1<ex>example.com</ex></ph> requires that you read and accept the following Terms of Service before using this device. These terms do not expand, modify or limit the ChromeOS Terms.
-        </message>
       </if>
 
       <!-- MediaStream capture status tray icon -->
@@ -1622,12 +1657,18 @@ Brave is unable to recover your settings.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
             Open link in Brave &amp;private window
           </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP_V2" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
+            Open link in Brave &amp;Private window
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="In Title Case: The name of the command to open a link in a newly created browser tab when the user is in an app window">
             Open Link in New Brave &amp;tab
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
+            Open Link in Brave &amp;Private Window
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP_V2" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
             Open Link in Brave &amp;Private Window
           </message>
         </if>
@@ -2064,6 +2105,9 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_OVERLAY_TAB_ENTRYPOINT_LABEL" desc="Label for the Lens overlay command, through which the current tab will be searched using the Image Search service.">
           Search this tab with Image Search
         </message>
+        <message name="IDS_LENS_OVERLAY_TAB_ENTRYPOINT_LABEL_V2" desc="Label for the Lens overlay command, through which the current tab will be searched using the Image Search service.">
+          Search with Image Search
+        </message>
         <message name="IDS_LENS_OVERLAY_VIDEO_ENTRYPOINT_LABEL_ALT1" desc="Label for the Lens overlay command, through which the user can ask questions about the video.">
           Ask about this video
         </message>
@@ -2374,20 +2418,8 @@ Brave is unable to recover your settings.
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_V2" desc="Title of a screen that lets the user choose which profile to use when browsing the web. *If the EN source doesn't translate well in your language, an alternative string 'Which Brave profile would you like to use?' may be used instead">
           Who's using Brave?
         </message>
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_KEEP_EVERYTHING_IN_CHROME" desc="Profile picker main view title.">
-          Keep everything in Brave
-        </message>
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE" desc="Profile picker main view subtitle">
           With Brave profiles, you can separate all your Brave stuff. Create profiles for friends and family, or split between work and fun.
-        </message>
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_KEEP_WORK_AND_LIFE_SEPARATE" desc="Profile picker main view subtitle.">
-          Brave profiles let you keep personal browsing and work apart. Add a new profile now.
-        </message>
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_GOT_ANOTHER_GOOGLE_ACCOUNT" desc="Profile picker main view subtitle.">
-          Brave profiles help you separate different parts of your life. Add a new profile now.
-        </message>
-        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_KEEP_TASKS_SEPARATE" desc="Profile picker main view subtitle.">
-          Add a new Brave profile to keep bookmarks, passwords, and settings apart.
         </message>
         <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_TITLE" desc="Profile picker profile type choice title">
           Set up your new Brave profile
@@ -2544,7 +2576,7 @@ Brave is unable to recover your settings.
           Brave
         </message>
         <message name="IDS_NO_UPDATE_RESPONSE" desc="Updater response for no updates when handling install result.">
-          No update is available.
+          No update is available
         </message>
         <message name="IDS_INSTALL_UPDATER_FAILED" desc="Updater response for failure when handling install result.">
           Installation failed. Please try again.
@@ -2574,7 +2606,7 @@ Brave is unable to recover your settings.
           Downloading... <ph name="HOURS">$1<ex>0</ex></ph> hour(s) remaining
         </message>
         <message name="IDS_DOWNLOADING_COMPLETED" desc="For when donwload is completed.">
-          Download complete.
+          Download complete
         </message>
         <message name="IDS_DOWNLOADING" desc="For when time remaining is less than 0.">
           Downloading...
@@ -2610,7 +2642,7 @@ Brave is unable to recover your settings.
           Help
         </message>
         <message name="IDS_INSTALLATION_STOPPED_WINDOW_TITLE" desc="For dialog when user chooses to close the installation window.">
-          Installation Stopped.
+          Installation Stopped
         </message>
         <message name="IDS_INSTALL_STOPPED" desc="Message of the dialog when user chooses to close the installation window.">
           Installation not complete. Are you sure you want to cancel?
@@ -2622,7 +2654,7 @@ Brave is unable to recover your settings.
           Cancel Installation
         </message>
         <message name="IDS_BUNDLE_INSTALLED_SUCCESSFULLY" desc="Installation complete message.">
-          Installation complete.
+          Installation complete
         </message>
         <message name="IDS_UPDATER_OS_NOT_SUPPORTED" desc="Error displayed if the OS is not supported">
           Installation failed because your version of Windows is not supported.
@@ -2831,7 +2863,7 @@ Brave is unable to recover your settings.
       <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is closed." formatter_data="android_java">
         Open Gemini in Brave
       </message>
-      <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP_CLOSE" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is open.">
+      <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP_CLOSE" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is open." formatter_data="android_java">
         Close Gemini in Brave
       </message>
 
@@ -2899,11 +2931,33 @@ Brave is unable to recover your settings.
       <message name="IDS_SETTINGS_GLIC_ROW_LABEL" translateable="false" desc="Label of the Glic row button on the AI settings page leading to the Glic subpage.">
         Gemini in Brave
       </message>
-      <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen">
-        Let Brave browse for you
+      <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE_SUBLABEL" desc="Sublabel of the toggle that controls whether the Gemini icon is shown in the tabstrip." formatter_data="android_java">
+        Quickly open Gemini in Brave whenever you need it
       </message>
-      <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_SUBLABEL" desc="Subheader explaining what the Gemini feature does">
-        Gemini in Brave uses auto browse to work in your tabs and complete tasks you give it. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+      <if expr="is_macosx">
+        <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE" desc="Name of the toggle that controls whether the Gemini icon is shown in the MacOS menu bar (on Mac only).">
+          Show Gemini in Brave in Mac menu bar and turn on keyboard shortcut
+        </message>
+      </if>
+      <if expr="is_win or is_linux or is_chromeos">
+        <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE" desc="Name of the toggle that controls whether the Gemini icon is shown in the system tray (on ChromeOS, Windows and Linux).">
+          Show Gemini in Brave in system tray and turn on keyboard shortcut
+        </message>
+      </if>
+      <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE_SUBLABEL" desc="Sublabel of the toggle that controls whether the Gemini icon is shown in the menu bar (on Mac) / system tray (on Windows and Linux).">
+        Easy access to use Gemini in Brave across your device, even if Brave is minimized.
+      </message>
+      <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut that's used to globally invoke Gemini.">
+        Open Gemini in Brave with a keyboard shortcut.
+      </message>
+      <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut navigate between Brave and Gemini.">
+        To leave or return to Gemini in Brave, use keyboard shortcut.
+      </message>
+      <message name="IDS_SETTINGS_GLIC_KEEP_SIDEPANEL_OPEN_ON_NEW_TABS_SUBLABEL" desc="Sublabel describing the setting to keep side panel open when new tabs are opened.">
+        If Gemini in Brave is open, the side panel stays open when creating new tabs
+      </message>
+      <message name="IDS_SETTINGS_GLIC_SELECTION_SHORTCUT_SUBLABEL" desc="Sublabel describing the selection shortcut triggering in Gemini.">
+        To select part of the screen in Gemini in Brave, use keyboard shortcut.
       </message>
 
       <!-- Profile Picker Glic version-->
@@ -2926,10 +2980,6 @@ Brave is unable to recover your settings.
       <!-- Glic button and tab strip context menu -->
       <message name="IDS_GLIC_CONTEXTUAL_CUEING_ANNOUNCEMENT" desc="Polite announcement that happens when a contextual nudge is shown next to the Glic button." translateable="false">
         To open Gemini in Brave, press <ph name="GLOBAL_HOTKEY">$1<ex>⌘+G</ex></ph>
-      </message>
-      <!-- Variant of the label on the Gemini button in the tabstrip-->
-      <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_BROWSER_LABEL" desc="Label on the button used to open Gemini in Brave.">
-        Ask Brave
       </message>
 
       <!-- UNO Promo strings for extensions -->
@@ -3011,20 +3061,11 @@ Brave is unable to recover your settings.
         <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_QR" desc="The description for the iOS desktop password promo bubble footer which lets the user know how to use their saved passwords on their phone: follow the QR code, download Brave for iOS and sign in to their account.">
           To use your saved passwords, follow the QR code, download Brave for iOS and sign in to your Brave sync chain
         </message>
-        <message name="IDS_IOS_DESKTOP_LENS_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Lens promo notification.">
-          Brave Tip: Search With Lens
-        </message>
-        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Password promo notification.">
-          Brave Tip: Save Passwords
-        </message>
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_DESCRIPTION_QR" desc="The description for the iOS desktop price tracking promo bubble with a QR code.">
           Download Brave on your phone to track prices and get alerts when the price drops on any site
         </message>
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after the user chooses to be reminded of price tracking on their iOS device.">
           Next time you open Brave on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>, you’ll see a prompt to enable price tracking alerts.
-        </message>
-        <message name="IDS_IOS_DESKTOP_SAFE_BROWSING_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Enhanced Safe Browsing promo notification.">
-          Brave Tip: Enhanced Safe Browsing
         </message>
         <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop Tab Groups promo bubble with a QR code.">
           Download Brave on your phone to open or create new tab groups on the go.
@@ -3062,40 +3103,18 @@ Brave is unable to recover your settings.
           We use info to improve this service. See Privacy Policy and Terms of Service.
       </message>
 
-      <!-- Indigo Strings -->
-      <message name="IDS_INDIGO_ENTRYPOINT_CHIP_TEXT" desc="The text on the Indigo entry point chip in the omnibox." translateable="false">
-        Indigo
-      </message>
-      <message name="IDS_INDIGO_ENTRYPOINT_CHIP_TOOLTIP_TEXT" desc="The tooltip text of the Indigo entry point chip in the omnibox when in hover state." translateable="false">
-        Indigo tooltip text
-      </message>
-      <message name="IDS_INDIGO_ENTRYPOINT_ANCHORED_MESSAGE_TEXT" desc="The text shown in the anchored message bubble for the Indigo page action." translateable="false">
-        Indigo is available for this page
-      </message>
-      <message name="IDS_INDIGO_TITLE" desc="Title for the Indigo page." translateable="false">
-        Indigo
-      </message>
-      <message name="IDS_INDIGO_TEXT_LAYER_STEP_1" desc="The text for step 1 of the Indigo text layer." translateable="false">
-        Loading (1/3)...
-      </message>
-      <message name="IDS_INDIGO_TEXT_LAYER_STEP_2" desc="The text for step 2 of the Indigo text layer." translateable="false">
-        Loading (2/3)...
-      </message>
-      <message name="IDS_INDIGO_TEXT_LAYER_STEP_3" desc="The text for step 3 of the Indigo text layer." translateable="false">
-        Loading (3/3)...
-      </message>
-      <message name="IDS_INDIGO_DISCLAIMER_LINE_1" desc="First line of disclaimer in text overlay." translateable="false">
-        Generative AI can make mistakes.
-      </message>
-      <message name="IDS_INDIGO_DISCLAIMER_LINE_2" desc="Second line of disclaimer in text overlay." translateable="false">
-        Appearance won't be exact
-      </message>
-
       <!-- JS optimizations bubble -->
       <message name="IDS_JS_OPTIMIZATION_BUBBLE_BODY_NON_POLICY_BODY" desc="Body text for the JavaScript optimization bubble when disabled for other reasons.">
-        Brave turns off JavaScript optimization when you visit a site for the first time.
+        For security, Brave turns off JavaScript optimization when you visit a site for the first time.
 
 If this page isn’t working as expected, try allowing optimization.
+      </message>
+      <!-- Send Tab To Self -->
+      <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_TITLE" desc="Title of the send-tab-to-self sign-in promo bubble.">
+        Sign in to Brave
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_BUTTON_LABEL" desc="Label of the sign-in button in the send-tab-to-self sign-in promo bubble.">
+        Sign in to Brave
       </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta

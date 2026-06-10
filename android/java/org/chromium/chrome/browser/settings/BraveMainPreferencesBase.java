@@ -117,6 +117,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_DOWNLOADS = "brave_downloads";
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
     private static final String PREF_SAFETY_CHECK = "safety_check";
+    private static final String PREF_TOOLBAR_SHORTCUT = "toolbar_shortcut";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable BraveAccountSectionController mAccountController;
@@ -244,7 +245,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Below prefs are removed from main settings.
         removePreferenceIfPresent(MainSettings.PREF_SIGN_IN);
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
-        removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
         removePreferenceIfPresent(MainSettings.PREF_DOWNLOADS);
         removePreferenceIfPresent(PREF_SAFETY_CHECK);
         removePreferenceIfPresent(MainSettings.PREF_SAFETY_HUB);
@@ -465,9 +465,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // We want to move the address bar preference to the Appearence settings.
         removePreferenceIfPresent(MainSettings.PREF_ADDRESS_BAR);
 
-        // We want to move toolbar shortcut preference to the Appearence settings.
-        removePreferenceIfPresent(MainSettings.PREF_TOOLBAR_SHORTCUT);
-
         // We have our own Appearance settings so we don't need the upstream's one.
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
 
@@ -530,8 +527,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
         updatePreferenceIcon(MainSettings.PREF_AUTOFILL_OPTIONS, R.drawable.ic_autofill);
-        updatePreferenceIcon(
-                MainSettings.PREF_TOOLBAR_SHORTCUT, R.drawable.ic_browser_customizable_shortcut);
+        updatePreferenceIcon(PREF_TOOLBAR_SHORTCUT, R.drawable.ic_browser_customizable_shortcut);
     }
 
     private void updateSearchEnginePreference() {
@@ -829,7 +825,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_PRIVACY));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_APPEARANCE));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_ADDRESS_BAR));
-                    indexData.removeEntry(getUniqueId(MainSettings.PREF_TOOLBAR_SHORTCUT));
                     // Account section is only shown when Brave Account is enabled.
                     if (!BraveAccountFeatures.isBraveAccountEnabled()) {
                         for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {

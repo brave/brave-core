@@ -300,8 +300,14 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
 
   browser_task_environment_.FastForwardBy(kOneSecond);
 
+  // Use MEDIASTREAM_MIC rather than GEOLOCATION: on Android,
+  // kApproximateGeolocationPermission routes GEOLOCATION to
+  // GEOLOCATION_WITH_OPTIONS, which mismatches the pref key ("geolocation" vs
+  // "geolocation-with-options") and causes ResetPermission to crash because
+  // SetContentSettingDefaultScope CHECKs the type is in ContentSettingsRegistry
+  // and GEOLOCATION_WITH_OPTIONS is not.
   auto request2(CreateRequestAndAllowContentSetting(
-      kOrigin2, ContentSettingsType::GEOLOCATION, kLifetime));
+      kOrigin2, ContentSettingsType::MEDIASTREAM_MIC, kLifetime));
   const base::Time expected_expiration_time2 =
       base::Time::Now() + *request2->GetLifetime();
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
@@ -314,7 +320,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
       {"notifications",
        base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
                                 .InMicroseconds()),
-       kOrigin.spec(), "geolocation",
+       kOrigin.spec(), "media-stream-mic",
        base::NumberToString(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
                                 .InMicroseconds()),
        kOrigin2.spec()});
@@ -323,17 +329,19 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   browser_task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
-  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::GEOLOCATION,
+  ExpectContentSetting(FROM_HERE, kOrigin2,
+                       ContentSettingsType::MEDIASTREAM_MIC,
                        ContentSetting::CONTENT_SETTING_ALLOW);
   CheckExpirationsPref(
       FROM_HERE, kOneTypeOneExpirationPrefValue,
-      {"geolocation",
+      {"media-stream-mic",
        base::NumberToString(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
                                 .InMicroseconds()),
        kOrigin2.spec()});
 
   browser_task_environment_.FastForwardBy(kOneSecond);
-  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::GEOLOCATION,
+  ExpectContentSetting(FROM_HERE, kOrigin2,
+                       ContentSettingsType::MEDIASTREAM_MIC,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
 
   // Prefs data should be empty.
@@ -546,21 +554,32 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
 }
 
 TEST_F(PermissionLifetimeManagerTest, ExternalContentSettingChange) {
+  // Use NOTIFICATIONS rather than GEOLOCATION: on Android,
+  // kApproximateGeolocationPermission is enabled by default, which routes
+  // GEOLOCATION requests to GEOLOCATION_WITH_OPTIONS in PermissionDecided but
+  // fires GEOLOCATION notifications from SetContentSettingDefaultScope —
+  // causing a type mismatch. Using GEOLOCATION_WITH_OPTIONS directly also
+  // crashes: it is registered only in PermissionSettingsRegistry::Init(), never
+  // through ContentSettingsRegistry::Register(), so it has no entry in
+  // ContentSettingsRegistry and GetContentSetting() (which gates on
+  // CheckContentTypeRegistration → ContentSettingsRegistry::Get()) hits
+  // NOTREACHED. NOTIFICATIONS has no such platform aliasing and tests the same
+  // PLM observer behaviour.
   for (auto external_content_setting :
        {ContentSetting::CONTENT_SETTING_DEFAULT,
         ContentSetting::CONTENT_SETTING_BLOCK}) {
     auto request(CreateRequestAndAllowContentSetting(
-        kOrigin, ContentSettingsType::GEOLOCATION, kLifetime));
+        kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime));
     manager()->PermissionDecided(*request, kOrigin, kOrigin,
                                  PermissionDecision::kAllow);
     EXPECT_TRUE(timer().IsRunning());
 
     host_content_settings_map_->SetContentSettingDefaultScope(
-        kOrigin, kOrigin, ContentSettingsType::GEOLOCATION,
+        kOrigin, kOrigin, ContentSettingsType::NOTIFICATIONS,
         external_content_setting);
     EXPECT_FALSE(timer().IsRunning());
 
-    ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::GEOLOCATION,
+    ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                          external_content_setting);
 
     // Prefs data should be empty.

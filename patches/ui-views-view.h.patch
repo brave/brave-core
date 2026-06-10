@@ -1,8 +1,8 @@
 diff --git a/ui/views/view.h b/ui/views/view.h
-index 3d016a2264721cc6e10efb506181962023b66bb0..ada755128e6ab3723759ee88a1a85bff4b85b437 100644
+index 8c4da8f506b40fcf6d4d601eb3a87107697f40b3..3e03d87cebd32d6cd0ee63f2ac623960a4582e0d 100644
 --- a/ui/views/view.h
 +++ b/ui/views/view.h
-@@ -322,6 +322,7 @@ class VIEWS_EXPORT View : public ui::LayerDelegate,
+@@ -320,6 +320,7 @@ class VIEWS_EXPORT View : public ui::LayerDelegate,
      FRIEND_TEST_ALL_PREFIXES(WebViewUnitTest, CrashedOverlayView);
  
      OwnedByClientPassKey() = default;

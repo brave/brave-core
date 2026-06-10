@@ -24,6 +24,7 @@ source_set("manifest_v2") {
     "//content/public/browser",
     "//extensions/browser",
     "//extensions/browser:crx_installer",
+    "//extensions/browser:webstore_installer",
     "//extensions/common",
     "//net/traffic_annotation",
     "//services/network/public/cpp",

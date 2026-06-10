@@ -10,7 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "chrome/browser/ui/page_actions/page_action_controller.h"
+#include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/controls/menu/menu_model_adapter.h"

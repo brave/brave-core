@@ -82,7 +82,7 @@ class BraveIncognitoStateProvider : public IncognitoStateProvider {
       SkColor icon_color,
       const ui::ColorProvider& color_provider) const override {
     return {ui::ImageModel::FromVectorIcon(
-                kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), icon_size),
+                kIncognitoOldIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), icon_size),
             AvatarIconType::kNonPlaceholder};
   }
 };

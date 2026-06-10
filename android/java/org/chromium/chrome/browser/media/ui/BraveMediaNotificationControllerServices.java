@@ -5,9 +5,11 @@
 
 package org.chromium.chrome.browser.media.ui;
 
+import org.chromium.base.SplitCompatService;
 import org.chromium.build.annotations.IdentifierNameString;
-import org.chromium.chrome.browser.base.SplitCompatService;
+import org.chromium.build.annotations.NullMarked;
 
+@NullMarked
 public class BraveMediaNotificationControllerServices {
     public static class PlaybackListenerMicService extends SplitCompatService {
         @SuppressWarnings("FieldCanBeFinal") // @IdentifierNameString requires non-final

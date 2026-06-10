@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Add `browser` to the ctor arg list
+
+This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+'''
+re_pattern = '(WindowFeatureController\((?=[^)]*ui::UnownedUserDataHost).*?)(\);)'
+re_flags = ['DOTALL']
+replace = '''\1,
+      BrowserWindowInterface& browser\2'''
+
+[[substitution]]
+description = '''Add `browser_` as the last member of WindowFeatureController
+
+This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+'''
+re_pattern = '(class WindowFeatureController \{.*)(\n\};)'
+re_flags = ['DOTALL']
+replace = '''\1
+  const raw_ref<BrowserWindowInterface> browser_;\2'''
+
+[[substitution]]
+description = '''Mirror NormalBrowserSupportsWindowFeature as `_ChromiumImpl`
+
+This sibling function is required for the customisation of
+NormalBrowserSupportsWindowFeature.
+'''
+re_pattern = '(bool )(NormalBrowserSupportsWindowFeature)(\([\s\S]*?\) const;)'
+replace = '''\1\2\3
+  \1\2_ChromiumImpl\3'''

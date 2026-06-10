@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_EXTENSIONS_BRAVE_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_EXTENSIONS_BRAVE_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_
 
+#include <utility>
+
 #include "chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -13,8 +15,11 @@ class BraveExtensionsMenuMainPageView : public ExtensionsMenuMainPageView {
   METADATA_HEADER(BraveExtensionsMenuMainPageView, ExtensionsMenuMainPageView)
 
  public:
-  BraveExtensionsMenuMainPageView(Browser* browser,
-                                  ExtensionsMenuHandler* menu_handler);
+  template <typename... Args>
+  explicit BraveExtensionsMenuMainPageView(Args&&... args)
+      : ExtensionsMenuMainPageView(std::forward<Args>(args)...) {
+    UpdateButtons();
+  }
   ~BraveExtensionsMenuMainPageView() override;
 
   // BraveExtensionsMenuMainPageView:

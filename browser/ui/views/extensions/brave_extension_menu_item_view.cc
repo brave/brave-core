@@ -22,24 +22,23 @@
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
-BraveExtensionMenuItemView::BraveExtensionMenuItemView(
-    Browser* browser,
-    std::unique_ptr<ToolbarActionViewModel> view_model,
-    bool allow_pinning)
-    : ExtensionMenuItemView(browser, std::move(view_model), allow_pinning) {
+BraveExtensionMenuItemView::~BraveExtensionMenuItemView() = default;
+
+void BraveExtensionMenuItemView::Init() {
   CHECK(!base::FeatureList::IsEnabled(
       extensions_features::kExtensionsMenuAccessControl));
   // Upstream code initially calls UpdatePinButton from c'tor which means our
-  // override doesn't get called so we have to call it manually.
-  if (allow_pinning) {
+  // override doesn't get called so we have to call it manually. `pin_button_`
+  // is only created by the upstream constructor when pinning is allowed, so it
+  // doubles as the post-construction signal for the original `allow_pinning`
+  // parameter.
+  if (pin_button_) {
     bool is_pinned = model_ && model_->IsActionPinned(view_model_->GetId());
     bool is_force_pinned =
         model_ && model_->IsActionForcePinned(view_model_->GetId());
     UpdatePinButton(is_force_pinned, is_pinned);
   }
 }
-
-BraveExtensionMenuItemView::~BraveExtensionMenuItemView() = default;
 
 void BraveExtensionMenuItemView::UpdatePinButton(bool is_force_pinned,
                                                  bool is_pinned) {

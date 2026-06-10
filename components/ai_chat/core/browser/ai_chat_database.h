@@ -33,7 +33,7 @@ extern const int kCurrentDatabaseVersion;
 class AIChatDatabase {
  public:
   AIChatDatabase(const base::FilePath& db_file_path,
-                 os_crypt_async::Encryptor encryptor);
+                 scoped_refptr<os_crypt_async::Encryptor> encryptor);
   AIChatDatabase(const AIChatDatabase&) = delete;
   AIChatDatabase& operator=(const AIChatDatabase&) = delete;
   virtual ~AIChatDatabase();
@@ -129,7 +129,8 @@ class AIChatDatabase {
 
   // The underlying SQL database
   sql::Database db_ GUARDED_BY_CONTEXT(sequence_checker_);
-  os_crypt_async::Encryptor encryptor_ GUARDED_BY_CONTEXT(sequence_checker_);
+  scoped_refptr<os_crypt_async::Encryptor> encryptor_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   // The initialization status of the database. It's not set if never attempted.
   std::optional<sql::InitStatus> db_init_status_ = std::nullopt;
 

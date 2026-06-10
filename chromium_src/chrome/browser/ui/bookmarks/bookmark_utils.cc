@@ -115,8 +115,8 @@ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
   }
 
   const gfx::VectorIcon* id = icon_type == BookmarkFolderIconType::kManaged
-                                  ? &vector_icons::kFolderManagedRefreshIcon
-                                  : &vector_icons::kFolderChromeRefreshIcon;
+                                  ? &vector_icons::kFolderManagedRefreshOldIcon
+                                  : &vector_icons::kFolderChromeRefreshOldIcon;
   if (color == ui::kColorIconDisabled) {
     color = kColorToolbarButtonIconInactive;
   } else if (color == kColorBookmarkFolderIcon) {

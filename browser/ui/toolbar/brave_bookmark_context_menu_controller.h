@@ -68,7 +68,10 @@ class BraveBookmarkContextMenuController
   std::u16string GetLabelForCommandId(int command_id) const override;
 
  private:
-  friend class BraveBookmarkContextMenuTest;
+  FRIEND_TEST_ALL_PREFIXES(BraveBookmarkContextMenuControllerTest,
+                           AddShowAllBookmarksButtonMenu);
+  FRIEND_TEST_ALL_PREFIXES(BraveBookmarkContextMenuControllerTest,
+                           ShowAllBookmarksButtonMenuCheckedState);
 
   void AddBraveBookmarksSubmenu(Profile* profile);
   void AddShowAllBookmarksButtonMenu();

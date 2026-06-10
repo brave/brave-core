@@ -5,10 +5,12 @@
 
 package org.chromium.chrome.browser.vpn.wireguard;
 
+import org.chromium.base.SplitCompatService;
 import org.chromium.build.annotations.IdentifierNameString;
-import org.chromium.chrome.browser.base.SplitCompatService;
+import org.chromium.build.annotations.NullMarked;
 
 /** See {@link WireguardServiceImpl}. */
+@NullMarked
 public class WireguardService extends SplitCompatService {
     @SuppressWarnings("FieldCanBeFinal") // @IdentifierNameString requires non-final
     private static @IdentifierNameString String sImplClassName =

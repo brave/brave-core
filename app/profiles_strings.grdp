@@ -12,12 +12,6 @@
   <message name="IDS_AVATAR_BUTTON_GUEST_TOOLTIP" desc="Tooltip for the avatar button when the user is in Guest mode.">
     To delete Guest mode history, close all Guest windows.
   </message>
-  <message name="IDS_GUEST_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in guest mode. The message also shows the number of open guest windows if they are more than one. [ICU Syntax]">
-      {0, plural,
-        =1 {Guest}
-        other {# open guest windows}
-      }
-  </message>
   <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in Private mode. The message also shows the number of open Private windows if they are more than one. [ICU Syntax]">
       {0, plural,
         =1 {Private}
@@ -134,9 +128,6 @@
     Profiles
   </message>
   <if expr="is_macosx">
-    <message name="IDS_PROFILES_CREATE_NEW_PROFILE_OPTION" desc="In Title Case. Create new profile menu item and button title.">
-      Add Person...
-    </message>
     <message name="IDS_PROFILES_ADD_PROFILE_LABEL" desc="In Title Case. Menu item for adding a new profile.">
       Add Profile...
     </message>
@@ -149,30 +140,15 @@
   <message name="IDS_PROFILES_PROFILE_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu bubble.">
     Accounts and sync
   </message>
-  <message name="IDS_PROFILES_EXIT_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to close all windows of the current profile when there is more than one profile.">
-    Exit <ph name="PROFILE_NAME">$1<ex>User</ex></ph>
-  </message>
   <message name="IDS_PROFILES_ACCOUNT_REMOVAL_TITLE" desc="Title of the account removal view in the avatar menu bubble.">
     Remove account
-  </message>
-  <message name="IDS_PROFILES_SYNC_COMPLETE_TITLE" desc="Title of the profile card when sync is complete.">
-    Syncing to
   </message>
   <message name="IDS_PROFILES_DICE_SIGNIN_BUTTON" desc="Button in the profile user menu to sign in and turn on Sync.">
     Turn on sync...
   </message>
-  <message name="IDS_EXTENSIONS_EXPLICIT_SIGNIN_BUTTON" desc="Button in the profile user menu to explicitly sign in.">
-    Sign in
-  </message>
 
   <message name="IDS_PROFILES_DICE_WEB_ONLY_SIGNIN_BUTTON" desc="Button in the profile menu to sign in on Brave and turn on Sync for a specific web account that is signed in only on the web.">
     Continue as <ph name="ACCOUNT_NAME">$1<ex>John</ex></ph>
-  </message>
-  <message name="IDS_PROFILES_DICE_SIGNIN_FIRST_ACCOUNT_BUTTON" desc="Button to sign in and turn on Sync for a specific web account.">
-    Sync as <ph name="ACCOUNT_FULL_NAME">$1<ex>John Doe</ex></ph>
-  </message>
-  <message name="IDS_PROFILES_DICE_SIGNIN_FIRST_ACCOUNT_BUTTON_NO_NAME" desc="Button to sign in and turn on Sync for a web account when the name is empty.">
-    Sync to your account
   </message>
   <message name="IDS_PROFILES_DICE_SYNC_DISABLED_TITLE" desc="Title of the profile user menu when sync is disabled.">
     Sync disabled
@@ -180,14 +156,11 @@
   <message name="IDS_PROFILES_DASHER_FEATURE_DISABLED_TITLE" desc="Description of the profile user menu when certain features are disabled for Dasherless profile.">
     This isn't a Brave sync chain. Items you save to Brave won't be available on other devices.
   </message>
-   <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
+  <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
     Sync is paused
   </message>
-  <message name="IDS_PROFILES_SIGNIN_PROMO" desc="Text describing the benefits of signing in.">
-    Sign in to get your bookmarks, history, passwords, and other settings on all your devices.
-  </message>
 
-   <!-- Signin Search AI Mode promo. -->
+  <!-- Signin Search AI Mode promo. -->
   <message name="IDS_AI_SIGNIN_PROMO_TITLE" desc="The title of in the sign-in promo bubble that is shown to users not signed-in to the browser when they click on search AI Mode result.">
     Ask questions while you browse
   </message>
@@ -230,12 +203,6 @@
     }
   </message>
   <if expr="not use_titlecase">
-    <message name="IDS_PROFILES_PROFILE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to manage accounts for a profile.">
-      Your accounts
-    </message>
-    <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
-      Hide accounts
-    </message>
     <message name="IDS_PROFILE_MENU_OPEN_GUEST_PROFILE" desc="The text label of the open guest profile item in the profile menu.">
       Open Guest profile
     </message>
@@ -265,12 +232,6 @@
     </message>
   </if>
   <if expr="use_titlecase">
-    <message name="IDS_PROFILES_PROFILE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to manage accounts for a profile.">
-      Your Accounts
-    </message>
-    <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
-      Hide Accounts
-    </message>
     <message name="IDS_PROFILE_MENU_OPEN_GUEST_PROFILE" desc="The text label of the open guest profile item in the profile menu.">
       Open Guest Profile
     </message>
@@ -299,15 +260,6 @@
       }
     </message>
   </if>
-  <message name="IDS_PROFILES_MANAGED_BY" desc="Label shown under the avatar in the avatar menu bubble view stating that the account is managed.">
-    Managed by <ph name="VALUE">$1<ex>1</ex></ph>
-  </message>
-  <message name="IDS_PROFILES_MANAGE_PROFILES_BUTTON_TOOLTIP" desc="Button in the avatar menu bubble view for launching the profile picker.">
-    Manage profiles
-  </message>
-  <message name="IDS_PROFILES_CUSTOMIZE_PROFILE_BUTTON_TOOLTIP" desc="Tooltip of the customize profile button in the avatar menu bubble view for editing the current profile. The button itself has no text, it is only the edit icon.">
-    Customize profile
-  </message>
   <message name="IDS_PROFILES_GUEST_PROFILE_NAME" desc="Name of the guest profile.">
     Guest
   </message>
@@ -557,9 +509,6 @@
   <message name="IDS_PROFILES_LOCAL_PROFILE_STATE" desc="This is displayed underneath the profile name for profiles that are not signed in to sync.">
     Not signed in
   </message>
-  <message name="IDS_PROFILES_CREATE_BUTTON_LABEL" desc="The label that appears on the profile create button in the options dialog to allow a user to create a new profile.">
-    Add person...
-  </message>
   <message name="IDS_PROFILES_MANAGE_BUTTON_LABEL" desc="The label that appears on the profile manage button in the options dialog to allow a user to manage their profile.">
     Edit...
   </message>
@@ -571,9 +520,6 @@
   </message>
    <message name="IDS_SIGN_IN_LOGIN_NAME_PROHIBITED" desc="The error message shown when the user tries to sign in using a name that is not allowed by the admin policy">
     Your organization doesn't allow you to sign in with this account
-  </message>
-  <message name="IDS_SUPERVISED_USER_NOT_ALLOWED_BY_POLICY" desc="The error message shown when the user tries to use the supervised user profile when it's disabled by policy">
-    Supervised users have been disabled by your administrator.
   </message>
   <if expr="is_android">
     <message name="IDS_SYNC_USER_NAME_IN_USE_ERROR" desc="Mobile: An error message shown when a user tries to sign in to sync using a user name that's already in use by another profile.">
@@ -603,9 +549,6 @@
       </message>
     </if>
     <if expr="is_chromeos">
-      <message name="IDS_LAUNCH_APP_BUTTON" desc="Text shown on the button that launches kiosk app from ChromeOS login UI">
-        Launch app
-      </message>
       <message name="IDS_PIN_KEYBOARD_HINT_TEXT_PIN" desc="Text to display in the pin field for user pod when no pin has been entered.">
         PIN
       </message>
@@ -619,6 +562,175 @@
         Sorry, your password could not be verified. Please try again.
       </message>
     </if>
+  </if>
+
+  <if expr="not is_android">
+
+    <!-- Feature Showcase - Brave Password Manager -->
+    <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_TITLE" desc="Headline for the password security onboarding screen. It introduces the product name 'Brave Password Manager,' which should typically remain in English or follow established brand guidelines for the locale. The intent is to highlight safety and security. (CHAR LIMIT = 50)">
+      Stay safe with Brave Password Manager
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_SUBTITLE" desc="Description for the Brave Password Manager page in the Feature Showcase.">
+      Built into Brave to help you create, save, and autofill strong passwords. Add the shortcut for easy access
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_NO_THANKS" desc="Label for the 'No thanks' button to not pin the Brave Password Manager to toolbar.">
+      No thanks
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_ADD_TO_TOOLBAR" desc="Label for the 'Add to toolbar' button to pin the Brave Password Manager to toolbar.">
+      Add to toolbar
+    </message>
+    <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_ILLUSTRATION_A11Y_LABEL" desc="Accessibility label for the illustration on the Brave Password Manager page in the Feature Showcase.">
+      A simplified image showing the Brave Password Manager entry point in Brave
+    </message>
+
+    <!-- Batch Upload Desktop -->
+    <message name="IDS_BATCH_UPLOAD_TITLE" desc="Title of the Batch Upload dialog on Desktop. This dialog appears when the user clicks on an informational message about items saved to their device. This title precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      Save items in account
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_ITEMS_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if no special type exists. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle only mentions the total number of items that are shown. A special type will have its type name shown first instead of 'items' and potentially show 'and other items' if multiple sections exist, in different strings. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {ITEM_COUNT, plural,
+      =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain. This will also clean up any duplicates.}
+      other {{ITEM_COUNT} items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if password type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {PASSWORD_COUNT, plural,
+      =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain. This will also clean up any duplicates.}
+      other {{PASSWORD_COUNT} passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS_COMBO_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if password type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {PASSWORD_COUNT, plural,
+      =1 {1 password and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
+      other {{PASSWORD_COUNT} passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if bookmark type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain. This will also clean up any duplicates.}
+      other {{BOOKMARK_COUNT} bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS_COMBO_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if bookmark type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
+      other {{BOOKMARK_COUNT} bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_ITEMS" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if no special type exists. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle only mentions the total number of items that are shown. A special type will have its type name shown first instead of 'items' and potentially show 'and other items' if multiple sections exist, in different strings. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {ITEM_COUNT, plural,
+      =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+      other {{ITEM_COUNT} items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if password type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {PASSWORD_COUNT, plural,
+      =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+      other {{PASSWORD_COUNT} passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS_COMBO" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if password type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {PASSWORD_COUNT, plural,
+      =1 {1 password and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      other {{PASSWORD_COUNT} passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if bookmark type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+      other {{BOOKMARK_COUNT} bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS_COMBO" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if bookmark type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      other {{BOOKMARK_COUNT} bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_PASSWORDS" desc="Title of the Passwords section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
+      {SELECTED_ITEMS, plural,
+      =0 {Passwords}
+      =1 {Passwords ({SELECTED_ITEMS})}
+      other {Passwords ({SELECTED_ITEMS})}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_BOOKMARKS" desc="Title of the Bookmarks section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
+      {SELECTED_ITEMS, plural,
+      =0 {Bookmarks}
+      =1 {Bookmarks ({SELECTED_ITEMS})}
+      other {Bookmarks ({SELECTED_ITEMS})}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_READING_LIST" desc="Title of the Reading list section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
+      {SELECTED_ITEMS, plural,
+      =0 {Reading list}
+      =1 {Reading list ({SELECTED_ITEMS})}
+      other {Reading list ({SELECTED_ITEMS})}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_ADDRESSES" desc="Title of the Addresses section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
+      {SELECTED_ITEMS, plural,
+      =0 {Addresses}
+      =1 {Addresses ({SELECTED_ITEMS})}
+      other {Addresses ({SELECTED_ITEMS})}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_EXTENSIONS" desc="Title of the Extensions section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
+      {SELECTED_ITEMS, plural,
+      =0 {Extensions}
+      =1 {Extensions ({SELECTED_ITEMS})}
+      other {Extensions ({SELECTED_ITEMS})}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_THEMES_WITH_DESCRIPTION" desc="Title of the Themes section in the Batch Upload dialog. It contains a fixed title in addition to its only item title description. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. This section title also acts as the item being selected (the section toggle dictates the state of the selection) since Themes will always have one item.">
+      Theme: <ph name="THEME_NAME">$1<ex>Green color</ex></ph>
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SAVE_TO_ACCOUNT_OK_BUTTON_LABEL" desc="Text of the button that triggers the saving of the selected items in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items only saved to their device. The title of the dialog is ‘Save items in account’. The list of items has three sections: Passwords, Bookmarks, and Addresses. When pressing the button, selected items are moved to the account storage (Saved in account) and the dialog is then closed. The tone should be motivating.">
+      Save in account
+    </message>
+    <message name="IDS_BATCH_UPLOAD_AVATAR_BUTTON_SAVING_TO_ACCOUNT" desc="Text shown on the avatar button pill after the user has requested to save items in their account through the Batch Upload dialog. The text is shown for few seconds then disappears.">
+      Saving in your account...
+    </message>
+    <message name="IDS_BATCH_UPLOAD_LAST_ITEM_SELECTED_SCREEN_READER" desc="Text read by the screen reader after focusing the last selected item of a section of the Batch upload dialog. It will mention that it is the last item, and that unselecting it will disable the section,  given that this can be an uncommon behavior, esepcially for visually impaired users, it needs to be explicilty stated by the screen reader.">
+      Last item selected, unselecting it will exit selection mode
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SCREEN_READER_ITEM_COUNT_SELECTED" desc="Text read by the screen reader after interacting with a checkbox in a section of the Batch Upload dialog. It will read the current number of selected items in the section after the user action on that checkbox.">
+      <ph name="NUMBER_OF_ITEMS_SELECTED">$1</ph> selected
+    </message>
+    <message name="IDS_BATCH_UPLOAD_SCREEN_READER_SELECT_ALL" desc="Text read by the screen reader when focusing the toggle button of a section in the Batch Upload dialog and that toggle is turned off. Notifies that the action on the toggle would select all items in this section.">
+      Select all
+    </message>
+    <message name="IDS_BATCH_UPLOAD_PROMO_TITLE" desc="Title of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+      Get your bookmarks and more on all your devices
+    </message>
+    <if expr="use_titlecase">
+      <message name="IDS_BATCH_UPLOAD_PROMO_TITLE_OK_BUTTON_LABEL" desc="Affirmative button of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks (and other items, if any) are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. When the user clicks this button, the items aren’t saved yet: the user first sees the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+        Save in Account
+      </message>
+    </if>
+    <if expr="not use_titlecase">
+      <message name="IDS_BATCH_UPLOAD_PROMO_TITLE_OK_BUTTON_LABEL" desc="Affirmative button of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks (and other items, if any) are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. When the user clicks this button, the items aren’t saved yet: the user first sees the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+        Save in account
+      </message>
+    </if>
+    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_BOOKMARKS" desc="Subtitle of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+      other {{BOOKMARK_COUNT} bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_BOOKMARKS_COMBO" desc="Subtitle of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks and other items are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      other {{BOOKMARK_COUNT} bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_ITEMS_WITH_LINK" desc="The text for a promotional banner located on the Account Settings page. It informs the user how many items on their local device are waiting to be uploaded. The text contains a placeholder for the number of items (e.g., '5 items') and acts as a clickable link that takes the user to the Batch Upload screen. Please ensure the placeholder handles pluralization correctly.">
+      {ITEM_COUNT, plural,
+      =1 {1 item is saved only to this device. To use it on your other devices, <ph name="BEGIN_LINK">&lt;a href="'#'" id="openBatchUploadLink"&gt;</ph>save it in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.}
+      other {{ITEM_COUNT} items are saved only to this device. To use them on your other devices, <ph name="BEGIN_LINK">&lt;a href="'#'" id="openBatchUploadLink"&gt;</ph>save them in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.}
+      }
+    </message>
   </if>
 
   <if expr="not is_chromeos and not is_android">
@@ -894,23 +1006,11 @@
     <message name="IDS_PROFILE_PICKER_BACK_BUTTON_SIGN_IN_LABEL" desc="Label for a button that navigates user to the previous page from the 'Sign in' page">
       Back from sign in
     </message>
-    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_KEEP_WORK_AND_LIFE_SEPARATE" desc="Profile picker main view title.">
-      Keep work and life separate
+    <message name="IDS_PROFILE_PICKER_PAUSE_EFFECTS_BUTTON" desc="A text label for a button that pauses background effects, i.e. audio and animations (if applicable).">
+      Pause effects
     </message>
-    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_GOT_ANOTHER_GOOGLE_ACCOUNT" desc="Profile picker main view title.">
-      Got another Brave sync chain?
-    </message>
-    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_KEEP_TASKS_SEPARATE" desc="Profile picker main view title.">
-      Keep school, side projects, and other tasks separate
-    </message>
-    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_SHARING_A_COMPUTER" desc="Profile picker main view title.">
-      Sharing a computer?
-    </message>
-    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_SHARING_A_COMPUTER" desc="Profile picker main view subtitle.">
-      Keep your bookmarks, passwords, and settings separate. Add a new profile now.
-    </message>
-    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_KEEP_EVERYTHING_IN_CHROME" desc="Profile picker main view subtitle.">
-      Profiles let you separate work, personal, and play without switching to another browser. Add a new profile now.
+    <message name="IDS_PROFILE_PICKER_PLAY_EFFECTS_BUTTON" desc="A text label for a button that plays background effects, i.e. audio and animations (if applicable).">
+      Play effects
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CARD_NEEDS_SIGNIN_PROMPT" desc="Text on the profile card signaling that the user must sign-in in order to open a profile">
       Sign in
@@ -930,14 +1030,8 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_REMOVE_TEXT" desc="Text of the remove button in profile card menu.">
       Delete
     </message>
-    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_REMOVE_CONFIRM" desc="Text of the remove button in the remove warning.">
-      Delete
-    </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_CUSTOMIZE_TEXT" desc="Text of the customize button in profile card menu">
       Edit
-    </message>
-    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the Private button in profile card menu">
-      Private
     </message>
     <message name="IDS_PROFILE_PICKER_ASK_ON_STARTUP" desc="Text for the checkbox on the profile picker main view">
       Show on startup
@@ -1006,26 +1100,8 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_AVATAR_TEXT" desc="Text of a section to pick an avatar for the profile.">
       Pick an avatar
     </message>
-    <message name="IDS_PROFILE_PICKER_TAKE_A_TOUR_BUTTON_LABEL" desc="Label of a button that starts a tour for the picker using IPH bubbles.">
-      Take a tour
-    </message>
     <message name="IDS_PROFILE_PICKER_IPH_NEXT_BUTTON_LABEL" desc="Label of the next button showing on the IPH.">
       Next
-    </message>
-    <message name="IDS_PROFILE_PICKER_IPH_DONE_BUTTON_LABEL" desc="Label of the done button showing on the last IPH to close the tour.">
-      Done
-    </message>
-    <message name="IDS_PROFILE_PICKER_IPH_FOR_PROFILES_TITLE" desc="Title of the IPH bubble for introducing profiles.">
-      Your profiles
-    </message>
-    <message name="IDS_PROFILE_PICKER_IPH_FOR_ADD_PROFILE_TITLE" desc="Title of the IPH bubble for adding new profiles.">
-      Add family and friends
-    </message>
-    <message name="IDS_PROFILE_PICKER_IPH_FOR_CUSTOMIZE_PROFILE_TITLE" desc="Title of the IPH bubble for customizing profiles.">
-      Customize your profile
-    </message>
-    <message name="IDS_PROFILE_PICKER_IPH_FOR_CUSTOMIZE_PROFILE_TEXT" desc="Text of the IPH bubble for customizing profiles.">
-      Choose a name and color theme to differentiate between profiles
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_SWITCH_BUTTON_LABEL" desc="Label of a button that switches user browsing to existing profile">
       Switch
@@ -1056,9 +1132,6 @@
     <!-- First Run Experience strings -->
     <message name="IDS_FRE_SIGN_IN_SUBTITLE_0" desc="This is the subtitle on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. These features are also described in the cards below as 'All your devices', 'Stronger security', and 'Back up data'. The tone should be inviting and alluring.">
       Get additional features
-    </message>
-    <message name="IDS_FRE_SIGN_IN_SUBTITLE_1" desc="This is the subtitle on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. These features are also described in the cards below as 'All your devices', 'Stronger security', and 'Back up data'. The tone should be inviting and alluring.">
-      Sign in for additional features
     </message>
     <message name="IDS_FRE_DEVICES_CARD_TITLE" desc="This string is the headline in one of three cards that represent the top benefits for why a user should sign in to Brave with a Brave sync chain. The cards appear on a full-page screen when the user launches Brave for the first time. This card's headline means that users can get their data (like bookmarks, history) on all the devices where they're signed in. The headline is followed by the body text 'Easily pick up where you left off'. The tone should be informative.">
       All your devices
@@ -1124,13 +1197,19 @@
     <message name="IDS_FRE_NEXT_BUTTON_TITLE" desc="A title for a button that advances a user to the next step (sign in screen) in the first run experience flow.">
       Next
     </message>
+    <message name="IDS_FRE_FINISH_OR_CONTINUE_TITLE" desc="A title for the final onboarding screen (Finish or Continue) in the first run experience flow.  It indicates that the setup process is complete.">
+      You're all set!
+    </message>
+    <message name="IDS_FRE_FINISH_OR_CONTINUE_SEE_MORE_TIPS_BUTTON_LABEL" desc="A label for a button that leads to educational content. It appears on the final onboarding screen (Finish or Continue) in the first run experience flow.">
+      See more tips
+    </message>
+    <message name="IDS_FRE_FINISH_OR_CONTINUE_START_BROWSING_BUTTON_LABEL" desc="A label for a button that enters the web. It appears on the final onboarding screen (Finish or Continue) in the first run experience flow.">
+      Start browsing
+    </message>
 
     <!-- Default Browser Promo -->
     <message name="IDS_FRE_DEFAULT_BROWSER_TITLE_NEW" desc="Title for the page that prompts user to set Brave as their default browser in the first run experience.">
       Set your default browser
-    </message>
-    <message name="IDS_FRE_DEFAULT_BROWSER_SUBTITLE" desc="Subtitle for the page that prompts user to set Brave as their default browser in the first run experience.">
-      Get Brave Search and Brave smarts every time you browse
     </message>
     <message name="IDS_FRE_DEFAULT_BROWSER_SET_AS_DEFAULT" desc="The label for a button to confirm setting Brave as their default browser.">
       Set as default
@@ -1145,155 +1224,6 @@
     </message>
     <message name="IDS_FRE_REFRESH_DEFAULT_BROWSER_NO_THANKS" desc="The label for a button to skip setting Brave as their default browser.">
       No thanks
-    </message>
-
-    <!-- Batch Upload Desktop -->
-    <message name="IDS_BATCH_UPLOAD_TITLE" desc="Title of the Batch Upload dialog on Desktop. This dialog appears when the user clicks on an informational message about items saved to their device. This title precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      Save items in account
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_ITEMS_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if no special type exists. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle only mentions the total number of items that are shown. A special type will have its type name shown first instead of 'items' and potentially show 'and other items' if multiple sections exist, in different strings. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {ITEM_COUNT, plural,
-      =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain. This will also clean up any duplicates.}
-      other {{ITEM_COUNT} items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if password type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {PASSWORD_COUNT, plural,
-      =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain. This will also clean up any duplicates.}
-      other {{PASSWORD_COUNT} passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS_COMBO_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if password type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {PASSWORD_COUNT, plural,
-      =1 {1 password and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
-      other {{PASSWORD_COUNT} passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if bookmark type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {BOOKMARK_COUNT, plural,
-      =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain. This will also clean up any duplicates.}
-      other {{BOOKMARK_COUNT} bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS_COMBO_WITH_DEDUPLICATION" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if bookmark type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {BOOKMARK_COUNT, plural,
-      =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
-      other {{BOOKMARK_COUNT} bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain. This will also clean up any duplicates.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_ITEMS" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if no special type exists. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle only mentions the total number of items that are shown. A special type will have its type name shown first instead of 'items' and potentially show 'and other items' if multiple sections exist, in different strings. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {ITEM_COUNT, plural,
-      =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
-      other {{ITEM_COUNT} items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if password type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {PASSWORD_COUNT, plural,
-      =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
-      other {{PASSWORD_COUNT} passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_PASSWORDS_COMBO" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if password type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of passwords items in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {PASSWORD_COUNT, plural,
-      =1 {1 password and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      other {{PASSWORD_COUNT} passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved to their device. This subtitle variant is shown if bookmark type exists with no other types. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {BOOKMARK_COUNT, plural,
-      =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
-      other {{BOOKMARK_COUNT} bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SUBTITLE_DESCRIPTION_BOOKMARKS_COMBO" desc="Subtitle of the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. This subtitle variant is shown if bookmark type is the first type and it is not the only one. This subtitle precedes a list of items (passwords, bookmarks, and addresses), where the user can select the checkboxes for the items that they want to save in their Brave sync chain. This subtitle mentions the number of bookmarks in the section as well as 'and other items' to reference the other types. When items are saved in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. The tone should be motivating.">
-      {BOOKMARK_COUNT, plural,
-      =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      other {{BOOKMARK_COUNT} bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_PASSWORDS" desc="Title of the Passwords section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
-      {SELECTED_ITEMS, plural,
-      =0 {Passwords}
-      =1 {Passwords ({SELECTED_ITEMS})}
-      other {Passwords ({SELECTED_ITEMS})}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_BOOKMARKS" desc="Title of the Bookmarks section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
-      {SELECTED_ITEMS, plural,
-      =0 {Bookmarks}
-      =1 {Bookmarks ({SELECTED_ITEMS})}
-      other {Bookmarks ({SELECTED_ITEMS})}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_READING_LIST" desc="Title of the Reading list section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
-      {SELECTED_ITEMS, plural,
-      =0 {Reading list}
-      =1 {Reading list ({SELECTED_ITEMS})}
-      other {Reading list ({SELECTED_ITEMS})}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_ADDRESSES" desc="Title of the Addresses section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
-      {SELECTED_ITEMS, plural,
-      =0 {Addresses}
-      =1 {Addresses ({SELECTED_ITEMS})}
-      other {Addresses ({SELECTED_ITEMS})}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_EXTENSIONS" desc="Title of the Extensions section in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. The list of items has sections for each applicable data type: Passwords, Bookmarks, and more. This section shows the number of selected items in the section of the dialog, if any.">
-      {SELECTED_ITEMS, plural,
-      =0 {Extensions}
-      =1 {Extensions ({SELECTED_ITEMS})}
-      other {Extensions ({SELECTED_ITEMS})}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SECTION_TITLE_THEMES_WITH_DESCRIPTION" desc="Title of the Themes section in the Batch Upload dialog. It contains a fixed title in addition to its only item title description. This dialog appears when the user clicks on an informational message about items saved only to their device. The title of the dialog is ‘Save items in account’. This section title also acts as the item being selected (the section toggle dictates the state of the selection) since Themes will always have one item.">
-      Theme: <ph name="THEME_NAME">$1<ex>Green color</ex></ph>
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SAVE_TO_ACCOUNT_OK_BUTTON_LABEL" desc="Text of the button that triggers the saving of the selected items in the Batch Upload dialog. This dialog appears when the user clicks on an informational message about items only saved to their device. The title of the dialog is ‘Save items in account’. The list of items has three sections: Passwords, Bookmarks, and Addresses. When pressing the button, selected items are moved to the account storage (Saved in account) and the dialog is then closed. The tone should be motivating.">
-      Save in account
-    </message>
-    <message name="IDS_BATCH_UPLOAD_AVATAR_BUTTON_SAVING_TO_ACCOUNT" desc="Text shown on the avatar button pill after the user has requested to save items in their account through the Batch Upload dialog. The text is shown for few seconds then disappears.">
-      Saving in your account...
-    </message>
-    <message name="IDS_BATCH_UPLOAD_LAST_ITEM_SELECTED_SCREEN_READER" desc="Text read by the screen reader after focusing the last selected item of a section of the Batch upload dialog. It will mention that it is the last item, and that unselecting it will disable the section,  given that this can be an uncommon behavior, esepcially for visually impaired users, it needs to be explicilty stated by the screen reader.">
-      Last item selected, unselecting it will exit selection mode
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SCREEN_READER_ITEM_COUNT_SELECTED" desc="Text read by the screen reader after interacting with a checkbox in a section of the Batch Upload dialog. It will read the current number of selected items in the section after the user action on that checkbox.">
-      <ph name="NUMBER_OF_ITEMS_SELECTED">$1</ph> selected
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SCREEN_READER_SELECT_ALL" desc="Text read by the screen reader when focusing the toggle button of a section in the Batch Upload dialog and that toggle is turned off. Notifies that the action on the toggle would select all items in this section.">
-      Select all
-    </message>
-    <message name="IDS_BATCH_UPLOAD_PROMO_TITLE" desc="Title of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
-      Get your bookmarks and more on all your devices
-    </message>
-    <if expr="use_titlecase">
-      <message name="IDS_BATCH_UPLOAD_PROMO_TITLE_OK_BUTTON_LABEL" desc="Affirmative button of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks (and other items, if any) are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. When the user clicks this button, the items aren’t saved yet: the user first sees the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
-        Save in Account
-      </message>
-    </if>
-    <if expr="not use_titlecase">
-      <message name="IDS_BATCH_UPLOAD_PROMO_TITLE_OK_BUTTON_LABEL" desc="Affirmative button of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks (and other items, if any) are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. When the user clicks this button, the items aren’t saved yet: the user first sees the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
-        Save in account
-      </message>
-    </if>
-    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_BOOKMARKS" desc="Subtitle of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
-      {BOOKMARK_COUNT, plural,
-      =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
-      other {{BOOKMARK_COUNT} bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_BOOKMARKS_COMBO" desc="Subtitle of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks and other items are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
-      {BOOKMARK_COUNT, plural,
-      =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      other {{BOOKMARK_COUNT} bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
-      }
-    </message>
-    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_ITEMS_WITH_LINK" desc="The text for a promotional banner located on the Account Settings page. It informs the user how many items on their local device are waiting to be uploaded. The text contains a placeholder for the number of items (e.g., '5 items') and acts as a clickable link that takes the user to the Batch Upload screen. Please ensure the placeholder handles pluralization correctly.">
-      {ITEM_COUNT, plural,
-      =1 {1 item is saved only to this device. To use it on your other devices, <ph name="BEGIN_LINK">&lt;a href="'#'" id="openBatchUploadLink"&gt;</ph>save it in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.}
-      other {{ITEM_COUNT} items are saved only to this device. To use them on your other devices, <ph name="BEGIN_LINK">&lt;a href="'#'" id="openBatchUploadLink"&gt;</ph>save them in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.}
-      }
     </message>
 
     <!-- Signout Confirmation Dialog Desktop -->
@@ -1319,9 +1249,6 @@
     </message>
     <message name="IDS_HISTORY_SYNC_OPT_IN_SUBTITLE" desc="Subtitle of the history sync opt in screen which offers the user to turn on the data types history, tabs, and saved tab groups.">
       To quickly get back to sites you’ve visited, sync your history and tabs
-    </message>
-    <message name="IDS_HISTORY_SYNC_OPT_IN_SUBTITLE_WITH_EMAIL" desc="Subtitle of the history sync opt in screen which offers the user to turn on the data types history, tabs, and saved tab groups. Also includes the user's email.">
-      To quickly get back to sites you’ve visited, sync your history and tabs to <ph name="USER_EMAIL_ADDRESS">$2<ex>john.doe@example.com</ex></ph>
     </message>
     <message name="IDS_HISTORY_SYNC_OPT_IN_DESCRIPTION" desc="Description of the history sync opt in screen which offers the user to turn on the data types history, tabs, and saved tab groups.">
       You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.

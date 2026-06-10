@@ -45,7 +45,7 @@ void BraveProfileMenuView::MaybeBuildCloseBrowsersButton() {
       l10n_util::GetPluralStringFUTF16(button_title_id, window_count),
       base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
                           base::Unretained(this)),
-      vector_icons::kCloseIcon);
+      vector_icons::kCloseOldIcon);
 }
 
 // We don't want feature buttons to manage google account

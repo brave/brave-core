@@ -1,8 +1,8 @@
 diff --git a/components/sync/service/sync_service_impl.h b/components/sync/service/sync_service_impl.h
-index d65c6634db1ddb4ce0a042dd70cd556b29219ba9..bb15589d25e23beba3d5f6d54fb4052e817f033f 100644
+index 576eca10b24b4355e3030dc15f6afba23bd12ef7..d666ac3b3182e53df5f17f8c9f5eb5ccb730d5f4 100644
 --- a/components/sync/service/sync_service_impl.h
 +++ b/components/sync/service/sync_service_impl.h
-@@ -298,6 +298,7 @@ class SyncServiceImpl : public SyncService,
+@@ -300,6 +300,7 @@ class SyncServiceImpl : public SyncService,
    size_t GetQueuedLocalDataMigrationItemCountForTest() const;
  
   private:

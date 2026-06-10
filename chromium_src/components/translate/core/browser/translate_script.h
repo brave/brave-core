@@ -31,7 +31,9 @@ class TranslateScript : public ChromiumTranslateScript {
   using ChromiumTranslateScript::ChromiumTranslateScript;
 
   void OnScriptFetchComplete(bool success, const std::string& data) override;
-  void Request(RequestCallback callback, bool is_incognito) override;
+  void Request(RequestCallback callback,
+               bool is_incognito,
+               PrefService* prefs) override;
 };
 
 }  // namespace translate

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/BUILD.gn b/chrome/browser/ui/startup/BUILD.gn
-index d2f05875009c8aa8304e788d7f5d704bcf8a22ff..c4317bd5bb6edabbbcd20c7e3fdc2a3369b38e53 100644
+index 8505da9893af7b0fa2b8dd525f680b2b8b826ed3..01bf538fb616128d57d6f9973004df6d782d0812 100644
 --- a/chrome/browser/ui/startup/BUILD.gn
 +++ b/chrome/browser/ui/startup/BUILD.gn
-@@ -26,6 +26,7 @@ source_set("startup_tab") {
+@@ -28,6 +28,7 @@ source_set("startup_tab") {
    ]
  
    public_deps = [ "//url" ]

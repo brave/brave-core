@@ -44,23 +44,27 @@ public class BraveAppMenu extends BraveAppMenuDummySuper {
     public static int[] getPopupPosition(
             int[] tempLocation,
             boolean isByPermanentButton,
+            boolean isFromBottomBar,
             int negativeSoftwareVerticalOffset,
             int screenRotation,
             Rect appRect,
             Rect padding,
             View anchorView,
             int popupWidth,
+            int popupHeight,
             int viewLayoutDirection) {
         int[] position =
                 AppMenu.getPopupPosition(
                         tempLocation,
                         isByPermanentButton,
+                        isFromBottomBar,
                         negativeSoftwareVerticalOffset,
                         screenRotation,
                         appRect,
                         padding,
                         anchorView,
                         popupWidth,
+                        popupHeight,
                         viewLayoutDirection);
         if (isMenuFromBottom()) {
             anchorView.getLocationOnScreen(tempLocation);

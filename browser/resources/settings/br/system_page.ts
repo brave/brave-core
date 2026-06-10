@@ -11,6 +11,7 @@ import {
 import { loadTimeData } from '../i18n_setup.js'
 
 import { Router } from '../router.js'
+import type { Route } from '../router.js'
 
 RegisterPolymerPrototypeModification({
   'settings-system-page': (prototype) => {
@@ -22,7 +23,8 @@ RegisterPolymerPrototypeModification({
 
     prototype.onShortcutsClicked_ = () => {
       const router = Router.getInstance()
-      router.navigateTo((router.getRoutes() as any).SHORTCUTS)
+      router.navigateTo(
+        (router.getRoutes() as unknown as {SHORTCUTS: Route}).SHORTCUTS)
     }
   }
 })

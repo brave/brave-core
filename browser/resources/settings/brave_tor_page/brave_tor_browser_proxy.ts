@@ -5,12 +5,26 @@
 
 import { sendWithPromise } from 'chrome://resources/js/cr.js';
 
-// TODO(petemill): Define the expected types instead of using any
+export interface BridgesConfig {
+  use_bridges: number
+  use_builtin_bridges: number
+  requested_bridges: string[]
+  provided_bridges: string[]
+}
+
+export interface BridgesCaptcha {
+  captcha: string
+}
+
+export interface BridgesCaptchaResponse {
+  bridges: Object[]
+}
+
 export interface BraveTorBrowserProxy {
-  getBridgesConfig: () => Promise<any>
-  setBridgesConfig: (config: any) => void
-  requestBridgesCaptcha: () => Promise<any>
-  resolveBridgesCaptcha: (captcha: any) => Promise<any>
+  getBridgesConfig: () => Promise<BridgesConfig>
+  setBridgesConfig: (config: BridgesConfig) => void
+  requestBridgesCaptcha: () => Promise<BridgesCaptcha>
+  resolveBridgesCaptcha: (captcha: string) => Promise<BridgesCaptchaResponse>
   setTorEnabled: (value: boolean) => void
   isTorEnabled: () => Promise<boolean>
   isTorManaged: () => Promise<boolean>
@@ -25,19 +39,20 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
   }
 
   getBridgesConfig() {
-    return sendWithPromise<any>('brave_tor.getBridgesConfig')
+    return sendWithPromise<BridgesConfig>('brave_tor.getBridgesConfig')
   }
 
-  setBridgesConfig(config: any) {
+  setBridgesConfig(config: BridgesConfig) {
     chrome.send('brave_tor.setBridgesConfig', [config])
   }
 
   requestBridgesCaptcha() {
-    return sendWithPromise<any>('brave_tor.requestBridgesCaptcha')
+    return sendWithPromise<BridgesCaptcha>('brave_tor.requestBridgesCaptcha')
   }
 
-  resolveBridgesCaptcha(captcha: any) {
-    return sendWithPromise<any>('brave_tor.resolveBridgesCaptcha', captcha)
+  resolveBridgesCaptcha(captcha: string) {
+    return sendWithPromise<BridgesCaptchaResponse>(
+      'brave_tor.resolveBridgesCaptcha', captcha)
   }
 
   setTorEnabled(value: boolean) {
