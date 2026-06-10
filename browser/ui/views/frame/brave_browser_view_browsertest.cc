@@ -12,6 +12,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -22,6 +24,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -46,6 +49,7 @@
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -404,6 +408,78 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                                           ->GetBackgroundRadii());
   }
 }
+
+// Regression test: In Sidebar V2 the Chromium side panel can be visible while
+// IsSidebarVisible() is false. Verify that the lower corner adjacent to the
+// panel still uses the border radius in that case.
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+IN_PROC_BROWSER_TEST_P(
+    BraveBrowserViewWithRoundedCornersTest,
+    RoundedCornersWithSidePanelVisibleButSidebarControlViewHiddenTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(https://github.com/brave/brave-browser/issues/55995): Re-enable on
+  // macOS 26.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
+  const auto border_radius = GetRoundedCornersBorderRadius();
+  const auto window_corner_radius =
+      GetRoundedCornersBorderRadiusAtWindowCorner();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Hide the sidebar so IsSidebarVisible() returns false, isolating the
+  // side_panel()->GetVisible() branch of GetRoundedCornersForContentsView().
+  sidebar::SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->SetSidebarShowOption(
+          sidebar::SidebarService::ShowSidebarOption::kShowNever);
+  RunScheduledLayouts();
+
+  // Baseline: no panel, no sidebar -> both lower corners use window radius.
+  EXPECT_FALSE(brave_browser_view()->IsSidebarVisible());
+  if (IsRoundedCornersEnabled()) {
+    ExpectContentsViewRadii(border_radius, border_radius, window_corner_radius,
+                            window_corner_radius);
+  }
+
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+
+  // --- Right-aligned panel (default: kSidePanelHorizontalAlignment = true) ---
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(browser_view()->side_panel()->GetVisible());
+  EXPECT_FALSE(brave_browser_view()->IsSidebarVisible());
+
+  if (IsRoundedCornersEnabled()) {
+    // Panel is on the right -> lower-right rounded, lower-left at window edge.
+    ExpectContentsViewRadii(border_radius, border_radius, window_corner_radius,
+                            border_radius);
+  } else {
+    ExpectContentsViewRadii(0, 0, 0, 0);
+  }
+
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  // --- Left-aligned panel (kSidePanelHorizontalAlignment = false) ---
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(browser_view()->side_panel()->GetVisible());
+  EXPECT_FALSE(brave_browser_view()->IsSidebarVisible());
+
+  if (IsRoundedCornersEnabled()) {
+    // Panel is on the left -> lower-left rounded, lower-right at window edge.
+    ExpectContentsViewRadii(border_radius, border_radius, border_radius,
+                            window_corner_radius);
+  } else {
+    ExpectContentsViewRadii(0, 0, 0, 0);
+  }
+}
+#endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 // Test 2: Rounded corners in split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
