@@ -5,47 +5,24 @@
 
 substitutions:
   - description: |-
-      Notify Brave when a YouTube PiP session is attempted.
+      Delegate YouTube PiP entry to Brave.
 
-      After upstream confirms PiP is allowed and resolves the WebContents in
-      attemptPictureInPicture(), calls onYouTubePictureInPictureAttempt() so
-      Brave can start tracking the session that is about to begin.
+      Replaces the inline enterPictureInPictureMode() try/catch with a single call
+      to BraveFullscreenVideoPictureInPictureController#braveAttemptPictureInPicture(),
+      which performs the entry, notifies Brave of the attempt, and rolls the
+      session state back if entry is refused or throws. Keeping all of that in the
+      Brave superclass means upstream just hands off the built params. The pattern
+      is anchored inside attemptPictureInPicture() and matches the try/catch by
+      balanced braces (tolerating up to two levels of nested {} in either body,
+      independent of line breaks or indentation), with a content-agnostic
+      catch(...), so it stays scoped to this method and does not depend on the
+      refusal check, the caught exception types, or the log statement inside.
     re_pattern:
-      '(\s+if \(!allowed\) return;\n\n\s+final WebContents webContents =
-      getWebContents\(\);\n\s+assert webContents != null;)'
+      '(public void attemptPictureInPicture\(\)
+      \{[\s\S]*?)\btry\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}\s*catch\s*\([^)]*\)\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}'
     replace: |-
-      \1
-              BraveFullscreenVideoPictureInPictureController.class.cast(this)
-                      .onYouTubePictureInPictureAttempt(mActivity, webContents);
-
-  - description: |-
-      Notify Brave when PiP entry is refused by the system.
-
-      When mActivity.enterPictureInPictureMode() returns false (the framework
-      declined to enter PiP), calls onYouTubePictureInPictureEnterFailed() before
-      returning so Brave can reset any pending session state.
-    re_pattern:
-      'if \(!mActivity\.enterPictureInPictureMode\(builder\.build\(\)\)\)
-      return;'
-    replace: |-
-      if (!mActivity.enterPictureInPictureMode(builder.build())) {
-                      BraveFullscreenVideoPictureInPictureController.class.cast(this)
-                              .onYouTubePictureInPictureEnterFailed();
-                      return;
-                  }
-
-  - description: |-
-      Notify Brave when PiP entry throws.
-
-      In the catch block of attemptPictureInPicture() (after upstream logs the
-      error), also calls onYouTubePictureInPictureEnterFailed() so a thrown entry
-      is handled the same way as a refused one.
-    re_pattern:
-      '(\s+Log\.e\(TAG, "Error entering PiP with bounds %s", bounds, e\);)'
-    replace: |-
-      \1
-                  BraveFullscreenVideoPictureInPictureController.class.cast(this)
-                          .onYouTubePictureInPictureEnterFailed();
+      \1BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                      .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds);
 
   - description: |-
       Let Brave intercept YouTube PiP dismiss signals.

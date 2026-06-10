@@ -6,13 +6,18 @@
 package org.chromium.chrome.browser.media;
 
 import android.app.Activity;
+import android.app.PictureInPictureParams;
+import android.graphics.Rect;
 
+import org.chromium.base.Log;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.content_public.browser.WebContents;
 
 public class BraveFullscreenVideoPictureInPictureController {
+    private static final String TAG = "BraveFullscreenVideo";
+
     /**
      * This variable will be used instead of {@link FullscreenVideoPictureInPictureController}'s
      * variable, that will be deleted in bytecode.
@@ -26,7 +31,30 @@ public class BraveFullscreenVideoPictureInPictureController {
     @Nullable private BraveActivity mPendingBraveActivityForPiP;
 
     /**
-     * Called by upstream's attemptPictureInPicture before entering PiP. Resolves the Brave activity
+     * Performs the YouTube PiP entry that upstream's attemptPictureInPicture delegates to once the
+     * PictureInPictureParams are built. Notifies the pending Brave activity that a session is being
+     * requested, asks the framework to enter PiP, and rolls that state back via {@link
+     * #onYouTubePictureInPictureEnterFailed} when entry is refused or throws. {@code bounds} is
+     * used only for the failure log.
+     */
+    protected void braveAttemptPictureInPicture(
+            final Activity activity,
+            final WebContents webContents,
+            final PictureInPictureParams.Builder builder,
+            @Nullable final Rect bounds) {
+        onYouTubePictureInPictureAttempt(activity, webContents);
+        try {
+            if (!activity.enterPictureInPictureMode(builder.build())) {
+                onYouTubePictureInPictureEnterFailed();
+            }
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            Log.e(TAG, "Error entering PiP with bounds %s", bounds, e);
+            onYouTubePictureInPictureEnterFailed();
+        }
+    }
+
+    /**
+     * Called by {@link #attemptPictureInPicture} before entering PiP. Resolves the Brave activity
      * that should manage the upcoming YouTube PiP session (or null if this is not a Brave-managed
      * YouTube PiP attempt) and notifies it that a session is being requested.
      */
@@ -39,9 +67,9 @@ public class BraveFullscreenVideoPictureInPictureController {
     }
 
     /**
-     * Called by upstream when {@code enterPictureInPictureMode} returns false or throws, so the
-     * Brave activity can roll back any YouTube PiP session state set up in {@link
-     * #onYouTubePictureInPictureAttempt}.
+     * Called by {@link #attemptPictureInPicture} when {@code enterPictureInPictureMode} returns
+     * false or throws, so the Brave activity can roll back any YouTube PiP session state set up in
+     * {@link #onYouTubePictureInPictureAttempt}.
      */
     protected void onYouTubePictureInPictureEnterFailed() {
         if (mPendingBraveActivityForPiP != null) {
