@@ -6,6 +6,7 @@
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
 
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/brave_search/renderer/backup_results_url_loader_throttle.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -29,13 +30,18 @@ std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateOnionDomainThrottle(
 }
 }  // namespace
 
-#define IsRequestDestinationFrame                                         \
-  IsRequestDestinationFrame(request.destination);                         \
-  if (auto onion_domain_throttle = MaybeCreateOnionDomainThrottle(        \
-          static_cast<BraveContentRendererClient*>(                       \
-              chrome_content_renderer_client_))) {                        \
-    throttles.emplace_back(std::move(onion_domain_throttle));             \
-  }                                                                       \
+#define IsRequestDestinationFrame                                          \
+  IsRequestDestinationFrame(request.destination);                          \
+  auto* brave_client = static_cast<BraveContentRendererClient*>(           \
+      chrome_content_renderer_client_);                                    \
+  if (auto onion_domain_throttle =                                         \
+          MaybeCreateOnionDomainThrottle(brave_client)) {                  \
+    throttles.emplace_back(std::move(onion_domain_throttle));              \
+  }                                                                        \
+  if (brave_client->IsBackupResultsProcess()) {                            \
+    throttles.emplace_back(                                                \
+        std::make_unique<brave_search::BackupResultsURLLoaderThrottle>()); \
+  }                                                                        \
   blink::IsRequestDestinationFrame
 
 #include <chrome/renderer/url_loader_throttle_provider_impl.cc>

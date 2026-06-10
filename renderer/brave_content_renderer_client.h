@@ -54,6 +54,7 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
       blink::URLLoaderThrottleProviderType provider_type) override;
 
   bool IsOnionAllowed() const;
+  bool IsBackupResultsProcess() const;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   bool IsBraveWalletAvailable() const;

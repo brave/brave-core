@@ -29,6 +29,7 @@ class BraveRenderThreadObserver
   ~BraveRenderThreadObserver() override;
 
   bool IsOnionAllowed() const;
+  bool IsBackupResultsProcess() const;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   bool IsBraveWalletAvailable() const;
@@ -47,7 +48,8 @@ class BraveRenderThreadObserver
 
   // brave::mojom::BraveRendererConfiguration:
   void SetInitialConfiguration(bool is_tor_process,
-                               bool is_brave_wallet_available) override;
+                               bool is_brave_wallet_available,
+                               bool is_backup_results_process) override;
   void SetConfiguration(brave::mojom::DynamicParamsPtr params) override;
 
   void OnRendererConfigurationAssociatedRequest(
@@ -55,6 +57,7 @@ class BraveRenderThreadObserver
           receiver);
 
   bool is_tor_process_ = false;
+  bool is_backup_results_process_ = false;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   bool is_brave_wallet_available_ = false;
 #endif

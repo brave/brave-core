@@ -1,6 +1,7 @@
 include_rules = [
   "+content/public/renderer",
   "+gin",
+  "+services/network/public/cpp",
   "+third_party/blink/public",
   "+v8/include",
 ]

@@ -325,6 +325,10 @@ bool BraveContentRendererClient::IsOnionAllowed() const {
   return brave_observer_->IsOnionAllowed();
 }
 
+bool BraveContentRendererClient::IsBackupResultsProcess() const {
+  return brave_observer_ && brave_observer_->IsBackupResultsProcess();
+}
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 bool BraveContentRendererClient::IsBraveWalletAvailable() const {
   return brave_observer_ && brave_observer_->IsBraveWalletAvailable();

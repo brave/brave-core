@@ -71,4 +71,13 @@ const base::FeatureParam<base::TimeDelta>
         &kBackupResults, "load_after_restore_low_delay_max",
         base::Milliseconds(1500)};
 
+const base::FeatureParam<bool> kBackupResultsAllowFetches{
+    &kBackupResults, "allow_fetches", false};
+
+const base::FeatureParam<bool> kBackupResultsAllowCosmeticAssets{
+    &kBackupResults, "allow_cosmetic_assets", false};
+
+const base::FeatureParam<bool> kBackupResultsAllowUnclassifiedRequests{
+    &kBackupResults, "allow_unclassified_requests", false};
+
 }  // namespace brave_search::features
