@@ -1619,7 +1619,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
 #define MAYBE_UnshieldFunds UnshieldFunds
 #endif
 
-// https://3xpl.com/zcash/transaction/5e07d5b298f2862f2332effc833f5fe9157eb9ca00e03f394663e81b397515a9
+// https://3xpl.com/zcash/transaction/821edadc1bc51e7dc7a57c01eb766292a88d3836ad7f83f4e3e505100cef2300
 TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
@@ -2048,7 +2048,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
       ToHex(captured_data));
 }
 
-// https://zcashblockexplorer.com/transactions/9956437828356014ae531b71f6a0337bb7980abf5e4d3d572a117a3f97db8a15/raw
+// https://3xpl.com/zcash/transaction/7aa77162f1a2ba09222136abcf6fcb11dbef9584dd62dca79803111eff285b96
 TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
@@ -2452,7 +2452,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
       ToHex(captured_data));
 }
 
-// https://3xpl.com/zcash/transaction/1f4ca7c4b182620861632c9c35398c5f61a846e783070a1ebe30941b6f55ab78
+// https://3xpl.com/zcash/transaction/2718c2dea2427f05c0120da629f150bef8e2f566abda02f530eb689e51a75ac6
 TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
@@ -3102,7 +3102,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
       ToHex(captured_data));
 }
 
-// https://3xpl.com/zcash/transaction/99b223198efaa5fb2ea4b10c53f9f9d118753789ce7f9ed3f891c9e2c8da91f0
+// https://3xpl.com/zcash/transaction/88d012500b323b0f8936ca249fc3d8bbe98071a0f0aafd73da60474680d69003
 TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
