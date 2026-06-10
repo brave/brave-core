@@ -1,0 +1,19 @@
+diff --git a/components/sync_device_info/device_info_sync_bridge.h b/components/sync_device_info/device_info_sync_bridge.h
+index 800339c55f081f0b19c25d8b44692623a938d178..1481db047dfcda45af75ab57f67e5f26ecfd9a6e 100644
+--- a/components/sync_device_info/device_info_sync_bridge.h
++++ b/components/sync_device_info/device_info_sync_bridge.h
+@@ -62,6 +62,14 @@ class DeviceInfoSyncBridge : public DataTypeSyncBridge,
+ 
+   ~DeviceInfoSyncBridge() override;
+ 
++  void DeleteDeviceInfo(const std::string& client_id,
++                        base::OnceClosure callback) override;
++  std::vector<std::unique_ptr<DeviceInfo>> GetAllBraveDeviceInfo()
++      const override;
++  void RefreshLocalDeviceInfoIfNeeded_ChromiumImpl();
++  void OnDeviceInfoDeleted(const std::string& client_id, const int attempt,
++                           base::OnceClosure callback);
++
+   LocalDeviceInfoProvider* GetLocalDeviceInfoProvider();
+ 
+   // Refresh local copy of device info in memory, and informs sync of the

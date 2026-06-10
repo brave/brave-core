@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/side_bar.ts b/chrome/browser/resources/history/side_bar.ts
-index 48874b0233d65839cfe560721402b67d377ad978..d58c4d27f201250a7bff664416658344a37be84a 100644
+index f1667adc562780c4bf697c7e32a6d79ac227c965..6ebd9b55498cad146e41abfb47bbc0fbe86e5f14 100644
 --- a/chrome/browser/resources/history/side_bar.ts
 +++ b/chrome/browser/resources/history/side_bar.ts
 @@ -249,4 +249,3 @@ declare global {

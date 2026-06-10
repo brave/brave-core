@@ -169,11 +169,4 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
         super.onVoiceResults(results);
     }
-
-    // Prevents from clearing URL bar text and suggestions when
-    // in multi-window/split-mode or when switch away from Brave.
-    // It was introduced in that chromium commit
-    // https://github.com/chromium/chromium/commit/7bcc9de3972ca4ba6feb6a136edce9d49ec30daf
-    @Override
-    public void onTopResumedActivityChanged(boolean isTopResumedActivity) {}
 }

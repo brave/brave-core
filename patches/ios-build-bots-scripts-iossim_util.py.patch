@@ -1,5 +1,5 @@
 diff --git a/ios/build/bots/scripts/iossim_util.py b/ios/build/bots/scripts/iossim_util.py
-index c68a604e297162a7e1b338776ca32aa3a1e55674..847941a3586738019f0d3f72e2eca5d816098556 100644
+index f26b0cf667d80c12fa9cd455fdaa5e99c8573d7b..013666149542721b8b9438c41c687efdf075953d 100644
 --- a/ios/build/bots/scripts/iossim_util.py
 +++ b/ios/build/bots/scripts/iossim_util.py
 @@ -490,6 +490,7 @@ def update_dyld_shared_cache(runtime=None):

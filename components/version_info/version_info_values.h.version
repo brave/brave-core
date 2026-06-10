@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_VERSION_INFO_VERSION_INFO_VALUES_H_
 #define BRAVE_COMPONENTS_VERSION_INFO_VERSION_INFO_VALUES_H_
 
+#define BRAVE_CHROMIUM_VERSION "@BRAVE_CHROMIUM_VERSION@"
+
 namespace version_info {
 namespace constants {
 inline constexpr char kBraveBrowserVersion[] = "@BRAVE_BROWSER_VERSION@";

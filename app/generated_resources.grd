@@ -639,7 +639,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Print...
           </message>
           <message name="IDS_CONTENT_CONTEXT_PRINT_SELECTION" desc="The name of the Print command in the content area context menu when there is a text selection.">
-            &amp;Print "<ph name="SELECTION">$1<ex>selected text</ex></ph>"
+            &amp;Print “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_VIEWPAGESOURCE" desc="The name of the View Page Source command in the content area context menu">
             &amp;View page source
@@ -657,7 +657,7 @@ are declared in tools/grit/grit_args.gni.
            Open in reading mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="Context menu menuitem to open selected text in reading mode view">
-           Open "<ph name="SELECTION">$1<ex>text</ex></ph>" in reading mode
+           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in reading mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="Context menu item to listen to this page">
            Listen to this page
@@ -865,7 +865,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Copy
           </message>
           <message name="IDS_CONTENT_CONTEXT_COPY_SELECTION" desc="The name of the Copy command with selection in the content area context menu">
-            &amp;Copy "<ph name="SELECTION">$1<ex>text</ex></ph>"
+            &amp;Copy “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_PASTE" desc="The name of the Paste command in the content area context menu" meaning="'Paste' menu command in sentence case">
             &amp;Paste
@@ -913,7 +913,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Translate selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="The name of the Translate command in the content area context menu when there is a text selection.">
-            &amp;Translate "<ph name="SELECTION">$1<ex>text</ex></ph>" to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -979,7 +979,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Print...
           </message>
           <message name="IDS_CONTENT_CONTEXT_PRINT_SELECTION" desc="In Title Case: The name of the Print command in the content area context menu when there is a text selection.">
-            &amp;Print "<ph name="SELECTION">$1<ex>selected text</ex></ph>"
+            &amp;Print “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_VIEWPAGESOURCE" desc="In Title Case: The name of the View Page Source command in the content area context menu">
             &amp;View Page Source
@@ -997,7 +997,7 @@ are declared in tools/grit/grit_args.gni.
            Open in Reading Mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="In Title Case: Context menu menuitem to open selected text in reading mode view">
-           Open "<ph name="SELECTION">$1<ex>text</ex></ph>" in Reading Mode
+           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in Reading Mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="In Title Case: Context menu item to listen to this page">
            Listen to This Page
@@ -1205,7 +1205,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Copy
           </message>
           <message name="IDS_CONTENT_CONTEXT_COPY_SELECTION" desc="The name of the Copy command with selection in the content area context menu">
-            &amp;Copy "<ph name="SELECTION">$1<ex>text</ex></ph>"
+            &amp;Copy “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <!-- Paste and Match Style / Paste as Plain Text -->
           <if expr="is_macosx">
@@ -1267,7 +1267,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Translate Selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="In Title Case: The name of the Translate command in the content area context menu when there is a text selection.">
-            &amp;Translate "<ph name="SELECTION">$1<ex>text</ex></ph>" to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="In Title Case: The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -1703,8 +1703,8 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_REPORT_UNSAFE_SITE" desc="Text label of the Report Unsafe Site menu item">
           Report an &amp;unsafe site...
         </message>
-        <message name="IDS_RESTORE_ALL_TABS" desc="The text label of the Restore All Tabs menu item.">
-          R&amp;estore all tabs
+        <message name="IDS_RESTORE_SPLIT" desc="The text label of the Restore Split View menu item.">
+          R&amp;estore split view
         </message>
         <message name="IDS_RESTORE_TAB" desc="The text label of the Restore Tab menu item">
           R&amp;eopen closed tab
@@ -1714,6 +1714,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_REOPEN_GROUP" desc="The text label of the Reopen Closed Group menu item">
           Reopen closed group
+        </message>
+        <message name="IDS_REOPEN_SPLIT" desc="The text label of the Reopen Closed Split menu item">
+          Reopen closed split view
         </message>
         <message name="IDS_RESTORE_WINDOW" desc="The text label of the Restore Window menu item">
           &amp;Restore window
@@ -1753,8 +1756,8 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_TAKE_SCREENSHOT" desc="The text label of the Take Screenshot menu item">
           T&amp;ake Screenshot
         </message>
-        <message name="IDS_RESTORE_ALL_TABS" desc="In Title Case: The text label of the Restore All Tabs menu item.">
-          R&amp;estore All Tabs
+        <message name="IDS_RESTORE_SPLIT" desc="In Title Case: The text label of the Restore Split View menu item.">
+          R&amp;estore Split View
         </message>
         <message name="IDS_RESTORE_TAB" desc="In Title Case: The text label of the Restore Tab menu item">
           R&amp;eopen Closed Tab
@@ -1764,6 +1767,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_REOPEN_GROUP" desc="In Title Case: The text label of the Reopen Closed Group menu item">
           Reopen Closed Group
+        </message>
+        <message name="IDS_REOPEN_SPLIT" desc="In Title Case: The text label of the Reopen Closed Split menu item">
+          Reopen Closed Split View
         </message>
         <message name="IDS_REPORT_UNSAFE_SITE" desc="In Title Case: Text label of the Report Unsafe Site menu item">
           Report an &amp;Unsafe Site...
@@ -5922,34 +5928,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Learn more about disabled extensions.
       </message>
 
-      <!-- Manifest V2 Deprecation Dialogs -->
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_KEEP_DIALOG_TITLE" desc="The title of the dialog asking the user if they want to keep the extension installed, which is affected by the Manifest V2 deprecation">
-        Keep "<ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_KEEP_DIALOG_OK_BUTTON" desc="The text of the dialog button to keep the extension installed, which is affected by the Manifest V2 deprecation">
-        Keep
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_TITLE" desc="The title of the dialog that appears when extensions were disabled due to the Manifest V2 deprecation">
-        "<ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>" was turned off
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_PLURAL_TITLE" desc="The title of the dialog that appears when extensions were disabled due to the Manifest V2 deprecation">
-        <ph name="NUM_EXTENSIONS">$1<ex>3</ex></ph> extensions were turned off
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_OK_BUTTON" desc="The text of the dialog button that removes the extension(s) that were were disabled due to the Manifest V2 deprecation">
-        Remove
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_CANCEL_BUTTON" desc="The text of the dialog button that opens the settings for the extension(s) that were were disabled due to the Manifest V2 deprecation">
-        {NUM_EXTENSIONS, plural,
-          =1 {Manage extension}
-          other {Manage extensions}
-        }
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_REENABLE_DIALOG_TITLE" desc="The title of the dialog asking the user if they want to enable an extension that was disabled due to the Manifest V2 deprecation">
-        Turn "<ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>" on?
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_REENABLE_DIALOG_OK_BUTTON" desc="The text of the dialog button to turn on an extension that was disabled due to the Manifest V2 deprecation">
-        Turn on
-      </message>
 
       <!-- Begin Extension Settings Overridden Dialog strings. -->
       <message name="IDS_EXTENSION_SETTINGS_OVERRIDDEN_DIALOG_CHANGE_IT_BACK" desc="The text of the button to revert to old settings; displayed in the dialog describing settings overridden by an extension.">
@@ -8334,7 +8312,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Ask about this doc
       </message>
       <message name="IDS_COMPOSE_SHARING_TABS" desc="Text for a menu item that indicates how many tabs are currently being shared. [ICU Syntax]">
-        {TAB_COUNT, plural,
+        {0, plural,
           =1 {Sharing 1 tab}
           other {Sharing # tabs}}
       </message>
@@ -9916,6 +9894,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert announced after resizing a split view.">
         <ph name="VIEW_ONE_ORIENTATION">$1<ex>Left</ex></ph> View now <ph name="VIEW_ONE_PERCENT">$2<ex>50%</ex></ph> wide, <ph name="VIEW_TWO_ORIENTATION">$3<ex>Right</ex></ph> View now <ph name="VIEW_TWO_PERCENT">$4<ex>50%</ex></ph> wide.
       </message>
+      <message name="IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT_STACKED" is_accessibility_with_no_ui="true" desc="Accessible alert announced after resizing a stacked split view.">
+        <ph name="VIEW_ONE_ORIENTATION">$1<ex>Top</ex></ph> View now <ph name="VIEW_ONE_PERCENT">$2<ex>50%</ex></ph> tall, <ph name="VIEW_TWO_ORIENTATION">$3<ex>Bottom</ex></ph> View now <ph name="VIEW_TWO_PERCENT">$4<ex>50%</ex></ph> tall.
+      </message>
       <message name="IDS_SPLIT_VIEW_RESIZE_LEFT_SIDE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert text used in IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT for which side the window/pane is seen on.">
                Left
       </message>
@@ -10361,9 +10342,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="not is_android">
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Price Tracking promo bubble with a reminder button.">
           Keep up with all your price drops on the go
-        </message>
-        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Price Tracking promo bubble with a QR Code.">
-          Get price tracking alerts on your phone
         </message>
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Price Tracking promo bubble with a reminder button.">
           Get price tracking alerts on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
@@ -11797,6 +11775,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_NEW_HORIZONTAL" desc="The label for a menu item for creating a new split view with a horizontal divider.">
           Stacked
         </message>
+        <message name="IDS_SPLIT_TAB_SHOW_STACKED" desc="The label for a menu item that switches the layout of the split tabs to stacked when clicked.">
+          Show stacked
+        </message>
+        <message name="IDS_SPLIT_TAB_SHOW_SIDE_BY_SIDE" desc="The label for a menu item that switches the layout of the split tabs to side-by-side when clicked.">
+          Show side by side
+        </message>
         <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
           Send feedback
         </message>
@@ -11844,6 +11828,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_NEW_HORIZONTAL" desc="In title case: The label for a menu item for creating a new split view with a horizontal divider.">
           Stacked
         </message>
+        <message name="IDS_SPLIT_TAB_SHOW_STACKED" desc="In title case: The label for a menu item that switches the layout of the split tabs to stacked when clicked.">
+          Show Stacked
+        </message>
+        <message name="IDS_SPLIT_TAB_SHOW_SIDE_BY_SIDE" desc="In title case: The label for a menu item that switches the layout of the split tabs to side-by-side when clicked.">
+          Show Side by Side
+        </message>
         <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
           Send Feedback
         </message>
@@ -11889,6 +11879,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_SEARCH_A11Y_TAB_CLOSED" desc="A11y message after user clicks on the close tab button in the list item.">
         Tab Closed
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_SPLIT_VIEW_CLOSED" is_accessibility_with_no_ui="true" desc="A11y message after user clicks on the close button of a split view row in the list item.">
+        Split View Closed
       </message>
       <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB" desc="Singular form of a11y message after user changes search field when search filed is empty.">
         Found <ph name="NUM">$1<ex>1</ex></ph> Tab
@@ -12840,6 +12833,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_DATA_SHARING_PAGE_ACTION_CHANGED_TAB" desc="A description of a member changing a tab for the data sharing page action.">
           Changed this tab
+        </message>
+        <message name="IDS_ANCHORED_MESSAGE_EXPAND_BUTTON_TOOLTIP" desc="Tooltip for the anchored message expand button.">
+          Show details
+        </message>
+        <message name="IDS_ANCHORED_MESSAGE_COLLAPSE_BUTTON_TOOLTIP" desc="Tooltip for the anchored message collapse button.">
+          Hide details
         </message>
       <!-- /Page Action -->
 
@@ -15372,7 +15371,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Recently Closed
         </message>
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed window.">
-          Restore All Tabs
+          Restore Window
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_GROUP_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed group.">
+          Restore Group
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_SPLIT_MAC" desc="The Mac menu item for restoring a recently closed split.">
+          Restore Split View
         </message>
         <!-- Window menu -->
         <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
@@ -15517,7 +15522,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Recently Closed
         </message>
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_LINUX" desc="The Linux menu item for restoring all the tabs of a recently closed window.">
-          Restore All Tabs
+          Restore window
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_GROUP_LINUX" desc="The Linux menu item for restoring all the tabs of a recently closed group.">
+          Restore group
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_SPLIT_LINUX" desc="The Linux menu item for restoring a recently closed split.">
+          Restore split view
         </message>
       </if>
 
@@ -16257,6 +16268,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_RIGHT_VIEW_FORMAT" desc="Accessibility label text for a tab, when it is the right tab of a split view. Example: 'Brave Search - Right view'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Right view
+      </message>
+      <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_TOP_VIEW_FORMAT" is_accessibility_with_no_ui="true" desc="Accessibility label text for a tab, when it is the top tab of a split view. Example: 'Brave Search - Top view'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Top view
+      </message>
+      <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_BOTTOM_VIEW_FORMAT" is_accessibility_with_no_ui="true" desc="Accessibility label text for a tab, when it is the bottom tab of a split view. Example: 'Brave Search - Bottom view'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Bottom view
       </message>
       <message name="IDS_TAB_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has not been named by the user. Example: 'Brave Search - Part of unnamed group'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of unnamed group
@@ -18539,20 +18556,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TRANSLATE_TOAST_UNDO_BUTTON" desc="Button on a toast notification that allows users to undo the translation.">
         Undo
       </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_TITLE" desc="Title to show on the toast for Multistep Filter suggestions." translateable="false">
-        Apply <ph name="FILTER_COUNT">$1</ph> filters from <ph name="TIME_PERIOD">$2</ph> ago? <ph name="DETAILS">$3</ph>
-      </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_APPLY_BUTTON" desc="Text for the apply button on the Multistep Filter suggestion toast." translateable="false">
-        Apply
-      </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_RECENT_TITLE" desc="Title to show on the toast for Multistep Filter suggestions recent toast." translateable="false">
-        Recall <ph name="FILTER_COUNT">$1</ph> filters from <ph name="SOURCE_DOMAIN">$2</ph>? <ph name="DETAILS">$3</ph>
-      </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_RECENT_APPLY_BUTTON" desc="Text for the apply button on the Multistep Filter suggestion recent toast." translateable="false">
-        Apply
-      </message>
       <message name="IDS_MULTISTEP_FILTER_CUE_ACTION_TEXT" desc="Text for the action button on the contextual cue for multistep filters." translateable="false">
         Continue
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_CUE_DISMISS" desc="Text for the dismiss menu item on the contextual cue for multistep filters." translateable="false">
+        Dismiss
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_CUE_SETTINGS" desc="Text for the settings menu item on the contextual cue for multistep filters." translateable="false">
+        Manage settings
       </message>
       <message name="IDS_LINK_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when a link is successfully copied.">
         Link copied
@@ -18778,6 +18789,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_IWA_INSTALLER_VERIFICATION_ERROR_SUBTITLE" desc="Subtitle of an error popup during the verification step of the Isolated Web App installer">
       This bundle might be broken or compromised. Please close this window and download it again
+    </message>
+    <message name="IDS_IWA_SUB_APPS_INSTALLER_PARENT_APP_NAME" desc="Label before the Sub App's parent Isolated Web App name in the app related dialogs.">
+    Parent App: <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
     </message>
     <if expr="is_chromeos">
         <message name="IDS_IWA_INSTALLER_SHELF_ITEM_TITLE" desc="Title of an Isolated Web App installer item on the ChromeOS Shelf.">
@@ -19052,7 +19066,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Choose your account
     </message>
     <message name="IDS_ACCOUNT_CHOOSER_SUBTITLE" desc="Text description for saving files to Drive via Brave PDF viewer.">
-      Find your file in the <ph name="FEATURE_NAME">$1<ex>Saved from Brave</ex></ph> folder
+      Find your <ph name="FILENAME">$1<ex>document.pdf</ex></ph> in the <ph name="FEATURE_NAME">$2<ex>Saved from Brave</ex></ph> folder
     </message>
     <message name="IDS_SAVE_TO_DRIVE_FOLDER_NAME" desc="Name of the folder in Drive where files saved from Brave are stored." meaning="Name of the folder in Drive where files saved from Chrome are stored. Please use the short version of the branded term for Google Chrome i.e. Chrome">
       Saved from Brave

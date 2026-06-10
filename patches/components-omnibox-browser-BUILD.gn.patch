@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 88a658e662620b4c0cc3e4a54d8cc0b44f5df873..0b53c2ae0dbbd3a4cefceb6f95b08a57d0da4e07 100644
+index 987bc8ef54cbb892ffd52da1e2fcbd5a77db7831..e94ff39f48688a017214d6ef9b3baf79c3b120df 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -370,6 +370,7 @@ static_library("browser") {
@@ -17,8 +17,8 @@ index 88a658e662620b4c0cc3e4a54d8cc0b44f5df873..0b53c2ae0dbbd3a4cefceb6f95b08a57
 +  public_deps += brave_components_omnibox_browser_public_deps
  
    deps = [
-     "//build:branding_buildflags",
-@@ -444,6 +446,7 @@ static_library("browser") {
+     "//build:android_buildflags",
+@@ -445,6 +447,7 @@ static_library("browser") {
      "//ui/base",
      "//ui/gfx",
    ]
@@ -26,7 +26,7 @@ index 88a658e662620b4c0cc3e4a54d8cc0b44f5df873..0b53c2ae0dbbd3a4cefceb6f95b08a57
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
-@@ -1080,6 +1083,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+@@ -1085,6 +1088,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
  }
  
  mojom("mojo_bindings") {

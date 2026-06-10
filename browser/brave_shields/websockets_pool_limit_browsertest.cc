@@ -11,6 +11,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -356,6 +357,7 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
                        PoolIsNotLimitedForExtensions) {
+  extensions::ScopedTestMV2Enabler mv2_enabler;
   extensions::TestExtensionDir test_extension_dir;
   test_extension_dir.WriteManifest(R"({
     "name": "Test",

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index 7d5ad263bf0bcf7042f2dbd9317a8b3e6bf7e841..b2f138d9eedbb685cf8853b81b0d5709d7ccb5a7 100644
+index b037debeb51eaf98dc55606063ecae21bf535103..0f7f2f413872bcafc7058e869a4787657c124af2 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -267,7 +267,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -266,7 +266,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
            *browser, fullscreen_controller_.get(), app_browser_controller_.get(),
            browser->GetType(),
            browser->GetBrowserForMigrationOnly()->is_trusted_source(),

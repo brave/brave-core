@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 127634d6989ab9ce8b6fc033504e8e71c301bcef..6f8e6ca24d123678714462b0d5e5e73462294d3b 100644
+index 1f06dc1788849eb47f93b445e35acb0220893765..c143b75e145a6bdf3164b455262cc4810afb6108 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
 @@ -638,6 +638,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
@@ -10,8 +10,8 @@ index 127634d6989ab9ce8b6fc033504e8e71c301bcef..6f8e6ca24d123678714462b0d5e5e734
    VISIT(sharing_fields);
    VISIT(model);
    VISIT(manufacturer);
-@@ -671,6 +672,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
-   VISIT_ENUM(glic_experimental_triggering_state);
+@@ -674,6 +675,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+   VISIT(glic_experimental_triggering_version);
  }
  
 +BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD

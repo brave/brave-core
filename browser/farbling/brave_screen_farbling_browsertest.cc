@@ -15,6 +15,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/chrome_test_extension_loader.h"
+#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/chrome_paths.h"
@@ -443,6 +444,7 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
   FarbleScreenSize(GURL("chrome:version"), false);
 
   // chrome-extension: URI (don't farble)
+  extensions::ScopedTestMV2Enabler mv2_enabler;
   base::FilePath test_data_dir;
   base::PathService::Get(chrome::DIR_TEST_DATA, &test_data_dir);
   std::string extension_id =

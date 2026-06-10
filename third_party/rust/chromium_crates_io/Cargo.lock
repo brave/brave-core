@@ -9,7 +9,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "arrayvec",
  "base64",
- "bitflags 2.11.1",
+ "bitflags 2.12.1",
  "cssparser 0.34.0",
  "flatbuffers",
  "idna",
@@ -170,7 +170,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bitflags"
-version = "2.11.1"
+version = "2.12.1"
 dependencies = [
  "serde_core",
 ]
@@ -823,7 +823,7 @@ name = "flatbuffers"
 version = "25.12.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.11.1",
+ "bitflags 2.12.1",
  "rustc_version",
 ]
 
@@ -1275,7 +1275,7 @@ name = "lol_html"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.11.1",
+ "bitflags 2.12.1",
  "cfg-if",
  "cssparser 0.29.6",
  "encoding_rs",
@@ -1823,7 +1823,7 @@ dependencies = [
 name = "readability"
 version = "0.1.4"
 dependencies = [
- "bitflags 2.11.1",
+ "bitflags 2.12.1",
  "html5ever",
  "kuchikiki",
  "lazy_static",
@@ -1855,7 +1855,7 @@ name = "redox_syscall"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.11.1",
+ "bitflags 2.12.1",
 ]
 
 [[package]]
@@ -1968,7 +1968,7 @@ name = "selectors"
 version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.11.1",
+ "bitflags 2.12.1",
  "cssparser 0.34.0",
  "derive_more",
  "fxhash",
@@ -2073,7 +2073,7 @@ name = "shardtree"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.11.1",
+ "bitflags 2.12.1",
  "either",
  "incrementalmerkletree",
  "tracing",

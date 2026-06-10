@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 9011eb9a1a11629d014060417414abec06e02578..a3e89b9c18cd19f12dbab39b8f40e402b3039aa7 100644
+index 34aebe8d77390f6fa5c4d83bd3aa192a974fe450..c595bfdd29fc3252d7ca35c7ff17c534d2a2eb31 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -595,6 +595,7 @@ public class ToolbarPhone extends ToolbarLayout
@@ -34,7 +34,7 @@ index 9011eb9a1a11629d014060417414abec06e02578..a3e89b9c18cd19f12dbab39b8f40e402
          updateButtonVisibility();
      }
  
-@@ -2504,6 +2508,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2503,6 +2507,7 @@ public class ToolbarPhone extends ToolbarLayout
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

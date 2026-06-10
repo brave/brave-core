@@ -16,7 +16,7 @@
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace views {
 class View;
@@ -46,7 +46,7 @@ class PlaylistEditBubbleView : public PlaylistBubbleView,
   void RemoveFromPlaylist();
   void MoreMediaInContents();
 
-  raw_ptr<Browser> browser_;
+  raw_ptr<BrowserWindowInterface> browser_;
   base::ScopedObservation<PlaylistTabHelper, PlaylistTabHelperObserver>
       tab_helper_observation_{this};
 };

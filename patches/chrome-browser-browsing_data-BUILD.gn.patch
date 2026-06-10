@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/BUILD.gn b/chrome/browser/browsing_data/BUILD.gn
-index 3985fac6fee891e9b05d64024164640019de59b8..5f8e5613745fbb8556f13fb8909ccacd506c493b 100644
+index d360bd8ab323e54631fa32e3f8c283cfd14905e8..a36bae2c6a4b22d0bc527743eb52c1ac89fc5a8e 100644
 --- a/chrome/browser/browsing_data/BUILD.gn
 +++ b/chrome/browser/browsing_data/BUILD.gn
 @@ -12,6 +12,7 @@ source_set("constants") {

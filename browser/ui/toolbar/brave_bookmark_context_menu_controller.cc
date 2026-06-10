@@ -131,7 +131,8 @@ void BraveBookmarkContextMenuController::MaybeAddContainersBookmarkSubmenu(
 
 bool BraveBookmarkContextMenuController::IsCommandIdChecked(
     int command_id) const {
-  if (brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
+  if (brave_bookmarks_submenu_model_ &&
+      brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
     return brave_bookmarks_submenu_model_->IsCommandIdChecked(command_id);
   }
 
@@ -161,7 +162,8 @@ bool BraveBookmarkContextMenuController::IsCommandIdChecked(
 
 bool BraveBookmarkContextMenuController::IsCommandIdEnabled(
     int command_id) const {
-  if (brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
+  if (brave_bookmarks_submenu_model_ &&
+      brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
     return brave_bookmarks_submenu_model_->IsCommandIdEnabled(command_id);
   }
 
@@ -185,7 +187,8 @@ bool BraveBookmarkContextMenuController::IsCommandIdEnabled(
 
 bool BraveBookmarkContextMenuController::IsCommandIdVisible(
     int command_id) const {
-  if (brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
+  if (brave_bookmarks_submenu_model_ &&
+      brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
     return brave_bookmarks_submenu_model_->IsCommandIdVisible(command_id);
   }
 
@@ -213,7 +216,8 @@ bool BraveBookmarkContextMenuController::IsCommandIdVisible(
 
 void BraveBookmarkContextMenuController::ExecuteCommand(int command_id,
                                                         int event_flags) {
-  if (brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
+  if (brave_bookmarks_submenu_model_ &&
+      brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
     brave_bookmarks_submenu_model_->ExecuteCommand(command_id, event_flags);
     return;
   }
@@ -241,7 +245,8 @@ void BraveBookmarkContextMenuController::ExecuteCommand(int command_id,
 
 std::u16string BraveBookmarkContextMenuController::GetLabelForCommandId(
     int command_id) const {
-  if (brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
+  if (brave_bookmarks_submenu_model_ &&
+      brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
     return brave_bookmarks_submenu_model_->GetLabelForCommandId(command_id);
   }
 

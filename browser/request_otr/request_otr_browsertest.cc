@@ -22,6 +22,7 @@
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -508,6 +509,7 @@ class RequestOTRServiceWorkerBrowserTest : public RequestOTRBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
                        ServiceWorkerUnavailable) {
+  extensions::ScopedTestMV2Enabler mv2_enabler;
   ASSERT_TRUE(InstallMockExtension());
 
   // Always use request-otr for sensitive sites (skipping interstitial).
@@ -521,6 +523,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
                        ServiceWorkerAvailable) {
+  extensions::ScopedTestMV2Enabler mv2_enabler;
   ASSERT_TRUE(InstallMockExtension());
 
   // Never use request-otr mode for sensitive sites.

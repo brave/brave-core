@@ -585,6 +585,7 @@ source_set("ui") {
       "//brave/components/commander/browser",
       "//chrome/browser/ui:accelerator_utils_headers",
       "//chrome/browser/ui/location_bar",
+      "//chrome/browser/ui/window_metadata",
     ]
   }
 

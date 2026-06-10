@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index c3c6757959dde7b945e66d80c6a17c4b5011f2be..1a5a1fe533af512f2f57e701c7e3f3d6f9af34c5 100644
+index a53fbb4a1cc5a5f71503aff667ac0ec594b172e3..9753934a2111e4e2ebce029e7dc2b5ce1778b08a 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1307,6 +1307,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {

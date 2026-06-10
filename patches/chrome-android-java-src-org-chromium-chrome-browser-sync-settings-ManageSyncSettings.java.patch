@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 2fab9bcfd639a13bc4ad9c65d25e0b1be79d464a..007518e217eee8463a838dd032e66b486c3ab9ff 100644
+index 97ffd7bd67ab326fd71925ccc3eac76a2b69b04d..bf120b4ef9d90c24984bb38fa94e5fd71f163c62 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -266,6 +266,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
@@ -10,11 +10,12 @@ index 2fab9bcfd639a13bc4ad9c65d25e0b1be79d464a..007518e217eee8463a838dd032e66b48
          if (mSyncService.isUsingExplicitPassphrase()
                  && preference
                          .getKey()
-@@ -461,6 +462,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -460,7 +461,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+      * this state.
       */
      private void updateSyncPreferences() {
-         String signedInAccountName =
-+                mGoogleActivityControls != null ? "" : // We want the next `if` to be always false.
-                 CoreAccountInfo.getEmailFrom(getIdentityManager().getPrimaryAccountInfo());
+-        @Nullable AccountInfo primaryAccount = getIdentityManager().getPrimaryAccountInfo();
++        @Nullable AccountInfo primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("")).build();
          // May happen if account is removed from the device while this screen is shown.
-         if (signedInAccountName == null) {
+         if (primaryAccount == null) {
+             finishCurrentSettings();

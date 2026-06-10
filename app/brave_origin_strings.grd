@@ -933,16 +933,6 @@ Brave is unable to recover your settings.
         <message name="IDS_EXTENSIONS_ALERT_ITEM_BLOCKLISTED_MALWARE_TITLE" desc="A statement that multiple extension/apps have been newly blocklisted for malware.">
           Brave found that these items contain malware:
         </message>
-
-        <!-- Manifest V2 Deprecation dialog -->
-        <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_KEEP_DIALOG_DESCRIPTION" desc="The description of the dialog asking the user if they want to keep the extension installed, which is affected by the Manifest V2 deprecation">
-          This extension is no longer supported. Brave recommends that you remove it instead.
-        </message>
-        <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_DESCRIPTION" desc="The description of the dialog that appears when extensions were disabled due to the Manifest V2 deprecation">
-          {NUM_EXTENSIONS, plural,
-          =1 {This extension is no longer supported. Brave recommends that you remove it.}
-          other {These extensions are no longer supported. Brave recommends that you remove them.}}
-        </message>
         <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_DISABLED_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation message for a specific extension during the disabled stage.">
           Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
@@ -3063,6 +3053,9 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_DESCRIPTION_QR" desc="The description for the iOS desktop price tracking promo bubble with a QR code.">
           Download Brave on your phone to track prices and get alerts when the price drops on any site
+        </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Price Tracking promo bubble with a QR Code.">
+          Get price tracking alerts with Brave on your phone
         </message>
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after the user chooses to be reminded of price tracking on their iOS device.">
           Next time you open Brave on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>, you’ll see a prompt to enable price tracking alerts.

@@ -11,8 +11,7 @@
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "content/public/browser/web_contents.h"
 
 namespace {
@@ -61,8 +60,8 @@ void UnlockWallet() {
 }
 
 void ShowWalletOnboarding(content::WebContents* web_contents) {
-  Browser* browser =
-      web_contents ? chrome::FindBrowserWithTab(web_contents) : nullptr;
+  BrowserWindowInterface* browser =
+      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(web_contents);
 
   if (browser) {
     brave::ShowBraveWalletOnboarding(browser);
@@ -73,8 +72,8 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
 
 void ShowAccountCreation(content::WebContents* web_contents,
                          brave_wallet::mojom::CoinType coin_type) {
-  Browser* browser =
-      web_contents ? chrome::FindBrowserWithTab(web_contents) : nullptr;
+  BrowserWindowInterface* browser =
+      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(web_contents);
 
   auto it = kAccountCreationCoinName.find(coin_type);
   if (kAccountCreationCoinName.find(coin_type) ==

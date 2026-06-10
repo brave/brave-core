@@ -144,8 +144,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
-      &extensions_features::kExtensionManifestV2Unsupported,
-      &extensions_features::kExtensionsManifestV3Only,
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHAutofillAccountNameEmailSuggestionFeature,
@@ -218,7 +216,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &metrics::structured::kPhoneHubStructuredMetrics,
       &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
-      &net::features::kWaitForFirstPartySetsInit,
       &network::features::kBrowsingTopics,
       &network::features::kInterestGroupStorage,
       &network::features::kSharedStorageAPI,
@@ -280,9 +277,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
-#if !BUILDFLAG(IS_ANDROID)
-      &extensions_features::kExtensionManifestV2ExceptionList,
-#endif
       &features::kBookmarkTriggerForPrerender2KillSwitch,
       &features::kCertificateTransparencyAskBeforeEnabling,
       &features::kDesktopPWAsTabStripSettings,

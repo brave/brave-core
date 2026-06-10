@@ -410,6 +410,7 @@ if (!is_android) {
     "//brave/ui/webui/brave_color_change_listener",
     "//chrome/browser/regional_capabilities",
     "//chrome/browser/ui/thumbnails",
+    "//chrome/browser/ui/webui/bookmarks",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
     "//components/regional_capabilities",

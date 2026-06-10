@@ -1182,6 +1182,7 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/frame",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/browser/ui/webui/bookmarks",
     ]
   }
 

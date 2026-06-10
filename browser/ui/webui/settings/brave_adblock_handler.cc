@@ -24,8 +24,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "content/public/browser/web_ui.h"
 #include "ui/base/l10n/time_format.h"
@@ -293,7 +292,8 @@ void BraveAdBlockHandler::ViewSubscriptionSource(const base::ListValue& args) {
                             ->subscription_service_manager()
                             ->GetListTextFileUrl(subscription_url);
 
-  auto* browser = chrome::FindBrowserWithTab(web_ui()->GetWebContents());
+  auto* browser = GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+      web_ui()->GetWebContents());
   ShowSingletonTabOverwritingNTP(browser, file_url);
 }
 
