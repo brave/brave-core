@@ -300,10 +300,6 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
-void SidebarContainerView::UpdateBorder() {
-  sidebar_control_view_->UpdateBackgroundAndBorder();
-}
-
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   DVLOG(2) << __func__;
 

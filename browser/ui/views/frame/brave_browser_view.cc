@@ -1154,10 +1154,6 @@ void BraveBrowserView::UpdateSidebarBorder() {
     side_panel_->UpdateBorder();
   }
 #endif
-
-  if (sidebar_container_view_) {
-    sidebar_container_view_->UpdateBorder();
-  }
 }
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)

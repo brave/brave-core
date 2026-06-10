@@ -14,13 +14,13 @@ class SidebarButtonView : public views::LabelButton {
   METADATA_HEADER(SidebarButtonView, views::LabelButton)
  public:
   // Value ought to follow TOOLBAR_BUTTON_HEIGHT in brave_layout_constants.cc
-  static constexpr int kSidebarButtonSize = 28;
+  static constexpr int kSidebarButtonSize = 32;
   // Value ought to follow kDefaultIconSize in toolbar_button.h
   static constexpr int kDefaultIconSize = 20;
   // External, meaning favicons for bookmarked pages
   static constexpr int kExternalIconSize = 18;
   // Vertical space between sidebar buttons
-  static constexpr int kMargin = 8;
+  static constexpr int kMargin = 4;
 
   explicit SidebarButtonView(const std::u16string& accessible_name);
   ~SidebarButtonView() override;

@@ -12,7 +12,6 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -31,7 +30,6 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
-#include "ui/views/border.h"
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/layout/flex_layout.h"
 
@@ -93,11 +91,6 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
-    int border_thickness =
-        1 - BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
-    SetBorder(views::CreateEmptyBorder(
-        gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : border_thickness, 0,
-                          sidebar_on_left_ ? border_thickness : 0)));
   }
 }
 
@@ -270,7 +263,6 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
 
 void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
   sidebar_on_left_ = sidebar_on_left;
-  UpdateBackgroundAndBorder();
 }
 
 BEGIN_METADATA(SidebarControlView)
