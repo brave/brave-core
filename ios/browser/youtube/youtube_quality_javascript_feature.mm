@@ -29,8 +29,6 @@ namespace {
 constexpr char kScriptName[] = "yt_video_quality";
 constexpr char kEventListenersScriptName[] = "yt_video_quality_event_listeners";
 constexpr char kScriptHandlerName[] = "YouTubeQualityMessageHandler";
-constexpr auto kAllowedHosts = base::MakeFixedFlatSet<std::string_view>(
-    {"m.youtube.com", "www.youtube.com", "youtube.com"});
 
 }  // namespace
 
@@ -41,13 +39,19 @@ YouTubeQualityJavaScriptFeature::YouTubeQualityJavaScriptFeature()
                kScriptName,
                FeatureScript::InjectionTime::kDocumentStart,
                FeatureScript::TargetFrames::kMainFrame,
-               FeatureScript::ReinjectionBehavior::kInjectOncePerWindow),
+               FeatureScript::ReinjectionBehavior::kInjectOncePerWindow,
+               FeatureScript::PlaceholderReplacementsCallback(),
+               web::OriginFilter::kYouTube),
            FeatureScript::CreateWithFilename(
                kEventListenersScriptName,
                FeatureScript::InjectionTime::kDocumentStart,
                FeatureScript::TargetFrames::kMainFrame,
                FeatureScript::ReinjectionBehavior::
-                   kReinjectOnDocumentRecreation)}) {}
+                   kReinjectOnDocumentRecreation,
+               FeatureScript::PlaceholderReplacementsCallback(),
+               web::OriginFilter::kYouTube)},
+          /*dependent_feature=*/{},
+          web::OriginFilter::kYouTube) {}
 
 YouTubeQualityJavaScriptFeature::~YouTubeQualityJavaScriptFeature() = default;
 
@@ -82,8 +86,7 @@ void YouTubeQualityJavaScriptFeature::ScriptMessageReceivedWithReply(
     ScriptMessageReplyCallback callback) {
   GURL request_url = message.request_url().value_or(GURL());
 
-  if (!message.is_main_frame() || !request_url.is_valid() ||
-      !kAllowedHosts.contains(request_url.host())) {
+  if (!message.is_main_frame() || !request_url.is_valid()) {
     std::move(callback).Run(nullptr, nil);
     return;
   }

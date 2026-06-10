@@ -5,26 +5,18 @@
 
 import { sendWebKitMessage } from '//ios/web/public/js_messaging/resources/utils.js'
 
-const allowedOrigins = [
-  'https://talk.brave.com',
-  'https://talk.bravesoftware.com',
-  'https://talk.brave.software',
-]
-
-if (allowedOrigins.includes(window.location.origin)) {
-  const observer = new MutationObserver((mutations: MutationRecord[]) => {
-    for (const mutation of mutations) {
-      for (const node of mutation.addedNodes) {
-        if (node instanceof HTMLIFrameElement) {
-          sendWebKitMessage('BraveTalkLauncherMessageHandler', {
-            url: node.src,
-          })
-          observer.disconnect()
-          return
-        }
+const observer = new MutationObserver((mutations: MutationRecord[]) => {
+  for (const mutation of mutations) {
+    for (const node of mutation.addedNodes) {
+      if (node instanceof HTMLIFrameElement) {
+        sendWebKitMessage('BraveTalkLauncherMessageHandler', {
+          url: node.src,
+        })
+        observer.disconnect()
+        return
       }
     }
-  })
+  }
+})
 
-  observer.observe(document, { childList: true, subtree: true })
-}
+observer.observe(document, { childList: true, subtree: true })

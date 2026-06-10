@@ -24,15 +24,6 @@ constexpr char kScriptHandlerName[] = "BraveSearchMakeDefaultMessageHandler";
 constexpr char kMethodIdKey[] = "method_id";
 constexpr int kMethodGetCanSetDefault = 1;
 constexpr int kMethodSetDefault = 2;
-constexpr auto kAllowedHosts = base::MakeFixedFlatSet<std::string_view>({
-    "safesearch.brave.com",
-    "safesearch.brave.software",
-    "safesearch.bravesoftware.com",
-    "search-dev-local.brave.com",
-    "search.brave.com",
-    "search.brave.software",
-    "search.bravesoftware.com",
-});
 
 }  // namespace
 
@@ -44,7 +35,11 @@ BraveSearchMakeDefaultJavaScriptFeature::
               kScriptName,
               FeatureScript::InjectionTime::kDocumentStart,
               FeatureScript::TargetFrames::kMainFrame,
-              FeatureScript::ReinjectionBehavior::kInjectOncePerWindow)}) {}
+              FeatureScript::ReinjectionBehavior::kInjectOncePerWindow,
+              FeatureScript::PlaceholderReplacementsCallback(),
+              web::OriginFilter::kBraveSearch)},
+          /*dependent_feature=*/{},
+          web::OriginFilter::kBraveSearch) {}
 
 BraveSearchMakeDefaultJavaScriptFeature::
     ~BraveSearchMakeDefaultJavaScriptFeature() = default;
@@ -73,8 +68,7 @@ void BraveSearchMakeDefaultJavaScriptFeature::ScriptMessageReceivedWithReply(
   GURL request_url = message.request_url().value_or(GURL());
 
   if (!message.is_main_frame() || !request_url.is_valid() ||
-      !request_url.SchemeIs(url::kHttpsScheme) ||
-      !kAllowedHosts.contains(request_url.host())) {
+      !request_url.SchemeIs(url::kHttpsScheme)) {
     std::move(callback).Run(nullptr, nil);
     return;
   }
