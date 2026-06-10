@@ -2199,8 +2199,9 @@ IN_PROC_BROWSER_TEST_P(VerticalTabStripHideCompletelyTest,
 
 // Verifies that the vertical tab strip host view and the web contents are
 // positioned correctly in RTL mode for both "tab on left" and "tab on right"
-// user preferences. The layout applies GetMirroredRect() so the user's visual
-// intent is preserved regardless of locale directionality.
+// user preferences. The layout flips the pref into a leading-edge boolean in
+// stored coordinates (IsVerticalTabStripLeading), so the user's visual intent
+// is preserved regardless of locale directionality.
 IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   ToggleVerticalTabStrip();
   ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));

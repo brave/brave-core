@@ -1941,8 +1941,9 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
 //   - SetMirrored(false) on SidebarContainerView/SidebarControlView prevents
 //     the Views framework from flipping internal layout in RTL.
 //   - SetFlipCanvasOnPaintForRTLUI(false) on buttons prevents icon flipping.
-//   - GetMirroredRect(contents_bounds) in BraveBrowserViewLayout ensures the
-//     contents container is placed correctly next to the sidebar in RTL.
+//   - BraveBrowserViewTabbedLayoutImpl flips the alignment pref into a
+//     leading-edge boolean in stored coordinates (IsSideBarLeading), so the
+//     sidebar renders on the visual side the user chose in RTL.
 IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidebarLayoutInRTLTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* sidebar_container = GetSidebarContainerView();
@@ -1957,8 +1958,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidebarLayoutInRTLTest) {
   // --- Right-aligned sidebar (default) ---
   ASSERT_FALSE(IsSidebarUIOnLeft());
 
-  // As we set mirrored rect for sidebar and contents during the layout,
-  // Each views' mirrored bounds are what we're seeing in RTL mode.
+  // Mirrored bounds are the visual positions in RTL: the sidebar must stay on
+  // the visual right, matching the user's alignment pref.
   EXPECT_LE(contents_view->GetMirroredBounds().right(),
             sidebar_container->GetMirroredBounds().x());
 
@@ -1987,8 +1988,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2, SidebarLayoutInRTLTest) {
   // their bounds are what we're seeing.
   EXPECT_LE(control_view->bounds().right(), GetSidePanel()->bounds().x());
 
-  // As we set mirrored rect for sidebar and contents during the layout,
-  // Each views' mirrored bounds are what we're seeing in RTL mode.
+  // Mirrored bounds are the visual positions in RTL: the sidebar must stay on
+  // the visual left, matching the user's alignment pref.
   EXPECT_LE(sidebar_container->GetMirroredBounds().right(),
             contents_view->GetMirroredBounds().x());
 }
