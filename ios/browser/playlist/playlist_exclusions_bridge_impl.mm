@@ -6,7 +6,7 @@
 #include "brave/ios/browser/playlist/playlist_exclusions_bridge_impl.h"
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/playlist/core/browser/playlist_exclusion.h"
+#include "brave/components/playlist/core/browser/playlist_exclusions.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 

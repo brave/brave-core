@@ -1,0 +1,20 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_COMPONENT_INSTALLER_H_
+#define BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_COMPONENT_INSTALLER_H_
+
+namespace component_updater {
+class ComponentUpdateService;
+}  // namespace component_updater
+
+namespace playlist {
+
+void MaybeRegisterPlaylistExclusionsComponent(
+    component_updater::ComponentUpdateService* cus);
+
+}  // namespace playlist
+
+#endif  // BRAVE_COMPONENTS_PLAYLIST_CORE_BROWSER_PLAYLIST_EXCLUSIONS_COMPONENT_INSTALLER_H_

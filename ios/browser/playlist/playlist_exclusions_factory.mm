@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/playlist/playlist_exclusions_factory.h"
 
-#include "brave/components/playlist/core/browser/playlist_exclusion.h"
+#include "brave/components/playlist/core/browser/playlist_exclusions.h"
 #include "brave/ios/browser/playlist/playlist_exclusions_bridge_impl.h"
 
 @implementation PlaylistExclusionsFactory

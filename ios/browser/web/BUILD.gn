@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 
 source_set("web") {
   sources = [
@@ -65,6 +66,9 @@ source_set("web") {
   }
   if (enable_brave_wallet) {
     deps += [ "//brave/components/brave_wallet/browser" ]
+  }
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/browser" ]
   }
   frameworks = [ "Foundation.framework" ]
 }

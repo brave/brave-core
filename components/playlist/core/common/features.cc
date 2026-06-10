@@ -6,10 +6,16 @@
 #include "brave/components/playlist/core/common/features.h"
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace playlist::features {
 
-BASE_FEATURE(kPlaylist, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kPlaylist,
+#if BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 
 BASE_FEATURE(kPlaylistFakeUA,
              base::FEATURE_DISABLED_BY_DEFAULT);
