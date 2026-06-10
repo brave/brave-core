@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/vendor.rs b/tools/crates/gnrt/vendor.rs
-index b88f0d8e05214526ced8ba571c778b0bd8cc1092..074e9ac560d73a587dc200f27eb1e06a8d73a5c1 100644
+index a86a2aac720273421a4a8338cf0fe32f10d8dbb0..78113541053a1f87f76c77d5c07485b0ae4539ba 100644
 --- a/tools/crates/gnrt/vendor.rs
 +++ b/tools/crates/gnrt/vendor.rs
-@@ -139,7 +139,7 @@ fn download_crates(args: &VendorCommandArgs, paths: &paths::ChromiumPaths) -> Re
+@@ -140,7 +140,7 @@ fn download_crates(args: &VendorCommandArgs, paths: &paths::ChromiumPaths) -> Re
                  format!("Generating placeholder for removed crate {}", crate_dirname.display());
              println!("{msg}");
              generate_placeholder_crate(p, &crate_path).context(msg)?;

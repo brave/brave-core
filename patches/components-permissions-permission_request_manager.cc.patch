@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index b2e67ae236563bcbb0af45e40cdb82438ca3e59b..cb102a5eb5bf2730c95b255cf10916e78dc6611b 100644
+index 46f2ec83796adc65a1ad2fb17b00cbe2b2194c8a..2ca3499eb76d6b23d6b0a456dcc1b13446e0577a 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
 @@ -589,6 +589,7 @@ void PermissionRequestManager::OnVisibilityChanged(
@@ -18,7 +18,7 @@ index b2e67ae236563bcbb0af45e40cdb82438ca3e59b..cb102a5eb5bf2730c95b255cf10916e7
        DCHECK_EQ(origin, request->requesting_origin());
      }
    }
-@@ -982,7 +984,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
+@@ -983,7 +985,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
    // only after the camera request is resolved. This is caused by code in
    // PermissionBubbleMediaAccessHandler and UserMediaClient. We probably don't
    // need two permission queues, so resolve the duplication.
@@ -27,7 +27,7 @@ index b2e67ae236563bcbb0af45e40cdb82438ca3e59b..cb102a5eb5bf2730c95b255cf10916e7
        IsRequestInProgress()) {
      return;
    }
-@@ -1114,7 +1116,7 @@ void PermissionRequestManager::ShowPrompt() {
+@@ -1115,7 +1117,7 @@ void PermissionRequestManager::ShowPrompt() {
      return;
    }
  
@@ -36,7 +36,7 @@ index b2e67ae236563bcbb0af45e40cdb82438ca3e59b..cb102a5eb5bf2730c95b255cf10916e7
    DCHECK(current_request_ui_to_use_);
  
    if (!tab_is_active_) {
-@@ -1967,7 +1969,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
+@@ -1979,7 +1981,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
      return;
    }
  

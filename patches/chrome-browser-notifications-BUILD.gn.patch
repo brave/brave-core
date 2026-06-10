@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/BUILD.gn b/chrome/browser/notifications/BUILD.gn
-index 76b9cf1772f4705fde16f1f9a8c50ee52846dc3e..b7c064f643c05fe664229608801a05d5f37be716 100644
+index 2b3cfdf26a992b6441dc83d1db0387bcf53e1cbd..1049fd420ba54b5bd02357af1146e1b8cb1db578 100644
 --- a/chrome/browser/notifications/BUILD.gn
 +++ b/chrome/browser/notifications/BUILD.gn
-@@ -461,6 +461,7 @@ if (is_android) {
+@@ -464,6 +464,7 @@ if (is_android) {
        "//third_party/jni_zero:jni_zero_java",
        "//ui/android:ui_no_recycler_view_java",
      ]

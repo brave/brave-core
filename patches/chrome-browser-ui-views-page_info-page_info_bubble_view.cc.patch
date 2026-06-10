@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
-index b2c265ab2698479cebef4ee6dcc43b8cbd1d849d..007c8455a7411269cefd7564a61c0174a79c0d9f 100644
+index ef941e57dc25d7c72b627b9c491595747a3a43aa..1a109b4e3a1823b86ba208b5fabf620cc2723c4c 100644
 --- a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
 +++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
-@@ -209,7 +209,7 @@ views::BubbleDialogDelegateView* PageInfoBubbleView::CreatePageInfoBubble(
+@@ -253,7 +253,7 @@ views::BubbleDialogDelegateView* PageInfoBubbleView::CreatePageInfoBubble(
    }
  
    PageInfoBubbleView* const bubble =

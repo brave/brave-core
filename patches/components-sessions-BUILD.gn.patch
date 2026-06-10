@@ -1,5 +1,5 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index 065feb12f55b231e1790ccd8a0db79bd4683eb16..66676acba643e4d61a1a2d1152f45fe9703c7225 100644
+index 9016b77a04f40121c91224698b641cdd7462c77f..1a149ac827d29c64b54bedd445a9b5426d1a3f0d 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
 @@ -44,6 +44,7 @@ if (!is_ios) {
@@ -10,7 +10,7 @@ index 065feb12f55b231e1790ccd8a0db79bd4683eb16..66676acba643e4d61a1a2d1152f45fe9
    }
  } else {
    source_set("sessions") {
-@@ -156,6 +157,7 @@ source_set("shared") {
+@@ -158,6 +159,7 @@ source_set("shared") {
      "//ui/gfx",
      "//url",
    ]

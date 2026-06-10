@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/component_updater/BUILD.gn b/chrome/browser/component_updater/BUILD.gn
-index e529ab109865d98507cf09cbda7bbd77e75f06f9..90f21a27d2063328342a85d97329c73955a2a721 100644
+index 443627d1d4f4498d12e1dfd833cb2f20ed4b96ad..d1e1733968048f21c1386cf8b98eb81c8ab50c61 100644
 --- a/chrome/browser/component_updater/BUILD.gn
 +++ b/chrome/browser/component_updater/BUILD.gn
-@@ -173,6 +173,7 @@ source_set("impl") {
+@@ -172,6 +172,7 @@ source_set("impl") {
      "//services/cert_verifier/public/mojom",
      "//services/network/public/cpp",
    ]

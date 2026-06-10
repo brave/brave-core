@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index ac6a50f9dafdb082556ad8702bcc5d0130681f22..823deabc348a698d62f887af92126d273c25459b 100644
+index 9d8b4ade5aff13eb00892614ad7b309805f00ec2..b389a8d7812158547dc15cac807153971d14c3cf 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,12 @@
@@ -15,7 +15,7 @@ index ac6a50f9dafdb082556ad8702bcc5d0130681f22..823deabc348a698d62f887af92126d27
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -481,7 +487,7 @@
+@@ -490,7 +496,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
@@ -24,7 +24,7 @@ index ac6a50f9dafdb082556ad8702bcc5d0130681f22..823deabc348a698d62f887af92126d27
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -701,7 +707,7 @@
+@@ -718,7 +724,7 @@
      "includes": [4730],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -33,7 +33,7 @@ index ac6a50f9dafdb082556ad8702bcc5d0130681f22..823deabc348a698d62f887af92126d27
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -729,7 +735,7 @@
+@@ -746,7 +752,7 @@
      "includes": [4820],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/customize_chrome/resources.grd": {
@@ -42,7 +42,7 @@ index ac6a50f9dafdb082556ad8702bcc5d0130681f22..823deabc348a698d62f887af92126d27
      "includes": [4840],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/history/resources.grd": {
-@@ -1200,6 +1206,12 @@
+@@ -1217,6 +1223,12 @@
      "META": {"join": 2},
      "messages": [7020],
    },
@@ -55,7 +55,7 @@ index ac6a50f9dafdb082556ad8702bcc5d0130681f22..823deabc348a698d62f887af92126d27
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1730,11 +1742,11 @@
+@@ -1747,11 +1759,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {

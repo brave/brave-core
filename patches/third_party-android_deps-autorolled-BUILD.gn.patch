@@ -1,8 +1,8 @@
 diff --git a/third_party/android_deps/autorolled/BUILD.gn b/third_party/android_deps/autorolled/BUILD.gn
-index 36cf2cc53909e09b843b5d7eb5ff75e58a70247e..5b65d0851f2891132321ca77f333199f81275911 100644
+index 815f98486739c4c7472a710d1a65f82bf3eb7a1d..9bdbcaed09831d66b46ab42c03a2f235a9d91c19 100644
 --- a/third_party/android_deps/autorolled/BUILD.gn
 +++ b/third_party/android_deps/autorolled/BUILD.gn
-@@ -1114,6 +1114,7 @@ template("define_autorolled_targets") {
+@@ -1181,6 +1181,7 @@ template("define_autorolled_targets") {
            "$google_play_services_package:google_firebase_firebase_encoders_json_java",
            "//third_party/androidx:androidx_annotation_annotation_java",
          ]
@@ -10,7 +10,7 @@ index 36cf2cc53909e09b843b5d7eb5ff75e58a70247e..5b65d0851f2891132321ca77f333199f
        }
      }
  
-@@ -1138,6 +1139,7 @@ template("define_autorolled_targets") {
+@@ -1206,6 +1207,7 @@ template("define_autorolled_targets") {
            "//third_party/android_deps:javax_inject_javax_inject_java",
            "//third_party/androidx:androidx_annotation_annotation_java",
          ]

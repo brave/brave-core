@@ -1,8 +1,8 @@
 diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
-index d5b3297dbe750480b0b381268605f8da9131e089..d6fa2a1f319118616b5d15d9d721ce90884aa724 100644
+index 554ae78028cdcfe7784a644ad9c53455fcacb5d2..1b11d559f540d5959c43151f65287593ee5bd2da 100644
 --- a/components/sync/service/sync_user_settings_impl.cc
 +++ b/components/sync/service/sync_user_settings_impl.cc
-@@ -410,6 +410,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+@@ -415,6 +415,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
      types.Remove(THEMES_IOS);
      types.Remove(THEMES_ANDROID);
    }
