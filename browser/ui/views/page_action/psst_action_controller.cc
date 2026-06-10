@@ -92,7 +92,8 @@ base::WeakPtr<PsstActionController> PsstActionController::AsWeakPtr() {
 
 void PsstActionController::ExecuteAction(
     ToolbarButtonProvider* toolbar_button_provider,
-    actions::ActionItem* item, int event_flags) {
+    actions::ActionItem* item,
+    int event_flags) {
   if (menu_runner_ && menu_runner_->IsRunning()) {
     menu_runner_->Cancel();
   }
@@ -144,8 +145,6 @@ void PsstActionController::ExecuteCommand(int command_id, int event_flags) {
   if (!psst_menu_model_delegate_) {
     return;
   }
-  LOG(INFO) << "[PSST] PsstActionController::ExecuteCommand: command_id=" << command_id
-            << ", event_flags=" << event_flags;
   if (command_id == IDC_PSST_DONT_SHOW_FOR_THIS_SITE) {
     psst_menu_model_delegate_->OnDontShowThisSiteSelected();
   } else if (command_id == IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING) {

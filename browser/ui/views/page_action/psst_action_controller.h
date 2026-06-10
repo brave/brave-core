@@ -45,7 +45,8 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   base::WeakPtr<PsstActionController> AsWeakPtr();
 
   void ExecuteAction(ToolbarButtonProvider* toolbar_button_provider,
-                     actions::ActionItem* item, int event_flags);
+                     actions::ActionItem* item,
+                     int event_flags);
 
  private:
   // ui::SimpleMenuModel::Delegate:
