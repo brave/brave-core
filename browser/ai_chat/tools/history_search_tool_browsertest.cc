@@ -29,10 +29,14 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/history_embeddings/core/history_embeddings_search.h"
 #include "components/history_embeddings/core/vector_database.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -103,6 +107,16 @@ class HistorySearchToolBrowserTest
   HistorySearchToolBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
         history_embeddings::kHistoryEmbeddings);
+  }
+
+  void SetUpOnMainThread() override {
+    // IsHistoryEmbeddingsEnabledForProfile gates the tool on both the
+    // brave-history-embeddings feature flag and a Brave-owned pref. Enable
+    // the pref so BrowserToolProvider::CreateTools actually constructs the
+    // HistorySearchTool we're exercising here.
+    browser()->profile()->GetPrefs()->SetBoolean(
+        local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
+    AIChatConversationUIBrowserTestBase::SetUpOnMainThread();
   }
 
  protected:

@@ -1508,6 +1508,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER" desc="Disclaimer shown on chrome://history and in the history search IPH promo, indicating that history semantic search runs entirely on-device.">
         Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers.
       </message>
+
+      <!-- Semantic History Search toggle in the chrome://history side bar. -->
+      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_LABEL" desc="Label for the toggle on chrome://history that turns Semantic History Search on or off.">
+        Semantic History Search
+      </message>
+      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_DESCRIPTION" desc="One-line explainer below the Semantic History Search toggle on chrome://history.">
+        Index pages you visit locally so you can search your history by meaning. All processing stays on this device.
+      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

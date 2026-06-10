@@ -374,6 +374,10 @@ if (enable_email_aliases) {
 }
 
 if (!is_android) {
+  # Brave chrome://history toggle handler + WebUI subclass — desktop only;
+  # upstream Android uses HistoryUIAndroid which we don't extend.
+  brave_chrome_browser_deps += [ "//brave/browser/ui/webui/history" ]
+
   # BraveHidDelegate inherits from ChromeHidDelegate, and referenced by
   # BraveContentBrowserClient, so we put into the same source_set.
   brave_chrome_browser_sources += [

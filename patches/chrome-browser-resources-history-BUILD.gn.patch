@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
+index 6bf1e2f1f61f0f3e0bf9176c0ee195ec784a8a18..352037cb96ccb8691b0dbbbf0b1823dbf6e9b5ff 100644
+--- a/chrome/browser/resources/history/BUILD.gn
++++ b/chrome/browser/resources/history/BUILD.gn
+@@ -106,4 +106,5 @@ build_webui("build") {
+     optimize_webui_host = "history"
+     optimize_webui_in_files = [ "history.js" ]
+   }
++  import("//brave/browser/resources/history/sources.gni") mojo_files = brave_history_mojo_files mojo_files_deps = brave_history_mojo_files_deps ts_files += brave_history_ts_files exclude_ts_preprocess_files = brave_history_ts_files preprocess_deps = brave_history_preprocess_deps
+ }

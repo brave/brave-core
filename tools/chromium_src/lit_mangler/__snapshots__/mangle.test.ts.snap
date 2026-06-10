@@ -162,6 +162,76 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/side_bar.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/history/side_bar.html.ts
++++ gen/chrome/browser/resources/history/preprocessed/side_bar.html.ts
+@@ -4,47 +4,40 @@
+ 
+ export function getHtml(this: HistorySideBarElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<cr-menu-selector id="menu" selected="\${this.selectedPage}"
+-    @selected-changed="\${this.onSelectorSelectedChanged_}"
+-    selectable=".page-item" attr-for-selected="path"
+-    @iron-activate="\${this.onMenuIronActivate_}"
+-    selected-attribute="selected">
+-  <a id="history" role="menuitem" class="page-item cr-nav-menu-item"
+-      href="\${this.getHistoryItemHref_()}"
+-      path="\${this.getHistoryItemPath_()}"
+-      @click="\${this.onItemClick_}">
++<cr-menu-selector id="menu" selected="\${this.selectedPage}" @selected-changed="\${this.onSelectorSelectedChanged_}" selectable=".page-item" attr-for-selected="path" @iron-activate="\${this.onMenuIronActivate_}" selected-attribute="selected">
++  <a id="history" role="menuitem" class="page-item cr-nav-menu-item" href="\${this.getHistoryItemHref_()}" path="\${this.getHistoryItemPath_()}" @click="\${this.onItemClick_}">
+     <cr-icon icon="cr:history"></cr-icon>
+     $i18n{historyMenuItem}
+     <cr-ripple></cr-ripple>
+   </a>
+-  <a id="syncedTabs" role="menuitem" href="/syncedTabs"
+-      class="page-item cr-nav-menu-item"
+-      path="syncedTabs" @click="\${this.onItemClick_}">
++  <a id="syncedTabs" role="menuitem" href="/syncedTabs" class="page-item cr-nav-menu-item" path="syncedTabs" @click="\${this.onItemClick_}">
+     <cr-icon icon="cr:phonelink"></cr-icon>
+     $i18n{openTabsMenuItem}
+     <cr-ripple></cr-ripple>
+   </a>
+-  <a role="menuitem" id="clear-browsing-data"
+-      class="cr-nav-menu-item"
+-      href="chrome://settings/clearBrowserData"
+-      @click="\${this.onClearBrowsingDataClick_}"
+-      ?disabled="\${this.guestSession_}"
+-      title="$i18n{clearBrowsingDataLinkTooltip}">
++  <a role="menuitem" id="clear-browsing-data" class="cr-nav-menu-item" href="chrome://settings/clearBrowserData" @click="\${this.onClearBrowsingDataClick_}" ?disabled="\${this.guestSession_}" title="$i18n{clearBrowsingDataLinkTooltip}">
+     <cr-icon icon="cr:delete"></cr-icon>
+     $i18n{clearBrowsingData}
+     <div class="cr-icon icon-external"></div>
+     <cr-ripple></cr-ripple>
+   </a>
+ </cr-menu-selector>
+-<div id="spacer"></div>
++<div id="brave-history-embeddings-toggle" ?hidden="\${!this.braveHistoryEmbeddingsFeatureEnabled}">
++         <div class="text">
++           <div class="label">$i18n{braveHistoryEmbeddingsToggleLabel}</div>
++           <div class="description">
++             $i18n{braveHistoryEmbeddingsToggleDescription}
++           </div>
++         </div>
++         <cr-toggle ?checked="\${this.braveHistoryEmbeddingsEnabled}" @change="\${this.onBraveHistoryEmbeddingsToggleChange}">
++         </cr-toggle>
++       </div><div id="spacer"></div>
+ <div id="footer" ?hidden="\${!this.showFooter_}">
+   <div class="separator"></div>
+   <managed-footnote></managed-footnote>
+-  <div id="google-account-footer"
+-      ?hidden="\${!this.showGoogleAccountFooter_}"
+-      @click="\${this.onGoogleAccountFooterClick_}">
++  <div id="google-account-footer" ?hidden="\${!this.showGoogleAccountFooter_}" @click="\${this.onGoogleAccountFooterClick_}">
+     <cr-icon icon="cr:info-outline"></cr-icon>
+     <div ?hidden="\${!this.showGMAOnly_}">$i18nRaw{sidebarFooterGMAOnly}</div>
+     <div ?hidden="\${!this.showGAAOnly_}">$i18nRaw{sidebarFooterGAAOnly}</div>
+     <div ?hidden="\${!this.showGMAAndGAA_}">$i18nRaw{sidebarFooterGMAAndGAA}</div>
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/synced_device_manager.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/history/synced_device_manager.html.ts

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//tools/grit/preprocess_if_expr.gni")
+import("sources.gni")
+
+preprocess_folder = "preprocessed"
+
+# Move brave history files to the location where build_webui() expects to
+# find them so they sit alongside chromium's preprocessed sources.
+preprocess_if_expr("preprocess") {
+  out_folder =
+      "$root_gen_dir/chrome/browser/resources/history/$preprocess_folder"
+  in_files = brave_history_ts_files
+}
