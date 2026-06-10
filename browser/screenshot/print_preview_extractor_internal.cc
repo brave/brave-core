@@ -58,8 +58,6 @@ static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 using printing::PrintCompositeClient;
 using printing::mojom::PrintPreviewUI;
 
-using ImageCallback = screenshot::PrintPreviewExtractor::CaptureImagesCallback;
-
 namespace {
 
 // chrome/browser/printing/print_view_manager_common.cc
@@ -86,6 +84,8 @@ content::RenderFrameHost* GetRenderFrameHostToUse(
 }  // namespace
 
 namespace screenshot {
+
+using ImageCallback = PrintPreviewExtractor::CaptureImagesCallback;
 
 PreviewPageImageExtractor::PreviewPageImageExtractor() = default;
 
