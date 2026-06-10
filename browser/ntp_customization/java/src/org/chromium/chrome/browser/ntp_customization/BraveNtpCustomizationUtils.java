@@ -7,11 +7,11 @@ package org.chromium.chrome.browser.ntp_customization;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
+import org.chromium.ui.base.WindowAndroid;
 
 /**
- * Brave-specific NTP customization utilities. Used via bytecode to replace
- * NtpCustomizationUtils.isInNarrowWindowOnTablet to avoid leftMargin override to 0 at
- * NewTabPageLayout.updateMvtOnTablet on tablets and misalign of MVT area.
+ * Brave-specific NTP customization utilities. Used via bytecode to replace methods in
+ * NtpCustomizationUtils.
  */
 @NullMarked
 public class BraveNtpCustomizationUtils {
@@ -23,5 +23,22 @@ public class BraveNtpCustomizationUtils {
      */
     public static boolean isInNarrowWindowOnTablet(boolean isTablet, UiConfig uiConfig) {
         return isTablet;
+    }
+
+    /**
+     * Replace NtpCustomizationUtils.isNtpThemeCustomizationEnabled (no-arg). Brave uses its own NTP
+     * background system and does not participate in Chromium's NTP theme customization.
+     */
+    public static boolean isNtpThemeCustomizationEnabled() {
+        return false;
+    }
+
+    /**
+     * Replace NtpCustomizationUtils.isNtpThemeCustomizationEnabled (WindowAndroid, boolean). Same
+     * rationale as the no-arg overload above.
+     */
+    public static boolean isNtpThemeCustomizationEnabled(
+            WindowAndroid windowAndroid, boolean isTablet) {
+        return false;
     }
 }
