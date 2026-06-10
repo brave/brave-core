@@ -36,8 +36,7 @@ substitutions:
   - description: |-
       Let Brave handle YouTube PiP dismiss signals using upstream enum names
     re_pattern:
-      '(\s+private void dismissActivityIfNeeded\(Activity activity,
-      @MetricsEndReason int reason\) \{\n)'
+      '(\s+private void dismissActivityIfNeeded\(.*\) \{\n)'
     replace: |
       \1        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
                       .maybeHandleDismissActivityForYouTubePictureInPicture(
