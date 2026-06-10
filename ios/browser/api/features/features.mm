@@ -398,6 +398,10 @@
   return [[Feature alloc] initWithFeature:&serp_metrics::kSerpMetricsFeature];
 }
 
++ (Feature*)kPlaylist {
+  return [[Feature alloc] initWithFeature:&playlist::features::kPlaylist];
+}
+
 + (Feature*)kPlaylistOfflineCacheEnabled {
   return [[Feature alloc]
       initWithFeature:&playlist::features::kPlaylistOfflineCacheEnabled];
