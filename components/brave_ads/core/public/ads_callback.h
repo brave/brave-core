@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CALLBACK_H_
 
 #include <optional>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/types/optional_ref.h"
@@ -48,8 +49,8 @@ using MaybeGetNotificationAdCallback =
 using MaybeGetSearchResultAdCallback = base::OnceCallback<void(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad)>;
 
-using GetAdHistoryForUICallback =
-    base::OnceCallback<void(std::optional<base::ListValue> ad_history)>;
+using GetAdHistoryForUICallback = base::OnceCallback<void(
+    std::optional<std::vector<mojom::AdHistoryItemInfoPtr>> ad_history)>;
 
 }  // namespace brave_ads
 

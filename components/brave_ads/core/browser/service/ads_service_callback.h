@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_CALLBACK_H_
 
 #include <optional>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -39,8 +40,8 @@ using MaybeServeMojomNewTabPageAdCallback =
 using MaybeGetSearchResultAdCallback = base::OnceCallback<void(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad)>;
 
-using GetAdHistoryForUICallback =
-    base::OnceCallback<void(std::optional<base::ListValue> ad_history)>;
+using GetAdHistoryForUICallback = base::OnceCallback<void(
+    std::optional<std::vector<mojom::AdHistoryItemInfoPtr>> ad_history)>;
 
 }  // namespace brave_ads
 

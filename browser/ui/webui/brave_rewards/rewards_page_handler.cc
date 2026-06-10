@@ -14,9 +14,6 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/logging.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -39,10 +36,8 @@
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
-#include "brave/components/brave_ads/core/public/user_engagement/reactions/reactions_util.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace brave_rewards {
@@ -486,7 +481,7 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
 void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!ads_service_) {
-    std::move(callback).Run(/*ads_history=*/"");
+    std::move(callback).Run(/*history=*/std::nullopt);
     return;
   }
 
@@ -494,34 +489,12 @@ void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
   base::Time from_time =
       now - brave_ads::kAdHistoryRetentionPeriod.Get() - base::Days(1);
 
-  auto on_history = [](decltype(callback) callback,
-                       std::optional<base::ListValue> list) {
-    // The Ads service provides Ads history data as a `base::Value` (i.e. JSON).
-    // Rather than sending a Mojo `base::Value` interface to the client (which
-    // is awkward to use in this context), send the data to the WebUI as a JSON
-    // string. The front-end will send this JSON data back when the user
-    // modifies Ads history state.
-
-    if (!list) {
-      // If there is no Ads history data, send an empty JSON array.
-      list = base::ListValue();
-    }
-
-    std::string json;
-    if (!base::JSONWriter::Write(*list, &json)) {
-      LOG(ERROR) << "Unable to convert Ads history to JSON";
-    }
-    std::move(callback).Run(std::move(json));
-  };
-
   brave_rewards::p3a::RecordAdsHistoryView();
 
-  // TODO(https://github.com/brave/brave-browser/issues/24595): Transition
-  // GetAdHistory from base::Value to a mojom data structure.
   ads_service_->GetAdHistory(from_time.LocalMidnight(), now,
-                             base::BindOnce(on_history, std::move(callback)));
+                             std::move(callback));
 #else
-  std::move(callback).Run(/*ads_history=*/"");
+  std::move(callback).Run(/*history=*/std::nullopt);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
@@ -569,54 +542,30 @@ void RewardsPageHandler::SetAdsSubdivision(const std::string& subdivision,
   std::move(callback).Run();
 }
 
-void RewardsPageHandler::ToggleAdLike(const std::string& history_item,
-                                      ToggleAdLikeCallback callback) {
+void RewardsPageHandler::ToggleAdLike(
+    brave_ads::mojom::ReactionInfoPtr reaction,
+    ToggleAdLikeCallback callback) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!ads_service_) {
     std::move(callback).Run();
     return;
   }
-
-  auto dict = base::JSONReader::ReadDict(history_item,
-                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  if (!dict) {
-    std::move(callback).Run();
-    return;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/40852): Refactor UI
-  // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
-  const brave_ads::AdHistoryItemInfo ad_history_item =
-      brave_ads::AdHistoryItemFromDict(*dict);
-
-  ads_service_->ToggleLikeAd(brave_ads::CreateReaction(ad_history_item),
+  ads_service_->ToggleLikeAd(std::move(reaction),
                              base::IgnoreArgs<bool>(std::move(callback)));
 #else
   std::move(callback).Run();
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
-void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
-                                         ToggleAdDislikeCallback callback) {
+void RewardsPageHandler::ToggleAdDislike(
+    brave_ads::mojom::ReactionInfoPtr reaction,
+    ToggleAdDislikeCallback callback) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!ads_service_) {
     std::move(callback).Run();
     return;
   }
-
-  auto dict = base::JSONReader::ReadDict(history_item,
-                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  if (!dict) {
-    std::move(callback).Run();
-    return;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/40852): Refactor UI
-  // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
-  const brave_ads::AdHistoryItemInfo ad_history_item =
-      brave_ads::AdHistoryItemFromDict(*dict);
-
-  ads_service_->ToggleDislikeAd(brave_ads::CreateReaction(ad_history_item),
+  ads_service_->ToggleDislikeAd(std::move(reaction),
                                 base::IgnoreArgs<bool>(std::move(callback)));
 #else
   std::move(callback).Run();
@@ -624,29 +573,15 @@ void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
 }
 
 void RewardsPageHandler::ToggleAdInappropriate(
-    const std::string& history_item,
+    brave_ads::mojom::ReactionInfoPtr reaction,
     ToggleAdInappropriateCallback callback) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!ads_service_) {
     std::move(callback).Run();
     return;
   }
-
-  auto dict = base::JSONReader::ReadDict(history_item,
-                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  if (!dict) {
-    std::move(callback).Run();
-    return;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/40852): Refactor UI
-  // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
-  const brave_ads::AdHistoryItemInfo ad_history_item =
-      brave_ads::AdHistoryItemFromDict(*dict);
-
   ads_service_->ToggleMarkAdAsInappropriate(
-      brave_ads::CreateReaction(ad_history_item),
-      base::IgnoreArgs<bool>(std::move(callback)));
+      std::move(reaction), base::IgnoreArgs<bool>(std::move(callback)));
 #else
   std::move(callback).Run();
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)

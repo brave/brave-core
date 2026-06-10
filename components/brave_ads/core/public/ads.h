@@ -143,8 +143,8 @@ class Ads {
                                             ResultCallback callback) = 0;
 
   // Called to get ad history for the given date range in descending order. The
-  // callback takes one argument - `base::ListValue` containing info of the
-  // obtained ad history.
+  // callback takes one argument - a vector of `mojom::AdHistoryItemInfo`
+  // containing the obtained ad history enriched with reaction state.
   virtual void GetAdHistory(base::Time from_time,
                             base::Time to_time,
                             GetAdHistoryForUICallback callback) = 0;
