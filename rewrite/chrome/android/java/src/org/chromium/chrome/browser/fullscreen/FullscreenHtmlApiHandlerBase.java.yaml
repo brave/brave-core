@@ -57,9 +57,8 @@ substitutions:
       '(private void exitFullscreen\(WebContents webContents, View
       contentView\)[\s\S]+?\n\s+if \()([^\n]*?\)
       webContents\.exitFullscreen\(\);)'
-    replace:
-      '\1!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip
-      && \2'
+    replace: |-
+      \1!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip && \2
 
   - description: |-
       Preserve fullscreen across transient activity stops while YouTube PiP is active.

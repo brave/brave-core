@@ -12,9 +12,10 @@ substitutions:
       Brave can start tracking the session that is about to begin.
     re_pattern:
       '(\s+if \(!allowed\) return;\n\n\s+final WebContents webContents =
-      getWebContents\(\);\n\s+assert webContents != null;\n)'
-    replace: |
-      \1        BraveFullscreenVideoPictureInPictureController.class.cast(this)
+      getWebContents\(\);\n\s+assert webContents != null;)'
+    replace: |-
+      \1
+              BraveFullscreenVideoPictureInPictureController.class.cast(this)
                       .onYouTubePictureInPictureAttempt(mActivity, webContents);
 
   - description: |-
@@ -40,9 +41,10 @@ substitutions:
       error), also calls onYouTubePictureInPictureEnterFailed() so a thrown entry
       is handled the same way as a refused one.
     re_pattern:
-      '(\s+Log\.e\(TAG, "Error entering PiP with bounds %s", bounds, e\);\n)'
-    replace: |
-      \1            BraveFullscreenVideoPictureInPictureController.class.cast(this)
+      '(\s+Log\.e\(TAG, "Error entering PiP with bounds %s", bounds, e\);)'
+    replace: |-
+      \1
+                  BraveFullscreenVideoPictureInPictureController.class.cast(this)
                           .onYouTubePictureInPictureEnterFailed();
 
   - description: |-
@@ -54,9 +56,10 @@ substitutions:
       flags so Brave does not depend on the enum directly. Returns early when
       Brave handles it.
     re_pattern:
-      '(\s+private void dismissActivityIfNeeded\(.*\) \{\n)'
-    replace: |
-      \1        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+      '(\s+private void dismissActivityIfNeeded\(.*\) \{)'
+    replace: |-
+      \1
+              if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
                       .maybeHandleDismissActivityForYouTubePictureInPicture(
                               activity,
                               reason == MetricsEndReason.START,
