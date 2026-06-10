@@ -6,6 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_CONTROLLER_H_
 
+namespace gfx {
+class Insets;
+}  // namespace gfx
+
 namespace page_actions {
 class PageActionControllerImpl;
 }  // namespace page_actions
@@ -32,6 +36,9 @@ class PageActionControllerImpl
   void ClearOverrideHeight(actions::ActionId action_id);
   void SetOverrideTriggerableEvent(actions::ActionId action_id,
                                    std::optional<int> event_flags);
+  void SetOverrideBorder(actions::ActionId action_id,
+                         const gfx::Insets& border);
+  void ClearOverrideBorder(actions::ActionId action_id);
 
   // chromium_impl::PageActionControllerImpl:
   std::unique_ptr<PageActionModelInterface> CreateModel(

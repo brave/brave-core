@@ -178,6 +178,7 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
     page_action_controller_->ClearOverrideHeight(kActionShowPartitionedStorage);
     page_action_controller_->SetOverrideTriggerableEvent(
         kActionShowPartitionedStorage, std::nullopt);
+    page_action_controller_->ClearOverrideBorder(kActionShowPartitionedStorage);
     return;
   }
 
@@ -207,6 +208,10 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
   page_action_controller_->SetOverrideHeight(kActionShowPartitionedStorage, 20);
   page_action_controller_->SetOverrideTriggerableEvent(
       kActionShowPartitionedStorage, ui::EF_RIGHT_MOUSE_BUTTON);
+  // Sets empty insets so that we can get rid of additional padding around icon
+  // and text.
+  page_action_controller_->SetOverrideBorder(kActionShowPartitionedStorage,
+                                             gfx::Insets());
 }
 
 void PartitionedStoragePageActionController::OnPartitionedStorageMenuClosed() {
