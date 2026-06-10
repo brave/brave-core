@@ -279,17 +279,13 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
     return true;
   }
 
-  if (!url.is_valid()) {
-    return false;
-  }
-
   // For blobs we would like to make sure that we apply farbling to it.
-  if (url.SchemeIsBlob()) {
+  if (url.is_valid() && url.SchemeIsBlob()) {
     return true;
   }
 
   // By default all non http and https are not churned in the shields flow.
-  if (!url.SchemeIsHTTPOrHTTPS()) {
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
     return false;
   }
 
