@@ -340,6 +340,24 @@ class ConversationHandler : public mojom::ConversationHandler,
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_DeltaWithInterleavedInlineSearch);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_NotDeltaWithInterleavedInlineSearch);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_ToolUseSplitsCompletion);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_CompletionMergesAcrossNonSplitting);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_ToolUseArgsMergeAcrossNonSplitting);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationHandlerUnitTest,
+      UpdateOrCreateLastAssistantEntry_CompletionSplitsToolUse);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            OnGetStagedEntriesFromContent);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
