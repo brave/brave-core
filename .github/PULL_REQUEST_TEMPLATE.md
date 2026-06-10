@@ -2,20 +2,19 @@
 Resolves
 
 <!-- CI-related labels that can be applied to this PR:
-* CI/disable-pipeline-step-cache - instruct CI to not cache build steps between runs for the same commit hash
-* CI/enable-coverage - enable coverage reporting for your code changes
-* CI/enable-test-only-affected - instruct CI to only run tests affected by your change
-* CI/run-audit-deps (1) - check for known npm/cargo vulnerabilities (audit_deps)
-* CI/run-network-audit (1) - run network-audit
-* CI/run-perf-smoke-tests - run smoke performance tests
-* CI/storybook-url (1) - deploy storybook and provide a unique URL for each build
-* CI/run-upstream-tests - run Chromium unit and browser tests on Linux and Windows (otherwise only on Linux)
-* CI/skip-upstream-tests - do not run Chromium unit, or browser tests (otherwise only on Linux)
-* CI/run-teamcity - run TeamCity
-* CI/skip-teamcity - skip TeamCity
-* CI/skip - do not run CI builds (except noplatform)
+* CI/disable-pipeline-step-cache - do not cache build steps between runs for the same commit hash
+* CI/enable-coverage - enable coverage reporting
+* CI/enable-test-only-affected - only run tests affected by changes in the PR
+* CI/run-audit-deps (1) - run audit_deps
 * CI/run-linux-arm64, CI/run-macos-x64, CI/run-windows-arm64, CI/run-windows-x86 - run builds that would otherwise be skipped
-* CI/skip-linux-x64, CI/skip-android, CI/skip-macos-arm64, CI/skip-ios, CI/skip-windows-x64 - skip CI builds for specific platforms
+* CI/run-network-audit (1) - run network-audit
+* CI/run-perf-smoke-tests - run perf_tests
+* CI/run-upstream-tests - run Chromium unit and browser tests on Linux and Windows (otherwise only on Linux)
+* CI/skip - do not run CI builds (except noplatform)
+* CI/skip-android, CI/skip-macos-arm64, CI/skip-ios, CI/skip-windows-x64 - skip CI builds for specific platforms
+* CI/skip-origin - do not run any builds for Brave Origin
+* CI/skip-upstream-tests - do not run Chromium unit, or browser tests (otherwise only on Linux)
+* CI/storybook-url (1) - deploy storybook and provide a unique URL for each build
 
 (1) applied automatically when some files are changed (see: https://github.com/brave/brave-core/blob/master/.github/labeler.yml)
 -->
