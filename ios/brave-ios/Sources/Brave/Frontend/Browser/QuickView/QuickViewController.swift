@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShields
 import BraveUI
+import Combine
 import Data
 import Preferences
 import Shared
@@ -30,6 +31,9 @@ class QuickViewController: UIViewController {
     manager.isPrivateBrowsing = profile.isOffTheRecord
     return manager
   }()
+  var toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 110)
+  private var toolbarVisibilityCancellable: AnyCancellable?
+  private var toolbarBottomConstraint: Constraint?
   private let onOpenInNewTab: ((URLRequest) -> Void)?
   private let onAttachTab: ((any TabState) -> Void)?
 
@@ -50,6 +54,15 @@ class QuickViewController: UIViewController {
 
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) { fatalError() }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    let toolbarHeight = toolbarHostingController.view.bounds.height
+    if toolbarHeight > 0 {
+      toolbarVisibilityViewModel.transitionDistance =
+        toolbarHeight - QuickViewToolbarView.collapsedHeight
+    }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -84,6 +97,12 @@ class QuickViewController: UIViewController {
     setupUI()
 
     currentTab?.loadRequest(URLRequest(url: url))
+
+    toolbarVisibilityCancellable = toolbarVisibilityViewModel.objectWillChange
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        self?.handleToolbarVisibilityStateChange()
+      }
   }
 
   private func updateViewModel() {
@@ -166,7 +185,7 @@ class QuickViewController: UIViewController {
     }
     toolbarHostingController.view.snp.makeConstraints {
       $0.leading.trailing.equalTo(view)
-      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+      toolbarBottomConstraint = $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).constraint
     }
   }
 
@@ -312,6 +331,33 @@ class QuickViewController: UIViewController {
       $0.bottom.equalTo(toolbarHostingController.view.snp.top)
     }
   }
+
+  private func handleToolbarVisibilityStateChange() {
+    let state = toolbarVisibilityViewModel.toolbarState
+    let progress = toolbarVisibilityViewModel.interactiveTransitionProgress
+    let maxOffset = toolbarVisibilityViewModel.transitionDistance
+
+    if let p = progress {
+      let collapseProgress: CGFloat
+      switch state {
+      case .expanded:
+        collapseProgress = p
+      case .collapsed:
+        collapseProgress = 1 - p
+      }
+      toolbarViewModel.collapseProgress = collapseProgress
+      toolbarBottomConstraint?.update(offset: maxOffset * collapseProgress)
+      view.layoutIfNeeded()
+      return
+    }
+    // snapped state
+    let targetOffset: CGFloat = state == .expanded ? 0 : maxOffset
+    toolbarViewModel.collapseProgress = state == .expanded ? 0 : 1
+    toolbarBottomConstraint?.update(offset: targetOffset)
+    let animator = toolbarVisibilityViewModel.toolbarChangePropertyAnimator
+    animator.addAnimations { self.view.layoutIfNeeded() }
+    animator.startAnimation()
+  }
 }
 
 // MARK: - TabDelegate
@@ -342,6 +388,9 @@ extension QuickViewController: TabDelegate {
 // MARK: - TabObserver
 extension QuickViewController: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
+    if let scrollView = tab.webViewProxy?.scrollView {
+      toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
+    }
     if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
       tab: tab,
       profileController: profileController
@@ -350,11 +399,18 @@ extension QuickViewController: TabObserver {
     }
   }
 
+  func tabDidStartNavigation(_ tab: some TabState) {
+    toolbarVisibilityViewModel.toolbarState = .expanded
+  }
+
   func tabDidUpdateURL(_ tab: some TabState) {
     refreshShieldStatus(url: tab.visibleURL ?? url)
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
+    if let scrollView = tab.webViewProxy?.scrollView {
+      toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
+    }
     tab.removeObserver(self)
   }
 }

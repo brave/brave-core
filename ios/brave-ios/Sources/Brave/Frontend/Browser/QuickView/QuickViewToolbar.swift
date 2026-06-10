@@ -36,6 +36,7 @@ struct QuickViewToolbarView: View {
       }
     }
     .disabled(viewModel.readerModeState == .active)
+    .opacity(1 - viewModel.collapseProgress)
   }
 
   @ViewBuilder
@@ -97,7 +98,7 @@ struct QuickViewToolbarView: View {
 
   private var addressView: some View {
     Text(viewModel.url.host ?? viewModel.url.absoluteString)
-      .font(.subheadline)
+      .font(.system(size: 15 - 3 * viewModel.collapseProgress))
       .foregroundStyle(Color(braveSystemName: .textTertiary))
       .lineLimit(1)
       .frame(maxWidth: .infinity)
@@ -109,6 +110,7 @@ struct QuickViewToolbarView: View {
       secondaryTopButtonView
       refreshButton
     }
+    .opacity(1 - viewModel.collapseProgress)
   }
 
   private var topRow: some View {
@@ -202,6 +204,7 @@ struct QuickViewToolbarView: View {
       closeButton
     }
     .labelStyle(QuickViewToolbarLabelBottomIconStyle())
+    .opacity(1 - viewModel.collapseProgress)
   }
 }
 
@@ -224,4 +227,9 @@ private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
         configuration.title
       }
   }
+}
+
+extension QuickViewToolbarView {
+  /// Height of the URL-only strip that remains visible when collapsed.
+  static let collapsedHeight: CGFloat = 24
 }
