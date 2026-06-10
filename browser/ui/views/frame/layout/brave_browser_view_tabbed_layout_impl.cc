@@ -11,6 +11,8 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/i18n/rtl.h"
+#include "base/logging.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -157,6 +159,27 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     layout.AddChild(views().contents_background, contents_layout->bounds);
   }
 
+  // Relocate the upstream side-panel inset to Brave's pref-literal frame.
+  //
+  // Upstream insets the contents for the toolbar-height side panel on the
+  // `side_panel_leading` side, which folds in `base::i18n::IsRTL()` (see
+  // BrowserViewTabbedLayoutImpl::CalculateProposedLayout). Brave, however, lays
+  // out the sidebar/vertical-tab/panel by the user's left/right preference
+  // (ignoring RTL) and re-mirrors the contents at the end of this method so the
+  // browser_view paint-time mirror nets out to that preference. In RTL the
+  // upstream inset therefore lands on the opposite physical side from the panel,
+  // leaving a phantom gap in the contents.
+  //
+  // Mirroring the contents here -- while it still carries only the upstream
+  // inset, before any Brave inset is applied -- gives that inset a net-odd
+  // (single) mirror, relocating it to the user's chosen side, while Brave's own
+  // insets added below get the net-even (double) mirror and stay pref-literal.
+  // No-op in LTR (browser_view is not mirrored). The contents_background above
+  // intentionally keeps the upstream bounds: it is not pre-mirrored, so its
+  // single paint-time mirror already matches the contents' final position.
+  contents_layout->bounds =
+      views().browser_view->GetMirroredRect(contents_layout->bounds);
+
   // Apply vertical tab strip insets for contents container BEFORE laying out
   // sidebar, so the sidebar is positioned adjacent to (not underneath) the
   // vertical tab strip when it's on the right. This is because sidebar is laid
@@ -200,6 +223,21 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     }
   }
 
+  // TODO(REMOVE): temporary RTL diagnostics.
+  {
+    const bool on_left = views().sidebar_container &&
+                         views().sidebar_container->sidebar_on_left();
+    auto* sb = layout.GetLayoutFor(views().sidebar_container);
+    auto* sp = layout.GetLayoutFor(views().side_panel.get());
+    LOG(ERROR) << "[RTL-DBG] IsRTL=" << base::i18n::IsRTL()
+               << " bv_mirrored=" << views().browser_view->GetMirrored()
+               << " sidebar_on_left=" << on_left
+               << " bv_width=" << views().browser_view->GetLocalBounds().width()
+               << " | PRE-MIRROR contents=" << contents_layout->bounds.ToString()
+               << " sidebar=" << (sb ? sb->bounds.ToString() : "null")
+               << " panel=" << (sp ? sp->bounds.ToString() : "null");
+  }
+
   // Mirroring all views that affected by vertical tab alignment in RTL mode
   // as vertical tab/sidebar follow user's setting for their alignment.
   // Each views' mirrored bounds are what we're seeing in RTL mode.
@@ -221,6 +259,16 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
           layout.GetLayoutFor(views().vertical_tab_strip_host)) {
     vertical_tab_host_layout->bounds =
         views().browser_view->GetMirroredRect(vertical_tab_host_layout->bounds);
+  }
+
+  // TODO(REMOVE): temporary RTL diagnostics.
+  {
+    auto* sb = layout.GetLayoutFor(views().sidebar_container);
+    auto* sp = layout.GetLayoutFor(views().side_panel.get());
+    LOG(ERROR) << "[RTL-DBG] POST-MIRROR contents="
+               << contents_layout->bounds.ToString()
+               << " sidebar=" << (sb ? sb->bounds.ToString() : "null")
+               << " panel(unmirrored)=" << (sp ? sp->bounds.ToString() : "null");
   }
 
   return layout;

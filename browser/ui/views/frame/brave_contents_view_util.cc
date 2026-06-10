@@ -116,7 +116,8 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     }
   }
 
-  if (browser_view->IsSidebarVisible()) {
+  if (browser_view->IsSidebarVisible() ||
+      (browser_view->side_panel() && browser_view->side_panel()->GetVisible())) {
     if (browser_window_interface->GetProfile()->GetPrefs()->GetBoolean(
             prefs::kSidePanelHorizontalAlignment)) {
       has_right_side_ui = true;
