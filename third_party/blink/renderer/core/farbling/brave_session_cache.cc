@@ -245,6 +245,7 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   if (const auto* storage_key = GetStorageKey(&context);
       storage_key && storage_key->GetNonce() &&
       !storage_key->GetNonce()->is_empty()) {
+    LOG(ERROR) << "Rohit: Storage key path? " << context.Url();
     // Use storage key nonce hash to XOR the existing farbling token. Do not use
     // the nonce directly to not accidentaly leak it somehow via farbled values.
     const size_t storage_key_nonce_hash =

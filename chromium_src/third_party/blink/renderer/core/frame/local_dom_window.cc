@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 // Include mouse_event.h, pointer_event.h here to avoid re-defining
 // tokens named screenX, screenY:
@@ -58,9 +59,15 @@ const SecurityOrigin* GetEphemeralStorageOrigin(LocalDOMWindow* window) {
 }
 
 int LocalDOMWindow::outerWidth() const {
+  // Sharing the same execution context as the opener to ensure the underlying
+  // brave session cache is the same which helps to keep the same farbling seed.
+  DOMWindow* opener_window = opener();
+  ExecutionContext* context = opener_window
+                                  ? opener_window->GetExecutionContext()
+                                  : GetExecutionContext();
+
   // Prevent fingerprinter use of outerWidth by returning a farbled value near
   // innerWidth instead:
-  ExecutionContext* context = GetExecutionContext();
   auto* top_window = DynamicTo<LocalDOMWindow>(top());
   return BlockScreenFingerprinting(context) && top_window
              ? FarbleInteger(context, brave::FarbleKey::kWindowInnerWidth,
@@ -69,9 +76,15 @@ int LocalDOMWindow::outerWidth() const {
 }
 
 int LocalDOMWindow::outerHeight() const {
+  // Sharing the same execution context as the opener to ensure the underlying
+  // brave session cache is the same which helps to keep the same farbling seed.
+  DOMWindow* opener_window = opener();
+  ExecutionContext* context = opener_window
+                                  ? opener_window->GetExecutionContext()
+                                  : GetExecutionContext();
+
   // Prevent fingerprinter use of outerHeight by returning a farbled value near
   // innerHeight instead:
-  ExecutionContext* context = GetExecutionContext();
   auto* top_window = DynamicTo<LocalDOMWindow>(top());
   return BlockScreenFingerprinting(context) && top_window
              ? FarbleInteger(context, brave::FarbleKey::kWindowInnerHeight,
@@ -80,16 +93,28 @@ int LocalDOMWindow::outerHeight() const {
 }
 
 int LocalDOMWindow::screenX() const {
+  // Sharing the same execution context as the opener to ensure the underlying
+  // brave session cache is the same which helps to keep the same farbling seed.
+  DOMWindow* opener_window = opener();
+  ExecutionContext* context = opener_window
+                                  ? opener_window->GetExecutionContext()
+                                  : GetExecutionContext();
+
   // Prevent fingerprinter use of screenX, screenLeft by returning value near 0:
-  ExecutionContext* context = GetExecutionContext();
   return BlockScreenFingerprinting(context)
              ? FarbleInteger(context, brave::FarbleKey::kWindowScreenX, 0, 0, 8)
              : screenX_ChromiumImpl();
 }
 
 int LocalDOMWindow::screenY() const {
+  // Sharing the same execution context as the opener to ensure the underlying
+  // brave session cache is the same which helps to keep the same farbling seed.
+  DOMWindow* opener_window = opener();
+  ExecutionContext* context = opener_window
+                                  ? opener_window->GetExecutionContext()
+                                  : GetExecutionContext();
+
   // Prevent fingerprinter use of screenY, screenTop by returning value near 0:
-  ExecutionContext* context = GetExecutionContext();
   return BlockScreenFingerprinting(context)
              ? FarbleInteger(context, brave::FarbleKey::kWindowScreenY, 0, 0, 8)
              : screenY_ChromiumImpl();
