@@ -15,8 +15,8 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/content/browser/pdf_utils.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/screenshot/content/pdf_utils.h"
+#include "brave/components/screenshot/core/browser/utils.h"
 #include "components/paint_preview/browser/compositor_utils.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
 #include "components/paint_preview/common/recording_map.h"
@@ -52,7 +52,7 @@ void FullScreenshotter::CaptureScreenshots(
         base::unexpected("The given web contents is no longer valid"));
     return;
   }
-  if (IsPdf(web_contents)) {
+  if (screenshot::IsPdf(web_contents)) {
     std::move(callback).Run(base::unexpected("Do not support pdf capturing"));
     return;
   }
@@ -232,7 +232,8 @@ void FullScreenshotter::OnBitmapReceived(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&FullScreenshotter::EncodeBitmap, ScaleDownBitmap(bitmap)),
+      base::BindOnce(&FullScreenshotter::EncodeBitmap,
+                     screenshot::ScaleDownBitmap(bitmap)),
       base::BindOnce(&FullScreenshotter::OnBitmapEncoded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(pending),
                      index));

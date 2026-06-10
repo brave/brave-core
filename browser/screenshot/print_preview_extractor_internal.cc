@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/print_preview_extractor_internal.h"
+#include "brave/browser/screenshot/print_preview_extractor_internal.h"
 
 #include <memory>
 #include <optional>
@@ -19,10 +19,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/browser/ai_chat/print_preview_extractor.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/content/browser/pdf_utils.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/browser/screenshot/print_preview_extractor.h"
+#include "brave/components/screenshot/core/browser/utils.h"
 #include "chrome/browser/pdf/pdf_pref_names.h"
 #include "chrome/browser/printing/print_compositor_util.h"
 #include "chrome/browser/printing/print_preview_data_service.h"
@@ -45,6 +43,8 @@
 #include "printing/units.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "third_party/skia/include/core/SkCanvas.h"
+#include "third_party/skia/include/core/SkImage.h"
 #include "ui/gfx/codec/png_codec.h"
 
 #if BUILDFLAG(ENABLE_PDF)
@@ -58,11 +58,8 @@ static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 using printing::PrintCompositeClient;
 using printing::mojom::PrintPreviewUI;
 
-namespace ai_chat {
-
-using ImageCallback = PrintPreviewExtractor::Extractor::ImageCallback;
-
 namespace {
+
 // chrome/browser/printing/print_view_manager_common.cc
 // Pick the right RenderFrameHost based on the WebContents.
 content::RenderFrameHost* GetRenderFrameHostToUse(
@@ -85,6 +82,10 @@ content::RenderFrameHost* GetRenderFrameHostToUse(
 }
 
 }  // namespace
+
+namespace screenshot {
+
+using ImageCallback = PrintPreviewExtractor::CaptureImagesCallback;
 
 PreviewPageImageExtractor::PreviewPageImageExtractor() = default;
 
@@ -554,4 +555,4 @@ void PrintPreviewExtractorInternal::OnCaptureBitmapResult(
   }
 }
 
-}  // namespace ai_chat
+}  // namespace screenshot

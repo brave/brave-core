@@ -24,7 +24,6 @@
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
-#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -32,6 +31,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/screenshot/content/pdf_utils.h"
 #include "content/public/browser/browser_accessibility_state.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_details.h"
@@ -158,7 +158,7 @@ void AssociatedWebContentsContent::DidFinishLoad(
 void AssociatedWebContentsContent::GetPageContent(
     FetchPageContentCallback callback,
     std::string_view invalidation_token) {
-  bool is_pdf = IsPdf(web_contents());
+  bool is_pdf = screenshot::IsPdf(web_contents());
   if (is_pdf) {
 #if BUILDFLAG(ENABLE_PDF)
     auto* pdf_helper =
@@ -353,7 +353,7 @@ bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {
 void AssociatedWebContentsContent::GetScreenshots(
     mojom::ConversationHandler::GetScreenshotsCallback callback) {
   if (print_preview_extraction_delegate_ &&
-      (IsPdf(web_contents()) ||
+      (screenshot::IsPdf(web_contents()) ||
        kPrintPreviewRetrievalHosts.contains(
            web_contents()->GetLastCommittedURL().host()))) {
     // Use print preview extraction for PDFs and print preview hosts

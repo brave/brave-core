@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/screenshot/core/browser/utils.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -163,7 +164,7 @@ void OnImageDecoded(
   auto encode_image = base::BindOnce(
       [](const SkBitmap& decoded_bitmap) {
         return gfx::PNGCodec::EncodeBGRASkBitmap(
-            ScaleDownBitmap(decoded_bitmap), false);
+            screenshot::ScaleDownBitmap(decoded_bitmap), false);
       },
       decoded_bitmap);
   base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},

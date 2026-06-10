@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/components/screenshot/content",
+  "+brave/components/screenshot/core/browser",
+  "+brave/components/text_recognition/common",
+  "+brave/services/printing/public",
+]

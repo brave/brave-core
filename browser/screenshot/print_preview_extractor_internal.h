@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
-#define BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#ifndef BRAVE_BROWSER_SCREENSHOT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#define BRAVE_BROWSER_SCREENSHOT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
 
 #include <cstddef>
 #include <cstdint>
@@ -18,8 +18,7 @@
 #include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/browser/ai_chat/print_preview_extractor.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/browser/screenshot/print_preview_extractor.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/printing/common/print.mojom.h"
@@ -36,7 +35,7 @@
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
-namespace ai_chat {
+namespace screenshot {
 
 class PreviewPageImageExtractor {
  public:
@@ -45,7 +44,7 @@ class PreviewPageImageExtractor {
 
   virtual void StartExtract(
       base::ReadOnlySharedMemoryRegion pdf_region,
-      PrintPreviewExtractor::Extractor::ImageCallback callback,
+      PrintPreviewExtractor::CaptureImagesCallback callback,
       std::optional<bool> pdf_use_skia_renderer_enabled);
 
   void BindForTesting(
@@ -61,7 +60,7 @@ class PreviewPageImageExtractor {
   size_t current_page_index_ = 0;
   size_t total_page_count_ = 0;
   base::ReadOnlySharedMemoryRegion pdf_region_;
-  PrintPreviewExtractor::Extractor::ImageCallback callback_;
+  PrintPreviewExtractor::CaptureImagesCallback callback_;
   // raw bytes data of captured pdf pages
   std::vector<std::vector<uint8_t>> pdf_pages_image_data_;
   mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
@@ -79,7 +78,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
       content::WebContents* web_contents,
       Profile* profile,
       bool is_pdf,
-      PrintPreviewExtractor::Extractor::ImageCallback callback,
+      PrintPreviewExtractor::CaptureImagesCallback callback,
       GetPrintPreviewUIIdMapCallback id_map_callback,
       GetPrintPreviewUIRequestIdMapCallback request_id_map_callback);
 
@@ -167,7 +166,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
  private:
   bool is_pdf_ = false;
-  PrintPreviewExtractor::Extractor::ImageCallback callback_;
+  PrintPreviewExtractor::CaptureImagesCallback callback_;
   GetPrintPreviewUIIdMapCallback id_map_callback_;
   GetPrintPreviewUIRequestIdMapCallback request_id_map_callback_;
   // unique id to avoid conflicts with other print preview UIs
@@ -183,6 +182,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
   base::WeakPtrFactory<PrintPreviewExtractorInternal> weak_ptr_factory_{this};
 };
-}  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+}  // namespace screenshot
+
+#endif  // BRAVE_BROWSER_SCREENSHOT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
