@@ -718,6 +718,10 @@ action("create_dist_zips") {
 if (is_mac) {
   group("brave_app") {
     deps = [ ":brave_app_plist" ]
+
+    if (enable_brave_vpn_v2_bundling) {
+      deps += [ "//brave/components/brave_vpn/app/v2/agent:brave_vpn_agent_launchd_plist_data" ]
+    }
   }
 
   brave_tweak_info_plist("brave_app_plist") {
