@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java b/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
+index 55b6365710f09f7c9e74fc0e511191c81e210650..4860b943cbef438847832977346e105889cf623f 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
+@@ -110,7 +110,7 @@ public class ShortcutHelper {
+                 // Encoding {@link icon} as a string and computing the mac are expensive.
+ 
+                 // Encode the icon as a base64 string (Launcher drops Bitmaps in the Intent).
+-                String encodedIcon = BitmapHelper.encodeBitmapAsString(icon);
++                String encodedIcon = BravePwaShortcutIconHelper.encodeDownscaledBitmapAsString(icon);
+ 
+                 // TODO(http://crbug.com/40097069): Use action which does not require mac on O+
+                 Intent shortcutIntent =
