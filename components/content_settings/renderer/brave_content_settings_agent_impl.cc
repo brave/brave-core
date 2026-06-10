@@ -359,7 +359,7 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL primary_url(GetTopFrameOriginAsURL(frame));
-  if (!primary_url.SchemeIsHTTPOrHTTPS()) {
+  if (!primary_url.SchemeIsHTTPOrHTTPS() && !primary_url.SchemeIsBlob()) {
     return brave_shields::mojom::ShieldsSettings::New();
   }
 
