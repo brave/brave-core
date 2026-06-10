@@ -1216,6 +1216,17 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               blink::features::kBraveBlockScreenFingerprinting),               \
       },                                                                       \
       {                                                                        \
+          "brave-webgl-balanced-fingerprinting-protections",                   \
+          "Add more protections for graphics in balanced fingerprinting",      \
+          "Adds extra protections when sites asks for device specific "        \
+          "information from the graphics APIs. It also adds noise to APIs "    \
+          "that enumerates webgl extensions which can be used to fingerprint " \
+          "users across sites.",                                               \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              blink::features::kWebGLBalancedFingerprintingProtection),        \
+      },                                                                       \
+      {                                                                        \
           "brave-tor-windows-https-only",                                      \
           "Use HTTPS-Only Mode in Private Windows with Tor",                   \
           "Prevents Private Windows with Tor from making any insecure HTTP "   \
