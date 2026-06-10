@@ -95,6 +95,8 @@ source_set("browser_tests") {
     ":frame",
     ":frame_impl",
     "//base",
+    "//brave/browser/ui/sidebar:sidebar_impl",
+    "//brave/browser/ui/sidebar/buildflags",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/brave_origin/buildflags",

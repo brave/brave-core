@@ -116,7 +116,18 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     }
   }
 
-  if (browser_view->IsSidebarVisible()) {
+  // In V2, checking sidebar UI only is not sufficient because panel could be
+  // visible alone. Below works on both(V1 and V2) because side_panel() is null
+  // in V2.
+  // TODO(https://github.com/brave/brave-browser/issues/56248): Rethink the
+  // naming convention for V2. The current names will become inaccurate. For
+  // instance, IsSidebarVisible() works fine in V1 because the container view
+  // includes both the sidebar control UI and the panel. But in V2, the panel is
+  // separated from the container view, so IsSidebarVisible() will no longer
+  // return an accurate value.
+  if (browser_view->IsSidebarVisible() ||
+      (browser_view->side_panel() &&
+       browser_view->side_panel()->GetVisible())) {
     if (browser_window_interface->GetProfile()->GetPrefs()->GetBoolean(
             prefs::kSidePanelHorizontalAlignment)) {
       has_right_side_ui = true;
