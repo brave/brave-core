@@ -40,6 +40,7 @@ struct QuickViewToolbarView: View {
       }
     }
     .disabled(viewModel.readerModeState == .active)
+    .opacity(1 - viewModel.collapseProgress)
   }
 
   @ViewBuilder
@@ -103,14 +104,13 @@ struct QuickViewToolbarView: View {
     URLDisplayLabel(
       formattedURL: viewModel.displayURL,
       isLeftToRight: viewModel.isURLLeftToRight,
-      textFont: UIFont.preferredFont(forTextStyle: .body),
+      textFont: .systemFont(ofSize: 15 - 3 * viewModel.collapseProgress),
       textColor: UIColor(braveSystemName: .textTertiary),
       gradientColors: [
         browserColors.chromeBackground.cgColor,
         browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
       ]
     )
-    .frame(maxWidth: .infinity)
     .accessibilityLabel(viewModel.displayURL)
   }
 
@@ -119,6 +119,7 @@ struct QuickViewToolbarView: View {
       secondaryTopButtonView
       refreshButton
     }
+    .opacity(1 - viewModel.collapseProgress)
   }
 
   @ViewBuilder private var warningIcon: some View {
@@ -270,6 +271,7 @@ struct QuickViewToolbarView: View {
         iconDisabledColor: Color(browserColors.iconDisabled)
       )
     )
+    .opacity(1 - viewModel.collapseProgress)
   }
 }
 
@@ -296,6 +298,11 @@ private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
         configuration.title
       }
   }
+}
+
+extension QuickViewToolbarView {
+  /// Height of the URL-only strip that remains visible when collapsed.
+  static let collapsedHeight: CGFloat = 24
 }
 
 private struct QuickViewToolbarBottomButtonStyle: ButtonStyle {
