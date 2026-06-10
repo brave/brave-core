@@ -4,23 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      Let Brave handle YouTube PiP dismiss signals using upstream enum names
-    re_pattern:
-      '(\s+private void dismissActivityIfNeeded\(Activity activity,
-      @MetricsEndReason int reason\) \{\n)'
-    replace: |
-      \1        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
-                      .maybeHandleDismissActivityForYouTubePictureInPicture(
-                              activity,
-                              reason == MetricsEndReason.START,
-                              reason == MetricsEndReason.RESUME,
-                              reason == MetricsEndReason.LEFT_FULLSCREEN,
-                              reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
-                              reason == MetricsEndReason.NEW_TAB)) {
-                  return;
-              }
-
   - description: Notify Brave that a YouTube PiP session is being attempted
     re_pattern:
       '(\s+if \(!allowed\) return;\n\n\s+final WebContents webContents =
@@ -46,3 +29,20 @@ substitutions:
     replace: |
       \1            BraveFullscreenVideoPictureInPictureController.class.cast(this)
                           .onYouTubePictureInPictureEnterFailed();
+
+  - description:
+      Let Brave handle YouTube PiP dismiss signals using upstream enum names
+    re_pattern:
+      '(\s+private void dismissActivityIfNeeded\(Activity activity,
+      @MetricsEndReason int reason\) \{\n)'
+    replace: |
+      \1        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                      .maybeHandleDismissActivityForYouTubePictureInPicture(
+                              activity,
+                              reason == MetricsEndReason.START,
+                              reason == MetricsEndReason.RESUME,
+                              reason == MetricsEndReason.LEFT_FULLSCREEN,
+                              reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
+                              reason == MetricsEndReason.NEW_TAB)) {
+                  return;
+              }
