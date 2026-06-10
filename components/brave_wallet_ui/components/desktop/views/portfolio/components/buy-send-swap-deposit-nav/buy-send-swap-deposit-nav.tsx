@@ -9,9 +9,6 @@ import * as React from 'react'
 import { NavOption } from '../../../../../../constants/types'
 
 // Hooks
-import {
-  useOnClickOutside, //
-} from '../../../../../../common/hooks/useOnClickOutside'
 import { useRoute } from '../../../../../../common/hooks/use_route'
 
 // Options
@@ -31,30 +28,18 @@ import { UISelectors } from '../../../../../../common/selectors'
 
 // Components
 import {
-  PortfolioAccountMenu, //
+  PortfolioActionsMoreMenu, //
 } from '../../../../wallet-menus/portfolio_actions_more_menu'
 
 // Styled Components
-import {
-  Button,
-  ButtonIcon,
-  ButtonWrapper,
-  MoreMenuWrapper,
-} from './buy-send-swap-deposit-nav.style'
-import { Row, Text } from '../../../../../shared/style'
+import { Button, ButtonIcon } from './buy-send-swap-deposit-nav.style'
+import { Row, Column, Text } from '../../../../../shared/style'
 
 export const BuySendSwapDepositNav = () => {
-  // state
-  const [showMoreMenu, setShowMoreMenu] = React.useState<boolean>(false)
-
-  // refs
-  const moreMenuRef = React.useRef<HTMLDivElement>(null)
-
   // selectors
   const isIOS = useSafeUISelector(UISelectors.isIOS)
 
   // hooks
-  useOnClickOutside(moreMenuRef, () => setShowMoreMenu(false), showMoreMenu)
   const { openOrPushRoute } = useRoute()
 
   // methods
@@ -70,9 +55,12 @@ export const BuySendSwapDepositNav = () => {
     : BuySendSwapDepositOptions
 
   return (
-    <Row width='unset'>
+    <Row
+      width='unset'
+      gap='28px'
+    >
       {options.slice(0, 3).map((option) => (
-        <ButtonWrapper key={option.id}>
+        <Column key={option.id}>
           <Button onClick={() => onClick(option)}>
             <ButtonIcon name={option.icon} />
           </Button>
@@ -82,20 +70,21 @@ export const BuySendSwapDepositNav = () => {
           >
             {getLocale(option.name)}
           </Text>
-        </ButtonWrapper>
+        </Column>
       ))}
-      <MoreMenuWrapper ref={moreMenuRef}>
-        <Button onClick={() => setShowMoreMenu(true)}>
-          <ButtonIcon name='more-horizontal' />
-        </Button>
-        <Text
-          textColor='primary'
-          variant='small.semibold'
-        >
-          {getLocale('braveWalletButtonMore')}
-        </Text>
-        {showMoreMenu && <PortfolioAccountMenu onClick={onClick} />}
-      </MoreMenuWrapper>
+      <PortfolioActionsMoreMenu onClick={onClick}>
+        <Column slot='anchor-content'>
+          <Button>
+            <ButtonIcon name='more-horizontal' />
+          </Button>
+          <Text
+            textColor='primary'
+            variant='small.semibold'
+          >
+            {getLocale('braveWalletButtonMore')}
+          </Text>
+        </Column>
+      </PortfolioActionsMoreMenu>
     </Row>
   )
 }

@@ -6,14 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton, Column } from '../../../../../shared/style'
-
-export const ButtonWrapper = styled(Column)`
-  margin-right: 28px;
-  &:last-child {
-    margin-right: 0px;
-  }
-`
+import { WalletButton } from '../../../../../shared/style'
 
 export const Button = styled(WalletButton)<{
   minWidth?: number
@@ -39,8 +32,4 @@ export const ButtonIcon = styled(Icon)`
   @media (prefers-color-scheme: dark) {
     color: ${leo.color.schemes.onPrimary};
   }
-`
-
-export const MoreMenuWrapper = styled(ButtonWrapper)`
-  position: relative;
 `
