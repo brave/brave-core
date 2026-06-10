@@ -24,6 +24,7 @@
 #include "ios/web/public/test/web_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace web {
 
@@ -107,7 +108,8 @@ class PromptFacadeTest : public WebTest {
   }
 
   std::optional<std::string> HandlePrompt(const std::string& prompt) {
-    return handler_->HandleJavaScriptPrompt(GURL("https://example.com/"),
+    GURL url("https://example.com/");
+    return handler_->HandleJavaScriptPrompt(url, url::Origin::Create(url),
                                             /*is_main_frame=*/true, prompt);
   }
 
@@ -158,9 +160,9 @@ TEST_F(PromptFacadeTest, ValidPromptDispatchesToFeature) {
   base::DictValue message;
   message.Set("key", "value");
   std::string prompt = BuildPromptJSON(kHandlerName, std::move(message));
-  std::optional<std::string> result =
-      handler_->HandleJavaScriptPrompt(GURL("https://example.com/foo"),
-                                       /*is_main_frame=*/true, prompt);
+  GURL url("https://example.com/foo");
+  std::optional<std::string> result = handler_->HandleJavaScriptPrompt(
+      url, url::Origin::Create(url), /*is_main_frame=*/true, prompt);
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ("\"hello\"", *result);
 
@@ -185,9 +187,9 @@ TEST_F(PromptFacadeTest, SubFramePropagatedToMessage) {
   feature_->SetReply(std::make_unique<base::Value>("hello"));
 
   std::string prompt = BuildPromptJSON(kHandlerName, base::DictValue());
-  std::optional<std::string> result =
-      handler_->HandleJavaScriptPrompt(GURL("https://example.com/"),
-                                       /*is_main_frame=*/false, prompt);
+  GURL url("https://example.com/");
+  std::optional<std::string> result = handler_->HandleJavaScriptPrompt(
+      url, url::Origin::Create(url), /*is_main_frame=*/false, prompt);
   EXPECT_TRUE(result.has_value());
   ASSERT_NE(nullptr, feature_->last_message());
   EXPECT_FALSE(feature_->last_message()->is_main_frame());

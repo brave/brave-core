@@ -21,6 +21,7 @@
 #include "ios/web/public/js_messaging/script_message.h"
 #include "ios/web/public/web_state.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace web {
 
@@ -54,6 +55,7 @@ PromptFacade::PromptFacade(web::WebState* web_state) : web_state_(web_state) {}
 
 std::optional<std::string> PromptFacade::HandleJavaScriptPrompt(
     GURL request_url,
+    url::Origin security_origin,
     bool is_main_frame,
     const std::string& prompt) {
   if (!request_url.is_valid()) {
@@ -72,9 +74,15 @@ std::optional<std::string> PromptFacade::HandleJavaScriptPrompt(
     return std::nullopt;
   }
 
-  const JavaScriptFeature* feature =
-      GetFeatureReplyingToPrompts(web_state_->GetBrowserState(), *handler_name);
-  if (!feature) {
+  // Typically upstream binds `ScriptMessageReceivedWithReply` to the mutable
+  // `WeakPtr` of `JavaScriptFeature` which removes the `const`. Since our code
+  // is non-escaping though we don't need to make a `WeakPtr` so must
+  // `const_cast`
+  JavaScriptFeature* feature =
+      const_cast<JavaScriptFeature*>(GetFeatureReplyingToPrompts(
+          web_state_->GetBrowserState(), *handler_name));
+
+  if (!feature || !feature->ShouldHandleMessageFromOrigin(security_origin)) {
     return std::nullopt;
   }
 
@@ -84,11 +92,7 @@ std::optional<std::string> PromptFacade::HandleJavaScriptPrompt(
 
   bool replied = false;
   std::string reply_json;
-  // Typically upstream binds `ScriptMessageReceivedWithReply` to the mutable
-  // `WeakPtr` of `JavaScriptFeature` which removes the `const`. Since our code
-  // is non-escaping though we don't need to make a `WeakPtr` so must
-  // `const_cast`
-  const_cast<JavaScriptFeature*>(feature)->ScriptMessageReceivedWithReply(
+  feature->ScriptMessageReceivedWithReply(
       web_state_, script_message,
       base::BindOnce(
           [](bool* replied, std::string* reply_json, const base::Value* reply,

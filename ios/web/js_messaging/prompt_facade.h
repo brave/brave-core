@@ -13,6 +13,10 @@
 
 class GURL;
 
+namespace url {
+class Origin;
+}
+
 namespace web {
 
 class WebState;
@@ -31,6 +35,7 @@ class PromptFacade {
   // dispatches the message and returns the JSON-encoded reply, otherwise
   // returns nullptr
   std::optional<std::string> HandleJavaScriptPrompt(GURL request_url,
+                                                    url::Origin security_origin,
                                                     bool is_main_frame,
                                                     const std::string& prompt);
 

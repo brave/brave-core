@@ -55,8 +55,9 @@
   if (web::UrlHasWebScheme(origin_url)) {
     std::optional<std::string> result =
         self.promptFacade->HandleJavaScriptPrompt(
-            net::GURLWithNSURL(frame.request.URL), frame.isMainFrame,
-            base::SysNSStringToUTF8(prompt));
+            net::GURLWithNSURL(frame.request.URL),
+            web::OriginWithWKSecurityOrigin(frame.securityOrigin),
+            frame.isMainFrame, base::SysNSStringToUTF8(prompt));
     if (result) {
       completionHandler(base::SysUTF8ToNSString(*result));
       return;
