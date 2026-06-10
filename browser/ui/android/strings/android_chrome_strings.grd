@@ -4247,6 +4247,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR_LIMIT=27]">
         Recent tabs
       </message>
+      <message name="IDS_MENU_RECENT_ENTRY_RESTORE_WINDOW" desc="Menu item to restore a recently closed window. [CHAR_LIMIT=27]">
+        Restore window
+      </message>
+      <message name="IDS_MENU_RECENT_ENTRY_RESTORE_GROUP" desc="Menu item to restore a recently closed tab group. [CHAR_LIMIT=27]">
+        Restore group
+      </message>
+      <message name="IDS_MENU_WINDOW_TITLE_WITH_TAB_COUNT" desc="Format string to display a window title followed by the number of tabs in that window, for example 'Window 1 - 5 tabs'. [CHAR_LIMIT=27]">
+        <ph name="WINDOW_TITLE">%1$s<ex>Window name</ex></ph> - <ph name="TAB_COUNT">%2$s<ex>5 tabs</ex></ph>
+      </message>
       <message name="IDS_MENU_EXTENSIONS" desc="Menu item for opening the 'Extensions' page that allows the user to manage installed extensions. [CHAR_LIMIT=27]">
         Extensions
       </message>
@@ -4493,12 +4502,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_BOOKMARKS_SAVE_FLOW_CONTENT_DESCRIPTION" desc="The content description for the bookmark bottom sheet save flow. Read as accessibility string when tapping on the bottom sheet.">
         Bookmark saved to <ph name="FOLDER_NAME">%1$s<ex>Mobile bookmarks</ex></ph>
       </message>
-        <message name="IDS_BOOKMARKS_SAVE_FLOW_OPENED_HALF" desc="The accessibility string read when the bookmark bottom sheet save flow is half opened.">
-        Bookmark save flow opened at half height
-      </message>
-      <message name="IDS_BOOKMARKS_SAVE_FLOW_OPENED_FULL" desc="The accessibility string read when the bookmark bottom sheet save flow is fully opened.">
-        Bookmark save flow folders opened at full height
-      </message>
+
       <message name="IDS_BOOKMARKS_SAVE_FLOW_CLOSED_DESCRIPTION" desc="The accessibility string read when the bookmark bottom sheet save flow is closed.">
         Bookmark save flow closed
       </message>
@@ -5309,12 +5313,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           =1 {Remove 1 selected item}
           other {Remove # selected items}}
       </message>
-      <message name="IDS_ACCESSIBILITY_EXPAND_SECTION_HEADER" desc="Content description for the suggested section header expand button.">
-        Tap to expand
-      </message>
-      <message name="IDS_ACCESSIBILITY_COLLAPSE_SECTION_HEADER" desc="Content description for the suggested section header collapse button.">
-        Tap to collapse
-      </message>
 
       <message name="IDS_ACCESSIBILITY_DEFAULT_APP_LABEL" desc="Accessibility label of the current window when app name is empty.">
         Application
@@ -6006,6 +6004,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_TAB_SWITCHER_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open the new tab page. The 'open tabs' button name should match TC 3108541343994525384">
         To open tabs and visit different pages at the same time, tap the open tabs button
+      </message>
+      <message name="IDS_IPH_INCOGNITO_INDICATOR_CLOSE_ALL_WINDOWS_TEXT" desc="The in-product-help message to inform users that they can close all private windows by tapping the private indicator.">
+        Tap here to close all Private windows
+      </message>
+      <message name="IDS_IPH_INCOGNITO_INDICATOR_CLOSE_ALL_WINDOWS_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to inform users that they can close all private windows by tapping the private indicator.">
+        To close all Private windows, tap the Private indicator
       </message>
 
       <!-- Bottom bar IPH strings. -->
