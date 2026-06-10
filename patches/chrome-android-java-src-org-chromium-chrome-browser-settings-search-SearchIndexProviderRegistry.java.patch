@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index b9a515255ae779daf61e37b86cc1ec54e1215f21..f258764dac9bdf57f46037855d41a453cf3a2cc1 100644
+index b9a515255ae779daf61e37b86cc1ec54e1215f21..1a8e009e441721f73cb0ede55571b3eb1fe8fc2b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -59,12 +59,13 @@ index b9a515255ae779daf61e37b86cc1ec54e1215f21..f258764dac9bdf57f46037855d41a453
                      SafetyCheckSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      TabsSettings.SEARCH_INDEX_DATA_PROVIDER,
                      ManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER,
-@@ -153,5 +146,30 @@ public final class SearchIndexProviderRegistry {
+@@ -153,5 +146,31 @@ public final class SearchIndexProviderRegistry {
                      DownloadSettings.SEARCH_INDEX_DATA_PROVIDER,
                      DeveloperSettings.SEARCH_INDEX_DATA_PROVIDER,
                      TracingSettings.SEARCH_INDEX_DATA_PROVIDER,
 -                    TracingCategoriesSettings.SEARCH_INDEX_DATA_PROVIDER);
 +                    TracingCategoriesSettings.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.password_manager.settings.PasswordSettings.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences.SEARCH_INDEX_DATA_PROVIDER,

@@ -1692,6 +1692,12 @@ Are you sure you want to do this?
       <message name="IDS_GO_BACK" desc="Go back button text">
         Go Back
       </message>
+      <message name="IDS_PULL_TO_REFRESH_TITLE" desc="Title for pull to refresh preference in accessibility settings.">
+        Pull to refresh
+      </message>
+      <message name="IDS_PULL_TO_REFRESH_SUMMARY" desc="Summary for pull to refresh preference in accessibility settings.">
+        Enables the pull to refresh gesture. Swiping down from the top of a page will refresh the page.
+      </message>
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
       </message>

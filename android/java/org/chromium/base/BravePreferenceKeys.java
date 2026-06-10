@@ -129,6 +129,8 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED =
             "brave_origin_credential_summary_cached";
 
+    public static final String PREF_PULL_TO_REFRESH = "brave_pull_to_refresh";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
