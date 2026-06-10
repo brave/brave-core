@@ -119,10 +119,12 @@
 
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
     *** isInNarrowWindowOnTablet(...);
+    *** isNtpThemeCustomizationEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
     *** isInNarrowWindowOnTablet(...);
+    *** isNtpThemeCustomizationEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {

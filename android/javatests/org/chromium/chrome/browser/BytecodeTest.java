@@ -506,6 +506,20 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         UiConfig.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
+                        "isNtpThemeCustomizationEnabled",
+                        MethodModifier.STATIC,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
+                        "isNtpThemeCustomizationEnabled",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        WindowAndroid.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 methodExists(
