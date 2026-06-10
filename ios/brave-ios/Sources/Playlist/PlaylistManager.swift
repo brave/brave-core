@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveCore
 import BraveShared
 import Combine
 import CoreData
@@ -345,7 +346,9 @@ public class PlaylistManager: NSObject {
   }
 
   public func download(item: PlaylistInfo) {
-    guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src)
+    guard FeatureList.kPlaylistOfflineCacheEnabled.enabled,
+      downloadManager.downloadTask(for: item.tagId) == nil,
+      let assetUrl = URL(string: item.src)
     else { return }
     Task {
       if assetUrl.scheme == "data" {
