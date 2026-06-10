@@ -16,7 +16,7 @@ static_library("screenshot") {
 
   deps = [
     "//base",
-    "//brave//components/screenshot/content",
+    "//brave/components/screenshot/content",
     "//chrome/browser/profiles",
     "//components/printing/common",
     "//components/printing/common:mojo_interfaces",
