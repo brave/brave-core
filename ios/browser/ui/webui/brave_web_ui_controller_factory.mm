@@ -10,28 +10,44 @@
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
-#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/web_state.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#endif
 
 using web::WebUIIOS;
 using web::WebUIIOSController;
@@ -49,6 +65,46 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
   return std::make_unique<T>(web_ui, url);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+template <>
+std::unique_ptr<WebUIIOSController> NewWebUIIOS<AdsInternalsUI>(
+    WebUIIOS* web_ui,
+    const GURL& url) {
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
+  if (profile->GetPrefs()->GetBoolean(
+          brave_rewards::prefs::kDisabledByPolicy)) {
+    return nullptr;
+  }
+  return std::make_unique<AdsInternalsUI>(web_ui, url);
+}
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+template <>
+std::unique_ptr<WebUIIOSController> NewWebUIIOS<AIChatUI>(WebUIIOS* web_ui,
+                                                          const GURL& url) {
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
+  if (profile->IsOffTheRecord() ||
+      !ai_chat::IsAIChatEnabled(profile->GetPrefs())) {
+    return nullptr;
+  }
+  return std::make_unique<AIChatUI>(web_ui, url);
+}
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+template <>
+std::unique_ptr<WebUIIOSController> NewWebUIIOS<WalletPageUI>(WebUIIOS* web_ui,
+                                                              const GURL& url) {
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
+  if (profile->IsOffTheRecord() ||
+      !brave_wallet::IsAllowed(profile->GetPrefs())) {
+    return nullptr;
+  }
+  return std::make_unique<WalletPageUI>(web_ui, url);
+}
+#endif
+
 template <class T>
 std::unique_ptr<WebUIIOSController> NewRegularProfileOnlyWebUIIOS(
     WebUIIOS* web_ui,
@@ -61,13 +117,16 @@ std::unique_ptr<WebUIIOSController> NewRegularProfileOnlyWebUIIOS(
 
 WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   DCHECK(url.SchemeIs(kChromeUIUntrustedScheme));
-  const std::string_view url_host = url.host();
+  [[maybe_unused]] const std::string_view url_host = url.host();
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (url_host == kAIChatUntrustedConversationUIHost &&
       ai_chat::features::IsAIChatWebUIEnabled()) {
     return &NewRegularProfileOnlyWebUIIOS<AIChatUntrustedConversationUI>;
   }
+#endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsWalletWebUIEnabled()) {
     if (url_host == kUntrustedNftHost) {
       return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
@@ -77,6 +136,7 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
       return &NewRegularProfileOnlyWebUIIOS<line_chart::UntrustedLineChartUI>;
     }
   }
+#endif
 
   return nullptr;
 }
@@ -95,19 +155,27 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   }
 
   std::string_view url_host = url.host();
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
-  } else if (url_host == kBraveAccountHost &&
-             brave_account::features::IsBraveAccountEnabled()) {
+  }
+#endif
+  if (url_host == kBraveAccountHost &&
+      brave_account::features::IsBraveAccountEnabled()) {
     return &NewWebUIIOS<BraveAccountUIIOS>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
+#if BUILDFLAG(ENABLE_AI_CHAT)
   } else if (url_host == kAIChatUIHost &&
              ai_chat::features::IsAIChatWebUIEnabled()) {
-    return &NewRegularProfileOnlyWebUIIOS<AIChatUI>;
+    return &NewWebUIIOS<AIChatUI>;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   } else if (url_host == kWalletPageHost &&
              brave_wallet::IsWalletWebUIEnabled()) {
-    return &NewRegularProfileOnlyWebUIIOS<WalletPageUI>;
+    return &NewWebUIIOS<WalletPageUI>;
+#endif
   }
   return nullptr;
 }
