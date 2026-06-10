@@ -12,8 +12,7 @@ substitutions:
       Brave-managed YouTube Picture-in-Picture session is active.
       maybeSkipExitFullscreenOnTabHidden also records whether the tab was hidden
       by a tab switch before deciding whether to skip.
-    re_pattern:
-      '(public void onHidden\(.*\)\s+\{)'
+    re_pattern: '(public void onHidden\(.*\)\s+\{)'
     replace: |-
       \1
                               if (BraveFullscreenHtmlApiHandlerBase.class.cast(

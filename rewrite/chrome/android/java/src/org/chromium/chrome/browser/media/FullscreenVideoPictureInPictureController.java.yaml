@@ -55,8 +55,7 @@ substitutions:
       translating the upstream MetricsEndReason enum into individual boolean
       flags so Brave does not depend on the enum directly. Returns early when
       Brave handles it.
-    re_pattern:
-      '(\s+private void dismissActivityIfNeeded\(.*\) \{)'
+    re_pattern: '(\s+private void dismissActivityIfNeeded\(.*\) \{)'
     replace: |-
       \1
               if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
