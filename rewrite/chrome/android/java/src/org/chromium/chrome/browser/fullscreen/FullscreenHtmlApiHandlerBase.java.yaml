@@ -9,7 +9,7 @@ substitutions:
       preserve the state while Brave-managed YouTube PiP is active when a tab is
       hidden
     re_pattern:
-      '(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{)'
+      '(public void onHidden\(.*\)\s+\{)'
     replace: |-
       \1
                               if (BraveFullscreenHtmlApiHandlerBase.class.cast(
