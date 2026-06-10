@@ -3,17 +3,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
 source_set("skus") {
   sources = [
+    "skus_javascript_feature.h",
+    "skus_javascript_feature.mm",
     "skus_sdk_factory_wrappers.h",
     "skus_sdk_factory_wrappers.mm",
     "skus_service_factory.h",
     "skus_service_factory.mm",
   ]
   deps = [
+    ":skus_helper_js",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
-    "//brave/components/skus/common:mojom",
     "//brave/ios/browser/api/skus:skus_mojom_wrappers",
     "//brave/ios/browser/keyed_service",
     "//components/keyed_service/core",
@@ -21,8 +25,22 @@ source_set("skus") {
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
-    "//ios/web/public",
-    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
+    "//url",
   ]
+  public_deps = [
+    "//base",
+    "//brave/components/skus/common:mojom",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+optimize_ts("skus_helper_js") {
+  visibility = [ ":skus" ]
+
+  sources = [ "resources/skus_helper.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
 }

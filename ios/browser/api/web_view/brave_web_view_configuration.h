@@ -39,6 +39,15 @@ CWV_EXPORT
 
 @end
 
+CWV_EXPORT
+@interface BraveWebViewConfiguration (SkusJS)
+// Set a closure to be executed when a Brave Account page requests a SKUs
+// credential summary for a given domain. `message` is the result from the skus
+// service.
+- (void)setSkusCredentialsFetchedCallback:(void (^)(NSString* domain,
+                                                    NSString* message))callback;
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_CONFIGURATION_H_

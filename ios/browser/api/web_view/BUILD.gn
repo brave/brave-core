@@ -43,6 +43,7 @@ source_set("web_view") {
     "//brave/ios/browser/brave_search",
     "//brave/ios/browser/favicon",
     "//brave/ios/browser/serp_metrics",
+    "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/browser/ui/webui/brave_wallet",
     "//brave/ios/browser/web/document_fetch",

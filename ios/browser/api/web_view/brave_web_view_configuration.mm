@@ -7,9 +7,14 @@
 
 #include <WebKit/WebKit.h>
 
+#include <string>
+
 #include "base/apple/foundation_util.h"
+#include "base/functional/bind.h"
+#include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_configuration_provider.h"
+#include "brave/ios/browser/skus/skus_javascript_feature.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "components/autofill/core/browser/data_manager/personal_data_manager.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -75,6 +80,20 @@
       base::apple::ObjCCastStrict<ProfileBridgeImpl>(profileBridge).profile;
   return BraveWebViewConfigurationProvider::FromBrowserState(profile)
       .GetConfiguration();
+}
+
+@end
+
+@implementation BraveWebViewConfiguration (SkusJS)
+
+- (void)setSkusCredentialsFetchedCallback:
+    (void (^)(NSString* domain, NSString* message))callback {
+  skus::SkusJavaScriptFeature::FromBrowserState(self.browserState)
+      ->SetCredentialSummaryFetched(base::BindRepeating(
+          ^(const std::string domain, const std::string message) {
+            callback(base::SysUTF8ToNSString(domain),
+                     base::SysUTF8ToNSString(message));
+          }));
 }
 
 @end
