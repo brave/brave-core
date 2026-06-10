@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Group AI_CHAT_CONVERSATION with the medium local change nudge delay data
+      types.'
+    re_pattern:
+      '(\n[ \t]*)case THEMES_ANDROID:(\n[ \t]*return
+      kMediumLocalChangeNudgeDelay;)'
+    replace: '\1case THEMES_ANDROID:\1case AI_CHAT_CONVERSATION:\2'
+
+  - description:
+      'Group AI_CHAT_CONVERSATION with the data types that cannot get commits
+      from extensions.'
+    re_pattern: '(\n[ \t]*)case THEMES_ANDROID:(\n[ \t]*return false;)'
+    replace: '\1case THEMES_ANDROID:\1case AI_CHAT_CONVERSATION:\2'

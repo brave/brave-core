@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Return the pref name for Brave selectable types in GetPrefNameForType.'
+    re_pattern: '(\n[ \t]*)return prefs::internal::kSyncCookies;'
+    replace:
+      '\1return
+      prefs::internal::kSyncCookies;\1BRAVE_SYNC_PREFS_GET_PREF_NAME_FOR_TYPE'
+
+  - description:
+      'Declare transport-mode support for Brave selectable types in
+      IsTypeSupportedInTransportMode. Whitespace in the anchoring comment is
+      flexible so a reflowed comment still matches.'
+    re_pattern:
+      '(//\s+`kCookies`\s+is\s+not\s+supported\s+in\s+transport\s+mode\s+\(ChromeOS-only\s+type\)\.)(\n[
+      \t]*)return false;'
+    replace:
+      '\1\2return false;\2BRAVE_SYNC_PREFS_IS_TYPE_SUPPORTED_IN_TRANSPORT_MODE'
+
+  - description:
+      'Declare default transport-mode selection for Brave selectable types in
+      IsTypeSelectedByDefaultInTransportMode.'
+    re_pattern:
+      '(//\s+kReplaceSyncPromosWithSignInPromos\.)(\n[ \t]*)return
+      IsReplaceSyncPromosWithSignInPromosEnabled\(\);'
+    replace:
+      '\1\2return
+      IsReplaceSyncPromosWithSignInPromosEnabled();\2BRAVE_SYNC_PREFS_IS_TYPE_SELECTED_BY_DEFAULT_IN_TRANSPORT_MODE'

@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      "Bump the GetNumDataTypes static_assert for Brave's extra data types"
+    re_pattern: 'static_assert\(64\s*==\s*syncer::GetNumDataTypes\(\),'
+    replace: 'static_assert(65 == syncer::GetNumDataTypes(),'
+
+  - description:
+      'Return UserSelectableTypeInfo for Brave selectable types in
+      GetUserSelectableTypeInfo.'
+    re_pattern: '(\n[ \t]*)return \{kCookiesTypeName, COOKIES, \{COOKIES\}\};'
+    replace:
+      '\1return {kCookiesTypeName, COOKIES,
+      {COOKIES}};\1BRAVE_GET_USER_SELECTABLE_TYPE_INFO'
+
+  - description:
+      'Add Brave selectable types to the string lookup map in
+      GetUserSelectableTypeFromString.'
+    re_pattern: '(\n[ \t]*)\{kCookiesTypeName, UserSelectableType::kCookies\},'
+    replace:
+      '\1{kCookiesTypeName,
+      UserSelectableType::kCookies},\1BRAVE_GET_USER_SELECTABLE_TYPE_FROM_STRING'

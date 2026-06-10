@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Append AI_CHAT_CONVERSATION to the DataType enum and make it the new
+      LAST_USER_DATA_TYPE.
+    re_pattern: '(\n[ \t]*)LAST_USER_DATA_TYPE\s*=\s*THEMES_ANDROID,'
+    replace:
+      '\1AI_CHAT_CONVERSATION,\1LAST_USER_DATA_TYPE = AI_CHAT_CONVERSATION,'
+
+  - description: |-
+      Append the AI Chat histogram value and make it the new kMaxValue.
+    re_pattern: '(\n[ \t]*)kMaxValue\s*=\s*kThemesAndroid,'
+    replace: '\1kAIChatConversation = 81,\1kMaxValue = kAIChatConversation,'

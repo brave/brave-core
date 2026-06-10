@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      "Bump the kLastType static_assert for Brave's extra UserSelectableType
+      items"
+    re_pattern: 'static_assert\(13\s*==\s*static_cast<int>\(syncer::UserSelectableType::kLastType\),'
+    replace:
+      'static_assert(14 ==
+      static_cast<int>(syncer::UserSelectableType::kLastType),'

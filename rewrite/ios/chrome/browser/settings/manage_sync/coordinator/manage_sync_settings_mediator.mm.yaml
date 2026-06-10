@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Handle the kAIChat UserSelectableType in the manage-sync settings switch.'
+    re_pattern:
+      '(\n[ \t]*)case syncer::UserSelectableType::kCookies:(\n[
+      \t]*NOTREACHED\(\);)'
+    replace:
+      '\1case syncer::UserSelectableType::kCookies:\1case
+      syncer::UserSelectableType::kAIChat:\2'
