@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.bottom;
 
 import android.app.Activity;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -202,5 +203,12 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     public boolean isInTabSwitcherMode() {
         return mBottomToolbarCoordinator != null && mBottomToolbarCoordinator.isInTabSwitcherMode();
+    }
+
+    /** Returns the bottom toolbar menu button view, or null if not available. */
+    public @Nullable View getMenuButtonView() {
+        return mBottomToolbarCoordinator != null
+                ? mBottomToolbarCoordinator.getMenuButtonView()
+                : null;
     }
 }
