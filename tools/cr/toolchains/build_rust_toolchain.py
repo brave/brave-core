@@ -12,7 +12,24 @@
 #   version: "version:6.0.1"
 # >
 # [VPYTHON:END]
-"""Build and package a minimal Rust toolchain subset for Chromium.
+"""Build and package the complete Rust toolchain for Chromium.
+
+This builds the *entire* Rust toolchain (rustc, the standard library, cargo,
+clippy, rustfmt, rust-analyzer, bindgen, crubit, ...) exactly as upstream's
+`tools/rust/package_rust.py` would, and additionally compiles the bare-metal
+`wasm32-unknown-unknown` standard library and injects Rust's copy of the LLD
+linker (`rust-lld`). The resulting archive is a drop-in *replacement* for the
+upstream Chromium-built `src/third_party/rust-toolchain` GCS dependency, not an
+overlay on top of it.
+
+Building the whole toolchain ourselves (rather than only the wasm32 extras and
+overlaying them on the upstream package) makes the host `rustc`, its standard
+library, and the wasm32 sysroot all come out of a single, self-consistent
+build. This is what lets us tolerate `build_rust.py`'s `GitApplyCherryPicks()`
+producing rust-src commits whose hash depends on the local git committer
+identity: with an overlay, a locally-built wasm32 std could fail to load against
+an upstream `rustc` stamped with a different commit; with a full build there is
+no second compiler to disagree with.
 
 Keep this as a *standalone* script that can be invoked directly with a vanilla
 Chromium checkout.
@@ -40,17 +57,21 @@ vpython3 build_rust_toolchain.py \
     --brave-subrevision=1
 ```
 
-The output of this script is a .tar.xz archive containing two artifacts built
-against the Chromium-managed LLVM/Clang installation.  Members are stored at
+The output of this script is a .tar.xz archive containing the complete Rust
+toolchain installed by `x.py install` into `RUST_TOOLCHAIN_OUT_DIR`, built
+against the Chromium-managed LLVM/Clang installation. Members are stored at
 paths relative to a Rust toolchain root, so the archive can be extracted
-directly over `src/third_party/rust-toolchain`:
+directly over `src/third_party/rust-toolchain`. On top of everything the
+upstream package ships, the archive also contains:
 
   * bin/rust-lld  — Rust's copy of the LLD linker, taken from the Chromium-built
                     LLVM install tree (`RUST_HOST_LLVM_INSTALL_DIR/bin/lld`).
-  * lib/rustlib/wasm32-unknown-unknown  — the stage-1 standard-library sysroot
-                              for the bare-metal WebAssembly target, taken from
-                              the Rust bootstrap build tree
-                              (`RUST_BUILD_DIR/<triple>/stage1/lib/rustlib/`).
+                    The Chromium-configured build links against a prebuilt LLVM
+                    and so does not place this in the toolchain itself.
+  * lib/rustlib/wasm32-unknown-unknown  — the standard-library sysroot for the
+                    bare-metal WebAssembly target, produced by adding wasm32 to
+                    `[build] target` in `config.toml` so the stock install picks
+                    it up alongside the host std.
 
 The output archive is named:
 
@@ -90,10 +111,10 @@ Chromium source tree:
   * `build_rust.py`    — clones the Rust repository, builds LLVM/Clang via
                         `tools/clang/scripts/build.py`, generates `config.toml`
                         from `config.toml.template`, and runs `x.py` (the Rust
-                        bootstrap driver) to compile the toolchain.  The
-                        `--prepare-run-xpy` flag stops after setup; `--run-xpy`
-                        then forwards extra arguments directly to `x.py`with the
-                        correct environment variables in place.
+                        bootstrap driver) to compile and install the toolchain.
+                        We invoke it exactly as `package_rust.py` does
+                        (`--build-bindgen --build-crubit`), relying on the
+                        wrapping config edits to add the wasm32 target.
 
   * `package_rust.py`  — strips and packages the full Rust toolchain output
                            into a `.tar.xz` archive for upload to GCS.  This
@@ -112,6 +133,7 @@ from datetime import datetime, timezone
 import hashlib
 import importlib
 import logging
+import lzma
 from pathlib import Path
 import os
 import platform
@@ -146,15 +168,14 @@ LLVM_LIB = 'llvm-lib.exe'
 # build so that Chromium can compile Rust code targeting WebAssembly.
 WASM32_UNKNOWN_UNKNOWN = 'wasm32-unknown-unknown'
 
-# Member paths for each artifact inside the output archive, laid out relative
-# to a Rust toolchain root (i.e. `src/third_party/rust-toolchain`).  The archive
-# mirrors the final on-disk layout so a consumer can extract it straight over
-# the toolchain directory without knowing anything about its contents — no
-# per-file moves and no platform-specific name handling on the client side.
-# Forward slashes are used deliberately: they are the portable tar separator on
-# every platform.
+# Archive paths for the binaries we inject on top of `x.py install`'s output,
+# laid out relative to a Rust toolchain root (i.e.
+# `src/third_party/rust-toolchain`).  The archive mirrors the final on-disk
+# layout so a consumer can extract it straight over the toolchain directory
+# without knowing anything about its contents — no per-file moves and no
+# platform-specific name handling on the client side.  Forward slashes are used
+# deliberately: they are the portable tar separator on every platform.
 RUST_LLD_ARCNAME = f'bin/{RUST_LLD}'
-WASM32_ARCNAME = f'lib/rustlib/{WASM32_UNKNOWN_UNKNOWN}'
 LLVM_LIB_ARCNAME = f'bin/{LLVM_LIB}'
 
 # Relative path (within tools/rust/) of the Rust bootstrap configuration
@@ -163,11 +184,6 @@ CONFIG_TOML_TEMPLATE = Path('config.toml.template')
 
 # Relative path (within the Chromium src/ root) of the Rust toolchain scripts.
 TOOLS_RUST = Path('tools') / 'rust'
-
-# Relative path (within RUST_BUILD_DIR/<target_triple>/) to the stage-1
-# rustlib output directory.  The wasm32 standard-library sysroot lives at
-# <RUST_BUILD_DIR>/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/.
-STAGE1_RUSTLIB = Path('stage1') / 'lib' / 'rustlib'
 
 # vpython3 that is selected by `depot_tools` from `$PATH`.
 # This little Windows specific quirk is only needed when calling this script on
@@ -198,11 +214,12 @@ SUPPORTED_PLATFORM_CONDITIONS = {
 }
 
 # Chromium GCS `host_os` directory for each supported platform prefix. The Brave
-# WASM archive is an *overlay* on top of the upstream Chromium-built Rust
-# toolchain that gclient downloads as a `gcs` dep, so each published object
-# records the upstream archive it sits on top of (`overlayed_on`). This maps our
-# prefix to the directory that archive lives under in the clang bucket,
-# mirroring the `host_os` list in
+# archive *replaces* the upstream Chromium-built Rust toolchain that gclient
+# downloads as a `gcs` dep, so each published object records the upstream
+# archive it stands in for (`overlayed_on`). That pin is used on the client to
+# assert the replacement matches the Rust+Clang revision DEPS currently expects.
+# This maps our prefix to the directory that archive lives under in the clang
+# bucket, mirroring the `host_os` list in
 # `tools/clang/scripts/sync_deps.py:GetRustObjectNames`.
 PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS = {
     'linux-x64': 'Linux_x64',
@@ -343,8 +360,10 @@ def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
         objects.append({
             'object_name': object_name,
             'sha256sum': sha256sum,
-            # Upstream Chromium-built Rust toolchain this archive overlays; see
-            # `sync_deps.GetRustObjectNames` for the matching naming scheme.
+            # Upstream Chromium-built Rust toolchain this archive replaces; see
+            # `sync_deps.GetRustObjectNames` for the matching naming scheme. The
+            # client uses this to verify the replacement matches the Rust+Clang
+            # revision DEPS currently pins before installing it.
             'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
             'condition': condition,
         })
@@ -359,31 +378,33 @@ def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
 
 
 class ToolchainBuilder:
-    """Orchestrate a minimal Rust toolchain build and package it as a .tar.xz.
+    """Orchestrate a full Rust toolchain build and package it as a .tar.xz.
 
-    The build process has three phases:
+    The build process has two phases:
 
-    1. **Prepare** (`_prepare_run_xpy`): Runs `build_rust.py
-       --prepare-run-xpy`.  This performs all one-time setup — cloning the
-       Rust source tree, building LLVM/Clang, and generating `config.toml`
-       from `config.toml.template` — but stops before invoking `x.py`.
+    1. **Build** (`_build_full_toolchain`): Runs the stock
+       `build_rust.py --build-bindgen --build-crubit` — the exact invocation
+       `tools/rust/package_rust.py` uses. This clones the Rust source tree,
+       builds LLVM/Clang, generates `config.toml` from `config.toml.template`,
+       runs the full stage-2 `x.py` test/build/install, and then builds bindgen
+       and crubit. `x.py install` populates `RUST_TOOLCHAIN_OUT_DIR` with the
+       complete toolchain. Because the wrapping config edits add
+       `wasm32-unknown-unknown` to `[build] target`, the install also includes
+       the wasm32 standard-library sysroot.
 
-    2. **Build** (`_run_xpy`): Runs `build_rust.py --run-xpy -- build`
-       with `--stage 1` targeting both the host triple and
-       `wasm32-unknown-unknown`.  This compiles the stage-1 Rust compiler
-       and standard library using the previously generated configuration.
+    2. **Package** (`_create_archive`): Tars the entire `RUST_TOOLCHAIN_OUT_DIR`
+       tree (stripped, like `package_rust.py`) and injects the two binaries the
+       Chromium-configured build does not place in the toolchain itself:
 
-    3. **Package** (`_create_archive`): Assembles the output `.tar.xz`
-       archive from two sources inside the build tree:
+       * `bin/rust-lld` — the `lld` binary from the LLVM install tree
+         (`RUST_HOST_LLVM_INSTALL_DIR/bin/`).
+       * `bin/llvm-lib.exe` (Windows only) — the standalone librarian, also from
+         the LLVM install tree.
 
-       * The `lld` binary from `RUST_HOST_LLVM_INSTALL_DIR/bin/`,
-         stored as `bin/rust-lld` in the archive.
-       * The `wasm32-unknown-unknown` standard-library sysroot directory
-         from the stage-1 rustlib output, stored under `lib/rustlib/`.
-
-    Phases 1 and 2 are wrapped in `_temporary_config_toml_template_edits`,
-    which appends a `[target.wasm32-unknown-unknown]` stanza to
-    `config.toml.template` (inherited from the host stanza).
+    The build phase is wrapped in `_temporary_config_toml_template_edits`, which
+    appends a `[target.wasm32-unknown-unknown]` stanza to
+    `config.toml.template` (inherited from the host stanza) and adds wasm32 to
+    `[build] target` so the stock pipeline builds and installs it.
     """
 
     def __init__(self,
@@ -416,7 +437,8 @@ class ToolchainBuilder:
         self._out_dir: Path = Path(out_dir).expanduser().resolve()
 
         # Absolute path to tools/rust/config.toml.template.  This file is
-        # temporarily edited during the build to add wasm32 profiler settings.
+        # temporarily edited during the build to add the wasm32 target stanza
+        # and add wasm32 to the `[build] target` list.
         self._config_toml_template: Path = (self._tools_rust /
                                             CONFIG_TOML_TEMPLATE)
 
@@ -460,15 +482,20 @@ class ToolchainBuilder:
         """Context manager: patch `config.toml.template` for the build.
 
         `build_rust.py` generates `config.toml` from
-        `tools/rust/config.toml.template`.  We append a
-        `[target.wasm32-unknown-unknown]` stanza that inherits most of the
-        host target's settings, and then we do a few changes to them.
+        `tools/rust/config.toml.template`.  We make two edits:
+
+        * Append a `[target.wasm32-unknown-unknown]` stanza that inherits most
+          of the host target's settings (with a few changes).
+        * Add `wasm32-unknown-unknown` to the `[build] target` list. The stock
+          `build_rust.py` pipeline never passes `--target` on the `x.py`
+          command line, so the wasm32 std is only built and installed if the
+          config's default target set includes it.
 
         Protocol:
         1. Restore the template to its HEAD state via `git checkout` before
            any edits — guards against a dirty file left by a previous
            interrupted run.
-        2. Append the `[target.wasm32-unknown-unknown]` stanza.
+        2. Inject `[build] target` and append the wasm32 stanza.
         3. `yield` so the caller can run the build.
         4. Unconditionally restore the template in a `finally` block.
         """
@@ -514,64 +541,57 @@ class ToolchainBuilder:
             *(self._emit_toml_kv(k, v) for k, v in wasm.items())
         ])
 
-        logging.info('Appending to %s:\n%s', self._config_toml_template,
-                     stanza)
-        with self._config_toml_template.open('a') as file:
-            file.write('\n' + stanza + '\n')
+        # Inject wasm32 into `[build] target` so the stock `x.py` install (which
+        # is never given `--target` on the command line) builds and installs the
+        # wasm32 std alongside the host std. The template has a `[build]` table
+        # but no `target` key, so x.py otherwise defaults to the host triple
+        # only.
+        host_triple = self._build_rust_module.RustTargetTriple()
+        build_target = (f'target = ["{host_triple}", '
+                        f'"{WASM32_UNKNOWN_UNKNOWN}"]\n')
+        text = self._config_toml_template.read_text(encoding='utf-8')
+        text, count = re.subn(r'(?m)^\[build\]\n', f'[build]\n{build_target}',
+                              text)
+        if count != 1:
+            raise RuntimeError(f'Expected exactly one [build] table in '
+                               f'{self._config_toml_template}, found {count}.')
+        text = f'{text}\n{stanza}\n'
+
+        logging.info('Patching %s with build target %r and stanza:\n%s',
+                     self._config_toml_template, build_target.strip(), stanza)
+        self._config_toml_template.write_text(text, encoding='utf-8')
 
         try:
             yield
         finally:
             _restore_config_toml_template()
 
-    def _prepare_run_xpy(self):
-        """Set up the Rust checkout so that x.py can be run subsequently.
+    def _build_full_toolchain(self):
+        """Build and install the complete Rust toolchain via `build_rust.py`.
 
-        Invokes `build_rust.py --prepare-run-xpy`, which performs all
-        one-time preparation steps:
+        Invokes the stock `build_rust.py --build-bindgen --build-crubit` — the
+        same command `tools/rust/package_rust.py` runs to produce the upstream
+        toolchain package. This performs the full pipeline:
 
-        * Clones / updates the Rust source tree to the pinned revision.
+        * Clones / updates the Rust source tree to the pinned revision (applying
+          upstream's cherry-picks).
         * Builds LLVM and Clang via `tools/clang/scripts/build.py`.
         * Generates `config.toml` from the (already-patched)
           `config.toml.template`.
+        * Runs the full stage-2 `x.py` test/build/install, installing the whole
+          toolchain into `RUST_TOOLCHAIN_OUT_DIR`. Because the config carries
+          wasm32 in `[build] target`, the install includes the wasm32 std.
+        * Builds bindgen and crubit into the same install tree.
 
-        After this call returns, the build directory is ready for
-        `_run_xpy` to invoke x.py directly without repeating the setup.
+        Unlike the previous overlay build, the host `rustc`, its std, and the
+        wasm32 sysroot all come out of this single build, so the cherry-pick
+        commit-hash nondeterminism that depends on the local git committer
+        identity can no longer cause a cross-compiler metadata mismatch.
         """
         _check_call(str(self._vpython_path),
                     'build_rust.py',
-                    '--prepare-run-xpy',
-                    cwd=self._tools_rust)
-
-    def _run_xpy(self):
-        """Compile the stage-1 Rust toolchain via x.py.
-
-        Invokes `build_rust.py --run-xpy -- build` with the following flags:
-
-        * `--build <host-triple>`  — the native host target (e.g.
-          `x86_64-unknown-linux-gnu`) as returned by
-          `build_rust.RustTargetTriple()`.
-        * `--target <host-triple>,wasm32-unknown-unknown`  — build both the
-          host and the bare-metal WebAssembly standard library.
-        * `--stage 1`  — stop after the stage-1 compiler and stdlib; a full
-          stage-2 build is not required for our purposes.
-
-        The resulting artifacts are placed under
-        `RUST_BUILD_DIR/<host-triple>/stage1/` by the Rust bootstrap.
-        """
-        target_triple: str = self._build_rust_module.RustTargetTriple()
-
-        _check_call(str(self._vpython_path),
-                    'build_rust.py',
-                    '--run-xpy',
-                    '--',
-                    'build',
-                    '--build',
-                    target_triple,
-                    '--target',
-                    f'{target_triple},{WASM32_UNKNOWN_UNKNOWN}',
-                    '--stage',
-                    '1',
+                    '--build-bindgen',
+                    '--build-crubit',
                     cwd=self._tools_rust)
 
     def _chromium_version(self) -> str:
@@ -829,44 +849,70 @@ class ToolchainBuilder:
                      len(entries))
         logging.info('Toolchain index contents:\n%s', index_yaml)
 
+    @staticmethod
+    def _strip_bin_dir(bin_dir: Path) -> None:
+        """Strip every non-symlink file in `bin_dir` to shrink the archive.
+
+        Mirrors `package_rust.py`'s stripping step. No-op on Windows (no
+        `strip`) and when `bin_dir` is absent. Failures are non-fatal: a binary
+        that cannot be stripped is still shipped as-is.
+        """
+        if sys.platform == 'win32' or not bin_dir.is_dir():
+            return
+        for entry in bin_dir.iterdir():
+            if entry.is_symlink() or not entry.is_file():
+                continue
+            logging.info('Stripping %s', entry)
+            subprocess.run(['strip', str(entry)], check=False)
+
     def _create_archive(self) -> Path:
         """Write the output .tar.xz archive to `self._out_dir`.
 
         Returns the absolute path of the archive on disk.
 
-        Members are laid out relative to a Rust toolchain root, mirroring the
-        final on-disk layout under `src/third_party/rust-toolchain`, so the
-        archive can be extracted straight over the toolchain directory:
+        The archive is a full replacement for the upstream Chromium
+        `rust-toolchain` package. Members are laid out relative to a Rust
+        toolchain root, mirroring the final on-disk layout under
+        `src/third_party/rust-toolchain`, so the archive can be extracted
+        straight over the toolchain directory. It contains:
 
+        * Everything `x.py install` placed in `RUST_TOOLCHAIN_OUT_DIR` — rustc,
+          the host and `wasm32-unknown-unknown` standard libraries, cargo,
+          clippy, rustfmt, rust-analyzer, the vendored `src`, plus bindgen and
+          crubit. The `bin/` directory is stripped first to keep the archive
+          small, matching `package_rust.py`.
         * `bin/rust-lld[.exe]` — the LLD linker binary from
-          `RUST_HOST_LLVM_INSTALL_DIR/bin/lld[.exe]`.  Rust's toolchain ships
-          its own copy of LLD under this name so that `rustc` can link without
-          requiring a system linker.
-        * `lib/rustlib/wasm32-unknown-unknown/` — the stage-1 standard-library
-          sysroot directory located at
-          `RUST_BUILD_DIR/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/`.
-          This directory contains the precompiled `core`, `alloc`, and `std`
-          libraries needed to compile Rust code for the bare-metal WebAssembly
-          target.
+          `RUST_HOST_LLVM_INSTALL_DIR/bin/lld[.exe]`, injected because the
+          Chromium-configured build links against a prebuilt LLVM and does not
+          place rust-lld in the toolchain. Injected only if `x.py install` did
+          not already produce it.
         * `bin/llvm-lib.exe` (Windows only) — the standalone MSVC-style
           librarian from `RUST_HOST_LLVM_INSTALL_DIR/bin/llvm-lib.exe`. Shipping
           this binary allows us to point AR straight at it, matching the
           upstream `tools/rust/config.toml.template` pattern
           (`ar = "$LLVM_BIN/llvm-lib.exe"`).
         """
-        target_triple = self._build_rust_module.RustTargetTriple()
-        stage1_output_path = (Path(self._build_rust_module.RUST_BUILD_DIR) /
-                              target_triple / STAGE1_RUSTLIB)
+        install_dir = Path(self._build_rust_module.RUST_TOOLCHAIN_OUT_DIR)
         output_archive = self._out_dir / self._package_name()
 
         llvm_bin = Path(
             self._build_rust_module.RUST_HOST_LLVM_INSTALL_DIR) / 'bin'
 
+        # Strip the installed binaries before packaging, like package_rust.py.
+        self._strip_bin_dir(install_dir / 'bin')
+
         logging.info('Creating output archive at %s', output_archive)
-        with tarfile.open(output_archive, 'w:xz') as tar:
-            tar.add(llvm_bin / LLD, arcname=RUST_LLD_ARCNAME)
-            tar.add(stage1_output_path / WASM32_UNKNOWN_UNKNOWN,
-                    arcname=WASM32_ARCNAME)
+        # `preset=9 | PRESET_EXTREME` matches package_rust.py: the toolchain is
+        # hundreds of MB, so the extra compression effort is worth it.
+        with tarfile.open(output_archive,
+                          'w:xz',
+                          preset=9 | lzma.PRESET_EXTREME) as tar:
+            for entry in sorted(install_dir.iterdir()):
+                tar.add(entry, arcname=entry.name)
+            # Inject rust-lld unless the install already produced it (it does
+            # not, under the Chromium prebuilt-LLVM configuration).
+            if not (install_dir / 'bin' / RUST_LLD).exists():
+                tar.add(llvm_bin / LLD, arcname=RUST_LLD_ARCNAME)
             if sys.platform == 'win32':
                 tar.add(llvm_bin / LLVM_LIB, arcname=LLVM_LIB_ARCNAME)
         return output_archive
@@ -980,11 +1026,12 @@ class ToolchainBuilder:
             force_overwrite: bool = False):
         """Execute the full build-and-package pipeline.
 
-        Coordinates the three phases in order:
+        Coordinates the phases in order:
 
         1. Within `_temporary_config_toml_template_edits`:
-           a. `_prepare_run_xpy` — clone, build LLVM, generate config.toml.
-           b. `_run_xpy` — compile stage-1 Rust + wasm32 stdlib via x.py.
+           a. `_build_full_toolchain` — clone, build LLVM, generate
+              config.toml, run the stock stage-2 build/install (host + wasm32
+              std), and build bindgen + crubit.
         2. `_create_archive` — assemble the output .tar.xz.
 
         `config.toml.template` is returned to its original state always.
@@ -1010,8 +1057,8 @@ class ToolchainBuilder:
             installation for it can be found with Git.
             subprocess.CalledProcessError: If any subprocess command fails
                 during the build process (from _bootstrap_depot_tools,
-                _clone_chromium, _checkout_chromium_ref, _prepare_run_xpy,
-                or _run_xpy).
+                _clone_chromium, _checkout_chromium_ref, or
+                _build_full_toolchain).
         """
         if not self._has_valid_chromium_path():
             if clone_chromium:
@@ -1082,8 +1129,7 @@ class ToolchainBuilder:
             os.environ['LZMA_API_STATIC'] = '1'
 
         with self._temporary_config_toml_template_edits():
-            self._prepare_run_xpy()
-            self._run_xpy()
+            self._build_full_toolchain()
 
         archive_path = self._create_archive()
         self._publish_archive_index(archive_path,
@@ -1096,7 +1142,8 @@ class ToolchainBuilder:
 def main():
     """Parse CLI arguments, configure logging, and run the toolchain builder."""
     parser = argparse.ArgumentParser(
-        description='Build and package rust-lld and wasm32-unknown-unknown')
+        description='Build and package the complete Rust toolchain (host + '
+        'wasm32-unknown-unknown + rust-lld)')
     parser.add_argument('--chromium-src',
                         required=True,
                         help='Path to Chromium src/ directory')
