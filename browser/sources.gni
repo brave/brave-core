@@ -727,6 +727,10 @@ brave_chrome_browser_public_deps = [
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
+
+  if (enable_brave_vpn_v2_bundling) {
+    brave_chrome_framework_bundle_deps += [ "//brave:vpn_apps_bundle_data" ]
+  }
 }
 
 brave_chrome_browser_sources += brave_browser_profiles_sources

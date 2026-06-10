@@ -326,9 +326,11 @@ if (is_android) {
 if (is_mac) {
   group("framework_bundle_data") {
     deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
+  }
 
-    if (enable_brave_vpn_v2_bundling) {
-      deps += [
+  if (enable_brave_vpn_v2_bundling) {
+    group("vpn_apps_bundle_data") {
+      deps = [
         "//brave/components/brave_vpn/app/v2/agent:brave_vpn_agent_bundle_data",
       ]
     }
