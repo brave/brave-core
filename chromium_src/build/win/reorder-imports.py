@@ -8,7 +8,7 @@ import glob
 import override_utils
 
 
-@override_utils.override_function(glob, name='iglob')
+@override_utils.override_function(glob)
 def iglob(original_function, *args, **kwargs):
     for fname in original_function(*args, **kwargs):
         # The .rsp (response file) can still be present while this action runs,
