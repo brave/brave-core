@@ -36,6 +36,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveLandscapeHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLaunchIntentDispatcher.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLocalState.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BravePwaShortcutIconHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsBalance.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsExternalWallet.java",
