@@ -143,7 +143,7 @@ bool IsTabOrganizationEnabled() {
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
 BASE_FEATURE(kTabManagementTool,
              "BraveTabManagementTool",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
 BASE_FEATURE(kNEARModels,
