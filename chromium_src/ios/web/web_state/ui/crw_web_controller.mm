@@ -7,23 +7,8 @@
 
 #include <WebKit/WebKit.h>
 
-#include "ios/web/web_state/ui/crw_wk_ui_handler.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
-
-// Replace the navigation & UI handlers with Brave subclasses
-#define initWithWebState                                               \
-  initWithWebState:                                                    \
-  (WebStateImpl*)webState {                                            \
-    if ((self = [self initWithWebState_Chromium:webState])) {          \
-      _navigationHandler =                                             \
-          [[BraveCRWWKNavigationHandler alloc] initWithDelegate:self]; \
-      _UIHandler = [[BraveCRWWKUIHandler alloc] init];                 \
-      _UIHandler.delegate = self;                                      \
-    }                                                                  \
-    return self;                                                       \
-  }                                                                    \
-  -(instancetype)initWithWebState_Chromium
 
 // Support for tab sync
 #define webViewNavigationProxy webViewNavigationProxy_ChromiumImpl
@@ -31,7 +16,6 @@
 #include <ios/web/web_state/ui/crw_web_controller.mm>
 
 #undef webViewNavigationProxy
-#undef initWithWebState
 
 #pragma mark - BackForwardList
 
