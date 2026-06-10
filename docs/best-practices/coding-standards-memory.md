@@ -837,3 +837,83 @@ class Decoder {
 constexpr auto kMagic = std::to_array<uint8_t>({0x7f, 'E', 'L', 'F'});
 base::BindOnce(&Validate, base::span(kMagic));
 ```
+
+---
+
+<a id="CSM-038"></a>
+
+## ✅ Choose Parameter Types by Ownership
+
+**Pick a function parameter type from what the function does with the
+argument.** For a `std::string` argument:
+
+| Intent                                           | Parameter type             |
+| ------------------------------------------------ | -------------------------- |
+| Read-only (default)                              | `std::string_view`         |
+| Read-only, needs a null-terminated `const char*` | `base::cstring_view`       |
+| Read-only, but downstream needs a `std::string`  | `const std::string&`       |
+| Consume / take ownership                         | `std::string` (by value)   |
+
+**`std::string_view` is the default for read-only parameters.** When a
+`string_view` won't do, two narrower non-owning options exist before you reach
+for an owning `std::string`:
+
+- **Passing to a C API that wants a null-terminated `const char*`.** A plain
+  `std::string_view` is not guaranteed null-terminated, so its `data()` cannot be
+  handed to a C API. Use
+  [`base::cstring_view`](https://source.chromium.org/chromium/chromium/src/+/main:base/strings/cstring_view.h)
+  — a non-owning, bounds-safe view of a NUL-terminated string. It is the intended
+  replacement for `const char*`, exposes `.c_str()`, and avoids forcing the caller
+  to own a `std::string`. Prefer it over `const std::string&` for this case.
+- **A downstream API forces a `std::string`.** When the value is handed to a
+  mojo-generated API, or to existing code that already takes `const std::string&`
+  / `std::string`, converting a `string_view` back into a `std::string` would
+  copy. Take `const std::string&` to borrow the caller's existing `std::string`
+  and avoid the copy.
+
+**When the function consumes the argument** (stores it or otherwise takes
+ownership), take it **by value** (`std::string`) and `std::move` it into its
+destination. A by-value sink parameter handles both callers with one signature:
+an rvalue is moved in (no copy), and an lvalue is copied exactly once — a copy
+that is unavoidable anyway, since the caller keeps its own copy.
+
+**Prefer by-value over `std::string&&` for consuming.** An rvalue-reference
+parameter only binds to rvalues, so every caller holding an lvalue must copy
+into a temporary itself (or you must add a second overload). Taking by value and
+`std::move`-ing collapses both cases into one signature and is the idiomatic
+sink parameter in Chromium.
+
+```cpp
+// ❌ AVOID - const ref then copy into the member: always copies, even for an
+// rvalue the caller was happy to give up.
+void Widget::SetName(const std::string& name) { name_ = name; }
+
+// ✅ PREFER - consume by value, then move into place.
+void Widget::SetName(std::string name) { name_ = std::move(name); }
+
+SetName(std::move(name_src));  // rvalue: moved in, no copy
+SetName(other.GetName());      // lvalue: copied once (caller keeps its own)
+```
+
+Putting the read-only and consuming cases together:
+
+```cpp
+void LogName(std::string_view name);          // read-only (default)
+void OpenPath(base::cstring_view path);       // read-only, needs const char* for a C API
+void StoreViaMojo(const std::string& name);   // read-only, but mojo/legacy needs a std::string
+void SetName(std::string name);               // consume — take by value, then std::move
+```
+
+**This applies to any movable owning type, not just strings** — take
+`std::vector<T>`, `base::Value`, etc. by value and `std::move` when consuming:
+
+```cpp
+void Consume(std::vector<Item> items);  // take by value, then std::move
+void Attach(base::Value value);         // take by value, then std::move
+```
+
+This is the same by-value rule move-only types already follow: pass
+`std::unique_ptr<T>`, `mojo::Remote<T>`, or `base::OnceCallback` **by value** —
+the type prevents a silent copy and the caller still `std::move`s to transfer.
+See also CSM-031 (don't pass smart pointers by const reference) and CSM-037
+(don't bind unowned view types into callbacks).
