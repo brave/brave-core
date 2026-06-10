@@ -1224,7 +1224,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync, re-create account.
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT" desc="Button label on the Sync account deleted notice. When pressed, the Brave Sync settings page opens so the user can re-create the account.">
-        Re-create account
+        Re-create
       </message>
       <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
         Could not join this sync chain. The sync chain was deleted.
