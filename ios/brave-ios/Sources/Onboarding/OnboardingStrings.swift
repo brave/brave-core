@@ -24,7 +24,7 @@ extension Strings {
       "playlistOnboardingDescription",
       bundle: .module,
       value:
-        "Create playlists with content you love. Add media from any page.\nPlay anytime. Even offline!",
+        "Create playlists with content you love. Add media from any page.",
       comment:
         "A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist'"
     )
@@ -50,7 +50,7 @@ extension Strings {
     public static let playlistInfoFeaturePointTitleOne = NSLocalizedString(
       "playlistInfoFeaturePointTitleOne",
       bundle: .module,
-      value: "Add videos to Brave Playlist. Playback anytime. Even offline",
+      value: "Add videos to Brave Playlist.",
       comment: "A list of features in Playlist"
     )
     public static let playlistInfoFeaturePointSubtitleOne = NSLocalizedString(

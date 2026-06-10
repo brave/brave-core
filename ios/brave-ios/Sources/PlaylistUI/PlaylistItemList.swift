@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Data
 import Foundation
 import Playlist
@@ -91,7 +92,7 @@ struct PlaylistItemList: View {
             } label: {
               Label(Strings.Playlist.removeOfflineData, braveSystemImage: "leo.cloud.off")
             }
-          } else {
+          } else if FeatureList.kPlaylistOfflineCacheEnabled.enabled {
             Button {
               PlaylistManager.shared.download(item: .init(item: item))
             } label: {
