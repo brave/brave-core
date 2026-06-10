@@ -532,12 +532,22 @@ public class BraveToolbarManager extends ToolbarManager
 
     @Override
     public @Nullable View getMenuButtonView() {
-        if (mMenuButtonCoordinator.getMenuButton() == null) {
-            // Return fake view instead of null to avoid NullPointerException as some code within
-            // Chromium doesn't check for null.
-            return new View(mActivity);
+        if (mMenuButtonCoordinator.getMenuButton() != null) {
+            return super.getMenuButtonView();
         }
-        return super.getMenuButtonView();
+        // The menu button is in the bottom toolbar (isMenuFromBottom). Use the bottom toolbar's
+        // real menu button view so that IPH anchored to it finds an attached view.
+        if (mTabGroupUiBottomControlsCoordinatorSupplier != null) {
+            var coord = mTabGroupUiBottomControlsCoordinatorSupplier.get();
+            if (coord instanceof BraveBottomControlsCoordinator) {
+                View bottomMenuButton =
+                        ((BraveBottomControlsCoordinator) coord).getMenuButtonView();
+                if (bottomMenuButton != null) return bottomMenuButton;
+            }
+        }
+        // Fallback: keeps existing behaviour (satisfies the assert in TabbedRootUiCoordinator).
+        // In practice this path should not be reached when the bottom toolbar is fully set up.
+        return new View(mActivity);
     }
 
     @Override
