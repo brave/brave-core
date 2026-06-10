@@ -270,6 +270,39 @@ TEST(PolkadotChainMetadataUnitTest,
   EXPECT_EQ(*metadata2, expected_from_name);
 }
 
+TEST(PolkadotChainMetadataUnitTest,
+     ParseRealStateGetMetadataResponseAssetHubPaseo) {
+  // Refreshed with:
+  // curl -sS -H 'Content-Type: application/json' \
+  //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
+  //   https://asset-hub-paseo-rpc.n.dwellir.com/
+  std::vector<uint8_t> metadata_bytes =
+      ReadMetadataFixture("state_getMetadata_assethub_paseo.json");
+
+  auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
+  ASSERT_TRUE(metadata);
+
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/0x0a,
+      /*transaction_payment_pallet_index=*/0x0b,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/0, /*spec_version=*/2'002'002,
+      /*asset_tx_payment=*/true,
+      /*has_assets_pallet=*/true,
+      /*assets_pallet_index=*/50,
+      /*assets_transfer_all_call_index=*/32,
+      /*assets_transfer_keep_alive_call_index=*/9);
+  EXPECT_EQ(*metadata, expected);
+
+  auto metadata2 = PolkadotMetadataFromChainName("Paseo Asset Hub");
+  ASSERT_TRUE(metadata2);
+  PolkadotChainMetadata expected_from_name = expected;
+  expected_from_name->spec_version = 0;
+  EXPECT_EQ(*metadata2, expected_from_name);
+}
+
 TEST(PolkadotChainMetadataUnitTest, Security_V14NoStorage_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(

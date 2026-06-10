@@ -87,6 +87,7 @@ struct PolkadotMockRpc {
   // Convenience wrapper for the above Add* family of functions.
   void AddReqResPairs();
   void AddWestendAssetHubReqResPairs();
+  void AddPaseoAssetHubReqResPairs();
   void AddPolkadotAssetHubReqResPairs();
 
   // Must be called last. Sets the interceptor for the TestURLLoaderFactory and
@@ -127,6 +128,7 @@ struct PolkadotMockRpc {
   std::string testnet_url_;
   std::string mainnet_url_;
   std::string westend_asset_hub_url_;
+  std::string paseo_asset_hub_url_;
   std::string polkadot_asset_hub_url_;
   std::optional<std::string> expected_extrinsic_;
   std::string submitted_extrinsic_hash_;

@@ -76,6 +76,12 @@ const mockInitialFilteredOutNetworkKeys = [
     .toString(),
   networkEntityAdapter
     .selectId({
+      chainId: BraveWallet.POLKADOT_PASEO_ASSET_HUB,
+      coin: BraveWallet.CoinType.DOT,
+    })
+    .toString(),
+  networkEntityAdapter
+    .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.ETH,
     })

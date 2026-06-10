@@ -405,7 +405,6 @@ TEST(CommonUtils, IsPolkadotRelayNetwork) {
   EXPECT_FALSE(IsPolkadotRelayNetwork("abc"));
 }
 
-
 TEST(CommonUtils, GetActiveEndpointUrl) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
   EXPECT_EQ(GURL("https://url1.com"), GetActiveEndpointUrl(chain));
@@ -634,6 +633,10 @@ TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
                                 mojom::KeyringId::kPolkadotImportTestnet}));
   EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(
                   mojom::CoinType::DOT, mojom::kPolkadotTestnetAssetHub),
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
+                                mojom::KeyringId::kPolkadotImportTestnet}));
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(
+                  mojom::CoinType::DOT, mojom::kPolkadotPaseoAssetHub),
               ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
                                 mojom::KeyringId::kPolkadotImportTestnet}));
 

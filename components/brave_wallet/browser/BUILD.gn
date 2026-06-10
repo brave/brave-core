@@ -677,6 +677,7 @@ if (is_ios) {
       "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_cip30/test_vectors.json",
       "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_crypto_slip23/index.mts",
       "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_crypto_slip23/test_vectors.json",
+      "//brave/components/test/data/brave_wallet/polkadot/chain_metadata/state_getMetadata_assethub_paseo.json",
       "//brave/components/test/data/brave_wallet/polkadot/chain_metadata/state_getMetadata_assethub_polkadot.json",
       "//brave/components/test/data/brave_wallet/polkadot/chain_metadata/state_getMetadata_assethub_westend.json",
       "//brave/components/test/data/brave_wallet/polkadot/chain_metadata/state_getMetadata_polkadot.json",

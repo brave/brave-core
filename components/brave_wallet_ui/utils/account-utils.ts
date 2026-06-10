@@ -203,6 +203,7 @@ export const keyringIdForNewAccount = (
       [
         BraveWallet.POLKADOT_TESTNET,
         BraveWallet.POLKADOT_TESTNET_ASSET_HUB,
+        BraveWallet.POLKADOT_PASEO_ASSET_HUB,
       ].includes(chainId)
     ) {
       return BraveWallet.KeyringId.kPolkadotTestnet

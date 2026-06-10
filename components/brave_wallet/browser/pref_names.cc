@@ -125,6 +125,7 @@ base::DictValue GetDefaultHiddenNetworks() {
   base::ListValue polkadot_hidden;
   polkadot_hidden.Append(mojom::kPolkadotTestnet);
   polkadot_hidden.Append(mojom::kPolkadotTestnetAssetHub);
+  polkadot_hidden.Append(mojom::kPolkadotPaseoAssetHub);
   hidden_networks.Set(kPolkadotPrefKey, std::move(polkadot_hidden));
 
   return hidden_networks;

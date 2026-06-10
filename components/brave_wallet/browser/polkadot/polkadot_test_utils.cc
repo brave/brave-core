@@ -187,6 +187,21 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*assets_transfer_keep_alive_call_index=*/9);
   }
 
+  if (chain_name == "Paseo Asset Hub") {
+    return PolkadotChainMetadata::FromFields(
+        /*system_pallet_index=*/0, /*balances_pallet_index=*/0x0a,
+        /*transaction_payment_pallet_index=*/0x0b,
+        /*transfer_allow_death_call_index=*/0,
+        /*transfer_keep_alive_call_index=*/3,
+        /*transfer_all_call_index=*/4,
+        /*ss58_prefix=*/0, /*spec_version=*/kUnknownSpecVersion,
+        /*asset_tx_payment=*/true,
+        /*has_assets_pallet=*/true,
+        /*assets_pallet_index=*/50,
+        /*assets_transfer_all_call_index=*/32,
+        /*assets_transfer_keep_alive_call_index=*/9);
+  }
+
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
   if (chain_name == "Polkadot") {
     return PolkadotChainMetadata::FromFields(
@@ -535,6 +550,124 @@ void PolkadotMockRpc::AddWestendAssetHubReqResPairs() {
         }
       })");
 }
+void PolkadotMockRpc::AddPaseoAssetHubReqResPairs() {
+  account_info_response_json_ = R"(
+    {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": [ {
+          "block": "0x8c0e4bf9ae20618e8a08bd8af389746ce5d1b7ca93c45137bf0849a32cd4a2a6",
+          "changes": [[
+            "0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da96f72e0a390db2406281323ac697d46f10e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e",
+            "0x020000000000000001000000000000008853c430f82c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080"
+          ]]
+      } ]
+    })";
+
+  block_header_map_.emplace("", R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "result": {
+        "digest": {
+          "logs": [
+            "0x06434d4c53100100010c",
+            "0x066175726120e027d80800000000",
+            "0x0452505352907e9e22dbb0797cd8fbcedcccf71b5fd97b20c2eeb55b00b31f2380dc3742e49f8a0dda02",
+            "0x056175726101012e29390482b382dbc41c79b95ae6799525fe24e4176f45af23c7757290932719c56b2685d943e41338e8d2a229b0c88e42a74d46edf72d31b576df65a3b5a68c"
+          ]
+        },
+        "extrinsicsRoot": "0xe735e1f7705e8b73bcf08883f548dc33d005c4cd1ea552f407b159f4967e9c90",
+        "number": "0x93c1ab",
+        "parentHash": "0xc3da0f76ab484260860d32dab28fb96f6b9a01b7c378587bebe37da88bb7f268",
+        "stateRoot": "0x7933dd8574a4ea56530fade14d1c8bbe7f7c0623ca680136fb744cb56e643d27"
+    }
+  })");
+
+  req_res_pairs_.emplace(
+      base::test::ParseJsonDict(
+          R"({"id":1,"jsonrpc":"2.0","method":"chain_getFinalizedHead","params":[]})"),
+      R"({"jsonrpc":"2.0","id":1,"result":"0x5ebbd2cbdec4a87c6aebbf7cd2b9a7c741a3892042239683d1339e5cb5c51030"})");
+  req_res_pairs_.emplace(
+      base::test::ParseJsonDict(
+          R"({"id":1,"jsonrpc":"2.0","method":"chain_getBlockHash","params":["00000000"]})"),
+      R"({"jsonrpc":"2.0","id":1,"result":"0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2"})");
+
+  block_header_map_.emplace(
+      "c3da0f76ab484260860d32dab28fb96f6b9a01b7c378587bebe37da88bb7f268",
+      R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": {
+          "digest": {
+              "logs": [
+                "0x06434d4c53100102010c",
+                "0x066175726120df27d80800000000",
+                "0x045250535290ea71edfd042b8e785b19992e9e4cf909b6d579bc4bb06899c4423c96eb1de4fa860dda02",
+                "0x056175726101017a8f4bc21a16aebd2c9356b74eb70782efa0e5a4ef39c8db0793014da7a004217b892dd3cb2287fbe325a6cd814fdd88f67d522ad683a94fd32f527a745ce981"
+              ]
+          },
+          "extrinsicsRoot": "0x223ed4bb448aeb4316f209971831649e795ce2081f4a3d5aeee1dc402357f3c2",
+          "number": "0x93c1aa",
+          "parentHash": "0x7fb4271ef28fcdd41a2f7c323124997646c416aeb54eb00123017456e59d4bfd",
+          "stateRoot": "0x0c5619e980ac1cd9615cf70513a8649b42ca455e0385f17ffb4f211a1776ea03"
+        }
+      })");
+
+  block_header_map_.emplace(
+      "5ebbd2cbdec4a87c6aebbf7cd2b9a7c741a3892042239683d1339e5cb5c51030",
+      R"({
+          "id": 1,
+          "jsonrpc": "2.0",
+          "result": {
+              "digest": {
+                "logs": [
+                  "0x06434d4c53100101010c",
+                  "0x066175726120dd27d80800000000",
+                  "0x04525053529072594c48ad73e5e51fb627989f0823c09726f7cc409fff88d4430d1d673f6742760dda02",
+                  "0x056175726101010697df3a452d69a5ae1e44b2735fe6dc89f10cc5874945eb43695bfd1bb9764d9c64d93d3e2713f4e256c75fa783dde9b5ffca6d78c77a8d72815024ce68f58d"
+                ]
+              },
+              "extrinsicsRoot": "0x0e192696fb0680a1b32689366a25a53b10c17d9dedd809181afabf3765664b4c",
+              "number": "0x93c19d",
+              "parentHash": "0xabc580f64cc965fa859ef51df3c21fa566933b5ac660b0f3d95d74df0a9e7ac0",
+              "stateRoot": "0xaace0e25124cd75b35cb6adf09d0235d840bca97c210c96c92528b789bdb6669"
+          }
+        })");
+
+  req_res_pairs_.emplace(
+      base::test::ParseJsonDict(
+          R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":["7fb4271ef28fcdd41a2f7c323124997646c416aeb54eb00123017456e59d4bfd"]})"),
+      R"({
+          "id": 1,
+          "jsonrpc": "2.0",
+          "result": {
+              "apis": [
+                [ "0xf78b278be53f454c", 2 ], [ "0xfbc577b9d747efd6", 1 ],
+                [ "0xc51ff1fa3f5d0cca", 1 ], [ "0x8c403e5c4a9fd442", 1 ],
+                [ "0x91b1c8b16328eb92", 2 ], [ "0x6ff52ee858e6c5bd", 2 ],
+                [ "0x9ffb505aa738d69c", 1 ], [ "0x2609be83ac4468dc", 1 ],
+                [ "0xdf6acb689907609b", 5 ], [ "0x04e70521a0d3d2f8", 1 ],
+                [ "0xd2bc9897eed08f15", 3 ], [ "0x40fe3ad401f8959a", 6 ],
+                [ "0x37c8bb1350a9a2a8", 4 ], [ "0xd7bdd8a272ca0d65", 2 ],
+                [ "0xf3ff14d5ab527059", 3 ], [ "0xdd718d5cc53262d4", 1 ],
+                [ "0xde92b8a0426b9bf6", 2 ], [ "0x18ef58a3b67ba770", 1 ],
+                [ "0xab3c0572291feb8b", 2 ], [ "0xa2ddb6a58477bf63", 1 ],
+                [ "0xea93e3f16f3d6962", 3 ], [ "0x12c8e3d4d7e06de0", 1 ],
+                [ "0x37e397fc7c91f5e4", 2 ], [ "0xbc9d89904f5b923f", 1 ],
+                [ "0x17a6bc0d0062aeb3", 1 ], [ "0xccd9de6396c899ca", 1 ],
+                [ "0x8a8047a53a8277ec", 1 ]
+              ],
+              "authoringVersion": 1,
+              "implName": "asset-hub-paseo",
+              "implVersion": 0,
+              "specName": "asset-hub-paseo",
+              "specVersion": 2002002,
+              "stateVersion": 1,
+              "systemVersion": 1,
+              "transactionVersion": 15
+          }
+        })");
+}
 
 void PolkadotMockRpc::AddPolkadotAssetHubReqResPairs() {
   account_info_response_json_ = R"({
@@ -658,6 +791,11 @@ void PolkadotMockRpc::FinalizeSetup() {
     polkadot_asset_hub_url_ = polkadot_asset_hub->rpc_endpoints.front().spec();
   }
 
+  if (auto paseo_asset_hub = network_manager_->GetKnownChain(
+          mojom::kPolkadotPaseoAssetHub, mojom::CoinType::DOT)) {
+    paseo_asset_hub_url_ = paseo_asset_hub->rpc_endpoints.front().spec();
+  }
+
   EXPECT_EQ(testnet_url_, "https://polkadot-westend.wallet.brave.com/");
   EXPECT_EQ(mainnet_url_, "https://polkadot-mainnet.wallet.brave.com/");
 
@@ -669,7 +807,8 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
   url_loader_factory_->ClearResponses();
 
   CHECK(req.url == mainnet_url_ || req.url == testnet_url_ ||
-        req.url == westend_asset_hub_url_ || req.url == polkadot_asset_hub_url_)
+        req.url == westend_asset_hub_url_ ||
+        req.url == polkadot_asset_hub_url_ || req.url == paseo_asset_hub_url_)
       << "Incorrect URL supplied to PolkadotMockRpc: " << req.url;
 
   auto req_body = RequestBodyToJsonDict(req);
@@ -742,6 +881,13 @@ bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
       return true;
     }
 
+    if (req.url == GURL(paseo_asset_hub_url_)) {
+      url_loader_factory_->AddResponse(
+          req.url.spec(),
+          ReadMetadataFixtureJsonImpl("state_getMetadata_assethub_paseo.json"));
+      return true;
+    }
+
     if (req.url == GURL(mainnet_url_)) {
       url_loader_factory_->AddResponse(
           req.url.spec(),
@@ -753,62 +899,6 @@ bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
       url_loader_factory_->AddResponse(
           req.url.spec(),
           ReadMetadataFixtureJsonImpl("state_getMetadata_westend.json"));
-      return true;
-    }
-
-    return false;
-  }
-
-  if (*method == "system_chain") {
-    if (use_invalid_metadata_) {
-      if (req.url == GURL(testnet_url_)) {
-        url_loader_factory_->AddResponse(req.url.spec(), R"(
-          { "jsonrpc": "2.0",
-            "error": { "code": 1234 },
-            "id": 1 })");
-        return true;
-      }
-
-      if (req.url == GURL(mainnet_url_)) {
-        url_loader_factory_->AddResponse(req.url.spec(), R"(
-          { "jsonrpc": "2.0",
-            "error": { "code": 4321 },
-            "id": 1 })");
-        return true;
-      }
-
-      return false;
-    }
-
-    if (req.url == GURL(westend_asset_hub_url_)) {
-      url_loader_factory_->AddResponse(req.url.spec(), R"(
-        { "jsonrpc": "2.0",
-          "result": "Westend Asset Hub",
-          "id": 1 })");
-      return true;
-    }
-
-    if (req.url == GURL(polkadot_asset_hub_url_)) {
-      url_loader_factory_->AddResponse(req.url.spec(), R"(
-        { "jsonrpc": "2.0",
-          "result": "Polkadot Asset Hub",
-          "id": 1 })");
-      return true;
-    }
-
-    if (req.url == GURL(testnet_url_)) {
-      url_loader_factory_->AddResponse(req.url.spec(), R"(
-        { "jsonrpc": "2.0",
-          "result": "Westend",
-          "id": 1 })");
-      return true;
-    }
-
-    if (req.url == GURL(mainnet_url_)) {
-      url_loader_factory_->AddResponse(req.url.spec(), R"(
-        { "jsonrpc": "2.0",
-          "result": "Polkadot",
-          "id": 1 })");
       return true;
     }
 
