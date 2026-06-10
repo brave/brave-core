@@ -70,9 +70,6 @@
     <message name="IDS_AUTOFILL_FIELD_LABEL_PHONE" desc="The label of the Phone entry in a settings-like UI to enter a phone number.">
       Phone
     </message>
-    <message name="IDS_AUTOFILL_FIELD_LABEL_BILLING_ADDRESS" desc="Title of the field representing the billing address of a credit card.">
-      Billing Address
-    </message>
   </if>
 
   <!-- Autofill save credit card bubble or infobar prompt -->
@@ -157,9 +154,6 @@
       Save card?
     </message>
   </if>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_V4" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Google Payments, according to November 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
-    Save card to Brave sync chain?
-  </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_SECURITY" desc="Title text for the credit card upload save prompt on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025.">
     Save card securely?
   </message>
@@ -194,9 +188,6 @@
   </message>
   <message name="IDS_AUTOFILL_DONE" desc="Text to show for the button in the save card manager bubble when the card has been saved either locally or to Google Payments.">
     Done
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Google Payments and also saved locally. The prompt can be either a bubble or an infobar.">
-    Pay quickly on sites and apps across devices using cards you have saved with Brave.
   </message>
   <if expr="is_android">
     <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Google Payments, according to April 2018 UI guidelines, and minorly updated again in September 2023. The prompt will be shown either in a bubble below the omnibox, or in a bottom sheet, or in an infobar.">
@@ -470,18 +461,6 @@
       Something went wrong
     </message>
   </if>
-  <if expr="is_ios">
-    <if expr="_google_chrome">
-      <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_STORAGE_TOOLTIP" desc="Text that provides further explanation on iOS for the option in the card unmasking dialog that allows user to store a Wallet card on their local device.">
-        If enabled, Brave will store a copy of your card on this device for faster form filling.
-      </message>
-    </if>
-    <if expr="not _google_chrome">
-      <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_STORAGE_TOOLTIP" desc="Text that provides further explanation on iOS for the option in the card unmasking dialog that allows user to store a Wallet card on their local device.">
-        If enabled, Brave will store a copy of your card on this device for faster form filling.
-      </message>
-    </if>
-  </if>
   <if expr="is_android">
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_ERROR_TRY_AGAIN_EXPIRATION_DATE" desc="Error message that encourages the user to try to re-enter their credit card expiration date after a previous failed attempt." formatter_data="android_java">
       Check your expiration date and try again
@@ -507,9 +486,6 @@
   </if>
   <message name="IDS_AUTOFILL_CARD_UNMASK_CONFIRM_BUTTON" desc="Text for button that confirms the credit card CVC entry dialog.">
     Confirm
-  </message>
-  <message name="IDS_AUTOFILL_CARD_UNMASK_VERIFY_BUTTON" desc="Label text for the ok button in the credit card CVC entry dialog.">
-    Verify
   </message>
   <message name="IDS_AUTOFILL_CARD_UNMASK_EXPIRATION_MONTH" desc="Accessible name for card expiry month field.">
     Month
@@ -1028,7 +1004,7 @@
   <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_KLARNA" desc="Text for the payment option button in the BNPL Pay Later tab, explaining that users can pay monthly or in installments. It is specifically for Klarna options.">
       Pay in 4 or monthly
   </message>
-  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_CLEAR_FORM_TO_ENABLE" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the user must clear the form to enable and use the pay later option." translateable="false">
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_CLEAR_FORM_TO_ENABLE" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the user must clear the form to enable and use the pay later option.">
       Clear form to use pay later
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_NOT_AVAILABLE_RIGHT_NOW" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the option is not available right now.">
@@ -1085,10 +1061,10 @@
   <message name="IDS_AUTOFILL_PAY_LATER" desc="Label for the tab in the autofill dropdown allowing the user to pay later using a Buy Now, Pay Later (BNPL) provider.">
       Pay later
   </message>
-  <message name="IDS_AUTOFILL_PAY_NOW_PAY_LATER_TAB_ACCESSIBILITY_ANNOUNCEMENT" desc="Accessibility announcement when a tab is selected within the Autofill popup tabbed pane." translateable="false">
+  <message name="IDS_AUTOFILL_PAY_NOW_PAY_LATER_TAB_ACCESSIBILITY_ANNOUNCEMENT" desc="Accessibility announcement when a tab is selected within the Autofill popup tabbed pane.">
       <ph name="TAB_TITLE">$1<ex>Pay now</ex></ph>, selected tab, <ph name="INDEX">$2<ex>1</ex></ph> of <ph name="TOTAL">$3<ex>2</ex></ph>, use left or right arrow to switch between tabs
   </message>
-  <message name="IDS_AUTOFILL_A11Y_ANNOUNCEMENT_CONCATENATE_TWO_STRINGS" desc="Generic template to concatenate two accessibility announcements with a comma." translateable="false">
+  <message name="IDS_AUTOFILL_A11Y_ANNOUNCEMENT_CONCATENATE_TWO_STRINGS" desc="Generic template to concatenate two accessibility announcements with a comma.">
       <ph name="STRING_1">$1<ex>Tab announcement</ex></ph>, <ph name="STRING_2">$2<ex>Footnote announcement</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_CARD_INFO_RETRIEVAL_SUGGESTION_IPH_BUBBLE_FALLBACK_LABEL" desc="Text shown in the `In-Product Help(IPH)` bubble for card info retrieval suggestions on Brave Android when the issuer_id is not present in the card. It is specifically for card info retrieval enrolled card. Card info will be copied after the user clicks the suggestion.">
@@ -1371,9 +1347,6 @@
   </if>
 
   <!-- Credit card and promo code offers and rewards-related strings -->
-  <message name="IDS_AUTOFILL_OFFERS_CASHBACK" desc="Displays that a cashback offer will be rewarded if credit card is used on current page. Part of Autofill suggestions popup.">
-    Cashback linked
-  </message>
   <message name="IDS_AUTOFILL_CARD_LINKED_OFFER_REMINDER_TITLE" desc="Title of the bubble/infobar shown on the merchant website when a GPay-activated card linked offer is available to use.">
     Reminder: saved offer available
   </message>
@@ -1402,9 +1375,6 @@
     </message>
   </if>
   <if expr="toolkit_views">
-    <message name="IDS_AUTOFILL_PROMO_CODE_OFFERS_REMINDER_TITLE" desc="Title of the bubble shown on the merchant website when a merchant promo code offer is available to use.">
-      Use this code at checkout
-    </message>
     <message name="IDS_AUTOFILL_GPAY_PROMO_CODE_OFFERS_REMINDER_TITLE" desc="Title of the bubble shown on the merchant website when a GPay merchant promo code offer is available to use, and the user can click on the promo code field to autofill it.">
       Reminder: Saved promo code available
     </message>
@@ -1416,9 +1386,6 @@
     </message>
     <message name="IDS_AUTOFILL_GPAY_PROMO_CODE_OFFERS_REMINDER_VALUE_PROP_TEXT" desc="The first line of the GPay promo code notification bubble, consisting of the value prop text and a see details link">
       <ph name="VALUE_PROP">$1<ex>5% off on shoes. Up to $50.</ex></ph> <ph name="DETAILS">$2<ex>See Details</ex></ph>
-    </message>
-    <message name="IDS_AUTOFILL_PROMO_CODE_OFFERS_USE_THIS_CODE_TEXT" desc="Text used in the promo code notification bubble to inform the user they can use the displayed promo code during checkout.">
-      Use this code at checkout
     </message>
   </if>
 
@@ -1601,7 +1568,7 @@
       Terms apply for card benefits
     </message>
     <message name="IDS_AUTOFILL_BNPL_ISSUER_SELECTION_TEXT_AFFIRM_BOTTOM_SHEET" desc="Text for the payment option button in the BNPL select provider bottomsheet, explaining that users can pay monthly or in installments. It is specifically for Affirm options.">
-        Monthly or 4 installments
+      No fees, as low as 0% APR
     </message>
     <message name="IDS_AUTOFILL_BNPL_ISSUER_SELECTION_TEXT_ZIP_BOTTOM_SHEET" desc="Text for the payment option button in the BNPL select provider bottomsheet, explaining that users can pay monthly or in installments. It is specifically for Zip options.">
         Pay in easy installments
@@ -1781,5 +1748,16 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
       Card info saved
     </message>
   </if>
+
+  <!-- Omnibox Autofill strings -->
+  <message name="IDS_AUTOFILL_PAYMENT_TEXT" desc="Text for the 'Autofill payment' chip displayed on the omnibox.">
+    Autofill payment
+  </message>
+  <message name="IDS_AUTOFILL_IPH_OMNIBOX_PAYMENT_CHIP_LABEL" desc="Text shown in the IPH bubble for the Autofill payment omnibox page action chip.">
+    Autofill using a saved payment method
+  </message>
+  <message name="IDS_AUTOFILL_IPH_OMNIBOX_PAYMENT_CHIP_LABEL_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for the IPH bubble for the Autofill payment omnibox page action chip.">
+    To autofill using a saved payment method, select the Autofill payment button.
+  </message>
 
 </grit-part>

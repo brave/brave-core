@@ -43,7 +43,10 @@
       </if>
     </if>
 
-     <if expr="is_ios">
+     <if expr="not is_android">
+    </if>
+
+  <if expr="is_ios">
     <then>
       </then>
     <else>
