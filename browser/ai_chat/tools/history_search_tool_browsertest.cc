@@ -70,6 +70,7 @@ class FakeHistoryEmbeddingsSearch
       std::optional<base::Time> time_range_start,
       size_t count,
       bool skip_answering,
+      std::vector<history::URLID> url_id_filter,
       history_embeddings::SearchResultCallback callback) override {
     last_query_ = query;
     last_time_range_start_ = time_range_start;

@@ -72,7 +72,8 @@ TEST_F(HistoryEmbeddingsServiceTest,
 
   base::test::TestFuture<SearchResult> future;
   service_->Search(nullptr, "test passage", {}, 3,
-                   /*skip_answering=*/true, future.GetRepeatingCallback());
+                   /*skip_answering=*/true, /*url_id_filter=*/{},
+                   future.GetRepeatingCallback());
   SearchResult result = future.Take();
 
   // Brave: results must be preserved despite no visibility model.

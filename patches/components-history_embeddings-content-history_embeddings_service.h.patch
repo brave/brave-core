@@ -1,0 +1,12 @@
+diff --git a/components/history_embeddings/content/history_embeddings_service.h b/components/history_embeddings/content/history_embeddings_service.h
+index eef58f7e78e406a3b9d30c4eb5513ede972cc0f1..ab573285c18933b0ddecb5115bb6091d6b72a4dd 100644
+--- a/components/history_embeddings/content/history_embeddings_service.h
++++ b/components/history_embeddings/content/history_embeddings_service.h
+@@ -109,6 +109,7 @@ class HistoryEmbeddingsService
+                       std::optional<base::Time> time_range_start,
+                       size_t count,
+                       bool skip_answering,
++                      std::vector<history::URLID> url_id_filter,
+                       SearchResultCallback callback) override;
+ 
+   // Weak `this` provider method.

@@ -1,0 +1,20 @@
+diff --git a/components/history_embeddings/content/history_embeddings_service.cc b/components/history_embeddings/content/history_embeddings_service.cc
+index 8955b93243ea86ac6f118fe1afab867a1650d853..2ab7a36a93b9808816cedd20fad98e34c2cbdd6b 100644
+--- a/components/history_embeddings/content/history_embeddings_service.cc
++++ b/components/history_embeddings/content/history_embeddings_service.cc
+@@ -218,6 +218,7 @@ SearchResult HistoryEmbeddingsService::Search(
+     std::optional<base::Time> time_range_start,
+     size_t count,
+     bool skip_answering,
++    std::vector<history::URLID> url_id_filter,
+     SearchResultCallback callback) {
+   SearchResult result;
+ 
+@@ -269,6 +270,7 @@ SearchResult HistoryEmbeddingsService::Search(
+       GetFeatureParameters().word_match_max_term_count;
+   result.search_params.word_match_required_term_ratio =
+       GetFeatureParameters().word_match_required_term_ratio;
++  result.search_params.url_id_filter = std::move(url_id_filter);
+ 
+   if (QueryIsFiltered(query, result.search_params)) {
+     result.count = 0;

@@ -1,0 +1,91 @@
+diff --git a/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc b/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc
+index 34f6aeca524f5fb818f2361b5d2ac50d242522c7..a84126fb5b1d5eb6fb6f9e07eeb0d354c2ecfa5a 100644
+--- a/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc
++++ b/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc
+@@ -244,7 +244,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsBrowserTest,
+   // Search for the passage.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "A B C D e f g", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult result = search_future.Take();
+   ASSERT_EQ(result.scored_url_rows.size(), 1u);
+   EXPECT_EQ(result.scored_url_rows[0].GetBestPassage(), "A a B C b a 2 D");
+@@ -305,7 +305,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsWithLowAggregationBrowserTest,
+   // Search for the passage.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "A B C", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult result = search_future.Take();
+   ASSERT_EQ(result.scored_url_rows.size(), 1u);
+   EXPECT_EQ(result.scored_url_rows[0].GetBestPassage(),
+@@ -355,7 +355,7 @@ IN_PROC_BROWSER_TEST_F(
+   // Search for the passage.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "A B C D e f g", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult result = search_future.Take();
+   EXPECT_TRUE(result.scored_url_rows.empty());
+ 
+@@ -384,7 +384,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsBrowserTest,
+   // Search for the passage.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "A B C D e f g", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult result = search_future.Take();
+   EXPECT_TRUE(result.scored_url_rows.empty());
+ 
+@@ -446,7 +446,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsWithUrlFilterBrowserTest,
+   // Search for the passage, should return empty result because of the filter.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "A B C D e f g", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult result = search_future.Take();
+   EXPECT_TRUE(result.scored_url_rows.empty());
+ 
+@@ -481,7 +481,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsWithUrlFilterBrowserTest,
+   // Search for the passage; should have valid result since the URL is allowed.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "A B C D e f g", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult result = search_future.Take();
+   ASSERT_EQ(result.scored_url_rows.size(), 1u);
+   EXPECT_EQ(result.scored_url_rows[0].GetBestPassage(), "A a B C b a 2 D");
+@@ -515,6 +515,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsBrowserTest,
+     // Search with an answerable query by ending it with '?'.
+     base::test::TestFuture<SearchResult> search_future;
+     service()->Search(nullptr, "A B C D?", {}, 1, /*skip_answering=*/false,
++                      /*url_id_filter=*/{},
+                       search_future.GetRepeatingCallback());
+     SearchResult first_result = search_future.Take();
+     EXPECT_EQ(first_result.scored_url_rows.size(), 1u);
+@@ -544,6 +545,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsBrowserTest,
+     // Search with a query that does not signal query intent (not answerable).
+     base::test::TestFuture<SearchResult> search_future;
+     service()->Search(nullptr, "A B C D", {}, 1, /*skip_answering=*/false,
++                      /*url_id_filter=*/{},
+                       search_future.GetRepeatingCallback());
+     SearchResult first_result = search_future.Take();
+     EXPECT_EQ(first_result.scored_url_rows.size(), 1u);
+@@ -581,7 +583,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsRestrictedSigninBrowserTest,
+   // due to account restriction.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "A B C D?", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult first_result = search_future.Take();
+   EXPECT_EQ(first_result.scored_url_rows.size(), 1u);
+   EXPECT_TRUE(first_result.AnswerText().empty());
+@@ -633,6 +635,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsKillSwitchBrowserTest,
+   {
+     base::test::TestFuture<SearchResult> search_future;
+     service()->Search(nullptr, "A B C D e f g", {}, 1, /*skip_answering=*/false,
++                      /*url_id_filter=*/{},
+                       search_future.GetRepeatingCallback());
+     SearchResult result = search_future.Take();
+     ASSERT_EQ(result.scored_url_rows.size(), 1u);
