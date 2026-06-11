@@ -97,18 +97,6 @@ public struct OriginPaywallView: View {
       } message: {
         Text(Strings.Origin.purchaseErrorMessage)
       }
-      .introspectViewController { vc in
-        vc.navigationItem.do {
-          let appearance = UINavigationBarAppearance().then {
-            $0.configureWithDefaultBackground()
-            $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary10)
-            $0.titleTextAttributes = [.foregroundColor: UIColor.white]
-            $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-          }
-          $0.standardAppearance = appearance
-          $0.scrollEdgeAppearance = appearance
-        }
-      }
     }
     .colorScheme(.dark)
     .preferredColorScheme(.dark)

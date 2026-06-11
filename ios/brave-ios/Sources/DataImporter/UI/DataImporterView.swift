@@ -178,6 +178,5 @@ public struct DataImportView: View {
     }
     .padding(16.0)
     .navigationTitle(Strings.DataImporter.importDataFileSelectorNavigationTitle)
-    .toolbar(.visible, for: .navigationBar)
   }
 }

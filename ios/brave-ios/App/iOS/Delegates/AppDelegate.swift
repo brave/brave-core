@@ -139,8 +139,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var shouldPerformAdditionalDelegateHandling = true
     AdblockEngine.setDomainResolver()
 
-    UIView.applyAppearanceDefaults()
-
     if Preferences.Rewards.isUsingBAP.value == nil {
       Preferences.Rewards.isUsingBAP.value = Locale.current.region?.identifier == "JP"
     }

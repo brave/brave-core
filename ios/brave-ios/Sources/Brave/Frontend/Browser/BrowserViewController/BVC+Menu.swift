@@ -398,10 +398,9 @@ extension BrowserViewController {
           }
         )
 
-        let vc = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
-        let container = UINavigationController(rootViewController: vc)
+        let vc = UIHostingController(rootView: vpnPaywallView)
         self.dismiss(animated: true) {
-          self.present(container, animated: true)
+          self.present(vc, animated: true)
         }
         return .none
       }
