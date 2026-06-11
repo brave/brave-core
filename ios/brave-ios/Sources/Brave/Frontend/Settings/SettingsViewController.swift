@@ -1970,8 +1970,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       }
     )
 
-    let vpnHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
-    self.present(UINavigationController(rootViewController: vpnHostingVC), animated: true)
+    let vpnHostingVC = UIHostingController(rootView: vpnPaywallView)
+    self.present(vpnHostingVC, animated: true)
   }
 
   // MARK: - Actions
