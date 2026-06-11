@@ -27,7 +27,6 @@ source_set("brave_simple_policy_map") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common/buildflags",
-    "//brave/components/brave_news/common",
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_policy:policy_pref_interceptor",
     "//brave/components/brave_rewards/core",
@@ -36,7 +35,6 @@ source_set("brave_simple_policy_map") {
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
@@ -46,7 +44,6 @@ source_set("brave_simple_policy_map") {
     "//brave/components/global_privacy_control",
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
-    "//brave/components/playlist/core/common",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/query_filter/common",
     "//brave/components/speedreader/common/buildflags",
@@ -95,7 +92,10 @@ source_set("brave_simple_policy_map") {
   }
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/content/browser" ]
+    deps += [
+      "//brave/components/playlist/content/browser",
+      "//brave/components/playlist/core/common",
+    ]
   }
 
   if (enable_email_aliases) {

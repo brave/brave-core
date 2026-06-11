@@ -27,7 +27,8 @@ class COMPONENT_EXPORT(POLICY_PREF_INTERCEPTOR) PolicyPrefInterceptorList {
       delete;
 
   // Sets the list of non-dynamic pref names. The string_view entries must
-  // reference static-storage string literals for the lifetime of the process.
+  // reference data with static storage duration for the lifetime of the
+  // process.
   void SetPrefs(base::span<const std::string_view> prefs);
 
   base::span<const std::string_view> GetPrefs() const;
