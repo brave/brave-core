@@ -2681,13 +2681,12 @@ dependencies = [
 name = "zcash_primitives"
 version = "0.28.0"
 dependencies = [
- "byteorder",
+ "blake2b_simd",
+ "corez",
  "incrementalmerkletree",
- "memuse",
  "nonempty",
  "orchard",
  "zcash_encoding",
- "zcash_note_encryption",
  "zcash_protocol",
 ]
 

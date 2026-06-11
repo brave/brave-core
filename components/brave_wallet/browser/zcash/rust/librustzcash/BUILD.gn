@@ -29,7 +29,6 @@ rust_static_library("zcash_protocol") {
   deps = [
     ":zcash_encoding",
     "//brave/third_party/rust/corez/v0_1:lib",
-    "//brave/third_party/rust/memuse/v0_2:lib",
   ]
 }
 
@@ -80,7 +79,6 @@ rust_static_library("zcash_primitives") {
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/corez/v0_1:lib",
     "//brave/third_party/rust/incrementalmerkletree/v0_8:lib",
-    "//brave/third_party/rust/memuse/v0_2:lib",
     "//brave/third_party/rust/nonempty/v0_11:lib",
     "//brave/third_party/rust/orchard/v0_14:lib",
   ]
