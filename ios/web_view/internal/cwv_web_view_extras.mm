@@ -60,8 +60,7 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   // all Brave JavaScript features are ported over to actual Chromium
   // JavascriptFeature types and added to BraveWebClient
   web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(
-          self.webState->GetBrowserState());
+      web::WKWebViewConfigurationProvider::FromWebState(self.webState);
   config_provider.UpdateScripts();
 }
 
@@ -114,8 +113,7 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
     return;
   }
   web::WebFrameInternal* webFrame = mainFrame->GetWebFrameInternal();
-  auto worlds = web::JavaScriptFeatureManager::FromBrowserState(
-                    self.configuration.browserState)
+  auto worlds = web::JavaScriptFeatureManager::FromWebState(self.webState)
                     ->GetAllContentWorlds();
 
   auto jsContentWorld =
