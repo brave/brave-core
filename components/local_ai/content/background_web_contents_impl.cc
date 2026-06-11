@@ -5,6 +5,7 @@
 
 #include "brave/components/local_ai/content/background_web_contents_impl.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/logging.h"
@@ -21,19 +22,20 @@ BackgroundWebContentsImpl::BackgroundWebContentsImpl(
     content::BrowserContext* browser_context,
     const GURL& url,
     Delegate* delegate,
-    WebContentsCreatedCallback web_contents_created_callback)
+    WebContentsCreatedCallback web_contents_created_callback,
+    std::optional<network::mojom::WebSandboxFlags> sandbox_flags)
     : delegate_(delegate), expected_url_(url) {
   DCHECK(browser_context);
   DCHECK(delegate);
 
   content::WebContents::CreateParams create_params(browser_context);
   create_params.is_never_composited = true;
-  // Sandbox everything except scripts (needed for JS/WASM execution)
-  // and origin (needed for Mojo WebUI bridge).
+  // Sandbox everything except scripts (needed for JS/WASM execution) and
+  // origin (needed for the Mojo WebUI bridge) unless the caller overrides it.
   create_params.starting_sandbox_flags =
-      network::mojom::WebSandboxFlags::kAll &
-      ~network::mojom::WebSandboxFlags::kScripts &
-      ~network::mojom::WebSandboxFlags::kOrigin;
+      sandbox_flags.value_or(network::mojom::WebSandboxFlags::kAll &
+                             ~network::mojom::WebSandboxFlags::kScripts &
+                             ~network::mojom::WebSandboxFlags::kOrigin);
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetOwnerLocationForDebug(FROM_HERE);
 

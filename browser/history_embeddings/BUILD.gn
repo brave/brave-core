@@ -77,6 +77,7 @@ source_set("history_embeddings") {
   deps = [
     ":batch_passage_embedder",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/local_ai",
     "//brave/components/history_embeddings",
     "//brave/components/local_ai/content",
     "//brave/components/local_ai/core",

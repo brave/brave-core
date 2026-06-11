@@ -398,7 +398,10 @@ test("brave_unit_tests") {
   }
 
   if (enable_local_ai) {
-    deps += [ "//brave/browser/history_embeddings:unit_tests" ]
+    deps += [
+      "//brave/browser/history_embeddings:unit_tests",
+      "//brave/browser/local_ai:unit_tests",
+    ]
   }
 
   if (enable_print_preview) {

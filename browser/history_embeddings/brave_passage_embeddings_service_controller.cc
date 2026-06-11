@@ -17,18 +17,16 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/history_embeddings/brave_batch_passage_embedder.h"
-#include "brave/components/local_ai/content/background_web_contents_impl.h"
+#include "brave/browser/local_ai/background_web_contents_factory.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/task_manager/web_contents_tags.h"
 #include "components/passage_embeddings/core/passage_embeddings_features.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "url/gurl.h"
 
 namespace passage_embeddings {
 
@@ -46,41 +44,31 @@ mojom::PassagePriority ToMojom(PassagePriority priority) {
   }
 }
 
-void TagWebContentsForTaskManager(content::WebContents* web_contents) {
-  task_manager::WebContentsTags::CreateForToolContents(
-      web_contents, IDS_LOCAL_AI_TASK_MANAGER_TITLE);
-}
-
-void OnGuestProfileCreated(
-    base::WeakPtr<BraveBatchPassageEmbedder> weak_embedder,
+// Completion callback for local_ai::CreateBackgroundWebContents().
+//
+// Registers the OTR profile with the controller so we tear the service down
+// before the profile is destroyed on shutdown (otherwise the WebContents inside
+// the embedder would outlive its BrowserContext), then forwards the
+// BackgroundWebContents to the embedder.
+void OnBackgroundWebContentsCreated(
     BraveBatchPassageEmbedder::BackgroundWebContentsCreatedCallback callback,
-    Profile* guest_profile) {
-  CHECK(guest_profile);
-  if (!weak_embedder) {
-    return;
+    std::unique_ptr<local_ai::BackgroundWebContents> contents,
+    Profile* otr_profile) {
+  if (otr_profile) {
+    BravePassageEmbeddingsServiceController::Get()->ObserveGuestOTRProfile(
+        otr_profile);
   }
-  auto* otr = guest_profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
-  // Register the OTR profile with the controller so we tear the service
-  // down before the profile is destroyed on shutdown — otherwise the
-  // WebContents inside the embedder would outlive its BrowserContext.
-  BravePassageEmbeddingsServiceController::Get()->ObserveGuestOTRProfile(otr);
-  auto contents = std::make_unique<local_ai::BackgroundWebContentsImpl>(
-      otr, GURL(local_ai::kUntrustedLocalAIURL), weak_embedder.get(),
-      base::BindOnce(&TagWebContentsForTaskManager));
   std::move(callback).Run(std::move(contents));
 }
 
 void CreateBackgroundWebContents(
     local_ai::BackgroundWebContents::Delegate* delegate,
     BraveBatchPassageEmbedder::BackgroundWebContentsCreatedCallback callback) {
-  auto* embedder = static_cast<BraveBatchPassageEmbedder*>(delegate);
-  auto weak_embedder = embedder->GetWeakPtr();
-  auto* profile_manager = g_browser_process->profile_manager();
-  CHECK(profile_manager);
-  profile_manager->CreateProfileAsync(
-      ProfileManager::GetGuestProfilePath(),
-      base::BindOnce(&OnGuestProfileCreated, std::move(weak_embedder),
-                     std::move(callback)));
+  local_ai::CreateBackgroundWebContents(
+      GURL(local_ai::kUntrustedLocalAIURL), IDS_LOCAL_AI_TASK_MANAGER_TITLE,
+      /*sandbox_flags=*/std::nullopt,
+      static_cast<BraveBatchPassageEmbedder*>(delegate)->GetWeakPtr(),
+      base::BindOnce(&OnBackgroundWebContentsCreated, std::move(callback)));
 }
 
 // Reads a file directly into BigBuffer storage. For files >64KB
