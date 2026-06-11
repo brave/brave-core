@@ -790,13 +790,6 @@ if (enable_ai_chat) {
       [ "//brave/browser/ui/webui/ai_chat" ]
 }
 
-if (enable_brave_news) {
-  # brave_news_tab_helper.cc includes chrome/browser/feed/rss_links_fetcher.h,
-  # which is part of the //chrome/browser monolith.
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/brave_news:impl" ]
-}
-
 if (enable_playlist) {
   brave_chrome_browser_sources += brave_browser_playlist_sources
   brave_chrome_browser_deps += brave_browser_playlist_deps
