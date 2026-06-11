@@ -148,8 +148,6 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     // Queries
     const { accounts } = useAccountsQuery()
     const { data: fullTokenList } = useGetCombinedTokensListQuery()
-    const { receiveAddress: fromAccountAddress } =
-      useReceiveAddressQuery(fromAccountId)
 
     // Domain name lookup Queries
     const selectedSendAssetId = selectedAsset
@@ -244,6 +242,21 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           : skipToken,
       )
 
+    // For DOT, the from-account address must use the network-specific ss58
+    // prefix. Skip the generic receive-address query (which would return the
+    // account's default keyring-prefixed address) and resolve it from the
+    // Polkadot address map below instead.
+    const { receiveAddress: nonPolkadotFromAddress } = useReceiveAddressQuery(
+      fromAccountId?.coin === BraveWallet.CoinType.DOT
+        ? undefined
+        : fromAccountId,
+    )
+
+    const fromAccountAddress =
+      isDotSend && fromAccountId
+        ? polkadotAddressesByUniqueKey[fromAccountId.uniqueKey]
+        : nonPolkadotFromAddress
+
     const filteredAccounts = React.useMemo(() => {
       const lowerSearch = searchValue.toLocaleLowerCase()
       return accountsByNetwork.filter((account) => {
@@ -337,7 +350,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       React.useMemo(() => {
         return processAddressOrUrl({
           addressOrUrl: trimmedSearchValue,
-          fromAccountAddress: fromAccountAddress,
+          fromAccountAddress,
           ethAddressChecksum,
           isBase58,
           coinType: fromAccountId?.coin ?? BraveWallet.CoinType.ETH,
