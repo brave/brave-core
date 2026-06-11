@@ -1151,6 +1151,19 @@ void KeyringService::RequestUnlock() {
   request_unlock_pending_ = true;
 }
 
+void KeyringService::GenerateMnemonic(int32_t word_count,
+                                      GenerateMnemonicCallback callback) {
+  if (word_count != 12 && word_count != 24) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  uint32_t entropy_size = word_count == 12 ? bip39::k12WordsEntropySize
+                                           : bip39::k24WordsEntropySize;
+  std::move(callback).Run(
+      *bip39::GenerateMnemonic(base::RandBytesAsVector(entropy_size)));
+}
+
 void KeyringService::GetWalletMnemonic(const std::string& password,
                                        GetWalletMnemonicCallback callback) {
   if (IsLockedSync()) {
@@ -1178,10 +1191,17 @@ void KeyringService::CreateWallet(const std::string& password,
     return;
   }
 
+  CreateWalletWithMnemonic(*mnemonic, password, std::move(callback));
+}
+
+void KeyringService::CreateWalletWithMnemonic(
+    const std::string& mnemonic,
+    const std::string& password,
+    CreateWalletWithMnemonicCallback callback) {
   WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
           &KeyringService::OnCreateWalletRegisterComponentUpdater,
-          weak_ptr_factory_.GetWeakPtr(), *mnemonic, password,
+          weak_ptr_factory_.GetWeakPtr(), mnemonic, password,
           std::move(callback)));
 }
 
