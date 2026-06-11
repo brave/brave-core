@@ -68,13 +68,6 @@ void OpenBrowserWindowForAIChatAgentProfileWithCallback(
     std::move(callback).Run(nullptr);
     return;
   }
-  // This should not be callable if the current profile has not yet opted-in to
-  // AI Chat.
-  if (!HasUserOptedIn(from_profile.GetPrefs())) {
-    DLOG(ERROR) << __func__ << " Existing profile has not opted-in to AI Chat";
-    std::move(callback).Run(nullptr);
-    return;
-  }
 
   // We don't provide a profile-init callback because we want to ensure
   // the prefs are up to date each time.

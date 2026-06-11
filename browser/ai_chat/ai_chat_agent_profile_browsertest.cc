@@ -117,19 +117,14 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   // Keep track of initial browser count
   EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
 
-  // First request to open AI Chat Agent Profile browser window
-  // should be a noop because this profile is not opted in to AI Chat.
-  Browser* opened_browser =
-      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
-  EXPECT_EQ(nullptr, opened_browser);
-  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
-  EXPECT_FALSE(GetProfile()->IsAIChatAgent());
-
+  // The source profile is opted in to AI Chat, so the new agent profile should
+  // inherit the opt-in.
   SetUserOptedIn(GetProfile()->GetPrefs(), true);
 
-  // Second request to open AI Chat Agent Profile browser window
-  // should open a new browser window
-  opened_browser = CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
+  // Request to open AI Chat Agent Profile browser window should open a new
+  // browser window.
+  Browser* opened_browser =
+      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
 
   // Verify that a new browser window was opened
   EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
@@ -138,6 +133,9 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   Browser* ai_chat_browser = FindAIChatBrowser();
   ASSERT_TRUE(ai_chat_browser);
   EXPECT_EQ(opened_browser, ai_chat_browser);
+
+  // The agent profile should have inherited the opt-in from the source profile.
+  EXPECT_TRUE(HasUserOptedIn(ai_chat_browser->profile()->GetPrefs()));
 
   // Verify the profile is reported as the AI Chat profile, although it is
   // already used in FindAIChatBrowser - that could change and we want to make
@@ -204,6 +202,31 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
           << "Tool " << tool->Name() << " should not be in the regular profile";
     }
   }
+}
+
+// Test that opening the AI Chat Agent Profile is allowed even when the source
+// profile has not opted in, but in that case the agent profile is not opted in
+// either.
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
+                       OpenBrowserWindowForAIChatAgentProfile_NotOptedIn) {
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+  ASSERT_FALSE(HasUserOptedIn(GetProfile()->GetPrefs()));
+
+  // Opening the agent profile is allowed even when the source profile has not
+  // opted in to AI Chat.
+  Browser* opened_browser =
+      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
+  ASSERT_TRUE(opened_browser);
+  EXPECT_EQ(2u, chrome::GetTotalBrowserCount());
+
+  Browser* ai_chat_browser = FindAIChatBrowser();
+  ASSERT_TRUE(ai_chat_browser);
+  EXPECT_EQ(opened_browser, ai_chat_browser);
+  EXPECT_TRUE(ai_chat_browser->profile()->IsAIChatAgent());
+
+  // Since no other profile has opted in, the agent profile should not be opted
+  // in either; the user should opt in via the agent profile's own flow.
+  EXPECT_FALSE(HasUserOptedIn(ai_chat_browser->profile()->GetPrefs()));
 }
 
 // Test that multiple calls to OpenBrowserWindowForAIChatAgentProfile work
@@ -352,12 +375,8 @@ IN_PROC_BROWSER_TEST_P(AIChatAgentProfileWebUIContentBrowserTest,
     return;
   }
 
-  // When not opted in, no agent profile button is shown
-  EXPECT_FALSE(IsAIChatAgentProfileTooltipPresent(browser()));
-  EXPECT_FALSE(IsAIChatAgentProfileLaunchButtonPresent(browser()));
-
-  // When opted in, the agent profile button is shown
-  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+  // The agent profile launch button is shown even when not opted in, so that
+  // the user can start the agent profile and opt in there.
   WaitForAIChatAgentProfileLaunchButton(browser());
   EXPECT_FALSE(IsAIChatAgentProfileTooltipPresent(browser()));
 

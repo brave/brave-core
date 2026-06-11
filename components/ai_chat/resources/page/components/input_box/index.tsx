@@ -76,7 +76,6 @@ type Props = Pick<
     | 'isMobile'
     | 'isAIChatAgentProfileFeatureEnabled'
     | 'isAIChatAgentProfile'
-    | 'hasAcceptedAgreement'
     | 'getPluralString'
     | 'processImageFile'
     | 'processPdfFile'
@@ -470,8 +469,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
               unassociatedTabs={props.context.unassociatedTabs}
               setAttachmentsDialog={props.context.setAttachmentsDialog}
             />
-            {props.context.hasAcceptedAgreement
-              && props.context.isAIChatAgentProfileFeatureEnabled
+            {props.context.isAIChatAgentProfileFeatureEnabled
               && !props.context.isAIChatAgentProfile && (
                 <Button
                   fab

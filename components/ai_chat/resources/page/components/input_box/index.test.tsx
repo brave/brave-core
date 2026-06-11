@@ -21,7 +21,6 @@ Object.defineProperty(URL, 'createObjectURL', {
 
 const testContext: InputBoxProps['context'] = {
   isMobile: false,
-  hasAcceptedAgreement: true,
   getPluralString: () => Promise.resolve(''),
   attachFiles: jest.fn(),
   isAIChatAgentProfileFeatureEnabled: false,

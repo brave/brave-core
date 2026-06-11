@@ -10,6 +10,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "third_party/skia/include/core/SkColor.h"
 
@@ -59,9 +60,12 @@ void AIChatAgentProfileManager::OnProfileAdded(
 void AIChatAgentProfileManager::OnProfileAdded(Profile* profile) {
   if (is_added_profile_new_ai_chat_agent_profile_ && profile->IsAIChatAgent()) {
     is_added_profile_new_ai_chat_agent_profile_ = false;
-    // Assume user has opted-in in some profile already in order to get
-    // here, so we can copy that preference.
-    ai_chat::SetUserOptedIn(profile->GetPrefs(), true);
+    // Only opt the agent profile in to AI Chat if another (source) profile has
+    // already opted in. Otherwise the user should go through the opt-in flow in
+    // the agent profile itself.
+    if (HasAnyOtherProfileOptedIn(profile)) {
+      ai_chat::SetUserOptedIn(profile->GetPrefs(), true);
+    }
 
     // Set profile name so that the user can identify the profile
     // in the various profile list UIs.
@@ -76,6 +80,19 @@ void AIChatAgentProfileManager::OnProfileAdded(Profile* profile) {
     theme_service->SetUserColor(kAIChatAgentProfileThemeColor);
 #endif
   }
+}
+
+bool AIChatAgentProfileManager::HasAnyOtherProfileOptedIn(
+    Profile* agent_profile) const {
+  for (Profile* profile : profile_manager_->GetLoadedProfiles()) {
+    if (profile == agent_profile) {
+      continue;
+    }
+    if (ai_chat::HasUserOptedIn(profile->GetPrefs())) {
+      return true;
+    }
+  }
+  return false;
 }
 
 }  // namespace ai_chat
