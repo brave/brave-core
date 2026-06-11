@@ -1,11 +1,10 @@
 /* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
 
-#include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -51,11 +50,8 @@ class BraveBlobScreenFarblingBrowserTest
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
-
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-
+    embedded_test_server()->ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     ASSERT_TRUE(embedded_test_server()->Start());
 
     blob_test_url_ =
@@ -80,17 +76,28 @@ class BraveBlobScreenFarblingBrowserTest
     return Contents()->GetPrimaryMainFrame();
   }
 
+  // The driver of test is basically on the JS side which simplifies testing a
+  // lot. See brave_screen_farbling_browsertest for comparison.
+  // The JS test basically does the following:
+  // 1. Reads the various screen attributes from the parent window and writes to
+  // the localStorage keyed under parent_.
+  // 2. Opens a blob:// window.
+  // 3. Reads the various screen attributes from the blob window and then writes
+  // to the localStorage keyed under blob_.
+  // 4. Compares the two and they should match for passing tests.
+  // 4.1) For cases where fingerprinting was blocked: both the parent and the
+  // blob window sees the same "farbled" value. 4.2) For cases where
+  // fingerprinting was not blocked: both the parent and the blob window sees
+  // the same "un-farbled" value.
   void FarbleScreenBlobURL() {
     ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
 
-    // Fingerprinting is blocked.
     SetFingerprintingSetting(/*allow=*/false);
     // TODO(https://github.com/brave/brave-browser/issues/56048): Expect pass
     // once Shields are supported on blob:// URLs.
     std::u16string expected_title = GetParam() ? kFailTitle : kPassTitle;
     NavigateToBlob(expected_title);
 
-    // Regardless of the feature flag we should see the tests passing.
     SetFingerprintingSetting(/*allow=*/true);
     expected_title = kPassTitle;
     NavigateToBlob(expected_title);
