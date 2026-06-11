@@ -301,7 +301,7 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
 }
 
 void SidebarContainerView::UpdateBorder() {
-  sidebar_control_view_->UpdateBackgroundAndBorder();
+  sidebar_control_view_->UpdateBorder();
 }
 
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {

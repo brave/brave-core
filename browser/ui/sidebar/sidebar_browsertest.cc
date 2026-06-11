@@ -2824,4 +2824,65 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelShadow) {
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
+// Verify that SidebarControlView::UpdateBorder() applies a negative inset on
+// the content-facing side equal to -kRoundedCornersContentsViewMargin when
+// rounded corners is on, so the control view overlaps the margin already owned
+// by the contents/panel and avoids a double gap. When rounded corners is off
+// the margin is 0, so the border insets are all zero.
+//
+// Also verifies the relationship between kSidebarButtonSize, kMargin, and the
+// control view's preferred width: the FlexLayout adds border insets to the max
+// child width, so a negative border shrinks the preferred width by the overlap
+// margin.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ControlViewBorderOverlapGap) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* control_view = GetSidebarControlView();
+  const int button_width =
+      SidebarButtonView::kSidebarButtonSize + SidebarButtonView::kMargin * 2;
+
+  // Default: sidebar on right (kSidePanelHorizontalAlignment = true).
+  ASSERT_FALSE(IsSidebarUIOnLeft());
+
+  // Rounded corners off: no overlap needed, all insets should be zero and the
+  // control view's preferred width equals exactly the button width.
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  {
+    const gfx::Insets insets = control_view->GetBorder()->GetInsets();
+    EXPECT_EQ(0, insets.left()) << "rounded corners off: no left inset";
+    EXPECT_EQ(0, insets.right()) << "rounded corners off: no right inset";
+    EXPECT_EQ(button_width, control_view->GetPreferredSize().width())
+        << "no border: control view preferred width equals button width";
+  }
+
+  // Rounded corners on, sidebar on right: content-facing side is left, so the
+  // left inset should be -kRoundedCornersContentsViewMargin. The negative
+  // border reduces the preferred width by the overlap margin.
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  {
+    const gfx::Insets insets = control_view->GetBorder()->GetInsets();
+    EXPECT_EQ(-kRoundedCornersContentsViewMargin, insets.left())
+        << "sidebar on right: left inset overlaps into content margin";
+    EXPECT_EQ(0, insets.right());
+    EXPECT_EQ(button_width - kRoundedCornersContentsViewMargin,
+              control_view->GetPreferredSize().width())
+        << "rounded corners on: preferred width narrows by the overlap margin";
+  }
+
+  // Flip to left-aligned: content-facing side becomes right.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  RunScheduledLayouts();
+  ASSERT_TRUE(IsSidebarUIOnLeft());
+  {
+    const gfx::Insets insets = control_view->GetBorder()->GetInsets();
+    EXPECT_EQ(0, insets.left());
+    EXPECT_EQ(-kRoundedCornersContentsViewMargin, insets.right())
+        << "sidebar on left: right inset overlaps into content margin";
+    EXPECT_EQ(button_width - kRoundedCornersContentsViewMargin,
+              control_view->GetPreferredSize().width())
+        << "rounded corners on: preferred width narrows by the overlap margin";
+  }
+}
+
 }  // namespace sidebar

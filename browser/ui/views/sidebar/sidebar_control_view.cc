@@ -79,26 +79,27 @@ SidebarControlView::SidebarControlView(Delegate* delegate,
       browser_->GetFeatures().sidebar_controller()->model());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
+  SetBackground(views::CreateSolidBackground(kColorToolbar));
 }
 
 void SidebarControlView::OnThemeChanged() {
   View::OnThemeChanged();
 
-  UpdateBackgroundAndBorder();
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
 }
 
-void SidebarControlView::UpdateBackgroundAndBorder() {
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    SetBackground(
-        views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
-    int border_thickness =
-        1 - BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
-    SetBorder(views::CreateEmptyBorder(
-        gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : border_thickness, 0,
-                          sidebar_on_left_ ? border_thickness : 0)));
-  }
+void SidebarControlView::UpdateBorder() {
+  // When rounded corners is on, contents and side panel already have an
+  // inward margin. Without adjustment the gap between the control view and
+  // the content would be double that margin. Use a negative inset on the
+  // content-facing side to overlap into that existing margin, keeping visual
+  // spacing tight. When rounded corners is off the margin is 0, so
+  // overlap is 0.
+  const int overlap =
+      -BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
+  SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(
+      0, sidebar_on_left_ ? 0 : overlap, 0, sidebar_on_left_ ? overlap : 0)));
 }
 
 SidebarControlView::~SidebarControlView() = default;
@@ -270,7 +271,7 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
 
 void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
   sidebar_on_left_ = sidebar_on_left;
-  UpdateBackgroundAndBorder();
+  UpdateBorder();
 }
 
 BEGIN_METADATA(SidebarControlView)
