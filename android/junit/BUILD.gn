@@ -231,7 +231,7 @@ if (is_android) {
       "//chrome/browser/hub/internal:java",
     ]
   }
-  
+
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.fullscreen") {
     sources = [ "src/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBaseTest.java" ]
