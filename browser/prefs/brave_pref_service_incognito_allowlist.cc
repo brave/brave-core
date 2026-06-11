@@ -51,6 +51,7 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kAlwaysHideTabCloseButton,
       brave_tabs::kMiddleClickCloseTabEnabled,
       brave_tabs::kTabMinWidthMode,
+      brave_tabs::kOneLinerTabsEnabled,
       brave_tabs::kScrollableHorizontalTabStrip,
       brave_tabs::kShowHorizontalTabScrollButtons,
 #endif
