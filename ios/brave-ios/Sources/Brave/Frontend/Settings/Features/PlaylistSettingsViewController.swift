@@ -47,22 +47,26 @@ struct PlaylistSettingsView: View {
       } footer: {
         Text(Strings.PlayList.playlistAutoPlaySettingsOptionFooterText)
       }
-      Section {
-        Picker(Strings.PlayList.playlistAutoSaveSettingsTitle, selection: $autoDownloadVideo.value)
-        {
-          Text(Strings.PlayList.playlistAutoSaveOptionOn)
-            .tag(PlayListDownloadType.on.rawValue)
-          Text(Strings.PlayList.playlistAutoSaveOptionOff)
-            .tag(PlayListDownloadType.off.rawValue)
-          Text(Strings.PlayList.playlistAutoSaveOptionOnlyWifi)
-            .tag(PlayListDownloadType.wifi.rawValue)
-        }
-        .pickerStyle(.navigationLink)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      } footer: {
-        VStack(alignment: .leading, spacing: 4) {
-          Text(Strings.PlayList.playlistAutoSaveSettingsFooterText)
-          Text(Strings.PlayList.playlistAutoSaveSettingsDescription)
+      if FeatureList.kPlaylistOfflineCacheEnabled.enabled {
+        Section {
+          Picker(
+            Strings.PlayList.playlistAutoSaveSettingsTitle,
+            selection: $autoDownloadVideo.value
+          ) {
+            Text(Strings.PlayList.playlistAutoSaveOptionOn)
+              .tag(PlayListDownloadType.on.rawValue)
+            Text(Strings.PlayList.playlistAutoSaveOptionOff)
+              .tag(PlayListDownloadType.off.rawValue)
+            Text(Strings.PlayList.playlistAutoSaveOptionOnlyWifi)
+              .tag(PlayListDownloadType.wifi.rawValue)
+          }
+          .pickerStyle(.navigationLink)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        } footer: {
+          VStack(alignment: .leading, spacing: 4) {
+            Text(Strings.PlayList.playlistAutoSaveSettingsFooterText)
+            Text(Strings.PlayList.playlistAutoSaveSettingsDescription)
+          }
         }
       }
       Section {
