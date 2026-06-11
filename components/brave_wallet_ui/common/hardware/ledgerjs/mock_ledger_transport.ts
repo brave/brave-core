@@ -8,17 +8,12 @@ import {
   LedgerFrameCommand,
   LedgerFrameResponse,
 } from './ledger-messages'
-import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
+import { LedgerMessagingTransport } from './ledger-messaging-transport'
 
 type MockResponseType = LedgerFrameResponse | LedgerBridgeErrorCodes
 
-export class MockLedgerTransport extends LedgerTrustedMessagingTransport {
-  sendCommandResponses: MockResponseType[] // queue
-
-  constructor(targetWindow: Window, targetUrl: string) {
-    super(targetWindow, targetUrl)
-    this.sendCommandResponses = []
-  }
+export class MockLedgerTransport extends LedgerMessagingTransport {
+  sendCommandResponses: MockResponseType[] = [] // queue
 
   addSendCommandResponse = (
     response: LedgerFrameResponse | LedgerBridgeErrorCodes,

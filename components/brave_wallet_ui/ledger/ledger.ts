@@ -61,6 +61,6 @@ const bridgeType = params.get('bridgeType')
 if (targetUrl && bridgeType) {
   const sanitizedUrl = checkWebuiScheme(targetUrl)
   if (sanitizedUrl) {
-    setupUntrustedMessagingTransport(bridgeType, targetUrl)
+    setupUntrustedMessagingTransport(bridgeType, sanitizedUrl)
   }
 }
