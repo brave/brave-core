@@ -55,7 +55,7 @@ export default function AttachmentButtonMenu(props: Props) {
 
   return (
     <>
-      <ButtonMenu>
+      <ButtonMenu positionStrategy='fixed'>
         <div
           slot='anchor-content'
           className={styles.anchor}

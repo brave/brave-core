@@ -616,7 +616,9 @@ void AIChatService::MaybeAssociateContent(
   if (CanAssociateContent(associated_content.get())) {
     conversation->associated_content_manager()->AddContent(
         associated_content.get(),
-        /*notify_updated=*/true);
+        /*notify_updated=*/true,
+        /*detach_existing_content=*/false,
+        /*detect_tools=*/true);
   }
   // Record that this is the latest conversation for this content. Even
   // if we don't call SetAssociatedContentDelegate, the conversation still
@@ -1266,6 +1268,18 @@ void AIChatService::DisassociateContent(
   if (content_conversations_[content->content_id] == conversation_uuid) {
     content_conversations_.erase(content->content_id);
   }
+}
+
+void AIChatService::SetToolsAttached(const std::string& content_uuid,
+                                     bool tools_attached,
+                                     const std::string& conversation_uuid) {
+  // Note: This will only work if the conversation is already loaded.
+  auto* conversation = GetConversation(conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+  conversation->associated_content_manager()->SetToolsAttached(content_uuid,
+                                                               tools_attached);
 }
 
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,

@@ -170,6 +170,9 @@ class AIChatService : public KeyedService,
                              const std::string& conversation_uuid);
   void DisassociateContent(const mojom::AssociatedContentPtr& content,
                            const std::string& conversation_uuid);
+  void SetToolsAttached(const std::string& content_uuid,
+                        bool tools_attached,
+                        const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
                     const std::string& topic,

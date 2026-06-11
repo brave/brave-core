@@ -61,9 +61,13 @@ class AssociatedContentManager : public ToolProvider,
   // metadata, which can be problematic if you aren't expecting it to change.
   // If |detach_existing_content| is true, the current content will be detached
   // and the new content will be set as the only content for this conversation.
+  // If |detect_tools| is true, the content is queried for tools and, if it
+  // provides any, they are attached by default (tools_attached set to true).
+  // This is only meaningful for live tab content.
   void AddContent(AssociatedContentDelegate* delegate,
                   bool notify_updated = true,
-                  bool detach_existing_content = false);
+                  bool detach_existing_content = false,
+                  bool detect_tools = false);
   void AddOwnedContent(std::unique_ptr<AssociatedContentDelegate> delegate,
                        bool notify_updated = true);
 
@@ -93,6 +97,10 @@ class AssociatedContentManager : public ToolProvider,
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
+
+  // Sets whether tools provided by the content with |content_uuid| are enabled
+  // for the LLM. No-op if no matching content is attached.
+  void SetToolsAttached(std::string_view content_uuid, bool tools_attached);
 
   PageContents GetCachedContents() const;
 

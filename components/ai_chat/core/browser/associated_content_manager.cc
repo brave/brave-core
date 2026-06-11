@@ -108,7 +108,8 @@ void AssociatedContentManager::CreateArchiveContent(
 
 void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
                                           bool notify_updated,
-                                          bool detach_existing_content) {
+                                          bool detach_existing_content,
+                                          bool detect_tools) {
   DVLOG(1) << __func__;
 
   // Optionally, we can set |delegate| as the only content for this
@@ -151,11 +152,39 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
 
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
+
+    // If this content provides tools, attach them by default. The user can
+    // detach them via SetToolsAttached(). This relies on the content's
+    // WebContents being live, so it's only requested for tab content.
+    if (detect_tools) {
+      delegate->GetContentTools(base::BindOnce(
+          [](base::WeakPtr<AssociatedContentManager> self,
+             base::WeakPtr<AssociatedContentDelegate> delegate,
+             std::vector<std::unique_ptr<Tool>> tools) {
+            if (!self || !delegate || tools.empty()) {
+              return;
+            }
+            delegate->set_tools_attached(true);
+            self->conversation_->OnAssociatedContentUpdated();
+          },
+          weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr()));
+    }
   }
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
   }
+}
+
+void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
+                                                bool tools_attached) {
+  auto it = std::ranges::find(content_delegates_, content_uuid,
+                              &AssociatedContentDelegate::uuid);
+  if (it == content_delegates_.end()) {
+    return;
+  }
+  (*it)->set_tools_attached(tools_attached);
+  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::AddOwnedContent(
@@ -272,6 +301,8 @@ AssociatedContentManager::GetAssociatedContent() const {
     if (it != content_uuid_to_conversation_turns_.end()) {
       content->conversation_turn_uuid = it->second;
     }
+
+    content->tools_attached = delegate->tools_attached();
 
     result.push_back(std::move(content));
     total_consumed_chars += content_length;
@@ -492,6 +523,12 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
   auto barrier =
       base::BarrierClosure(content_delegates_.size(), std::move(on_updated));
   for (auto* content : content_delegates_) {
+    // Skip content whose tools the user has detached (or that were never
+    // attached). The barrier still needs to be satisfied for each delegate.
+    if (!content->tools_attached()) {
+      barrier.Run();
+      continue;
+    }
     content->GetContentTools(base::BindOnce(
         [](base::WeakPtr<AssociatedContentManager> self,
            base::RepeatingClosure done,
