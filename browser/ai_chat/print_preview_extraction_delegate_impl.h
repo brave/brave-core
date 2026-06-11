@@ -15,6 +15,10 @@
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace ai_chat {
 
 // Adapts the browser-layer PrintPreviewExtractor to the AI Chat
@@ -22,7 +26,8 @@ namespace ai_chat {
 class PrintPreviewExtractionDelegateImpl
     : public AssociatedWebContentsContent::PrintPreviewExtractionDelegate {
  public:
-  explicit PrintPreviewExtractionDelegateImpl(
+  PrintPreviewExtractionDelegateImpl(
+      content::WebContents* web_contents,
       std::unique_ptr<screenshot::PrintPreviewExtractor> extractor);
   ~PrintPreviewExtractionDelegateImpl() override;
 
@@ -36,6 +41,7 @@ class PrintPreviewExtractionDelegateImpl
 
  private:
   std::unique_ptr<screenshot::PrintPreviewExtractor> extractor_;
+  raw_ptr<content::WebContents> web_contents_;
 };
 
 }  // namespace ai_chat

@@ -10,15 +10,16 @@
 namespace ai_chat {
 
 PrintPreviewExtractionDelegateImpl::PrintPreviewExtractionDelegateImpl(
+    content::WebContents* web_contents,
     std::unique_ptr<screenshot::PrintPreviewExtractor> extractor)
-    : extractor_(std::move(extractor)) {}
+    : extractor_(std::move(extractor)), web_contents_(web_contents) {}
 
 PrintPreviewExtractionDelegateImpl::~PrintPreviewExtractionDelegateImpl() =
     default;
 
 void PrintPreviewExtractionDelegateImpl::CaptureImages(
     CaptureImagesCallback callback) {
-  extractor_->CaptureImages(std::move(callback));
+  extractor_->CaptureImages(web_contents_, std::move(callback));
 }
 
 }  // namespace ai_chat
