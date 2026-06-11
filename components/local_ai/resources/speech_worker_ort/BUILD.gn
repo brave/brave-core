@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/resources/brave_grit.gni")
+
+# Bundles the stock onnxruntime-web distribution (loader bundle, pthread
+# worker glue, threaded WASM) from node_modules into a pak served by the ORT
+# speech worker WebUI under /ort-dist/. Files are taken from
+# node_modules/onnxruntime-web/dist whose version is pinned in
+# brave/package.json.
+brave_grit("ort_dist_generated") {
+  source = "ort_dist_resources.grd"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  outputs = [
+    "grit/ort_dist_generated.h",
+    "grit/ort_dist_generated_map.cc",
+    "grit/ort_dist_generated_map.h",
+    "ort_dist_generated.pak",
+  ]
+}
