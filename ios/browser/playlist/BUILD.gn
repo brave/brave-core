@@ -13,3 +13,11 @@ source_set("playlist") {
     "//brave/components/playlist/core/common",
   ]
 }
+
+source_set("features") {
+  sources = [
+    "features.h",
+    "features.mm",
+  ]
+  public_deps = [ "//base" ]
+}

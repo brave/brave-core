@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
@@ -255,6 +256,15 @@ const flags_ui::FeatureEntry::FeatureVariation
 #define BRAVE_WALLET_FEATURE_ENTRIES
 #endif
 
+#define BRAVE_PLAYLIST_FEATURE_ENTRIES                   \
+  EXPAND_FEATURE_ENTRIES({                               \
+      "brave-playlist",                                  \
+      "Enable Brave Playlist",                           \
+      "Enables the Brave Playlist feature.",             \
+      flags_ui::kOsIos,                                  \
+      FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
+  })
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -368,4 +378,5 @@ const flags_ui::FeatureEntry::FeatureVariation
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_WALLET_FEATURE_ENTRIES                                                 \
+  BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
