@@ -761,8 +761,7 @@ TEST_F(KeyringServiceUnitTest, GenerateMnemonic) {
     ASSERT_TRUE(mnemonic);
     mnemonics.push_back(*mnemonic);
   }
-  std::ranges::sort(mnemonics);
-  EXPECT_EQ(std::ranges::unique(mnemonics).size(), 100u);
+  EXPECT_EQ(base::MakeFlatSet<std::string>(mnemonics).size(), 100u);
 }
 
 TEST_F(KeyringServiceUnitTest, GetWalletMnemonic) {
