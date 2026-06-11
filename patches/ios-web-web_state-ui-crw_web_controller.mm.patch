@@ -1,0 +1,18 @@
+diff --git a/ios/web/web_state/ui/crw_web_controller.mm b/ios/web/web_state/ui/crw_web_controller.mm
+index 13067f0c8f2d1fba7215fdab050d07e8cbbb8cef..6cad786e94b0daab2042f8adacfb00bcfdf07827 100644
+--- a/ios/web/web_state/ui/crw_web_controller.mm
++++ b/ios/web/web_state/ui/crw_web_controller.mm
+@@ -311,11 +311,11 @@ BOOL ExtractInteractionState(NSData* data, NSData** interactionState) {
+       web::AnnotationsTextManager::CreateForWebState(_webStateImpl);
+     }
+ 
+-    _navigationHandler = [[CRWWKNavigationHandler alloc] initWithDelegate:self];
++    _navigationHandler = [[BraveCRWWKNavigationHandler alloc] initWithDelegate:self];
+ 
+     _jsNavigationHandler = [[CRWJSNavigationHandler alloc] init];
+ 
+-    _UIHandler = [[CRWWKUIHandler alloc] init];
++    _UIHandler = [[BraveCRWWKUIHandler alloc] init];
+     _UIHandler.delegate = self;
+ 
+     _webViewNavigationObserver = [[CRWWebViewNavigationObserver alloc] init];
