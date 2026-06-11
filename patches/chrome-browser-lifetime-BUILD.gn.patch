@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/lifetime/BUILD.gn b/chrome/browser/lifetime/BUILD.gn
+index 8182ba05022ee2a4a2def0d2c4b7d3a30b808d64..693611400e836aa78c820c36d9598a3afa2043f7 100644
+--- a/chrome/browser/lifetime/BUILD.gn
++++ b/chrome/browser/lifetime/BUILD.gn
+@@ -126,6 +126,7 @@ source_set("impl") {
+   }
+ 
+   if (!is_android) {
++    import("//brave/chromium_src/chrome/browser/lifetime/sources.gni") deps += brave_chrome_browser_lifetime_impl_deps
+     sources += [
+       "application_lifetime_desktop.cc",
+       "browser_close_manager.cc",
