@@ -508,6 +508,33 @@ const RegisterInitializeTestCase* RegisterInitializeUnknown() {
   return kRegisterInitializeUnknown.get();
 }
 
+const RegisterInitializeTestCase* RegisterInitializeVerificationTokenMissing() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kRegisterInitializeVerificationTokenMissing({
+          .test_name = "register_initialize_verification_token_missing",
+          .email = kEmailAddress,
+          .blinded_message = "blinded_message",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       PasswordInit::Response::SuccessBody body;
+                                       body.verification_token = std::nullopt;
+                                       body.serialized_response =
+                                           "serialized_response";
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
+      });
+  return kRegisterInitializeVerificationTokenMissing.get();
+}
+
 const RegisterInitializeTestCase* RegisterInitializeVerificationTokenEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kRegisterInitializeVerificationTokenEmpty({
@@ -640,6 +667,7 @@ INSTANTIATE_TEST_SUITE_P(
                     RegisterInitializeUnauthorized(),
                     RegisterInitializeServerError(),
                     RegisterInitializeUnknown(),
+                    RegisterInitializeVerificationTokenMissing(),
                     RegisterInitializeVerificationTokenEmpty(),
                     RegisterInitializeSerializedResponseEmpty(),
                     RegisterInitializeVerificationTokenFailedToEncrypt(),

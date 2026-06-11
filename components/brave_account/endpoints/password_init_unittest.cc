@@ -26,12 +26,15 @@ namespace {
 
 using PasswordInitTestCase = EndpointTestCase<PasswordInit>;
 
-const PasswordInitTestCase* Success() {
-  static const base::NoDestructor<PasswordInitTestCase> kSuccess(
-      {.test_name = "success",
+const PasswordInitTestCase* RegistrationSuccess() {
+  static const base::NoDestructor<PasswordInitTestCase> kRegistrationSuccess(
+      {.test_name = "registration_success",
        .http_status_code = net::HTTP_OK,
-       .raw_response_body = R"({ "serializedResponse": "34c375d933e3c",
-                                 "verificationToken": "eyJhbGciOiJFUz" })",
+       .raw_response_body = R"(
+         { "serializedResponse": "34c375d933e3c",
+           "verificationToken": "eyJhbGciOiJFUz",
+           "verificationTokenExpiresAt": "2026-06-11T16:02:59.234260946Z" }
+        )",
        .expected_response = {
            .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
              PasswordInit::Response::SuccessBody body;
@@ -39,7 +42,22 @@ const PasswordInitTestCase* Success() {
              body.verification_token = "eyJhbGciOiJFUz";
              return body;
            }()}});
-  return kSuccess.get();
+  return kRegistrationSuccess.get();
+}
+
+const PasswordInitTestCase* PasswordResetSuccess() {
+  static const base::NoDestructor<PasswordInitTestCase> kPasswordResetSuccess(
+      {.test_name = "password_reset_success",
+       .http_status_code = net::HTTP_OK,
+       .raw_response_body = R"({ "serializedResponse": "34c375d933e3c" })",
+       .expected_response = {
+           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+             PasswordInit::Response::SuccessBody body;
+             body.serialized_response = "34c375d933e3c";
+             body.verification_token = std::nullopt;
+             return body;
+           }()}});
+  return kPasswordResetSuccess.get();
 }
 
 // clang-format off
@@ -119,7 +137,8 @@ TEST_P(PasswordInitTest, HandlesReplies) {
 
 INSTANTIATE_TEST_SUITE_P(PasswordInitTestCases,
                          PasswordInitTest,
-                         testing::Values(Success(),
+                         testing::Values(RegistrationSuccess(),
+                                         PasswordResetSuccess(),
                                          ApplicationJsonErrorCodeIsNull(),
                                          ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
