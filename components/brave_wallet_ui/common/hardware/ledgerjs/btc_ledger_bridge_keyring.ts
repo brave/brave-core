@@ -25,10 +25,6 @@ export default class BitcoinLedgerBridgeKeyring
   extends LedgerBridgeKeyring
   implements LedgerBitcoinKeyring
 {
-  constructor() {
-    super()
-  }
-
   bridgeType = (): BridgeType => {
     return BridgeTypes.BtcLedger
   }
