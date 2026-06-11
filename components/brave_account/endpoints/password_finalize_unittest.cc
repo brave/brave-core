@@ -16,28 +16,49 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const PasswordFinalize::Response::SuccessBody&,
-                const PasswordFinalize::Response::SuccessBody&) {
-  return true;
+bool operator==(const PasswordFinalize::Response::SuccessBody& lhs,
+                const PasswordFinalize::Response::SuccessBody& rhs) {
+  return lhs.auth_token == rhs.auth_token;
 }
 
 namespace {
 
 using PasswordFinalizeTestCase = EndpointTestCase<PasswordFinalize>;
 
-const PasswordFinalizeTestCase* Success() {
-  static const base::NoDestructor<PasswordFinalizeTestCase> kSuccess(
-      {.test_name = "success",
-       .http_status_code = net::HTTP_OK,
-       .raw_response_body = R"({ "authToken": null,
+const PasswordFinalizeTestCase* RegistrationSuccess() {
+  static const base::NoDestructor<PasswordFinalizeTestCase>
+      kRegistrationSuccess(
+          {.test_name = "registration_success",
+           .http_status_code = net::HTTP_OK,
+           .raw_response_body = R"({ "authToken": null,
                                  "requiresEmailVerification": true,
                                  "requiresTwoFA": false,
                                  "sessionsInvalidated": false })",
-       .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_OK,
-           .body = PasswordFinalize::Response::SuccessBody()}});
-  return kSuccess.get();
+           .expected_response = {
+               .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+                 PasswordFinalize::Response::SuccessBody body;
+                 body.auth_token = base::Value();
+                 return body;
+               }()}});
+  return kRegistrationSuccess.get();
+}
+
+const PasswordFinalizeTestCase* PasswordResetSuccess() {
+  static const base::NoDestructor<PasswordFinalizeTestCase>
+      kPasswordResetSuccess(
+          {.test_name = "password_reset_success",
+           .http_status_code = net::HTTP_OK,
+           .raw_response_body = R"({ "authToken": "eyJhbGciOiJFUz",
+                                 "requiresEmailVerification": false,
+                                 "requiresTwoFA": false,
+                                 "sessionsInvalidated": true })",
+           .expected_response = {
+               .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+                 PasswordFinalize::Response::SuccessBody body;
+                 body.auth_token = base::Value("eyJhbGciOiJFUz");
+                 return body;
+               }()}});
+  return kPasswordResetSuccess.get();
 }
 
 // clang-format off
@@ -117,7 +138,8 @@ TEST_P(PasswordFinalizeTest, HandlesReplies) {
 
 INSTANTIATE_TEST_SUITE_P(PasswordFinalizeTestCases,
                          PasswordFinalizeTest,
-                         testing::Values(Success(),
+                         testing::Values(RegistrationSuccess(),
+                                         PasswordResetSuccess(),
                                          ApplicationJsonErrorCodeIsNull(),
                                          ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
