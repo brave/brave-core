@@ -517,6 +517,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Leo AI
       </message>
 
+      <!-- Screenshot feature strings -->
+      <message name="IDS_BRAVE_SCREENSHOT_BUBBLE_TITLE" desc="Title of the screenshot capture bubble and download selection dialog">
+        Capture screenshot
+      </message>
+
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
         Web Extensions Store

@@ -1422,6 +1422,7 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
+      "//brave/browser/ui/screenshot",
       "//components/constrained_window",
       "//ui/events",
       "//ui/views",

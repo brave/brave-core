@@ -249,7 +249,6 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
                       ui::PageTransition::PAGE_TRANSITION_FIRST);
     printing::PrintCompositeClient::CreateForWebContents(web_contents());
     pp_extractor_ = std::make_unique<PrintPreviewExtractor>(
-        web_contents(),
         base::BindRepeating([](content::WebContents* web_contents, bool is_pdf,
                                PrintPreviewExtractor::CaptureImagesCallback&&
                                    callback)
@@ -363,7 +362,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     base::test::TestFuture<
         base::expected<std::vector<std::vector<uint8_t>>, std::string>>
         future;
-    pp_extractor_->CaptureImages(future.GetCallback());
+    pp_extractor_->CaptureImages(web_contents(), future.GetCallback());
     auto result = future.Take();
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), "PrintPreviewFailed");
@@ -402,7 +401,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     base::test::TestFuture<
         base::expected<std::vector<std::vector<uint8_t>>, std::string>>
         future;
-    pp_extractor_->CaptureImages(future.GetCallback());
+    pp_extractor_->CaptureImages(web_contents(), future.GetCallback());
     auto result = future.Take();
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), expected_error_message);
@@ -499,7 +498,7 @@ TEST_F(PrintPreviewExtractorTest, CaptureImagesWithNonPdf) {
   base::test::TestFuture<
       base::expected<std::vector<std::vector<uint8_t>>, std::string>>
       future;
-  pp_extractor_->CaptureImages(future.GetCallback());
+  pp_extractor_->CaptureImages(web_contents(), future.GetCallback());
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), "PrintPreviewFailed");
@@ -584,7 +583,7 @@ TEST_F(PrintPreviewExtractorTest, PrintPreviewData) {
         MockPrintPreviewPrintRenderFrame::ExpectedError::kNone);
 
     base::test::TestFuture<ImageResult> future;
-    pp_extractor_->CaptureImages(future.GetCallback());
+    pp_extractor_->CaptureImages(web_contents(), future.GetCallback());
     RunTestCase(future, test_case.mime_type, test_case.expected_error_msg,
                 test_case.extractor_error,
                 test_case.simulate_partial_composition);

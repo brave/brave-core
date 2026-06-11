@@ -8,6 +8,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
+import("//printing/buildflags/buildflags.gni")
 
 source_set("internal") {
   sources = []
@@ -39,11 +40,17 @@ source_set("internal") {
   if (!is_android) {
     deps += [
       "//brave/browser/ui/focus_mode",
+      "//brave/browser/ui/screenshot",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tree_tab_session_manager",
       "//brave/browser/ui/views/page_info",
       "//chrome/browser/ui/tabs:features",
     ]
+  }
+
+  deps += [ "//printing/buildflags" ]
+  if (enable_print_preview) {
+    deps += [ "//brave/browser/screenshot" ]
   }
 
   if (enable_brave_rewards) {

@@ -12,32 +12,28 @@
 #include "brave/browser/screenshot/print_preview_extractor.h"
 #include "brave/browser/screenshot/print_preview_extractor_internal.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_contents.h"
 
 namespace screenshot {
 
 std::unique_ptr<PrintPreviewExtractor> CreatePrintPreviewExtractor(
-    content::WebContents* web_contents,
     base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>
         id_map_callback,
     base::RepeatingCallback<base::flat_map<int, int>&()>
         request_id_map_callback) {
-  return std::make_unique<PrintPreviewExtractor>(
-      web_contents,
-      base::BindRepeating(
-          [](base::RepeatingCallback<base::IDMap<
-                 printing::mojom::PrintPreviewUI*>&()> id_map_callback,
-             base::RepeatingCallback<base::flat_map<int, int>&()>
-                 request_id_map_callback,
-             content::WebContents* wc, bool is_pdf,
-             PrintPreviewExtractor::CaptureImagesCallback&& callback)
-              -> std::unique_ptr<PrintPreviewExtractor::Extractor> {
-            return std::make_unique<PrintPreviewExtractorInternal>(
-                wc, Profile::FromBrowserContext(wc->GetBrowserContext()),
-                is_pdf, std::move(callback), std::move(id_map_callback),
-                std::move(request_id_map_callback));
-          },
-          std::move(id_map_callback), std::move(request_id_map_callback)));
+  return std::make_unique<PrintPreviewExtractor>(base::BindRepeating(
+      [](base::RepeatingCallback<
+             base::IDMap<printing::mojom::PrintPreviewUI*>&()> id_map_callback,
+         base::RepeatingCallback<base::flat_map<int, int>&()>
+             request_id_map_callback,
+         content::WebContents* wc, bool is_pdf,
+         PrintPreviewExtractor::CaptureImagesCallback&& callback)
+          -> std::unique_ptr<PrintPreviewExtractor::Extractor> {
+        return std::make_unique<PrintPreviewExtractorInternal>(
+            wc, Profile::FromBrowserContext(wc->GetBrowserContext()), is_pdf,
+            std::move(callback), std::move(id_map_callback),
+            std::move(request_id_map_callback));
+      },
+      std::move(id_map_callback), std::move(request_id_map_callback)));
 }
 
 }  // namespace screenshot
