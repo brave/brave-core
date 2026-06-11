@@ -13,16 +13,17 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/url_util.h"
+#include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -248,6 +249,17 @@ void BraveSanitizedImageSource::StartImageDownload(
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = request_attributes.image_url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+
+  // Lazily initialize the pcdn domain
+  if (pcdn_domain_.empty()) {
+    pcdn_domain_ = brave_domains::GetServicesDomain("pcdn");
+  }
+
+  if (request_attributes.image_url.host() == pcdn_domain_) {
+    for (const auto& entry : brave::private_cdn_headers) {
+      request->headers.SetHeader(entry.first, entry.second);
+    }
+  }
   request->headers.SetHeader("Accept",
                              blink::network_utils::ImageAcceptHeader());
 

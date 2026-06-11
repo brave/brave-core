@@ -20,6 +20,7 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "components/image_fetcher/ios/ios_image_decoder_impl.h"
 #include "components/signin/public/identity_manager/primary_account_access_token_fetcher.h"
@@ -29,6 +30,7 @@
 #include "ios/chrome/browser/signin/model/identity_manager_factory.h"
 #include "ios/web/public/browser_state.h"
 #include "net/base/url_util.h"
+#include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/data_decoder/public/cpp/decode_image.h"
@@ -281,6 +283,18 @@ void SanitizedImageSource::StartImageDownload(
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = request_attributes.image_url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+
+  // Lazily initialize the pcdn domain
+  if (pcdn_domain_.empty()) {
+    pcdn_domain_ = brave_domains::GetServicesDomain("pcdn");
+  }
+
+  if (request_attributes.image_url.host() == pcdn_domain_) {
+    for (const auto& entry : brave::private_cdn_headers) {
+      request->headers.SetHeader(entry.first, entry.second);
+    }
+  }
+
   if (request_attributes.access_token_info) {
     request->headers.SetHeader(
         net::HttpRequestHeaders::kAuthorization,
