@@ -446,6 +446,12 @@ public abstract class BraveActivity extends ChromeActivity
                 mMiscAndroidMetrics.recordIntentUrl(resumeIntent.getData().toString());
             }
         }
+
+        Profile profile = mTabModelProfileSupplier.get();
+        if (profile != null) {
+            InAppPurchaseWrapper.getInstance()
+                    .maybeShowSubscriptionInAppMessages(BraveActivity.this, profile);
+        }
     }
 
     @Override
