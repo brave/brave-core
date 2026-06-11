@@ -28,13 +28,9 @@ extension BraveHistoryAPI {
       return nil
     }
 
-    let current = Date()
     let options = HistorySearchOptions(
       maxCount: 100,
-      hostOnly: false,
-      duplicateHandling: .removeAll,
-      begin: Calendar.current.date(byAdding: .hour, value: -24, to: current),  // last 24 hour
-      end: current
+      duplicateHandling: .removeAll
     )
 
     return search(
