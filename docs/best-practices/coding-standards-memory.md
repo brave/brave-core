@@ -706,13 +706,17 @@ instead. See
 class and struct fields should be written `const raw_ref<T>` or `raw_ptr<T>`
 rather than `T&` or `T*` whenever possible.** `raw_ptr<T>` is the default for
 non-owning fields. Choose `const raw_ref<T>` when the field must never be null —
-`const` prevents reseating (matching `T&` semantics), and `raw_ref<T>`
+`const` prevents rebinding (matching `T&` semantics), and `raw_ref<T>`
 communicates that the referenced object is expected to outlive the holder. Both
 types enforce that the pointee remains alive for as long as the field holds a
 reference to it: they detect use-after-free rather than silently operating on
 freed memory, and in doing so document the lifetime contract — whenever a field
 of either type holds a value, the expectation is that the memory it points to is
 alive.
+
+Drop the `const` qualifier (plain `raw_ref<T>`) only in the rare case where the
+field must never be null but does need to be rebound to a different referent
+after construction. Default to `const raw_ref<T>`.
 
 ```cpp
 // raw_ptr<T> - replaces T* fields (can be null or reassigned)
@@ -745,6 +749,13 @@ class MyService {
 **Use `CHECK_DEREF` when a pointer-returning function result must be stored in a
 `const raw_ref<T>` field.** It asserts non-null and converts to a reference,
 which is safer than `*ptr` (undefined behavior on null).
+
+**Don't reach for `CHECK_DEREF` reflexively.** When a function effectively never
+returns null in practice — e.g. `browser->GetProfile()` — wrapping it in
+`CHECK_DEREF` adds a redundant runtime check that upstream does not do. Reserve
+`CHECK_DEREF` for pointers that genuinely could be null; otherwise prefer
+storing the dependency as it comes (take a `T&` in the constructor, or
+dereference directly) without an extra assertion.
 
 **`RAW_PTR_EXCLUSION` (per-field) is acceptable only for:**
 
