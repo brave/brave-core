@@ -20,19 +20,15 @@ BackgroundWebContentsImpl::BackgroundWebContentsImpl(
     content::BrowserContext* browser_context,
     const GURL& url,
     Delegate* delegate,
-    WebContentsCreatedCallback web_contents_created_callback)
+    WebContentsCreatedCallback web_contents_created_callback,
+    network::mojom::WebSandboxFlags sandbox_flags)
     : delegate_(delegate), expected_url_(url) {
   DCHECK(browser_context);
   DCHECK(delegate);
 
   content::WebContents::CreateParams create_params(browser_context);
   create_params.is_never_composited = true;
-  // Sandbox everything except scripts (needed for JS/WASM execution)
-  // and origin (needed for Mojo WebUI bridge).
-  create_params.starting_sandbox_flags =
-      network::mojom::WebSandboxFlags::kAll &
-      ~network::mojom::WebSandboxFlags::kScripts &
-      ~network::mojom::WebSandboxFlags::kOrigin;
+  create_params.starting_sandbox_flags = sandbox_flags;
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetOwnerLocationForDebug(FROM_HERE);
 

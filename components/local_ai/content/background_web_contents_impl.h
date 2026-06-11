@@ -13,6 +13,7 @@
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/restricted_web_contents_delegate/restricted_web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "services/network/public/cpp/web_sandbox_flags.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -38,12 +39,23 @@ class BackgroundWebContentsImpl : public BackgroundWebContents,
   // |web_contents_created_callback| is an optional callback invoked
   // immediately after the WebContents is created (e.g. for task manager
   // tagging). It runs before navigation begins.
+  //
+  // |sandbox_flags| is the starting sandbox of the hidden WebContents.
+  // Defaults to "sandbox everything except scripts (needed for JS/WASM)
+  // and origin (needed for the Mojo WebUI bridge)". Pages that must be
+  // cross-origin isolated (COOP/COEP) need a relaxed value
+  // (WebSandboxFlags::kNone), since a sandboxed document can't become
+  // cross-origin isolated.
   BackgroundWebContentsImpl(
       content::BrowserContext* browser_context,
       const GURL& url,
       Delegate* delegate,
       WebContentsCreatedCallback web_contents_created_callback =
-          WebContentsCreatedCallback());
+          WebContentsCreatedCallback(),
+      network::mojom::WebSandboxFlags sandbox_flags =
+          network::mojom::WebSandboxFlags::kAll &
+          ~network::mojom::WebSandboxFlags::kScripts &
+          ~network::mojom::WebSandboxFlags::kOrigin);
   ~BackgroundWebContentsImpl() override;
 
   BackgroundWebContentsImpl(const BackgroundWebContentsImpl&) = delete;
