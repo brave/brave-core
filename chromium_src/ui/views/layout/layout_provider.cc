@@ -24,6 +24,9 @@ int LayoutProvider::GetCornerRadiusMetric(ShapeContextTokensOverride id) const {
       return 6;
     case ShapeContextTokensOverride::kRoundedCornersBorderRadiusAtWindowCorner:
 #if BUILDFLAG(IS_MAC)
+      if (base::mac::MacOSMajorVersion() >= 27) {
+        return 12;
+      }
       if (base::mac::MacOSMajorVersion() >= 26) {
         return 16;
       }
