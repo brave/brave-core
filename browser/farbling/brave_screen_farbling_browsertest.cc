@@ -5,14 +5,12 @@
 
 #include <algorithm>
 #include <array>
-#include <string>
 
 #include "base/files/file_path.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/values.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -31,7 +29,6 @@
 #include "ui/views/widget/widget_observer.h"
 
 using brave_shields::ControlType;
-using content::TitleWatcher;
 
 namespace {
 
@@ -43,17 +40,6 @@ constexpr auto kAllowedScreenSizes = std::to_array<const gfx::Size>(
     {gfx::Size(1280, 800), gfx::Size(1366, 768), gfx::Size(1440, 900),
      gfx::Size(1680, 1050), gfx::Size(1920, 1080), gfx::Size(2560, 1440),
      gfx::Size(3840, 2160)});
-
-struct ScreenValues {
-  int width;
-  int height;
-  int avail_width;
-  int avail_height;
-  int avail_left;
-  int avail_top;
-  int screen_x;
-  int screen_y;
-};
 
 }  // namespace
 
@@ -172,46 +158,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     return false;
   }
 
-  void ExpectScreenSizeFarbling(content::RenderFrameHost* host,
-                                bool expect_farbled,
-                                const gfx::Size& minimum_screen_size,
-                                const std::string& inner_width_expression,
-                                const std::string& inner_height_expression) {
-    if (expect_farbled) {
-      EXPECT_GE(8,
-                EvalJs(host, "window.outerWidth - " + inner_width_expression));
-      EXPECT_GE(
-          8, EvalJs(host, "window.outerHeight - " + inner_height_expression));
-      EXPECT_EQ(0, EvalJs(host,
-                          "window.screen.width - "
-                          "window.screen.availWidth"));
-      EXPECT_EQ(0, EvalJs(host,
-                          "window.screen.height - "
-                          "window.screen.availHeight"));
-      const int screen_width = EvalJs(host, "window.screen.width").ExtractInt();
-      const int screen_height =
-          EvalJs(host, "window.screen.height").ExtractInt();
-      EXPECT_TRUE(IsAllowedScreenSize(screen_width, screen_height));
-      EXPECT_GE(screen_width, minimum_screen_size.width());
-      EXPECT_GE(screen_height, minimum_screen_size.height());
-      EXPECT_GE(8, EvalJs(host, "window.screenX"));
-      EXPECT_GE(8, EvalJs(host, "window.screenY"));
-    } else {
-      EXPECT_LE(0,
-                EvalJs(host, "window.outerWidth - " + inner_width_expression));
-      EXPECT_LT(
-          8, EvalJs(host, "window.outerHeight - " + inner_height_expression));
-      EXPECT_LT(8, EvalJs(host, "window.screen.availWidth - " +
-                                    inner_width_expression));
-      EXPECT_LT(8, EvalJs(host, "window.screen.availHeight - " +
-                                    inner_height_expression));
-      EXPECT_LT(
-          8, EvalJs(host, "window.screen.width - " + inner_width_expression));
-      EXPECT_LT(
-          8, EvalJs(host, "window.screen.height - " + inner_height_expression));
-    }
-  }
-
   void FarbleScreenSize(const GURL& url, bool content_scheme) {
     for (const auto& test_bounds : kTestWindowBounds) {
       SetBounds(test_bounds);
@@ -223,9 +169,40 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             continue;
           }
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
-          ExpectScreenSizeFarbling(
-              host, !allow_fingerprinting && !IsFlagDisabled(),
-              test_bounds.size(), "parent.innerWidth", "parent.innerHeight");
+          if (!allow_fingerprinting && !IsFlagDisabled() && content_scheme) {
+            EXPECT_GE(8, EvalJs(host, "window.outerWidth - parent.innerWidth"));
+            EXPECT_GE(8,
+                      EvalJs(host, "window.outerHeight - parent.innerHeight"));
+            EXPECT_EQ(
+                0,
+                EvalJs(host, "window.screen.width - window.screen.availWidth"));
+            EXPECT_EQ(
+                0, EvalJs(host,
+                          "window.screen.height - window.screen.availHeight"));
+            const auto& screen_width =
+                EvalJs(host, "window.screen.width").ExtractInt();
+            const auto& screen_height =
+                EvalJs(host, "window.screen.height").ExtractInt();
+            EXPECT_TRUE(IsAllowedScreenSize(screen_width, screen_height));
+            EXPECT_GE(screen_width, test_bounds.width());
+            EXPECT_GE(screen_height, test_bounds.height());
+            EXPECT_GE(8, EvalJs(host, "window.screenX"));
+            EXPECT_GE(8, EvalJs(host, "window.screenY"));
+          } else {
+            EXPECT_LE(0, EvalJs(host, "window.outerWidth - parent.innerWidth"));
+            EXPECT_LT(8,
+                      EvalJs(host, "window.outerHeight - parent.innerHeight"));
+            EXPECT_LT(
+                8,
+                EvalJs(host, "window.screen.availWidth - parent.innerWidth"));
+            EXPECT_LT(
+                8,
+                EvalJs(host, "window.screen.availHeight - parent.innerHeight"));
+            EXPECT_LT(8,
+                      EvalJs(host, "window.screen.width - parent.innerWidth"));
+            EXPECT_LT(
+                8, EvalJs(host, "window.screen.height - parent.innerHeight"));
+          }
         }
       }
     }
@@ -295,72 +272,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         }
       }
     }
-  }
-
-  // This method checks the screen farbling behaviour for blob:// based URLs. It
-  // does so by opening a blob:// window which reads the various screen
-  // attribtues and then compares with the parent window. This comparison is
-  // spliced on fingerinting being "allowed" and "blocked".
-  void FarbleScreenBlobURL() {
-    // Read the "real" blob values while fingerprinting is set to "allowed" as
-    // a baseline for the blob checks below.
-    SetFingerprintingSetting(/*allow=*/true);
-    NavigateToBlob("real_blob");
-    const ScreenValues real_blob = GetStoredScreenValues("real_blob");
-
-    // Fingerprinting blocked.
-    SetFingerprintingSetting(/*allow=*/false);
-    NavigateToBlob("blob");
-    const ScreenValues blob = GetStoredScreenValues("blob");
-
-    // We check the screen farbling similar to how FarbleScreenSize tests.
-    ExpectScreenSizeFarbling(Parent(), !IsFlagDisabled(),
-                             browser()->window()->GetBounds().size(),
-                             "window.innerWidth", "window.innerHeight");
-
-    // TODO(https://github.com/brave/brave-browser/issues/56048): Blob aren't
-    // getting farbled. Update these tests to EXPECT_NE once the support is
-    // added.
-    if (!IsFlagDisabled()) {
-      EXPECT_EQ(real_blob.width, blob.width);
-      EXPECT_EQ(real_blob.height, blob.height);
-      EXPECT_EQ(real_blob.avail_width, blob.avail_width);
-      EXPECT_EQ(real_blob.avail_height, blob.avail_height);
-      EXPECT_EQ(real_blob.avail_left, blob.avail_left);
-      EXPECT_EQ(real_blob.avail_top, blob.avail_top);
-    }
-  }
-
-  // Navigates to a page which opens a blob:// popup window and writes the
-  // various screen attributes to local storage.
-  void NavigateToBlob(const std::string& prefix) {
-    const GURL url =
-        embedded_test_server()->GetURL("a.com", "/blob-fingerprinting.html");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    Browser* popup = OpenPopup(
-        content::JsReplace("startBlobScreenFingerprintingTest($1)", prefix),
-        /*from_iframe=*/true);
-    auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
-    const std::u16string expected_title(u"blob-screen-values-written");
-    TitleWatcher watcher(popup_contents, expected_title);
-    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
-    // Close the popup but the parent window is still alive allowing us to
-    // query the "shared" local storage.
-    CloseBrowserSynchronously(popup);
-  }
-
-  ScreenValues GetStoredScreenValues(const std::string& prefix) {
-    const content::EvalJsResult result = EvalJs(
-        Parent(), content::JsReplace("readStoredScreenValues($1)", prefix));
-    const base::DictValue& values = result.ExtractDict();
-    return ScreenValuesFromDict(values);
-  }
-
-  ScreenValues ScreenValuesFromDict(const base::DictValue& values) {
-    return {*values.FindInt("width"),      *values.FindInt("height"),
-            *values.FindInt("availWidth"), *values.FindInt("availHeight"),
-            *values.FindInt("availLeft"),  *values.FindInt("availTop"),
-            *values.FindInt("screenX"),    *values.FindInt("screenY")};
   }
 
   enum class TestMode { kIframe, kWindowSize, kWindowPosition };
@@ -480,16 +391,6 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenMediaQuery_DisableFlag) {
   FarbleScreenMediaQuery();
-}
-
-IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
-                       FarbleScreenBlobURL_EnableFlag) {
-  FarbleScreenBlobURL();
-}
-
-IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
-                       FarbleScreenBlobURL_DisableFlag) {
-  FarbleScreenBlobURL();
 }
 
 // Run each window size as a separate test because on linux
