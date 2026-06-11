@@ -27,6 +27,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
+import org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
@@ -563,6 +564,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         Preference homePagePreference = findPreference(MainSettings.PREF_HOMEPAGE);
         if (homePagePreference != null) {
             homePagePreference.setFragment(BraveHomepageSettings.class.getName());
+        }
+        Preference accessibilityPreference = findPreference(PREF_ACCESSIBILITY);
+        if (accessibilityPreference != null) {
+            accessibilityPreference.setFragment(BraveAccessibilitySettings.class.getName());
         }
     }
 

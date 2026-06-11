@@ -5,7 +5,9 @@
 
 package org.chromium.chrome.browser;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.ui.OverscrollAction;
 import org.chromium.ui.base.BackGestureEventSwipeEdge;
@@ -25,10 +27,16 @@ public class BraveSwipeRefreshHandler extends SwipeRefreshHandler {
     @Override
     public boolean start(
             @OverscrollAction int type, @BackGestureEventSwipeEdge int initiatingEdge) {
-        if (mIgnorePullToRefresh && type == OverscrollAction.PULL_TO_REFRESH) {
+        if (type == OverscrollAction.PULL_TO_REFRESH
+                && (mIgnorePullToRefresh || !isPullToRefreshEnabled())) {
             return true;
         }
 
         return super.start(type, initiatingEdge);
+    }
+
+    private static boolean isPullToRefreshEnabled() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.PREF_PULL_TO_REFRESH, true);
     }
 }
