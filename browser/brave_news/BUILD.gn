@@ -35,21 +35,21 @@ source_set("impl") {
     "brave_news_controller_factory.cc",
     "brave_news_tab_helper.cc",
     "direct_feed_fetcher_delegate_impl.cc",
+    "rss_links_fetcher.cc",
+    "rss_links_fetcher.h",
   ]
 
   if (is_android) {
     sources += [ "android/brave_news_controller_factory_android.cc" ]
   }
 
-  # brave_news_tab_helper.cc includes chrome/browser/feed/rss_links_fetcher.h,
-  # which lives in the //chrome/browser monolith. That circular include is
-  # permitted via allow_circular_includes_from in //brave/browser/sources.gni.
   deps = [
     ":brave_news",
     "//base",
     "//brave/browser:browser_process",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:rss_link_reader_mojom",
     "//brave/components/brave_policy:policy_initialization_waiter",
     "//brave/components/brave_shields/core/browser",
     "//chrome/browser/content_settings:content_settings_factory",
@@ -61,6 +61,9 @@ source_set("impl") {
     "//components/keyed_service/content",
     "//components/policy/core/common",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//url",
   ]
 
   if (is_android) {
