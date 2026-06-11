@@ -124,6 +124,7 @@ struct ManagePasswordsView: View {
         }
       }
     }
+    .listSectionSpacing(.compact)
     .scrollContentBackground(.hidden)
     .background((Color(.braveGroupedBackground)))
     .accessibilityHidden(isPrivacyOverlayActive)
