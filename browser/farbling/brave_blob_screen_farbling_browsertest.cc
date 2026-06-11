@@ -26,7 +26,6 @@ using content::TitleWatcher;
 namespace {
 
 constexpr char16_t kPassTitle[] = u"pass";
-constexpr char16_t kFailTitle[] = u"fail";
 constexpr gfx::Rect kTestWindowBounds(100, 100, 400, 400);
 
 }  // namespace
@@ -93,14 +92,10 @@ class BraveBlobScreenFarblingBrowserTest
     ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
 
     SetFingerprintingSetting(/*allow=*/false);
-    // TODO(https://github.com/brave/brave-browser/issues/56048): Expect pass
-    // once Shields are supported on blob:// URLs.
-    std::u16string expected_title = GetParam() ? kFailTitle : kPassTitle;
-    NavigateToBlob(expected_title);
+    NavigateToBlob(kPassTitle);
 
     SetFingerprintingSetting(/*allow=*/true);
-    expected_title = kPassTitle;
-    NavigateToBlob(expected_title);
+    NavigateToBlob(kPassTitle);
   }
 
   void NavigateToBlob(const std::u16string& expected_title) {
