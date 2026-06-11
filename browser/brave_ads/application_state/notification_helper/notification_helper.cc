@@ -9,7 +9,6 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/no_destructor.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
 #include "build/build_config.h"
@@ -90,12 +89,6 @@ NotificationHelper::NotificationHelper() {
 }
 
 NotificationHelper::~NotificationHelper() = default;
-
-// static
-NotificationHelper* NotificationHelper::GetInstance() {
-  static base::NoDestructor<NotificationHelper> instance;
-  return instance.get();
-}
 
 void NotificationHelper::MaybeInitForProfile(Profile* profile) {
   if (is_initialized_) {
