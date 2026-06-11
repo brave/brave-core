@@ -13,6 +13,9 @@ int VerticalTabStripWidgetDelegateView::GetVerticalTabStripCornerRadiusMac()
   // when hosted in browser view.
   CHECK(!base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded));
 
+  if (@available(macOS 27, *)) {
+    return 16;
+  }
   if (@available(macOS 26, *)) {
     return 20;
   }
