@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/net/features.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/screenshot/features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -1424,6 +1425,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       "Enables Brave Origin features and settings.",                           \
       kOsDesktop | kOsAndroid,                                                 \
       FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),                \
+  })                                                                           \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "brave-screenshot",                                                      \
+      "Enable Brave Screenshot",                                               \
+      "Adds a toolbar button for capturing the visible area or full page as "  \
+      "a PNG.",                                                                \
+      kOsDesktop,                                                              \
+      FEATURE_VALUE_TYPE(screenshot::features::kBraveScreenshot),              \
   })                                                                           \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {

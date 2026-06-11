@@ -1425,6 +1425,7 @@ source_set("ui") {
       "//components/constrained_window",
       "//ui/events",
       "//ui/views",
+      "//brave/browser/ui/screenshot",
     ]
   }
 
