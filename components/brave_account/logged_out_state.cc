@@ -184,7 +184,8 @@ void LoggedOutState::OnRegisterInitialize(RegisterInitializeCallback callback,
           .and_then([&](auto success_body)
                         -> base::expected<mojom::RegisterInitializeResultPtr,
                                           mojom::RegisterErrorPtr> {
-            if (success_body.verification_token.empty() ||
+            if (!success_body.verification_token ||
+                success_body.verification_token->empty() ||
                 success_body.serialized_response.empty()) {
               return base::unexpected(MakeServerError<mojom::RegisterError>(
                   status_code,
@@ -192,7 +193,7 @@ void LoggedOutState::OnRegisterInitialize(RegisterInitializeCallback callback,
             }
 
             std::string encrypted_verification_token =
-                Encrypt(success_body.verification_token);
+                Encrypt(*success_body.verification_token);
             if (encrypted_verification_token.empty()) {
               return base::unexpected(MakeClientError<mojom::RegisterError>(
                   mojom::RegisterClientErrorCode::
