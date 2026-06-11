@@ -38,6 +38,16 @@ const display::ScreenInfos& ChromeClientImpl::BraveGetScreenInfos(
   if (!dom_window) {
     return GetScreenInfos(frame);
   }
+  // Share the opener's window/execution context (and therefore its
+  // BraveSessionCache and farbling seed) so that a popup (e.g. a blob:// URL)
+  // farbles the screen identically to the window that opened it. This mirrors
+  // the opener-context handling in LocalDOMWindow::screenX/screenY/outerWidth/
+  // outerHeight and keeps screen.* values consistent between opener and popup.
+  if (DOMWindow* opener_window = dom_window->opener()) {
+    if (auto* local_opener = DynamicTo<LocalDOMWindow>(opener_window)) {
+      dom_window = local_opener;
+    }
+  }
   ExecutionContext* context = dom_window->GetExecutionContext();
   if (!brave::BlockScreenFingerprinting(context)) {
     return GetScreenInfos(frame);
