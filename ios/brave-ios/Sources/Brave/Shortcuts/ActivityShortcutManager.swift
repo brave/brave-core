@@ -186,6 +186,9 @@ public class ActivityShortcutManager: NSObject {
     case .clearBrowsingHistory:
       bvc.clearHistoryAndOpenNewTab()
     case .enableBraveVPN:
+      if !bvc.profileController.profile.prefs.isBraveVPNAvailable {
+        return
+      }
       // need to stay in NTP for Brave VPN flow
       openExternalNewTab(bvc.privateBrowsingManager.isPrivateBrowsing, false)
 
@@ -198,6 +201,10 @@ public class ActivityShortcutManager: NSObject {
         }
       }
     case .openBraveNews:
+      if !bvc.profileController.profile.prefs.isBraveNewsAvailable {
+        return
+      }
+
       // Do nothing as browser when browser to PB only and Brave News isn't available on private tabs
       guard !Preferences.Privacy.privateBrowsingOnly.value else {
         return
@@ -229,6 +236,10 @@ public class ActivityShortcutManager: NSObject {
         bvc.present(container, animated: true)
       }
     case .openPlayList:
+      if !bvc.profileController.profile.prefs.isPlaylistAvailable {
+        return
+      }
+
       bvc.popToBVC()
 
       let tab = bvc.tabManager.selectedTab

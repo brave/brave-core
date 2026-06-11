@@ -761,7 +761,11 @@ class SettingsViewController: TableViewController {
           text: Strings.Shortcuts.shortcutSettingsTitle,
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
-              ShortcutSettingsViewController(),
+              ShortcutSettingsViewController(
+                isPlaylistAvailable: braveCore.profile.prefs.isPlaylistAvailable,
+                isBraveVPNAvailable: braveCore.profile.prefs.isBraveVPNAvailable,
+                isBraveNewsAvailable: braveCore.profile.prefs.isBraveNewsAvailable
+              ),
               animated: true
             )
           },

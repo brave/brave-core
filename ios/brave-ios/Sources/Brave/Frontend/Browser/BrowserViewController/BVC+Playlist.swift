@@ -299,6 +299,9 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
     item: PlaylistInfo?,
     playbackOffset: Double
   ) {
+    if !profileController.profile.prefs.isPlaylistAvailable {
+      return
+    }
     let playlistController = PlaylistCoordinator.shared.getPlaylistController(
       tab: tab,
       profile: profileController.profile,
