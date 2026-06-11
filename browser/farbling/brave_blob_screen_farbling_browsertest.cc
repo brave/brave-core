@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <string>
-
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -25,7 +23,6 @@ using content::TitleWatcher;
 
 namespace {
 
-constexpr char16_t kPassTitle[] = u"pass";
 constexpr gfx::Rect kTestWindowBounds(100, 100, 400, 400);
 
 }  // namespace
@@ -92,13 +89,13 @@ class BraveBlobScreenFarblingBrowserTest
     ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
 
     SetFingerprintingSetting(/*allow=*/false);
-    NavigateToBlob(kPassTitle);
+    NavigateToBlob();
 
     SetFingerprintingSetting(/*allow=*/true);
-    NavigateToBlob(kPassTitle);
+    NavigateToBlob();
   }
 
-  void NavigateToBlob(const std::u16string& expected_title) {
+  void NavigateToBlob() {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
     content::ExecuteScriptAsync(Parent(),
                                 "startBlobScreenFingerprintingTest()");
@@ -107,8 +104,8 @@ class BraveBlobScreenFarblingBrowserTest
     auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
 
     EXPECT_TRUE(WaitForRenderFrameReady(popup_contents->GetPrimaryMainFrame()));
-    TitleWatcher watcher(popup_contents, expected_title);
-    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+    TitleWatcher watcher(popup_contents, u"pass");
+    EXPECT_EQ(u"pass", watcher.WaitAndGetTitle());
     CloseBrowserSynchronously(popup);
   }
 
