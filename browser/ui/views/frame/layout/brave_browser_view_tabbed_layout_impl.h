@@ -26,10 +26,14 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // Pure geometry helpers used by CalculateSideBarLayout. Exposed as public
   // static so tests can call them directly without special access.
   //
-  // Returns the bounds for the sidebar control view given its side, width,
-  // the outer (browser-edge) limits already inset for any vertical tab on the
-  // same side, and the vertical extents of the contents area.
-  static gfx::Rect ComputeSidebarBounds(bool sidebar_on_left,
+  // All bounds are in stored (pre-paint-mirroring) coordinates, following the
+  // upstream convention: `leading` means the lowest-X edge, which renders on
+  // the visual right in RTL.
+  //
+  // Returns the bounds for the sidebar control view given its leading edge,
+  // width, the outer (browser-edge) limits already inset for any vertical tab
+  // on the same side, and the vertical extents of the contents area.
+  static gfx::Rect ComputeSidebarBounds(bool sidebar_leading,
                                         int sidebar_width,
                                         int outer_left,
                                         int outer_right,
@@ -39,7 +43,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // between the contents area and the sidebar control view.  The panel is
   // shifted inward (toward the centre of the browser) until it is flush with
   // the inner edge of |sidebar_bounds|.
-  static gfx::Rect ComputeAdjustedPanelBounds(bool sidebar_on_left,
+  static gfx::Rect ComputeAdjustedPanelBounds(bool sidebar_leading,
                                               const gfx::Rect& sidebar_bounds,
                                               const gfx::Rect& panel_bounds);
 
@@ -83,6 +87,14 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   gfx::Insets GetContentsMargins() const;
   bool ShouldPushBookmarkBarForVerticalTabs() const;
   gfx::Insets GetInsetsConsideringVerticalTabHost() const;
+
+  // Whether the sidebar / vertical tab strip occupies the leading (lowest-X)
+  // edge in stored coordinates. As stored bounds are paint-mirrored in RTL,
+  // these flip the user's alignment pref so the visual side always matches
+  // the pref. This is the same conversion upstream does for its side panel
+  // (`side_panel_leading` in BrowserViewTabbedLayoutImpl).
+  bool IsSidebarLeading() const;
+  bool IsVerticalTabStripLeading() const;
 
 #if BUILDFLAG(IS_MAC)
   gfx::Insets AddFrameBorderInsets(const gfx::Insets& insets) const;

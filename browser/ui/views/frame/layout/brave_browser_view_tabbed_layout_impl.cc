@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/i18n/rtl.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -62,34 +63,37 @@ void BraveBrowserViewTabbedLayoutImpl::ConfigureTopContainerBackground(
 
 // static
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeSidebarBounds(
-    bool sidebar_on_left,
+    bool sidebar_leading,
     int sidebar_width,
     int outer_left,
     int outer_right,
     int y,
     int height) {
-  const int x = sidebar_on_left ? outer_left : outer_right - sidebar_width;
+  const int x = sidebar_leading ? outer_left : outer_right - sidebar_width;
   return gfx::Rect(x, y, sidebar_width, height);
 }
 
 // static
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-    bool sidebar_on_left,
+    bool sidebar_leading,
     const gfx::Rect& sidebar_bounds,
     const gfx::Rect& panel_bounds) {
   // The upstream layout animates the panel by varying panel.x:
-  //   right panel: x = right_edge - visible_width  (slides in from the right)
-  //   left  panel: x = left_edge  - (target - visible_width) (from the left)
+  //   trailing panel: x = right_edge - visible_width (slides in from high X)
+  //   leading  panel: x = left_edge - (target - visible_width) (from low X)
   //
   // Shifting by ±sidebar_width offsets the whole slide range without changing
   // the animation value, so the panel animates correctly against the sidebar
-  // edge instead of the browser edge.
+  // edge instead of the browser edge. The sidebar and the upstream panel share
+  // the alignment pref, so `sidebar_leading` matches upstream's
+  // `side_panel_leading` and the shift direction agrees with where upstream
+  // placed the panel.
   gfx::Rect result = panel_bounds;
-  if (sidebar_on_left) {
-    // Sidebar on left: shift panel right by sidebar width.
+  if (sidebar_leading) {
+    // Sidebar at the leading edge: shift panel toward high X.
     result.set_x(panel_bounds.x() + sidebar_bounds.width());
   } else {
-    // Sidebar on right: shift panel left by sidebar width.
+    // Sidebar at the trailing edge: shift panel toward low X.
     result.set_x(panel_bounds.x() - sidebar_bounds.width());
   }
   return result;
@@ -198,29 +202,6 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
       insets.set_bottom(0);
       infobar_layout->bounds.Inset(insets);
     }
-  }
-
-  // Mirroring all views that affected by vertical tab alignment in RTL mode
-  // as vertical tab/sidebar follow user's setting for their alignment.
-  // Each views' mirrored bounds are what we're seeing in RTL mode.
-  contents_layout->bounds =
-      views().browser_view->GetMirroredRect(contents_layout->bounds);
-  if (auto* bookmark_layout = layout.GetLayoutFor(views().bookmark_bar)) {
-    bookmark_layout->bounds =
-        views().browser_view->GetMirroredRect(bookmark_layout->bounds);
-  }
-  if (auto* infobar_layout = layout.GetLayoutFor(views().infobar_container)) {
-    infobar_layout->bounds =
-        views().browser_view->GetMirroredRect(infobar_layout->bounds);
-  }
-  if (auto* sidebar_layout = layout.GetLayoutFor(views().sidebar_container)) {
-    sidebar_layout->bounds =
-        views().browser_view->GetMirroredRect(sidebar_layout->bounds);
-  }
-  if (auto* vertical_tab_host_layout =
-          layout.GetLayoutFor(views().vertical_tab_strip_host)) {
-    vertical_tab_host_layout->bounds =
-        views().browser_view->GetMirroredRect(vertical_tab_host_layout->bounds);
   }
 
   return layout;
@@ -407,7 +388,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   const int width =
       views().vertical_tab_strip_host->GetPreferredSize().width() +
       insets.width();
-  if (delegate().IsVerticalTabOnRight()) {
+  if (!IsVerticalTabStripLeading()) {
     vertical_tab_strip_bounds.set_x(vertical_tab_strip_bounds.right() - width);
   }
   vertical_tab_strip_bounds.set_width(width);
@@ -427,15 +408,18 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
 
   gfx::Rect contents_bounds = contents_layout->bounds;
 
-  const bool on_left = views().sidebar_container->sidebar_on_left();
+  const bool sidebar_leading = IsSidebarLeading();
 
   // The sidebar is always the outermost element on its side (only the vertical
   // tab, when on the same side, sits further out).
   //
-  // Desired LTR layout (sidebar right):
+  // All bounds here are in stored coordinates; `leading` is the lowest-X edge
+  // (rendered on the visual right in RTL).
+  //
+  // Desired layout (sidebar trailing):
   //   [vertical_tab] [contents] [panel] [sidebar]
   //   [contents] [panel] [sidebar] [vertical_tab]
-  // Desired LTR layout (sidebar left):
+  // Desired layout (sidebar leading):
   //   [vertical_tab] [sidebar] [panel] [contents]
   //   [sidebar] [panel] [contents] [vertical_tab]
   //
@@ -447,19 +431,20 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   // in this function is a no-op in V1 and meaningful only in V2.
 
   // Vertical tab is outermost when on the same side as the sidebar.
-  const bool vtab_on_same_side = views().vertical_tab_strip_host &&
-                                 delegate().ShouldShowVerticalTabs() &&
-                                 (on_left != delegate().IsVerticalTabOnRight());
+  const bool vtab_on_same_side =
+      views().vertical_tab_strip_host && delegate().ShouldShowVerticalTabs() &&
+      (sidebar_leading == IsVerticalTabStripLeading());
   const int vtab_width =
       vtab_on_same_side
           ? views().vertical_tab_strip_host->GetPreferredSize().width()
           : 0;
 
-  // Outer available edge in logical (pre-mirroring) coordinates, inset for
-  // any vertical tab on the same side.
+  // Outer available edges, inset for any vertical tab on the same side.
   const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
-  const int outer_left = browser_bounds.x() + (on_left ? vtab_width : 0);
-  const int outer_right = browser_bounds.right() - (on_left ? 0 : vtab_width);
+  const int outer_left =
+      browser_bounds.x() + (sidebar_leading ? vtab_width : 0);
+  const int outer_right =
+      browser_bounds.right() - (sidebar_leading ? 0 : vtab_width);
 
   // Sidebar width capped at 80% of the space shared between contents and
   // sidebar (contents_bounds.width()).  In V1 this is the full available width
@@ -467,9 +452,9 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   // width, but the sidebar control is narrow enough that the cap never fires.
   const int sidebar_width = GetIdealSideBarWidth(contents_bounds.width());
 
-  const gfx::Rect sidebar_bounds =
-      ComputeSidebarBounds(on_left, sidebar_width, outer_left, outer_right,
-                           contents_bounds.y(), contents_bounds.height());
+  const gfx::Rect sidebar_bounds = ComputeSidebarBounds(
+      sidebar_leading, sidebar_width, outer_left, outer_right,
+      contents_bounds.y(), contents_bounds.height());
 
   // Shift upstream side panels (V2 only; no-op in V1 since those panels are
   // inside sidebar_container and are not top-level layout entries) inward so
@@ -482,8 +467,8 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     if (!panel_layout) {
       return;
     }
-    panel_layout->bounds = ComputeAdjustedPanelBounds(on_left, sidebar_bounds,
-                                                      panel_layout->bounds);
+    panel_layout->bounds = ComputeAdjustedPanelBounds(
+        sidebar_leading, sidebar_bounds, panel_layout->bounds);
     // The upstream layout offsets the panel -1px above the contents to overlap
     // the toolbar separator. Brave doesn't need that overlap; align the panel's
     // vertical extent with the contents container instead.
@@ -493,7 +478,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   adjust_panel(views().side_panel.get());
 
   // Reduce contents bounds by the sidebar width on the sidebar side.
-  if (on_left) {
+  if (sidebar_leading) {
     contents_bounds.Inset(gfx::Insets().set_left(sidebar_width));
   } else {
     contents_bounds.Inset(gfx::Insets().set_right(sidebar_width));
@@ -554,10 +539,10 @@ void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
         delegate().ShouldUseBraveWebViewRoundedCornersForContents()
             ? (tabs::kMarginForVerticalTabContainers / 2)
             : 0;
-    if (delegate().IsVerticalTabOnRight()) {
-      contents_margins.set_right(margin_with_vertical_tab);
-    } else {
+    if (IsVerticalTabStripLeading()) {
       contents_margins.set_left(margin_with_vertical_tab);
+    } else {
+      contents_margins.set_right(margin_with_vertical_tab);
     }
   }
 
@@ -579,9 +564,8 @@ void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
 
   // If sidebar UI is only shown, contents container should have margin
   // based on sidebar's position because sidebar UI itself has padding always.
-  // If sidebar is shown in left-side, contents container doesn't need its
-  // left margin.
-  if (views().sidebar_container->sidebar_on_left()) {
+  // The contents container doesn't need the full margin on the sidebar side.
+  if (IsSidebarLeading()) {
     contents_margins.set_left(contents_margin_for_rounded_corners);
   } else {
     contents_margins.set_right(contents_margin_for_rounded_corners);
@@ -692,17 +676,29 @@ bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()
          delegate().IsBookmarkBarVisible();
 }
 
+bool BraveBrowserViewTabbedLayoutImpl::IsSidebarLeading() const {
+  // In stored coordinates, the leading (lowest-X) edge renders on the visual
+  // left in LTR and the visual right in RTL. Flip the pref in RTL so the
+  // sidebar always appears on the visual side the user chose.
+  return views().sidebar_container->sidebar_on_left() != base::i18n::IsRTL();
+}
+
+bool BraveBrowserViewTabbedLayoutImpl::IsVerticalTabStripLeading() const {
+  // See IsSideBarLeading() for the polarity rationale.
+  return delegate().IsVerticalTabOnRight() == base::i18n::IsRTL();
+}
+
 gfx::Insets
 BraveBrowserViewTabbedLayoutImpl::GetInsetsConsideringVerticalTabHost() const {
   // This method is used only when vertical tab strip host is set
   CHECK(views().vertical_tab_strip_host);
 
   gfx::Insets insets;
-  if (delegate().IsVerticalTabOnRight()) {
-    insets.set_right(
+  if (IsVerticalTabStripLeading()) {
+    insets.set_left(
         views().vertical_tab_strip_host->GetPreferredSize().width());
   } else {
-    insets.set_left(
+    insets.set_right(
         views().vertical_tab_strip_host->GetPreferredSize().width());
   }
 
