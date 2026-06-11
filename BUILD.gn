@@ -726,7 +726,10 @@ if (is_mac) {
     deps = [ ":brave_app_plist" ]
 
     if (enable_brave_vpn_v2_bundling) {
-      deps += [ "//brave/components/brave_vpn/app/v2/agent:brave_vpn_agent_launchd_plist_data" ]
+      deps += [
+        "//brave/components/brave_vpn/app/v2/agent:brave_vpn_agent_launchd_plist_data",
+        "//brave/components/brave_vpn/app/v2/helper:brave_vpn_helper_launchd_plist_data",
+      ]
     }
   }
 
