@@ -108,10 +108,12 @@ repack("resources") {
     deps += [
       "//brave/components/local_ai/resources:local_ai_generated",
       "//brave/components/local_ai/resources/candle_embedding_gemma:candle_embedding_module_generated",
+      "//brave/components/local_ai/resources/speech_worker_ort:ort_dist_generated",
     ]
     sources += [
       "$root_gen_dir/brave/components/local_ai/resources/candle_embedding_module_generated.pak",
       "$root_gen_dir/brave/components/local_ai/resources/local_ai_generated.pak",
+      "$root_gen_dir/brave/components/local_ai/resources/ort_dist_generated.pak",
     ]
   }
 
