@@ -6,14 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_TRIGGERS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_TRIGGERS_H_
 
-#include "ui/base/class_property.h"
-
-#define kPageActionTriggerKey \
-  kPageActionTriggerKey;      \
-  extern const ui::ClassProperty<int>* const kBravePageActionEventFlagKey
-
 #include <chrome/browser/ui/page_actions/page_action_triggers.h>  // IWYU pragma: export
 
-#undef kPageActionTriggerKey
+#include "ui/base/class_property.h"
+namespace page_actions {
+extern const ui::ClassProperty<int>* const kBravePageActionEventFlagKey;
+}  // namespace page_actions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_TRIGGERS_H_

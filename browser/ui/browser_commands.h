@@ -18,6 +18,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/events/event_constants.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -27,10 +28,6 @@ class ActionItem;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
-#endif
-
-#if BUILDFLAG(ENABLE_PSST)
-#include "ui/events/event_constants.h"
 #endif
 
 class Browser;
