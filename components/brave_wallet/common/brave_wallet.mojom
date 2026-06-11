@@ -1173,6 +1173,13 @@ interface KeyringService {
   // Creates a new wallet and encrypts it using the specified password
   CreateWallet(string password) => (string? mnemonic);
 
+  // Creates a new wallet with given password and mnemonic.
+  CreateWalletWithMnemonic(string mnemonic, string password)
+      => (string? mnemonic);
+
+  // Generate mnemonic. Only 12 and 24 words are supported for now.
+  GenerateMnemonic(int32 word_count) => (string? mnemonic);
+
   // Obtains the mnemonic code words for an already existing wallet
   GetWalletMnemonic(string password) => (string? mnemonic);
 
