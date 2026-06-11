@@ -21,6 +21,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/http/http_request_headers.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -78,6 +79,17 @@ class BraveSanitizedImageSourceTest : public testing::Test {
               const auto accept_header = request.headers.GetHeader("Accept");
               ASSERT_TRUE(accept_header.has_value());
               EXPECT_NE(accept_header->find("image/webp"), std::string::npos);
+
+              const auto user_agent = request.headers.GetHeader(
+                  net::HttpRequestHeaders::kUserAgent);
+
+              const bool is_pcdn = url.host() == "pcdn.brave.com";
+
+              ASSERT_EQ(user_agent.has_value(), is_pcdn);
+
+              const auto accept_language = request.headers.GetHeader(
+                  net::HttpRequestHeaders::kAcceptLanguage);
+              ASSERT_EQ(accept_language.has_value(), is_pcdn);
             });
     test_url_loader_factory_.SetInterceptor(std::move(interceptor));
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
