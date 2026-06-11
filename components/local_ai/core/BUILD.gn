@@ -21,7 +21,9 @@ mojom_component("mojom") {
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
-source_set("features") {
+component("features") {
+  defines = [ "IS_LOCAL_AI_FEATURES_IMPL" ]
+
   sources = [
     "features.cc",
     "features.h",

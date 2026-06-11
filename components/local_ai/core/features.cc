@@ -4,3 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/local_ai/core/features.h"
+
+namespace local_ai {
+
+BASE_FEATURE(kBraveOnDeviceSpeechRecognition,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+}  // namespace local_ai
