@@ -281,6 +281,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
+      &history::kHistoryMoreSearchResults,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
