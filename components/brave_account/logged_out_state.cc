@@ -275,14 +275,16 @@ void LoggedOutState::OnRegisterVerify(RegisterVerifyCallback callback,
           .and_then([&](auto success_body)
                         -> base::expected<mojom::RegisterVerifyResultPtr,
                                           mojom::RegisterErrorPtr> {
-            if (success_body.auth_token.empty() || success_body.email.empty()) {
+            if (!success_body.auth_token.is_string() ||
+                success_body.auth_token.GetString().empty() ||
+                success_body.email.empty()) {
               return base::unexpected(MakeServerError<mojom::RegisterError>(
                   status_code,
                   mojom::RegisterServerErrorCode::kInvalidResponse));
             }
 
             if (encrypted_authentication_token =
-                    Encrypt(success_body.auth_token);
+                    Encrypt(success_body.auth_token.GetString());
                 encrypted_authentication_token.empty()) {
               return base::unexpected(MakeClientError<mojom::RegisterError>(
                   mojom::RegisterClientErrorCode::

@@ -27,9 +27,9 @@ namespace {
 
 using VerifyCompleteTestCase = EndpointTestCase<VerifyComplete>;
 
-const VerifyCompleteTestCase* Success() {
-  static const base::NoDestructor<VerifyCompleteTestCase> kSuccess(
-      {.test_name = "success",
+const VerifyCompleteTestCase* RegistrationSuccess() {
+  static const base::NoDestructor<VerifyCompleteTestCase> kRegistrationSuccess(
+      {.test_name = "registration_success",
        .http_status_code = net::HTTP_OK,
        .raw_response_body = R"({ "authToken": "34c375d933e3c",
                                  "email": "email",
@@ -37,11 +37,28 @@ const VerifyCompleteTestCase* Success() {
        .expected_response = {
            .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
              VerifyComplete::Response::SuccessBody body;
-             body.auth_token = "34c375d933e3c";
+             body.auth_token = base::Value("34c375d933e3c");
              body.email = "email";
              return body;
            }()}});
-  return kSuccess.get();
+  return kRegistrationSuccess.get();
+}
+
+const VerifyCompleteTestCase* PasswordResetSuccess() {
+  static const base::NoDestructor<VerifyCompleteTestCase> kPasswordResetSuccess(
+      {.test_name = "password_reset_success",
+       .http_status_code = net::HTTP_OK,
+       .raw_response_body = R"({ "authToken": null,
+                                 "email": "email",
+                                 "service": "accounts" })",
+       .expected_response = {
+           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+             VerifyComplete::Response::SuccessBody body;
+             body.auth_token = base::Value();
+             body.email = "email";
+             return body;
+           }()}});
+  return kPasswordResetSuccess.get();
 }
 
 // clang-format off
@@ -120,7 +137,8 @@ TEST_P(VerifyCompleteTest, HandlesReplies) {
 
 INSTANTIATE_TEST_SUITE_P(VerifyCompleteTestCases,
                          VerifyCompleteTest,
-                         testing::Values(Success(),
+                         testing::Values(RegistrationSuccess(),
+                                         PasswordResetSuccess(),
                                          ApplicationJsonErrorCodeIsNull(),
                                          ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
