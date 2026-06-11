@@ -15,3 +15,22 @@ substitutions:
                     browser->profile(), navigations, selected_navigation)
       #endif  // BUILDFLAG(ENABLE_CONTAINERS)
         ))
+
+  - description: |-
+      Try restoration of tree tab hierarchy when restoring a tab after calling 
+      AddRestoredTabImpl()
+    re_pattern: 'return (AddRestoredTabImpl\(.*?\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      content::WebContents* restored_contents = \1
+        return MaybeRestoreTabTreeHierarchy(browser, restored_contents, extra_data);
+
+  - description: |-
+      Try restoration of tree tab hierarchy when restoring a tab in
+      ReplaceRestoredTab() right before returning the new contents
+    re_pattern:
+      '(WebContents\*\ ReplaceRestoredTab\(.*?)(return\ raw_web_contents;)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1MaybeRestoreTabTreeHierarchy(browser, raw_web_contents, extra_data);
+        \2

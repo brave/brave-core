@@ -10,6 +10,7 @@
 #include "base/containers/map_util.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/sessions/brave_session_keys.h"
@@ -22,6 +23,7 @@
 #include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -226,6 +228,23 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
           .ToString();
     }
     return std::string();
+  }
+
+  // Returns the TreeTabNodeTabCollection for the tab at |index|, or nullptr.
+  const tabs::TreeTabNodeTabCollection* GetTreeCollectionForTab(
+      BraveTabStripModel* model,
+      int index) {
+    const tabs::TabInterface* tab = model->GetTabAtIndex(index);
+    const tabs::TabCollection* parent = tab->GetParentCollection();
+    if (parent && parent->type() == tabs::TabCollection::Type::TREE_NODE) {
+      return static_cast<const tabs::TreeTabNodeTabCollection*>(parent);
+    }
+    return nullptr;
+  }
+
+  // Convenience overload for the default browser().
+  const tabs::TreeTabNodeTabCollection* GetTreeCollectionForTab(int index) {
+    return GetTreeCollectionForTab(brave_tab_strip_model(), index);
   }
 
   SessionService* session_service() {
@@ -594,4 +613,126 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
       base::FindOrNull(restored_tab->extra_data, kBraveTreeParentNodeIdKey));
   EXPECT_FALSE(
       base::FindOrNull(restored_tab->extra_data, kBraveTreeNodeCollapsedKey));
+}
+
+// Verifies that closing a child tree tab and restoring it via Ctrl+Shift+T
+// (ReplaceRestoredTab path) puts the tab back under its original parent node.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       RestoreClosedTreeChildTabRestoresHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Build A (root at 0) -> B (child of A at 1).
+  auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
+  {
+    auto tab_b = std::make_unique<tabs::TabModel>(
+        content::WebContents::Create(
+            content::WebContents::CreateParams(browser()->profile())),
+        browser()->tab_strip_model());
+    tab_b->set_opener(tab_a_iface);
+    brave_tab_strip_model()->AddTab(
+        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  // Navigate B so TabRestoreService records it (tabs with no committed entry
+  // are skipped during capture).
+  content::WebContents* wc_b =
+      browser()->tab_strip_model()->GetWebContentsAt(1);
+  ASSERT_TRUE(wc_b);
+  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+
+  // Verify the initial hierarchy before closing.
+  const auto* coll_a = GetTreeCollectionForTab(0);
+  const auto* coll_b = GetTreeCollectionForTab(1);
+  ASSERT_TRUE(coll_a && coll_b);
+  ASSERT_EQ(coll_b->GetParentCollection(), coll_a)
+      << "B should be nested under A before close";
+
+  // Record A's node ID — it must survive the close+restore cycle unchanged.
+  const std::string node_a_id = coll_a->node().id().ToString();
+
+  // Close B (CLOSE_CREATE_HISTORICAL_TAB populates TabRestoreService).
+  browser()->tab_strip_model()->CloseWebContentsAt(
+      1, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  ASSERT_EQ(1, browser()->tab_strip_model()->count());
+
+  // Restore B via chrome::RestoreTab (Ctrl+Shift+T equivalent).
+  ui_test_utils::TabAddedWaiter tab_added_waiter(browser());
+  chrome::RestoreTab(browser());
+  tab_added_waiter.Wait();
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // After restoration, B's tree node must still be nested under A's tree node.
+  const auto* restored_coll_b = GetTreeCollectionForTab(1);
+  ASSERT_TRUE(restored_coll_b) << "Restored tab B must be inside a tree node";
+  EXPECT_EQ(restored_coll_b->GetParentCollection(), coll_a)
+      << "Restored B must be nested under A's tree node";
+}
+
+// Verifies that closing a browser window containing a parent-child tree tab
+// pair and then restoring the window (AddRestoredTab path, same as session
+// restore on browser restart) reconstructs the tree hierarchy.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       RestoreClosedWindowPreservesTreeTabHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Navigate tab A so the session records a committed entry for it.
+  content::WebContents* wc_a =
+      browser()->tab_strip_model()->GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(wc_a, GURL("about:blank")));
+
+  // Build A (root at 0) -> B (child of A at 1).
+  auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
+  {
+    auto tab_b = std::make_unique<tabs::TabModel>(
+        content::WebContents::Create(
+            content::WebContents::CreateParams(browser()->profile())),
+        browser()->tab_strip_model());
+    tab_b->set_opener(tab_a_iface);
+    brave_tab_strip_model()->AddTab(
+        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  content::WebContents* wc_b =
+      browser()->tab_strip_model()->GetWebContentsAt(1);
+  ASSERT_TRUE(wc_b);
+  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+
+  // Verify initial hierarchy.
+  const auto* coll_a = GetTreeCollectionForTab(0);
+  const auto* coll_b = GetTreeCollectionForTab(1);
+  ASSERT_TRUE(coll_a && coll_b);
+  ASSERT_EQ(coll_b->GetParentCollection(), coll_a);
+  const std::string node_a_id = coll_a->node().id().ToString();
+
+  // Open a second browser so the app stays alive when browser() is closed.
+  Browser* second_browser = CreateBrowser(browser()->profile());
+  ASSERT_TRUE(second_browser);
+
+  // Set up the observer before closing browser() so we don't miss the open
+  // event when the window is restored.
+  ui_test_utils::BrowserCreatedObserver browser_observer;
+
+  // Close browser() — this creates a WINDOW entry in TabRestoreService.
+  CloseBrowserSynchronously(browser());
+
+  // Restore the closed window. AddRestoredTab is called for each tab, which
+  // exercises the same MaybeRestoreTabTreeHierarchy path as session restore.
+  chrome::RestoreTab(second_browser);
+  Browser* restored_browser = browser_observer.Wait();
+  ASSERT_TRUE(restored_browser);
+
+  // Wait until both tabs are present in the restored browser.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return restored_browser->tab_strip_model()->count() == 2; }));
+
+  auto* restored_model =
+      static_cast<BraveTabStripModel*>(restored_browser->tab_strip_model());
+  const auto* restored_coll_a = GetTreeCollectionForTab(restored_model, 0);
+  const auto* restored_coll_b = GetTreeCollectionForTab(restored_model, 1);
+  ASSERT_TRUE(restored_coll_a)
+      << "Tab A must be inside a tree node in the restored window";
+  ASSERT_TRUE(restored_coll_b)
+      << "Tab B must be inside a tree node in the restored window";
+  EXPECT_EQ(restored_coll_a->node().id().ToString(), node_a_id)
+      << "A's node ID must match the original after window restore";
+  EXPECT_EQ(restored_coll_b->GetParentCollection(), restored_coll_a)
+      << "Restored B must be nested under A's tree node";
 }

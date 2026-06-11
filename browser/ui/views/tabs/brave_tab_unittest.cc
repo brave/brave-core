@@ -458,7 +458,7 @@ TEST_F(BraveTabTestWithTreeTab, TreeToggleButtonVisibleInsteadOfCloseButton) {
 
   tabs::TreeTabNodeTabCollection collection(
       node_id, std::move(split_collection), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
 
   ASSERT_EQ(collection.node().height(), 0);
 
@@ -506,7 +506,7 @@ TEST_F(BraveTabTestWithTreeTab,
 
   tabs::TreeTabNodeTabCollection collection(
       node_id, std::move(split_collection), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   ASSERT_EQ(collection.node().height(), 0);
 
   // When tree tab has descendants, the tree toggle button should be visible.
@@ -558,7 +558,7 @@ TEST_F(BraveTabTestWithTreeTab,
 
   tabs::TreeTabNodeTabCollection collection(
       node_id, std::move(split_collection), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   collection.node().set_height_for_test(100);
   collection.node().set_collapsed(false);
 

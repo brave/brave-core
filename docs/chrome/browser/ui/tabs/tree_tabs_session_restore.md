@@ -57,6 +57,13 @@ existing
 **[`kCommandAddTabExtraData`](https://source.chromium.org/chromium/chromium/src/+/main:components/sessions/core/session_service_commands.h;l=111;drc=f9d29b4ce34d252f7a124d326331901c3b942ee5)**
 mechanism (id=33) rather than adding new fields to Chromium's `session_types.h`.
 
+The restore entry point for **both** browser-restart and close-tab-and-restore
+is the same: `MaybeRestoreTabTreeHierarchy` is injected into
+`chrome/browser/ui/browser_tabrestore.cc` via a plaster rewrite
+(`rewrite/chrome/browser/ui/browser_tabrestore.cc.toml`). It is called at the
+tail of `AddRestoredTab` (session restore path) and `ReplaceRestoredTab`
+(tab-restore path), after the tab has been inserted into the browser.
+
 ---
 
 ## Data Stored Per Tab
@@ -76,6 +83,13 @@ written on the first tab in the group/split, and `brave_tree_node_collapsed` is
 omitted (group/split nodes cannot be individually collapsed today).
 
 Keys are defined in `brave/browser/sessions/brave_session_keys.h`.
+
+The helper `TreeTabNodeTabCollection::GetTreeTabNodeCollection(tab)` returns the
+nearest `TreeTabNodeTabCollection` ancestor for a given `TabInterface*`. It was
+previously a file-local function inside `tree_tab_session_manager.cc`; it was
+promoted to a public static method on `TreeTabNodeTabCollection` so that both
+the session manager and any future callers can use it without duplicating the
+traversal logic.
 
 ---
 
@@ -127,25 +141,17 @@ Keys are defined in `brave/browser/sessions/brave_session_keys.h`.
 │    kCommandAddTabExtraData → SessionTab::extra_data populated       │
 │              │                                                      │
 │              ▼                                                      │
-│  BraveTabStripModel constructor                                     │
-│    OnTreeTabRelatedPrefChanged() → BuildTreeTabs()                  │
-│    → BraveTreeTabStripCollectionDelegate set on collection          │
+│  RestoreTabsToBrowser → AddRestoredTab (per tab)                    │
+│    tab inserted with a freshly generated TreeTabNodeTabCollection   │
 │              │                                                      │
-│              ▼                                                      │
-│  RestoreTabsToBrowser  (tabs added flat, each in its own            │
-│    TreeTabNodeTabCollection with a fresh generated ID)              │
-│              │                                                      │
-│              ▼                                                      │
-│  RestoreTabGroupMetadata  (existing, unchanged)                     │
-│              │                                                      │
-│              ▼                                                      │
-│  BRAVE_RESTORE_TREE_TAB_NODES                                       │
-│  → BraveRestoreTreeTabNodeMetadata                                  │
-│    1. Build old_id → TreeTabNodeTabCollection* map                  │
-│       (using initial_tab_count + tab_visual_index as browser index) │
-│    2. Reparent collections to recreate tree hierarchy               │
-│    3. Apply collapsed state via                                     │
-│    BraveTabStripModel::SetTreeTabNodeCollapsed                      │
+│              ▼ (tail of AddRestoredTab, plaster-injected)           │
+│  MaybeRestoreTabTreeHierarchy(browser, web_contents, extra_data)    │
+│  → TreeTabSessionManager::MaybeRestoreTabTreeHierarchy              │
+│    1. Read kBraveTreeNodeIdKey → call SetNodeId on the collection   │
+│       (fires on_remove_ for generated ID, on_create_ for saved ID)  │
+│    2. Read kBraveTreeParentNodeIdKey                                 │
+│    3. Scan strip for live collection whose node ID == parent id     │
+│    4. MaybeRemoveCollection + AddCollection to reparent             │
 └─────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -163,13 +169,40 @@ Keys are defined in `brave/browser/sessions/brave_session_keys.h`.
 ┌─────────────────────────────────────────────────────────────────────┐
 │             RESTORE PATH — Restore (Ctrl+Shift+t)                   │
 │                                                                     │
-│  BrowserLiveTabContext::AddRestoredTab                              │
-│  (BRAVE_ADD_RESTORED_TAB chromium_src override)                     │
-│    → BraveRestoreTabTreeHierarchy                                   │
-│      scans live strip for parent by its current node ID             │
-│      → MaybeRemoveCollection + AddCollection to reparent            │
+│  ReplaceRestoredTab (tab re-inserted into browser)                  │
+│              │                                                      │
+│              ▼ (tail of ReplaceRestoredTab, plaster-injected)       │
+│  MaybeRestoreTabTreeHierarchy(browser, web_contents, extra_data)    │
+│  → TreeTabSessionManager::MaybeRestoreTabTreeHierarchy              │
+│    1. Read kBraveTreeNodeIdKey → SetNodeId on the collection        │
+│    2. Scan strip for parent collection by saved parent node ID      │
+│    3. MaybeRemoveCollection + AddCollection to reparent             │
+│    (if parent was also closed, step 3 is skipped gracefully)        │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Why One Restore Entry Point Handles Both Scenarios
+
+Both browser-restart (`AddRestoredTab`) and close-tab-and-restore
+(`ReplaceRestoredTab`) are plumbed through the same
+`TreeTabSessionManager::MaybeRestoreTabTreeHierarchy` method. The logic is
+identical: read the saved node and parent IDs from `extra_data`, update the
+freshly-created collection's ID via `SetNodeId`, then scan the live strip for
+the parent collection and reparent.
+
+### Why `SetNodeId` fires `on_remove_` then `on_create_`
+
+When `BuildTreeTabs` (or any constructor path) creates a
+`TreeTabNodeTabCollection`, it assigns a fresh generated `TreeTabNodeId`. The
+`TreeTabModel` indexes collections by this ID. On restore, we need to swap in
+the saved ID so that parent-lookup (which also uses `node().id().ToString()`)
+succeeds on sibling tabs that were restored before this one. `SetNodeId` does
+this atomically: it fires `on_remove_` with the old ID (removing it from the
+index), updates the node, then fires `on_create_` with the new ID (re-inserting
+it). Without this two-step swap, the index would hold the wrong key and
+parent-lookup would silently miss.
 
 ---
 
