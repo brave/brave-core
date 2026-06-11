@@ -19,7 +19,7 @@
       };
     }
 
-    // Writes the various screen attributes to the local storage. 
+    // Writes the various screen attributes to the local storage.
     function writeScreenValues(prefix) {
       const values = readScreenValues();
       Object.keys(values).forEach((key) => {
@@ -47,7 +47,7 @@
     }
 
     // Opens a pop-up window with a blob:// url which writes to the local storage
-    // the various screen attributes it sees. 
+    // the various screen attributes it sees.
     window.startBlobScreenFingerprintingTest = function() {
       writeScreenValues('parent');
       const html =
