@@ -5,14 +5,11 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import LeoButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import { WalletButton } from '../../../shared/style'
-
-export const SelectTimelineClickArea = styled.div`
-  position: relative;
-`
 
 export const SelectTimelinButton = styled(WalletButton)`
   --button-border: ${leo.color.primary[20]};
@@ -41,4 +38,13 @@ export const SelectTimelinButtonIcon = styled(Icon)<{
   margin-left: 8px;
   transition-duration: 0.3s;
   transform: ${(p) => (p.isOpen ? 'rotate(180deg)' : 'unset')};
+`
+
+export const ButtonMenu = styled(LeoButtonMenu)`
+  leo-menu-item {
+    color: ${leo.color.text.primary};
+    font: ${leo.font.default.regular};
+    min-width: 150px;
+    padding: 6px 16px;
+  }
 `

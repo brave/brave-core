@@ -8,9 +8,6 @@ import * as React from 'react'
 // Types
 import { BraveWallet } from '../../../../constants/types'
 
-// Hooks
-import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-
 // Options
 import {
   ChartTimelineOptions, //
@@ -22,15 +19,10 @@ import {
   setStoredPortfolioTimeframe, //
 } from '../../../../utils/local-storage-utils'
 
-// Components
-import {
-  LineChartControlsMenu, //
-} from '../../wallet-menus/line-chart-controls-menu'
-
 // Styled Components
 import {
+  ButtonMenu,
   SelectTimelinButton,
-  SelectTimelineClickArea,
   SelectTimelinButtonIcon,
 } from './line-chart-controls.style'
 
@@ -46,16 +38,6 @@ export const LineChartControls = (props: Props) => {
   const [showLineChartControlMenu, setShowLineChartControlMenu] =
     React.useState<boolean>(false)
 
-  // refs
-  const lineChartControlMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(
-    lineChartControlMenuRef,
-    () => setShowLineChartControlMenu(false),
-    showLineChartControlMenu,
-  )
-
   // methods
   const handleOnSelectTimeline = React.useCallback(
     (id: BraveWallet.AssetPriceTimeframe) => {
@@ -67,20 +49,28 @@ export const LineChartControls = (props: Props) => {
   )
 
   return (
-    <SelectTimelineClickArea ref={lineChartControlMenuRef}>
-      <SelectTimelinButton
-        onClick={() => setShowLineChartControlMenu((prev) => !prev)}
-      >
+    <ButtonMenu
+      placement='bottom-end'
+      isOpen={showLineChartControlMenu}
+      onClose={() => setShowLineChartControlMenu(false)}
+      onChange={({ isOpen }) => setShowLineChartControlMenu(isOpen)}
+    >
+      <SelectTimelinButton slot='anchor-content'>
         {getLocale(ChartTimelineOptions[selectedTimeline].name)}
         <SelectTimelinButtonIcon
           isOpen={showLineChartControlMenu}
           name='carat-down'
         />
       </SelectTimelinButton>
-      {showLineChartControlMenu && (
-        <LineChartControlsMenu onClick={handleOnSelectTimeline} />
-      )}
-    </SelectTimelineClickArea>
+      {ChartTimelineOptions.map((option) => (
+        <leo-menu-item
+          key={option.id}
+          onClick={() => handleOnSelectTimeline(option.id)}
+        >
+          {getLocale(option.name)}
+        </leo-menu-item>
+      ))}
+    </ButtonMenu>
   )
 }
 

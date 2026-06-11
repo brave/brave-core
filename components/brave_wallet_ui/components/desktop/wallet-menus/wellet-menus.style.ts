@@ -13,10 +13,6 @@ import { AccountModalTypes } from '../../../constants/types'
 
 // Shared Styles
 import { Text, WalletButton } from '../../shared/style'
-import {
-  layoutPanelWidth,
-  layoutSmallWidth,
-} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div<{
   yPosition?: number
@@ -123,27 +119,6 @@ export const ButtonIcon = styled(Icon)<{ id?: AccountModalTypes }>`
       ? leo.color.systemfeedback.successIcon
       : leo.color.icon.default};
   margin-right: 16px;
-`
-
-export const LineChartWrapper = styled(StyledWrapper)`
-  padding: 4px;
-  gap: 4px;
-  @media screen and (max-width: ${layoutSmallWidth}px) {
-    left: 0px;
-    right: unset;
-  }
-  @media screen and (max-width: ${layoutPanelWidth}px) {
-    left: unset;
-    right: 0px;
-  }
-`
-
-export const LineChartButton = styled(PopupButton)`
-  margin: 0px;
-  padding: 6px 16px;
-  &:hover {
-    background-color: ${leo.color.page.background};
-  }
 `
 
 export const ButtonMenu = styled(LeoButtonMenu)<{
