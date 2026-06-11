@@ -73,9 +73,9 @@ struct ManagePasswordDetailEditableView: View {
                   text: $passwordValue
                 )
                 .textContentType(.password)
-                .accessibilityLabel(Strings.Login.loginInfoDetailsPasswordFieldTitle)
               }
             }
+            .accessibilityLabel(Strings.Login.loginInfoDetailsPasswordFieldTitle)
             .multilineTextAlignment(.trailing)
             .focused($focusedField, equals: .password)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
