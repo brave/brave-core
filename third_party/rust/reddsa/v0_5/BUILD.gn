@@ -61,7 +61,6 @@ cargo_crate("lib") {
   ]
   features = [
     "alloc",
-    "default",
     "hex",
     "serde",
     "std",

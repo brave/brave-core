@@ -21,6 +21,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/halo2_proofs-v0_3/src/circuit/floor_planner/v1.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/halo2_proofs-v0_3/src/circuit/floor_planner/v1/strategy.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/halo2_proofs-v0_3/src/circuit/layouter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_proofs-v0_3/src/circuit/table_layouter.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/halo2_proofs-v0_3/src/circuit/value.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/halo2_proofs-v0_3/src/dev.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/halo2_proofs-v0_3/src/dev/cost.rs",
@@ -70,12 +71,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Ying Tong Lai <yingtong@electriccoin.co>, Daira Hopwood <daira@electriccoin.co>, Jack Grigg <jack@electriccoin.co>"
+  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Ying Tong Lai <yingtong@electriccoin.co>, Daira Emma Hopwood <daira@jacaranda.org>, Jack Grigg <jack@electriccoin.co>"
   cargo_pkg_name = "halo2_proofs"
   cargo_pkg_description =
       "Fast PLONK-based zero-knowledge proving system with no trusted setup"
   cargo_pkg_repository = "https://github.com/zcash/halo2"
-  cargo_pkg_version = "0.3.0"
+  cargo_pkg_version = "0.3.2"
 
   allow_unsafe = false
 
@@ -84,6 +85,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/ff/v0_13:lib",
     "//brave/third_party/rust/group/v0_13:lib",
     "//brave/third_party/rust/halo2_legacy_pdqsort/v0_1:lib",
+    "//brave/third_party/rust/indexmap/v1:lib",
     "//brave/third_party/rust/maybe_rayon/v0_1:lib",
     "//brave/third_party/rust/pasta_curves/v0_5:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",

@@ -71,3 +71,46 @@ where
         self.try_fold(identity(), fold_op)
     }
 }
+
+pub(crate) trait TheBestReduce {
+    type Item;
+
+    /// Combines the best of `std::iter` and `rayon` reductions.
+    fn the_best_reduce(
+        self,
+        identity: impl Fn() -> Self::Item + Send + Sync,
+        op: impl Fn(Self::Item, Self::Item) -> Self::Item + Send + Sync,
+    ) -> Option<Self::Item>;
+}
+
+#[cfg(feature = "multicore")]
+impl<I> TheBestReduce for I
+where
+    I: maybe_rayon::iter::ParallelIterator,
+{
+    type Item = <Self as maybe_rayon::iter::ParallelIterator>::Item;
+
+    fn the_best_reduce(
+        self,
+        identity: impl Fn() -> Self::Item + Send + Sync,
+        op: impl Fn(Self::Item, Self::Item) -> Self::Item + Send + Sync,
+    ) -> Option<Self::Item> {
+        Some(self.reduce(identity, op))
+    }
+}
+
+#[cfg(not(feature = "multicore"))]
+impl<I> TheBestReduce for I
+where
+    I: std::iter::Iterator,
+{
+    type Item = <Self as std::iter::Iterator>::Item;
+
+    fn the_best_reduce(
+        self,
+        _: impl Fn() -> Self::Item + Send + Sync,
+        f: impl Fn(Self::Item, Self::Item) -> Self::Item + Send + Sync,
+    ) -> Option<Self::Item> {
+        self.reduce(f)
+    }
+}
