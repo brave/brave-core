@@ -296,6 +296,9 @@
 # These tests fail because they expect the infobar count to be 1, but we
 # display an additional confirmation infobar for P3A
 -All/InfoBarContainerSplitTabTest.InfobarsAreIndependentInSplitTabs/Prioritization*
+-BrowserInfoBarManagerBrowserTest.ButtonConfiguration
+-BrowserInfoBarManagerBrowserTest.RegisterAndShowCurrentTab
+-BrowserInfoBarManagerBrowserTest.RegisterShowAndHideCurrentTab
 -ConfirmInfobarCustomLayoutBrowserTest.ShowsDefaultLayout
 -HeadlessModeInfobarBrowserTest.InfoBarsCanBeDisabled/*
 -InfoBarViewBrowserTest.AlertAccessibleEvent
@@ -1121,6 +1124,7 @@
 -GlicButtonTest.ContextMenuUnpinned
 -GlicButtonTest.UnpinCommand
 -GlicEnablingTest.EnabledForProfileTest
+-GlicMessagingBrowserTest.AccountMismatch
 -GlicPolicy*Test.*
 -GlicProfileManagerBrowserTest.ProfileForLaunch_BasedOnActivationOrder
 -GlicProfileManagerBrowserTest.ProfileForLaunch_WithDetachedGlic
@@ -1367,6 +1371,7 @@
 -SharedDictionaryDevToolsBrowserTest.WriteErrorDisallowedBySettings
 
 # These fail because we disable kFirstPartySets
+-FirstPartySetsBrowserTestWithSetChangeNotAffectingSitesUnderTest.CookieNotDeleted
 -RequestStorageAccessForBrowserTest.ThirdPartyGrantsExpireOverIPC
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.Permission_AllowsRequestStorageAccessResolution
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.Permission_AutograntedWithinFirstPartySet
@@ -1969,6 +1974,7 @@
 # This test fails because about:newtab in Brave is chrome://newtab and the test
 # expects chrome://new-tab-page
 -ExtensionTabsTest.TabsUpdate_WebToAboutNewTab
+-LocationBarModelInstantNTPTest.ShouldDisplayURLWhileNavigatingAwayFromRemoteNTP
 
 # These test fail because we override the default NTP shortcut type from "custom
 # links" to "most visited".
@@ -2244,6 +2250,11 @@
 # out.
 -AuthenticatorWindowTest.MultiAccountPinReset
 -AuthenticatorWindowTest.MultiAccountRecovery
+
+# These tests fail because we override IdentityManager::GetAccountsInCookieJar
+# to return an empty list.
+-GlicMessagingWebViewGuestTest.WebViewGuest
+-GlicMessagingWebViewGuestTest.WebViewGuestInvoke
 
 # These tests fail because they expect the WebUSB support url to be
 # https://support.google.com/chrome?p=webusb, but it's
