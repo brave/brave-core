@@ -40,12 +40,16 @@
       };
     }
 
+    function storedScreenValuesMatch(leftPrefix, rightPrefix) {
+      const left = readStoredScreenValues(leftPrefix);
+      const right = readStoredScreenValues(rightPrefix);
+      return Object.keys(left).every((key) => left[key] === right[key]);
+    }
+
     // Opens a pop-up window with a blob:// url which writes to the local storage
     // the various screen attributes it sees. 
-    // |blobPrefix| is passed by the native side, which helps to keep a distinct key
-    // when farbling is "off" vs "on" allowing to retrive the corresponding entries
-    // in that context.
-    window.startBlobScreenFingerprintingTest = function(blobPrefix = 'blob') { 
+    window.startBlobScreenFingerprintingTest = function() {
+      writeScreenValues('parent');
       const html =
 `<!DOCTYPE html>
     <html>
@@ -54,17 +58,20 @@
     <script>
         const readScreenValues = ${readScreenValues.toString()};
         const writeScreenValues = ${writeScreenValues.toString()};
-        writeScreenValues(${JSON.stringify(blobPrefix)});
-        document.title = 'blob-screen-values-written';
+        const readStoredScreenValues = ${readStoredScreenValues.toString()};
+        const storedScreenValuesMatch = ${storedScreenValuesMatch.toString()};
+        writeScreenValues('blob');
+        document.title = storedScreenValuesMatch('parent', 'blob')
+            ? 'pass'
+            : 'fail';
     <\/script>
     </body>
 </html>`;
 
       const blob = new Blob([html], {type: 'text/html'});
-      // We fix the window size for easier test setup.
       window.open(
           URL.createObjectURL(blob), '_blank',
-          'left=100,top=100,width=400,height=400');
+          `left=${screenX},top=${screenY},width=${outerWidth},height=${outerHeight}`);
     };
   </script>
 </body>
