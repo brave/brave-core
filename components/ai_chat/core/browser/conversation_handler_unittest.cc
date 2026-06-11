@@ -1317,6 +1317,332 @@ TEST_F(ConversationHandlerUnitTest,
   }
 }
 
+TEST_F(ConversationHandlerUnitTest,
+       UpdateOrCreateLastAssistantEntry_DeltaWithInterleavedInlineSearch) {
+  // Tests that an inline search event arriving *between* completion deltas does
+  // not split the response into multiple completion events. The trailing delta
+  // must merge into the existing completion event (which stays before the
+  // inline search event) so the UI renders the whole answer together.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(true);
+  {
+    // First completion delta. Leading space should be removed.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" This is")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is");
+  }
+  {
+    // Interleaved inline search event.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewInlineSearchEvent(
+            mojom::InlineSearchEvent::New("query", "[]")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 2u);
+  }
+  {
+    // Second completion delta arriving after the inline search event. It must
+    // merge into the existing (first) completion event rather than create a
+    // new one, and the leading space is preserved because it continues the same
+    // response.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" successful.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    EXPECT_EQ(history.back()->text, "This is successful.");
+    auto& events = history.back()->events;
+    // Still only two events: the merged completion and the inline search event,
+    // with the completion kept ahead of the inline search.
+    ASSERT_EQ(events->size(), 2u);
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion,
+              "This is successful.");
+    EXPECT_TRUE(events->at(1)->is_inline_search_event());
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       UpdateOrCreateLastAssistantEntry_NotDeltaWithInterleavedInlineSearch) {
+  // As above, but for engines that send the full (non-delta) completion each
+  // time. The interleaved inline search event must not cause a second
+  // completion event; the existing completion is replaced in place.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(false);
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" This is")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is");
+  }
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewInlineSearchEvent(
+            mojom::InlineSearchEvent::New("query", "[]")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    EXPECT_EQ(history.back()->events->size(), 2u);
+  }
+  {
+    // Full updated completion text after the inline search event. Leading space
+    // is trimmed (non-delta trims every message) and the existing completion is
+    // replaced, keeping a single completion event.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" This is successful.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    EXPECT_EQ(history.back()->text, "This is successful.");
+    auto& events = history.back()->events;
+    ASSERT_EQ(events->size(), 2u);
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion,
+              "This is successful.");
+    EXPECT_TRUE(events->at(1)->is_inline_search_event());
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       UpdateOrCreateLastAssistantEntry_ToolUseSplitsCompletion) {
+  // Unlike inline search events, a tool use event is a genuine boundary: a
+  // completion that follows it must start a new completion event rather than
+  // merge into the earlier one. This preserves per-step "thinking" alongside
+  // tool use.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(true);
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("Let me check the weather.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "weather_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
+            nullptr, false)),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    // Completion after the tool use must not merge into the first completion.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("It is sunny.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    // Two separate completion events on either side of the tool use event.
+    ASSERT_EQ(events->size(), 3u);
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion,
+              "Let me check the weather.");
+    EXPECT_TRUE(events->at(1)->is_tool_use_event());
+    EXPECT_TRUE(events->at(2)->is_completion_event());
+    EXPECT_EQ(events->at(2)->get_completion_event()->completion,
+              "It is sunny.");
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       UpdateOrCreateLastAssistantEntry_CompletionMergesAcrossNonSplitting) {
+  // A completion delta must merge into the previous completion event across any
+  // number of non-splitting events of different types (here a search status
+  // event followed by an inline search event), not just a single inline search.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(true);
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" This is")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewSearchStatusEvent(
+            mojom::SearchStatusEvent::New()),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewInlineSearchEvent(
+            mojom::InlineSearchEvent::New("query", "[]")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    // Delta after both non-splitting events merges into the first completion.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" successful.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    EXPECT_EQ(history.back()->text, "This is successful.");
+    auto& events = history.back()->events;
+    // Single completion event kept ahead of the two non-splitting events.
+    ASSERT_EQ(events->size(), 3u);
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion,
+              "This is successful.");
+    EXPECT_TRUE(events->at(1)->is_search_status_event());
+    EXPECT_TRUE(events->at(2)->is_inline_search_event());
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       UpdateOrCreateLastAssistantEntry_ToolUseArgsMergeAcrossNonSplitting) {
+  // Streamed tool use arguments must accumulate into the existing tool use
+  // event even when a non-splitting event (e.g. an inline search) arrives
+  // between the partial argument chunks.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(true);
+  {
+    // Tool use request with the first chunk of arguments.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "search_tool", "tool_id_1", "{\"query\":", std::nullopt,
+            std::nullopt, nullptr, false)),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewInlineSearchEvent(
+            mojom::InlineSearchEvent::New("query", "[]")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    // Continuation chunk: empty name/id, no output - must append to the
+    // existing tool use event rather than create a new one.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+            "", "", "\"bars\"}", std::nullopt, std::nullopt, nullptr, false)),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    // Tool use event kept ahead of the inline search event, args accumulated.
+    ASSERT_EQ(events->size(), 2u);
+    EXPECT_TRUE(events->at(0)->is_tool_use_event());
+    EXPECT_EQ(events->at(0)->get_tool_use_event()->arguments_json,
+              "{\"query\":\"bars\"}");
+    EXPECT_TRUE(events->at(1)->is_inline_search_event());
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       UpdateOrCreateLastAssistantEntry_CompletionSplitsToolUse) {
+  // Symmetric to _ToolUseSplitsCompletion: a completion event is a splitting
+  // boundary for tool use, so a tool use following a completion must not
+  // accumulate into the earlier tool use event.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(true);
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            mojom::ToolUseEvent::New("tool_a", "tool_id_1", "{}", std::nullopt,
+                                     std::nullopt, nullptr, false)),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("Now another tool.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+  }
+  {
+    // Tool use after the completion is a separate request, not a continuation.
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            mojom::ToolUseEvent::New("tool_b", "tool_id_2", "{}", std::nullopt,
+                                     std::nullopt, nullptr, false)),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_handler_->GetConversationHistory();
+    ASSERT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    // Two separate tool use events on either side of the completion event.
+    ASSERT_EQ(events->size(), 3u);
+    EXPECT_TRUE(events->at(0)->is_tool_use_event());
+    EXPECT_EQ(events->at(0)->get_tool_use_event()->id, "tool_id_1");
+    EXPECT_TRUE(events->at(1)->is_completion_event());
+    EXPECT_TRUE(events->at(2)->is_tool_use_event());
+    EXPECT_EQ(events->at(2)->get_tool_use_event()->id, "tool_id_2");
+  }
+}
+
 // TODO(https://github.com/brave/brave-browser/issues/47838)
 #if BUILDFLAG(IS_IOS)
 #define MAYBE_ModifyConversation DISABLED_ModifyConversation
