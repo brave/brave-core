@@ -10,7 +10,8 @@ namespace endpoints {
   };
 
   dictionary VerifyCompleteSuccessBody {
-    DOMString authToken;
+    // either DOMString, or null, but must always be present
+    any authToken;
     DOMString email;
   };
 };

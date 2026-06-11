@@ -1257,6 +1257,34 @@ const RegisterVerifyTestCase* RegisterVerifyServerError() {
   return kRegisterVerifyServerError.get();
 }
 
+const RegisterVerifyTestCase* RegisterVerifyAuthTokenNull() {
+  static const base::NoDestructor<RegisterVerifyTestCase>
+      kRegisterVerifyAuthTokenNull({
+          .test_name = "register_verify_auth_token_null",
+          .code = "23TZMP",
+          .logged_out_verification_intent =
+              mojom::LoggedOutVerificationIntent::kRegistration,
+          .fail_decryption = false,
+          .fail_encryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyComplete::Response::SuccessBody
+                                           body;
+                                       body.auth_token = base::Value();
+                                       body.email = kEmailAddress;
+                                       return body;
+                                     }()}},
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
+      });
+  return kRegisterVerifyAuthTokenNull.get();
+}
+
 const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
   static const base::NoDestructor<RegisterVerifyTestCase>
       kRegisterVerifyAuthTokenEmpty({
@@ -1272,7 +1300,7 @@ const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
                                      [] {
                                        VerifyComplete::Response::SuccessBody
                                            body;
-                                       body.auth_token = "";
+                                       body.auth_token = base::Value("");
                                        body.email = kEmailAddress;
                                        return body;
                                      }()}},
@@ -1300,7 +1328,8 @@ const RegisterVerifyTestCase* RegisterVerifyEmailEmpty() {
                                      [] {
                                        VerifyComplete::Response::SuccessBody
                                            body;
-                                       body.auth_token = kAuthenticationToken;
+                                       body.auth_token =
+                                           base::Value(kAuthenticationToken);
                                        body.email = "";
                                        return body;
                                      }()}},
@@ -1329,7 +1358,8 @@ RegisterVerifyAuthenticationTokenEncryptionFailed() {
                                      [] {
                                        VerifyComplete::Response::SuccessBody
                                            body;
-                                       body.auth_token = kAuthenticationToken;
+                                       body.auth_token =
+                                           base::Value(kAuthenticationToken);
                                        body.email = kEmailAddress;
                                        return body;
                                      }()}},
@@ -1357,7 +1387,8 @@ const RegisterVerifyTestCase* RegisterVerifySuccess() {
                                      [] {
                                        VerifyComplete::Response::SuccessBody
                                            body;
-                                       body.auth_token = kAuthenticationToken;
+                                       body.auth_token =
+                                           base::Value(kAuthenticationToken);
                                        body.email = kEmailAddress;
                                        return body;
                                      }()}},
@@ -1389,6 +1420,7 @@ INSTANTIATE_TEST_SUITE_P(
                     RegisterVerifyMaximumCodeVerificationAttemptsExceeded(),
                     RegisterVerifyInvalidVerificationCode(),
                     RegisterVerifyServerError(),
+                    RegisterVerifyAuthTokenNull(),
                     RegisterVerifyAuthTokenEmpty(),
                     RegisterVerifyEmailEmpty(),
                     RegisterVerifyAuthenticationTokenEncryptionFailed(),
