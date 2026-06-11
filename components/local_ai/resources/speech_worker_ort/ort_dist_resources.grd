@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="grit/ort_dist_generated.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="grit/ort_dist_generated_map.cc"
+            type="resource_file_map_source" />
+    <output filename="grit/ort_dist_generated_map.h"
+            type="resource_map_header" />
+    <output filename="ort_dist_generated.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <!-- onnxruntime-web runtime dist files from node_modules, bundled into
+        the ORT speech worker pak. .mjs sources are served under .js names to
+        be identified as application/javascript mime type instead of text/html,
+        since .mjs is not handled (falling back to text/html) in Chromium's
+        WebUIDataSourceImpl::GetMimeType. -->
+      <include name="IDR_ORT_DIST_ORT_WASM_BUNDLE_MIN_JS"
+               file="../../../../node_modules/onnxruntime-web/dist/ort.wasm.bundle.min.mjs"
+               resource_path="ort-dist/ort.wasm.bundle.min.js"
+               type="BINDATA" />
+      <include name="IDR_ORT_DIST_ORT_WASM_SIMD_THREADED_JS"
+               file="../../../../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs"
+               resource_path="ort-dist/ort-wasm-simd-threaded.js"
+               type="BINDATA" />
+      <include name="IDR_ORT_DIST_ORT_WASM_SIMD_THREADED_WASM"
+               file="../../../../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm"
+               resource_path="ort-dist/ort-wasm-simd-threaded.wasm"
+               type="BINDATA" />
+    </includes>
+  </release>
+</grit>
