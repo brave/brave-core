@@ -1120,6 +1120,9 @@
 -GlicButtonTest.ContextMenuUnpinned
 -GlicButtonTest.UnpinCommand
 -GlicEnablingTest.EnabledForProfileTest
+-GlicMessagingBrowserTest.AccountMismatch
+-GlicMessagingWebViewGuestTest.WebViewGuest
+-GlicMessagingWebViewGuestTest.WebViewGuestInvoke
 -GlicPolicy*Test.*
 -GlicProfileManagerBrowserTest.ProfileForLaunch_BasedOnActivationOrder
 -GlicProfileManagerBrowserTest.ProfileForLaunch_WithDetachedGlic
@@ -1236,6 +1239,7 @@
 -ClientSideDetectionServiceBrowserTest.*
 -ExtensionTelemetryServiceBrowserTest.*
 -GeminiAntiscamProtectionServiceBrowserTest.*
+-ProfileNetworkContextServiceCacheResetSameBackendBrowserTest.TestCacheResetOnUpgradeMultiPartition
 -ProfileNetworkContextServiceDohBrowsertest.DohFallbackAllowedForContext
 -SCTHashdanceBrowserTest.DoNotReportSCTFound
 -SCTHashdanceBrowserTest.HashdanceReportLimitReached
@@ -1563,6 +1567,8 @@
 -AdHeuristicTPCDBrowserTestSkipMetadata.CookieBlocked
 
 # This test fails because we set prefs::kSigninAllowed to false.
+-AccountPreviewDataServiceBrowserTest.LogMetrics
+-AccountPreviewDataServiceBrowserTest.LogMetricsProfileOverflow
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForNewAccount
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForSecondaryAccount
 -TurnSyncOnHelperBrowserTest.WebOnlyAccountResetAfterSyncOptInFlowAborted
@@ -1857,6 +1863,7 @@
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
 -BrowserInstantControllerTest.DefaultSearchProviderChanged
 -ChromeLocationBarModelDelegateTest.IsNewTabPage
+-LocationBarModelInstantNTPTest.ShouldDisplayURLWhileNavigatingAwayFromRemoteNTP
 -SearchTest.InstantCacheableNTPNavigationEntry
 -SearchTest.InstantCacheableNTPNavigationEntryNewProfile
 -SearchTest.InstantNTPExtendedEnabled

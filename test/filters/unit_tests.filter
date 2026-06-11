@@ -699,6 +699,7 @@
 
 # These tests fail because brave.omnibox.history_suggestions_enabled is not
 # registered.
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
 -WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
