@@ -513,6 +513,72 @@ TEST_F(EngineConsumerOAIUnitTest,
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponseWithLeoModelOptionsUsesE2EEPrompt) {
+  auto options = mojom::LeoModelOptions::New();
+  options->name = "test-leo-model";
+  options->display_maker = "Test Maker";
+  options->category = mojom::ModelCategory::CHAT;
+  options->access = mojom::ModelAccess::BASIC;
+  options->max_associated_content_length = 17200;
+  options->long_conversation_warning_character_limit = 1000;
+
+  model_ = mojom::Model::New();
+  model_->key = "test_model_key";
+  model_->display_name = "Test Model Display Name";
+  model_->options = mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+  engine_ = std::make_unique<EngineConsumerOAIRemote>(
+      model_->options.Clone(), nullptr,
+      /*network_context_getter=*/network::NetworkContextGetter(),
+      /*credential_manager=*/nullptr, /*model_service=*/nullptr,
+      &pref_service_);
+  engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
+
+  std::string date_and_time_string =
+      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
+  std::string expected_system_message = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_E2EE_SYSTEM_PROMPT),
+      {date_and_time_string}, nullptr);
+
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "Hello?", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr, false, std::nullopt, nullptr));
+
+  auto* client = GetClient();
+  auto run_loop = std::make_unique<base::RunLoop>();
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
+      .WillOnce(
+          [&expected_system_message, &run_loop](
+              const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            ASSERT_GE(messages.size(), 1u);
+            EXPECT_EQ(messages[0].role, "system");
+            ASSERT_EQ(messages[0].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                            expected_system_message);
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("response")),
+                    std::nullopt)));
+            run_loop->Quit();
+          });
+
+  engine_->GenerateAssistantResponse({}, history, false, {}, std::nullopt,
+                                     {mojom::ConversationCapability::CHAT},
+                                     base::DoNothing(), base::DoNothing());
+
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest,
        GenerateAssistantResponseWithCustomSystemPrompt) {
   EngineConsumer::ConversationHistory history;
 

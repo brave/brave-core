@@ -248,10 +248,11 @@ OAIMessage EngineConsumerOAIRemote::BuildSystemMessage(
     base::ReplaceSubstringsAfterOffset(&system_text, 0, "%datetime%",
                                        date_and_time_string);
   } else {
+    const int prompt_id = model_options_->is_leo_model_options()
+                              ? IDS_AI_CHAT_E2EE_SYSTEM_PROMPT
+                              : IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT;
     system_text = base::ReplaceStringPlaceholders(
-        l10n_util::GetStringUTF8(
-            IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
-        {date_and_time_string}, nullptr);
+        l10n_util::GetStringUTF8(prompt_id), {date_and_time_string}, nullptr);
 
     bool include_memory_prompt =
         std::ranges::any_of(conversation_messages, [](const auto& msg) {
