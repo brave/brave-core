@@ -9448,7 +9448,7 @@ extension Strings {
       bundle: .module,
       value: "This password will be removed from your sync chain and your device.",
       comment:
-        "Alert message warning the user that deleting non-synced the current password will permanently remove them"
+        "Alert message warning the user that deleting the password will remove it from their sync chain and device"
     )
   }
 }
