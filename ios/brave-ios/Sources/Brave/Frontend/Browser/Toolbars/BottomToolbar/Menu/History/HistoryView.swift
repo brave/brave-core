@@ -251,7 +251,6 @@ struct HistoryView: View {
       }
       .navigationTitle(Strings.historyScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
-      .toolbarBackground(.visible, for: .navigationBar)
       .searchable(
         text: $searchText,
         placement: .navigationBarDrawer,

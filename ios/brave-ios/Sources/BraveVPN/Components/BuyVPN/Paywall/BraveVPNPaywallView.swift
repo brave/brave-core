@@ -26,11 +26,11 @@ public struct BraveVPNPaywallView: View {
   @State private var isShowingPurchaseAlert = false
   @State private var iapRestoreTimer: Task<Void, Error>?
 
-  @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   @Environment(\.verticalSizeClass) private var verticalSizeClass
   @Environment(\.pixelLength) private var pixelLength
+  @Environment(\.dismiss) private var dismiss
   @Environment(\.allowExternalPurchaseLinks) private var allowExternalPurchaseLinks
 
   public init(
@@ -47,28 +47,43 @@ public struct BraveVPNPaywallView: View {
   }
 
   public var body: some View {
-    VStack(spacing: 0) {
-      ScrollView {
-        Group {
-          if sizeCategory.isAccessibilityCategory
-            || (horizontalSizeClass == .compact && verticalSizeClass == .regular)
-          {
-            verticalContentView
-              .padding(.horizontal, 16)
-          } else {
-            horizontalContentView
-              .padding(24.0)
+    NavigationStack {
+      VStack(spacing: 0) {
+        ScrollView {
+          Group {
+            if sizeCategory.isAccessibilityCategory
+              || (horizontalSizeClass == .compact && verticalSizeClass == .regular)
+            {
+              verticalContentView
+                .padding(.horizontal, 16)
+            } else {
+              horizontalContentView
+                .padding(24.0)
+            }
           }
         }
+        paywallActionContainerView
       }
-      paywallActionContainerView
+      .toolbar {
+        ToolbarItemGroup(placement: .cancellationAction) {
+          Button(Strings.CancelString) {
+            dismiss()
+          }
+          .foregroundStyle(Color.white)
+        }
+        ToolbarItemGroup(placement: .topBarTrailing) {
+          Button(Strings.VPN.restorePurchases) {
+            restorePurchase()
+          }
+          .foregroundStyle(Color.white)
+        }
+      }
+      .navigationTitle(Strings.VPN.vpnName)
+      .navigationBarTitleDisplayMode(.inline)
+      .background(Color(braveSystemName: .primitivePrimary10))
     }
-    .navigationTitle(Strings.VPN.vpnName)
-    .navigationBarTitleDisplayMode(.inline)
-    .background(
-      Color(braveSystemName: .primitivePrimary10)
-        .edgesIgnoringSafeArea(.all)
-    )
+    .colorScheme(.dark)
+    .preferredColorScheme(.dark)
     .alert(isPresented: $isShowingPurchaseAlert) {
       Alert(
         title: Text(Strings.VPN.vpnErrorPurchaseFailedTitle),
@@ -100,7 +115,7 @@ public struct BraveVPNPaywallView: View {
           }
         }
 
-        presentationMode.dismiss()
+        dismiss()
         installVPNProfile()
       }
     }
@@ -393,7 +408,7 @@ public struct BraveVPNPaywallView: View {
   }
 
   private func refreshCredential() {
-    presentationMode.dismiss()
+    dismiss()
     openVPNAuthenticationInNewTab()
   }
 

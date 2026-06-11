@@ -14,7 +14,6 @@ struct AboutBraveShieldsView: View {
     }
     .padding()
     .navigationTitle(Strings.Shields.aboutBraveShieldsTitle)
-    .toolbar(.visible)
   }
 }
 

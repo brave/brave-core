@@ -88,9 +88,6 @@ public struct StoreKitReceiptView: View {
       }
       .navigationTitle("App Store Receipt")
       .navigationViewStyle(.stack)
-      .introspectNavigationController { controller in
-        controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
-      }
     } else {
       Text("No App Store Receipt")
         .navigationTitle("App Store Receipt")

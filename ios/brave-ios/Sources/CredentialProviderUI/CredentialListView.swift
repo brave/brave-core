@@ -17,8 +17,6 @@ public struct CredentialListView: View {
 
   public init(model: CredentialListModel) {
     self.model = model
-
-    UIView.applyAppearanceDefaults()
   }
 
   private struct CredentialButton: View {

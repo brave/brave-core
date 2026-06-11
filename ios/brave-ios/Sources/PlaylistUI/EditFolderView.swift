@@ -71,12 +71,6 @@ struct EditFolderView: View {
       .environment(\.editMode, .constant(.active))
       .scrollContentBackground(.hidden)
       .background(Color(braveSystemName: .neutral10))
-      .toolbarBackground(
-        Color(braveSystemName: .containerBackground),
-        for: .navigationBar,
-        .bottomBar
-      )
-      .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
       .navigationTitle(folder.title ?? Strings.Playlist.editPlaylist)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

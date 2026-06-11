@@ -57,7 +57,6 @@ struct AdblockBlockedRequestsView: View {
       }
     }
     .navigationTitle(Strings.Shields.blockedRequestsTitle)
-    .toolbar(.visible)
     .searchable(text: $filterText)
   }
 

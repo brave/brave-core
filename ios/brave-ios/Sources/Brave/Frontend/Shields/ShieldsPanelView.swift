@@ -87,7 +87,7 @@ struct ShieldsPanelView: View {
     }
     .background(Color(braveSystemName: .containerBackground))
     .frame(idealWidth: 360, alignment: .center)
-    .toolbar(.hidden)
+    .toolbarBackground(.hidden, for: .navigationBar)
   }
 
   @ViewBuilder @MainActor private var headerView: some View {
