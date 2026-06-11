@@ -68,3 +68,63 @@ Reserve `re_pattern` for when you need regex features like whitespace matching,
 character classes, or structural patterns.
 
 ---
+
+<a id="PLSTR-003"></a>
+
+## ✅ Use Plaster to change private fields/methods visibility in Java for new code
+
+```yaml
+# ✅ CORRECT - simple visibility replacement for a field
+pattern: 'private final @Nullable View mNtpHeader;'
+replace: 'protected final @Nullable View mNtpHeader;'
+```
+
+```java
+// ❌ WRONG - Bytecode manipulation for field visibility change
+        deleteField(sBraveFeedSurfaceCoordinatorClassName, "mNtpHeader");
+        makeProtectedField(sFeedSurfaceCoordinatorClassName, "mNtpHeader");
+```
+
+```yaml
+# ✅ CORRECT - simple visibility replacement for a method
+pattern: 'private void runMenuItemEnterAnimations()'
+replace: 'protected void runMenuItemEnterAnimations()'
+```
+
+```java
+// ❌ WRONG - Bytecode manipulation for method visibility change
+
+// BraveAppMenuDummySuper.java
+class BraveAppMenuDummySuper extends AppMenu
+
+public void runMenuItemEnterAnimations() {
+    assert false : "This class usage should be removed in the bytecode!";
+}
+
+// BraveAppMenu.java
+public class BraveAppMenu extends BraveAppMenuDummySuper
+
+@Override
+public void runMenuItemEnterAnimations() {
+    // We do nothing here as we don't want any fancy animation for the menu.
+}
+
+// BraveAppMenuClassAdapter.java
+    changeSuperName(sBraveAppMenuClassName, sAppMenuClassName);
+    makePublicMethod(sAppMenuClassName, "runMenuItemEnterAnimations");
+```
+
+```java
+// 💡 Note: you can still use Bytecode to replace the static method
+    changeSuperName(sManageAccountDevicesLinkView, sBraveManageAccountDevicesLinkView);
+    changeMethodOwner(
+            sManageAccountDevicesLinkView,
+            "getSharingAccountInfo",
+            sBraveManageAccountDevicesLinkView);
+
+// 💡 Note: you can still use Bytecode to redirect constructor
+// so not to change every occurrence of the Chromium class name
+    redirectConstructor(sAppHooksClassName, sBraveAppHooksClassName);
+```
+
+---
