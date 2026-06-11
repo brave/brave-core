@@ -17,10 +17,6 @@ export const HeaderTitle = styled(Text)`
   word-break: break-all;
 `
 
-export const MenuWrapper = styled.div`
-  position: relative;
-`
-
 export const MenuButton = styled(WalletButton)<{
   marginRight?: number
 }>`

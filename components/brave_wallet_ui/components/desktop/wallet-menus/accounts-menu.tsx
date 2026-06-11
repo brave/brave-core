@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import Icon from '@brave/leo/react/icon'
 
 // Selectors
 import {
@@ -20,19 +21,14 @@ import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
+import { ButtonMenu } from './wellet-menus.style'
 
 interface Props {
+  children: React.ReactNode
   hiddenAccounts: BraveWallet.AccountInfo[]
-  onCloseMenu: () => void
 }
 
-export const AccountsMenu = ({ hiddenAccounts, onCloseMenu }: Props) => {
+export const AccountsMenu = ({ children, hiddenAccounts }: Props) => {
   // routing
   const history = useHistory()
 
@@ -40,7 +36,11 @@ export const AccountsMenu = ({ hiddenAccounts, onCloseMenu }: Props) => {
   const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   return (
-    <StyledWrapper yPosition={42}>
+    <ButtonMenu
+      placement='bottom-end'
+      minWidth={240}
+    >
+      {children}
       {CreateAccountOptions.filter((option) => {
         // Filter out hardware wallet item on Android.
         if (isMobile && option.name === 'braveWalletConnectHardwareWallet') {
@@ -55,19 +55,15 @@ export const AccountsMenu = ({ hiddenAccounts, onCloseMenu }: Props) => {
         }
         return true
       }).map((option) => (
-        <PopupButton
+        <leo-menu-item
           key={option.name}
-          onClick={() => {
-            history.push(option.route)
-            onCloseMenu()
-          }}
-          minWidth={240}
+          onClick={() => history.push(option.route)}
         >
-          <ButtonIcon name={option.icon} />
-          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-        </PopupButton>
+          <Icon name={option.icon} />
+          {getLocale(option.name)}
+        </leo-menu-item>
       ))}
-    </StyledWrapper>
+    </ButtonMenu>
   )
 }
 
