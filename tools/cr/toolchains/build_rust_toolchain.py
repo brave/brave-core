@@ -40,17 +40,29 @@ vpython3 build_rust_toolchain.py \
     --brave-subrevision=1
 ```
 
-The output of this script is a .tar.xz archive containing two artifacts built
-against the Chromium-managed LLVM/Clang installation.  Members are stored at
-paths relative to a Rust toolchain root, so the archive can be extracted
-directly over `src/third_party/rust-toolchain`:
+By default the builder packages the *complete* Rust toolchain (unless
+`--no-full-toolchain` is passed), exactly as Chromium's
+`tools/rust/package_rust.py` does, and then overlays the bare-metal
+WebAssembly standard-library sysroot onto that archive. The option to build the
+full toolchain is provided to work around upstream issues that cause
+reproducibility problems relating to cherry-picks and the fact that the `rustc`
+compiler encodes the value of `HEAD`.
+
+With `--no-full-toolchain`, the script instead produces a minimal overlay
+`.tar.xz` containing only two artifacts built against the Chromium-managed
+LLVM/Clang installation. In both modes members are stored at paths relative to
+a Rust toolchain root, so the archive can be extracted directly over
+`src/third_party/rust-toolchain`:
 
   * bin/rust-lld  — Rust's copy of the LLD linker, taken from the Chromium-built
                     LLVM install tree (`RUST_HOST_LLVM_INSTALL_DIR/bin/lld`).
+                    `package_rust.py` does not install this, so it is added in
+                    both modes.
   * lib/rustlib/wasm32-unknown-unknown  — the stage-1 standard-library sysroot
                               for the bare-metal WebAssembly target, taken from
                               the Rust bootstrap build tree
                               (`RUST_BUILD_DIR/<triple>/stage1/lib/rustlib/`).
+                              Added in both modes.
 
 The output archive is named:
 
@@ -112,10 +124,12 @@ from datetime import datetime, timezone
 import hashlib
 import importlib
 import logging
+import lzma
 from pathlib import Path
 import os
 import platform
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -182,6 +196,27 @@ DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 # it is one of those reliable files that are always present in any version.
 CHROME_VERSION_FILE = Path('chrome/VERSION')
 
+# Cherry-pick hash for upstream's reproducibility fix for the committer details
+# used in a cherry-pick commit. See https://crrev.com/c/7914461. This CL was
+# provided once we reported to them mismatches on the `rustc` hash between our
+# toolchain and theirs due to cherry-picks.
+CLANG_GIT_METADATA_COMMIT = 'a710d2e1475f4c224290ce22f1a21c42d5fad900'
+
+# Fixed git author/committer metadata applied when we cherry-pick onto the
+# checkout. A commit's hash includes this metadata, and `rustc` encodes the
+# Chromium `HEAD` it was built from, so pinning it (together with `--no-gpg-sign`
+# on the cherry-pick) keeps the resulting HEAD — and the toolchain hash —
+# identical regardless of the local git config. Mirrors the override upstream's
+# `tools/clang/scripts/build.py` uses for its own cherry-picks.
+GIT_METADATA_OVERRIDES = {
+    'GIT_AUTHOR_NAME': 'Dummy Author',
+    'GIT_AUTHOR_EMAIL': 'none@none.com',
+    'GIT_AUTHOR_DATE': '2099-01-01 10:10:10',
+    'GIT_COMMITTER_NAME': 'Dummy Committer',
+    'GIT_COMMITTER_EMAIL': 'none@none.com',
+    'GIT_COMMITTER_DATE': '2099-01-01 10:10:10',
+}
+
 # The bucket in our infra where the rust toolchain is archived.
 TOOLCHAIN_BUCKET_URL = (
     'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux')
@@ -223,22 +258,34 @@ if sys.platform == 'win32':
     GIT_SH_PRESUMED_BIN_PATH = Path(r'C:\Program Files\Git\bin\sh.exe')
 
 
-def _check_call(*command, cwd=None):
+def _check_call(*command,
+                cwd=None,
+                env=None,
+                check=True,
+                capture_output=False):
     """Run *command* as a subprocess, logging the invocation.
 
     Logs the full command string at INFO level before executing it.  Stdout
-    and stderr are inherited from the parent process so subprocess output
-    streams directly to the terminal.
+    and stderr are inherited from the parent process (so subprocess output
+    streams directly to the terminal) unless `capture_output` is set.
 
     Args:
         *command: The program and its arguments (passed as positional args,
             not as a list).
         cwd: Optional working directory for the subprocess.  Defaults to the
             caller's current working directory when `None`.
+        env: Optional environment mapping for the subprocess.  Inherits the
+            parent process environment when `None`.
+        check: Raise `CalledProcessError` on a non-zero exit when True.
+        capture_output: Capture stdout/stderr (as text) instead of inheriting
+            the parent's streams.
+
+    Returns:
+        The `subprocess.CompletedProcess` for the invocation.
 
     Raises:
-        subprocess.CalledProcessError: If the process exits with a non-zero
-            return code.
+        subprocess.CalledProcessError: If `check` is True and the process exits
+            with a non-zero return code.
         RuntimeError: On Windows, if the command cannot be resolved to an
         executable path.
     """
@@ -254,7 +301,12 @@ def _check_call(*command, cwd=None):
         if resolved != command[0]:
             command = [resolved] + list(command[1:])
 
-    subprocess.run(command, cwd=cwd, check=True)
+    return subprocess.run(command,
+                          cwd=cwd,
+                          env=env,
+                          check=check,
+                          capture_output=capture_output,
+                          text=True)
 
 
 def _sha256_file(path: Path) -> str:
@@ -617,6 +669,17 @@ class ToolchainBuilder:
         return hashlib.sha256(
             path.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
 
+    @staticmethod
+    def _command_line() -> str:
+        """Return the shell-quoted command line this script was invoked with.
+
+        Reconstructed from `sys.argv` (the interpreter is not included), so it
+        records exactly how the build was driven — the script name plus every
+        flag. Stored in the index to make a build reproducible with the same
+        invocation.
+        """
+        return shlex.join(sys.argv)
+
     def _toolchain_name_stem(self) -> str:
         """Shared filename stem identifying this platform + Rust + Clang combo.
         """
@@ -706,6 +769,8 @@ class ToolchainBuilder:
           * `chromium_version` — `MAJOR.MINOR.BUILD.PATCH` parsed from
                                  `chrome/VERSION`.
           * `chromium_commit`  — HEAD commit hash in the Chromium checkout.
+          * `command_line`     — shell-quoted command line this script was
+                                 invoked with (from `sys.argv`).
           * `script_sha256sum` — SHA-256 of this script's contents.
 
         This function accepts `force_overwrite` for when we want to suspend
@@ -815,6 +880,7 @@ class ToolchainBuilder:
             'sha256sum': archive_sha256,
             'chromium_version': self._chromium_version(),
             'chromium_commit': self._chromium_commit(),
+            'command_line': self._command_line(),
         }
         script_sha = self._script_sha256()
         if script_sha is not None:
@@ -828,6 +894,80 @@ class ToolchainBuilder:
         logging.info('Wrote toolchain index to %s (%d entries)', local_index,
                      len(entries))
         logging.info('Toolchain index contents:\n%s', index_yaml)
+
+    def _package_full_rust(self) -> Path:
+        """Build and package the full Rust toolchain via `package_rust.py`.
+
+        Runs Chromium's `tools/rust/package_rust.py` (without `--upload`), which
+        builds the complete toolchain — including bindgen and crubit — installs
+        it to `RUST_TOOLCHAIN_OUT_DIR`, strips the binaries, and writes a
+        `.tar.xz` to `third_party/`. The wasm32 sysroot is overlaid onto this
+        archive afterwards by `_create_full_archive`.
+
+        Returns the absolute path of the toolchain archive produced under
+        `third_party/` (`RUST_TOOLCHAIN_PACKAGE_NAME`).
+
+        Raises:
+            RuntimeError: if the expected archive is missing after the run.
+        """
+        _check_call(str(self._vpython_path),
+                    'package_rust.py',
+                    cwd=self._tools_rust)
+
+        base_archive = (Path(self._build_rust_module.THIRD_PARTY_DIR) /
+                        self._package_rust_module.RUST_TOOLCHAIN_PACKAGE_NAME)
+        if not base_archive.is_file():
+            raise RuntimeError(
+                f'package_rust.py did not produce the expected archive at '
+                f'{base_archive}')
+        return base_archive
+
+    def _create_full_archive(self, base_archive: Path) -> Path:
+        """Overlay the rust-lld + wasm32 artifacts onto the full-toolchain
+        archive.
+
+        Repacks `base_archive` (the full Rust toolchain produced by
+        `_package_full_rust`) into `self._out_dir / _package_name()`, adding the
+        same artifacts `_create_archive` ships, none of which `package_rust.py`
+        installs into the toolchain tree:
+
+        * `bin/rust-lld[.exe]` — the LLD linker from the Chromium LLVM install
+          (`RUST_HOST_LLVM_INSTALL_DIR/bin/lld[.exe]`). `rustc` invokes
+          `rust-lld` as the linker (e.g. for the wasm32 target), so the build
+          fails with `linker 'rust-lld' not found` without it.
+        * `lib/rustlib/wasm32-unknown-unknown/` — the stage-1 wasm32
+          standard-library sysroot from the bootstrap build tree.
+        * `bin/llvm-lib.exe` (Windows only) — the standalone MSVC-style
+          librarian from the LLVM install.
+
+        `.tar.xz` is a compressed stream and cannot be appended to in place, so
+        every member of `base_archive` is copied across into a fresh archive
+        before the overlay artifacts are added.
+
+        Returns the absolute path of the archive on disk.
+        """
+        target_triple = self._build_rust_module.RustTargetTriple()
+        stage1_output_path = (Path(self._build_rust_module.RUST_BUILD_DIR) /
+                              target_triple / STAGE1_RUSTLIB)
+        wasm_src = stage1_output_path / WASM32_UNKNOWN_UNKNOWN
+        llvm_bin = Path(
+            self._build_rust_module.RUST_HOST_LLVM_INSTALL_DIR) / 'bin'
+        output_archive = self._out_dir / self._package_name()
+
+        logging.info('Repacking %s into %s with the rust-lld + wasm32 overlay',
+                     base_archive, output_archive)
+        with tarfile.open(base_archive, 'r:xz') as src, \
+                tarfile.open(output_archive,
+                             'w:xz',
+                             preset=9 | lzma.PRESET_EXTREME) as dst:
+            for member in src.getmembers():
+                fileobj = src.extractfile(member) if member.isreg() else None
+                dst.addfile(member, fileobj)
+            dst.add(llvm_bin / LLD, arcname=RUST_LLD_ARCNAME)
+            dst.add(wasm_src, arcname=WASM32_ARCNAME)
+            if sys.platform == 'win32':
+                dst.add(llvm_bin / LLVM_LIB, arcname=LLVM_LIB_ARCNAME)
+        return output_archive
 
     def _create_archive(self) -> Path:
         """Write the output .tar.xz archive to `self._out_dir`.
@@ -965,6 +1105,96 @@ class ToolchainBuilder:
                     str(CHROME_VERSION_FILE),
                     cwd=self._chromium_src)
 
+    def _run_git(self,
+                 *args,
+                 check: bool = True,
+                 capture_output: bool = False,
+                 env: dict | None = None) -> subprocess.CompletedProcess:
+        """Run `git -C <chromium_src> <args...>` via `_check_call`.
+
+        Thin wrapper that prepends the `git -C <checkout>` prefix so git
+        operations on the Chromium source tree share one code path. See
+        `_check_call` for the argument semantics and return value.
+        """
+        return _check_call('git',
+                           '-C',
+                           str(self._chromium_src),
+                           *args,
+                           check=check,
+                           capture_output=capture_output,
+                           env=env)
+
+    @contextlib.contextmanager
+    def _cherry_picks(self, commits: list[str]):
+        """Context manager: apply upstream cherry-picks for the build's
+        duration.
+
+        Ensures every commit in *commits* is in the checkout's history while the
+        build runs, then restores the original HEAD afterwards. Used to pull in
+        upstream fixes the active Chromium ref may predate — e.g.
+        `CLANG_GIT_METADATA_COMMIT`, which pins the git author/committer
+        metadata that `tools/clang/scripts/build.py` stamps onto its LLVM
+        cherry-picks so the toolchain hash is reproducible across the
+        full-toolchain and wasm32 builds.
+
+        Protocol:
+        1. For each commit, fetch it if its object is missing (the ref may have
+           branched before it landed), then skip it if it is already reachable
+           from HEAD.
+        2. If nothing needs applying, `yield` immediately and leave the checkout
+           untouched — there is nothing to clean up.
+        3. Otherwise cherry-pick the remaining commits — with
+           `GIT_METADATA_OVERRIDES` and `--no-gpg-sign` so the resulting HEAD is
+           deterministic — `yield`, and unconditionally restore the checkout to
+           its original HEAD in a `finally` block. Build outputs are untracked,
+           so the reset leaves them in place.
+        """
+        to_apply = []
+        for commit in commits:
+            object_present = self._run_git('cat-file',
+                                           '-e',
+                                           f'{commit}^{{commit}}',
+                                           check=False,
+                                           capture_output=True).returncode == 0
+            if not object_present:
+                logging.info('Fetching cherry-pick %s.', commit)
+                self._run_git('fetch', 'origin', commit)
+
+            already_applied = self._run_git(
+                'merge-base',
+                '--is-ancestor',
+                commit,
+                'HEAD',
+                check=False,
+                capture_output=True).returncode == 0
+            if already_applied:
+                logging.info('Cherry-pick %s already present; skipping.',
+                             commit)
+            else:
+                to_apply.append(commit)
+
+        if not to_apply:
+            yield
+            return
+
+        original_head = self._run_git('rev-parse', 'HEAD',
+                                      capture_output=True).stdout.strip()
+        logging.info('Cherry-picking %s.', ', '.join(to_apply))
+        self._run_git('cherry-pick',
+                      '--keep-redundant-commits',
+                      '--no-gpg-sign',
+                      *to_apply,
+                      env={
+                          **os.environ,
+                          **GIT_METADATA_OVERRIDES
+                      })
+        try:
+            yield
+        finally:
+            logging.info('Restoring checkout to %s after cherry-picks.',
+                         original_head)
+            self._run_git('reset', '--hard', original_head)
+
     def _clone_chromium(self):
         """Clone a fresh Chromium checkout under `self._chromium_src.parent`."""
         self._chromium_src.parent.mkdir(parents=True, exist_ok=True)
@@ -977,15 +1207,23 @@ class ToolchainBuilder:
             clone_chromium: bool = False,
             use_ref: str = None,
             clear: bool = False,
-            force_overwrite: bool = False):
+            force_overwrite: bool = False,
+            full_toolchain: bool = True):
         """Execute the full build-and-package pipeline.
 
-        Coordinates the three phases in order:
+        Coordinates the phases in order:
 
-        1. Within `_temporary_config_toml_template_edits`:
-           a. `_prepare_run_xpy` — clone, build LLVM, generate config.toml.
-           b. `_run_xpy` — compile stage-1 Rust + wasm32 stdlib via x.py.
-        2. `_create_archive` — assemble the output .tar.xz.
+        1. Within `_cherry_picks` (which applies `CLANG_GIT_METADATA_COMMIT`
+           so both builds cherry-pick to identical hashes):
+           a. `_package_full_rust` (only when `full_toolchain`) — build and
+              package the complete Rust toolchain via `package_rust.py`.
+           b. Within `_temporary_config_toml_template_edits`:
+              - `_prepare_run_xpy` — clone, build LLVM, generate config.toml.
+              - `_run_xpy` — compile stage-1 Rust + wasm32 stdlib via x.py.
+        2. Assemble the output .tar.xz:
+           * `_create_full_archive` when `full_toolchain` — overlay the wasm32
+             sysroot onto the full-toolchain archive from step 1.
+           * `_create_archive` otherwise — the minimal rust-lld + wasm32 subset.
 
         `config.toml.template` is returned to its original state always.
 
@@ -1002,6 +1240,10 @@ class ToolchainBuilder:
                 index-collision checks: an entry at the same URL is
                 replaced rather than raising, and a matching `sha256sum`
                 elsewhere is tolerated.  See `_publish_archive_index`.
+            full_toolchain: If True (the default), package the whole Rust
+                toolchain with `package_rust.py` and overlay the wasm32 sysroot
+                onto it. If False, package only the minimal rust-lld + wasm32
+                subset via `_create_archive`.
         Raises:
             RuntimeError: If --chromium-src but there is no valid Chromium
             repo at the path, and --clone-chromium is not provided.
@@ -1081,11 +1323,23 @@ class ToolchainBuilder:
         if sys.platform == 'darwin':
             os.environ['LZMA_API_STATIC'] = '1'
 
-        with self._temporary_config_toml_template_edits():
-            self._prepare_run_xpy()
-            self._run_xpy()
+        # Cherry picks upstream commit for the committership reproducibility
+        # fix.
+        with self._cherry_picks([CLANG_GIT_METADATA_COMMIT]):
+            # Build and package the full Rust toolchain first, the overlay the
+            # wasm32 sysroot onto it.
+            base_archive = None
+            if full_toolchain:
+                base_archive = self._package_full_rust()
 
-        archive_path = self._create_archive()
+            with self._temporary_config_toml_template_edits():
+                self._prepare_run_xpy()
+                self._run_xpy()
+
+        if full_toolchain:
+            archive_path = self._create_full_archive(base_archive)
+        else:
+            archive_path = self._create_archive()
         self._publish_archive_index(archive_path,
                                     force_overwrite=force_overwrite)
 
@@ -1131,6 +1385,24 @@ def main():
         help='Bypasses the uniqueness checks for the toolchain being published '
         'and overwrites any entry on the index that collide with the toolchain '
         'being built.')
+    # `--full-toolchain` / `--no-full-toolchain` are expressed as a pair of
+    # store_true/store_false actions on a shared dest rather than
+    # `argparse.BooleanOptionalAction`, which the presubmit's pylint does not
+    # recognise.
+    parser.add_argument(
+        '--full-toolchain',
+        dest='full_toolchain',
+        action='store_true',
+        default=True,
+        help='Package the whole Rust toolchain via package_rust.py and overlay '
+        'the wasm32 sysroot onto it (default). Pass --no-full-toolchain to '
+        'package only the minimal rust-lld + wasm32 subset.')
+    parser.add_argument(
+        '--no-full-toolchain',
+        dest='full_toolchain',
+        action='store_false',
+        help='Package only the minimal rust-lld + wasm32 subset '
+        'instead of the whole Rust toolchain.')
     parser.add_argument(
         '--with-git-cache',
         nargs='?',
@@ -1186,7 +1458,8 @@ def main():
                          args.clone_chromium,
                          args.use_ref,
                          clear=args.clear,
-                         force_overwrite=args.force_overwrite)
+                         force_overwrite=args.force_overwrite,
+                         full_toolchain=args.full_toolchain)
     return 0
 
 
