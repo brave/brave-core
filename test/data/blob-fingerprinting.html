@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blob fingerprinting test</title>
+</head>
+<body>
+  <script>
+    function readScreenValues() {
+      return {
+        width: screen.width,
+        height: screen.height,
+        availWidth: screen.availWidth,
+        availHeight: screen.availHeight,
+        availLeft: screen.availLeft,
+        availTop: screen.availTop,
+        screenX: screenX,
+        screenY: screenY,
+      };
+    }
+
+    // Writes the various screen attributes to the local storage. 
+    function writeScreenValues(prefix) {
+      const values = readScreenValues();
+      Object.keys(values).forEach((key) => {
+        localStorage.setItem(`${prefix}_${key}`, String(values[key]));
+      });
+    }
+
+    function readStoredScreenValues(prefix) {
+      return {
+        width: Number(localStorage.getItem(`${prefix}_width`)),
+        height: Number(localStorage.getItem(`${prefix}_height`)),
+        availWidth: Number(localStorage.getItem(`${prefix}_availWidth`)),
+        availHeight: Number(localStorage.getItem(`${prefix}_availHeight`)),
+        availLeft: Number(localStorage.getItem(`${prefix}_availLeft`)),
+        availTop: Number(localStorage.getItem(`${prefix}_availTop`)),
+        screenX: Number(localStorage.getItem(`${prefix}_screenX`)),
+        screenY: Number(localStorage.getItem(`${prefix}_screenY`)),
+      };
+    }
+
+    // Opens a pop-up window with a blob:// url which writes to the local storage
+    // the various screen attributes it sees. 
+    // |blobPrefix| is passed by the native side, which helps to keep a distinct key
+    // when farbling is "off" vs "on" allowing to retrive the corresponding entries
+    // in that context.
+    window.startBlobScreenFingerprintingTest = function(blobPrefix = 'blob') { 
+      const html =
+`<!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"></head>
+    <body>
+    <script>
+        const readScreenValues = ${readScreenValues.toString()};
+        const writeScreenValues = ${writeScreenValues.toString()};
+        writeScreenValues(${JSON.stringify(blobPrefix)});
+        document.title = 'blob-screen-values-written';
+    <\/script>
+    </body>
+</html>`;
+
+      const blob = new Blob([html], {type: 'text/html'});
+      // We fix the window size for easier test setup.
+      window.open(
+          URL.createObjectURL(blob), '_blank',
+          'left=100,top=100,width=400,height=400');
+    };
+  </script>
+</body>
+</html>
