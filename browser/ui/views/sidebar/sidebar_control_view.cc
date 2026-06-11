@@ -12,6 +12,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -30,6 +31,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
+#include "ui/views/border.h"
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/layout/flex_layout.h"
 
@@ -77,21 +79,27 @@ SidebarControlView::SidebarControlView(Delegate* delegate,
       browser_->GetFeatures().sidebar_controller()->model());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
+  SetBackground(views::CreateSolidBackground(kColorToolbar));
 }
 
 void SidebarControlView::OnThemeChanged() {
   View::OnThemeChanged();
 
-  UpdateBackgroundAndBorder();
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
 }
 
-void SidebarControlView::UpdateBackgroundAndBorder() {
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    SetBackground(
-        views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
-  }
+void SidebarControlView::UpdateBorder() {
+  // When rounded corners is on, contents and side panel already have an
+  // inward margin. Without adjustment the gap between the control view and
+  // the content would be double that margin. Use a negative inset on the
+  // content-facing side to overlap into that existing margin, keeping visual
+  // spacing tight. When rounded corners is off the margin is 0, so
+  // overlap is 0.
+  const int overlap =
+      -BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
+  SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(
+      0, sidebar_on_left_ ? 0 : overlap, 0, sidebar_on_left_ ? overlap : 0)));
 }
 
 SidebarControlView::~SidebarControlView() = default;
@@ -263,6 +271,7 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
 
 void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
   sidebar_on_left_ = sidebar_on_left;
+  UpdateBorder();
 }
 
 BEGIN_METADATA(SidebarControlView)

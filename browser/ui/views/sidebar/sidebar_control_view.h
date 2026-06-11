@@ -76,7 +76,7 @@ class SidebarControlView : public views::View,
   bool IsItemReorderingInProgress() const;
   bool IsBubbleWidgetVisible() const;
   void SetSidebarOnLeft(bool sidebar_on_left);
-  void UpdateBackgroundAndBorder();
+  void UpdateBorder();
 
  private:
   friend class sidebar::SidebarBrowserTest;

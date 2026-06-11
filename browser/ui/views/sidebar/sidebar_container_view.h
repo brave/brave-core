@@ -85,6 +85,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   // is called whether it's closing from deregistration.
   void WillShowSidePanel();
   bool IsFullscreenForCurrentEntry() const;
+  void UpdateBorder();
 
   // Runs `callback` whenever the sidebar control view's visibility changes, so
   // the side panel can recompute its content corner radii (which depend on
