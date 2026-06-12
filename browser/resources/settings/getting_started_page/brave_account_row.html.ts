@@ -7,6 +7,7 @@ import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import {
   AccountStateFieldTags,
+  LoggedOutVerificationIntent,
   whichAccountState,
 } from '../brave_account.mojom-webui.js'
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
@@ -41,51 +42,7 @@ export function getHtml(this: SettingsBraveAccountRowElement) {
                          .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
               </leo-button>
             </div>`
-          : this.state.loggedOut!.verification ? html`
-            <div class="first-row">
-              <div class="circle">
-                <leo-icon name="social-brave-release-favicon-fullheight-color">
-                </leo-icon>
-              </div>
-              <div class="title-and-description">
-                <div class="title">
-                  ${this.i18n(
-                      BraveAccountSettingsStrings
-                           .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE)}
-                </div>
-                <div class="description">
-                  <localized-link
-                      .localizedString=${`${
-                        this.i18n(BraveAccountSettingsStrings
-                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1)} ${
-                        this.i18n(BraveAccountSettingsStrings
-                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
-                        this.i18nAdvanced(BraveAccountSettingsStrings
-                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
-                          {tags: ['a'], attrs: ['href']})}`}
-                      @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
-                  </localized-link>
-                </div>
-              </div>
-            </div>
-            <div class="second-row">
-              <leo-button kind="plain"
-                          size="small"
-                          @click=${this.openBraveAccountDialog}>
-                ${this.i18n(
-                    BraveAccountSettingsStrings
-                         .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL)}
-              </leo-button>
-              <leo-button kind="plain"
-                          size="small"
-                          class="cancel-registration-button"
-                          @click=${this.onCancelRegistrationButtonClicked}>
-                ${this.i18n(
-                    BraveAccountSettingsStrings
-                         .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL)}
-              </leo-button>
-            </div>`
-          : html`
+          : !this.state.loggedOut!.verification ? html`
             <div class="first-row">
               <div class="circle">
                 <leo-icon name="social-brave-release-favicon-fullheight-color">
@@ -108,6 +65,68 @@ export function getHtml(this: SettingsBraveAccountRowElement) {
                 ${this.i18n(
                     BraveAccountSettingsStrings
                          .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}
+              </leo-button>
+            </div>`
+          : html`
+            <div class="first-row">
+              <div class="circle">
+                <leo-icon name="social-brave-release-favicon-fullheight-color">
+                </leo-icon>
+              </div>
+              <div class="title-and-description">
+                <div class="title">
+                  ${this.i18n(
+                      BraveAccountSettingsStrings
+                           .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE)}
+                </div>
+                <div class="description">
+                  ${this.state.loggedOut!.verification.intent
+                      === LoggedOutVerificationIntent.kResetPassword
+                      && this.state.loggedOut!.verification.email
+                    ? this.i18n(BraveAccountSettingsStrings
+                        .SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_VERIFIED_ROW_DESCRIPTION)
+                    : html`
+                      <localized-link
+                          .localizedString=${`${
+                            this.i18n(this.state.loggedOut!.verification.intent
+                              === LoggedOutVerificationIntent.kResetPassword
+                              ? BraveAccountSettingsStrings
+                                  .SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_ROW_DESCRIPTION_1
+                              : BraveAccountSettingsStrings
+                                  .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1)} ${
+                            this.i18n(
+                              BraveAccountSettingsStrings
+                                   .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
+                            this.i18nAdvanced(BraveAccountSettingsStrings
+                              .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
+                              {tags: ['a'], attrs: ['href']})}`}
+                          @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
+                      </localized-link>`}
+                </div>
+              </div>
+            </div>
+            <div class="second-row">
+              <leo-button kind="plain"
+                          size="small"
+                          @click=${this.openBraveAccountDialog}>
+                ${this.i18n(this.state.loggedOut!.verification.intent
+                    === LoggedOutVerificationIntent.kResetPassword
+                    && this.state.loggedOut!.verification.email
+                    ? BraveAccountSettingsStrings
+                        .SETTINGS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL
+                    : BraveAccountSettingsStrings
+                        .SETTINGS_BRAVE_ACCOUNT_ENTER_VERIFICATION_CODE_BUTTON_LABEL)}
+              </leo-button>
+              <leo-button kind="plain"
+                          size="small"
+                          class="cancel-registration-button"
+                          @click=${this.onCancelRegistrationButtonClicked}>
+                ${this.i18n(this.state.loggedOut!.verification.intent
+                    === LoggedOutVerificationIntent.kResetPassword
+                    ? BraveAccountSettingsStrings
+                        .SETTINGS_BRAVE_ACCOUNT_CANCEL_RESET_PASSWORD_BUTTON_LABEL
+                    : BraveAccountSettingsStrings
+                        .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL)}
               </leo-button>
             </div>`
         }

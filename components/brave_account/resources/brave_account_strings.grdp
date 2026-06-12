@@ -15,8 +15,8 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccountSettings android_java">
     In order to create your account, please verify your email address.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL" desc="Label for the button that opens a dialog to enter the registration code when clicked" formatter_data="webui=BraveAccountSettings android_java">
-    Enter registration code
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ENTER_VERIFICATION_CODE_BUTTON_LABEL" desc="Label for the button that opens a dialog to enter the email verification code when clicked" formatter_data="webui=BraveAccountSettings android_java">
+    Enter verification code
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccountSettings android_java">
     You should have received an email with a code that you'll need to input.
@@ -37,6 +37,18 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" desc="Label for the button that cancels the pending registration when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Cancel registration
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_ROW_DESCRIPTION_1" desc="Instructions informing the user that a password reset email has been sent and they need to enter the code to continue" formatter_data="webui=BraveAccountSettings android_java">
+    In order to reset your password, please verify your email address.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_VERIFIED_ROW_DESCRIPTION" desc="Row description shown during password reset after the user has already verified their email, prompting them to set a new password to finish" formatter_data="webui=BraveAccountSettings android_java">
+    Your email has been verified. Set a new password to complete your password reset.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL" desc="Label for the button that opens a dialog to set a new password when clicked, shown during password reset after the user has already verified their email" formatter_data="webui=BraveAccountSettings android_java">
+    Set new password
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_RESET_PASSWORD_BUTTON_LABEL" desc="Label for the button that cancels the pending password reset when clicked" formatter_data="webui=BraveAccountSettings android_java">
+    Cancel password reset
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Log out
   </message>
@@ -52,7 +64,7 @@
     Already have an account? Log in
   </message>
 
-  <!-- 'Create' dialog: -->
+  <!-- 'Credentials' dialog: -->
   <message name="IDS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE" desc="Title for the dialog where the user can create their Brave Account" formatter_data="webui=BraveAccount">
     Create your account
   </message>
@@ -88,6 +100,15 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL" desc="Label for the button that submits the 'Create' dialog" formatter_data="webui=BraveAccount">
     Create account
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL" desc="Label for the button that submits the new password during the password reset flow" formatter_data="webui=BraveAccount">
+    Reset password
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_TITLE" desc="Title for the dialog where the user sets a new password after verifying their email during the password reset flow" formatter_data="webui=BraveAccount">
+    Reset password
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_DESCRIPTION" desc="Description shown in the dialog where the user sets a new password after verifying their email during the password reset flow" formatter_data="webui=BraveAccount">
+    Confirmation successful. Now enter your desired new password:
   </message>
 
   <!-- 'Sign In' dialog: -->

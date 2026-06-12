@@ -20,6 +20,7 @@ import org.chromium.brave_account.mojom.AccountState;
 import org.chromium.brave_account.mojom.Authentication;
 import org.chromium.brave_account.mojom.AuthenticationObserver;
 import org.chromium.brave_account.mojom.LoggedOutState;
+import org.chromium.brave_account.mojom.LoggedOutVerificationIntent;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailError;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailResult;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailServerError;
@@ -55,7 +56,7 @@ public class BraveAccountSectionController
     private static final String PREF_USER_INFO = "user_info";
     private static final String PREF_SIGN_OUT = "sign_out";
     private static final String PREF_ALMOST_THERE = "almost_there";
-    private static final String PREF_ENTER_REGISTRATION_CODE = "enter_registration_code";
+    private static final String PREF_ENTER_VERIFICATION_CODE = "enter_verification_code";
     private static final String PREF_RESEND_CONFIRMATION_EMAIL = "resend_confirmation_email";
     private static final String PREF_CANCEL_REGISTRATION = "cancel_registration";
     private static final String PREF_GET_STARTED = "get_started";
@@ -65,7 +66,7 @@ public class BraveAccountSectionController
                 PREF_USER_INFO,
                 PREF_SIGN_OUT,
                 PREF_ALMOST_THERE,
-                PREF_ENTER_REGISTRATION_CODE,
+                PREF_ENTER_VERIFICATION_CODE,
                 PREF_RESEND_CONFIRMATION_EMAIL,
                 PREF_CANCEL_REGISTRATION,
                 PREF_GET_STARTED
@@ -133,10 +134,10 @@ public class BraveAccountSectionController
                     });
         }
 
-        Preference enterRegistrationCodePreference =
-                mFragment.findPreference(PREF_ENTER_REGISTRATION_CODE);
-        if (enterRegistrationCodePreference != null) {
-            enterRegistrationCodePreference.setOnPreferenceClickListener(
+        Preference enterVerificationCodePreference =
+                mFragment.findPreference(PREF_ENTER_VERIFICATION_CODE);
+        if (enterVerificationCodePreference != null) {
+            enterVerificationCodePreference.setOnPreferenceClickListener(
                     preference -> openBraveAccountDialog());
         }
 
@@ -155,34 +156,32 @@ public class BraveAccountSectionController
         Preference userInfoPref = mFragment.findPreference(PREF_USER_INFO);
         Preference signOutPref = mFragment.findPreference(PREF_SIGN_OUT);
         Preference almostTherePref = mFragment.findPreference(PREF_ALMOST_THERE);
-        Preference enterRegistrationCodePref =
-                mFragment.findPreference(PREF_ENTER_REGISTRATION_CODE);
+        Preference enterVerificationCodePref =
+                mFragment.findPreference(PREF_ENTER_VERIFICATION_CODE);
         Preference resendConfirmationEmailPref =
                 mFragment.findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
         Preference cancelRegistrationPref = mFragment.findPreference(PREF_CANCEL_REGISTRATION);
         Preference getStartedPref = mFragment.findPreference(PREF_GET_STARTED);
+
+        // Hidden by default; each state re-shows only the rows it needs.
+        setVisibility(userInfoPref, false);
+        setVisibility(signOutPref, false);
+        setVisibility(almostTherePref, false);
+        setVisibility(enterVerificationCodePref, false);
+        setVisibility(resendConfirmationEmailPref, false);
+        setVisibility(cancelRegistrationPref, false);
+        setVisibility(getStartedPref, false);
 
         switch (state.which()) {
             case AccountState.Tag.LoggedIn:
                 userInfoPref.setTitle(state.getLoggedIn().email);
                 setVisibility(userInfoPref, true);
                 setVisibility(signOutPref, true);
-                setVisibility(almostTherePref, false);
-                setVisibility(enterRegistrationCodePref, false);
-                setVisibility(resendConfirmationEmailPref, false);
-                setVisibility(cancelRegistrationPref, false);
-                setVisibility(getStartedPref, false);
                 break;
 
             case AccountState.Tag.LoggedOut:
                 LoggedOutState loggedOut = state.getLoggedOut();
                 if (loggedOut.verification == null) {
-                    setVisibility(userInfoPref, false);
-                    setVisibility(signOutPref, false);
-                    setVisibility(almostTherePref, false);
-                    setVisibility(enterRegistrationCodePref, false);
-                    setVisibility(resendConfirmationEmailPref, false);
-                    setVisibility(cancelRegistrationPref, false);
                     setVisibility(getStartedPref, true);
                     break;
                 }
@@ -213,13 +212,61 @@ public class BraveAccountSectionController
                             });
                 }
 
-                setVisibility(userInfoPref, false);
-                setVisibility(signOutPref, false);
-                setVisibility(almostTherePref, true);
-                setVisibility(enterRegistrationCodePref, true);
-                setVisibility(resendConfirmationEmailPref, true);
-                setVisibility(cancelRegistrationPref, true);
-                setVisibility(getStartedPref, false);
+                switch (loggedOut.verification.intent) {
+                    case LoggedOutVerificationIntent.REGISTRATION:
+                        setTitleAndSummary(
+                                almostTherePref,
+                                R.string.settings_brave_account_verification_row_title,
+                                R.string.settings_brave_account_verification_row_description_1);
+                        setTitleAndSummary(
+                                enterVerificationCodePref,
+                                R.string
+                                        .settings_brave_account_enter_verification_code_button_label, // presubmit: ignore-long-line
+                                R.string.settings_brave_account_verification_row_description_2);
+                        setTitle(
+                                cancelRegistrationPref,
+                                R.string.settings_brave_account_cancel_registration_button_label);
+                        setVisibility(almostTherePref, true);
+                        setVisibility(enterVerificationCodePref, true);
+                        setVisibility(resendConfirmationEmailPref, true);
+                        setVisibility(cancelRegistrationPref, true);
+                        break;
+
+                    case LoggedOutVerificationIntent.RESET_PASSWORD:
+                        if (loggedOut.verification.email.isEmpty()) {
+                            setTitleAndSummary(
+                                    almostTherePref,
+                                    R.string.settings_brave_account_verification_row_title,
+                                    R.string
+                                            .settings_brave_account_reset_password_row_description_1); // presubmit: ignore-long-line
+                            setTitleAndSummary(
+                                    enterVerificationCodePref,
+                                    R.string
+                                            .settings_brave_account_enter_verification_code_button_label, // presubmit: ignore-long-line
+                                    R.string.settings_brave_account_verification_row_description_2);
+                            setVisibility(resendConfirmationEmailPref, true);
+                        } else {
+                            setTitleAndSummary(
+                                    almostTherePref,
+                                    R.string.settings_brave_account_verification_row_title,
+                                    R.string
+                                            .settings_brave_account_reset_password_verified_row_description); // presubmit: ignore-long-line
+                            setTitle(
+                                    enterVerificationCodePref,
+                                    R.string.settings_brave_account_set_new_password_button_label);
+                        }
+                        setTitle(
+                                cancelRegistrationPref,
+                                R.string.settings_brave_account_cancel_reset_password_button_label);
+                        setVisibility(almostTherePref, true);
+                        setVisibility(enterVerificationCodePref, true);
+                        setVisibility(cancelRegistrationPref, true);
+                        break;
+
+                    default:
+                        assert false : "Unhandled LoggedOutVerificationIntent!";
+                        break;
+                }
                 break;
         }
         mFragment.notifyPreferencesUpdated();
@@ -228,6 +275,20 @@ public class BraveAccountSectionController
     private void setVisibility(@Nullable Preference preference, boolean visible) {
         if (preference != null) {
             preference.setVisible(visible);
+        }
+    }
+
+    private void setTitle(@Nullable Preference preference, int titleId) {
+        if (preference != null) {
+            preference.setTitle(titleId);
+            preference.setSummary(null);
+        }
+    }
+
+    private void setTitleAndSummary(@Nullable Preference preference, int titleId, int summaryId) {
+        setTitle(preference, titleId);
+        if (preference != null) {
+            preference.setSummary(mFragment.getString(summaryId));
         }
     }
 
