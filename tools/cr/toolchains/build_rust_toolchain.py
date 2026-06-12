@@ -147,7 +147,7 @@ EXE_SUFFIX = '.exe' if sys.platform == 'win32' else ''
 # Filename of the LLVM linker binary produced by the Chromium LLVM build.
 LLD = 'lld' + EXE_SUFFIX
 
-# Basenames of the prebuilt host tools used as bootstrap's stage-0 compiler in
+# Basenames of the prebuilt host tools used as bootstrap's stage-1 compiler in
 # `--no-full-toolchain` mode (see USE_PREBUILT_RUSTC_FOR_WASM_STD). They live
 # under `RUST_TOOLCHAIN_OUT_DIR/bin/` and carry the platform's executable suffix.
 RUSTC = f'rustc{EXE_SUFFIX}'
@@ -191,7 +191,7 @@ TOOLS_RUST = Path('tools') / 'rust'
 # directory.  The wasm32 standard-library sysroot lives at
 # <RUST_BUILD_DIR>/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/.  Both
 # build modes write here: bootstrap names the standard library by the stage that
-# *consumes* it, so the std the prebuilt stage-0 compiler builds (see
+# *consumes* it, so the std the prebuilt stage-1 compiler builds (see
 # USE_PREBUILT_RUSTC_FOR_WASM_STD) is the "stage-1 std" and lands under `stage1/`
 # just like the from-scratch stage-1 build.
 STAGE1_RUSTLIB = Path('stage1') / 'lib' / 'rustlib'
@@ -199,7 +199,7 @@ STAGE1_RUSTLIB = Path('stage1') / 'lib' / 'rustlib'
 # When True, the `--no-full-toolchain` build compiles only the wasm32 standard
 # library against the prebuilt `rustc` that gclient already syncs to
 # `third_party/rust-toolchain` (`RUST_TOOLCHAIN_OUT_DIR`), used as the Rust
-# bootstrap stage-0 compiler via `x.py build library --stage 0`. No `rustc` is
+# bootstrap stage-1 compiler via `x.py build library --stage 1`. No `rustc` is
 # rebuilt from scratch, and the wasm std is guaranteed to match the toolchain it
 # overlays. Set to False to fall back to building a stage-1 `rustc` purely to
 # produce the wasm std.
@@ -632,20 +632,22 @@ class ToolchainBuilder:
           standard libraries.  Artifacts land under
           `RUST_BUILD_DIR/<host>/stage1/`.
 
-        * `use_prebuilt_rustc=True`: `build library --stage 0 --target wasm32`
+        * `use_prebuilt_rustc=True`: `build library --stage 1 --target wasm32`
           with `--set build.rustc`/`build.cargo` pointed at the prebuilt
-          toolchain in `RUST_TOOLCHAIN_OUT_DIR`.  The synced compiler is used as
-          bootstrap's stage-0, so only the wasm32 std is compiled — no `rustc`
-          is built — and the result is byte-compatible with the toolchain it
-          overlays.  Bootstrap names std by the stage that consumes it, so the
-          artifacts still land under `RUST_BUILD_DIR/<host>/stage1/` (see
-          `STAGE1_RUSTLIB`), same as the default build.
+          toolchain in `RUST_TOOLCHAIN_OUT_DIR` and `--set
+          build.local-rebuild=true`.  `local-rebuild` tells bootstrap the
+          stage-1 compiler is the same version as the in-tree sources, which is
+          true here because `update_rust.py` pins the synced toolchain and
+          `rust-src` to the same revision. This lets it reuse the synced
+          compiler as the stage-1 compiler instead of building one.  Only the
+          wasm32 std is compiled (no `rustc` build), and the result is
+          byte-compatible with the toolchain it overlays.  Artifacts land under
+          `RUST_BUILD_DIR/<host>/stage1/` (see `STAGE1_RUSTLIB`), same as the
+          default build.
 
-          `build.local-rebuild=true` is required: bootstrap otherwise refuses to
-          build anything at stage 0 ("cannot build anything on stage 0").  It is
-          the assertion that the stage-0 compiler is the same version as the
-          in-tree sources, which holds here because `update_rust.py` pins the
-          synced toolchain and `rust-src` to the same revision.
+          `--stage 1` (rather than `--stage 0`) is required: a stage-0 build
+          compiles std into cargo's output dir but never assembles the
+          `lib/rustlib/<target>/lib/` sysroot, whereas stage 1 assembles it.
         """
         target_triple: str = self._build_rust_module.RustTargetTriple()
 
@@ -660,7 +662,7 @@ class ToolchainBuilder:
                         f'Prebuilt Rust tool not found: {tool}. The '
                         f'--no-full-toolchain build uses the toolchain gclient '
                         f'syncs to {prebuilt_bin.parent} as bootstrap\'s '
-                        f'stage-0; run `gclient sync` or pass --full-toolchain.'
+                        f'stage-1; run `gclient sync` or pass --full-toolchain.'
                     )
             _check_call(str(self._vpython_path),
                         'build_rust.py',
@@ -673,7 +675,7 @@ class ToolchainBuilder:
                         '--target',
                         WASM32_UNKNOWN_UNKNOWN,
                         '--stage',
-                        '0',
+                        '1',
                         '--set',
                         f'build.rustc={rustc}',
                         '--set',
