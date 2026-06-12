@@ -41,6 +41,7 @@
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_ort_worker_ui.h"
@@ -872,6 +873,32 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
       IsJsBlockingEnforced(browser_context, url));
+}
+
+mojo::PendingRemote<local_ai::mojom::AsrSession>
+BraveContentBrowserClient::GetAsrSession(
+    content::BrowserContext* browser_context) {
+  if (!base::FeatureList::IsEnabled(
+          local_ai::kBraveOnDeviceSpeechRecognition)) {
+    return {};
+  }
+  return speech::OnDeviceSpeechRecognitionController::Get()->GetAsrSession();
+}
+
+media::mojom::AvailabilityStatus
+BraveContentBrowserClient::GetOnDeviceSpeechRecognitionAvailabilityStatus(
+    content::BrowserContext* context,
+    const std::string& language,
+    media::mojom::SpeechRecognitionQuality quality) {
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    if (l10n_util::GetLanguage(language) == "en") {
+      return media::mojom::AvailabilityStatus::kAvailable;
+    }
+    return media::mojom::AvailabilityStatus::kUnavailable;
+  }
+  return ChromeContentBrowserClient::
+      GetOnDeviceSpeechRecognitionAvailabilityStatus(context, language,
+                                                     quality);
 }
 
 bool BraveContentBrowserClient::CanCreateWindow(
