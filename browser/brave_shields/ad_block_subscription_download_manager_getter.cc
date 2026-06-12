@@ -71,15 +71,35 @@ class AdBlockSubscriptionDownloadManagerFactory
   }
 };
 
-AdBlockSubscriptionDownloadManager* MaybeGetDownloadManager() {
-  auto* profile_manager = g_browser_process->profile_manager();
-  auto* profile =
-      profile_manager->GetProfileByPath(profile_manager->user_data_dir().Append(
-          profile_manager->GetInitialProfileDir()));
-  if (profile) {
-    return AdBlockSubscriptionDownloadManagerFactory::GetInstance()->GetForKey(
+AdBlockSubscriptionDownloadManager* GetDownloadManagerForProfile(
+    Profile* profile) {
+  if (profile && profile->IsRegularProfile()) {
+    return AdBlockSubscriptionDownloadManagerFactory::GetForKey(
         profile->GetProfileKey());
   }
+  return nullptr;
+}
+
+AdBlockSubscriptionDownloadManager* MaybeGetDownloadManager() {
+  auto* profile_manager = g_browser_process->profile_manager();
+  if (auto* download_manager =
+          GetDownloadManagerForProfile(profile_manager->GetProfileByPath(
+              profile_manager->user_data_dir().Append(
+                  profile_manager->GetInitialProfileDir())))) {
+    return download_manager;
+  }
+
+  if (auto* download_manager = GetDownloadManagerForProfile(
+          ProfileManager::GetLastUsedProfileIfLoaded())) {
+    return download_manager;
+  }
+
+  for (auto* profile : profile_manager->GetLoadedProfiles()) {
+    if (auto* download_manager = GetDownloadManagerForProfile(profile)) {
+      return download_manager;
+    }
+  }
+
   return nullptr;
 }
 
@@ -97,7 +117,7 @@ class AdBlockSubscriptionDownloadManagerGetterImpl
 
  private:
   void OnProfileAdded(Profile* profile) override {
-    if (auto* download_manager = MaybeGetDownloadManager()) {
+    if (auto* download_manager = GetDownloadManagerForProfile(profile)) {
       std::move(callback_).Run(download_manager);
       OnProfileManagerDestroying();
     }
