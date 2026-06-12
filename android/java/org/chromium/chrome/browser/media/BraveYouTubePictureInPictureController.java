@@ -433,7 +433,7 @@ public class BraveYouTubePictureInPictureController {
         final int sessionId = mSessionId;
         mExiting = true;
         // Primary exit path: ask the renderer to drop DOM fullscreen directly. The page
-        // receives the same fullscreenchange event it gets when the user presses Back in a
+        // receives the same fullscreen change event it gets when the user presses Back in a
         // fullscreen video, so YouTube's player restores its layout.
         webContents.exitFullscreen();
 
