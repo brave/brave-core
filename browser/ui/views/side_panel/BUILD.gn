@@ -71,6 +71,7 @@ source_set("unit_tests") {
   if (enable_sidebar_v2) {
     sources += [
       "brave_side_panel_header_controller_unittest.cc",
+      "side_panel_entry_unittest.cc",
       "side_panel_utils_unittest.cc",
     ]
 
