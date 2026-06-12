@@ -743,13 +743,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
 
-  auto* dialog_ui =
-      dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
-  ASSERT_TRUE(dialog_ui);
   // Wait for the Mojo PsstConsentFactory::CreatePsstConsentHandler call from
   // the WebUI JavaScript to complete before interacting with the handler.
-  ASSERT_TRUE(base::test::RunUntil(
-      [dialog_ui]() { return dialog_ui->psst_consent_handler_ != nullptr; }));
+  WaitForPsstDialogUIReady(dialog_wc);
 
   const std::vector<std::string> perform_uids = {"1", "2"};
   ASSERT_TRUE(AcceptModalDialog(
