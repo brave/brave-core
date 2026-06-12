@@ -13,16 +13,24 @@ source_set("brave_shields") {
     "brave_shields_settings_service_factory_bridge.mm",
     "cookie_control_javascript_feature.h",
     "cookie_control_javascript_feature.mm",
+    "farbling_args.h",
+    "farbling_args.mm",
+    "farbling_javascript_feature.h",
+    "farbling_javascript_feature.mm",
   ]
 
   deps = [
     ":cookie_control_js",
+    ":farbling_js",
     "//base",
     "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/brave_shields/ios/browser",
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/keyed_service",
     "//brave/ios/browser/shared/prefs",
+    "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/user_prefs",
@@ -32,10 +40,16 @@ source_set("brave_shields") {
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/web/public",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 
-  public_deps = [ "//ios/web/public/js_messaging" ]
+  public_deps = [
+    "//base",
+    "//brave/ios/web/js_messaging:message_handler_token",
+    "//brave/ios/web/js_messaging:randomized_message_handler_name",
+    "//ios/web/public/js_messaging",
+  ]
 
   frameworks = [ "Foundation.framework" ]
 }
@@ -44,4 +58,24 @@ optimize_ts("cookie_control_js") {
   visibility = [ ":brave_shields" ]
   sources = [ "resources/cookie_control.ts" ]
   deps = [ "//ios/web/public/js_messaging:gcrweb" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "farbling_args_unittest.mm" ]
+
+  deps = [
+    ":brave_shields",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_shields/core/common",
+    "//testing/gtest",
+  ]
+}
+
+optimize_ts("farbling_js") {
+  visibility = [ ":brave_shields" ]
+  sources = [ "resources/farbling.ts" ]
+  deps = [ "//brave/ios/web/js_messaging:util_scripts" ]
 }
