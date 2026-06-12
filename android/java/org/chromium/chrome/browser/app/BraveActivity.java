@@ -1207,21 +1207,6 @@ public abstract class BraveActivity extends ChromeActivity
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
-        Profile profile = mTabModelProfileSupplier.get();
-        if (profile != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
-            if (!BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)) {
-                // Restore Origin purchase from Google Play if the local pref is not set
-                // (e.g. after device change). This ensures prefs are populated before the user
-                // taps the Origin menu.
-                BraveOriginSubscriptionPrefs.verifyPurchase(profile);
-            } else {
-                // The subscription is active locally. If a prior session was killed mid-fetch
-                // (order ID never written), restart the credential fetch so the user isn't left
-                // permanently stuck on the "Disabling features" spinner.
-                BraveOriginSubscriptionPrefs.resumeCredentialFetchIfNeeded(profile);
-            }
-        }
-
         BraveHelper.maybeMigrateSettings();
 
         PrefChangeRegistrar mPrefChangeRegistrar = PrefServiceUtil.createFor(getCurrentProfile());
@@ -1374,12 +1359,30 @@ public abstract class BraveActivity extends ChromeActivity
                 && !BraveVpnPolicy.isDisabledByPolicy(mTabModelProfileSupplier.get())) {
             showLinkVpnSubscriptionDialog();
         }
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+        Profile profile = mTabModelProfileSupplier.get();
+        if (profile != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+            if (BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)) {
+                // The subscription is active locally (Google Play purchase). If a prior session
+                // was killed mid-fetch (order ID never written), restart the credential fetch so
+                // the user isn't left permanently stuck on the "Disabling features" spinner.
+                BraveOriginSubscriptionPrefs.resumeCredentialFetchIfNeeded(profile);
+            }
             // Refresh the cached Skus credential summary so sync "is Origin active" readers
-            // (promo/engagement gates) see up-to-date status. Local-first; only hits the
-            // backend when credentials are past their expiry window.
+            // (promo/engagement gates) see up-to-date status. Local-first; only hits the backend
+            // when credentials are past their expiry window. The fresh result also decides whether
+            // to restore a Google Play purchase: only query Google Play when there is no local
+            // Play purchase AND no Origin SKU credentials, so a subscription purchased on desktop
+            // and linked to this account is never overridden by an unrelated account-wide Play
+            // purchase. Using the fresh result (not the cache) keeps this correct even on the very
+            // first restart right after linking.
             BraveOriginSubscriptionPrefs.requestCredentialSummary(
-                    mTabModelProfileSupplier.get(), null);
+                    profile,
+                    (isActive) -> {
+                        if (!BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)
+                                && !isActive) {
+                            BraveOriginSubscriptionPrefs.verifyPurchase(profile);
+                        }
+                    });
         }
         if (isFirstInstall
                 && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
