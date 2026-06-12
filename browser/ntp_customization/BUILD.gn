@@ -5,13 +5,18 @@
 
 import("//build/config/android/rules.gni")
 
-# Brave override for NtpCustomizationUtils.isInNarrowWindowOnTablet (bytecode
-# redirects calls to this). Depends only on UiConfig to avoid circular deps
-# with //chrome/browser/ntp_customization:java.
+# Brave overrides for NtpCustomizationUtils.isInNarrowWindowOnTablet and
+# NtpCustomizationPromoManager.canShowCustomizationIph (bytecode redirects calls
+# to these). Depends only on the minimum needed to avoid circular deps with
+# //chrome/browser/ntp_customization:java.
 android_library("java") {
-  sources = [ "java/src/org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils.java" ]
+  sources = [
+    "java/src/org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils.java",
+    "java/src/org/chromium/chrome/browser/ntp_customization/theme/BraveNtpCustomizationPromoManager.java",
+  ]
 
   deps = [
+    "//chrome/browser/tab:java",
     "//components/browser_ui/widget/android:java",
     "//ui/android:ui_java",
   ]
