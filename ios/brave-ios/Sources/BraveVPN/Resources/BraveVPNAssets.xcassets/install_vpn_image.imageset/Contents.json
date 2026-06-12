@@ -5,23 +5,14 @@
       "scale" : "1x"
     },
     {
-      "filename" : "install profile@2x.png",
+      "filename" : "install_vpn_image@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "install profile@3x.png",
+      "filename" : "install_vpn_image@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
-    },
-    {
-      "idiom" : "ipad",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "install profile-ipad@2x.png",
-      "idiom" : "ipad",
-      "scale" : "2x"
     }
   ],
   "info" : {

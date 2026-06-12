@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveVPN
+import SwiftUI
 import UIKit
 
 extension BrowserViewController {
@@ -85,7 +86,7 @@ extension BrowserViewController {
       installVPNProfile: { [weak self] in
         guard let self = self else { return }
         self.dismiss(animated: true) {
-          self.present(BraveVPNInstallViewController(), animated: true)
+          self.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
         }
       }
     )

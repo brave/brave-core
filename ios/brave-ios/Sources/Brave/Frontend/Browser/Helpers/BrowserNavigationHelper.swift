@@ -147,7 +147,7 @@ class BrowserNavigationHelper {
       installVPNProfile: { [weak bvc] in
         guard let bvc = bvc else { return }
         bvc.popToBVC()
-        bvc.openInsideSettingsNavigation(with: BraveVPNInstallViewController())
+        bvc.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
       }
     )
 
