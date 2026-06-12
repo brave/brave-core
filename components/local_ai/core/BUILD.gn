@@ -41,6 +41,7 @@ static_library("core") {
     "local_models_updater.h",
     "on_device_speech_models_state.h",
     "url_constants.h",
+    "utils.h",
   ]
 
   sources = [
@@ -49,12 +50,15 @@ static_library("core") {
     "local_models_updater.h",
     "on_device_speech_models_state.cc",
     "on_device_speech_models_state.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [
     ":features",
     ":mojom",
     "//base",
+    "//mojo/public/cpp/base",
   ]
 
   deps = [
@@ -65,7 +69,6 @@ static_library("core") {
     "//components/history_embeddings/core",
     "//components/update_client",
     "//crypto",
-    "//mojo/public/cpp/base",
     "//mojo/public/cpp/bindings",
   ]
 }
