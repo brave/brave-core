@@ -11,6 +11,10 @@ include_rules = [
   "+components/keyed_service",
   "+components/os_crypt/async",
   "+components/prefs",
+  "+components/sync/base",
+  "+components/sync/model",
+  "+components/sync/protocol",
+  "+components/sync/test",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+crypto",
   "+services/network/public",
@@ -21,6 +25,7 @@ include_rules = [
   "+tensorflow_lite_support/cc/task/text/proto",
   "+third_party/re2/src/re2",
   "+third_party/skia/include",
+  "+third_party/zlib/google",
   "+ui/base",
   "+ui/gfx/image",
 ]
