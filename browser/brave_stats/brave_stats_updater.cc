@@ -408,7 +408,11 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
-  registry->RegisterTimePref(serp_metrics::prefs::kLastReportedAt,
+  registry->RegisterTimePref(serp_metrics::prefs::kLastDailyReportedAt,
+                             base::Time());
+  registry->RegisterTimePref(serp_metrics::prefs::kLastWeeklyReportedAt,
+                             base::Time());
+  registry->RegisterTimePref(serp_metrics::prefs::kLastMonthlyReportedAt,
                              base::Time());
 }
 
