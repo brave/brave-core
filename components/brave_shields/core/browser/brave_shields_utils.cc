@@ -278,6 +278,13 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
       url.SchemeIs(kChromeExtensionScheme)) {
     return true;
   }
+
+  // For blobs we would like to make sure that we apply farbling to it.
+  if (url.is_valid() && url.SchemeIsBlob()) {
+    return true;
+  }
+
+  // By default all non http and https are not churned in the shields flow.
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
     return false;
   }
@@ -800,7 +807,11 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
                          PrefService* local_state) {
   DCHECK(map);
 
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+  if (url.is_empty()) {
+    return;
+  }
+
+  if (!url.SchemeIsHTTPOrHTTPS() && !url.SchemeIsBlob()) {
     return;
   }
 
@@ -822,7 +833,11 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         const GURL& url) {
   DCHECK(map);
 
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+  if (url.is_empty()) {
+    return false;
+  }
+
+  if (!url.SchemeIsHTTPOrHTTPS() && !url.SchemeIsBlob()) {
     return false;
   }
 
@@ -860,7 +875,7 @@ base::Token GetFarblingToken(HostContentSettingsMap* map,
                              const GURL& url,
                              base::span<const uint8_t> additional_entropy) {
   base::Token token;
-  if (!url.SchemeIsHTTPOrHTTPS()) {
+  if (!url.SchemeIsHTTPOrHTTPS() && !url.SchemeIsBlob()) {
     return token;
   }
 
