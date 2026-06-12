@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/header_util.cc b/services/network/public/cpp/header_util.cc
-index cabfb3121e1d30d0cf84e7985a21de78b27cf65c..53b93d04ee4f43cdad960423491a5cc21bf776e7 100644
+index 61c6d9a5cb466026152782fd9c4db16c0a975124..76371c2d6aa76abc0fa7e8e351e92b2b87bdc415 100644
 --- a/services/network/public/cpp/header_util.cc
 +++ b/services/network/public/cpp/header_util.cc
-@@ -120,6 +120,7 @@ bool ContainsForbiddenSecurityHeader(net::HttpRequestHeaders& headers) {
+@@ -133,6 +133,7 @@ bool ContainsForbiddenSecurityHeader(net::HttpRequestHeaders& headers) {
  
    auto sanitize_and_check_security_header = [&](std::string_view name,
                                                  std::string_view value) {
