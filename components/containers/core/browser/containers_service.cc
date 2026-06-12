@@ -159,7 +159,19 @@ ContainersService::GetContainerIdFromContainerSpecifier(
 }
 
 void ContainersService::ScheduleOrphanedContainersCleanup() {
-  bool should_cleanup = false;
+  if (!ShouldScheduleOrphanedContainersCleanup()) {
+    return;
+  }
+
+  delegate_->GetReferencedContainerIds(
+      base::BindOnce(&ContainersService::OnReferencedContainerIdsReady,
+                     weak_factory_.GetWeakPtr()));
+}
+
+bool ContainersService::ShouldScheduleOrphanedContainersCleanup() const {
+  if (HasContainersPendingDeletionInPrefs(*prefs_)) {
+    return true;
+  }
 
   // Check if any locally used container is not referenced by the synced
   // containers list. If so, schedule the cleanup.
@@ -172,21 +184,18 @@ void ContainersService::ScheduleOrphanedContainersCleanup() {
       continue;
     }
 
-    should_cleanup = true;
-    break;
+    return true;
   }
 
-  // If any locally used container is not referenced by the synced containers
-  // list, schedule the cleanup.
-  if (should_cleanup) {
-    delegate_->GetReferencedContainerIds(
-        base::BindOnce(&ContainersService::OnReferencedContainerIdsReady,
-                       weak_factory_.GetWeakPtr()));
-  }
+  return false;
 }
 
 void ContainersService::OnReferencedContainerIdsReady(
     const base::flat_set<std::string>& referenced_container_ids) {
+  for (const auto& id : referenced_container_ids) {
+    RemoveContainerPendingDeletionFromPrefs(id, *prefs_);
+  }
+
   const auto& synced_containers = GetContainersFromPrefs(*prefs_);
   for (const auto& locally_used_container :
        GetLocallyUsedContainersFromPrefs(*prefs_)) {
@@ -197,6 +206,20 @@ void ContainersService::OnReferencedContainerIdsReady(
       continue;
     }
 
+    RemoveLocallyUsedContainerFromPrefs(id, *prefs_);
+    AddContainerPendingDeletionToPrefs(id, *prefs_);
+  }
+
+  ProcessContainersPendingDeletion();
+}
+
+void ContainersService::ProcessContainersPendingDeletion() {
+  for (const auto& id : GetContainersPendingDeletionFromPrefs(*prefs_)) {
+    if (delete_requests_in_flight_.contains(id)) {
+      continue;
+    }
+
+    delete_requests_in_flight_.insert(id);
     delegate_->DeleteContainerStorage(
         id, base::BindOnce(&ContainersService::OnContainerStorageDeleted,
                            weak_factory_.GetWeakPtr(), id));
@@ -205,17 +228,15 @@ void ContainersService::OnReferencedContainerIdsReady(
 
 void ContainersService::OnContainerStorageDeleted(const std::string& id,
                                                   bool success) {
+  delete_requests_in_flight_.erase(id);
+
   if (!success) {
     LOG(WARNING) << "Failed to delete container storage for " << id
                  << " will retry on next launch";
     return;
   }
 
-  // If the container did not reappear in the synced containers list, remove the
-  // used-container snapshot from the prefs to forget about it forever.
-  if (!GetContainerFromPrefs(*prefs_, id)) {
-    RemoveLocallyUsedContainerFromPrefs(id, *prefs_);
-  }
+  RemoveContainerPendingDeletionFromPrefs(id, *prefs_);
 }
 
 }  // namespace containers

@@ -282,6 +282,38 @@ TEST_F(ContainersServiceTest, CleanupRunsWhenReferencesDisappear) {
   ASSERT_EQ(delegate_->delete_requests().size(), 1u);
   EXPECT_EQ(delegate_->delete_requests()[0], "container-id");
   EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+  EXPECT_FALSE(IsContainerPendingDeletionInPrefs(prefs_, "container-id"));
+}
+
+TEST_F(ContainersServiceTest, CleanupHidesContainerWhileDeletionIsPending) {
+  auto container = MakeContainer("container-id", "Shopping",
+                                 mojom::Icon::kShopping, SK_ColorRED);
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+  service_->MarkContainerUsed("container-id");
+
+  ContainersService::Delegate::DeleteContainerStorageCallback delete_callback;
+  EXPECT_CALL(*delegate_, DeleteContainerStorage("container-id", testing::_))
+      .WillOnce([&](const std::string&,
+                    ContainersService::Delegate::DeleteContainerStorageCallback
+                        callback) { delete_callback = std::move(callback); });
+
+  delegate_->SetReferencedContainersIds({});
+  SetContainersToPrefs({}, prefs_);
+
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_FALSE(service_->GetRuntimeContainerById("container-id"));
+  EXPECT_FALSE(service_->GetRuntimeContainerByName("Shopping"));
+  EXPECT_TRUE(service_->GetUsedContainerIds().empty());
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+  EXPECT_TRUE(IsContainerPendingDeletionInPrefs(prefs_, "container-id"));
+
+  ASSERT_TRUE(delete_callback);
+  std::move(delete_callback).Run(true);
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+  EXPECT_FALSE(IsContainerPendingDeletionInPrefs(prefs_, "container-id"));
 }
 
 TEST_F(ContainersServiceTest, CleanupBlockedWhileContainerIsReferenced) {
@@ -301,7 +333,18 @@ TEST_F(ContainersServiceTest, CleanupBlockedWhileContainerIsReferenced) {
   EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
 }
 
-TEST_F(ContainersServiceTest, CleanupFailureKeepsUsedSnapshot) {
+TEST_F(ContainersServiceTest,
+       CleanupRemovesPendingDeletionWhenContainerIsReferenced) {
+  AddContainerPendingDeletionToPrefs("container-id", prefs_);
+  delegate_->SetReferencedContainersIds({"container-id"});
+
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_TRUE(delegate_->delete_requests().empty());
+  EXPECT_FALSE(IsContainerPendingDeletionInPrefs(prefs_, "container-id"));
+}
+
+TEST_F(ContainersServiceTest, CleanupFailureKeepsContainerPendingDeletion) {
   auto container = MakeContainer("container-id", "Shopping",
                                  mojom::Icon::kShopping, SK_ColorRED);
   std::vector<mojom::ContainerPtr> synced_containers;
@@ -316,7 +359,21 @@ TEST_F(ContainersServiceTest, CleanupFailureKeepsUsedSnapshot) {
   service_->ScheduleOrphanedContainersCleanupForTesting();
 
   ASSERT_EQ(delegate_->delete_requests().size(), 1u);
-  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+  EXPECT_TRUE(IsContainerPendingDeletionInPrefs(prefs_, "container-id"));
+
+  delegate_ = nullptr;
+  service_->Shutdown();
+  service_.reset();
+
+  auto delegate =
+      std::make_unique<testing::NiceMock<MockContainersServiceDelegate>>();
+  delegate_ = delegate.get();
+  service_ = std::make_unique<ContainersService>(&prefs_, std::move(delegate));
+
+  ASSERT_EQ(delegate_->delete_requests().size(), 1u);
+  EXPECT_EQ(delegate_->delete_requests()[0], "container-id");
+  EXPECT_FALSE(IsContainerPendingDeletionInPrefs(prefs_, "container-id"));
 }
 
 }  // namespace containers

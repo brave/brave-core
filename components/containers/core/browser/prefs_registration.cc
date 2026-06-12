@@ -19,6 +19,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       ConvertContainersToListValue(CreateDefaultContainersList()),
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
   registry->RegisterDictionaryPref(prefs::kLocallyUsedContainers);
+  registry->RegisterListPref(prefs::kContainersPendingDeletion);
 }
 
 }  // namespace containers

@@ -135,6 +135,47 @@ void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
   update->Remove(id);
 }
 
+bool IsContainerPendingDeletionInPrefs(const PrefService& prefs,
+                                       std::string_view id) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  return prefs.GetList(prefs::kContainersPendingDeletion).contains(id);
+}
+
+bool HasContainersPendingDeletionInPrefs(const PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  return !prefs.GetList(prefs::kContainersPendingDeletion).empty();
+}
+
+std::vector<std::string> GetContainersPendingDeletionFromPrefs(
+    const PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  std::vector<std::string> ids;
+  for (const auto& value : prefs.GetList(prefs::kContainersPendingDeletion)) {
+    if (value.is_string()) {
+      ids.push_back(value.GetString());
+    }
+  }
+  return ids;
+}
+
+void AddContainerPendingDeletionToPrefs(std::string_view id,
+                                        PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  ScopedListPrefUpdate update(prefs, prefs::kContainersPendingDeletion);
+  if (!update->contains(id)) {
+    update->Append(id);
+  }
+}
+
+void RemoveContainerPendingDeletionFromPrefs(std::string_view id,
+                                             PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  ScopedListPrefUpdate update(prefs, prefs::kContainersPendingDeletion);
+  update->EraseIf([&](const base::Value& value) {
+    return value.is_string() && value.GetString() == id;
+  });
+}
+
 base::ListValue ConvertContainersToListValue(
     const std::vector<mojom::ContainerPtr>& containers) {
   base::ListValue list;
