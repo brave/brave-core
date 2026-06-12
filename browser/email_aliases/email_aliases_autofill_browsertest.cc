@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <string_view>
 #include <vector>
 
@@ -23,14 +24,38 @@
 #include "components/autofill/core/browser/foundations/test_autofill_manager_waiter.h"
 #include "components/autofill/core/browser/suggestions/suggestion.h"
 #include "components/autofill/core/browser/test_utils/autofill_test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_widget_host.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace email_aliases {
+
+namespace {
+
+void ExpectBraveEmailAliasAddressEntry(const autofill::Suggestion& suggestion) {
+  EXPECT_EQ(suggestion.type, autofill::SuggestionType::kAddressEntry);
+  EXPECT_TRUE(suggestion.brave_new_email_alias_suggestion);
+  EXPECT_EQ(suggestion.main_text.value,
+            l10n_util::GetStringUTF16(IDS_IDC_NEW_EMAIL_ALIAS));
+  ASSERT_EQ(1u, suggestion.labels.size());
+  EXPECT_EQ(suggestion.labels[0][0].value,
+            l10n_util::GetStringUTF16(IDS_IDC_NEW_EMAIL_ALIAS_DESC));
+  EXPECT_EQ(suggestion.icon, autofill::Suggestion::Icon::kEmail);
+}
+
+const autofill::Suggestion* FindBraveEmailAliasSuggestion(
+    const std::vector<autofill::Suggestion>& suggestions) {
+  const auto it = std::ranges::find_if(
+      suggestions, &autofill::Suggestion::brave_new_email_alias_suggestion);
+  return it == suggestions.end() ? nullptr : &*it;
+}
+
+}  // namespace
 
 class TestAutofillClient : public autofill::ChromeAutofillClient {
  public:
@@ -163,31 +188,37 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest, NewEmailAliasSuggestion) {
 
   ASSERT_LE(3u, autofill_client()->suggestions().size());
 
-  // Suggestion from Address settings.
+  // Saved profile suggestion — kAddressEntry without the Brave flag.
   EXPECT_EQ(autofill_client()->suggestions()[0].main_text.value,
             u"johndoe@hades.com");
   EXPECT_EQ(autofill_client()->suggestions()[0].type,
             autofill::SuggestionType::kAddressEntry);
-
-  EXPECT_EQ(autofill_client()->suggestions()[1].type,
-            autofill::SuggestionType::kSeparator);
-
-  // Upstream ManageAddress suggession.
-  EXPECT_EQ(autofill_client()->suggestions()[2].type,
-            autofill::SuggestionType::kManageAddress);
   EXPECT_FALSE(
-      autofill_client()->suggestions()[2].brave_new_email_alias_suggestion);
+      autofill_client()->suggestions()[0].brave_new_email_alias_suggestion);
 
+  const autofill::Suggestion* brave_suggestion =
+      FindBraveEmailAliasSuggestion(autofill_client()->suggestions());
   if (GetParam()) {
     ASSERT_LE(4u, autofill_client()->suggestions().size());
-    // EmailAlias ManageAddress (type reused) suggession.
+    ASSERT_NE(brave_suggestion, nullptr);
+
+    // Brave email alias suggestion — last body row, before footer.
+    ExpectBraveEmailAliasAddressEntry(*brave_suggestion);
+    EXPECT_EQ(brave_suggestion, &autofill_client()->suggestions()[1]);
+
+    EXPECT_EQ(autofill_client()->suggestions()[2].type,
+              autofill::SuggestionType::kSeparator);
     EXPECT_EQ(autofill_client()->suggestions()[3].type,
               autofill::SuggestionType::kManageAddress);
-    EXPECT_TRUE(
-        autofill_client()->suggestions()[3].brave_new_email_alias_suggestion);
   } else {
-    // Feature is disabled.
+    // Feature is disabled — no Brave email alias suggestion.
+    EXPECT_EQ(brave_suggestion, nullptr);
+
     EXPECT_EQ(3u, autofill_client()->suggestions().size());
+    EXPECT_EQ(autofill_client()->suggestions()[1].type,
+              autofill::SuggestionType::kSeparator);
+    EXPECT_EQ(autofill_client()->suggestions()[2].type,
+              autofill::SuggestionType::kManageAddress);
   }
 
   autofill_client()->ResetSuggestions();
@@ -208,13 +239,14 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest,
 
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !autofill_client()->suggestions().empty(); }));
+
+  // Brave email alias suggestion as the only entry on signup email field.
   EXPECT_EQ(1u, autofill_client()->suggestions().size());
 
-  // EmailAlias ManageAddress (type reused) suggession.
-  EXPECT_EQ(autofill_client()->suggestions()[0].type,
-            autofill::SuggestionType::kManageAddress);
-  EXPECT_TRUE(
-      autofill_client()->suggestions()[0].brave_new_email_alias_suggestion);
+  const autofill::Suggestion* brave_suggestion =
+      FindBraveEmailAliasSuggestion(autofill_client()->suggestions());
+  ASSERT_NE(brave_suggestion, nullptr);
+  ExpectBraveEmailAliasAddressEntry(*brave_suggestion);
 
   autofill_client()->ResetSuggestions();
 }

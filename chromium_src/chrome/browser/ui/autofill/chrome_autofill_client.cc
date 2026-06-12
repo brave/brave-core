@@ -10,7 +10,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/autofill/payments/webauthn_dialog_controller_impl.h"
+#include "chrome/browser/ui/autofill/autofill_suggestion_controller_utils.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/page_info/page_info_dialog.h"
@@ -143,12 +143,23 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
       if (contains_email_suggestion || username_field_in_sign_up_form) {
         autofill::Suggestion new_email_alias(
-            autofill::SuggestionType::kManageAddress);
+            autofill::SuggestionType::kAddressEntry);
         new_email_alias.icon = autofill::Suggestion::Icon::kEmail;
         new_email_alias.main_text = autofill::Suggestion::Text(
             l10n_util::GetStringUTF16(IDS_IDC_NEW_EMAIL_ALIAS));
+        new_email_alias.labels.push_back({autofill::Suggestion::Text(
+            l10n_util::GetStringUTF16(IDS_IDC_NEW_EMAIL_ALIAS_DESC))});
         new_email_alias.brave_new_email_alias_suggestion = true;
-        chrome_suggestions.push_back(std::move(new_email_alias));
+
+        size_t insert_index = chrome_suggestions.size();
+        for (size_t i = 0; i < chrome_suggestions.size(); ++i) {
+          if (IsFooterItem(chrome_suggestions, i)) {
+            insert_index = i;
+            break;
+          }
+        }
+        chrome_suggestions.insert(chrome_suggestions.begin() + insert_index,
+                                  std::move(new_email_alias));
       }
     }
   }
