@@ -14,6 +14,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_internals_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -21,6 +22,8 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/local_ai/core/features.h"
+#include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -169,6 +172,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
+  } else if (host == local_ai::kOnDeviceSpeechRecognitionInternalsHost) {
+    return new local_ai::OnDeviceSpeechRecognitionInternalsUI(web_ui,
+                                                              url.host());
   }
   return nullptr;
 }
@@ -215,7 +221,10 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
            brave_rewards::prefs::kDisabledByPolicy)) ||
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       (url.host() == kSkusInternalsHost &&
-       base::FeatureList::IsEnabled(skus::features::kSkusFeature))) {
+       base::FeatureList::IsEnabled(skus::features::kSkusFeature)) ||
+      (url.host() == local_ai::kOnDeviceSpeechRecognitionInternalsHost &&
+       base::FeatureList::IsEnabled(
+           local_ai::kBraveOnDeviceSpeechRecognition))) {
     return &NewWebUI;
   }
 
