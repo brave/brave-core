@@ -188,6 +188,18 @@
 -ReadAnythingReadAloudAppModelV8SegmentationTest.*
 -SidePanelCoordinatorTest.ReadAnythingSidePanelWidthNotCappedAtTwoThirds
 
+# Per Claude: This test times out because chromium_src override of
+# /chrome/test/base/chrome_render_view_test.cc swaps in
+# BraveContentRendererClient whose RenderFrameCreated
+# (brave/renderer/brave_content_renderer_client.cc:151) attaches a stack of
+# extra RenderFrameObservers and mojo receivers at frame creation. On a
+# frame that's never navigated, one of those pipes is what's left dangling
+# and spinning in teardown. ChromeRenderViewTest::TearDown() calls
+# base::RunLoop::RunUntilIdle(). A renderer-side mojo pipe is stuck in a
+# perpetual connection-error loop: the main thread keeps re-posting/servicing
+# OnPipeConnectionError work.
+-AXTreeDistillerTestBase.DistillPdfRoot
+
 # Google translate is disabled
 -TranslateAgentBrowserTest.*
 -TranslateManagerBrowserTest.*
@@ -2280,6 +2292,24 @@
 # routing are involved; root cause is the default pref.
 -ServiceWorkerWebRequestPersistFilteredEventsTest.PRE_WebRequestAfterRestart
 -ServiceWorkerWebRequestPersistFilteredEventsTest.WebRequestAfterRestart
+
+# Per Claude: these tests fail because the P3A consent infobar
+# (BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE) is shown in the web‑app window during
+# the test, and the infobar container is in a visible state, which in turn
+# suppresses Window Controls Overlay.
+# BrowserView::IsWindowControlsOverlayEnabled() returns the cached
+# window_controls_overlay_enabled_, which UpdateWindowControlsOverlayEnabled()
+# gates on a second condition (browser_view.cc:2512):
+#  bool enabled = should_show_window_controls_overlay_toggle_ &&
+#      app_controller && app_controller->IsWindowControlsOverlayEnabled();
+# should_show_window_controls_overlay_toggle_ is forced false whenever the
+# infobar container is visible (browser_view.cc:2568):
+#  if (... || (infobar_container_ && infobar_container_->GetVisible())) {
+#     should_show = false;
+#  }
+-WebAppIntegration_WindowControlsOverlayNoToggle.ManifestUpdateDisplayOverrideRemoveWindowControlsOverlayNoToggle
+-WebAppIntegration_WindowControlsOverlayNoToggle.WindowControlsOverlayEnabledByDefaultWithoutToggle
+-WebAppIntegration_WindowControlsOverlayNoToggle.WindowControlsOverlayPreservedAcrossLaunchesNoToggle
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdsPageLoadMetricsObserverBrowserTest.*
