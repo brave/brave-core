@@ -13,7 +13,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -31,6 +30,7 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_test_extension_loader.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "extensions/common/extension.h"
 #include "extensions/test/test_extension_dir.h"
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
@@ -136,11 +136,14 @@ class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
 
   void OpenEventSources(content::RenderFrameHost* rfh,
                         std::string_view script_template,
-                        int count) {
+                        int count,
+                        int32_t world_id = content::ISOLATED_WORLD_ID_GLOBAL) {
     const std::string& es_open_script =
         content::JsReplace(script_template, es_url_);
     for (int i = 0; i < count; ++i) {
-      EXPECT_EQ("open", content::EvalJs(rfh, es_open_script));
+      EXPECT_EQ("open", content::EvalJs(rfh, es_open_script,
+                                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                        world_id));
     }
   }
 
@@ -388,15 +391,12 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
                        PoolIsNotLimitedForExtensions) {
-  extensions::ScopedTestMV2Enabler mv2_enabler;
   extensions::TestExtensionDir test_extension_dir;
   test_extension_dir.WriteManifest(R"({
     "name": "Test",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "version": "0.1",
-    "permissions": ["webRequest", "webRequestBlocking", "*://a.com/*"],
-    "content_security_policy":
-      "script-src 'self' 'unsafe-eval'; object-src 'self'"
+    "host_permissions": ["*://a.com/*"]
   })");
   test_extension_dir.WriteFile(FILE_PATH_LITERAL("empty.html"), "");
 
@@ -408,8 +408,11 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(extension_rfh);
+  // Run the test script in an isolated world to bypass the MV3 extension page
+  // CSP (which, unlike MV2, cannot relax `script-src` with 'unsafe-eval').
   OpenEventSources(extension_rfh, kEventSourcesOpenScript,
-                   kEventSourcesPoolLimit + 5);
+                   kEventSourcesPoolLimit + 5,
+                   ISOLATED_WORLD_ID_CHROME_INTERNAL);
 }
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
