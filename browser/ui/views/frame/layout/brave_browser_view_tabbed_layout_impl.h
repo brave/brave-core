@@ -40,12 +40,17 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
                                         int y,
                                         int height);
   // Returns the adjusted bounds for an upstream side panel so that it sits
-  // between the contents area and the sidebar control view.  The panel is
-  // shifted inward (toward the centre of the browser) until it is flush with
-  // the inner edge of |sidebar_bounds|.
-  static gfx::Rect ComputeAdjustedPanelBounds(bool sidebar_leading,
-                                              const gfx::Rect& sidebar_bounds,
-                                              const gfx::Rect& panel_bounds);
+  // between the contents area and the sidebar control view.  The upstream panel
+  // animates its open/close slide against the browser edge; this translates the
+  // whole slide by a constant offset so it instead plays out against the inner
+  // edge of |sidebar_bounds|, ending flush with the sidebar at full open.
+  // |visual_client_area| is the upstream anchor rect (the same one used to
+  // compute |panel_bounds|), needed to derive that offset.
+  static gfx::Rect ComputeAdjustedPanelBounds(
+      bool sidebar_leading,
+      const gfx::Rect& sidebar_bounds,
+      const gfx::Rect& panel_bounds,
+      const gfx::Rect& visual_client_area);
 
   views::View* contents_container() { return views().contents_container; }
 
