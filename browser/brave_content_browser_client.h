@@ -13,10 +13,12 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/resource_context_data.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-forward.h"
 #include "build/build_config.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "media/mojo/mojom/speech_recognizer.mojom-forward.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
@@ -94,6 +96,15 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       content::BrowserContext* browser_context,
       const content::StoragePartitionConfig* storage_partition_config) override;
+
+  mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession(
+      content::BrowserContext* browser_context) override;
+
+  media::mojom::AvailabilityStatus
+  GetOnDeviceSpeechRecognitionAvailabilityStatus(
+      content::BrowserContext* context,
+      const std::string& language,
+      media::mojom::SpeechRecognitionQuality quality) override;
 
   void RegisterBrowserInterfaceBindersForFrame(
       content::RenderFrameHost* render_frame_host,

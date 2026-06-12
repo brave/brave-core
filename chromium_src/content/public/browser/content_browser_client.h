@@ -7,6 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_
 
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-forward.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
 namespace content {
@@ -41,6 +43,8 @@ class StoragePartitionConfig;
       const content::StoragePartitionConfig& partition_config) const;        \
   virtual bool ShouldUseDefaultHostZoomMapForStoragePartition(               \
       const content::StoragePartitionConfig& partition_config) const;        \
+  virtual mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession(    \
+      BrowserContext* browser_context);                                      \
   virtual void SetBrowserStartupIsCompleteForTesting
 
 #include <content/public/browser/content_browser_client.h>  // IWYU pragma: export
