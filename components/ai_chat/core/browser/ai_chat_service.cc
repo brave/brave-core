@@ -1130,6 +1130,34 @@ void AIChatService::BindObserver(
   std::move(callback).Run(BuildState());
 }
 
+void AIChatService::GetConversationData(const std::string& uuid,
+                                        GetConversationDataCallback callback) {
+  GetConversation(
+      uuid,
+      base::BindOnce(
+          [](base::WeakPtr<AIChatService> service,
+             GetConversationDataCallback cb, const std::string& conv_uuid,
+             ConversationHandler* handler) {
+            if (!service) {
+              std::move(cb).Run(nullptr, {});
+              return;
+            }
+            std::vector<mojom::ConversationTurnPtr> turns;
+            mojom::ConversationPtr conv = nullptr;
+            if (handler) {
+              auto it = service->conversations_.find(conv_uuid);
+              if (it != service->conversations_.end()) {
+                conv = it->second->Clone();
+              }
+              for (const auto& turn : handler->GetConversationHistory()) {
+                turns.push_back(turn.Clone());
+              }
+            }
+            std::move(cb).Run(std::move(conv), std::move(turns));
+          },
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback), uuid));
+}
+
 void AIChatService::BindObserver(
     mojo::PendingRemote<mojom::UntrustedServiceObserver> observer,
     mojom::UntrustedService::BindObserverCallback callback) {
