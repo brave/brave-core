@@ -11,8 +11,6 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
-#include "base/containers/span.h"
-#include "base/files/file.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -21,6 +19,7 @@
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/local_ai/content/background_web_contents_impl.h"
 #include "brave/components/local_ai/core/url_constants.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -43,31 +42,6 @@ OnDeviceSpeechRecognitionController::PendingSession::~PendingSession() =
 
 namespace {
 
-// Reads a file directly into BigBuffer storage. For files >64KB
-// BigBuffer uses shared memory.
-// TODO(yrliou): This is the same as
-// brave_passage_embeddings_service_controller.cc, we should pull this util
-// function out to share with it.
-std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
-    const base::FilePath& path) {
-  base::File file(path, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  if (!file.IsValid()) {
-    DVLOG(0) << "Failed to open: " << path;
-    return std::nullopt;
-  }
-  int64_t size = file.GetLength();
-  if (size <= 0) {
-    DVLOG(0) << "Empty or unreadable: " << path;
-    return std::nullopt;
-  }
-  mojo_base::BigBuffer buffer(static_cast<size_t>(size));
-  if (!file.ReadAndCheck(0, base::span<uint8_t>(buffer))) {
-    DVLOG(0) << "Failed to read: " << path;
-    return std::nullopt;
-  }
-  return buffer;
-}
-
 // Runs on a ThreadPool blocking sequence. Reads the Nemotron 0.6B streaming
 // model's graphs (encoder/decoder), the 128-mel filterbank and the token
 // list, all in full, and packs them into an OrtModelFiles. The worker builds
@@ -77,31 +51,33 @@ std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
 // of the model files in WASM memory.
 local_ai::mojom::OrtModelFilesPtr ReadNemotronOrtFiles(
     const base::FilePath& install_dir) {
-  auto encoder = ReadFileToBigBuffer(install_dir.AppendASCII("encoder.onnx"));
+  auto encoder =
+      local_ai::ReadFileToBigBuffer(install_dir.AppendASCII("encoder.onnx"));
   if (!encoder) {
     return nullptr;
   }
-  auto decoder =
-      ReadFileToBigBuffer(install_dir.AppendASCII("decoder_joint.onnx"));
+  auto decoder = local_ai::ReadFileToBigBuffer(
+      install_dir.AppendASCII("decoder_joint.onnx"));
   if (!decoder) {
     return nullptr;
   }
-  auto encoder_data =
-      ReadFileToBigBuffer(install_dir.AppendASCII("encoder.onnx.data"));
+  auto encoder_data = local_ai::ReadFileToBigBuffer(
+      install_dir.AppendASCII("encoder.onnx.data"));
   if (!encoder_data) {
     return nullptr;
   }
-  auto decoder_data =
-      ReadFileToBigBuffer(install_dir.AppendASCII("decoder_joint.onnx.data"));
+  auto decoder_data = local_ai::ReadFileToBigBuffer(
+      install_dir.AppendASCII("decoder_joint.onnx.data"));
   if (!decoder_data) {
     return nullptr;
   }
   auto filterbank =
-      ReadFileToBigBuffer(install_dir.AppendASCII("filterbank.bin"));
+      local_ai::ReadFileToBigBuffer(install_dir.AppendASCII("filterbank.bin"));
   if (!filterbank) {
     return nullptr;
   }
-  auto tokens = ReadFileToBigBuffer(install_dir.AppendASCII("tokens.txt"));
+  auto tokens =
+      local_ai::ReadFileToBigBuffer(install_dir.AppendASCII("tokens.txt"));
   if (!tokens) {
     return nullptr;
   }

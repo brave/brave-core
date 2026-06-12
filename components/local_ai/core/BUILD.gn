@@ -42,6 +42,7 @@ static_library("core") {
     "on_device_speech_models_state.h",
     "pref_names.h",
     "url_constants.h",
+    "utils.h",
   ]
 
   sources = [
@@ -52,12 +53,15 @@ static_library("core") {
     "on_device_speech_models_state.h",
     "pref_names.cc",
     "pref_names.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [
     ":features",
     ":mojom",
     "//base",
+    "//mojo/public/cpp/base",
   ]
 
   deps = [
@@ -69,7 +73,6 @@ static_library("core") {
     "//components/prefs",
     "//components/update_client",
     "//crypto",
-    "//mojo/public/cpp/base",
     "//mojo/public/cpp/bindings",
   ]
 }
