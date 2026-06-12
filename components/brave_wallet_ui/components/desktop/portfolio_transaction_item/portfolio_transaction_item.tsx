@@ -60,6 +60,9 @@ import {
 } from '../../../common/slices/api.slice.extra'
 import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 import {
+  usePolkadotTransactionAddresses, //
+} from '../../../common/hooks/use_polkadot_transaction_addresses'
+import {
   useGate3SwapStatus, //
 } from '../../../page/screens/swap/hooks/useGate3SwapStatus'
 import {
@@ -192,7 +195,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const txToken = findTransactionToken(transaction, combinedTokensList)
 
-    const recipientLabel = getAddressLabel(recipient, accountInfosRegistry)
+    const polkadotAddressesByUniqueKey =
+      usePolkadotTransactionAddresses(transaction)
+
+    const recipientLabel = getAddressLabel(
+      recipient,
+      accountInfosRegistry,
+      polkadotAddressesByUniqueKey,
+    )
 
     const senderLabel = getAccountLabel(
       transaction.fromAccountId,

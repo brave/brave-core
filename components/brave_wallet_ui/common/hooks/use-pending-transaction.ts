@@ -17,7 +17,10 @@ import { PanelActions } from '../../panel/actions'
 // utils
 import Amount from '../../utils/amount'
 import { getPriceRequestsForTokens } from '../../utils/pricing-utils'
-import { isHardwareAccount } from '../../utils/account-utils'
+import {
+  isHardwareAccount,
+  findAccountByPolkadotAddress,
+} from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { UISelectors } from '../selectors'
@@ -65,6 +68,9 @@ import {
   querySubscriptionOptions60s,
 } from '../slices/constants'
 import { useIsAccountSyncing } from './use_is_account_syncing'
+import {
+  usePolkadotTransactionAddresses, //
+} from './use_polkadot_transaction_addresses'
 
 // Constants
 import {
@@ -695,9 +701,32 @@ export const usePendingTransactions = () => {
       : skipToken,
   )
 
-  const { account: toAccount } = useAccountFromAddressQuery(
+  const { account: toAccountByAddress } = useAccountFromAddressQuery(
     transactionDetails?.recipient,
   )
+
+  // A parachain may encode the recipient with a different ss58 prefix than the
+  // keyring default stored in `account.address`, so the address-based lookup
+  // above misses own-account recipients. Fall back to matching the recipient
+  // against each account's chain-correct re-encoding (see
+  // `usePolkadotTransactionAddresses`) so the panel still resolves the name.
+  const polkadotAddressesByUniqueKey =
+    usePolkadotTransactionAddresses(transactionInfo)
+
+  const toAccount =
+    toAccountByAddress
+    ?? (transactionDetails?.recipient
+      ? findAccountByPolkadotAddress(
+          transactionDetails.recipient,
+          accounts,
+          polkadotAddressesByUniqueKey,
+        )
+      : undefined)
+
+  const fromAddress =
+    (transactionInfo
+      && polkadotAddressesByUniqueKey[transactionInfo.fromAccountId.uniqueKey])
+    || txAccount?.address
 
   const canEditNetworkFee = React.useMemo(() => {
     return (
@@ -712,6 +741,7 @@ export const usePendingTransactions = () => {
     isCurrentAllowanceUnlimited,
     erc20ApproveTokenInfo,
     fromAccount: txAccount,
+    fromAddress,
     toAccount,
     fromOrb,
     isConfirmButtonDisabled,

@@ -194,6 +194,8 @@ export function ConfirmationTokenInfo(props: Props) {
     return isSwapDestinationLabel && !amount
   }, [isSwapDestinationLabel, amount])
 
+  const displayAddress = receiveAddress || account?.address || ''
+
   if (label === 'to' && account) {
     return (
       <Row
@@ -218,12 +220,12 @@ export function ConfirmationTokenInfo(props: Props) {
           >
             {account.name}
           </AddressText>
-          <Tooltip text={account.address}>
+          <Tooltip text={displayAddress}>
             <ConfirmationInfoText
               textColor='tertiary'
               textAlign='left'
             >
-              {reduceAddress(account.address)}
+              {reduceAddress(displayAddress)}
             </ConfirmationInfoText>
           </Tooltip>
         </Column>
@@ -335,16 +337,12 @@ export function ConfirmationTokenInfo(props: Props) {
             text={
               isAddressCopied
                 ? getLocale('braveWalletButtonCopied')
-                : account
-                  ? (account?.address ?? '')
-                  : (receiveAddress ?? '')
+                : displayAddress
             }
           >
             <AccountButton
               onClick={() => {
-                copyToClipboard(
-                  account ? account.address : (receiveAddress ?? ''),
-                )
+                copyToClipboard(displayAddress)
                 setIsAddressCopied(true)
                 setTimeout(() => setIsAddressCopied(false), 1500)
               }}

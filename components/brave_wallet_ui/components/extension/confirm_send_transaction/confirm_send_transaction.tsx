@@ -94,6 +94,7 @@ export function ConfirmSendTransaction() {
     gasFee,
     updateUnapprovedTransactionNonce,
     fromAccount,
+    fromAddress,
     toAccount,
     canEditNetworkFee,
     isEthereumTransaction,
@@ -226,6 +227,7 @@ export function ConfirmSendTransaction() {
                   fiatValue={transactionDetails.fiatValue}
                   network={transactionsNetwork}
                   account={fromAccount}
+                  receiveAddress={fromAddress}
                 />
 
                 {/* Divider */}
