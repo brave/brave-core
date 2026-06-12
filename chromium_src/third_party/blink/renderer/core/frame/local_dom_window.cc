@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
-
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 // Include mouse_event.h, pointer_event.h here to avoid re-defining
 // tokens named screenX, screenY:

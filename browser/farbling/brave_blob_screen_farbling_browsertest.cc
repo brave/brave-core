@@ -124,8 +124,6 @@ class BraveBlobScreenFarblingBrowserTest
     NavigateToBlobIframe();
   }
 
-  // Like NavigateToBlob but the blob URL is loaded inside an iframe rather
-  // than a new popup window, so the pass/fail title is set on the main frame.
   void NavigateToBlobIframe() {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
     content::ExecuteScriptAsync(Parent(),
