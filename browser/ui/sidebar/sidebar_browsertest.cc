@@ -2445,11 +2445,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 }
 
 // Verify that the panel border insets follow the sidebar's horizontal
-// alignment. Flipping kSidePanelHorizontalAlignment runs through
-// BraveBrowserView::UpdateSideBarHorizontalAlignment(), which calls
+// alignment, in both LTR and RTL. Flipping kSidePanelHorizontalAlignment runs
+// through BraveBrowserView::UpdateSideBarHorizontalAlignment(), and toggling
+// kWebViewRoundedCorners runs through UpdateRoundedCornersUI(); both end up in
 // SidePanel::UpdateBorder(). The content-facing edge owns the separator/margin
-// and the outer edge owns the rounded-corner gap, so left alignment is the
-// mirror image of the default right alignment.
+// and the outer edge owns the rounded-corner gap.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        SidebarV2BorderInsetsFollowAlignment) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
@@ -2461,14 +2461,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   panel_ui->Toggle();
   ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
 
-  // When right-aligned the content-facing edge is the left and the outer edge
-  // is the right; when left-aligned the two are mirrored.
+  // Border insets live in the panel's stored (pre-mirror) coordinate space, so
+  // they track the leading edge rather than the visual side: the web contents
+  // sit on the panel's high-X (right) stored side when the sidebar is leading,
+  // and on the low-X (left) side when it is trailing. browser_view
+  // mirror-paints the panel in RTL, so the separator still renders against the
+  // contents visually. This mirrors SidePanel::UpdateBorder()'s own
+  // is_sidebar_leading = (IsRightAligned() == IsRTL()) logic.
   auto verify_state = [&](bool right_aligned, bool rounded_corners,
                           const base::Location& loc = FROM_HERE) {
     SCOPED_TRACE(loc.ToString());
+    const bool is_sidebar_leading = (right_aligned == base::i18n::IsRTL());
     const gfx::Insets insets = side_panel->GetInsets();
-    const int content_side = right_aligned ? insets.left() : insets.right();
-    const int outer_side = right_aligned ? insets.right() : insets.left();
+    const int content_side =
+        is_sidebar_leading ? insets.right() : insets.left();
+    const int outer_side = is_sidebar_leading ? insets.left() : insets.right();
     if (rounded_corners) {
       EXPECT_EQ(0, content_side)
           << "rounded: no content-side inset (content view owns its margin)";
@@ -2481,35 +2488,43 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
     }
   };
 
-  // Default: right-aligned.
-  ASSERT_TRUE(side_panel->IsRightAligned());
-  prefs->SetBoolean(kWebViewRoundedCorners, true);
-  RunScheduledLayouts();
-  verify_state(/*right_aligned=*/true, /*rounded_corners=*/true);
+  // Exercises every (alignment x rounded) combination, transitioning one pref
+  // at a time so each step fires OnPreferenceChanged -> UpdateBorder(). Both
+  // alignment directions (right->left and left->right) are covered. The matrix
+  // ends at right-aligned + plain, so the first step of a second call (a
+  // rounded change) is always a real change that recomputes the border.
+  auto run_matrix = [&]() {
+    prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+    prefs->SetBoolean(kWebViewRoundedCorners, true);
+    RunScheduledLayouts();
+    ASSERT_TRUE(side_panel->IsRightAligned());
+    verify_state(/*right_aligned=*/true, /*rounded_corners=*/true);
 
-  prefs->SetBoolean(kWebViewRoundedCorners, false);
-  RunScheduledLayouts();
-  verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
+    prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+    RunScheduledLayouts();
+    ASSERT_FALSE(side_panel->IsRightAligned());
+    verify_state(/*right_aligned=*/false, /*rounded_corners=*/true);
 
-  // Flip to left-aligned while visible. This drives
-  // UpdateSideBarHorizontalAlignment() -> SidePanel::UpdateBorder().
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
-  ASSERT_FALSE(side_panel->IsRightAligned());
+    prefs->SetBoolean(kWebViewRoundedCorners, false);
+    RunScheduledLayouts();
+    verify_state(/*right_aligned=*/false, /*rounded_corners=*/false);
 
-  prefs->SetBoolean(kWebViewRoundedCorners, true);
-  RunScheduledLayouts();
-  verify_state(/*right_aligned=*/false, /*rounded_corners=*/true);
+    prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+    RunScheduledLayouts();
+    ASSERT_TRUE(side_panel->IsRightAligned());
+    verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
+  };
 
-  prefs->SetBoolean(kWebViewRoundedCorners, false);
-  RunScheduledLayouts();
-  verify_state(/*right_aligned=*/false, /*rounded_corners=*/false);
+  // LTR.
+  run_matrix();
 
-  // Flip back to right-aligned while visible to exercise the reverse
-  // transition.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-  ASSERT_TRUE(side_panel->IsRightAligned());
-  RunScheduledLayouts();
-  verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
+  // RTL: the same stored-space expectations map to the mirror-image visual
+  // sides. The first step inside the scope is a rounded-corners change, so the
+  // border is recomputed with IsRTL() == true.
+  {
+    base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+    run_matrix();
+  }
 }
 
 // Regression test: the top container separator must remain visible when a side
