@@ -1,0 +1,13 @@
+diff --git a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
+index 0a5320818ab90ddef8c0dff54a8183313234e1d9..8f8b82a64a4aea5f1f0d0542668f20c5b408a984 100644
+--- a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
++++ b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
+@@ -30,7 +30,7 @@ import java.util.zip.GZIPOutputStream;
+ @NullMarked
+ public class MinidumpUploader {
+     /* package */ static @Nullable String sCrashUrlString =
+-            BuildConfig.IS_CHROME_BRANDED ? "https://clients2.google.com/cr/report" : null;
++            "https://cr.brave.com";
+ 
+     public static @Nullable String setCrashUrlStringForTesting(@Nullable String url) {
+         @Nullable String oldUrl = sCrashUrlString;
