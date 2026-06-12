@@ -101,7 +101,10 @@ void PsstActionController::ExecuteAction(
   // Handle left-click on the page action icon as a trigger to open the consent
   // dialog.
   if (event_flags & ui::EF_LEFT_MOUSE_BUTTON) {
-    psst_menu_model_delegate_->OnShowConsentDialogSelected();
+    if (psst_menu_model_delegate_) {
+      psst_menu_model_delegate_->OnShowConsentDialogSelected();
+    }
+
     return;
   }
 
