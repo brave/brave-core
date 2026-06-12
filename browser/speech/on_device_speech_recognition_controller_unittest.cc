@@ -336,9 +336,29 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
 // ---------- Error and edge handling ----------
 
 TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       GetAsrSessionWithNoModelHandsBackNothing) {
+  SetInstalled(false);
+  // The engine reads an invalid remote as "on-device unavailable" and reports
+  // kLanguageNotSupported, so no session is handed out at all.
+  EXPECT_FALSE(controller_->GetAsrSession().is_valid());
+  // No worker is spun up just to discover the files are missing.
+  EXPECT_EQ(nullptr, last_bwc_.get());
+  EXPECT_EQ(0, bwc_created_count_);
+}
+
+// A session bound before the model went away (or through BindAsrSession, which
+// does not check) still must not boot a worker.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
        StartWithNoModelDropsSessionNoBoot) {
   SetInstalled(false);
-  Session s = StartSession();
+  Session s;
+  controller_->BindAsrSession(s.session.BindNewPipeAndPassReceiver());
+  mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder;
+  s.responder_receiver = responder.InitWithNewPipeAndPassReceiver();
+  s.session->Start(on_device_model::mojom::AsrStreamOptions::New(),
+                   s.input.BindNewPipeAndPassReceiver(), std::move(responder));
+  s.session.FlushForTesting();
+
   // No worker is spun up just to discover the files are missing.
   EXPECT_EQ(nullptr, last_bwc_.get());
   EXPECT_EQ(0, bwc_created_count_);

@@ -22,6 +22,17 @@ inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
 // dormant regardless of the per-profile toggle.
 inline constexpr char kBraveLocalAIEnabled[] = "brave.local_ai_enabled";
 
+// Local-state-scoped: records that the user has activated on-device speech
+// recognition by invoking `SpeechRecognition.install()`, a page call gated on a
+// user gesture. Using speech recognition also requires the microphone
+// permission. Defaults to false and is set true on the first install request.
+// Gates startup component registration the way `kWidevineEnabled` gates the
+// Widevine CDM component. Registering makes the component updater fetch the
+// model on its own cycle, so a user who never invokes on-device speech never
+// triggers the download.
+inline constexpr char kBraveOnDeviceSpeechModelEnabled[] =
+    "brave.on_device_speech_model_enabled";
+
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 

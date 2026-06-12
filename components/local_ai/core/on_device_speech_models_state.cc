@@ -5,7 +5,11 @@
 
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 
+#include <utility>
+#include <vector>
+
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
 #include "base/no_destructor.h"
 #include "base/sequence_checker.h"
 
@@ -37,6 +41,34 @@ void OnDeviceSpeechModelsState::SetInstallDir(
     return;
   }
   model_dir_ = install_dir_.AppendASCII(kModelDir);
+
+  // The model just became available; wake anyone awaiting it.
+  SettlePending(true);
+}
+
+void OnDeviceSpeechModelsState::NotifyWhenSettled(
+    base::OnceCallback<void(bool)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!install_dir_.empty()) {
+    std::move(callback).Run(true);
+    return;
+  }
+  pending_callbacks_.push_back(std::move(callback));
+}
+
+void OnDeviceSpeechModelsState::OnInstallFailed() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  SettlePending(false);
+}
+
+void OnDeviceSpeechModelsState::SettlePending(bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::vector<base::OnceCallback<void(bool)>> callbacks =
+      std::move(pending_callbacks_);
+  pending_callbacks_.clear();
+  for (auto& callback : callbacks) {
+    std::move(callback).Run(success);
+  }
 }
 
 const base::FilePath& OnDeviceSpeechModelsState::GetInstallDir() const {

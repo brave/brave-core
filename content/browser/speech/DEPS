@@ -1,0 +1,10 @@
+include_rules = [
+  "+brave/components/local_ai/core",
+  "+components/speech",
+  "+content/browser/speech",
+  "+content/public/browser",
+  "+content/public/common",
+  "+media/base",
+  "+mojo/public/cpp/bindings",
+  "+services/on_device_model/public/mojom",
+]

@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Treat the qualities Brave's model serves as an on-device model.
+
+      Brave serves on-device speech from its own model, so those sessions must
+      take the on-device branch rather than the cloud one. Only adds a case:
+      upstream's body still decides its own backends, so a change to which
+      qualities it routes here needs nothing from us. UsesBraveOnDeviceSpeech
+      comes from the chromium_src override.
+    preempt_function_impl:
+      function_name: SpeechRecognitionManagerImpl::IsOptimizationGuideSpeechModel
+      code: |-
+        if (UsesBraveOnDeviceSpeech(config.quality)) {
+          return true;
+        }
+
+  - description: |
+      Apply the same decision to the audio-forwarder guard.
+
+      CreateSession computes IsOptimizationGuideSpeechModel's condition inline
+      rather than calling it, and without the same extension Brave's on-device
+      sessions would hand audio to the forwarder fast path and never reach the
+      engine. Upstream's own disjuncts are carried through in \2 rather than
+      retyped, and parenthesized in case a `&&` is introduced there later.
+    regex:
+      re_pattern: '(const bool uses_optimization_guide_model =)\s*([^;]*);'
+      replace: |-
+        \1 (\2) ||
+              UsesBraveOnDeviceSpeech(config.quality);
+
+  - description: |
+      Construct Brave's on-device speech recognition engine.
+
+      OnDeviceSpeechRecognitionEngineAlias, from the chromium_src override, is
+      Brave's subclass when local AI is built in and upstream's engine otherwise.
+    regex:
+      pattern: 'std::make_unique<OnDeviceSpeechRecognitionEngine>'
+      replace: 'std::make_unique<OnDeviceSpeechRecognitionEngineAlias>'

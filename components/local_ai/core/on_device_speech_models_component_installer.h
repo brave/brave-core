@@ -11,8 +11,11 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/values.h"
 #include "components/component_updater/component_installer.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/update_client/update_client.h"
 
 namespace base {
@@ -57,10 +60,30 @@ class OnDeviceSpeechModelsComponentInstallerPolicy
   bool IsBraveComponent() const override;
 };
 
-// Registers the on-device speech models component when the feature is enabled,
-// otherwise removes any previously installed copy. No-op if `cus` is null.
+// Registers the on-device speech models component when the feature is enabled
+// AND on-device speech has been activated (`activated`, i.e. the user has
+// invoked `SpeechRecognition.install()` at least once), otherwise removes any
+// previously installed copy. Registration alone makes the component updater
+// fetch the model on its own cycle, so gating on activation here is what keeps
+// the download from happening for users who never use on-device speech.
+//
+// `callback` reports the download that registration triggers. It also runs,
+// with `Error::INVALID_ARGUMENT`, on every path that registers nothing at all
+// (feature off, not activated, or `cus` null), so a caller waiting on the
+// install is never left waiting on a download that will not start.
 void RegisterOnDeviceSpeechModelsComponent(
-    component_updater::ComponentUpdateService* cus);
+    component_updater::ComponentUpdateService* cus,
+    bool activated,
+    component_updater::Callback callback = base::DoNothing());
+
+// Requests an on-demand download/install of the on-device speech model,
+// triggered from `SpeechRecognition.install()`. Requires the component to have
+// been registered first, and reports `Error::INVALID_ARGUMENT` through
+// `callback` when it was not. `callback` runs exactly once, for every outcome,
+// which is how terminal download failures reach
+// `OnDeviceSpeechModelsState::OnInstallFailed`.
+void EnsureOnDeviceSpeechModelInstalled(
+    component_updater::Callback callback = base::DoNothing());
 
 }  // namespace local_ai
 

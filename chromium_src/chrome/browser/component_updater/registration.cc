@@ -47,6 +47,8 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#include "components/prefs/pref_service.h"
 #endif
 
 namespace component_updater {
@@ -80,7 +82,11 @@ void RegisterComponentsForUpdate() {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::ManageLocalModelsComponentRegistration(
       cus, g_browser_process->local_state());
-  local_ai::RegisterOnDeviceSpeechModelsComponent(cus);
+  // Gated on the user having activated on-device speech at least once, which
+  // is what keeps the model from downloading for users who never ask for it.
+  local_ai::RegisterOnDeviceSpeechModelsComponent(
+      cus, g_browser_process->local_state()->GetBoolean(
+               local_ai::prefs::kBraveOnDeviceSpeechModelEnabled));
 #endif
   RegisterQueryFilterComponent(cus);
 }

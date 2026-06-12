@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# `class CONTENT_EXPORT OnDeviceSpeechRecognitionEngine` cannot be parsed by
+# tree-sitter with the export macro in place, so blank it out for AST matching.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Befriend the Brave subclass so it can reach private members
+
+      BraveOnDeviceSpeechRecognitionEngine reuses the base engine's audio
+      accumulation (accumulated_audio_data_, ConvertAccumulatedAudioData) and
+      the asr_stream_ pipe so the inherited TakeAudioChunk flushes to Brave's
+      worker session.
+    add_friend:
+      class_name: OnDeviceSpeechRecognitionEngine
+      friend_type: class BraveOnDeviceSpeechRecognitionEngine

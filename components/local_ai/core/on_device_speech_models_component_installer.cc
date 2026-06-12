@@ -123,19 +123,27 @@ bool OnDeviceSpeechModelsComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void RegisterOnDeviceSpeechModelsComponent(
-    component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) || !cus) {
+    component_updater::ComponentUpdateService* cus,
+    bool activated,
+    component_updater::Callback callback) {
+  if (!base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) || !cus ||
+      !activated) {
     DeleteComponentDirectory();
+    // Nothing is registered, so no download can follow. Report that instead of
+    // leaving a caller waiting on an install that will never start.
+    std::move(callback).Run(update_client::Error::INVALID_ARGUMENT);
     return;
   }
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<OnDeviceSpeechModelsComponentInstallerPolicy>());
-  installer->Register(
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kComponentId);
-      }));
+  installer->Register(cus, base::BindOnce(&EnsureOnDeviceSpeechModelInstalled,
+                                          std::move(callback)));
+}
+
+void EnsureOnDeviceSpeechModelInstalled(component_updater::Callback callback) {
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
+      kComponentId, std::move(callback));
 }
 
 }  // namespace local_ai

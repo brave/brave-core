@@ -1,0 +1,41 @@
+diff --git a/chrome/browser/speech/on_device_speech_recognition_impl.cc b/chrome/browser/speech/on_device_speech_recognition_impl.cc
+index 719c3c8a8fbc3f9b3d73c98ec3c476bf6d930b27..dcde4b9ad62244944f40732f5f2f1aaf20edfcce 100644
+--- a/chrome/browser/speech/on_device_speech_recognition_impl.cc
++++ b/chrome/browser/speech/on_device_speech_recognition_impl.cc
+@@ -138,9 +138,7 @@ void OnDeviceSpeechRecognitionImpl::Available(
+     return;
+   }
+ 
+-  if (quality == media::mojom::SpeechRecognitionQuality::kDictation &&
+-      !base::FeatureList::IsEnabled(
+-          media::kOnDeviceWebSpeechSmallExpertModel)) {
++  if (!IsOnDeviceSpeechQualitySupported(quality)) {
+     std::move(callback).Run(media::mojom::AvailabilityStatus::kUnavailable);
+     return;
+   }
+@@ -206,9 +204,7 @@ void OnDeviceSpeechRecognitionImpl::Install(
+     return;
+   }
+ 
+-  if (quality == media::mojom::SpeechRecognitionQuality::kDictation &&
+-      !base::FeatureList::IsEnabled(
+-          media::kOnDeviceWebSpeechSmallExpertModel)) {
++  if (!IsOnDeviceSpeechQualitySupported(quality)) {
+     std::move(callback).Run(false);
+     return;
+   }
+@@ -240,6 +236,14 @@ void OnDeviceSpeechRecognitionImpl::Install(
+     return;
+   }
+ 
++  if (UsesBraveOnDeviceSpeech(quality)) {
++    for (std::string_view language : language_names_key) {
++      SetOnDeviceLanguageDownloaded(language);
++    }
++    InstallBraveOnDeviceSpeechModel(std::move(callback));
++    return;
++  }
++
+   if (quality == media::mojom::SpeechRecognitionQuality::kConversation ||
+       quality == media::mojom::SpeechRecognitionQuality::kDictation) {
+     OptimizationGuideKeyedService* optimization_guide_keyed_service =

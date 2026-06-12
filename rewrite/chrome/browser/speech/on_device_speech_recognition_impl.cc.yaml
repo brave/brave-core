@@ -1,0 +1,64 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Ask whether any backend serves the quality, rather than naming one.
+
+      Upstream rejects kDictation unless the optimization guide's
+      SmallExpertModel flag is on, and never gates kCommand because SODA
+      always serves it. Brave ships neither backend and serves both qualities
+      from its own model, so the question this gate is really asking belongs in
+      `IsOnDeviceSpeechQualitySupported`, which the chromium_src replacement of
+      on_device_speech_recognition_util answers for Brave.
+
+      Behaviour-neutral off the Brave path. The default implementation returns
+      exactly the flag this condition tested for kDictation, and keeps kCommand
+      supported as before.
+
+      The same gate appears in Available() and Install(), and both need it,
+      hence count 2. In Install() it is also what stops a kCommand request from
+      reaching the SODA arm while Brave's own feature is off.
+    count: 2
+    regex:
+      re_pattern:
+        'if \(quality == media::mojom::SpeechRecognitionQuality::kDictation
+        &&\s+!base::FeatureList::IsEnabled\(\s+media::kOnDeviceWebSpeechSmallExpertModel\)\)
+        \{'
+      replace: 'if (!IsOnDeviceSpeechQualitySupported(quality)) {'
+
+  - description: |
+      Give Brave's own on-device model its own install arm.
+
+      Upstream chooses between the optimization guide and SODA. Brave's model
+      is neither, and routing it through the SODA arm is what previously forced
+      a SodaInstaller subclass to answer for a model that is not SODA. An arm
+      ahead of that choice keeps everything else upstream's: the
+      permissions-policy gate, the language canonicalization that keys the
+      per-origin mask, and the mask write itself, which stays on the same terms
+      as the other two arms because it records the request rather than the
+      outcome.
+
+      Both functions come from the chromium_src replacement of
+      on_device_speech_recognition_util, where `UsesBraveOnDeviceSpeech` is
+      false unless local AI is built in.
+
+      The anchor captures the newline and indentation before upstream's arm and
+      reuses them, so the inserted block follows any reindentation upstream
+      makes. Matching on `kConversation ||` is what distinguishes Install()'s
+      arm selection from the `kConversation &&` gate in Available().
+    regex:
+      re_pattern:
+        '(\n)( *)(if \(quality ==
+        media::mojom::SpeechRecognitionQuality::kConversation \|\|)'
+      replace: |-
+        \1\2if (UsesBraveOnDeviceSpeech(quality)) {
+        \2  for (std::string_view language : language_names_key) {
+        \2    SetOnDeviceLanguageDownloaded(language);
+        \2  }
+        \2  InstallBraveOnDeviceSpeechModel(std::move(callback));
+        \2  return;
+        \2}
+        \1\2\3

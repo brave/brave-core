@@ -92,7 +92,7 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest, Register) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(1)
       .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
-  RegisterOnDeviceSpeechModelsComponent(cus_.get());
+  RegisterOnDeviceSpeechModelsComponent(cus_.get(), /*activated=*/true);
   run_loop.Run();
 }
 
@@ -128,7 +128,7 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest, DeleteComponent) {
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  RegisterOnDeviceSpeechModelsComponent(cus_.get());
+  RegisterOnDeviceSpeechModelsComponent(cus_.get(), /*activated=*/true);
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
   EXPECT_FALSE(PathExists(install_dir_));
@@ -143,7 +143,7 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  RegisterOnDeviceSpeechModelsComponent(cus_.get());
+  RegisterOnDeviceSpeechModelsComponent(cus_.get(), /*activated=*/true);
 }
 
 // Tests that the component is not registered when ComponentUpdateService is
@@ -152,7 +152,23 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
        NoRegisterWhenCUSIsNull) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  RegisterOnDeviceSpeechModelsComponent(nullptr);
+  RegisterOnDeviceSpeechModelsComponent(nullptr, /*activated=*/true);
+}
+
+// Tests that the component is not registered (and any copy is deleted) when
+// on-device speech has not been activated, even with the feature enabled.
+TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
+       NoRegisterWhenNotActivated) {
+  CreateDirectory(install_dir_);
+  EXPECT_TRUE(PathExists(install_dir_));
+
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(0);
+  RegisterOnDeviceSpeechModelsComponent(cus_.get(), /*activated=*/false);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
+  EXPECT_FALSE(PathExists(install_dir_));
 }
 
 }  // namespace local_ai

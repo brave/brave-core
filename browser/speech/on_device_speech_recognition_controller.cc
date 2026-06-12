@@ -135,6 +135,16 @@ OnDeviceSpeechRecognitionController::~OnDeviceSpeechRecognitionController() =
 
 mojo::PendingRemote<local_ai::mojom::AsrSession>
 OnDeviceSpeechRecognitionController::GetAsrSession() {
+  // No model installed: hand back no session. The engine treats an invalid
+  // remote as "on-device unavailable" and reports kLanguageNotSupported,
+  // instead of spinning up a worker that can't load (mirrors upstream, which
+  // errors when on-device recognition is requested but not installed).
+  if (local_ai::OnDeviceSpeechModelsState::GetInstance()
+          ->GetModelDir()
+          .empty()) {
+    return {};
+  }
+
   mojo::PendingRemote<local_ai::mojom::AsrSession> remote;
   asr_session_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   // Handing out a session puts the worker in use, so make sure no idle

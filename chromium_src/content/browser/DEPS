@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/ai_chat/core/common/buildflags",
   "+brave/components/brave_shields/core/common",
+  "+brave/components/local_ai/buildflags",
   "+brave/content/browser/screen_orientation",
   "+content/public/browser",
   "+content/public/common",

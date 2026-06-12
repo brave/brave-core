@@ -15,6 +15,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveLocalAIEnabled, true);
+  registry->RegisterBooleanPref(kBraveOnDeviceSpeechModelEnabled, false);
 }
 
 }  // namespace local_ai::prefs

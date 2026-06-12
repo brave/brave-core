@@ -150,7 +150,6 @@
 #include "third_party/blink/public/common/switches.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
-#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/hid/brave_hid_delegate.h"
@@ -172,6 +171,7 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
@@ -913,6 +913,18 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
       IsJsBlockingEnforced(browser_context, url));
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+mojo::PendingRemote<local_ai::mojom::AsrSession>
+BraveContentBrowserClient::GetAsrSession(
+    content::BrowserContext* browser_context) {
+  if (!base::FeatureList::IsEnabled(
+          local_ai::kBraveOnDeviceSpeechRecognition)) {
+    return {};
+  }
+  return speech::OnDeviceSpeechRecognitionController::Get()->GetAsrSession();
+}
+#endif
 
 bool BraveContentBrowserClient::CanCreateWindow(
     content::RenderFrameHost* opener,
