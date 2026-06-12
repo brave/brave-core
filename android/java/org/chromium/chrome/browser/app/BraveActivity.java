@@ -132,6 +132,7 @@ import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
@@ -148,6 +149,7 @@ import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
+import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifetime.ApplicationLifetime;
 import org.chromium.chrome.browser.media.BraveYouTubePictureInPictureController;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
@@ -2370,6 +2372,22 @@ public abstract class BraveActivity extends ChromeActivity
      */
     public void onYouTubePictureInPictureNewTab() {
         getYouTubePictureInPictureController().onNewTabDuringPictureInPicture();
+    }
+
+    /**
+     * Ensures the browsing layout is showing when a Brave-managed YouTube PiP session hands the UI
+     * back to the activity. The activity can be recreated into the tab switcher while the PiP
+     * window is up (e.g. a configuration change mid-session), and expanding the PiP must land the
+     * user on the video tab, not the switcher. Performs the same overview-to-browsing transition as
+     * upstream's {@code exitOverviewModeOnActorPiPExpand}, but implemented locally: that helper
+     * belongs to the actor (Glic) feature, which Brave keeps disabled, so depending on it would
+     * couple this flow to an API upstream may refactor away with the actor code.
+     */
+    public void exitOverviewModeForYouTubePictureInPicture() {
+        final LayoutManagerImpl layoutManager = getLayoutManagerSupplier().get();
+        if (isInOverviewMode() && layoutManager != null) {
+            layoutManager.showLayout(LayoutType.BROWSING, /* animate= */ false);
+        }
     }
 
     private BraveYouTubePictureInPictureController getYouTubePictureInPictureController() {

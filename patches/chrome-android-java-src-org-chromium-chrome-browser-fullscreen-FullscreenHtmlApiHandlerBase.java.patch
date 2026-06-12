@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..38d01ed90194e4ae015197f2110e77a651337a40 100644
+index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..1593ea34e68a6214a0684a8c16ac6850031cc40c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 @@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
@@ -14,32 +14,7 @@ index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..38d01ed90194e4ae015197f2110e77a6
                          // Clean up any fullscreen state that might impact other tabs.
                          mFullscreenManagerDelegate.onExitFullscreen(null);
                      }
-@@ -623,6 +628,15 @@ public abstract class FullscreenHtmlApiHandlerBase
-         }
-     }
- 
-+    public void exitPersistentFullscreenModeForPictureInPicture() {
-+        BraveFullscreenHtmlApiHandlerBase self = BraveFullscreenHtmlApiHandlerBase.class.cast(this);
-+        self.mSkipWebContentsExitFullscreenForPip = true;
-+        try {
-+            exitPersistentFullscreenMode();
-+        } finally {
-+            self.mSkipWebContentsExitFullscreenForPip = false;
-+        }
-+    }
-     @Override
-     public void exitPersistentFullscreenMode() {
-         // Return to the original starting position and bounds if the fullscreen was opening on
-@@ -729,7 +743,7 @@ public abstract class FullscreenHtmlApiHandlerBase
-         showSystemBars(contentView);
-         if (DEBUG_LOGS) logExitFullscreen(contentView);
-         resetExitFullscreenLayoutChangeListener(contentView);
--        if (webContents != null && !webContents.isDestroyed()) webContents.exitFullscreen();
-+        if (!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip && webContents != null && !webContents.isDestroyed()) webContents.exitFullscreen();
- 
-         // Often - when edge to edge is enabled, or when we are in multi window
-         //  mode, or on automotive devices that never hide system bars - onLayoutChange doesn't
-@@ -885,6 +899,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -885,6 +890,10 @@ public abstract class FullscreenHtmlApiHandlerBase
      @Override
      public void onActivityStateChange(Activity activity, int newState) {
          if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {

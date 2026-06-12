@@ -28,24 +28,6 @@ public abstract class BraveFullscreenHtmlApiHandlerBase {
     protected boolean mTabHiddenByChangedTabs;
 
     /**
-     * Set by {@link #exitPersistentFullscreenModeForPictureInPicture} (whose real body is injected
-     * into upstream {@link FullscreenHtmlApiHandlerBase} via Plaster) for the duration of a single
-     * synchronous {@code exitPersistentFullscreenMode()} call. When set, upstream tears down the
-     * browser fullscreen UI but skips {@code WebContents#exitFullscreen()}, so the DOM stays in
-     * fullscreen for a Brave-managed Picture-in-Picture return. The injected method clears it in a
-     * {@code finally} block, so the flag never leaks beyond that call.
-     */
-    protected boolean mSkipWebContentsExitFullscreenForPip;
-
-    /**
-     * Restores browser fullscreen UI state for a Brave-managed Picture-in-Picture return without
-     * asking the WebContents to exit fullscreen synchronously. The real implementation is injected
-     * into upstream via Plaster; this empty body is the fallback used when bytecode rewriting is
-     * not applied and provides the symbol callers compile against.
-     */
-    public void exitPersistentFullscreenModeForPictureInPicture() {}
-
-    /**
      * Invoked from upstream observer hooks (tab hidden, activity stopped) to decide whether the
      * persistent fullscreen teardown should be skipped. When a Brave-managed YouTube
      * Picture-in-Picture session is alive we want to keep both the browser and DOM fullscreen state

@@ -22,44 +22,6 @@ substitutions:
                               }
 
   - description: |-
-      Add the PiP-specific persistent fullscreen exit entry point.
-
-      Adds exitPersistentFullscreenModeForPictureInPicture(), which tears down
-      the browser fullscreen UI while preserving the WebContents (DOM)
-      fullscreen state. It sets mSkipWebContentsExitFullscreenForPip on the Brave
-      superclass for the duration of a single synchronous
-      exitPersistentFullscreenMode() call and clears it in a finally block so the
-      flag never leaks beyond that call.
-    re_pattern:
-      '(@Override\n\s+public void exitPersistentFullscreenMode\(\)\s+\{\n)'
-    replace: |-
-      public void exitPersistentFullscreenModeForPictureInPicture() {
-              BraveFullscreenHtmlApiHandlerBase self = BraveFullscreenHtmlApiHandlerBase.class.cast(this);
-              self.mSkipWebContentsExitFullscreenForPip = true;
-              try {
-                  exitPersistentFullscreenMode();
-              } finally {
-                  self.mSkipWebContentsExitFullscreenForPip = false;
-              }
-          }
-          \1
-
-  - description: |-
-      Skip the WebContents (DOM) fullscreen exit for the Brave-managed PiP path.
-
-      Prepends the mSkipWebContentsExitFullscreenForPip flag (set by
-      exitPersistentFullscreenModeForPictureInPicture) to the existing guard. The
-      pattern only locates the if statement that calls webContents.exitFullscreen()
-      and inserts at the start of its condition, so it does not depend on what the
-      rest of that condition checks.
-    re_pattern:
-      '(private void exitFullscreen\(WebContents webContents, View
-      contentView\)[\s\S]+?\n\s+if \()([^\n]*?\)
-      webContents\.exitFullscreen\(\);)'
-    replace: |-
-      \1!BraveFullscreenHtmlApiHandlerBase.class.cast(this).mSkipWebContentsExitFullscreenForPip && \2
-
-  - description: |-
       Preserve fullscreen across transient activity stops while YouTube PiP is active.
 
       Inserts an early return at the top of the ActivityState.STOPPED branch of

@@ -19,6 +19,7 @@ import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -26,14 +27,18 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.MediaSession;
+import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
 
@@ -58,6 +63,10 @@ public class BraveYouTubePictureInPictureController {
     @VisibleForTesting
     static final String KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY =
             "org.chromium.chrome.browser.media.YT_PIP_RESUME_MEDIA_ON_ENTRY";
+
+    @VisibleForTesting
+    static final String KEY_WAS_PLAYING_BEFORE_SCREEN_LOCK =
+            "org.chromium.chrome.browser.media.YT_PIP_WAS_PLAYING_BEFORE_SCREEN_LOCK";
 
     @VisibleForTesting
     static final String KEY_TAB_ID = "org.chromium.chrome.browser.media.YT_PIP_TAB_ID";
@@ -86,6 +95,30 @@ public class BraveYouTubePictureInPictureController {
     private boolean mInterruptedByScreenLock;
     private int mSessionId;
     private @Nullable BroadcastReceiver mScreenStateReceiver;
+
+    /**
+     * Snapshot of whether media was playing when the current screen-lock interruption began, taken
+     * by {@link #markInterruptedByScreenLock} before any pause is issued. Consumed by {@link
+     * #maybeResumeAfterScreenLock} so the PiP re-entry resume only restores playback that the lock
+     * interrupted. (Mirrors the intent of upstream's {@code mIsSuspendedForStash} guard).
+     */
+    private boolean mWasPlayingBeforeScreenLock;
+
+    /**
+     * Whether the session's media is currently playing, kept up to date by {@link
+     * #mMediaSessionObserver}. The Java MediaSession API has no state getter and observer callbacks
+     * are delivered asynchronously, so the state must be tracked continuously while the session is
+     * bound; it cannot be queried on demand at interrupt time.
+     */
+    private boolean mIsMediaPlaying;
+
+    /**
+     * Observes play/pause state changes of the media session bound to the session's WebContents.
+     * Attached by {@link #startObservingMediaSession} whenever the session binds to a WebContents
+     * (initial request or post-recreation recovery) and detached when the session ends. (Mirrors
+     * upstream's {@code mIsPlaying} tracking in {@code FullscreenVideoPictureInPictureController}.)
+     */
+    private @Nullable MediaSessionObserver mMediaSessionObserver;
 
     /**
      * One shot observer wired up by {@link #handleSessionExited} to fire {@code
@@ -125,6 +158,8 @@ public class BraveYouTubePictureInPictureController {
                 savedInstanceState.getBoolean(KEY_INTERRUPTED_BY_SCREEN_LOCK, false);
         mResumeMediaSessionOnPipEntry =
                 savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY, false);
+        mWasPlayingBeforeScreenLock =
+                savedInstanceState.getBoolean(KEY_WAS_PLAYING_BEFORE_SCREEN_LOCK, false);
         mTabId = savedInstanceState.getInt(KEY_TAB_ID, Tab.INVALID_TAB_ID);
         if (mActive && mInterruptedByScreenLock) {
             registerScreenStateReceiver();
@@ -136,6 +171,7 @@ public class BraveYouTubePictureInPictureController {
         outState.putBoolean(KEY_ACTIVE, mActive);
         outState.putBoolean(KEY_INTERRUPTED_BY_SCREEN_LOCK, mInterruptedByScreenLock);
         outState.putBoolean(KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY, mResumeMediaSessionOnPipEntry);
+        outState.putBoolean(KEY_WAS_PLAYING_BEFORE_SCREEN_LOCK, mWasPlayingBeforeScreenLock);
         outState.putInt(KEY_TAB_ID, mTabId);
     }
 
@@ -222,6 +258,7 @@ public class BraveYouTubePictureInPictureController {
                         ? currentTab.getId()
                         : Tab.INVALID_TAB_ID;
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(webContents);
+        startObservingMediaSession(webContents);
         mActive = true;
         mExiting = false;
         mInterruptedByScreenLock = false;
@@ -270,15 +307,7 @@ public class BraveYouTubePictureInPictureController {
             // Pause YouTube playback so audio does not continue while the user is on the new
             // tab. Mirrors maybeSuspendDismissed() but without the visibility check, since a
             // new-tab event is an explicit "user moved on" signal.
-            final MediaSession mediaSession = MediaSession.fromWebContents(webContents);
-            if (mediaSession != null) {
-                mediaSession.suspend();
-            }
-            // Nudge YouTube's player out of its own fullscreen state, since YouTube tracks
-            // fullscreen independently of the DOM.
-            // TODO - Uncomment exitFullscreen once implemented in core.
-            // See https://github.com/brave/brave-core/pull/36087
-            // BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
+            suspendMediaSession(webContents);
             // Tell the YouTube WebContents to drop fullscreen directly. We do not rely on
             // FullscreenManager.exitPersistentFullscreenMode() to forward this: by the
             // time the tab-change observer has fired and we get here, the manager's internal
@@ -374,12 +403,13 @@ public class BraveYouTubePictureInPictureController {
 
         final int sessionId = mSessionId;
         mExiting = true;
-        // TODO - Uncomment exitFullscreen once implemented in core.
-        // See https://github.com/brave/brave-core/pull/36087
-        // BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
+        // Primary exit path: ask the renderer to drop DOM fullscreen directly. The page
+        // receives the same fullscreenchange event it gets when the user presses Back in a
+        // fullscreen video, so YouTube's player restores its layout.
+        webContents.exitFullscreen();
 
         // Drive the restore from the actual renderer signal. didToggleFullscreenModeForTab
-        // fires shortly after YouTube's JS exits DOM fullscreen, which is much sooner than the
+        // fires shortly after the renderer acts on the exit above, which is much sooner than the
         // hard timeout below. mPendingFullscreenExitObserver doubles as the single shot sentinel:
         // both paths claim ownership by clearing the field, so whichever wins runs the cleanup
         // and the loser short circuits. resetSessionState clearing the field makes the loser
@@ -406,6 +436,11 @@ public class BraveYouTubePictureInPictureController {
                     }
                     mPendingFullscreenExitObserver = null;
                     exitObserver.observe(null);
+                    // The renderer never reported a fullscreen exit. The benign causes are a page
+                    // that had already left DOM fullscreen before the exit request (no transition
+                    // to report) or a renderer that is slow/hung; in all of them the browser-side
+                    // restore below is the only part we can and need to drive, and the page heals
+                    // its own layout off the late fullscreenchange, if any.
                     maybeRestoreFullscreenUi(sessionId, webContents);
                 },
                 FULLSCREEN_EXIT_FALLBACK_MS);
@@ -433,6 +468,7 @@ public class BraveYouTubePictureInPictureController {
                 BraveMediaSessionHelper.getYouTubePictureInPictureWebContents();
         if (pictureInPictureWebContents != null) {
             mWebContents = pictureInPictureWebContents;
+            startObservingMediaSession(pictureInPictureWebContents);
             return pictureInPictureWebContents;
         }
 
@@ -459,6 +495,7 @@ public class BraveYouTubePictureInPictureController {
         }
         mWebContents = tabWebContents;
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(tabWebContents);
+        startObservingMediaSession(tabWebContents);
         return tabWebContents;
     }
 
@@ -474,10 +511,26 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
+        // The activity can be recreated into the tab switcher while the PiP window is up (e.g. a
+        // configuration change mid-session). Expanding the PiP must land the user on the video
+        // tab, so leave overview mode before restoring the fullscreen UI. Mirrors upstream's
+        // exitOverviewModeOnActorPiPExpand handling for the actor PiP, which faces the same
+        // layout problem on expand.
+        mActivity.exitOverviewModeForYouTubePictureInPicture();
+
         final FullscreenManager fullscreenManager = mActivity.getFullscreenManager();
-        if (fullscreenManager.getPersistentFullscreenMode()
-                && fullscreenManager instanceof final BraveFullscreenHtmlApiHandlerBase brave) {
-            brave.exitPersistentFullscreenModeForPictureInPicture();
+        if (fullscreenManager.getPersistentFullscreenMode()) {
+            // Tear down the browser fullscreen UI through the stock upstream path. Besides
+            // restoring the UI, exitPersistentFullscreenMode() also asks the WebContents to
+            // exit DOM fullscreen. That second part is harmless here in both ways this method
+            // can be reached:
+            // - Fast path: the renderer already left DOM fullscreen (handleSessionExited
+            //   requested it, and the renderer's exit report is what triggered this call), so
+            //   the extra exit request is a no-op.
+            // - Fallback path: the renderer never reported leaving fullscreen within the
+            //   timeout, so asking it to exit again is exactly what we want.
+            // This is why no Brave-specific teardown variant is needed.
+            fullscreenManager.exitPersistentFullscreenMode();
         }
     }
 
@@ -492,10 +545,7 @@ public class BraveYouTubePictureInPictureController {
         }
 
         if (!isActivityVisibleAfterPictureInPicture()) {
-            final MediaSession mediaSession = MediaSession.fromWebContents(webContents);
-            if (mediaSession != null) {
-                mediaSession.suspend();
-            }
+            suspendMediaSession(webContents);
         }
         clearSession(sessionId, webContents);
     }
@@ -520,7 +570,7 @@ public class BraveYouTubePictureInPictureController {
         // session stays consistent and the receiver is still wired up for a later wake-up.
         if (mActivity.isInPictureInPictureMode()
                 || mActivity.isChangingConfigurations()
-                || mActivity.isFinishing()
+                || mActivity.isActivityFinishingOrDestroyed()
                 || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                         webContents)) {
             return;
@@ -539,7 +589,17 @@ public class BraveYouTubePictureInPictureController {
         // from onPictureInPictureModeChanged(true). If PiP entry fails below, we clear the
         // session without ever resuming, so the user does not get foreground audio after
         // unlocking.
-        mResumeMediaSessionOnPipEntry = true;
+        //
+        // The resume exists to restore playback that the lock (and the PiP exit it caused)
+        // interrupted, so it is scheduled only when both hold:
+        // - Background video playback is enabled. Otherwise maybeSuspendForScreenLock() paused
+        //   the video for the locked gap, and YouTube videos do not auto-resume after unlock
+        //   outside PiP either; re-enter paused and let the user resume from the PiP controls.
+        // - Media was actually playing when the lock hit. Otherwise the user had paused before
+        //   locking the device, and resuming would force playback they did not ask for.
+        mResumeMediaSessionOnPipEntry =
+                mWasPlayingBeforeScreenLock && isBackgroundVideoPlaybackEnabled(webContents);
+        mWasPlayingBeforeScreenLock = false;
 
         try {
             if (!mActivity.enterPictureInPictureMode(
@@ -555,8 +615,109 @@ public class BraveYouTubePictureInPictureController {
     }
 
     private void markInterruptedByScreenLock() {
+        if (!mInterruptedByScreenLock) {
+            // Snapshot the playing state only on the first signal of an interruption, and
+            // before maybeSuspendForScreenLock() below issues any pause, so the snapshot
+            // reflects what the user was doing when the lock hit.
+            mWasPlayingBeforeScreenLock = mIsMediaPlaying;
+        }
         mInterruptedByScreenLock = true;
         registerScreenStateReceiver();
+        maybeSuspendForScreenLock();
+    }
+
+    /**
+     * Pauses playback for the duration of a screen-lock interruption when background video playback
+     * is disabled, modeling what happens to a regular tab: the video pauses when the screen goes
+     * off and stays paused after unlock (YouTube videos do not auto-resume). Brave deliberately
+     * swallows upstream's screen-off dismiss to keep the PiP session alive across a lock (see
+     * {@code BraveFullscreenVideoPictureInPictureController#shouldKeepPictureInPictureAlive}), but
+     * that dismiss is also what would have suspended playback. Letting audio continue through the
+     * locked gap is only wanted when the user opted into background playback; otherwise pause here
+     * and let the user resume playback from the PiP window controls after unlock.
+     */
+    private void maybeSuspendForScreenLock() {
+        final WebContents webContents = getOrFindWebContents();
+        if (webContents == null || webContents.isDestroyed()) {
+            return;
+        }
+
+        if (!isBackgroundVideoPlaybackEnabled(webContents)) {
+            suspendMediaSession(webContents);
+        }
+    }
+
+    /**
+     * Returns true when background video playback is enabled: both the feature and the profile
+     * preference. Also serves as a test seam: Profile and UserPrefs go through JNI that has no mock
+     * in the Robolectric environment.
+     */
+    @VisibleForTesting
+    protected boolean isBackgroundVideoPlaybackEnabled(final WebContents webContents) {
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
+            return false;
+        }
+        final Profile profile = Profile.fromWebContents(webContents);
+        return profile != null
+                && UserPrefs.get(profile).getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED);
+    }
+
+    /**
+     * Suspends the media session bound to {@code webContents}, if any. Also serves as the test
+     * seam: {@link MediaSession#fromWebContents} goes through JNI that has no mock in the
+     * Robolectric environment.
+     */
+    @VisibleForTesting
+    protected void suspendMediaSession(final WebContents webContents) {
+        final MediaSession mediaSession = getMediaSession(webContents);
+        if (mediaSession != null) {
+            mediaSession.suspend();
+        }
+    }
+
+    /**
+     * Returns the media session bound to {@code webContents}, if any. Also serves as the test seam:
+     * {@link MediaSession#fromWebContents} goes through JNI that has no mock in the Robolectric
+     * environment.
+     */
+    @VisibleForTesting
+    protected @Nullable MediaSession getMediaSession(final WebContents webContents) {
+        return MediaSession.fromWebContents(webContents);
+    }
+
+    /**
+     * Starts tracking the play/pause state of the media session bound to {@code webContents} in
+     * {@code mIsMediaPlaying}. Called whenever the session binds to a WebContents; any observer
+     * from a previous binding is detached first so at most one observer is ever live.
+     */
+    private void startObservingMediaSession(final WebContents webContents) {
+        stopObservingMediaSession();
+        final MediaSession mediaSession = getMediaSession(webContents);
+        if (mediaSession == null) {
+            return;
+        }
+
+        mMediaSessionObserver =
+                new MediaSessionObserver(mediaSession) {
+                    @Override
+                    public void mediaSessionStateChanged(
+                            boolean isControllable, boolean isSuspended) {
+                        mIsMediaPlaying = !isSuspended;
+                    }
+
+                    @Override
+                    public void mediaSessionDestroyed() {
+                        mIsMediaPlaying = false;
+                    }
+                };
+    }
+
+    private void stopObservingMediaSession() {
+        if (mMediaSessionObserver != null) {
+            mMediaSessionObserver.stopObserving();
+            mMediaSessionObserver = null;
+        }
+        mIsMediaPlaying = false;
     }
 
     private void registerScreenStateReceiver() {
@@ -629,9 +790,11 @@ public class BraveYouTubePictureInPictureController {
         mActive = false;
         mExiting = false;
         mInterruptedByScreenLock = false;
+        mWasPlayingBeforeScreenLock = false;
         mResumeMediaSessionOnPipEntry = false;
         mWebContents = null;
         mTabId = Tab.INVALID_TAB_ID;
+        stopObservingMediaSession();
         if (mPendingFullscreenExitObserver != null) {
             mPendingFullscreenExitObserver.observe(null);
             mPendingFullscreenExitObserver = null;

@@ -31,12 +31,6 @@ public class BraveYouTubeScriptInjectorNativeHelper {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
     }
 
-    // TODO - Uncomment once implemented in core.
-    // See https://github.com/brave/brave-core/pull/36087
-    // public static void exitFullscreen(WebContents webContents) {
-    //     BraveYouTubeScriptInjectorNativeHelperJni.get().exitFullscreen(webContents);
-    // }
-
     public static boolean hasFullscreenBeenRequested(WebContents webContents) {
         return BraveYouTubeScriptInjectorNativeHelperJni.get()
                 .hasFullscreenBeenRequested(webContents);
@@ -90,10 +84,6 @@ public class BraveYouTubeScriptInjectorNativeHelper {
     @NativeMethods
     public interface Natives {
         void setFullscreen(WebContents webContents);
-
-        // TODO - Uncomment once implemented in core.
-        // See https://github.com/brave/brave-core/pull/36087
-        // void exitFullscreen(WebContents webContents);
 
         boolean hasFullscreenBeenRequested(WebContents webContents);
 
