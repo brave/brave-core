@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import Button from '@brave/leo/react/button'
 
 // Types
@@ -12,6 +13,7 @@ import { BraveWallet } from '../../../../../constants/types'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
+  useGetPolkadotAddressesForNetworkQuery,
 } from '../../../../../common/slices/api.slice'
 
 // Components
@@ -98,6 +100,28 @@ export const SelectAccount = (props: Props) => {
   // Queries
   const { data: tokensNetwork } = useGetNetworkQuery(token)
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
+
+  const isDotSend = token.coin === BraveWallet.CoinType.DOT
+
+  const polkadotAccountIds = React.useMemo(
+    () =>
+      isDotSend
+        ? accounts
+            .filter((a) => a.accountId.coin === BraveWallet.CoinType.DOT)
+            .map((a) => a.accountId)
+        : [],
+    [accounts, isDotSend],
+  )
+
+  const { data: polkadotAddressesByUniqueKey = {} } =
+    useGetPolkadotAddressesForNetworkQuery(
+      isDotSend && polkadotAccountIds.length > 0
+        ? {
+            accountIds: polkadotAccountIds,
+            chainId: token.chainId,
+          }
+        : skipToken,
+    )
 
   // State
   const [selectedAccount, setSelectedAccount] = React.useState<
@@ -203,7 +227,10 @@ export const SelectAccount = (props: Props) => {
                   isBold={false}
                   textAlign='left'
                 >
-                  {reduceAddress(account.address)}
+                  {reduceAddress(
+                    polkadotAddressesByUniqueKey[account.accountId.uniqueKey]
+                      ?? account.address,
+                  )}
                 </Text>
               </Column>
             </Row>

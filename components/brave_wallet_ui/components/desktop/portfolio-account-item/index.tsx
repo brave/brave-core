@@ -41,7 +41,8 @@ import {
 
 // Queries
 import {
-  useGetDefaultFiatCurrencyQuery, //
+  useGetDefaultFiatCurrencyQuery,
+  useGetPolkadotAddressForNetworkQuery,
 } from '../../../common/slices/api.slice'
 import {
   usePersistedTokenSpotPricesQuery, //
@@ -120,6 +121,14 @@ export const PortfolioAccountItem = (props: Props) => {
     querySubscriptionOptions60s,
   )
 
+  const { data: polkadotAddress } = useGetPolkadotAddressForNetworkQuery(
+    account.accountId.coin === BraveWallet.CoinType.DOT
+      ? { accountId: account.accountId, chainId: asset.chainId }
+      : skipToken,
+  )
+
+  const displayAddress = polkadotAddress ?? account.address
+
   const fiatBalance: Amount = React.useMemo(() => {
     return computeFiatAmount({
       spotPrices,
@@ -182,14 +191,14 @@ export const PortfolioAccountItem = (props: Props) => {
                   </BraveRewardsIndicator>
                 </>
               )}
-              {account.address && !isRewardsAccount && (
+              {displayAddress && !isRewardsAccount && (
                 <Text
                   textSize='12px'
                   isBold={false}
                   textColor='primary'
                   textAlign='left'
                 >
-                  {reduceAddress(account.address)}
+                  {reduceAddress(displayAddress)}
                 </Text>
               )}
             </Column>
