@@ -6,15 +6,16 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DELEGATE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DELEGATE_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -85,6 +86,12 @@ class AssociatedContentDelegate {
   virtual bool HasOpenAIChatPermission() const;
   virtual void GetScreenshots(
       mojom::ConversationHandler::GetScreenshotsCallback callback);
+
+  // Fetches the current set of content tools from the content. The default
+  // implementation calls |callback| with an empty list immediately.
+  using GetContentToolsCallback =
+      base::OnceCallback<void(std::vector<std::unique_ptr<Tool>>)>;
+  virtual void GetContentTools(GetContentToolsCallback callback);
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();

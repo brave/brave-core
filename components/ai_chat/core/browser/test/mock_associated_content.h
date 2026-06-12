@@ -45,6 +45,7 @@ class MockAssociatedContent : public AssociatedContentDelegate {
               GetScreenshots,
               (mojom::ConversationHandler::GetScreenshotsCallback),
               (override));
+  MOCK_METHOD(void, GetContentTools, (GetContentToolsCallback), (override));
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();

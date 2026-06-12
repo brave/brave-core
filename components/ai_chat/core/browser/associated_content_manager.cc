@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <memory>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,6 +28,10 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
 namespace ai_chat {
+
+namespace {
+constexpr size_t kMaxToolsPerContent = 10;
+}
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -475,6 +480,41 @@ void AssociatedContentManager::OnTitleChanged(
   DVLOG(1) << __func__;
 
   conversation_->OnAssociatedContentUpdated();
+}
+
+void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
+    base::OnceClosure on_updated) {
+  tools_.clear();
+  if (content_delegates_.empty()) {
+    std::move(on_updated).Run();
+    return;
+  }
+  auto barrier =
+      base::BarrierClosure(content_delegates_.size(), std::move(on_updated));
+  for (auto* content : content_delegates_) {
+    content->GetContentTools(base::BindOnce(
+        [](base::WeakPtr<AssociatedContentManager> self,
+           base::RepeatingClosure done,
+           std::vector<std::unique_ptr<Tool>> tools) {
+          if (self) {
+            std::move(
+                tools.begin(),
+                tools.begin() + std::min(tools.size(), kMaxToolsPerContent),
+                std::back_inserter(self->tools_));
+          }
+          done.Run();
+        },
+        weak_ptr_factory_.GetWeakPtr(), barrier));
+  }
+}
+
+std::vector<base::WeakPtr<Tool>> AssociatedContentManager::GetTools() {
+  std::vector<base::WeakPtr<Tool>> tool_ptrs;
+  tool_ptrs.reserve(tools_.size());
+  for (const auto& tool : tools_) {
+    tool_ptrs.push_back(tool->GetWeakPtr());
+  }
+  return tool_ptrs;
 }
 
 void AssociatedContentManager::DetachContent() {

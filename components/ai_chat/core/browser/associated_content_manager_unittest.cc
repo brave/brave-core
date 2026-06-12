@@ -3,14 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <memory>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/callback_helpers.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -440,6 +451,124 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_EQ(1u, contents_map_after.at("removal-turn").size());
   EXPECT_EQ("Keep this content",
             contents_map_after.at("removal-turn")[0].get().content);
+}
+
+// Tests for the script-tools (WebMCP) plumbing: AssociatedContentManager acts
+// as a ToolProvider and aggregates per-content tools fetched via
+// AssociatedContentDelegate::GetContentTools.
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_NoDelegates) {
+  // With no content delegates attached, the on_updated callback must still
+  // fire and GetTools must return empty.
+  base::test::TestFuture<void> done;
+  conversation_handler_->associated_content_manager()
+      ->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_AggregatesToolsFromAllDelegates) {
+  NiceMock<MockAssociatedContent> first_content;
+  NiceMock<MockAssociatedContent> second_content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+
+  EXPECT_CALL(first_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("first_tool"));
+        std::move(cb).Run(std::move(tools));
+      });
+  EXPECT_CALL(second_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("second_tool"));
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("third_tool"));
+        std::move(cb).Run(std::move(tools));
+      });
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+
+  auto tools = manager->GetTools();
+  ASSERT_EQ(3u, tools.size());
+  std::set<std::string> tool_names;
+  for (const auto& tool : tools) {
+    ASSERT_TRUE(tool);
+    tool_names.insert(std::string(tool->Name()));
+  }
+  EXPECT_THAT(tool_names, ::testing::UnorderedElementsAre(
+                              "first_tool", "second_tool", "third_tool"));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_ClearsPreviousTools) {
+  NiceMock<MockAssociatedContent> content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("first_loop"));
+        std::move(cb).Run(std::move(tools));
+      });
+  base::test::TestFuture<void> first_done;
+  manager->UpdateToolsForNewGenerationLoop(first_done.GetCallback());
+  EXPECT_TRUE(first_done.Wait());
+  ASSERT_EQ(1u, manager->GetTools().size());
+
+  // A subsequent loop with no tools must clear the previously aggregated set.
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::move(cb).Run({});
+      });
+  base::test::TestFuture<void> second_done;
+  manager->UpdateToolsForNewGenerationLoop(second_done.GetCallback());
+  EXPECT_TRUE(second_done.Wait());
+  EXPECT_TRUE(manager->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_DefersUntilAllDelegatesRespond) {
+  // Verifies the BarrierClosure semantics: on_updated must not run until the
+  // last GetScriptTools callback has been invoked.
+  NiceMock<MockAssociatedContent> first_content;
+  NiceMock<MockAssociatedContent> second_content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+
+  AssociatedContentDelegate::GetContentToolsCallback pending_callback;
+  EXPECT_CALL(first_content, GetContentTools)
+      .WillOnce([&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        pending_callback = std::move(cb);
+      });
+  EXPECT_CALL(second_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::move(cb).Run({});
+      });
+
+  bool done_called = false;
+  manager->UpdateToolsForNewGenerationLoop(
+      base::BindLambdaForTesting([&] { done_called = true; }));
+
+  // Only second_content has responded so far; the barrier should still be
+  // open.
+  EXPECT_FALSE(done_called);
+  ASSERT_FALSE(pending_callback.is_null());
+
+  std::vector<std::unique_ptr<Tool>> deferred_tools;
+  deferred_tools.push_back(std::make_unique<NiceMock<MockTool>>("late_tool"));
+  std::move(pending_callback).Run(std::move(deferred_tools));
+
+  EXPECT_TRUE(done_called);
+  ASSERT_EQ(1u, manager->GetTools().size());
+  EXPECT_EQ("late_tool", std::string(manager->GetTools().front()->Name()));
 }
 
 TEST_F(AssociatedContentManagerUnitTest,

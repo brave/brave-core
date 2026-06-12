@@ -23,6 +23,7 @@
 #include "base/types/fixed_array.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/content_tool.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -70,6 +71,14 @@ void ExtractTextFromAIPageContentNode(
   for (const auto& child : node.children_nodes) {
     ExtractTextFromAIPageContentNode(*child, out);
   }
+}
+
+void MaybeBindRemote(mojo::Remote<blink::mojom::AIPageContentAgent>& agent,
+                     content::RenderFrameHost* rfh) {
+  if (agent.is_bound()) {
+    return;
+  }
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
 }
 
 }  // namespace
@@ -249,6 +258,8 @@ void AssociatedWebContentsContent::OnNewPage(int64_t navigation_id) {
   // Note: A new page needs a new UUID.
   set_uuid(base::Uuid::GenerateRandomV4().AsLowercaseString());
 
+  ai_page_content_agent_.reset();
+
   // Notify observers now that url, title, and uuid are all set for the new
   // page. This fires after OnRequestArchive has completed for all observers.
   NotifyNewPage();
@@ -289,9 +300,7 @@ void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
     return;
   }
 
-  ai_page_content_agent_.reset();
-  rfh->GetRemoteInterfaces()->GetInterface(
-      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+  MaybeBindRemote(ai_page_content_agent_, rfh);
 
   auto options = blink::mojom::AIPageContentOptions::New();
   options->mode = blink::mojom::AIPageContentMode::kDefault;
@@ -308,8 +317,6 @@ void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
 void AssociatedWebContentsContent::OnAIPageContentResult(
     FetchPageContentCallback callback,
     blink::mojom::AIPageContentPtr result) {
-  ai_page_content_agent_.reset();
-
   std::string content;
   if (result) {
     ExtractTextFromAIPageContentNode(*result->root_node, content);
@@ -335,6 +342,41 @@ void AssociatedWebContentsContent::GetSearchSummarizerKey(
 void AssociatedWebContentsContent::GetOpenAIChatButtonNonce(
     mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
+}
+
+void AssociatedWebContentsContent::GetContentTools(
+    GetContentToolsCallback callback) {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  MaybeBindRemote(ai_page_content_agent_, rfh);
+
+  auto options = blink::mojom::AIPageContentOptions::New();
+  options->mode = blink::mojom::AIPageContentMode::kDefault;
+  options->on_critical_path = true;
+  ai_page_content_agent_->GetAIPageContent(
+      std::move(options),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AssociatedWebContentsContent::OnContentToolsFetched,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         rfh->GetWeakDocumentPtr()),
+          nullptr));
+}
+
+void AssociatedWebContentsContent::OnContentToolsFetched(
+    GetContentToolsCallback callback,
+    content::WeakDocumentPtr rfh,
+    blink::mojom::AIPageContentPtr result) {
+  std::vector<std::unique_ptr<Tool>> tools;
+  if (result && result->frame_data) {
+    for (const auto& script_tool : result->frame_data->script_tools) {
+      tools.push_back(std::make_unique<ContentTool>(*script_tool, rfh));
+    }
+  }
+  std::move(callback).Run(std::move(tools));
 }
 
 bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {
