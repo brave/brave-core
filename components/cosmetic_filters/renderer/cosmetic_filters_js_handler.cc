@@ -723,9 +723,6 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
       isolated_world_id_,
       blink::WebScriptSource(blink::WebString::FromUtf8(pre_init_script)),
       blink::BackForwardCacheAware::kAllow);
-  ExecuteObservingBundleEntryPoint();
-
-  CSSRulesRoutine(*resources_dict_);
 
   const std::string* procedural_actions_script =
       resources_dict_->FindString("procedural_actions_script");
@@ -750,6 +747,10 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
       }
     }
   }
+
+  ExecuteObservingBundleEntryPoint();
+
+  CSSRulesRoutine(*resources_dict_);
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
