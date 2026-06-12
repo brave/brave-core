@@ -20,9 +20,12 @@
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/ref_counted.h"
+#include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
+#include "base/sequence_checker.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -40,6 +43,7 @@
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/sync/model/data_type_controller_delegate.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -334,6 +338,16 @@ class AIChatService : public KeyedService,
       SkusServiceGetter getter,
       mojo::PendingRemote<skus::mojom::SkusService> service);
   void OnConversationListChanged();
+  // Called on this sequence (UI thread) by AIChatSyncBridge after it
+  // applies a batch of remote ADDs/UPDATEs/DELETEs. Refreshes the
+  // in-memory conversation list and pushes new data into any active
+  // ConversationHandler — stopping any in-flight LLM request or tool-use
+  // loop on those handlers first, since their local state has been
+  // superseded by the remote write.
+  void OnRemoteSyncDataApplied();
+  void OnConversationDataForRemoteSyncReload(
+      const std::string& uuid,
+      mojom::ConversationArchivePtr archive);
   void OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
@@ -430,15 +444,61 @@ class AIChatService : public KeyedService,
   // this is profile-specific.
   bool is_content_agent_allowed_ = false;
 
-  // Background task runner for the database and sync bridge.
+  // Background task runner for the database and sync bridge. Created
+  // synchronously the first time MaybeInitStorage() succeeds so that a
+  // ProxyDataTypeControllerDelegate can be handed out even before the bridge
+  // has finished initializing on it.
   scoped_refptr<base::SequencedTaskRunner> db_task_runner_;
 
-  // Sync bridge for AI Chat conversation sync. Lives on db_task_runner_.
-  // Created when database is ready. Must be destroyed on db_task_runner_.
-  std::unique_ptr<AIChatSyncBridge> sync_bridge_;
-  // WeakPtr to bridge, obtained on db_task_runner_ after creation. Safe to
-  // copy to the UI thread and use in PostTask (will be invalidated when bridge
-  // is destroyed on db_task_runner_).
+  // Thread-safe holder for the sync bridge so that
+  // CreateSyncControllerDelegate() can hand out a working proxy delegate
+  // before the bridge itself has been created on |db_task_runner_|. The
+  // bridge is owned, set, accessed, and destroyed only on |db_task_runner_|.
+  // The holder itself is shared between the UI thread (for binding into the
+  // proxy delegate's callback) and |db_task_runner_| (for actual access).
+  class SyncBackend : public base::RefCountedDeleteOnSequence<SyncBackend> {
+   public:
+    explicit SyncBackend(
+        scoped_refptr<base::SequencedTaskRunner> owning_task_runner);
+
+    // Called on the owning sequence to install the bridge once it has been
+    // constructed. Must be called at most once.
+    void SetBridge(std::unique_ptr<AIChatSyncBridge> bridge);
+
+    // Returns the bridge's change-processor controller delegate, or a null
+    // weak_ptr if the bridge has not been installed yet (or has been
+    // released by Shutdown()). Called by ProxyDataTypeControllerDelegate
+    // on the owning sequence.
+    base::WeakPtr<syncer::DataTypeControllerDelegate> GetControllerDelegate();
+
+    // Drops the bridge on the owning sequence so its raw_ptr to the
+    // AIChatDatabase is released before AIChatService destroys the
+    // database. SyncBackend itself may still be kept alive by proxy
+    // delegates the sync engine holds; GetControllerDelegate() returns
+    // null after this point.
+    void Shutdown();
+
+   private:
+    friend class base::RefCountedDeleteOnSequence<SyncBackend>;
+    friend class base::DeleteHelper<SyncBackend>;
+    ~SyncBackend();
+
+    std::unique_ptr<AIChatSyncBridge> bridge_;
+    SEQUENCE_CHECKER(sequence_checker_);
+  };
+  // True while an os_crypt_async GetInstance() call is in flight, to
+  // prevent MaybeInitStorage() from starting a second one (which would
+  // race and cause a double bridge install when the second callback
+  // fires).
+  bool os_crypt_init_pending_ = false;
+
+  scoped_refptr<SyncBackend> sync_backend_;
+
+  // Weak ptr to the bridge owned by |sync_backend_|. Written on
+  // |db_task_runner_| after the bridge has been constructed. Read on the
+  // UI thread to fan outbound conversation notifications into bridge
+  // method calls posted back to |db_task_runner_|; the weak_ptr check at
+  // invocation time makes the race benign.
   base::WeakPtr<AIChatSyncBridge> sync_bridge_weak_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};

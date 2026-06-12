@@ -99,6 +99,25 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual bool DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
                                           std::optional<base::Time> end_time);
 
+  // Applies a remote conversation metadata record from sync. Upserts the
+  // conversation row only; existing entries and associated content are left
+  // untouched (they sync as independent records).
+  virtual bool ApplyRemoteConversationMetadata(
+      mojom::ConversationPtr conversation);
+
+  // Applies a remote conversation entry from sync. If the parent conversation
+  // does not exist yet, a stub row is created; later metadata sync will fill
+  // in the title/model/tokens. The entry is fully replaced (delete + insert).
+  // |associated_content| is the per-entry content metadata. |contents| is a
+  // parallel vector of text strings to write to each AC row's last_contents
+  // column; the caller is responsible for substituting local values in
+  // place of any field the remote sender marked as truncated-for-sync.
+  virtual bool ApplyRemoteEntry(
+      const std::string& conversation_uuid,
+      mojom::ConversationTurnPtr entry,
+      std::vector<mojom::AssociatedContentPtr> associated_content,
+      std::vector<std::string> contents);
+
   // Reads all sync metadata (entity metadata + data type state) into the batch.
   bool GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch);
 
@@ -119,6 +138,7 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
  private:
   friend class AIChatDatabaseTest;
   friend class AIChatDatabaseMigrationTest;
+  friend class AIChatSyncBridge;
 
   sql::Database& GetDB();
 
