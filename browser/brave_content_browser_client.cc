@@ -44,6 +44,7 @@
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_internals_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_ort_worker_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
@@ -685,6 +686,11 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
+  }
+
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    registry.ForWebUI<local_ai::OnDeviceSpeechRecognitionInternalsUI>()
+        .Add<local_ai::mojom::OnDeviceSpeechRecognitionService>();
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
