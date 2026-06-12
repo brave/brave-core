@@ -56,6 +56,12 @@ public class BraveFullscreenVideoPictureInPictureController {
         } catch (IllegalStateException | IllegalArgumentException e) {
             Log.e(TAG, "Error entering PiP with bounds %s", bounds, e);
             onYouTubePictureInPictureEnterFailed();
+        } finally {
+            // The pending reference exists only so a failed attempt can be rolled back; drop it
+            // however the attempt resolves — success, refusal, a caught throw, or even an
+            // exception escaping the rollback itself. (No lifetime concern either way: it
+            // aliases the controller's own activity.)
+            mPendingBraveActivityForPiP = null;
         }
         return true;
     }
@@ -76,12 +82,13 @@ public class BraveFullscreenVideoPictureInPictureController {
     /**
      * Called by {@link #braveAttemptPictureInPicture} when {@code enterPictureInPictureMode}
      * returns false or throws, so the Brave activity can roll back any YouTube PiP session state
-     * set up in {@link #onYouTubePictureInPictureAttempt}.
+     * set up in {@link #onYouTubePictureInPictureAttempt}. Does not clear the pending reference:
+     * the sole caller clears it unconditionally once the attempt resolves, keeping a single owner
+     * for that field's lifetime.
      */
     private void onYouTubePictureInPictureEnterFailed() {
         if (mPendingBraveActivityForPiP != null) {
             mPendingBraveActivityForPiP.onYouTubePictureInPictureEnterFailed();
-            mPendingBraveActivityForPiP = null;
         }
     }
 
