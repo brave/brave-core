@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_TEST_FAKE_NTP_BACKGROUND_IMAGES_SERVICE_H_
 
 #include <cstddef>
+#include <string>
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
@@ -37,6 +38,11 @@ class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
   ~FakeNTPBackgroundImagesService() override;
 
   void RegisterSponsoredImagesComponent() override;
+
+  // Test-only entry point: parses `json` and injects it as if the component
+  // were ready. Passes `std::nullopt` to `OnHandledSponsoredComponentData` if
+  // `json` is malformed, exercising the failure path.
+  void OnGetSponsoredComponentJsonData(const std::string& json);
 
   size_t register_sponsored_images_component_call_count() const {
     return register_sponsored_images_component_call_count_;
