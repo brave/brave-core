@@ -7,6 +7,7 @@ import BraveCore
 import BraveShields
 import BraveUI
 import Data
+import Preferences
 import Shared
 import SnapKit
 import SwiftUI
@@ -23,6 +24,12 @@ class QuickViewController: UIViewController {
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
   )
+  private var readerModeBar: ReaderModeBarView?
+  private lazy var privateBrowsingManager: PrivateBrowsingManager = {
+    let manager = PrivateBrowsingManager()
+    manager.isPrivateBrowsing = profile.isOffTheRecord
+    return manager
+  }()
   private let onOpenInNewTab: ((URLRequest) -> Void)?
 
   init(
@@ -55,6 +62,14 @@ class QuickViewController: UIViewController {
     )
     tab.addObserver(toolbarViewModel)
     tab.addObserver(self)
+    tab.browserData = TabBrowserData(tab: tab)
+    tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
+    tab.readerMode?.onStateChanged = { [weak self, weak tab] in
+      self?.toolbarViewModel.readerModeState = tab?.readerMode?.state ?? .unavailable
+    }
+    tab.readerMode?.onReaderModeDisplayed = { [weak self] in
+      self?.showReaderModeBar()
+    }
     tab.createWebView()
     tab.delegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
@@ -84,7 +99,9 @@ class QuickViewController: UIViewController {
         currentTab.goForward()
       case .shield:
         self?.presentBraveShieldsView()
-      case .refresh, .playlist, .readerMode,
+      case .readerMode:
+        self?.currentTab?.readerMode?.toggleReaderMode()
+      case .refresh, .playlist,
         .translate, .share, .openTab:
         break
       }
@@ -227,7 +244,36 @@ class QuickViewController: UIViewController {
 
   private func refreshShieldStatus(url: URL) {
     let isShieldsEnabled = currentTab?.braveShieldsHelper?.isBraveShieldsEnabled(for: url) ?? false
-    toolbarViewModel.updateShieldingState(isShieldsEnabled)
+    toolbarViewModel.isShieldEnabled = isShieldsEnabled
+  }
+
+  private func showReaderModeBar() {
+    guard readerModeBar == nil, let currentTab else { return }
+    let bar = ReaderModeBarView(privateBrowsingManager: privateBrowsingManager)
+    bar.delegate = self
+    view.insertSubview(bar, aboveSubview: currentTab.view)
+    readerModeBar = bar
+    bar.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+      $0.leading.trailing.equalTo(view)
+      $0.height.equalTo(UIConstants.toolbarHeight)
+    }
+    currentTab.view.snp.remakeConstraints {
+      $0.top.equalTo(bar.snp.bottom)
+      $0.leading.trailing.equalTo(view)
+      $0.bottom.equalTo(toolbarHostingController.view.snp.top)
+    }
+  }
+
+  private func hideReaderModeBar() {
+    guard let bar = readerModeBar, let currentTab else { return }
+    bar.removeFromSuperview()
+    readerModeBar = nil
+    currentTab.view.snp.remakeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+      $0.leading.trailing.equalTo(view)
+      $0.bottom.equalTo(toolbarHostingController.view.snp.top)
+    }
   }
 }
 
@@ -243,6 +289,12 @@ extension QuickViewController: TabDelegate {
       self?.onOpenInNewTab?(request)
     }
     return nil
+  }
+
+  func tabDidStartNavigation(_ tab: some TabState) {
+    if tab.visibleURL?.isInternalURL(for: .readermode) != true {
+      hideReaderModeBar()
+    }
   }
 }
 
@@ -263,5 +315,56 @@ extension QuickViewController: TabObserver {
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
+  }
+}
+
+// MARK: - ReaderModeBarViewDelegate
+extension QuickViewController: ReaderModeBarViewDelegate {
+  func readerModeSettingsTapped(_ view: UIView) {
+    var readerModeStyle = defaultReaderModeStyle
+    if let encodedString = Preferences.ReaderMode.style.value,
+      let style = ReaderModeStyle(encodedString: encodedString)
+    {
+      readerModeStyle = style
+    }
+    let vc = ReaderModeStyleViewController(selectedStyle: readerModeStyle)
+    vc.delegate = self
+    vc.modalPresentationStyle = .popover
+    vc.presentationController?.delegate = self
+    if let popover = vc.popoverPresentationController {
+      popover.backgroundColor = .white
+      popover.sourceView = view
+      popover.sourceRect = CGRect(
+        x: view.bounds.width / 2,
+        y: UIConstants.toolbarHeight / 2,
+        width: 0,
+        height: 0
+      )
+      popover.permittedArrowDirections = .up
+    }
+    present(vc, animated: true)
+  }
+}
+
+// MARK: - ReaderModeStyleViewControllerDelegate
+
+extension QuickViewController: ReaderModeStyleViewControllerDelegate {
+  func readerModeStyleViewController(
+    _ readerModeStyleViewController: ReaderModeStyleViewController,
+    didConfigureStyle style: ReaderModeStyle
+  ) {
+    Preferences.ReaderMode.style.value = style.encode()
+    currentTab?.readerMode?.setStyle(style)
+  }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension QuickViewController: UIAdaptivePresentationControllerDelegate {
+  public func adaptivePresentationStyle(
+    for controller: UIPresentationController,
+    traitCollection: UITraitCollection
+  ) -> UIModalPresentationStyle {
+    return .none
   }
 }
