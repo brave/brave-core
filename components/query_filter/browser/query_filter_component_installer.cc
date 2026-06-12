@@ -45,20 +45,23 @@ std::string ReadQueryFilterFile(const base::FilePath& path) {
   return contents;
 }
 
-// Returns true iff the current set of rules were updated.
-bool OnQueryFilterFileRead(const std::string& json_data) {
+// Reads the |json_data| and updates the component version iff the current rules
+// were updated.
+void OnQueryFilterFileRead(const base::Version& version,
+                           const std::string& json_data) {
   if (json_data.empty()) {
-    return false;
+    return;
   }
   auto* data = query_filter::QueryFilterData::GetInstance();
   CHECK(data);
 
   if (!data->PopulateDataFromComponent(json_data)) {
     LOG(WARNING) << "Failed to populate data from component";
-    return false;
+    return;
   }
 
-  return true;
+  data->UpdateVersion(version);
+  return;
 }
 
 }  // namespace
@@ -111,11 +114,8 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
           &ReadQueryFilterFile,
           install_dir.AppendASCII(query_filter::kQueryFilterJsonFile)),
       base::BindOnce(
-          [](base::Version version, const std::string& json_data) {
-            if (OnQueryFilterFileRead(json_data)) {
-              query_filter::QueryFilterData::GetInstance()->UpdateVersion(
-                  version);
-            }
+          [](const base::Version& version, const std::string& json_data) {
+            OnQueryFilterFileRead(version, json_data);
 
             if (g_on_file_loaded_callback_for_testing_) {
               CHECK_IS_TEST();
