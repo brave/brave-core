@@ -50,6 +50,8 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_ort_worker_ui.h"
+#include "brave/components/local_ai/core/features.h"
 #endif
 
 #define RegisterChromeUntrustedWebUIConfigs \
@@ -79,6 +81,11 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<local_ai::UntrustedLocalAIUIConfig>());
+  }
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<
+            local_ai::UntrustedOnDeviceSpeechRecognitionOrtWorkerUIConfig>());
   }
 #endif
 #if !BUILDFLAG(IS_ANDROID)

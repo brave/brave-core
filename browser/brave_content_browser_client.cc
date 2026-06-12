@@ -172,6 +172,8 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_ort_worker_ui.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #endif
 
@@ -977,6 +979,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     content::RegisterWebUIControllerInterfaceBinder<
         local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
+  }
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        local_ai::mojom::SpeechRecognitionFactoryHost,
+        local_ai::UntrustedOnDeviceSpeechRecognitionOrtWorkerUI>(map);
   }
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
