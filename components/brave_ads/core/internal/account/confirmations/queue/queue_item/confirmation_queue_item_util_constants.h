@@ -11,7 +11,7 @@
 namespace brave_ads {
 
 inline constexpr base::TimeDelta
-    kMinimumDelayBeforeProcessingConfirmationQueueItem = base::Seconds(5);
+    kMinimumDelayBeforeProcessingConfirmationQueueItem = base::Seconds(15);
 
 }  // namespace brave_ads
 
