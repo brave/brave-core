@@ -739,12 +739,6 @@ brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_sources += brave_browser_webcompat_reporter_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
-if (enable_brave_news) {
-  brave_chrome_browser_deps += [
-    "//brave/browser/brave_news",
-    "//brave/browser/brave_news:impl",
-  ]
-}
 brave_chrome_browser_deps += brave_browser_brave_referrals_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
@@ -866,6 +860,13 @@ if (enable_widevine) {
   brave_chrome_browser_deps += [ "//brave/browser/widevine" ]
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/widevine" ]
+}
+
+if (enable_brave_news) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/brave_news",
+    "//brave/browser/brave_news:impl",
+  ]
 }
 
 # https://github.com/brave/brave-browser/issues/41486
