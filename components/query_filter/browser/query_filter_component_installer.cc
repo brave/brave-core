@@ -59,9 +59,7 @@ void OnQueryFilterFileRead(const base::Version& version,
     LOG(WARNING) << "Failed to populate data from component";
     return;
   }
-
   data->UpdateVersion(version);
-  return;
 }
 
 }  // namespace
