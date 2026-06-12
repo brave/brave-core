@@ -123,6 +123,14 @@ class StateBase : public mojom::Authentication {
   }
 
  private:
+  // `ResetPassword` is a flow helper owned by `LoggedOutState`: it implements
+  // that state's `ResetPassword*` overrides on its owner's behalf. It is
+  // friended on `StateBase` (not on the owning state) because the plumbing it
+  // borrows through its back-reference - request lifetime (`in_flight_`,
+  // `SendStateOwnedRequest()`), crypto, and `account_state_prefs_` - is bound
+  // to `StateBase` and can't move out.
+  friend class ResetPassword;
+
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) final;
 
@@ -143,6 +151,25 @@ class StateBase : public mojom::Authentication {
       ResendVerificationEmailCallback callback) override;
 
   void CancelVerification(mojom::VerificationIntentPtr intent) override;
+
+  void ResetPasswordVerifyInit(
+      mojom::Service initiating_service,
+      const std::string& email,
+      ResetPasswordVerifyInitCallback callback) override;
+
+  void ResetPasswordVerifyComplete(
+      const std::string& code,
+      ResetPasswordVerifyCompleteCallback callback) override;
+
+  void ResetPasswordPasswordInit(
+      mojom::Service initiating_service,
+      const std::string& blinded_message,
+      ResetPasswordPasswordInitCallback callback) override;
+
+  void ResetPasswordPasswordFinalize(
+      const std::string& serialized_record,
+      const std::string& email,
+      ResetPasswordPasswordFinalizeCallback callback) override;
 
   void LoginInitialize(mojom::Service initiating_service,
                        const std::string& email,
