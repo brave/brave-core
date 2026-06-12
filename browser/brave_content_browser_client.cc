@@ -43,6 +43,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_ort_worker_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -85,6 +86,7 @@
 #include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
@@ -954,6 +956,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     content::RegisterWebUIControllerInterfaceBinder<
         local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
+  }
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        local_ai::mojom::SpeechRecognitionFactoryHost,
+        local_ai::UntrustedOnDeviceSpeechRecognitionOrtWorkerUI>(map);
   }
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(

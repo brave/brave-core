@@ -36,6 +36,9 @@ class UntrustedOnDeviceSpeechRecognitionOrtWorkerUI
       const UntrustedOnDeviceSpeechRecognitionOrtWorkerUI&) = delete;
   ~UntrustedOnDeviceSpeechRecognitionOrtWorkerUI() override;
 
+  void BindInterface(
+      mojo::PendingReceiver<mojom::SpeechRecognitionFactoryHost> receiver);
+
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

@@ -14,6 +14,7 @@ source_set("local_ai") {
   deps = [
     "//base",
     "//brave/browser/history_embeddings",
+    "//brave/browser/speech",
     "//brave/components/local_ai/core",
     "//brave/components/local_ai/core:mojom",
     "//brave/components/local_ai/resources:local_ai_generated",
