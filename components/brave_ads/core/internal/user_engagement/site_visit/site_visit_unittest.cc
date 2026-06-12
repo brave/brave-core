@@ -537,6 +537,146 @@ TEST_F(
   ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
 }
 
+TEST_F(
+    BraveAdsSiteVisitTest,
+    DoNotLandOnPageWhenSearchResultAdRedirectFailedWithHttpClientErrorStatusCode) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                  /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_, OnMaybeLandOnPage).Times(0);
+  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
+
+  // Act & Assert
+  SimulateClickingAd(
+      ad, /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1")},
+      net::HTTP_BAD_REQUEST);
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    DoNotLandOnPageWhenSearchResultAdRedirectFailedWithHttpServerErrorStatusCode) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                  /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_, OnMaybeLandOnPage).Times(0);
+  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
+
+  // Act & Assert
+  SimulateClickingAd(
+      ad, /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1")},
+      net::HTTP_INTERNAL_SERVER_ERROR);
+}
+
+TEST_F(BraveAdsSiteVisitTest, LandOnPageWhenSearchResultAdRedirectSucceeded) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                  /*use_random_uuids=*/true);
+  SimulateClickingAd(
+      ad, /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1"),
+       GURL("https://brave.com")},
+      net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnDidLandOnPage(/*tab_id=*/1, net::HTTP_OK, ad));
+  FastForwardClockBy(kPageLandAfter.Get());
+}
+
+TEST_F(BraveAdsSiteVisitTest,
+       LandOnPageForNonSearchResultAdWhenSearchResultAdRedirectFailed) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
+      .Times(0);
+
+  // Act
+  bool did_land_on_page = false;
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnDidLandOnPage(/*tab_id=*/1, net::HTTP_BAD_REQUEST, ad))
+      .WillOnce([&] { did_land_on_page = true; });
+  SimulateClickingAd(
+      ad, /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1")},
+      net::HTTP_BAD_REQUEST);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    LandOnPageWithHttpClientErrorStatusCodeWhenSearchResultAdRedirectSucceeded) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                  /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnMaybeLandOnPage(ad, kPageLandAfter.Get()))
+      .Times(0);
+
+  // Act
+  bool did_land_on_page = false;
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnDidLandOnPage(/*tab_id=*/1, net::HTTP_BAD_REQUEST, ad))
+      .WillOnce([&] { did_land_on_page = true; });
+  SimulateClickingAd(
+      ad, /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1"),
+       GURL("https://basicattentiontoken.org")},
+      net::HTTP_BAD_REQUEST);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    LandOnPageWithHttpServerErrorStatusCodeWhenSearchResultAdRedirectSucceeded) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                  /*use_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnMaybeLandOnPage(ad, kPageLandAfter.Get()))
+      .Times(0);
+
+  // Act
+  bool did_land_on_page = false;
+  EXPECT_CALL(
+      site_visit_observer_mock_,
+      OnDidLandOnPage(/*tab_id=*/1, net::HTTP_INTERNAL_SERVER_ERROR, ad))
+      .WillOnce([&] { did_land_on_page = true; });
+  SimulateClickingAd(
+      ad, /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1"),
+       GURL("https://basicattentiontoken.org")},
+      net::HTTP_INTERNAL_SERVER_ERROR);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
+}
+
 TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);

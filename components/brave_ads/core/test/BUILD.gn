@@ -187,6 +187,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_for_non_rewards_test.cc",
     "//brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_for_rewards_test.cc",
+    "//brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_url_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/search_result_ad/test/search_result_ad_test_util.cc",
     "//brave/components/brave_ads/core/internal/ad_units/search_result_ad/test/search_result_ad_test_util.h",
     "//brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h",
