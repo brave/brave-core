@@ -86,6 +86,7 @@ class NTPBackgroundImagesService {
   void ForceSponsoredComponentUpdate();
 
  private:
+  friend class FakeNTPBackgroundImagesService;
   friend class NTPBackgroundImagesServiceForTesting;
   friend class NTPBackgroundImagesServiceTest;
   friend class ViewCounterServiceTest;
@@ -134,7 +135,10 @@ class NTPBackgroundImagesService {
       AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
 
-  void OnGetSponsoredComponentJsonData(const std::string& json_string);
+  static std::optional<base::DictValue> HandleSponsoredComponentData(
+      const base::FilePath& installed_dir,
+      const std::string& variations_country_code);
+  void OnHandledSponsoredComponentData(std::optional<base::DictValue> dict);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
   void OnVariationsCountryPrefChanged();

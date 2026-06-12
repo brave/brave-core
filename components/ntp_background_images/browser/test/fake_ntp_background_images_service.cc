@@ -5,6 +5,8 @@
 
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 
+#include "base/json/json_reader.h"
+
 namespace ntp_background_images {
 
 FakeNTPBackgroundImagesService::FakeNTPBackgroundImagesService(
@@ -20,6 +22,12 @@ FakeNTPBackgroundImagesService::~FakeNTPBackgroundImagesService() = default;
 void FakeNTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   NTPBackgroundImagesService::RegisterSponsoredImagesComponent();
   ++register_sponsored_images_component_call_count_;
+}
+
+void FakeNTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
+    const std::string& json) {
+  NTPBackgroundImagesService::OnHandledSponsoredComponentData(
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS));
 }
 
 }  // namespace ntp_background_images
