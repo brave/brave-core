@@ -141,6 +141,37 @@ void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
   account_state_prefs_->ClearVerification();
 }
 
+void StateBase::ResetPasswordVerifyInit(
+    mojom::Service initiating_service,
+    const std::string& email,
+    ResetPasswordVerifyInitCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
+}
+
+void StateBase::ResetPasswordVerifyComplete(
+    const std::string& code,
+    ResetPasswordVerifyCompleteCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
+}
+
+void StateBase::ResetPasswordPasswordInit(
+    mojom::Service initiating_service,
+    const std::string& blinded_message,
+    ResetPasswordPasswordInitCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
+}
+
+void StateBase::ResetPasswordPasswordFinalize(
+    const std::string& serialized_record,
+    const std::string& email,
+    ResetPasswordPasswordFinalizeCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
+}
+
 void StateBase::LoginInitialize(mojom::Service,
                                 const std::string&,
                                 const std::string&,
