@@ -1978,7 +1978,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, MixedTabsPersistence) {
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       DISABLED_PRE_RemovedContainerCleanupAfterRestore) {
+                       PRE_RemovedContainerCleanupAfterRestore) {
   const GURL url("https://a.test/simple.html");
   std::vector<containers::mojom::ContainerPtr> synced;
   auto container = containers::mojom::Container::New(
@@ -2019,7 +2019,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       DISABLED_RemovedContainerCleanupAfterRestore) {
+                       RemovedContainerCleanupAfterRestore) {
   const GURL url("https://a.test/simple.html");
   auto container = containers::mojom::Container::New(
       kTestContainerId, "Shopping", containers::mojom::Icon::kShopping,

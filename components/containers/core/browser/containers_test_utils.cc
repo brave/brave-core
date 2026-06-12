@@ -15,12 +15,21 @@ namespace containers {
 MockContainersServiceDelegate::MockContainersServiceDelegate() {
   ON_CALL(*this, GetReferencedContainerIds(testing::_))
       .WillByDefault([this](OnReferencedContainerIdsReadyCallback callback) {
+        if (defer_referenced_container_ids_callback_) {
+          deferred_referenced_container_ids_callback_ = std::move(callback);
+          return;
+        }
         std::move(callback).Run(referenced_container_ids_);
       });
   ON_CALL(*this, DeleteContainerStorage(testing::_, testing::_))
       .WillByDefault([this](const std::string& id,
                             DeleteContainerStorageCallback callback) {
         delete_requests_.push_back(id);
+        if (defer_delete_container_storage_callback_) {
+          deferred_delete_container_storage_callbacks_[id] =
+              std::move(callback);
+          return;
+        }
         std::move(callback).Run(delete_result_);
       });
 }
