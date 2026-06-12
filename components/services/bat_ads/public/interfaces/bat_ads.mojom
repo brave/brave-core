@@ -93,8 +93,6 @@ interface BatAdsClient {
   LoadResourceComponent(string id, int32 version) =>
       (mojo_base.mojom.File? file);
 
-  ShowScheduledCaptcha(string payment_id, string captcha_id);
-
   [Sync]
   FindProfilePref(string path) => (bool value);
   [Sync]
@@ -129,6 +127,8 @@ interface BatAdsObserver {
   OnIneligibleWalletToServeAds();
 
   OnRemindUser(brave_ads.mojom.ReminderType mojom_reminder_type);
+
+  OnSolveCaptchaToServeAds(string payment_id, string captcha_id);
 };
 
 interface BatAds {
