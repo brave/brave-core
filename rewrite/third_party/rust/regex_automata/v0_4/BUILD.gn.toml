@@ -7,14 +7,3 @@
 description = 'Allow regex_automata to be used outside of test targets'
 pattern = 'testonly = true'
 replace = 'testonly = false'
-
-[[substitution]]
-# Without this, chrome.dll links two `aho_corasick` rlibs with identical crate
-# metadata (`aho_corasick-1`): one via `//brave/third_party/rust/regex/v1` ->
-# `//brave/third_party/rust/aho_corasick/v1`, and another via
-# `//brave/third_party/rust/regex_automata/v0_4` -> upstream regex_automata ->
-# `//third_party/rust/aho_corasick/v1`. lld-link rejects the duplicate symbols
-# in Windows component-debug builds.
-description = 'Route regex_automata aho_corasick dep to brave-vendored crate to avoid duplicate aho_corasick rlibs'
-pattern = '"//third_party/rust/aho_corasick/v1:lib"'
-replace = '"//brave/third_party/rust/aho_corasick/v1:lib"'
