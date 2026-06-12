@@ -6,7 +6,6 @@
 import("//brave/browser/ai_chat/android/sources.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_account/android/sources.gni")
-import("//brave/browser/brave_news/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
@@ -717,7 +716,6 @@ if (is_mac) {
 
 brave_chrome_browser_sources += brave_browser_profiles_sources
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
-brave_chrome_browser_sources += brave_browser_brave_news_sources
 brave_chrome_browser_sources += brave_browser_brave_referrals_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
@@ -741,7 +739,6 @@ brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_sources += brave_browser_webcompat_reporter_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
-brave_chrome_browser_deps += brave_browser_brave_news_deps
 brave_chrome_browser_deps += brave_browser_brave_referrals_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
@@ -865,6 +862,13 @@ if (enable_widevine) {
   brave_chrome_browser_deps += [ "//brave/browser/widevine" ]
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/widevine" ]
+}
+
+if (enable_brave_news) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/brave_news",
+    "//brave/browser/brave_news:impl",
+  ]
 }
 
 # https://github.com/brave/brave-browser/issues/41486
