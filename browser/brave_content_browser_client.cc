@@ -175,6 +175,7 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_internals_ui.h"
 #include "brave/components/local_ai/content/no_network_connection_allowlist_throttle.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
@@ -716,6 +717,13 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
   }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    registry.ForWebUI<local_ai::OnDeviceSpeechRecognitionInternalsUI>()
+        .Add<local_ai::mojom::AsrSession>();
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   registry.ForWebUI<brave_rewards::RewardsPageUI>()

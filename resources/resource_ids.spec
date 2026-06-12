@@ -275,6 +275,10 @@
     "META": {"sizes": {"includes": [5]}},
     "includes": [54165],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_internals/on_device_speech_recognition_internals.grd": {
+    "META": {"sizes": {"includes": [5]}},
+    "includes": [54170],
+  },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the
   # ids got expanded for the build.

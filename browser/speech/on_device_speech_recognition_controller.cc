@@ -140,6 +140,12 @@ OnDeviceSpeechRecognitionController::GetAsrSession() {
   return remote;
 }
 
+void OnDeviceSpeechRecognitionController::BindAsrSession(
+    mojo::PendingReceiver<local_ai::mojom::AsrSession> receiver) {
+  asr_session_receivers_.Add(this, std::move(receiver));
+  idle_timer_.Stop();
+}
+
 void OnDeviceSpeechRecognitionController::BindFactoryHost(
     mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>
         receiver) {

@@ -72,6 +72,10 @@ class OnDeviceSpeechRecognitionController
   // the session.
   mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession();
 
+  // Binds an AsrSession receiver for a WebUI consumer (the internals page).
+  void BindAsrSession(
+      mojo::PendingReceiver<local_ai::mojom::AsrSession> receiver);
+
   // Binds the FactoryHost receiver for the ORT worker WebUI.
   void BindFactoryHost(
       mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>

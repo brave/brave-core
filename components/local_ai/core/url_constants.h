@@ -20,6 +20,13 @@ inline constexpr char kOnDeviceSpeechRecognitionWorkerHost[] =
 inline constexpr char kOnDeviceSpeechRecognitionWorkerURL[] =
     "chrome-untrusted://on-device-speech-recognition-worker/";
 
+// Trusted WebUI dev/QA test page that drives the on-device speech
+// recognition pipeline end to end for verification.
+inline constexpr char kOnDeviceSpeechRecognitionInternalsHost[] =
+    "on-device-speech-recognition-internals";
+inline constexpr char kOnDeviceSpeechRecognitionInternalsURL[] =
+    "chrome://on-device-speech-recognition-internals/";
+
 }  // namespace local_ai
 
 #endif  // BRAVE_COMPONENTS_LOCAL_AI_CORE_URL_CONSTANTS_H_
