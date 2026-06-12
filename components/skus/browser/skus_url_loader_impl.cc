@@ -94,17 +94,23 @@ void SkusUrlLoaderImpl::OnFetchComplete(
 
   // Body might be empty here which is still a success.
   auto body = api_request_result.SerializeBodyToString();
-  std::vector<uint8_t> body_bytes;
-  if (!body.empty()) {
-    body_bytes.assign(body.begin(), body.end());
+  // HttpResponse owns its data (rust::Vec), so deep-copy across the FFI
+  // boundary rather than handing C++ heap allocations to Rust.
+  rust::Vec<uint8_t> body_bytes;
+  body_bytes.reserve(body.size());
+  for (char byte : body) {
+    body_bytes.push_back(static_cast<uint8_t>(byte));
   }
 
-  std::vector<std::string> headers;
+  rust::Vec<rust::String> headers;
   headers.reserve(api_request_result.headers().size());
   for (const auto& header : api_request_result.headers()) {
     std::string new_header_value = header.first + ": " + header.second;
     VLOG(1) << "header[" << new_header_value << "]";
-    headers.push_back(std::move(new_header_value));
+    // Use lossy() rather than the throwing rust::String ctor: server response
+    // headers are not guaranteed to be UTF-8, and the Rust side already
+    // validates header names/values, returning a clean error on bad input.
+    headers.push_back(rust::String::lossy(new_header_value));
   }
 
   skus::SkusResult result = {

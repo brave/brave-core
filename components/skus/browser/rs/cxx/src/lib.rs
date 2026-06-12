@@ -164,11 +164,11 @@ mod ffi {
         pub body: Vec<u8>,
     }
     #[derive(Debug)]
-    pub struct HttpResponse<'a> {
+    pub struct HttpResponse {
         pub result: SkusResult,
         pub return_code: u16,
-        pub headers: &'a CxxVector<CxxString>,
-        pub body: &'a CxxVector<u8>,
+        pub headers: Vec<String>,
+        pub body: Vec<u8>,
     }
 
     extern "Rust" {

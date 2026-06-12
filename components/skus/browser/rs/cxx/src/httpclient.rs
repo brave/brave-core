@@ -46,14 +46,13 @@ impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
     }
 }
 
-impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalError> {
-    fn from(resp: ffi::HttpResponse<'_>) -> Self {
+impl From<ffi::HttpResponse> for Result<http::Response<Vec<u8>>, InternalError> {
+    fn from(resp: ffi::HttpResponse) -> Self {
         match resp.result.code {
             ffi::SkusResultCode::Ok => {
                 let mut response = http::Response::builder().status(resp.return_code);
 
                 for header in resp.headers {
-                    let header = header.to_string();
                     // header: value
                     let idx = header
                         .find(':')
@@ -91,7 +90,7 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
                 }
 
                 response
-                    .body(resp.body.iter().cloned().collect())
+                    .body(resp.body)
                     .map_err(|e| InternalError::InvalidCall(e.to_string()))
                     .debug_unwrap()
             }
