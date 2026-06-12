@@ -125,6 +125,14 @@
     *** isInNarrowWindowOnTablet(...);
 }
 
+-keep class org.chromium.chrome.browser.ntp_customization.theme.NtpCustomizationPromoManager {
+    *** canShowCustomizationIph(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp_customization.theme.BraveNtpCustomizationPromoManager {
+    *** canShowCustomizationIph(...);
+}
+
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
     <init>(...);
     *** getPopupPosition(...);

@@ -101,6 +101,7 @@ public class BraveClassAdapter {
         chain = new BraveNewTabPageCoordinatorClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
         chain = new BraveNtpCustomizationUtilsClassAdapter(chain);
+        chain = new BraveNtpCustomizationPromoManagerClassAdapter(chain);
         chain = new BraveNotificationBuilderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);

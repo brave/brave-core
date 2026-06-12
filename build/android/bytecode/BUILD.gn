@@ -104,6 +104,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationManagerProxyImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationPermissionRationaleDialogControllerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationPlatformBridgeClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNtpCustomizationPromoManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNtpCustomizationUtilsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNullAccountManagerDelegateAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveOmniboxResourceProviderClassAdapter.java",
