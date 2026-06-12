@@ -218,7 +218,9 @@ void PsstUiDesktopPresenter::ShowConsentDialog() {
 
   HideInfoBar();
 
-  psst_action_controller_->SetShowBadge(false);
+  if (psst_action_controller_) {
+    psst_action_controller_->SetShowBadge(false);
+  }
 
   dialog_delegate_ = OpenPsstDialog(web_contents_.get());
 }
