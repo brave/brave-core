@@ -300,12 +300,6 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
 
   browser_task_environment_.FastForwardBy(kOneSecond);
 
-  // Use MEDIASTREAM_MIC rather than GEOLOCATION: on Android,
-  // kApproximateGeolocationPermission routes GEOLOCATION to
-  // GEOLOCATION_WITH_OPTIONS, which mismatches the pref key ("geolocation" vs
-  // "geolocation-with-options") and causes ResetPermission to crash because
-  // SetContentSettingDefaultScope CHECKs the type is in ContentSettingsRegistry
-  // and GEOLOCATION_WITH_OPTIONS is not.
   auto request2(CreateRequestAndAllowContentSetting(
       kOrigin2, ContentSettingsType::MEDIASTREAM_MIC, kLifetime));
   const base::Time expected_expiration_time2 =
@@ -554,17 +548,6 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
 }
 
 TEST_F(PermissionLifetimeManagerTest, ExternalContentSettingChange) {
-  // Use NOTIFICATIONS rather than GEOLOCATION: on Android,
-  // kApproximateGeolocationPermission is enabled by default, which routes
-  // GEOLOCATION requests to GEOLOCATION_WITH_OPTIONS in PermissionDecided but
-  // fires GEOLOCATION notifications from SetContentSettingDefaultScope —
-  // causing a type mismatch. Using GEOLOCATION_WITH_OPTIONS directly also
-  // crashes: it is registered only in PermissionSettingsRegistry::Init(), never
-  // through ContentSettingsRegistry::Register(), so it has no entry in
-  // ContentSettingsRegistry and GetContentSetting() (which gates on
-  // CheckContentTypeRegistration → ContentSettingsRegistry::Get()) hits
-  // NOTREACHED. NOTIFICATIONS has no such platform aliasing and tests the same
-  // PLM observer behaviour.
   for (auto external_content_setting :
        {ContentSetting::CONTENT_SETTING_DEFAULT,
         ContentSetting::CONTENT_SETTING_BLOCK}) {
