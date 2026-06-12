@@ -78,23 +78,25 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
     bool sidebar_leading,
     const gfx::Rect& sidebar_bounds,
     const gfx::Rect& panel_bounds) {
-  // The upstream layout animates the panel by varying panel.x:
-  //   trailing panel: x = right_edge - visible_width (slides in from high X)
-  //   leading  panel: x = left_edge - (target - visible_width) (from low X)
+  // The upstream layout places the panel at the browser edge, animating by
+  // varying panel.x. We relocate it so it sits adjacent to the Brave sidebar
+  // control instead.
   //
-  // Shifting by ±sidebar_width offsets the whole slide range without changing
-  // the animation value, so the panel animates correctly against the sidebar
-  // edge instead of the browser edge. The sidebar and the upstream panel share
-  // the alignment pref, so `sidebar_leading` matches upstream's
-  // `side_panel_leading` and the shift direction agrees with where upstream
-  // placed the panel.
+  // Anchoring to sidebar_bounds directly (rather than shifting panel_bounds.x
+  // by ±sidebar_width) is correct even when the vertical tab strip is on the
+  // same side as the sidebar: sidebar_bounds already accounts for the VT
+  // offset, whereas panel_bounds.x() is always relative to the browser edge.
+  // Without this, the panel is misplaced by vtab_width — leaving a gap between
+  // the panel and the contents on the shared-side configuration.
+  // The sidebar and the upstream panel share the alignment pref, so
+  // `sidebar_leading` matches upstream's `side_panel_leading`.
   gfx::Rect result = panel_bounds;
   if (sidebar_leading) {
-    // Sidebar at the leading edge: shift panel toward high X.
-    result.set_x(panel_bounds.x() + sidebar_bounds.width());
+    // Leading sidebar: panel's left edge aligns with sidebar's right edge.
+    result.set_x(sidebar_bounds.right());
   } else {
-    // Sidebar at the trailing edge: shift panel toward low X.
-    result.set_x(panel_bounds.x() - sidebar_bounds.width());
+    // Trailing sidebar: panel's right edge aligns with sidebar's left edge.
+    result.set_x(sidebar_bounds.x() - panel_bounds.width());
   }
   return result;
 }

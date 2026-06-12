@@ -26,6 +26,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -2046,7 +2047,8 @@ using views::ShapeContextTokensOverride::
 // In V2 the upstream side panel is a direct child of browser_view, positioned
 // by CalculateSideBarLayout.  Verify that when the panel is open it sits
 // between the contents container and the sidebar control, NOT outside it.
-// Covers both the default right-side and the explicitly set left-side layouts.
+// Covers: right-side, left-side, and VT+sidebar on the same side (regression
+// for the vtab_width gap bug fixed in ComputeAdjustedPanelBounds).
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* panel = browser_view->side_panel();
@@ -2090,6 +2092,44 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
       << "sidebar=" << sidebar->bounds().ToString()
       << " panel=" << panel->bounds().ToString();
 
+  EXPECT_EQ(panel->bounds().y(), contents->bounds().y())
+      << "panel y=" << panel->bounds().y()
+      << " contents y=" << contents->bounds().y();
+
+  // --- VT and sidebar on the same left side (VT left by default, sidebar
+  // left). Before the fix, the panel was misplaced by vtab_width, leaving a gap
+  // between the panel and the contents container.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  brave::ToggleVerticalTabStrip(browser());
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  // VT defaults to left (kVerticalTabsOnRight = false).
+  ASSERT_FALSE(tabs::utils::IsVerticalTabOnRight(browser()));
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(sidebar->sidebar_on_left());
+
+  // Panel sits immediately right of the sidebar control; no gap to contents.
+  //   [VT] [sidebar_control] [panel] [contents]
+  EXPECT_EQ(sidebar->bounds().right(), panel->bounds().x())
+      << "sidebar=" << sidebar->bounds().ToString()
+      << " panel=" << panel->bounds().ToString();
+  EXPECT_EQ(panel->bounds().y(), contents->bounds().y())
+      << "panel y=" << panel->bounds().y()
+      << " contents y=" << contents->bounds().y();
+
+  // --- VT and sidebar on the same right side (VT right, sidebar right).
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  ASSERT_TRUE(tabs::utils::IsVerticalTabOnRight(browser()));
+  RunScheduledLayouts();
+
+  ASSERT_FALSE(sidebar->sidebar_on_left());
+
+  // Panel sits immediately left of the sidebar control; no gap to contents.
+  //   [contents] [panel] [sidebar_control] [VT]
+  EXPECT_EQ(panel->bounds().right(), sidebar->bounds().x())
+      << "panel=" << panel->bounds().ToString()
+      << " sidebar=" << sidebar->bounds().ToString();
   EXPECT_EQ(panel->bounds().y(), contents->bounds().y())
       << "panel y=" << panel->bounds().y()
       << " contents y=" << contents->bounds().y();
