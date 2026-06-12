@@ -7,6 +7,8 @@ source_set("local_ai") {
   sources = [
     "local_ai_ui.cc",
     "local_ai_ui.h",
+    "on_device_speech_recognition_ort_worker_ui.cc",
+    "on_device_speech_recognition_ort_worker_ui.h",
   ]
 
   deps = [
@@ -16,6 +18,8 @@ source_set("local_ai") {
     "//brave/components/local_ai/core:mojom",
     "//brave/components/local_ai/resources:local_ai_generated",
     "//brave/components/local_ai/resources/candle_embedding_gemma:candle_embedding_module_generated",
+    "//brave/components/local_ai/resources/speech_worker_ort:on_device_speech_recognition_ort_worker_generated",
+    "//brave/components/local_ai/resources/speech_worker_ort:ort_dist_generated",
     "//brave/components/resources:static_resources",
     "//content/public/browser",
     "//content/public/common",
