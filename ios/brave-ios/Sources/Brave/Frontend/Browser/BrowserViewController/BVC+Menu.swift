@@ -66,18 +66,15 @@ extension BrowserViewController {
 
   /// Presents Wallet without an origin (ex. from menu)
   func presentWallet() {
-    Task {
-      guard let walletStore = self.walletStore ?? newWalletStore() else { return }
-      if await walletStore.keyringStore.shouldUseWalletWebUI() == true {
-        self.dismiss(animated: true) {
-          self.tabManager.addTabAndSelect(
-            URLRequest(url: .webUI.wallet.home),
-            isPrivate: self.privateBrowsingManager.isPrivateBrowsing
-          )
-        }
-      } else {
-        presentNativeWallet()
+    if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
+      self.dismiss(animated: true) {
+        self.tabManager.addTabAndSelect(
+          URLRequest(url: .webUI.wallet.home),
+          isPrivate: self.privateBrowsingManager.isPrivateBrowsing
+        )
       }
+    } else {
+      presentNativeWallet()
     }
   }
 
