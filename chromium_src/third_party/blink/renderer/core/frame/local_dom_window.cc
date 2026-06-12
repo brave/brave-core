@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 // Include mouse_event.h, pointer_event.h here to avoid re-defining
 // tokens named screenX, screenY:
@@ -44,6 +45,21 @@ using brave::BlockScreenFingerprinting;
 using brave::FarbleInteger;
 using brave::FarbleKey;
 
+namespace {
+
+// A helper method to return the execution context of the |opener| if |opener|
+// is not null. Otherwise, returns the |current_context|.
+// Sharing the same execution context as the opener helps to ensure the
+// underlying brave session cache is the same, which helps to keep the same
+// farbling seed for both the opener and the openee ensuring they see the same
+// farbled values.
+ExecutionContext* GetContextFromOpenerIfPossible(
+    const DOMWindow* opener,
+    ExecutionContext* current_context) {
+  return opener ? opener->GetExecutionContext() : current_context;
+}
+
+}  // namespace
 const SecurityOrigin* GetEphemeralStorageOrigin(LocalDOMWindow* window) {
   auto* frame = window->GetFrame();
   if (!frame) {
@@ -98,7 +114,8 @@ int LocalDOMWindow::screenY() const {
 void LocalDOMWindow::resizeTo(int width,
                               int height,
                               ExceptionState& exception_state) const {
-  ExecutionContext* context = GetExecutionContext();
+  ExecutionContext* context =
+      GetContextFromOpenerIfPossible(opener(), GetExecutionContext());
   if (BlockScreenFingerprinting(context)) {
     resizeTo_ChromiumImpl(width + outerWidth_ChromiumImpl() - outerWidth(),
                           height + outerHeight_ChromiumImpl() - outerHeight(),
@@ -109,7 +126,8 @@ void LocalDOMWindow::resizeTo(int width,
 }
 
 void LocalDOMWindow::moveTo(int x, int y) const {
-  ExecutionContext* context = GetExecutionContext();
+  ExecutionContext* context =
+      GetContextFromOpenerIfPossible(opener(), GetExecutionContext());
   if (BlockScreenFingerprinting(context)) {
     moveTo_ChromiumImpl(x + screenX_ChromiumImpl() - screenX(),
                         y + screenY_ChromiumImpl() - screenY());

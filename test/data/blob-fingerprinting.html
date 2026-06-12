@@ -46,9 +46,11 @@
       return Object.keys(left).every((key) => left[key] === right[key]);
     }
 
-    // Opens a pop-up window with a blob:// url which writes to the local storage
-    // the various screen attributes it sees.
+    // Opens a pop-up window with a blob:// url which writes to the local
+    // storage the various screen attributes it sees. The popup sets its own
+    // title to "pass" or "fail".
     window.startBlobScreenFingerprintingTest = function() {
+      document.title = 'Blob fingerprinting test';
       writeScreenValues('parent');
       const html =
 `<!DOCTYPE html>
@@ -72,6 +74,54 @@
       window.open(
           URL.createObjectURL(blob), '_blank',
           `left=${screenX},top=${screenY},width=${outerWidth},height=${outerHeight}`);
+    };
+
+    // Loads a blob:// url in an iframe which writes to the local storage the
+    // various screen attributes it sees. The main frame polls localStorage for
+    // completion and sets its own title to "pass", "fail", or "timeout".
+    window.startBlobScreenFingerprintingIframeTest = function() {
+      document.title = 'Blob fingerprinting test';
+      localStorage.removeItem('blob_done');
+      writeScreenValues('parent');
+      const html =
+`<!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"></head>
+    <body>
+    <script>
+        const readScreenValues = ${readScreenValues.toString()};
+        const writeScreenValues = ${writeScreenValues.toString()};
+        writeScreenValues('blob');
+        localStorage.setItem('blob_done', 'true');
+    <\/script>
+    </body>
+</html>`;
+
+      const blob = new Blob([html], {type: 'text/html'});
+      const blobUrl = URL.createObjectURL(blob);
+
+      const iframe = document.createElement('iframe');
+      iframe.src = blobUrl;
+      document.body.appendChild(iframe);
+
+      let attempts = 0;
+      const poller = setInterval(() => {
+        attempts++;
+        if (attempts > 200) {
+          clearInterval(poller);
+          URL.revokeObjectURL(blobUrl);
+          document.title = 'timeout';
+          return;
+        }
+
+        if (localStorage.getItem('blob_done') !== 'true') return;
+
+        clearInterval(poller);
+        URL.revokeObjectURL(blobUrl);
+        document.title = storedScreenValuesMatch('parent', 'blob')
+            ? 'pass'
+            : 'fail';
+      }, 50);
     };
   </script>
 </body>
