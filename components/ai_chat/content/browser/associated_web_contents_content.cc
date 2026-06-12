@@ -73,6 +73,14 @@ void ExtractTextFromAIPageContentNode(
   }
 }
 
+void MaybeBindRemote(mojo::Remote<blink::mojom::AIPageContentAgent>& agent,
+                     content::RenderFrameHost* rfh) {
+  if (agent.is_bound()) {
+    return;
+  }
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
+}
+
 }  // namespace
 
 AssociatedWebContentsContent::AssociatedWebContentsContent(
@@ -250,6 +258,8 @@ void AssociatedWebContentsContent::OnNewPage(int64_t navigation_id) {
   // Note: A new page needs a new UUID.
   set_uuid(base::Uuid::GenerateRandomV4().AsLowercaseString());
 
+  ai_page_content_agent_.reset();
+
   // Notify observers now that url, title, and uuid are all set for the new
   // page. This fires after OnRequestArchive has completed for all observers.
   NotifyNewPage();
@@ -290,9 +300,7 @@ void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
     return;
   }
 
-  ai_page_content_agent_.reset();
-  rfh->GetRemoteInterfaces()->GetInterface(
-      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+  MaybeBindRemote(ai_page_content_agent_, rfh);
 
   auto options = blink::mojom::AIPageContentOptions::New();
   options->mode = blink::mojom::AIPageContentMode::kDefault;
@@ -309,8 +317,6 @@ void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
 void AssociatedWebContentsContent::OnAIPageContentResult(
     FetchPageContentCallback callback,
     blink::mojom::AIPageContentPtr result) {
-  ai_page_content_agent_.reset();
-
   std::string content;
   if (result) {
     ExtractTextFromAIPageContentNode(*result->root_node, content);
@@ -345,31 +351,24 @@ void AssociatedWebContentsContent::GetContentTools(
     std::move(callback).Run({});
     return;
   }
-  // Use a local Remote rather than the `ai_page_content_agent_` member: the
-  // member is also used by FetchPageContentFromAIPageContentAgent (the
-  // GetContent fallback path). If GetContent's fallback was in flight when
-  // GetContentTools is called, the shared remote gets reset and the in-flight
-  // response is dropped — and vice versa. Owning the remote in the bound
-  // callback keeps each call independent.
-  mojo::Remote<blink::mojom::AIPageContentAgent> agent;
-  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
-  auto* agent_ptr = agent.get();
+
+  MaybeBindRemote(ai_page_content_agent_, rfh);
+
   auto options = blink::mojom::AIPageContentOptions::New();
   options->mode = blink::mojom::AIPageContentMode::kDefault;
   options->on_critical_path = true;
-  agent_ptr->GetAIPageContent(
+  ai_page_content_agent_->GetAIPageContent(
       std::move(options),
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
           base::BindOnce(&AssociatedWebContentsContent::OnContentToolsFetched,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                         rfh->GetWeakDocumentPtr(), std::move(agent)),
+                         rfh->GetWeakDocumentPtr()),
           nullptr));
 }
 
 void AssociatedWebContentsContent::OnContentToolsFetched(
     GetContentToolsCallback callback,
     content::WeakDocumentPtr rfh,
-    mojo::Remote<blink::mojom::AIPageContentAgent> agent,
     blink::mojom::AIPageContentPtr result) {
   std::vector<std::unique_ptr<Tool>> tools;
   if (result && result->frame_data) {
