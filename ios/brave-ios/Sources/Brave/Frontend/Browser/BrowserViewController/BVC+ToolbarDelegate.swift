@@ -955,14 +955,32 @@ extension BrowserViewController: TopToolbarDelegate {
     var activities: [UIActivity] = []
     if let url = selectedTabURL, let tab = tabManager.selectedTab {
       activities = makeShareActivities(
-        for: url,
+        url: url,
         tab: tab,
-        sourceView: view,
-        sourceRect: self.view.convert(
-          self.topToolbar.menuButton.frame,
-          from: self.topToolbar.menuButton.superview
+        syncAPI: profileController.syncAPI,
+        sendTabAPI: profileController.sendTabAPI,
+        feedDataSource: feedDataSource,
+        isBraveNewsAvailable: profileController.profile.prefs.isBraveNewsAvailable,
+        source: .init(
+          view: view,
+          rect: view.convert(
+            topToolbar.menuButton.frame,
+            from: topToolbar.menuButton.superview
+          ),
+          arrowDirection: .up
         ),
-        arrowDirection: .up
+        callbacks: .init(
+          onToggleReaderMode: { tab.readerMode?.toggleReaderMode() },
+          onDisplayPageZoom: { [weak self] in self?.displayPageZoomDialog() },
+          onAddSearchEngine: { [weak self] in
+            guard let self else { return }
+            self.evaluateWebsiteSupportOpenSearchEngine(in: tab)
+            self.addCustomSearchEngineForFocusedElement()
+          },
+          onDisplayCertificate: { [weak self] in self?.displayPageCertificateInfo() },
+          onShowSubmitReport: { [weak self] url in self?.showSubmitReportView(for: url) },
+          onCleanUp: { [weak self] in self?.showQueuedAlertIfAvailable() }
+        )
       )
     }
 
