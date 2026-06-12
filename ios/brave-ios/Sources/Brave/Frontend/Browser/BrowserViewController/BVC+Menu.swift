@@ -391,7 +391,7 @@ extension BrowserViewController {
           installVPNProfile: { [weak self] in
             guard let self else { return }
             self.popToBVC()
-            self.openInsideSettingsNavigation(with: BraveVPNInstallViewController())
+            self.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
           }
         )
 
