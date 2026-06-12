@@ -1,14 +1,12 @@
 diff --git a/extensions/browser/manifest_v2_experiment_manager.cc b/extensions/browser/manifest_v2_experiment_manager.cc
-index 13ed81f555b1811d45b688167d45ed9973d9b8fb..43f86d474b74ca5d42b4bab90d92d0a98014c07a 100644
+index 13ed81f555b1811d45b688167d45ed9973d9b8fb..c8c303728699d33d6299038cf7b14341b2b29a8c 100644
 --- a/extensions/browser/manifest_v2_experiment_manager.cc
 +++ b/extensions/browser/manifest_v2_experiment_manager.cc
-@@ -124,6 +124,9 @@ bool ManifestV2ExperimentManagerFactory::ServiceIsCreatedWithBrowserContext()
+@@ -124,6 +124,7 @@ bool ManifestV2ExperimentManagerFactory::ServiceIsCreatedWithBrowserContext()
  // Returns true if legacy extensions should be disabled, looking at both
  // experiment stage and global state.
  bool ShouldDisableLegacyExtensions() {
-+  if ((true)) {
-+      return false;
-+  }
++  BRAVE_SHOULD_DISABLE_LEGACY_EXTENSIONS
    if (g_allow_mv2_for_testing) {
      // We allow legacy MV2 extensions for testing purposes.
      return false;
