@@ -1,0 +1,13 @@
+diff --git a/components/history/core/browser/history_backend.h b/components/history/core/browser/history_backend.h
+index 38f7fb922dd5e4858daaacbebd84c027c15d63c9..400b1ee13c10981099496c227e8a36e164fdec80 100644
+--- a/components/history/core/browser/history_backend.h
++++ b/components/history/core/browser/history_backend.h
+@@ -300,6 +300,8 @@ class HistoryBackend : public base::RefCountedThreadSafe<HistoryBackend>,
+   // Querying ------------------------------------------------------------------
+ 
+   QueryURLResult QueryURL(const GURL& url);
++  // Returns a vector parallel to `urls`; unknown URLs map to 0.
++  std::vector<URLID> QueryURLIDs(const std::vector<GURL>& urls);
+   QueryURLAndVisitsResult QueryURLAndVisits(
+       const GURL& url,
+       VisitQuery404sPolicy policy_for_404s);

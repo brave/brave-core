@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -71,6 +72,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 
   void SetTabFocusEnabled() override;
   void GetTabFocusShowFRE(GetTabFocusShowFRECallback callback) override;
+  void SearchTabsByContent(const std::string& query,
+                           SearchTabsByContentCallback callback) override;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void SetOriginalTabsInfoByWindowForTesting(
@@ -103,6 +106,11 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   // undo last focus tabs action. This is used to move the focus tabs back to
   // their original positions.
   base::flat_map<SessionID, std::vector<TabInfo>> original_tabs_info_by_window_;
+
+  // Tracks per-tab HistoryService::QueryURL calls issued by
+  // SearchTabsByContent. Destruction cancels any in-flight resolution so a
+  // stale search can't fire its embeddings query after the handler is gone.
+  base::CancelableTaskTracker query_url_task_tracker_;
 
   base::WeakPtrFactory<TabSearchPageHandler> weak_ptr_factory_{this};
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
