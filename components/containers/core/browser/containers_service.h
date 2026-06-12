@@ -102,6 +102,12 @@ class ContainersService : public KeyedService {
   // containers that are not referenced by any tab restore or session service.
   void ScheduleOrphanedContainersCleanup();
 
+  // Returns true if the cleanup of orphaned containers should be scheduled.
+  bool ShouldScheduleOrphanedContainersCleanup() const;
+
+  // Processes container ids whose storage deletion was already requested.
+  void ProcessContainersPendingDeletion();
+
   // Called when the container ids referenced by the current profile are ready.
   void OnReferencedContainerIdsReady(const base::flat_set<std::string>& ids);
 
@@ -112,6 +118,7 @@ class ContainersService : public KeyedService {
   std::unique_ptr<Delegate> delegate_;
   PrefChangeRegistrar pref_change_registrar_;
   base::ObserverList<ContainersServiceObserver> observers_;
+  base::flat_set<std::string> delete_requests_in_flight_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
 

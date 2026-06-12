@@ -19,6 +19,10 @@ inline constexpr char kContainersList[] = "brave.containers.list";
 // this profile even if they disappear from the synced containers list.
 inline constexpr char kLocallyUsedContainers[] = "brave.containers.used";
 
+// Local-only list of container ids whose storage deletion has been requested.
+inline constexpr char kContainersPendingDeletion[] =
+    "brave.containers.pending_deletion";
+
 }  // namespace containers::prefs
 
 #endif  // BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREF_NAMES_H_

@@ -50,6 +50,25 @@ bool HasLocallyUsedContainerInPrefs(const PrefService& prefs,
 void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
                                          PrefService& prefs);
 
+// Returns true if a container storage deletion has been requested.
+bool IsContainerPendingDeletionInPrefs(const PrefService& prefs,
+                                       std::string_view id);
+
+// Returns true if any container storage deletion has been requested.
+bool HasContainersPendingDeletionInPrefs(const PrefService& prefs);
+
+// Returns container ids whose storage deletion has been requested.
+std::vector<std::string> GetContainersPendingDeletionFromPrefs(
+    const PrefService& prefs);
+
+// Adds a container id to the pending-deletion list.
+void AddContainerPendingDeletionToPrefs(std::string_view id,
+                                        PrefService& prefs);
+
+// Removes a container id from the pending-deletion list.
+void RemoveContainerPendingDeletionFromPrefs(std::string_view id,
+                                             PrefService& prefs);
+
 // Converts a list of containers to a base::ListValue.
 base::ListValue ConvertContainersToListValue(
     const std::vector<mojom::ContainerPtr>& containers);
