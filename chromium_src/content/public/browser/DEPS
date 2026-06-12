@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_shields/core/common",
+  "+brave/components/local_ai/core",
   "+components/services/storage/public/mojom/blob_storage_context.mojom.h",
   "+content/browser",
   "+content/common",
