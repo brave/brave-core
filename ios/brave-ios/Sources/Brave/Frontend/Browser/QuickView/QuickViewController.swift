@@ -64,8 +64,8 @@ class QuickViewController: UIViewController {
     tab.addObserver(self)
     tab.browserData = TabBrowserData(tab: tab)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
-    tab.readerMode?.onStateChanged = { [weak self] in
-      self?.toolbarViewModel.readerModeState = tab.readerMode?.state ?? .unavailable
+    tab.readerMode?.onStateChanged = { [weak self, weak tab] in
+      self?.toolbarViewModel.readerModeState = tab?.readerMode?.state ?? .unavailable
     }
     tab.readerMode?.onReaderModeDisplayed = { [weak self] in
       self?.showReaderModeBar()
