@@ -23,7 +23,6 @@
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace {
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
@@ -46,27 +45,20 @@ std::string ReadQueryFilterFile(const base::FilePath& path) {
   return contents;
 }
 
-void OnQueryFilterFileRead(const base::Version& version,
-                           const std::string& json_data) {
-  absl::Cleanup cleanup_for_test_only = []() {
-    if (g_on_file_loaded_callback_for_testing_) {
-      CHECK_IS_TEST();
-      CHECK(!g_on_file_loaded_callback_for_testing_->is_null());
-      std::move(*g_on_file_loaded_callback_for_testing_).Run();
-    }
-  };
-
+// Returns true iff the current set of rules were updated.
+bool OnQueryFilterFileRead(const std::string& json_data) {
   if (json_data.empty()) {
-    return;
+    return false;
   }
   auto* data = query_filter::QueryFilterData::GetInstance();
   CHECK(data);
 
   if (!data->PopulateDataFromComponent(json_data)) {
     LOG(WARNING) << "Failed to populate data from component";
-    return;
+    return false;
   }
-  data->UpdateVersion(version);
+
+  return true;
 }
 
 }  // namespace
@@ -118,7 +110,21 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
       base::BindOnce(
           &ReadQueryFilterFile,
           install_dir.AppendASCII(query_filter::kQueryFilterJsonFile)),
-      base::BindOnce(&OnQueryFilterFileRead, version));
+      base::BindOnce(
+          [](base::Version version, const std::string& json_data) {
+            if (OnQueryFilterFileRead(json_data)) {
+              query_filter::QueryFilterData::GetInstance()->UpdateVersion(
+                  version);
+            }
+
+            if (g_on_file_loaded_callback_for_testing_) {
+              CHECK_IS_TEST();
+              CHECK(!g_on_file_loaded_callback_for_testing_->is_null());
+              std::move(*g_on_file_loaded_callback_for_testing_).Run();
+              g_on_file_loaded_callback_for_testing_ = nullptr;
+            }
+          },
+          version));
 }
 
 base::FilePath QueryFilterComponentInstallerPolicy::GetRelativeInstallDir()
