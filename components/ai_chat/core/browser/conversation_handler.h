@@ -219,6 +219,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;
   void RetryAPIRequest() override;
+  void SwitchToTab(int32_t tab_id) override;
   void ClearErrorAndGetFailedMessage(
       ClearErrorAndGetFailedMessageCallback callback) override;
   void StopGenerationAndMaybeGetHumanEntry(

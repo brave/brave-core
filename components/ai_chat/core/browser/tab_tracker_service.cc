@@ -47,6 +47,17 @@ void TabTrackerService::UpdateTab(int32_t tab_id, mojom::TabDataPtr tab) {
   NotifyObservers();
 }
 
+void TabTrackerService::SetActivator(ActivateTabCallback activator) {
+  activator_ = std::move(activator);
+}
+
+bool TabTrackerService::ActivateTab(int32_t tab_id) {
+  if (!activator_) {
+    return false;
+  }
+  return activator_.Run(tab_id);
+}
+
 void TabTrackerService::AddObserver(
     mojo::PendingRemote<mojom::TabDataObserver> observer) {
   auto id = observers_.Add(std::move(observer));

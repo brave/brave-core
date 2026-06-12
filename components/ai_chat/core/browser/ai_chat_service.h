@@ -252,6 +252,8 @@ class AIChatService : public KeyedService,
     tab_tracker_service_ = tab_tracker_service;
   }
 
+  TabTrackerService* tab_tracker_service() { return tab_tracker_service_; }
+
   void SetDatabaseForTesting(
       base::SequenceBound<std::unique_ptr<AIChatDatabase>> db) {
     ai_chat_db_ = std::move(db);

@@ -91,6 +91,10 @@ interface UntrustedConversationHandler {
 
   // Retry the last failed API request.
   RetryAPIRequest();
+
+  // Activate the open tab with the given handle. Used by `TabSourcesEvent`
+  // cards rendered from `TabSourcesContentBlock` tool outputs.
+  SwitchToTab(int32 tab_id);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
