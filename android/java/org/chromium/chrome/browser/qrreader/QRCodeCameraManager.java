@@ -61,6 +61,7 @@ public class QRCodeCameraManager
     private @Nullable CameraSourcePreview mCameraSourcePreview;
     private @Nullable DisplayManager mDisplayManager;
     private int mLastRotation = INITIAL_ROTATION;
+    private boolean mErrorShown;
     private final Callback mCallback;
     private final HostProvider mHostProvider;
 
@@ -212,7 +213,11 @@ public class QRCodeCameraManager
                 if (mCallback.onPlayServicesUnavailable(dlg)) {
                     return false;
                 }
+                if (mErrorShown) {
+                    return false;
+                }
                 if (dlg != null) {
+                    mErrorShown = true;
                     dlg.show();
                 }
             }
