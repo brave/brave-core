@@ -171,6 +171,13 @@ class ViewCounterService : public KeyedService,
   void OnGetCurrentBrandedWallpaper(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
       std::optional<base::DictValue> branded_wallpaper);
+  void CheckBrandedWallpaperCreativeFileExists(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+      base::DictValue branded_wallpaper);
+  void OnCheckBrandedWallpaperCreativeFileExists(
+      base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+      base::DictValue branded_wallpaper,
+      bool file_exists);
   void GetCurrentBrandedWallpaperFromAdsServiceCallback(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
       brave_ads::mojom::NewTabPageAdInfoPtr ad);

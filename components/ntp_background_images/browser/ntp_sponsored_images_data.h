@@ -124,6 +124,11 @@ struct NTPSponsoredImagesData {
   std::vector<Campaign> campaigns;
 };
 
+// Removes invalid creatives from `dict`, pruning empty creative sets and
+// campaigns. Must be called on a sequence that allows blocking I/O.
+void FilterCampaigns(base::DictValue& dict,
+                     const base::FilePath& installed_dir);
+
 }  // namespace ntp_background_images
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
