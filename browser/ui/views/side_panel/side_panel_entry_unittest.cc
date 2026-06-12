@@ -10,7 +10,7 @@
 namespace brave {
 
 TEST(SidePanelEntryTest, DefaultContentWidthIs400) {
-  EXPECT_EQ(SidePanelEntry::kSidePanelDefaultContentWidth, 400);
+  EXPECT_EQ(400, SidePanelEntry::kSidePanelDefaultContentWidth);
 }
 
 }  // namespace brave
