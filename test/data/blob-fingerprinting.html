@@ -78,10 +78,10 @@
     };
 
     // Loads a blob:// url in an iframe which writes to the local storage the
-    // various screen attributes it sees. The main frame polls localStorage for
-    // completion and sets its own title to "pass", "fail", or "timeout".
+    // various screen attributes it sees. The C++ test polls localStorage for
+    // completion via EvalJs / base::test::RunUntil(), so no JS-side poller is
+    // needed here.
     window.startBlobScreenFingerprintingIframeTest = function() {
-      document.title = 'Blob fingerprinting test';
       localStorage.clear();
       writeScreenValues('parent');
       const html =
@@ -104,25 +104,8 @@
       const iframe = document.createElement('iframe');
       iframe.src = blobUrl;
       document.body.appendChild(iframe);
-
-      let attempts = 0;
-      const poller = setInterval(() => {
-        attempts++;
-        if (attempts > 200) {
-          clearInterval(poller);
-          URL.revokeObjectURL(blobUrl);
-          document.title = 'timeout';
-          return;
-        }
-
-        if (localStorage.getItem('blob_done') !== 'true') return;
-
-        clearInterval(poller);
-        URL.revokeObjectURL(blobUrl);
-        document.title = storedScreenValuesMatch('parent', 'blob')
-            ? 'pass'
-            : 'fail';
-      }, 50);
+      // Revoking after appendChild is safe: the navigation has already started.
+      URL.revokeObjectURL(blobUrl);
     };
   </script>
 </body>

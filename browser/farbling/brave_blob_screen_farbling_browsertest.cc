@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -128,8 +129,17 @@ class BraveBlobScreenFarblingBrowserTest
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
     content::ExecuteScriptAsync(Parent(),
                                 "startBlobScreenFingerprintingIframeTest()");
-    TitleWatcher watcher(Contents(), u"pass");
-    EXPECT_EQ(u"pass", watcher.WaitAndGetTitle());
+
+    // Wait for the blob iframe to finish writing to localStorage.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return content::EvalJs(Parent(),
+                             "localStorage.getItem('blob_done') === 'true'")
+          .ExtractBool();
+    }));
+
+    EXPECT_EQ(true, content::EvalJs(Parent(),
+                                    "storedScreenValuesMatch('parent', 'blob')")
+                        .ExtractBool());
   }
 
  private:
