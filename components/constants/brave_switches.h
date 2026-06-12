@@ -39,6 +39,17 @@ inline constexpr char kDisableEncryptionWin[] = "disable-encryption-win";
 // Allows disabling the machine ID generation on Windows.
 inline constexpr char kDisableMachineId[] = "disable-machine-id";
 
+// Developer override: load the on-device speech-recognition model files
+// from the given local directory instead of the component-updater install
+// path. The value is the model directory itself; for the ORT-Web Nemotron
+// backend it must contain the ONNX model set in an `int8-static/` subfolder
+// (encoder_model.onnx{,.data}, decoder_model.onnx{,.data}) and a `shared/`
+// subfolder (filterbank.bin, tokens.txt). No per-model subfolder is
+// appended; point it directly at e.g.
+// `~/brave/local-ai-models/nemotron-0.6b`.
+inline constexpr char kOnDeviceSpeechRecognitionModelDir[] =
+    "on-device-speech-recognition-model-dir";
+
 // Starts Brave in Tor mode.
 inline constexpr char kTor[] = "tor";
 
