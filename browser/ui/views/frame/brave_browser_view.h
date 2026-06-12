@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -71,6 +72,8 @@ class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class ContentsLayoutManager;
+class FocusModeTitleBarView;
+class FocusModeTopOverlay;
 class SidebarContainerView;
 class SidePanelEntry;
 class TabStripPlacementCoordinator;
@@ -82,7 +85,8 @@ class WalletButton;
 #endif
 
 class BraveBrowserView : public BrowserView,
-                         public commands::AcceleratorService::Observer {
+                         public commands::AcceleratorService::Observer,
+                         public FocusModeController::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
   explicit BraveBrowserView(Browser* browser);
@@ -91,6 +95,7 @@ class BraveBrowserView : public BrowserView,
   ~BraveBrowserView() override;
 
   static BraveBrowserView* From(BrowserView* view);
+  static const BraveBrowserView* From(const BrowserView* view);
 
   // We use rounded corners even rounded corners setting is disabled.
   // Call this when we want to know
@@ -134,11 +139,15 @@ class BraveBrowserView : public BrowserView,
                           content::WebContents* new_contents,
                           int index,
                           int reason) override;
+  bool UpdateToolbarSecurityState() override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
   bool IsWebPanelContents(content::WebContents* contents) override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
+
+  void OnImmersiveFullscreenExited() override;
+  void OnImmersiveModeControllerDestroyed() override;
 
 #if BUILDFLAG(IS_MAC)
   bool UsesImmersiveFullscreenMode() const override;
@@ -163,6 +172,9 @@ class BraveBrowserView : public BrowserView,
   void OnAcceleratorsChanged(
       const commands::AcceleratorPrefManager::Accelerators& changed) override;
 
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
+
   BraveMultiContentsView* GetBraveMultiContentsView() const;
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
@@ -181,6 +193,10 @@ class BraveBrowserView : public BrowserView,
 
   TabStripPlacementCoordinator* tab_strip_placement_coordinator() {
     return tab_strip_placement_.get();
+  }
+
+  FocusModeTopOverlay* focus_mode_top_overlay() {
+    return focus_mode_top_overlay_;
   }
 
   views::View* top_container_separator_for_testing() const {
@@ -238,6 +254,7 @@ class BraveBrowserView : public BrowserView,
 
   // BrowserView overrides:
   void AddedToWidget() override;
+  void RemovedFromWidget() override;
   void LoadAccelerators() override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
@@ -260,7 +277,6 @@ class BraveBrowserView : public BrowserView,
   bool ShouldDrawTabStrokes() const override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
-  bool IsBraveWebViewRoundedCornersEnabled();
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
@@ -269,6 +285,7 @@ class BraveBrowserView : public BrowserView,
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
+  void UpdateFocusModeState();
 
   // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
   // child of BrowserView for correct z-order. Call when a child is added after
@@ -300,6 +317,8 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
+  raw_ptr<FocusModeTitleBarView> focus_mode_title_bar_view_ = nullptr;
+  raw_ptr<FocusModeTopOverlay> focus_mode_top_overlay_ = nullptr;
   raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
 
@@ -331,6 +350,8 @@ class BraveBrowserView : public BrowserView,
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>
       accelerators_observation_{this};
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 
 #if BUILDFLAG(IS_MAC)
   // Cached at construction: true if vertical tabs were enabled at startup.

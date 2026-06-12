@@ -57,7 +57,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // BrowserViewTabbedLayoutImpl overrides:
   gfx::Size GetMinimumSize(const views::View* host) const override;
   ProposedLayout CalculateProposedLayout(
-      const BrowserLayoutParams& params) const override;
+      const BrowserLayoutParams& browser_params) const override;
   gfx::Rect CalculateTopContainerLayoutImpl(
       ProposedLayout& layout,
       BrowserLayoutParams params,
