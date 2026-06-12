@@ -36,8 +36,14 @@ public class BraveFullscreenVideoPictureInPictureController {
      * requested, asks the framework to enter PiP, and rolls that state back via {@link
      * #onYouTubePictureInPictureEnterFailed} when entry is refused or throws. {@code bounds} is
      * used only for the failure log.
+     *
+     * <p>Always returns {@code true}: Brave fully owns the entry attempt, including rolling back on
+     * refusal or throw. The boolean is the "handled" signal for the plaster-injected call site,
+     * which takes an early return on it and leaves upstream's own enterPictureInPictureMode
+     * try/catch in place but unreachable (a bare {@code return} before it would be an unreachable
+     * statement, which Java rejects at compile time).
      */
-    protected void braveAttemptPictureInPicture(
+    protected boolean braveAttemptPictureInPicture(
             final Activity activity,
             final WebContents webContents,
             final PictureInPictureParams.Builder builder,
@@ -51,6 +57,7 @@ public class BraveFullscreenVideoPictureInPictureController {
             Log.e(TAG, "Error entering PiP with bounds %s", bounds, e);
             onYouTubePictureInPictureEnterFailed();
         }
+        return true;
     }
 
     /**

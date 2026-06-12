@@ -1,23 +1,20 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-index aa4753242c00d57dc3702d3e8f65954e43aa9085..03d698a802c5e65a770fba287ad98a58592028fc 100644
+index aa4753242c00d57dc3702d3e8f65954e43aa9085..d4eb87dc2816f3984822f4db329b5d3cb5398772 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-@@ -280,12 +280,8 @@ public class FullscreenVideoPictureInPictureController {
+@@ -280,6 +280,11 @@ public class FullscreenVideoPictureInPictureController {
              }
          }
  
--        try {
--            if (!mActivity.enterPictureInPictureMode(builder.build())) return;
--        } catch (IllegalStateException | IllegalArgumentException e) {
--            Log.e(TAG, "Error entering PiP with bounds %s", bounds, e);
--            return;
--        }
-+        BraveFullscreenVideoPictureInPictureController.class.cast(this)
-+                .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds);
-     }
- 
-     /**
-@@ -606,6 +602,16 @@ public class FullscreenVideoPictureInPictureController {
++        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds)) {
++            return;
++        }
++
+         try {
+             if (!mActivity.enterPictureInPictureMode(builder.build())) return;
+         } catch (IllegalStateException | IllegalArgumentException e) {
+@@ -606,6 +611,16 @@ public class FullscreenVideoPictureInPictureController {
       * This will also update our auto-PiP preference with the framework, if it's changed.
       */
      private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {

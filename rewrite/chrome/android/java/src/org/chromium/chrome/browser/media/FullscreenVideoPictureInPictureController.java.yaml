@@ -7,22 +7,26 @@ substitutions:
   - description: |-
       Delegate YouTube PiP entry to Brave.
 
-      Replaces the inline enterPictureInPictureMode() try/catch with a single call
-      to BraveFullscreenVideoPictureInPictureController#braveAttemptPictureInPicture(),
+      Inserts a guarded early return just before the inline
+      enterPictureInPictureMode() try/catch, handing the entry off to
+      BraveFullscreenVideoPictureInPictureController#braveAttemptPictureInPicture(),
       which performs the entry, notifies Brave of the attempt, and rolls the
-      session state back if entry is refused or throws. Keeping all of that in the
-      Brave superclass means upstream just hands off the built params. The pattern
-      is anchored inside attemptPictureInPicture() and matches the try/catch by
-      balanced braces (tolerating up to two levels of nested {} in either body,
-      independent of line breaks or indentation), with a content-agnostic
-      catch(...), so it stays scoped to this method and does not depend on the
-      refusal check, the caught exception types, or the log statement inside.
-    re_pattern:
-      '(public void attemptPictureInPicture\(\)
-      \{[\s\S]*?)\btry\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}\s*catch\s*\([^)]*\)\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}'
+      session state back if entry is refused or throws. braveAttemptPictureInPicture
+      always returns true ("handled"), so the early return always fires and the
+      upstream try/catch below is left in the source but never executed. The pattern
+      only needs to locate attemptPictureInPicture() and the first try inside it, so
+      it does not depend on the refusal check, the caught exception types, or the log
+      statement. The return value (rather than a bare return) is required because a
+      bare return before the try would make it an unreachable statement, which Java
+      rejects at compile time.
+    re_pattern: '(public void attemptPictureInPicture\(\) \{[\s\S]*?)\btry\s*\{'
     replace: |-
-      \1BraveFullscreenVideoPictureInPictureController.class.cast(this)
-                      .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds);
+      \1if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                      .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds)) {
+                  return;
+              }
+
+              try {
 
   - description: |-
       Let Brave intercept YouTube PiP dismiss signals.
