@@ -7,6 +7,7 @@
 #include "build/buildflag.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "base/i18n/rtl.h"
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -98,12 +99,13 @@ void SidePanel::UpdateBorder() {
 
   // With rounded corners the content view owns its own margins, so only add an
   // outer-side gap for visual separation from the window chrome.
+  const bool is_sidebar_leading = (IsRightAligned() == base::i18n::IsRTL());
   if (rounded_border_enabled_) {
     insets.set_bottom(kRoundedCornersContentsViewMargin);
-    if (IsRightAligned()) {
-      insets.set_right(kRoundedCornersContentsViewMargin);
-    } else {
+    if (is_sidebar_leading) {
       insets.set_left(kRoundedCornersContentsViewMargin);
+    } else {
+      insets.set_right(kRoundedCornersContentsViewMargin);
     }
     SetBorder(views::CreateEmptyBorder(insets));
     return;
@@ -112,10 +114,10 @@ void SidePanel::UpdateBorder() {
   // Without rounded corners, draw a 1px vertical separator between content and
   // panel.
   constexpr int kBorderThickness = 1;
-  if (IsRightAligned()) {
-    insets.set_left(kBorderThickness);
-  } else {
+  if (is_sidebar_leading) {
     insets.set_right(kBorderThickness);
+  } else {
+    insets.set_left(kBorderThickness);
   }
   SetBorder(
       views::CreateSolidSidedBorder(insets, kColorToolbarContentAreaSeparator));
