@@ -457,6 +457,52 @@ public class BraveYouTubePictureInPictureControllerTest {
         assertFalse(controller.hasScreenStateReceiverForTesting());
     }
 
+    @Test
+    public void onDestroy_restoredSessionWithoutWebContents_doesNotWipeRegistry() {
+        // A restored session that never re-bound a WebContents must not clear the registry on
+        // destroy: the slot may belong to another window's live session started while ours was
+        // lock-interrupted.
+        WebContents otherWindowWebContents = mock(WebContents.class);
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(otherWindowWebContents);
+
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+        savedState.putBoolean(
+                BraveYouTubePictureInPictureController.KEY_INTERRUPTED_BY_SCREEN_LOCK, true);
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        controller.onDestroy();
+
+        assertSame(
+                otherWindowWebContents,
+                BraveMediaSessionHelper.getYouTubePictureInPictureWebContents());
+    }
+
+    @Test
+    public void clearSession_withoutWebContents_doesNotWipeRegistry() {
+        // Same guard on the clearSession path: ending a session that never bound a WebContents
+        // (here via a failed entry after restore) must leave a foreign registry entry alone.
+        WebContents otherWindowWebContents = mock(WebContents.class);
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(otherWindowWebContents);
+
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+        savedState.putBoolean(
+                BraveYouTubePictureInPictureController.KEY_INTERRUPTED_BY_SCREEN_LOCK, true);
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        controller.onSessionEnterFailed();
+
+        assertFalse(controller.isActive());
+        assertSame(
+                otherWindowWebContents,
+                BraveMediaSessionHelper.getYouTubePictureInPictureWebContents());
+    }
+
     private static void setKeyguardLocked() {
         ShadowKeyguardManager shadowKeyguardManager =
                 Shadows.shadowOf(

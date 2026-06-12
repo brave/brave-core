@@ -203,10 +203,12 @@ public class BraveYouTubePictureInPictureController {
         unregisterScreenStateReceiver();
         // On a configuration change the recreated activity restores the session from the
         // saved instance bundle, so leave the registry intact for it to pick up. Only clear
-        // when this controller actually owns a session: every BraveActivity lazily creates a
-        // controller on its destroy path, and clear(null) from a session-less window would wipe
-        // another window's live registry entry (the slot is process-global).
-        if (!mActivity.isChangingConfigurations() && (mActive || mWebContents != null)) {
+        // with a non-null WebContents to match against: clear(null) wipes the process-global
+        // slot unconditionally, and when this controller never (re)bound a WebContents the slot
+        // may belong to another window's live session (e.g. ours was lock-interrupted and a
+        // second window started its own PiP). clear(non-null) is self-guarded and it only
+        // clears a matching or dead entry.
+        if (!mActivity.isChangingConfigurations() && mWebContents != null) {
             BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(mWebContents);
         }
         // Reset session state so any delayed callbacks queued by handleSessionExited() return
@@ -846,7 +848,13 @@ public class BraveYouTubePictureInPictureController {
         }
 
         unregisterScreenStateReceiver();
-        BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(webContents);
+        // Only clear the process-global registry with a non-null WebContents to match against;
+        // clear(null) wipes the slot unconditionally, and a null here (the identity guard above
+        // makes it equal to mWebContents) means this session never bound one, so the slot may
+        // belong to another window's live session. See the matching guard in onDestroy().
+        if (webContents != null) {
+            BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(webContents);
+        }
         resetSessionState();
     }
 
