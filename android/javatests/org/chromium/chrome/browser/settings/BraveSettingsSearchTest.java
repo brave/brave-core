@@ -74,20 +74,122 @@ public class BraveSettingsSearchTest {
     @Test
     @SmallTest
     @Feature({"Preferences"})
-    public void testBraveSettingsAreSearchable() {
+    public void testBraveMainSettingsAreSearchable() {
         mSettingsActivityTestRule.startSettingsActivity();
 
-        // Search for "Shields" → expect Brave Shields & privacy
-        typeIntoSearch("Shields");
+        // Features section
+
+        typeIntoSearch("Brave Shields");
         assertSearchResult("Brave Shields & privacy");
 
-        // Search for "Firewall" → expect Brave Firewall + VPN
+        clearAndTypeIntoSearch("Brave News");
+        assertSearchResult("Brave News");
+
+        clearAndTypeIntoSearch("Brave Wallet");
+        assertSearchResult("Brave Wallet");
+
         clearAndTypeIntoSearch("Firewall");
         assertSearchResult("Brave Firewall + VPN");
 
-        // Search for "Brave Sync" → expect Sync entry
-        // clearAndTypeIntoSearch("Brave Sync");
+        clearAndTypeIntoSearch("Leo AI");
+        assertSearchResult("Leo AI");
+
+        // Needs adjustment/flag
+        // clearAndTypeIntoSearch("Brave Playlist");
+        // assertSearchResult("Brave Playlist");
+
+        // General section
+
+        // "Search engines" (plural) is Brave's; Chrome's is "Search engine" (singular).
+        clearAndTypeIntoSearch("Search engines");
+        assertSearchResult("Search engines");
+
+        clearAndTypeIntoSearch("Homepage");
+        assertSearchResult("Homepage");
+
+        clearAndTypeIntoSearch("Home screen widget");
+        assertSearchResult("Home screen widget");
+
+        // Needs adjustment
+        // clearAndTypeIntoSearch("Sync");
         // assertSearchResult("Sync");
+
+        clearAndTypeIntoSearch("Privacy Report");
+        assertSearchResult("Privacy Report");
+
+        // Disabled as it fails
+        // clearAndTypeIntoSearch("Notifications");
+        // assertSearchResult("Notifications");
+
+        clearAndTypeIntoSearch("Site settings");
+        assertSearchResult("Site settings");
+
+        clearAndTypeIntoSearch("Downloads");
+        assertSearchResult("Downloads");
+
+        // Disabled as it fails
+        // clearAndTypeIntoSearch("Closing all tabs closes Brave");
+        // assertSearchResult("Closing all tabs closes Brave");
+
+        // Disabled as it fails
+        // clearAndTypeIntoSearch("Open external links in Brave");
+        // assertSearchResult("Open external links in Brave");
+
+        clearAndTypeIntoSearch("Brave Origin");
+        assertSearchResult("Brave Origin");
+
+        // Display section
+
+        clearAndTypeIntoSearch("Tabs and tab groups");
+        assertSearchResult("Tabs and tab groups");
+
+        clearAndTypeIntoSearch("Media");
+        assertSearchResult("Media");
+
+        clearAndTypeIntoSearch("Appearance");
+        assertSearchResult("Appearance");
+
+        clearAndTypeIntoSearch("New Tab Page");
+        assertSearchResult("New Tab Page");
+
+        clearAndTypeIntoSearch("Accessibility");
+        assertSearchResult("Accessibility");
+
+        clearAndTypeIntoSearch("Languages");
+        assertSearchResult("Languages");
+
+        // Passwords and autofill section
+
+        clearAndTypeIntoSearch("Brave Password Manager");
+        assertSearchResult("Brave Password Manager");
+
+        // Disabled as it fails
+        // clearAndTypeIntoSearch("Autofill services");
+        // assertSearchResult("Autofill services");
+
+        clearAndTypeIntoSearch("Payment methods");
+        assertSearchResult("Payment methods");
+
+        clearAndTypeIntoSearch("Addresses and more");
+        assertSearchResult("Addresses and more");
+
+        // Disabled as it fails
+        // clearAndTypeIntoSearch("Autofill in private tabs");
+        // assertSearchResult("Autofill in private tabs");
+
+        // Support section
+
+        // Disabled as it fails
+        // clearAndTypeIntoSearch("Rate Brave");
+        // assertSearchResult("Rate Brave");
+
+        // About
+
+        clearAndTypeIntoSearch("Developer options");
+        assertSearchResult("Developer options");
+
+        clearAndTypeIntoSearch("About Brave");
+        assertSearchResult("About Brave");
     }
 
     // ---------------------------------------------------------------------------
