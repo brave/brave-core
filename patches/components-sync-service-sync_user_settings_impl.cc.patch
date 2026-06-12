@@ -1,5 +1,5 @@
 diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
-index 3a8a6817342dd503a687972e962187fa406ca812..02f38203ceb3d2cd0af755e38f8446dbb8451a2b 100644
+index 3a8a6817342dd503a687972e962187fa406ca812..2dafa65a85fc733eb658eca218540cc63c72d967 100644
 --- a/components/sync/service/sync_user_settings_impl.cc
 +++ b/components/sync/service/sync_user_settings_impl.cc
 @@ -360,7 +360,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
@@ -7,7 +7,7 @@ index 3a8a6817342dd503a687972e962187fa406ca812..02f38203ceb3d2cd0af755e38f8446db
    types.PutAll(ControlTypes());
  
 -  static_assert(64 == GetNumDataTypes(),
-+  static_assert(65 == GetNumDataTypes(),
++  static_assert(64 + 1 == GetNumDataTypes(),
                  "If adding a new sync data type, update the list below below if"
                  " you want to disable the new data type for local sync, aka"
                  " roaming profiles on Windows.");

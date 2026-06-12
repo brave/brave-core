@@ -4,10 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      "Bump the GetNumDataTypes static_assert for Brave's extra data types"
-    re_pattern: 'static_assert\(64\s*==\s*GetNumDataTypes\(\),'
-    replace: 'static_assert(65 == GetNumDataTypes(),'
+  - description: |-
+      Account for Brave's extra data type in the GetNumDataTypes static_assert.
+      Add one to the upstream count rather than matching its value, so the
+      assert is undisturbed when upstream adds or removes data types.
+    re_pattern: 'static_assert\((\d+) == GetNumDataTypes\(\),'
+    replace: 'static_assert(\1 + 1 == GetNumDataTypes(),'
 
   - description: |-
       Call BraveAdjustPreferredDataTypes for unconditional and

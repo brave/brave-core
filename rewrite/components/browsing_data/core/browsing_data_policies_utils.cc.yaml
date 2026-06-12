@@ -4,10 +4,13 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      "Bump the kLastType static_assert for Brave's extra UserSelectableType
-      items"
-    re_pattern: 'static_assert\(static_cast<int>\(syncer::UserSelectableType::kLastType\)\s*==\s*13,'
+  - description: |-
+      Account for Brave's extra UserSelectableType in the kLastType
+      static_assert. Add one to the upstream count rather than matching its
+      value, so the assert is undisturbed when upstream adds or removes types.
+    re_pattern:
+      'static_assert\(static_cast<int>\(syncer::UserSelectableType::kLastType\)
+      == (\d+),'
     replace:
       'static_assert(static_cast<int>(syncer::UserSelectableType::kLastType) ==
-      14,'
+      \1 + 1,'

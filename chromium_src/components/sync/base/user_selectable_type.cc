@@ -5,14 +5,4 @@
 
 constexpr char kAIChatTypeName[] = "aiChat";
 
-#define BRAVE_GET_USER_SELECTABLE_TYPE_INFO \
-  case UserSelectableType::kAIChat:         \
-    return {kAIChatTypeName, AI_CHAT_CONVERSATION, {AI_CHAT_CONVERSATION}};
-
-#define BRAVE_GET_USER_SELECTABLE_TYPE_FROM_STRING \
-  {kAIChatTypeName, UserSelectableType::kAIChat},
-
 #include <components/sync/base/user_selectable_type.cc>
-
-#undef BRAVE_GET_USER_SELECTABLE_TYPE_FROM_STRING
-#undef BRAVE_GET_USER_SELECTABLE_TYPE_INFO

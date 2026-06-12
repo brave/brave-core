@@ -12,10 +12,12 @@ substitutions:
       import "components/sync/protocol/accessibility_annotation_specifics.proto";
       import "brave/components/sync/protocol/ai_chat_specifics.proto";
 
-  - description: 'Add the AI Chat conversation field to EntitySpecifics.'
+  - description: |-
+      Add the AI Chat conversation field to EntitySpecifics, before the trailing
+      "keep this comment as the last entry" marker so it does not depend on any
+      sibling field.
     re_pattern:
-      '(\n[
-      \t]*)AccessibilityAnnotationSpecifics\s+accessibility_annotation\s*=\s*1588764;'
+      '(\n([ \t]*))(// When adding a new type, follow the docs below and keep
+      this comment)'
     replace:
-      '\1AccessibilityAnnotationSpecifics accessibility_annotation =
-      1588764;\1AIChatConversationSpecifics ai_chat_conversation = 10000001;'
+      '\1AIChatConversationSpecifics ai_chat_conversation = 10000001;\1\3'
