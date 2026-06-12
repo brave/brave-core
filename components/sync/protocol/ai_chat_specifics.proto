@@ -1,0 +1,228 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Sync protocol datatype extension for AI Chat conversations.
+//
+// To stay under the 400 KB-per-entity server limit, each conversation is
+// represented by one Conversation metadata record plus one Entry record per
+// conversation turn. The storage key encodes the record kind with a prefix
+// ("c:" for Conversation, "e:" for Entry).
+//
+// Large text fields are wrapped in AIChatCompressibleString so the sender
+// can optionally gzip them, and fields that cannot be inlined within the
+// per-record budget are dropped with a `was_truncated_for_sync` sentinel
+// so the receiver knows to preserve any existing local value instead of
+// overwriting it with an empty one.
+
+syntax = "proto2";
+
+option java_multiple_files = true;
+option java_package = "org.chromium.components.sync.protocol";
+
+option optimize_for = LITE_RUNTIME;
+
+package sync_pb;
+
+// A string-valued field that may be gzipped when long and may be omitted
+// when it would not fit in the per-record budget.
+//
+// On write the sender picks `raw` for short values, `gzipped` for long
+// ones, and sets `was_truncated_for_sync = true` (with no value bytes)
+// when the field had to be dropped to fit the record under the size cap.
+//
+// On read, the receiver MUST treat `was_truncated_for_sync = true` as
+// "preserve any existing local value for this field" rather than as an
+// empty string.
+message AIChatCompressibleString {
+  oneof value {
+    string raw = 1;
+    // RFC 1952 gzip of the UTF-8 string bytes.
+    bytes gzipped = 2;
+  }
+  optional bool was_truncated_for_sync = 3;
+}
+
+// One sync entity is either a Conversation metadata record or a single
+// conversation Entry record.
+//
+// This message is registered in EntitySpecifics (sync/protocol/
+// entity_specifics.proto) at field number 10000001. Brave reserves field
+// numbers in the 10000000+ range for its own sync types, far above the
+// numbers upstream Chromium currently assigns, so that future upstream
+// EntitySpecifics additions cannot collide with ours.
+message AIChatConversationSpecifics {
+  // Conversation-level metadata. There is one Conversation record per
+  // conversation. Entries are synced as separate Entry records linked via
+  // |conversation_uuid|.
+  message Conversation {
+    // Unique identifier for the conversation.
+    optional string uuid = 1;
+    optional string title = 2;
+    optional string model_key = 3;
+    optional uint64 total_tokens = 4;
+    optional uint64 trimmed_tokens = 5;
+    optional int64 created_time_unix_epoch_micros = 6;
+    optional int64 last_modified_time_unix_epoch_micros = 7;
+  }
+
+  // A single conversation turn (human or assistant message), with the
+  // events, associated content, and uploaded files that belong to it.
+  // Each turn is its own sync entity so that a long conversation can
+  // exceed the per-entity size limit.
+  message Entry {
+    // Unique identifier for the entry. Used as the storage key suffix.
+    optional string uuid = 1;
+    // UUID of the conversation this entry belongs to.
+    optional string conversation_uuid = 2;
+    optional int64 date_unix_epoch_micros = 3;
+    optional string entry_text = 4;
+    // Optional user-invisible override prompt sent to the AI engine.
+    optional string prompt = 5;
+    // mojom::CharacterType (0=HUMAN, 1=ASSISTANT)
+    optional int32 character_type = 6;
+    // UUID of the parent entry being edited (for edit history tracking).
+    optional string editing_entry_uuid = 7;
+    // mojom::ActionType enum.
+    optional int32 action_type = 8;
+    // Selected text from page context.
+    optional string selected_text = 9;
+    optional string model_key = 10;
+
+    repeated AIChatEntryEventProto events = 11;
+    repeated AIChatAssociatedContentProto associated_content = 12;
+    repeated AIChatUploadedFile uploaded_files = 13;
+  }
+
+  oneof kind {
+    Conversation conversation = 1;
+    Entry entry = 2;
+  }
+}
+
+// Content associated with a conversation entry (e.g. a web page). The
+// extracted text lives in `last_contents` and uses AIChatCompressibleString
+// so it can be gzipped or dropped to fit the per-record budget.
+message AIChatAssociatedContentProto {
+  optional string uuid = 1;
+  optional string title = 2;
+  optional string url = 3;
+  // mojom::ContentType (0=PageContent, 1=VideoTranscript)
+  optional int32 content_type = 4;
+  optional int32 content_used_percentage = 5;
+  // Extracted text content used by the model.
+  optional AIChatCompressibleString last_contents = 6;
+}
+
+// A file uploaded by the user to the conversation entry.
+//
+// File rows are matched between devices by ordinal position within the
+// entry (matching the local |file_order| primary key). Raw bytes go in
+// |data|; when the file is too large to fit within the per-record budget,
+// |data| is omitted and |data_truncated_for_sync| is set so the receiver
+// preserves any existing local bytes.
+message AIChatUploadedFile {
+  optional string filename = 1;
+  // Original file size in bytes (independent of whether |data| was synced).
+  optional uint32 filesize = 2;
+  // mojom::UploadedFileType
+  optional int32 type = 3;
+  // Raw file bytes. May be absent when the bytes would not fit in the
+  // per-record budget; in that case |data_truncated_for_sync| is true.
+  optional bytes data = 4;
+  optional bool data_truncated_for_sync = 5;
+  // Text extracted from the file (for PDFs/text files). May be gzipped or
+  // truncated; see AIChatCompressibleString semantics.
+  optional AIChatCompressibleString extracted_text = 6;
+}
+
+// Permission challenge attached to a tool use event. Set by the server
+// (alignment check) or by the client tool to block execution until the
+// user approves.
+message AIChatPermissionChallenge {
+  // Server alignment reasoning (when the server blocks the tool).
+  optional string assessment = 1;
+  // Tool's explanation for why it needs permission.
+  optional string plan = 2;
+}
+
+// An event within a conversation entry.
+message AIChatEntryEventProto {
+  optional int32 event_order = 1;
+  oneof event {
+    AIChatCompressibleString completion = 2;
+    AIChatSearchQueriesEvent search_queries = 3;
+    AIChatWebSourcesEvent web_sources = 4;
+    AIChatInlineSearchEvent inline_search = 5;
+    AIChatToolUseEvent tool_use = 6;
+  }
+}
+
+message AIChatSearchQueriesEvent {
+  repeated string queries = 1;
+}
+
+// Web search results shown to the user.
+message AIChatWebSourcesEvent {
+  repeated AIChatWebSource sources = 1;
+  // JSON-formatted rich search results passed through to the renderer.
+  repeated AIChatCompressibleString rich_results = 2;
+}
+
+message AIChatWebSource {
+  optional string title = 1;
+  optional string url = 2;
+  optional string favicon_url = 3;
+  optional AIChatCompressibleString page_content = 4;
+  repeated string extra_snippets = 5;
+}
+
+// An inline search performed during the conversation.
+message AIChatInlineSearchEvent {
+  optional string query = 1;
+  optional AIChatCompressibleString results_json = 2;
+}
+
+// A tool/function call made during the conversation. Only the subset of
+// ContentBlock variants that the local store persists is included here;
+// other variants are runtime-only and are not synced (see |output|).
+message AIChatToolUseEvent {
+  optional string tool_name = 1;
+  optional string id = 2;
+  optional AIChatCompressibleString arguments_json = 3;
+  repeated AIChatContentBlock output = 4;
+  optional bool is_server_result = 5;
+  repeated AIChatToolArtifact artifacts = 6;
+  optional AIChatPermissionChallenge permission_challenge = 7;
+}
+
+// A persisted tool output content block. Mirrors the subset of
+// mojom::ContentBlock variants that the local store persists; runtime-only
+// variants (page excerpts, focus topics, change-tone, etc.) are not synced.
+message AIChatContentBlock {
+  oneof content {
+    AIChatImageContentBlock image_content_block = 1;
+    AIChatTextContentBlock text_content_block = 2;
+    AIChatWebSourcesContentBlock web_sources_content_block = 3;
+  }
+}
+
+message AIChatImageContentBlock {
+  optional string image_url = 1;
+}
+
+message AIChatTextContentBlock {
+  optional AIChatCompressibleString text = 1;
+}
+
+message AIChatWebSourcesContentBlock {
+  repeated AIChatWebSource sources = 1;
+  repeated string queries = 2;
+  repeated AIChatCompressibleString rich_results = 3;
+}
+
+message AIChatToolArtifact {
+  optional string type = 1;
+  optional AIChatCompressibleString content_json = 2;
+}

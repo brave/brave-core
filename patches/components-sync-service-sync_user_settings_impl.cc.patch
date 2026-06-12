@@ -1,12 +1,21 @@
 diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
-index 3a8a6817342dd503a687972e962187fa406ca812..a554fb4a84f25958331ccc65d2fb4c7192a70bb1 100644
+index 3a8a6817342dd503a687972e962187fa406ca812..2dafa65a85fc733eb658eca218540cc63c72d967 100644
 --- a/components/sync/service/sync_user_settings_impl.cc
 +++ b/components/sync/service/sync_user_settings_impl.cc
+@@ -360,7 +360,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+   // though they're technically not registered.
+   types.PutAll(ControlTypes());
+ 
+-  static_assert(64 == GetNumDataTypes(),
++  static_assert(64 + 1 == GetNumDataTypes(),
+                 "If adding a new sync data type, update the list below below if"
+                 " you want to disable the new data type for local sync, aka"
+                 " roaming profiles on Windows.");
 @@ -401,6 +401,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
      types.Remove(ACCESSIBILITY_ANNOTATION);
      types.Remove(THEMES_ANDROID);
    }
-+  BraveAdjustPreferredDataTypes(&types);
++  BraveAdjustPreferredDataTypes(&types, prefs_->IsLocalSyncEnabled());
    return types;
  }
  

@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Return the kSyncAIChat pref for the kAIChat type, at the end of the switch
+      in GetPrefNameForType.
+    re_pattern:
+      '(SyncPrefs::GetPrefNameForType\(UserSelectableType type\) \{.*?switch
+      \(type\) \{.*?)(\n[ \t]*\}\n[ \t]*NOTREACHED\(\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case UserSelectableType::kAIChat:
+            return prefs::internal::kSyncAIChat;\2
+
+  - description: |-
+      Mark kAIChat as supported in transport mode, at the end of the switch in
+      IsTypeSupportedInTransportMode.
+    re_pattern:
+      '(SyncPrefs::IsTypeSupportedInTransportMode\(.*?switch \(type\) \{.*?)(\n[
+      \t]*\}\n[ \t]*NOTREACHED\(\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case UserSelectableType::kAIChat:
+            return true;\2
+
+  - description: |-
+      Mark kAIChat as selected by default in transport mode, at the end of the
+      switch in IsTypeSelectedByDefaultInTransportMode.
+    re_pattern:
+      '(SyncPrefs::IsTypeSelectedByDefaultInTransportMode\(.*?switch \(type\)
+      \{.*?)(\n[ \t]*\}\n[ \t]*NOTREACHED\(\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case UserSelectableType::kAIChat:
+            return true;\2
