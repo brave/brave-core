@@ -25,7 +25,6 @@ substitutions:
                       .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds)) {
                   return;
               }
-
               try {
 
   - description: |-
