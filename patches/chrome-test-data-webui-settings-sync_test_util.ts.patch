@@ -1,0 +1,14 @@
+diff --git a/chrome/test/data/webui/settings/sync_test_util.ts b/chrome/test/data/webui/settings/sync_test_util.ts
+index 1aafc4790f0bf0d1b54b93ce32f9b73cccc67bab..f88e1c175f72702d8d57e0d43482ff115cf4bb2c 100644
+--- a/chrome/test/data/webui/settings/sync_test_util.ts
++++ b/chrome/test/data/webui/settings/sync_test_util.ts
+@@ -64,6 +64,9 @@ export function getSyncAllPrefs(): SyncPrefs {
+     wifiConfigurationsManaged: false,
+     wifiConfigurationsRegistered: true,
+     wifiConfigurationsSynced: true,
++    aiChatManaged: false,
++    aiChatRegistered: true,
++    aiChatSynced: true,
+   };
+ }
+ 

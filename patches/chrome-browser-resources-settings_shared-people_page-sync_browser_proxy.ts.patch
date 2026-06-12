@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts b/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
+index 2ca225f2b4fca916c4ff51e5f9870124ff327437..1e034be4a54813535471e99be17d6d09443c91a7 100644
+--- a/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
++++ b/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
+@@ -151,6 +151,9 @@ export interface SyncPrefs {
+   wifiConfigurationsManaged: boolean;
+   wifiConfigurationsRegistered: boolean;
+   wifiConfigurationsSynced: boolean;
++  aiChatManaged: boolean;
++  aiChatRegistered: boolean;
++  aiChatSynced: boolean;
+   explicitPassphraseTime?: string;
+ }
+ 
+@@ -174,6 +177,7 @@ export const syncPrefsIndividualDataTypes: string[] = [
+   'themesSynced',
+   'typedUrlsSynced',
+   'wifiConfigurationsSynced',
++  'aiChatSynced',
+ ];
+ 
+ // Always keep in sync with `UserSelectableType` (C++).
+@@ -192,7 +196,8 @@ export enum UserSelectableType {
+   SAVED_TAB_GROUPS = 10,
+   PAYMENTS = 11,
+   PRODUCT_COMPARISON = 12,
+-  COOKIES = 13
++  COOKIES = 13,
++  AI_CHAT = 14
+ }
+ // LINT.ThenChange(/components/sync/base/user_selectable_type.h:UserSelectableType)
+ 
