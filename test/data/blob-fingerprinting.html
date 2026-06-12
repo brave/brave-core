@@ -51,6 +51,7 @@
     // title to "pass" or "fail".
     window.startBlobScreenFingerprintingTest = function() {
       document.title = 'Blob fingerprinting test';
+      localStorage.clear();
       writeScreenValues('parent');
       const html =
 `<!DOCTYPE html>
@@ -81,7 +82,7 @@
     // completion and sets its own title to "pass", "fail", or "timeout".
     window.startBlobScreenFingerprintingIframeTest = function() {
       document.title = 'Blob fingerprinting test';
-      localStorage.removeItem('blob_done');
+      localStorage.clear();
       writeScreenValues('parent');
       const html =
 `<!DOCTYPE html>
