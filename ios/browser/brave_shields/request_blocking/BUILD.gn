@@ -1,0 +1,56 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("request_blocking") {
+  sources = [
+    "request_blocking_javascript_feature.h",
+    "request_blocking_javascript_feature.mm",
+    "request_blocking_tab_helper.h",
+    "request_blocking_tab_helper.mm",
+    "request_blocking_tab_helper_bridge.h",
+  ]
+  deps = [
+    ":request_blocking_js",
+    "//base",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/js_messaging",
+    "//url",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("request_blocking_js") {
+  visibility = [ ":request_blocking" ]
+
+  sources = [ "resources/request_blocking.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "request_blocking_javascript_feature_unittest.mm" ]
+
+  deps = [
+    ":request_blocking",
+    "//base",
+    "//base/test:test_support",
+    "//ios/chrome/test:ios_chrome_test_with_web_state",
+    "//ios/web/public",
+    "//ios/web/public/test",
+    "//ios/web/public/test/fakes",
+    "//net",
+    "//testing/gtest",
+    "//url",
+  ]
+}
