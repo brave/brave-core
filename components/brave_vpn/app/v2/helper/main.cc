@@ -13,16 +13,12 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_WIN)
-int APIENTRY wWinMain(HINSTANCE, HINSTANCE, wchar_t*, int) {
-#else
+#include "base/win/process_startup_helper.h"
+#endif
+
 int main(int argc, char* argv[]) {
-#endif
   base::AtExitManager exit_manager;
-#if BUILDFLAG(IS_WIN)
-  base::CommandLine::Init(0, nullptr);
-#else
   base::CommandLine::Init(argc, argv);
-#endif
   const auto& command_line = *base::CommandLine::ForCurrentProcess();
 
   base::EnableTerminationOnHeapCorruption();

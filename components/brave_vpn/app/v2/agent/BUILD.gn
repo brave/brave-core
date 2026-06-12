@@ -34,6 +34,7 @@ if (is_win) {
 executable("agent") {
   output_name = "brave_vpn_agent_app"
 
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
   sources = [ "main.cc" ]
   deps = [
     ":core",
@@ -43,6 +44,7 @@ executable("agent") {
   ]
 
   if (is_mac) {
+    deps += [ "//base/allocator:early_zone_registration_apple" ]
     frameworks = [ "AppKit.framework" ]
   }
 
@@ -66,6 +68,7 @@ if (is_mac) {
     output_name = vpn_agent_product_full_name
     extra_substitutions = [ "MAC_BUNDLE_IDENTIFIER=$vpn_agent_bundle_id" ]
 
+    configs += [ "//build/config/compiler:wexit_time_destructors" ]
     sources = [ "main.cc" ]
     frameworks = [ "AppKit.framework" ]
 
@@ -75,6 +78,15 @@ if (is_mac) {
       "//base:base_static",
       "//brave/components/brave_vpn/app/v2/shared",
     ]
+
+    ldflags = []
+    if (is_component_build) {
+      # This is similar to what "chrome_helper_app" template does.
+      ldflags += [
+        "-Wl,-rpath,@executable_path/../../../../../../..",
+        "-Wl,-rpath,@loader_path/../../../../../../../../../..",
+      ]
+    }
   }
 
   # Drops the assembled app into the browser framework's Helpers directory.
