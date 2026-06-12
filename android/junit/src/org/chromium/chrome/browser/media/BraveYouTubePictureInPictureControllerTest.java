@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.media;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.withSettings;
 import android.app.KeyguardManager;
 import android.app.PictureInPictureParams;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import org.junit.After;
@@ -135,6 +137,9 @@ public class BraveYouTubePictureInPictureControllerTest {
         Bundle out = new Bundle();
         source.onSaveInstanceState(out);
 
+        // The restore validates against ground truth: model a recreation while the PiP window
+        // is up, the case where carrying the session over is correct.
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         BraveYouTubePictureInPictureController restored =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
         restored.onPostCreate(out);
@@ -146,7 +151,7 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    public void onPostCreate_withInterruptedActiveSession_registersScreenStateReceiver() {
+    public void onPostCreate_withInterruptedActiveSession_restoresAndArmsReceiverOnResume() {
         Bundle savedState = new Bundle();
         savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
         savedState.putBoolean(
@@ -156,9 +161,52 @@ public class BraveYouTubePictureInPictureControllerTest {
                 new BraveYouTubePictureInPictureController(mBraveActivity);
         controller.onPostCreate(savedState);
 
+        // The session is restored, but the receiver is deliberately NOT registered yet:
+        // onPostCreate runs pre-native, and a broadcast delivered in that window would reach
+        // code that needs the tab models.
         assertTrue(controller.isActive());
         assertTrue(controller.isInterruptedByScreenLockForTesting());
+        assertFalse(controller.hasScreenStateReceiverForTesting());
+
+        // onResume (native ready) arms the receiver; the device is still locked, so the
+        // session keeps waiting for the unlock broadcast.
+        setKeyguardLocked();
+        controller.onResume();
+
+        assertTrue(controller.isActive());
         assertTrue(controller.hasScreenStateReceiverForTesting());
+    }
+
+    @Test
+    public void onPostCreate_staleActiveSession_isDiscarded() {
+        // A bundle can claim an active session while no PiP window survived the recreation and
+        // no lock interruption justifies it (process death, PiP dismissed in the recreation
+        // gap). Restoring it would latch the session active for the activity lifetime, since
+        // no framework callback would ever end it.
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        assertFalse(controller.isActive());
+    }
+
+    @Test
+    public void onPostCreate_activeInPictureInPicture_isRestored() {
+        // Recreation while the PiP window is up (e.g. a configuration change): the window
+        // survives, so the session must be restored even without a lock interruption.
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        assertTrue(controller.isActive());
+        assertFalse(controller.isInterruptedByScreenLockForTesting());
     }
 
     @Test
@@ -343,6 +391,72 @@ public class BraveYouTubePictureInPictureControllerTest {
         return captor.getValue();
     }
 
+    @Test
+    public void onDestroy_withoutSession_doesNotWipeRegistry() {
+        // Every BraveActivity lazily creates a controller on its destroy path; a session-less
+        // window (multi-window) must not clear another window's live registry entry.
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onDestroy();
+
+        assertSame(mWebContents, BraveMediaSessionHelper.getYouTubePictureInPictureWebContents());
+    }
+
+    @Test
+    public void onEnterPictureInPictureMode_resumesSessionWebContents() {
+        // The entry resume must target the session's own WebContents: after a screen-lock
+        // re-entry the foreground tab can differ from the session tab, and resuming the
+        // foreground tab would start unrelated media while the PiP video stays paused.
+        BraveYouTubePictureInPictureController controller =
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(mMediaSession).when(controller).getMediaSession(any());
+        controller.onSessionRequested(mWebContents);
+
+        assertTrue(controller.onEnterPictureInPictureMode());
+
+        verify(mMediaSession).resume();
+        verify(mBraveActivity, never()).getCurrentWebContents();
+    }
+
+    @Test
+    public void screenOffBroadcast_pausesPlaybackDuringActiveSession() {
+        // SCREEN_OFF is the only reliable lock signal when the PiP window survives the lock:
+        // Android keeps the activity in PiP mode and the still-playing media produces no
+        // upstream fullscreen-left signal, so the receiver must drive the pause directly.
+        BraveYouTubePictureInPictureController controller =
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(null).when(controller).getMediaSession(any());
+        doReturn(false).when(controller).isBackgroundVideoPlaybackEnabled(any());
+        doNothing().when(controller).suspendMediaSession(any());
+
+        controller.onSessionRequested(mWebContents);
+        // The receiver is armed for the whole session, not only after an interruption.
+        assertTrue(controller.hasScreenStateReceiverForTesting());
+
+        controller
+                .getScreenStateReceiverForTesting()
+                .onReceive(
+                        ContextUtils.getApplicationContext(), new Intent(Intent.ACTION_SCREEN_OFF));
+
+        assertTrue(controller.isInterruptedByScreenLockForTesting());
+        verify(controller).suspendMediaSession(mWebContents);
+    }
+
+    @Test
+    public void screenOffBroadcast_inactiveSession_isNoop() {
+        BraveYouTubePictureInPictureController controller =
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(null).when(controller).getMediaSession(any());
+        doNothing().when(controller).suspendMediaSession(any());
+        controller.onSessionRequested(mWebContents);
+        controller.onSessionEnterFailed();
+
+        // clearSession tears the receiver down with the session.
+        assertFalse(controller.hasScreenStateReceiverForTesting());
+    }
+
     private static void setKeyguardLocked() {
         ShadowKeyguardManager shadowKeyguardManager =
                 Shadows.shadowOf(
@@ -359,15 +473,17 @@ public class BraveYouTubePictureInPictureControllerTest {
         // not fall back to the foreground tab which would silently retarget the session; the
         // operation simply no-ops on the renderer side.
         final int tabId = 42;
-        when(mBraveActivity.getTabModelSelector()).thenReturn(mTabModelSelector);
         when(mTabModelSelector.getTabById(tabId)).thenReturn(null);
 
         Bundle savedState = new Bundle();
         savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+        savedState.putBoolean(
+                BraveYouTubePictureInPictureController.KEY_INTERRUPTED_BY_SCREEN_LOCK, true);
         savedState.putInt(BraveYouTubePictureInPictureController.KEY_TAB_ID, tabId);
 
         BraveYouTubePictureInPictureController controller =
-                new BraveYouTubePictureInPictureController(mBraveActivity);
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(mTabModelSelector).when(controller).getTabModelSelectorIfReady();
         controller.onPostCreate(savedState);
 
         controller.onNewTabDuringPictureInPicture();

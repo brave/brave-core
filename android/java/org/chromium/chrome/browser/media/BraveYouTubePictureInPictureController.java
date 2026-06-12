@@ -153,17 +153,30 @@ public class BraveYouTubePictureInPictureController {
         if (savedInstanceState == null) {
             return;
         }
-        mActive = savedInstanceState.getBoolean(KEY_ACTIVE, false);
-        mInterruptedByScreenLock =
+        final boolean wasActive = savedInstanceState.getBoolean(KEY_ACTIVE, false);
+        final boolean wasInterrupted =
                 savedInstanceState.getBoolean(KEY_INTERRUPTED_BY_SCREEN_LOCK, false);
+        // Validate the persisted snapshot against ground truth before adopting it: a restored
+        // session is only real if the PiP window survived the recreation or the session is
+        // parked behind a screen-lock interruption. Anything else (saved-instance bundles also
+        // survive process death and PiP dismissals in the recreation gap) means no callback
+        // will ever end the session, and a stale mActive would keep
+        // isYouTubePictureInPictureActive() latched true for the whole activity lifetime,
+        // suppressing upstream's fullscreen teardown browser-wide.
+        if (!wasActive || (!wasInterrupted && !mActivity.isInPictureInPictureMode())) {
+            return;
+        }
+        mActive = true;
+        mInterruptedByScreenLock = wasInterrupted;
         mResumeMediaSessionOnPipEntry =
                 savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY, false);
         mWasPlayingBeforeScreenLock =
                 savedInstanceState.getBoolean(KEY_WAS_PLAYING_BEFORE_SCREEN_LOCK, false);
         mTabId = savedInstanceState.getInt(KEY_TAB_ID, Tab.INVALID_TAB_ID);
-        if (mActive && mInterruptedByScreenLock) {
-            registerScreenStateReceiver();
-        }
+        // The screen state receiver is deliberately NOT registered here: onPostCreate runs
+        // synchronously inside onCreate, before native and the tab models initialize, and a
+        // broadcast delivered in that window would reach getOrFindWebContents() pre-init.
+        // onResume() (called from onResumeWithNative) arms it.
     }
 
     /** Persist state ahead of activity recreation. */
@@ -175,8 +188,13 @@ public class BraveYouTubePictureInPictureController {
         outState.putInt(KEY_TAB_ID, mTabId);
     }
 
-    /** Hook from {@code Activity#onResume}. */
+    /** Hook from {@code Activity#onResumeWithNative}. */
     public void onResume() {
+        // Arm the receiver for a session restored by onPostCreate (which cannot register it
+        // pre-native). Harmless no-op when already registered.
+        if (mActive) {
+            registerScreenStateReceiver();
+        }
         maybeResumeAfterScreenLock();
     }
 
@@ -184,8 +202,11 @@ public class BraveYouTubePictureInPictureController {
     public void onDestroy() {
         unregisterScreenStateReceiver();
         // On a configuration change the recreated activity restores the session from the
-        // saved-instance bundle, so leave the registry intact for it to pick up.
-        if (!mActivity.isChangingConfigurations()) {
+        // saved instance bundle, so leave the registry intact for it to pick up. Only clear
+        // when this controller actually owns a session: every BraveActivity lazily creates a
+        // controller on its destroy path, and clear(null) from a session-less window would wipe
+        // another window's live registry entry (the slot is process-global).
+        if (!mActivity.isChangingConfigurations() && (mActive || mWebContents != null)) {
             BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(mWebContents);
         }
         // Reset session state so any delayed callbacks queued by handleSessionExited() return
@@ -213,15 +234,16 @@ public class BraveYouTubePictureInPictureController {
         }
         mResumeMediaSessionOnPipEntry = false;
 
-        // The caller (BraveActivity.onPictureInPictureModeChanged) currently looks at the
-        // activity's current WebContents to find the media session. We mirror that to keep
-        // behavior identical: if the tab changed between request and entry, the activity-side
-        // resume still targets the now-foreground tab. (Worst case: a benign no-op on a tab
-        // without a media session.)
-        final WebContents wc = mActivity.getCurrentWebContents();
-        MediaSession mediaSession = wc != null ? MediaSession.fromWebContents(wc) : null;
-        if (mediaSession != null) {
-            mediaSession.resume();
+        // Resume the session's own WebContents, recovered if needed. After a screen-lock
+        // re-entry the foreground tab can differ from the session tab (a new-tab intent arrived
+        // while locked, or the activity was recreated), and resuming the foreground tab would
+        // start unrelated media while the video in the PiP window stays paused.
+        final WebContents webContents = getOrFindWebContents();
+        if (webContents != null) {
+            final MediaSession mediaSession = getMediaSession(webContents);
+            if (mediaSession != null) {
+                mediaSession.resume();
+            }
         }
         return true;
     }
@@ -251,7 +273,7 @@ public class BraveYouTubePictureInPictureController {
         // resolving via the current tab is correct; the equality guard is defensive in case that
         // ever changes; without it, a mismatched binding would silently retarget recovery at
         // the wrong tab.
-        final TabModelSelector tabModelSelector = mActivity.getTabModelSelector();
+        final TabModelSelector tabModelSelector = getTabModelSelectorIfReady();
         final Tab currentTab = tabModelSelector != null ? tabModelSelector.getCurrentTab() : null;
         mTabId =
                 currentTab != null && currentTab.getWebContents() == webContents
@@ -263,6 +285,9 @@ public class BraveYouTubePictureInPictureController {
         mExiting = false;
         mInterruptedByScreenLock = false;
         mSessionId++;
+        // Arm the screen-state receiver for the whole session: SCREEN_OFF is the only reliable
+        // lock signal when the PiP window survives the lock (see registerScreenStateReceiver).
+        registerScreenStateReceiver();
     }
 
     /** The corresponding PiP entry attempt failed. Abandon the session. */
@@ -334,7 +359,9 @@ public class BraveYouTubePictureInPictureController {
                         return;
                     }
                     final FullscreenManager fullscreenManager = mActivity.getFullscreenManager();
-                    final Tab activityTab = mActivity.getTabModelSelector().getCurrentTab();
+                    final TabModelSelector tabModelSelector = getTabModelSelectorIfReady();
+                    final Tab activityTab =
+                            tabModelSelector != null ? tabModelSelector.getCurrentTab() : null;
                     if (fullscreenManager.getPersistentFullscreenMode() && activityTab != null) {
                         // Canonical exit path: clears persistent-fullscreen layout state and
                         // fans out to FullscreenManager.Observer (InfoBarContainer,
@@ -481,7 +508,7 @@ public class BraveYouTubePictureInPictureController {
         if (mTabId == Tab.INVALID_TAB_ID) {
             return null;
         }
-        final TabModelSelector tabModelSelector = mActivity.getTabModelSelector();
+        final TabModelSelector tabModelSelector = getTabModelSelectorIfReady();
         if (tabModelSelector == null) {
             return null;
         }
@@ -566,10 +593,19 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
+        if (mActivity.isInPictureInPictureMode()) {
+            // The PiP window survived the lock, so there is no re-entry to drive. Consume the
+            // interrupt so the next screen-off can pause playback again (the user may resume
+            // from the PiP controls in between). Playback itself deliberately stays paused:
+            // YouTube videos do not auto-resume after unlock.
+            mInterruptedByScreenLock = false;
+            mWasPlayingBeforeScreenLock = false;
+            return;
+        }
+
         // Conditions under which we cannot re-enter PiP. Bail out *before* mutating state so the
-        // session stays consistent and the receiver is still wired up for a later wake-up.
-        if (mActivity.isInPictureInPictureMode()
-                || mActivity.isChangingConfigurations()
+        // session stays consistent and the receiver keeps listening for a later wake-up.
+        if (mActivity.isChangingConfigurations()
                 || mActivity.isActivityFinishingOrDestroyed()
                 || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                         webContents)) {
@@ -580,9 +616,9 @@ public class BraveYouTubePictureInPictureController {
         // receiver and the activity-resume hook can both call into here for a single wake-up
         // (e.g. broadcast races the activity lifecycle), and any later re-entry must short-circuit
         // on the !mInterruptedByScreenLock guard above instead of racing a second
-        // enterPictureInPictureMode call against the in-flight one.
+        // enterPictureInPictureMode call against the in-flight one. The receiver itself stays
+        // registered: it serves the whole session, including the next lock.
         mInterruptedByScreenLock = false;
-        unregisterScreenStateReceiver();
 
         // Defer resuming the media session until Android confirms PiP entry. Mirrors the path
         // taken by an initial PiP request: onEnterPictureInPictureMode() will consume this flag
@@ -615,15 +651,20 @@ public class BraveYouTubePictureInPictureController {
     }
 
     private void markInterruptedByScreenLock() {
-        if (!mInterruptedByScreenLock) {
-            // Snapshot the playing state only on the first signal of an interruption, and
-            // before maybeSuspendForScreenLock() below issues any pause, so the snapshot
-            // reflects what the user was doing when the lock hit.
-            mWasPlayingBeforeScreenLock = mIsMediaPlaying;
+        if (mInterruptedByScreenLock) {
+            // Already parked: the receiver is armed and playback has been handled.
+            return;
         }
+
+        // Re-bind before snapshotting: after activity recreation the media-session observer is
+        // only re-attached by getOrFindWebContents(), and MediaSessionImpl replays the current
+        // state synchronously on attach, so the snapshot below is accurate even on the first
+        // interrupt after recreation.
+        final WebContents webContents = getOrFindWebContents();
+        mWasPlayingBeforeScreenLock = mIsMediaPlaying;
         mInterruptedByScreenLock = true;
         registerScreenStateReceiver();
-        maybeSuspendForScreenLock();
+        maybeSuspendForScreenLock(webContents);
     }
 
     /**
@@ -636,8 +677,7 @@ public class BraveYouTubePictureInPictureController {
      * locked gap is only wanted when the user opted into background playback; otherwise pause here
      * and let the user resume playback from the PiP window controls after unlock.
      */
-    private void maybeSuspendForScreenLock() {
-        final WebContents webContents = getOrFindWebContents();
+    private void maybeSuspendForScreenLock(@Nullable final WebContents webContents) {
         if (webContents == null || webContents.isDestroyed()) {
             return;
         }
@@ -686,6 +726,20 @@ public class BraveYouTubePictureInPictureController {
     }
 
     /**
+     * Returns the activity's TabModelSelector, or null before the tab models initialize.
+     * Deliberately NOT ChromeActivity#getTabModelSelector(), which THROWS (rather than returning
+     * null) pre-initialization and this controller is reachable from the screen-state receiver
+     * during startup. Also serves as the test seam: the supplier accessor on ChromeActivity is
+     * final and cannot be stubbed.
+     */
+    @VisibleForTesting
+    protected @Nullable TabModelSelector getTabModelSelectorIfReady() {
+        final MonotonicObservableSupplier<TabModelSelector> supplier =
+                mActivity.getTabModelSelectorSupplier();
+        return supplier != null ? supplier.get() : null;
+    }
+
+    /**
      * Starts tracking the play/pause state of the media session bound to {@code webContents} in
      * {@code mIsMediaPlaying}. Called whenever the session binds to a WebContents; any observer
      * from a previous binding is detached first so at most one observer is ever live.
@@ -720,6 +774,15 @@ public class BraveYouTubePictureInPictureController {
         mIsMediaPlaying = false;
     }
 
+    /**
+     * Registers the session-lifetime screen-state receiver. SCREEN_OFF is the only reliable signal
+     * that the device locked while the PiP window stays alive: in that state Android does not exit
+     * PiP mode and the still-playing media produces no upstream fullscreen-left signal, so without
+     * this broadcast the controller would never learn about the lock — and the pause-for-lock
+     * behavior (background playback disabled) would silently not happen. SCREEN_ON/USER_PRESENT
+     * drive the resume side. Registered for the whole session (from {@link #onSessionRequested}
+     * until {@link #clearSession}/{@link #onDestroy}) so repeated lock/unlock cycles keep working.
+     */
     private void registerScreenStateReceiver() {
         if (mScreenStateReceiver != null) {
             return;
@@ -730,14 +793,20 @@ public class BraveYouTubePictureInPictureController {
                     @Override
                     public void onReceive(Context context, Intent intent) {
                         final String action = intent.getAction();
-                        if (!Intent.ACTION_SCREEN_ON.equals(action)
-                                && !Intent.ACTION_USER_PRESENT.equals(action)) {
+                        if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                            if (mActive) {
+                                markInterruptedByScreenLock();
+                            }
                             return;
                         }
-                        maybeResumeAfterScreenLock();
+                        if (Intent.ACTION_SCREEN_ON.equals(action)
+                                || Intent.ACTION_USER_PRESENT.equals(action)) {
+                            maybeResumeAfterScreenLock();
+                        }
                     }
                 };
         final IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_USER_PRESENT);
         ContextUtils.registerProtectedBroadcastReceiver(mActivity, mScreenStateReceiver, filter);
@@ -814,5 +883,10 @@ public class BraveYouTubePictureInPictureController {
     @VisibleForTesting
     public boolean hasScreenStateReceiverForTesting() {
         return mScreenStateReceiver != null;
+    }
+
+    @VisibleForTesting
+    public @Nullable BroadcastReceiver getScreenStateReceiverForTesting() {
+        return mScreenStateReceiver;
     }
 }
