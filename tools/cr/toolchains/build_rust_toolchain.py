@@ -677,9 +677,9 @@ class ToolchainBuilder:
                         '--stage',
                         '1',
                         '--set',
-                        f'build.rustc={rustc}',
+                        f'build.rustc={rustc.as_posix()}',
                         '--set',
-                        f'build.cargo={cargo}',
+                        f'build.cargo={cargo.as_posix()}',
                         '--set',
                         'build.local-rebuild=true',
                         cwd=self._tools_rust)
