@@ -713,6 +713,7 @@ source_set("ui") {
       "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/page_action",
       "//brave/browser/ui/views/tabs/accent_color",
+      "//brave/browser/ui/views/workspaces",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",

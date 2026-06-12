@@ -38,6 +38,10 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
     return tab_scroll_next_button_;
   }  // IN-TEST
 
+  TabStripControlButton* workspaces_button_for_testing() {
+    return workspaces_button_;
+  }  // IN-TEST
+
   bool IsRepeatingEventForTesting(TabStripControlButton* button);
 
   void Layout(PassKey) override;
@@ -60,9 +64,11 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   void OnScrollNextPressed();
   bool HaveScrollButtons() const;
   bool ShouldShowHorizontalScrollButton() const;
+  void OnWorkspacesButtonPressed();
 
   raw_ptr<TabStripControlButton> tab_scroll_previous_button_ = nullptr;
   raw_ptr<TabStripControlButton> tab_scroll_next_button_ = nullptr;
+  raw_ptr<TabStripControlButton> workspaces_button_ = nullptr;
 
   base::CallbackListSubscription horizontal_scroll_offset_changed_subscription_;
 
