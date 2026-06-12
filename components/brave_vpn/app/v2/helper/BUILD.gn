@@ -41,6 +41,7 @@ executable("helper") {
     "//base",
     "//base:base_static",
     "//brave/components/brave_vpn/app/v2/shared",
+    "//brave/components/brave_vpn/app/v2/shared:crashrpt",
   ]
 
   data_deps = [ "//brave/third_party/boringtun" ]
@@ -76,6 +77,7 @@ if (is_mac) {
       "//base",
       "//base:base_static",
       "//brave/components/brave_vpn/app/v2/shared",
+      "//brave/components/brave_vpn/app/v2/shared:crashrpt",
     ]
 
     ldflags = []

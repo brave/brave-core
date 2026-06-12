@@ -11,7 +11,57 @@ static_library("shared") {
   sources = [
     "app_utils.cc",
     "app_utils.h",
+    "switches.h",
   ]
 
   deps = [ "//base" ]
+
+  if (is_mac) {
+    sources += [ "app_utils_mac.cc" ]
+  }
+}
+
+static_library("crashrpt") {
+  sources = [
+    "crash_reporter_client.cc",
+    "crash_reporter_client.h",
+  ]
+
+  public_deps = [ "//components/crash/core/app" ]
+
+  deps = [
+    ":shared",
+    "//base",
+    "//components/version_info:channel",
+  ]
+
+  if (is_win) {
+    sources += [ "crash_reporter_client_win.cc" ]
+
+    deps += [
+      "//components/crash/core/app:crash_export_thunks",
+      "//components/crash/core/app:run_as_crashpad_handler",
+    ]
+  }
+
+  if (is_posix) {
+    sources += [ "crash_reporter_client_posix.cc" ]
+    data_deps = [ "//components/crash/core/app:chrome_crashpad_handler" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "app_utils_unittest.cc",
+    "crash_reporter_client_unittest.cc",
+  ]
+
+  deps = [
+    ":crashrpt",
+    ":shared",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
 }
