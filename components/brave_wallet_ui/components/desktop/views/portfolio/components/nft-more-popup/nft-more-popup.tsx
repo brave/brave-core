@@ -4,20 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 import { getLocale } from '../../../../../../../common/locale'
-import { useOnClickOutside } from '../../../../../../common/hooks/useOnClickOutside'
 
 // Styled Components
-import {
-  ButtonIcon,
-  Popup,
-  PopupButton,
-  PopupButtonText,
-} from './nft-more-popup.styles'
+import { ButtonMenu } from '../../../../wallet-menus/wellet-menus.style'
 
 interface Props {
-  isOpen: boolean
+  children: React.ReactNode
   isTokenHidden: boolean
   isTokenSpam: boolean
   onEditNft: () => void
@@ -26,12 +21,11 @@ interface Props {
   onUnSpam: () => void
   onMarkAsSpam: () => void
   onRemoveNft: () => void
-  onClose: () => void
 }
 
 export const NftMorePopup = (props: Props) => {
   const {
-    isOpen,
+    children,
     isTokenHidden,
     isTokenSpam,
     onEditNft,
@@ -39,63 +33,53 @@ export const NftMorePopup = (props: Props) => {
     onUnHideNft,
     onUnSpam,
     onRemoveNft,
-    onClose,
     onMarkAsSpam,
   } = props
 
-  const popupRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(popupRef, onClose, isOpen)
-
   return (
-    <Popup
-      isOpen={isOpen}
-      ref={popupRef}
-    >
+    <ButtonMenu placement='top-end'>
+      {children}
       {/* show hide and edit option if a token is not hidden or not spam */}
       {!isTokenHidden && !isTokenSpam && (
         <>
-          <PopupButton onClick={onEditNft}>
-            <ButtonIcon name='edit-pencil' />
-            <PopupButtonText>{getLocale('braveNftsTabEdit')}</PopupButtonText>
-          </PopupButton>
-          <PopupButton onClick={onHideNft}>
-            <ButtonIcon name='eye-off' />
-            <PopupButtonText>{getLocale('braveNftsTabHide')}</PopupButtonText>
-          </PopupButton>
+          <leo-menu-item onClick={onEditNft}>
+            <Icon name='edit-pencil' />
+            {getLocale('braveNftsTabEdit')}
+          </leo-menu-item>
+          <leo-menu-item onClick={onHideNft}>
+            <Icon name='eye-off' />
+            {getLocale('braveNftsTabHide')}
+          </leo-menu-item>
         </>
       )}
 
       {isTokenSpam ? (
         // show mark as not junk if a token is junk/spam
-        <PopupButton onClick={onUnSpam}>
-          <ButtonIcon name='junk-false' />
-          <PopupButtonText>{getLocale('braveWalletNftUnspam')}</PopupButtonText>
-        </PopupButton>
+        <leo-menu-item onClick={onUnSpam}>
+          <Icon name='junk-false' />
+          {getLocale('braveWalletNftUnspam')}
+        </leo-menu-item>
       ) : (
         // show mark as spam option if a token is not marked as junk
-        <PopupButton onClick={onMarkAsSpam}>
-          <ButtonIcon name='junk-true' />
-          <PopupButtonText>
-            {getLocale('braveWalletNftMoveToSpam')}
-          </PopupButtonText>
-        </PopupButton>
+        <leo-menu-item onClick={onMarkAsSpam}>
+          <Icon name='junk-true' />
+          {getLocale('braveWalletNftMoveToSpam')}
+        </leo-menu-item>
       )}
 
       {/* show unhide option if a token is hidden but not junk */}
-      {isTokenHidden && !isTokenSpam ? (
-        <PopupButton onClick={onUnHideNft}>
-          <ButtonIcon name='eye-on' />
-          <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
-        </PopupButton>
-      ) : null}
+      {isTokenHidden && !isTokenSpam && (
+        <leo-menu-item onClick={onUnHideNft}>
+          <Icon name='eye-on' />
+          {getLocale('braveNftsTabUnhide')}
+        </leo-menu-item>
+      )}
 
       {/* remove option */}
-      <PopupButton onClick={onRemoveNft}>
-        <ButtonIcon name='trash' />
-        <PopupButtonText>{getLocale('braveNftsTabRemove')}</PopupButtonText>
-      </PopupButton>
-    </Popup>
+      <leo-menu-item onClick={onRemoveNft}>
+        <Icon name='trash' />
+        {getLocale('braveNftsTabRemove')}
+      </leo-menu-item>
+    </ButtonMenu>
   )
 }
