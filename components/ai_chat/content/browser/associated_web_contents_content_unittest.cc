@@ -743,9 +743,11 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetContentTools_NullResponse) {
 }
 
 TEST_P(AssociatedWebContentsContentUnitTest,
-       GetContentTools_NoLiveFrameReturnsEmpty) {
-  // If the main frame is not live, we should not attempt to bind the agent
-  // and the callback must run synchronously with an empty list.
+       GetContentTools_DroppedConnectionReturnsEmpty) {
+  // When the renderer goes away, the agent's interface request is dropped and
+  // GetAIPageContent never responds. The WrapCallbackWithDefaultInvokeIfNotRun
+  // helper must still deliver a null result so the callback fires with an empty
+  // list rather than hanging.
   NavigateTo(GURL("https://www.example.com"));
   content::WebContentsTester::For(web_contents())
       ->SetIsCrashed(base::TERMINATION_STATUS_PROCESS_CRASHED, 0);
