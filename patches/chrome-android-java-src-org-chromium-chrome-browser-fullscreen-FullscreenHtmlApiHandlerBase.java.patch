@@ -1,12 +1,27 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..2787ce1b3dc881539697c0aed8a5e26319545b0d 100644
+index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..1593ea34e68a6214a0684a8c16ac6850031cc40c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -320,6 +320,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {
-+                        BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
++                        if (BraveFullscreenHtmlApiHandlerBase.class.cast(
++                                        FullscreenHtmlApiHandlerBase.this)
++                                .maybeSkipExitFullscreenOnTabHidden(mActivity, reason)) {
++                            return;
++                        }
                          // Clean up any fullscreen state that might impact other tabs.
                          mFullscreenManagerDelegate.onExitFullscreen(null);
                      }
+@@ -885,6 +890,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+     @Override
+     public void onActivityStateChange(Activity activity, int newState) {
+         if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {
++            if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this)
++                        .shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
++                return;
++            }
+             // Exit fullscreen in onStop to ensure the system UI flags are set
+             // correctly when
+             // showing again (on JB MR2+ builds, the omnibox would be covered by the

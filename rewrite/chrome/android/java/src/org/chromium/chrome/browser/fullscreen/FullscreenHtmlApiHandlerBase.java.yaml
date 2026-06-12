@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Skip the tab-hidden fullscreen teardown while YouTube PiP is active.
+
+      Inserts an early return at the top of the TabObserver onHidden hook so the
+      persistent fullscreen state is preserved when a tab is hidden while a
+      Brave-managed YouTube Picture-in-Picture session is active.
+      maybeSkipExitFullscreenOnTabHidden also records whether the tab was hidden
+      by a tab switch before deciding whether to skip.
+    re_pattern: '(public void onHidden\(.*\)\s+\{)'
+    replace: |-
+      \1
+                              if (BraveFullscreenHtmlApiHandlerBase.class.cast(
+                                              FullscreenHtmlApiHandlerBase.this)
+                                      .maybeSkipExitFullscreenOnTabHidden(mActivity, reason)) {
+                                  return;
+                              }
+
+  - description: |-
+      Preserve fullscreen across transient activity stops while YouTube PiP is active.
+
+      Inserts an early return at the top of the ActivityState.STOPPED branch of
+      onActivityStateChange so the fullscreen teardown
+      (mFullscreenManagerDelegate.onExitFullscreen(null)) is skipped while a
+      Brave-managed YouTube Picture-in-Picture session is active. This keeps the
+      browser and DOM fullscreen state intact across transient activity stops
+      (e.g. screen-off or PiP window occlusion) so there is no flicker when the
+      user returns. The DESTROYED branch is intentionally left untouched.
+    re_pattern:
+      '(public void onActivityStateChange\(Activity activity, int
+      newState\)\s+\{\n\s+if \(newState == ActivityState\.STOPPED &&
+      mExitFullscreenOnStop\)\s+\{)'
+    replace: |-
+      \1
+                  if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this)
+                              .shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
+                      return;
+                  }
