@@ -18,8 +18,8 @@
 #include "base/strings/string_view_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_source_test_util.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
+#include "brave/components/ntp_background_images/browser/test/ntp_sponsored_source_test_util.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -118,6 +118,8 @@ TEST_F(NTPSponsoredImageSourceTest,
       ::testing::IsEmpty());
 }
 
+// `DUMP_WILL_BE_NOTREACHED()` aborts the process in non-official DCHECK builds.
+#if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 TEST_F(NTPSponsoredImageSourceTest,
        DoNotStartDataRequestIfContentDoesNotExist) {
   EXPECT_THAT(
@@ -129,6 +131,7 @@ TEST_F(NTPSponsoredImageSourceTest,
           R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent.jpg)")),
       ::testing::IsEmpty());
 }
+#endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
 TEST_F(NTPSponsoredImageSourceTest, GetMimeType) {
   EXPECT_EQ(

@@ -6,8 +6,10 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_source_util.h"
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/notreached.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
 namespace ntp_background_images {
@@ -39,6 +41,15 @@ std::optional<base::FilePath> MaybeGetChildCreativeSubdirectories(
 }  // namespace
 
 std::optional<std::string> ReadFileToString(const base::FilePath& path) {
+  if (!base::PathExists(path)) {
+    SCOPED_CRASH_KEY_STRING64("Issue55874", "failure_reason",
+                              "Missing file path");
+    SCOPED_CRASH_KEY_STRING64("Issue55874", "file_path",
+                              path.BaseName().AsUTF8Unsafe());
+    DUMP_WILL_BE_NOTREACHED();
+    return std::nullopt;
+  }
+
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
     return std::nullopt;
