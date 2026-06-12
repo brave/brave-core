@@ -121,7 +121,7 @@ extension BraveVPN {
   public static func fetchLastUsedRegionDetail(_ completion: ((GRDRegion?, Bool) -> Void)? = nil) {
     switch vpnState {
     case .expired, .notPurchased:
-      break
+      completion?(nil, false)
     case .purchased(_):
       housekeepingApi.requestTimeZonesForRegions { timeZones, error in
         if let error = error {
