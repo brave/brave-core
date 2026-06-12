@@ -347,6 +347,7 @@ extension QuickViewController: ReaderModeBarViewDelegate {
 }
 
 // MARK: - ReaderModeStyleViewControllerDelegate
+
 extension QuickViewController: ReaderModeStyleViewControllerDelegate {
   func readerModeStyleViewController(
     _ readerModeStyleViewController: ReaderModeStyleViewController,

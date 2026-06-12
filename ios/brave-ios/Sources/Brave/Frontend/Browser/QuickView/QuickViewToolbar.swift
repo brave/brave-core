@@ -31,8 +31,7 @@ struct QuickViewToolbarView: View {
       Label {
         Text(Strings.quickViewShieldAccessibilityLabel)
       } icon: {
-        viewModel.isShieldEnabled
-          ? Image(sharedName: "brave.logo") : Image(sharedName: "brave.logo.greyscale")
+        Image(sharedName: viewModel.isShieldEnabled ? "brave.logo" : "brave.logo.greyscale")
       }
     }
     .disabled(viewModel.readerModeState == .active)
@@ -51,8 +50,7 @@ struct QuickViewToolbarView: View {
             braveSystemImage: "leo.product.playlist-add"
           )
           .tint(
-            viewModel.isPlaylistEnabled
-              ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .iconDefault)
+            Color(braveSystemName: viewModel.isPlaylistEnabled ? .iconInteractive : .iconDefault)
           )
         }
       case .readerMode:
