@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -25,8 +26,6 @@ using content::TitleWatcher;
 
 namespace {
 
-constexpr char16_t kPassTitle[] = u"pass";
-constexpr char16_t kFailTitle[] = u"fail";
 constexpr gfx::Rect kTestWindowBounds(100, 100, 400, 400);
 
 }  // namespace
@@ -95,12 +94,10 @@ class BraveBlobScreenFarblingBrowserTest
     SetFingerprintingSetting(/*allow=*/false);
     // TODO(https://github.com/brave/brave-browser/issues/56048): Expect pass
     // once Shields are supported on blob:// URLs.
-    std::u16string expected_title = GetParam() ? kFailTitle : kPassTitle;
-    NavigateToBlob(expected_title);
+    NavigateToBlob(GetParam() ? u"fail" : u"pass");
 
     SetFingerprintingSetting(/*allow=*/true);
-    expected_title = kPassTitle;
-    NavigateToBlob(expected_title);
+    NavigateToBlob(u"pass");
   }
 
   void NavigateToBlob(const std::u16string& expected_title) {
@@ -115,6 +112,34 @@ class BraveBlobScreenFarblingBrowserTest
     TitleWatcher watcher(popup_contents, expected_title);
     EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
     CloseBrowserSynchronously(popup);
+  }
+
+  // Similar to FarbleScreenBlobURL but renders the blob in an iframe.
+  void FarbleScreenBlobURLIframe() {
+    ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
+
+    SetFingerprintingSetting(/*allow=*/false);
+    NavigateToBlobIframe();
+
+    SetFingerprintingSetting(/*allow=*/true);
+    NavigateToBlobIframe();
+  }
+
+  void NavigateToBlobIframe() {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
+    content::ExecuteScriptAsync(Parent(),
+                                "startBlobScreenFingerprintingIframeTest()");
+
+    // Wait for the blob iframe to finish writing to localStorage.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return content::EvalJs(Parent(),
+                             "localStorage.getItem('blob_done') === 'true'")
+          .ExtractBool();
+    }));
+
+    EXPECT_EQ(true, content::EvalJs(Parent(),
+                                    "storedScreenValuesMatch('parent', 'blob')")
+                        .ExtractBool());
   }
 
  private:
@@ -134,4 +159,9 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
                        FarbleScreenBlobURL) {
   FarbleScreenBlobURL();
+}
+
+IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
+                       FarbleScreenBlobURLIframe) {
+  FarbleScreenBlobURLIframe();
 }
