@@ -5,8 +5,12 @@
 
 substitutions:
   - description: |-
-      Append kAIChat to the UserSelectableType enum and make it the new
-      kLastType. Anchoring on the existing kLastType value keeps our entry last
-      and forces a manual review if upstream appends a new type.
-    re_pattern: '(\n[ \t]*)kLastType\s*=\s*kCookies'
-    replace: '\1kAIChat,\1kLastType = kAIChat'
+      Append kAIChat to the UserSelectableType enum as the new kLastType.
+      Anchored on the enum and the existing kLastType, value-agnostically, so it
+      does not depend on which key happens to be last upstream.
+    re_pattern: '(enum class UserSelectableType \{.+?,)(\s+)kLastType = \w+'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        kAIChat,
+        kLastType = kAIChat

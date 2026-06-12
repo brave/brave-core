@@ -23,7 +23,7 @@ index 300bbbe4ba190a27fd6a4073fb47b654c212cef6..b7fa5a4ec6df5274952d405ddf0d047e
  
  VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
 -  static_assert(64 == GetNumDataTypes(),
-+  static_assert(65 == GetNumDataTypes(),
++  static_assert(64 + 1 == GetNumDataTypes(),
                  "When adding a new protocol type, you will likely need to add "
                  "it here as well.");
    VISIT(encrypted);

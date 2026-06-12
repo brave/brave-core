@@ -4,10 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Add the kAIChat selectable type to the checked sync types in the
-      AllSyncTypesChecked test.'
-    re_pattern: 'syncer::UserSelectableType::kReadingList\};'
-    replace:
-      'syncer::UserSelectableType::kReadingList,
-      syncer::UserSelectableType::kAIChat};'
+  - description: |-
+      Add the kAIChat selectable type at the end of the always_enabled_sync_types
+      set in the AllSyncTypesChecked test. Anchored on the container rather than
+      a sibling key, so it is undisturbed when upstream adds or removes keys.
+    re_pattern: '(always_enabled_sync_types\s*=\s*\{.*?)(\};)'
+    re_flags: [DOTALL]
+    replace: '\1, syncer::UserSelectableType::kAIChat\2'

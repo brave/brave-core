@@ -1,28 +1,31 @@
 diff --git a/components/sync/service/sync_prefs.cc b/components/sync/service/sync_prefs.cc
-index 3762eb20577941b07e32fb068490a00271717d57..f192724381f1f2f1e5b47fbaeff0f0ac2d70fcb2 100644
+index 3762eb20577941b07e32fb068490a00271717d57..e43f25f6a5a5725597a370a8d73383c96f98fdd6 100644
 --- a/components/sync/service/sync_prefs.cc
 +++ b/components/sync/service/sync_prefs.cc
-@@ -693,6 +693,7 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
+@@ -693,6 +693,8 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
        return prefs::internal::kSyncProductComparison;
      case UserSelectableType::kCookies:
        return prefs::internal::kSyncCookies;
-+      BRAVE_SYNC_PREFS_GET_PREF_NAME_FOR_TYPE
++    case UserSelectableType::kAIChat:
++      return prefs::internal::kSyncAIChat;
    }
    NOTREACHED();
  }
-@@ -775,6 +776,7 @@ bool SyncPrefs::IsTypeSupportedInTransportMode(UserSelectableType type) {
+@@ -775,6 +777,8 @@ bool SyncPrefs::IsTypeSupportedInTransportMode(UserSelectableType type) {
      case UserSelectableType::kCookies:
        // `kCookies` is not supported in transport mode (ChromeOS-only type).
        return false;
-+      BRAVE_SYNC_PREFS_IS_TYPE_SUPPORTED_IN_TRANSPORT_MODE
++    case UserSelectableType::kAIChat:
++      return true;
    }
    NOTREACHED();
  }
-@@ -1165,6 +1167,7 @@ bool SyncPrefs::IsTypeSelectedByDefaultInTransportMode(
+@@ -1165,6 +1169,8 @@ bool SyncPrefs::IsTypeSelectedByDefaultInTransportMode(
        // All other types are always enabled by default with
        // kReplaceSyncPromosWithSignInPromos.
        return IsReplaceSyncPromosWithSignInPromosEnabled();
-+      BRAVE_SYNC_PREFS_IS_TYPE_SELECTED_BY_DEFAULT_IN_TRANSPORT_MODE
++    case UserSelectableType::kAIChat:
++      return true;
    }
    NOTREACHED();
  }

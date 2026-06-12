@@ -3,35 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Adds the AI_CHAT_CONVERSATION row to kDataTypeInfoTable. The table is keyed
-// by `.type` at runtime (not by array position), so this can be injected at
-// any point in the initializer list.
-#define BRAVE_DATA_TYPE_INFO_TABLE_ENTRY                                      \
-  {                                                                           \
-      .type = AI_CHAT_CONVERSATION,                                           \
-      .specifics_field_number =                                               \
-          sync_pb::EntitySpecifics::kAiChatConversationFieldNumber,           \
-      .debug_string = "AI Chat Conversation",                                 \
-      .histogram_suffix = "AI_CHAT_CONVERSATION",                             \
-      .stable_lowercase_string = "ai_chat_conversation",                      \
-      .encryption_policy = EncryptionPolicy::kEncryptedIfCustomPassphraseSet, \
-      .priority = DataTypePriority::kRegular,                                 \
-      .communication_direction = CommunicationDirection::kRegularTwoWay,      \
-      .apply_updates_batch_policy = ApplyUpdatesBatchPolicy::kStandard,       \
-      .unsynced_data_check_on_signout_policy =                                \
-          UnsyncedDataCheckOnSignoutPolicy::kNone,                            \
-      .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,             \
-  },
-
-#define BRAVE_DATA_TYPE_ADD_DEFAULT_FIELD_VALUE \
-  case AI_CHAT_CONVERSATION:                    \
-    specifics->mutable_ai_chat_conversation();  \
-    break;
-
-#define BRAVE_DATA_TYPE_HISTOGRAM_VALUE \
-  case AI_CHAT_CONVERSATION:            \
-    return DataTypeForHistograms::kAIChatConversation;
-
 #define EncryptableUserTypes EncryptableUserTypes_ChromiumImpl
 #define LowPriorityUserTypes LowPriorityUserTypes_ChromiumImpl
 
@@ -39,9 +10,6 @@
 
 #undef LowPriorityUserTypes
 #undef EncryptableUserTypes
-#undef BRAVE_DATA_TYPE_HISTOGRAM_VALUE
-#undef BRAVE_DATA_TYPE_ADD_DEFAULT_FIELD_VALUE
-#undef BRAVE_DATA_TYPE_INFO_TABLE_ENTRY
 
 namespace syncer {
 

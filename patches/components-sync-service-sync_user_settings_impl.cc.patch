@@ -7,7 +7,7 @@ index 903a6035095dd6f8d13d1809b9f2822058bdbf34..f2fe0e59ce719eccb05d5c51ca25019c
    types.PutAll(ControlTypes());
  
 -  static_assert(64 == GetNumDataTypes(),
-+  static_assert(65 == GetNumDataTypes(),
++  static_assert(64 + 1 == GetNumDataTypes(),
                  "If adding a new sync data type, update the list below below if"
                  " you want to disable the new data type for local sync, aka"
                  " roaming profiles on Windows.");patches/components-sync-protocol-proto_visitors.h.patch

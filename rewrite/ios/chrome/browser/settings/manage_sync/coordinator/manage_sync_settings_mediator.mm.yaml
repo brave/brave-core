@@ -4,11 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Handle the kAIChat UserSelectableType in the manage-sync settings switch.'
+  - description: |-
+      Group the kAIChat UserSelectableType with the unhandled cases in
+      tableViewItemWithDataType:. Anchored on the method and the NOTREACHED()
+      outcome rather than a sibling case key.
     re_pattern:
-      '(\n[ \t]*)case syncer::UserSelectableType::kCookies:(\n[
+      '(tableViewItemWithDataType:.*?switch \(dataType\) \{.*?)(\n[
       \t]*NOTREACHED\(\);)'
-    replace:
-      '\1case syncer::UserSelectableType::kCookies:\1case
-      syncer::UserSelectableType::kAIChat:\2'
+    re_flags: [DOTALL]
+    replace: '\1\n    case syncer::UserSelectableType::kAIChat:\2'

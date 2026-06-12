@@ -4,23 +4,32 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      "Bump the GetNumDataTypes static_assert for Brave's extra data types"
-    re_pattern: 'static_assert\(64\s*==\s*syncer::GetNumDataTypes\(\),'
-    replace: 'static_assert(65 == syncer::GetNumDataTypes(),'
+  - description: |-
+      Account for Brave's extra data type in the GetNumDataTypes static_assert.
+      Add one to the upstream count rather than matching its value, so the
+      assert is undisturbed when upstream adds or removes data types.
+    re_pattern: 'static_assert\((\d+) == syncer::GetNumDataTypes\(\),'
+    replace: 'static_assert(\1 + 1 == syncer::GetNumDataTypes(),'
 
-  - description:
-      'Return UserSelectableTypeInfo for Brave selectable types in
-      GetUserSelectableTypeInfo.'
-    re_pattern: '(\n[ \t]*)return \{kCookiesTypeName, COOKIES, \{COOKIES\}\};'
-    replace:
-      '\1return {kCookiesTypeName, COOKIES,
-      {COOKIES}};\1BRAVE_GET_USER_SELECTABLE_TYPE_INFO'
+  - description: |-
+      Return the UserSelectableTypeInfo for kAIChat at the end of the switch in
+      GetUserSelectableTypeInfo.
+    re_pattern:
+      '(UserSelectableTypeInfo
+      GetUserSelectableTypeInfo\(.*?switch[^{]*\{.*?)(\n[ \t]*\}\n[
+      \t]*NOTREACHED\(\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case UserSelectableType::kAIChat:
+            return {kAIChatTypeName, AI_CHAT_CONVERSATION, {AI_CHAT_CONVERSATION}};\2
 
-  - description:
-      'Add Brave selectable types to the string lookup map in
-      GetUserSelectableTypeFromString.'
-    re_pattern: '(\n[ \t]*)\{kCookiesTypeName, UserSelectableType::kCookies\},'
-    replace:
-      '\1{kCookiesTypeName,
-      UserSelectableType::kCookies},\1BRAVE_GET_USER_SELECTABLE_TYPE_FROM_STRING'
+  - description: |-
+      Add the kAIChat string mapping at the end of the lookup map in
+      GetUserSelectableTypeFromString.
+    re_pattern:
+      '(std::optional<UserSelectableType>
+      GetUserSelectableTypeFromString\(.*?base::MakeFixedFlatMap<.*?>\(\{.*?)(\n[
+      \t]*\}\);)'
+    re_flags: [DOTALL]
+    replace: '\1\n          {kAIChatTypeName, UserSelectableType::kAIChat},\2'

@@ -4,27 +4,55 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Insert Brave DataTypeInfo table entries immediately before the NIGORI
-      control entry, keeping them last among the user data types. Anchored on
-      the NIGORI entry alone so it does not depend on the brace layout of the
-      preceding entry.'
-    re_pattern: '(\n([ \t]*))(\{\s*\.type\s*=\s*NIGORI,)'
-    replace: '\1BRAVE_DATA_TYPE_INFO_TABLE_ENTRY\1\3'
+  - description: |-
+      Append the AI_CHAT_CONVERSATION row at the end of kDataTypeInfoTable. The
+      table is keyed by .type at runtime, so the position is not significant.
+    re_pattern: '(kDataTypeInfoTable = \{\{.*?)(\n[ \t]*\}\};)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+              {
+                  .type = AI_CHAT_CONVERSATION,
+                  .specifics_field_number =
+                      sync_pb::EntitySpecifics::kAiChatConversationFieldNumber,
+                  .debug_string = "AI Chat Conversation",
+                  .histogram_suffix = "AI_CHAT_CONVERSATION",
+                  .stable_lowercase_string = "ai_chat_conversation",
+                  .encryption_policy = EncryptionPolicy::kEncryptedIfCustomPassphraseSet,
+                  .priority = DataTypePriority::kRegular,
+                  .communication_direction = CommunicationDirection::kRegularTwoWay,
+                  .apply_updates_batch_policy = ApplyUpdatesBatchPolicy::kStandard,
+                  .unsynced_data_check_on_signout_policy =
+                      UnsyncedDataCheckOnSignoutPolicy::kNone,
+                  .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
+              },\2
 
-  - description:
-      "Bump the GetNumDataTypes static_assert for Brave's extra data types"
-    re_pattern: 'static_assert\(GetNumDataTypes\(\)\s*==\s*64,'
-    replace: 'static_assert(GetNumDataTypes() == 65,'
+  - description: |-
+      Account for Brave's extra data type in the GetNumDataTypes static_assert.
+      Add one to the upstream count rather than matching its value, so the
+      assert is undisturbed when upstream adds or removes data types.
+    re_pattern: 'static_assert\(GetNumDataTypes\(\) == (\d+),'
+    replace: 'static_assert(GetNumDataTypes() == \1 + 1,'
 
-  - description:
-      'Add default field values for Brave data types in AddDefaultFieldValue.'
-    re_pattern: 'specifics->mutable_theme_android\(\);(\n[ \t]*)break;'
-    replace: 'specifics->mutable_theme_android();\1break;\1BRAVE_DATA_TYPE_ADD_DEFAULT_FIELD_VALUE'
+  - description: |-
+      Provide the default specifics field for AI_CHAT_CONVERSATION at the end of
+      the switch in AddDefaultFieldValue.
+    re_pattern: '(AddDefaultFieldValue\(.*?switch[^{]*\{.*?)(\n[ \t]*\}\n\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case AI_CHAT_CONVERSATION:
+            specifics->mutable_ai_chat_conversation();
+            break;\2
 
-  - description:
-      'Map Brave data types to histogram values in DataTypeHistogramValue.'
-    re_pattern: '(\n[ \t]*)return DataTypeForHistograms::kThemesAndroid;'
-    replace:
-      '\1return
-      DataTypeForHistograms::kThemesAndroid;\1BRAVE_DATA_TYPE_HISTOGRAM_VALUE'
+  - description: |-
+      Map AI_CHAT_CONVERSATION to its histogram value at the end of the switch in
+      DataTypeHistogramValue.
+    re_pattern:
+      '(DataTypeHistogramValue\(DataType data_type\).*?switch[^{]*\{.*?)(\n[
+      \t]*\}\n[ \t]*NOTREACHED\(\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case AI_CHAT_CONVERSATION:
+            return DataTypeForHistograms::kAIChatConversation;\2
