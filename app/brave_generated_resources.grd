@@ -349,6 +349,12 @@
           Create your first space by clicking the Save button below.
         </message>
       </if>
+      <message name="IDS_TOOLTIP_WORKSPACES_BUTTON" desc="The tooltip for the workspaces button in the tab strip">
+        Spaces
+      </message>
+      <message name="IDS_ACCNAME_WORKSPACES_BUTTON" desc="The accessible name for the workspaces button in the tab strip.">
+        Spaces
+      </message>
 
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
