@@ -130,6 +130,7 @@ source_set("unit_tests") {
     "new_tab_takeover_infobar_util_unittest.cc",
     "ntp_background_images_service_unittest.cc",
     "ntp_sponsored_images_data_unittest.cc",
+    "ntp_sponsored_rich_media_data_unittest.cc",
     "ntp_sponsored_source_util_unittest.cc",
     "view_counter_model_unittest.cc",
   ]

@@ -9,7 +9,9 @@
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -44,6 +46,24 @@ constexpr char kImageWallpaperFocalPointYKey[] = "focalPoint.y";
 constexpr char kImageWallpaperButtonImageRelativeUrlKey[] =
     "button.image.relativeUrl";
 constexpr char kRichMediaWallpaperRelativeUrlKey[] = "relativeUrl";
+
+// Normalizes `relative_url` to a `FilePath` and validates that it is a valid
+// relative path. Returns `std::nullopt` otherwise.
+std::optional<base::FilePath> MaybeNormalizeRelativeUrl(
+    const std::string& relative_url) {
+  if (relative_url.find(':') != std::string::npos) {
+    // Windows alternate data streams are not supported.
+    return std::nullopt;
+  }
+  const base::FilePath relative_file_path =
+      base::FilePath::FromUTF8Unsafe(relative_url).NormalizePathSeparators();
+  if (relative_file_path.ReferencesParent() ||
+      relative_file_path.IsAbsolute() || relative_file_path.IsNetwork()) {
+    // Path traversal, absolute or network paths are not supported.
+    return std::nullopt;
+  }
+  return relative_file_path;
+}
 
 std::optional<std::string> ToString(WallpaperType wallpaper_type) {
   switch (wallpaper_type) {
@@ -187,11 +207,13 @@ std::optional<Campaign> MaybeParseCampaign(
           // Relative url is required.
           continue;
         }
-        if (base::FilePath::FromUTF8Unsafe(*relative_url).ReferencesParent()) {
-          // Path traversal, deny access.
+        const std::optional<base::FilePath> relative_file_path =
+            MaybeNormalizeRelativeUrl(*relative_url);
+        if (!relative_file_path) {
+          // Path traversal or invalid path, deny access.
           continue;
         }
-        creative.file_path = installed_dir.AppendASCII(*relative_url);
+        creative.file_path = installed_dir.Append(*relative_file_path);
         const std::string creative_url_string = base::ReplaceStringPlaceholders(
             "$1://$2/$3",
             {content::kChromeUIScheme, kBrandedWallpaperHost, *relative_url},
@@ -215,13 +237,14 @@ std::optional<Campaign> MaybeParseCampaign(
           // Relative url is required.
           continue;
         }
-        if (base::FilePath::FromUTF8Unsafe(*button_image_relative_url)
-                .ReferencesParent()) {
-          // Path traversal, deny access.
+        const std::optional<base::FilePath> relative_button_image_path =
+            MaybeNormalizeRelativeUrl(*button_image_relative_url);
+        if (!relative_button_image_path) {
+          // Path traversal or invalid path, deny access.
           continue;
         }
         creative.logo.image_file =
-            installed_dir.AppendASCII(*button_image_relative_url);
+            installed_dir.Append(*relative_button_image_path);
         creative.logo.image_url = base::ReplaceStringPlaceholders(
             "$1://$2/$3",
             {content::kChromeUIScheme, kBrandedWallpaperHost,
@@ -237,11 +260,13 @@ std::optional<Campaign> MaybeParseCampaign(
           // Relative url is required.
           continue;
         }
-        if (base::FilePath::FromUTF8Unsafe(*relative_url).ReferencesParent()) {
-          // Path traversal, deny access.
+        const std::optional<base::FilePath> relative_file_path =
+            MaybeNormalizeRelativeUrl(*relative_url);
+        if (!relative_file_path) {
+          // Path traversal or invalid path, deny access.
           continue;
         }
-        creative.file_path = installed_dir.AppendASCII(*relative_url);
+        creative.file_path = installed_dir.Append(*relative_file_path);
         creative.url = GURL(kNTPNewTabTakeoverRichMediaUrl + *relative_url);
       } else {
         // Unknown wallpaper type.
@@ -262,7 +287,150 @@ std::optional<Campaign> MaybeParseCampaign(
   return campaign;
 }
 
+bool CreativeFileByRelativeUrlExists(const std::string& relative_url,
+                                     const base::FilePath& installed_dir,
+                                     const base::DictValue& creative_dict) {
+  const std::optional<base::FilePath> relative_file_path =
+      MaybeNormalizeRelativeUrl(relative_url);
+  if (!relative_file_path) {
+    // Path traversal or invalid path, deny access.
+    return false;
+  }
+
+  if (base::PathExists(installed_dir.Append(*relative_file_path))) {
+    return true;
+  }
+
+  SCOPED_CRASH_KEY_STRING64("Issue55874", "component_id",
+                            installed_dir.DirName().BaseName().AsUTF8Unsafe());
+  SCOPED_CRASH_KEY_STRING64("Issue55874", "component_version",
+                            installed_dir.BaseName().AsUTF8Unsafe());
+  if (const std::string* const creative_instance_id =
+          creative_dict.FindString(kCreativeInstanceIdKey)) {
+    SCOPED_CRASH_KEY_STRING64("Issue55874", "creative_instance_id",
+                              *creative_instance_id);
+  }
+  SCOPED_CRASH_KEY_STRING64("Issue55874", "relative_url", relative_url);
+  SCOPED_CRASH_KEY_STRING64(
+      "Issue55874", "failure_reason",
+      "Creative file is missing when the component loads");
+  DUMP_WILL_BE_NOTREACHED();
+  return false;
+}
+
+bool CreativeFilesExist(const base::DictValue& creative_dict,
+                        const base::FilePath& installed_dir) {
+  const base::DictValue* const wallpaper =
+      creative_dict.FindDict(kWallpaperKey);
+  if (!wallpaper) {
+    return true;
+  }
+
+  const std::string* const wallpaper_type =
+      wallpaper->FindString(kWallpaperTypeKey);
+  if (!wallpaper_type) {
+    return true;
+  }
+
+  if (*wallpaper_type == kRichMediaWallpaperType) {
+    const std::string* const rich_media_relative_url =
+        wallpaper->FindString(kRichMediaWallpaperRelativeUrlKey);
+    if (rich_media_relative_url &&
+        !CreativeFileByRelativeUrlExists(*rich_media_relative_url,
+                                         installed_dir, creative_dict)) {
+      return false;
+    }
+  } else if (*wallpaper_type == kImageWallpaperType) {
+    const std::string* const image_relative_url =
+        wallpaper->FindStringByDottedPath(kImageWallpaperRelativeUrlKey);
+    if (image_relative_url &&
+        !CreativeFileByRelativeUrlExists(*image_relative_url, installed_dir,
+                                         creative_dict)) {
+      return false;
+    }
+
+    const std::string* const button_image_relative_url =
+        wallpaper->FindStringByDottedPath(
+            kImageWallpaperButtonImageRelativeUrlKey);
+    if (button_image_relative_url &&
+        !CreativeFileByRelativeUrlExists(*button_image_relative_url,
+                                         installed_dir, creative_dict)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+void FilterCreativeSet(base::DictValue& dict,
+                       const base::FilePath& installed_dir) {
+  base::ListValue* const creative_list = dict.FindList(kCreativesKey);
+  if (!creative_list) {
+    return;
+  }
+
+  creative_list->EraseIf([&](const base::Value& creative_value) {
+    const base::DictValue* const creative_dict = creative_value.GetIfDict();
+    return !creative_dict || !CreativeFilesExist(*creative_dict, installed_dir);
+  });
+}
+
 }  // namespace
+
+void FilterCampaigns(base::DictValue& dict,
+                     const base::FilePath& installed_dir) {
+  base::ListValue* const list = dict.FindList(kCampaignsKey);
+  if (!list) {
+    return;
+  }
+
+  for (auto& campaign_value : *list) {
+    base::DictValue* const campaign_dict = campaign_value.GetIfDict();
+    if (!campaign_dict) {
+      continue;
+    }
+
+    const std::string* const campaign_id =
+        campaign_dict->FindString(kCampaignIdKey);
+    if (!campaign_id || campaign_id->empty()) {
+      continue;
+    }
+
+    base::ListValue* const creative_set_list =
+        campaign_dict->FindList(kCreativeSetsKey);
+    if (!creative_set_list) {
+      continue;
+    }
+
+    for (auto& creative_set_value : *creative_set_list) {
+      if (base::DictValue* const creative_set_dict =
+              creative_set_value.GetIfDict()) {
+        FilterCreativeSet(*creative_set_dict, installed_dir);
+      }
+    }
+
+    creative_set_list->EraseIf([](const base::Value& creative_set_value) {
+      const base::DictValue* const creative_set_dict =
+          creative_set_value.GetIfDict();
+      if (!creative_set_dict) {
+        return true;
+      }
+      const base::ListValue* const creative_list =
+          creative_set_dict->FindList(kCreativesKey);
+      return !creative_list || creative_list->empty();
+    });
+  }
+
+  list->EraseIf([](const base::Value& campaign_value) {
+    const base::DictValue* const campaign_dict = campaign_value.GetIfDict();
+    if (!campaign_dict) {
+      return true;
+    }
+    const base::ListValue* const creative_set_list =
+        campaign_dict->FindList(kCreativeSetsKey);
+    return !creative_set_list || creative_set_list->empty();
+  });
+}
 
 Logo::Logo() = default;
 
