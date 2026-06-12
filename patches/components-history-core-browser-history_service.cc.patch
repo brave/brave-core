@@ -1,0 +1,23 @@
+diff --git a/components/history/core/browser/history_service.cc b/components/history/core/browser/history_service.cc
+index 30ab41fb9f8be24441cddc353d9246310489e6ff..7b0f0c0020b723e8ac52fab0c915a02b9da93e83 100644
+--- a/components/history/core/browser/history_service.cc
++++ b/components/history/core/browser/history_service.cc
+@@ -1146,6 +1146,18 @@ base::CancelableTaskTracker::TaskId HistoryService::QueryURL(
+       std::move(callback));
+ }
+ 
++base::CancelableTaskTracker::TaskId HistoryService::QueryURLIDs(
++    const std::vector<GURL>& urls,
++    QueryURLIDsCallback callback,
++    base::CancelableTaskTracker* tracker) {
++  DCHECK(backend_task_runner_) << "History service being called after cleanup";
++  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++  return tracker->PostTaskAndReplyWithResult(
++      backend_task_runner_.get(), FROM_HERE,
++      base::BindOnce(&HistoryBackend::QueryURLIDs, history_backend_, urls),
++      std::move(callback));
++}
++
+ base::CancelableTaskTracker::TaskId HistoryService::QueryURLAndVisits(
+     const GURL& url,
+     const VisitQuery404sPolicy policy_for_404s,
