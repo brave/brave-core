@@ -153,69 +153,38 @@ TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
 
 // ---------------------------------------------------------------------------
 // ComputeAdjustedPanelBounds
+//
+// The panel is anchored to `sidebar_bounds` and keeps its y/width/height. The
+// caller has already offset `sidebar_bounds` for any vertical tab on the same
+// side, and this function never reads `panel_bounds.x()`, so a vertical tab on
+// the same side needs no separate case here — it only moves the sidebar's x,
+// which these cases exercise via arbitrary sidebar positions.
 // ---------------------------------------------------------------------------
 
 TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnRightFullyOpen) {
-  // Browser 1000px wide. Sidebar control: narrow, x=960, width=40.
-  // Panel: upstream placed it at x=700 (= 1000-300), width=300 (fully open).
-  // Expected: shift left by sidebar_width (40) → x=660, right=960=sidebar.x.
-  gfx::Rect sidebar(960, 50, 40, 600);
+     ComputeAdjustedPanelBoundsSidebarTrailing) {
+  // Trailing (right) sidebar: panel's right edge aligns with the sidebar's
+  // left edge. x = sidebar.x() - panel.width() = 810 - 300 = 510.
+  gfx::Rect sidebar(810, 50, 40, 600);
   gfx::Rect panel(700, 50, 300, 600);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
           /*sidebar_leading=*/false, sidebar, panel);
-  EXPECT_EQ(660, adjusted.x());
+  EXPECT_EQ(gfx::Rect(510, 50, 300, 600), adjusted);
   EXPECT_EQ(sidebar.x(), adjusted.right());  // flush with sidebar's left edge
-  EXPECT_EQ(panel.width(), adjusted.width());
-  EXPECT_EQ(panel.y(), adjusted.y());
-  EXPECT_EQ(panel.height(), adjusted.height());
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnRightAnimating) {
-  // Same browser/sidebar.  Panel 50% open: visible_width=150, so upstream
-  // places it at x=850 (= 1000-150).  After adjustment: x=810.
-  // The user sees 150px between adjusted.x(810) and sidebar.x(960). ✓
-  gfx::Rect sidebar(960, 50, 40, 600);
-  gfx::Rect panel(850, 50, 300, 600);  // upstream: right_edge - visible_width
-  gfx::Rect adjusted =
-      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-          /*sidebar_leading=*/false, sidebar, panel);
-  EXPECT_EQ(810, adjusted.x());
-  EXPECT_EQ(150, sidebar.x() - adjusted.x());  // 150px visible to the user
-}
-
-TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnLeftFullyOpen) {
-  // Browser 1000px wide. Sidebar control: x=0, width=40.
-  // Panel: upstream placed it at x=0 (= visual_client_area.x()), width=300
-  // (fully open). Expected: shift right by sidebar_width (40) →
-  // x=40=sidebar.right.
-  gfx::Rect sidebar(0, 50, 40, 600);
+     ComputeAdjustedPanelBoundsSidebarLeading) {
+  // Leading (left) sidebar: panel's left edge aligns with the sidebar's right
+  // edge. x = sidebar.right() = 150 + 40 = 190.
+  gfx::Rect sidebar(150, 50, 40, 600);
   gfx::Rect panel(0, 50, 300, 600);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
           /*sidebar_leading=*/true, sidebar, panel);
-  EXPECT_EQ(40, adjusted.x());
+  EXPECT_EQ(gfx::Rect(190, 50, 300, 600), adjusted);
   EXPECT_EQ(sidebar.right(), adjusted.x());  // flush with sidebar's right edge
-  EXPECT_EQ(panel.width(), adjusted.width());
-  EXPECT_EQ(panel.y(), adjusted.y());
-  EXPECT_EQ(panel.height(), adjusted.height());
-}
-
-TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnLeftAnimating) {
-  // Panel 50% open: visible_width=150, upstream x = 0-(300-150) = -150.
-  // After adjustment: x = -150+40 = -110.
-  // Visible to user: from sidebar.right(40) to adjusted.right(190) = 150px. ✓
-  gfx::Rect sidebar(0, 50, 40, 600);
-  gfx::Rect panel(-150, 50, 300, 600);  // upstream: left_edge-(target-visible)
-  gfx::Rect adjusted =
-      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-          /*sidebar_leading=*/true, sidebar, panel);
-  EXPECT_EQ(-110, adjusted.x());
-  EXPECT_EQ(150, adjusted.right() - sidebar.right());  // 150px visible to user
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
