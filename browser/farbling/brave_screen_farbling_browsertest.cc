@@ -15,14 +15,13 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/chrome_test_extension_loader.h"
-#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "extensions/test/test_extension_dir.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/blink/public/common/features.h"
@@ -444,13 +443,16 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
   FarbleScreenSize(GURL("chrome:version"), false);
 
   // chrome-extension: URI (don't farble)
-  extensions::ScopedTestMV2Enabler mv2_enabler;
-  base::FilePath test_data_dir;
-  base::PathService::Get(chrome::DIR_TEST_DATA, &test_data_dir);
-  std::string extension_id =
-      LoadExtension(test_data_dir.AppendASCII("extensions")
-                        .AppendASCII("ui")
-                        .AppendASCII("browser_action_popup"));
+  extensions::TestExtensionDir test_extension_dir;
+  test_extension_dir.WriteManifest(R"({
+    "name": "Browser Action Popup",
+    "manifest_version": 3,
+    "version": "0.1",
+    "action": { "default_popup": "popup.html" }
+  })");
+  test_extension_dir.WriteFile(FILE_PATH_LITERAL("popup.html"),
+                               "<!doctype html><html>This is a popup</html>");
+  std::string extension_id = LoadExtension(test_extension_dir.UnpackedPath());
   base::RunLoop().RunUntilIdle();  // Ensure the extension is fully loaded.
   const GURL extension_url("chrome-extension://" + extension_id +
                            "/popup.html");
