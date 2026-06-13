@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
@@ -17,25 +16,14 @@ import App from './containers/App'
 
 // Utils
 import store from './store'
-import * as webcompatReporterActions from './actions/webcompatreporter_actions'
+import { setDialogArgs } from './slices/webcompatreporter.slice'
 import {
   getDialogArgs,
   setViewPortChangeListener,
-  ViewPortSizeChangedObject,
+  ViewPortSizeChangedObject
 } from './browser_proxy'
 
-let actions: any
-
-function getActions () {
-  if (actions) {
-    return actions
-  }
-
-  actions = bindActionCreators(webcompatReporterActions, store.dispatch.bind(store))
-  return actions
-}
-
-function loadDialogArgs () {
+function loadDialogArgs() {
   const dialogArgsRaw = getDialogArgs()
   let dialogArgs
   try {
@@ -44,7 +32,7 @@ function loadDialogArgs () {
     console.error('Error parsing incoming dialog args: ', dialogArgsRaw, e)
   }
 
-  getActions().setDialogArgs(dialogArgs)
+  store.dispatch(setDialogArgs(dialogArgs))
 }
 
 function onViewPortSizeChanged(data: ViewPortSizeChangedObject) {
