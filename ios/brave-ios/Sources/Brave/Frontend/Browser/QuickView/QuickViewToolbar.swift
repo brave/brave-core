@@ -33,6 +33,8 @@ class QuickViewToolbarModel {
   var isLoading: Bool = true
   var loadingProgress: Double = 0.0
   var onActionButton: ((QuickViewActionButton) -> Void)?
+  var collapseProgress: CGFloat = 0.0
+  private var loadingCompletionTask: Task<Void, Never>?
 
   init(
     url: URL,
@@ -57,11 +59,20 @@ extension QuickViewToolbarModel: TabObserver {
   }
 
   func tabDidStartLoading(_ tab: some TabState) {
+    loadingCompletionTask?.cancel()
+    loadingCompletionTask = nil
+    loadingProgress = 0.0
     isLoading = true
   }
 
   func tabDidStopLoading(_ tab: some TabState) {
-    isLoading = false
+    loadingProgress = 1.0
+    loadingCompletionTask = Task { @MainActor [weak self] in
+      try? await Task.sleep(for: .seconds(0.3))
+      guard !Task.isCancelled else { return }
+      self?.isLoading = false
+      self?.loadingProgress = 0.0
+    }
   }
 
   func tabDidChangeLoadProgress(_ tab: some TabState) {
@@ -81,6 +92,7 @@ extension QuickViewToolbarModel: TabObserver {
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
+    loadingCompletionTask?.cancel()
     tab.removeObserver(self)
   }
 }
@@ -110,6 +122,7 @@ struct QuickViewToolbarView: View {
           ? Image(sharedName: "brave.logo.greyscale") : Image(sharedName: "brave.logo")
       }
     }
+    .opacity(1 - viewModel.collapseProgress)
   }
 
   @ViewBuilder
@@ -159,7 +172,7 @@ struct QuickViewToolbarView: View {
 
   private var addressView: some View {
     Text(viewModel.url.host ?? viewModel.url.absoluteString)
-      .font(.subheadline)
+      .font(.system(size: 15 - 3 * viewModel.collapseProgress))
       .foregroundStyle(Color(braveSystemName: .textTertiary))
       .lineLimit(1)
       .frame(maxWidth: .infinity)
@@ -171,6 +184,7 @@ struct QuickViewToolbarView: View {
       secondaryTopButtonView
       refreshButton
     }
+    .opacity(1 - viewModel.collapseProgress)
   }
 
   private var topRow: some View {
@@ -263,6 +277,7 @@ struct QuickViewToolbarView: View {
       closeButton
     }
     .labelStyle(QuickViewToolbarLabelBottomIconStyle())
+    .opacity(1 - viewModel.collapseProgress)
   }
 }
 
@@ -286,4 +301,9 @@ private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
         configuration.title
       }
   }
+}
+
+extension QuickViewToolbarView {
+  /// Height of the URL-only strip that remains visible when collapsed.
+  static let collapsedHeight: CGFloat = 24
 }
