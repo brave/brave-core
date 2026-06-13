@@ -135,7 +135,10 @@ source_set("brave_new_tab_page_refresh") {
   }
 
   if (enable_brave_news) {
-    deps += [ "//brave/components/brave_news/browser" ]
+    deps += [
+      "//brave/browser/brave_news",
+      "//brave/components/brave_news/browser",
+    ]
   }
 }
 
