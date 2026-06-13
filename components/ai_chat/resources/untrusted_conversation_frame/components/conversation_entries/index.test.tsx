@@ -10,6 +10,7 @@ import * as Mojom from '../../../common/mojom'
 import {
   createConversationTurnWithDefaults,
   getCompletionEvent,
+  getToolUseEvent,
 } from '../../../common/test_data_utils'
 import MockContext, {
   MockContextRef,
@@ -28,6 +29,14 @@ jest.mock('../assistant_response', () => ({
     assistantResponseMock(props)
     return <div />
   },
+}))
+
+// A response that includes a tool call renders as a task (AssistantTask)
+// rather than an AssistantResponse. Stub it out so these tests can focus on
+// ConversationEntries' own decision of whether to render the context actions.
+jest.mock('../assistant_task/assistant_task', () => ({
+  __esModule: true,
+  default: () => <div data-testid='assistant-task' />,
 }))
 
 describe('ConversationEntries allowedLinks per response', () => {
@@ -876,6 +885,117 @@ describe('last entry pair scroll on mount', () => {
     })
 
     expect(scrollToBottomMock).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('ContextActionsAssistant rendering', () => {
+  const humanTurn = (text: string, uuid: string) =>
+    ({
+      characterType: Mojom.CharacterType.HUMAN,
+      text,
+      uuid,
+    }) as Mojom.ConversationTurn
+
+  const assistantTurn = (completion: string, uuid: string) =>
+    ({
+      characterType: Mojom.CharacterType.ASSISTANT,
+      uuid,
+      events: [{ completionEvent: { completion } }],
+    }) as Mojom.ConversationTurn
+
+  const baseOverrides: Partial<UntrustedConversationContext> = {
+    isMobile: false,
+    isLeoModel: true,
+    allModels: [],
+    canSubmitUserEntries: true,
+    trimmedTokens: BigInt(0),
+    totalTokens: BigInt(0),
+    contentUsedPercentage: 100,
+  }
+
+  const renderConversation = (
+    conversationHistory: Mojom.ConversationTurn[],
+    isGenerating: boolean,
+  ) =>
+    render(
+      <MockContext
+        overrides={{ ...baseOverrides, isGenerating }}
+        initialState={{ conversationHistory }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+  // Maps each rendered assistant turn (in document order) to whether it shows
+  // the assistant context actions. The like button is always present inside
+  // ContextActionsAssistant, so it is a reliable marker for the whole
+  // component being rendered.
+  const assistantTurnsShowingActions = (container: HTMLElement) =>
+    Array.from(
+      container.querySelectorAll('[data-testid="assistant-turn"]'),
+    ).map(
+      (turn) =>
+        !!turn.querySelector(`[title="${S.CHAT_UI_LIKE_ANSWER_BUTTON_LABEL}"]`),
+    )
+
+  // A response whose group contains a tool call. A single tool call is enough
+  // to make the group a task, which takes a different render path but must
+  // still surface the context actions.
+  const toolCallAssistantTurn = (uuid: string) =>
+    ({
+      characterType: Mojom.CharacterType.ASSISTANT,
+      uuid,
+      events: [
+        getCompletionEvent('Response part a'),
+        getToolUseEvent({
+          toolName: 'some-tool',
+          id: '1',
+          argumentsJson: '{}',
+          output: undefined,
+        }),
+        getCompletionEvent('Response part b'),
+      ],
+    }) as Mojom.ConversationTurn
+
+  // Two human/assistant pairs. The first response contains a tool call (a
+  // task), the second is a plain response. The second (last) pair is the
+  // "active group".
+  const twoResponseHistory = [
+    humanTurn('Question 1', '1'),
+    toolCallAssistantTurn('2'),
+    humanTurn('Question 2', '3'),
+    assistantTurn('Response 2', '4'),
+  ]
+
+  it('renders context actions for every response when not generating', () => {
+    const { container } = renderConversation(twoResponseHistory, false)
+    // Including the tool-call/task response and the last/active group, since
+    // it is no longer generating.
+    expect(assistantTurnsShowingActions(container)).toEqual([true, true])
+  })
+
+  it('hides context actions for only the active group while generating', () => {
+    const { container } = renderConversation(twoResponseHistory, true)
+    // The last (active) group is still generating, so its context actions are
+    // hidden; every earlier, completed response keeps them — including the
+    // tool-call/task response.
+    expect(assistantTurnsShowingActions(container)).toEqual([true, false])
+  })
+
+  it('hides context actions for a lone active group while generating', () => {
+    const { container } = renderConversation(
+      [humanTurn('Question 1', '1'), assistantTurn('Response 1', '2')],
+      true,
+    )
+    expect(assistantTurnsShowingActions(container)).toEqual([false])
+  })
+
+  it('renders context actions for a lone group once generation completes', () => {
+    const { container } = renderConversation(
+      [humanTurn('Question 1', '1'), assistantTurn('Response 1', '2')],
+      false,
+    )
+    expect(assistantTurnsShowingActions(container)).toEqual([true])
   })
 })
 

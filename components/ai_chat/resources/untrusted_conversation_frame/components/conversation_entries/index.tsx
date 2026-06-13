@@ -508,31 +508,26 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               })}
           </div>
 
-          {!groupIsTask && (
-            <>
-              {isAIAssistant && showEditIndicator && (
-                <EditIndicator time={lastEditedTime} />
-              )}
-              {isAIAssistant
-                && conversationContext.isLeoModel
-                && !firstEntryEdit.selectedText
-                && !showEditInput && (
-                  <ContextActionsAssistant
-                    turnUuid={firstEntryEdit.uuid}
-                    turnModelKey={turnModelKey}
-                    turnNEARVerified={
-                      group.at(-1)?.nearVerificationStatus?.verified
-                    }
-                    onEditAnswerClicked={
-                      canEditEntry
-                        ? () => setEditInputId(entryNumber)
-                        : undefined
-                    }
-                    onCopyTextClicked={handleCopyText}
-                  />
-                )}
-            </>
+          {isAIAssistant && showEditIndicator && (
+            <EditIndicator time={lastEditedTime} />
           )}
+          {isAIAssistant
+            && (!conversationContext.isGenerating || !isActiveGroup)
+            && conversationContext.isLeoModel
+            && !firstEntryEdit.selectedText
+            && !showEditInput && (
+              <ContextActionsAssistant
+                turnUuid={firstEntryEdit.uuid}
+                turnModelKey={turnModelKey}
+                turnNEARVerified={
+                  group.at(-1)?.nearVerificationStatus?.verified
+                }
+                onEditAnswerClicked={
+                  canEditEntry ? () => setEditInputId(entryNumber) : undefined
+                }
+                onCopyTextClicked={handleCopyText}
+              />
+            )}
         </div>
       </div>
     )
