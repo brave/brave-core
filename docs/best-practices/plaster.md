@@ -68,3 +68,21 @@ Reserve `re_pattern` for when you need regex features like whitespace matching,
 character classes, or structural patterns.
 
 ---
+
+<a id="PLSTR-003"></a>
+
+## ✅ Use Plaster to change private fields/methods visibility in Java for new code
+
+````yaml
+# ✅ CORRECT - simple visibility replacement for a field
+pattern: 'private final @Nullable View mNtpHeader;'
+replace: 'protected final @Nullable View mNtpHeader;'
+
+# ❌ WRONG - Bytecode manupulation
+```Java
+
+        deleteField(sBraveFeedSurfaceCoordinatorClassName, "mNtpHeader");
+        makeProtectedField(sFeedSurfaceCoordinatorClassName, "mNtpHeader");
+````
+
+---
