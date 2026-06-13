@@ -1,0 +1,72 @@
+diff --git a/chrome/browser/ui/views/frame/multi_contents_view.h b/chrome/browser/ui/views/frame/multi_contents_view.h
+index c284e31f0c6ef3fc87fc3c8c4c1ca5b74d3968bf..5cf6d9ed03ec34ed2c0b1c4e9249ac5ce7df1cfa 100644
+--- a/chrome/browser/ui/views/frame/multi_contents_view.h
++++ b/chrome/browser/ui/views/frame/multi_contents_view.h
+@@ -62,7 +62,7 @@ class MultiContentsView
+     double end_width = 0;
+   };
+ 
+-  static constexpr int kSplitViewContentInset = 8;
++  static constexpr int kSplitViewContentInset = 0;
+ 
+   MultiContentsView(BrowserView* browser_view,
+                     std::unique_ptr<MultiContentsViewDelegate> delegate);
+@@ -70,19 +70,20 @@ class MultiContentsView
+   MultiContentsView& operator=(const MultiContentsView&) = delete;
+   ~MultiContentsView() override;
+ 
+-  ContentsContainerView* GetActiveContentsContainerView() const;
++  virtual ContentsContainerView* GetActiveContentsContainerView() const;
+   ContentsContainerView* GetInactiveContentsContainerView() const;
+-  ContentsContainerView* GetContentsContainerViewFor(
++  virtual ContentsContainerView* GetContentsContainerViewFor(
+       content::WebContents* web_contents) const;
+ 
+   // Returns the currently active ContentsWebView.
+-  ContentsWebView* GetActiveContentsView() const;
++  virtual ContentsWebView* GetActiveContentsView() const;
+ 
+   // Returns the currently inactive ContentsWebView.
+   ContentsWebView* GetInactiveContentsView() const;
+ 
+   const gfx::RoundedCornersF& background_radii() const;
+   void SetBackgroundRadii(const gfx::RoundedCornersF& radii);
++  virtual void ResetResizeArea() {}
+ 
+   // Returns true if more than one WebContents is displayed.
+   bool IsInSplitView() const;
+@@ -115,7 +116,7 @@ class MultiContentsView
+ 
+   // Helper method to execute an arbitrary callback on each visible contents
+   // view. Will execute the callback on the active contents view first.
+-  void ExecuteOnEachVisibleContentsView(
++  virtual void ExecuteOnEachVisibleContentsView(
+       base::RepeatingCallback<void(ContentsWebView*)> callback);
+ 
+   // If in a split view, swaps the order of the two contents views.
+@@ -205,6 +206,7 @@ class MultiContentsView
+       const ContentsContainerView* container) const;
+ 
+  private:
++  friend class BraveMultiContentsView;
+   FRIEND_TEST_ALL_PREFIXES(MultiContentsViewBrowserTest, DropTargetLayout);
+   FRIEND_TEST_ALL_PREFIXES(MultiContentsViewBrowserTest,
+                            LeadingSeparatorLayout);
+@@ -246,7 +248,7 @@ class MultiContentsView
+ 
+   int GetInactiveIndex() const;
+ 
+-  void OnWebContentsFocused(views::WebView*);
++  virtual void OnWebContentsFocused(views::WebView*);
+   void OnNtpFooterFocused(views::WebView*);
+   void OnActorOverlayFocused(views::WebView*);
+   void OnReadAnythingOverlayFocused(ContentsContainerView* container,
+@@ -264,7 +266,7 @@ class MultiContentsView
+   // Returns 0 if not in a split view.
+   int GetMinViewWidth(gfx::Rect available_space) const;
+ 
+-  void UpdateContentsBorderAndOverlay();
++  virtual void UpdateContentsBorderAndOverlay();
+ 
+   double CalculateRatioWithSnapPoints(double end_width,
+                                       double total_width) const;
