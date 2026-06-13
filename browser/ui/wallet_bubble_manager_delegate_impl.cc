@@ -202,7 +202,9 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
-  webui_bubble_manager_->CloseBubble();
+  if (webui_bubble_manager_) {
+    webui_bubble_manager_->CloseBubble();
+  }
 }
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {
