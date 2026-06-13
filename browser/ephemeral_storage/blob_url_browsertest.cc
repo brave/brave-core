@@ -259,10 +259,10 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
 
   extensions::TestExtensionDir test_extension_dir;
   // The extension's host permissions are what authorize the cross-origin blob
-  // fetch below, so the test script must run in the extension page's main
-  // world (no isolated world). MV3 disallows relaxing the page CSP with
-  // 'unsafe-eval', but EvalJs injects a classic script (not eval()), so
-  // the default MV3 CSP is sufficient.
+  // fetch, so the test script must run in the extension page's main world (no
+  // isolated world). MV3 disallows relaxing the page CSP with 'unsafe-eval',
+  // but EvalJs injects a classic script (not eval()), so the default MV3 CSP
+  // is sufficient.
   test_extension_dir.WriteManifest(R"({
     "name": "Test",
     "manifest_version": 3,
