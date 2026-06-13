@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      Rename ReloadBypassingCache to ReloadBypassingCache_ChromiumImpl to avoid
+      conflict with Brave implementation
+    re_pattern: (void ReloadBypassingCache)\(
+    replace: \1_ChromiumImpl(
+
+  - description:
+      Return nullptr in GetReadingListModel(). We don't want ReadingList panel
+      in the side panel.
+    re_pattern: (ReadingListModel\* GetReadingListModel\(.*?)(return model;)
+    re_flags: [DOTALL]
+    replace: \1model = nullptr;\n  \2
+
+  - description:
+      Replace chrome::kChromeUISplitViewNewTabPageURL to kChromeUINewTabURL in
+      NewSplitTab(). We don't want to have a separate NTP URL for split view.
+    re_pattern: |-
+      (void NewSplitTab\(.*?const GURL new_tab_url =.*?)GURL\(chrome::kChromeUISplitViewNewTabPageURL\);
+    re_flags: [DOTALL]
+    replace: \1GURL(chrome::kChromeUINewTabURL);
+
+  - description:
+      Nullify toast controller in CloseTab() not to show toast when closing a
+      pinned tab
+    re_pattern: (void CloseTab\(.*?toast_controller\(\);)
+    re_flags: [DOTALL]
+    replace: \1\n  toast_controller = nullptr;

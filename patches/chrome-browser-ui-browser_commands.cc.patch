@@ -1,12 +1,38 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 6f7b8dd8fae6be7514020adf59805319920bda2c..96bdca13af644e8ea97954e40517102f179e076a 100644
+index 6f7b8dd8fae6be7514020adf59805319920bda2c..4a29570bb0d620135490b97be35a081b3a17d511 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -1220,6 +1220,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -304,6 +304,7 @@ ReadingListModel* GetReadingListModel(BrowserWindowInterface* browser) {
+   if (!model || !model->loaded()) {
+     return nullptr;  // Ignore requests until model has loaded.
+   }
++  model = nullptr;
+   return model;
+ }
+ 
+@@ -942,7 +943,7 @@ void Reload(BrowserWindowInterface* browser,
+   ReloadInternal(browser, disposition, false);
+ }
+ 
+-void ReloadBypassingCache(BrowserWindowInterface* browser,
++void ReloadBypassingCache_ChromiumImpl(BrowserWindowInterface* browser,
+                           WindowOpenDisposition disposition) {
+   base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
+   ReloadInternal(browser, disposition, true);
+@@ -1220,6 +1221,7 @@ void CloseTab(BrowserWindowInterface* browser) {
    }
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();
-+  BRAVE_CLOSE_TAB
++  toast_controller = nullptr;
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
+@@ -1506,7 +1508,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+   // the regular NTP which renders special content when in Incognito.
+   const GURL new_tab_url = browser->GetProfile()->IsIncognitoProfile()
+                                ? chrome::ChromeUINewTabURLAsGURL()
+-                               : GURL(chrome::kChromeUISplitViewNewTabPageURL);
++                               : GURL(chrome::kChromeUINewTabURL);
+   tab_strip_model->delegate()->AddTabAt(
+       new_tab_url, active_index + 1, true,
+       tab_strip_model->GetTabGroupForTab(active_index),
