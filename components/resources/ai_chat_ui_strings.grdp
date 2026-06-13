@@ -435,6 +435,9 @@
   <message name="IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation" formatter_data="webui=AiChat">
     Start a new conversation
   </message>
+  <message name="IDS_CHAT_UI_EXPORT_CONVERSATION_BUTTON_LABEL" desc="A label for the button which exports the current conversation as a downloadable file" formatter_data="webui=AiChat">
+    Export conversation
+  </message>
   <message name="IDS_CHAT_UI_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation" formatter_data="webui=AiChat">
     Rename conversation
   </message>

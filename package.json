@@ -54,6 +54,8 @@
     "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
     "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js",
     "coverage_report": "node ./build/commands/scripts/commands.js coverage_report",
+    "ai-chat-sharing-dev": "webpack serve --config components/ai_chat/resources/shared_conversation_page/webpack.config.ts --mode=development",
+    "ai-chat-sharing-prod": "webpack --config components/ai_chat/resources/shared_conversation_page/webpack.config.ts --mode=production",
     "generate_about_credits": "node ./build/commands/scripts/generateAboutCredits.js"
   },
   "repository": {
@@ -134,6 +136,7 @@
     "buffer": "6.0.3",
     "chalk": "4.1.2",
     "commander": "14.0.3",
+    "copy-webpack-plugin": "14.0.0",
     "crypto-browserify": "3.12.0",
     "css-loader": "5.2.7",
     "csstype": "2.6.21",
@@ -198,7 +201,8 @@
     "typescript-plugin-css-modules": "5.1.0",
     "typescript-plugin-styled-components": "3.0.0",
     "webpack": "5.105.0",
-    "webpack-cli": "5.1.4"
+    "webpack-cli": "5.1.4",
+    "webpack-dev-server": "^5.2.4"
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
