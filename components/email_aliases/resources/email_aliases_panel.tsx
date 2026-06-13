@@ -21,18 +21,25 @@ import {
   EmailAliasesPanelHandler,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { useEmailAliases } from './content/use_email_aliases'
+import {
+  useEmailAliases,
+  useBraveAccountState,
+  getLoggedInEmail,
+  isAccountLoggedIn,
+} from './content/use_email_aliases'
 
 export const EmailAliasesPanelConnected = ({
+  authEmail,
   emailAliasesService,
   emailAliasesPanelHandler,
   bindObserver,
 }: {
+  authEmail: string
   emailAliasesService: EmailAliasesServiceInterface
   emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
+  const { aliasesUpdate } = useEmailAliases(bindObserver)
   const aliases = aliasesUpdate.error ? [] : (aliasesUpdate.aliases ?? [])
   return (
     <EmailAliasModal
@@ -52,9 +59,32 @@ export const EmailAliasesPanelConnected = ({
         }
       }}
       editing={false}
-      mainEmail={authState.email}
+      mainEmail={authEmail}
       emailAliasesService={emailAliasesService}
       bubble
+    />
+  )
+}
+
+export const EmailAliasesPanel = ({
+  emailAliasesService,
+  emailAliasesPanelHandler,
+  bindObserver,
+}: {
+  emailAliasesService: EmailAliasesServiceInterface
+  emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+}) => {
+  const accountState = useBraveAccountState()
+  if (!isAccountLoggedIn(accountState)) {
+    return null
+  }
+  return (
+    <EmailAliasesPanelConnected
+      authEmail={getLoggedInEmail(accountState)}
+      emailAliasesService={emailAliasesService}
+      emailAliasesPanelHandler={emailAliasesPanelHandler}
+      bindObserver={bindObserver}
     />
   )
 }
@@ -72,7 +102,7 @@ const mount = () => {
   setIconBasePath('//resources/brave-icons')
   createRoot(rootElement).render(
     <StyleSheetManager>
-      <EmailAliasesPanelConnected
+      <EmailAliasesPanel
         emailAliasesService={emailAliasesService}
         emailAliasesPanelHandler={emailAliasesPanelHandler}
         bindObserver={bindObserver}
