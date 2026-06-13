@@ -22,6 +22,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -598,6 +599,17 @@ class KeyringServiceUnitTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
 };  // namespace brave_wallet
 
+TEST_F(KeyringServiceUnitTest, CreateWalletWithMnemonic) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  service.CreateWalletWithMnemonic(kMnemonicDivideCruise, kPasswordBrave,
+                                   future.GetCallback());
+  auto mnemonic = future.Take();
+  ASSERT_TRUE(mnemonic);
+  EXPECT_EQ(*mnemonic, kMnemonicDivideCruise);
+  EXPECT_EQ(GetWalletMnemonic(kPasswordBrave, &service), kMnemonicDivideCruise);
+}
+
 TEST_F(KeyringServiceUnitTest, CreateWallet_DoubleCall) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
@@ -710,6 +722,45 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesNewKeyring) {
     EXPECT_EQ(1u, all_sol_accounts.size());
     EXPECT_EQ(first_sol_account_address, all_sol_accounts[0]->address);
   }
+}
+
+TEST_F(KeyringServiceUnitTest, GenerateMnemonic) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  base::test::TestFuture<const std::optional<std::string>&> mnemonic_future;
+
+  // 12 words mnemonic.
+  service.GenerateMnemonic(12, mnemonic_future.GetCallback());
+  auto mnemonic = mnemonic_future.Take();
+  ASSERT_TRUE(mnemonic);
+  EXPECT_EQ(12u, base::SplitString(*mnemonic, " ", base::KEEP_WHITESPACE,
+                                   base::SPLIT_WANT_NONEMPTY)
+                     .size());
+
+  // 24 words mnemonic.
+  service.GenerateMnemonic(24, mnemonic_future.GetCallback());
+  mnemonic = mnemonic_future.Take();
+  ASSERT_TRUE(mnemonic);
+  EXPECT_EQ(24u, base::SplitString(*mnemonic, " ", base::KEEP_WHITESPACE,
+                                   base::SPLIT_WANT_NONEMPTY)
+                     .size());
+
+  // Invalid mnemonic lengths.
+  const int invalid_lens[] = {0, 1, 4, 100, INT32_MAX};
+  for (int x : invalid_lens) {
+    service.GenerateMnemonic(x, mnemonic_future.GetCallback());
+    EXPECT_FALSE(mnemonic_future.Take());
+  }
+
+  // Generate 100 mnemonics and check if they are unique.
+  std::vector<std::string> mnemonics;
+  for (int i = 0; i < 100; i++) {
+    service.GenerateMnemonic(12, mnemonic_future.GetCallback());
+    mnemonic = mnemonic_future.Take();
+    ASSERT_TRUE(mnemonic);
+    mnemonics.push_back(*mnemonic);
+  }
+  EXPECT_EQ(base::MakeFlatSet<std::string>(mnemonics).size(), 100u);
 }
 
 TEST_F(KeyringServiceUnitTest, GetWalletMnemonic) {

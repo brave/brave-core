@@ -110,6 +110,31 @@ class MockKeyringService: BraveWalletKeyringService {
     }
   }
 
+  func createWalletWithMnemonic(
+    mnemonic: String,
+    password: String,
+    completion: @escaping (String?) -> Void
+  ) {
+    _ = mnemonic
+    isLocked = false
+    self.password = password
+    addAccount(
+      coin: .eth,
+      keyringId: BraveWallet.KeyringId.default,
+      accountName: "Account 1"
+    ) { [self] accountInfo in
+      selectedAccount = accountInfo
+      observers.allObjects.forEach {
+        $0.walletCreated()
+      }
+      completion(self.mnemonic)
+    }
+  }
+
+  func generateMnemonic(wordCount: Int32, completion: @escaping (String?) -> Void) {
+    completion(mnemonic)
+  }
+
   func isLocked(completion: @escaping (Bool) -> Void) {
     completion(isLocked)
   }
