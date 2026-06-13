@@ -17,6 +17,8 @@
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
+class ContentsCaptureBorderView;
+
 namespace gfx {
 class RoundedCornersF;
 }  // namespace gfx
@@ -65,6 +67,8 @@ class BraveContentsContainerView :
 
   // true when this view is used for web panel.
   const bool for_web_panel_;
+
+  raw_ptr<ContentsCaptureBorderView> capture_contents_border_view_ = nullptr;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_ = nullptr;
