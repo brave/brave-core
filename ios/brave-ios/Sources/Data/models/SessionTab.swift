@@ -208,12 +208,9 @@ extension SessionTab {
   }
 
   public static func updateAll(
-    synchronously: Bool,
     tabs: [(tabId: UUID, interactionState: Data, title: String, url: URL)]
   ) {
-    DataController.perform(
-      context: synchronously ? .existing(DataController.viewContext) : .new(inMemory: false)
-    ) { context in
+    DataController.perform { context in
       for tab in tabs {
         guard let sessionTab = Self.from(tabId: tab.tabId, in: context) else {
           Logger.module.error("Error: SessionTab.updateAll missing managed object")
@@ -222,9 +219,58 @@ extension SessionTab {
         sessionTab.interactionState = tab.interactionState
         sessionTab.title = tab.title
         sessionTab.url = tab.url
+        sessionTab.lastUpdated = .now
       }
-      if synchronously {
-        try? context.save()
+    }
+  }
+
+  /// Creates or updates session tabs for the given window
+  public static func persistTabs(
+    windowId: UUID,
+    tabs: [(
+      tabId: UUID,
+      interactionState: Data,
+      title: String,
+      url: URL,
+      isPrivate: Bool
+    )]
+  ) {
+    DataController.perform { context in
+      guard
+        let window = SessionWindow.ensureWindow(
+          windowId: windowId,
+          isSelected: true,
+          in: context
+        )
+      else {
+        Logger.module.error("Error: SessionTab.persistTabs missing session window")
+        return
+      }
+
+      for (index, tab) in tabs.enumerated() {
+        if let sessionTab = Self.from(tabId: tab.tabId, in: context) {
+          sessionTab.interactionState = tab.interactionState
+          sessionTab.title = tab.title
+          sessionTab.url = tab.url
+          sessionTab.lastUpdated = .now
+          sessionTab.index = Int32(index)
+          sessionTab.sessionWindow = window
+        } else {
+          _ = SessionTab(
+            context: context,
+            sessionWindow: window,
+            sessionTabGroup: nil,
+            index: Int32(index),
+            interactionState: tab.interactionState,
+            isPrivate: tab.isPrivate,
+            isSelected: false,
+            lastUpdated: .now,
+            screenshotData: Data(),
+            title: tab.title,
+            url: tab.url,
+            tabId: tab.tabId
+          )
+        }
       }
     }
   }
