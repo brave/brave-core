@@ -10,9 +10,9 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.ui.base.WindowAndroid;
 
 /**
- * Brave override for NtpCustomizationPromoManager. Suppresses the NTP theme
- * customization IPH, which crashes in debug builds when the anchor view is not
- * yet attached to a window at the time the async IPH callback fires.
+ * Brave override for NtpCustomizationPromoManager. Suppresses the NTP theme customization IPH,
+ * which crashes in debug builds when the anchor view is not yet attached to a window at the time
+ * the async IPH callback fires.
  */
 @NullMarked
 public class BraveNtpCustomizationPromoManager {
