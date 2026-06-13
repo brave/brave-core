@@ -202,7 +202,7 @@ BraveSanitizedImageSource::BraveSanitizedImageSource(
 }
 
 bool BraveSanitizedImageSource::AllowCaching() {
-  return false;
+  return true;
 }
 std::string BraveSanitizedImageSource::GetSource() {
   return kChromeUIBraveImageHost;
