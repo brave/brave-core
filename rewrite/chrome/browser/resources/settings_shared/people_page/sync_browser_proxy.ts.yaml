@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the AI Chat flags to the SyncPrefs interface, grouped after the
+      wifiConfigurations type flags.
+    re_pattern: '(\n[ \t]*)wifiConfigurationsSynced: boolean;'
+    replace:
+      '\1wifiConfigurationsSynced: boolean;\1aiChatManaged:
+      boolean;\1aiChatRegistered: boolean;\1aiChatSynced: boolean;'
+
+  - description: |-
+      Add aiChatSynced to the end of the syncPrefsIndividualDataTypes list.
+      Anchored on the list, not a sibling entry.
+    re_pattern: '(syncPrefsIndividualDataTypes: string\[\] = \[.*?)(\n\];)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        'aiChatSynced',\2
+
+  - description: |-
+      Append AI_CHAT to the UserSelectableType enum, mirroring the C++
+      UserSelectableType (kept in sync via the LINT.IfChange annotation).
+      Anchored on the enum and its last entry, value-agnostically.
+    re_pattern: '(export enum UserSelectableType \{.*?[A-Z0-9_]+ = \d+)(\n\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1,
+        AI_CHAT = 14\2
