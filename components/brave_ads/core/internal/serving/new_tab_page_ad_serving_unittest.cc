@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/run_loop.h"
@@ -28,16 +29,23 @@ namespace brave_ads {
 
 class BraveAdsNewTabPageAdServingTest : public test::TestBase {
  protected:
+  void SetUp() override {
+    test::TestBase::SetUp();
+
+    subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+  }
+
   void MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
-    SubdivisionTargeting subdivision_targeting;
-    AntiTargetingResource anti_targeting_resource;
     ad_serving_ = std::make_unique<NewTabPageAdServing>(
-        subdivision_targeting, anti_targeting_resource);
+        *subdivision_targeting_, *anti_targeting_resource_);
     ad_serving_->SetDelegate(&delegate_mock_);
 
     ad_serving_->MaybeServeAd(std::move(callback));
   }
 
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
   ::testing::StrictMock<NewTabPageAdServingDelegateMock> delegate_mock_;
   std::unique_ptr<NewTabPageAdServing> ad_serving_;
 };
