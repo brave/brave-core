@@ -99,7 +99,8 @@ void StatusIcon::UpdateIcon() {
 
 void StatusIcon::SetToolTip(const std::u16string& tool_tip) {
   auto icon_data = GetIconData(window_, NIF_TIP);
-  UNSAFE_TODO(wcscpy_s(icon_data->szTip, base::as_wcstr(tool_tip)));
+  base::as_writable_byte_span(icon_data->szTip)
+      .copy_from_nonoverlapping(base::as_byte_span(tool_tip));
   if (!Shell_NotifyIcon(NIM_MODIFY, icon_data.get())) {
     LOG(WARNING) << "Unable to set tooltip for status tray icon";
   }
