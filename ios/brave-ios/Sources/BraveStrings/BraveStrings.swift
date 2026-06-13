@@ -9434,6 +9434,29 @@ extension Strings {
       value: "Please authenticate to manage your passwords.",
       comment: "The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management."
     )
+    public static let managePasswordDetailAddCredentialTitle =
+      NSLocalizedString(
+        "autofill.managePasswords.passwordDetail.addCredentialTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Add Password",
+        comment: "Navigation title when creating a new saved login from password management"
+      )
+    public static let managePasswordDetailDeleteConfirmMessage = NSLocalizedString(
+      "autofill.managePasswords.passwordDetail.deleteConfirmMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "This password will be removed from your sync chain and your device.",
+      comment:
+        "Alert message warning the user that deleting the password will remove it from their sync chain and device"
+    )
+    public static let managePasswordsDeleteCredentialConfirmButtonTitle = NSLocalizedString(
+      "autofill.managePasswords.deleteManagePasswordConfrimButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Delete Password",
+      comment: "Label for the button used to confirm delete action for the current password."
+    )
   }
 }
 

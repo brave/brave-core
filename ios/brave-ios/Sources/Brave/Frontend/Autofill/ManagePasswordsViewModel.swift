@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import SwiftUI
 
 @MainActor
@@ -99,6 +100,57 @@ class ManagePasswordsViewModel {
       return groups.first { $0.domain == domain }?.credentials ?? []
     }
     deletePasswords(toDelete)
+  }
+
+  func updatePassword(_ password: CWVPassword, username: String, passwordValue: String) {
+    let username = username.trimmingCharacters(in: .whitespacesAndNewlines)
+    let newPassword = passwordValue.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard
+      username != (password.username ?? "")
+        || newPassword != (password.password ?? "")
+    else { return }
+
+    autofillDataManager.update(
+      password,
+      newUsername: username,
+      newPassword: newPassword,
+      timestamp: Date()
+    )
+  }
+
+  func addPassword(username: String, password: String, site: String) {
+    autofillDataManager.addNewPassword(
+      forUsername: username.trimmingCharacters(in: .whitespacesAndNewlines),
+      password: password.trimmingCharacters(in: .whitespacesAndNewlines),
+      site: site.trimmingCharacters(in: .whitespacesAndNewlines),
+      timestamp: Date()
+    )
+  }
+
+  /// `true` when `site` is a fully qualified http/https URL and both `username` and `password` are non-empty.
+  ///
+  /// Both fields are required because `CWVAutofillDataManager`'s add and update methods
+  /// each reject empty values by different mechanisms:
+  /// - `addNewPasswordForUsername:password:site:timestamp:` `DCHECK`s on non-empty `username` and `password`
+  /// - `updatePassword:newUsername:newPassword:timestamp:` silently no-ops on an empty field — the cleared value is dropped
+  ///   and the existing stored value is kept, which would otherwise surprise the user who thought they had cleared it.
+  ///
+  /// Gating on this property at the UI layer prevents both outcomes.
+  func isValidCredential(username: String, password: String, site: String) -> Bool {
+    !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      && !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      && isSiteValid(site)
+  }
+
+  /// DCHECK(url.is_valid()); crashes if not a valid scheme *and* a non-empty host.
+  ///
+  /// `data:` URLs are excluded because they have no host.
+  /// Use this when a URL is being persisted or sent to an API that expects a real reachable web address.
+  func isSiteValid(_ site: String) -> Bool {
+    guard let siteUrl = URL(string: site.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+      return false
+    }
+    return siteUrl.schemeIsValid && !(siteUrl.host?.isEmpty ?? true)
   }
 }
 
