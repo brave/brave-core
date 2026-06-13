@@ -32,13 +32,11 @@ struct ManagePasswordDetailReadOnlyView: View {
           } label: {
             Text(password.site).lineLimit(1)
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
         LabeledContent {
           Menu {
@@ -51,13 +49,11 @@ struct ManagePasswordDetailReadOnlyView: View {
             Text(password.username ?? "")
               .lineLimit(1)
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
         LabeledContent {
           HStack(spacing: 8) {
@@ -83,7 +79,7 @@ struct ManagePasswordDetailReadOnlyView: View {
                 }
               }
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
             }
 
             Button {
@@ -100,9 +96,7 @@ struct ManagePasswordDetailReadOnlyView: View {
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
   }

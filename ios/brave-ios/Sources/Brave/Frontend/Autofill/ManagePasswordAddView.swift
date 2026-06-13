@@ -49,9 +49,6 @@ struct ManagePasswordAddView: View {
         isSiteDisabled: isSitePrefilled
       )
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
-    .foregroundStyle(Color(braveSystemName: .textPrimary))
     .navigationTitle(Strings.Autofill.managePasswordDetailAddCredentialTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

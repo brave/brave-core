@@ -41,9 +41,6 @@ struct ManagePasswordDetailContainerView: View {
         )
       }
     }
-    .scrollContentBackground(.hidden)
-    .background((Color(.braveGroupedBackground)))
-    .foregroundStyle(Color(braveSystemName: .textPrimary))
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
