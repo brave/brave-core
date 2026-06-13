@@ -231,6 +231,44 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
+       DoNotFireDuplicateClickedEventWhileFireAdEventIsInProgress) {
+  // Arrange
+  const NewTabPageAdInfo ad =
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*use_random_uuids=*/false);
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireNewTabPageAdClickedEvent(ad));
+  EXPECT_CALL(delegate_mock_, OnFailedToFireNewTabPageAdEvent(
+                                  ad.placement_id, ad.creative_instance_id,
+                                  mojom::NewTabPageAdEventType::kClicked));
+  EXPECT_CALL(delegate_mock_, OnDidFireNewTabPageAdClickedEvent(ad));
+
+  // Act
+  base::test::TestFuture<bool, std::string, mojom::NewTabPageAdEventType>
+      click_future;
+  event_handler_.FireEvent(
+      ad.placement_id, ad.creative_instance_id,
+      mojom::NewTabPageAdEventType::kClicked,
+      click_future.GetCallback<bool, const std::string&,
+                               mojom::NewTabPageAdEventType>());
+
+  base::test::TestFuture<bool, std::string, mojom::NewTabPageAdEventType>
+      duplicate_click_future;
+  event_handler_.FireEvent(
+      ad.placement_id, ad.creative_instance_id,
+      mojom::NewTabPageAdEventType::kClicked,
+      duplicate_click_future.GetCallback<bool, const std::string&,
+                                         mojom::NewTabPageAdEventType>());
+
+  // Assert
+  EXPECT_FALSE(duplicate_click_future.Get<bool>());
+  EXPECT_TRUE(click_future.Get<bool>());
+}
+
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Act & Assert
   base::RunLoop run_loop;

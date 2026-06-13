@@ -61,11 +61,11 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
 
   void FireEvent(const NewTabPageAdInfo& ad,
                  mojom::NewTabPageAdEventType mojom_ad_event_type,
-                 FireNewTabPageAdEventHandlerCallback callback) const;
+                 FireNewTabPageAdEventHandlerCallback callback);
   void FireEventCallback(const NewTabPageAdInfo& ad,
                          mojom::NewTabPageAdEventType mojom_ad_event_type,
                          FireNewTabPageAdEventHandlerCallback callback,
-                         bool success) const;
+                         bool success);
 
   void SuccessfullyFiredEvent(
       const NewTabPageAdInfo& ad,
@@ -85,11 +85,21 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type) const;
 
+  bool IsDuplicateOfPendingAdEvent(
+      const NewTabPageAdInfo& ad,
+      mojom::NewTabPageAdEventType mojom_ad_event_type) const;
+  void TrackPendingAdEvent(const NewTabPageAdInfo& ad,
+                           mojom::NewTabPageAdEventType mojom_ad_event_type);
+  void UntrackPendingAdEvent(const NewTabPageAdInfo& ad,
+                             mojom::NewTabPageAdEventType mojom_ad_event_type);
+
   raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;  // Not owned.
 
   const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
+
+  AdEventList pending_ad_events_;
 
   base::WeakPtrFactory<NewTabPageAdEventHandler> weak_factory_{this};
 };
