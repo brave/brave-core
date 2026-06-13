@@ -260,7 +260,6 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
       let cell =
         tableView.dequeueReusableCell(for: indexPath) as CustomEngineTitleInputTableViewCell
       cell.do {
-        $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
         $0.delegate = self
         $0.selectionStyle = .none
       }
@@ -274,7 +273,6 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
     case Section.url.rawValue:
       let cell = tableView.dequeueReusableCell(for: indexPath) as CustomEngineURLInputTableViewCell
       cell.do {
-        $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
         $0.delegate = self
         $0.selectionStyle = .none
       }
@@ -312,7 +310,7 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
     forSection section: Int
   ) {
     guard let footerView = view as? UITableViewHeaderFooterView else { return }
-    footerView.textLabel?.textColor = UIColor(braveSystemName: .textSecondary)
+    footerView.textLabel?.textColor = UIColor.secondaryLabel
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

@@ -26,34 +26,34 @@ class EmptyStateOverlayView: UIView {
 
   private let iconImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
   }
 
   private let informationLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }
 
   private let descriptionLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
   }
 
   private let actionButton = UIButton().then {
-    $0.setTitleColor(.white, for: .normal)
+    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
     $0.layer.cornerCurve = .continuous
     $0.layer.cornerRadius = UX.buttonHeight / 2.0
     $0.titleEdgeInsets = UX.titleEdgeInsets
     $0.contentEdgeInsets = UX.contentEdgeInsets
-    $0.backgroundColor = .braveBlurpleTint
+    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
   }
 
   private let actionDescriptionLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
   }
 

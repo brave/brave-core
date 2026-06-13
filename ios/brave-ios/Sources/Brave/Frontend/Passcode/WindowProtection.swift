@@ -26,15 +26,16 @@ public class WindowProtection {
     let titleLabel = UILabel().then {
       $0.font = .preferredFont(for: .title3, weight: .semibold)
       $0.adjustsFontForContentSizeCategory = true
-      $0.textColor = .bravePrimary
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
       $0.numberOfLines = 0
       $0.textAlignment = .center
     }
     let unlockButton = FilledActionButton(type: .system).then {
       $0.setTitle(Strings.unlockButtonTitle, for: .normal)
+      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
       $0.titleLabel?.adjustsFontForContentSizeCategory = true
-      $0.backgroundColor = .braveBlurpleTint
+      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.isHidden = true
     }
     let cancelButton = ActionButton(type: .system).then {
@@ -42,7 +43,7 @@ public class WindowProtection {
       $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
       $0.titleLabel?.adjustsFontForContentSizeCategory = true
       $0.setTitle(Strings.cancelButtonTitle, for: .normal)
-      $0.tintColor = .braveLabel
+      $0.tintColor = UIColor(braveSystemName: .textPrimary)
       $0.isHidden = true
     }
 

@@ -10,8 +10,8 @@ import Web
 
 struct DownloadToastUX {
   static let toastTapDismissalMode: Toast.TapDismissalMode = .noDismissal
-  static let toastBackgroundColor = UIColor.braveInfoBorder
-  static let toastProgressColor = UIColor.braveInfoLabel
+  static let toastBackgroundColor = UIColor(braveSystemName: .systemfeedbackInfoText)
+  static let toastProgressColor = UIColor.white.withAlphaComponent(0.2)
 }
 
 class DownloadToast: Toast {

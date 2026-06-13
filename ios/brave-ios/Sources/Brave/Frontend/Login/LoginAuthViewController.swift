@@ -21,7 +21,7 @@ class LoginAuthViewController: UITableViewController {
   init(windowProtection: WindowProtection?, requiresAuthentication: Bool = false) {
     self.windowProtection = windowProtection
     self.requiresAuthentication = requiresAuthentication
-    super.init(nibName: nil, bundle: nil)
+    super.init(style: .grouped)
 
     windowProtection?.isCancellable = true
   }

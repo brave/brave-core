@@ -56,7 +56,7 @@ public struct NewSiteConnectionView: View {
           Image(uiImage: image)
             .resizable()
             .scaledToFit()
-            .background(Color(.braveDisabled))
+            .background(Color(braveSystemName: .neutral20))
             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
         } else {
           ProgressView()
@@ -66,7 +66,7 @@ public struct NewSiteConnectionView: View {
     }
     Text(urlOrigin: urlOrigin)
       .font(.subheadline)
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
       .multilineTextAlignment(.center)
   }
 
@@ -76,7 +76,7 @@ public struct NewSiteConnectionView: View {
         .accessibilityElement(children: .combine)
       Text(Strings.Wallet.newSiteConnectMessage)
         .font(.headline)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
     }
     .frame(maxWidth: .infinity)
@@ -86,7 +86,7 @@ public struct NewSiteConnectionView: View {
     Text(Strings.Wallet.newSiteConnectFooter)
       .frame(maxWidth: .infinity)
       .padding(.top)
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
       .multilineTextAlignment(.center)
   }
 
@@ -95,7 +95,6 @@ public struct NewSiteConnectionView: View {
       List {
         Section {
           headerView
-            .listRowBackground(Color(.braveGroupedBackground))
         }
         Section {
           ForEach(accountInfos) { account in
@@ -126,10 +125,10 @@ public struct NewSiteConnectionView: View {
                 Group {
                   if selectedAccounts.contains(account.id) {
                     Image(braveSystemName: "leo.check.circle-filled")
-                      .foregroundColor(Color(.braveSuccessLabel))
+                      .foregroundColor(Color(braveSystemName: .systemfeedbackSuccessText))
                   } else {
                     Image(systemName: "circle")
-                      .foregroundColor(Color(.secondaryButtonTint))
+                      .foregroundColor(Color(braveSystemName: .neutral30))
                   }
                 }
                 .imageScale(.large)
@@ -137,7 +136,6 @@ public struct NewSiteConnectionView: View {
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
         } footer: {
@@ -165,12 +163,9 @@ public struct NewSiteConnectionView: View {
             )
             .hidden()
           )
-          .listRowBackground(Color(.braveGroupedBackground))
         }
       }
       .listStyle(InsetGroupedListStyle())
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
       .toolbar {
@@ -179,7 +174,7 @@ public struct NewSiteConnectionView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }
@@ -222,9 +217,8 @@ public struct NewSiteConnectionView: View {
           Text(accountsAddressesToConfirm)
             .multilineTextAlignment(.center)
             .font(.footnote)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.braveGroupedBackground))
       }
       Section {
         HStack(spacing: 12) {
@@ -233,10 +227,9 @@ public struct NewSiteConnectionView: View {
           Text(Strings.Wallet.newSiteConnectConfirmationMessage)
             .multilineTextAlignment(.leading)
         }
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
-        .listRowBackground(Color(.braveGroupedBackground))
       } footer: {
         cautionFooterView
       }
@@ -252,12 +245,9 @@ public struct NewSiteConnectionView: View {
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
         .frame(maxWidth: .infinity)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
     .navigationBarTitleDisplayMode(.inline)
   }

@@ -17,13 +17,11 @@ struct BraveWalletDebugMenu: View {
     Form {
       Section {
         Toggle("Enable Bitcoin Testnet", isOn: $enableBitcoinTestnet.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
         Toggle("Enable Zcash Testnet", isOn: $enableZcashTestnet.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Brave Wallet Debug")
     .navigationBarTitleDisplayMode(.inline)
   }

@@ -30,7 +30,6 @@ struct CredentialDetailView: View {
           UIPasteboard.general.string = credential.serviceIdentifier ?? ""
         }
       )
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       HStack {
         Text(Strings.CredentialProvider.detailsFormUsernameField)
         Spacer()
@@ -43,7 +42,6 @@ struct CredentialDetailView: View {
           UIPasteboard.general.string = credential.username ?? ""
         }
       )
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       HStack {
         Text(Strings.CredentialProvider.detailsFormPasswordField)
         Spacer()
@@ -85,11 +83,8 @@ struct CredentialDetailView: View {
           }
         }
       )
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .foregroundColor(Color(braveSystemName: .textPrimary))
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
         Button {

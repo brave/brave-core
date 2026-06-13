@@ -112,7 +112,7 @@ struct DepositTokenView: View {
                   Text(viewModel.token.name)
                     .font(.footnote)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(.bravePrimary))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                   Text(
                     String.localizedStringWithFormat(
                       Strings.Wallet.userAssetSymbolNetworkDesc,
@@ -121,7 +121,7 @@ struct DepositTokenView: View {
                     )
                   )
                   .font(.caption)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -140,7 +140,7 @@ struct DepositTokenView: View {
               } label: {
                 Image(braveSystemName: "leo.tune")
                   .font(.footnote.weight(.medium))
-                  .foregroundColor(Color(.braveBlurpleTint))
+                  .foregroundColor(Color(braveSystemName: .iconInteractive))
                   .clipShape(Rectangle())
               }
               Spacer()
@@ -157,7 +157,7 @@ struct DepositTokenView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }
@@ -275,19 +275,19 @@ private struct DepositDetailsView: View {
         .frame(width: avatarSize, height: avatarSize)
       Text(selectedAccount?.name ?? "")
         .fontWeight(.semibold)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.leading)
         .font(.body)
       Image(braveSystemName: "leo.arrow.small-down")
         .font(.callout.weight(.medium))
-        .foregroundColor(Color(.primaryButtonTint))
+        .foregroundColor(Color(braveSystemName: .neutral70))
         .padding(.leading, 48)
     }
     .padding(.horizontal, 12)
     .padding(.vertical, 8)
     .background {
       RoundedRectangle(cornerRadius: 8)
-        .fill(Color(.secondaryBraveBackground))
+        .fill(Color(braveSystemName: .pageBackground))
     }
   }
 
@@ -300,27 +300,27 @@ private struct DepositDetailsView: View {
       case .eth:
         Text(Strings.Wallet.ethAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: supportedNetworks, maxIcons: 8)
       case .sol:
         Text(Strings.Wallet.solAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: supportedNetworks)
       case .fil:
         Text(Strings.Wallet.filAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: supportedNetworks)
       case .btc:
         Text(Strings.Wallet.btcAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .btc }))
       case .zec:
         Text(Strings.Wallet.zecAccountDescription)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .zec }))
       case .ada:
         EmptyView()
@@ -338,7 +338,7 @@ private struct DepositDetailsView: View {
   @ViewBuilder private func qrCodeView(_ viewModel: QRCodeViewModel) -> some View {
     VStack(spacing: 12) {
       RoundedRectangle(cornerRadius: 20, style: .continuous)
-        .stroke(Color(.secondaryButtonTint).opacity(0.5), lineWidth: 1)
+        .stroke(Color(braveSystemName: .neutral30).opacity(0.5), lineWidth: 1)
         .frame(width: 184, height: 184)
         .overlay(
           Group {
@@ -358,7 +358,7 @@ private struct DepositDetailsView: View {
         .multilineTextAlignment(.center)
       Text(viewModel.address)
         .font(.subheadline)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .multilineTextAlignment(.center)
       HStack {
         Button {
@@ -369,7 +369,7 @@ private struct DepositDetailsView: View {
             Text(Strings.Wallet.depositAddressCopy)
               .font(.footnote.weight(.semibold))
           }
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         .buttonStyle(BraveOutlineButtonStyle(size: .normal))
         Button {
@@ -380,7 +380,7 @@ private struct DepositDetailsView: View {
             Text(Strings.share)
               .font(.footnote.weight(.semibold))
           }
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         .buttonStyle(BraveOutlineButtonStyle(size: .normal))
       }
@@ -401,7 +401,7 @@ private struct DepositDetailsView: View {
   @ViewBuilder private var ethDisclosureView: some View {
     Text(String.localizedStringWithFormat(Strings.Wallet.depositEthDisclosure, ethNetworksCombined))
       .font(.caption2)
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
       .multilineTextAlignment(.center)
   }
 

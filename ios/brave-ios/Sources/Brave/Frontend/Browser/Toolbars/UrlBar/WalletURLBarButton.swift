@@ -17,7 +17,7 @@ class WalletURLBarButton: UIButton {
   var buttonState: ButtonState = .inactive {
     didSet {
       // We may end up having different states here where active is actually blurple
-      tintColor = .braveLabel
+      tintColor = UIColor(braveSystemName: .textPrimary)
 
       if buttonState == .activeWithPendingRequest {
         addBadgeIfNeeded()
@@ -42,7 +42,9 @@ class WalletURLBarButton: UIButton {
 
   override open var isHighlighted: Bool {
     didSet {
-      self.tintColor = isHighlighted ? .braveBlurpleTint : .braveLabel
+      self.tintColor =
+        isHighlighted
+        ? UIColor(braveSystemName: .textInteractive) : UIColor(braveSystemName: .textPrimary)
     }
   }
 
@@ -54,7 +56,7 @@ class WalletURLBarButton: UIButton {
   func addBadgeIfNeeded() {
     guard badgeView.superview == nil else { return }
 
-    badgeView.backgroundColor = .braveErrorBorder
+    badgeView.backgroundColor = UIColor(braveSystemName: .systemfeedbackErrorIcon)
     badgeView.layer.cornerRadius = badgeView.frame.height / 2
     badgeView.layer.masksToBounds = true
     addSubview(badgeView)

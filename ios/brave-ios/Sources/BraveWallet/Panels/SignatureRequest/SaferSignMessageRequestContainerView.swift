@@ -90,9 +90,9 @@ struct SaferSignMessageRequestContainerView: View {
           .background(
             LinearGradient(
               stops: [
-                .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                .init(color: Color(.systemGroupedBackground).opacity(0), location: 0),
+                .init(color: Color(.systemGroupedBackground).opacity(1), location: 0.05),
+                .init(color: Color(.systemGroupedBackground).opacity(1), location: 1),
               ],
               startPoint: .top,
               endPoint: .bottom
@@ -112,7 +112,7 @@ struct SaferSignMessageRequestContainerView: View {
       if let network {
         Text(network.chainName)
           .font(.callout)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       Spacer()
       if requestCount > 1 {
@@ -132,7 +132,6 @@ struct SaferSignMessageRequestContainerView: View {
           Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .foregroundColor(Color(.braveOrange))
         } else {
           if let url = URL(string: request.originInfo.originSpec) {
             FaviconReader(url: url) { image in
@@ -142,10 +141,10 @@ struct SaferSignMessageRequestContainerView: View {
                   .scaledToFit()
               } else {
                 Circle()
-                  .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+                  .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
               }
             }
-            .background(Color(.braveDisabled))
+            .background(Color(braveSystemName: .neutral20))
             .clipShape(RoundedRectangle(cornerRadius: 4))
           }
         }
@@ -153,7 +152,7 @@ struct SaferSignMessageRequestContainerView: View {
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
       Text(originInfo: request.originInfo)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.subheadline)
         .multilineTextAlignment(.center)
         .padding(.top, 8)
@@ -166,14 +165,14 @@ struct SaferSignMessageRequestContainerView: View {
         VStack(alignment: .leading, spacing: 4) {
           Text(Strings.Wallet.swapConfirmationNetworkFee)
             .fontWeight(.medium)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
           HStack {
             Group {
               if let network {
                 NetworkIcon(network: network)
               } else {
                 Circle()
-                  .stroke(Color(.braveSeparator))
+                  .stroke(Color(braveSystemName: .dividerStrong))
                   .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
               }
             }
@@ -182,7 +181,7 @@ struct SaferSignMessageRequestContainerView: View {
               height: min(assetNetworkIconSize, maxAssetNetworkIconSize)
             )
             Text(Strings.Wallet.braveSwapFree)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .frame(maxWidth: .infinity, alignment: .leading)
         }

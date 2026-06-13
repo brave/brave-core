@@ -82,10 +82,10 @@ private struct LaunchScreen: View {
       Color.clear
         .frame(height: 44)
         .background(Color(uiColor: .systemGray6))
-      Color(uiColor: .braveSeparator)
+      Color(braveSystemName: .dividerStrong)
         .frame(height: 1)
       Spacer()
-      Color(uiColor: .braveSeparator)
+      Color(braveSystemName: .dividerStrong)
         .frame(height: 1)
       Color.clear
         .frame(height: 44)
@@ -128,7 +128,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let window = UIWindow(windowScene: windowScene).then {
       $0.backgroundColor = UIColor(braveSystemName: .iosBrowserChromeBackgroundIos)
       $0.overrideUserInterfaceStyle = expectedThemeOverride(for: windowScene)
-      $0.tintColor = .braveBlurpleTint
+      $0.tintColor = UIColor(braveSystemName: .textInteractive)
     }
     window.rootViewController = UIHostingController(rootView: LaunchScreen())
     window.makeKeyAndVisible()

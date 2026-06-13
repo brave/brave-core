@@ -55,12 +55,10 @@ struct AdvancedShieldsSettingsView: View {
             subtitle: nil
           )
         }
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
 
       OtherPrivacySettingsSectionView(settings: settings)
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.braveShieldsAndPrivacy)
     .environment(

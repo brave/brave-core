@@ -24,7 +24,7 @@ struct NFTDetailView: View {
 
   @ViewBuilder private var noImageView: some View {
     Text(Strings.Wallet.nftDetailImageNotAvailable)
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
       .frame(maxWidth: .infinity, minHeight: 300)
   }
 
@@ -69,11 +69,11 @@ struct NFTDetailView: View {
                   Text(Strings.Wallet.nftSpam)
                     .padding(.vertical, 4)
                     .padding(.leading, 6)
-                    .foregroundColor(Color(.braveErrorLabel))
+                    .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
                   Image(braveSystemName: "leo.warning.triangle-outline")
                     .padding(.vertical, 4)
                     .padding(.trailing, 6)
-                    .foregroundColor(Color(.braveErrorBorder))
+                    .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
                 }
                 .font(.system(size: 13).weight(.semibold))
                 .background(
@@ -103,9 +103,9 @@ struct NFTDetailView: View {
           VStack(alignment: .leading, spacing: 8) {
             Text(nftDetailStore.nft.nftDetailTitle)
               .font(.title3.weight(.semibold))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(nftDetailStore.nft.name)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         .transaction { transaction in
@@ -122,9 +122,9 @@ struct NFTDetailView: View {
               AddressView(address: owner.address) {
                 HStack {
                   Text(owner.name)
-                    .foregroundColor(Color(.braveBlurpleTint))
+                    .foregroundColor(Color(braveSystemName: .textInteractive))
                   Text(owner.address.truncatedAddress)
-                    .foregroundColor(Color(.braveLabel))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                 }
                 .font(.subheadline)
               }
@@ -136,7 +136,7 @@ struct NFTDetailView: View {
             NFTDetailRow(title: Strings.Wallet.nftDetailTokenID) {
               Text("\(tokenId)")
                 .font(.subheadline)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
           }
           NFTDetailRow(
@@ -153,14 +153,14 @@ struct NFTDetailView: View {
                 Image(braveSystemName: "leo.arrow.diagonal-up-right")
               }
               .font(.subheadline)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
           if let networkInfo = nftDetailStore.networkInfo {
             NFTDetailRow(title: Strings.Wallet.nftDetailBlockchain) {
               Text(networkInfo.chainName)
                 .font(.subheadline)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
           }
           NFTDetailRow(title: Strings.Wallet.nftDetailTokenStandard) {
@@ -169,10 +169,9 @@ struct NFTDetailView: View {
                 ? Strings.Wallet.nftDetailERC721 : Strings.Wallet.nftDetailSPL
             )
             .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Wallet.nftDetailOverview)
       }
@@ -182,8 +181,7 @@ struct NFTDetailView: View {
         Section {
           Text(nftMetadata.desc)
             .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .listRowInsets(
               horizontalSizeClass == .regular
                 ? EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16) : nil
@@ -199,18 +197,15 @@ struct NFTDetailView: View {
               NFTDetailRow(title: attribute.traitType) {
                 Text(attribute.value)
                   .font(.subheadline)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.Wallet.nftDetailProperties)
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .onChange(of: nftDetailStore.nftMetadata) { _, newValue in
       if let newMetadata = newValue {
         onNFTMetadataRefreshed?(newMetadata)
@@ -222,7 +217,7 @@ struct NFTDetailView: View {
         isPresentingRemoveAlert = false
       }
     }
-    .background(Color(UIColor.braveGroupedBackground).ignoresSafeArea())
+    .background(Color(UIColor.systemGroupedBackground).ignoresSafeArea())
     .navigationBarTitle(nftDetailStore.nft.nftDetailTitle)
     .toolbar {
       ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -276,7 +271,7 @@ struct NFTDetailView: View {
             braveSystemImage: "leo.more.horizontal"
           )
           .labelStyle(.iconOnly)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .iconInteractive))
         }
       }
     }
@@ -308,10 +303,10 @@ struct NFTDetailView: View {
           VStack(spacing: 16) {
             Text(Strings.Wallet.nftRemoveFromWalletAlertTitle)
               .font(.headline)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Text(Strings.Wallet.nftRemoveFromWalletAlertDescription)
               .font(.footnote)
-              .foregroundStyle(Color(.secondaryBraveLabel))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
           .padding(.bottom, 28)
         }

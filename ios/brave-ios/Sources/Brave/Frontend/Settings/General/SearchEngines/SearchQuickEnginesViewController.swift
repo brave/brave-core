@@ -122,6 +122,7 @@ class SearchQuickEnginesViewController: UITableViewController {
       if let searchEngine = engine {
         $0.isOn = searchEngines.isEngineEnabled(searchEngine)
       }
+      $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
     }
 
     let searchEngineCell = UITableViewCell(
@@ -135,9 +136,8 @@ class SearchQuickEnginesViewController: UITableViewController {
       $0.textLabel?.text = engine?.displayName
       $0.textLabel?.adjustsFontSizeToFitWidth = true
       $0.textLabel?.minimumScaleFactor = 0.5
-      $0.textLabel?.textColor = UIColor(braveSystemName: .textPrimary)
       $0.detailTextLabel?.text = searchTemplateHost(for: engine?.searchTemplate ?? "")
-      $0.detailTextLabel?.textColor = UIColor(braveSystemName: .textSecondary)
+      $0.detailTextLabel?.textColor = UIColor.secondaryLabel
       $0.imageView?.image = engine?.image.createScaled(UX.iconSize)
       $0.imageView?.layer.cornerRadius = 4
       $0.imageView?.layer.cornerCurve = .continuous

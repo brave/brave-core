@@ -192,7 +192,7 @@ struct EditPriorityFeeView: View {
     List {
       Section(
         header: Text(Strings.Wallet.gasFeeDisclaimer)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .font(.footnote)
           .resetListHeaderStyle()
           .padding(.vertical)
@@ -205,10 +205,9 @@ struct EditPriorityFeeView: View {
         } label: {
           EmptyView()
         }
-        .accentColor(Color(.braveBlurpleTint))
+        .accentColor(Color(braveSystemName: .primitivePrimary40))
         .pickerStyle(.inline)
-        .foregroundColor(Color(.braveLabel))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       if gasFeeKind == .custom {
         Section(
@@ -220,7 +219,7 @@ struct EditPriorityFeeView: View {
             }
           }
           .font(.headline)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.top)
           .padding(.bottom, 12)
           .resetListHeaderStyle()
@@ -228,33 +227,32 @@ struct EditPriorityFeeView: View {
           Group {
             VStack(alignment: .leading, spacing: 4) {
               Text(Strings.Wallet.gasAmountLimit)
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .font(.footnote.weight(.semibold))
               TextField("", text: $gasLimit)
                 .keyboardType(.numberPad)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             .padding(.vertical, 6)
             VStack(alignment: .leading, spacing: 4) {
               Text(Strings.Wallet.perGasTipLimit)
                 .font(.footnote.weight(.semibold))
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               TextField("", text: maximumPriorityFeeBinding)
                 .keyboardType(.numberPad)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             .padding(.vertical, 6)
             VStack(alignment: .leading, spacing: 4) {
               Text(Strings.Wallet.perGasPriceLimit)
                 .font(.footnote.weight(.semibold))
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               TextField("", text: $maximumGasPrice)
                 .keyboardType(.numberPad)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             .padding(.vertical, 6)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       Section {
@@ -264,11 +262,10 @@ struct EditPriorityFeeView: View {
           Text("~\(calculatedMaximumFee)")
             .bold()
         }
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.headline)
         .frame(maxWidth: .infinity)
         .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
       Section {
         Button(action: save) {
@@ -278,12 +275,9 @@ struct EditPriorityFeeView: View {
         .frame(maxWidth: .infinity)
         .disabled(isSaveButtonDisabled)
         .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.maxPriorityFeeTitle)
     .alert(isPresented: $isShowingAlert) {

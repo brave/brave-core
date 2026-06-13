@@ -37,35 +37,3 @@ public class InsetButton: UIButton {
     }
   }
 }
-
-public class SelectedInsetButton: InsetButton {
-  public override var isSelected: Bool {
-    didSet {
-      backgroundColor = isSelected ? selectedBackgroundColor : .clear
-      setTitleColor(isSelected ? .white : .braveLabel, for: .normal)
-    }
-  }
-
-  public var selectedBackgroundColor: UIColor? {
-    didSet {
-      if isSelected {
-        backgroundColor = selectedBackgroundColor
-      }
-    }
-  }
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    contentEdgeInsets = UIEdgeInsets(top: 3, left: 6, bottom: 3, right: 6)
-    layer.cornerRadius = 4.0
-    layer.cornerCurve = .continuous
-
-    setTitleColor(.braveLabel, for: .normal)
-    selectedBackgroundColor = .braveBlurpleTint
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-}

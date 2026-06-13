@@ -149,7 +149,7 @@ struct AddAccountView: View {
             Picker(selection: $accountNetwork) {
               ForEach(selectedCoinNetworks) { network in
                 Text(network.chainName)
-                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
                   .tag(network)
               }
             } label: {
@@ -159,18 +159,17 @@ struct AddAccountView: View {
           label: {
             HStack {
               Text(Strings.Wallet.transactionDetailsNetworkTitle)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               Spacer()
               Group {
                 Text(accountNetwork.chainName)
                 Image(systemName: "chevron.up.chevron.down")
               }
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
         )
         .disabled(preSelectedAccountNetwork != nil)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       accountNameSection
       if isJSONImported {
@@ -181,8 +180,6 @@ struct AddAccountView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(navigationTitle)
     .navigationBarItems(
@@ -237,24 +234,21 @@ struct AddAccountView: View {
                 .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               VStack(alignment: .leading, spacing: 3) {
                 Text(coin.localizedTitle)
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .font(.headline)
                   .multilineTextAlignment(.leading)
                 Text(coin.localizedDescription)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .font(.footnote)
                   .multilineTextAlignment(.leading)
               }
             }
             .padding(.vertical, 10)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
   }
@@ -274,7 +268,7 @@ struct AddAccountView: View {
           presentationMode.dismiss()
         } label: {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }
@@ -310,13 +304,12 @@ struct AddAccountView: View {
     Section(
       content: {
         TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name, axis: .vertical)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       },
       header: {
         WalletListHeaderView(
           title: Text(Strings.Wallet.accountDetailsNameTitle)
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         )
       },
       footer: {
@@ -337,11 +330,10 @@ struct AddAccountView: View {
       header: WalletListHeaderView(
         title: Text(Strings.Wallet.importAccountOriginPasswordTitle)
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       )
     ) {
       SecureField(Strings.Wallet.passwordPlaceholder, text: $originPassword)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
 
@@ -355,7 +347,7 @@ struct AddAccountView: View {
       header: WalletListHeaderView(
         title: Text(Strings.Wallet.importAccountSectionTitle)
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       )
     ) {
       if self.selectedCoin == .btc || self.preSelectedCoin == .btc {
@@ -416,7 +408,6 @@ struct AddAccountView: View {
           .disabled(isLoadingFile)
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listRowSeparator(.hidden)
   }

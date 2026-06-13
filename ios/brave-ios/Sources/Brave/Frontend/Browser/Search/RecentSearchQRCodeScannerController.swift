@@ -6,6 +6,7 @@
 import AVFoundation
 import BraveCore
 import BraveShared
+import BraveUI
 import Foundation
 import Shared
 import UIKit
@@ -47,8 +48,7 @@ class RecentSearchQRCodeScannerController: UIViewController {
     super.viewDidLoad()
 
     title = Strings.recentSearchScannerTitle
-    navigationItem.rightBarButtonItem = UIBarButtonItem(
-      barButtonSystemItem: .done,
+    navigationItem.rightBarButtonItem = .doneButton(
       target: self,
       action: #selector(tappedDone)
     )
@@ -143,14 +143,14 @@ extension RecentSearchQRCodeScannerController {
       $0.text = Strings.recentSearchScannerDescriptionTitle
       $0.font = .systemFont(ofSize: 17, weight: .semibold)
       $0.numberOfLines = 0
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
     }
 
     private let bodyLabel = UILabel().then {
       $0.text = Strings.recentSearchScannerDescriptionBody
       $0.font = .systemFont(ofSize: 17)
       $0.numberOfLines = 0
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
     }
 
     var scannedText: String? {
@@ -212,7 +212,7 @@ extension RecentSearchQRCodeScannerController {
     override init(frame: CGRect) {
       super.init(frame: frame)
 
-      backgroundColor = .secondaryBraveBackground
+      backgroundColor = UIColor(braveSystemName: .pageBackground)
 
       addSubview(cameraView)
       addSubview(scannedDisplayButton)

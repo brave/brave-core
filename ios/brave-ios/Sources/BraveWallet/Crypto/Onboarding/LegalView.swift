@@ -57,7 +57,7 @@ struct LegalView: View {
             )
           )
           .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
-          .tint(Color(.braveBlurpleTint))
+          .tint(Color(braveSystemName: .textInteractive))
           .font(.subheadline)
           .frame(maxWidth: .infinity, alignment: .leading)
           .onTapGesture {
@@ -90,7 +90,7 @@ struct LegalView: View {
       )
     )
     .accessibilityEmbedInScrollView()
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .transparentNavigationBar(
       backButtonTitle: Strings.Wallet.web3DomainInterstitialPageTAndU.capitalizeFirstLetter,
       backButtonDisplayMode: .generic

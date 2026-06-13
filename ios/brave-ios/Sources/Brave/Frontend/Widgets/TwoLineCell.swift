@@ -117,7 +117,7 @@ class SiteTableViewCell: TwoLineTableViewCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = UIColor(braveSystemName: .pageBackground)
 
     twoLineHelper.setUpViews(
       contentView,
@@ -148,7 +148,7 @@ class BookmarkTableViewCell: TwoLineTableViewCell {
       let imageView = imageView
     else { return }
 
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = UIColor(braveSystemName: .pageBackground)
 
     twoLineHelper.setUpViews(
       contentView,
@@ -250,8 +250,8 @@ private class TwoLineCellHelper {
       self.container?.backgroundColor = .clear
     }
 
-    textLabel.textColor = .braveLabel
-    detailTextLabel.textColor = .secondaryBraveLabel
+    textLabel.textColor = UIColor(braveSystemName: .textPrimary)
+    detailTextLabel.textColor = UIColor(braveSystemName: .textSecondary)
     setupDynamicFonts()
 
     imageView.contentMode = .scaleAspectFill

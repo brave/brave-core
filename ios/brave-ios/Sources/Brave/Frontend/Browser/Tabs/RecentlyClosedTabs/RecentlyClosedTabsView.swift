@@ -33,7 +33,7 @@ struct RecentlyClosedTabsView: View {
       }
     )
     .accessibility(label: Text(Strings.RecentlyClosed.recentlyClosedClearActionConfirmation))
-    .foregroundColor(Color(.braveBlurpleTint))
+    .foregroundColor(Color(braveSystemName: .textInteractive))
     .actionSheet(isPresented: $showClearDataPrompt) {
       .init(
         title: Text(Strings.RecentlyClosed.recentlyClosedClearActionConfirmation),
@@ -59,7 +59,7 @@ struct RecentlyClosedTabsView: View {
         dismissView()
       }
     )
-    .foregroundColor(Color(.braveBlurpleTint))
+    .foregroundColor(Color(braveSystemName: .textInteractive))
   }
 
   private var websitesList: some View {
@@ -78,13 +78,13 @@ struct RecentlyClosedTabsView: View {
               VStack(alignment: .leading) {
                 Text(recentlyClosed.title ?? "")
                   .font(.footnote.weight(.semibold))
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .lineLimit(1)
                 Text(
                   "\(URLFormatter.formatURL(recentlyClosed.url, formatTypes: [], unescapeOptions: []))"
                 )
                 .font(.caption)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .lineLimit(1)
               }
               Spacer()
@@ -105,12 +105,9 @@ struct RecentlyClosedTabsView: View {
           }
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .environment(\.defaultMinListHeaderHeight, 0)
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 
   init(tabManager: TabManager? = nil) {
@@ -128,7 +125,7 @@ struct RecentlyClosedTabsView: View {
             Text(Strings.RecentlyClosed.recentlyClosedEmptyListTitle)
               .font(.headline.weight(.bold))
               .multilineTextAlignment(.center)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .padding(.horizontal, 20)
           } else {
             websitesList
@@ -136,7 +133,7 @@ struct RecentlyClosedTabsView: View {
         }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(.braveGroupedBackground).ignoresSafeArea())
+      .background(Color(.systemGroupedBackground))
       .navigationTitle(Strings.RecentlyClosed.recentlyClosedTabsScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

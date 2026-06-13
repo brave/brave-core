@@ -15,8 +15,8 @@ struct NetworkPicker: View {
     let borderColor: UIColor
 
     static let `default` = Style(
-      textColor: .bravePrimary,
-      borderColor: .secondaryButtonTint
+      textColor: UIColor(braveSystemName: .textPrimary),
+      borderColor: UIColor(braveSystemName: .neutral30)
     )
   }
 
@@ -96,7 +96,7 @@ struct NetworkPicker: View {
                 networkSelectionStore: networkSelectionStore
               )
             }
-            .accentColor(Color(.braveBlurpleTint))
+            .accentColor(Color(braveSystemName: .primitivePrimary40))
             .navigationViewStyle(.stack)
           }
         }

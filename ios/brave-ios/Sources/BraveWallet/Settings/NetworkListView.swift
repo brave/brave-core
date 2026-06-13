@@ -53,7 +53,7 @@ struct NetworkListView: View {
       HStack {
         VStack(alignment: .leading, spacing: 4) {
           Text(network.chainName)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.callout.weight(isDefaultNetwork(network) ? .bold : .regular))
           Group {
             Text(network.chainId)
@@ -63,7 +63,7 @@ struct NetworkListView: View {
               Text(rpcEndpoint)
             }
           }
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .font(.footnote)
         }
         Spacer()
@@ -92,7 +92,7 @@ struct NetworkListView: View {
             .font(.callout.weight(.semibold))
             .foregroundColor(
               isDefaultNetwork(network)
-                ? Color(.braveDisabled) : Color(.braveLabel)
+                ? Color(braveSystemName: .neutral20) : Color(braveSystemName: .textPrimary)
             )
           }
           .disabled(isDefaultNetwork(network))
@@ -130,13 +130,13 @@ struct NetworkListView: View {
                 }
               }
             }
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           } label: {
             Image(
               braveSystemName: "leo.more.vertical"
             )
             .font(.callout.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
       }
@@ -151,9 +151,6 @@ struct NetworkListView: View {
           ForEach(networks) { network in
             networkRow(network)
               .padding(.vertical, 6)
-              .listRowBackground(
-                Color(.secondaryBraveGroupedBackground)
-              )
           }
         } header: {
           Text(coin.localizedTitle)
@@ -161,8 +158,6 @@ struct NetworkListView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.transactionDetailsNetworkTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -171,7 +166,7 @@ struct NetworkListView: View {
           isPresentingNetworkDetails = .init()
         } label: {
           Label(Strings.Wallet.addCustomNetworkBarItemTitle, systemImage: "plus")
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }

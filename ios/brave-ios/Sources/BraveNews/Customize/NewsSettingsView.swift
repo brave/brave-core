@@ -35,8 +35,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
     defer { isControllerSetUp = true }
 
     if navigationController?.viewControllers.first === self {
-      navigationItem.rightBarButtonItem = .init(
-        barButtonSystemItem: .done,
+      navigationItem.rightBarButtonItem = .doneButton(
         target: self,
         action: #selector(tappedDone)
       )
@@ -137,10 +136,10 @@ public struct NewsSettingsView: View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
       Text(Strings.BraveNews.isEnabledToggleLabel)
         .font(.headline)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+    .tint(Color(braveSystemName: .primitivePrimary40))
   }
 
   // Xcode typechecker struggled when these were inside of `body`
@@ -193,8 +192,8 @@ public struct NewsSettingsView: View {
                 .font(.caption)
                 .padding(.vertical, 1)
                 .padding(.horizontal, 6)
-                .background(Capsule().stroke(Color(.secondaryButtonTint), lineWidth: 1))
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .background(Capsule().stroke(Color(braveSystemName: .neutral30), lineWidth: 1))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           },
           subtitle: Strings.BraveNews.followingButtonSubtitle
@@ -208,7 +207,6 @@ public struct NewsSettingsView: View {
       Section {
         if isNewsEnabled.value {
           destinations
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         showBraveNewsToggle
@@ -218,8 +216,6 @@ public struct NewsSettingsView: View {
     }
     .listStyle(.insetGrouped)
     .animation(.default, value: searchDelegate.isEditing)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.BraveNews.braveNews)
     .navigationBarTitleDisplayMode(.inline)
     .onChange(of: searchDelegate.query) { _, query in
@@ -288,7 +284,7 @@ public struct NewsSettingsView: View {
         tappedOptInLearnMore?()
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(.braveBackground).ignoresSafeArea())
+      .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
       .transition(.opacity.animation(.default))
     }
   }
@@ -314,17 +310,17 @@ private struct DestinationLabel<Title: View>: View {
   var body: some View {
     HStack(spacing: 12) {
       image
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(width: imageSize, height: imageSize)
-        .background(Color(.secondaryBraveBackground).clipShape(Circle()))
+        .background(Color(braveSystemName: .pageBackground).clipShape(Circle()))
       VStack(alignment: .leading, spacing: 2) {
         title
           .font(.headline)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         if let subtitle {
           Text(subtitle)
             .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
       }
     }
@@ -372,7 +368,6 @@ struct NewsSettingsView_PreviewProvider: PreviewProvider {
         rootViewController: NewsSettingsViewController(dataSource: .init(), openURL: { _ in })
       )
     )
-    .accentColor(Color(.braveBlurpleTint))
   }
 }
 #endif

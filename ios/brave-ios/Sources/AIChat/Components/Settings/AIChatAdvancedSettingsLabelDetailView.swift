@@ -22,7 +22,7 @@ public struct AIChatAdvancedSettingsLabelDetailView: View {
 
       if let detail = detail {
         Text(detail)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       } else {
         ProgressView()
       }

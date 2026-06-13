@@ -48,7 +48,7 @@ private struct AppIconView: View {
         }
       HStack {
         Text(altIcon.map(\.displayName) ?? Strings.AltAppIcon.defaultAppIcon)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .foregroundStyle(Color(uiColor: UIColor.label))
         Spacer()
         if isSelected {
           Image(braveSystemName: "leo.check.circle-filled")
@@ -80,24 +80,27 @@ struct AltIconsView: View {
         } label: {
           AppIconView(altIcon: nil, isSelected: model.selectedAltAppIcon == nil)
         }
-        .listRowBackground(Color(uiColor: UIColor.secondaryBraveGroupedBackground))
         ForEach(AltIcon.allBraveIcons) { icon in
           Button {
             selectIcon(icon)
           } label: {
             AppIconView(altIcon: icon, isSelected: model.selectedAltAppIcon == icon.assetName)
           }
-          .listRowBackground(Color(uiColor: UIColor.secondaryBraveGroupedBackground))
         }
       } header: {
         Text(Strings.AltAppIcon.braveIconsHeader)
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(uiColor: UIColor.braveGroupedBackground))
     .navigationTitle(Strings.AltAppIcon.changeAppIcon)
     .alert(Strings.AltAppIcon.errorTitle, isPresented: $isErrorPresented) {
       Button(Strings.OKString) {}
     }
+    .tint(Color(braveSystemName: .textInteractive))
   }
 }
+
+#if DEBUG
+#Preview {
+  AltIconsView(model: .init())
+}
+#endif

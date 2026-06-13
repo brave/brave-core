@@ -59,7 +59,7 @@ struct BackupRecoveryPhraseView: View {
             .padding(8)
             .overlay(
               RoundedRectangle(cornerRadius: 4)
-                .stroke(Color(.braveDisabled), lineWidth: 1)
+                .stroke(Color(braveSystemName: .neutral20), lineWidth: 1)
             )
         }
         Button {
@@ -70,11 +70,11 @@ struct BackupRecoveryPhraseView: View {
               "\(Strings.Wallet.copiedToPasteboard)  \(Image(braveSystemName: "leo.check.normal"))"
             )
             .font(.subheadline.bold())
-            .foregroundColor(Color(.braveSuccessLabel))
+            .foregroundColor(Color(braveSystemName: .systemfeedbackSuccessText))
           } else {
             Text(Strings.Wallet.copyToPasteboard)
               .font(.subheadline.bold())
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         .padding(.top, 20)
@@ -111,7 +111,7 @@ struct BackupRecoveryPhraseView: View {
           } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .padding(.top, 16)
         }
@@ -122,7 +122,7 @@ struct BackupRecoveryPhraseView: View {
       backButtonTitle: Strings.Wallet.backupRecoveryPhraseBackButtonTitle,
       backButtonDisplayMode: .generic
     )
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .alertOnScreenshot {
       Alert(
         title: Text(Strings.Wallet.screenshotDetectedTitle),

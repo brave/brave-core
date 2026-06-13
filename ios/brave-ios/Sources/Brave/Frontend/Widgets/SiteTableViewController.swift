@@ -24,7 +24,7 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
     super.init(reuseIdentifier: reuseIdentifier)
 
     titleLabel.font = DynamicFontHelper.defaultHelper.deviceFontMediumBold
-    titleLabel.textColor = .braveLabel
+    titleLabel.textColor = UIColor(braveSystemName: .textPrimary)
 
     contentView.addSubview(titleLabel)
 
@@ -79,8 +79,8 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
       $0.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
       $0.layoutMargins = .zero
       $0.keyboardDismissMode = .onDrag
-      $0.backgroundColor = .secondaryBraveBackground
-      $0.separatorColor = .braveSeparator
+      $0.backgroundColor = UIColor(braveSystemName: .pageBackground)
+      $0.separatorColor = UIColor(braveSystemName: .dividerStrong)
       $0.accessibilityIdentifier = "SiteTable"
       $0.cellLayoutMarginsFollowReadableWidth = false
       $0.sectionHeaderTopPadding = 5

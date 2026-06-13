@@ -101,7 +101,7 @@ extension BraveVPNInstallViewController {
 
     let installVPNButton = BraveButton().then {
       $0.setTitle(Strings.VPN.installProfileButtonText, for: .normal)
-      $0.backgroundColor = .braveDarkerBlurple
+      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
       $0.setTitleColor(.white, for: .normal)
       $0.snp.makeConstraints { make in
@@ -117,7 +117,7 @@ extension BraveVPNInstallViewController {
     let contactSupportButton = BraveButton(type: .system).then {
       $0.setTitle(Strings.VPN.settingsContactSupport, for: .normal)
       $0.titleLabel?.font = .systemFont(ofSize: 16)
-      $0.setTitleColor(.secondaryBraveLabel, for: .normal)
+      $0.setTitleColor(UIColor(braveSystemName: .textSecondary), for: .normal)
       $0.snp.makeConstraints { make in
         make.height.equalTo(44)
       }

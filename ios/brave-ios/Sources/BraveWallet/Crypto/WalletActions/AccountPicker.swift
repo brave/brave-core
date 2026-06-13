@@ -50,18 +50,18 @@ struct AccountPicker: View {
       VStack(alignment: .leading, spacing: 2) {
         Text(keyringStore.selectedAccount.name)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.leading)
         if !keyringStore.selectedAccount.address.isEmpty {
           Text(keyringStore.selectedAccount.address.truncatedAddress)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .multilineTextAlignment(.leading)
         }
       }
       .font(.caption)
       Image(systemName: "chevron.down.circle")
         .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.primaryButtonTint))
+        .foregroundColor(Color(braveSystemName: .neutral70))
     }
     .padding(.vertical, 6)
   }

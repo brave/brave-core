@@ -93,7 +93,7 @@ struct PasswordEntryField: View {
           icon
             .imageScale(.large)
             .font(.headline)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .iconInteractive))
         }
       }
     }
@@ -196,7 +196,7 @@ struct PasswordEntryView: View {
               presentationMode.dismiss()
             } label: {
               Text(Strings.cancelButtonTitle)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
         }

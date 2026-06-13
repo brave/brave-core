@@ -56,11 +56,11 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     var backgroundColor: UIColor {
       switch self {
       case .primary:
-        return .braveBlurpleTint
+        return UIColor(braveSystemName: .buttonBackground)
       case .secondary:
-        return .secondaryButtonTint
+        return UIColor(braveSystemName: .neutral30)
       case .destructive:
-        return .braveErrorLabel
+        return UIColor(braveSystemName: .systemfeedbackErrorText)
       case .link:
         return .clear
       }
@@ -68,7 +68,10 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
 
     var titleColor: UIColor {
       if self == .link {
-        return .braveBlurpleTint
+        return UIColor(braveSystemName: .textInteractive)
+      }
+      if self == .primary {
+        return UIColor(braveSystemName: .schemesOnPrimary)
       }
       return .white
     }

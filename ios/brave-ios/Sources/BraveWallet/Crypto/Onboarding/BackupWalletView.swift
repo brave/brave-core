@@ -68,17 +68,17 @@ struct BackupWalletView: View {
         VStack(spacing: 14) {
           Text(Strings.Wallet.backupWalletTitle)
             .font(.headline)
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(Strings.Wallet.backupWalletSubtitle)
             .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
         .multilineTextAlignment(.center)
 
         Toggle(Strings.Wallet.backupWalletDisclaimer, isOn: $acknowledgedWarning)
           .font(.footnote)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-          .foregroundColor(Color(.braveLabel))
+          .tint(Color(braveSystemName: .primitivePrimary40))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.horizontal, 20)
           .padding(.vertical, 10)
 
@@ -105,7 +105,7 @@ struct BackupWalletView: View {
           } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
         }
       }
@@ -120,7 +120,7 @@ struct BackupWalletView: View {
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
     .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .background(
       NavigationLink(
         isActive: Binding(
@@ -154,7 +154,7 @@ struct BackupWalletView: View {
                 presentationMode.dismiss()
               } label: {
                 Text(Strings.cancelButtonTitle)
-                  .foregroundColor(Color(.braveBlurpleTint))
+                  .foregroundColor(Color(braveSystemName: .textInteractive))
               }
             }
           }

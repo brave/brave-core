@@ -76,21 +76,21 @@ struct PrivacyReportAllTimeListsView: View {
               VStack(alignment: .leading, spacing: 0) {
                 Text(item.name)
                   .font(.callout)
-                  .foregroundColor(Color(.bravePrimary))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
               }
 
               Group {
                 if sizeCategory.isAccessibilityCategory {
                   VStack(alignment: .leading, spacing: 4) {
                     Text(Strings.PrivacyHub.blockedBy)
-                      .foregroundColor(Color(.secondaryBraveLabel))
+                      .foregroundColor(Color(braveSystemName: .textSecondary))
 
                     blockedLabels(by: item.source)
                   }
                 } else {
                   HStack(spacing: 4) {
                     Text(Strings.PrivacyHub.blockedBy)
-                      .foregroundColor(Color(.secondaryBraveLabel))
+                      .foregroundColor(Color(braveSystemName: .textSecondary))
 
                     blockedLabels(by: item.source)
                   }
@@ -110,11 +110,8 @@ struct PrivacyReportAllTimeListsView: View {
           .padding(.vertical, 8)
           .font(.footnote)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 
   private var websitesList: some View {
@@ -135,11 +132,8 @@ struct PrivacyReportAllTimeListsView: View {
           .listRowInsets(.init())
           .padding(.vertical, 8)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 
   var body: some View {
@@ -164,13 +158,13 @@ struct PrivacyReportAllTimeListsView: View {
         }
       }
     }
-    .background(Color(.braveGroupedBackground).ignoresSafeArea())
+    .background(Color(uiColor: .systemGroupedBackground))
     .ignoresSafeArea(.container, edges: .bottom)
     .navigationTitle(Strings.PrivacyHub.allTimeListsButtonText)
     .toolbar {
       ToolbarItem(placement: .confirmationAction) {
         Button(Strings.done, action: onDismiss)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
     .onAppear {

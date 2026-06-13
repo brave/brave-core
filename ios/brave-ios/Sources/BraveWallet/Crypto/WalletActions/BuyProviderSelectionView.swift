@@ -68,12 +68,9 @@ struct BuyProviderSelectionView: View {
                 )
               }
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
         .listStyle(InsetGroupedListStyle())
-        .scrollContentBackground(.hidden)
-        .background(Color(UIColor.braveGroupedBackground))
       }
     }
     .navigationBarTitleDisplayMode(.inline)
@@ -123,20 +120,20 @@ private struct ProviderView: View {
                   .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               } else {
                 Rectangle()
-                  .foregroundColor(Color(.tertiaryBraveGroupedBackground))
+                  .foregroundColor(Color(.tertiarySystemGroupedBackground))
                   .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
                   .shimmer(true)
               }
             }
           } else {
             Rectangle()
-              .foregroundColor(Color(.tertiaryBraveGroupedBackground))
+              .foregroundColor(Color(.tertiarySystemGroupedBackground))
               .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               .shimmer(true)
           }
           VStack(alignment: .leading, spacing: 4) {
             Text(provider.name ?? "")
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.headline)
               .multilineTextAlignment(.leading)
             if let sourceAmount = quote.sourceAmount,
@@ -148,7 +145,7 @@ private struct ProviderView: View {
               Text(
                 "\(sourceAmount) \(sourceCurrencyCode) ≈ \(destinationAmountBDouble.decimalDescription.trimmingTrailingZeros) \(destinationCurrencyCode)"
               )
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.footnote)
               .multilineTextAlignment(.leading)
             }

@@ -35,11 +35,8 @@ private struct ChannelListView: View {
           isFollowing: isFollowingChannel(channel)
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.grouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .environment(\.defaultMinListRowHeight, 0)
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.BraveNews.channelsTitle)

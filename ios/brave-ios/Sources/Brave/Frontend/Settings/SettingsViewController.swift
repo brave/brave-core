@@ -142,7 +142,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     }
 
     UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor =
-      .braveLabel
+      .label
   }
 
   deinit {
@@ -165,9 +165,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
 
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 
-    view.backgroundColor = .braveGroupedBackground
-    view.tintColor = .braveBlurpleTint
-    navigationController?.view.backgroundColor = .braveGroupedBackground
+    view.backgroundColor = .systemGroupedBackground
+    view.tintColor = UIColor(braveSystemName: .textInteractive)
+    navigationController?.view.backgroundColor = .systemGroupedBackground
 
     setUpSections()
 
@@ -406,12 +406,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     let container = UINavigationController(rootViewController: controller)
     controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
     controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
-    controller.navigationItem.rightBarButtonItem = .init(
-      systemItem: .done,
-      primaryAction: .init { [unowned container] _ in
-        container.dismiss(animated: true)
-      }
-    )
+    controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
+      container.dismiss(animated: true)
+    }
     present(container, animated: true)
   }
 
@@ -991,12 +988,15 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         Row(
           text: Strings.showTabsBar,
           image: UIImage(braveSystemNamed: "leo.window.tab"),
-          accessory: .switchToggle(
-            value: Preferences.General.tabBarVisibility.value != TabBarVisibility.never.rawValue,
-            {
-              Preferences.General.tabBarVisibility.value =
-                $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue
-            }
+          accessory: .view(
+            SwitchAccessoryView(
+              initialValue: Preferences.General.tabBarVisibility.value
+                != TabBarVisibility.never.rawValue,
+              valueChange: {
+                Preferences.General.tabBarVisibility.value =
+                  $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue
+              }
+            )
           ),
           cellClass: MultilineValue1Cell.self
         )
@@ -1259,7 +1259,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       if Preferences.VPN.vpnReceiptStatus.value
         == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
       {
-        return (Strings.VPN.updateActionCellTitle, .braveErrorLabel)
+        return (
+          Strings.VPN.updateActionCellTitle, UIColor(braveSystemName: .systemfeedbackErrorText)
+        )
       }
 
       switch BraveVPN.vpnState {
@@ -1267,12 +1269,16 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         return ("", UIColor.black)
       case .purchased(let enabled):
         if enabled {
-          return (Strings.VPN.settingsVPNEnabled, .braveSuccessLabel)
+          return (
+            Strings.VPN.settingsVPNEnabled, UIColor(braveSystemName: .systemfeedbackSuccessText)
+          )
         } else {
-          return (Strings.VPN.settingsVPNDisabled, .braveErrorLabel)
+          return (
+            Strings.VPN.settingsVPNDisabled, UIColor(braveSystemName: .systemfeedbackErrorText)
+          )
         }
       case .expired:
-        return (Strings.VPN.settingsVPNExpired, .braveErrorLabel)
+        return (Strings.VPN.settingsVPNExpired, UIColor(braveSystemName: .systemfeedbackErrorText))
       }
     }()
 
@@ -1310,7 +1316,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
         ? UIImage(braveSystemNamed: "leo.warning.triangle-filled")?
           .withRenderingMode(.alwaysOriginal)
-          .withTintColor(.braveErrorLabel)
+          .withTintColor(UIColor(braveSystemName: .systemfeedbackErrorText))
         : UIImage(braveSystemNamed: "leo.product.vpn"),
       accessory: .disclosureIndicator,
       cellClass: ColoredDetailCell.self,
@@ -1465,7 +1471,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     )
     let titleLabel = UITableViewHeaderFooterView().then {
       $0.textLabel?.text = Strings.about.uppercased()
-      $0.textLabel?.textColor = .braveLabel
       $0.isUserInteractionEnabled = true
       $0.addGestureRecognizer(
         UITapGestureRecognizer(target: self, action: #selector(tappedAboutHeader))
@@ -1790,15 +1795,17 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       section.rows.insert(
         Row(
           text: "Enable Liquid Glass",
-          accessory: .switchToggle(
-            value: UserDefaults.standard.bool(forKey: key),
-            { newValue in
-              if newValue {
-                UserDefaults.standard.set(true, forKey: key)
-              } else {
-                UserDefaults.standard.removeObject(forKey: key)
+          accessory: .view(
+            SwitchAccessoryView(
+              initialValue: UserDefaults.standard.bool(forKey: key),
+              valueChange: { newValue in
+                if newValue {
+                  UserDefaults.standard.set(true, forKey: key)
+                } else {
+                  UserDefaults.standard.removeObject(forKey: key)
+                }
               }
-            }
+            )
           )
         ),
         at: 0
@@ -2021,7 +2028,7 @@ private final class BraveAccountIconCell: UITableViewCell, Cell {
 
     content.secondaryText = row.detailText
     content.secondaryTextProperties.numberOfLines = 0
-    content.secondaryTextProperties.color = .secondaryBraveLabel
+    content.secondaryTextProperties.color = UIColor.secondaryLabel
 
     contentConfiguration = content
     accessoryType = row.accessory.type

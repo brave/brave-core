@@ -41,12 +41,12 @@ class SendTabProcessController: SendTabTransitioningController {
 
   private let processTypeImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
   }
 
   private let processInformationLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
   }
 
@@ -76,7 +76,7 @@ class SendTabProcessController: SendTabTransitioningController {
 
     super.init()
 
-    containerView.backgroundColor = .secondaryBraveBackground
+    containerView.backgroundColor = UIColor(braveSystemName: .pageBackground)
   }
 
   @available(*, unavailable)

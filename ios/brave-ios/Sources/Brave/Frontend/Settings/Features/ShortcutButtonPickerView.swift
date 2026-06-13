@@ -28,21 +28,18 @@ struct ShortcutButtonPickerView: View {
       Picker("", selection: $selectedShortcut.value) {
         Label(Strings.ShortcutButton.hideButtonTitle, braveSystemImage: "leo.eye.off")
           .tag(Int?.none)
+          .tint(Color(braveSystemName: .iconDefault))
         ForEach(eligibleShortcuts, id: \.self) { shortcut in
           Label(shortcut.displayString, braveSystemImage: shortcut.braveSystemImageName ?? "")
             .tag(Int?.some(shortcut.rawValue))
         }
       }
       .pickerStyle(.inline)
-      .tint(Color(braveSystemName: .iconDefault))
-      .foregroundStyle(Color(braveSystemName: .textPrimary))
-      .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
     }
+    .tint(Color(braveSystemName: .iconInteractive))
     .onChange(of: selectedShortcut.value) { _, newValue in
       dismiss()
     }
     .navigationTitle(Strings.ShortcutButton.shortcutButtonTitle)
-    .scrollContentBackground(.hidden)
-    .background(Color(uiColor: .braveGroupedBackground))
   }
 }

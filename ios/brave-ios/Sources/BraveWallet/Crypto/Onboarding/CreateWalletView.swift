@@ -124,7 +124,7 @@ struct CreateWalletView: View {
     HStack(spacing: 12) {
       Image(braveSystemName: "leo.warning.circle-filled")
         .renderingMode(.template)
-        .foregroundColor(Color(.braveLighterOrange))
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
       Text(error?.errorDescription ?? "")
         .multilineTextAlignment(.leading)
         .font(.callout)
@@ -132,7 +132,7 @@ struct CreateWalletView: View {
     }
     .padding(12)
     .background(
-      Color(.braveErrorBackground)
+      Color(braveSystemName: .systemfeedbackErrorBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
     .hidden(isHidden: error == nil)
@@ -211,7 +211,7 @@ struct CreateWalletView: View {
       .padding(.horizontal, 20)
       .padding(.bottom, 20)
     }
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .background(
       NavigationLink(
         destination: BackupRecoveryPhraseView(
@@ -244,7 +244,7 @@ struct CreateWalletView: View {
           Button(action: dismissAction) {  // dismiss all of wallet
             Image("wallet-dismiss", bundle: .module)
               .renderingMode(.template)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .iconInteractive))
           }
         }
       }
@@ -283,7 +283,9 @@ struct CreatingWalletView: View {
     VStack(spacing: 24) {
       Spacer()
       ProgressView()
-        .progressViewStyle(.braveCircular(size: .normal, tint: .braveBlurpleTint))
+        .progressViewStyle(
+          .braveCircular(size: .normal, tint: UIColor(braveSystemName: .primitivePrimary40))
+        )
       Text(Strings.Wallet.creatingWallet)
         .font(.title)
       Spacer()

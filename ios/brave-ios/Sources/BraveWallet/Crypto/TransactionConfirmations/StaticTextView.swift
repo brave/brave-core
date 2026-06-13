@@ -20,7 +20,7 @@ struct StaticTextView: UIViewRepresentable {
       textView.text = text
     }
     textView.isEditable = false
-    textView.backgroundColor = .tertiaryBraveGroupedBackground
+    textView.backgroundColor = .tertiarySystemGroupedBackground
     textView.font = {
       let metrics = UIFontMetrics(forTextStyle: .body)
       let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)

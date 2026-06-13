@@ -38,11 +38,11 @@ struct ChannelLabel: View {
         VStack(alignment: .leading, spacing: 2) {
           Text(title)
             .font(.footnote.bold())
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           if let subtitle {
             Text(subtitle)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
       } icon: {
@@ -55,9 +55,9 @@ struct ChannelLabel: View {
               .font(.callout.weight(.medium))
           }
         }
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(width: imageSize, height: imageSize)
-        .background(Color(.secondaryBraveBackground).clipShape(Circle()))
+        .background(Color(braveSystemName: .pageBackground).clipShape(Circle()))
       }
       .labelStyle(NewsLabelStyle())
     }

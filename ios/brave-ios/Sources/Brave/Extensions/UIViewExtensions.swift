@@ -105,7 +105,7 @@ extension UIView {
   /// Returns a line with height of 1pt. Used to imitate a separator line in custom views.
   static var separatorLine: UIView {
     let view = UIView().then {
-      $0.backgroundColor = .braveSeparator
+      $0.backgroundColor = UIColor(braveSystemName: .dividerStrong)
       $0.snp.makeConstraints {
         $0.height.equalTo(1.0 / UIScreen.main.scale)
       }

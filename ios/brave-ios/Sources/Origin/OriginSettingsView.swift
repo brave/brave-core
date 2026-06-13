@@ -24,7 +24,6 @@ public struct OriginSettingsView: View {
           Label(Strings.Origin.rewardsLabel, braveSystemImage: "leo.product.bat-outline")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Origin.adsHeader)
       }
@@ -33,12 +32,10 @@ public struct OriginSettingsView: View {
           Label(Strings.Origin.privacyPreservingAnalyticsLabel, braveSystemImage: "leo.bar.chart")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isStatsPingEnabled) {
           Label(Strings.Origin.statisticsReportingLabel, braveSystemImage: "leo.bar.chart")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Origin.analyticsHeader)
       }
@@ -47,32 +44,26 @@ public struct OriginSettingsView: View {
           Label(Strings.Origin.leoAILabel, braveSystemImage: "leo.product.brave-leo")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isNewsDisabled.inversed) {
           Label(Strings.Origin.newsLabel, braveSystemImage: "leo.product.brave-news")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isPlaylistEnabled) {
           Label(Strings.Origin.playlistLabel, braveSystemImage: "leo.product.playlist")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isTalkDisabled.inversed) {
           Label(Strings.Origin.talkLabel, braveSystemImage: "leo.product.brave-talk")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isVPNDisabled.inversed) {
           Label(Strings.Origin.vpnLabel, braveSystemImage: "leo.product.vpn")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isWalletDisabled.inversed) {
           Label(Strings.Origin.walletLabel, braveSystemImage: "leo.product.brave-wallet")
         }
         .toggleStyle(.origin)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Origin.featuresHeader)
       } footer: {
@@ -87,7 +78,6 @@ public struct OriginSettingsView: View {
         } label: {
           Text(Strings.Origin.resetToDefaultsButton)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if viewModel.isPuchaseLinkable {
         Section {
@@ -96,13 +86,11 @@ public struct OriginSettingsView: View {
           } label: {
             Text(Strings.Origin.linkPurchase)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           NavigationLink {
             StoreKitReceiptSimpleView()
           } label: {
             Text(Strings.Origin.viewAppStoreReceipt)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Text(Strings.Origin.purchaseSectionHeader)
         } footer: {
@@ -112,8 +100,6 @@ public struct OriginSettingsView: View {
     }
     .navigationTitle(Strings.Origin.originProductName)
     .navigationBarTitleDisplayMode(.inline)
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
     .overlay(alignment: .bottom) {
       if viewModel.isRestartToastVisible {
         FeatureEnabledToastView {

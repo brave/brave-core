@@ -14,8 +14,8 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
     textView.autocorrectionType = .yes
     textView.inlinePredictionType = .no
     textView.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.medium)
-    textView.textColor = .braveLabel
-    textView.backgroundColor = .braveBackground
+    textView.textColor = UIColor(braveSystemName: .textPrimary)
+    textView.backgroundColor = UIColor(braveSystemName: .containerBackground)
     return textView
   }()
 
@@ -23,7 +23,7 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
     let label = UILabel()
     label.text = Strings.Sync.codeWordInputHelp
     label.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
-    label.textColor = .secondaryBraveLabel
+    label.textColor = UIColor(braveSystemName: .textSecondary)
     label.lineBreakMode = .byWordWrapping
     label.numberOfLines = 0
     return label

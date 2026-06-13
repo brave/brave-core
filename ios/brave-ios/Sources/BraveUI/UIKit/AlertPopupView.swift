@@ -50,7 +50,7 @@ public class AlertPopupView: UIKitPopupView {
     }
 
     titleLabel = UILabel(frame: CGRect.zero)
-    titleLabel.textColor = .bravePrimary
+    titleLabel.textColor = UIColor(braveSystemName: .textPrimary)
     titleLabel.textAlignment = .center
     titleLabel.font = UIFont.systemFont(ofSize: titleSize, weight: titleWeight)
     titleLabel.text = title
@@ -58,7 +58,7 @@ public class AlertPopupView: UIKitPopupView {
     containerView.addSubview(titleLabel)
 
     messageLabel = UILabel(frame: CGRect.zero)
-    messageLabel.textColor = .braveLabel
+    messageLabel.textColor = UIColor(braveSystemName: .textPrimary)
     messageLabel.textAlignment = .center
     messageLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
     messageLabel.text = message
@@ -68,10 +68,10 @@ public class AlertPopupView: UIKitPopupView {
     if let inputType = inputType {
       textField = UITextField(frame: CGRect.zero).then {
         $0.keyboardType = inputType
-        $0.textColor = .braveLabel
+        $0.textColor = UIColor(braveSystemName: .textPrimary)
         $0.attributedPlaceholder = NSAttributedString(
           string: inputPlaceholder ?? "",
-          attributes: [.foregroundColor: UIColor.secondaryBraveLabel]
+          attributes: [.foregroundColor: UIColor(braveSystemName: .textSecondary)]
         )
         $0.autocorrectionType = .no
         $0.autocapitalizationType = .none
@@ -90,7 +90,7 @@ public class AlertPopupView: UIKitPopupView {
 
     setPopupContentView(view: containerView)
     setStyle(popupStyle: .dialog)
-    setDialogColor(color: .tertiaryBraveBackground)
+    setDialogColor(color: UIColor(braveSystemName: .containerHighlight))
   }
 
   func update(title: String) {

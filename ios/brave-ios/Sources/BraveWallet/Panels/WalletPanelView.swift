@@ -77,7 +77,7 @@ public struct WalletPanelContainerView: View {
     .padding()
     .padding()
     .frame(maxWidth: .infinity)
-    .background(Color(.braveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
   }
 
   private var setupView: some View {
@@ -85,10 +85,10 @@ public struct WalletPanelContainerView: View {
       VStack(spacing: 36) {
         VStack(spacing: 4) {
           Text(Strings.Wallet.braveWallet)
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.headline)
           Text(Strings.Wallet.walletPanelSetupWalletDescription)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .font(.subheadline)
         }
         .multilineTextAlignment(.center)
@@ -103,7 +103,7 @@ public struct WalletPanelContainerView: View {
       .padding()
     }
     .frame(maxWidth: .infinity)
-    .background(Color(.braveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
   }
 
   public var body: some View {
@@ -336,11 +336,11 @@ struct WalletPanelView: View {
             .lineLimit(1)
         }
       }
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
       .font(.caption.weight(.semibold))
       .padding(.init(top: 6, leading: 12, bottom: 6, trailing: 12))
       .background(
-        Color(.secondaryButtonTint)
+        Color(braveSystemName: .neutral30)
           .clipShape(Capsule().inset(by: 0.5).stroke())
       )
       .clipShape(Capsule())
@@ -350,7 +350,10 @@ struct WalletPanelView: View {
 
   private var networkPickerButton: some View {
     NetworkPicker(
-      style: .init(textColor: .braveLabel, borderColor: .secondaryButtonTint),
+      style: .init(
+        textColor: UIColor(braveSystemName: .textPrimary),
+        borderColor: UIColor(braveSystemName: .neutral30)
+      ),
       isForOrigin: true,
       keyringStore: keyringStore,
       networkStore: networkStore
@@ -362,7 +365,7 @@ struct WalletPanelView: View {
       presentWalletWithContext(.pendingRequests)
     } label: {
       Image(braveSystemName: "leo.notification.dot")
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(minWidth: 30, minHeight: 44)
         .contentShape(Rectangle())
     }
@@ -377,7 +380,7 @@ struct WalletPanelView: View {
       }
     } label: {
       Image(braveSystemName: "leo.expand")
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .rotationEffect(.init(degrees: 90))
         .frame(minWidth: 30, minHeight: 44)
         .contentShape(Rectangle())
@@ -405,7 +408,7 @@ struct WalletPanelView: View {
       }
     } label: {
       Image(braveSystemName: "leo.more.horizontal")
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .frame(minWidth: 30, minHeight: 44)
         .contentShape(Rectangle())
     }
@@ -445,7 +448,7 @@ struct WalletPanelView: View {
         if sizeCategory.isAccessibilityCategory {
           VStack {
             Text(Strings.Wallet.braveWallet)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.headline)
               .background(
                 Color.clear
@@ -463,7 +466,7 @@ struct WalletPanelView: View {
           .padding(.horizontal, 16)
           .padding(.vertical, 4)
           .overlay(
-            Color(.braveLabel).opacity(0.3)  // Divider
+            Color(braveSystemName: .textPrimary).opacity(0.3)  // Divider
               .frame(height: pixelLength),
             alignment: .bottom
           )
@@ -477,7 +480,7 @@ struct WalletPanelView: View {
             }
             Spacer()
             Text(Strings.Wallet.braveWallet)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.headline)
               .background(
                 Color.clear
@@ -491,7 +494,7 @@ struct WalletPanelView: View {
           .padding(.horizontal, 16)
           .padding(.vertical, 4)
           .overlay(
-            Color(.braveLabel).opacity(0.3)  // Divider
+            Color(braveSystemName: .textPrimary).opacity(0.3)  // Divider
               .frame(height: pixelLength),
             alignment: .bottom
           )
@@ -515,23 +518,26 @@ struct WalletPanelView: View {
                 .frame(width: blockieSize, height: blockieSize)
                 .overlay(
                   RoundedRectangle(cornerRadius: 4)
-                    .strokeBorder(Color(.braveLabel).opacity(0.6), style: .init(lineWidth: 1))
+                    .strokeBorder(
+                      Color(braveSystemName: .textPrimary).opacity(0.6),
+                      style: .init(lineWidth: 1)
+                    )
                 )
                 .overlay(
                   Image(systemName: "chevron.down.circle.fill")
                     .font(.footnote)
-                    .background(Color(.braveLabel).clipShape(Circle()))
+                    .background(Color(braveSystemName: .textPrimary).clipShape(Circle()))
                     .offset(x: -4, y: 4),
                   alignment: .bottomLeading
                 )
             }
             VStack(spacing: 4) {
               Text(keyringStore.selectedAccount.name)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .font(.headline)
               AddressView(address: keyringStore.selectedAccount.address) {
                 Text(keyringStore.selectedAccount.address.truncatedAddress)
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                   .font(.callout)
                   .multilineTextAlignment(.center)
               }
@@ -558,20 +564,20 @@ struct WalletPanelView: View {
             )
             .font(.callout)
           }
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.vertical)
           HStack(spacing: 0) {
             Button {
               presentBuySendSwap()
             } label: {
               Image(braveSystemName: "leo.swap.horizontal")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .imageScale(.large)
                 .padding(.horizontal, 44)
                 .padding(.vertical, 8)
             }
             .background(buySendSwapBackground)
-            Color(.braveLabel).opacity(0.6)
+            Color(braveSystemName: .textPrimary).opacity(0.6)
               .frame(width: pixelLength)
             Button {
               if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
@@ -581,7 +587,7 @@ struct WalletPanelView: View {
               }
             } label: {
               Image(braveSystemName: "leo.history")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
                 .imageScale(.large)
                 .padding(.horizontal, 44)
                 .padding(.vertical, 8)
@@ -589,7 +595,7 @@ struct WalletPanelView: View {
           }
           .overlay(
             RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(
-              Color(.braveLabel).opacity(0.6),
+              Color(braveSystemName: .textPrimary).opacity(0.6),
               style: .init(lineWidth: pixelLength)
             )
           )
@@ -599,7 +605,7 @@ struct WalletPanelView: View {
     }
     .foregroundColor(.white)
     .background(
-      Color(.braveGroupedBackground)
+      Color(.systemGroupedBackground)
         .ignoresSafeArea()
     )
     .onChange(of: cryptoStore.selectedTab) { _, tab in

@@ -59,7 +59,7 @@ struct NetworkFilterView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.Wallet.saveButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }

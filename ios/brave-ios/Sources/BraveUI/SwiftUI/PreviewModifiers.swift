@@ -12,7 +12,7 @@ private struct PreviewColorSchemeIteratorModifier: ViewModifier {
   func body(content: Content) -> some View {
     ForEach(schemes, id: \.self) { scheme in
       content
-        .background(Color(.braveBackground))
+        .background(Color(braveSystemName: .containerBackground))
         .preferredColorScheme(scheme)
         .previewDisplayName(String(describing: scheme).capitalized)
     }

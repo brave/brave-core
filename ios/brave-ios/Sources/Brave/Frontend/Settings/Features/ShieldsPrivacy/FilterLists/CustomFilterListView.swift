@@ -137,7 +137,7 @@ struct CustomFilterListView: View {
       .scrollContentBackground(.hidden)
       .scrollDismissesKeyboard(.interactively)
       .background(
-        Color(.secondaryBraveBackground)
+        Color(braveSystemName: .pageBackground)
           .edgesIgnoringSafeArea(.all)
       )
       .navigationTitle(Text(Strings.Shields.customFilters))
@@ -225,11 +225,10 @@ struct FilterListEditor: UIViewRepresentable {
     lazy var textView: UITextView = {
       let textView = UITextView()
       textView.font = UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)
-      textView.textColor = UIColor.braveLabel
       textView.autocorrectionType = .no
       textView.autocapitalizationType = .none
       textView.keyboardType = .alphabet
-      textView.backgroundColor = .secondaryBraveGroupedBackground
+      textView.backgroundColor = .secondarySystemGroupedBackground
       textView.textContainerInset = UIEdgeInsets(
         vertical: 16,
         horizontal: 12

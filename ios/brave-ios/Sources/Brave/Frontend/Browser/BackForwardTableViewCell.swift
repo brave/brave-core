@@ -17,12 +17,12 @@ class BackForwardTableViewCell: UITableViewCell {
     static let borderBold = 5
     static let iconSize = 23
     static let fontSize: CGFloat = 12.0
-    static let textColor: UIColor = .braveLabel
+    static let textColor: UIColor = UIColor(braveSystemName: .textPrimary)
   }
 
   lazy var faviconView: UIImageView = {
     let faviconView = UIImageView(image: UIImage(sharedNamed: "brave.logo"))
-    faviconView.backgroundColor = .braveBackground
+    faviconView.backgroundColor = UIColor(braveSystemName: .containerBackground)
     faviconView.layer.cornerRadius = 6
     faviconView.layer.cornerCurve = .continuous
     faviconView.layer.borderWidth = 0.5
@@ -33,7 +33,7 @@ class BackForwardTableViewCell: UITableViewCell {
   }()
 
   let line = UIView().then {
-    $0.backgroundColor = .braveSeparator
+    $0.backgroundColor = UIColor(braveSystemName: .dividerStrong)
   }
 
   lazy var label: UILabel = {
@@ -61,7 +61,7 @@ class BackForwardTableViewCell: UITableViewCell {
     didSet {
       if isCurrentTab {
         label.font = UIFont(name: "HelveticaNeue-Bold", size: BackForwardViewCellUX.fontSize)
-        contentView.backgroundColor = .secondaryBraveBackground
+        contentView.backgroundColor = UIColor(braveSystemName: .pageBackground)
       }
     }
   }

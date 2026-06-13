@@ -69,7 +69,7 @@ class ShieldsSwitch: UIControl {
   }
 
   private let backgroundView = UIView().then {
-    $0.backgroundColor = UIColor.secondaryBraveBackground
+    $0.backgroundColor = UIColor(braveSystemName: .pageBackground)
     $0.isUserInteractionEnabled = false
   }
 

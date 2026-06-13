@@ -45,7 +45,6 @@ struct AccountDetailsView: View {
           AccountDetailsHeaderView(account: account)
             .frame(maxWidth: .infinity)
             .listRowInsets(.zero)
-            .listRowBackground(Color(.braveGroupedBackground))
         }
         Section(
           content: {
@@ -59,13 +58,12 @@ struct AccountDetailsView: View {
                 isFieldFocused = tf.becomeFirstResponder()
               }
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           },
           header: {
             WalletListHeaderView(
               title: Text(Strings.Wallet.accountDetailsNameTitle)
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(Color(.bravePrimary))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             )
           },
           footer: {
@@ -86,7 +84,6 @@ struct AccountDetailsView: View {
             ) {
               Text(Strings.Wallet.accountPrivateKey)
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
         if account.isImported {
@@ -108,13 +105,10 @@ struct AccountDetailsView: View {
                 )
               }
             )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
       }
       .listStyle(InsetGroupedListStyle())
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
@@ -122,7 +116,7 @@ struct AccountDetailsView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         ToolbarItemGroup(placement: .confirmationAction) {
@@ -133,7 +127,8 @@ struct AccountDetailsView: View {
         }
       }
     }
-    .accentColor(Color(.braveBlurpleTint))  // needed for navigation bar back button(s)
+    // needed for navigation bar back button(s)
+    .accentColor(Color(braveSystemName: .primitivePrimary40))
     .onAppear {
       if name.isEmpty {
         // Wait until next runloop pass to fix bug where body isn't recomputed based on state change
@@ -171,10 +166,10 @@ struct AccountDetailsHeaderView: View {
       } label: {
         HStack {
           Text(account.address)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
           Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "leo.copy.plain-text")
             .labelStyle(.iconOnly)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
       }
       .buttonStyle(.plain)

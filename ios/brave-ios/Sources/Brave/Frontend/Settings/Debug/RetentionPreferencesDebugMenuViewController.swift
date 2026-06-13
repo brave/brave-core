@@ -53,7 +53,7 @@ struct RetentionPreferencesDebugMenuView: View {
             Text(
               "Flag showing if the user installed the application after new onboarding is added."
             )
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            .foregroundStyle(.secondary)
             .font(.footnote)
           }
         }
@@ -61,7 +61,7 @@ struct RetentionPreferencesDebugMenuView: View {
           VStack(alignment: .leading) {
             Text("NTP Education Shown")
             Text("Flag tracking NTP Education should be loaded after onboarding of user.")
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
               .font(.footnote)
           }
         }
@@ -69,7 +69,7 @@ struct RetentionPreferencesDebugMenuView: View {
           VStack(alignment: .leading) {
             Text("Rewards Callout Shown")
             Text("Flag determining if Rewards callout is shown to user.")
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
               .font(.footnote)
           }
         }
@@ -77,7 +77,7 @@ struct RetentionPreferencesDebugMenuView: View {
           VStack(alignment: .leading) {
             Text("Default Browser Callout Shown")
             Text("Flag determining if DefaultBrowser callout is shown to user.")
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
               .font(.footnote)
           }
         }

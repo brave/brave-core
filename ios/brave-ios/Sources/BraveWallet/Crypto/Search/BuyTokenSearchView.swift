@@ -25,7 +25,7 @@ struct BuyTokenSearchView: View {
     } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
         .clipShape(Rectangle())
     }
     .sheet(isPresented: $isPresentingNetworkFilter) {
@@ -137,7 +137,7 @@ private struct MeldCryptoView: View {
       VStack(alignment: .leading) {
         Text(token.name ?? "")
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Text(
           String.localizedStringWithFormat(
             Strings.Wallet.userAssetSymbolNetworkDesc,
@@ -146,7 +146,7 @@ private struct MeldCryptoView: View {
           )
         )
         .font(.caption)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
       }
       .font(.footnote)
       Spacer()

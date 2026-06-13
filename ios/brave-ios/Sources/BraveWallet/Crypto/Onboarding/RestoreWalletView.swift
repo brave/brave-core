@@ -47,7 +47,7 @@ struct RestoreWalletView: View {
     HStack(spacing: 12) {
       Image(braveSystemName: "leo.warning.circle-filled")
         .renderingMode(.template)
-        .foregroundColor(Color(.braveLighterOrange))
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
       Text(Strings.Wallet.restoreWalletPhraseInvalidError)
         .multilineTextAlignment(.leading)
         .font(.callout)
@@ -55,7 +55,7 @@ struct RestoreWalletView: View {
     }
     .padding(12)
     .background(
-      Color(.braveErrorBackground)
+      Color(braveSystemName: .systemfeedbackErrorBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
   }
@@ -128,7 +128,7 @@ struct RestoreWalletView: View {
                 .customPrivacySensitive()
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               } else {
                 SecureField(
                   String.localizedStringWithFormat(
@@ -172,23 +172,23 @@ struct RestoreWalletView: View {
                   : Strings.Wallet.restoreWalletImportFromTwentyFourPhrases
               )
               .fontWeight(.medium)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
             }
             Spacer()
             Button {
               isRevealRecoveryWords.toggle()
             } label: {
               Image(braveSystemName: isRevealRecoveryWords ? "leo.eye.off" : "leo.eye.on")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
           }
           if !isTwelvePhrase {
             Toggle(isOn: $isLegacyEthSeedFormat) {
               Text(Strings.Wallet.restoreLegacyBraveWalletToggleLabel)
                 .fontWeight(.medium)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
-            .tint(Color(.braveBlurpleTint))
+            .tint(Color(braveSystemName: .primitivePrimary40))
           }
         }
         .padding(.horizontal, 16)
@@ -212,7 +212,7 @@ struct RestoreWalletView: View {
     }
     .navigationBarBackButtonHidden(isShowingCreatingWallet)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .overlay {
       if isShowingCreatingWallet {
         CreatingWalletView()
@@ -226,7 +226,7 @@ struct RestoreWalletView: View {
           Button(action: dismissAction) {  // dismiss all of wallet
             Image("wallet-dismiss", bundle: .module)
               .renderingMode(.template)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .iconInteractive))
           }
         }
       }

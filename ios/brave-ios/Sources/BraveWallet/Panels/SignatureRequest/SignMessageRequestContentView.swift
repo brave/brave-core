@@ -44,7 +44,7 @@ struct SignMessageRequestContentView: View {
       for: UIFont.systemFont(ofSize: desc.pointSize, weight: .regular)
     )
     let regularAttributes: [NSAttributedString.Key: Any] = [
-      .font: regularFont, .foregroundColor: UIColor.braveLabel,
+      .font: regularFont, .foregroundColor: UIColor(braveSystemName: .textPrimary),
     ]
     if requestDomain.isEmpty {
       // if we don't show domain, we don't need the titles so we
@@ -53,7 +53,7 @@ struct SignMessageRequestContentView: View {
     }
     let boldFont = metrics.scaledFont(for: UIFont.systemFont(ofSize: desc.pointSize, weight: .bold))
     let boldAttributes: [NSAttributedString.Key: Any] = [
-      .font: boldFont, .foregroundColor: UIColor.braveLabel,
+      .font: boldFont, .foregroundColor: UIColor(braveSystemName: .textPrimary),
     ]
 
     let domainTitle = NSAttributedString(
@@ -168,12 +168,12 @@ struct SignMessageRequestContentView: View {
       .frame(maxWidth: .infinity)
       .frame(height: staticTextViewHeight)
       .background(
-        Color(.tertiaryBraveGroupedBackground),
+        Color(.tertiarySystemGroupedBackground),
         in: RoundedRectangle(cornerRadius: 5, style: .continuous)
       )
       .padding()
       .background(
-        Color(.secondaryBraveGroupedBackground),
+        Color(.secondarySystemGroupedBackground),
         in: RoundedRectangle(cornerRadius: 10, style: .continuous)
       )
       .introspectTextView { textView in
@@ -213,7 +213,7 @@ private struct MessageWarningView: View {
           "\(Image(braveSystemName: "leo.warning.triangle-filled")) \(Strings.Wallet.signMessageConsecutiveNewlineWarning)"
         )
         .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
       }
       if hasUnknownUnicode {
@@ -221,7 +221,7 @@ private struct MessageWarningView: View {
           "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.signMessageRequestUnknownUnicodeWarning)"
         )
         .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
       }
       Button {
@@ -233,17 +233,13 @@ private struct MessageWarningView: View {
             : Strings.Wallet.signMessageShowOriginalMessage
         )
         .font(.subheadline)
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .textInteractive))
       }
     }
     .padding(12)
     .frame(maxWidth: .infinity)
     .background(
-      Color(.braveWarningBackground)
-        .overlay(
-          RoundedRectangle(cornerRadius: 10, style: .continuous)
-            .strokeBorder(Color(.braveWarningBorder), style: StrokeStyle(lineWidth: pixelLength))
-        )
+      Color(braveSystemName: .systemfeedbackWarningBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
   }

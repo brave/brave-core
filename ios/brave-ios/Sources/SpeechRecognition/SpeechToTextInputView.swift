@@ -36,7 +36,7 @@ public struct SpeechToTextInputView: View {
           dismissView()
         } label: {
           Image(braveSystemName: "leo.close")
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.system(.body))
         }
       }
@@ -44,7 +44,7 @@ public struct SpeechToTextInputView: View {
       Text(disclaimer)
         .font(.footnote)
         .multilineTextAlignment(.center)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .padding(.horizontal, 25)
         .padding(.bottom, 25)
     }
@@ -55,7 +55,7 @@ public struct SpeechToTextInputView: View {
       speechModel.stopTranscribing()
     }
     .padding()
-    .background(Color(.secondaryBraveBackground).ignoresSafeArea())
+    .background(Color(braveSystemName: .pageBackground).ignoresSafeArea())
   }
 
   private var transcriptView: some View {
@@ -71,12 +71,12 @@ public struct SpeechToTextInputView: View {
   private var microphoneView: some View {
     ZStack {
       Circle()
-        .foregroundColor(Color(.braveDarkerBlurple).opacity(0.20))
+        .foregroundColor(Color(braveSystemName: .primitivePrimary40).opacity(0.20))
         .frame(width: 150, height: 150, alignment: .center)
         .scaleEffect(outerCircleScale)
         .animation(outerCircleAnimation, value: outerCircleScale)
       Circle()
-        .foregroundColor(Color(.braveDarkerBlurple).opacity(0.5))
+        .foregroundColor(Color(braveSystemName: .primitivePrimary40).opacity(0.5))
         .frame(width: 100, height: 100, alignment: .center)
       Button {
         onEnterSearchKeyword?()

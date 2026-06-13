@@ -51,7 +51,7 @@ class SyncViewController: AuthenticationController {
   }
 
   override func viewDidLoad() {
-    view.backgroundColor = .secondaryBraveBackground
+    view.backgroundColor = UIColor(braveSystemName: .pageBackground)
   }
 
   override func viewWillAppear(_ animated: Bool) {

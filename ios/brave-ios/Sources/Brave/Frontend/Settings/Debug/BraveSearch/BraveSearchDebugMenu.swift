@@ -18,7 +18,7 @@ struct BraveSearchDebugMenu: View {
     Form {
       Section {
         Toggle("Enable callback logging", isOn: $logging.isEnabled)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
       }
 
       Section(header: Text(verbatim: "Logs")) {
@@ -44,8 +44,6 @@ struct BraveSearchDebugMenu: View {
         Text(String(describing: storageTypes))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .onAppear(perform: loadRecords)
   }
 

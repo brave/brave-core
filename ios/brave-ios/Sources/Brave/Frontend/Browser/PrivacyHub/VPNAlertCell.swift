@@ -45,7 +45,7 @@ extension PrivacyReportsView {
       Group {
         if let category = vpnAlert.categoryEnum {
           Text(headerText(for: category))
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .font(.caption.weight(.semibold))
         } else {
           EmptyView()
@@ -81,12 +81,12 @@ extension PrivacyReportsView {
 
             Text(date)
               .font(.caption)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
         }
         Spacer()
       }
-      .background(Color(.braveBackground))
+      .background(Color(braveSystemName: .containerBackground))
       .frame(maxWidth: .infinity)
       .fixedSize(horizontal: false, vertical: true)
       .padding(.horizontal)

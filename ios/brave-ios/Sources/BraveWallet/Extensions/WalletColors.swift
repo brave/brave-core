@@ -101,7 +101,7 @@ enum WalletV2Design {
   })
 
   // Light Theme/Text/text01 rgba(33, 37, 41, 1)
-  static let text01: UIColor = .bravePrimary
+  static let text01: UIColor = UIColor(braveSystemName: .textPrimary)
 
   // Extended/Gray/20 rgba(225, 226, 232, 1) / rgba(38, 42, 51, 1)
   static let extendedGray20 = UIColor(dynamicProvider: { traits in

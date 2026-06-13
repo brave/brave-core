@@ -12,7 +12,7 @@ import WebKit
 
 private struct BackForwardViewUX {
   static let rowHeight: CGFloat = 50
-  static let backgroundColor: UIColor = .braveBackground
+  static let backgroundColor: UIColor = UIColor(braveSystemName: .containerBackground)
 }
 
 class BackForwardListViewController: UIViewController, UIGestureRecognizerDelegate,

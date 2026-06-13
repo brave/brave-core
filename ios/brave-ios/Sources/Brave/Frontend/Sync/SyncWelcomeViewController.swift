@@ -143,8 +143,8 @@ class SyncWelcomeViewController: SyncViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle(Strings.Sync.newSyncCode, for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
-    button.setTitleColor(.white, for: .normal)
-    button.backgroundColor = .braveBlurpleTint
+    button.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
+    button.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     button.addTarget(self, action: #selector(newToSyncAction), for: .touchUpInside)
 
     button.snp.makeConstraints { make in
@@ -159,7 +159,7 @@ class SyncWelcomeViewController: SyncViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle(Strings.Sync.scanSyncCode, for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-    button.setTitleColor(.braveLabel, for: .normal)
+    button.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     button.addTarget(self, action: #selector(existingUserAction), for: .touchUpInside)
     return button
   }()
@@ -230,8 +230,7 @@ class SyncWelcomeViewController: SyncViewController {
     )
 
     if isModallyPresented {
-      navigationItem.leftBarButtonItem = UIBarButtonItem(
-        barButtonSystemItem: .done,
+      navigationItem.leftBarButtonItem = .doneButton(
         target: self,
         action: #selector(doneTapped)
       )

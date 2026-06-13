@@ -108,7 +108,7 @@ class BraveVPNLinkSwitchCell: UITableViewCell, Cell {
           }
         )
       }
-      .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+      .tint(Color(braveSystemName: .primitivePrimary40))
     }
   }
 }

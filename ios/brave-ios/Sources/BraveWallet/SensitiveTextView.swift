@@ -37,13 +37,13 @@ struct SensitiveTextView: View {
             "\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "leo.copy.plain-text"))"
           )
           .font(.subheadline)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }
     .padding(20)
     .background(
-      Color(.secondaryBraveBackground).clipShape(
+      Color(braveSystemName: .pageBackground).clipShape(
         RoundedRectangle(cornerRadius: 10, style: .continuous)
       )
     )

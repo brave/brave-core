@@ -9,7 +9,7 @@ import UIKit
 struct SimpleToastUX {
   static let toastHeight = bottomToolbarHeight
   static let toastAnimationDuration = 0.5
-  static let toastDefaultColor = UIColor.braveInfoBorder
+  static let toastDefaultColor = UIColor(braveSystemName: .systemfeedbackInfoIcon)
   static let toastFont = UIFont.systemFont(ofSize: 15)
   static let toastDismissAfter = DispatchTimeInterval.milliseconds(4500)  // 4.5 seconds.
   static let toastDelayBefore = DispatchTimeInterval.milliseconds(0)  // 0 seconds

@@ -73,12 +73,11 @@ struct BraveRewardsSettingsView: View {
           VStack(alignment: .leading) {
             Text(Strings.Rewards.settingsToggleTitle)
             Text(Strings.Rewards.settingsToggleMessage)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
               .font(.footnote)
           }
         }
         .tint(Color(braveSystemName: .primary50))
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if model.isWalletInitialized, let rewardsAPI = model.rewards.rewardsAPI {
         Section {
@@ -87,12 +86,9 @@ struct BraveRewardsSettingsView: View {
           } label: {
             Text(Strings.RewardsInternals.title)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
   }
 }
 

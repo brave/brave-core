@@ -26,8 +26,6 @@ protocol PlaylistScriptHandlerDelegate: NSObject {
     state: PlaylistItemAddedState,
     item: PlaylistInfo?
   )
-  func showPlaylistPopover(tab: (any TabState)?)
-  func showPlaylistToast(tab: (any TabState)?, state: PlaylistItemAddedState, item: PlaylistInfo?)
   func showPlaylistAlert(tab: (any TabState)?, state: PlaylistItemAddedState, item: PlaylistInfo?)
   func showPlaylistOnboarding(tab: (any TabState)?)
 }
@@ -199,12 +197,8 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
       // Use the ID that it was saved as in the database, rather than the Javascript ID
       item.tagId = $0
 
-      if let delegate = self.delegate {
-        if detected {
-          delegate.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
-        } else {
-          delegate.showPlaylistToast(tab: tab, state: .existingItem, item: item)
-        }
+      if detected, let delegate = self.delegate {
+        delegate.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
       }
     }
   }

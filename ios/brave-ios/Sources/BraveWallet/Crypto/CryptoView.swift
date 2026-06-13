@@ -65,7 +65,7 @@ public struct CryptoView: View {
       } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .iconInteractive))
       }
     }
   }
@@ -268,7 +268,7 @@ public struct CryptoView: View {
                     keyringStore: keyringStore
                   )
                 }
-                .accentColor(Color(.braveBlurpleTint))
+                .accentColor(Color(braveSystemName: .primitivePrimary40))
                 .navigationViewStyle(.stack)
               } else {
                 EmptyView()  // screen will be handled via `visibleScreen`
@@ -390,7 +390,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
       } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .iconInteractive))
       }
     }
   }

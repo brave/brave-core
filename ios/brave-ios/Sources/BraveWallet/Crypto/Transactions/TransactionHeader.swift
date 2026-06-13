@@ -70,7 +70,7 @@ struct TransactionHeader: View {
               }
             }
           }
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.callout)
         }
       }
@@ -87,7 +87,7 @@ struct TransactionHeader: View {
       )
       if let originInfo = originInfo {
         Text(originInfo: originInfo)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.subheadline)
           .multilineTextAlignment(.center)
           .padding(.top, 8)  // match vertical padding for tx type, value & fiat VStack
@@ -97,7 +97,7 @@ struct TransactionHeader: View {
           .font(.footnote)
         Text(value)
           .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         if let fiat = fiat {
           Text(fiat)  // Value in Fiat
             .font(.footnote)

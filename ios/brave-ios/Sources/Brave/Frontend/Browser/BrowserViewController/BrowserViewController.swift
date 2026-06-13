@@ -850,7 +850,7 @@ public class BrowserViewController: UIViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .braveBackground
+    view.backgroundColor = UIColor(braveSystemName: .containerBackground)
 
     // Add layout guides
     view.addLayoutGuide(pageOverlayLayoutGuide)
@@ -2035,8 +2035,7 @@ public class BrowserViewController: UIViewController {
     settingsNavigationController.modalPresentationStyle =
       UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
     settingsNavigationController.navigationBar.topItem?.leftBarButtonItem =
-      UIBarButtonItem(
-        barButtonSystemItem: .done,
+      .doneButton(
         target: settingsNavigationController,
         action: #selector(settingsNavigationController.done)
       )

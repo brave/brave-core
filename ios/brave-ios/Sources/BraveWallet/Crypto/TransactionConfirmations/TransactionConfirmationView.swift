@@ -99,8 +99,8 @@ struct TransactionConfirmationView: View {
     }
     .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .foregroundColor(Color(.braveLabel))
-    .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
+    .foregroundColor(Color(braveSystemName: .textPrimary))
+    .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     .onChange(of: confirmationStore.activeTransactionId) { _, newValue in
       // we are looking for `activeTransactionId` value
       // when the value is an empty string meaning there is no active transaction

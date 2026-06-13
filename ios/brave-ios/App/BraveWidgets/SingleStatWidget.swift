@@ -95,8 +95,8 @@ private struct StatView: View {
         .unredacted()
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
-    .foregroundColor(Color(UIColor.braveLabel))
+    .widgetBackground { Color(UIColor(braveSystemName: .pageBackground)) }
+    .foregroundColor(Color(braveSystemName: .textPrimary))
   }
 }
 
@@ -111,7 +111,7 @@ struct SingleStatWidget_Previews: PreviewProvider {
         statData: .init(
           name: "Ads & Trackers Blocked",
           value: "100k",
-          color: UIColor.braveBlurpleTint
+          color: UIColor(braveSystemName: .primitivePrimary40)
         )
       )
     )
@@ -119,7 +119,11 @@ struct SingleStatWidget_Previews: PreviewProvider {
     StatView(
       entry: StatEntry(
         date: Date(),
-        statData: .init(name: "Placeholder Count", value: "100k", color: UIColor.braveBlurpleTint)
+        statData: .init(
+          name: "Placeholder Count",
+          value: "100k",
+          color: UIColor(braveSystemName: .primitivePrimary40)
+        )
       )
     )
     .redacted(reason: .placeholder)

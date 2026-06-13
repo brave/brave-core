@@ -69,7 +69,7 @@ struct VerifyRecoveryPhraseView: View {
         HStack(spacing: 12) {
           Image(braveSystemName: "leo.warning.circle-filled")
             .renderingMode(.template)
-            .foregroundColor(Color(.braveLighterOrange))
+            .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
           Text(Strings.Wallet.verifyRecoveryPhraseError)
             .multilineTextAlignment(.leading)
             .font(.callout)
@@ -77,7 +77,7 @@ struct VerifyRecoveryPhraseView: View {
         }
         .padding(12)
         .background(
-          Color(.braveErrorBackground)
+          Color(braveSystemName: .systemfeedbackErrorBackground)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         )
         .hidden(isHidden: !isShowingError)
@@ -115,7 +115,7 @@ struct VerifyRecoveryPhraseView: View {
           } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .padding(.top, 16)
         }
@@ -123,7 +123,7 @@ struct VerifyRecoveryPhraseView: View {
     }
     .padding(.horizontal, 20)
     .padding(.bottom, 20)
-    .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
     .background(
       WalletPromptView(
         isPresented: $isShowingSkipWarning,
