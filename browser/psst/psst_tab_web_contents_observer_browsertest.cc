@@ -743,8 +743,11 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
 
+  // Wait for the Mojo PsstConsentFactory::CreatePsstConsentHandler call from
+  // the WebUI JavaScript to complete before interacting with the handler.
+  WaitForPsstDialogUIReady(dialog_wc);
+
   const std::vector<std::string> perform_uids = {"1", "2"};
-  // Accept the consent dialog to continue the flow and apply PSST settings
   ASSERT_TRUE(AcceptModalDialog(
       dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
 
