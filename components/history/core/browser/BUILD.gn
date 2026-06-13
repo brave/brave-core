@@ -9,6 +9,10 @@ source_set("unit_tests") {
     "//brave/components/history/core/browser/brave_expire_history_backend_unittest.cc",
     "//brave/components/history/core/browser/brave_visit_database_unittest.cc",
   ]
+
+  if (is_android) {
+    sources += [ "//brave/components/history/core/browser/brave_top_sites_constants_unittest.cc" ]
+  }
   deps = [
     "//base",
     "//base/test:test_support",
