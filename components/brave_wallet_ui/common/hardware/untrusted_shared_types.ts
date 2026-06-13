@@ -17,7 +17,7 @@ export type BridgeType = (typeof BridgeTypes)[keyof typeof BridgeTypes]
 
 export namespace Untrusted {
   export type EthereumSignatureVRS = {
-    vBytes: Buffer
+    vHex: string
     rBytes: Buffer
     sBytes: Buffer
   }

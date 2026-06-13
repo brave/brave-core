@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -92,7 +93,7 @@ TEST(Eip2930TransactionUnitTest, GetHashedMessageToSign) {
 
   access_list->push_back(item);
 
-  EXPECT_EQ(base::HexEncodeLower(tx.GetHashedMessageToSign()),
+  EXPECT_EQ(base::HexEncodeLower(KeccakHash(tx.GetMessageToSign())),
             "78528e2724aa359c58c13e43a7c467eb721ce8d410c2a12ee62943a3aaefb60b");
 }
 
@@ -122,26 +123,26 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
 
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
   ASSERT_TRUE(key);
-  auto signature = *key->SignCompact(tx.GetHashedMessageToSign());
+  auto signature = *key->SignCompact(KeccakHash(tx.GetMessageToSign()));
 
   ASSERT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(signature);
+  tx.set_signature(std::move(signature));
   ASSERT_TRUE(tx.IsSigned());
   EXPECT_EQ(
-      tx.GetSignedTransaction(),
+      ToHex(tx.GetSignedTransaction()),
       "0x01f8a587796f6c6f76337880843b9aca008262d494df0a88b2b68c673713a8ec826003"
       "676f272e35730180f838f7940000000000000000000000000000000000001337e1a00000"
       "00000000000000000000000000000000000000000000000000000000000080a0294ac940"
       "77b35057971e6b4b06dfdf55a6fbed819133a6c1d31e187f1bca938da00be950468ba1c2"
       "5a5cb50e9f6d8aa13c8cd21f24ba909402775b262ac76d374d");
   EXPECT_EQ(
-      tx.GetTransactionHash(),
+      ToHex(KeccakHash(tx.GetSignedTransaction())),
       "0xbbd570a3c6acc9bb7da0d5c0322fe4ea2a300db80226f7df4fef39b2d6649eec");
 
-  EXPECT_EQ(tx.v_, (uint256_t)0);
-  EXPECT_EQ(base::HexEncodeLower(tx.r_),
+  EXPECT_EQ(tx.GetSignature()->recid(), 0);
+  EXPECT_EQ(base::HexEncodeLower(tx.GetSignature()->r_bytes()),
             "294ac94077b35057971e6b4b06dfdf55a6fbed819133a6c1d31e187f1bca938d");
-  EXPECT_EQ(base::HexEncodeLower(tx.s_),
+  EXPECT_EQ(base::HexEncodeLower(tx.GetSignature()->s_bytes()),
             "0be950468ba1c25a5cb50e9f6d8aa13c8cd21f24ba909402775b262ac76d374d");
 }
 

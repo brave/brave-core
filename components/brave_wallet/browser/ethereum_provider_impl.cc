@@ -14,7 +14,6 @@
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/containers/to_vector.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -26,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/internal/secp256k1_signature.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/siwe_message_parser.h"
@@ -34,6 +34,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -483,7 +484,7 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
   }
 
   SignMessageInternal(account_id, std::move(sign_data),
-                      std::move(message_bytes), std::move(callback),
+                      KeccakHashForEthSign(message_bytes), std::move(callback),
                       std::move(id));
 }
 
@@ -508,9 +509,14 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
   if (!signature_bytes) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
+  auto sig =
+      Secp256k1Signature::CreateFromRecoverAddressPayload(*signature_bytes);
+  if (!sig) {
+    return RejectInvalidParams(std::move(id), std::move(callback));
+  }
 
-  auto address = keyring_service_->RecoverAddressByDefaultKeyring(
-      *message_bytes, *signature_bytes);
+  auto address = keyring_service_->RecoverAddressByEthereumKeyring(
+      KeccakHashForEthSign(*message_bytes), *sig);
   if (!address) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError,
@@ -714,19 +720,17 @@ void EthereumProviderImpl::SignTypedMessage(
   mojom::SignDataUnionPtr sign_data =
       mojom::SignDataUnion::NewEthSignTypedData(std::move(eth_sign_typed_data));
 
-  SignMessageInternal(account_id, std::move(sign_data),
-                      base::ToVector(message_to_sign), std::move(callback),
-                      std::move(id));
+  SignMessageInternal(account_id, std::move(sign_data), message_to_sign,
+                      std::move(callback), std::move(id));
 }
 
 void EthereumProviderImpl::SignMessageInternal(
     const mojom::AccountIdPtr& account_id,
     mojom::SignDataUnionPtr sign_data,
-    std::vector<uint8_t> message_to_sign,
+    KeccakHashArray hashed_message,
     RequestCallback callback,
     base::Value id) {
   CHECK(sign_data);
-  bool is_eip712 = sign_data->is_eth_sign_typed_data();
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(origin_), 0, account_id.Clone(), std::move(sign_data),
       mojom::CoinType::ETH,
@@ -737,7 +741,7 @@ void EthereumProviderImpl::SignMessageInternal(
       base::BindOnce(&EthereumProviderImpl::OnSignMessageRequestProcessed,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      std::move(id), account_id.Clone(),
-                     std::move(message_to_sign), is_eip712));
+                     std::move(hashed_message)));
   delegate_->ShowPanel(origin_);
 }
 
@@ -745,8 +749,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     RequestCallback callback,
     base::Value id,
     const mojom::AccountIdPtr& account_id,
-    std::vector<uint8_t> message,
-    bool is_eip712,
+    KeccakHashArray hashed_message,
     bool approved,
     mojom::EthereumSignatureBytesPtr hw_signature,
     const std::optional<std::string>& error) {
@@ -771,14 +774,16 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
 
   base::Value formed_response;
   if (account_id->kind != mojom::AccountKind::kHardware) {
-    auto signature = keyring_service_->SignMessageByDefaultKeyring(
-        account_id, message, is_eip712);
-    if (!signature.has_value()) {
+    auto signature = keyring_service_->SignMessageByEthereumKeyring(
+        account_id, hashed_message);
+    if (!signature) {
       formed_response = GetProviderErrorDictionary(
-          mojom::ProviderError::kInternalError, signature.error());
+          mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
       reject = true;
     } else {
-      formed_response = base::Value(ToHex(signature.value()));
+      formed_response =
+          base::Value(ToHex(signature->ToSignatureBytesForEthSignMessage()));
     }
   } else {
     if (!hw_signature) {  // Missing hardware signature.
