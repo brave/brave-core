@@ -2088,6 +2088,42 @@ export const isCancelTransaction = (
   )
 }
 
+/**
+ * Detects ERC-721/ERC-1155 `setApprovalForAll(operator, approved)` transactions
+ * that are *granting* approval (approved === true).
+ *
+ * The calldata is decoded in core (eth_data_parser.cc); here we only read the
+ * resulting txType and txArgs, mirroring how every other ERC type is handled.
+ * Revoking approval (approved === false) is intentionally not flagged.
+ */
+export const isSetApprovalForAllTransaction = (
+  tx: Pick<TransactionInfo, 'txType' | 'txArgs'>,
+): boolean => {
+  if (tx.txType !== BraveWallet.TransactionType.ERC721SetApprovalForAll) {
+    return false
+  }
+
+  // txArgs: [address operator, bool approved ("0x1" or "0x0")]
+  const [, approved] = tx.txArgs
+  return approved === '0x1'
+}
+
+/**
+ * Returns the operator address being granted approval in a
+ * `setApprovalForAll` transaction, or an empty string for any other type.
+ */
+export const getSetApprovalForAllOperator = (
+  tx: Pick<TransactionInfo, 'txType' | 'txArgs'>,
+): string => {
+  if (tx.txType !== BraveWallet.TransactionType.ERC721SetApprovalForAll) {
+    return ''
+  }
+
+  // txArgs: [address operator, bool approved]
+  const [operator] = tx.txArgs
+  return operator ?? ''
+}
+
 export const parseTransactionWithPrices = ({
   accounts,
   tx,
@@ -2186,6 +2222,9 @@ export function getTransactionTypeName(txType: BraveWallet.TransactionType) {
 
     case BraveWallet.TransactionType.ERC721TransferFrom:
       return getLocale('braveWalletTransactionTypeNameNftTransfer')
+
+    case BraveWallet.TransactionType.ERC721SetApprovalForAll:
+      return getLocale('braveWalletApprovalForAllWarningTitle')
 
     case BraveWallet.TransactionType.ETHFilForwarderTransfer:
       return getLocale('braveWalletTransactionTypeNameForwardFil')

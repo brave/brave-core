@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/notifications/notification_display_service_tester.h"
 #include "chrome/browser/notifications/notification_handler.h"
@@ -358,6 +359,127 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest,
   EXPECT_EQ(0u, incognito_wallet_service()
                     ->tx_service()
                     ->GetPendingTransactionsCountSync());
+}
+
+// End-to-end through the real transaction pipeline (TxService -> EthTxManager
+// -> eth_data_parser): calldata that bypasses a naive setApprovalForAll check
+// must still produce the classification the approval-for-all warning keys on
+// (tx_type == ERC721SetApprovalForAll && tx_args[1] == "0x1"). This is the
+// browser-test complement to the eth_data_parser unit tests, validating that
+// the warning's precondition holds for the bypass cases when a transaction is
+// added the same way the UI adds one.
+IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest,
+                       SetApprovalForAllWarningClassifiedFromBypassCalldata) {
+  AccountUtils account_utils(wallet_service()->keyring_service());
+  account_utils.CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+  wallet_service()->json_rpc_service()->SetGasPriceForTesting("0x123");
+
+  const auto from = account_utils.EnsureEthAccount(0)->account_id.Clone();
+  const std::string nft_contract = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd";
+
+  // Adds an unapproved EVM transaction with the given calldata and returns the
+  // resulting TransactionInfo as the UI would see it.
+  auto add_and_get =
+      [&](const std::vector<uint8_t>& data) -> mojom::TransactionInfoPtr {
+    TestFuture<bool, const std::string&, const std::string&> add_future;
+    tx_service()->AddUnapprovedEvmTransaction(
+        mojom::NewEvmTransactionParams::New(
+            mojom::kBnbSmartChainMainnetChainId, from.Clone(), nft_contract,
+            "0x0" /*value*/, "0x0974" /*gas_limit*/, data, nullptr),
+        add_future.GetCallback());
+    auto [success, meta_id, error] = add_future.Take();
+    EXPECT_TRUE(success) << error;
+    TestFuture<mojom::TransactionInfoPtr> info_future;
+    tx_service()->GetTransactionInfo(mojom::CoinType::ETH, meta_id,
+                                     info_future.GetCallback());
+    return info_future.Take();
+  };
+
+  // Wraps `inner` calls in a multicall(bytes[]) (selector 0xac9650d8).
+  auto encode_multicall = [](const std::vector<std::vector<uint8_t>>& calls) {
+    std::vector<uint8_t> out = {0xac, 0x96, 0x50, 0xd8};
+    auto append_word = [&](uint64_t value) {
+      std::vector<uint8_t> word(32, 0);
+      for (int i = 0; i < 8; ++i) {
+        word[31 - i] = static_cast<uint8_t>((value >> (8 * i)) & 0xff);
+      }
+      out.insert(out.end(), word.begin(), word.end());
+    };
+    append_word(0x20);
+    append_word(calls.size());
+    size_t running = calls.size() * 32;
+    for (const auto& call : calls) {
+      append_word(running);
+      running += 32 + ((call.size() + 31) / 32) * 32;
+    }
+    for (const auto& call : calls) {
+      append_word(call.size());
+      out.insert(out.end(), call.begin(), call.end());
+      out.insert(out.end(), (((call.size() + 31) / 32) * 32) - call.size(), 0);
+    }
+    return out;
+  };
+
+  std::vector<uint8_t> grant;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &grant));
+
+  // Finding A: non-canonical `approved` value (0x2) still classifies as a
+  // grant, so the warning is shown.
+  std::vector<uint8_t> non_canonical;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000002",
+      &non_canonical));
+  auto info = add_and_get(non_canonical);
+  ASSERT_TRUE(info);
+  EXPECT_EQ(info->tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(info->tx_args.size(), 2u);
+  EXPECT_EQ(info->tx_args[1], "0x1");
+
+  // Finding B: a setApprovalForAll nested in a multicall is surfaced as a
+  // grant.
+  info = add_and_get(encode_multicall({grant}));
+  ASSERT_TRUE(info);
+  EXPECT_EQ(info->tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(info->tx_args.size(), 2u);
+  EXPECT_EQ(info->tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(info->tx_args[1], "0x1");
+
+  // Finding B: nested multicalls are unwrapped recursively.
+  info = add_and_get(encode_multicall({encode_multicall({grant})}));
+  ASSERT_TRUE(info);
+  EXPECT_EQ(info->tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  EXPECT_EQ(info->tx_args[1], "0x1");
+
+  // Negative: a revoke is classified as setApprovalForAll but not a grant
+  // (approved == 0x0), so the warning is intentionally not shown.
+  std::vector<uint8_t> revoke;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &revoke));
+  info = add_and_get(revoke);
+  ASSERT_TRUE(info);
+  EXPECT_EQ(info->tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(info->tx_args.size(), 2u);
+  EXPECT_EQ(info->tx_args[1], "0x0");
+
+  // Negative: a multicall with no setApprovalForAll is not reclassified.
+  std::vector<uint8_t> erc20_transfer;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa9059cbb"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000064",
+      &erc20_transfer));
+  info = add_and_get(encode_multicall({erc20_transfer}));
+  ASSERT_TRUE(info);
+  EXPECT_NE(info->tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
 }
 
 }  // namespace brave_wallet
