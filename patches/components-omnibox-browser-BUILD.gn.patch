@@ -1,20 +1,36 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 86f0cccd5e086029ecdb7456f9216546059d73b0..b9e13685d549babeac2d2425e96c3e8957a9eff8 100644
+index 86f0cccd5e086029ecdb7456f9216546059d73b0..3f4244084f2ebec91aeeec2c1db09c31f51f39a3 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -399,6 +399,7 @@ static_library("browser") {
+@@ -326,6 +326,7 @@ static_library("browser") {
+     "zero_suggest_verbatim_match_provider.cc",
+     "zero_suggest_verbatim_match_provider.h",
+   ]
++  sources += brave_components_omnibox_browser_sources
+ 
+   public_deps = [
+     ":aim_eligibility_service_features",
+@@ -354,6 +355,7 @@ static_library("browser") {
+     "//third_party/tflite_support:tflite_support_proto",
+     "//url",
+   ]
++  public_deps += brave_components_omnibox_browser_public_deps
+ 
+   deps = [
+     "//build:branding_buildflags",
+@@ -399,6 +401,7 @@ static_library("browser") {
      "//ui/base",
      "//ui/gfx",
    ]
-+  sources += brave_components_omnibox_browser_sources deps += brave_components_omnibox_browser_deps public_deps += brave_components_omnibox_browser_public_deps
++  deps += brave_components_omnibox_browser_deps
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
-@@ -1032,6 +1033,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+@@ -1031,6 +1034,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+ }
  
  mojom("mojo_bindings") {
-   sources = [ "omnibox.mojom" ]
 +  generate_legacy_js_bindings = true
+   sources = [ "omnibox.mojom" ]
    if ((!is_android && !is_ios) || enable_webui_ntp) {
      sources += [ "searchbox.mojom" ]
-   }
