@@ -62,7 +62,6 @@ struct ManagePasswordCredentialFields: View {
               )
               .textContentType(.password)
               .textInputAutocapitalization(.never)
-              .autocorrectionDisabled()
             } else {
               SecureField(
                 Strings.Autofill.managePasswordDetailInputPasswordPlaceholder,
@@ -71,6 +70,7 @@ struct ManagePasswordCredentialFields: View {
               .textContentType(.password)
             }
           }
+          .autocorrectionDisabled()
           .accessibilityLabel(Strings.Login.loginInfoDetailsPasswordFieldTitle)
           .multilineTextAlignment(.trailing)
           .focused($focusedField, equals: .password)
