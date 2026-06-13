@@ -237,13 +237,6 @@ extension URL {
     return host
   }
 
-  /// Requires a valid scheme *and* a non-empty host. `data:` URLs are excluded because they have no host.
-  ///
-  /// Use this when a URL is being persisted or sent to an API that expects a real reachable web address.
-  public func isFullyQualifiedDomainAndHost() -> Bool {
-    schemeIsValid && !(host?.isEmpty ?? true)
-  }
-
   /// Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
   ///
   /// E.g., https://m.foo.com/bar/baz?noo=abc#123  => foo
