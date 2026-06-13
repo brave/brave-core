@@ -9454,6 +9454,13 @@ extension Strings {
       comment:
         "Alert message warning the user that deleting the password will remove it from their sync chain and device"
     )
+    public static let managePasswordsDeleteCredentialConfirmButtonTitle = NSLocalizedString(
+      "autofill.managePasswords.deleteManagePasswordConfrimButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Delete Password",
+      comment: "Label for the button used to confirm delete action for the current password."
+    )
   }
 }
 

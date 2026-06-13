@@ -25,7 +25,7 @@ struct ManagePasswordsView: View {
   @State private var selectedGroupIds: Set<GroupID> = []
   @State private var isDeleteSelectionDialogPresented: Bool = false
   @State private var isSceneInactive = false
-  @State private var addPasswordDraft: ManagePasswordDraft? = nil
+  @State private var addPasswordPresentation: ManagePasswordAddPresentation?
 
   private var isSearchActive: Bool {
     !viewModel.searchText.isEmpty
@@ -149,7 +149,7 @@ struct ManagePasswordsView: View {
       if !isPrivacyOverlayActive {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            addPasswordDraft = ManagePasswordDraft()
+            addPasswordPresentation = ManagePasswordAddPresentation(prefilledSite: "")
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
           }
@@ -215,13 +215,10 @@ struct ManagePasswordsView: View {
         await privacyLock.authenticate(onFailure: exitAfterAuthFailure)
       }
     }
-    .sheet(item: $addPasswordDraft) { draft in
+    .sheet(item: $addPasswordPresentation) { presentation in
       NavigationStack {
-        ManagePasswordDetailContainerView(
-          viewModel: viewModel,
-          mode: .add(draft)
-        )
-        .environment(\.redactionReasons, effectiveRedactionReasons)
+        ManagePasswordAddView(viewModel: viewModel, prefilledSite: presentation.prefilledSite)
+          .environment(\.redactionReasons, effectiveRedactionReasons)
       }
     }
     // Obscure list immediately when the scene deactivates (Control Center, Face ID sheet, etc.);
@@ -286,7 +283,7 @@ private struct ManagePasswordListRow: View {
     NavigationLink {
       Group {
         if passwords.count == 1, let password = passwords.first {
-          ManagePasswordDetailContainerView(viewModel: viewModel, mode: .edit(password))
+          ManagePasswordDetailContainerView(viewModel: viewModel, password: password)
         } else {
           ManagePasswordGroupView(viewModel: viewModel, domain: domain)
         }

@@ -3,131 +3,76 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import SwiftUI
 
 struct ManagePasswordDetailEditableView: View {
-  enum Field { case site, username, password }
-  typealias DeleteExistingPasswordAction = () -> Void
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.editMode) private var editMode
 
-  @FocusState private var focusedField: Field?
   @Binding var isPasswordRevealed: Bool
-  @Binding var site: String
-  @Binding var username: String
-  @Binding var passwordValue: String
+  @FocusState private var focusedField: ManagePasswordCredentialFields.Field?
+  @State private var username = ""
+  @State private var passwordValue = ""
   @State private var isDeleteDialogPresented = false
 
-  var isSitePrefilled: Bool = false
-  var deleteAction: DeleteExistingPasswordAction? = nil
+  let viewModel: ManagePasswordsViewModel
+  let password: CWVPassword
+
+  private var isValid: Bool {
+    viewModel.isValidCredential(username: username, password: passwordValue, site: password.site)
+  }
+
+  private var hasChanges: Bool {
+    username != (password.username ?? "") || passwordValue != (password.password ?? "")
+  }
+
+  private func resetFields() {
+    username = password.username ?? ""
+    passwordValue = password.password ?? ""
+  }
+
+  private func deletePassword() {
+    viewModel.deletePasswords([password])
+    dismiss()
+  }
+
   var body: some View {
     Form {
+      ManagePasswordCredentialFields(
+        site: .constant(password.site),
+        username: $username,
+        password: $passwordValue,
+        isPasswordRevealed: $isPasswordRevealed,
+        focusedField: $focusedField,
+        isSiteDisabled: true
+      )
+
       Section {
-        LabeledContent {
-          TextField("", text: $site)
-            .textContentType(.URL)
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled()
-            .accessibilityLabel(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-            .disabled(isSitePrefilled)
-            .multilineTextAlignment(.trailing)
-            .focused($focusedField, equals: .site)
-            .foregroundStyle(
-              Color(braveSystemName: isSitePrefilled ? .textTertiary : .textSecondary)
-            )
+        Button(role: .destructive) {
+          isDeleteDialogPresented = true
         } label: {
-          Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
-        LabeledContent {
-          TextField("", text: $username)
-            .textContentType(.username)
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled()
-            .accessibilityLabel(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-            .multilineTextAlignment(.trailing)
-            .focused($focusedField, equals: .username)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
-        } label: {
-          Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
-        LabeledContent {
-          HStack(spacing: 8) {
-            Group {
-              if isPasswordRevealed {
-                TextField(
-                  Strings.Autofill.managePasswordDetailInputPasswordPlaceholder,
-                  text: $passwordValue
-                )
-                .textContentType(.password)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .accessibilityLabel(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-              } else {
-                SecureField(
-                  Strings.Autofill.managePasswordDetailInputPasswordPlaceholder,
-                  text: $passwordValue
-                )
-                .textContentType(.password)
-              }
-            }
-            .accessibilityLabel(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-            .multilineTextAlignment(.trailing)
-            .focused($focusedField, equals: .password)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
-
-            Button {
-              isPasswordRevealed.toggle()
-            } label: {
-              Label(
-                Strings.Autofill.managePasswordDetailRevealPassword,
-                braveSystemImage: isPasswordRevealed ? "leo.eye.on" : "leo.eye.off"
-              )
-              .foregroundStyle(Color(braveSystemName: .iconInteractive))
-              .labelStyle(.iconOnly)
-            }
-            .buttonStyle(.plain)
+          HStack {
+            Spacer()
+            Text(Strings.Autofill.managePasswordsDeleteCredentialButtonTitle)
+            Spacer()
           }
-        } label: {
-          Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
-      if let deleteAction {
-        Section {
-          Button {
-            isDeleteDialogPresented = true
-          } label: {
-            Label(
-              Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
-              braveSystemImage: "leo.trash"
-            )
-            .labelStyle(.titleOnly)
-          }
-          .foregroundStyle(
-            Color(
-              braveSystemName: .systemfeedbackErrorVibrant
-            )
-          )
-          .confirmationDialog(
-            Strings.Autofill.managePasswordsDeleteCredentialsAlertTitle,
-            isPresented: $isDeleteDialogPresented
+        .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorVibrant))
+        .confirmationDialog(
+          Strings.Autofill.managePasswordsDeleteCredentialsAlertTitle,
+          isPresented: $isDeleteDialogPresented
+        ) {
+          Button(Strings.CancelString, role: .cancel) {}
+          Button(
+            Strings.Autofill.managePasswordsDeleteCredentialConfirmButtonTitle,
+            role: .destructive
           ) {
-            Button(Strings.CancelString, role: .cancel) {}
-            Button(
-              Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
-              role: .destructive
-            ) {
-              deleteAction()
-            }
-          } message: {
-            Text(Strings.Autofill.managePasswordDetailDeleteConfirmMessage)
+            deletePassword()
           }
+        } message: {
+          Text(Strings.Autofill.managePasswordDetailDeleteConfirmMessage)
         }
       }
     }
@@ -137,7 +82,28 @@ struct ManagePasswordDetailEditableView: View {
       // and laid out. A short delay lets the presentation transition settle so the field
       // actually becomes first responder and the keyboard rises.
       try? await Task.sleep(for: .milliseconds(500))
-      focusedField = isSitePrefilled ? .username : .site
+      focusedField = .username
+    }
+    .onAppear {
+      resetFields()
+    }
+    .onChange(of: editMode?.wrappedValue) { oldValue, newValue in
+      // In edit mode there is no explicit Save button — the EditButton toggles between
+      // read-only and editable as afforded by @Environment(\.editMode).
+      guard oldValue == .active, newValue == .inactive, hasChanges, isValid else { return }
+      viewModel.updatePassword(password, username: username, passwordValue: passwordValue)
+    }
+    .toolbar {
+      ToolbarItem(placement: .topBarLeading) {
+        Button {
+          // Dismiss edit mode without applying any changes
+          // undo all changes by resetting with the original values
+          resetFields()
+          editMode?.wrappedValue = .inactive
+        } label: {
+          Label(Strings.CancelString, braveSystemImage: "leo.close")
+        }
+      }
     }
   }
 }

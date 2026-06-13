@@ -22,7 +22,7 @@ struct ManagePasswordGroupView: View {
 
   @State private var selectedCredentialIds: Set<String> = []
   @State private var isDeleteSelectionDialogPresented = false
-  @State private var passwordDraft: ManagePasswordDraft? = nil
+  @State private var addPasswordPresentation: ManagePasswordAddPresentation?
 
   private var passwords: [CWVPassword] {
     (viewModel.allowedGroups.first { $0.domain == domain }
@@ -34,7 +34,7 @@ struct ManagePasswordGroupView: View {
       Section {
         ForEach(passwords, id: \.identifier) { password in
           NavigationLink {
-            ManagePasswordDetailContainerView(viewModel: viewModel, mode: .edit(password))
+            ManagePasswordDetailContainerView(viewModel: viewModel, password: password)
               .environment(\.openURL, openURL)
               .environment(\.redactionReasons, redactionReasons)
           } label: {
@@ -66,8 +66,8 @@ struct ManagePasswordGroupView: View {
       if !redactionReasons.contains(.privacy) {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            passwordDraft = ManagePasswordDraft(
-              site: passwords.first?.site ?? URL(string: domain)?.absoluteString ?? ""
+            addPasswordPresentation = ManagePasswordAddPresentation(
+              prefilledSite: passwords.first?.site ?? URL(string: domain)?.absoluteString ?? ""
             )
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
@@ -129,13 +129,10 @@ struct ManagePasswordGroupView: View {
         Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
       }
     }
-    .sheet(item: $passwordDraft) { draft in
+    .sheet(item: $addPasswordPresentation) { presentation in
       NavigationStack {
-        ManagePasswordDetailContainerView(
-          viewModel: viewModel,
-          mode: .add(draft)
-        )
-        .environment(\.redactionReasons, redactionReasons)
+        ManagePasswordAddView(viewModel: viewModel, prefilledSite: presentation.prefilledSite)
+          .environment(\.redactionReasons, redactionReasons)
       }
     }
   }
