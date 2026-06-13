@@ -49,9 +49,6 @@ struct ManagePasswordAddView: View {
         isSiteDisabled: isSitePrefilled
       )
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
-    .foregroundStyle(Color(braveSystemName: .textPrimary))
     .navigationTitle(Strings.Autofill.managePasswordDetailAddCredentialTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -74,7 +71,9 @@ struct ManagePasswordAddView: View {
       }
     }
     .overlay {
-      if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if redactionReasons.contains(.privacy) {
+        Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
+      }
     }
     .task(id: prefilledSite) {
       site = prefilledSite

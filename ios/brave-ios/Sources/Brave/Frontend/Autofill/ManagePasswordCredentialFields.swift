@@ -28,14 +28,10 @@ struct ManagePasswordCredentialFields: View {
           .disabled(isSiteDisabled)
           .multilineTextAlignment(.trailing)
           .focused($focusedField, equals: .site)
-          .foregroundStyle(
-            Color(braveSystemName: isSiteDisabled ? .textTertiary : .textSecondary)
-          )
+          .foregroundStyle(isSiteDisabled ? .tertiary : .secondary)
       } label: {
         Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       LabeledContent {
         TextField("", text: $username)
@@ -45,12 +41,10 @@ struct ManagePasswordCredentialFields: View {
           .accessibilityLabel(Strings.Login.loginInfoDetailsUsernameFieldTitle)
           .multilineTextAlignment(.trailing)
           .focused($focusedField, equals: .username)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
+          .foregroundStyle(.secondary)
       } label: {
         Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       LabeledContent {
         HStack(spacing: 8) {
@@ -74,7 +68,7 @@ struct ManagePasswordCredentialFields: View {
           .accessibilityLabel(Strings.Login.loginInfoDetailsPasswordFieldTitle)
           .multilineTextAlignment(.trailing)
           .focused($focusedField, equals: .password)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
+          .foregroundStyle(.secondary)
 
           Button {
             isPasswordRevealed.toggle()
@@ -90,9 +84,7 @@ struct ManagePasswordCredentialFields: View {
         }
       } label: {
         Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
 }

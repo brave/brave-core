@@ -59,7 +59,6 @@ struct ManagePasswordDetailEditableView: View {
             Spacer()
           }
         }
-        .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorVibrant))
         .confirmationDialog(
           Strings.Autofill.managePasswordsDeleteCredentialsAlertTitle,
           isPresented: $isDeleteDialogPresented

@@ -10,7 +10,6 @@ import Favicon
 import LocalAuthentication
 import Preferences
 import SwiftUI
-import UIKit
 
 struct ManagePasswordsView: View {
   private typealias GroupID = ManagePasswordsViewModel.GroupID
@@ -125,7 +124,6 @@ struct ManagePasswordsView: View {
     }
     .listSectionSpacing(.compact)
     .scrollContentBackground(.hidden)
-    .background((Color(.braveGroupedBackground)))
     .accessibilityHidden(isPrivacyOverlayActive)
     .searchable(
       text: $viewModel.searchText,

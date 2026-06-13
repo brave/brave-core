@@ -41,9 +41,6 @@ struct ManagePasswordDetailContainerView: View {
         )
       }
     }
-    .scrollContentBackground(.hidden)
-    .background((Color(.braveGroupedBackground)))
-    .foregroundStyle(Color(braveSystemName: .textPrimary))
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
@@ -56,7 +53,9 @@ struct ManagePasswordDetailContainerView: View {
       }
     }
     .overlay {
-      if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if redactionReasons.contains(.privacy) {
+        Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
+      }
     }
   }
 }

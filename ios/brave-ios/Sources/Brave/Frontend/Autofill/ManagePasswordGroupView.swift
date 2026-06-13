@@ -7,7 +7,6 @@ import BraveCore
 import BraveStrings
 import BraveUI
 import SwiftUI
-import UIKit
 
 /// Displays all login credentials for a selected domain.
 /// Each credential is shown as a separate row (username + masked password).
