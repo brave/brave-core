@@ -405,8 +405,8 @@ bool ZCashTransaction::IsTransparentPartSigned() const {
                              [](auto& input) { return input.IsSigned(); });
 }
 
-uint64_t ZCashTransaction::TotalInputsAmount() const {
-  uint64_t result = 0;
+base::CheckedNumeric<uint64_t> ZCashTransaction::TotalInputsAmount() const {
+  base::CheckedNumeric<uint64_t> result = 0;
   for (auto& input : transparent_part_.inputs) {
     result += input.utxo_value;
   }
