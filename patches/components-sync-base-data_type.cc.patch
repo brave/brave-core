@@ -1,0 +1,55 @@
+diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
+index 8624d8af6fd389016f029c129dfea55200311451..f5b1047cacade52faf38934d9a1532fdc5893ea5 100644
+--- a/components/sync/base/data_type.cc
++++ b/components/sync/base/data_type.cc
+@@ -1091,6 +1091,22 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+                 UnsyncedDataCheckOnSignoutPolicy::kNone,
+             .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
+         },
++        {
++            .type = BRAVE_NEWS,
++            .specifics_field_number =
++                sync_pb::EntitySpecifics::kBraveNewsFieldNumber,
++            .debug_string = "Brave News",
++            .histogram_suffix = "BRAVE_NEWS",
++            .stable_lowercase_string = "brave_news",
++            .encryption_policy =
++                EncryptionPolicy::kEncryptedIfCustomPassphraseSet,
++            .priority = DataTypePriority::kRegular,
++            .communication_direction = CommunicationDirection::kRegularTwoWay,
++            .apply_updates_batch_policy = ApplyUpdatesBatchPolicy::kStandard,
++            .unsynced_data_check_on_signout_policy =
++                UnsyncedDataCheckOnSignoutPolicy::kNone,
++            .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
++        },
+         {
+             .type = NIGORI,
+             .specifics_field_number =
+@@ -1111,7 +1127,7 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+     }};
+ 
+ // LINT.IfChange(DataTypeHistogramSuffix)
+-static_assert(GetNumDataTypes() == 64,
++static_assert(GetNumDataTypes() == 65,
+               "When adding a new type, update kDataTypeInfoTable, update "
+               "histograms.xml and follow the integration checklist in "
+               "https://www.chromium.org/developers/design-documents/sync/"
+@@ -1331,6 +1347,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+     case THEMES_ANDROID:
+       specifics->mutable_theme_android();
+       break;
++    case BRAVE_NEWS:
++      specifics->mutable_brave_news();
++      break;
+   }
+ }
+ 
+@@ -1683,6 +1702,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
+       return DataTypeForHistograms::kAccessibilityAnnotation;
+     case THEMES_ANDROID:
+       return DataTypeForHistograms::kThemesAndroid;
++    case BRAVE_NEWS:
++      return DataTypeForHistograms::kBraveNews;
+   }
+   NOTREACHED();
+ }

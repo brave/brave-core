@@ -183,6 +183,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK},
 
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+      {"braveNewsCheckboxLabel", IDS_SETTINGS_BRAVE_NEWS_SYNC_LABEL},
       {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
       {"braveOriginSectionAdsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE},

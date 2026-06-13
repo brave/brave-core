@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_controls.html b/chrome/browser/resources/settings/people_page/sync_controls.html
+index 9b8f2be001684e6bfe0a27338b6549064bc0d4f1..03f771017248178eaab51aa1150e783fad52a014 100644
+--- a/chrome/browser/resources/settings/people_page/sync_controls.html
++++ b/chrome/browser/resources/settings/people_page/sync_controls.html
+@@ -147,6 +147,24 @@
+         </cr-toggle>
+       </div>
+ 
++      <div class="list-item" hidden="[[!syncPrefs.braveNewsRegistered]]">
++        <div id="braveNewsCheckboxLabel">
++          $i18n{braveNewsCheckboxLabel}
++        </div>
++        <cr-policy-indicator indicator-type="userPolicy"
++            hidden="[[!showPolicyIndicator_(syncStatus,
++                  syncPrefs.braveNewsManaged)]]">
++        </cr-policy-indicator>
++        <cr-toggle checked="{{syncPrefs.braveNewsSynced}}"
++            on-change="onSingleSyncDataTypeChanged_"
++            disabled="[[disableTypeCheckBox_(syncStatus,
++                syncPrefs.syncAllDataTypes, syncPrefs.braveNewsManaged,
++                syncStatus.disabled)]]"
++            aria-labelledby="braveNewsCheckboxLabel"
++            data-type$="[[UserSelectableTypeEnum_.BRAVE_NEWS]]">
++        </cr-toggle>
++      </div>
++
+       <div class="list-item" hidden="[[!syncPrefs.readingListRegistered]]">
+         <div id="readingListCheckboxLabel">
+           $i18n{readingListCheckboxLabel}

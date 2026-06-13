@@ -1,0 +1,23 @@
+diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
+index 69a0ff1e525f56a2a42e8a858690dafb2fb2471f..fdcf9ef1786b43dd133f82c349d4d92a04032cd0 100644
+--- a/components/sync/protocol/entity_specifics.proto
++++ b/components/sync/protocol/entity_specifics.proto
+@@ -25,6 +25,7 @@ import "components/sync/protocol/autofill_valuable_metadata_specifics.proto";
+ import "components/sync/protocol/account_setting_specifics.proto";
+ import "components/sync/protocol/autofill_wallet_credential_specifics.proto";
+ import "components/sync/protocol/autofill_wallet_usage_specifics.proto";
++import "brave/components/sync/protocol/brave_news_specifics.proto";
+ import "components/sync/protocol/bookmark_specifics.proto";
+ import "components/sync/protocol/collaboration_group_specifics.proto";
+ import "components/sync/protocol/product_comparison_specifics.proto";
+@@ -176,6 +177,10 @@ message EntitySpecifics {
+     SkillSpecifics skill = 1564245;
+     GeminiThreadSpecifics gemini_thread = 1569348;
+     AccessibilityAnnotationSpecifics accessibility_annotation = 1588764;
++    // Brave-reserved field number (10000000), well above upstream's
++    // commit-position-derived numbers. Must stay in sync with the go-sync
++    // server and with kBraveNewsFieldNumber used in data_type.cc.
++    BraveNewsSpecifics brave_news = 10000000;
+     // When adding a new type, follow the docs below and keep this comment as
+     // the last entry.
+     // https://www.chromium.org/developers/design-documents/sync/integration-checklist/

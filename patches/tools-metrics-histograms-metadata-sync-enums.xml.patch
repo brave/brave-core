@@ -1,0 +1,12 @@
+diff --git a/tools/metrics/histograms/metadata/sync/enums.xml b/tools/metrics/histograms/metadata/sync/enums.xml
+index e5bbe94b63bfb664580fb5c98f10d1451d0adeb1..100b16bee4360cbe55121b603844fb7dd3e0f447 100644
+--- a/tools/metrics/histograms/metadata/sync/enums.xml
++++ b/tools/metrics/histograms/metadata/sync/enums.xml
+@@ -1033,6 +1033,7 @@ chromium-metrics-reviews@google.com.
+   <int value="78" label="Themes (iOS)"/>
+   <int value="79" label="Accessibility Annotation"/>
+   <int value="80" label="Themes (Android)"/>
++  <int value="81" label="Brave News"/>
+ </enum>
+ 
+ <!-- LINT.ThenChange(/components/sync/base/data_type.h:SyncDataTypes) -->

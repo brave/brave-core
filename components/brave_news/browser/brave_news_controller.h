@@ -27,6 +27,7 @@
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/sync/model/data_type_store.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -48,7 +49,13 @@ namespace history {
 class HistoryService;
 }  // namespace history
 
+namespace syncer {
+class DataTypeControllerDelegate;
+}  // namespace syncer
+
 namespace brave_news {
+
+class BraveNewsSyncBridge;
 
 // Browser-side handler for Brave News mojom API, 1 per profile
 // Orchestrates FeedController and PublishersController for data, as well as
@@ -68,7 +75,8 @@ class BraveNewsController
       history::HistoryService* history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<DirectFeedFetcher::Delegate>
-          direct_feed_fetcher_delegate);
+          direct_feed_fetcher_delegate,
+      syncer::OnceDataTypeStoreFactory sync_store_factory);
   ~BraveNewsController() override;
   BraveNewsController(const BraveNewsController&) = delete;
   BraveNewsController& operator=(const BraveNewsController&) = delete;
@@ -81,6 +89,12 @@ class BraveNewsController
   void ClearHistory();
 
   BraveNewsPrefManager& prefs() { return pref_manager_; }
+
+  // Returns the sync controller delegate for syncer::BRAVE_NEWS, or null if the
+  // sync bridge isn't available (e.g. no sync store factory was provided, as in
+  // tests). The browser-layer sync factory wraps this in a DataTypeController.
+  std::unique_ptr<syncer::DataTypeControllerDelegate>
+  GetSyncControllerDelegate();
 
   void GetPublisherForSite(const GURL& site_url, GetPublisherCallback callback);
   void GetPublisherForFeed(const GURL& feed_url, GetPublisherCallback callback);
@@ -179,6 +193,10 @@ class BraveNewsController
 
   BraveNewsPrefManager pref_manager_;
   SubscriptionsSnapshot last_subscriptions_;
+
+  // Syncs a subset of Brave News prefs as the syncer::BRAVE_NEWS data type.
+  // Null when no sync store factory was provided (e.g. in tests).
+  std::unique_ptr<BraveNewsSyncBridge> sync_bridge_;
 
   p3a::NewsMetrics news_metrics_;
 

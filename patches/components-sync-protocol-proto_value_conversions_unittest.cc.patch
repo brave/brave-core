@@ -1,0 +1,21 @@
+diff --git a/components/sync/protocol/proto_value_conversions_unittest.cc b/components/sync/protocol/proto_value_conversions_unittest.cc
+index fa948f5d9ede7b12e0eb9b06fe04aed67b75b3de..44ea6d98d5b84ef6c9312a99e37cb9f3dbdb36ea 100644
+--- a/components/sync/protocol/proto_value_conversions_unittest.cc
++++ b/components/sync/protocol/proto_value_conversions_unittest.cc
+@@ -71,7 +71,7 @@ using ::testing::Pointee;
+ 
+ DEFINE_SPECIFICS_TO_VALUE_TEST(encrypted)
+ 
+-static_assert(64 == syncer::GetNumDataTypes(),
++static_assert(65 == syncer::GetNumDataTypes(),
+               "When adding a new field, add a DEFINE_SPECIFICS_TO_VALUE_TEST "
+               "for your field below, and optionally a test for the specific "
+               "conversions.");
+@@ -88,6 +88,7 @@ DEFINE_SPECIFICS_TO_VALUE_TEST(autofill_wallet)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(autofill_wallet_credential)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(autofill_wallet_usage)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(bookmark)
++DEFINE_SPECIFICS_TO_VALUE_TEST(brave_news)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(collaboration_group)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(contact_info)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(cookie)
