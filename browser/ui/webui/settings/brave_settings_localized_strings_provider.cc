@@ -30,6 +30,7 @@
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/safebrowsing/constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -86,6 +87,9 @@ namespace {
 constexpr char16_t kWebRTCLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
     u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
+constexpr char16_t kSafeBrowsingLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/"
+    u"15222663599629-Safe-Browsing-in-Brave";
 constexpr char16_t kBraveBuildInstructionsUrl[] =
     u"https://github.com/brave/brave-browser/wiki";
 constexpr char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
@@ -1102,11 +1106,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_COOKIE_CONTROLLED_BY_SHIELDS_TOOLTIP_TEXT},
       {"cookieControlledByGoogleSigninTooltip",
        IDS_SETTINGS_COOKIE_CONTROLLED_BY_GOOGLE_SIGN_IN_TOOLTIP_TEXT},
+      {"safeBrowsingLimited", IDS_SETTINGS_BRAVE_SAFEBROWSING_LIMITED},
+      {"safeBrowsingLimitedDesc", IDS_SETTINGS_BRAVE_SAFEBROWSING_LIMITED_DESC},
+      {"safeBrowsingLearnMore", IDS_SETTINGS_BRAVE_SAFEBROWSING_LEARN_MORE},
   };
 
+  html_source->AddInteger("braveSafeBrowsingLimited",
+                          safe_browsing::kBraveSafeBrowsingLimitedProtection);
   html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
+  html_source->AddString("safeBrowsingLearnMoreURL", kSafeBrowsingLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);

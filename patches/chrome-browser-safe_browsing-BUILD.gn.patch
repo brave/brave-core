@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/safe_browsing/BUILD.gn b/chrome/browser/safe_browsing/BUILD.gn
+index ec47cf63ab03e36327f5334852e5589b6f8dd049..79cb3f35ece4547ca1b7bedd7a8b443750bbbdf0 100644
+--- a/chrome/browser/safe_browsing/BUILD.gn
++++ b/chrome/browser/safe_browsing/BUILD.gn
+@@ -35,6 +35,7 @@ static_library("safe_browsing") {
+   ]
+ 
+   deps = [
++    "//brave/components/safebrowsing",
+     "//build:branding_buildflags",
+     "//chrome/app:generated_resources",
+     "//chrome/browser:browser_features",
