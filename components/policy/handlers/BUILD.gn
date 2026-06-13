@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+if (enable_brave_ads) {
+  static_library("handlers") {
+    public = [ "brave_ads_enabled_policy_handler.h" ]
+
+    sources = [ "brave_ads_enabled_policy_handler.cc" ]
+
+    public_deps = [ "//components/policy/core/browser" ]
+
+    deps = [
+      "//base",
+      "//brave/components/brave_ads/core/public:headers",
+      "//brave/components/ntp_background_images/common",
+      "//components/policy/core/common:common_constants",
+      "//components/prefs",
+    ]
+  }
+
+  source_set("unit_tests") {
+    testonly = true
+
+    sources = [ "brave_ads_enabled_policy_handler_unittest.cc" ]
+
+    deps = [
+      ":handlers",
+      "//base",
+      "//brave/components/brave_ads/core/public:headers",
+      "//brave/components/ntp_background_images/common",
+      "//components/policy/core/browser",
+      "//components/policy/core/common",
+      "//components/prefs",
+      "//testing/gtest",
+    ]
+  }
+}

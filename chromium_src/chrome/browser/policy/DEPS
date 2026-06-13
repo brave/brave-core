@@ -1,0 +1,6 @@
+specific_include_rules = {
+  "configuration_policy_handler_list_factory\.cc": [
+    "+brave/components/brave_ads/buildflags/buildflags.h",
+    "+brave/components/policy/handlers/brave_ads_enabled_policy_handler.h",
+  ],
+}
