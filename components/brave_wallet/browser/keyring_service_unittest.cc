@@ -746,12 +746,11 @@ TEST_F(KeyringServiceUnitTest, GenerateMnemonic) {
                      .size());
 
   // Invalid mnemonic lengths.
-  service.GenerateMnemonic(0, mnemonic_future.GetCallback());
-  EXPECT_FALSE(mnemonic_future.Take());
-  service.GenerateMnemonic(4, mnemonic_future.GetCallback());
-  EXPECT_FALSE(mnemonic_future.Take());
-  service.GenerateMnemonic(100, mnemonic_future.GetCallback());
-  EXPECT_FALSE(mnemonic_future.Take());
+  const int invalid_lens[] = {0, 1, 4, 100, INT32_MAX};
+  for (int x : invalid_lens) {
+    service.GenerateMnemonic(x, mnemonic_future.GetCallback());
+    EXPECT_FALSE(mnemonic_future.Take());
+  }
 
   // Generate 100 mnemonics and check if they are unique.
   std::vector<std::string> mnemonics;
