@@ -38,6 +38,11 @@ class AccountStatePrefs {
   void SetLoggedIn(const std::string& email,
                    const std::string& encrypted_authentication_token);
 
+  // Records the verified email on the current verification slot.
+  // Called once the email is verified (OTP step completed).
+  // Requires a verification slot to be present.
+  void SetVerificationEmail(const std::string& verification_email);
+
   // Removes the verification slot from the current state without changing
   // whether the user is logged in or out. No-op if no slot is present.
   void ClearVerification();

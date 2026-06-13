@@ -156,7 +156,7 @@ mojom::AccountStatePtr LoggedOut() {
 mojom::AccountStatePtr LoggedOutWithVerification() {
   return mojom::AccountState::NewLoggedOut(
       mojom::LoggedOutState::New(mojom::LoggedOutVerification::New(
-          mojom::LoggedOutVerificationIntent::kRegistration)));
+          mojom::LoggedOutVerificationIntent::kRegistration, /*email=*/"")));
 }
 
 mojom::AccountStatePtr LoggedIn(const std::string& email) {

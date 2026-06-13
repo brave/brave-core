@@ -11,7 +11,6 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/state_internal.h"
@@ -116,6 +115,35 @@ void LoggedOutState::RegisterVerify(const std::string& code,
       std::move(request),
       base::BindOnce(&LoggedOutState::OnRegisterVerify,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void LoggedOutState::ResetPasswordVerifyInit(
+    mojom::Service initiating_service,
+    const std::string& email,
+    ResetPasswordVerifyInitCallback callback) {
+  reset_password_.VerifyInit(initiating_service, email, std::move(callback));
+}
+
+void LoggedOutState::ResetPasswordVerifyComplete(
+    const std::string& code,
+    ResetPasswordVerifyCompleteCallback callback) {
+  reset_password_.VerifyComplete(code, std::move(callback));
+}
+
+void LoggedOutState::ResetPasswordPasswordInit(
+    mojom::Service initiating_service,
+    const std::string& blinded_message,
+    ResetPasswordPasswordInitCallback callback) {
+  reset_password_.PasswordInit(initiating_service, blinded_message,
+                               std::move(callback));
+}
+
+void LoggedOutState::ResetPasswordPasswordFinalize(
+    const std::string& serialized_record,
+    const std::string& email,
+    ResetPasswordPasswordFinalizeCallback callback) {
+  reset_password_.PasswordFinalize(serialized_record, email,
+                                   std::move(callback));
 }
 
 void LoggedOutState::LoginInitialize(mojom::Service initiating_service,

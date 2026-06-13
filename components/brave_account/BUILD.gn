@@ -21,6 +21,8 @@ source_set("brave_account") {
     "logged_out_state.h",
     "prefs.cc",
     "prefs.h",
+    "reset_password.cc",
+    "reset_password.h",
     "state_base.cc",
     "state_base.h",
     "state_internal.h",
@@ -116,6 +118,7 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
+    "reset_password_unittest.cc",
     "state_base_unittest.cc",
   ]
 
