@@ -139,8 +139,18 @@ class ManagePasswordsViewModel {
   func isValidCredential(username: String, password: String, site: String) -> Bool {
     !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
       && !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-      && URL(string: site.trimmingCharacters(in: .whitespacesAndNewlines))?
-        .isFullyQualifiedDomainAndHost() == true
+      && isSiteValid(site)
+  }
+
+  /// DCHECK(url.is_valid()); crashes if not a valid scheme *and* a non-empty host.
+  ///
+  /// `data:` URLs are excluded because they have no host.
+  /// Use this when a URL is being persisted or sent to an API that expects a real reachable web address.
+  func isSiteValid(_ site: String) -> Bool {
+    guard let siteUrl = URL(string: site.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+      return false
+    }
+    return siteUrl.schemeIsValid && !(siteUrl.host?.isEmpty ?? true)
   }
 }
 
