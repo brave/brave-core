@@ -80,6 +80,11 @@
 
 namespace policy {
 
+// Note: If a policy without dynamic refresh support is being added
+//       which requires preservation of the pref value at runtime,
+//       please add it to kNonDynamicPrefs in
+//       browser/policy/policy_pref_interceptor_utils.cc.
+//       However, please try to support dynamic refresh if possible.
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     {policy::key::kBraveRewardsDisabled,

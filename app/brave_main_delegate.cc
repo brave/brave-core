@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/policy/policy_pref_interceptor_utils.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
@@ -182,6 +183,7 @@ void BraveMainDelegate::PreSandboxStartup() {
 
 std::optional<int> BraveMainDelegate::PostEarlyInitialization(
     ChromeMainDelegate::InvokedIn invoked_in) {
+  brave_policy::InitializePolicyPrefInterceptorList();
   auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
   if (result.has_value()) {
     // An exit code is set. Stop initialization.
