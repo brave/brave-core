@@ -15,9 +15,14 @@
 
 void PinnedToolbarActionsContainer::UpdateActionState(actions::ActionId id,
                                                       bool is_active) {
-  // We don't want anything pinned. Downloads button is shown ephemerally on
-  // download status change.
-  return;
+  // We don't want regular actions pinned/updated. However, keep Chromium's
+  // active-state handling for ephemeral actions so the same button can toggle
+  // its bubble/popup closed on a second click.
+  if (id != kActionShowDownloads && id != kActionSendTabToSelf) {
+    return;
+  }
+
+  PinnedToolbarActionsContainer::UpdateActionState_UnUsed(id, is_active);
 }
 
 void PinnedToolbarActionsContainer::ShowActionEphemerallyInToolbar(
