@@ -1,12 +1,44 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index bb8c86103c906e102aaa7c1b77764623596b0eca..ed48d62c16f51194b147c8812c55000fff64cc9b 100644
+index bb8c86103c906e102aaa7c1b77764623596b0eca..75634f693f6f55f111b2723e44c3b676dfaae5c3 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
-@@ -116,6 +116,7 @@ source_set("extensions") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-     sources += [ "api/file_system_provider_capabilities/file_system_provider_capabilities_handler.cc" ]
-   }
-+  import("//brave/common/extensions/sources.gni") public += brave_chrome_common_extensions_public sources += brave_chrome_common_extensions_sources deps += brave_chrome_common_extensions_deps public_deps += brave_chrome_common_extensions_public_deps
- }
++import("//brave/common/extensions/sources.gni")
+ import("//extensions/buildflags/buildflags.gni")
+ import("//tools/json_schema_compiler/json_features.gni")
  
- # TODO(zturner): Enable this on Windows. See
+@@ -27,6 +28,7 @@ source_set("extensions") {
+     "sync_helper.h",
+     "webstore_install_result.h",
+   ]
++  public += brave_chrome_common_extensions_public
+ 
+   # Files that can only be included from here.
+   sources = [
+@@ -52,6 +54,7 @@ source_set("extensions") {
+     "sync_helper.cc",
+     "webstore_install_result.cc",
+   ]
++  sources += brave_chrome_common_extensions_sources
+ 
+   public_deps = [
+     "//base",
+@@ -64,6 +67,7 @@ source_set("extensions") {
+     "//ui/gfx/geometry",
+     "//url",
+   ]
++  public_deps += brave_chrome_common_extensions_public_deps
+ 
+   deps = [
+     "//chrome/app:branded_strings",
+@@ -90,6 +94,7 @@ source_set("extensions") {
+     "//ui/message_center/public/cpp",
+     "//url",
+   ]
++  deps += brave_chrome_common_extensions_deps
+ 
+   # TODO(https://crbug.com/356905053): These sources do not currently build
+   # cleanly on the experimental desktop-android configuration. Gradually include

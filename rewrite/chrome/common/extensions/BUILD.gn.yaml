@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pull in the variable list shared between Brave and the upstream
+      `source_set("extensions")` target.
+
+      Anchored on the license header, so always on top.
+    re_pattern: '(# found in the LICENSE file\.\n\n)'
+    replace: |
+      \1import("//brave/common/extensions/sources.gni")
+
+  - description: |
+      Append Brave public headers to `source_set("extensions")`.
+    re_pattern: '(source_set\("extensions"\).*?\bpublic\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  public += brave_chrome_common_extensions_public'
+
+  - description: |
+      Append Brave sources to `source_set("extensions")`.
+    re_pattern: '(source_set\("extensions"\).*?\bsources\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  sources += brave_chrome_common_extensions_sources'
+
+  - description: |
+      Append Brave public_deps to `source_set("extensions")`.
+    re_pattern: '(source_set\("extensions"\).*?\bpublic_deps\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  public_deps += brave_chrome_common_extensions_public_deps'
+
+  - description: |
+      Append Brave deps to `source_set("extensions")`.
+    re_pattern: '(source_set\("extensions"\).*?\bdeps\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  deps += brave_chrome_common_extensions_deps'
