@@ -23,7 +23,6 @@
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace {
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
@@ -46,16 +45,10 @@ std::string ReadQueryFilterFile(const base::FilePath& path) {
   return contents;
 }
 
+// Reads the |json_data| and updates the component version iff the current rules
+// were updated.
 void OnQueryFilterFileRead(const base::Version& version,
                            const std::string& json_data) {
-  absl::Cleanup cleanup_for_test_only = []() {
-    if (g_on_file_loaded_callback_for_testing_) {
-      CHECK_IS_TEST();
-      CHECK(!g_on_file_loaded_callback_for_testing_->is_null());
-      std::move(*g_on_file_loaded_callback_for_testing_).Run();
-    }
-  };
-
   if (json_data.empty()) {
     return;
   }
@@ -118,7 +111,18 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
       base::BindOnce(
           &ReadQueryFilterFile,
           install_dir.AppendASCII(query_filter::kQueryFilterJsonFile)),
-      base::BindOnce(&OnQueryFilterFileRead, version));
+      base::BindOnce(
+          [](const base::Version& version, const std::string& json_data) {
+            OnQueryFilterFileRead(version, json_data);
+
+            if (g_on_file_loaded_callback_for_testing_) {
+              CHECK_IS_TEST();
+              CHECK(!g_on_file_loaded_callback_for_testing_->is_null());
+              std::move(*g_on_file_loaded_callback_for_testing_).Run();
+              g_on_file_loaded_callback_for_testing_ = nullptr;
+            }
+          },
+          version));
 }
 
 base::FilePath QueryFilterComponentInstallerPolicy::GetRelativeInstallDir()
