@@ -18,6 +18,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/events/event_constants.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -197,7 +198,8 @@ void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
 
 #if BUILDFLAG(ENABLE_PSST)
 void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
-                                  actions::ActionItem* item);
+                                  actions::ActionItem* item,
+                                  int event_flags = ui::EF_NONE);
 #endif
 
 }  // namespace brave

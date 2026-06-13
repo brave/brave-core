@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..8051adc18865ad5e5d465de28336e51545b45ab8 100644
+index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..fb5ee8dc7bd7003fbb533a83cd56bc2de3bc7b19 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -167,7 +167,7 @@ void PageActionView::OnPageActionModelChanged(
@@ -17,5 +17,14 @@ index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..8051adc18865ad5e5d465de28336e515
    }
 +  MaybeOverrideBorder(observation_.GetSource(), border_insets);
    SetBorder(views::CreateEmptyBorder(border_insets));
+ }
+ 
+@@ -270,6 +271,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+           .SetProperty(kPageActionTriggerKey,
+                        static_cast<std::underlying_type_t<PageActionTrigger>>(
+                            trigger_source))
++          .SetProperty(kBravePageActionEventFlagKey,
++                       event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
+           .Build());
  }
  

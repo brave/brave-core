@@ -92,9 +92,20 @@ base::WeakPtr<PsstActionController> PsstActionController::AsWeakPtr() {
 
 void PsstActionController::ExecuteAction(
     ToolbarButtonProvider* toolbar_button_provider,
-    actions::ActionItem* item) {
+    actions::ActionItem* item,
+    int event_flags) {
   if (menu_runner_ && menu_runner_->IsRunning()) {
     menu_runner_->Cancel();
+  }
+
+  // Handle left-click on the page action icon as a trigger to open the consent
+  // dialog.
+  if (event_flags & ui::EF_LEFT_MOUSE_BUTTON) {
+    if (psst_menu_model_delegate_) {
+      psst_menu_model_delegate_->OnShowConsentDialogSelected();
+    }
+
+    return;
   }
 
   if (!toolbar_button_provider) {
@@ -166,7 +177,8 @@ void PsstActionController::UpdatePageAction() {
   page_action_controller_->OverrideTooltip(kActionShowPsstIcon, name);
 
   page_action_controller_->SetOverrideTriggerableEvent(
-      kActionShowPsstIcon, ui::EF_RIGHT_MOUSE_BUTTON);
+      kActionShowPsstIcon,
+      ui::EF_LEFT_MOUSE_BUTTON | ui::EF_RIGHT_MOUSE_BUTTON);
   if (!show_badge_) {
     page_action_controller_->OverrideImage(
         kActionShowPsstIcon,

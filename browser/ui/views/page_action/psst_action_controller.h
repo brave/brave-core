@@ -26,6 +26,7 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   // PSST page action menu delegate.
   class Delegate {
    public:
+    virtual void OnShowConsentDialogSelected() = 0;
     virtual void OnDontShowThisSiteSelected() = 0;
     virtual void OnDisablePrivacySettingsTuningSelected() = 0;
   };
@@ -44,7 +45,8 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   base::WeakPtr<PsstActionController> AsWeakPtr();
 
   void ExecuteAction(ToolbarButtonProvider* toolbar_button_provider,
-                     actions::ActionItem* item);
+                     actions::ActionItem* item,
+                     int event_flags);
 
  private:
   // ui::SimpleMenuModel::Delegate:

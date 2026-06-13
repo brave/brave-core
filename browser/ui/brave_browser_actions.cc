@@ -39,6 +39,7 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/common/features.h"
+#include "chrome/browser/ui/page_actions/page_action_triggers.h"
 #endif
 
 namespace {
@@ -139,7 +140,10 @@ void BraveBrowserActions::InitializeBrowserActions() {
             base::BindRepeating(
                 [](BrowserWindowInterface* bwi, actions::ActionItem* item,
                    actions::ActionInvocationContext context) {
-                  brave::OpenPsstMenuOnPageActionView(bwi, item);
+                  brave::OpenPsstMenuOnPageActionView(
+                      bwi, item,
+                      context.GetProperty(
+                          page_actions::kBravePageActionEventFlagKey));
                 },
                 bwi))
             .SetActionId(kActionShowPsstIcon)

@@ -74,7 +74,8 @@ class PsstUiDesktopPresenter
   bool IsDialogShown() const override;
 
  private:
-  // page_actions::PsstActionController::Observer:
+  // page_actions::PsstActionController::Delegate:
+  void OnShowConsentDialogSelected() override;
   void OnDontShowThisSiteSelected() override;
   void OnDisablePrivacySettingsTuningSelected() override;
 
