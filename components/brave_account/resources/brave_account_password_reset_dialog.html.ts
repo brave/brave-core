@@ -7,10 +7,10 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_dialog.js'
 import './brave_account_email_input.js'
-import { BraveAccountForgotPasswordDialogElement } from './brave_account_forgot_password_dialog.js'
+import { BraveAccountPasswordResetDialogElement } from './brave_account_password_reset_dialog.js'
 import type { EmailInputEventDetail } from './brave_account_email_input.js'
 
-export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
+export function getHtml(this: BraveAccountPasswordResetDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
       dialog-description="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION}"
@@ -29,6 +29,7 @@ export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
       <leo-button
         slot="buttons"
         ?isDisabled=${!this.isEmailValid}
+        @click=${this.onResetPasswordButtonClicked}
       >
         $i18n{BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL}
       </leo-button>

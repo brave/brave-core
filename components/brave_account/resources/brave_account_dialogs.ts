@@ -6,6 +6,7 @@
 import {
   AccountState,
   AccountStateFieldTags,
+  LoggedOutVerification,
   VerificationIntent,
   whichAccountState,
 } from './brave_account.mojom-webui.js'
@@ -23,8 +24,9 @@ import {
 import { getHtml } from './brave_account_dialogs.html.js'
 
 export type Dialog =
-  | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
+  | { type: 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
   | { type: 'OTP'; intent: VerificationIntent }
+  | { type: 'CREDENTIALS'; verification?: LoggedOutVerification }
 
 export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
@@ -74,22 +76,32 @@ export class BraveAccountDialogsElement extends CrLitElement {
 
     // Handle account state changes.
     // LOGGED_OUT (no verification): show the ENTRY dialog
-    // LOGGED_OUT (with verification): show the OTP dialog
+    // LOGGED_OUT (with verification, email not yet verified): show OTP
+    // LOGGED_OUT (with verification, email verified): show CREDENTIALS
     // LOGGED_IN: close the native dialog
-    // Since account state is profile-wide, this automatically updates dialogs
-    // across all tabs.
+    // The verification's `email` is empty until the OTP step completes, at
+    // which point it's persisted by the service. A non-empty email therefore
+    // means the user has already passed OTP, so the flow resumes straight at
+    // CREDENTIALS — even after a browser restart or a dismissed dialog. Since
+    // account state is profile-wide, this also keeps dialogs in sync across
+    // tabs. The verification's `intent` is threaded through to both dialogs so
+    // they don't have to reconstruct what drove the state.
     this.accountStateListenerId =
       this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
         (state: AccountState) => {
           switch (whichAccountState(state)) {
             case AccountStateFieldTags.LOGGED_OUT: {
               const verification = state.loggedOut!.verification
-              this.dialog = verification
-                ? {
-                    type: 'OTP',
-                    intent: { loggedOutIntent: verification.intent },
-                  }
-                : { type: 'ENTRY' }
+              if (verification) {
+                this.dialog = verification.email
+                  ? { type: 'CREDENTIALS', verification }
+                  : {
+                      type: 'OTP',
+                      intent: { loggedOutIntent: verification.intent },
+                    }
+              } else {
+                this.dialog = { type: 'ENTRY' }
+              }
               break
             }
             case AccountStateFieldTags.LOGGED_IN:
