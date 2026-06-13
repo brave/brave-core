@@ -362,6 +362,7 @@ leo_icons_sources = [
   "news-worldnews.svg",
   "next-outline.svg",
   "nft.svg",
+  "nvidia-color.svg",
   "notification-off.svg",
   "notification.svg",
   "ollama.svg",
