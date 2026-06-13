@@ -34,6 +34,7 @@ if (is_win) {
 executable("helper") {
   output_name = "brave_vpn_helper_app"
 
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
   sources = [ "main.cc" ]
   deps = [
     ":core",
@@ -43,6 +44,10 @@ executable("helper") {
   ]
 
   data_deps = [ "//brave/third_party/boringtun" ]
+
+  if (is_mac) {
+    deps += [ "//base/allocator:early_zone_registration_apple" ]
+  }
 
   if (is_win) {
     deps += [
@@ -62,6 +67,7 @@ if (is_mac) {
     output_name = vpn_helper_product_full_name
     extra_substitutions = [ "MAC_BUNDLE_IDENTIFIER=$vpn_helper_bundle_id" ]
 
+    configs += [ "//build/config/compiler:wexit_time_destructors" ]
     sources = [ "main.cc" ]
 
     deps = [
@@ -71,6 +77,15 @@ if (is_mac) {
       "//base:base_static",
       "//brave/components/brave_vpn/app/v2/shared",
     ]
+
+    ldflags = []
+    if (is_component_build) {
+      # This is similar to what "chrome_helper_app" template does.
+      ldflags += [
+        "-Wl,-rpath,@executable_path/../../../../../../..",
+        "-Wl,-rpath,@loader_path/../../../../../../../../../..",
+      ]
+    }
   }
 
   # Drops boringtun shared object into the helper's bundle.
