@@ -8,6 +8,7 @@
 load("@builtin//lib/gn.star", "gn")
 load("@builtin//runtime.star", "runtime")
 load("@builtin//struct.star", "module", "struct")
+load("./config.star", "config")
 
 __HOST_OS_IS_LINUX = runtime.os == "linux"
 __HOST_OS_IS_WINDOWS = runtime.os == "windows"
@@ -73,6 +74,7 @@ def __configure(ctx, step_config, filegroups, handlers):
     __adjust_filegroups(step_config, filegroups)
     __adjust_handlers(ctx, step_config, handlers)
     __remove_labels_from_platforms(step_config)
+    __remove_copy_handler_if_remote_link(ctx, step_config)
 
 # Disable any handling for rules that deviate from upstream.
 def __remove_rules(ctx, step_config):
@@ -206,6 +208,17 @@ def __remove_labels_from_platforms(step_config):
     for platform_properties in step_config["platforms"].values():
         for label in __LABELS_TO_REMOVE_FROM_PLATFORMS:
             platform_properties.pop('label:' + label, None)
+
+
+# Disable copy handler until copy with executable flag is fixed in remote-link
+# in SISO. https://issues.chromium.org/issues/440453073
+def __remove_copy_handler_if_remote_link(ctx, step_config):
+    if not config.get(ctx, "remote-link"):
+        return
+
+    for rule in step_config["rules"]:
+        if rule.get("handler") == "copy":
+            rule.pop("handler")
 
 
 # Wraps a rule with the redirect_cc handler to handle C/C++ source file
