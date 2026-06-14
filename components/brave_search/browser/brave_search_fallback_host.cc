@@ -43,8 +43,10 @@ GURL BraveSearchFallbackHost::GetBackupResultURL(const GURL& baseURL,
                                                  int page_index) {
   GURL url = baseURL;
   url = net::AppendQueryParameter(url, "q", query);
-  url =
-      net::AppendQueryParameter(url, "start", base::NumberToString(page_index));
+  if (page_index > 0) {
+    url = net::AppendQueryParameter(url, "start",
+                                    base::NumberToString(page_index));
+  }
   if (!lang.empty()) {
     url = net::AppendQueryParameter(url, "hl", lang);
   }
