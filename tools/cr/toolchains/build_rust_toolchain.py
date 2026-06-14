@@ -187,22 +187,19 @@ CONFIG_TOML_TEMPLATE = Path('config.toml.template')
 # Relative path (within the Chromium src/ root) of the Rust toolchain scripts.
 TOOLS_RUST = Path('tools') / 'rust'
 
-# Relative path (within RUST_BUILD_DIR/<target_triple>/) to the rustlib output
-# directory.  The wasm32 standard-library sysroot lives at
-# <RUST_BUILD_DIR>/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/.  Both
-# build modes write here: bootstrap names the standard library by the stage that
-# *consumes* it, so the std the prebuilt stage-1 compiler builds (see
-# USE_PREBUILT_RUSTC_FOR_WASM_STD) is the "stage-1 std" and lands under `stage1/`
-# just like the from-scratch stage-1 build.
+# Relative path (within RUST_BUILD_DIR/<host-triple>/) to the from-scratch
+# stage-1 rustlib output.  The default (full-toolchain) build's wasm32 sysroot
+# is assembled by x.py at
+# <RUST_BUILD_DIR>/<host>/stage1/lib/rustlib/wasm32-unknown-unknown/.
 STAGE1_RUSTLIB = Path('stage1') / 'lib' / 'rustlib'
+
+# Relative paths (within RUST_BUILD_DIR/<host-triple>/) to the prebuilt-compiler
+# stage-0 build output.
+STAGE0_STD = Path('stage0-std')
+STAGE0_RUSTLIB = Path('stage0-sysroot') / 'lib' / 'rustlib'
 
 # When True, the `--no-full-toolchain` build compiles only the wasm32 standard
 # library against the prebuilt `rustc` that gclient already syncs to
-# `third_party/rust-toolchain` (`RUST_TOOLCHAIN_OUT_DIR`), used as the Rust
-# bootstrap stage-1 compiler via `x.py build library --stage 1`. No `rustc` is
-# rebuilt from scratch, and the wasm std is guaranteed to match the toolchain it
-# overlays. Set to False to fall back to building a stage-1 `rustc` purely to
-# produce the wasm std.
 #
 # Only affects `--no-full-toolchain`: the full-toolchain build ships its own
 # freshly built `rustc`, so its wasm std must come from that same build (which
@@ -632,22 +629,23 @@ class ToolchainBuilder:
           standard libraries.  Artifacts land under
           `RUST_BUILD_DIR/<host>/stage1/`.
 
-        * `use_prebuilt_rustc=True`: `build library --stage 1 --target wasm32`
+        * `use_prebuilt_rustc=True`: `build library --stage 0 --target wasm32`
           with `--set build.rustc`/`build.cargo` pointed at the prebuilt
           toolchain in `RUST_TOOLCHAIN_OUT_DIR` and `--set
           build.local-rebuild=true`.  `local-rebuild` tells bootstrap the
-          stage-1 compiler is the same version as the in-tree sources, which is
+          stage-0 compiler is the same version as the in-tree sources, which is
           true here because `update_rust.py` pins the synced toolchain and
-          `rust-src` to the same revision. This lets it reuse the synced
-          compiler as the stage-1 compiler instead of building one.  Only the
-          wasm32 std is compiled (no `rustc` build), and the result is
-          byte-compatible with the toolchain it overlays.  Artifacts land under
-          `RUST_BUILD_DIR/<host>/stage1/` (see `STAGE1_RUSTLIB`), same as the
-          default build.
+          `rust-src` to the same revision; without it bootstrap refuses to build
+          at stage 0.  The synced compiler compiles the wasm32 std directly — no
+          `rustc` is built — so the rlibs are byte-compatible with the toolchain
+          it overlays.
 
-          `--stage 1` (rather than `--stage 0`) is required: a stage-0 build
-          compiles std into cargo's output dir but never assembles the
-          `lib/rustlib/<target>/lib/` sysroot, whereas stage 1 assembles it.
+          A stage-0 build does not assemble a `lib/rustlib/<target>/lib/`
+          sysroot (the crates land in cargo's output dir), so
+          `_assemble_stage0_wasm_sysroot` stitches one together afterwards.  A
+          `--stage 1` build *would* assemble the sysroot, but it compiles a
+          fresh stage-1 `rustc` and tags the std with it — which a consumer
+          using the synced `rustc` then rejects with E0514.
         """
         target_triple: str = self._build_rust_module.RustTargetTriple()
 
@@ -662,7 +660,7 @@ class ToolchainBuilder:
                         f'Prebuilt Rust tool not found: {tool}. The '
                         f'--no-full-toolchain build uses the toolchain gclient '
                         f'syncs to {prebuilt_bin.parent} as bootstrap\'s '
-                        f'stage-1; run `gclient sync` or pass --full-toolchain.'
+                        f'stage-0; run `gclient sync` or pass --full-toolchain.'
                     )
             _check_call(str(self._vpython_path),
                         'build_rust.py',
@@ -675,7 +673,7 @@ class ToolchainBuilder:
                         '--target',
                         WASM32_UNKNOWN_UNKNOWN,
                         '--stage',
-                        '1',
+                        '0',
                         '--set',
                         f'build.rustc={rustc.as_posix()}',
                         '--set',
@@ -698,15 +696,72 @@ class ToolchainBuilder:
                     '1',
                     cwd=self._tools_rust)
 
-    def _wasm_stdlib_dir(self) -> Path:
-        """Return the freshly built wasm32 sysroot in the bootstrap build tree.
+    def _stage1_wasm_stdlib_dir(self) -> Path:
+        """Return the stage-1 wasm32 sysroot x.py assembles in the build tree.
 
-        Both build modes (`_run_xpy`) emit the wasm32 standard library under the
-        `stage1/` rustlib directory — see `STAGE1_RUSTLIB`.
+        Used by the default (full-toolchain) build, where `_run_xpy` runs a
+        from-scratch `--stage 1` build that assembles the sysroot under
+        `stage1/` — see `STAGE1_RUSTLIB`.
         """
         target_triple = self._build_rust_module.RustTargetTriple()
         return (Path(self._build_rust_module.RUST_BUILD_DIR) / target_triple /
                 STAGE1_RUSTLIB / WASM32_UNKNOWN_UNKNOWN)
+
+    def _assemble_stage0_wasm_sysroot(self) -> Path:
+        """Assemble a wasm32 sysroot from the prebuilt stage-0 build output.
+
+        `x.py build library --stage 0` (the `--no-full-toolchain` path) compiles
+        the wasm32 std with the synced stage-0 compiler, so the rlibs are
+        byte-compatible with the toolchain we overlay, but leaves them in
+        cargo's output dir instead of assembling a `lib/rustlib/<target>/lib/`
+        sysroot.  This copies the compiled `.rlib`/`.rmeta` crates plus the
+        `self-contained/` linker directory into a freshly built sysroot under the
+        build tree and returns its `wasm32-unknown-unknown` directory (laid out
+        so `_create_archive` can add it as `WASM32_ARCNAME` unchanged).
+
+        Raises:
+            RuntimeError: if the stage-0 std output cannot be found.
+        """
+        target_triple = self._build_rust_module.RustTargetTriple()
+        build_dir = Path(
+            self._build_rust_module.RUST_BUILD_DIR) / target_triple
+
+        # Compiled crates: stage0-std/<wasm>/<profile>/deps/*.{rlib,rmeta}. The
+        # profile dir name (e.g. `dist`) is matched with a glob; pick the one
+        # that actually holds rlibs.
+        std_out = build_dir / STAGE0_STD / WASM32_UNKNOWN_UNKNOWN
+        deps_dir = next(
+            (d
+             for d in sorted(std_out.glob('*/deps')) if any(d.glob('*.rlib'))),
+            None)
+        if deps_dir is None:
+            raise RuntimeError(
+                f'No stage-0 wasm32 std crates found under {std_out}; did the '
+                f'`build library --stage 0` step run?')
+
+        # Assemble into a clean sysroot so stale crates from a prior run cannot
+        # leak in (they would surface as the E0514 "multiple `core`" failure).
+        sysroot_root = build_dir / 'brave-wasm-sysroot'
+        if sysroot_root.exists():
+            shutil.rmtree(sysroot_root)
+        wasm_dir = (sysroot_root / 'lib' / 'rustlib' / WASM32_UNKNOWN_UNKNOWN)
+        lib_dir = wasm_dir / 'lib'
+        lib_dir.mkdir(parents=True)
+
+        crates = list(deps_dir.glob('*.rlib')) + list(deps_dir.glob('*.rmeta'))
+        logging.info('Assembling %d wasm32 std crates from %s into %s',
+                     len(crates), deps_dir, lib_dir)
+        for crate in crates:
+            shutil.copy2(crate, lib_dir / crate.name)
+
+        # The `self-contained/` linker bits are the only part of the sysroot a
+        # stage-0 build does populate; carry them over too.
+        self_contained = (build_dir / STAGE0_RUSTLIB / WASM32_UNKNOWN_UNKNOWN /
+                          'lib' / 'self-contained')
+        if self_contained.is_dir():
+            shutil.copytree(self_contained, lib_dir / 'self-contained')
+
+        return wasm_dir
 
     def _chromium_version(self) -> str:
         """Parse the Chromium version from `chrome/VERSION` at HEAD.
@@ -1294,7 +1349,9 @@ class ToolchainBuilder:
               - `_run_xpy` — compile the wasm32 stdlib via x.py, either building
                 a stage-1 `rustc` or reusing the prebuilt one (see
                 `USE_PREBUILT_RUSTC_FOR_WASM_STD`).
-        2. Assemble the output .tar.xz from `_wasm_stdlib_dir`:
+        2. Resolve the wasm32 sysroot, using `_assemble_stage0_wasm_sysroot` for
+           the prebuilt path, `_stage1_wasm_stdlib_dir` otherwise, and assemble
+           the output .tar.xz:
            * `_create_full_archive` when `full_toolchain` — overlay the wasm32
              sysroot onto the full-toolchain archive from step 1.
            * `_create_archive` otherwise — the minimal rust-lld + wasm32 subset.
@@ -1417,7 +1474,14 @@ class ToolchainBuilder:
                 self._prepare_run_xpy()
                 self._run_xpy(use_prebuilt_rustc=use_prebuilt_rustc)
 
-        wasm_src = self._wasm_stdlib_dir()
+        # The prebuilt-compiler path builds a bare `--stage 0` std that must be
+        # assembled into a sysroot; the from-scratch path's `--stage 1` build
+        # already assembled one.
+        if use_prebuilt_rustc:
+            wasm_src = self._assemble_stage0_wasm_sysroot()
+        else:
+            wasm_src = self._stage1_wasm_stdlib_dir()
+
         if full_toolchain:
             archive_path = self._create_full_archive(base_archive, wasm_src)
         else:
