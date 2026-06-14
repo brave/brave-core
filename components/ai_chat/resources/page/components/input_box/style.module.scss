@@ -16,6 +16,9 @@
   color: var(--leo-color-text-primary);
   position: relative;
   transition: all 0.2s ease-in-out;
+  overflow: clip;
+
+  background-color: var(--leo-color-page-background);
 }
 
 .form:hover,
@@ -140,6 +143,13 @@
 .attachmentChipScrollFullPage {
   flex: 0 0 30%;
   min-width: 0;
+}
+
+// Wraps everything below the tools section. Rounding the top corners nests the
+// input area below the tools bar for the double-radius look.
+.inputBody {
+  border-radius: var(--leo-radius-xl) var(--leo-radius-xl) 0 0;
+  background-color: var(--leo-color-container-background);
 }
 
 .button {

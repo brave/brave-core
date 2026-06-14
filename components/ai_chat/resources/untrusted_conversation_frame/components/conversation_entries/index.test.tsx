@@ -1020,6 +1020,7 @@ describe('highlightRichText', () => {
         contentType: Mojom.ContentType.PageContent,
         contentUsedPercentage: 0,
         uuid: '1',
+        toolsAttached: false,
       },
     ]
 
@@ -1057,6 +1058,7 @@ describe('highlightRichText', () => {
         contentType: Mojom.ContentType.PageContent,
         contentUsedPercentage: 0,
         uuid: '1',
+        toolsAttached: false,
       },
       {
         conversationTurnUuid: '1',
@@ -1066,6 +1068,7 @@ describe('highlightRichText', () => {
         contentType: Mojom.ContentType.PageContent,
         contentUsedPercentage: 0,
         uuid: '2',
+        toolsAttached: false,
       },
     ]
 

@@ -268,6 +268,8 @@ AssociatedContentManager::GetAssociatedContent() const {
       content->conversation_turn_uuid = it->second;
     }
 
+    content->tools_attached = delegate->tools_attached();
+
     result.push_back(std::move(content));
     total_consumed_chars += content_length;
   }

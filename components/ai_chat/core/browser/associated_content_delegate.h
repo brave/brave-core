@@ -101,6 +101,14 @@ class AssociatedContentDelegate {
   const std::u16string& title() const { return title_; }
   const GURL& url() const { return url_; }
 
+  // Whether tools provided by this content are enabled for the LLM. This is
+  // live-only state (it relies on the content's WebContents being live) and is
+  // not persisted.
+  bool tools_attached() const { return tools_attached_; }
+  void set_tools_attached(bool tools_attached) {
+    tools_attached_ = tools_attached;
+  }
+
   // Get current cache of content, if available. Do not perform any fresh
   // fetch for the content.
   const PageContent& cached_page_content() const {
@@ -131,6 +139,7 @@ class AssociatedContentDelegate {
   std::u16string title_;
   GURL url_;
   PageContent cached_page_content_;
+  bool tools_attached_ = false;
 
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };
