@@ -195,7 +195,10 @@ void BackupResultsServiceImpl::FetchBackupResults(
         stored_height > 0 ? stored_height : base::RandIntInclusive(600, 1080));
 #if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
-    native_view->OnSizeChanged(view_size.width(), view_size.height());
+    float dip_scale = native_view->GetDipScale();
+    native_view->OnSizeChanged(
+        static_cast<int>(view_size.width() * dip_scale),
+        static_cast<int>(view_size.height() * dip_scale));
 #else
     web_contents->Resize(gfx::Rect(view_size));
 #endif
