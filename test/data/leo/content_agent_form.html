@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create new issue</title>
+  </head>
+  <body>
+    <!-- Form controls are deliberately nested inside several single-child
+         containers, mirroring real sites (e.g. GitHub's "new issue" page) where
+         the title and description fields were not being assigned a dom_id and so
+         could not be targeted by the content agent. -->
+    <div class="page">
+      <div class="form-wrapper">
+        <form aria-label="issueform">
+          <div class="field">
+            <div class="control">
+              <label>
+                Add a title
+                <span class="input-wrapper">
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    placeholder="Title"
+                    aria-label="Add a title"
+                  >
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label>
+                Add a description
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="6"
+                  placeholder="Describe the issue"
+                  aria-label="Add a description"
+                ></textarea>
+              </label>
+            </div>
+          </div>
+          <button id="create" type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
