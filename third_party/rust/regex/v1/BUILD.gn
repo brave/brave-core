@@ -42,10 +42,10 @@ cargo_crate("lib") {
   allow_unsafe = true
 
   deps = [
+    "//brave/third_party/rust/aho_corasick/v1:lib",
     "//brave/third_party/rust/memchr/v2:lib",
     "//brave/third_party/rust/regex_automata/v0_4:lib",
     "//brave/third_party/rust/regex_syntax/v0_8:lib",
-    "//third_party/rust/aho_corasick/v1:lib",
   ]
   features = [
     "default",
@@ -133,10 +133,10 @@ cargo_crate("buildrs_support") {
   allow_unsafe = true
 
   deps = [
+    "//brave/third_party/rust/aho_corasick/v1:lib",
     "//brave/third_party/rust/memchr/v2:lib",
     "//brave/third_party/rust/regex_automata/v0_4:lib",
     "//brave/third_party/rust/regex_syntax/v0_8:lib",
-    "//third_party/rust/aho_corasick/v1:lib",
   ]
   rustenv = []
   rustflags = []
