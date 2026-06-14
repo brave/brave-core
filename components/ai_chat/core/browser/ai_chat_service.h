@@ -209,6 +209,8 @@ class AIChatService : public KeyedService,
   void BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) override;
   void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
                     mojom::Service::BindObserverCallback callback) override;
+  void GetConversationData(const std::string& uuid,
+                           GetConversationDataCallback callback) override;
   void BindObserver(
       mojo::PendingRemote<mojom::UntrustedServiceObserver> observer,
       mojom::UntrustedService::BindObserverCallback callback) override;

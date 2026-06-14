@@ -126,6 +126,10 @@ export function createMockConversationHandler(
     sendFeedback: () => Promise.resolve({ isSuccess: true }),
 
     // Action methods - fire and forget stubs
+    generateQuestions: () => {},
+    submitSummarizationRequest: () => {},
+    submitSuggestion: () => {},
+    retryAPIRequest: () => {},
     changeModel: () => {},
     submitHumanConversationEntryWithAction: () => {},
     submitHumanConversationEntryWithSkill: () => {},
@@ -152,23 +156,24 @@ export function createMockService(
   return makeCloseable({
     // Query methods - return empty/default results
     getConversations: () => Promise.resolve({ conversations: [] }),
+    getConversationData: () => Promise.resolve({ conversation: null, entries: [] }),
     getActionMenuList: () => Promise.resolve({ actionList: [] }),
     getSkills: () => Promise.resolve({ skills: [] }),
     getPremiumStatus: () =>
       Promise.resolve({ status: Mojom.PremiumStatus.Inactive, info: null }),
 
     // Action methods - fire and forget stubs
-    markAgreementAccepted: () => {},
-    enableStoragePref: () => {},
-    dismissStorageNotice: () => {},
-    dismissPremiumPrompt: () => {},
-    bindConversation: () => {},
-    deleteConversation: () => {},
-    renameConversation: () => {},
+    markAgreementAccepted: () => { },
+    enableStoragePref: () => { },
+    dismissStorageNotice: () => { },
+    dismissPremiumPrompt: () => { },
+    bindConversation: () => { },
+    deleteConversation: () => { },
+    renameConversation: () => { },
     conversationExists: () => Promise.resolve({ exists: true }),
-    createSkill: () => {},
-    updateSkill: () => {},
-    deleteSkill: () => {},
+    createSkill: () => { },
+    updateSkill: () => { },
+    deleteSkill: () => { },
     bindObserver: () =>
       Promise.resolve({
         state: {
@@ -176,7 +181,7 @@ export function createMockService(
           ...initialState,
         },
       }),
-    bindMetrics: () => {},
+    bindMetrics: () => { },
 
     // Apply overrides
     ...overrides,
@@ -229,24 +234,24 @@ export function createMockUIHandler(
     setChatUI: () => Promise.resolve({ isStandalone: false }),
 
     // Action methods - fire and forget stubs
-    newConversation: () => {},
-    bindRelatedConversation: () => {},
-    openURL: () => {},
-    closeUI: () => {},
-    openModelSupportUrl: () => {},
-    openStorageSupportUrl: () => {},
-    goPremium: () => {},
-    managePremium: () => {},
-    refreshPremiumSession: () => {},
-    handleVoiceRecognition: () => {},
-    openAIChatSettings: () => {},
-    openMemorySettings: () => {},
-    openConversationFullPage: () => {},
-    associateTab: () => {},
-    associateUrlContent: () => {},
-    disassociateContent: () => {},
-    openAIChatAgentProfile: () => {},
-    showSoftKeyboard: () => {},
+    newConversation: () => { },
+    bindRelatedConversation: () => { },
+    openURL: () => { },
+    closeUI: () => { },
+    openModelSupportUrl: () => { },
+    openStorageSupportUrl: () => { },
+    goPremium: () => { },
+    managePremium: () => { },
+    refreshPremiumSession: () => { },
+    handleVoiceRecognition: () => { },
+    openAIChatSettings: () => { },
+    openMemorySettings: () => { },
+    openConversationFullPage: () => { },
+    associateTab: () => { },
+    associateUrlContent: () => { },
+    disassociateContent: () => { },
+    openAIChatAgentProfile: () => { },
+    showSoftKeyboard: () => { },
 
     // Apply overrides
     ...overrides,
@@ -297,10 +302,10 @@ export function createMockMetrics(
   overrides: Partial<Mojom.MetricsInterface> = {},
 ): Closable<Mojom.MetricsInterface> {
   return makeCloseable({
-    onSendingPromptWithNTP: () => {},
-    onQuickActionStatusChange: () => {},
-    onSendingPromptWithFullPage: () => {},
-    recordSkillClick: () => {},
+    onSendingPromptWithNTP: () => { },
+    onQuickActionStatusChange: () => { },
+    onSendingPromptWithFullPage: () => { },
+    recordSkillClick: () => { },
 
     // Apply overrides
     ...overrides,

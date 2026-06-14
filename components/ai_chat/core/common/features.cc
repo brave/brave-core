@@ -209,4 +209,12 @@ bool IsAIChatDeepResearchEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatDeepResearch);
 }
 
+BASE_FEATURE(kAIChatInternalWebUI,
+             "AIChatInternalWebUI",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatInternalWebUIEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatInternalWebUI);
+}
+
 }  // namespace ai_chat::features
