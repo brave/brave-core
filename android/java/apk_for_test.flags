@@ -93,7 +93,6 @@
     *** mGoogleActivityControls;
     *** mSyncEncryption;
     *** mSyncEverything;
-    *** mSyncTypeCheckBoxPreferencesMap;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {

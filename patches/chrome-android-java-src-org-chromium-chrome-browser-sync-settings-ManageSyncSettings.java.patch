@@ -2,6 +2,15 @@ diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/M
 index 2fab9bcfd639a13bc4ad9c65d25e0b1be79d464a..007518e217eee8463a838dd032e66b486c3ab9ff 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
+@@ -173,7 +173,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+     private boolean mShouldUpdatePrefs;
+ 
+     /** Maps {@link UserSelectableType} to the corresponding preference. */
+-    private Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
++    protected Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
+ 
+     private Preference mGoogleActivityControls;
+     private Preference mSyncEncryption;
 @@ -266,6 +266,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      @Override
