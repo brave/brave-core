@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the Brave settings WebUI test grdp into the shared chrome://webui-test
+      resources, so brave_browser_tests can RunTest() Brave settings mocha tests.
+    re_pattern: '(\n[ \t]*)"settings:build_grdp",'
+    replace: '\1"settings:build_grdp",\1"//brave/test/data/webui/settings:build_grdp",'
+
+  - description: |-
+      Include the Brave settings WebUI test resources.grdp in the combined grd.
+    re_pattern: '(\n[ \t]*)"\$target_gen_dir/settings/resources\.grdp",'
+    replace: '\1"$target_gen_dir/settings/resources.grdp",\1"$root_gen_dir/brave/test/data/webui/settings/resources.grdp",'

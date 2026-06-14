@@ -1,0 +1,20 @@
+diff --git a/chrome/test/data/webui/BUILD.gn b/chrome/test/data/webui/BUILD.gn
+index af5fd85adb27ecca132c70a4a7359b75ad59830e..b358e60954eab2325cfbe0509c31797f0b11f816 100644
+--- a/chrome/test/data/webui/BUILD.gn
++++ b/chrome/test/data/webui/BUILD.gn
+@@ -609,6 +609,7 @@ generate_grd("build_grd") {
+       "privacy_sandbox/internals/related_website_sets:build_grdp",
+       "sandbox:build_grdp",
+       "settings:build_grdp",
++      "//brave/test/data/webui/settings:build_grdp",
+       "side_panel:build_grdp",
+       "side_panel/customize_chrome:build_grdp",
+       "side_panel/read_anything:build_grdp",
+@@ -672,6 +673,7 @@ generate_grd("build_grd") {
+       "$target_gen_dir/privacy_sandbox/internals/related_website_sets/resources.grdp",
+       "$target_gen_dir/sandbox/resources.grdp",
+       "$target_gen_dir/settings/resources.grdp",
++      "$root_gen_dir/brave/test/data/webui/settings/resources.grdp",
+       "$target_gen_dir/side_panel/customize_chrome/resources.grdp",
+       "$target_gen_dir/side_panel/read_anything/resources.grdp",
+       "$target_gen_dir/side_panel/resources.grdp",

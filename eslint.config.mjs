@@ -117,6 +117,9 @@ export default defineConfig([
     '**/*.d.ts',
     'tools/chromium_src/lit_mangler/*.ts',
 
+    // WebUI browser test TypeScript; linted by the GN build's eslint_ts.
+    'test/data/webui/**/*.ts',
+
     // External or vendored code; not maintained in this repo
     'vendor/',
     'third_party/',
