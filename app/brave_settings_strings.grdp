@@ -1228,7 +1228,7 @@
     Passwords
   </message>
   <message name="IDS_SETTINGS_AI_CHAT_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing Leo AI Chat conversation history between multiple browser instances.">
-    Leo AI
+    Brave Leo AI
   </message>
 
   <!-- Settings / Search engine -->

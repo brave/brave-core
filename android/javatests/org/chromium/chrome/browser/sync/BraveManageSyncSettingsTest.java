@@ -17,9 +17,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Feature;
+import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
@@ -93,6 +96,33 @@ public class BraveManageSyncSettingsTest {
         Assert.assertTrue(
                 "Addresses warning dialog should be suppressed",
                 fragment.onPreferenceChange(addressesToggle, true));
+    }
+
+    @Test
+    @SmallTest
+    @Feature({"Sync"})
+    @EnableFeatures(BraveFeatureList.BRAVE_SYNC_AI_CHAT)
+    public void aiChatToggleIsVisibleWhenFeatureEnabled() {
+        setupMockSyncService();
+        BraveManageSyncSettings fragment = startManageSyncPreferences();
+
+        Preference prefAiChat = fragment.findPreference("account_section_ai_chat_toggle");
+        Assert.assertNotNull(
+                "AI Chat preference should exist when feature is enabled", prefAiChat);
+        Assert.assertTrue("AI Chat toggle should be visible", prefAiChat.isVisible());
+    }
+
+    @Test
+    @SmallTest
+    @Feature({"Sync"})
+    @DisableFeatures(BraveFeatureList.BRAVE_SYNC_AI_CHAT)
+    public void aiChatToggleIsAbsentWhenFeatureDisabled() {
+        setupMockSyncService();
+        BraveManageSyncSettings fragment = startManageSyncPreferences();
+
+        Preference prefAiChat = fragment.findPreference("account_section_ai_chat_toggle");
+        Assert.assertNull(
+                "AI Chat preference should not exist when feature is disabled", prefAiChat);
     }
 
     void syncPasswordsOverridden(Boolean isChromeOS, Boolean handlerShouldBeOverridden) {
