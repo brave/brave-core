@@ -358,8 +358,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                     BaseSearchIndexProvider.INDEX_OPT_OUT) {
 
                 @Override
-                public void updateDynamicPreferences(
-                        Context context, SettingsIndexData indexData) {
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
                     if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SYNC_AI_CHAT)) {
                         indexData.addEntryForKey(
                                 ManageSyncSettings.class.getName(),
