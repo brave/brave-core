@@ -350,14 +350,20 @@ ContentNodeBuilder& ContentNodeBuilder::AsCanvas() {
 ContentNodeBuilder& ContentNodeBuilder::MakeClickable(int dom_id) {
   auto* attrs = node_.mutable_content_attributes();
   attrs->set_common_ancestor_dom_node_id(dom_id);
-  attrs->mutable_interaction_info()->set_is_clickable(true);
+  // The deprecated `is_clickable` boolean is no longer populated by Chromium;
+  // actionability is expressed via `clickability_reasons`.
+  attrs->mutable_interaction_info()->add_clickability_reasons(
+      optimization_guide::proto::CLICKABILITY_REASON_CLICK_HANDLER);
   return *this;
 }
 
 ContentNodeBuilder& ContentNodeBuilder::MakeEditable(int dom_id) {
   auto* attrs = node_.mutable_content_attributes();
   attrs->set_common_ancestor_dom_node_id(dom_id);
-  attrs->mutable_interaction_info()->set_is_editable(true);
+  // The deprecated `is_editable` boolean is no longer populated by Chromium;
+  // editability is expressed via the EDITABLE clickability reason.
+  attrs->mutable_interaction_info()->add_clickability_reasons(
+      optimization_guide::proto::CLICKABILITY_REASON_EDITABLE);
   return *this;
 }
 

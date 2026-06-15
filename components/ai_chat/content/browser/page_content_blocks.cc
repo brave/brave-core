@@ -26,8 +26,29 @@ using optimization_guide::proto::AnnotatedPageContent;
 using optimization_guide::proto::ContentAttributes;
 using optimization_guide::proto::ContentAttributeType;
 using optimization_guide::proto::ContentNode;
+using optimization_guide::proto::InteractionInfo;
 
 constexpr size_t kMaxTreeStringLength = 100000;
+
+// Actionability is expressed through the `clickability_reasons` list, so the
+// signals must be derived from it
+bool IsNodeEditable(const InteractionInfo& interaction) {
+  for (int reason : interaction.clickability_reasons()) {
+    if (reason == optimization_guide::proto::CLICKABILITY_REASON_EDITABLE) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool IsNodeClickable(const InteractionInfo& interaction) {
+  for (int reason : interaction.clickability_reasons()) {
+    if (reason != optimization_guide::proto::CLICKABILITY_REASON_EDITABLE) {
+      return true;
+    }
+  }
+  return false;
+}
 
 bool ShouldFlattenContainer(const ContentNode& node) {
   // Only consider flattening if there's exactly one child
@@ -39,7 +60,7 @@ bool ShouldFlattenContainer(const ContentNode& node) {
   const auto& interaction = attrs.interaction_info();
   // Flatten non-interactive containers with only 1 child
   // but don't consider focusable, selectable and draggable for now
-  if (interaction.is_clickable() || interaction.is_editable()) {
+  if (IsNodeClickable(interaction) || IsNodeEditable(interaction)) {
     return false;
   }
 
@@ -112,7 +133,7 @@ std::string BuildAttributes(const ContentAttributes& attrs,
       }
     }
     if (!is_interactive &&
-        (interaction.is_clickable() || interaction.is_editable())) {
+        (IsNodeClickable(interaction) || IsNodeEditable(interaction))) {
       // ignore selectable, focusable and draggable for now
       is_interactive = true;
     }
@@ -128,10 +149,10 @@ std::string BuildAttributes(const ContentAttributes& attrs,
   // Add interaction capabilities
   if (attrs.has_interaction_info()) {
     const auto& interaction = attrs.interaction_info();
-    if (interaction.is_clickable()) {
+    if (IsNodeClickable(interaction)) {
       attr_result.append(" clickable");
     }
-    if (interaction.is_editable()) {
+    if (IsNodeEditable(interaction)) {
       attr_result.append(" editable");
     }
     if (interaction.has_scroller_info()) {
