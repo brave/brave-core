@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/callback_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
@@ -32,6 +33,7 @@ class MenuRunner;
 
 class BraveNewTabButton;
 class BrowserView;
+class BrowserWindowInterface;
 class FullscreenController;
 class TabStyle;
 
@@ -184,6 +186,10 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   void OnMenuClosed();
 
+  // Subscription to `RegisterBrowserDidClose`. We use this event to handle the
+  // lifetime of `menu_runner_`.
+  void OnBrowserClosing(BrowserWindowInterface* browser);
+
   // Callback that is called when collapse animation ends. We update visibility
   // of this view if it's needed
   void OnCollapseAnimationEnded();
@@ -245,6 +251,10 @@ class BraveVerticalTabStripRegionView : public views::View,
   BooleanPrefMember vertical_tab_on_right_;
 
   std::unique_ptr<views::MenuRunner> menu_runner_;
+
+  // A subscription to `Browser::RegisterBrowserDidClose`, to manage the
+  // lifetime of `menu_runner_`.
+  base::CallbackListSubscription browser_did_close_subscription_;
 
   base::WeakPtrFactory<BraveVerticalTabStripRegionView> weak_factory_{this};
 };
