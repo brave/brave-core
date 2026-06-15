@@ -40,7 +40,7 @@ import { RemoveNftModal } from '../../../../popup-modals/remove-nft-modal/remove
 
 // Styled Components
 import {
-  NFTWrapper,
+  GridItemWrapper,
   NFTText,
   IconWrapper,
   MoreIcon,
@@ -79,7 +79,6 @@ export const NFTGridViewItem = ({
   )
 
   // state
-  const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
 
   // hooks
@@ -91,25 +90,15 @@ export const NFTGridViewItem = ({
   const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
 
   // methods
-  const onToggleShowMore = React.useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event?.stopPropagation()
-      setShowMore((currentValue) => !currentValue)
-    },
-    [],
-  )
-
   const onHideModal = React.useCallback(() => {
     setShowEditModal(false)
   }, [])
 
   const onEditNft = React.useCallback(() => {
     setShowEditModal(true)
-    setShowMore(false)
   }, [])
 
   const onHideNft = React.useCallback(async () => {
-    setShowMore(false)
     await updateUserAssetVisible({
       token,
       isVisible: false,
@@ -117,7 +106,6 @@ export const NFTGridViewItem = ({
   }, [token, updateUserAssetVisible])
 
   const onUnHideNft = React.useCallback(async () => {
-    setShowMore(false)
     await updateUserAssetVisible({
       token,
       isVisible: true,
@@ -129,13 +117,11 @@ export const NFTGridViewItem = ({
   }, [updateUserAssetVisible, token, isTokenSpam, updateNftSpamStatus])
 
   const onUnSpam = async () => {
-    setShowMore(false)
     await updateNftSpamStatus({ token, isSpam: false })
     dispatch(WalletActions.refreshNetworksAndTokens())
   }
 
   const onMarkAsSpam = async () => {
-    setShowMore(false)
     await updateNftSpamStatus({ token, isSpam: true })
     dispatch(WalletActions.refreshNetworksAndTokens())
   }
@@ -147,23 +133,7 @@ export const NFTGridViewItem = ({
 
   return (
     <>
-      <NFTWrapper>
-        <NftMorePopup
-          isOpen={showMore}
-          isTokenHidden={isTokenHidden}
-          isTokenSpam={isTokenSpam}
-          onEditNft={onEditNft}
-          onHideNft={onHideNft}
-          onUnHideNft={onUnHideNft}
-          onUnSpam={onUnSpam}
-          onMarkAsSpam={onMarkAsSpam}
-          onRemoveNft={() => {
-            setShowMore(false)
-            setShowRemoveNftModal(true)
-          }}
-          onClose={() => setShowMore(false)}
-        />
-        <DIVForClickableArea onClick={() => onSelectAsset(token)} />
+      <GridItemWrapper>
         {isTokenSpam && (
           <JunkMarker>
             {getLocale('braveWalletNftJunk')}
@@ -178,6 +148,7 @@ export const NFTGridViewItem = ({
           </WatchOnlyMarker>
         )}
         <IconWrapper>
+          <DIVForClickableArea onClick={() => onSelectAsset(token)} />
           <DecoratedNftIcon
             icon={tokenImageURL}
             responsive={true}
@@ -194,22 +165,35 @@ export const NFTGridViewItem = ({
           <NFTText
             textColor='primary'
             variant='default.semibold'
+            onClick={() => onSelectAsset(token)}
           >
             {token.name}
           </NFTText>
-          <MoreButton onClick={onToggleShowMore}>
-            <MoreIcon />
-          </MoreButton>
+          <NftMorePopup
+            isTokenHidden={isTokenHidden}
+            isTokenSpam={isTokenSpam}
+            onEditNft={onEditNft}
+            onHideNft={onHideNft}
+            onUnHideNft={onUnHideNft}
+            onUnSpam={onUnSpam}
+            onMarkAsSpam={onMarkAsSpam}
+            onRemoveNft={() => setShowRemoveNftModal(true)}
+          >
+            <MoreButton slot='anchor-content'>
+              <MoreIcon />
+            </MoreButton>
+          </NftMorePopup>
         </Row>
         {token.symbol !== '' && (
           <NFTSymbol
             textColor='secondary'
             variant='small.regular'
+            onClick={() => onSelectAsset(token)}
           >
             {token.symbol}
           </NFTSymbol>
         )}
-      </NFTWrapper>
+      </GridItemWrapper>
       {showEditModal && (
         <AddOrEditNftModal
           nftToken={token}

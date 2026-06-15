@@ -29,6 +29,10 @@ export const NFTWrapper = styled.div`
   z-index: 0;
 `
 
+export const GridItemWrapper = styled(NFTWrapper)`
+  overflow: visible;
+`
+
 export const IconWrapper = styled.div`
   position: relative;
   overflow: visible;
@@ -46,7 +50,7 @@ export const DIVForClickableArea = styled.div`
   right: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 3;
 `
 
 export const NFTText = styled(Text)`
