@@ -42,6 +42,7 @@ if (is_android) {
       "//brave/browser/android/preferences:pref_names_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/glic/android:java",
+      "//chrome/browser/glic/android:jni_headers_java",
       "//chrome/browser/tab_group_suggestion:toolbar_java",
       "//chrome/browser/ui/android/toolbar:adaptive_features_java",
       "//chrome/browser/ui/messages/android:java",
