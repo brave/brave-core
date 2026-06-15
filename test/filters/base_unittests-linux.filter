@@ -7,3 +7,13 @@
 
 # This test fails on CI but passes locally
 -CancelableEventTest.BothCancelFailureAndSucceedOccurUnderContention
+
+# Upstream flake (crbug.com/325641473): the last trace event is occasionally
+# missing after EndTraceAndFlush(), so the ASSERT_TRUE(dict) lookup for the
+# final event fails. Chromium already disables this test on Mac for the same
+# "missing last event" root cause; we observed the same failure on Linux x64
+# (brave/brave-browser#55948). The race is platform-general but upstream LUCI
+# Analysis reports it as stable (<1% / 60d), so this is a low-frequency flush
+# race, not a Brave-specific issue — Brave only adds unrelated trace categories
+# in chromium_src/base/trace_event/builtin_categories.h.
+-TraceEventTestFixture.PrimitiveArgs
