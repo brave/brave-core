@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -167,9 +168,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                   .EqualsIgnoringRef(url));
 }
 
-// Flaky on Mac.
-// System menu is used on Windows.
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+// System menu is used on Windows, so the menu_runner_ path under test does not
+// apply there.
+#if BUILDFLAG(IS_WIN)
 #define MAYBE_ContextMenuInUnobscuredRegion \
   DISABLED_ContextMenuInUnobscuredRegion
 #else
@@ -190,4 +191,34 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
       vtab_strip_root_view, gfx::Point(), ui::mojom::MenuSourceType::kMouse);
 
   EXPECT_TRUE(vtab_strip_root_view->IsMenuShowing());
+}
+
+// Teesting menu tear down for `menu_runner_`, which is only used on
+// non-Windows platforms.
+#if BUILDFLAG(IS_WIN)
+#define MAYBE_CloseBrowserWithContextMenuOpen \
+  DISABLED_CloseBrowserWithContextMenuOpen
+#else
+#define MAYBE_CloseBrowserWithContextMenuOpen CloseBrowserWithContextMenuOpen
+#endif
+IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
+                       MAYBE_CloseBrowserWithContextMenuOpen) {
+  ToggleVerticalTabStrip();
+
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+
+  auto* region_view =
+      vtab_tab_strip_widget_delegate_view()->vertical_tab_strip_region_view();
+  ASSERT_FALSE(region_view->IsMenuShowing());
+
+  region_view->ShowContextMenuForView(region_view, gfx::Point(),
+                                      ui::mojom::MenuSourceType::kMouse);
+  ASSERT_TRUE(region_view->IsMenuShowing());
+
+  // Keep the browser process alive after the target browser is closed.
+  ASSERT_TRUE(CreateBrowser(browser()->profile()));
+
+  // Closing the browser must not use the system menu model after it has been
+  // freed.
+  CloseBrowserSynchronously(browser());
 }
