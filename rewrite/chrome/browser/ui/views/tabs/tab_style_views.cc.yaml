@@ -29,7 +29,7 @@ substitutions:
       Virtualise GetStrokeThickness for BraveVerticalTabStyle.
 
       Virtualising it to return 0 for vertical/horizontal-update tabs.
-    re_pattern: '(int GetStrokeThickness\(bool should_paint_as_active\) const;)'
+    re_pattern: '(int GetStrokeThickness\(\) const;)'
     replace: 'virtual \1'
 
   - description: |-

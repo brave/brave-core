@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0f53d1bcb 100644
+index c77e0b3989b74e2124b88a2491e7d974f868bb85..668bdf29902a55126d16079d908976c5a76d5526 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -82,12 +82,12 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -82,19 +82,19 @@ class TabStyleViewsImpl : public TabStyleViews {
      return hover_controller_.get();
    }
  
@@ -17,16 +17,15 @@ index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0
        TabStyle::TabSelectionState selection_state,
        bool hovered) const;
  
-@@ -95,7 +95,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   // Returns the thickness of the stroke drawn around the top and sides of the
    // tab. Only active tabs may have a stroke, and not in all cases. If there
-   // is no stroke, returns 0. If `should_paint_as_active` is true, the tab is
-   // treated as an active tab regardless of its true current state.
--  int GetStrokeThickness(bool should_paint_as_active) const;
-+  virtual int GetStrokeThickness(bool should_paint_as_active) const;
+   // is no stroke, returns 0.
+-  int GetStrokeThickness() const;
++  virtual int GetStrokeThickness() const;
  
    bool ShouldPaintTabBackgroundColor(
        TabStyle::TabSelectionState selection_state,
-@@ -113,7 +113,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -112,7 +112,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    // Returns a single separator's opacity based on whether it is the
    // logically `leading` separator. `for_layout` has the same meaning as in
    // GetSeparatorOpacities().
@@ -35,7 +34,7 @@ index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0
  
    // Helper that returns an interpolated opacity if the tab or its neighbor
    // `other_tab` is mid-hover-animation. Used in almost all cases when a
-@@ -125,7 +125,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -124,7 +124,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  
    // Gets the bounds for the leading and trailing separators for a tab.
@@ -44,7 +43,7 @@ index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0
  
    // Returns the opacities of the separators. If `for_layout` is true, returns
    // the "layout" opacities, which ignore the effects of surrounding tabs' hover
-@@ -133,7 +133,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -132,7 +132,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
  
    // Returns whether the mouse is currently hovering this tab.
@@ -53,7 +52,7 @@ index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0
  
    // Returns whether the hover animation is being shown.
    bool IsHoverAnimationActive() const;
-@@ -357,6 +357,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+@@ -348,6 +348,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
    const bool compact_left_to_bottom = ShouldCompactLeadingEdge(path_type);
@@ -61,7 +60,7 @@ index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0
  
    float left_extension_corner_radius = extension_corner_radius;
    if (compact_left_to_bottom) {
-@@ -1045,14 +1046,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1029,14 +1030,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
@@ -82,7 +81,7 @@ index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0
  }
  
  bool TabStyleViewsImpl::IsLeftSplitTab(const Tab* tab) const {
-@@ -1192,10 +1197,12 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {
+@@ -1176,10 +1181,12 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {
  
  // TabStyleViews ---------------------------------------------------------------
  

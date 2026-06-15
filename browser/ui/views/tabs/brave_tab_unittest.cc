@@ -140,7 +140,7 @@ TEST_F(BraveTabTest, TabHeightTest) {
             tab.GetContentsBounds().height());
 
   SkPath mask = tab.tab_style_views()->GetPath(
-      TabStyle::PathType::kFill,
+      TabStyle::PathType::kActiveTab,
       /* scale */ 1.0, {.render_units = TabStyle::RenderUnits::kDips});
   SkRegion clip_region;
   clip_region.setRect({0, 0, tab.width(), tab.height()});
