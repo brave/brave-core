@@ -240,6 +240,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
     }
 
     if FeatureList.kQuickViewEnabled.enabled,
+      Preferences.General.openLinkInQuickViewMode.value,
       shouldOpenInQuickView(requestURL: requestURL, requestInfo: requestInfo, tab: tab)
     {
       presentInQuickView?(requestURL, tab)

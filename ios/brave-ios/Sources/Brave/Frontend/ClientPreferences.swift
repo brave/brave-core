@@ -142,6 +142,11 @@ extension Preferences {
       key: "general.open-keyboard-on-ntp-selection",
       default: false
     )
+    /// Whether or not open link in quickview mode
+    public static let openLinkInQuickViewMode: Option<Bool> = .init(
+      key: "general.open-link-in-quickview-mode",
+      default: true
+    )
   }
 
   final public class Search {
