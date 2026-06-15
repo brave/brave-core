@@ -49,6 +49,9 @@ import {
 import {
   useSwapTransactionParser, //
 } from '../../../../common/hooks/use-swap-tx-parser'
+import {
+  usePolkadotTransactionAddresses, //
+} from '../../../../common/hooks/use_polkadot_transaction_addresses'
 import { useExplorer } from '../../../../common/hooks/explorer'
 
 // Styled Components
@@ -172,6 +175,9 @@ export const TransactionIntent = (props: Props) => {
 
   const swapOrBridgeRecipient = destinationAddress || txAccount?.address || ''
 
+  const polkadotAddressesByUniqueKey =
+    usePolkadotTransactionAddresses(transaction)
+
   const recipientLabel = getAddressLabel(
     isERC20Approval
       ? txApprovalTarget
@@ -179,6 +185,7 @@ export const TransactionIntent = (props: Props) => {
         ? swapOrBridgeRecipient
         : txToAddress,
     accountInfosRegistry,
+    polkadotAddressesByUniqueKey,
   )
 
   const formattedSendAmount = React.useMemo(() => {
