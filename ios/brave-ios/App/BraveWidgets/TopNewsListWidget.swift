@@ -28,6 +28,7 @@ struct TopNewsListWidget: Widget {
 
 private struct TopNewsListEntry: TimelineEntry {
   var date: Date = .now
+  var isDisabledByPolicy: Bool = false
   var topics: [NewsTopic]?
   var images: [NewsTopic.ID: UIImage] = [:]
 }
@@ -38,6 +39,11 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
 
   func getSnapshot(in context: Context, completion: @escaping (TopNewsListEntry) -> Void) {
     Task {
+      let isAvailable = await model.isNewsAvailable()
+      if !isAvailable {
+        completion(.init(isDisabledByPolicy: true))
+        return
+      }
       let grouping = context.family == .systemMedium ? 2 : 5
       // No need to load more than the grouping in the snapshot
       let topics = Array(await model.fetchNewsTopics(Locale.autoupdatingCurrent).prefix(grouping))
@@ -48,6 +54,11 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
   func getTimeline(in context: Context, completion: @escaping (Timeline<TopNewsListEntry>) -> Void)
   {
     Task {
+      let isAvailable = await model.isNewsAvailable()
+      if !isAvailable {
+        completion(.init(entries: [.init(isDisabledByPolicy: true)], policy: .never))
+        return
+      }
       let grouping = context.family == .systemMedium ? 2 : 5
       let interval = context.family == .systemMedium ? 15 : 20
       let allTopics = Array(
@@ -89,15 +100,17 @@ private struct TopNewsListView: View {
           .font(.system(size: 14, weight: .bold, design: .rounded))
       }
       Spacer()
-      Link(
-        destination: URL(
-          string:
-            "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.braveNews.rawValue)"
-        )!
-      ) {
-        Text(Strings.Widgets.newsClusteringReadMoreButtonTitle)
-          .foregroundColor(Color(.braveBlurpleTint))
-          .font(.system(size: 13, weight: .semibold, design: .rounded))
+      if !entry.isDisabledByPolicy {
+        Link(
+          destination: URL(
+            string:
+              "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.braveNews.rawValue)"
+          )!
+        ) {
+          Text(Strings.Widgets.newsClusteringReadMoreButtonTitle)
+            .foregroundColor(Color(.braveBlurpleTint))
+            .font(.system(size: 13, weight: .semibold, design: .rounded))
+        }
       }
     }
     .padding(.horizontal)
@@ -163,27 +176,22 @@ private struct TopNewsListView: View {
         .padding(.bottom)
       } else {
         ZStack(alignment: .top) {
-          Text(Strings.Widgets.newsClusteringErrorLabel)
-            .font(
-              .system(
-                size: widgetFamily == .systemLarge ? 26 : 18,
-                weight: .semibold,
-                design: .rounded
-              )
-            )
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background {
-              LinearGradient(braveGradient: .darkGradient01)
-                .mask {
-                  Image("brave-today-error")
-                    .renderingMode(.template)
-                    .resizable(resizingMode: .tile)
-                    .opacity(0.1)
-                    .rotationEffect(.degrees(-45))
-                    .scaleEffect(x: 2.1, y: 2.1)
-                }
+          VStack(spacing: 8) {
+            Image(braveSystemName: "leo.disable.outline")
+              .imageScale(.large)
+            VStack {
+              Text(Strings.Widgets.newsUnavailableByPolicy)
+                .font(.headline)
+                .fontDesign(.rounded)
+              Text(Strings.Widgets.newsUnavailableByPolicyDescription)
+                .font(.subheadline)
+                .fontDesign(.rounded)
+                .foregroundStyle(Color(braveSystemName: .textTertiary))
             }
+          }
+          .foregroundStyle(Color(braveSystemName: .textSecondary))
+          .padding()
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
           headerView
             .background {
               LinearGradient(
@@ -203,7 +211,7 @@ private struct TopNewsListView: View {
 #if DEBUG
 struct TopNewsListView_PreviewProvider: PreviewProvider {
   struct PreviewView: View {
-    let model = NewsTopicsModel.mock
+    let model = NewsTopicsModel.mock(isAvailable: true)
     @State private var topics: [NewsTopic] = []
 
     var body: some View {
@@ -220,4 +228,15 @@ struct TopNewsListView_PreviewProvider: PreviewProvider {
       .previewContext(WidgetPreviewContext(family: .systemMedium))
   }
 }
+
+#Preview(
+  as: .systemMedium,
+  widget: {
+    TopNewsListWidget()
+  },
+  timeline: {
+    TopNewsListEntry(isDisabledByPolicy: true)
+  }
+)
+
 #endif
