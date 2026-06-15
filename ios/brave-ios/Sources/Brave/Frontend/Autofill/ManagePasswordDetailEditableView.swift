@@ -9,16 +9,32 @@ import SwiftUI
 
 struct ManagePasswordDetailEditableView: View {
   @Environment(\.dismiss) private var dismiss
-  @Environment(\.editMode) private var editMode
 
   @Binding var isPasswordRevealed: Bool
   @FocusState private var focusedField: ManagePasswordCredentialFields.Field?
-  @State private var username = ""
-  @State private var passwordValue = ""
+  @State private var site: String
+  @State private var username: String
+  @State private var passwordValue: String
   @State private var isDeleteDialogPresented = false
 
   let viewModel: ManagePasswordsViewModel
   let password: CWVPassword
+  let onFinishEditing: () -> Void
+
+  init(
+    isPasswordRevealed: Binding<Bool>,
+    viewModel: ManagePasswordsViewModel,
+    password: CWVPassword,
+    onFinishEditing: @escaping () -> Void
+  ) {
+    _isPasswordRevealed = isPasswordRevealed
+    self.viewModel = viewModel
+    self.password = password
+    self.onFinishEditing = onFinishEditing
+    _site = State(initialValue: password.site)
+    _username = State(initialValue: password.username ?? "")
+    _passwordValue = State(initialValue: password.password ?? "")
+  }
 
   private var isValid: Bool {
     viewModel.isValidCredential(username: username, password: passwordValue, site: password.site)
@@ -29,6 +45,7 @@ struct ManagePasswordDetailEditableView: View {
   }
 
   private func resetFields() {
+    site = password.site
     username = password.username ?? ""
     passwordValue = password.password ?? ""
   }
@@ -41,7 +58,7 @@ struct ManagePasswordDetailEditableView: View {
   var body: some View {
     Form {
       ManagePasswordCredentialFields(
-        site: .constant(password.site),
+        site: $site,
         username: $username,
         password: $passwordValue,
         isPasswordRevealed: $isPasswordRevealed,
@@ -75,6 +92,28 @@ struct ManagePasswordDetailEditableView: View {
         }
       }
     }
+    .toolbar {
+      ToolbarItem(placement: .cancellationAction) {
+        Button {
+          resetFields()
+          onFinishEditing()
+        } label: {
+          Label(Strings.CancelString, braveSystemImage: "leo.close")
+        }
+      }
+
+      ToolbarItem(placement: .confirmationAction) {
+        Button {
+          if hasChanges, isValid {
+            viewModel.updatePassword(password, username: username, passwordValue: passwordValue)
+          }
+          onFinishEditing()
+        } label: {
+          Label(Strings.saveButtonTitle, braveSystemImage: "leo.check.normal")
+        }
+        .disabled(!isValid)
+      }
+    }
     .task {
       // SwiftUI's `Form` doesn't reliably accept focus the instant a screen presents — the
       // keyboard can be suppressed if `focusedField` is set before the view is fully mounted
@@ -82,27 +121,6 @@ struct ManagePasswordDetailEditableView: View {
       // actually becomes first responder and the keyboard rises.
       try? await Task.sleep(for: .milliseconds(500))
       focusedField = .username
-    }
-    .onAppear {
-      resetFields()
-    }
-    .onChange(of: editMode?.wrappedValue) { oldValue, newValue in
-      // In edit mode there is no explicit Save button — the EditButton toggles between
-      // read-only and editable as afforded by @Environment(\.editMode).
-      guard oldValue == .active, newValue == .inactive, hasChanges, isValid else { return }
-      viewModel.updatePassword(password, username: username, passwordValue: passwordValue)
-    }
-    .toolbar {
-      ToolbarItem(placement: .topBarLeading) {
-        Button {
-          // Dismiss edit mode without applying any changes
-          // undo all changes by resetting with the original values
-          resetFields()
-          editMode?.wrappedValue = .inactive
-        } label: {
-          Label(Strings.CancelString, braveSystemImage: "leo.close")
-        }
-      }
     }
   }
 }

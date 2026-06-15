@@ -8,10 +8,10 @@ import BraveStrings
 import SwiftUI
 
 struct ManagePasswordDetailContainerView: View {
-  @Environment(\.editMode) private var editMode
   @Environment(\.redactionReasons) private var redactionReasons
 
   @State private var isPasswordRevealed = false
+  @State private var isEditing = false
 
   let viewModel: ManagePasswordsViewModel
   let password: CWVPassword
@@ -22,17 +22,14 @@ struct ManagePasswordDetailContainerView: View {
     return URL(string: password.site)?.baseDomain ?? password.title
   }
 
-  private var isEditMode: Bool {
-    editMode?.wrappedValue == .active
-  }
-
   var body: some View {
     Group {
-      if isEditMode {
+      if isEditing {
         ManagePasswordDetailEditableView(
           isPasswordRevealed: $isPasswordRevealed,
           viewModel: viewModel,
-          password: password
+          password: password,
+          onFinishEditing: { isEditing = false }
         )
       } else {
         ManagePasswordDetailReadOnlyView(
@@ -44,11 +41,13 @@ struct ManagePasswordDetailContainerView: View {
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .navigationBarBackButtonHidden(isEditMode)
+    .navigationBarBackButtonHidden(isEditing)
     .toolbar {
-      if !isEditMode {
+      if !isEditing {
         ToolbarItem(placement: .topBarTrailing) {
-          EditButton()
+          Button(Strings.edit) {
+            isEditing = true
+          }
         }
       }
     }
