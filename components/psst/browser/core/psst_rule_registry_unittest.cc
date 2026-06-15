@@ -51,7 +51,7 @@ class PsstRuleRegistryUnitTest : public testing::Test {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
     test_data_dir_base_ =
-        test_data_dir.AppendASCII("components/test/data/psst");
+        test_data_dir.AppendASCII("brave/components/test/data/psst");
     scoped_feature_list_.InitAndEnableFeature(features::kEnablePsst);
   }
 
