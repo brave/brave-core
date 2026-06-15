@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.80"
 name = "lol_html"
-version = "2.2.0"
+version = "2.7.0"
 authors = ["Ivan Nikulin <inikulin@cloudflare.com, ifaaan@gmail.com>"]
 build = false
 include = [
@@ -45,79 +45,78 @@ categories = [
 license = "BSD-3-Clause"
 repository = "https://github.com/cloudflare/lol-html"
 
+[features]
+debug_trace = []
+integration_test = []
+
 [lib]
 name = "lol_html"
 path = "src/lib.rs"
 bench = false
 
 [dependencies.bitflags]
-version = "2.0.0"
+version = "2.9.1"
 
 [dependencies.cfg-if]
-version = "1.0.0"
+version = "1.0.1"
 
 [dependencies.cssparser]
-version = "0.29"
+version = "0.35"
 
 [dependencies.encoding_rs]
-version = "0.8.13"
+version = "0.8.35"
 
 [dependencies.hashbrown]
-version = "0.15.0"
+version = "0.16.0"
 
 [dependencies.memchr]
-version = "2.1.2"
+version = "2.7.5"
 
 [dependencies.mime]
-version = "0.3.16"
+version = "0.3.17"
+
+[dependencies.precomputed-hash]
+version = "0.1.1"
 
 [dependencies.selectors]
-version = "0.24"
+version = "0.32"
 
 [dependencies.thiserror]
 version = "2.0"
 
-[dev-dependencies.clap]
-version = "4.5.21"
-features = ["help"]
-
 [dev-dependencies.criterion]
-version = "0.5.1"
+version = "0.7.0"
 
 [dev-dependencies.glob]
-version = "0.3.0"
+version = "0.3.2"
 
 [dev-dependencies.hashbrown]
-version = "0.15.0"
+version = "0.16.0"
 features = ["serde"]
 
 [dev-dependencies.html5ever]
-version = "0.29"
+version = "0.35"
 
 [dev-dependencies.itertools]
 version = "0.14"
 
 [dev-dependencies.markup5ever_rcdom]
-version = "0.5.0-unofficial"
+version = "0.35.0"
 
 [dev-dependencies.rand]
-version = "0.8.5"
+version = "0.9.2"
 
 [dev-dependencies.serde]
-version = "1.0.126"
+version = "1.0.219"
 
 [dev-dependencies.serde_derive]
-version = "1.0.19"
+version = "1.0.219"
 
 [dev-dependencies.serde_json]
-version = "1.0.65"
+version = "1.0.140"
 
 [dev-dependencies.static_assertions]
 version = "1.1.0"
-
-[features]
-debug_trace = []
-integration_test = []
 
 [lints.rust]
 absolute_paths_not_starting_with_crate = "warn"

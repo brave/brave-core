@@ -1,5 +1,7 @@
 use crate::base::Bytes;
+use crate::base::Spanned;
 use crate::errors::RewritingError;
+use crate::html_content::SourceLocation;
 use crate::rewritable_units::{Serialize, Token};
 use encoding_rs::Encoding;
 use std::any::Any;
@@ -38,7 +40,7 @@ pub struct Doctype<'i> {
     system_id: Option<Bytes<'i>>,
     force_quirks: bool,
     removed: bool,
-    raw: Bytes<'i>,
+    raw: Spanned<Bytes<'i>>,
     encoding: &'static Encoding,
     user_data: Box<dyn Any>,
 }
@@ -52,7 +54,7 @@ impl<'i> Doctype<'i> {
         system_id: Option<Bytes<'i>>,
         force_quirks: bool,
         removed: bool,
-        raw: Bytes<'i>,
+        raw: Spanned<Bytes<'i>>,
         encoding: &'static Encoding,
     ) -> Token<'i> {
         Token::Doctype(Doctype {
@@ -109,6 +111,12 @@ impl<'i> Doctype<'i> {
     pub fn removed(&self) -> bool {
         self.removed
     }
+
+    /// Position of the doctype in the source document, before any rewriting
+    #[must_use]
+    pub fn source_location(&self) -> SourceLocation {
+        self.raw.source_location()
+    }
 }
 
 impl_user_data!(Doctype<'_>);
@@ -117,7 +125,7 @@ impl Serialize for &Doctype<'_> {
     #[inline]
     fn into_bytes(self, output_handler: &mut dyn FnMut(&[u8])) -> Result<(), RewritingError> {
         if !self.removed() {
-            output_handler(&self.raw);
+            output_handler(self.raw.as_slice());
         }
         Ok(())
     }
@@ -132,6 +140,7 @@ impl Debug for Doctype<'_> {
             .field("system_id", &self.system_id())
             .field("force_quirks", &self.force_quirks)
             .field("removed", &self.removed)
+            .field("at", &self.source_location())
             .finish()
     }
 }

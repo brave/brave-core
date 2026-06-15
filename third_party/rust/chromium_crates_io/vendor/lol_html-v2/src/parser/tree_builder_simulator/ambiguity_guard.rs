@@ -68,7 +68,7 @@ use thiserror::Error;
 /// [`strict`]: ../struct.Settings.html#structfield.strict
 #[derive(Error, Debug, Eq, PartialEq)]
 pub struct ParsingAmbiguityError {
-    on_tag_name: String,
+    on_tag_name: Box<str>,
 }
 
 impl Display for ParsingAmbiguityError {
@@ -98,11 +98,12 @@ impl Display for ParsingAmbiguityError {
 macro_rules! create_assert_for_tags {
     ( $($tag:ident),+ ) => {
         #[cold]
-        fn tag_hash_to_string(tag_name: LocalNameHash) -> String {
-            match tag_name {
-                $(t if t == Tag::$tag => stringify!($tag).to_string().to_lowercase(),)+
-                _ => unreachable!("Error tag name should have a string representation")
-            }
+        fn tag_hash_to_string(tag_name: LocalNameHash) -> Box<str> {
+            let s = match tag_name {
+                $(t if t == Tag::$tag => stringify!($tag),)+
+                _ => "no string representation",
+            };
+            s.to_ascii_lowercase().into_boxed_str()
         }
 
         #[inline]
