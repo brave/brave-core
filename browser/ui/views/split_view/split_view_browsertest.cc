@@ -590,7 +590,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitTabInsetsTest) {
 
   // Check split tab's first & second tabs' insets are different.
   // value 4 here is copied from |kPaddingForVerticalTabInTile| in
-  // brave_tab_style_views.inc.cc.
+  // chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc.
   EXPECT_EQ(tab_strip()->tab_at(2)->GetBorder()->GetInsets(),
             insets + gfx::Insets::TLBR(4, 0, 0, 0));
   EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),

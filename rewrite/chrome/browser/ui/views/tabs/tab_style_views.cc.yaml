@@ -1,0 +1,73 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose TabStyleViewsImpl's private members to BraveVerticalTabStyle.
+
+      Brave subclasses TabStyleViewsImpl (in
+      chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc), so its
+      members must be reachable from the derived class.
+    re_pattern: '(class TabStyleViewsImpl\b.*?)\n private:'
+    re_flags: [DOTALL]
+    replace: '\1\n protected:'
+
+  - description: |-
+      Virtualise GetSeparatorBounds for BraveVerticalTabStyle.
+    re_pattern: '(TabStyle::SeparatorBounds GetSeparatorBounds\(float scale\) const;)'
+    replace: 'virtual \1'
+
+  - description: |-
+      Virtualise IsHovering for BraveVerticalTabStyle.
+    re_pattern: '(bool IsHovering\(\) const;)'
+    replace: 'virtual \1'
+
+  - description: |-
+      Square off the extension corner in TabStyleViewsImpl::GetPath, so Brave
+      tabs don't carry upstream's rounded extension.
+    re_pattern: '(const bool compact_left_to_bottom =[^;]*;\n)'
+    replace: '\1  extension_corner_radius = 0;\n'
+
+  - description: |-
+      Fully round the tab separators in TabStyleViewsImpl::PaintSeparators
+
+
+      This patch computes a radius of half the separator width.
+    re_pattern: '(void TabStyleViewsImpl::PaintSeparators\(.*?\n)(  cc::PaintFlags flags;)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
+        // will be approximated with color, although extremely subtle and
+        // likely only on screens >= 2x (i.e. separator width is 2+px)!
+        const int separator_radius = separator_bounds.leading.width() / 2;
+      \2
+
+  - description: |-
+      Use the fully-rounded separator radius for both separator draws.
+    re_pattern: 'tab_style\(\)->GetSeparatorCornerRadius\(\) \* scale'
+    replace: 'separator_radius'
+    count: 2
+
+  - description: |-
+      Disable the upstream `TabStyleViews::CreateForTab` factory.
+
+      We disable the definition of `TabStyleViews::CreateForTab` in upstream so
+      we can define it in `chromium_src` returning `BraveVerticalTabStyle`.
+
+      Unfortunately, `TabStyleViewsImpl` is declared in a `.cc` file, and
+      `BraveVerticalTabStyle` inherits from it, therefore the defintion of
+      `BraveVerticalTabStyle` has to occur after the definition of
+      `TabStyleViewsImpl`. That being the case, we cannot just replace
+      `return std::make_unique<TabStyleViewsImpl>(tab);` in upstream code with
+      `return std::make_unique<BraveVerticalTabStyle>(tab);` because that
+      requires the full definition of `BraveVerticalTabStyle` to be visible, not
+      just a forward declaration. So instead, we disable the entire definition
+      in upstream and re-define it in `chromium_src`.
+    re_pattern: '(// static\nstd::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'
+    re_flags: [DOTALL]
+    replace: |-
+      #if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
+      \1
+      #endif
