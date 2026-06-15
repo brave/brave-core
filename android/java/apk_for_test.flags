@@ -720,7 +720,6 @@
 }
 
 -keep class org.chromium.components.cached_flags.CachedFlag {
-    *** mDefaultValue;
     <init>(...);
 }
 

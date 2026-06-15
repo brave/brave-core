@@ -38,10 +38,6 @@ public class BraveCachedFlag extends CachedFlag {
         sFlags.put(SURFACE_POLISH, false);
     }
 
-    // Will be deleted in bytecode. Variable from the parent class will be used instead.
-    @SuppressWarnings("UnusedVariable")
-    private boolean mDefaultValue;
-
     public BraveCachedFlag(
             FeatureMap featureMap,
             String featureName,

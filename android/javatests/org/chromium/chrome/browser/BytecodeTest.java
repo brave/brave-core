@@ -2675,8 +2675,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkPage",
                         "mBookmarkManagerCoordinator"));
         Assert.assertTrue(
-                fieldExists("org/chromium/components/cached_flags/CachedFlag", "mDefaultValue"));
-        Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
                         "mContainerView"));
