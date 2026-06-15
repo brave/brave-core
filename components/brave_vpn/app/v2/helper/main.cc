@@ -22,7 +22,11 @@ using brave_vpn::v2::CrashReporterClient;
 using brave_vpn::v2::HelperApp;
 
 namespace {
+// Split into two places to avoid patching:
+// chromium_src/components/crash/core/app/crashpad.cc
+// Need keep it in sync.
 constexpr char kBraveVpnHelperAppProcessType[] = "brave-vpn-helper-app";
+
 constexpr char kBraveVpnHelperAppProductName[] = "BraveVpnHelperApp";
 }  // namespace
 
