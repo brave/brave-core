@@ -140,6 +140,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
+import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
@@ -2036,7 +2037,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         NonNullObservableSupplier.class,
                         OneshotSupplier.class,
-                        BottomBarHostManager.class));
+                        BottomBarHostManager.class,
+                        VerticalTabsActionDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",

@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabSwitcher;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.toolbar.ToolbarHairlineView;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
 import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
@@ -137,7 +138,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             MonotonicObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier,
             NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             OneshotSupplier<ChromeInactivityTracker> inactivityTrackerSupplier,
-            @Nullable BottomBarHostManager bottomBarHostManager) {
+            @Nullable BottomBarHostManager bottomBarHostManager,
+            VerticalTabsActionDelegate verticalTabsActionDelegate) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -191,7 +193,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 bookmarkManagerOpenerSupplier,
                 xrSpaceModeObservableSupplier,
                 inactivityTrackerSupplier,
-                bottomBarHostManager);
+                bottomBarHostManager,
+                verticalTabsActionDelegate);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
