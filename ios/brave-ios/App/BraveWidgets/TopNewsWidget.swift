@@ -30,15 +30,10 @@ struct TopNewsWidget: Widget {
 }
 
 private struct TopNewsEntry: TimelineEntry {
-  var date: Date
+  var date: Date = .now
+  var isDisabledByPolicy: Bool = false
   var topic: NewsTopic?
   var image: UIImage?
-
-  init(date: Date = .now, topic: NewsTopic?, image: UIImage? = nil) {
-    self.date = date
-    self.topic = topic
-    self.image = image
-  }
 }
 
 extension WidgetFamily {
@@ -65,6 +60,11 @@ private struct TopNewsWidgetProvider: TimelineProvider {
 
   func getSnapshot(in context: Context, completion: @escaping (TopNewsEntry) -> Void) {
     Task {
+      let isNewsAvailable = await model.isNewsAvailable()
+      if !isNewsAvailable {
+        completion(.init(isDisabledByPolicy: true))
+        return
+      }
       let topics = await model.fetchNewsTopics(Locale.autoupdatingCurrent)
       var entry: TopNewsEntry = .init(topic: topics.first)
       if let topic = entry.topic, !context.family.isLockScreen {
@@ -81,6 +81,11 @@ private struct TopNewsWidgetProvider: TimelineProvider {
 
   func getTimeline(in context: Context, completion: @escaping (Timeline<TopNewsEntry>) -> Void) {
     Task {
+      let isNewsAvailable = await model.isNewsAvailable()
+      if !isNewsAvailable {
+        completion(.init(entries: [.init(isDisabledByPolicy: true)], policy: .never))
+        return
+      }
       let topics = Array(await model.fetchNewsTopics(Locale.autoupdatingCurrent).prefix(6))
       var images: [NewsTopic.ID: UIImage] = [:]
       if !context.family.isLockScreen {
@@ -148,20 +153,31 @@ private struct LockScreenTopNewsView: View {
       .widgetBackground { Color.clear }
     } else {
       VStack(spacing: 4) {
-        Image("brave-today-error")
-          .resizable()
-          .renderingMode(.template)
-          .aspectRatio(contentMode: .fit)
-          .frame(height: 32)
-          .foregroundColor(.black)
-        HStack(spacing: 3) {
-          Text(Strings.Widgets.newsClusteringErrorLabel)
+        if entry.isDisabledByPolicy {
+          Image(braveSystemName: "leo.disable.outline")
+            .imageScale(.large)
+            .foregroundColor(.black)
+          Text(Strings.Widgets.newsUnavailableByPolicy)
             .lineLimit(1)
             .font(.system(size: 11, weight: .semibold, design: .rounded))
             .foregroundColor(.secondary)
             .minimumScaleFactor(0.75)
+        } else {
+          Image("brave-today-error")
+            .resizable()
+            .renderingMode(.template)
+            .aspectRatio(contentMode: .fit)
+            .frame(height: 32)
+            .foregroundColor(.black)
+          HStack(spacing: 3) {
+            Text(Strings.Widgets.newsClusteringErrorLabel)
+              .lineLimit(1)
+              .font(.system(size: 11, weight: .semibold, design: .rounded))
+              .foregroundColor(.secondary)
+              .minimumScaleFactor(0.75)
+          }
+          .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
       }
       .allowsTightening(true)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -233,23 +249,32 @@ private struct WidgetTopNewsView: View {
             Color(.white).clipShape(Circle()).shadow(color: .black.opacity(0.2), radius: 2, y: 1)
           )
         Spacer()
-        Text(Strings.Widgets.newsClusteringErrorLabel)
-          .font(.system(size: 14, weight: .medium, design: .rounded))
+        Text(
+          entry.isDisabledByPolicy
+            ? Strings.Widgets.newsUnavailableByPolicy : Strings.Widgets.newsClusteringErrorLabel
+        )
+        .font(.system(size: 14, weight: .medium, design: .rounded))
+        if entry.isDisabledByPolicy {
+          Text(Strings.Widgets.newsUnavailableByPolicyDescription)
+            .font(.system(size: 12, design: .rounded))
+            .foregroundStyle(Color(braveSystemName: .textTertiary))
+        }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
       .padding()
       .widgetBackground {
-        LinearGradient(braveGradient: .darkGradient01)
-          .mask {
-            Image("brave-today-error")
-              .renderingMode(.template)
-              .resizable(resizingMode: .tile)
-              .opacity(0.1)
-              .rotationEffect(.degrees(-45))
-              .scaleEffect(x: 1.5, y: 1.5)
-          }
+        if !entry.isDisabledByPolicy {
+          LinearGradient(braveGradient: .darkGradient01)
+            .mask {
+              Image("brave-today-error")
+                .renderingMode(.template)
+                .resizable(resizingMode: .tile)
+                .opacity(0.1)
+                .rotationEffect(.degrees(-45))
+                .scaleEffect(x: 1.5, y: 1.5)
+            }
+        }
       }
-      //      .background(Color(.braveBackground))
     }
   }
 }
@@ -297,4 +322,25 @@ struct TopNewsView_PreviewProvider: PreviewProvider {
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }
 }
+
+#Preview(
+  as: .systemSmall,
+  widget: {
+    TopNewsWidget()
+  },
+  timeline: {
+    TopNewsEntry(isDisabledByPolicy: true)
+  }
+)
+
+#Preview(
+  as: .accessoryRectangular,
+  widget: {
+    TopNewsWidget()
+  },
+  timeline: {
+    TopNewsEntry(isDisabledByPolicy: true)
+  }
+)
+
 #endif
