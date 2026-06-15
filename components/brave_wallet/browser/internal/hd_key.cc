@@ -22,8 +22,8 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
-#include "crypto/process_bound_string.h"
 #include "crypto/random.h"
+#include "crypto/secure_util.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
 
 #define SECP256K1_BUILD  // This effectively turns off export attributes.
@@ -100,7 +100,7 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
   }
 
   SecureVector buf(decoded_key.begin(), decoded_key.end());
-  crypto::internal::SecureZeroBuffer(base::as_writable_byte_span(decoded_key));
+  crypto::SecureZeroBuffer(base::as_writable_byte_span(decoded_key));
 
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
