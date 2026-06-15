@@ -281,6 +281,7 @@
   <release seq="1">
     <!-- IMPORTANT: .grdp files must be in the same directory as this file -->
     <messages fallback_to_english="true">
+      <part file="accessibility_annotator_strings.grdp" />
       <part file="arc_strings.grdp" />
       <part file="autofill_payments_strings.grdp" />
       <part file="autofill_strings.grdp" />
@@ -328,7 +329,6 @@
       <part file="send_tab_to_self_strings.grdp" />
       <part file="site_settings_strings.grdp" />
       <part file="smart_tab_sharing.grdp" />
-      <part file="sms_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
       <part file="subresource_filter_strings.grdp" />
       <part file="supervised_user_strings.grdp" />
@@ -587,6 +587,29 @@
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_DEVICE_ACTIVE_HOURS" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
         {HOURS, plural, =1 {Active 1 hour ago} other {Active # hours ago}}
+      </message>
+
+      <!-- Desktop-to-Mobile Promo Notifications (Unbranded) -->
+      <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Price Tracking promo notification.">
+        Enable price tracking alerts
+      </message>
+      <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Tab Groups promo notification.">
+        Reminder: Your tab groups
+      </message>
+      <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Password promo notification.">
+        Save and autofill your passwords to easily sign in to sites and apps
+      </message>
+      <message name="IDS_IOS_DESKTOP_SAFE_BROWSING_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Enhanced Safe Browsing promo notification.">
+        Add an extra layer of protection against online threats
+      </message>
+      <message name="IDS_IOS_DESKTOP_LENS_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Lens promo notification.">
+        Shop, translate, and identify what you see with your camera.
+      </message>
+      <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Price Tracking promo notification.">
+        Keep up with all your price drops on the go
+      </message>
+      <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Tab Groups promo notification.">
+        You can pick up where you left off or create new tab groups on the go
       </message>
     </messages>
   </release>

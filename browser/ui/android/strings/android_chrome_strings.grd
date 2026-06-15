@@ -492,7 +492,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Keyboard shortcut
       </message>
       <message name="IDS_SITE_SEARCH_KEYBOARD_SHORTCUT_DESCRIPTION" desc="Explanation for the 'Keyboard Shortcut' section.">
-        In the address bar, use this keyboard shortcut with shortcuts for search engines and site search
+        In the address bar, use this keyboard shortcut with shortcuts for search engines and site search.
       </message>
       <message name="IDS_SITE_SEARCH_KEYBOARD_SHORTCUT_SPACE_OR_TAB" desc="Label for the 'Space or Tab' keyboard shortcut option.">
         Space or Tab
@@ -543,11 +543,17 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Extensions
       </message>
       <message name="IDS_SITE_SEARCH_EXTENSIONS_DESCRIPTION" desc="Explanation for 'Extensions' section">
-        Some extensions can add search engines to Brave
+        Some extensions can add search engines to Brave.
       </message>
       <if expr="enable_extensions_core">
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_MESSAGE_TITLE_SINGLE_EXTENSION" desc="The title of the request access message banner that appears on the toolbar when an extension requests access to the site" formatter_data="android_java">
           Allow extension "<ph name="EXTENSION_NAME">%1$s</ph>"?
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_MESSAGE_DESCRIPTION_SINGLE_EXTENSION" desc="The description of the request access message banner for a single extension" formatter_data="android_java">
+          <ph name="WEBSITE">%1$s</ph> needs your permission to run <ph name="EXTENSION_NAME">%2$s</ph>
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_MESSAGE_DESCRIPTION_MULTIPLE_EXTENSIONS" desc="The description of the request access message banner for multiple extensions" formatter_data="android_java">
+          <ph name="WEBSITE">%1$s</ph> needs your permission to run <ph name="COUNT">%2$s</ph> extensions
         </message>
         <message name="IDS_SITE_SEARCH_EXTENSIONS_MENU_MANAGE" desc="Menu item to manage extensions">
           Manage
@@ -2065,6 +2071,20 @@ Your Brave account may have other forms of browsing history like searches and ac
         Download not recommended by your organization
       </message>
 
+      <!-- Non-dangerous download -->
+      <message name="IDS_NON_DANGEROUS_DOWNLOAD_DIALOG_CONFIRM_TEXT" desc="Text label for the confirm button on the download dialog asking users to confirm the download.">
+        Download
+      </message>
+      <message name="IDS_NON_DANGEROUS_DOWNLOAD_DIALOG_TITLE" desc="Title of the download dialog asking users to confirm a downloaded file.">
+        Download from this site?
+      </message>
+      <message name="IDS_NON_DANGEROUS_DOWNLOAD_DIALOG_TEXT" desc="Warning message shown on the download dialog asking users to validate the downloaded file.">
+        Make sure you trust this site
+      </message>
+      <message name="IDS_NON_DANGEROUS_DOWNLOAD_DIALOG_TEXT_WITH_DOMAIN" desc="Warning message shown on the download dialog asking users to validate the downloaded file, including the domain of the download.">
+        Make sure you trust <ph name="DOWNLOAD_DOMAIN">^1<ex>badsite.com</ex></ph>
+      </message>
+
       <!-- Mixed content download -->
       <message name="IDS_INSECURE_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm an insecure download">
         File can’t be downloaded securely
@@ -2426,6 +2446,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ACCOUNT_SECTION_SETTINGS_TOGGLE" desc="Settings, one of the data types that we allow syncing. Shown on next to the toggle that controls whether Settings should be saved in the Brave sync chain and synced across devices.">
         Settings
       </message>
+      <message name="IDS_ACCOUNT_SECTION_THEMES_TOGGLE" desc="Themes, one of the data types that we allow syncing. Shown on next to the toggle that controls whether Themes should be saved in the Brave sync chain and synced across devices.">
+        Themes
+      </message>
       <message name="IDS_ACCOUNT_SECTION_FOOTER" desc="Footer below a section with toggles to control which types of data users can use and save in their Brave sync chain (as opposed to saving them only on the device).">
         When on, use and save data in your Brave sync chain. When off, data is saved only to this device.
       </message>
@@ -2774,6 +2797,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Download
       </message>
 
+      <!-- Page-level App Menu items -->
       <message name="IDS_MENU_TRANSLATE" desc="Menu item for triggering a page translation. The word 'Translate' should match the translation in TC ID 1613971242435858090. [CHAR_LIMIT=27]">
         Translate…
       </message>
@@ -2789,11 +2813,23 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Listen to this page with AI
       </message>
 
+      <message name="IDS_MENU_SEARCH_TAB_WITH_GOOGLE_LENS" desc="Text for the Lens overlay item in the app menu. [CHAR_LIMIT=35]">
+        Search tab with Google Lens
+      </message>
       <message name="IDS_MENU_PRINT" desc="Menu item for printing the current page. [CHAR_LIMIT=27]">
         Print…
       </message>
       <message name="IDS_MENU_SHARE_PAGE" desc="Menu item for sharing the current page. [CHAR_LIMIT=27]">
         Share…
+      </message>
+      <message name="IDS_MENU_COPY_LINK" desc="Menu item for copying the link to the current page. [CHAR_LIMIT=27]">
+        Copy link
+      </message>
+      <message name="IDS_MENU_SEND_TO_DEVICES" desc="Menu item for sending the page to another device. [CHAR_LIMIT=27]">
+        Send to devices
+      </message>
+      <message name="IDS_MENU_QR_CODE" desc="Menu item for generating a QR Code for the current page. [CHAR_LIMIT=27]">
+        QR code
       </message>
       <message name="IDS_MENU_BACK_BUTTON_IPH_TEXT" desc="Message on the generic text buble to educate users on the menu back button">
         Open the menu to go back
@@ -2842,6 +2878,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- ContextMenu -->
       <message name="IDS_CONTEXTMENU_SAVE_PAGE" desc="This string is shown in the context menu for saving the current page. [CHAR_LIMIT=30]">
         Download
+      </message>
+      <message name="IDS_CONTEXTMENU_SEARCH_TAB_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=35]">
+        Search tab with Google Lens
       </message>
       <message name="IDS_CONTEXTMENU_SHARE_PAGE" desc="This string is shown in the context menu for sharing the current page. [CHAR_LIMIT=30]">
         Share
@@ -2909,9 +2948,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CONTEXTMENU_SEARCH_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=30]">
         Search image with Google Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_LENS_OVERLAY_APP_MENU" desc="Text for the Lens overlay item in the app menu. [CHAR_LIMIT=30]">
-        Search with Google Lens
-      </message>
       <message name="IDS_CONTEXTMENU_TRANSLATE_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive chip for deep linking into google lens for translate results. [CHAR_LIMIT=30]">
           Translate image with Google Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
@@ -2929,6 +2965,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CONTEXTMENU_SAVE_VIDEO" desc="Context sensitive menu item for saving the selected video. [CHAR_LIMIT=30]">
         Download video
+      </message>
+      <message name="IDS_CONTEXTMENU_COPY_VIDEO_FRAME" desc="The context menu item to copy the current video frame as an image. [CHAR_LIMIT=30]">
+        Copy video frame
+      </message>
+      <message name="IDS_CONTEXTMENU_DOWNLOAD_VIDEO_FRAME" desc="The context menu item to download the current video frame as an image. [CHAR_LIMIT=30]">
+        Download video frame
       </message>
       <message name="IDS_CONTEXTMENU_PICTURE_IN_PICTURE" desc="The context menu item to enter picture-in-picture mode for a video. [CHAR_LIMIT=30]">
         Picture in Picture
@@ -3076,6 +3118,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PAGE_INFO_CONNECTION_LOCAL_PDF" desc="Message to display in the page info bubble when viewing a local pdf page.">
         You're viewing a local file
       </message>
+      <message name="IDS_PAGE_INFO_NOT_SECURE_DESCRIPTION" desc="Descriptive text announced by screen readers when focusing the Omnibox on a site with a non-secure connection.">
+        Connection is not secure
+      </message>
 
 <message name="IDS_PAGE_INFO_IPH" desc="Message to in InProductHelp bubble to make users aware of changing permissions in PageInfo.">
         Change your site settings here
@@ -3222,36 +3267,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_REMAINING_DURATION_ONE_SECOND" desc="Message to show remaining duration in 1 second">
         1 sec left
-      </message>
-      <message name="IDS_PROCEED_OMA_DOWNLOAD_MESSAGE" desc="A message within a modal dialog that confirms the user want to download an OMA DRM file.">
-        Proceed to download the content?
-      </message>
-      <message name="IDS_OPEN_URL_POST_OMA_DOWNLOAD" desc="A message within a modal dialog to confirm that the user want to open the url specified in the OMA download descriptor.">
-        Open the suggested URL specified in the downloaded content?
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_INSUFFICIENT_MEMORY" desc="Error message displayed when there are not enough memory to download the OMA DRM content.">
-        Insufficient memory to download the selected content.
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_NON_ACCEPTABLE_CONTENT" desc="Error message displayed when the device cannot open the OMA DRM content.">
-        Device cannot open the content to be downloaded.
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_FAILED" desc="Error message displayed when the device cannot download the OMA request.">
-        An error occurred while downloading the content.
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_NAME_LABEL" desc="A text label to display the name of the OMA download.">
-        Name:
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_VENDOR_LABEL" desc="A text label to display the vendor of the OMA download.">
-        Vendor:
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_SIZE_LABEL" desc="A text label to display the size of the OMA download.">
-        Size:
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_TYPE_LABEL" desc="A text label to display the MIME tyoe of the OMA download.">
-        Type:
-      </message>
-      <message name="IDS_OMA_DOWNLOAD_DESCRIPTION_LABEL" desc="A text label to display the description of the OMA download.">
-        Description:
       </message>
       <message name="IDS_OPEN_DOWNLOADED_LABEL" desc="A text label on the snackbar widget to open the downloaded file.">
         Open
@@ -3550,6 +3565,29 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Getting your stuff\u2026
       </message>
 
+      <!-- Deep link signin flow strings -->
+      <message name="IDS_SIGNIN_DEEP_LINK_FLOW_ALREADY_SIGNED_IN_TOAST_MESSAGE" desc="Text of the toast shown when a user attempts to sign in to Brave via deep link to a account that is already signed in.">
+        You stayed signed in as <ph name="NAME_OR_EMAIL">%1$s<ex>John</ex></ph>.
+      </message>
+      <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SIGNIN_TITLE" desc="Title of the screen shown when an signed-out user starts a sigin flow with a signin deep link.">
+        Pick up where you left off
+      </message>
+      <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SIGNIN_SUBTITLE" desc="Subtitle of the screen shown when an signed-out user starts a sigin flow with a signin deep link.">
+        You scanned a QR code to sign in to Brave. Confirm that you want to get the passwords, bookmarks, and more from this profile.
+      </message>
+      <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SIGNIN_DISMISS_BUTTON" desc="Text of the dismiss button shown on the screen displayed when an signed-out user starts a sigin flow with a signin deep link.">
+        Stay signed out
+      </message>
+      <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SWITCH_ACCOUNT_TITLE" desc="Title of the screen shown when a signed-in user starts a sigin flow with a signin deep link.">
+        Switch accounts?
+      </message>
+      <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SWITCH_ACCOUNT_SUBTITLE" desc="Subtitle of the screen shown when a signed-in user starts a sigin flow with a signin deep link.">
+        You’re signed in as <ph name="FROM_EMAIL">%1$s<ex>from@gmail.com</ex></ph>.\n\nTo continue from your computer, switch to <ph name="TO_EMAIL">%2$s<ex>to@gmail.com</ex></ph>. You’ll get the passwords, bookmarks, and more from this account.
+      </message>
+      <message name="IDS_SIGNIN_DEEP_LINK_FLOW_SWITCH_ACCOUNT_DISMISS_BUTTON" desc="Text of the dismiss button shown on the screen displayed when a signed-in user starts a sigin flow with a signin deep link.">
+        No thanks
+      </message>
+
       <!-- Account Signin Strings -->
       <message name="IDS_SIGNIN_ADD_ACCOUNT_TO_DEVICE" desc="Text for adding another Brave sync chain to device in the web sign-in flow and account picker dialog, users will be asked to add an account to his device when this text is tapped">
         Add account to device
@@ -3777,6 +3815,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS" desc="This string is the title of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Get all your bookmarks'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and sign-in. The tone should be inviting.">
         Sign in to get your bookmarks and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_PROMO_TITLE_AUTOFILL_AND_PASSWORDS" desc="This string is the headline of a card that appears in the Autofill and Passwords settings; the user is signed out of Brave. The line below this string is 'Sign in to get your passwords and more on all your devices'. [CHAR_LIMIT=70]">
+        Get all your saved info
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_AUTOFILL_AND_PASSWORDS" desc="This string is the description of a card that appears in the Autofill and Passwords settings; the user is signed out of Brave. The headline above this string is 'Get all your saved info'. We want users to read this card and tap the 'Sign-in' button and sign-in. The tone should be inviting.">
+        Sign in to get your passwords and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_AUTOFILL_AND_PASSWORDS_SEAMLESS" desc="This string is the description of a card that appears in the Autofill and Passwords settings; the user is signed out of Brave. The headline above this string is 'Sign in to Brave'.">
+        Get your passwords and more on all your devices
       </message>
       <message name="IDS_SIGNIN_PROMO_TITLE_NTP_FEED_TOP_PROMO" desc="This string is the headline of a card that appears when the user visits Brave's new tab page; the user isn't signed in to Brave. The line below this string is 'Sign in to get content based on your interests'. [CHAR_LIMIT=70]">
         Get better content
@@ -4137,8 +4184,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_DOWNLOAD" desc="Tooltip for the button to download the current web page. [CHAR_LIMIT=27]">
         Download
       </message>
-      <message name="IDS_MENU_SAVE_AND_PRINT" desc="Parent menu item for items related to saving and printing page">
-        Save and print
+      <message name="IDS_MENU_SAVE_AND_SHARE" desc="Parent menu item for items related to saving and sharing the page. [CHAR_LIMIT=27]">
+        Save and share
       </message>
       <message name="IDS_MENU_DOWNLOAD_PAGE" desc="Menu item for downloading the current web page. [CHAR_LIMIT=27]">
         Download page
@@ -4167,6 +4214,36 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_BOOKMARKS" desc="Menu item for opening the bookmarks page that contains all the user's bookmarks. [CHAR_LIMIT=27]">
         Bookmarks
       </message>
+      <message name="IDS_MENU_BOOKMARK_THIS_PAGE" desc="Menu item for adding the page to the bookmarks. [CHAR_LIMIT=27]">
+        Bookmark this page
+      </message>
+      <message name="IDS_MENU_SHOW_BOOKMARKS_BAR" desc="Menu item for showing the bookmarks bar. [CHAR_LIMIT=27]">
+        Show bookmarks bar
+      </message>
+      <message name="IDS_MENU_HIDE_BOOKMARKS_BAR" desc="Menu item for hiding the bookmarks bar. [CHAR_LIMIT=27]">
+        Hide bookmarks bar
+      </message>
+      <message name="IDS_MENU_READING_LIST" desc="Menu item for showing items related to reading list. [CHAR_LIMIT=27]">
+        Reading list
+      </message>
+      <message name="IDS_MENU_ADD_TO_READING_LIST" desc="Menu item for adding the current tab to the reading list. [CHAR_LIMIT=27]">
+        Add tab to reading list
+      </message>
+      <message name="IDS_MENU_SHOW_READING_LIST" desc="Menu item for showing the reading list. [CHAR_LIMIT=27]">
+        Show reading list
+      </message>
+      <message name="IDS_MENU_MOBILE_BOOKMARKS" desc="Menu item for showing bookmarks stored in 'Mobile bookmarks'. [CHAR_LIMIT=27]">
+        Mobile bookmarks
+      </message>
+      <message name="IDS_MENU_OTHER_BOOKMARKS" desc="Menu item for showing bookmarks stored in 'Other bookmarks'. [CHAR_LIMIT=27]">
+        Other bookmarks
+      </message>
+      <message name="IDS_MENU_TAB_GROUPS" desc="Menu item for showing items related to tab groups. [CHAR_LIMIT=27]">
+        Tab groups
+      </message>
+      <message name="IDS_MENU_CREATE_NEW_TAB_GROUP" desc="Menu item for creating a new tab group. [CHAR_LIMIT=27]">
+        Create new tab group
+      </message>
       <message name="IDS_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR_LIMIT=27]">
         Recent tabs
       </message>
@@ -4184,6 +4261,18 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CHROME_HISTORY" desc="Menu item for opening the CCT history page. [CHAR_LIMIT=27]">
         Brave history
+      </message>
+      <message name="IDS_MENU_PASSWORDS_AND_AUTOFILL" desc="Menu item for showing menus related to passwords and autofill. [CHAR_LIMIT=27]">
+        Passwords and autofill
+      </message>
+      <message name="IDS_MENU_PAYMENT_METHODS" desc="Menu item for showing the payments page. [CHAR_LIMIT=27]">
+        Payment methods
+      </message>
+      <message name="IDS_MENU_ADDRESSES_AND_MORE" desc="Menu item for showing the 'Addresses and more' page. [CHAR_LIMIT=27]">
+        Addresses and more
+      </message>
+      <message name="IDS_MENU_GOOGLE_PASSWORD_MANAGER" desc="Menu item for opening the password manager. [CHAR_LIMIT=27]">
+        Brave Password Manager
       </message>
       <message name="IDS_MENU_HISTORY" desc="Menu item for opening the history page. [CHAR_LIMIT=27]">
         History
@@ -4262,10 +4351,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_STOP_IMAGE_DESCRIPTIONS" desc="Menu item to stop getting alt text accessibility image labels/descriptions [CHAR_LIMIT=27]">
         Stop image descriptions
       </message>
-      <message name="IDS_MENU_ADD_TAB_TO_GROUP" desc="Menu item for adding a tab to a tab group.">
+      <message name="IDS_MENU_ADD_TAB_TO_GROUP" desc="Menu item for adding a tab to a tab group. [CHAR_LIMIT=27]">
         Add tab to group
       </message>
-      <message name="IDS_MENU_ADD_TAB_TO_NEW_GROUP" desc="Menu item for adding a tab to a new tab group.">
+      <message name="IDS_MENU_ADD_TAB_TO_NEW_GROUP" desc="Menu item for adding a tab to a new tab group. [CHAR_LIMIT=27]">
         Add tab to new group
       </message>
       <message name="IDS_MENU_MOVE_TAB_TO_GROUP" desc="Menu item for moving a tab to another group.">
@@ -4291,6 +4380,18 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_BOOKMARK_ALL_TABS" desc="Menu item for bookmarking all tabs.">
         Bookmark all tabs
+      </message>
+      <message name="IDS_MENU_ABOUT_CHROME" desc="Menu item for opening the 'About Brave' page in the settings. [CHAR_LIMIT=27]">
+        About Brave
+      </message>
+      <message name="IDS_MENU_HELP_CENTER" desc="Menu item for opening the help center. [CHAR_LIMIT=27]">
+        Help center
+      </message>
+      <message name="IDS_MENU_REPORT_ISSUE" desc="Menu item for reporting an issue. [CHAR_LIMIT=27]">
+        Report an issue...
+      </message>
+      <message name="IDS_MENU_EMPTY_SUBMENU" desc="Menu item to show when a folder doesn't contain any items.">
+        (empty)
       </message>
 
       <!-- Bookmarks strings -->
@@ -4612,8 +4713,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_READING_LIST_UNREAD" desc="The header for the unread section in the reading list UI.">
         Unread - Available offline
       </message>
-      <message name="IDS_READING_LIST_SAVED" desc="App-based message shown after user adds a new link to the reading list. [CHAR_LIMIT=32]">
+      <message name="IDS_READING_LIST_SAVED" desc="App-based message shown after user adds a new link to the reading list.">
         Added to reading list
+      </message>
+      <message name="IDS_READING_LIST_SAVED_PLURAL" desc="App-based message shown after user adds multiple links to the reading list.">
+        Pages added to reading list
       </message>
       <message name="IDS_READING_LIST_MARK_AS_READ" desc="The text for the action to mark the reading list as read.">
         Mark as read
@@ -4762,6 +4866,27 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- Pdf Page -->
       <message name="IDS_PDF_PAGE_DOWNLOAD_IPH_TEXT" desc="Text shown in the text bubble to inform users about the option to download a PDF when the PDF document is opened in Brave.">
         You can download PDFs here
+      </message>
+      <message name="IDS_PDF_TWO_PAGE_VIEW" desc="Menu option to enable two-page view in PDF.">
+        Two-page view
+      </message>
+      <message name="IDS_PDF_SINGLE_PAGE_VIEW" desc="Menu option to enable single page view in PDF.">
+        Single-page view
+      </message>
+      <message name="IDS_PDF_DOCUMENT_PROPERTIES" desc="Menu option to view PDF document properties.">
+        Document properties
+      </message>
+      <message name="IDS_PDF_DOWNLOAD" desc="Menu option to download the PDF document.">
+        Download
+      </message>
+      <message name="IDS_PDF_ROTATE" desc="Menu option to rotate the PDF document.">
+        Rotate
+      </message>
+      <message name="IDS_PDF_FIT_HEIGHT" desc="Menu option to fit the PDF page height to the screen.">
+        Fit to height
+      </message>
+      <message name="IDS_PDF_FIT_WIDTH" desc="Menu option to fit the PDF page width to the screen.">
+        Fit to width
       </message>
 
       <!-- Accessibility -->
@@ -5137,9 +5262,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_OMNIBOX_SUGGESTED_ITEMS" desc="Announcement about the presence and volume of suggestions below the Omnibox.">
         <ph name="SUGGESTIONS_COUNT">%d<ex>12</ex></ph> suggested items in list below.
       </message>
-      <message name="IDS_ACCESSIBILITY_OMNIBOX_SUGGESTED_ITEMS_ABOVE" desc="Announcement about the presence and volume of suggestions below the Omnibox.">
-        <ph name="SUGGESTIONS_COUNT">%d<ex>12</ex></ph> suggested items in list above.
-      </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_MOST_VISITED_TILE_SEARCH" desc="Announces that interacting with a Tile executes a specific search query.">
         Search: <ph name="SEARCH_QUERY">%s<ex>Weather in San Francisco</ex></ph>
       </message>
@@ -5160,9 +5282,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_CONTEXT_POPUP_TITLE" desc="Accessibility description for the 'Add context' popup.">
         Context popup window
-      </message>
-      <message name="IDS_ACCESSIBILITY_OMNIBOX_ENABLE_AI_MODE" desc="Accessibility announcement when the 'AI Mode' option in the Omnibox 'Add context' popup is highlighted.">
-        Enable AI Mode
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_RESET_MODE" desc="Accessibility announcement when the 'Reset mode' button in the omnibox is highlighted.">
         Reset current mode <ph name="MODE_NAME">%1$s<ex>AI Mode</ex></ph> to Search
@@ -5263,8 +5382,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PRINT_SHARE_ACTIVITY_TITLE" desc="Title of the Print Share activity that will appear in the Android share dialog.">
         Print
       </message>
-      <message name="IDS_SEND_TAB_TO_SELF_SHARE_ACTIVITY_TITLE" desc="Title of the Send Tab To Self Share activity that will appear in the Android share dialog.">
-        Send to your devices
+      <message name="IDS_SEND_TAB_TO_SELF_CONTEXT_MENU_TITLE" desc="Title of the Send Tab To Self option in the tab context menu.">
+        Send to your device
       </message>
 
       <!-- Omnibox Suggestions -->
@@ -5340,6 +5459,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_INACTIVE_TAB" desc="Message to notify the user thata window cannot be restored because the total number of persisted instances exceeds the window limit.">
         To restore a new window, reduce the total number of active windows to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer. Inactive windows are deleted after 6 months.
+      </message>
+      <message name="IDS_CRASH_RECOVERY_DIALOG_TITLE" desc="Title of the crash recovery dialog that prompts the user to restore windows that were active during a crash.">
+        Restore all windows?
+      </message>
+      <message name="IDS_CRASH_RECOVERY_DIALOG_MESSAGE" desc="Message on the crash recovery dialog that prompts the user to restore windows that were active during a crash.">
+        Brave didn’t shut down correctly and can try to restore your lost windows and tabs. Some windows may be minimized when restored.
+      </message>
+      <message name="IDS_CRASH_RECOVERY_DIALOG_POSITIVE_BUTTON_TEXT" desc="Positive button text on the crash recovery dialog. [ICU Syntax]">
+        {NUM_WINDOWS, plural,
+          =1 {Restore 1 window}
+          other {Restore # windows}}
       </message>
       <message name="IDS_TAB_DROPPED_DIFFERENT_MODEL" desc="Toast that appears when a tab is dropped into tab strip with a different profile (regular v.s. private).">
         You can find all open tabs in the tab switcher
@@ -5842,7 +5972,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
 
       <!-- In-Product Help strings -->
       <message name="IDS_IPH_GLIC_PROMO_TEXT" desc="The in-product-help promotion message to try Glic.">
-        Gemini is now on your toolbar. To change your pinned tool anytime, long-press the icon.
+        Try Gemini in Brave to get answers, key takeaways and more
       </message>
       <message name="IDS_IPH_GLIC_PROMO_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to try Glic.">
         Gemini is now on your toolbar. To change your pinned tool anytime, long-press the icon.
@@ -5866,7 +5996,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Manage your account
       </message>
       <message name="IDS_IPH_INSTANCE_SWITCHER_TEXT" desc="The in-product-help text prompting the user that app menu has a menu for managing multiple Brave windows with instance switcher.">
-        Got many windows? You can manage them from here
+        You can manage your windows in Brave's Window Manager
       </message>
       <message name="IDS_IPH_IDENTITY_DISC_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text prompting the user that tapping identity disc will navigate to 'Sync and Brave services' settings page.">
         To manage your Brave account, tap the "Manage account" button
@@ -5877,6 +6007,33 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IPH_TAB_SWITCHER_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open the new tab page. The 'open tabs' button name should match TC 3108541343994525384">
         To open tabs and visit different pages at the same time, tap the open tabs button
       </message>
+      <message name="IDS_IPH_INCOGNITO_INDICATOR_CLOSE_ALL_WINDOWS_TEXT" desc="The in-product-help message to inform users that they can close all private windows by tapping the private indicator.">
+        Tap here to close all Private windows
+      </message>
+      <message name="IDS_IPH_INCOGNITO_INDICATOR_CLOSE_ALL_WINDOWS_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to inform users that they can close all private windows by tapping the private indicator.">
+        To close all Private windows, tap the Private indicator
+      </message>
+
+      <!-- Bottom bar IPH strings. -->
+      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_GLIC" desc="The in-product-help message for the GLIC button in the bottom bar.">
+        Ask Gemini to help with your tabs and tasks
+      </message>
+      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_NEW_TAB" desc="The in-product-help message for the New Tab button in the bottom bar.">
+        Open a new tab
+      </message>
+      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_DIALOG_TITLE" desc="Title for the in-product help dialog introducing Gemini in the bottom bar.">
+        Introducing Gemini in Brave
+      </message>
+      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_DIALOG_DESCRIPTION" desc="Description for the bottom bar Gemini introduction dialog.">
+        Some tools have moved to give you easy access to Gemini while you browse
+      </message>
+      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_TRIGGER_IPH" desc="Text on the button that triggers the in-product-help sequence.">
+        Show me
+      </message>
+      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_DIALOG_ACK" desc="Button text to acknowledge bottom bar changes and dismiss the dialog.">
+        Got it
+      </message>
+
       <message name="IDS_IPH_ANDROID_TAB_DECLUTTER_TEXT_WITH_TAB_GROUPS" desc="The in-product-help text for the android tab declutter feature.">
         Review your inactive tabs and groups here
       </message>
@@ -5996,6 +6153,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- SendTabToSelf -->
       <message name="IDS_SEND_TAB_TO_SELF_TOAST" desc="Text for a toast indicating that the tab is being shared on the user's other synced devices.">
         Sending to <ph name="device_name">%1$s<ex>Tanya's Pixel 2</ex></ph>...
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_TITLE" desc="The title for the message banner shown on Android when links are received in the background.">
+        Links received
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_SUBTITLE" desc="The subtitle for the message banner shown on Android indicating the sender device.">
+        From <ph name="DEVICE_NAME">%1$s<ex>Tanya's Pixel 10a</ex></ph>
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_OPEN" desc="Label for the button to open a tab received from another device.">
+        Open
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_NOTIFICATION_CONTEXT_TEXT" desc="Text displayed as the second line of a notification indicating the domain and the device the tab is shared from.">
         <ph name="DOMAIN">%1$s<ex>www.google.com</ex></ph> - Sent from <ph name="DEVICE_NAME">%2$s<ex>Tanya's Pixel 2XL</ex></ph>
@@ -6595,6 +6761,14 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Sign in to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph>
       </message>
 
+      <!-- Settings Bottom Bar strings -->
+      <message name="IDS_SETTINGS_SHOW_GEMINI_IN_BOTTOM_BAR_TITLE" desc="Title for the settings toggle to show or hide Gemini in the bottom bar. [CHAR_LIMIT=32]">
+        Show Gemini in the bottom toolbar
+      </message>
+      <message name="IDS_SETTINGS_SHOW_GEMINI_IN_BOTTOM_BAR_SUMMARY" desc="Summary description for the settings toggle to show Gemini in the bottom bar.">
+        Quickly open Gemini when you need it
+      </message>
+
       <!-- HTTPS-First Mode settings strings -->
       <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_TITLE" desc="Text for the HTTPS-First Mode toggle in settings.">
         Always use secure connections
@@ -7140,6 +7314,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Loading PDF…
       </message>
 
+      <message name="IDS_ACTIONBAR_TRANSLATE" desc="Contextual action bar item for translating the selected text.">
+        Translate
+      </message>
+
       <!-- Tab declutter -->
       <message name="IDS_ARCHIVED_TAB_CARD_TITLE" desc="Shown in the tab switcher to prompt the user to review their inactive tabs and tab groups. Indicates how many tabs and tab groups are inactive.">
         {ARCHIVED_TAB_COUNT, plural,
@@ -7162,9 +7340,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- Hub search -->
       <message name="IDS_HUB_SEARCH_EMPTY_HINT" desc="The text displayed in the search box when it's empty.">
         Search your tabs
-      </message>
-      <message name="IDS_HUB_SEARCH_EMPTY_HINT_WITH_TAB_GROUPS" desc="The text displayed in the search box when it's empty.">
-        Search your tabs and groups
       </message>
       <message name="IDS_HUB_SEARCH_EMPTY_HINT_INCOGNITO" desc="The text displayed in the private search box when it's empty.">
         Search your Private tabs
@@ -7435,6 +7610,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_DESCRIPTION" desc="Description of the Tips Opt In bottom sheet promo.">
         Turn on notifications for useful tips to help you get the best of Brave
       </message>
+      <message name="IDS_TIPS_OPT_IN_SNACKBAR_MESSAGE" desc="Snackbar message shown when the user opts in to receive tips notifications.">
+        Tips notifications turned on
+      </message>
+      <message name="IDS_TIPS_OPT_IN_SNACKBAR_ACTION_TEXT" desc="Action button of the Tips snackbar on user opt-in. [CHAR_LIMIT=10]">
+        Manage
+      </message>
 
       <!-- Caret Browsing -->
       <message name="IDS_CARET_BROWSING_DIALOG_TITLE" desc="Title of the caret browsing confirmation dialog" formatter_data="android_java">
@@ -7498,9 +7679,50 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
     <!-- Glic strings -->
+      <message name="IDS_GLIC_BUTTON_ENTRYPOINT_OPEN_GEMINI_LABEL" desc="Label on the 3-dot menu item used to open Gemini in Brave.">
+        Open Gemini
+      </message>
       <message name="IDS_GLIC_ACTOR_TASK_IN_PROGRESS" desc="Snackbar message shown when a Glic actor task is still in progress.">
         Your task is still in progress
       </message>
-</messages>
+      <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic toolbar button in a Private tab.">
+        Gemini isn’t available in Private mode
+      </message>
+
+      <!-- Immersive Playback Confirmation strings -->
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_MESSAGE" desc="Message in the snackbar asking the user if they want to view the video in immersive mode." translateable="false">
+        View this video in immersive mode?
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_YES" desc="Text for the positive button in the snackbar to proceed to format selection." translateable="false">
+        Yes
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_FORMAT_TITLE" desc="Title of the dialog for selecting immersive playback format." translateable="false">
+        Format
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OPTION_STANDARD" desc="Option for standard projection in the immersive playback confirmation dialog." translateable="false">
+        Standard
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OPTION_STEREO_3D" desc="Option for stereoscopic 3D projection in the immersive playback confirmation dialog." translateable="false">
+        Stereoscopic (3D)
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OPTION_VR180" desc="Option for VR 180 projection in the immersive playback confirmation dialog." translateable="false">
+        VR 180
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OPTION_VR360" desc="Option for VR 360 projection in the immersive playback confirmation dialog." translateable="false">
+        VR 360
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_OK" desc="Text for the positive button in the format selection dialog." translateable="false">
+        OK
+      </message>
+      <message name="IDS_IMMERSIVE_PLAYBACK_CONFIRMATION_CANCEL" desc="Text for the negative button in the format selection dialog." translateable="false">
+        Cancel
+      </message>
+      <message name="IDS_ACCESSIBILITY_IMMERSIVE_VIDEO_FORMAT" desc="Content description for a button that opens the format selection popup in immersive video playback." translateable="false">
+        Select video format
+      </message>
+      <message name="IDS_ACCESSIBILITY_EXIT_IMMERSIVE_PLAYBACK" desc="Content description for a button that exits immersive video playback." translateable="false">
+        Exit immersive playback
+      </message>
+    </messages>
   </release>
 </grit>
