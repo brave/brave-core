@@ -77,24 +77,30 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeSidebarBounds(
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
     bool sidebar_leading,
     const gfx::Rect& sidebar_bounds,
-    const gfx::Rect& panel_bounds) {
-  // The upstream layout animates the panel by varying panel.x:
-  //   trailing panel: x = right_edge - visible_width (slides in from high X)
-  //   leading  panel: x = left_edge - (target - visible_width) (from low X)
+    const gfx::Rect& panel_bounds,
+    const gfx::Rect& visual_client_area) {
+  // The upstream layout animates the panel's open/close by sliding panel.x
+  // between the browser edge (hidden) and the target width (shown), keeping the
+  // bounds width fixed. We translate that whole slide by a constant offset so
+  // it plays out against the sidebar's inner edge instead of the browser edge.
   //
-  // Shifting by ±sidebar_width offsets the whole slide range without changing
-  // the animation value, so the panel animates correctly against the sidebar
-  // edge instead of the browser edge. The sidebar and the upstream panel share
-  // the alignment pref, so `sidebar_leading` matches upstream's
-  // `side_panel_leading` and the shift direction agrees with where upstream
-  // placed the panel.
+  // A constant shift preserves the animation — overwriting panel.x outright
+  // would pin the bounds to a fixed rectangle and flatten the slide (the panel
+  // would pop to fully-open and overlap the still-animating contents). The
+  // offset is the gap between the upstream anchor edge (|visual_client_area|,
+  // the same rect upstream used to place |panel_bounds|) and the sidebar's
+  // inner edge. Because |sidebar_bounds| is already inset for any vertical tab
+  // on the same side, the offset is correct in every VT configuration.
+  //
+  // The sidebar and the upstream panel share the alignment pref, so
+  // `sidebar_leading` matches upstream's `side_panel_leading`.
   gfx::Rect result = panel_bounds;
   if (sidebar_leading) {
-    // Sidebar at the leading edge: shift panel toward high X.
-    result.set_x(panel_bounds.x() + sidebar_bounds.width());
+    // Slide anchored to the sidebar's trailing (right) edge.
+    result.Offset(sidebar_bounds.right() - visual_client_area.x(), 0);
   } else {
-    // Sidebar at the trailing edge: shift panel toward low X.
-    result.set_x(panel_bounds.x() - sidebar_bounds.width());
+    // Slide anchored to the sidebar's leading (left) edge.
+    result.Offset(sidebar_bounds.x() - visual_client_area.right(), 0);
   }
   return result;
 }
@@ -468,7 +474,8 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
       return;
     }
     panel_layout->bounds = ComputeAdjustedPanelBounds(
-        sidebar_leading, sidebar_bounds, panel_layout->bounds);
+        sidebar_leading, sidebar_bounds, panel_layout->bounds,
+        params.visual_client_area);
     // The upstream layout offsets the panel -1px above the contents to overlap
     // the toolbar separator. Brave doesn't need that overlap; align the panel's
     // vertical extent with the contents container instead.

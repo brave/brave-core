@@ -153,67 +153,91 @@ TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
 
 // ---------------------------------------------------------------------------
 // ComputeAdjustedPanelBounds
+//
+// The function translates the upstream panel by a constant offset so its
+// open/close slide plays out against the sidebar's inner edge. The upstream
+// panel keeps full `target_width` and animates by varying its x via
+// `visible_width` (0 → target); the function adds a constant shift, so it must
+// preserve that x-driven slide and only land flush with the sidebar at full
+// open. The "FullyOpen" cases pin the full-open geometry; the "Animating"
+// cases lock in that a mid-animation panel still slides (is not flattened).
+// `visual_client_area` is the upstream anchor rect, the same one upstream used
+// to place the panel.
 // ---------------------------------------------------------------------------
 
 TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnRightFullyOpen) {
-  // Browser 1000px wide. Sidebar control: narrow, x=960, width=40.
-  // Panel: upstream placed it at x=700 (= 1000-300), width=300 (fully open).
-  // Expected: shift left by sidebar_width (40) → x=660, right=960=sidebar.x.
+     ComputeAdjustedPanelBoundsSidebarTrailingFullyOpen) {
+  // Client 1000px wide. Trailing (right) sidebar at x=960, w=40 (flush, no VT).
+  // Panel fully open: upstream x = client.right()-target = 1000-300 = 700.
+  // Shift = sidebar.x()-client.right() = 960-1000 = -40 → x = 660, right = 960.
+  gfx::Rect client(0, 0, 1000, 700);
   gfx::Rect sidebar(960, 50, 40, 600);
   gfx::Rect panel(700, 50, 300, 600);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-          /*sidebar_leading=*/false, sidebar, panel);
-  EXPECT_EQ(660, adjusted.x());
+          /*sidebar_leading=*/false, sidebar, panel, client);
+  EXPECT_EQ(gfx::Rect(660, 50, 300, 600), adjusted);
   EXPECT_EQ(sidebar.x(), adjusted.right());  // flush with sidebar's left edge
-  EXPECT_EQ(panel.width(), adjusted.width());
-  EXPECT_EQ(panel.y(), adjusted.y());
-  EXPECT_EQ(panel.height(), adjusted.height());
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnRightAnimating) {
-  // Same browser/sidebar.  Panel 50% open: visible_width=150, so upstream
-  // places it at x=850 (= 1000-150).  After adjustment: x=810.
-  // The user sees 150px between adjusted.x(810) and sidebar.x(960). ✓
+     ComputeAdjustedPanelBoundsSidebarTrailingAnimating) {
+  // Same client/sidebar. Panel 50% open: visible_width=150, so upstream
+  // x = client.right()-visible = 1000-150 = 850.  Shift = -40 → x = 810.
+  // The slide is preserved: 150px of panel is visible up to the sidebar edge.
+  gfx::Rect client(0, 0, 1000, 700);
   gfx::Rect sidebar(960, 50, 40, 600);
-  gfx::Rect panel(850, 50, 300, 600);  // upstream: right_edge - visible_width
+  gfx::Rect panel(850, 50, 300, 600);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-          /*sidebar_leading=*/false, sidebar, panel);
+          /*sidebar_leading=*/false, sidebar, panel, client);
   EXPECT_EQ(810, adjusted.x());
   EXPECT_EQ(150, sidebar.x() - adjusted.x());  // 150px visible to the user
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnLeftFullyOpen) {
-  // Browser 1000px wide. Sidebar control: x=0, width=40.
-  // Panel: upstream placed it at x=0 (= visual_client_area.x()), width=300
-  // (fully open). Expected: shift right by sidebar_width (40) →
-  // x=40=sidebar.right.
+     ComputeAdjustedPanelBoundsSidebarAndVtabTrailingFullyOpen) {
+  // The regression case: VT on the right (width 150) pushes the sidebar inward,
+  // so sidebar.x()=810 (= 1000-150-40).  Panel fully open: upstream x=700.
+  // Shift = sidebar.x()-client.right() = 810-1000 = -190 = -(sidebar 40 + VT
+  // 150) → x = 510, right = 810.  A constant ±sidebar_width shift would have
+  // left a 150px gap here.
+  gfx::Rect client(0, 0, 1000, 700);
+  gfx::Rect sidebar(810, 50, 40, 600);
+  gfx::Rect panel(700, 50, 300, 600);
+  gfx::Rect adjusted =
+      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
+          /*sidebar_leading=*/false, sidebar, panel, client);
+  EXPECT_EQ(gfx::Rect(510, 50, 300, 600), adjusted);
+  EXPECT_EQ(sidebar.x(), adjusted.right());  // flush with sidebar's left edge
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
+     ComputeAdjustedPanelBoundsSidebarLeadingFullyOpen) {
+  // Client 1000px wide. Leading (left) sidebar at x=0, w=40 (flush, no VT).
+  // Panel fully open: upstream x = client.x()-(target-visible) = 0.
+  // Shift = sidebar.right()-client.x() = 40-0 = 40 → x = 40 = sidebar.right().
+  gfx::Rect client(0, 0, 1000, 700);
   gfx::Rect sidebar(0, 50, 40, 600);
   gfx::Rect panel(0, 50, 300, 600);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-          /*sidebar_leading=*/true, sidebar, panel);
-  EXPECT_EQ(40, adjusted.x());
+          /*sidebar_leading=*/true, sidebar, panel, client);
+  EXPECT_EQ(gfx::Rect(40, 50, 300, 600), adjusted);
   EXPECT_EQ(sidebar.right(), adjusted.x());  // flush with sidebar's right edge
-  EXPECT_EQ(panel.width(), adjusted.width());
-  EXPECT_EQ(panel.y(), adjusted.y());
-  EXPECT_EQ(panel.height(), adjusted.height());
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
-     ComputeAdjustedPanelBoundsSidebarOnLeftAnimating) {
-  // Panel 50% open: visible_width=150, upstream x = 0-(300-150) = -150.
-  // After adjustment: x = -150+40 = -110.
-  // Visible to user: from sidebar.right(40) to adjusted.right(190) = 150px. ✓
+     ComputeAdjustedPanelBoundsSidebarLeadingAnimating) {
+  // Same client/sidebar. Panel 50% open: visible_width=150, so upstream
+  // x = client.x()-(target-visible) = 0-(300-150) = -150.  Shift = 40 → x=-110.
+  // The slide is preserved: 150px visible from the sidebar edge.
+  gfx::Rect client(0, 0, 1000, 700);
   gfx::Rect sidebar(0, 50, 40, 600);
-  gfx::Rect panel(-150, 50, 300, 600);  // upstream: left_edge-(target-visible)
+  gfx::Rect panel(-150, 50, 300, 600);
   gfx::Rect adjusted =
       BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-          /*sidebar_leading=*/true, sidebar, panel);
+          /*sidebar_leading=*/true, sidebar, panel, client);
   EXPECT_EQ(-110, adjusted.x());
   EXPECT_EQ(150, adjusted.right() - sidebar.right());  // 150px visible to user
 }
