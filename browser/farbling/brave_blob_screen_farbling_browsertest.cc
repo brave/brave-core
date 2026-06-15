@@ -185,8 +185,6 @@ class BraveBlobScreenFarblingBrowserTest
   }
 
   void RunTests() {
-    ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
-
     AllowFingerprinting(/*allow=*/false);
     NavigateToBlob();
 

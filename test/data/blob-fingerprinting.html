@@ -63,15 +63,8 @@
 
     // Opens a pop-up window with a blob:// url which writes to the local
     // storage the various screen attributes it sees. The C++ test polls localStorage for
-<<<<<<< HEAD
     // completion via EvalJs / base::test::RunUntil().
     window.startBlobScreenFingerprintingPopUpTest = function() {
-=======
-    // completion via EvalJs / base::test::RunUntil(), so no JS-side poller is
-    // needed here.
-    window.startBlobScreenFingerprintingTest = function() {
-      document.title = 'Blob fingerprinting test';
->>>>>>> 561f61a93f9 (simplify tests)
       localStorage.clear();
       writeScreenValues('parent');
       const blob = new Blob([html], {type: 'text/html'});
@@ -82,12 +75,7 @@
 
     // Loads a blob:// url in an iframe which writes to the local storage the
     // various screen attributes it sees. The C++ test polls localStorage for
-<<<<<<< HEAD
     // completion via EvalJs / base::test::RunUntil().
-=======
-    // completion via EvalJs / base::test::RunUntil(), so no JS-side poller is
-    // needed here.
->>>>>>> 561f61a93f9 (simplify tests)
     window.startBlobScreenFingerprintingIframeTest = function() {
       localStorage.clear();
       writeScreenValues('parent');
