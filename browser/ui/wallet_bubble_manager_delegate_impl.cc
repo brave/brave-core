@@ -93,16 +93,19 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
                            const GURL& webui_url,
                            int task_manager_string_id,
                            bool force_load_on_create)
-      : WebUIBubbleManagerImpl(anchor_view,
-                               browser,
+      : WebUIBubbleManagerImpl(browser,
                                webui_url,
                                task_manager_string_id,
                                force_load_on_create),
         browser_(browser),
         anchor_view_(anchor_view) {}
 
+  bool ShowBubble() {
+    return WebUIBubbleManagerImpl::ShowBubble(anchor_view_.get());
+  }
+
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const std::optional<gfx::Rect>& anchor,
+      Anchor anchor,
       views::BubbleBorder::Arrow arrow) override {
     // This is prevent duplicate logic of cached_contents_wrapper creation
     // so we close WebUIBubbleDialogView and re-create bubble with
@@ -115,8 +118,12 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     }
     auto* contents_wrapper = cached_contents_wrapper();
     CHECK(contents_wrapper);
+    std::optional<gfx::Rect> anchor_rect;
+    if (std::holds_alternative<gfx::Rect>(anchor)) {
+      anchor_rect = std::get<gfx::Rect>(anchor);
+    }
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
-        anchor_view_, contents_wrapper, anchor, arrow);
+        anchor_view_, contents_wrapper, anchor_rect, arrow);
     bubble_view_ = bubble_view->GetWeakPtr();
     auto* widget =
         views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
