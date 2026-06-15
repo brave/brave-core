@@ -44,7 +44,6 @@ class BraveShieldsActionController
 
   using CreateWebUIBubbleManagerCallback =
       base::RepeatingCallback<std::unique_ptr<WebUIBubbleManager>(
-          views::View* anchor_view,
           BrowserWindowInterface* browser_window_interface,
           const GURL& webui_url,
           int task_manager_string_id,
