@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
@@ -365,8 +366,7 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
 
   void OnSponsoredComponentReady(
       const base::FilePath& /*installed_dir*/) override {
-    NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
-        cached_json_for_testing_);
+    OnGetSponsoredComponentJsonData(cached_json_for_testing_);
   }
 
   // Pre-sets the already-loaded state so tests can call
@@ -377,7 +377,12 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
     sponsored_images_component_id_ = component_id;
     // Use a non-empty sentinel so the replay path triggers.
     sponsored_images_installed_dir_ = base::FilePath(FILE_PATH_LITERAL("fake"));
-    NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(json);
+    OnGetSponsoredComponentJsonData(json);
+  }
+
+  void OnGetSponsoredComponentJsonData(const std::string& json) {
+    NTPBackgroundImagesService::OnHandledSponsoredComponentData(
+        base::test::ParseJsonDict(json));
   }
 
   bool sponsored_images_component_started = false;
@@ -486,9 +491,12 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
                    ->FindBool(kIsBackgroundKey)
                    .value());
 
-  EXPECT_EQ("30244a36-561a-48f0-8d7a-780e9035c57a/button.png",
-            *images_data->MaybeGetBackgroundAt(0, 0)->FindStringByDottedPath(
-                kLogoImagePath));
+  EXPECT_EQ(
+      base::FilePath::FromUTF8Unsafe("30244a36-561a-48f0-8d7a-780e9035c57a")
+          .AppendASCII("button.png"),
+      base::FilePath::FromUTF8Unsafe(
+          *images_data->MaybeGetBackgroundAt(0, 0)->FindStringByDottedPath(
+              kLogoImagePath)));
 
   // Test BI data loading
   observer_.background_images_data = nullptr;

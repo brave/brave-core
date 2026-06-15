@@ -9,7 +9,6 @@
 
 #include "base/command_line.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
@@ -333,40 +332,60 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
   }
 }
 
+std::optional<base::DictValue>
+NTPBackgroundImagesService::HandleSponsoredComponentData(
+    const base::FilePath& installed_dir,
+    const std::string& variations_country_code) {
+  const std::string json =
+      HandleComponentData(installed_dir, kNTPSponsoredManifestFile);
+
+  std::optional<base::DictValue> dict =
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  if (!dict) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "variations_country_code",
+                              variations_country_code);
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "empty_json", json.empty());
+    if (!json.empty()) {
+      SCOPED_CRASH_KEY_STRING64("Issue50267", "json", json);
+    }
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
+    DUMP_WILL_BE_NOTREACHED();
+    DVLOG(2) << "Read json data failed. Invalid JSON data";
+    return std::nullopt;
+  }
+
+  FilterCampaigns(*dict, installed_dir);
+
+  return dict;
+}
+
 void NTPBackgroundImagesService::OnSponsoredComponentReady(
     const base::FilePath& installed_dir) {
   sponsored_images_installed_dir_ = installed_dir;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&HandleComponentData, installed_dir,
-                     kNTPSponsoredManifestFile),
+      base::BindOnce(&NTPBackgroundImagesService::HandleSponsoredComponentData,
+                     installed_dir, GetCountryCode()),
       base::BindOnce(
-          &NTPBackgroundImagesService::OnGetSponsoredComponentJsonData,
+          &NTPBackgroundImagesService::OnHandledSponsoredComponentData,
           weak_factory_.GetWeakPtr()));
 }
 
-void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
-    const std::string& json_string) {
-  std::optional<base::DictValue> json_value = base::JSONReader::ReadDict(
-      json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  if (!json_value) {
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "variations_country_code",
-                              GetVariationsCountryCode(variations_service_));
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "json_string", json_string);
-    SCOPED_CRASH_KEY_BOOL("Issue50267", "empty_json", json_string.empty());
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
-    base::debug::DumpWithoutCrashing();
-    DVLOG(2) << "Read json data failed. Invalid JSON data";
+void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
+    std::optional<base::DictValue> dict) {
+  if (!dict) {
+    sponsored_images_data_.reset();
+    sponsored_images_data_excluding_rich_media_.reset();
+    observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate, nullptr);
     return;
   }
-  base::DictValue& data = *json_value;
 
   sponsored_images_data_ = std::make_unique<NTPSponsoredImagesData>(
-      data, sponsored_images_installed_dir_);
+      *dict, sponsored_images_installed_dir_);
+
   sponsored_images_data_excluding_rich_media_ =
-      std::make_unique<NTPSponsoredImagesData>(data,
-                                               sponsored_images_installed_dir_);
+      std::make_unique<NTPSponsoredImagesData>(*sponsored_images_data_);
   for (auto& campaign :
        sponsored_images_data_excluding_rich_media_->campaigns) {
     std::erase_if(campaign.creatives, [](const auto& creative) {
@@ -376,18 +395,10 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
   std::erase_if(
       sponsored_images_data_excluding_rich_media_->campaigns,
       [](const auto& campaign) { return campaign.creatives.empty(); });
-  if (!sponsored_images_data_excluding_rich_media_) {
-    sponsored_images_data_excluding_rich_media_ =
-        std::make_unique<NTPSponsoredImagesData>();
-  }
 
-  for (auto& observer : observers_) {
-    observer.OnSponsoredContentDidUpdate(data);
-  }
-
-  for (auto& observer : observers_) {
-    observer.OnSponsoredImagesDataDidUpdate(sponsored_images_data_.get());
-  }
+  observers_.Notify(&Observer::OnSponsoredContentDidUpdate, *dict);
+  observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate,
+                    sponsored_images_data_.get());
 }
 
 }  // namespace ntp_background_images
