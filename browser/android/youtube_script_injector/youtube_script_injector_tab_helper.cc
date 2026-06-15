@@ -247,45 +247,6 @@ constexpr char16_t kYoutubeFullscreen[] =
 }());
 )";
 
-constexpr char16_t kYoutubeExitFullscreen[] =
-    uR"(
-(function() {
-  // Mirror the entry-side selectors so we can fall back to whichever
-  // fullscreen button this YouTube variant is rendering.
-  const fullscreenSelector = "button.fullscreen-icon, "
-      + "button.ytp-fullscreen-button, .ytp-fullscreen-button";
-  const playerSelector = "#movie_player, .html5-video-player";
-  const player = document.querySelector(playerSelector);
-  const isPlayerFullscreen = player?.isFullscreen?.() === true;
-
-  if (document.fullscreenElement && document.exitFullscreen) {
-    document.exitFullscreen().catch(() => {
-      const fullscreenBtn = document.querySelector(fullscreenSelector);
-      if (fullscreenBtn && document.fullscreenElement) {
-        fullscreenBtn.click();
-      }
-    });
-    return;
-  }
-
-  if (isPlayerFullscreen && player?.toggleFullscreen) {
-    try {
-      player.toggleFullscreen();
-      return;
-    } catch (e) {
-      // Fall through to the button-based fallback below.
-    }
-  }
-
-  if (isPlayerFullscreen) {
-    const fullscreenBtn = document.querySelector(fullscreenSelector);
-    if (fullscreenBtn) {
-      fullscreenBtn.click();
-    }
-  }
-}());
-)";
-
 bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   PrefService* prefs =
       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
@@ -390,19 +351,6 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
       base::BindOnce(
           &YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete,
           weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
-}
-
-void YouTubeScriptInjectorTabHelper::MaybeExitFullscreen() {
-  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  if (!rfh || !rfh->IsRenderFrameLive()) {
-    return;
-  }
-
-  EnsureBound(rfh);
-  script_injector_remote_->RequestAsyncExecuteScript(
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeExitFullscreen,
-      blink::mojom::UserActivationOption::kActivate,
-      blink::mojom::PromiseResultOption::kDoNotWait, base::NullCallback());
 }
 
 bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
