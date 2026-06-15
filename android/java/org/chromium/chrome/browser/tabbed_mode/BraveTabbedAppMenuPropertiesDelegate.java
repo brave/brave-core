@@ -756,8 +756,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.readaloud_menu_id, R.string.menu_listen_to_this_page, 0)));
 
         // Reader mode
-        if (DomDistillerFeatures.showAlwaysOnEntryPoint()
-                || DomDistillerFeatures.sReaderModeDistillInApp.isEnabled()) {
+        if (DomDistillerFeatures.sReaderModeDistillInApp.isEnabled()) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
