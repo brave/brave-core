@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test-std:
+    name: Test (std + all features)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo test --all-features
+
+  test-alloc:
+    name: Test (alloc, no std)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo test --no-default-features --features alloc
+
+  test-no-alloc:
+    name: Test (no_std, no alloc)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo test --no-default-features
+
+  test-32bit:
+    name: Test (i686, 32-bit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gcc-multilib
+      # i686-unknown-linux-gnu is a 32-bit x86 Linux target, used here to
+      # exercise code paths that depend on usize being smaller than u64.
+      - run: rustup target add i686-unknown-linux-gnu
+      - run: cargo test --target i686-unknown-linux-gnu --all-features
+      - run: cargo test --target i686-unknown-linux-gnu --no-default-features --features alloc
+      - run: cargo test --target i686-unknown-linux-gnu --no-default-features
+
+  build-nostd-target:
+    name: Build (thumbv7em-none-eabihf)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: crate
+      - run: cargo init --lib ci-build
+      - run: cp crate/rust-toolchain.toml ci-build/
+      - run: echo '#![no_std]' > ci-build/src/lib.rs
+      - run: cargo add --no-default-features --path ../crate
+        working-directory: ci-build
+      - run: rustup target add thumbv7em-none-eabihf
+        working-directory: ci-build
+      - run: cargo build --target thumbv7em-none-eabihf
+        working-directory: ci-build
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo clippy --all-features --all-targets -- -D warnings
+      - run: cargo clippy --no-default-features  --features alloc --all-targets -- -D warnings
+      - run: cargo clippy --no-default-features --all-targets -- -D warnings
+
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo fmt --all -- --check
+
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo doc --no-deps --all-features
