@@ -128,7 +128,7 @@ impl Argument {
                     Any::Instance => instance,
                 };
                 parallelize(&mut modified_values, |modified_values, start| {
-                    let mut deltaomega = deltaomega * &omega.pow_vartime([start as u64, 0, 0, 0]);
+                    let mut deltaomega = deltaomega * &omega.pow_vartime([start as u64]);
                     for (modified_values, value) in modified_values
                         .iter_mut()
                         .zip(values[column.index()][start..].iter())

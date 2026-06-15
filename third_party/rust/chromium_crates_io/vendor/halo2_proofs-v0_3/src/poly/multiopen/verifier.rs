@@ -35,7 +35,8 @@ where
     // polynomial terms linearly independent.
     let x_2: ChallengeX2<_> = transcript.squeeze_challenge_scalar();
 
-    let (commitment_map, point_sets) = construct_intermediate_sets(queries);
+    let (commitment_map, point_sets) =
+        construct_intermediate_sets(queries).ok_or(Error::OpeningError)?;
 
     // Compress the commitments and expected evaluations at x together.
     // using the challenge x_1

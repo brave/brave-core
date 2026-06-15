@@ -2,6 +2,7 @@ use std::error;
 use std::fmt;
 use std::io;
 
+use super::TableColumn;
 use super::{Any, Column};
 
 /// This is an error that could occur during proving or circuit synthesis.
@@ -37,6 +38,10 @@ pub enum Error {
     /// The instance sets up a copy constraint involving a column that has not been
     /// included in the permutation.
     ColumnNotInPermutation(Column<Any>),
+    /// An error relating to a lookup table.
+    TableError(TableError),
+    /// Try to hash from a private point when allow_init_from_private_point is not set.
+    IllegalHashFromPrivatePoint,
 }
 
 impl From<io::Error> for Error {
@@ -79,6 +84,11 @@ impl fmt::Display for Error {
                 "Column {:?} must be included in the permutation. Help: try applying `meta.enable_equalty` on the column",
                 column
             ),
+            Error::TableError(error) => write!(f, "{}", error),
+            Error::IllegalHashFromPrivatePoint =>  write!(
+                f,
+                "Hashing from private point is disabled"
+            )
         }
     }
 }
@@ -88,6 +98,48 @@ impl error::Error for Error {
         match self {
             Error::Transcript(e) => Some(e),
             _ => None,
+        }
+    }
+}
+
+/// This is an error that could occur during table synthesis.
+#[derive(Debug)]
+pub enum TableError {
+    /// A `TableColumn` has not been assigned.
+    ColumnNotAssigned(TableColumn),
+    /// A Table has columns of uneven lengths.
+    UnevenColumnLengths((TableColumn, usize), (TableColumn, usize)),
+    /// Attempt to assign a used `TableColumn`
+    UsedColumn(TableColumn),
+    /// Attempt to overwrite a default value
+    OverwriteDefault(TableColumn, String, String),
+}
+
+impl fmt::Display for TableError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            TableError::ColumnNotAssigned(col) => {
+                write!(
+                    f,
+                    "{:?} not fully assigned. Help: assign a value at offset 0.",
+                    col
+                )
+            }
+            TableError::UnevenColumnLengths((col, col_len), (table, table_len)) => write!(
+                f,
+                "{:?} has length {} while {:?} has length {}",
+                col, col_len, table, table_len
+            ),
+            TableError::UsedColumn(col) => {
+                write!(f, "{:?} has already been used", col)
+            }
+            TableError::OverwriteDefault(col, default, val) => {
+                write!(
+                    f,
+                    "Attempted to overwrite default value {} with {} in {:?}",
+                    default, val, col
+                )
+            }
         }
     }
 }
