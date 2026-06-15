@@ -97,7 +97,6 @@ CoseSign1::~CoseSign1() {}
 
 bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
   cbor::Reader::Config cbor_config;
-  cbor_config.allow_and_canonicalize_out_of_order_keys = true;
 
   std::optional<cbor::Value> decoded_val =
       cbor::Reader::Read(data, cbor_config);
