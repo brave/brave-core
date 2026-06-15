@@ -568,6 +568,11 @@ impl<F: Field + Ord> MockProver<F> {
 
     /// Returns `Ok(())` if this `MockProver` is satisfied, or a list of errors indicating
     /// the reasons that the circuit is not satisfied.
+    ///
+    /// Note: When writing positive tests (i.e. checking that a circuit is valid), prefer using
+    /// [`MockProver::assert_satisfied`] which provides more readable error output. This method
+    /// is primarily intended for writing negative tests to check that specific invalid circuit
+    /// constructions fail with expected errors.
     pub fn verify(&self) -> Result<(), Vec<VerifyFailure>> {
         let n = self.n as i32;
 

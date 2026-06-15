@@ -1,14 +1,15 @@
 //! This module provides common utilities, traits and structures for group,
 //! field and polynomial arithmetic.
 
-use super::multicore;
 pub use ff::Field;
 use group::{
     ff::{BatchInvert, PrimeField},
     Group as _, GroupOpsOwned, ScalarMulOwned,
 };
-
+use maybe_rayon::prelude::*;
 pub use pasta_curves::arithmetic::*;
+
+use crate::multicore::{self, TheBestReduce};
 
 /// This represents an element of a group with basic operations that can be
 /// performed. This allows an FFT implementation (for example) to operate
@@ -25,92 +26,87 @@ where
 {
 }
 
-fn multiexp_serial<C: CurveAffine>(coeffs: &[C::Scalar], bases: &[C], acc: &mut C::Curve) {
-    let coeffs: Vec<_> = coeffs.iter().map(|a| a.to_repr()).collect();
+#[derive(Clone, Copy)]
+enum Bucket<C: CurveAffine> {
+    None,
+    Affine(C),
+    Projective(C::Curve),
+}
 
-    let c = if bases.len() < 4 {
-        1
-    } else if bases.len() < 32 {
-        3
-    } else {
-        (f64::from(bases.len() as u32)).ln().ceil() as usize
-    };
-
-    fn get_at<F: PrimeField>(segment: usize, c: usize, bytes: &F::Repr) -> usize {
-        let skip_bits = segment * c;
-        let skip_bytes = skip_bits / 8;
-
-        if skip_bytes >= 32 {
-            return 0;
+impl<C: CurveAffine> Bucket<C> {
+    fn add_assign(&mut self, other: &C) {
+        *self = match *self {
+            Bucket::None => Bucket::Affine(*other),
+            Bucket::Affine(a) => Bucket::Projective(a + *other),
+            Bucket::Projective(mut a) => {
+                a += *other;
+                Bucket::Projective(a)
+            }
         }
-
-        let mut v = [0; 8];
-        for (v, o) in v.iter_mut().zip(bytes.as_ref()[skip_bytes..].iter()) {
-            *v = *o;
-        }
-
-        let mut tmp = u64::from_le_bytes(v);
-        tmp >>= skip_bits - (skip_bytes * 8);
-        tmp %= 1 << c;
-
-        tmp as usize
     }
 
-    let segments = (256 / c) + 1;
-
-    for current_segment in (0..segments).rev() {
-        for _ in 0..c {
-            *acc = acc.double();
-        }
-
-        #[derive(Clone, Copy)]
-        enum Bucket<C: CurveAffine> {
-            None,
-            Affine(C),
-            Projective(C::Curve),
-        }
-
-        impl<C: CurveAffine> Bucket<C> {
-            fn add_assign(&mut self, other: &C) {
-                *self = match *self {
-                    Bucket::None => Bucket::Affine(*other),
-                    Bucket::Affine(a) => Bucket::Projective(a + *other),
-                    Bucket::Projective(mut a) => {
-                        a += *other;
-                        Bucket::Projective(a)
-                    }
-                }
+    fn add(self, mut other: C::Curve) -> C::Curve {
+        match self {
+            Bucket::None => other,
+            Bucket::Affine(a) => {
+                other += a;
+                other
             }
-
-            fn add(self, mut other: C::Curve) -> C::Curve {
-                match self {
-                    Bucket::None => other,
-                    Bucket::Affine(a) => {
-                        other += a;
-                        other
-                    }
-                    Bucket::Projective(a) => other + &a,
-                }
-            }
+            Bucket::Projective(a) => other + &a,
         }
+    }
+}
 
-        let mut buckets: Vec<Bucket<C>> = vec![Bucket::None; (1 << c) - 1];
+#[derive(Clone)]
+struct Buckets<C: CurveAffine> {
+    c: usize,
+    coeffs: Vec<Bucket<C>>,
+}
 
+impl<C: CurveAffine> Buckets<C> {
+    fn new(c: usize) -> Self {
+        Self {
+            c,
+            coeffs: vec![Bucket::None; (1 << c) - 1],
+        }
+    }
+
+    fn sum(&mut self, coeffs: &[C::Scalar], bases: &[C], i: usize) -> C::Curve {
+        // get segmentation and add coeff to buckets content
         for (coeff, base) in coeffs.iter().zip(bases.iter()) {
-            let coeff = get_at::<C::Scalar>(current_segment, c, coeff);
-            if coeff != 0 {
-                buckets[coeff - 1].add_assign(base);
+            let seg = self.get_at::<C::Scalar>(i, &coeff.to_repr());
+            if seg != 0 {
+                self.coeffs[seg - 1].add_assign(base);
             }
         }
-
         // Summation by parts
         // e.g. 3a + 2b + 1c = a +
         //                    (a) + b +
         //                    ((a) + b) + c
-        let mut running_sum = C::Curve::identity();
-        for exp in buckets.into_iter().rev() {
-            running_sum = exp.add(running_sum);
-            *acc += &running_sum;
+        let mut acc = C::Curve::identity();
+        let mut sum = C::Curve::identity();
+        self.coeffs.iter().rev().for_each(|b| {
+            sum = b.add(sum);
+            acc += sum;
+        });
+        acc
+    }
+
+    fn get_at<F: PrimeField>(&self, segment: usize, bytes: &F::Repr) -> usize {
+        let skip_bits = segment * self.c;
+        let skip_bytes = skip_bits / 8;
+
+        if skip_bytes >= 32 {
+            0
+        } else {
+            let mut v = [0; 8];
+            for (v, o) in v.iter_mut().zip(bytes.as_ref()[skip_bytes..].iter()) {
+                *v = *o;
+            }
+
+            let mut tmp = u64::from_le_bytes(v);
+            tmp >>= skip_bits - (skip_bytes * 8);
+            (tmp % (1 << self.c)) as usize
         }
     }
 }
@@ -147,29 +143,39 @@ pub fn small_multiexp<C: CurveAffine>(coeffs: &[C::Scalar], bases: &[C]) -> C::C
 pub fn best_multiexp<C: CurveAffine>(coeffs: &[C::Scalar], bases: &[C]) -> C::Curve {
     assert_eq!(coeffs.len(), bases.len());
 
+    let c = if bases.len() < 4 {
+        1
+    } else if bases.len() < 32 {
+        3
+    } else {
+        (f64::from(bases.len() as u32)).ln().ceil() as usize
+    };
+
+    let mut multi_buckets: Vec<Buckets<C>> = vec![Buckets::new(c); (256 / c) + 1];
     let num_threads = multicore::current_num_threads();
     if coeffs.len() > num_threads {
-        let chunk = coeffs.len() / num_threads;
-        let num_chunks = coeffs.chunks(chunk).len();
-        let mut results = vec![C::Curve::identity(); num_chunks];
-        multicore::scope(|scope| {
-            let chunk = coeffs.len() / num_threads;
-
-            for ((coeffs, bases), acc) in coeffs
-                .chunks(chunk)
-                .zip(bases.chunks(chunk))
-                .zip(results.iter_mut())
-            {
-                scope.spawn(move |_| {
-                    multiexp_serial(coeffs, bases, acc);
-                });
-            }
-        });
-        results.iter().fold(C::Curve::identity(), |a, b| a + b)
+        multi_buckets
+            .par_iter_mut()
+            .enumerate()
+            .rev()
+            .map(|(i, buckets)| {
+                let mut acc = buckets.sum(coeffs, bases, i);
+                (0..c * i).for_each(|_| acc = acc.double());
+                acc
+            })
+            .the_best_reduce(C::Curve::identity, |a, b| a + b)
+            .expect("multi_buckets always contains at least 1 bucket")
     } else {
-        let mut acc = C::Curve::identity();
-        multiexp_serial(coeffs, bases, &mut acc);
-        acc
+        multi_buckets
+            .iter_mut()
+            .enumerate()
+            .rev()
+            .map(|(i, buckets)| buckets.sum(coeffs, bases, i))
+            .fold(C::Curve::identity(), |mut sum, bucket| {
+                // restore original evaluation point
+                (0..c).for_each(|_| sum = sum.double());
+                sum + bucket
+            })
     }
 }
 
@@ -429,7 +435,27 @@ pub fn lagrange_interpolate<F: Field>(points: &[F], evals: &[F]) -> Vec<F> {
 use rand_core::OsRng;
 
 #[cfg(test)]
-use crate::pasta::Fp;
+use crate::pasta::{Eq, EqAffine, Fp};
+
+#[test]
+fn test_multiexp() {
+    let rng = OsRng;
+    let k = 8;
+
+    let coeffs = (0..(1 << k)).map(|_| Fp::random(rng)).collect::<Vec<_>>();
+    let bases = (0..(1 << k))
+        .map(|_| EqAffine::from(Eq::random(rng)))
+        .collect::<Vec<_>>();
+
+    let expected = best_multiexp(&coeffs, &bases);
+    let actual = coeffs
+        .iter()
+        .zip(bases)
+        .map(|(coeff, base)| base * coeff)
+        .fold(Eq::identity(), |acc, val| acc + val);
+
+    assert_eq!(expected, actual);
+}
 
 #[test]
 fn test_lagrange_interpolate() {

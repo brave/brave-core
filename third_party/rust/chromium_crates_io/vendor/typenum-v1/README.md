@@ -17,8 +17,8 @@ While `typenum` is divided into several modules, they are all re-exported
 through the crate root, so you can import anything contained herein with `use
 typenum::whatever;`, ignoring the crate structure.
 
-You may also find it useful to treat the `consts` module as a prelude, perfoming
-a glob import.
+You may also find it useful to treat the `consts` module as a prelude,
+performing a glob import.
 
 ### Example
 
@@ -54,9 +54,9 @@ take a look at [tnfilt](https://github.com/auxoncorp/tnfilt).
 Licensed under either of
 
  * Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
-   http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license
-   ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+   https://www.apache.org/licenses/LICENSE-2.0)
+ * MIT license ([LICENSE-MIT](LICENSE-MIT) or
+   https://opensource.org/license/mit)
 
 at your option.
 
