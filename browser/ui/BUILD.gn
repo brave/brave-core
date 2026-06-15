@@ -715,6 +715,7 @@ source_set("ui") {
       "//chrome/browser/ui/tabs/alert:tab_alert",
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/views/controls",
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/interaction",
