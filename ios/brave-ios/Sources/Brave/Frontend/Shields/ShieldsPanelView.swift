@@ -352,7 +352,7 @@ private struct ShieldSettingSectionHeader: View {
     VStack(alignment: .leading, spacing: 8) {
       URLElidedText(text: title)
         .font(.footnote)
-        .foregroundStyle(Color(braveSystemName: .textSecondary))
+        .foregroundStyle(Color(braveSystemName: .textTertiary))
         .textCase(.uppercase)
         .padding(.horizontal)
         .padding(.top, 8)

@@ -20,7 +20,7 @@ struct FilterListsView: View {
 
     var body: some View {
       VStack(alignment: .leading, spacing: 4) {
-        if LiquidGlassMode.isEnabled {
+        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
           Text(title)
           Text(description)
             .font(.caption)
@@ -194,33 +194,25 @@ struct FilterListsView: View {
   }
 
   @ViewBuilder private var customFiltersRows: some View {
+    if let customRules = customRules {
+      Text(customRules)
+        .lineLimit(2)
+        .multilineTextAlignment(.leading)
+        .font(.system(size: 14, weight: .regular, design: .monospaced))
+        .frame(maxWidth: .infinity, alignment: .leading)
+    } else if let error = rulesError {
+      Text(error.localizedDescription)
+        .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
+        .font(.subheadline)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
     Button {
       showingCustomFiltersSheet = true
     } label: {
-      HStack(alignment: .center) {
-        if let customRules = customRules {
-          Text(customRules)
-            .lineLimit(2)
-            .multilineTextAlignment(.leading)
-            .font(.system(size: 14, weight: .regular, design: .monospaced))
-            .frame(maxWidth: .infinity, alignment: .leading)
-        } else if let error = rulesError {
-          Text(error.localizedDescription)
-            .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
-            .font(.subheadline)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-          Text(Strings.Shields.customFiltersPlaceholder)
-            .foregroundStyle(.secondary)
-            .font(.subheadline)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        Image(systemName: "chevron.right")
-          .font(.body.weight(.semibold))
-          .foregroundColor(Color(.separator))
-      }
-      .accessibilityElement()
-      .accessibilityLabel(customFiltersAccessibilityLabel)
+      Text(
+        customRules != nil
+          ? Strings.Shields.editCustomFiltersLabel : Strings.Shields.customFiltersPlaceholder
+      )
     }
   }
 
