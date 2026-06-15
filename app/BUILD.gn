@@ -193,6 +193,7 @@ source_set("unit_tests") {
     deps += [
       "//android_webview/common",
       "//chrome/browser/flags:flags_android",
+      "//components/feed:feature_list",
       "//components/password_manager/core/common:features",
       "//components/security_interstitials/core",
     ]

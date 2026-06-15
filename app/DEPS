@@ -32,6 +32,7 @@ include_rules += [
   "+components/dom_distiller/core/dom_distiller_switches.h",
   "+components/embedder_support/switches.h",
   "+components/feature_engagement/public/feature_constants.h",
+  "+components/feed/feed_feature_list.h",
   "+components/heap_profiling/in_process/heap_profiler_parameters.h",
   "+components/history/core/browser/features.h",
   "+components/history_clusters/core/features.h",

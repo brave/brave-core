@@ -77,6 +77,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
+#include "components/feed/feed_feature_list.h"
 #include "components/security_interstitials/core/features.h"
 #else
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
@@ -204,6 +205,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kWebIdentityDigitalCredentials,
       &features::kWebIdentityDigitalCredentialsCreation,
       &features::kWebOTP,
+#if BUILDFLAG(IS_ANDROID)
+      &feed::kAndroidOpenIncognitoAsWindow,
+#endif
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
       &history_clusters::features::kOnDeviceClustering,
