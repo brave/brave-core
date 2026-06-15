@@ -5,7 +5,8 @@
 
 import("//brave/browser/ui/sidebar/buildflags/buildflags.gni")
 
-brave_browser_ui_views_side_panel_deps =
+brave_browser_ui_views_side_panel_deps = []
+brave_browser_ui_views_side_panel_public_deps =
     [ "//brave/browser/ui/sidebar/buildflags" ]
 
 if (enable_sidebar_v2) {
