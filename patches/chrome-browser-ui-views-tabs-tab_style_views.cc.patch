@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index e45afd34c99aa1850d5fa46b601f63e4d72c4763..b349da11ea5ebe5b5411585c87109b6788d3300e 100644
+index e45afd34c99aa1850d5fa46b601f63e4d72c4763..801e0369283e56135b9e54c52672afa0f53d1bcb 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -82,7 +82,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -82,12 +82,12 @@ class TabStyleViewsImpl : public TabStyleViews {
      return hover_controller_.get();
    }
  
@@ -11,6 +11,30 @@ index e45afd34c99aa1850d5fa46b601f63e4d72c4763..b349da11ea5ebe5b5411585c87109b67
    // Returns the color for the separator.
    SkColor GetTabSeparatorColor() const;
  
+   // Painting helper functions:
+-  SkColor GetCurrentTabBackgroundColor(
++  virtual SkColor GetCurrentTabBackgroundColor(
+       TabStyle::TabSelectionState selection_state,
+       bool hovered) const;
+ 
+@@ -95,7 +95,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   // tab. Only active tabs may have a stroke, and not in all cases. If there
+   // is no stroke, returns 0. If `should_paint_as_active` is true, the tab is
+   // treated as an active tab regardless of its true current state.
+-  int GetStrokeThickness(bool should_paint_as_active) const;
++  virtual int GetStrokeThickness(bool should_paint_as_active) const;
+ 
+   bool ShouldPaintTabBackgroundColor(
+       TabStyle::TabSelectionState selection_state,
+@@ -113,7 +113,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   // Returns a single separator's opacity based on whether it is the
+   // logically `leading` separator. `for_layout` has the same meaning as in
+   // GetSeparatorOpacities().
+-  float GetSeparatorOpacity(bool for_layout, bool leading) const;
++  virtual float GetSeparatorOpacity(bool for_layout, bool leading) const;
+ 
+   // Helper that returns an interpolated opacity if the tab or its neighbor
+   // `other_tab` is mid-hover-animation. Used in almost all cases when a
 @@ -125,7 +125,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  

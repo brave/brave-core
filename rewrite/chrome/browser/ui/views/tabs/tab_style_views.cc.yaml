@@ -16,12 +16,37 @@ substitutions:
 
   - description: |-
       Virtualise GetSeparatorBounds for BraveVerticalTabStyle.
-    re_pattern: '(TabStyle::SeparatorBounds GetSeparatorBounds\(float scale\) const;)'
+    re_pattern:
+      '(TabStyle::SeparatorBounds GetSeparatorBounds\(float scale\) const;)'
     replace: 'virtual \1'
 
   - description: |-
       Virtualise IsHovering for BraveVerticalTabStyle.
     re_pattern: '(bool IsHovering\(\) const;)'
+    replace: 'virtual \1'
+
+  - description: |-
+      Virtualise GetStrokeThickness for BraveVerticalTabStyle.
+
+      Virtualising it to return 0 for vertical/horizontal-update tabs.
+    re_pattern: '(int GetStrokeThickness\(bool should_paint_as_active\) const;)'
+    replace: 'virtual \1'
+
+  - description: |-
+      Virtualise GetSeparatorOpacity for BraveVerticalTabStyle.
+
+      Virtualising to tweak separator visibility for vertical tabs and split
+      tabs.
+
+    re_pattern:
+      '(float GetSeparatorOpacity\(bool for_layout, bool leading\) const;)'
+    replace: 'virtual \1'
+
+  - description: |-
+      Virtualise GetCurrentTabBackgroundColor for BraveVerticalTabStyle.
+
+      Virtualising to supply its own vertical-tab background colors.
+    re_pattern: '(SkColor GetCurrentTabBackgroundColor\()'
     replace: 'virtual \1'
 
   - description: |-
@@ -35,7 +60,8 @@ substitutions:
 
 
       This patch computes a radius of half the separator width.
-    re_pattern: '(void TabStyleViewsImpl::PaintSeparators\(.*?\n)(  cc::PaintFlags flags;)'
+    re_pattern:
+      '(void TabStyleViewsImpl::PaintSeparators\(.*?\n)(  cc::PaintFlags flags;)'
     re_flags: [DOTALL]
     replace: |-
       \1  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
@@ -65,7 +91,9 @@ substitutions:
       requires the full definition of `BraveVerticalTabStyle` to be visible, not
       just a forward declaration. So instead, we disable the entire definition
       in upstream and re-define it in `chromium_src`.
-    re_pattern: '(// static\nstd::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'
+    re_pattern:
+      '(// static\nstd::unique_ptr<TabStyleViews>
+      TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'
     re_flags: [DOTALL]
     replace: |-
       #if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
