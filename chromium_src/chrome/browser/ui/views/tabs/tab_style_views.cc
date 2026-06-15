@@ -78,7 +78,7 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
   gfx::Insets GetContentsInsets() const override;
   TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const override;
   float GetSeparatorOpacity(bool for_layout, bool leading) const override;
-  int GetStrokeThickness(bool should_paint_as_active = false) const override;
+  int GetStrokeThickness() const override;
   void PaintTab(gfx::Canvas* canvas) const override;
   TabStyle::TabColors CalculateTargetColors() const override;
   SkColor GetCurrentTabBackgroundColor(
@@ -220,7 +220,7 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
   if (is_pinned) {
     // Only pinned tabs have border
     if (path_type == TabStyle::PathType::kBorder ||
-        path_type == TabStyle::PathType::kFill) {
+        path_type == TabStyle::PathType::kActiveTab) {
       // As stroke's coordinate is amid of stroke width, we should set position
       // at 50% of 1 dip.
       tab_top += scale * 0.5;
@@ -400,10 +400,9 @@ float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
   return visible_opacity;
 }
 
-int BraveVerticalTabStyle::GetStrokeThickness(
-    bool should_paint_as_active) const {
+int BraveVerticalTabStyle::GetStrokeThickness() const {
   if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
-    return TabStyleViewsImpl::GetStrokeThickness(should_paint_as_active);
+    return TabStyleViewsImpl::GetStrokeThickness();
   }
   return 0;
 }
@@ -420,8 +419,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     // For vertical tabs, bypass the upstream logic to paint theme backgrounds,
     // as this can cause crashes due to the vertical tabstrip living in a
     // different widget hierarchy.
-    PaintTabBackground(canvas, GetSelectionState(), IsHoverAnimationActive(),
-                       std::nullopt);
+    PaintTabBackground(canvas, IsHoverAnimationActive(), std::nullopt);
   } else {
     TabStyleViewsImpl::PaintTab(canvas);
   }
@@ -485,13 +483,13 @@ void BraveVerticalTabStyle::PaintTabAccentBackground(
   float scale = canvas->UndoDeviceScaleFactor();
 
   // Clip to the full tab shape so we never paint outside the tab.
-  SkPath clip_path = GetPath(TabStyle::PathType::kFill, scale,
+  SkPath clip_path = GetPath(TabStyle::PathType::kActiveTab, scale,
                              /*flags=*/{}, /*inset_tab_accent_area=*/false);
   canvas->ClipPath(clip_path, /*do_anti_alias=*/true);
 
   // Paint accent only in the region outside the inset path (e.g. accent icon
   // area). GetPath(..., true) returns the tab shape with left inset.
-  SkPath inset_path = GetPath(TabStyle::PathType::kFill, scale,
+  SkPath inset_path = GetPath(TabStyle::PathType::kActiveTab, scale,
                               /*flags=*/{}, /*inset_tab_accent_area=*/true);
   SkPath inverse_path = inset_path.makeToggleInverseFillType();
 
