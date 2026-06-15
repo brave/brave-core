@@ -12,8 +12,8 @@
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "crypto/process_bound_string.h"
 #include "crypto/random.h"
+#include "crypto/secure_util.h"
 
 namespace brave_wallet {
 
@@ -166,7 +166,7 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
           base::span<uint8_t const>(keypair.GetPublicKey()));
   auto address = addr.Encode();
   if (!address) {
-    crypto::internal::SecureZeroBuffer(pkcs8_key);
+    crypto::SecureZeroBuffer(pkcs8_key);
     return std::nullopt;
   }
 
@@ -187,7 +187,7 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
 
   auto result = ::brave_wallet::EncodePrivateKeyForExport(
       pkcs8_key, *address, password, salt, nonce);
-  crypto::internal::SecureZeroBuffer(pkcs8_key);
+  crypto::SecureZeroBuffer(pkcs8_key);
   return result;
 }
 
