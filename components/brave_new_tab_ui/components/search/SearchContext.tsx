@@ -94,7 +94,7 @@ class SearchPage implements PageInterface {
   openCurrentSelection(disposition: WindowOpenDisposition): void {}
   setAimButtonVisible(visible: boolean): void {}
   updateAimPopupEligibility(eligible: boolean): void {}
-  onEmbeddedPermissionPromptChanged(isShowing: boolean, promptSize: Size): void {}
+  onPermissionPromptChanged(isShowing: boolean, promptSize: Size): void {}
   setRestoredTabIds(tabIds: number[]): void { }
   setAimThreadRestoredTabs(tabs: TabInfo[]): void { }
 }
