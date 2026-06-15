@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Alert from '@brave/leo/react/alert'
+import Icon from '@brave/leo/react/icon'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
@@ -17,7 +19,11 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
-import { getTransactionMemo } from '../../../utils/tx-utils'
+import {
+  getTransactionMemo,
+  getSetApprovalForAllOperator,
+  isSetApprovalForAllTransaction,
+} from '../../../utils/tx-utils'
 
 // Hooks
 import {
@@ -56,6 +62,9 @@ import {
 import {
   OriginInfoCard, //
 } from '../origin_info_card/origin_info_card'
+import {
+  ApprovalForAllWarning, //
+} from '../approval_for_all_warning/approval_for_all_warning'
 
 // Styled Components
 import {
@@ -63,6 +72,7 @@ import {
   InfoBox,
   Card,
   Title,
+  AlertWrapper,
 } from './confirm_send_transaction.style'
 import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
@@ -78,6 +88,8 @@ export function ConfirmSendTransaction() {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [showTransactionDetails, setShowTransactionDetails] =
+    React.useState<boolean>(false)
+  const [showApprovalForAllWarning, setShowApprovalForAllWarning] =
     React.useState<boolean>(false)
 
   // Hooks
@@ -160,6 +172,41 @@ export function ConfirmSendTransaction() {
 
   const memoText = getTransactionMemo(selectedPendingTransaction)
 
+  const isApprovalForAllTx = React.useMemo(() => {
+    if (!selectedPendingTransaction) {
+      return false
+    }
+    return isSetApprovalForAllTransaction(selectedPendingTransaction)
+  }, [selectedPendingTransaction])
+
+  // The operator (spender) being granted approval over the NFT collection
+  const approvalForAllOperator = React.useMemo(() => {
+    if (!selectedPendingTransaction) {
+      return ''
+    }
+    return getSetApprovalForAllOperator(selectedPendingTransaction)
+  }, [selectedPendingTransaction])
+
+  // Methods
+  const onConfirmOrMaybeShowWarning = React.useCallback(() => {
+    if (isApprovalForAllTx) {
+      setShowApprovalForAllWarning(true)
+      return
+    }
+    onConfirm()
+  }, [isApprovalForAllTx, onConfirm])
+
+  const onConfirmAndCloseWarning = React.useCallback(() => {
+    setShowApprovalForAllWarning(false)
+    onConfirm()
+  }, [onConfirm])
+
+  // Reset the warning overlay whenever the queued transaction changes so it
+  // doesn't carry over to the next pending transaction.
+  React.useEffect(() => {
+    setShowApprovalForAllWarning(false)
+  }, [selectedPendingTransaction?.id])
+
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
   }
@@ -213,28 +260,49 @@ export function ConfirmSendTransaction() {
               />
             )}
             <InfoBox width='100%'>
+              {/* Approval for all warning */}
+              {isApprovalForAllTx && (
+                <AlertWrapper width='100%'>
+                  <Alert type='error'>
+                    <Icon
+                      slot='icon'
+                      name='warning-circle-filled'
+                    />
+                    <span slot='title'>
+                      {getLocale('braveWalletApprovalForAllWarningTitle')}
+                    </span>
+                    {getLocale('braveWalletApprovalForAllWarningDescription')}
+                  </Alert>
+                </AlertWrapper>
+              )}
+
               {/* Swap details */}
               <Card
                 width='100%'
                 padding='16px'
+                noTopRadius={isApprovalForAllTx}
               >
                 {/* Send token and amount */}
-                <ConfirmationTokenInfo
-                  token={transactionDetails.token}
-                  label={isShieldingFunds ? 'shield' : 'send'}
-                  valueExact={transactionDetails.valueExact}
-                  fiatValue={transactionDetails.fiatValue}
-                  network={transactionsNetwork}
-                  account={fromAccount}
-                />
+                {!isApprovalForAllTx && (
+                  <ConfirmationTokenInfo
+                    token={transactionDetails.token}
+                    label={isShieldingFunds ? 'shield' : 'send'}
+                    valueExact={transactionDetails.valueExact}
+                    fiatValue={transactionDetails.fiatValue}
+                    network={transactionsNetwork}
+                    account={fromAccount}
+                  />
+                )}
 
                 {/* Divider */}
-                <Row
-                  justifyContent='space-between'
-                  padding='16px 0px'
-                >
-                  <VerticalDivider />
-                </Row>
+                {!isApprovalForAllTx && (
+                  <Row
+                    justifyContent='space-between'
+                    padding='16px 0px'
+                  >
+                    <VerticalDivider />
+                  </Row>
+                )}
 
                 {/* Recipient info */}
                 <ConfirmationTokenInfo
@@ -352,7 +420,8 @@ export function ConfirmSendTransaction() {
 
         {/* Confirm and reject buttons */}
         <ConfirmRejectButtons
-          onConfirm={onConfirm}
+          key={showApprovalForAllWarning ? 1 : 0}
+          onConfirm={onConfirmOrMaybeShowWarning}
           onReject={onReject}
           isConfirmButtonDisabled={isConfirmButtonDisabled}
           isAccountSyncing={isAccountSyncing}
@@ -397,6 +466,16 @@ export function ConfirmSendTransaction() {
         isOpen={showEditNetworkFee}
         onCancel={() => setShowEditNetworkFee(false)}
       />
+
+      {/* Approval for all warning */}
+      {isApprovalForAllTx && showApprovalForAllWarning && (
+        <ApprovalForAllWarning
+          onConfirm={onConfirmAndCloseWarning}
+          onReject={onReject}
+          address={approvalForAllOperator}
+          network={transactionsNetwork}
+        />
+      )}
     </>
   )
 }
