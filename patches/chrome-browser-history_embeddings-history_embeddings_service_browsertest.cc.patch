@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc b/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc
-index 8397a8d8486908ece3858b8afcfd5e2626498ba1..7b8271cee9f1aa5aa6c2f87ecced64cfcef51cc3 100644
+index 8397a8d8486908ece3858b8afcfd5e2626498ba1..7ec84e246eeb39169fba2823ce2acff72b07b306 100644
 --- a/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc
 +++ b/chrome/browser/history_embeddings/history_embeddings_service_browsertest.cc
 @@ -254,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsBrowserTest,
@@ -89,3 +89,12 @@ index 8397a8d8486908ece3858b8afcfd5e2626498ba1..7b8271cee9f1aa5aa6c2f87ecced64cf
                        search_future.GetRepeatingCallback());
      SearchResult result = search_future.Take();
      ASSERT_EQ(result.scored_url_rows.size(), 1u);
+@@ -686,7 +689,7 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsBrowserTest,
+   // Now check if the victim URL has been poisoned.
+   base::test::TestFuture<SearchResult> search_future;
+   service()->Search(nullptr, "Attacker", {}, 1, /*skip_answering=*/false,
+-                    search_future.GetRepeatingCallback());
++                    /*url_id_filter=*/{}, search_future.GetRepeatingCallback());
+   SearchResult result = search_future.Take();
+ 
+   bool found_victim_with_attacker_content = false;
