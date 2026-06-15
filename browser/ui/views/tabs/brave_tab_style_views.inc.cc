@@ -225,16 +225,6 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
       tab_right -= scale * 0.5;
       tab_bottom -= scale * 0.5;
     }
-
-    if (path_type == TabStyle::PathType::kInteriorClip) {
-      // In order to clip the fill by the stroke thickness, we should set
-      // another 1 dip for interior clip.
-      tab_top += scale + scale * 0.5;
-      tab_left += scale + scale * 0.5;
-      tab_right -= scale + scale * 0.5;
-      tab_bottom -= scale + scale * 0.5;
-      radius -= scale;
-    }
   }
 
   if (!is_pinned && IsSplitTab(tab()) &&
