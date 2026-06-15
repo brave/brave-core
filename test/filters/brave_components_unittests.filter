@@ -1,0 +1,15 @@
+##
+## Brave tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# These tests are failing and are temporarily disabled on all platforms.
+# https://github.com/brave/brave-browser/issues/56372
+-PsstRuleRegistryUnitTest.LoadConcreteRule
+-PsstRuleRegistryUnitTest.DoNotMatchRuleIfNotExists
+-PsstRuleRegistryUnitTest.RuleReferencesToNotExistedPath
+-PsstRuleRegistryUnitTest.RulesLoading
+-MatchedRuleTest.LoadSimpleMatchedRule
+-RuleDataReaderUnitTest.LoadComponentScripts
