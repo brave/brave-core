@@ -1796,7 +1796,7 @@
 -WebViewNewWindowTest.Shim_TestWebViewAndEmbedderInNewWindow_Noopener/MPArch
 
 # These tests fail because we disable MV2 deprecation and disablement
--ManifestV2ExperimentManagerBrowserTest.*
+-ManifestV2HandlerBrowserTest.*
 
 # These tests fail because they conflict with our own split view layout,
 # specifically with how we currently manage our vertical tabs host view
