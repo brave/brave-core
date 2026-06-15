@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/history_embeddings_provider.cc b/components/omnibox/browser/history_embeddings_provider.cc
-index d1bb7fbb2e2aee320d9017a7538cdff50fe43b8e..ae107cd847b20d1615c90ff0de06f42db252cd1a 100644
+index 027227a46282747fcef6b59a8d4a34a8ccfca774..0c5b16a1cb8f89d6270f895e8a04e12f3411e256 100644
 --- a/components/omnibox/browser/history_embeddings_provider.cc
 +++ b/components/omnibox/browser/history_embeddings_provider.cc
 @@ -93,7 +93,7 @@ void HistoryEmbeddingsProvider::Start(const AutocompleteInput& input,

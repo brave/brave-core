@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 515cfcf4c7938b29510fb20c4b95814123a682f3..bd52622d9ad073f8dbb187902d303ca185f17dbe 100644
+index 844abd0853e9ed8fb54e756423e4c2a130f066a9..1c3074e8df41d4bad7630a6d00c7f76e50341980 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-@@ -709,6 +709,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+@@ -803,6 +803,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
    // TODO(446953331): It's error-prone to keep the above if's up to date. When
    //   omnibox input and popup views are replaced with webUI, matches and
    //   actions can store an icon enum instead of `VectorIcon`.
@@ -18,7 +18,7 @@ index 515cfcf4c7938b29510fb20c4b95814123a682f3..bd52622d9ad073f8dbb187902d303ca1
    NOTREACHED() << "Every autocomplete icon must have an equivalent SVG "
                    "resource for the NTP Realbox. icon.name: '"
                 << icon.name << "'";
-@@ -1029,8 +1038,9 @@ void SearchboxHandler::QueryAutocomplete(const std::u16string& input,
+@@ -1121,8 +1130,9 @@ void SearchboxHandler::QueryAutocomplete(const std::u16string& input,
    autocomplete_input.set_prevent_inline_autocomplete(
        prevent_inline_autocomplete);
    // Disable keyword matches as NTP realbox has no UI affordance for it.

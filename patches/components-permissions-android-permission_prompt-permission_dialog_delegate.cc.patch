@@ -1,8 +1,8 @@
 diff --git a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
-index 4c671a1c302360d75b01b9f7596c40f473ba1f3d..0925da5b4c334855f3eedf969586a6ceecba9702 100644
+index 77d56280ffac7700a2e98688d2baa5448ae2c164..a5ac2a70ccf63a851633f46d8e62821005b85bb4 100644
 --- a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
 +++ b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
-@@ -59,6 +59,7 @@ void PermissionDialogJavaDelegate::CreateJavaDelegate(
+@@ -60,6 +60,7 @@ void PermissionDialogJavaDelegate::CreateJavaDelegate(
  void PermissionDialogJavaDelegate::CreateDialog(
      content::WebContents* web_contents) {
    JNIEnv* env = base::android::AttachCurrentThread();
@@ -10,7 +10,7 @@ index 4c671a1c302360d75b01b9f7596c40f473ba1f3d..0925da5b4c334855f3eedf969586a6ce
    // Send the Java delegate to the Java PermissionDialogController for display.
    // When the Java delegate is no longer needed it will in turn reset the native
    // java delegate (PermissionDialogJavaDelegate).
-@@ -164,6 +165,7 @@ PermissionDialogDelegate::CreateForTesting(
+@@ -165,6 +166,7 @@ PermissionDialogDelegate::CreateForTesting(
  
  void PermissionDialogDelegate::Accept(JNIEnv* env) {
    CHECK(permission_prompt_);
@@ -18,7 +18,7 @@ index 4c671a1c302360d75b01b9f7596c40f473ba1f3d..0925da5b4c334855f3eedf969586a6ce
    permission_prompt_->Accept(prompt_options_);
  }
  
-@@ -179,6 +181,7 @@ void PermissionDialogDelegate::Acknowledge(JNIEnv* env) {
+@@ -180,6 +182,7 @@ void PermissionDialogDelegate::Acknowledge(JNIEnv* env) {
  
  void PermissionDialogDelegate::Deny(JNIEnv* env) {
    CHECK(permission_prompt_);

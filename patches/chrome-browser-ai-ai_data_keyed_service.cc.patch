@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ai/ai_data_keyed_service.cc b/chrome/browser/ai/ai_data_keyed_service.cc
-index f232366924881e21584c50054eac298c5583f38a..7f5754e9dc818f69f909f8529ebd11ba144ee587 100644
+index 9807c3050e531f6c86b61032ea9dcc5bf381119b..4f8ad716f4840255bfbdb976a40a8abfdbfefc94 100644
 --- a/chrome/browser/ai/ai_data_keyed_service.cc
 +++ b/chrome/browser/ai/ai_data_keyed_service.cc
-@@ -255,7 +255,7 @@ void GetHistoryQueryResultForModelPrototyping(
+@@ -254,7 +254,7 @@ void GetHistoryQueryResultForModelPrototyping(
                           .start_time()
                           .seconds())),
          history_query.num_history_visits(),

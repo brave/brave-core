@@ -1,8 +1,8 @@
 diff --git a/components/history_embeddings/core/sql_database_unittest.cc b/components/history_embeddings/core/sql_database_unittest.cc
-index dde15ad4fe46e647adea936a9c5126cb2460ff6d..eed5a4e13bce9537e8817d00217eda781e6cd8a2 100644
+index aadcfc4d78e87f0ee8576f3340fb6fcc845d6214..e2782bfbb9491ad672115a757b452df96b4ac61e 100644
 --- a/components/history_embeddings/core/sql_database_unittest.cc
 +++ b/components/history_embeddings/core/sql_database_unittest.cc
-@@ -91,7 +91,7 @@ class HistoryEmbeddingsSqlDatabaseTest : public testing::Test {
+@@ -92,7 +92,7 @@ class HistoryEmbeddingsSqlDatabaseTest : public testing::Test {
    }
  
    size_t GetEmbeddingCount(SqlDatabase* sql_database) {
@@ -11,7 +11,7 @@ index dde15ad4fe46e647adea936a9c5126cb2460ff6d..eed5a4e13bce9537e8817d00217eda78
      EXPECT_TRUE(iterator);
      size_t count = 0;
      while (iterator->Next()) {
-@@ -194,7 +194,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadUrlData) {
+@@ -195,7 +195,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, WriteCloseAndThenReadUrlData) {
    {
      // Block scope destructs iterator before database is closed.
      std::unique_ptr<VectorDatabase::UrlDataIterator> iterator =
@@ -20,7 +20,7 @@ index dde15ad4fe46e647adea936a9c5126cb2460ff6d..eed5a4e13bce9537e8817d00217eda78
      EXPECT_TRUE(iterator);
      for (const UrlData& url_data : url_datas) {
        const UrlData* read_url_data = iterator->Next();
-@@ -317,7 +317,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IteratorMaySafelyOutliveDatabase) {
+@@ -318,7 +318,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IteratorMaySafelyOutliveDatabase) {
    // Without database reset, iteration reads data.
    {
      std::unique_ptr<VectorDatabase::UrlDataIterator> iterator =
@@ -29,7 +29,7 @@ index dde15ad4fe46e647adea936a9c5126cb2460ff6d..eed5a4e13bce9537e8817d00217eda78
      EXPECT_TRUE(iterator);
      EXPECT_TRUE(iterator->Next());
    }
-@@ -325,7 +325,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IteratorMaySafelyOutliveDatabase) {
+@@ -326,7 +326,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IteratorMaySafelyOutliveDatabase) {
    // With database reset, iteration gracefully ends.
    {
      std::unique_ptr<VectorDatabase::UrlDataIterator> iterator =
@@ -38,7 +38,7 @@ index dde15ad4fe46e647adea936a9c5126cb2460ff6d..eed5a4e13bce9537e8817d00217eda78
      EXPECT_TRUE(iterator);
  
      // Reset database while iterator is still in scope.
-@@ -505,7 +505,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IterationSkipsAndReportsMismatches) {
+@@ -506,7 +506,7 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, IterationSkipsAndReportsMismatches) {
    {
      // Iterate through stored data once.
      std::unique_ptr<VectorDatabase::UrlDataIterator> iterator =

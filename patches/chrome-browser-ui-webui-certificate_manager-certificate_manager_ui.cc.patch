@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc b/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc
-index 0849eded218b762f1dcc0286802c47c573f24648..c0f211a51f14c3c2f3ea80cd8f593800d2940bf2 100644
+index 58f903eb4708afabdcefefcbe62127077ee6dfe2..f752bf822eb77905d866f5f9f3dba5ded5d4c55a 100644
 --- a/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc
 +++ b/chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.cc
 @@ -30,8 +30,7 @@

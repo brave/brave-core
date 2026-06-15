@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc b/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc
-index 0b4f316ac00a1a37d8ecc8f7b01726f82486eb00..66bee93a776d85ceadf9b7d351766aba5c922dd4 100644
+index 3bf9835f1cb2b25d459d6e115587e61d40310185..818d0333dbecef7ff30ed21e5e8472e30cb9ac17 100644
 --- a/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc
 +++ b/components/autofill/core/browser/data_quality/addresses/profile_requirement_utils.cc
-@@ -45,7 +45,7 @@ ValidateProfileImportRequirements(const AutofillProfile& profile,
+@@ -55,7 +55,7 @@ ValidateProfileImportRequirements(const AutofillProfile& profile,
    SCOPED_CRASH_KEY_STRING32(
        "Autofill", "countrycode",
        base::UTF16ToUTF8(profile.GetInfo(ADDRESS_HOME_COUNTRY, "en-US")));
