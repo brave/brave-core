@@ -33,6 +33,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -378,6 +379,11 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   }
 
   widget_observation_.Observe(browser_view->GetWidget());
+
+  // Subscribe browser closing event, so we can dispose of the context menu.
+  browser_did_close_subscription_ = browser_->RegisterBrowserDidClose(
+      base::BindRepeating(&BraveVerticalTabStripRegionView::OnBrowserClosing,
+                          base::Unretained(this)));
 
   // Note: This should happen after all the PrefMembers have been initialized.
   OnFloatingModePrefChanged();
@@ -1255,6 +1261,14 @@ void BraveVerticalTabStripRegionView::ShowContextMenuForViewImpl(
 }
 
 void BraveVerticalTabStripRegionView::OnMenuClosed() {
+  menu_runner_.reset();
+}
+
+void BraveVerticalTabStripRegionView::OnBrowserClosing(
+    BrowserWindowInterface* browser) {
+  // Resetting the context menu at this stage, as `SystemMenuModelBuilder` is
+  // destroyed during `browser_widget_.reset()`, so we want to tear down our
+  // menu runner before that happens.
   menu_runner_.reset();
 }
 
