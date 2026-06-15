@@ -42,11 +42,6 @@ recursedeps = [
 
 hooks = [
   {
-    'name': 'bootstrap',
-    'pattern': '.',
-    'action': ['vpython3', 'script/bootstrap.py'],
-  },
-  {
     'name': 'bootstrap_ios',
     'pattern': '.',
     'condition': 'checkout_ios and host_os == "mac"',
