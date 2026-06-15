@@ -107,6 +107,8 @@ static_library("brave_test_support_unit") {
 test("brave_unit_tests") {
   testonly = true
 
+  data_deps = [ ":teamcity_reporter_integration_runner" ]
+
   configs += [
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
@@ -674,6 +676,13 @@ test("brave_unit_tests") {
       "//brave/components/psst/common",
     ]
   }
+}
+
+copy("teamcity_reporter_integration_runner") {
+  testonly = true
+  sources =
+      [ "//brave/base/test/launcher/teamcity_reporter_integration_test.py" ]
+  outputs = [ "$root_out_dir/teamcity_reporter_integration_test.py" ]
 }
 
 source_set("crypto_unittests") {
