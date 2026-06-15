@@ -180,9 +180,10 @@ void ResetPassword::OnVerifyInit(
 
   if (success) {
     CHECK(!encrypted_verification_token.empty());
-    state_->account_state_prefs_->SetLoggedOutWithVerification(
+    state_->account_state_prefs_->AddVerification(
         encrypted_verification_token,
-        mojom::LoggedOutVerificationIntent::kResetPassword);
+        mojom::VerificationIntent::NewLoggedOutIntent(
+            mojom::LoggedOutVerificationIntent::kResetPassword));
   }
 }
 

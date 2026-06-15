@@ -68,9 +68,10 @@ struct AuthenticationObserverTestCase {
     switch (CHECK_DEREF(test_case.from).which()) {
       case mojom::AccountState::Tag::kLoggedOut:
         if (test_case.from->get_logged_out()->verification) {
-          account_state_prefs.SetLoggedOutWithVerification(
+          account_state_prefs.AddVerification(
               EncryptedVerificationToken(),
-              mojom::LoggedOutVerificationIntent::kRegistration);
+              mojom::VerificationIntent::NewLoggedOutIntent(
+                  mojom::LoggedOutVerificationIntent::kRegistration));
         }
         break;
       case mojom::AccountState::Tag::kLoggedIn:
@@ -95,9 +96,10 @@ struct AuthenticationObserverTestCase {
 
     switch (test_case.action) {
       case StateAction::kSwitchToVerification:
-        account_state_prefs.SetLoggedOutWithVerification(
+        account_state_prefs.AddVerification(
             EncryptedVerificationToken(),
-            mojom::LoggedOutVerificationIntent::kRegistration);
+            mojom::VerificationIntent::NewLoggedOutIntent(
+                mojom::LoggedOutVerificationIntent::kRegistration));
         break;
       case StateAction::kSwitchToLoggedIn:
         account_state_prefs.SetLoggedIn(kEmailAddress,
@@ -950,8 +952,9 @@ struct RegisterVerifyTestCase {
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     AccountStatePrefs(pref_service)
-        .SetLoggedOutWithVerification(EncryptedVerificationToken(),
-                                      test_case.logged_out_verification_intent);
+        .AddVerification(EncryptedVerificationToken(),
+                         mojom::VerificationIntent::NewLoggedOutIntent(
+                             test_case.logged_out_verification_intent));
 
     authentication->RegisterVerify(
         test_case.code,
@@ -1412,8 +1415,9 @@ struct ResendVerificationEmailTestCase {
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     AccountStatePrefs(pref_service)
-        .SetLoggedOutWithVerification(EncryptedVerificationToken(),
-                                      test_case.logged_out_verification_intent);
+        .AddVerification(EncryptedVerificationToken(),
+                         mojom::VerificationIntent::NewLoggedOutIntent(
+                             test_case.logged_out_verification_intent));
 
     authentication->ResendVerificationEmail(
         mojom::VerificationIntent::NewLoggedOutIntent(
@@ -1897,9 +1901,10 @@ struct CancelVerificationTestCase {
                   PrefService& pref_service,
                   mojo::Remote<mojom::Authentication>& authentication) {
     AccountStatePrefs account_state_prefs(pref_service);
-    account_state_prefs.SetLoggedOutWithVerification(
+    account_state_prefs.AddVerification(
         EncryptedVerificationToken(),
-        mojom::LoggedOutVerificationIntent::kRegistration);
+        mojom::VerificationIntent::NewLoggedOutIntent(
+            mojom::LoggedOutVerificationIntent::kRegistration));
     authentication->CancelVerification(
         mojom::VerificationIntent::NewLoggedOutIntent(
             mojom::LoggedOutVerificationIntent::kRegistration));

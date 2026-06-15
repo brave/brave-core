@@ -45,6 +45,30 @@ LoggedInState::LoggedInState(
 
 LoggedInState::~LoggedInState() = default;
 
+void LoggedInState::ChangePasswordVerifyInit(
+    const std::string& email,
+    ChangePasswordVerifyInitCallback callback) {
+  change_password_.VerifyInit(email, std::move(callback));
+}
+
+void LoggedInState::ChangePasswordVerifyComplete(
+    const std::string& code,
+    ChangePasswordVerifyCompleteCallback callback) {
+  change_password_.VerifyComplete(code, std::move(callback));
+}
+
+void LoggedInState::ChangePasswordPasswordInit(
+    const std::string& blinded_message,
+    ChangePasswordPasswordInitCallback callback) {
+  change_password_.PasswordInit(blinded_message, std::move(callback));
+}
+
+void LoggedInState::ChangePasswordPasswordFinalize(
+    const std::string& serialized_record,
+    ChangePasswordPasswordFinalizeCallback callback) {
+  change_password_.PasswordFinalize(serialized_record, std::move(callback));
+}
+
 void LoggedInState::LogOut() {
   // Best-effort notification to the server, since server side will clean up
   // authentication tokens automatically (currently in 6 months of inactivity).

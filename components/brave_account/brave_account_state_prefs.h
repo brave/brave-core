@@ -31,12 +31,15 @@ class AccountStatePrefs {
 
   void SetLoggedOut();
 
-  void SetLoggedOutWithVerification(
-      const std::string& encrypted_verification_token,
-      mojom::LoggedOutVerificationIntent intent);
-
   void SetLoggedIn(const std::string& email,
                    const std::string& encrypted_authentication_token);
+
+  // Attaches a verification slot to the current state without changing whether
+  // the user is logged in or out. `intent`'s tag (logged-out/logged-in)
+  // selects the state the slot belongs to and must match the current state -
+  // CHECK()s otherwise.
+  void AddVerification(const std::string& encrypted_verification_token,
+                       mojom::VerificationIntentPtr intent);
 
   // Records the verified email on the current verification slot.
   // Called once the email is verified (OTP step completed).
