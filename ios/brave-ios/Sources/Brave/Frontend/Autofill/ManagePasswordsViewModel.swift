@@ -119,15 +119,18 @@ class ManagePasswordsViewModel {
   }
 
   func addPassword(username: String, password: String, site: String) {
+    let trimmedSite = site.trimmingCharacters(in: .whitespacesAndNewlines)
+    let resolvedSite = URL(string: trimmedSite)?.resolvingScheme.absoluteString ?? trimmedSite
+
     autofillDataManager.addNewPassword(
       forUsername: username.trimmingCharacters(in: .whitespacesAndNewlines),
       password: password.trimmingCharacters(in: .whitespacesAndNewlines),
-      site: site.trimmingCharacters(in: .whitespacesAndNewlines),
+      site: resolvedSite,
       timestamp: Date()
     )
   }
 
-  /// `true` when `site` is a fully qualified http/https URL and both `username` and `password` are non-empty.
+  /// `true` when `site` is a valid URL and both `username` and `password` are non-empty.
   ///
   /// Both fields are required because `CWVAutofillDataManager`'s add and update methods
   /// each reject empty values by different mechanisms:
@@ -137,20 +140,11 @@ class ManagePasswordsViewModel {
   ///
   /// Gating on this property at the UI layer prevents both outcomes.
   func isValidCredential(username: String, password: String, site: String) -> Bool {
-    !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-      && !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-      && isSiteValid(site)
-  }
-
-  /// DCHECK(url.is_valid()); crashes if not a valid scheme *and* a non-empty host.
-  ///
-  /// `data:` URLs are excluded because they have no host.
-  /// Use this when a URL is being persisted or sent to an API that expects a real reachable web address.
-  func isSiteValid(_ site: String) -> Bool {
-    guard let siteUrl = URL(string: site.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+    guard URL(string: site.trimmingCharacters(in: .whitespacesAndNewlines)) != nil else {
       return false
     }
-    return siteUrl.schemeIsValid && !(siteUrl.host?.isEmpty ?? true)
+    return !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      && !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
   }
 }
 
