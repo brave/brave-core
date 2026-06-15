@@ -149,13 +149,12 @@ void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
               l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_TITLE))
           .AddParagraph(ui::DialogModelLabel(
               l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_BODY)))
-          .AddOkButton(
-              base::BindOnce(&WorkspaceService::RemoveWorkspaceMetadata,
-                             service->GetWeakPtr(), name),
-              ui::DialogModel::Button::Params()
-                  .SetLabel(l10n_util::GetStringUTF16(
-                      IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))
-                  .SetStyle(ui::ButtonStyle::kProminent))
+          .AddOkButton(base::BindOnce(&WorkspaceService::DeleteWorkspace,
+                                      service->GetWeakPtr(), name),
+                       ui::DialogModel::Button::Params()
+                           .SetLabel(l10n_util::GetStringUTF16(
+                               IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))
+                           .SetStyle(ui::ButtonStyle::kProminent))
           .AddCancelButton(base::DoNothing(),
                            ui::DialogModel::Button::Params().SetLabel(
                                l10n_util::GetStringUTF16(

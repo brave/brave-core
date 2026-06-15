@@ -284,7 +284,7 @@
           Delete Space
         </message>
         <message name="IDS_WORKSPACE_DELETE_CONFIRM_BODY" desc="Body text of the confirmation dialog shown before deleting a workspace, warning the user of the consequences">
-          Are you sure you want to delete this Space? Deleting it will also close all groups and open tabs within it. This action cannot be undone.
+          Are you sure you want to delete this Space? The saved Space will be permanently removed. This action cannot be undone.
         </message>
         <message name="IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON" desc="Button label that confirms deletion in the workspace delete confirmation dialog">
           Delete
@@ -301,6 +301,18 @@
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
           Create Your First Space by Clicking the Save Button Below.
         </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with one tab">
+          1 tab
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with multiple tabs">
+          <ph name="TAB_COUNT">$1<ex>2</ex></ph> Tabs
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and one tab">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> Windows – 1 Tab
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and multiple tabs">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> Windows – <ph name="TAB_COUNT">$2<ex>2</ex></ph> Tabs
+        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
@@ -310,7 +322,7 @@
           Name
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
-          Enter your Space name
+          Enter your space name
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
           My Workspace
@@ -325,13 +337,13 @@
           Workspace options
         </message>
         <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
-          Delete Space
+          Delete space
         </message>
         <message name="IDS_WORKSPACE_DELETE_CONFIRM_TITLE" desc="Title of the confirmation dialog shown before deleting a workspace">
           Delete space
         </message>
         <message name="IDS_WORKSPACE_DELETE_CONFIRM_BODY" desc="Body text of the confirmation dialog shown before deleting a workspace, warning the user of the consequences">
-          Are you sure you want to delete this Space? Deleting it will also close all groups and open tabs within it. This action cannot be undone.
+          Are you sure you want to delete this space? The saved space will be permanently removed. This action cannot be undone.
         </message>
         <message name="IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON" desc="Button label that confirms deletion in the workspace delete confirmation dialog">
           Delete
@@ -347,6 +359,18 @@
         </message>
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
           Create your first space by clicking the Save button below.
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with one tab">
+          1 tab
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with multiple tabs">
+          <ph name="TAB_COUNT">$1<ex>2</ex></ph> tabs
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and one tab">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> windows – 1 tab
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and multiple tabs">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> windows – <ph name="TAB_COUNT">$2<ex>2</ex></ph> tabs
         </message>
       </if>
       <message name="IDS_TOOLTIP_WORKSPACES_BUTTON" desc="The tooltip for the workspaces button in the tab strip">

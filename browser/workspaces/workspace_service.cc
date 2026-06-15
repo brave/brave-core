@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
@@ -56,6 +57,17 @@ void WorkspaceService::SaveWorkspaceMetadata(const WorkspaceMetadata& meta) {
 void WorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
   ScopedDictPrefUpdate updated(*pref_service_, kWorkspacesMetadataPref);
   updated->Remove(ComputeKey(name));
+}
+
+void WorkspaceService::DeleteWorkspace(const std::string& name) {
+  RemoveWorkspaceMetadata(name);
+  io_task_runner_->PostTask(FROM_HERE, base::BindOnce(
+                                           [](base::FilePath dir) {
+                                             if (base::PathExists(dir)) {
+                                               base::DeletePathRecursively(dir);
+                                             }
+                                           },
+                                           GetWorkspacePathForName(name)));
 }
 
 base::FilePath WorkspaceService::GetWorkspacePathForName(

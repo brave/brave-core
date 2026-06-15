@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "ui/views/controls/textfield/textfield_controller.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class Browser;
@@ -18,7 +19,8 @@ class Textfield;
 
 // A modal dialog that prompts the user to name a new workspace.  On accept,
 // the current state of all open windows for the profile is saved to disk.
-class SaveWorkspaceDialog : public views::DialogDelegateView {
+class SaveWorkspaceDialog : public views::DialogDelegateView,
+                            public views::TextfieldController {
   METADATA_HEADER(SaveWorkspaceDialog, views::DialogDelegateView)
  public:
   // Shows the dialog as a browser-modal window.
@@ -35,6 +37,10 @@ class SaveWorkspaceDialog : public views::DialogDelegateView {
   ui::mojom::ModalType GetModalType() const override;
   std::u16string GetWindowTitle() const override;
   bool IsDialogButtonEnabled(ui::mojom::DialogButton button) const override;
+
+  // views::TextfieldController:
+  void ContentsChanged(views::Textfield* sender,
+                       const std::u16string& new_contents) override;
 
   void OnAccept();
 

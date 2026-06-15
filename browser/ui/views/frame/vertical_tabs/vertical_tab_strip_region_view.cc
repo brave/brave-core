@@ -280,13 +280,13 @@ class VerticalTabWorkspacesButton : public views::Button {
     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
     SetNotifyEnterExitOnChild(true);
 
-    constexpr int kVerticalPadding = 8;
-    constexpr int kHorizontalPadding = 7;
+    constexpr int kVerticalPadding = 7;
+    constexpr int kHorizontalPadding = 8;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
         .SetInteriorMargin(
-            gfx::Insets::VH(kHorizontalPadding, kVerticalPadding));
+            gfx::Insets::VH(kVerticalPadding, kHorizontalPadding));
 
     icon_ = AddChildView(std::make_unique<views::ImageView>());
     icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);
@@ -354,8 +354,8 @@ class VerticalTabWorkspacesButton : public views::Button {
         views::CreateRoundedRectBackground(bg_color_id, kCornerRadius));
   }
 
-  raw_ptr<views::ImageView> icon_ = nullptr;
-  raw_ptr<views::Label> label_ = nullptr;
+  raw_ptr<views::ImageView> icon_;
+  raw_ptr<views::Label> label_;
 };
 
 BEGIN_METADATA(VerticalTabWorkspacesButton)
@@ -407,7 +407,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
     workspaces_button_ = AddChildView(
         std::make_unique<VerticalTabWorkspacesButton>(base::BindRepeating(
             &BraveVerticalTabStripRegionView::OnWorkspacesButtonPressed,
-            base::Unretained(this))));
+            weak_factory_.GetWeakPtr())));
   }
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));

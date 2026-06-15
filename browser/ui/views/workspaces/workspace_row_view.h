@@ -9,9 +9,10 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/workspaces/workspace_metadata.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/view.h"
+
+struct WorkspaceMetadata;
 
 namespace views {
 class ImageButton;

@@ -63,6 +63,7 @@ SaveWorkspaceDialog::SaveWorkspaceDialog(Browser* browser) : browser_(browser) {
   textfield->SelectAll(false);
   textfield->SetPreferredSize(gfx::Size(kDialogWidth - kPadding * 2, 40));
   name_field_ = AddChildView(std::move(textfield));
+  name_field_->SetController(this);
 }
 
 SaveWorkspaceDialog::~SaveWorkspaceDialog() = default;
@@ -81,6 +82,11 @@ bool SaveWorkspaceDialog::IsDialogButtonEnabled(
     return name_field_ && !name_field_->GetText().empty();
   }
   return true;
+}
+
+void SaveWorkspaceDialog::ContentsChanged(views::Textfield* sender,
+                                          const std::u16string& new_contents) {
+  DialogModelChanged();
 }
 
 void SaveWorkspaceDialog::OnAccept() {

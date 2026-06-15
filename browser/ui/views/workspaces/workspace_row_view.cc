@@ -9,10 +9,11 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/workspaces/workspace_metadata.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -35,13 +36,23 @@ namespace {
 constexpr int kDeleteWorkspaceCommandId = 1;
 
 std::u16string FormatStats(const WorkspaceMetadata& info) {
-  if (info.number_of_windows > 1) {
-    return base::UTF8ToUTF16(absl::StrFormat(
-        "%d windows - %d %s", info.number_of_windows, info.number_of_tabs,
-        info.number_of_tabs == 1 ? "tab" : "tabs"));
+  const int windows = info.number_of_windows;
+  const int tabs = info.number_of_tabs;
+  if (windows == 1 && tabs == 1) {
+    return l10n_util::GetStringUTF16(IDS_WORKSPACE_ROW_STATS_SINGLE_TAB);
   }
-  return base::UTF8ToUTF16(absl::StrFormat(
-      "%d %s", info.number_of_tabs, info.number_of_tabs == 1 ? "tab" : "tabs"));
+  if (windows == 1) {
+    return l10n_util::GetStringFUTF16(IDS_WORKSPACE_ROW_STATS_MULTI_TAB,
+                                      base::NumberToString16(tabs));
+  }
+  if (tabs == 1) {
+    return l10n_util::GetStringFUTF16(
+        IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_SINGLE_TAB,
+        base::NumberToString16(windows));
+  }
+  return l10n_util::GetStringFUTF16(
+      IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_MULTI_TAB,
+      base::NumberToString16(windows), base::NumberToString16(tabs));
 }
 
 // Clickable two-row view: bold workspace name on top, stats below.
