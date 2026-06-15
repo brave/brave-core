@@ -15,9 +15,12 @@
 #include "base/check_is_test.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -378,10 +381,56 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
 void ViewCounterService::OnGetCurrentBrandedWallpaper(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback,
     std::optional<base::DictValue> branded_wallpaper) {
-  if (branded_wallpaper) {
-    return std::move(callback).Run(std::move(branded_wallpaper));
+  if (!branded_wallpaper) {
+    return std::move(callback).Run(GetNextWallpaperForDisplay());
   }
-  std::move(callback).Run(GetNextWallpaperForDisplay());
+
+  return CheckBrandedWallpaperCreativeFileExists(std::move(callback),
+                                                 std::move(*branded_wallpaper));
+}
+
+void ViewCounterService::CheckBrandedWallpaperCreativeFileExists(
+    base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+    base::DictValue branded_wallpaper) {
+  const std::string* const file_path =
+      branded_wallpaper.FindString(kWallpaperFilePathKey);
+
+  if (!file_path) {
+    SCOPED_CRASH_KEY_STRING64(
+        "Issue55874", "failure_reason",
+        "Missing file path for branded wallpaper creative");
+    DUMP_WILL_BE_NOTREACHED();
+    return std::move(callback).Run(std::nullopt);
+  }
+
+  const base::FilePath creative_file_path =
+      base::FilePath::FromUTF8Unsafe(*file_path);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&base::PathExists, creative_file_path),
+      base::BindOnce(
+          &ViewCounterService::OnCheckBrandedWallpaperCreativeFileExists,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+          std::move(branded_wallpaper)));
+}
+
+void ViewCounterService::OnCheckBrandedWallpaperCreativeFileExists(
+    base::OnceCallback<void(std::optional<base::DictValue>)> callback,
+    base::DictValue branded_wallpaper,
+    bool file_exists) {
+  if (!file_exists) {
+    if (const std::string* const creative_instance_id =
+            branded_wallpaper.FindString(kCreativeInstanceIDKey)) {
+      SCOPED_CRASH_KEY_STRING64("Issue55874", "creative_instance_id",
+                                *creative_instance_id);
+    }
+    SCOPED_CRASH_KEY_STRING64(
+        "Issue55874", "failure_reason",
+        "Creative file is missing when the wallpaper is shown");
+    DUMP_WILL_BE_NOTREACHED();
+    return std::move(callback).Run(std::nullopt);
+  }
+  std::move(callback).Run(std::move(branded_wallpaper));
 }
 
 void ViewCounterService::GetCurrentBrandedWallpaperFromAdsServiceCallback(
