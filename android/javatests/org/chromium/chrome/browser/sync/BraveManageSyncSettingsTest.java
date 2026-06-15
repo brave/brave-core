@@ -107,8 +107,7 @@ public class BraveManageSyncSettingsTest {
         BraveManageSyncSettings fragment = startManageSyncPreferences();
 
         Preference prefAiChat = fragment.findPreference("account_section_ai_chat_toggle");
-        Assert.assertNotNull(
-                "AI Chat preference should exist when feature is enabled", prefAiChat);
+        Assert.assertNotNull("AI Chat preference should exist when feature is enabled", prefAiChat);
         Assert.assertTrue("AI Chat toggle should be visible", prefAiChat.isVisible());
     }
 
