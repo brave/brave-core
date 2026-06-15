@@ -127,13 +127,13 @@ rust_static_library("rust_lib") {
     "librustzcash:zcash_protocol",
     "//brave/components/brave_wallet/common:rust_lib",
     "//brave/third_party/rust/byteorder/v1:lib",
-    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_8:lib",
     "//brave/third_party/rust/memuse/v0_2:lib",
-    "//brave/third_party/rust/nonempty/v0_7:lib",
-    "//brave/third_party/rust/orchard/v0_8:lib",
+    "//brave/third_party/rust/nonempty/v0_11:lib",
+    "//brave/third_party/rust/orchard/v0_14:lib",
     "//brave/third_party/rust/pasta_curves/v0_5:lib",
     "//brave/third_party/rust/rand/v0_8:lib",
-    "//brave/third_party/rust/shardtree/v0_3:lib",
+    "//brave/third_party/rust/shardtree/v0_6:lib",
     "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
   ]
 
