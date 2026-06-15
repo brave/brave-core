@@ -74,6 +74,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/views:layout_provider",
     "//chrome/test:test_support",
     "//components/tabs:test_support",
     "//content/test:test_support",

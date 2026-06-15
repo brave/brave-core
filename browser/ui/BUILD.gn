@@ -1233,7 +1233,10 @@ source_set("ui") {
       "views/toolbar/brave_toolbar_view.h",
     ]
 
-    deps += [ "//brave/browser/ui/views/brave_actions" ]
+    deps += [
+      "//brave/browser/ui/views/brave_actions",
+      "//chrome/browser/ui/views:layout_provider",
+    ]
 
     if (enable_brave_rewards) {
       sources += [
@@ -1498,6 +1501,7 @@ source_set("unit_tests") {
         "//brave/components/skus/browser",
         "//chrome/browser/prefs",
         "//chrome/browser/themes",
+        "//chrome/browser/ui/views:layout_provider",
         "//chrome/test:test_support",
         "//skia",
         "//third_party/abseil-cpp:absl",
