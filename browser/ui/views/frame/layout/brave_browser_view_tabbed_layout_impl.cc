@@ -16,7 +16,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "build/build_config.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -29,7 +28,7 @@
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
-#include "components/bookmarks/common/bookmark_pref_names.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "ui/views/border.h"
 #include "ui/views/view_class_properties.h"
 
@@ -245,7 +244,6 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
     const BrowserLayoutParams& params) {
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
-  UpdateMarginsForSideBar();
 
   if (delegate().ShouldDrawVerticalTabStrip()) {
     return;
@@ -376,12 +374,9 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   //   [vertical_tab] [sidebar] [panel] [contents]
   //   [sidebar] [panel] [contents] [vertical_tab]
   //
-  // In V2, sidebar_container holds only the control view and the upstream
-  // toolbar_height_side_panel is a direct child of browser_view positioned
-  // separately.  In V1, sidebar_container wraps both the control and the side
-  // panel, and the toolbar_height_side_panel pointer is NOT inside the
-  // container (so layout.GetLayoutFor returns null). The adjust_panel lambda
-  // in this function is a no-op in V1 and meaningful only in V2.
+  // sidebar_container holds only the control view; the upstream side panel is a
+  // direct child of browser_view positioned separately by the adjust_panel
+  // lambda below.
 
   // Vertical tab is outermost when on the same side as the sidebar.
   const bool vtab_on_same_side =
@@ -400,18 +395,17 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
       browser_bounds.right() - (sidebar_leading ? 0 : vtab_width);
 
   // Sidebar width capped at 80% of the space shared between contents and
-  // sidebar (contents_bounds.width()).  In V1 this is the full available width
-  // minus the vtab; in V2 it is further reduced by the upstream side panel
-  // width, but the sidebar control is narrow enough that the cap never fires.
+  // sidebar (contents_bounds.width()), i.e. the available width minus the vtab
+  // and the upstream side panel width. The sidebar control is narrow enough
+  // that the cap never fires.
   const int sidebar_width = GetIdealSideBarWidth(contents_bounds.width());
 
   const gfx::Rect sidebar_bounds = ComputeSidebarBounds(
       sidebar_leading, sidebar_width, outer_left, outer_right,
       contents_bounds.y(), contents_bounds.height());
 
-  // Shift upstream side panels (V2 only; no-op in V1 since those panels are
-  // inside sidebar_container and are not top-level layout entries) inward so
-  // they sit between the contents and the sidebar control.
+  // Shift upstream side panels inward so they sit between the contents and the
+  // sidebar control.
   auto adjust_panel = [&](SidePanel* panel) {
     if (!panel) {
       return;
@@ -560,34 +554,6 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateInsetsForVerticalTabStrip() {
 
   views().vertical_tab_strip_host->SetBorder(
       insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
-}
-
-void BraveBrowserViewTabbedLayoutImpl::UpdateMarginsForSideBar() {
-  if (!views().sidebar_container) {
-    return;
-  }
-
-  gfx::Insets panel_margins = GetContentsMargins();
-  const bool on_left = views().sidebar_container->sidebar_on_left();
-  if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
-    // In rounded mode, there is already a gap between the sidebar and the main
-    // contents view, so we only remove from the margin from that side (we need
-    // to keep it between the sidebar controls and the sidebar content).
-    if (on_left) {
-      panel_margins.set_right(0);
-    } else {
-      panel_margins.set_left(0);
-    }
-  } else {
-    // Side panel doesn't need margin as sidebar UI and contents container
-    // will have margins if needed.
-    panel_margins.set_left_right(0, 0);
-  }
-
-  // V1 wraps the side panel; set margins on it. V2 has no owned panel.
-  if (auto* panel = views().sidebar_container->side_panel()) {
-    panel->SetProperty(views::kMarginsKey, panel_margins);
-  }
 }
 
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {

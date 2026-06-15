@@ -24,8 +24,6 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
-#include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
@@ -34,6 +32,7 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/brave_side_panel_shadow_overlay_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
@@ -41,6 +40,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -66,6 +66,8 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
@@ -116,11 +118,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
-#include "brave/browser/ui/views/frame/brave_side_panel_shadow_overlay_view.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -346,49 +343,30 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
                           base::Unretained(this)));
 #endif
 
-  // When the ENABLE_SIDEBAR_V2 buildflag is on, upstream's SidePanel is
-  // compiled in and requires V2 behavior. Disabling kSidebarV2 at runtime
-  // would cause V1-only code paths (removed from this build) to be entered.
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
-  CHECK(base::FeatureList::IsEnabled(sidebar::features::kSidebarV2))
-      << "kSidebarV2 must be enabled when ENABLE_SIDEBAR_V2 buildflag is on";
-#endif
-
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
-    if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
-      sidebar_container_view_ = AddChildView(
-          std::make_unique<SidebarContainerView>(browser_, nullptr));
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
-      // Recompute the panel's content corners whenever the sidebar control view
-      // shows or hides, since the bottom corner radius depends on sidebar
-      // control view visibility. Unretained() is safe: `this` owns
-      // `sidebar_container_view_` (added via AddChildView), so the container
-      // cannot outlive the callback target.
-      sidebar_container_view_->SetSidebarControlViewVisibilityChangedCallback(
-          base::BindRepeating(
-              &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
-              base::Unretained(this)));
+    sidebar_container_view_ =
+        AddChildView(std::make_unique<SidebarContainerView>(browser_));
+    // Recompute the panel's content corners whenever the sidebar control view
+    // shows or hides, since the bottom corner radius depends on sidebar
+    // control view visibility. Unretained() is safe: `this` owns
+    // `sidebar_container_view_` (added via AddChildView), so the container
+    // cannot outlive the callback target.
+    sidebar_container_view_->SetSidebarControlViewVisibilityChangedCallback(
+        base::BindRepeating(
+            &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
+            base::Unretained(this)));
 
-      side_panel_->SetResizeArea(
-          std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
+    side_panel_->SetResizeArea(
+        std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
 
-      side_panel_shadow_overlay_ = AddChildView(
-          std::make_unique<BraveSidePanelShadowOverlayView>(*this));
-      // Render the overlay just below `side_panel_` so the panel covers the
-      // inner part of the shadow (a higher child index paints on top).
-      ReorderChildView(side_panel_shadow_overlay_,
-                       GetIndexOf(side_panel_).value());
-#endif
-    } else {
-      // V1: wrap chromium's side panel inside SidebarContainerView.
-      auto side_panel = RemoveChildViewT(side_panel_.get());
-      sidebar_container_view_ =
-          AddChildView(std::make_unique<SidebarContainerView>(
-              browser_, std::move(side_panel)));
-      side_panel_ = sidebar_container_view_->side_panel();
-    }
+    side_panel_shadow_overlay_ =
+        AddChildView(std::make_unique<BraveSidePanelShadowOverlayView>(*this));
+    // Render the overlay just below `side_panel_` so the panel covers the
+    // inner part of the shadow (a higher child index paints on top).
+    ReorderChildView(side_panel_shadow_overlay_,
+                     GetIndexOf(side_panel_).value());
 
 #if defined(USE_AURA)
     sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
@@ -458,10 +436,8 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   const bool on_left = !GetProfile()->GetPrefs()->GetBoolean(
       prefs::kSidePanelHorizontalAlignment);
 
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Panel has different border per horizontal alignment.
   side_panel_->UpdateBorder();
-#endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
@@ -510,7 +486,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   if (multi_contents_view_ &&
       base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
     GetBraveMultiContentsView()->SetWebPanelWidth(
-        sidebar::kDefaultSidePanelWidth);
+        SidePanelEntry::kSidePanelDefaultContentWidth);
     GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
   }
 
@@ -1132,7 +1108,6 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
 }
 
 void BraveBrowserView::UpdateSidebarBorder() {
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
   if (side_panel_) {
     side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
@@ -1141,18 +1116,12 @@ void BraveBrowserView::UpdateSidebarBorder() {
   if (side_panel_shadow_overlay_) {
     side_panel_shadow_overlay_->UpdateShadowVisibility();
   }
-#else
-  if (side_panel_) {
-    side_panel_->UpdateBorder();
-  }
-#endif
 
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateBorder();
   }
 }
 
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
 void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {
   // The panel's content corner radii depend on whether the sidebar control view
   // is visible (see brave::GetPanelContentsRoundedCorners()), so re-apply the
@@ -1165,7 +1134,6 @@ void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {
 views::View* BraveBrowserView::side_panel_shadow_overlay_for_testing() {
   return side_panel_shadow_overlay_.get();
 }
-#endif
 
 // PWA and omnibox Shields share kShieldsActionIcon; the PWA build uses
 // BraveShieldsToolbarButton with that id.
@@ -1449,14 +1417,6 @@ void BraveBrowserView::StopTabCycling() {
   tab_cycling_event_handler_.reset();
   static_cast<BraveTabStripModel*>(browser()->tab_strip_model())
       ->StopMRUCycling();
-}
-
-void BraveBrowserView::SetSidePanelOperationByActiveTabChange(bool tab_change) {
-  if (!sidebar_container_view_) {
-    return;
-  }
-
-  sidebar_container_view_->set_operation_from_active_tab_change(tab_change);
 }
 
 BEGIN_METADATA(BraveBrowserView)

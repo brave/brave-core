@@ -106,7 +106,6 @@ void SidebarService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(kSidebarShowOption,
                                 static_cast<int>(default_show_option));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
-  registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
   registry->RegisterIntegerPref(
       kLastUsedBuiltInItemType,
       static_cast<int>(SidebarItem::BuiltInItemType::kNone));

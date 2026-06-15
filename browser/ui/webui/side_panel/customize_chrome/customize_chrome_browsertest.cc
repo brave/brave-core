@@ -65,10 +65,12 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest, CloseButton) {
   ASSERT_TRUE(web_contents);
   content::WaitForLoadStop(web_contents);
 
-  // Clicking the close button should close the side panel.
-  // And the render frame will be deleted, so the returned result will be false.
-  EXPECT_FALSE(content::ExecJs(web_contents,
-                               R"-js-(
+  // Clicking the close button should close the side panel. The panel closes
+  // asynchronously (the close is animated), so the render frame is still alive
+  // when the click script returns and ExecJs succeeds. The RunUntil() below is
+  // the authoritative check that the panel actually closed.
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              R"-js-(
       document.querySelector("body > customize-chrome-app")
           .shadowRoot.querySelector("#closeButton")
           .shadowRoot.querySelector("#closeButton").click();)-js-"));

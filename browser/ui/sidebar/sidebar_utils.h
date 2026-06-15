@@ -17,6 +17,7 @@ class Browser;
 class BrowserWindowInterface;
 class GURL;
 class PrefService;
+class Profile;
 enum class SidePanelEntryId;
 
 namespace sidebar {
@@ -40,7 +41,7 @@ std::optional<SidePanelEntryId> GetLastUsedSidePanel(
     BrowserWindowInterface* browser);
 
 // Return the added item if item for |id| is added.
-std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
+std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Profile* profile,
                                                          SidePanelEntryId id);
 
 bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type);

@@ -20,10 +20,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
-#if defined(TOOLKIT_VIEWS)
-#include "brave/components/sidebar/browser/pref_names.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -53,9 +49,6 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kTabMinWidthMode,
       brave_tabs::kScrollableHorizontalTabStrip,
       brave_tabs::kShowHorizontalTabScrollButtons,
-#endif
-#if defined(TOOLKIT_VIEWS)
-      sidebar::kSidePanelWidth,
 #endif
       ai_chat::prefs::kLastAcceptedDisclaimer,
       ai_chat::prefs::kBraveChatAutocompleteProviderEnabled,

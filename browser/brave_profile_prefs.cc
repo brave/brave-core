@@ -344,6 +344,10 @@ void RegisterProfilePrefsForMigration(
 #if defined(TOOLKIT_VIEWS)
   registry->RegisterBooleanPref(sidebar::kSidebarAlignmentChangedTemporarily,
                                 false);
+
+  // Added 2026-06
+  // Upstream handles panel width from sidebar v2.
+  registry->RegisterIntegerPref(sidebar::kSidePanelWidth, 0);
 #endif
 
   // Added 2023-09

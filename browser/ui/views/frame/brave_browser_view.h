@@ -17,7 +17,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
-#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -50,7 +49,6 @@ enum class SpeedreaderBubbleLocation : int;
 namespace sidebar {
 FORWARD_DECLARE_TEST(SidebarBrowserWithSplitViewTest,
                      ShowSidebarOnMouseOverTest);
-FORWARD_DECLARE_TEST(SidebarV2BrowserTest, BrowserStartsWithV2Enabled);
 }  // namespace sidebar
 
 namespace content {
@@ -146,7 +144,6 @@ class BraveBrowserView : public BrowserView,
 
   void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
-  void SetSidePanelOperationByActiveTabChange(bool tab_change);
 
   VerticalTabStripWidgetDelegateView*
   vertical_tab_strip_widget_delegate_view() {
@@ -163,12 +160,10 @@ class BraveBrowserView : public BrowserView,
   void UpdateVerticalTabStripBorder();
   void UpdateSidebarBorder();
 
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Re-applies the side panel border so the content corner radii track the
   // sidebar control view's visibility. Wired as SidebarContainerView's
   // control-view-visibility-changed callback.
   void OnSidebarControlViewVisibilityChanged();
-#endif
 
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
@@ -182,9 +177,7 @@ class BraveBrowserView : public BrowserView,
     return top_container_separator_;
   }
 
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
   views::View* side_panel_shadow_overlay_for_testing();
-#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Returns the PWA Shields toolbar button, if it exists. Note that this
@@ -226,8 +219,6 @@ class BraveBrowserView : public BrowserView,
                            ContentsShadowTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithSplitViewTest,
                            ShowSidebarOnMouseOverTest);
-  FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarV2BrowserTest,
-                           BrowserStartsWithV2Enabled);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -315,11 +306,9 @@ class BraveBrowserView : public BrowserView,
       browser_window_mouse_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;
 
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Sibling of `side_panel_` that renders the panel's drop shadow without
   // drawing outside the browser view. Tracks the panel by observing it.
   raw_ptr<BraveSidePanelShadowOverlayView> side_panel_shadow_overlay_ = nullptr;
-#endif
 
   PrefChangeRegistrar pref_change_registrar_;
   BooleanPrefMember compact_horizontal_tabs_;

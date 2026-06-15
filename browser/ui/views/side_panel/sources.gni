@@ -3,13 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/ui/sidebar/buildflags/buildflags.gni")
-
-brave_browser_ui_views_side_panel_deps = []
-brave_browser_ui_views_side_panel_public_deps =
-    [ "//brave/browser/ui/sidebar/buildflags" ]
-
-if (enable_sidebar_v2) {
-  brave_browser_ui_views_side_panel_deps +=
-      [ "//chrome/browser/ui:layout_constants" ]
-}
+brave_browser_ui_views_side_panel_deps =
+    [ "//chrome/browser/ui:layout_constants" ]
+brave_browser_ui_views_side_panel_public_deps = []

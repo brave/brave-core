@@ -52,10 +52,8 @@ std::unique_ptr<views::ImageButton> CreateHeaderImageButton(
   return button;
 }
 
-// Per-panel header titles. Mirrors V1's hardcoded labels in
-// BraveReadLaterSidePanelView / BraveBookmarksSidePanelView; we deliberately
-// don't read from the entry's action item because that text differs from the
-// label V1 uses in the header.
+// Per-panel header titles. We deliberately don't read from the entry's action
+// item because that text differs from the label shown in the header.
 std::u16string GetEntryTitle(SidePanelEntry::Id id) {
   int message_id = 0;
   switch (id) {

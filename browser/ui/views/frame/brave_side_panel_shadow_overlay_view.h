@@ -18,19 +18,18 @@
 class BrowserView;
 class ViewShadow;
 
-// Renders a drop shadow around the V2 side panel that is visually identical to
-// the V1 panel shadow (BraveContentsViewUtil::CreateShadow) but never draws
-// outside the browser view.
+// Renders a drop shadow around the side panel that never draws outside the
+// browser view.
 //
-// V1 attaches the shadow layer to the side panel's own `kBelow` region, so the
-// shadow rides along with the sliding panel and leaks outside the window during
-// the open/close animation. Instead, this view is a sibling of the side panel
-// in BraveBrowserView. It:
+// A shadow layer attached to the side panel's own `kBelow` region would ride
+// along with the sliding panel and leak outside the window during the
+// open/close animation. Instead, this view is a sibling of the side panel in
+// BraveBrowserView. It:
 //   * tracks the panel's bounds by observing it,
 //   * paints the shadow into its own layer that is clipped (MasksToBounds) and
 //     clamped to the browser view, so nothing is ever drawn outside it, and
 //   * is stacked just *below* the panel, so the panel covers the inner part of
-//     the shadow - leaving only the outer glow visible, matching V1.
+//     the shadow - leaving only the outer glow visible.
 class BraveSidePanelShadowOverlayView : public views::View,
                                         public views::ViewObserver {
   METADATA_HEADER(BraveSidePanelShadowOverlayView, views::View)

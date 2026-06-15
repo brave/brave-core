@@ -53,8 +53,8 @@ using ShowSidebarOption = SidebarService::ShowSidebarOption;
 
 namespace {
 
-SidebarService* GetSidebarService(Browser* browser) {
-  return SidebarServiceFactory::GetForProfile(browser->profile());
+SidebarService* GetSidebarService(Profile* profile) {
+  return SidebarServiceFactory::GetForProfile(profile);
 }
 
 bool IsActiveTabNTP(content::WebContents* active_web_contents) {
@@ -142,7 +142,7 @@ bool CanAddCurrentActiveTabToSidebar(Browser* browser) {
     return false;
   }
 
-  auto* service = GetSidebarService(browser);
+  auto* service = GetSidebarService(browser->GetProfile());
   if (IsURLAlreadyAddedToSidebar(service, url)) {
     return false;
   }
@@ -215,10 +215,10 @@ SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
   return SidePanelIdFromSideBarItemType(item.built_in_item_type);
 }
 
-std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
+std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Profile* profile,
                                                          SidePanelEntryId id) {
   const auto hidden_default_items =
-      GetSidebarService(browser)->GetHiddenDefaultSidebarItems();
+      GetSidebarService(profile)->GetHiddenDefaultSidebarItems();
   if (hidden_default_items.empty()) {
     return std::nullopt;
   }
@@ -226,7 +226,7 @@ std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
   for (const auto& item : hidden_default_items) {
     // Only panel item could have panel id.
     if (item.open_in_panel && id == sidebar::SidePanelIdFromSideBarItem(item)) {
-      GetSidebarService(browser)->AddItem(item);
+      GetSidebarService(profile)->AddItem(item);
       return item;
     }
   }
