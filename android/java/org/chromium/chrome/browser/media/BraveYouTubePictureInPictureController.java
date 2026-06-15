@@ -41,6 +41,7 @@ import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
+import org.chromium.media_session.mojom.MediaSession.SuspendType;
 
 /**
  * Owns the lifecycle of a Brave-managed YouTube Picture-in-Picture session.
@@ -244,7 +245,7 @@ public class BraveYouTubePictureInPictureController {
         if (webContents != null) {
             final MediaSession mediaSession = getMediaSession(webContents);
             if (mediaSession != null) {
-                mediaSession.resume();
+                mediaSession.resume(SuspendType.SYSTEM);
             }
         }
         return true;
@@ -724,7 +725,7 @@ public class BraveYouTubePictureInPictureController {
     protected void suspendMediaSession(final WebContents webContents) {
         final MediaSession mediaSession = getMediaSession(webContents);
         if (mediaSession != null) {
-            mediaSession.suspend();
+            mediaSession.suspend(SuspendType.SYSTEM);
         }
     }
 
