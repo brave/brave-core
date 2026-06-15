@@ -198,7 +198,6 @@ class BraveBlobScreenFarblingBrowserTest
 
  private:
   base::test::ScopedFeatureList feature_list_;
-  raw_ptr<Browser> pop_up_browser_;
   GURL blob_test_url_;
   BlobContainerType blob_container_type_ = BlobContainerType::kUnset;
   bool fingerprinting_allowed_ = false;
