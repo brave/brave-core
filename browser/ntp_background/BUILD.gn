@@ -88,7 +88,6 @@ source_set("unit_tests") {
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
-    "//chrome/browser/ui/views:layout_provider",
     "//chrome/test:test_support",
     "//components/infobars/content",
     "//components/prefs:test_support",
@@ -96,6 +95,10 @@ source_set("unit_tests") {
     "//content/test:test_support",
     "//testing/gtest",
   ]
+
+  if (toolkit_views) {
+    deps += [ "//chrome/browser/ui/views:layout_provider" ]
+  }
 
   if (enable_custom_background) {
     sources += [
