@@ -13,6 +13,11 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_WIN)
+#include "base/win/process_startup_helper.h"
+#include "base/win/windows_types.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, wchar_t*, int) {
 #else
 int main(int argc, char* argv[]) {
