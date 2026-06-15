@@ -454,6 +454,7 @@ source_set("ui") {
       "//chrome/browser/send_tab_to_self",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
+      "//chrome/browser/ui:browser_actions",
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/content_settings",
