@@ -46,7 +46,6 @@ using brave::FarbleInteger;
 using brave::FarbleKey;
 
 namespace {
-
 // A helper method to return the execution context of the |opener| if |opener|
 // is not null. Otherwise, returns the |current_context|.
 // Sharing the same execution context as the opener helps to ensure the
@@ -56,10 +55,16 @@ namespace {
 ExecutionContext* GetContextFromOpenerIfPossible(
     const DOMWindow* opener,
     ExecutionContext* current_context) {
-  return opener ? opener->GetExecutionContext() : current_context;
+  if (auto* local_opener = DynamicTo<LocalDOMWindow>(opener)) {
+    if (ExecutionContext* opener_context =
+            local_opener->GetExecutionContext()) {
+      return opener_context;
+    }
+  }
+  return current_context;
 }
-
 }  // namespace
+
 const SecurityOrigin* GetEphemeralStorageOrigin(LocalDOMWindow* window) {
   auto* frame = window->GetFrame();
   if (!frame) {

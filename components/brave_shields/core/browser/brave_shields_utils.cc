@@ -186,6 +186,26 @@ base::Token CreateStableFarblingToken(const GURL& url) {
   return base::Token(high, low);
 }
 
+bool IsSchemeSupportedForShields(const GURL& url) {
+  if (!url.is_valid()) {
+    return false;
+  }
+
+  if (url.SchemeIsBlob()) {
+    return true;
+  }
+
+  if (url.SchemeIsHTTPOrHTTPS()) {
+    return true;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/56048): Add support to
+  // turn shields on for "data://" based schemes and add tests.
+
+  // By default not supported.
+  return false;
+}
+
 }  // namespace
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url) {
@@ -279,18 +299,18 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
     return true;
   }
 
-  // For blobs we would like to make sure that we apply farbling to it.
-  if (url.is_valid() && url.SchemeIsBlob()) {
-    return true;
-  }
-
-  // By default all non http and https are not churned in the shields flow.
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
+  if (url.is_valid() && !IsSchemeSupportedForShields(url)) {
     return false;
   }
 
-  ContentSetting setting =
-      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
+  // For blob://http://example.com/f23d2f49-6451-44c0-9cba-46ecb226be93
+  // scheme URLs, the |effective_url| would be the origin http://example.com.
+  // This helps to apply the same shield settings on blob://.
+  GURL effective_url =
+      url.is_valid() ? url::Origin::Create(url).GetURL() : GURL();
+
+  ContentSetting setting = map->GetContentSetting(
+      effective_url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
 
   // see EnableBraveShields - allow and default == true
   return setting == CONTENT_SETTING_BLOCK ? false : true;
@@ -807,11 +827,7 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
                          PrefService* local_state) {
   DCHECK(map);
 
-  if (url.is_empty()) {
-    return;
-  }
-
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.SchemeIsBlob()) {
+  if (!IsSchemeSupportedForShields(url)) {
     return;
   }
 
@@ -853,12 +869,15 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  const bool shields_up = GetBraveShieldsEnabled(map, primary_url);
+  // Scope the check on the origin.
+  const GURL effective_url = url::Origin::Create(primary_url).GetURL();
+
+  const bool shields_up = GetBraveShieldsEnabled(map, effective_url);
   if (!shields_up) {
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  auto fingerprinting_type = GetFingerprintingControlType(map, primary_url);
+  auto fingerprinting_type = GetFingerprintingControlType(map, effective_url);
   switch (fingerprinting_type) {
     case ControlType::ALLOW:
       return brave_shields::mojom::FarblingLevel::OFF;
@@ -875,7 +894,7 @@ base::Token GetFarblingToken(HostContentSettingsMap* map,
                              const GURL& url,
                              base::span<const uint8_t> additional_entropy) {
   base::Token token;
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.SchemeIsBlob()) {
+  if (!IsSchemeSupportedForShields(url)) {
     return token;
   }
 
