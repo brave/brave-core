@@ -1087,7 +1087,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         accessory: .view(
           SwitchAccessoryView(
             initialValue: Preferences.General.openLinkInQuickViewMode.value,
-            valueChange: { [unowned self] newValue in
+            valueChange: { newValue in
               Preferences.General.openLinkInQuickViewMode.value = newValue
             }
           )
