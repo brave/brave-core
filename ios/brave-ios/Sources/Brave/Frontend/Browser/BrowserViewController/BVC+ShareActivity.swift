@@ -22,9 +22,11 @@ extension BrowserViewController {
       isBraveNewsAvailable: profileController.profile.prefs.isBraveNewsAvailable,
       source: source,
       callbacks: .init(
-        onToggleReaderMode: { tab?.readerMode?.toggleReaderMode() },
+        onToggleReaderMode: { [weak tab] in
+          tab?.readerMode?.toggleReaderMode()
+        },
         onDisplayPageZoom: { [weak self] in self?.displayPageZoomDialog() },
-        onAddSearchEngine: { [weak self] in
+        onAddSearchEngine: { [weak self, weak tab] in
           guard let self, let tab else { return }
           self.evaluateWebsiteSupportOpenSearchEngine(in: tab)
           self.addCustomSearchEngineForFocusedElement()
