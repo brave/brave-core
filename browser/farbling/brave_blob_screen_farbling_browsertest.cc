@@ -184,8 +184,23 @@ class BraveBlobScreenFarblingBrowserTest
     blob_container_type_ = blob_container_type;
   }
 
+  void RunTests() {
+    ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
+
+    AllowFingerprinting(/*allow=*/false);
+    NavigateToBlob();
+
+    AllowFingerprinting(/*allow=*/true);
+    NavigateToBlob();
+  }
+
+  void set_blob_container_type(const BlobContainerType blob_container_type) {
+    blob_container_type_ = blob_container_type;
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
+  raw_ptr<Browser> pop_up_browser_;
   GURL blob_test_url_;
   BlobContainerType blob_container_type_ = BlobContainerType::kUnset;
   bool fingerprinting_allowed_ = false;
