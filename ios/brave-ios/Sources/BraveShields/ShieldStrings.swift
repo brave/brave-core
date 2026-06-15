@@ -763,7 +763,14 @@ extension Strings.Shields {
     "CustomFiltersPlaceholder",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Add your custom filters here, one per line.",
+    value: "Add Custom Filters",
+    comment: "A placeholder when custom filter lists are empty"
+  )
+  public static let editCustomFiltersLabel = NSLocalizedString(
+    "EditCustomFiltersLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit Custom Filters",
     comment: "A placeholder when custom filter lists are empty"
   )
   /// An error message telling the user that they crossed the line limit

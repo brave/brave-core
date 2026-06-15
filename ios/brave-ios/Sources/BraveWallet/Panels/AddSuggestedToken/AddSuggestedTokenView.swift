@@ -27,10 +27,10 @@ struct AddSuggestedTokenView: View {
         VStack(spacing: 8) {
           Text(Strings.Wallet.addSuggestedTokenSubtitle)
             .font(.headline)
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(originInfo: originInfo)
             .font(.footnote)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
         .padding(.top)
         VStack {
@@ -42,7 +42,7 @@ struct AddSuggestedTokenView: View {
             )
             Text(token.symbol)
               .font(.headline)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .accessibilityElement(children: .combine)
           Button {
@@ -58,7 +58,7 @@ struct AddSuggestedTokenView: View {
               Image(systemName: "arrow.up.forward.square")
             }
             .font(.subheadline)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
           }
           .accessibilityLabel(Strings.Wallet.contractAddressAccessibilityLabel)
           .accessibilityValue(token.contractAddress.truncatedAddress)
@@ -71,7 +71,7 @@ struct AddSuggestedTokenView: View {
       .frame(maxWidth: .infinity)
       .padding()
     }
-    .background(Color(.braveGroupedBackground).ignoresSafeArea())
+    .background(Color(.systemGroupedBackground).ignoresSafeArea())
     .navigationTitle(Strings.Wallet.addSuggestedTokenTitle)
     .navigationBarTitleDisplayMode(.inline)
     .overlay(
@@ -83,9 +83,9 @@ struct AddSuggestedTokenView: View {
             .background(
               LinearGradient(
                 stops: [
-                  .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                  .init(color: Color(.systemGroupedBackground).opacity(0), location: 0),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 0.05),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 1),
                 ],
                 startPoint: .top,
                 endPoint: .bottom

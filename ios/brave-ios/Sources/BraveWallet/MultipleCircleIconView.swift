@@ -58,7 +58,7 @@ struct MultipleCircleIconView<IconView: View, Model>: View {
               RoundedRectangle(cornerRadius: 4)
             }
           }
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .primitivePrimary40))
           .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
           .overlay(
             HStack(spacing: 1) {
@@ -79,7 +79,7 @@ struct MultipleCircleIconView<IconView: View, Model>: View {
 
   /// Creates the ContainerRelativeShape with `content` overlayed, inset to show a border.
   private func buildShapeBorder(content: () -> some View) -> some View {
-    Color(.secondaryBraveGroupedBackground)
+    Color(.secondarySystemGroupedBackground)
       .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
       .clipShape(ContainerRelativeShape())
       .overlay {

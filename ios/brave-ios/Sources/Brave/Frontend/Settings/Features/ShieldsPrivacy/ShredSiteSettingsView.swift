@@ -28,7 +28,7 @@ struct ShredSiteSettingsView: View {
         FormPicker(selection: $viewModel.autoShredLevel) {
           ForEach(SiteShredLevel.allCases) { level in
             Text(level.localizedTitle)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(.secondary)
               .tag(level)
           }
         } label: {
@@ -59,10 +59,8 @@ struct ShredSiteSettingsView: View {
         Text(
           viewModel.visibleURL?.displayURL?.baseDomain ?? viewModel.visibleURL?.absoluteString ?? ""
         )
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
     .navigationTitle(Strings.Shields.shredSiteData)
     .toolbar(.visible)
   }

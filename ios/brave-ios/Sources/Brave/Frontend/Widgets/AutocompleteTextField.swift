@@ -28,7 +28,7 @@ protocol AutocompleteTextFieldDelegate: AnyObject {
 }
 
 private struct AutocompleteTextFieldUX {
-  static let highlightColor = UIColor.braveInfoBackground
+  static let highlightColor = UIColor(braveSystemName: .systemfeedbackInfoBackground)
 }
 
 public class AutocompleteTextField: UITextField, UITextFieldDelegate {

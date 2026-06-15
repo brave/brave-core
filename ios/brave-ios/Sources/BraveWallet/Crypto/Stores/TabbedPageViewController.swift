@@ -88,7 +88,7 @@ class TabbedPageViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .braveBackground
+    view.backgroundColor = UIColor(braveSystemName: .containerBackground)
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
     view.addSubview(pageViewController.view)
@@ -352,12 +352,11 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
     $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
   }
 
-  let selectionIndicatorView: BraveGradientView = .init { traitCollection in
-    if traitCollection.userInterfaceStyle == .dark {
-      return BraveGradient.darkGradient02
-    }
-    return BraveGradient.lightGradient02
-  }
+  let selectionIndicatorView: UIView = {
+    let view = UIView()
+    view.backgroundColor = UIColor(braveSystemName: .iconInteractive)
+    return view
+  }()
 
   let collectionView = UICollectionView(
     frame: .zero,
@@ -386,7 +385,7 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .braveBackground
+    backgroundColor = UIColor(braveSystemName: .containerBackground)
 
     addSubview(collectionView)
     addSubview(shadowView)

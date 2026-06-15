@@ -16,8 +16,8 @@ class SyncPairWordsViewController: SyncViewController {
   }
   private let containerView = UIView().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.backgroundColor = .braveBackground
-    $0.layer.shadowColor = UIColor.braveSeparator.cgColor
+    $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
+    $0.layer.shadowColor = UIColor(braveSystemName: .dividerStrong).cgColor
     $0.layer.shadowRadius = 0
     $0.layer.shadowOpacity = 1.0
     $0.layer.shadowOffset = CGSize(width: 0, height: 0.5)
@@ -26,7 +26,7 @@ class SyncPairWordsViewController: SyncViewController {
   private lazy var wordCountLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
-    label.textColor = .braveLabel
+    label.textColor = UIColor(braveSystemName: .textPrimary)
     label.text = String(format: Strings.Sync.wordCount, 0)
     return label
   }()
@@ -38,14 +38,14 @@ class SyncPairWordsViewController: SyncViewController {
       for: .normal
     )
     button.addTarget(self, action: #selector(pasteButtonPressed), for: .touchUpInside)
-    button.tintColor = .braveLabel
+    button.tintColor = UIColor(braveSystemName: .textPrimary)
     return button
   }()
 
   private lazy var useCameraButton = UIButton().then {
     $0.setTitle(Strings.Sync.switchBackToCameraButton, for: .normal)
     $0.addTarget(self, action: #selector(useCameraButtonTapped), for: .touchDown)
-    $0.setTitleColor(.braveLabel, for: .normal)
+    $0.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
   }
 
@@ -74,7 +74,7 @@ class SyncPairWordsViewController: SyncViewController {
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
-    containerView.layer.shadowColor = UIColor.braveSeparator.cgColor
+    containerView.layer.shadowColor = UIColor(braveSystemName: .dividerStrong).cgColor
   }
 
   override func viewDidLoad() {

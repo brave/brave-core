@@ -18,16 +18,16 @@ extension BraveRewardsViewController {
     }
     let rewardsToggle = UISwitch().then {
       $0.setContentHuggingPriority(.required, for: .horizontal)
-      $0.onTintColor = .braveBlurpleTint
+      $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
     }
     private let titleLabel = UILabel().then {
       $0.text = Strings.braveRewardsTitle
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
       $0.font = .systemFont(ofSize: 20)
     }
     let subtitleLabel = UILabel().then {
       $0.text = Strings.Rewards.disabledBody
-      $0.textColor = .secondaryBraveLabel
+      $0.textColor = UIColor(braveSystemName: .textSecondary)
       $0.font = .systemFont(ofSize: 12)
       $0.numberOfLines = 0
     }
@@ -40,7 +40,7 @@ extension BraveRewardsViewController {
     override init(frame: CGRect) {
       super.init(frame: frame)
 
-      backgroundColor = .braveBackground
+      backgroundColor = UIColor(braveSystemName: .containerBackground)
 
       addSubview(stackView)
       stackView.snp.makeConstraints {

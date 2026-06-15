@@ -96,7 +96,6 @@ struct SaferSignTransactionContainerView: View {
             Image(uiImage: UIImage(sharedNamed: "brave.logo")!)
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .foregroundColor(Color(.braveOrange))
           } else {
             if let url = URL(string: originInfo.originSpec) {
               FaviconReader(url: url) { image in
@@ -106,10 +105,10 @@ struct SaferSignTransactionContainerView: View {
                     .scaledToFit()
                 } else {
                   Circle()
-                    .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+                    .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
                 }
               }
-              .background(Color(.braveDisabled))
+              .background(Color(braveSystemName: .neutral20))
               .clipShape(RoundedRectangle(cornerRadius: 4))
             }
           }
@@ -117,7 +116,7 @@ struct SaferSignTransactionContainerView: View {
         .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
 
         Text(originInfo: originInfo)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.subheadline)
           .multilineTextAlignment(.center)
           .padding(.top, 8)
@@ -130,11 +129,11 @@ struct SaferSignTransactionContainerView: View {
       HStack {
         Text(Strings.Wallet.swapConfirmationNetworkFee)
           .fontWeight(.medium)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         Spacer()
         Button(action: advancedSettingsTapped) {
           Image(braveSystemName: "leo.settings")
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .buttonStyle(.plain)
       }
@@ -145,7 +144,7 @@ struct SaferSignTransactionContainerView: View {
               .resizable()
           } else {
             Circle()
-              .stroke(Color(.braveSeparator))
+              .stroke(Color(braveSystemName: .dividerStrong))
               .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
           }
         }
@@ -154,11 +153,11 @@ struct SaferSignTransactionContainerView: View {
           height: min(assetNetworkIconSize, maxAssetNetworkIconSize)
         )
         Text(gasFee?.fiat ?? "")
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         Button(action: editGasFeeTapped) {
           Text(Strings.Wallet.editButtonTitle)
             .fontWeight(.semibold)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         Spacer()
       }

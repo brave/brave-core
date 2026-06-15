@@ -110,10 +110,11 @@ private struct ShortcutLink<Content: View>: View {
               .multilineTextAlignment(.center)
           }
           .padding(8)
-          .foregroundColor(Color(UIColor.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(
-            renderingMode == .accented ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+            renderingMode == .accented
+              ? Color.white.opacity(0.1) : Color(UIColor(braveSystemName: .containerBackground)),
             in: .containerRelative
           )
         }
@@ -216,12 +217,12 @@ private struct ShortcutsView: View {
               Image("brave-logo-no-bg-small")
                 .widgetAccentedRenderingModeFullColor()
             }
-            .foregroundColor(Color(UIColor.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .frame(maxWidth: .infinity)
             .frame(height: 44)
             .background(
               renderingMode == .accented
-                ? Color.white.opacity(0.1) : Color(UIColor.braveBackground),
+                ? Color.white.opacity(0.1) : Color(UIColor(braveSystemName: .containerBackground)),
               in: .containerRelative
             )
           }
@@ -259,7 +260,7 @@ private struct ShortcutsView: View {
       .frame(maxHeight: .infinity)
     }
     .padding(8)
-    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
+    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 

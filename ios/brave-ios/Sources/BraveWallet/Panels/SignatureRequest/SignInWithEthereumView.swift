@@ -41,9 +41,9 @@ struct SignInWithEthereumView: View {
           .background(
             LinearGradient(
               stops: [
-                .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                .init(color: Color(.systemGroupedBackground).opacity(0), location: 0),
+                .init(color: Color(.systemGroupedBackground).opacity(1), location: 0.05),
+                .init(color: Color(.systemGroupedBackground).opacity(1), location: 1),
               ],
               startPoint: .top,
               endPoint: .bottom
@@ -63,7 +63,7 @@ struct SignInWithEthereumView: View {
       Text(verbatim: originInfo.eTldPlusOne)
       Text(originInfo: originInfo)
         .font(.caption)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
     }
   }

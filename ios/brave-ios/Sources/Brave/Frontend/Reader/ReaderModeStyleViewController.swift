@@ -21,8 +21,8 @@ class ReaderModeStyleViewController: UIViewController {
     static let height = 4 * rowHeight
     static let rowHeight = 50
 
-    static let fontTypeRowBackground = UIColor.braveBackground
-    static let fontSizeRowBackground = UIColor.secondaryBraveBackground
+    static let fontTypeRowBackground = UIColor(braveSystemName: .containerBackground)
+    static let fontSizeRowBackground = UIColor(braveSystemName: .pageBackground)
 
     static let brightnessSliderWidth = 140
     static let brightnessIconOffset = 10
@@ -143,7 +143,7 @@ class ReaderModeStyleViewController: UIViewController {
 
     let brightnessRow = UIView()
     view.addSubview(brightnessRow)
-    brightnessRow.backgroundColor = .secondaryBraveBackground
+    brightnessRow.backgroundColor = UIColor(braveSystemName: .pageBackground)
 
     brightnessRow.snp.makeConstraints { (make) -> Void in
       make.top.equalTo(themeRow.snp.bottom)
@@ -154,7 +154,7 @@ class ReaderModeStyleViewController: UIViewController {
     let slider = UISlider()
     brightnessRow.addSubview(slider)
     slider.accessibilityLabel = Strings.readerModeBrightSliderAccessibilityLabel
-    slider.tintColor = .braveBlurpleTint
+    slider.tintColor = UIColor(braveSystemName: .iconInteractive)
     slider.addTarget(self, action: #selector(changeBrightness), for: .valueChanged)
 
     slider.snp.makeConstraints { make in
@@ -165,7 +165,7 @@ class ReaderModeStyleViewController: UIViewController {
     let brightnessMinImageView = UIImageView(
       image: UIImage(named: "brightnessMin", in: .module, compatibleWith: nil)!.template
     )
-    brightnessMinImageView.tintColor = .braveLabel
+    brightnessMinImageView.tintColor = UIColor(braveSystemName: .textPrimary)
     brightnessRow.addSubview(brightnessMinImageView)
 
     brightnessMinImageView.snp.makeConstraints { (make) -> Void in
@@ -176,7 +176,7 @@ class ReaderModeStyleViewController: UIViewController {
     let brightnessMaxImageView = UIImageView(
       image: UIImage(named: "brightnessMax", in: .module, compatibleWith: nil)!.template
     )
-    brightnessMaxImageView.tintColor = .braveLabel
+    brightnessMaxImageView.tintColor = UIColor(braveSystemName: .textPrimary)
     brightnessRow.addSubview(brightnessMaxImageView)
 
     brightnessMaxImageView.snp.makeConstraints { (make) -> Void in
@@ -285,9 +285,9 @@ class FontTypeButton: UIButton {
     self.init(frame: .zero)
     self.fontType = fontType
 
-    setTitleColor(.braveLabel, for: .selected)
-    setTitleColor(.secondaryBraveLabel, for: [])
-    backgroundColor = .braveBackground
+    setTitleColor(UIColor(braveSystemName: .textPrimary), for: .selected)
+    setTitleColor(UIColor(braveSystemName: .textSecondary), for: [])
+    backgroundColor = UIColor(braveSystemName: .containerBackground)
     accessibilityHint = Strings.readerModeFontTypeButtonAccessibilityHint
 
     switch fontType {
@@ -322,8 +322,8 @@ class FontSizeButton: UIButton {
     self.init(frame: .zero)
     self.fontSizeAction = fontSizeAction
 
-    setTitleColor(.bravePrimary, for: .normal)
-    setTitleColor(.braveDisabled, for: .disabled)
+    setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
+    setTitleColor(UIColor(braveSystemName: .neutral20), for: .disabled)
 
     switch fontSizeAction {
     case .smaller:
@@ -394,7 +394,9 @@ class ThemeButton: UIButton {
   private func themeBorders() {
     layer.borderWidth = isSelected ? 2 : 1
     layer.borderColor =
-      isSelected ? UIColor.braveBlurpleTint.cgColor : UIColor.braveSeparator.cgColor
+      isSelected
+      ? UIColor(braveSystemName: .dividerInteractive).cgColor
+      : UIColor(braveSystemName: .dividerStrong).cgColor
   }
 
   override var isSelected: Bool {

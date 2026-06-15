@@ -108,10 +108,8 @@ struct ManageWebsiteDataView: View {
                   record.dataTypes.compactMap(localizedStringForDataRecordType)
                 ).sorted()
                 Text(record.displayName)
-                  .foregroundColor(Color(.bravePrimary))
                 if !types.isEmpty {
                   Text(ListFormatter.localizedString(byJoining: types))
-                    .foregroundColor(Color(.braveLabel))
                     .font(.footnote)
                 }
               }
@@ -130,18 +128,15 @@ struct ManageWebsiteDataView: View {
             }
           }
         }
-        .listRowBackground(Color(.braveBackground))
       }
       .listStyle(.plain)
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.editMode, $editMode)
       .overlay(
         Group {
           if !isLoading && visibleRecords.isEmpty {
             Text(Strings.noSavedWebsiteData)
               .font(.headline)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(.secondary)
           }
         }
       )
@@ -151,7 +146,7 @@ struct ManageWebsiteDataView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.done)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
         ToolbarItemGroup(placement: .bottomBar) {
@@ -165,7 +160,8 @@ struct ManageWebsiteDataView: View {
           } label: {
             Text(editMode.isEditing ? Strings.done : Strings.edit)
               .foregroundColor(
-                visibleRecords.isEmpty ? Color(.braveDisabled) : Color(.braveBlurpleTint)
+                visibleRecords.isEmpty
+                  ? Color(braveSystemName: .neutral20) : Color(braveSystemName: .textInteractive)
               )
           }
           .disabled(visibleRecords.isEmpty)
@@ -180,7 +176,7 @@ struct ManageWebsiteDataView: View {
             }
           } label: {
             Text(removeButtonTitle(visibleRecords: visibleRecords))
-              .foregroundColor(visibleRecords.isEmpty ? Color(.braveDisabled) : .red)
+              .foregroundColor(visibleRecords.isEmpty ? Color(braveSystemName: .neutral20) : .red)
               .animation(nil, value: isEditMode)
           }
           .disabled(visibleRecords.isEmpty)

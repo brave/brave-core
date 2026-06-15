@@ -105,7 +105,7 @@ struct PageSecurityView: View {
         }
       }
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .frame(maxWidth: BraveUX.baseDimensionValue, alignment: .leading)
     #if DEBUG
     .onAppear {
@@ -120,7 +120,7 @@ struct PageSecurityView: View {
 
 extension PageSecurityView: PopoverContentComponent {
   var popoverBackgroundColor: UIColor {
-    UIColor.braveBackground
+    UIColor(braveSystemName: .containerBackground)
   }
 }
 

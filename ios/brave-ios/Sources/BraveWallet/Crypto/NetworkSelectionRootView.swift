@@ -116,7 +116,7 @@ struct NetworkSelectionRootView: View {
             presentationMode.dismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }
@@ -165,7 +165,7 @@ private struct NetworkRowView: View {
       .resizable()
       .aspectRatio(contentMode: .fit)
       .hidden(isHidden: !isSelected)
-      .foregroundColor(Color(.braveBlurpleTint))
+      .foregroundColor(Color(braveSystemName: .iconInteractive))
       .frame(width: 14, height: 14)
       .transition(.identity)
       .animation(nil, value: isSelected)
@@ -184,7 +184,7 @@ private struct NetworkRowView: View {
     }
     .accessibilityElement(children: .combine)
     .accessibilityAddTraits(isSelected ? [.isSelected] : [])
-    .foregroundColor(Color(.braveLabel))
+    .foregroundColor(Color(braveSystemName: .textPrimary))
     .padding(.horizontal)
     .padding(.vertical, 12)
     .contentShape(Rectangle())

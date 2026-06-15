@@ -187,7 +187,7 @@ struct SignTransactionView: View {
             if let network = self.network {
               Text(network.chainName)
                 .font(.callout)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             Spacer()
             if requests.count > 1 {
@@ -204,7 +204,7 @@ struct SignTransactionView: View {
                 Button(action: next) {
                   Text(Strings.Wallet.next)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(.braveBlurpleTint))
+                    .foregroundColor(Color(braveSystemName: .textInteractive))
                 }
               }
             }
@@ -218,17 +218,17 @@ struct SignTransactionView: View {
             AddressView(address: account.address) {
               Text(account.name)
             }
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .font(.callout)
             Text(originInfo: currentRequestOriginInfo)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.subheadline)
               .multilineTextAlignment(.center)
           }
           .accessibilityElement(children: .combine)
           Text(Strings.Wallet.signatureRequestSubtitle)
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
         .padding(.horizontal, 8)
         if showWarning {
@@ -242,7 +242,7 @@ struct SignTransactionView: View {
               .padding(.vertical, 8)
             SignTxRequestStaticTextView(text: instructionsDisplayString())
               .background(
-                Color(.secondaryBraveGroupedBackground),
+                Color(.secondarySystemGroupedBackground),
                 in: .rect(cornerRadius: 10, style: .continuous)
               )
           case .cardano(let signCardanoTransactionRequest):
@@ -267,7 +267,7 @@ struct SignTransactionView: View {
               }
               .frame(maxWidth: .infinity)
               .background(
-                Color(.secondaryBraveGroupedBackground),
+                Color(.secondarySystemGroupedBackground),
                 in: .rect(cornerRadius: 10, style: .continuous)
               )
             }
@@ -282,7 +282,7 @@ struct SignTransactionView: View {
     }
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Text(navigationTitle))
-    .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
+    .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
   }
 
   @ViewBuilder private var buttonsContainer: some View {
@@ -360,9 +360,9 @@ struct SignTransactionView: View {
     VStack {
       Text(Strings.Wallet.solanaSignTransactionDetails)
         .font(.subheadline.weight(.semibold))
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       HStack {
-        LinearGradient(braveGradient: colorScheme == .dark ? .darkGradient02 : .lightGradient02)
+        LinearGradient(braveSystemName: .toolbarBackground)
       }
       .frame(height: 4)
     }
@@ -385,24 +385,24 @@ struct SignMessageWarningView: View {
       Group {
         Label(Strings.Wallet.signTransactionSignRisk, systemImage: "exclamationmark.triangle")
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.braveErrorLabel))
+          .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
           .padding(.top, 12)
         Text(Strings.Wallet.solanaSignTransactionWarning)
           .font(.subheadline)
-          .foregroundColor(Color(.braveErrorLabel))
+          .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
         Button {
           openWalletURL(WalletConstants.signTransactionRiskLink)
         } label: {
           Text(Strings.Wallet.learnMoreButton)
             .font(.subheadline)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
         .padding(.bottom, 12)
       }
       .padding(.horizontal, 12)
     }
     .background(
-      Color(.braveErrorBackground)
+      Color(braveSystemName: .systemfeedbackErrorBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
   }
@@ -416,7 +416,7 @@ struct SignTxRequestStaticTextView: View {
       StaticTextView(text: text)
         .frame(maxWidth: .infinity)
         .frame(height: 200)
-        .background(Color(.tertiaryBraveGroupedBackground))
+        .background(Color(.tertiarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
     }
     .padding()

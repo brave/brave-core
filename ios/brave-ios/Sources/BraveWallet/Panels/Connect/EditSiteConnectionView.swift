@@ -125,7 +125,7 @@ struct EditSiteConnectionView: View {
       }
     } label: {
       Text(action.title)
-        .foregroundColor(Color(.braveBlurpleTint))
+        .foregroundColor(Color(braveSystemName: .textInteractive))
         .font(.footnote.weight(.semibold))
     }
   }
@@ -137,7 +137,7 @@ struct EditSiteConnectionView: View {
           Image(uiImage: image)
             .resizable()
             .scaledToFit()
-            .background(Color(.braveDisabled))
+            .background(Color(braveSystemName: .neutral20))
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         } else {
           ProgressView()
@@ -148,11 +148,11 @@ struct EditSiteConnectionView: View {
     VStack(alignment: sizeCategory.isAccessibilityCategory ? .center : .leading, spacing: 2) {
       Text(urlOrigin: urlOrigin)
         .font(.subheadline)
-        .foregroundColor(Color(.bravePrimary))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       Text(connectedAddresses)
         .font(.footnote)
         .multilineTextAlignment(.center)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
     }
   }
 
@@ -184,7 +184,6 @@ struct EditSiteConnectionView: View {
               }
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
           Group {
             if sizeCategory.isAccessibilityCategory {
@@ -202,8 +201,6 @@ struct EditSiteConnectionView: View {
           .padding(.vertical)
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.editSiteConnectionScreenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -212,7 +209,7 @@ struct EditSiteConnectionView: View {
             onDismiss(permittedAccounts)
           } label: {
             Text(Strings.done)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }

@@ -184,7 +184,7 @@ struct TransactionsListView: View {
     VStack(alignment: .center, spacing: 10) {
       Text(Strings.Wallet.activityPageEmptyTitle)
         .font(.headline.weight(.semibold))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       Text(Strings.Wallet.activityPageEmptyDescription)
         .font(.subheadline.weight(.semibold))
         .foregroundColor(Color(.secondaryLabel))

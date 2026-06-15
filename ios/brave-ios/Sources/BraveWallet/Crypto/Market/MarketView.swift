@@ -33,7 +33,7 @@ struct MarketView: View {
     VStack(alignment: .center, spacing: 10) {
       Text(Strings.Wallet.coinMarketEmptyMsg)
         .font(.headline.weight(.semibold))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       Button {
         marketStore.update()
       } label: {
@@ -50,14 +50,14 @@ struct MarketView: View {
   @ViewBuilder private var loadingTokenPlaceholder: some View {
     Circle()
       .aspectRatio(contentMode: .fit)
-      .foregroundColor(Color(.secondaryBraveLabel))
+      .foregroundColor(Color(braveSystemName: .textSecondary))
       .frame(width: min(coinLength, maxCoinSize), height: min(coinLength, maxCoinSize))
       .accessibilityHidden(true)
     VStack(alignment: .leading, spacing: 4) {
       Text("Token name")
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       Text("Token symbol")
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     }
   }
 
@@ -81,10 +81,10 @@ struct MarketView: View {
       .accessibilityHidden(true)
     VStack(alignment: .leading, spacing: 4) {
       Text(coinMarket.name)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .fontWeight(.semibold)
       Text(coinMarket.symbol.uppercased())
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     }
     .font(.footnote)
   }
@@ -104,7 +104,7 @@ struct MarketView: View {
         Spacer()
         VStack(alignment: .trailing, spacing: 4) {
           Text("$0.0000")
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .padding(.vertical, 8)
           Text("0.00%")
         }
@@ -148,7 +148,7 @@ struct MarketView: View {
                       ) ?? "$0.00"
                     )
                     .font(.footnote)
-                    .foregroundColor(Color(.braveLabel))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                     .padding(.vertical, 8)
                     HStack {
                       Image(
@@ -172,12 +172,9 @@ struct MarketView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .background(
       NavigationLink(
         isActive: Binding(

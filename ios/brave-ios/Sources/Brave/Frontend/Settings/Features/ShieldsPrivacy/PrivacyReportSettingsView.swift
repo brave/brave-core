@@ -19,16 +19,12 @@ struct PrivacyReportSettingsView: View {
     Form {
       Section(footer: Text(Strings.PrivacyHub.settingsEnableShieldsFooter)) {
         Toggle(Strings.PrivacyHub.settingsEnableShieldsTitle, isOn: $shieldsDataEnabled.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
       Section(footer: Text(Strings.PrivacyHub.settingsEnableVPNAlertsFooter)) {
         Toggle(Strings.PrivacyHub.settingsEnableVPNAlertsTitle, isOn: $vpnAlertsEnabled.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
       Section(footer: Text(Strings.PrivacyHub.settingsSlearDataFooter)) {
         HStack {
           Button(
@@ -61,12 +57,9 @@ struct PrivacyReportSettingsView: View {
 
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationTitle(Strings.PrivacyHub.privacyReportsTitle)
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 }
 

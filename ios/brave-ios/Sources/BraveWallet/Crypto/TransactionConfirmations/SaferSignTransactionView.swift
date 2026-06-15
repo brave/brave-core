@@ -92,7 +92,7 @@ struct SaferSignTransactionView: View {
       )
       Text(display)
         .font(.callout)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
     }
   }
 
@@ -101,7 +101,7 @@ struct SaferSignTransactionView: View {
       HStack {
         Text(Strings.Wallet.swapConfirmationYouSpend)
           .fontWeight(.medium)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         Spacer()
         AddressView(address: fromAddress ?? "") {
           HStack(spacing: 2) {
@@ -113,7 +113,7 @@ struct SaferSignTransactionView: View {
           .padding(4)
           .overlay(
             RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
-              .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+              .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
           )
         }
       }
@@ -139,7 +139,7 @@ struct SaferSignTransactionView: View {
       HStack {
         Text(Strings.Wallet.swapConfirmationYoullReceive)
           .fontWeight(.medium)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         Spacer()
         if let receiverAddress {
           AddressView(address: receiverAddress) {
@@ -152,7 +152,7 @@ struct SaferSignTransactionView: View {
             .padding(4)
             .overlay(
               RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
-                .stroke(Color(.braveSeparator), lineWidth: pixelLength)
+                .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
             )
           }
         }
@@ -176,8 +176,8 @@ struct SaferSignTransactionView: View {
 
   private var arrowView: some View {
     Circle()
-      .stroke(Color(.braveSeparator), lineWidth: pixelLength)
-      .background(Color(.secondaryBraveGroupedBackground))
+      .stroke(Color(braveSystemName: .dividerStrong), lineWidth: pixelLength)
+      .background(Color(.secondarySystemGroupedBackground))
       .frame(width: 32, height: 32)
       .overlay(
         Image(systemName: "arrow.down")
@@ -198,7 +198,7 @@ struct SaferSignTransactionView: View {
       toTokenView
         .padding(.init(top: 10, leading: 15, bottom: 20, trailing: 10))
     }
-    .background(Color(.secondaryBraveGroupedBackground).cornerRadius(10))
+    .background(Color(.secondarySystemGroupedBackground).cornerRadius(10))
   }
 }
 
@@ -230,7 +230,7 @@ private struct TokenRow: View {
         )
       } else {
         Circle()
-          .stroke(Color(.braveSeparator))
+          .stroke(Color(braveSystemName: .dividerStrong))
           .frame(width: assetIconSize, height: assetIconSize)
           .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
       }
@@ -309,7 +309,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
             minBuyAmount: "0.994798"
           )
         }
-        .background(Color(.braveGroupedBackground).ignoresSafeArea())
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .preferredColorScheme(colorScheme)
       }
     }

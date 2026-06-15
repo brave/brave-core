@@ -40,9 +40,13 @@ extension View {
         let appearance: UINavigationBarAppearance = {
           let appearance = UINavigationBarAppearance()
           appearance.configureWithOpaqueBackground()
-          appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-          appearance.backgroundColor = .braveBackground
+          appearance.titleTextAttributes = [
+            .foregroundColor: UIColor(braveSystemName: .textPrimary)
+          ]
+          appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor(braveSystemName: .textPrimary)
+          ]
+          appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
           return appearance
         }()
         $0.standardAppearance = appearance
@@ -59,8 +63,12 @@ extension View {
         let noShadowAppearance: UINavigationBarAppearance = {
           let appearance = UINavigationBarAppearance()
           appearance.configureWithTransparentBackground()
-          appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          appearance.titleTextAttributes = [
+            .foregroundColor: UIColor(braveSystemName: .textPrimary)
+          ]
+          appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor(braveSystemName: .textPrimary)
+          ]
           appearance.backgroundColor = .clear
           appearance.shadowColor = .clear
           return appearance
@@ -71,8 +79,12 @@ extension View {
         let shadowAppearance: UINavigationBarAppearance = {
           let appearance = UINavigationBarAppearance()
           appearance.configureWithOpaqueBackground()
-          appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
-          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+          appearance.titleTextAttributes = [
+            .foregroundColor: UIColor(braveSystemName: .textPrimary)
+          ]
+          appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor(braveSystemName: .textPrimary)
+          ]
           return appearance
         }()
         $0.standardAppearance = shadowAppearance

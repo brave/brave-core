@@ -19,14 +19,12 @@ struct BraveTranslateSettingsView: View {
         Toggle(isOn: $translateEnabled.value) {
           Text(Strings.BraveTranslate.settingsTranslateEnabledOptionTitle)
         }
-        .tint(Color.accentColor)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .tint(Color(braveSystemName: .primitivePrimary40))
       } footer: {
         Text(Strings.BraveTranslate.settingsTranslateEnabledOptionDescription)
       }
     }
     .listStyle(.insetGrouped)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.BraveTranslate.settingsScreenTitle)
   }
 }

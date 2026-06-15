@@ -24,7 +24,7 @@ class FolderDetailsViewTableViewCell: AddEditHeaderView, BookmarkFormFieldsProto
   convenience init(title: String?, viewHeight: CGFloat) {
     self.init(frame: .zero)
 
-    backgroundColor = .secondaryBraveGroupedBackground
+    backgroundColor = .secondarySystemGroupedBackground
 
     [UIView.separatorLine, titleTextField, UIView.separatorLine]
       .forEach(mainStackView.addArrangedSubview)

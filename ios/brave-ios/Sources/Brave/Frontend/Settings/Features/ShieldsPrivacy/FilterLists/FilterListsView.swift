@@ -20,7 +20,7 @@ struct FilterListsView: View {
 
     var body: some View {
       VStack(alignment: .leading, spacing: 4) {
-        if LiquidGlassMode.isEnabled {
+        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
           Text(title)
           Text(description)
             .font(.caption)
@@ -57,9 +57,9 @@ struct FilterListsView: View {
 
     var forgroundColor: Color {
       switch self {
-      case .unknown: Color(.braveBlurpleTint)
-      case .updated: Color(.braveSuccessLabel)
-      case .updating: Color(.braveDisabled)
+      case .unknown: Color(braveSystemName: .textInteractive)
+      case .updated: Color(braveSystemName: .systemfeedbackSuccessText)
+      case .updating: Color(braveSystemName: .neutral20)
       }
     }
   }
@@ -104,8 +104,6 @@ struct FilterListsView: View {
           description: Strings.Shields.addCustomFilterListDescription
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      .toggleStyle(SwitchToggleStyle(tint: .accentColor))
 
       if searchText.isEmpty {
         Section {
@@ -116,7 +114,6 @@ struct FilterListsView: View {
             description: Strings.Shields.customFiltersDescription
           )
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       Section {
@@ -135,7 +132,8 @@ struct FilterListsView: View {
           title: Strings.Shields.defaultFilterLists,
           description: Strings.Shields.filterListsDescription
         )
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
+      .tint(Color(braveSystemName: .primitivePrimary40))
     }
     .fullScreenCover(
       isPresented: $showingCustomFiltersSheet,
@@ -146,10 +144,7 @@ struct FilterListsView: View {
       }
     )
     .searchable(text: $searchText)
-    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.Shields.contentFiltering)
     .toolbar {
@@ -182,7 +177,7 @@ struct FilterListsView: View {
       .disabled(status == .updating)
       if let error {
         Text(error.localizedDescription)
-          .foregroundStyle(Color(.braveErrorLabel))
+          .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
           .font(.caption)
       }
     }
@@ -199,34 +194,25 @@ struct FilterListsView: View {
   }
 
   @ViewBuilder private var customFiltersRows: some View {
+    if let customRules = customRules {
+      Text(customRules)
+        .lineLimit(2)
+        .multilineTextAlignment(.leading)
+        .font(.system(size: 14, weight: .regular, design: .monospaced))
+        .frame(maxWidth: .infinity, alignment: .leading)
+    } else if let error = rulesError {
+      Text(error.localizedDescription)
+        .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
+        .font(.subheadline)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
     Button {
       showingCustomFiltersSheet = true
     } label: {
-      HStack(alignment: .center) {
-        if let customRules = customRules {
-          Text(customRules)
-            .lineLimit(2)
-            .multilineTextAlignment(.leading)
-            .foregroundStyle(Color(.braveLabel))
-            .font(.system(size: 14, weight: .regular, design: .monospaced))
-            .frame(maxWidth: .infinity, alignment: .leading)
-        } else if let error = rulesError {
-          Text(error.localizedDescription)
-            .foregroundStyle(Color(.braveErrorLabel))
-            .font(.subheadline)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-          Text(Strings.Shields.customFiltersPlaceholder)
-            .foregroundStyle(Color(.secondaryBraveLabel))
-            .font(.subheadline)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        Image(systemName: "chevron.right")
-          .font(.body.weight(.semibold))
-          .foregroundColor(Color(.separator))
-      }
-      .accessibilityElement()
-      .accessibilityLabel(customFiltersAccessibilityLabel)
+      Text(
+        customRules != nil
+          ? Strings.Shields.editCustomFiltersLabel : Strings.Shields.customFiltersPlaceholder
+      )
     }
   }
 
@@ -247,7 +233,7 @@ struct FilterListsView: View {
 
     Toggle(isOn: allEnabled) {
       VStack(alignment: .leading) {
-        Text("All").foregroundColor(Color(.bravePrimary))
+        Text("All")
       }
     }
     #endif
@@ -257,10 +243,9 @@ struct FilterListsView: View {
         Toggle(isOn: $filterList.isEnabled) {
           VStack(alignment: .leading) {
             Text(filterList.entry.title)
-              .foregroundColor(Color(.bravePrimary))
             Text(filterList.entry.desc)
               .font(.caption)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(.secondary)
           }
         }
       }
@@ -291,7 +276,6 @@ struct FilterListsView: View {
           ) {
             VStack(alignment: .leading, spacing: 4) {
               Text(filterListURL.title)
-                .foregroundColor(Color(.bravePrimary))
                 .truncationMode(.middle)
                 .lineLimit(1)
 
@@ -304,22 +288,21 @@ struct FilterListsView: View {
                   )
                 )
                 .font(.caption)
-                .foregroundColor(Color(.braveLabel))
               case .failure:
                 Text(Strings.Shields.filterListsDownloadFailed)
                   .font(.caption)
-                  .foregroundColor(Color(.braveErrorLabel))
+                  .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
               case .pending:
                 Text(Strings.Shields.filterListsDownloadPending)
                   .font(.caption)
-                  .foregroundColor(Color(.braveLabel))
               }
             }
           }
+          .tint(Color(braveSystemName: .primitivePrimary40))
 
           Text(filterListURL.setting.externalURL.absoluteDisplayString)
             .font(.caption)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(.secondary)
             .allowsTightening(true)
         }
       }
@@ -331,7 +314,7 @@ struct FilterListsView: View {
         showingAddSheet = true
       } label: {
         Text(Strings.Shields.addFilterByURL)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .textInteractive))
       }
       .disabled(editMode?.wrappedValue.isEditing == true)
       .popover(

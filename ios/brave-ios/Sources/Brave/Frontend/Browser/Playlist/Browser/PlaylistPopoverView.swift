@@ -27,7 +27,7 @@ struct PlaylistPopoverView: View {
   ) -> some View {
     HStack(spacing: dynamicTypeSize.isAccessibilitySize ? 0 : 10) {
       Image(braveSystemName: "leo.check.circle-filled")
-        .foregroundStyle(Color(.braveSuccessLabel))
+        .foregroundStyle(Color(braveSystemName: .systemfeedbackSuccessText))
         .accessibilityHidden(true)
       if dynamicTypeSize.isAccessibilitySize {
         VStack(alignment: .leading, content: content)
@@ -41,7 +41,7 @@ struct PlaylistPopoverView: View {
   var body: some View {
     containerView {
       Text(String.localizedStringWithFormat(Strings.PlayList.addedToPlaylistMessage, folderName))
-        .foregroundStyle(Color(.braveLabel))
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
         .font(.callout)
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -59,10 +59,10 @@ struct PlaylistPopoverView: View {
       }
       .padding(dynamicTypeSize.isAccessibilitySize ? .horizontal : .vertical)
       .font(.subheadline.weight(.semibold))
-      .foregroundColor(Color(.braveBlurpleTint))
+      .foregroundColor(Color(braveSystemName: .textInteractive))
       .layoutPriority(1)
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .accessibilityAction(named: Strings.PlayList.openInPlaylistButtonTitle) {
       action?(.openPlaylist)
     }

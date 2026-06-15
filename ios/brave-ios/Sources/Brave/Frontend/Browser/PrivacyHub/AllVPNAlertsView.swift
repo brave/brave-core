@@ -102,7 +102,7 @@ extension PrivacyReportsView {
     private func cell(for alert: BraveVPNAlert) -> some View {
       VPNAlertCell(vpnAlert: alert)
         .listRowInsets(.init())
-        .background(Color(.braveBackground))
+        .background(Color(braveSystemName: .containerBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .padding(.vertical, 4)
     }
@@ -123,19 +123,17 @@ extension PrivacyReportsView {
           }
         }
         .listStyle(.insetGrouped)
-        .scrollContentBackground(.hidden)
-        .background(Color(UIColor.braveGroupedBackground))
 
         Spacer()
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(.secondaryBraveBackground).ignoresSafeArea())
+      .background(Color(braveSystemName: .pageBackground).ignoresSafeArea())
       .ignoresSafeArea(.container, edges: .bottom)
       .navigationTitle(Strings.PrivacyHub.allVPNAlertsButtonText)
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button(Strings.done, action: onDismiss)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
       .onAppear {

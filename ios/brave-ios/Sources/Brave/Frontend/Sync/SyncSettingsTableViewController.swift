@@ -144,8 +144,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     if isModallyPresented {
       navigationController?.interactivePopGestureRecognizer?.isEnabled = false
       navigationItem.setHidesBackButton(true, animated: false)
-      navigationItem.leftBarButtonItem = UIBarButtonItem(
-        barButtonSystemItem: .done,
+      navigationItem.leftBarButtonItem = .doneButton(
         target: self,
         action: #selector(doneTapped)
       )
@@ -504,7 +503,7 @@ extension SyncSettingsTableViewController {
       let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.Sync.thisDevice))" : name
 
       cell.textLabel?.text = deviceName
-      cell.textLabel?.textColor = .braveLabel
+      cell.textLabel?.textColor = UIColor(braveSystemName: .textPrimary)
     case Sections.otherActions.rawValue:
       configureButtonCell(cell, atIndexPath: indexPath)
     case Sections.syncTypes.rawValue:
@@ -521,16 +520,16 @@ extension SyncSettingsTableViewController {
     switch indexPath.section {
     case Sections.deviceList.rawValue:
       cell.textLabel?.text = Strings.Sync.addAnotherDevice
-      cell.textLabel?.textColor = .braveBlurpleTint
+      cell.textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
       cell.accessoryType = .disclosureIndicator
     case Sections.otherActions.rawValue:
       if indexPath.row == 0 {
         cell.textLabel?.text = Strings.Sync.internalsTitle
-        cell.textLabel?.textColor = .braveBlurpleTint
+        cell.textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
         cell.accessoryType = .disclosureIndicator
       } else if indexPath.row == 1 {
         cell.textLabel?.text = Strings.Sync.deleteAccount
-        cell.textLabel?.textColor = .braveErrorLabel
+        cell.textLabel?.textColor = UIColor(braveSystemName: .systemfeedbackErrorText)
       }
     default:
       return
@@ -541,6 +540,7 @@ extension SyncSettingsTableViewController {
     let toggle = UISwitch().then {
       $0.addTarget(self, action: #selector(didToggleSyncType), for: .valueChanged)
       $0.isOn = isOn(syncType: syncType)
+      $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
       $0.tag = syncType.rawValue
     }
 

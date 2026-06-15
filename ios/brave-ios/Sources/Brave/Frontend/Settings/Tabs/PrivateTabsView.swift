@@ -69,13 +69,12 @@ struct PrivateTabsView: View {
           Toggle(isOn: $persistentPrivateBrowsing.value) {
             VStack(alignment: .leading, spacing: 4) {
               Text(Strings.TabsSettings.persistentPrivateBrowsingTitle)
-                .foregroundStyle(Color(braveSystemName: .textPrimary))
               Text(Strings.TabsSettings.persistentPrivateBrowsingDescription)
-                .foregroundStyle(Color(braveSystemName: .textSecondary))
+                .foregroundStyle(.secondary)
                 .font(.footnote)
             }
           }
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
           .onChange(of: persistentPrivateBrowsing.value) { _, newValue in
             if newValue {
               tabManager?.saveAllTabs()
@@ -109,21 +108,16 @@ struct PrivateTabsView: View {
           Toggle(isOn: .constant(false)) {
             VStack(alignment: .leading, spacing: 4) {
               Text(browsingLockTitle)
-                .foregroundColor(Color(.bravePrimary))
             }
             .opacity(0.25)
           }
           .disabled(true)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .tint(Color(braveSystemName: .primitivePrimary40))
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.TabsSettings.privateTabsSettingsTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
   }
 }
 

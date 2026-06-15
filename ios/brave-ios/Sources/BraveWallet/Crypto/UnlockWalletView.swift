@@ -221,7 +221,7 @@ private struct WalletUnlockStyleModifier<Failure: LocalizedError & Equatable>: V
         )
       )
       .font(.footnote)
-      .foregroundColor(Color(.braveErrorLabel))
+      .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
       .padding(.leading, 8)
       .hidden(isHidden: error == nil)
     }

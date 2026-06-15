@@ -81,7 +81,6 @@ public struct BraveNewsDebugSettingsView: View {
       } footer: {
         Text("Changing the environment will purge all cached resources immediately.")
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         HStack {
           Text("State")
@@ -150,7 +149,6 @@ public struct BraveNewsDebugSettingsView: View {
           }
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         if let fileList {
           if fileList.isEmpty {
@@ -173,7 +171,6 @@ public struct BraveNewsDebugSettingsView: View {
               }
               .padding(.vertical, 2)
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
             Button {
               Task {
                 if await feedDataSource.clearCachedFiles() {
@@ -185,7 +182,6 @@ public struct BraveNewsDebugSettingsView: View {
                 .foregroundColor(.red)
                 .frame(maxWidth: .infinity)
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         } else {
           ProgressView()
@@ -197,8 +193,6 @@ public struct BraveNewsDebugSettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Brave News QA Settings")
     .navigationBarTitleDisplayMode(.inline)
     .animation(.default, value: fileList)

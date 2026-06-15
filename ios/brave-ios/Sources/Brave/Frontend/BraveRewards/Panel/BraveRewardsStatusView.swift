@@ -76,7 +76,7 @@ class BraveRewardsStatusView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = UIColor(braveSystemName: .pageBackground)
 
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
@@ -105,7 +105,7 @@ private class StatusLabelView: UIStackView {
   let text: String
 
   private let imageView = UIImageView().then {
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
@@ -114,7 +114,7 @@ private class StatusLabelView: UIStackView {
     $0.textAlignment = .left
     $0.numberOfLines = 0
     $0.font = .systemFont(ofSize: 15)
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 
   init(image: UIImage, text: String) {

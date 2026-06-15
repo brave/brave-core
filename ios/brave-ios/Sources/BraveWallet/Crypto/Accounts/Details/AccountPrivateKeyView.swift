@@ -48,17 +48,10 @@ struct AccountPrivateKeyView: View {
           "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.accountPrivateKeyDisplayWarning)"
         )
         .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .padding(12)
         .background(
-          Color(.braveWarningBackground)
-            .overlay(
-              RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .strokeBorder(
-                  Color(.braveWarningBorder),
-                  style: StrokeStyle(lineWidth: pixelLength)
-                )
-            )
+          Color(braveSystemName: .systemfeedbackWarningBackground)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         )
         if let key = key {
@@ -101,7 +94,7 @@ struct AccountPrivateKeyView: View {
       }
       .padding()
     }
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .navigationTitle(Strings.Wallet.accountPrivateKey)
     .navigationBarTitleDisplayMode(.inline)
     .onReceive(

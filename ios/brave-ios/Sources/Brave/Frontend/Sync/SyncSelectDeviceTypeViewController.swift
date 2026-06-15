@@ -15,7 +15,7 @@ class SyncDeviceTypeButton: UIControl {
   var type: SyncDeviceType!
 
   // Color for the opposite state of `pressed`
-  private var pressedReversedColor = UIColor.braveBlurpleTint
+  private var pressedReversedColor = UIColor(braveSystemName: .textInteractive)
   var pressed: Bool = false {
     didSet {
       if pressed == oldValue {
@@ -38,7 +38,7 @@ class SyncDeviceTypeButton: UIControl {
   convenience init(image: String, title: String, type: SyncDeviceType) {
     self.init(frame: CGRect.zero)
 
-    backgroundColor = .braveBackground
+    backgroundColor = UIColor(braveSystemName: .containerBackground)
     clipsToBounds = false
     layer.cornerRadius = 12
     layer.cornerCurve = .continuous
@@ -49,13 +49,13 @@ class SyncDeviceTypeButton: UIControl {
 
     imageView.image = UIImage(named: image, in: .module, compatibleWith: nil)
     imageView.contentMode = .center
-    imageView.tintColor = .braveLabel
+    imageView.tintColor = UIColor(braveSystemName: .textPrimary)
     addSubview(imageView)
 
     label.text = title
     label.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.bold)
     label.textAlignment = .center
-    label.textColor = .braveLabel
+    label.textColor = UIColor(braveSystemName: .textPrimary)
     addSubview(label)
 
     self.type = type
@@ -104,7 +104,7 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
   let chooseDeviceLabel = UILabel().then {
     $0.text = Strings.Sync.chooseDeviceHeader
     $0.textAlignment = .center
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
     $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
   }

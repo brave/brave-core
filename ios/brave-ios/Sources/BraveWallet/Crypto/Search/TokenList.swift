@@ -61,7 +61,7 @@ struct TokenList<Item: Identifiable, Header: View, Content: View, EmptyStateView
           } else if filteredTokens.isEmpty {
             Text(Strings.Wallet.assetSearchEmpty)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .multilineTextAlignment(.center)
               .frame(maxWidth: .infinity)
           } else {

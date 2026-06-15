@@ -26,7 +26,6 @@ struct EditNonceView: View {
       ) {
         TextField(Strings.Wallet.editNoncePlaceholder, text: $nonce)
           .keyboardType(.numberPad)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {
         Button {
@@ -50,12 +49,9 @@ struct EditNonceView: View {
         .disabled(Int(nonce) == nil)
         .frame(maxWidth: .infinity)
         .listRowInsets(.zero)
-        .listRowBackground(Color(.braveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.advancedSettingsTransaction)
     .alert(isPresented: $isShowingAlert) {

@@ -150,8 +150,6 @@ class LoginListViewController: LoginAuthViewController {
       $0.delegate = self
       $0.hidesNavigationBarDuringPresentation = true
     }
-
-    navigationController?.view.backgroundColor = .secondaryBraveBackground
   }
 }
 
@@ -187,6 +185,7 @@ extension LoginListViewController {
     func createSaveToggleCell() -> UITableViewCell {
       let toggle = UISwitch().then {
         $0.addTarget(self, action: #selector(didToggleSaveLogins), for: .valueChanged)
+        $0.onTintColor = UIColor(braveSystemName: .primitivePrimary40)
         $0.isOn = Preferences.General.saveLogins.value
       }
 
@@ -215,7 +214,6 @@ extension LoginListViewController {
         $0.setLines(loginInfo.displayURLString, detailText: loginInfo.usernameValue)
         $0.selectionStyle = .none
         $0.accessoryType = .disclosureIndicator
-        $0.backgroundColor = .braveBackground
       }
 
       cell.imageIconView.do {
@@ -460,7 +458,7 @@ private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
 
   let imageIconView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
   }
 
   let labelStackView = UIStackView().then {
@@ -470,12 +468,12 @@ private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
   }
 
   let titleLabel = UILabel().then {
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.font = .preferredFont(forTextStyle: .footnote)
   }
 
   let descriptionLabel = UILabel().then {
-    $0.textColor = .secondaryBraveLabel
+    $0.textColor = UIColor(braveSystemName: .textSecondary)
     $0.font = .preferredFont(forTextStyle: .subheadline)
   }
 

@@ -73,12 +73,12 @@ struct DappsSettings: View {
     List {
       Section(
         header: Text(Strings.Wallet.dappsSettingsGeneralSectionTitle)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
       ) {
         Group {
           HStack {
             Text(defaultWalletTitle)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Spacer()
             Menu {
               Picker("", selection: $defaultWallet.value) {
@@ -91,14 +91,13 @@ struct DappsSettings: View {
             } label: {
               let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
               Text(wallet.name)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
           Toggle(allowProviderAccessTitle, isOn: $allowProviderAccess.value)
-            .foregroundColor(Color(.braveLabel))
-            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
+            .tint(Color(braveSystemName: .primitivePrimary40))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: Text(Strings.Wallet.dappsSettingsConnectedSitesSectionTitle)
@@ -106,7 +105,7 @@ struct DappsSettings: View {
         Group {
           if visibleSiteConnections.isEmpty {
             Text(Strings.Wallet.dappsSettingsConnectedSitesSectionEmpty)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .font(.footnote)
               .multilineTextAlignment(.leading)
               .padding(.vertical, 6)
@@ -141,12 +140,9 @@ struct DappsSettings: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(
       String.localizedStringWithFormat(Strings.Wallet.dappsSettingsNavTitle, coin.localizedTitle)
     )
@@ -164,7 +160,8 @@ struct DappsSettings: View {
         } label: {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
             .foregroundColor(
-              siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red
+              siteConnectionStore.siteConnections.isEmpty
+                ? Color(braveSystemName: .neutral20) : .red
             )
         }
         .disabled(siteConnectionStore.siteConnections.isEmpty)
@@ -215,12 +212,12 @@ private struct SiteRow: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       Text(verbatim: siteConnection.url)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .font(.headline)
       HStack {
         Text(connectedAddresses)
           .font(.subheadline)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
         accountBlockies
       }
       .frame(maxWidth: .infinity, alignment: .leading)
@@ -294,12 +291,9 @@ private struct SiteConnectionDetailView: View {
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(.insetGrouped)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .principal) {
@@ -320,7 +314,8 @@ private struct SiteConnectionDetailView: View {
         } label: {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
             .foregroundColor(
-              siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red
+              siteConnectionStore.siteConnections.isEmpty
+                ? Color(braveSystemName: .neutral20) : .red
             )
         }
       }

@@ -31,21 +31,19 @@ struct MediaSettingsView: View {
         Toggle(isOn: $enableBackgroundAudio.value) {
           Text(Strings.mediaAutoBackgrounding)
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
       Section(header: Text(Strings.Settings.youtube)) {
         Toggle(isOn: $keepYouTubeInBrave.value) {
           Text(Strings.Settings.openYouTubeInBrave)
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
         NavigationLink(destination: QualitySettingsView(prefs: prefs)) {
           VStack(alignment: .leading) {
             Text(Strings.Settings.highestQualityPlayback)
             Text(Strings.Settings.highestQualityPlaybackDetail)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(.secondary)
           }
         }
         Toggle(isOn: $youtubeRecommendationsBlocking) {
@@ -53,34 +51,32 @@ struct MediaSettingsView: View {
             Text(Strings.Settings.blockYoutubeRecommendationsTitle)
             Text(Strings.Settings.blockYoutubeRecommendationsDesc)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(.secondary)
           }
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
         Toggle(isOn: $youtubeDistractingElementsBlocking) {
           VStack(alignment: .leading) {
             Text(Strings.Settings.blockYouTubeDistractingElementsTitle)
             Text(Strings.Settings.blockYouTubeDistractingElementsDesc)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(.secondary)
           }
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
         Toggle(isOn: $youtubeShortsBlocking) {
           VStack(alignment: .leading) {
             Text(Strings.Settings.blockYouTubeShortsTitle)
             Text(Strings.Settings.blockYouTubeShortsDesc)
               .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(.secondary)
           }
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color(braveSystemName: .primitivePrimary40))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.Settings.mediaRootSetting)
     .navigationBarTitleDisplayMode(.inline)
-    .background(Color(UIColor.braveGroupedBackground))
     .task {
       // Update the enabled state filter lists
       self.youtubeDistractingElementsBlocking = FilterListStorage.shared.isEnabled(
@@ -181,16 +177,14 @@ private struct QualitySettingsView: View {
           }
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .navigationBarTitle(Strings.Settings.highestQualityPlayback)
-    .background(Color(UIColor.braveGroupedBackground))
+    .tint(Color(braveSystemName: .textInteractive))
   }
 
   func qualityOption(preference: YoutubeHighQualityPreference) -> some View {
     HStack {
       Text(preference.displayString)
-        .foregroundColor(Color(.braveLabel))
       Spacer()
       if prefs.integer(forPath: kYouTubeAutoQualityMode) == preference.rawValue {
         Image(braveSystemName: "leo.check.normal")

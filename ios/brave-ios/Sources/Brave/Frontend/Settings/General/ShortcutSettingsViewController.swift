@@ -71,7 +71,6 @@ struct ShortcutSettingsView: View {
             }
           }
           .buttonStyle(.plain)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } footer: {
           Text(activityType.footerDescription)
         }
@@ -97,13 +96,10 @@ struct ShortcutSettingsView: View {
         } message: {
           Text(Strings.Shortcuts.shortcutOpenApplicationSettingsDescription)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.Shortcuts.shortcutOpenApplicationSettingsDescription)
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
     .navigationTitle(Strings.Shortcuts.shortcutSettingsTitle)
     .sheet(item: $shortcutSheet) { sheet in
       switch sheet {

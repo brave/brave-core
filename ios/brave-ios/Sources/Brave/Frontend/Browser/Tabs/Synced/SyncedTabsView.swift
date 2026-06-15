@@ -132,8 +132,6 @@ struct SyncedTabsView: View {
           }
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(uiColor: .braveGroupedBackground))
       .overlay {
         Group {
           if !syncEnabled.value {
@@ -221,11 +219,9 @@ private struct SessionDisclosureGroup<Content: View>: View {
         dimension[.leading]
       }
       .listRowInsets(.zero)
-      .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
       if !isCollapsed {
         ForEach(session.tabs, id: \.tabId) { tab in
           content(tab)
-            .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
             .listRowInsets(.zero)
         }
       }

@@ -105,21 +105,21 @@ class BraveShieldStatsView: SpringButton {
   private lazy var adsStatView: StatView = {
     let statView = StatView(frame: CGRect.zero)
     statView.title = Strings.Shields.shieldsAdAndTrackerStats.capitalized
-    statView.color = .statsAdsBlockedTint
+    statView.color = UIColor(braveSystemName: .primitiveOrange70)
     return statView
   }()
 
   private lazy var dataSavedStatView: StatView = {
     let statView = StatView(frame: .zero)
     statView.title = Strings.Shields.dataSavedStat
-    statView.color = .statsDataSavedTint
+    statView.color = UIColor(braveSystemName: .primitiveBlurple70)
     return statView
   }()
 
   private lazy var timeStatView: StatView = {
     let statView = StatView(frame: .zero)
     statView.title = Strings.Shields.shieldsTimeStats
-    statView.color = .statsTimeSavedTint
+    statView.color = .white
     return statView
   }()
 
@@ -272,7 +272,7 @@ class BraveShieldStatsView: SpringButton {
 }
 
 private class StatView: UIView {
-  var color: UIColor = .braveLabel {
+  var color: UIColor = UIColor(braveSystemName: .textPrimary) {
     didSet {
       statLabel.textColor = color
     }

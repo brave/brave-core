@@ -56,12 +56,9 @@ struct ManagePasswordGroupView: View {
               .labelStyle(.iconOnly)
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background((Color(.braveGroupedBackground)))
     .navigationTitle(redactionReasons.contains(.privacy) ? redactedTitle : domain)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -125,7 +122,9 @@ struct ManagePasswordGroupView: View {
     }
     .toolbar(redactionReasons.contains(.privacy) ? .hidden : .visible, for: .bottomBar)
     .overlay {
-      if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if redactionReasons.contains(.privacy) {
+        Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
+      }
     }
   }
 

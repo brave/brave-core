@@ -32,7 +32,7 @@ struct WalletListHeaderView<Title: View, Subtitle: View>: View {
         .textCase(.none)
     }
     .accessibilityElement(children: .contain)
-    .foregroundColor(Color(.secondaryBraveLabel))
+    .foregroundColor(Color(braveSystemName: .textSecondary))
     .padding(.horizontal, -8)
     .frame(maxWidth: .infinity, alignment: .leading)
   }
@@ -66,14 +66,14 @@ class WalletTableViewHeaderView: UITableViewHeaderFooterView {
   }
 
   let titleLabel = UILabel().then {
-    $0.textColor = .secondaryBraveLabel
+    $0.textColor = UIColor(braveSystemName: .textSecondary)
     $0.font = .preferredFont(for: .footnote, weight: .medium)
     $0.adjustsFontForContentSizeCategory = true
     $0.numberOfLines = 0
   }
 
   let subtitleLabel = UILabel().then {
-    $0.textColor = .secondaryBraveLabel
+    $0.textColor = UIColor(braveSystemName: .textSecondary)
     $0.font = .preferredFont(forTextStyle: .caption1)
     $0.adjustsFontForContentSizeCategory = true
     $0.numberOfLines = 0

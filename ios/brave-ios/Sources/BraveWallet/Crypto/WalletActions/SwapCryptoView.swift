@@ -39,7 +39,7 @@ struct ShortcutAmountGrid: View {
             .minimumScaleFactor(0.75)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .background(WalletActionsGridBackgroundView())
             .padding(.top, 8)
         }
@@ -93,12 +93,16 @@ struct SlippageGrid: View {
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .foregroundColor(
-              Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel)
+              Color(
+                isPredefinedOptionSelected(option.id)
+                  ? .white : UIColor(braveSystemName: .textSecondary)
+              )
             )
             .background(
               WalletActionsGridBackgroundView(
                 backgroundColor: Color(
-                  isSelected ? .braveBlurpleTint : .secondaryBraveGroupedBackground
+                  isSelected
+                    ? UIColor(braveSystemName: .textInteractive) : .secondarySystemGroupedBackground
                 )
               )
             )
@@ -127,11 +131,14 @@ struct SlippageGrid: View {
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
         .accentColor(customSlippage != nil ? .white : nil)
-        .foregroundColor(Color(customSlippage != nil ? .white : .secondaryBraveLabel))
+        .foregroundColor(
+          Color(customSlippage != nil ? .white : UIColor(braveSystemName: .textSecondary))
+        )
         .background(
           WalletActionsGridBackgroundView(
             backgroundColor: Color(
-              customSlippage != nil ? .braveBlurpleTint : .secondaryBraveGroupedBackground
+              customSlippage != nil
+                ? UIColor(braveSystemName: .textInteractive) : .secondarySystemGroupedBackground
             )
           )
         )
@@ -168,7 +175,7 @@ struct MarketPriceView: View {
             swapTokenStore.selectedFromToken?.symbol ?? ""
           )
         )
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .font(.subheadline)
         Text(swapTokenStore.selectedFromTokenPrice)
           .font(.title3.weight(.semibold))
@@ -180,7 +187,7 @@ struct MarketPriceView: View {
       } label: {
         Label(Strings.Wallet.refreshMarketPriceLabel, braveSystemImage: "leo.refresh")
           .labelStyle(.iconOnly)
-          .foregroundColor(Color(.braveBlurpleTint))
+          .foregroundColor(Color(braveSystemName: .iconInteractive))
           .font(.title3)
       }
       .buttonStyle(.plain)
@@ -257,10 +264,9 @@ struct SwapCryptoView: View {
           )
         )
         .font(.subheadline)
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
       }
       .padding(.vertical, 6.0)
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
 
@@ -326,15 +332,14 @@ struct SwapCryptoView: View {
           }
           Text(swapTokensStore.selectedFromToken?.symbol ?? "")
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Spacer()
           Text(swapTokensStore.selectedFromTokenBalance?.decimalDescription ?? "0.0000")
             .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .padding(.vertical, 8)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       header: WalletListHeaderView(
@@ -360,11 +365,11 @@ struct SwapCryptoView: View {
             Label(Strings.Wallet.swapSelectedTokens, systemImage: "chevron.up.chevron.down")
               .labelStyle(.iconOnly)
               .font(.body)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .padding(.horizontal, 20)
               .padding(.vertical, 5)
               .background(
-                Color(.secondaryButtonTint)
+                Color(braveSystemName: .neutral30)
                   .clipShape(Capsule().inset(by: 0.5).stroke())
               )
               .clipShape(Capsule())
@@ -386,7 +391,6 @@ struct SwapCryptoView: View {
           swapTokensStore.isShowingSwapSellAmountError = BDouble(newValue) == nil
         }
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
@@ -408,15 +412,14 @@ struct SwapCryptoView: View {
           }
           Text(swapTokensStore.selectedToToken?.symbol ?? "")
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Spacer()
           Text(swapTokensStore.selectedToTokenBalance?.decimalDescription ?? "0.0000")
             .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .padding(.vertical, 8)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       header: WalletListHeaderView(
@@ -448,7 +451,6 @@ struct SwapCryptoView: View {
         }
       }
       .disabled(networkStore.defaultSelectedChain.coin == .sol)
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       //      MVP only supports market price swap. Ref: https://github.com/brave/brave-browser/issues/18307
@@ -462,7 +464,6 @@ struct SwapCryptoView: View {
       //        .padding(.bottom, 15)
       //        .listRowBackground(Color(.clear))
       header: MarketPriceView(swapTokenStore: swapTokensStore)
-        .listRowBackground(Color(UIColor.braveGroupedBackground))
         .resetListHeaderStyle()
         .padding(.horizontal)
         .padding(.bottom, 15),
@@ -487,12 +488,12 @@ struct SwapCryptoView: View {
             .font(.subheadline)
           Spacer()
           Text(formatSlippage)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .font(.subheadline.weight(.semibold))
           Image("wallet-dismiss", bundle: .module)
             .renderingMode(.template)
             .resizable()
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
             .frame(width: 12, height: 6)
             .rotationEffect(.degrees(hideSlippage ? 0 : 180))
             .animation(.default, value: hideSlippage)
@@ -503,7 +504,6 @@ struct SwapCryptoView: View {
       .accessibilityLabel(Strings.Wallet.swapCryptoSlippageTitle)
       .accessibilityValue(formatSlippage)
       .accessibility(addTraits: .isButton)
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
       header:
@@ -538,9 +538,9 @@ struct SwapCryptoView: View {
         HStack {
           Text(dexAggregator.swapDexAggrigatorNote)
             .multilineTextAlignment(.center)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Image(braveSystemName: "leo.info.ios-only")
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .iconInteractive))
             .accessibilityHidden(true)
         }
       }
@@ -561,7 +561,6 @@ struct SwapCryptoView: View {
       }
       .frame(maxWidth: .infinity)
       .font(.footnote)
-      .listRowBackground(Color(.braveGroupedBackground))
     }
   }
 
@@ -582,7 +581,7 @@ struct SwapCryptoView: View {
         }
       }
       .font(.footnote)
-      .foregroundColor(Color(.braveLabel))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
     }
   }
 
@@ -599,7 +598,6 @@ struct SwapCryptoView: View {
             keyringStore: keyringStore,
             networkStore: networkStore
           )
-          .listRowBackground(Color(UIColor.braveGroupedBackground))
           .resetListHeaderStyle()
         }
         if networkStore.isSwapSupported {
@@ -608,8 +606,6 @@ struct SwapCryptoView: View {
           unsupportedSwapChainSection
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
       .navigationTitle(Strings.Wallet.swap)
@@ -620,7 +616,7 @@ struct SwapCryptoView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }

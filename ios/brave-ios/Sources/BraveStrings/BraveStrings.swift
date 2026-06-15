@@ -4845,16 +4845,6 @@ extension Strings {
         comment: "The title for the toast button when an item was added to playlist"
       )
 
-    public static let toastExitingItemPlaylistTitle =
-      NSLocalizedString(
-        "playList.toastExitingItemPlaylistTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "View in Brave Playlist",
-        comment:
-          "The title for the toast that shows up on a page when an item that has already been added, was updated."
-      )
-
     public static let urlBarButtonOptionTitle =
       NSLocalizedString(
         "playlist.urlBarButtonOptionTitle",

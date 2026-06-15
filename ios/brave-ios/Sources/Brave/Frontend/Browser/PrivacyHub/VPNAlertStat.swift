@@ -28,7 +28,7 @@ extension PrivacyReportsView {
         if compact {
           VStack(alignment: .leading) {
             Text(title)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .font(.caption.weight(.semibold))
               .unredacted()
             Text("\(count)")
@@ -50,7 +50,7 @@ extension PrivacyReportsView {
       }
       .padding(.vertical, 8)
       .frame(maxWidth: .infinity)
-      .background(Color(.braveBackground))
+      .background(Color(braveSystemName: .containerBackground))
       .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
       .fixedSize(horizontal: false, vertical: true)
     }

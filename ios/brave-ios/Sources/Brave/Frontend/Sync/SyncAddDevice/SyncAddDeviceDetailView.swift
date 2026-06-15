@@ -56,7 +56,7 @@ class SyncAddDeviceInformationView: UIStackView {
         attributedDescription.addAttributes(
           [
             .font: UIFont.preferredFont(for: .footnote, weight: .semibold),
-            .foregroundColor: UIColor.braveErrorLabel,
+            .foregroundColor: UIColor(braveSystemName: .systemfeedbackErrorText),
           ],
           range: lastSentenceRange
         )
@@ -80,7 +80,7 @@ class SyncAddDeviceInformationView: UIStackView {
         description.addAttributes(
           [
             .font: UIFont.preferredFont(for: .footnote, weight: .semibold),
-            .foregroundColor: UIColor.braveErrorLabel,
+            .foregroundColor: UIColor(braveSystemName: .systemfeedbackErrorText),
           ],
           range: lastSentenceRange
         )

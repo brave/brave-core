@@ -18,7 +18,7 @@ class IndentedImageTableViewCell: UITableViewCell {
 
   let customImage = UIImageView().then {
     $0.image = UIImage(named: "shields-menu-icon", in: .module, compatibleWith: nil)!
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .textPrimary)
     $0.contentMode = .scaleAspectFit
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -26,7 +26,7 @@ class IndentedImageTableViewCell: UITableViewCell {
 
   let folderName = UILabel().then {
     $0.textAlignment = .left
-    $0.textColor = .braveLabel
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 
   convenience init(image: UIImage) {

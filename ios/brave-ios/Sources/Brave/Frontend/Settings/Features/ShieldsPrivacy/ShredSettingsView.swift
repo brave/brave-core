@@ -27,7 +27,6 @@ struct ShredSettingsView: View {
           EmptyView()
         }
         .pickerStyle(.inline)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Shields.autoShredSectionTitle)
       }
@@ -37,11 +36,8 @@ struct ShredSettingsView: View {
           subtitle: Strings.Shields.shredHistoryRowDescription,
           toggle: $settings.shredHistoryItems
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Shields.shredSettingsViewTitle)
   }
 }

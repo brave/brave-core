@@ -510,8 +510,7 @@ extension BrowserViewController: TopToolbarDelegate {
     let container = SettingsNavigationController(rootViewController: controller)
     container.modalPresentationStyle =
       UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
-    controller.navigationItem.rightBarButtonItem = .init(
-      barButtonSystemItem: .done,
+    controller.navigationItem.rightBarButtonItem = .doneButton(
       target: container,
       action: #selector(SettingsNavigationController.done)
     )
@@ -918,12 +917,10 @@ extension BrowserViewController: TopToolbarDelegate {
       action: #selector(SettingsNavigationController.done)
     )
 
-    let doneBarbutton = UIBarButtonItem(
-      barButtonSystemItem: .done,
+    let doneBarbutton = UIBarButtonItem.doneButton(
       target: navigationController,
       action: #selector(SettingsNavigationController.done)
     )
-
     navigationController.navigationBar.topItem?.leftBarButtonItem =
       cancelEnabled ? cancelBarbutton : nil
 

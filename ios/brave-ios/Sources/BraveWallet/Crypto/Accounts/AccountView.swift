@@ -43,11 +43,11 @@ struct AccountView: View {
       VStack(alignment: .leading, spacing: 2) {
         Text(name)
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
         if !address.isEmpty {
           Text(address.truncatedAddress)
             .font(.footnote)
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
         }
       }
       .font(.caption)

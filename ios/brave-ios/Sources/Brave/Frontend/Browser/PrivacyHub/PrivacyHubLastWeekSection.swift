@@ -34,7 +34,7 @@ extension PrivacyReportsView {
       .foregroundColor(Color.white)
       .frame(maxWidth: .infinity)
       .padding()
-      .background(Color(.braveInfoLabel))
+      .background(Color(braveSystemName: .systemfeedbackInfoText))
       .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
@@ -64,7 +64,7 @@ extension PrivacyReportsView {
           VStack(alignment: .leading) {
             Text(Strings.PrivacyHub.mostFrequentTrackerAndAdTitle.uppercased())
               .font(.caption)
-              .foregroundColor(.init(.secondaryBraveLabel))
+              .foregroundColor(.init(UIColor(braveSystemName: .textSecondary)))
               .unredacted()
             if let mostFrequentTracker = mostFrequentTracker {
               Text(
@@ -79,14 +79,14 @@ extension PrivacyReportsView {
               .font(.callout)
             } else {
               Text(Strings.PrivacyHub.noDataToShow)
-                .foregroundColor(.init(.secondaryBraveLabel))
+                .foregroundColor(.init(UIColor(braveSystemName: .textSecondary)))
             }
           }
           Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color(.braveBackground))
+        .background(Color(braveSystemName: .containerBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .redacted(reason: mostFrequentTrackerLoading ? .placeholder : [])
 
@@ -96,7 +96,7 @@ extension PrivacyReportsView {
           VStack(alignment: .leading) {
             Text(Strings.PrivacyHub.riskiestWebsiteTitle.uppercased())
               .font(.caption)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
               .unredacted()
 
             if let riskiestWebsite = riskiestWebsite {
@@ -112,7 +112,7 @@ extension PrivacyReportsView {
               .font(.callout)
             } else {
               Text(Strings.PrivacyHub.noDataToShow)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
 
@@ -120,7 +120,7 @@ extension PrivacyReportsView {
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color(.braveBackground))
+        .background(Color(braveSystemName: .containerBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .redacted(reason: riskiestWebsiteLoading ? .placeholder : [])
       }

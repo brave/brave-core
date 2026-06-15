@@ -44,11 +44,11 @@ struct BuyTokenView: View {
               .frame(width: avatarSize, height: avatarSize)
             Text(account.name)
               .font(.title3.weight(.semibold))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             Spacer()
             Image(systemName: "chevron.down")
               .imageScale(.small)
-              .foregroundColor(Color(.secondaryBraveLabel))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
           }
           Text(buyTokenStore.selectedAccountAddress)
             .padding(4)
@@ -94,18 +94,16 @@ struct BuyTokenView: View {
                 buyTokenStore.selectedBuyToken.name ?? buyTokenStore.selectedBuyToken.displaySymbol
               )
               .font(.title3.weight(.semibold))
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             .padding(.vertical, 8)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.meldAccountHeaderTitle))
         ) {
           accountPickerView
             .padding(.vertical, 8)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.enterAmount))
@@ -117,7 +115,7 @@ struct BuyTokenView: View {
                 content: {
                   ForEach(buyTokenStore.supportedFiatCurrencies, id: \.currencyCode) { currency in
                     Text(currency.name ?? "")
-                      .foregroundColor(Color(.secondaryBraveLabel))
+                      .foregroundColor(Color(braveSystemName: .textSecondary))
                       .tag(currency)
                   }
                 },
@@ -128,17 +126,16 @@ struct BuyTokenView: View {
               HStack(spacing: 4) {
                 Text(buyTokenStore.selectedFiatCurrency.currencyCode)
                   .font(.title2.weight(.bold))
-                  .foregroundColor(Color(.braveLabel))
+                  .foregroundColor(Color(braveSystemName: .textPrimary))
                 Image(systemName: "chevron.down")
                   .imageScale(.small)
-                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
               }
             }
             TextField("0", text: $buyTokenStore.buyAmount)
               .keyboardType(.decimalPad)
           }
           .padding(.vertical, 8)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.meldCountryHeaderTitle))
@@ -149,7 +146,7 @@ struct BuyTokenView: View {
               content: {
                 ForEach(buyTokenStore.supportedCountries, id: \.countryCode) { country in
                   Text(country.name ?? "")
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     .tag(country)
                 }
               },
@@ -159,14 +156,13 @@ struct BuyTokenView: View {
           } label: {
             HStack(spacing: 4) {
               Text(buyTokenStore.selectedCountry.name ?? "")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               Image(systemName: "chevron.down")
                 .imageScale(.small)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
           .padding(.vertical, 8)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.meldPaymentMethodHeaderTitle))
@@ -177,7 +173,7 @@ struct BuyTokenView: View {
               content: {
                 ForEach(buyTokenStore.supportedPaymentTypes, id: \.paymentMethod) { type in
                   Text(type.name ?? "")
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     .tag(type)
                 }
               },
@@ -187,14 +183,13 @@ struct BuyTokenView: View {
           } label: {
             HStack(spacing: 4) {
               Text(buyTokenStore.selectedPaymentType.name ?? "")
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
               Image(systemName: "chevron.down")
                 .imageScale(.small)
-                .foregroundColor(Color(.secondaryBraveLabel))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
             }
           }
           .padding(.vertical, 8)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: HStack {
@@ -218,8 +213,6 @@ struct BuyTokenView: View {
       }
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.buy)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -228,7 +221,7 @@ struct BuyTokenView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }

@@ -254,16 +254,15 @@ extension LoginInfoViewController {
           format: Strings.Login.loginInfoCreatedHeaderTitle,
           formattedCreationDate
         )
-        $0.tintColor = .secondaryBraveLabel
+        $0.tintColor = .secondaryLabel
         $0.selectionStyle = .none
-        $0.backgroundColor = .secondaryBraveBackground
       }
       return cell
     case Section.delete.rawValue:
       let cell = tableView.dequeueReusableCell(for: indexPath) as CenteredButtonCell
       cell.do {
         $0.textLabel?.text = Strings.delete
-        $0.tintColor = .braveBlurpleTint
+        $0.tintColor = UIColor(braveSystemName: .textInteractive)
       }
       return cell
     default:

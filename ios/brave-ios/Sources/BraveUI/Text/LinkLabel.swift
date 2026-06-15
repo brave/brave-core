@@ -195,8 +195,8 @@ final public class LinkLabel: UITextView {
   // MARK: - Private
 
   private struct UX {
-    static let textColor = UIColor.braveLabel
-    static let linkColor = UIColor.braveBlurpleTint
+    static let textColor = UIColor(braveSystemName: .textPrimary)
+    static let linkColor = UIColor(braveSystemName: .textInteractive)
     static let linkUnderlineStyle = 0
   }
 }

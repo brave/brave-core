@@ -36,7 +36,7 @@ struct SetupCryptoView: View {
             HStack(alignment: .top, spacing: 16) {
               Image(braveSystemName: "leo.plus.add")
                 .frame(width: 32, height: 32)
-                .background(Color(.secondaryButtonTint).opacity(0.3))
+                .background(Color(braveSystemName: .neutral30).opacity(0.3))
                 .clipShape(Circle())
               VStack(alignment: .leading, spacing: 12) {
                 Text(Strings.Wallet.setupCryptoCreateNewTitle)
@@ -51,7 +51,7 @@ struct SetupCryptoView: View {
               Spacer()
             }
             .padding(28)
-            .background(Color(.braveBackground))
+            .background(Color(braveSystemName: .containerBackground))
             .cornerRadius(16)
             .frame(maxWidth: .infinity)
           }
@@ -61,7 +61,7 @@ struct SetupCryptoView: View {
             HStack(alignment: .top, spacing: 16) {
               Image(braveSystemName: "leo.import.arrow")
                 .frame(width: 32, height: 32)
-                .background(Color(.secondaryButtonTint).opacity(0.3))
+                .background(Color(braveSystemName: .neutral30).opacity(0.3))
                 .clipShape(Circle())
               VStack(alignment: .leading, spacing: 12) {
                 Group {
@@ -92,13 +92,13 @@ struct SetupCryptoView: View {
               Spacer()
             }
             .padding(28)
-            .background(Color(.braveBackground))
+            .background(Color(braveSystemName: .containerBackground))
             .cornerRadius(16)
           }
         }
         Text(Strings.Wallet.setupCryptoDisclaimer)
           .font(.caption2)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .multilineTextAlignment(.center)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)

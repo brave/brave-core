@@ -27,7 +27,7 @@ private struct ZoomView: View {
       Button(action: onDecrement) {
         Image(braveSystemName: "leo.minus")
           .font(.system(.footnote).weight(.medium))
-          .foregroundColor(value == minValue ? .accentColor : Color(UIColor.braveLabel))
+          .foregroundColor(value == minValue ? .accentColor : Color(braveSystemName: .textPrimary))
           .frame(width: buttonWidth)
       }
       .disabled(value == minValue)
@@ -49,7 +49,7 @@ private struct ZoomView: View {
       Button(action: onIncrement) {
         Image(braveSystemName: "leo.plus.add")
           .font(.system(.footnote).weight(.medium))
-          .foregroundColor(value == maxValue ? .accentColor : Color(UIColor.braveLabel))
+          .foregroundColor(value == maxValue ? .accentColor : Color(braveSystemName: .textPrimary))
           .frame(width: buttonWidth)
       }
       .disabled(value == maxValue)
@@ -57,7 +57,7 @@ private struct ZoomView: View {
     }
     .padding(.vertical, 8.0)
     .fixedSize(horizontal: false, vertical: true)
-    .background(Color(UIColor.secondaryBraveBackground))
+    .background(Color(UIColor(braveSystemName: .pageBackground)))
     .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
   }
 
@@ -67,7 +67,7 @@ private struct ZoomView: View {
         .font(.system(.footnote).weight(.medium))
         .foregroundColor(
           (value == (isPrivateBrowsing ? 1.0 : Preferences.General.defaultPageZoomLevel.value))
-            ? .accentColor : Color(UIColor.braveLabel)
+            ? .accentColor : Color(braveSystemName: .textPrimary)
         )
         .padding()
         .contentShape(Rectangle())
@@ -125,7 +125,7 @@ struct PageZoomView: View {
           dismiss?()
         } label: {
           Image(braveSystemName: "leo.close")
-            .foregroundColor(Color(UIColor.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .iconInteractive))
             .font(.system(.footnote).weight(.medium))
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -134,7 +134,7 @@ struct PageZoomView: View {
       .padding(.vertical, 6.0)
       .hoverEffect()
     }
-    .background(Color(UIColor.braveBackground))
+    .background(Color(UIColor(braveSystemName: .containerBackground)))
     .ignoresSafeArea()
   }
 

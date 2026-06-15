@@ -107,7 +107,9 @@ class LocationViewPositionPickerCell: UITableViewCell, Cell {
         checkmarkView.image = UIImage(
           braveSystemNamed: isSelected ? "leo.check.circle-outline" : "leo.radio.unchecked"
         )
-        checkmarkView.tintColor = isSelected ? .braveBlurpleTint : .braveDisabled
+        checkmarkView.tintColor =
+          isSelected
+          ? UIColor(braveSystemName: .iconInteractive) : UIColor(braveSystemName: .neutral20)
       }
     }
 

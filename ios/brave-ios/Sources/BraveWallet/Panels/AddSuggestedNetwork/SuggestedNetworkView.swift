@@ -92,7 +92,7 @@ struct SuggestedNetworkView: View {
       .resizable()
       .aspectRatio(contentMode: .fit)
       .padding(8)
-      .background(Color(.braveDisabled))
+      .background(Color(braveSystemName: .neutral20))
   }
 
   @ViewBuilder private var faviconAndOrigin: some View {
@@ -115,7 +115,7 @@ struct SuggestedNetworkView: View {
       .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
       Text(originInfo: originInfo)
         .font(.subheadline)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
         .multilineTextAlignment(.center)
     }
     .accessibilityElement(children: .combine)
@@ -154,18 +154,18 @@ struct SuggestedNetworkView: View {
         faviconAndOrigin
         Text(headerTitle)
           .font(.headline)
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
         Text(headerDescription)
           .font(.subheadline)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .multilineTextAlignment(.center)
         if case .addNetwork = mode {
           Button {
             openWalletURL(.brave.support)
           } label: {
             Text(Strings.Wallet.learnMoreButton)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }
@@ -202,11 +202,10 @@ struct SuggestedNetworkView: View {
               )
             } label: {
               Text(Strings.Wallet.viewDetails)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         headerView
       }
@@ -215,15 +214,12 @@ struct SuggestedNetworkView: View {
       Section {
         actionButtonContainer
           .frame(maxWidth: .infinity)
-          .listRowBackground(Color(.braveGroupedBackground))
       }
       .listRowInsets(.zero)
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .overlay(
@@ -235,9 +231,9 @@ struct SuggestedNetworkView: View {
             .background(
               LinearGradient(
                 stops: [
-                  .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                  .init(color: Color(.systemGroupedBackground).opacity(0), location: 0),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 0.05),
+                  .init(color: Color(.systemGroupedBackground).opacity(1), location: 1),
                 ],
                 startPoint: .top,
                 endPoint: .bottom

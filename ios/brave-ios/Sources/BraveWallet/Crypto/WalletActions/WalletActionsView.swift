@@ -29,11 +29,11 @@ struct WalletActionsView: View {
         } label: {
           VStack(alignment: .leading, spacing: 3) {
             Text(destination.kind.localizedTitle)
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.headline)
               .multilineTextAlignment(.leading)
             Text(destination.kind.localizedDescription)
-              .foregroundColor(Color(.braveLabel))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
               .font(.footnote)
               .multilineTextAlignment(.leading)
           }
@@ -47,7 +47,7 @@ struct WalletActionsView: View {
       }
     }
     .padding(.vertical, 20)
-    .background(Color(.braveBackground))
+    .background(Color(braveSystemName: .containerBackground))
   }
 }
 

@@ -58,12 +58,12 @@ struct AssetDetailHeaderView: View {
             Text(assetDetailStore.assetDetailToken.name)
               .fixedSize(horizontal: false, vertical: true)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             if let chainName = assetDetailStore.network?.chainName {
               Text("\(assetDetailStore.assetDetailToken.symbol) on \(chainName)")
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.footnote)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
             Group {
               if let selectedCandle = selectedCandle,
@@ -77,7 +77,7 @@ struct AssetDetailHeaderView: View {
               }
             }
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           }
           .transaction { transaction in
             transaction.animation = nil
@@ -93,12 +93,12 @@ struct AssetDetailHeaderView: View {
             Text(assetDetailStore.assetDetailToken.name)
               .fixedSize(horizontal: false, vertical: true)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
+              .foregroundColor(Color(braveSystemName: .textPrimary))
             if let chainName = assetDetailStore.network?.chainName {
               Text("\(assetDetailStore.assetDetailToken.symbol) on \(chainName)")
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.footnote)
-                .foregroundColor(Color(.braveLabel))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
             }
           }
         }
@@ -116,7 +116,7 @@ struct AssetDetailHeaderView: View {
             }
           }
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .transaction { transaction in
             transaction.animation = nil
             transaction.disablesAnimations = true
@@ -137,7 +137,8 @@ struct AssetDetailHeaderView: View {
       LineChartView(data: data, numberOfColumns: data.count, selectedDataPoint: $selectedCandle) {
         LinearGradient(
           gradient: Gradient(colors: [
-            Color(.braveBlurpleTint).opacity(colourScheme == .dark ? 0.5 : 0.2), .clear,
+            Color(braveSystemName: .primitivePrimary40).opacity(colourScheme == .dark ? 0.5 : 0.2),
+            .clear,
           ]),
           startPoint: .top,
           endPoint: .bottom

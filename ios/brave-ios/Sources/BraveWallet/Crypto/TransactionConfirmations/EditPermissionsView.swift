@@ -72,17 +72,17 @@ struct EditPermissionsView: View {
             accountName
           )
         )
-        .foregroundColor(Color(.secondaryBraveLabel))
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .font(.footnote)
         .resetListHeaderStyle()
         .padding(.vertical)
       ) {
         VStack(alignment: .leading, spacing: 2) {
           Text(Strings.Wallet.editPermissionsProposedAllowanceHeader)
-            .foregroundColor(Color(.bravePrimary))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
             .fontWeight(.semibold)
           Text("\(confirmationStore.value) \(confirmationStore.symbol)")
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .font(.footnote)
         .padding(.vertical, 6)
@@ -90,7 +90,7 @@ struct EditPermissionsView: View {
 
       Section(
         header: Text(Strings.Wallet.editPermissionsCustomAllowanceHeader)
-          .foregroundColor(Color(.secondaryBraveLabel))
+          .foregroundColor(Color(braveSystemName: .textSecondary))
           .font(.footnote)
           .resetListHeaderStyle()
           .padding(.vertical)
@@ -106,14 +106,14 @@ struct EditPermissionsView: View {
             }
           )
           .keyboardType(.decimalPad)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           if proposedAllowance.caseInsensitiveCompare(WalletConstants.maxUInt256) != .orderedSame {
             Button {
               customAllowance = Strings.Wallet.editPermissionsApproveUnlimited
               resignFirstResponder()
             } label: {
               Text(Strings.Wallet.editPermissionsSetUnlimited)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
                 .font(.footnote)
             }
           }
@@ -140,11 +140,8 @@ struct EditPermissionsView: View {
       .disabled(customAllowance.isEmpty)
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)
-      .listRowBackground(Color(.braveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.editPermissionsTitle)
     .alert(isPresented: $isShowingAlert) {

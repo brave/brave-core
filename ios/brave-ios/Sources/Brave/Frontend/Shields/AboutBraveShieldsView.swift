@@ -14,8 +14,6 @@ struct AboutBraveShieldsView: View {
     }
     .padding()
     .navigationTitle(Strings.Shields.aboutBraveShieldsTitle)
-    .scrollContentBackground(.hidden)
-    .background(Color(.braveGroupedBackground))
     .toolbar(.visible)
   }
 }

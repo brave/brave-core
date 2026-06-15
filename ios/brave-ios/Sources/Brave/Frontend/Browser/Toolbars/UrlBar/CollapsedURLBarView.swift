@@ -31,7 +31,7 @@ class CollapsedURLBarView: UIView {
 
   private let urlLabel = UILabel().then {
     $0.font = .preferredFont(forTextStyle: .caption1)
-    $0.textColor = .bravePrimary
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.lineBreakMode = .byTruncatingHead
     $0.numberOfLines = 1
     $0.textAlignment = .right

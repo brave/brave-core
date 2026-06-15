@@ -33,7 +33,9 @@ struct UnavailableBTCBalanceView: View {
       label: {
         HStack(spacing: 16) {
           ProgressView()
-            .progressViewStyle(.braveCircular(size: .small, tint: .braveBlurpleTint))
+            .progressViewStyle(
+              .braveCircular(size: .small, tint: UIColor(braveSystemName: .primitivePrimary40))
+            )
           Text(Strings.Wallet.btcPendingBalancesBannerDesc)
             .font(.footnote)
             .multilineTextAlignment(.leading)

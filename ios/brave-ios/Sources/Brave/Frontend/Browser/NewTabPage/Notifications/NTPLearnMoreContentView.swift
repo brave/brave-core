@@ -167,7 +167,7 @@ private func detailLinkLabel(with text: String) -> LinkLabel {
   LinkLabel().then {
     $0.font = .systemFont(ofSize: 12.0)
     $0.textColor = UIColor(white: 0, alpha: 0.7)
-    $0.linkColor = UIColor.braveBlurpleTint
+    $0.linkColor = UIColor(braveSystemName: .textInteractive)
     $0.text = text
     $0.textContainerInset = .zero
     $0.textContainer.lineFragmentPadding = 0

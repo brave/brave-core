@@ -71,7 +71,7 @@ private struct NoFavoritesFoundView: View {
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
       Text(Strings.Widgets.noFavoritesFound)
         .multilineTextAlignment(.center)
-        .foregroundColor(Color(UIColor.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
     }
     .padding()
     .unredacted()
@@ -90,7 +90,7 @@ private struct FavoritesView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .widgetBackground { Color(UIColor.secondaryBraveBackground) }
+    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 
@@ -123,7 +123,7 @@ private struct FavoritesGridView: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .overlay(
         itemShape
-          .strokeBorder(Color(UIColor.braveLabel).opacity(0.2), lineWidth: pixelLength)
+          .strokeBorder(Color(braveSystemName: .textPrimary).opacity(0.2), lineWidth: pixelLength)
       )
       .aspectRatio(1.0, contentMode: .fit)
   }
@@ -154,15 +154,22 @@ private struct FavoritesGridView: View {
                     .font(.system(size: 36))
                     .aspectRatio(1.0, contentMode: .fit)
                     .clipped()
-                    .background(Color(UIColor.braveBackground))
-                    .foregroundColor(Color(UIColor.braveLabel))
+                    .background(Color(UIColor(braveSystemName: .containerBackground)))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                 }
               }
               .clipShape(itemShape)
-              .background(Color(UIColor.braveBackground).opacity(0.05).clipShape(itemShape))
+              .background(
+                Color(UIColor(braveSystemName: .containerBackground)).opacity(0.05).clipShape(
+                  itemShape
+                )
+              )
               .overlay(
                 itemShape
-                  .strokeBorder(Color(UIColor.braveLabel).opacity(0.2), lineWidth: pixelLength)
+                  .strokeBorder(
+                    Color(braveSystemName: .textPrimary).opacity(0.2),
+                    lineWidth: pixelLength
+                  )
               )
               .padding(widgetFamily == .systemMedium ? 4 : 0)
             }

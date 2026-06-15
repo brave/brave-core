@@ -39,12 +39,9 @@ private struct SourceListView: View {
         ForEach(sources) { source in
           SourceLabel(source: source, isFollowing: isFollowing(source))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .environment(\.defaultMinListRowHeight, 44)
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.grouped)
     .navigationTitle(Strings.BraveNews.popularSourcesTitle)
     .navigationBarTitleDisplayMode(.inline)
@@ -58,7 +55,6 @@ struct SourceListView_PreviewProvider: PreviewProvider {
       SourceListView(sources: Mock.sources, isFollowing: { _ in .constant(false) })
     }
     .navigationViewStyle(.stack)
-    .accentColor(Color(.braveBlurpleTint))
   }
 }
 #endif

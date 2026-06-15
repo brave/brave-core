@@ -26,7 +26,7 @@ struct NetworkTextField: View {
       TextField(placeholder, text: $item.input)
         .autocapitalization(.none)
         .disableAutocorrection(true)
-        .foregroundColor(Color(.braveLabel))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       if let error = item.error {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
           Image(braveSystemName: "leo.warning.circle-filled")
@@ -42,7 +42,7 @@ struct NetworkTextField: View {
           )
         )
         .font(.footnote)
-        .foregroundColor(Color(.braveErrorLabel))
+        .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
       }
     }
   }
@@ -351,7 +351,6 @@ struct NetworkDetailsView: View {
           isDisabled: isChainIdInputDisabled
         )
         .keyboardType(.numberPad)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkChainNameTitle))
@@ -361,7 +360,6 @@ struct NetworkDetailsView: View {
           item: $model.networkName,
           isDisabled: model.mode.isViewMode
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolNameTitle))
@@ -371,7 +369,6 @@ struct NetworkDetailsView: View {
           item: $model.networkSymbolName,
           isDisabled: model.mode.isViewMode
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolTitle))
@@ -381,7 +378,6 @@ struct NetworkDetailsView: View {
           item: $model.networkSymbol,
           isDisabled: model.mode.isViewMode
         )
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkCurrencyDecimalTitle))
@@ -392,7 +388,6 @@ struct NetworkDetailsView: View {
           isDisabled: model.mode.isViewMode
         )
         .keyboardType(.numberPad)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if !model.rpcUrls.isEmpty {
         Section(
@@ -406,7 +401,6 @@ struct NetworkDetailsView: View {
               isDisabled: model.mode.isViewMode
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       if !model.iconUrls.isEmpty {
@@ -420,7 +414,6 @@ struct NetworkDetailsView: View {
               isDisabled: model.mode.isViewMode
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       if !model.blockUrls.isEmpty {
@@ -436,12 +429,9 @@ struct NetworkDetailsView: View {
               isDisabled: model.mode.isViewMode
             )
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
-    .scrollContentBackground(.hidden)
-    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -462,7 +452,7 @@ struct NetworkDetailsView: View {
               }
             } label: {
               Text(Strings.Wallet.saveButtonTitle)
-                .foregroundColor(Color(.braveBlurpleTint))
+                .foregroundColor(Color(braveSystemName: .textInteractive))
             }
           }
         }
@@ -472,7 +462,7 @@ struct NetworkDetailsView: View {
           presentationMode.dismiss()
         } label: {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
         }
       }
     }
@@ -532,7 +522,7 @@ struct NetworkDetailsView: View {
       }
       if isDisabled {
         Text(item.wrappedValue.input)
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .contextMenu {
             Button {
               UIPasteboard.general.string = item.wrappedValue.input
@@ -703,7 +693,10 @@ struct NetworkRadioButton: View {
   var body: some View {
     Image(braveSystemName: checked ? "leo.check.circle-outline" : "leo.radio.unchecked")
       .renderingMode(.template)
-      .foregroundColor(Color((checked && !isDisabled) ? .braveBlurpleTint : .braveDisabled))
+      .foregroundColor(
+        (checked && !isDisabled)
+          ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .neutral20)
+      )
       .font(.title3)
       .onTapGesture {
         if !self.isDisabled && !checked {

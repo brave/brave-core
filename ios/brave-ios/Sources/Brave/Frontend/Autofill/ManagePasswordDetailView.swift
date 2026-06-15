@@ -46,8 +46,6 @@ struct ManagePasswordDetailView: View {
           Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
         LabeledContent {
           Menu {
             Button {
@@ -65,8 +63,6 @@ struct ManagePasswordDetailView: View {
           Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
         LabeledContent {
           HStack(spacing: 8) {
             Menu {
@@ -110,17 +106,16 @@ struct ManagePasswordDetailView: View {
           Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
-    .scrollContentBackground(.hidden)
-    .background((Color(.braveGroupedBackground)))
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
     .navigationTitle(redactionReasons.contains(.privacy) ? redactedTitle : navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .overlay {
-      if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if redactionReasons.contains(.privacy) {
+        Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
+      }
     }
   }
 }

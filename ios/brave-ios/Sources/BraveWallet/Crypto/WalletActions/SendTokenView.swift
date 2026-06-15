@@ -127,15 +127,15 @@ struct SendTokenView: View {
         VStack(alignment: .leading) {
           Text(sendTokenStore.selectedSendToken?.symbol ?? "")
             .font(.title3.weight(.semibold))
-            .foregroundColor(Color(.braveLabel))
+            .foregroundColor(Color(braveSystemName: .textPrimary))
           Text(networkStore.defaultSelectedChain.chainName)
             .font(.caption)
-            .foregroundColor(Color(.secondaryBraveLabel))
+            .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         Spacer()
         Text(sendTokenBalanceDisplay)
           .font(.title3.weight(.semibold))
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
       }
       .padding(.vertical, 8)
     }
@@ -178,7 +178,6 @@ struct SendTokenView: View {
               .listRowInsets(.init(top: 0, leading: 8, bottom: 8, trailing: 8))
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .listRowSpacing(0)
           .listRowSeparator(.hidden)
         }
@@ -208,7 +207,6 @@ struct SendTokenView: View {
               text: $sendTokenStore.sendAmount
             )
             .keyboardType(.numbersAndPunctuation)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
         Section(
@@ -233,7 +231,7 @@ struct SendTokenView: View {
               } label: {
                 Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "leo.copy.plain-text")
                   .labelStyle(.iconOnly)
-                  .foregroundColor(Color(.primaryButtonTint))
+                  .foregroundColor(Color(braveSystemName: .neutral70))
                   .font(.body)
               }
               .buttonStyle(PlainButtonStyle())
@@ -246,7 +244,7 @@ struct SendTokenView: View {
                     braveSystemImage: "leo.qr.code"
                   )
                   .labelStyle(.iconOnly)
-                  .foregroundColor(Color(.primaryButtonTint))
+                  .foregroundColor(Color(braveSystemName: .neutral70))
                   .font(.body)
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -262,17 +260,17 @@ struct SendTokenView: View {
                   Text(Strings.Wallet.ensOffchainGatewayTitle)
                     .font(.body)
                     .fontWeight(.bold)
-                    .foregroundColor(Color(.braveLabel))
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
                     .fixedSize(horizontal: false, vertical: true)
                   Text(Strings.Wallet.ensOffchainGatewayDesc)
                     .font(.body)
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                     .fixedSize(horizontal: false, vertical: true)
                   Button {
                     openURL(WalletConstants.braveWalletENSOffchainURL)
                   } label: {
                     Text(Strings.Wallet.learnMoreButton)
-                      .foregroundColor(Color(.braveBlurpleTint))
+                      .foregroundColor(Color(braveSystemName: .textInteractive))
                   }
                 }
                 .font(.subheadline)
@@ -283,13 +281,12 @@ struct SendTokenView: View {
                 AddressView(address: resolvedAddress) {
                   Text(resolvedAddress)
                     .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
                 }
               }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         if sendTokenStore.selectedSendToken?.coin == .btc {
           Section {
@@ -302,7 +299,7 @@ struct SendTokenView: View {
                   .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
               }
             }
-            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+            .tint(Color(braveSystemName: .primitivePrimary40))
           }
           .listRowBackground(Color(braveSystemName: .systemfeedbackWarningBackground))
         }
@@ -337,8 +334,6 @@ struct SendTokenView: View {
         ) {
         }
       }
-      .scrollContentBackground(.hidden)
-      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
       .alert(isPresented: $isShowingError) {
@@ -392,7 +387,7 @@ struct SendTokenView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveBlurpleTint))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
         }
       }

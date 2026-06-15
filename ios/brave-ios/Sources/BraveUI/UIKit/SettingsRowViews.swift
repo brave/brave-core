@@ -16,6 +16,7 @@ public class SwitchAccessoryView: UISwitch {
     self.valueChange = valueChange
     super.init(frame: .zero)
     isOn = initialValue
+    onTintColor = UIColor(braveSystemName: .primitivePrimary40)
     addTarget(self, action: #selector(valueChanged), for: .valueChanged)
   }
 
@@ -77,6 +78,7 @@ public class MultilineButtonCell: ButtonCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.numberOfLines = 0
+    textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -88,6 +90,7 @@ public class CenteredButtonCell: ButtonCell, TableViewReusable {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.textAlignment = .center
+    textLabel?.textColor = UIColor(braveSystemName: .textInteractive)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -136,7 +139,7 @@ open class MultilineSubtitleCell: SubtitleCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.numberOfLines = 0
     detailTextLabel?.numberOfLines = 0
-    detailTextLabel?.textColor = .secondaryBraveLabel
+    detailTextLabel?.textColor = .secondaryLabel
   }
 
   public required init?(coder aDecoder: NSCoder) {

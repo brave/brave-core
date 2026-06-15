@@ -20,7 +20,7 @@ struct BackupNotifyView: View {
       HStack {
         Text(Strings.Wallet.backupWalletWarningMessage)
           .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .fixedSize(horizontal: false, vertical: true)
           .frame(maxWidth: .infinity, alignment: .leading)
         closeImage.hidden()
@@ -28,13 +28,13 @@ struct BackupNotifyView: View {
     }
     .padding(12)
     .frame(maxWidth: .infinity)
-    .background(Color(.braveErrorBackground))
+    .background(Color(braveSystemName: .systemfeedbackErrorBackground))
     .hoverEffect()
     .clipShape(backgroundShape)
     .overlay(alignment: .topTrailing) {
       Button(action: onDismiss) {
         closeImage
-          .foregroundColor(Color(.braveLabel))
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(12)  // To make the hit-area a bit bigger
       }
       .contentShape(.hoverEffect, .rect(cornerRadius: 4).inset(by: -4))
@@ -48,7 +48,7 @@ struct BackupNotifyView_Previews: PreviewProvider {
   static var previews: some View {
     BackupNotifyView(action: {}, onDismiss: {})
       .padding()
-      .background(Color(.braveGroupedBackground))
+      .background(Color(.systemGroupedBackground))
       .previewLayout(.sizeThatFits)
       .previewColorSchemes()
   }

@@ -30,8 +30,7 @@ public struct ToggleView: View {
     Toggle(isOn: $toggle) {
       LabelView(title: title, subtitle: subtitle)
     }
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
-    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+    .tint(Color(braveSystemName: .primitivePrimary40))
     .onChange(of: toggle) { _, newValue in
       onChange?(newValue)
     }
