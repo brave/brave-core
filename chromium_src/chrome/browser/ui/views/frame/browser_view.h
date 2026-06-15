@@ -11,7 +11,6 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/frame/shadow_overlay_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 #define BrowserViewLayoutDelegateImplOld                        \
   BrowserViewLayoutDelegateImplOld;                             \
