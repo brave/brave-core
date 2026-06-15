@@ -43,6 +43,7 @@ public struct BraveButtonSize {
   )
 }
 
+@available(iOS, deprecated, message: "Use FilledButtonStyle or GlassFilledButtonStyle")
 public struct BraveFilledButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
 
@@ -77,6 +78,7 @@ public struct BraveFilledButtonStyle: ButtonStyle {
   }
 }
 
+@available(iOS, deprecated, message: "Use OutlineButtonStyle")
 public struct BraveOutlineButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
 
