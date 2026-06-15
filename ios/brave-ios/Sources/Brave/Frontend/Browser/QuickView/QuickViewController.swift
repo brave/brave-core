@@ -31,16 +31,19 @@ class QuickViewController: UIViewController {
     return manager
   }()
   private let onOpenInNewTab: ((URLRequest) -> Void)?
+  private let onAttachTab: ((any TabState) -> Void)?
 
   init(
     url: URL,
     profileController: BraveProfileController,
-    onOpenInNewTab: ((URLRequest) -> Void)?
+    onOpenInNewTab: ((URLRequest) -> Void)?,
+    onAttachTab: ((any TabState) -> Void)?
   ) {
     self.url = url
     self.toolbarViewModel = QuickViewToolbarModel(url: url)
     self.profileController = profileController
     self.onOpenInNewTab = onOpenInNewTab
+    self.onAttachTab = onAttachTab
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
   }
@@ -105,11 +108,11 @@ class QuickViewController: UIViewController {
         guard let currentTab = self?.currentTab else { return }
         currentTab.reload()
       case .openTab:
-        guard let currentTab = self?.currentTab,
-          let visibleURL = currentTab.visibleURL
-        else { return }
         self?.dismiss(animated: true) {
-          self?.onOpenInNewTab?(URLRequest(url: visibleURL))
+          guard let self, let currentTab = self.currentTab else { return }
+          currentTab.removeObserver(self.toolbarViewModel)
+          currentTab.removeObserver(self)
+          self.onAttachTab?(currentTab)
         }
       case .share:
         guard let self, let visibleURL = self.currentTab?.visibleURL
@@ -128,6 +131,9 @@ class QuickViewController: UIViewController {
             arrowDirection: [.down]
           ),
           callbacks: .init(
+            onToggleReaderMode: { [weak self] in
+              self?.currentTab?.readerMode?.toggleReaderMode()
+            },
             onShowSubmitReport: { [weak self] url in
               self?.showSubmitReportView(for: url)
             }

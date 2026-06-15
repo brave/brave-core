@@ -187,10 +187,10 @@ struct QuickViewToolbarView: View {
       Spacer()
 
       if viewModel.canGoForward {
+        forwardButton
+      } else {
         shareButton
           .background(shareBackgroundView)
-      } else {
-        forwardButton
       }
 
       Spacer()
