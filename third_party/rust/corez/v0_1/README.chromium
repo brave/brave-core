@@ -1,0 +1,10 @@
+Name: corez
+URL: https://crates.io/crates/corez
+Version: 0.1.1
+Revision: cceb90448aaf3c6a99b2769a74c9b0f50ad6bf14
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/corez-v0_1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Safe, no_std-compatible Read/Write traits for the Zcash ecosystem.

@@ -27,13 +27,13 @@ use orchard::{
 };
 
 use zcash_note_encryption::EphemeralKeyBytes;
-use zcash_primitives::{
-    merkle_tree::{read_commitment_tree, HashSer},
-    transaction::components::amount::Amount,
-};
+use zcash_primitives::merkle_tree::{read_commitment_tree, HashSer};
 use zcash_protocol::consensus::BlockHeight;
+// In the zcash_primitives 0.28 / zcash_protocol 0.9 stack the transaction
+// `Amount` type is replaced by `zcash_protocol::value::ZatBalance`.
+use zcash_protocol::value::ZatBalance as Amount;
 
-use incrementalmerkletree::{Address, Position, Retention};
+use incrementalmerkletree::{Address, Level, Marking, Position, Retention};
 
 use rand::{rngs::OsRng, CryptoRng, Error as OtherError, RngCore};
 
@@ -931,7 +931,10 @@ fn create_orchard_builder_internal(
                 None,
                 addr,
                 orchard::value::NoteValue::from_raw(out.value),
-                if out.use_memo { Some(out.memo) } else { Option::None },
+                // orchard 0.14's `add_output` always takes a 512-byte memo
+                // (previously an `Option`). Use the provided memo, or an empty
+                // (all-zero) memo when none was requested.
+                if out.use_memo { out.memo } else { [0u8; 512] },
             ),
             None => {
                 return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(
@@ -1117,7 +1120,10 @@ fn batch_decode(
         let block_id = &output.block_id;
         let retention: Retention<BlockHeight> = match (decrypted_note.is_some(), is_checkpoint) {
             (is_marked, true) => {
-                Retention::Checkpoint { id: BlockHeight::from_u32(*block_id), is_marked }
+                // incrementalmerkletree 0.8 replaced the `is_marked: bool` field
+                // of `Retention::Checkpoint` with a `marking: Marking`.
+                let marking = if is_marked { Marking::Marked } else { Marking::None };
+                Retention::Checkpoint { id: BlockHeight::from_u32(*block_id), marking }
             }
             (true, false) => Retention::Marked,
             (false, false) => Retention::Ephemeral,
@@ -1264,19 +1270,21 @@ impl CxxOrchardShardTree {
         commitment_tree_position: u32,
         checkpoint: u32,
     ) -> Box<CxxOrchardWitnessResult> {
+        // shardtree 0.6 returns `Ok(None)` when no witness exists at the
+        // requested checkpoint (previously this was folded into the error case).
         match self.0.tree.witness_at_checkpoint_id_caching(
             (commitment_tree_position as u64).into(),
             &checkpoint.into(),
         ) {
-            Ok(witness) => Box::new(CxxOrchardWitnessResult::from(Ok(OrchardWitnessValue {
+            Ok(Some(witness)) => Box::new(CxxOrchardWitnessResult::from(Ok(OrchardWitnessValue {
                 path: witness.path_elems().into(),
             }))),
-            Err(_e) => Box::new(CxxOrchardWitnessResult::from(Err(Error::WitnessError))),
+            Ok(None) | Err(_) => Box::new(CxxOrchardWitnessResult::from(Err(Error::WitnessError))),
         }
     }
 
     fn truncate(self: &mut CxxOrchardShardTree, checkpoint: u32) -> bool {
-        self.0.tree.truncate_removing_checkpoint(&BlockHeight::from_u32(checkpoint)).is_ok()
+        self.0.tree.truncate_to_checkpoint(&BlockHeight::from_u32(checkpoint)).is_ok()
     }
 }
 
@@ -1300,15 +1308,15 @@ impl CxxOrchardTestingShardTree {
             (commitment_tree_position as u64).into(),
             &checkpoint.into(),
         ) {
-            Ok(witness) => Box::new(CxxOrchardWitnessResult::from(Ok(OrchardWitnessValue {
+            Ok(Some(witness)) => Box::new(CxxOrchardWitnessResult::from(Ok(OrchardWitnessValue {
                 path: witness.into(),
             }))),
-            Err(_e) => Box::new(CxxOrchardWitnessResult::from(Err(Error::WitnessError))),
+            Ok(None) | Err(_) => Box::new(CxxOrchardWitnessResult::from(Err(Error::WitnessError))),
         }
     }
 
     fn truncate(self: &mut CxxOrchardTestingShardTree, checkpoint: u32) -> bool {
-        let result = self.0.tree.truncate_removing_checkpoint(&BlockHeight::from_u32(checkpoint));
+        let result = self.0.tree.truncate_to_checkpoint(&BlockHeight::from_u32(checkpoint));
         return result.is_ok() && result.unwrap();
     }
 }
@@ -1384,8 +1392,11 @@ impl<H: HashSer> TryFrom<&CxxOrchardShard> for LocatedPrunableTree<H> {
     fn try_from(item: &CxxOrchardShard) -> Result<Self, Self::Error> {
         let shard_tree =
             read_shard(&mut Cursor::new(&item.data)).map_err(|_| Error::ShardStoreError)?;
+        // shardtree 0.6 made `LocatedTree::from_parts` fallible (it validates the
+        // tree shape against the address).
         let located_tree: LocatedTree<_, (_, RetentionFlags)> =
-            LocatedPrunableTree::from_parts(Address::from(&item.address), shard_tree);
+            LocatedPrunableTree::from_parts(Address::from(&item.address), shard_tree)
+                .map_err(|_| Error::ShardStoreError)?;
         if !item.hash.is_empty() {
             let root_hash =
                 H::read(Cursor::new(item.hash.clone())).map_err(|_| Error::ShardStoreError)?;
@@ -1513,7 +1524,12 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore for ShardStoreImpl<H, SHARD_
             .collect());
     }
 
-    fn truncate(&mut self, from: Address) -> Result<(), Self::Error> {
+    fn truncate_shards(&mut self, shard_index: u64) -> Result<(), Self::Error> {
+        // shardtree 0.6 renamed `truncate(Address)` to `truncate_shards(u64)`,
+        // where the argument is the index of the first shard to remove at the
+        // shard root level (`SHARD_HEIGHT`). Reconstruct the shard address for
+        // the existing C++ delegate, which still takes an address.
+        let from = Address::from_parts(Level::from(SHARD_HEIGHT), shard_index);
         let result = *self.delegate.Truncate(
             &CxxOrchardShardAddress::try_from(&from).map_err(|_| Error::ShardStoreError)?,
         );
@@ -1705,13 +1721,33 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore for ShardStoreImpl<H, SHARD_
         Ok(())
     }
 
-    fn truncate_checkpoints(
+    fn truncate_checkpoints_retaining(
         &mut self,
         checkpoint_id: &Self::CheckpointId,
     ) -> Result<(), Self::Error> {
         let result = *self.delegate.TruncateCheckpoint((*checkpoint_id).into());
         if result.0.is_err() {
             return Err(Error::ShardStoreError);
+        }
+        Ok(())
+    }
+
+    // shardtree 0.6 added a read-only `for_each_checkpoint`. It mirrors
+    // `with_checkpoints` but borrows `&self` and iterates the most recent
+    // `limit` checkpoints.
+    fn for_each_checkpoint<F>(&self, limit: usize, mut callback: F) -> Result<(), Self::Error>
+    where
+        F: FnMut(&Self::CheckpointId, &Checkpoint) -> Result<(), Self::Error>,
+    {
+        let result = *self.delegate.GetCheckpoints(limit);
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
+        }
+
+        for item in result.0.unwrap() {
+            let checkpoint = Checkpoint::from(&item.checkpoint);
+            callback(&BlockHeight::from(item.checkpoint_id), &checkpoint)
+                .map_err(|_| Error::ShardStoreError)?;
         }
         Ok(())
     }
@@ -1736,7 +1772,7 @@ fn convert_ffi_commitments(
                 if c.retention.checkpoint {
                     Retention::Checkpoint {
                         id: c.retention.checkpoint_id.into(),
-                        is_marked: c.retention.marked,
+                        marking: if c.retention.marked { Marking::Marked } else { Marking::None },
                     }
                 } else if c.retention.marked {
                     Retention::Marked

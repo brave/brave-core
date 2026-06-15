@@ -246,7 +246,7 @@ impl TryFrom<Column<Any>> for Column<Instance> {
 ///     # let config: Config = todo!();
 ///     layouter.assign_region(|| "bar", |mut region| {
 ///         region.assign_advice(|| "a", config.a, 0, || Value::known(F::ONE))?;
-///         region.assign_advice(|| "a", config.b, 1, || Value::known(F::ONE))?;
+///         region.assign_advice(|| "b", config.b, 1, || Value::known(F::ONE))?;
 ///         config.s.enable(&mut region, 1)
 ///     })?;
 ///     Ok(())
@@ -311,7 +311,7 @@ pub struct InstanceQuery {
 /// they cannot simultaneously be used as general fixed columns.
 ///
 /// [`Layouter::assign_table`]: crate::circuit::Layouter::assign_table
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub struct TableColumn {
     /// The fixed column that this table column is stored in.
     ///

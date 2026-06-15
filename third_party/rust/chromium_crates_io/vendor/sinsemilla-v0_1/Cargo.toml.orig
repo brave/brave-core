@@ -1,0 +1,22 @@
+[package]
+name = "sinsemilla"
+version = "0.1.0"
+authors = [
+    "Jack Grigg <jack@electriccoin.co>",
+    "Kris Nuttycombe <kris@electriccoin.co>",
+    "Ying Tong Lai",
+]
+edition = "2021"
+rust-version = "1.60"
+description = "A collision-resistant circuit-efficient hash function"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/zcash/sinsemilla"
+categories = ["cryptography"]
+
+[dependencies]
+group = "0.13"
+pasta_curves = { version = "0.5", default-features = false, features = ["alloc"] }
+subtle = { version = "2.3", default-features = false }
+
+[features]
+test-dependencies = []
