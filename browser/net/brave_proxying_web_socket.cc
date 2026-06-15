@@ -242,6 +242,7 @@ void BraveProxyingWebSocket<T>::OnAuthRequired(
 
 template <template <typename> class T>
 void BraveProxyingWebSocket<T>::OnBeforeSendHeaders(
+    const GURL& request_url,
     const net::HttpRequestHeaders& headers,
     OnBeforeSendHeadersCallback callback) {
   DCHECK(proxy_has_extra_headers());
@@ -277,7 +278,7 @@ void BraveProxyingWebSocket<T>::OnBeforeRequestComplete(int error_code) {
 
   if (proxy_has_extra_headers()) {
     proxy_trusted_header_client_->OnBeforeSendHeaders(
-        request_.headers,
+        request_.url, request_.headers,
         base::BindOnce(
             &BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
