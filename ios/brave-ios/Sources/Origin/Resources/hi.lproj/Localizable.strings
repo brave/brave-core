@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "अभी खरीदें";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "यह सुविधा सक्षम की गई है क्योंकि आपने इसे सक्षम करना चुना है";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Brave फ़ीचर को सक्षम या अक्षम करने के लिए ब्राउज़र को पुनः लॉन्च करने की आवश्यकता है। कृपया Brave को बंद करें (App Switcher में ऊपर की ओर स्वाइप करें) और फिर इसे पुनः खोलें।";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Brave सुविधाएँ बदलना";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin, Brave ब्राउज़र का एक संस्करण है जो आपको उन राजस्व-सृजनकारी सुविधाओं को आसानी से निष्क्रिय करने की अनुमति देता है, जो सामान्यतः Brave को एक व्यवसाय के रूप में समर्थन देती हैं। Brave Origin उपयोगकर्ताओं को उद्योग-अग्रणी गोपनीयता, ऐडब्लॉक और गति (Brave Shields के माध्यम से), साथ ही नियमित सॉफ़्टवेयर अपडेट, Chromium पैच, और सुरक्षा व गोपनीयता सुधार मिलते रहेंगे। वे Brave Leo, Rewards, वॉलेट, VPN, Web3 डोमेन और अन्य सुविधाओं को निष्क्रिय करने का विकल्प भी अनलॉक करेंगे।\n\nखरीदने के बाद, उपयोगकर्ताओं को ब्राउज़र सेटिंग्स मेनू में एक नया कंट्रोल पैनल दिखाई देगा। मौजूदा सुविधाएँ—साथ ही भविष्य में दी जाने वाली कोई भी नई सुविधा—यहाँ दिखाई देंगी, और डिफ़ॉल्ट रूप से अक्षम की जाएँगी।\n\n**ध्यान दें: Brave Origin उन ब्राउज़र सुविधाओं को निष्क्रिय नहीं करेगा, जिन्हें आप वर्तमान में उपयोग कर रहे हैं, और यह Brave Search सुविधाओं या Brave Search ऐड्स को प्रभावित नहीं करेगा।**";
+"featuresFooter" = "**Brave का समर्थन करते हुए अपने ब्राउज़र को अनुकूलित करें**\n\nBrave Origin ब्राउज़र का एक भुगतान संस्करण है जो उन उपयोगकर्ताओं के लिए है जिन्हें Brave को व्यवसाय के रूप में समर्थन देने वाली सभी सुविधाओं की आवश्यकता नहीं है, लेकिन फिर भी वे केवल Brave द्वारा प्रदान की जाने वाली गोपनीयता चाहते हैं। Origin उपयोगकर्ता हमारी उद्योग-अग्रणी गोपनीयता, विज्ञापन अवरोधक और गति (Shields के माध्यम से), साथ ही नियमित सॉफ़्टवेयर अपडेट, Chromium पैच, और सुरक्षा और गोपनीयता सुधार से लाभ उठाना जारी रखेंगे। Origin ब्राउज़र से अधिकांश अन्य सुविधाओं को हटा देगा।";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "सुविधाएँ";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "लॉगिन कोड प्राप्त करें";
+"getLoginCodeButton" = "Brave Origin खरीदारी सत्यापित करें";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "लियो AI";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "एकबारी खरीदारी";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Brave का समर्थन करते हुए भी अपने ब्राउज़र को कस्टमाइज़ करें**\n\nBrave Origin, ब्राउज़र का एक सशुल्क संस्करण है उन उपयोगकर्ताओं के लिए जिन्हें Brave को एक व्यवसाय के रूप में समर्थन देने वाली सभी सुविधाओं की आवश्यकता नहीं है, लेकिन फिर भी वे वह गोपनीयता चाहते हैं जो केवल Brave प्रदान करता है। Brave Origin उपयोगकर्ताओं को उद्योग-अग्रणी गोपनीयता, ऐडब्लॉक और गति (Brave Shields के माध्यम से), साथ ही नियमित सॉफ़्टवेयर अपडेट, Chromium पैच, और सुरक्षा व गोपनीयता सुधार मिलते रहेंगे। वे AI, Rewards, वॉलेट, VPN, Web3 डोमेन और अन्य सुविधाओं को निष्क्रिय करने का विकल्प भी अनलॉक करेंगे।\n\n**Brave Origin एक बार की खरीद के माध्यम से उपलब्ध है। मोबाइल (Android और iOS) और डेस्कटॉप पर, Origin को आपके मौजूदा रिलीज़ संस्करण के अपग्रेड के रूप में खरीदा जा सकता है।** डेस्कटॉप पर, Origin एक अलग, स्टैंडअलोन ऐप के रूप में भी उपलब्ध है। चाहे अपग्रेड के रूप में खरीदा गया हो या अलग ऐप के रूप में, Origin उपयोगकर्ताओं को सेटिंग्स मेनू में एक नया कंट्रोल पैनल दिखाई देगा। मौजूदा सुविधाएँ—साथ ही भविष्य में दी जाने वाली कोई भी नई सुविधा—यहाँ दिखाई देंगी, और डिफ़ॉल्ट रूप से अक्षम की जाएँगी।*\n\n* ध्यान दें कि यदि आपने Origin को अपने मौजूदा Brave संस्करण के अपग्रेड के रूप में खरीदा है, तो Origin उन ब्राउज़र सुविधाओं को निष्क्रिय नहीं करेगा जिन्हें आप वर्तमान में उपयोग कर रहे हैं। अपग्रेड और स्टैंडअलोन दोनों संस्करणों के लिए, Origin, Brave Search सुविधाओं या Brave Search ऐड्स को प्रभावित नहीं करेगा।";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "प्लेलिस्ट";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "कोई प्रोमो कोड है?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "आपके लिए काम करने वाला चेकआउट का तरीका चुनें:";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "खरीदारी पूरी नहीं हो पाई। कृपया फिर से कोशिश करे या Apple पर अपने भुगतान की जानकारी देखकर फिर से कोशिश करें।";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "मुख्य ऐडब्लॉक, गोपनीयता और गति बनाए रखें";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "Shields पर केंद्रित न्यूनतम ब्राउज़र UI";
+"upsellMinimalUI" = "Brave Shields पर केंद्रित न्यूनतम ब्राउज़र UI";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "एक बार की खरीदारी, कोई अतिरिक्त सदस्यता लागत नहीं";
+"upsellOneTimePurchase" = "एकबारी खरीदारी आपके सभी डिवाइसों पर कई बार सक्रिय की जा सकती है";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "हमारे मिशन और ओपन-सोर्स कार्य का समर्थन करें";

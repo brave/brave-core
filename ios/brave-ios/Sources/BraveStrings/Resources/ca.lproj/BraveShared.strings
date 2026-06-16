@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Motors de cerca ràpida";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Pàgina anterior";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Pàgina següent";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Obre en una pestanya";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Afegeix a la llista de reproducció";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Activa el mode lector";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Actualitza";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Comparteix";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Escut";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Activa la traducció";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Valora Brave";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Confirmació del dispositiu";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Has assolit el nombre màxim de dispositius (10) permesos en una cadena de sincronització. Elimina un dispositiu per continuar.";
+"sync.maximumDeviceReachedErrorDescription" = "Has assolit el nombre màxim de dispositius (50) permesos en una cadena de sincronització. Elimina un dispositiu per continuar.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Límit del dispositiu";

@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "क्विक सर्च इंजन";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "पिछला पृष्ठ";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "अगला पृष्ठ";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "टैब में खोलें";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "प्लेलिस्ट में जोड़ें";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "रीडर मोड सक्षम करें";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "रीफ्रेश करें";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "शेयर करें";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Shields";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "अनुवाद सक्षम करें";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Brave का मूल्यांकन करें";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "डिवाइस की पुष्टि";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "आपने सिंक चेन में अनुमति वाले डिवाइसों की अधिकतम संख्या (10) को पार कर लिया है। जारी रखने के लिए कोई डिवाइस हटाएँ।";
+"sync.maximumDeviceReachedErrorDescription" = "आपने सिंक चेन में अनुमति वाले डिवाइसों की अधिकतम संख्या (50) को पार कर लिया है। जारी रखने के लिए कोई डिवाइस हटाएँ।";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "डिवाइस की सीमा";

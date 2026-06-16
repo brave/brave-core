@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Gyorskeresők";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Előző oldal";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Következő oldal";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Megnyitás lapon";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Hozzáadás lejátszási listához";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Olvasó mód engedélyezése";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Frissítés";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Megosztás";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Shields";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Fordítás engedélyezése";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Értékeld a Brave-et";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Eszköz megerősítése";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Elérte a szinkronizálási láncban engedélyezett eszközök maximális számát (10). A folytatáshoz távolítson el egy eszközt.";
+"sync.maximumDeviceReachedErrorDescription" = "Elérte a szinkronizálási láncban engedélyezett eszközök maximális számát (50). A folytatáshoz távolítson el egy eszközt.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Eszközkorlát";

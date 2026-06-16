@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "保持流畅：在浏览时添加视频，稍后观看。";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "将视频添加到 Brave 播放列表。随时播放。即使是离线";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "播放列表中的播放效果更好";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "只需点击按钮即可将视频添加到播放列表";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "用你喜欢的内容创建播放列表。从任何页面添加媒体。\n随时播放。甚至是离线时！";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "点击 %@ 添加你的第一项目";

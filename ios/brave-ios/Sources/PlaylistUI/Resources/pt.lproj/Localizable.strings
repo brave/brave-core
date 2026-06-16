@@ -146,7 +146,7 @@
 "playlist.repeatModeOptionOne" = "Um";
 
 /* A button call to action that allows the user to save their selection */
-"playlist.saveButtonTitle" = "Guardar";
+"playlist.saveButtonTitle" = "Salvar";
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Salvar dados off-line";

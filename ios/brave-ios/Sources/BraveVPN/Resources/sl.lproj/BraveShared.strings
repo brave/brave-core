@@ -11,7 +11,7 @@
 "vpn.autoRenewFreeMonthPopOverTitle" = "Samodejno obnovite naročnino Brave VPN in dobite 1 mesec brezplačno!";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "To pomeni, da boste izgubili dodatne zaščite Brave za vsako aplikacijo v telesu.";
+"vpn.autoRenewSoonExpirePopOverDescription" = "To pomeni, da boste izgubili dodatne zaščite Bravea za vsako aplikacijo na telefonu.";
 
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "O ne! Vaša naročnina Brave VPN bo kmalu potekla.";
