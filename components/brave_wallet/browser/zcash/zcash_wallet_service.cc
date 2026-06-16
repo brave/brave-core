@@ -593,8 +593,10 @@ void ZCashWalletService::ShieldAllFunds(mojom::AccountIdPtr account_id,
   }
 }
 
-void ZCashWalletService::ResetSyncState(mojom::AccountIdPtr account_id,
-                                        ResetSyncStateCallback callback) {
+void ZCashWalletService::ResetSyncState(
+    mojom::AccountIdPtr account_id,
+    std::optional<uint32_t> account_birthday_block,
+    ResetSyncStateCallback callback) {
   if (IsZCashShieldedTransactionsEnabled()) {
     if (shield_sync_services_.find(account_id) != shield_sync_services_.end()) {
       std::move(callback).Run("Sync in progress");
@@ -604,8 +606,8 @@ void ZCashWalletService::ResetSyncState(mojom::AccountIdPtr account_id,
         .AsyncCall(&OrchardSyncState::ResetAccountSyncState)
         .WithArgs(account_id.Clone())
         .Then(base::BindOnce(&ZCashWalletService::OnResetSyncState,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             std::move(callback)));
+                             weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+                             account_birthday_block, std::move(callback)));
   } else {
     std::move(callback).Run(
         l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
@@ -805,7 +807,7 @@ void ZCashWalletService::OnPostShieldTransactionDone(
 
 void ZCashWalletService::GetLatestBlockForAccountBirthday(
     mojom::AccountIdPtr account_id,
-    MakeAccountShieldedCallback callback) {
+    AccountBirthdayCallback callback) {
   CHECK(account_id);
   zcash_rpc_->GetLatestBlock(
       GetNetworkForZCashKeyring(account_id->keyring_id),
@@ -816,7 +818,7 @@ void ZCashWalletService::GetLatestBlockForAccountBirthday(
 
 void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
     mojom::AccountIdPtr account_id,
-    MakeAccountShieldedCallback callback,
+    AccountBirthdayCallback callback,
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   CHECK(account_id);
   if (!result.has_value() || !result.value()) {
@@ -831,7 +833,7 @@ void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
 void ZCashWalletService::GetTreeStateForAccountBirthday(
     mojom::AccountIdPtr account_id,
     uint32_t block_id,
-    MakeAccountShieldedCallback callback) {
+    AccountBirthdayCallback callback) {
   // Get block info for the block that is back from latest block for
   // kChainReorgBlockDelta to ensure account birthday won't be affected by chain
   // reorg.
@@ -853,7 +855,7 @@ void ZCashWalletService::GetTreeStateForAccountBirthday(
 
 void ZCashWalletService::OnGetTreeStateForAccountBirthday(
     mojom::AccountIdPtr account_id,
-    MakeAccountShieldedCallback callback,
+    AccountBirthdayCallback callback,
     base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
     std::move(callback).Run("Failed to retrieve tree state");
@@ -907,13 +909,21 @@ void ZCashWalletService::OnSyncStatusUpdate(
 }
 
 void ZCashWalletService::OnResetSyncState(
+    mojom::AccountIdPtr account_id,
+    std::optional<uint32_t> account_birthday_block,
     ResetSyncStateCallback callback,
     base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
   if (result.has_value()) {
-    std::move(callback).Run(
-        result.value() == OrchardStorage::Result::kSuccess
-            ? std::nullopt
-            : std::optional<std::string>("Account data wasn't deleted"));
+    if (result.value() != OrchardStorage::Result::kSuccess) {
+      std::move(callback).Run("Account data wasn't deleted");
+      return;
+    }
+    if (account_birthday_block) {
+      GetTreeStateForAccountBirthday(
+          std::move(account_id), *account_birthday_block, std::move(callback));
+      return;
+    }
+    std::move(callback).Run(std::nullopt);
     return;
   }
 

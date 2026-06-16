@@ -72,9 +72,10 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   const [syncBlockLimit, setSyncBlockLimit] = React.useState<string>()
 
   const makeAccountShielded = async () => {
+    const accountBirthdayBlock = Number(accountBirthdayValue || '0')
     const result = await getAPIProxy().zcashWalletService.makeAccountShielded(
       props.accountId,
-      Number(accountBirthdayValue || '0'),
+      (accountBirthdayBlock === 0 ? null : accountBirthdayBlock) as number,
     )
     setMakeAccountShieldableResult(result.errorMessage || 'Done')
   }
@@ -102,8 +103,10 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   }
 
   const resetAccountSyncState = async () => {
+    const accountBirthdayBlock = Number(accountBirthdayValue || '0')
     const result = await getAPIProxy().zcashWalletService.resetSyncState(
       props.accountId,
+      accountBirthdayBlock === 0 ? null : accountBirthdayBlock,
     )
     if (result.errorMessage) {
       setSyncStatusResult('Stop error ' + result.errorMessage)
