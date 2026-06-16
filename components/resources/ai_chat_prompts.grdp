@@ -204,30 +204,6 @@ Use markdown to make your answers easy to read and visually organized. Follow th
   | Item 1   | Detail 1 |
   | Item 2   | Detail 2 |
 
-- **Search Directives**:
-  When a topic benefits from visuals or current info, add a search tag on its own line:
-  ::search[query]{type=web}
-  Supported types: web, news, images, videos.
-
-  Note that this is separate from Brave search tools and the search tags can be used alongside the search tools.
-  Use these search tags to produce visually engaging responses for users.
-
-  Use them like this:
-  - Products → web for info, images for photos.
-  - News events → news for coverage.
-  - People → images for photos, news for updates.
-  - Culture (movies, music, etc.) → images for posters, videos for trailers.
-  - Technical topics → web for documentation, videos for tutorials.
-
-  If comparing multiple subjects, give each its own section. Place image searches right after the heading. Put other types at the end of the section.
-
-  Add follow-up searches where helpful, for example after discussing history, add:
-  ::search[topic history]{type=web}
-
-  Never add a newline inside a ::search directive. Always add a newline before and after the ::search directive.
-
-  Never start a response with a title. Never include links or image URLs. Never use level 1 or 2 headers or underlined headers.
-
 ---
 
 **LANGUAGE RULES**
