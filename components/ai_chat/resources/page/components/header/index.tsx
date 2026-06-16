@@ -8,6 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
 import { Conversation } from '../../../common/mojom'
+import { serializeConversation } from '../../../common/conversation_serialization'
 import useCanStartNewConversation from '../../hooks/useCanStartNewConversation'
 import FeatureButtonMenu, {
   Props as FeatureButtonMenuProps,
@@ -36,9 +37,22 @@ const Logo = ({ isPremium }: { isPremium: boolean }) => (
 const getTitle = (activeConversation?: Conversation) =>
   activeConversation?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
+// Builds a filesystem-friendly base filename from the conversation title.
+const getExportFileName = (activeConversation?: Conversation) => {
+  const slug = (activeConversation?.title ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return `${slug || 'conversation'}.json`
+}
+
 const newChatButtonLabel = getLocale(S.CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL)
 const closeButtonLabel = getLocale(S.CHAT_UI_LABEL_CLOSE)
 const openFullPageButtonLabel = getLocale(S.CHAT_UI_OPEN_LABEL)
+const exportConversationButtonLabel = getLocale(
+  S.CHAT_UI_EXPORT_CONVERSATION_BUTTON_LABEL,
+)
 
 export const ConversationHeader = React.forwardRef(function (
   props: FeatureButtonMenuProps,
@@ -58,6 +72,23 @@ export const ConversationHeader = React.forwardRef(function (
   const activeConversation = aiChatContext.conversations.find(
     (c: Conversation) => c.uuid === conversationContext.conversationUuid,
   )
+
+  const conversationHistory = conversationContext.conversationHistory
+  const canExportConversation =
+    aiChatContext.isConversationExportEnabled && conversationHistory.length > 0
+
+  const handleExportConversation = React.useCallback(() => {
+    const json = serializeConversation(conversationHistory)
+    const url = URL.createObjectURL(
+      new Blob([json], { type: 'application/json' }),
+    )
+    const link = document.createElement('a')
+    link.href = url
+    link.download = getExportFileName(activeConversation)
+    link.click()
+    URL.revokeObjectURL(url)
+  }, [conversationHistory, activeConversation])
+
   const showTitle =
     (!isMainConversation || aiChatContext.isStandalone) && !isMobile
   const canShowFullScreenButton =
@@ -138,6 +169,17 @@ export const ConversationHeader = React.forwardRef(function (
                 }
               >
                 <Icon name='expand' />
+              </Button>
+            )}
+            {canExportConversation && (
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label={exportConversationButtonLabel}
+                title={exportConversationButtonLabel}
+                onClick={handleExportConversation}
+              >
+                <Icon name='share' />
               </Button>
             )}
             <FeatureButtonMenu {...props} />
