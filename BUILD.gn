@@ -122,6 +122,7 @@ group("all") {
 
   if (!is_android && !is_ios) {
     deps += [
+      "//brave/test:brave_interactive_ui_tests",
       "//brave/test:brave_network_audit_tests",
       "//chrome/test:browser_tests",
     ]
