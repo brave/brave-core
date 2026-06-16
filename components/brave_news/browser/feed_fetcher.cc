@@ -90,6 +90,11 @@ std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
         url = item->get_article()->data->url;
       }
 
+      // Don't include articles with invalid URLs.
+      if (!url.is_valid()) {
+        continue;
+      }
+
       // Skip this, we've already seen it.
       auto spec = url.spec();
       if (!url.is_empty() && seen.contains(spec)) {
