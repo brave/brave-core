@@ -6444,6 +6444,20 @@ extension Strings {
       value: "Automatically focus the address bar when creating a new tab",
       comment: "The description of the toggle for user to turn on auto-open keyboard when creating a new tab."
     )
+    public static let openLinkInQuickViewModeTitle = NSLocalizedString(
+      "tabs.settings.openLinkInQuickViewModeTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Enable Quickview Tabs",
+      comment: "The title of the toggle for user to turn on open link in quick view mode."
+    )
+    public static let openLinkInQuickViewModeDescription = NSLocalizedString(
+      "tabs.settings.openLinkInQuickViewModeDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Open links from Ask Brave and Brave Search in preview tabs",
+      comment: "The description of the toggle for user to turn on open link in quick view mode."
+    )
   }
 }
 

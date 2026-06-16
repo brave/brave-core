@@ -1079,6 +1079,25 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       tabs.rows.append(privateTabsRow)
     }
 
+    if FeatureList.kQuickViewEnabled.enabled {
+      var quickViewRow = Row(
+        text: Strings.TabsSettings.openLinkInQuickViewModeTitle,
+        detailText: Strings.TabsSettings.openLinkInQuickViewModeDescription,
+        image: UIImage(braveSystemNamed: "leo.browser.quick-view"),
+        accessory: .view(
+          SwitchAccessoryView(
+            initialValue: Preferences.General.openLinkInQuickViewMode.value,
+            valueChange: { newValue in
+              Preferences.General.openLinkInQuickViewMode.value = newValue
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self,
+        uuid: Preferences.General.openLinkInQuickViewMode.key
+      )
+      tabs.rows.append(quickViewRow)
+    }
+
     var keyboardRow = Row(
       text: Strings.TabsSettings.autoOpenKeyboardTitle,
       detailText: Strings.TabsSettings.autoOpenKeyboardDescription,
