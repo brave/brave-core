@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper_bridge.h"
 #include "ios/web/public/web_state.h"
@@ -33,11 +34,8 @@ void RequestBlockingTabHelper::ShouldBlock(
     return;
   }
 
-  __block auto block_callback = std::move(callback);
   [bridge_ shouldBlockRequestURL:net::NSURLWithGURL(request_url)
                        sourceURL:net::NSURLWithGURL(source_url)
                     resourceType:base::SysUTF8ToNSString(resource_type)
-                      completion:^(BOOL should_block) {
-                        std::move(block_callback).Run(should_block);
-                      }];
+                      completion:base::CallbackToBlock(std::move(callback))];
 }

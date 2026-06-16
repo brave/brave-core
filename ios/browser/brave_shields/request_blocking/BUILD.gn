@@ -5,7 +5,7 @@
 
 import("//ios/web/public/js_messaging/optimize_ts.gni")
 
-static_library("request_blocking") {
+source_set("request_blocking") {
   sources = [
     "request_blocking_javascript_feature.h",
     "request_blocking_javascript_feature.mm",
@@ -45,9 +45,10 @@ source_set("unit_tests") {
     ":request_blocking",
     "//base",
     "//base/test:test_support",
-    "//ios/chrome/browser/shared/model/profile/test",
+    "//ios/chrome/test:ios_chrome_test_with_web_state",
     "//ios/web/public",
     "//ios/web/public/test",
+    "//ios/web/public/test/fakes",
     "//net",
     "//testing/gtest",
     "//url",
