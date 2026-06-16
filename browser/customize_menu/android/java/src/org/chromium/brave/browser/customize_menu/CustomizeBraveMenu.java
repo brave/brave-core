@@ -450,8 +450,7 @@ public class CustomizeBraveMenu {
                         maybeApplyTinting(context, resizedDrawable);
 
                         // Return to UI thread with result.
-                        PostTask.postTask(
-                                TaskTraits.UI_DEFAULT, () -> callback.onResult(resizedDrawable));
+                        PostTask.postTask(TaskTraits.UI_DEFAULT, callback.bind(resizedDrawable));
                     });
         } else {
             // No resizing needed, apply tinting and return directly.
