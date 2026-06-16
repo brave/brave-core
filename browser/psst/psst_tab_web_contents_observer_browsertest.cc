@@ -621,9 +621,13 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   }
 
   // Navigates to `url`, waits for the PSST icon to appear in the location bar,
-  // then right-clicks it to open its context menu and waits for the menu to be
-  // shown.
-  void NavigateAndOpenPsstContextMenu(const GURL& url) {
+  // then clicks it with the specified `event_flags` to open its context menu
+  // and waits for the menu to appear, or opens the consent dialog and waits
+  // for it to appear
+  void NavigateAndClickOnPsstLocationBarIcon(const GURL& url,
+                                             ui::EventFlags event_flags) {
+    ASSERT_TRUE(event_flags == ui::EF_RIGHT_MOUSE_BUTTON ||
+                event_flags == ui::EF_LEFT_MOUSE_BUTTON);
     IconLabelBubbleView* const psst_view = GetPsstPageActionView();
     ASSERT_TRUE(psst_view);
     // The icon starts hidden and only appears as a result of the navigation.
@@ -642,16 +646,29 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     }));
     ASSERT_FALSE(action->GetIsShowingBubble());
 
-    // A right-click triggers the page action and opens its context menu.
+    // Start observing for the consent dialog's WebContents before clicking, so
+    // we don't miss its creation in the left-click case.
+    content::CreateAndLoadWebContentsObserver new_web_contents_observer;
+
+    // A right-click opens the context menu; a left-click opens the consent
+    // dialog.
     const gfx::Point click_location = psst_view->GetLocalBounds().CenterPoint();
     const ui::MouseEvent click_event(
         ui::EventType::kMousePressed, click_location, click_location,
-        ui::EventTimeForNow(), ui::EF_RIGHT_MOUSE_BUTTON,
-        ui::EF_RIGHT_MOUSE_BUTTON);
+        ui::EventTimeForNow(), event_flags, event_flags);
     views::test::ButtonTestApi(views::Button::AsButton(psst_view))
         .NotifyClick(click_event);
-    ASSERT_TRUE(
-        base::test::RunUntil([&]() { return action->GetIsShowingBubble(); }));
+    if (event_flags & ui::EF_RIGHT_MOUSE_BUTTON) {
+      // Wait for the context menu to open.
+      ASSERT_TRUE(
+          base::test::RunUntil([&]() { return action->GetIsShowingBubble(); }));
+    } else {
+      // Wait for the consent dialog to open.
+      auto* dialog_wc =
+          WaitForAndGetDialogWebContents(new_web_contents_observer);
+      ASSERT_TRUE(dialog_wc);
+      WaitForPsstDialogUIReady(dialog_wc);
+    }
   }
 
   // Waits for the PSST context menu to close.
@@ -874,7 +891,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
 
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
-  ASSERT_NO_FATAL_FAILURE(NavigateAndOpenPsstContextMenu(url));
+  ASSERT_NO_FATAL_FAILURE(
+      NavigateAndClickOnPsstLocationBarIcon(url, ui::EF_RIGHT_MOUSE_BUTTON));
 
   views::MenuItemView* const root = GetActiveContextMenuRoot();
   ASSERT_TRUE(root);
@@ -909,7 +927,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
-  ASSERT_NO_FATAL_FAILURE(NavigateAndOpenPsstContextMenu(url));
+  ASSERT_NO_FATAL_FAILURE(
+      NavigateAndClickOnPsstLocationBarIcon(url, ui::EF_RIGHT_MOUSE_BUTTON));
 
   views::MenuItemView* const root = GetActiveContextMenuRoot();
   ASSERT_TRUE(root);
@@ -923,6 +942,16 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   // PSST is disabled globally.
   EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       LocationBarIconLeftClickShowsConsentDialog) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  ASSERT_NO_FATAL_FAILURE(
+      NavigateAndClickOnPsstLocationBarIcon(url, ui::EF_LEFT_MOUSE_BUTTON));
 }
 
 }  // namespace psst
