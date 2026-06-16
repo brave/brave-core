@@ -41,8 +41,7 @@ public class SponsoredRichMediaWebView {
     private static final String TAG = "SponsoredRichMedia";
     private static final String NEW_TAB_TAKEOVER_URL = "chrome://new-tab-takeover";
 
-    private static final int FIRST_PAINT_TIMEOUT_MS = 5_000;
-    private static final int POST_LOAD_GRACE_PERIOD_MS = 1_000;
+    private static final int FIRST_PAINT_TIMEOUT_MS = 2_500;
 
     private final WebContents mWebContents;
     private final ThinWebView mWebView;
@@ -51,16 +50,15 @@ public class SponsoredRichMediaWebView {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final Runnable mFirstPaintTimeout =
             () -> {
-                Log.w(TAG, "First paint timeout elapsed after %dms.", FIRST_PAINT_TIMEOUT_MS);
+                Log.w(
+                        TAG,
+                        "First paint timeout elapsed %dms after didStopLoading.",
+                        FIRST_PAINT_TIMEOUT_MS);
                 notifyFailure();
-            };
-    private final Runnable mAcceptAsRendered =
-            () -> {
-                Log.i(TAG, "Assuming rendered after didStopLoading grace; FNVEP not observed.");
-                mHandler.removeCallbacks(mFirstPaintTimeout);
             };
     private boolean mDocumentLoaded;
     private boolean mIframeStarted;
+    private boolean mFirstPaintReceived;
     private String mPlacementId;
     private String mCreativeInstanceId;
 
@@ -196,20 +194,18 @@ public class SponsoredRichMediaWebView {
                     @Override
                     public void didFirstVisuallyNonEmptyPaint() {
                         Log.i(TAG, "First visually non-empty paint received.");
+                        mFirstPaintReceived = true;
                         mHandler.removeCallbacks(mFirstPaintTimeout);
-                        mHandler.removeCallbacks(mAcceptAsRendered);
                     }
 
                     @Override
                     public void didStopLoading(GURL url, boolean isKnownValid) {
                         Log.i(TAG, "didStopLoading url=%s.", url);
-                        if (mIframeStarted) {
-                            // All content loaded; arm fallback in case FNVEP never fires.
-                            // Cancel the absolute timeout first so the grace period always
-                            // wins regardless of how long loading took.
+                        if (mIframeStarted && !mFirstPaintReceived) {
+                            // All content is on disk; the remaining time is purely rendering.
+                            // Start the first-paint deadline now.
                             mHandler.removeCallbacks(mFirstPaintTimeout);
-                            mHandler.removeCallbacks(mAcceptAsRendered);
-                            mHandler.postDelayed(mAcceptAsRendered, POST_LOAD_GRACE_PERIOD_MS);
+                            mHandler.postDelayed(mFirstPaintTimeout, FIRST_PAINT_TIMEOUT_MS);
                         }
                     }
 
@@ -242,20 +238,19 @@ public class SponsoredRichMediaWebView {
         mCreativeInstanceId = creativeInstanceId;
 
         mHandler.removeCallbacks(mFirstPaintTimeout);
-        mHandler.removeCallbacks(mAcceptAsRendered);
         mDocumentLoaded = false;
         mIframeStarted = false;
-        mHandler.postDelayed(mFirstPaintTimeout, FIRST_PAINT_TIMEOUT_MS);
+        mFirstPaintReceived = false;
 
         String url = getNewTabTakeoverUrl(placementId, creativeInstanceId);
-        Log.i(TAG, "Loading url=%s, first paint timeout=%dms.", url, FIRST_PAINT_TIMEOUT_MS);
+        Log.i(TAG, "Loading url=%s, first paint timeout=%dms after didStopLoading.",
+                url, FIRST_PAINT_TIMEOUT_MS);
         mWebContents.getNavigationController().loadUrl(new LoadUrlParams(url));
     }
 
     public void destroy() {
         Log.i(TAG, "Destroying.");
         mHandler.removeCallbacks(mFirstPaintTimeout);
-        mHandler.removeCallbacks(mAcceptAsRendered);
         mObserver.observe(null);
         mWebView.destroy();
         mWebContents.destroy();
@@ -273,7 +268,6 @@ public class SponsoredRichMediaWebView {
                 mWebView.getView().getHeight(),
                 mWebView.getView().isAttachedToWindow());
         mHandler.removeCallbacks(mFirstPaintTimeout);
-        mHandler.removeCallbacks(mAcceptAsRendered);
         mOnFailure.run();
     }
 
