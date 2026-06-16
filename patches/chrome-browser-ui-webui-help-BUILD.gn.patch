@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/help/BUILD.gn b/chrome/browser/ui/webui/help/BUILD.gn
+index 17d8d3e2832c4d572054a7c866690703e9fe87a2..4716b9609e0d8279ca872459cec0115ee742f914 100644
+--- a/chrome/browser/ui/webui/help/BUILD.gn
++++ b/chrome/browser/ui/webui/help/BUILD.gn
+@@ -49,7 +49,7 @@ source_set("help") {
+   }
+ 
+   if (is_win) {
+-    if (is_chrome_branded) {
++    if (is_official_build) {
+       sources = [ "version_updater_win.cc" ]
+       deps += [
+         "//chrome/app:generated_resources_grit",

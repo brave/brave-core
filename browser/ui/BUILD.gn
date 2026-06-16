@@ -186,6 +186,8 @@ source_set("ui") {
       "//brave/browser/brave_rewards",
       "//chrome/browser:flags",
       "//chrome/browser/lifetime",
+      "//chrome/browser/ui/webui:favicon_source",
+      "//chrome/browser/ui/webui:theme_source",
     ]
 
     sources += [
@@ -468,6 +470,7 @@ source_set("ui") {
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
+      "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
@@ -1105,6 +1108,7 @@ source_set("ui") {
     deps += [
       "//chrome/browser/favicon",
       "//chrome/browser/signin",
+      "//chrome/browser/ui/webui:favicon_source",
       "//components/favicon/core",
       "//components/favicon_base",
       "//components/history/core/browser",
@@ -1320,14 +1324,6 @@ source_set("ui") {
         "views/toolbar/brave_vpn_toggle_button.h",
       ]
     }
-  }
-
-  if (is_win && is_official_build) {
-    sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
-    deps += [
-      "//chrome/browser/google",
-      "//chrome/updater/app/server/win:updater_legacy_idl",
-    ]
   }
 
   if (enable_tor) {
