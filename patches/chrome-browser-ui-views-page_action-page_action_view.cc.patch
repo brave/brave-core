@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 9ebffc5cf89c7e23039138e5890906ed6a07ec0d..20604e08c9a12c041c63bea5f9dd866e99eecbb5 100644
+index 9ebffc5cf89c7e23039138e5890906ed6a07ec0d..ac2a7cf026abdb4156c55a2e3df16b4468097b9b 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -173,7 +173,7 @@ void PageActionView::OnPageActionModelChanged(
@@ -19,7 +19,7 @@ index 9ebffc5cf89c7e23039138e5890906ed6a07ec0d..20604e08c9a12c041c63bea5f9dd866e
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -270,6 +271,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+@@ -280,6 +281,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
            .SetProperty(kPageActionTriggerKey,
                         static_cast<std::underlying_type_t<PageActionTrigger>>(
                             trigger_source))
