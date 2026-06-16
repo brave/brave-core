@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Motoare de căutare rapidă";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Pagina precedentă";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Pagina următoare";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Deschide în filă";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Adaugă la Playlist";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Activează modul Cititor";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Actualizează";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Trimite";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Shield";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Activează Brave Translate";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Evaluează Brave";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Confirmare dispozitiv";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Ai atins numărul maxim de dispozitive (10) permis într-un lanț de sincronizare. Elimină unul dintre ele pentru a putea continua.";
+"sync.maximumDeviceReachedErrorDescription" = "Ai atins numărul maxim de dispozitive (50) permis într-un lanț de sincronizare. Elimină unul dintre ele pentru a putea continua.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Limită dispozitive";

@@ -32,7 +32,7 @@
 "BrowserMenu.customizeTitle" = "自訂";
 
 /* A button title that when tapped dismisses the customize screen. */
-"BrowserMenu.doneButtonTitle" = "完成";
+"BrowserMenu.doneButtonTitle" = "已完成";
 
 /* The title of a button that shows a screen that lets the user customize which actions are visible on the menu */
 "BrowserMenu.editButtonTitle" = "編輯";

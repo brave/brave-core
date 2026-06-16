@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "今すぐ購入";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "この機能は、あなたがオプトインしたため有効になっています。";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Brave機能を有効または無効にするには、ブラウザを再起動して変更を適用する必要があります。Braveを閉じて（App Switcherで上にスワイプ）から、再度開いてください。";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Brave機能の変更";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Originは、Braveの事業を支える収益生成機能を簡単に無効にできるBraveブラウザのバージョンです。Brave Originユーザーは、Brave Shieldsを介して、業界をリードするプライバシー、アドブロック、スピードの他、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティとプライバシーの改善から継続してメリットを受けることができます。さらに、Brave Leo、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションもアンロックされます。\n\n購入後、ユーザーにはブラウザの設定メニューに新しいコントロールパネルが表示されます。既存の機能と、今後リリースされる新しい機能がここに表示され、デフォルトではオフになっています。\n\n**注：Brave Originは現在使用しているブラウザ機能を無効にしないため、Brave Search機能やBrave Search広告には影響しません。**";
+"featuresFooter" = "**Braveをサポートしながらブラウザをカスタマイズ**\n\nBrave Originは、Braveのビジネスをサポートするすべての機能が必要ないが、Braveのみが提供するプライバシーが必要なユーザー向けの有料版ブラウザです。Originユーザーは、業界トップクラスのプライバシー、広告ブロック、速度(Shields経由)に加えて、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティおよびプライバシーの改善の恩恵を受け続けます。Originは、ブラウザからほとんどの他の機能を削除します。";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "機能";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "ログインコードを取得";
+"getLoginCodeButton" = "Brave Origin購入を確認";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "一度きりの購入";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Braveをサポートしながらブラウザをカスタマイズ**\n\nBrave Originは、Braveの事業を支えるすべての機能を必要としないものの、Braveだけが提供するプライバシーを引き続き利用したいユーザー向けの有料版ブラウザです。Brave Originユーザーは、Brave Shieldsを介して、業界をリードするプライバシー、アドブロック、スピードの他、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティとプライバシーの改善から継続してメリットを受けることができます。さらに、AI、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションもアンロックされます。\n\n**Brave Originは一度限りの購入でご利用いただけます。モバイル (AndroidおよびiOS) とデスクトップでは、Originは既存のリリースバージョンへのアップグレードとして購入できます。** デスクトップでは、Originは独立したスタンドアロンアプリとしてもご利用いただけます。アップグレードとして購入する場合でも、別のアプリとして購入する場合でも、Originユーザーには設定メニューに新しいコントロールパネルが表示されます。既存の機能と、今後リリースされる新しい機能がここに表示され、デフォルトではオフになっています。*\n\n* 既存のBraveバージョンへのアップグレードとしてOriginを購入した場合、Originは現在使用しているブラウザ機能を無効にしません。アップグレード版とスタンドアロン版のどちらも、OriginはBrave Search機能やBrave Search広告には影響しません。";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "プロモコードをお持ちですか？";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "ご都合の良い支払い方法をお選びください: ";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "アドブロック、プライバシー、 & スピードを維持";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "シールドを中心とした最小限のブラウザUI";
+"upsellMinimalUI" = "Brave Shields を中心とした最小限のブラウザUI";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "ワンタイム購入、追加のサブスクリプション料金なし";
+"upsellOneTimePurchase" = "一度きりの購入は、お使いのすべてのデバイスで複数回有効化できます";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "私たちのミッションと& オープンソースをサポートください";

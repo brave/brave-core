@@ -686,7 +686,7 @@
 "DownloadsMenuItem" = "Prenosi";
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
-"DownloadsPanelEmptyStateTitle" = "Prenešene datoteke se bodo prikažejo tukaj.";
+"DownloadsPanelEmptyStateTitle" = "Prejete datoteke se bodo pojavile tukaj.";
 
 /* Action item title of long press for Opening the existing - active Tab url in a new Tab */
 "DuplicateActiveTab" = "Podvoji zavihek";
@@ -779,7 +779,7 @@
 "ExternalAppURLDontAllow" = "Ne dovolim";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
-"FavoritesLocationFooterText" = "Priljubljene se nahajajo na domačem zaslonu. Ti zaznamki se ne sinhronizirajš z drugimi napravami.";
+"FavoritesLocationFooterText" = "Priljubljeni so se nahajajo na vašem domačem zaslonu. Te zaznamke se ne sinhronizirajo z drugimi napravami.";
 
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "Priljubljene";
@@ -1736,22 +1736,22 @@
 "privacyHub.notificationCalloutButtonText" = "Vklopite obvestila";
 
 /* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Povzetek, kako te je Brave zaščitil na spletu to sredo.";
+"privacyHub.notificationMessage" = "Povzetek tega, kako te je Brave zaščitil pri spletu to teden.";
 
 /* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Tedensko poročilo o zasebnosti";
 
 /* Text of a button that opens up a Privacy Reports screen. */
-"privacyHub.onboardingButtonTitle" = "Odpri Unikum za zasebnost";
+"privacyHub.onboardingButtonTitle" = "Odprite Privacy Hub";
 
 /* The title of the button action which open the privacy hub */
-"privacyHub.openPrivacyHubWidgetActionTitle" = "Odpri Unikum za zasebnost";
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Odprite Privacy Hub";
 
 /* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
-"privacyHub.privacyReportsDisclaimer" = "Podatki Unikuma za zasebnost se shranjujejo lokalno in se nikoli ne pošljejo nikamor.";
+"privacyHub.privacyReportsDisclaimer" = "Podatki Privacy Hub se shranjujejo lokalno in se nikoli ne pošiljajo nikamor.";
 
 /* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
-"privacyHub.privacyReportsTitle" = "Unikum za zasebnost";
+"privacyHub.privacyReportsTitle" = "Privacy Hub";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
 "privacyHub.riskiestWebsiteBody" = "**%1$@** je imel povprečno **%2$lld** sledilnikov in oglasov blokiranih na obisk";
@@ -1839,6 +1839,33 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Hitri spletni iskalniki";
+
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Prejšnja stran";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Naslednja stran";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Odpri v zavihku";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Dodaj na seznam predvajanja";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Omogoči način branja";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Osveži";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Skupna raba";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Ščit";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Omogoči prevajanje";
 
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Ocenite brskalnik Brave";
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Potrditev naprave";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Dosegли ste največje število naprav (10), dovoljenih v sinhronizacijski verigi. Odstranjene napravo in nadaljujte.";
+"sync.maximumDeviceReachedErrorDescription" = "Dosegli ste največje število naprav (50), dovoljenih v sinhronizacijski verigi. Odstranite napravo in nadaljujte.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Omejitev naprav";
@@ -3320,7 +3347,7 @@
 "today.addSourceNoFeedsFoundMessage" = "Žal ta naslov vira nima vsebine.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Dodaj vir Brave Novicam";
+"today.addSourceShareTitle" = "Dodaj vir v Brave Novice";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "Razpoložljivi viri RSS";

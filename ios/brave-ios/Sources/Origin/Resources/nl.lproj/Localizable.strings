@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "Nu kopen";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "Deze functie is ingeschakeld omdat u ervoor hebt gekozen";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Het in- of uitschakelen van een Brave-functie vereist dat de browser opnieuw wordt gestart om wijzigingen toe te passen. Sluit Brave (veeg omhoog in de App-switcher) en open Brave vervolgens opnieuw.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Brave-functies wijzigen";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin is een versie van de Brave-browser waarmee je eenvoudig de inkomstengenererende functies kunt uitschakelen die Brave als bedrijf anders ondersteunen. Brave Origin-gebruikers blijven profiteren van onze toonaangevende privacy, adblock en snelheid (via Brave Shields), evenals regelmatige software-updates, Chromium-patches en beveiligings- en privacyverbeteringen. Ze krijgen ook de mogelijkheid om functies zoals Brave Leo, Rewards, Wallet, VPN, Web3-domeinen en meer uit te schakelen.\n\nNa aankoop zien gebruikers een nieuw bedieningspaneel in het menu Browserinstellingen. Bestaande functies – en alle nieuwe functies die we in de toekomst uitbrengen – verschijnen hier en zijn standaard uitgeschakeld.\n\n**Opmerking: Brave Origin zal browserfuncties die je momenteel gebruikt niet uitschakelen, en heeft geen invloed op Brave Search-functies of Brave Search Ads.**";
+"featuresFooter" = "**Pas je browser aan terwijl je Brave blijft ondersteunen**\n\nBrave Origin is een betaalde versie van de browser voor gebruikers die niet alle functies nodig hebben die Brave als bedrijf ondersteunen, maar nog steeds de privacy willen die alleen Brave biedt. Origin-gebruikers blijven profiteren van onze toonaangevende privacy, adblocking en snelheid (via Shields), evenals regelmatige software-updates, Chromium-patches en verbeteringen op het gebied van beveiliging en privacy. Origin zal de meeste andere functies uit de browser verwijderen.";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Functies";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "Aanmeldingscode ophalen";
+"getLoginCodeButton" = "Brave Origin-aankoop verifiëren";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "Eenmalige aankoop";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Pas je browser aan terwijl je Brave blijft ondersteunen**\n\nBrave Origin is een betaalde versie van de browser voor gebruikers die niet alle functies nodig hebben die Brave als bedrijf ondersteunen, maar nog steeds de privacy willen die alleen Brave biedt. Brave Origin-gebruikers blijven profiteren van onze toonaangevende privacy, adblock en snelheid (via Brave Shields), evenals regelmatige software-updates, Chromium-patches en beveiligings- en privacyverbeteringen. Ze krijgen ook de mogelijkheid om functies zoals AI, Rewards, Wallet, VPN, Web3-domeinen en meer uit te schakelen.\n\n**Brave Origin is verkrijgbaar via een eenmalige aankoop. Op mobiel (Android en iOS) en desktop kan Origin worden aangeschaft als upgrade van je bestaande releaseversie.** Op desktop is Origin ook beschikbaar als een aparte, op zichzelf staande app. Of het nu wordt aangeschaft als upgrade of als aparte app, Origin-gebruikers zien een nieuw bedieningspaneel in het menu Instellingen. Bestaande functies – en alle nieuwe functies die we in de toekomst uitbrengen – verschijnen hier en zijn standaard uitgeschakeld.*\n\n* Houd er rekening mee dat als je Origin hebt aangeschaft als upgrade van je bestaande versie van Brave, Origin de browserfuncties die je momenteel gebruikt niet zal uitschakelen. Zowel voor de upgrade als de op zichzelf staande versie heeft Origin geen invloed op Brave Search-functies of Brave Search Ads.";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "Heb je een promotiecode?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Kies de gewenste betaalmethode:";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Aankoop kan niet worden afgerond. Probeer het opnieuw of controleer je betalingsgegevens bij Apple en probeer het dan opnieuw.";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "Behoud kern adblock, privacy, & snelheid";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "Minimale browser UI gecentreerd op Shields";
+"upsellMinimalUI" = "Minimale browser-UI gecentreerd op Brave Shields";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "Eenmalige aankoop, geen extra abonnementskosten";
+"upsellOneTimePurchase" = "Eenmalige aankoop kan meerdere keren worden geactiveerd op al je apparaten";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Steun onze missie & open-source werk";

@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Μηχανές γρήγορης αναζήτησης";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Προηγούμενη σελίδα";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Επόμενη σελίδα";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Άνοιγμα σε καρτέλα";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Προσθήκη στη Λίστα αναπαραγωγής";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Ενεργοποίηση λειτουργίας αναγνώστη";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Ανανέωση";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Κοινοποίηση";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Ασπίδα";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Ενεργοποίηση μετάφρασης";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Αξιολογήστε το Brave";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Επιβεβαίωση συσκευής";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Έχετε συμπληρώσει τον μέγιστο αριθμό συσκευών (10) που επιτρέπονται σε μια αλυσίδα συγχρονισμού. Καταργήστε μια συσκευή για να συνεχίσετε.";
+"sync.maximumDeviceReachedErrorDescription" = "Έχετε συμπληρώσει τον μέγιστο αριθμό συσκευών (50) που επιτρέπονται σε μια αλυσίδα συγχρονισμού. Καταργήστε μια συσκευή για να συνεχίσετε.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Όριο συσκευών";

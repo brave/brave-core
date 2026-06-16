@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Blijf in je flow: voeg tijdens het browsen video's toe en bekijk ze later.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Voeg video's aan Brave Playlist toe. Bekijk ze wanneer je wilt, al dan niet offline.";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Media wordt beter afgespeeld in Playlist";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Tik gewoon op de knop om video's aan een playlist toe te voegen";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Maak playlists met jouw favoriete content. Voeg media van pagina's toe.\nSpeel ze af wanneer je wilt, al dan niet offline.";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Tik op %@ om je eerste item toe te voegen";
