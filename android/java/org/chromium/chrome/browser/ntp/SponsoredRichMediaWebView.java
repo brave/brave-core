@@ -52,13 +52,10 @@ public class SponsoredRichMediaWebView {
             () -> {
                 Log.w(
                         TAG,
-                        "First paint timeout elapsed %dms after didStopLoading.",
+                        "First paint timeout elapsed %dms after documentLoadedInPrimaryMainFrame.",
                         FIRST_PAINT_TIMEOUT_MS);
                 notifyFailure();
             };
-    private boolean mDocumentLoaded;
-    private boolean mIframeStarted;
-    private boolean mFirstPaintReceived;
     private String mPlacementId;
     private String mCreativeInstanceId;
 
@@ -133,15 +130,6 @@ public class SponsoredRichMediaWebView {
         mObserver =
                 new WebContentsObserver(mWebContents) {
                     @Override
-                    public void didStartLoading(GURL url) {
-                        Log.i(TAG, "didStartLoading url=%s.", url);
-                        if (mDocumentLoaded && !mIframeStarted) {
-                            Log.i(TAG, "Iframe navigation detected.");
-                            mIframeStarted = true;
-                        }
-                    }
-
-                    @Override
                     public void didFinishNavigationInPrimaryMainFrame(
                             NavigationHandle navigationHandle) {
                         Log.i(
@@ -155,8 +143,8 @@ public class SponsoredRichMediaWebView {
                     @Override
                     public void documentLoadedInPrimaryMainFrame(
                             Page page, GlobalRenderFrameHostId rfhId, int rfhLifecycleState) {
-                        Log.i(TAG, "documentLoadedInPrimaryMainFrame.");
-                        mDocumentLoaded = true;
+                        Log.i(TAG, "documentLoadedInPrimaryMainFrame, starting first paint timer.");
+                        mHandler.postDelayed(mFirstPaintTimeout, FIRST_PAINT_TIMEOUT_MS);
                     }
 
                     @Override
@@ -174,39 +162,20 @@ public class SponsoredRichMediaWebView {
                             int errorCode,
                             GURL failingUrl,
                             int rfhLifecycleState) {
-                        if (isInPrimaryMainFrame) {
-                            Log.w(
-                                    TAG,
-                                    "Navigation failed in primary main frame,"
-                                            + " errorCode=%d, url=%s.",
-                                    errorCode,
-                                    failingUrl);
-                            notifyFailure();
-                        } else {
-                            Log.w(
-                                    TAG,
-                                    "Navigation failed in subframe," + " errorCode=%d, url=%s.",
-                                    errorCode,
-                                    failingUrl);
-                        }
+                        Log.w(
+                                TAG,
+                                "Load failed in isInPrimaryMainFrame=%b,"
+                                        + " errorCode=%d, url=%s.",
+                                isInPrimaryMainFrame,
+                                errorCode,
+                                failingUrl);
+                        notifyFailure();
                     }
 
                     @Override
                     public void didFirstVisuallyNonEmptyPaint() {
                         Log.i(TAG, "First visually non-empty paint received.");
-                        mFirstPaintReceived = true;
                         mHandler.removeCallbacks(mFirstPaintTimeout);
-                    }
-
-                    @Override
-                    public void didStopLoading(GURL url, boolean isKnownValid) {
-                        Log.i(TAG, "didStopLoading url=%s.", url);
-                        if (mIframeStarted && !mFirstPaintReceived) {
-                            // All content is on disk; the remaining time is purely rendering.
-                            // Start the first-paint deadline now.
-                            mHandler.removeCallbacks(mFirstPaintTimeout);
-                            mHandler.postDelayed(mFirstPaintTimeout, FIRST_PAINT_TIMEOUT_MS);
-                        }
                     }
 
                     @Override
@@ -238,13 +207,13 @@ public class SponsoredRichMediaWebView {
         mCreativeInstanceId = creativeInstanceId;
 
         mHandler.removeCallbacks(mFirstPaintTimeout);
-        mDocumentLoaded = false;
-        mIframeStarted = false;
-        mFirstPaintReceived = false;
 
         String url = getNewTabTakeoverUrl(placementId, creativeInstanceId);
-        Log.i(TAG, "Loading url=%s, first paint timeout=%dms after didStopLoading.",
-                url, FIRST_PAINT_TIMEOUT_MS);
+        Log.i(
+                TAG,
+                "Loading url=%s, first paint timeout=%dms after documentLoadedInPrimaryMainFrame.",
+                url,
+                FIRST_PAINT_TIMEOUT_MS);
         mWebContents.getNavigationController().loadUrl(new LoadUrlParams(url));
     }
 
