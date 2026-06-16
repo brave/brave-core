@@ -3,8 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
 brave_content_browser_sources =
     [ "//brave/content/browser/devtools/adblock_devtools_instrumentation.cc" ]
+
+if (enable_ai_chat) {
+  brave_content_browser_sources += [
+    "//brave/content/browser/devtools/ai_chat_handler.cc",
+    "//brave/content/browser/devtools/ai_chat_handler.h",
+  ]
+}
 
 if (is_android) {
   brave_content_browser_sources += [
@@ -20,3 +29,11 @@ brave_content_browser_deps = [
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/speech_to_text",
 ]
+
+if (enable_ai_chat) {
+  brave_content_browser_deps += [
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+  ]
+}

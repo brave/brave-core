@@ -209,4 +209,10 @@ bool IsAIChatDeepResearchEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatDeepResearch);
 }
 
+BASE_FEATURE(kAIChatCDP, "AIChatCDP", base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatCDPEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatCDP);
+}
+
 }  // namespace ai_chat::features

@@ -45,3 +45,80 @@ domain Network
     parameters
       Network.RequestId requestId
       AdblockInfo info
+
+# Provides access to Brave's Leo AI Chat from external agents.
+domain BraveAIChat
+
+  experimental type ConversationEntry extends object
+    properties
+      string uuid
+      # One of: human, assistant
+      string characterType
+      string text
+      number timestamp
+      optional array of ToolUseInfo toolUses
+
+  experimental type ToolUseInfo extends object
+    properties
+      string id
+      string toolName
+      optional string status
+      optional string outputSummary
+
+  # Enables the AIChat domain for this session.
+  experimental command enable
+    parameters
+      # Optional browser context ID to target a specific profile.
+      optional string browserContextId
+
+  # Disables the domain, cleaning up all tracked conversations.
+  experimental command disable
+
+  # Creates a new Leo conversation and returns its UUID.
+  experimental command createConversation
+    returns
+      string conversationId
+
+  # Submits a human message to a conversation. Response arrives via
+  # turnCompleted event.
+  experimental command submitMessage
+    parameters
+      string conversationId
+      string message
+
+  # Returns the full conversation history.
+  experimental command getHistory
+    parameters
+      string conversationId
+    returns
+      array of ConversationEntry entries
+
+  # Releases a conversation from CDP tracking.
+  experimental command destroyConversation
+    parameters
+      string conversationId
+
+  # Fired when a complete assistant turn is available, after all tool-use
+  # loops and final generation.
+  experimental event turnCompleted
+    parameters
+      string conversationId
+      string turnId
+      string text
+      array of ToolUseInfo toolUses
+
+  # Fired during tool execution for progress visibility.
+  experimental event turnProgress
+    parameters
+      string conversationId
+      # One of: toolStarted, toolCompleted, textDelta
+      string progressType
+      optional string text
+      optional string toolName
+      optional string toolStatus
+
+  # Fired when Leo auto-generates a conversation title.
+  experimental event conversationTitleChanged
+    parameters
+      string conversationId
+      string title

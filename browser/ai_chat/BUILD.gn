@@ -345,6 +345,7 @@ source_set("browser_tests") {
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h",
       "ai_chat_brave_search_throttle_browsertest.cc",
       "ai_chat_browsertests.cc",
+      "ai_chat_cdp_browsertest.cc",
       "ai_chat_conversation_entries_browsertest.cc",
       "ai_chat_conversation_task_browsertest.cc",
       "ai_chat_conversation_ui_browsertest.cc",
