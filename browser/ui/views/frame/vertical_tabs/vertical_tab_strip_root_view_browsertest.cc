@@ -169,8 +169,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
 }
 
 // System menu is used on Windows, so the menu_runner_ path under test does not
-// apply there.
-#if BUILDFLAG(IS_WIN)
+// apply there. On macOS, `views::MenuRunner` shows a native NSMenu whose
+// tracking event loop (`-[NSMenu popUpContextMenu:]` via `ui::ShowContextMenu`)
+// runs synchronously and blocks `RunMenuAt()` until the menu is dismissed. A
+// browser test has no user to dismiss it, so the run loop hangs until the test
+// harness terminates it (SIGTERM), making the test flaky. See
+// https://github.com/brave/brave-browser/issues/56403.
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #define MAYBE_ContextMenuInUnobscuredRegion \
   DISABLED_ContextMenuInUnobscuredRegion
 #else
@@ -193,9 +198,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
   EXPECT_TRUE(vtab_strip_root_view->IsMenuShowing());
 }
 
-// Teesting menu tear down for `menu_runner_`, which is only used on
-// non-Windows platforms.
-#if BUILDFLAG(IS_WIN)
+// Testing menu tear down for `menu_runner_`, which is only used on non-Windows
+// platforms. Disabled on macOS for the same reason as the
+// MAYBE_ContextMenuInUnobscuredRegion test: the native NSMenu tracking loop
+// blocks `RunMenuAt()` synchronously until dismissed, hanging the test until it
+// is terminated (SIGTERM). See
+// https://github.com/brave/brave-browser/issues/56402.
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #define MAYBE_CloseBrowserWithContextMenuOpen \
   DISABLED_CloseBrowserWithContextMenuOpen
 #else
