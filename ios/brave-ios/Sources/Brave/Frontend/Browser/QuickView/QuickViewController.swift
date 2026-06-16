@@ -60,7 +60,7 @@ class QuickViewController: UIViewController {
     let toolbarHeight = toolbarHostingController.view.bounds.height
     if toolbarHeight > 0 {
       toolbarVisibilityViewModel.transitionDistance =
-        toolbarHeight - QuickViewToolbarView.collapsedHeight
+        toolbarHeight - QuickViewToolbarView.collapsedHeight(compatibleWith: traitCollection)
     }
   }
 

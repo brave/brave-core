@@ -16,6 +16,9 @@ struct QuickViewToolbarView: View {
   var shieldBackgroundView: InvisibleUIView = .init()
   var shareBackgroundView: InvisibleUIView = .init()
 
+  @ScaledMetric private var baseAddressFontSize: CGFloat = 15
+  @ScaledMetric private var addressFontCollapseDelta: CGFloat = 3
+
   var body: some View {
     VStack(spacing: 0) {
       topRow
@@ -98,7 +101,11 @@ struct QuickViewToolbarView: View {
 
   private var addressView: some View {
     Text(viewModel.url.host ?? viewModel.url.absoluteString)
-      .font(.system(size: 15 - 3 * viewModel.collapseProgress))
+      .font(
+        .system(
+          size: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress
+        )
+      )
       .foregroundStyle(Color(braveSystemName: .textTertiary))
       .lineLimit(1)
       .frame(maxWidth: .infinity)
@@ -110,13 +117,15 @@ struct QuickViewToolbarView: View {
       secondaryTopButtonView
       refreshButton
     }
-    .opacity(1 - viewModel.collapseProgress)
   }
 
   private var topRow: some View {
     HStack(alignment: .top, spacing: 8) {
-      shieldButton
-        .background(shieldBackgroundView)
+      if viewModel.collapseProgress < 1 {
+        shieldButton
+          .background(shieldBackgroundView)
+          .opacity(1 - viewModel.collapseProgress)
+      }
 
       VStack(spacing: 12) {
         addressView
@@ -125,7 +134,10 @@ struct QuickViewToolbarView: View {
           .hidden(isHidden: !viewModel.isLoading)
       }
 
-      topRightButtonsView
+      if viewModel.collapseProgress < 1 {
+        topRightButtonsView
+          .opacity(1 - viewModel.collapseProgress)
+      }
     }
     .labelStyle(QuickViewToolbarLabelTopIconStyle())
   }
@@ -231,5 +243,7 @@ private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
 
 extension QuickViewToolbarView {
   /// Height of the URL-only strip that remains visible when collapsed.
-  static let collapsedHeight: CGFloat = 24
+  static func collapsedHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
+    UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 24, compatibleWith: traitCollection)
+  }
 }
