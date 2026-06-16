@@ -20,6 +20,9 @@ struct QuickViewToolbarView: View {
     viewModel.isPrivate ? .privateMode : .standard
   }
 
+  @ScaledMetric private var baseAddressFontSize: CGFloat = 15
+  @ScaledMetric private var addressFontCollapseDelta: CGFloat = 3
+
   var body: some View {
     VStack(spacing: 0) {
       topRow
@@ -104,7 +107,9 @@ struct QuickViewToolbarView: View {
     URLDisplayLabel(
       formattedURL: viewModel.displayURL,
       isLeftToRight: viewModel.isURLLeftToRight,
-      textFont: .systemFont(ofSize: 15 - 3 * viewModel.collapseProgress),
+      textFont: .systemFont(
+        ofSize: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress
+      ),
       textColor: UIColor(braveSystemName: .textTertiary),
       gradientColors: [
         browserColors.chromeBackground.cgColor,
@@ -119,7 +124,6 @@ struct QuickViewToolbarView: View {
       secondaryTopButtonView
       refreshButton
     }
-    .opacity(1 - viewModel.collapseProgress)
   }
 
   @ViewBuilder private var warningIcon: some View {
@@ -170,8 +174,11 @@ struct QuickViewToolbarView: View {
 
   private var topRow: some View {
     HStack(alignment: .top, spacing: 8) {
-      shieldButton
-        .background(shieldBackgroundView)
+      if viewModel.collapseProgress < 1 {
+        shieldButton
+          .background(shieldBackgroundView)
+          .opacity(1 - viewModel.collapseProgress)
+      }
 
       VStack(spacing: 12) {
         HStack(spacing: 8) {
@@ -186,7 +193,10 @@ struct QuickViewToolbarView: View {
       }
       .padding(.horizontal, 16)
 
-      topRightButtonsView
+      if viewModel.collapseProgress < 1 {
+        topRightButtonsView
+          .opacity(1 - viewModel.collapseProgress)
+      }
     }
     .labelStyle(QuickViewToolbarLabelTopIconStyle())
   }
@@ -302,7 +312,9 @@ private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
 
 extension QuickViewToolbarView {
   /// Height of the URL-only strip that remains visible when collapsed.
-  static let collapsedHeight: CGFloat = 24
+  static func collapsedHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
+    UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 24, compatibleWith: traitCollection)
+  }
 }
 
 private struct QuickViewToolbarBottomButtonStyle: ButtonStyle {
