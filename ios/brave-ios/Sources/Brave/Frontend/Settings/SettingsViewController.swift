@@ -1787,31 +1787,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       ],
       uuid: debugSectionUUID
     )
-    #if compiler(>=6.2.1)  // Xcode 26.1
-    let isCompatabilityModeEnabled =
-      Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"] as? Bool == true
-    if #available(iOS 26.1, *), isCompatabilityModeEnabled {
-      let key = "com.apple.Swi\("ftUI.IgnoreSolar")iumOptOut"
-      section.rows.insert(
-        Row(
-          text: "Enable Liquid Glass",
-          accessory: .view(
-            SwitchAccessoryView(
-              initialValue: UserDefaults.standard.bool(forKey: key),
-              valueChange: { newValue in
-                if newValue {
-                  UserDefaults.standard.set(true, forKey: key)
-                } else {
-                  UserDefaults.standard.removeObject(forKey: key)
-                }
-              }
-            )
-          )
-        ),
-        at: 0
-      )
-    }
-    #endif
     if !FeatureList.kUseProfileWebViewConfiguration.enabled {
       section.rows.append(
         Row(
