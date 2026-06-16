@@ -362,6 +362,11 @@ public abstract class BraveActivity extends ChromeActivity
 
     private ApplicationStateListener mApplicationStateListener;
     private IncognitoReauthController mIncognitoReauthController;
+    // Genuine cold start vs an in-process recreation (e.g. foldable fold/unfold). Set once in
+    // initializeState() and never mutated: several cold-start-only behaviors read it.
+    private boolean mIsColdStart;
+    // One-shot guard so the app-close shred notification fires at most once per cold start.
+    private boolean mAppCloseShredTriggered;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -1007,7 +1012,11 @@ public abstract class BraveActivity extends ChromeActivity
             mIsDeepLink = true;
             BraveOriginDeepLinkHandler.open(this);
         }
-        if (isNoRestoreState()) {
+        // Null savedInstanceState = real cold start; non-null = in-process recreation such as
+        // a fold/unfold. The app-exit behaviors below must run only on a real cold start,
+        // otherwise folding/unfolding wipes the live session.
+        mIsColdStart = getSavedInstanceState() == null;
+        if (isNoRestoreState() && mIsColdStart) {
             CommandLine.getInstance().appendSwitch(ChromeSwitches.NO_RESTORE_STATE);
         }
 
@@ -1519,7 +1528,10 @@ public abstract class BraveActivity extends ChromeActivity
 
         ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
-        if (isClearBrowsingDataOnExit()) {
+        // Clear only on a real cold start; otherwise a fold/unfold recreation would re-run
+        // this and wipe history/site data/cache mid-session. Use mIsColdStart (captured in
+        // initializeState()) since getSavedInstanceState() is already reset to null here.
+        if (isClearBrowsingDataOnExit() && mIsColdStart) {
             int[] dataTypesArray =
                     CollectionUtil.integerCollectionToIntArray(
                             Arrays.asList(
@@ -3155,10 +3167,18 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onTabStateInitializedHandler() {
+        // NO_RESTORE_STATE is a process-global sticky switch. Remove it here so a later
+        // fold/unfold recreation does not re-run ChromeTabbedActivity.clearState() and wipe
+        // the session. Safe: both readers (CTA#initializeState, which consumes it before the
+        // async onTabStateInitialized, and IncognitoRestoreAppLaunchDrawBlocker) run earlier.
+        CommandLine.getInstance().removeSwitch(ChromeSwitches.NO_RESTORE_STATE);
+
         Profile profile = getCurrentProfile();
-        if (profile != null) {
-            // Triggers current app state notification to make sure the first-party storage cleanup
-            // is scheduled on startup if needed.
+        if (profile != null && mIsColdStart && !mAppCloseShredTriggered) {
+            // Schedule the first-party storage cleanup only on a real cold start; on a
+            // fold/unfold recreation it would shred and close every APP_EXIT ("App close")
+            // tab mid-session. One-shot guard so it runs at most once per cold start.
+            mAppCloseShredTriggered = true;
             BraveFirstPartyStorageCleanerUtils.triggerCurrentAppStateNotification(profile);
         }
     }
