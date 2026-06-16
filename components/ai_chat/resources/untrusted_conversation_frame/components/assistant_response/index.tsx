@@ -43,7 +43,6 @@ function AssistantEvent(
 
   if (event.completionEvent) {
     const completion = event.completionEvent.completion
-
     const numberedLinks =
       allowedLinks.length > 0
         ? allowedLinks

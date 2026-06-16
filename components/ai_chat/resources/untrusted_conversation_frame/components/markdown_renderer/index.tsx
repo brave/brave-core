@@ -22,8 +22,8 @@ import {
   directiveComponents,
   remarkDirectives,
 } from './remark_directives'
-import Checkbox from '@brave/leo/react/checkbox'
 import { remarkColor, ColorChip } from './remark_color'
+import { createLiClickHandler, checkboxRenderer } from './todo_list'
 
 const CodeBlock = React.lazy(async () => ({
   default: (await import('../code_block')).default.Block,
@@ -327,18 +327,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
       li: (props: React.ComponentProps<'li'> & { node?: HastElement }) => (
         <CursorDecorator
           as='li'
-          onClickCapture={(e) => {
-            // Note: Unfortunately we need to handle the checkboxes checking here
-            // as the generated markdown doesn't generate this as the label.
-            // We also need to call `preventDefault` so when the user clicks the checkbox
-            // we don't instantaneously check and uncheck it.
-            e.preventDefault()
-            const checkBox = e.currentTarget?.querySelector<
-              HTMLElement & { checked: boolean }
-            >('leo-checkbox')
-            if (!checkBox) return
-            checkBox.checked = !checkBox.checked
-          }}
+          onClickCapture={createLiClickHandler(props.node?.position?.start?.offset, mainProps.text)}
           children={props.children}
           isCursorVisible={props.node === lastElementRef.current}
         />
@@ -366,22 +355,12 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
           disableLinkRestrictions={disableLinkRestrictionsRef.current}
         />
       ),
-      input: (props: any) => {
-        if (props.type !== 'checkbox') {
-          return null
-        }
-
-        // Note: Checkbox has `checked` marked as a required prop. We don't
-        // want to specify it here, as that will cause the checkbox to reset
-        // when rerendering it.
-        const C: any = Checkbox
-        return <C />
-      },
+      input: checkboxRenderer,
       colorchip: ColorChip,
       ...buildTableRenderer(),
       ...directiveComponents,
     }),
-    [],
+    [mainProps.text],
   )
 
   return (
