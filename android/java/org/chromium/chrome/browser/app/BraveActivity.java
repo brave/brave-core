@@ -2733,7 +2733,9 @@ public abstract class BraveActivity extends ChromeActivity
             final View rootView = requireViewById(android.R.id.content);
             rootView.post(
                     () -> {
-                        if (isActivityFinishingOrDestroyed()) {
+                        // Check again that mSearchWidgetPromoPanel is not null otherwise
+                        // it may cause NPE on some edge cases.
+                        if (isActivityFinishingOrDestroyed() || mSearchWidgetPromoPanel == null) {
                             return;
                         }
                         mSearchWidgetPromoPanel.showIfNeeded(
