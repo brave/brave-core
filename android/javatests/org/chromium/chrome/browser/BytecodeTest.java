@@ -2202,7 +2202,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         BottomSheetController.class,
                         ModalDialogManager.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",

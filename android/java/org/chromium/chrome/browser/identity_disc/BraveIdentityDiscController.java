@@ -26,7 +26,8 @@ public class BraveIdentityDiscController extends IdentityDiscController {
             MonotonicObservableSupplier<Profile> profileSupplier,
             BottomSheetController bottomSheetController,
             ModalDialogManager modalDialogManager,
-            SnackbarManager snackbarManager) {
+            SnackbarManager snackbarManager,
+            Runnable onSigninTapped) {
         super(
                 activity,
                 windowAndroid,
@@ -35,7 +36,8 @@ public class BraveIdentityDiscController extends IdentityDiscController {
                 profileSupplier,
                 bottomSheetController,
                 modalDialogManager,
-                snackbarManager);
+                snackbarManager,
+                onSigninTapped);
     }
 
     /*
