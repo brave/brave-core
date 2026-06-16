@@ -56,7 +56,7 @@ extension BrowserViewController: TabDelegate {
 
         let openNewPrivateTabAction = UIAction(
           title: Strings.openNewPrivateTabButtonTitle,
-          image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template
+          image: UIImage(braveSystemNamed: "leo.product.private-window")
         ) { _ in
           if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
