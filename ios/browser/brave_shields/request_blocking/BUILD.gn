@@ -9,6 +9,9 @@ static_library("request_blocking") {
   sources = [
     "request_blocking_javascript_feature.h",
     "request_blocking_javascript_feature.mm",
+    "request_blocking_tab_helper.h",
+    "request_blocking_tab_helper.mm",
+    "request_blocking_tab_helper_bridge.h",
   ]
   deps = [
     ":request_blocking_js",
