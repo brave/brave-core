@@ -20,7 +20,6 @@ namespace brave_account {
 
 using endpoint_client::SetBearerToken;
 using endpoint_client::WithHeaders;
-using internal::MakeCalledInWrongStateError;
 using internal::MakeClientError;
 using internal::MakeRequest;
 using internal::MakeServerError;
@@ -54,25 +53,17 @@ void ResetPassword::VerifyComplete(
     mojom::Authentication::ResetPasswordVerifyCompleteCallback callback) {
   CHECK(!code.empty());
 
-  const auto encrypted_verification_token =
-      state_->account_state_prefs_->GetVerificationToken(
+  auto verification_token =
+      state_->GetDecryptedVerificationToken<mojom::ResetPasswordError>(
           mojom::VerificationIntent::NewLoggedOutIntent(
               mojom::LoggedOutVerificationIntent::kResetPassword));
-  if (encrypted_verification_token.empty()) {
+  if (!verification_token.has_value()) {
     return std::move(callback).Run(
-        MakeCalledInWrongStateError<mojom::ResetPasswordError>());
-  }
-
-  const auto verification_token = state_->Decrypt(encrypted_verification_token);
-  if (verification_token.empty()) {
-    return std::move(callback).Run(
-        base::unexpected(MakeClientError<mojom::ResetPasswordError>(
-            mojom::ResetPasswordClientErrorCode::
-                kVerificationTokenDecryptionFailed)));
+        base::unexpected(std::move(verification_token).error()));
   }
 
   auto request = MakeRequest<WithHeaders<endpoints::VerifyComplete::Request>>();
-  SetBearerToken(request, verification_token);
+  SetBearerToken(request, *verification_token);
   request.body.code = code;
 
   state_->SendStateOwnedRequest<endpoints::VerifyComplete>(
@@ -87,25 +78,17 @@ void ResetPassword::PasswordInit(
     mojom::Authentication::ResetPasswordPasswordInitCallback callback) {
   CHECK(!blinded_message.empty());
 
-  const auto encrypted_verification_token =
-      state_->account_state_prefs_->GetVerificationToken(
+  auto verification_token =
+      state_->GetDecryptedVerificationToken<mojom::ResetPasswordError>(
           mojom::VerificationIntent::NewLoggedOutIntent(
               mojom::LoggedOutVerificationIntent::kResetPassword));
-  if (encrypted_verification_token.empty()) {
+  if (!verification_token.has_value()) {
     return std::move(callback).Run(
-        MakeCalledInWrongStateError<mojom::ResetPasswordError>());
-  }
-
-  const auto verification_token = state_->Decrypt(encrypted_verification_token);
-  if (verification_token.empty()) {
-    return std::move(callback).Run(
-        base::unexpected(MakeClientError<mojom::ResetPasswordError>(
-            mojom::ResetPasswordClientErrorCode::
-                kVerificationTokenDecryptionFailed)));
+        base::unexpected(std::move(verification_token).error()));
   }
 
   auto request = MakeRequest<WithHeaders<endpoints::PasswordInit::Request>>();
-  SetBearerToken(request, verification_token);
+  SetBearerToken(request, *verification_token);
   request.body.blinded_message = blinded_message;
   request.body.initiating_service_name =
       kServiceToString.at(initiating_service);
@@ -124,26 +107,18 @@ void ResetPassword::PasswordFinalize(
   CHECK(!serialized_record.empty());
   CHECK(!email.empty());
 
-  const auto encrypted_verification_token =
-      state_->account_state_prefs_->GetVerificationToken(
+  auto verification_token =
+      state_->GetDecryptedVerificationToken<mojom::ResetPasswordError>(
           mojom::VerificationIntent::NewLoggedOutIntent(
               mojom::LoggedOutVerificationIntent::kResetPassword));
-  if (encrypted_verification_token.empty()) {
+  if (!verification_token.has_value()) {
     return std::move(callback).Run(
-        MakeCalledInWrongStateError<mojom::ResetPasswordError>());
-  }
-
-  const auto verification_token = state_->Decrypt(encrypted_verification_token);
-  if (verification_token.empty()) {
-    return std::move(callback).Run(
-        base::unexpected(MakeClientError<mojom::ResetPasswordError>(
-            mojom::ResetPasswordClientErrorCode::
-                kVerificationTokenDecryptionFailed)));
+        base::unexpected(std::move(verification_token).error()));
   }
 
   auto request =
       MakeRequest<WithHeaders<endpoints::PasswordFinalize::Request>>();
-  SetBearerToken(request, verification_token);
+  SetBearerToken(request, *verification_token);
   request.body.serialized_record = serialized_record;
 
   state_->SendStateOwnedRequest<endpoints::PasswordFinalize>(

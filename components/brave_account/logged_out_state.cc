@@ -25,7 +25,6 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::VerifyComplete;
-using internal::MakeCalledInWrongStateError;
 using internal::MakeClientError;
 using internal::MakeRequest;
 using internal::MakeServerError;
@@ -91,24 +90,16 @@ void LoggedOutState::RegisterVerify(const std::string& code,
                                     RegisterVerifyCallback callback) {
   CHECK(!code.empty());
 
-  const auto encrypted_verification_token =
-      account_state_prefs_->GetVerificationToken(
-          mojom::VerificationIntent::NewLoggedOutIntent(
-              mojom::LoggedOutVerificationIntent::kRegistration));
-  if (encrypted_verification_token.empty()) {
+  auto verification_token = GetDecryptedVerificationToken<mojom::RegisterError>(
+      mojom::VerificationIntent::NewLoggedOutIntent(
+          mojom::LoggedOutVerificationIntent::kRegistration));
+  if (!verification_token.has_value()) {
     return std::move(callback).Run(
-        MakeCalledInWrongStateError<mojom::RegisterError>());
-  }
-
-  const auto verification_token = Decrypt(encrypted_verification_token);
-  if (verification_token.empty()) {
-    return std::move(callback).Run(base::unexpected(MakeClientError<
-                                                    mojom::RegisterError>(
-        mojom::RegisterClientErrorCode::kVerificationTokenDecryptionFailed)));
+        base::unexpected(std::move(verification_token).error()));
   }
 
   auto request = MakeRequest<WithHeaders<VerifyComplete::Request>>();
-  SetBearerToken(request, verification_token);
+  SetBearerToken(request, *verification_token);
   request.body.code = code;
 
   SendStateOwnedRequest<VerifyComplete>(

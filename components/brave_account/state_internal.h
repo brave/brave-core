@@ -79,6 +79,18 @@ auto MakeCalledInWrongStateError() {
       MakeClientError<Error>(ClientErrorCodeOf<Error>::kCalledInWrongState));
 }
 
+template <typename Error>
+auto MakeVerificationTokenDecryptionFailedError() {
+  return base::unexpected(MakeClientError<Error>(
+      ClientErrorCodeOf<Error>::kVerificationTokenDecryptionFailed));
+}
+
+template <typename Error>
+auto MakeAuthenticationTokenDecryptionFailedError() {
+  return base::unexpected(MakeClientError<Error>(
+      ClientErrorCodeOf<Error>::kAuthenticationTokenDecryptionFailed));
+}
+
 template <typename ServerErrorCode>
 auto MakeServerErrorCode(endpoints::ErrorBody error_body) {
   if (error_body.code.is_none()) {

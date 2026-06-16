@@ -8,19 +8,23 @@
 
 #include <list>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoints/verify_resend.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/state_internal.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -88,6 +92,54 @@ class StateBase : public mojom::Authentication {
 
   std::string Encrypt(const std::string& plain_text) const;
   std::string Decrypt(const std::string& base64) const;
+
+  template <typename Error = void>
+  auto GetDecryptedVerificationToken(
+      mojom::VerificationIntentPtr intent) const {
+    if constexpr (std::is_void_v<Error>) {
+      return Decrypt(
+          account_state_prefs_->GetVerificationToken(std::move(intent)));
+    } else {
+      using Expected =
+          base::expected<std::string, decltype(Error::NewClientError(nullptr))>;
+
+      const auto encrypted_verification_token =
+          account_state_prefs_->GetVerificationToken(std::move(intent));
+      if (encrypted_verification_token.empty()) {
+        return Expected(internal::MakeCalledInWrongStateError<Error>());
+      }
+
+      auto verification_token = Decrypt(encrypted_verification_token);
+      if (verification_token.empty()) {
+        return Expected(
+            internal::MakeVerificationTokenDecryptionFailedError<Error>());
+      }
+
+      return Expected(std::move(verification_token));
+    }
+  }
+
+  template <typename Error = void>
+  auto GetDecryptedAuthenticationToken() const {
+    const auto encrypted_authentication_token =
+        account_state_prefs_->GetAuthenticationToken();
+    CHECK(!encrypted_authentication_token.empty());
+
+    auto authentication_token = Decrypt(encrypted_authentication_token);
+    if constexpr (std::is_void_v<Error>) {
+      return authentication_token;
+    } else {
+      using Expected =
+          base::expected<std::string, decltype(Error::NewClientError(nullptr))>;
+
+      if (authentication_token.empty()) {
+        return Expected(
+            internal::MakeAuthenticationTokenDecryptionFailedError<Error>());
+      }
+
+      return Expected(std::move(authentication_token));
+    }
+  }
 
   // Caller-owned: the returned handle cancels the request when destroyed.
   // Use when the request's lifetime is tied to something other than
