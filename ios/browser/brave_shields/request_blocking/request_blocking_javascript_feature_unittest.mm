@@ -12,16 +12,13 @@
 #include "base/test/ios/wait_util.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper_bridge.h"
-#include "ios/chrome/browser/shared/model/profile/test/test_profile_ios.h"
+#include "ios/chrome/test/ios_chrome_test_with_web_state.h"
 #include "ios/web/public/test/fakes/fake_web_client.h"
-#include "ios/web/public/test/js_test_util.h"
-#include "ios/web/public/test/scoped_testing_web_client.h"
 #include "ios/web/public/test/web_state_test_util.h"
-#include "ios/web/public/test/web_task_environment.h"
+#include "ios/web/public/web_client.h"
 #include "ios/web/public/web_state.h"
 #include "net/base/apple/url_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "testing/platform_test.h"
 #include "url/gurl.h"
 
 // Fake bridge that records the parameters of the most recently received request
@@ -56,53 +53,23 @@
 
 @end
 
-class RequestBlockingJavaScriptFeatureTest : public PlatformTest {
+class RequestBlockingJavaScriptFeatureTest : public IOSChromeTestWithWebState {
  protected:
-  RequestBlockingJavaScriptFeatureTest()
-      : web_client_(std::make_unique<web::FakeWebClient>()) {}
-
   void SetUp() override {
-    PlatformTest::SetUp();
+    IOSChromeTestWithWebState::SetUp();
 
-    profile_ = TestProfileIOS::Builder().Build();
-
-    web::WebState::CreateParams params(profile_.get());
-    web_state_ = web::WebState::Create(params);
-    web_state_->GetView();
-    web_state_->SetKeepRenderProcessAlive(true);
-
-    GetWebClient()->SetJavaScriptFeatures(
-        {RequestBlockingJavaScriptFeature::GetInstance()});
+    static_cast<web::FakeWebClient*>(web::GetWebClient())
+        ->SetJavaScriptFeatures(
+            {RequestBlockingJavaScriptFeature::GetInstance()});
 
     bridge_ = [[FakeRequestBlockingTabHelperBridge alloc] init];
-    RequestBlockingTabHelper::CreateForWebState(web_state_.get());
-    RequestBlockingTabHelper::FromWebState(web_state_.get())
-        ->SetBridge(bridge_);
+    RequestBlockingTabHelper::CreateForWebState(web_state());
+    RequestBlockingTabHelper::FromWebState(web_state())->SetBridge(bridge_);
 
-    // The feature only forwards requests for HTTP(S) frames, so load the page
-    // from an HTTPS origin.
     web::test::LoadHtml(@"<html></html>", GURL("https://brave.com/"),
-                        web_state_.get());
+                        web_state());
   }
 
-  web::FakeWebClient* GetWebClient() {
-    return static_cast<web::FakeWebClient*>(web_client_.Get());
-  }
-
-  web::WebState* web_state() { return web_state_.get(); }
-
-  // Executes `script` in the feature's content world (where the injected
-  // request blocking script patches `fetch`/`XMLHttpRequest`) and returns the
-  // script's completion value.
-  id ExecuteJavaScript(NSString* script) {
-    return web::test::ExecuteJavaScriptForFeatureAndReturnResult(
-        web_state(), script, RequestBlockingJavaScriptFeature::GetInstance());
-  }
-
-  web::ScopedTestingWebClient web_client_;
-  web::WebTaskEnvironment task_environment_;
-  std::unique_ptr<TestProfileIOS> profile_;
-  std::unique_ptr<web::WebState> web_state_;
   FakeRequestBlockingTabHelperBridge* bridge_;
 };
 
@@ -115,11 +82,13 @@ TEST_F(RequestBlockingJavaScriptFeatureTest, TestFetchRequest) {
   ASSERT_FALSE(bridge_.lastSourceURL);
 
   // Perform a fetch request and store the value on window.sval
-  ExecuteJavaScript(@"window.sval = undefined;"
-                    @"fetch('https://brave.com/resource.json')"
-                    @"    .then(() => { window.sval = 'fetched'; })"
-                    @"    .catch(() => { window.sval = 'blocked'; });"
-                    @"true;");  // keep response serializable for WebKit/obj-c
+  web::test::ExecuteJavaScript(
+      @"window.sval = undefined;"
+      @"fetch('https://brave.com/resource.json')"
+      @"    .then(() => { window.sval = 'fetched'; })"
+      @"    .catch(() => { window.sval = 'blocked'; });"
+      @"true;",  // keep response serializable for WebKit/obj-c
+      web_state());
 
   // wait for it to be received by the bridge
   ASSERT_TRUE(base::test::ios::WaitUntilConditionOrTimeout(
@@ -139,8 +108,8 @@ TEST_F(RequestBlockingJavaScriptFeatureTest, TestFetchRequest) {
   __block NSString* result = nil;
   ASSERT_TRUE(base::test::ios::WaitUntilConditionOrTimeout(
       base::test::ios::kWaitForJSCompletionTimeout, ^bool {
-        result =
-            base::apple::ObjCCast<NSString>(ExecuteJavaScript(@"window.sval"));
+        result = base::apple::ObjCCast<NSString>(
+            web::test::ExecuteJavaScript(@"window.sval", web_state()));
         return result != nil;
       }));
   EXPECT_EQ("blocked", base::SysNSStringToUTF8(result));
@@ -155,13 +124,15 @@ TEST_F(RequestBlockingJavaScriptFeatureTest, TestXHR) {
   ASSERT_FALSE(bridge_.lastSourceURL);
 
   // Perform an XMLHttpRequest and store the value on window.sval
-  ExecuteJavaScript(@"window.sval = undefined;"
-                    @"var xhr = new XMLHttpRequest();"
-                    @"xhr.open('GET', 'https://brave.com/resource.json');"
-                    @"xhr.onload = () => { window.sval = 'fetched'; };"
-                    @"xhr.onerror = () => { window.sval = 'blocked'; };"
-                    @"xhr.send();"
-                    @"true;");  // keep response serializable for WebKit/obj-c
+  web::test::ExecuteJavaScript(
+      @"window.sval = undefined;"
+      @"var xhr = new XMLHttpRequest();"
+      @"xhr.open('GET', 'https://brave.com/resource.json');"
+      @"xhr.onload = () => { window.sval = 'fetched'; };"
+      @"xhr.onerror = () => { window.sval = 'blocked'; };"
+      @"xhr.send();"
+      @"true;",  // keep response serializable for WebKit/obj-c
+      web_state());
 
   // wait for it to be received by the bridge
   ASSERT_TRUE(base::test::ios::WaitUntilConditionOrTimeout(
@@ -181,8 +152,8 @@ TEST_F(RequestBlockingJavaScriptFeatureTest, TestXHR) {
   __block NSString* result = nil;
   ASSERT_TRUE(base::test::ios::WaitUntilConditionOrTimeout(
       base::test::ios::kWaitForJSCompletionTimeout, ^bool {
-        result =
-            base::apple::ObjCCast<NSString>(ExecuteJavaScript(@"window.sval"));
+        result = base::apple::ObjCCast<NSString>(
+            web::test::ExecuteJavaScript(@"window.sval", web_state()));
         return result != nil;
       }));
   EXPECT_EQ("blocked", base::SysNSStringToUTF8(result));
