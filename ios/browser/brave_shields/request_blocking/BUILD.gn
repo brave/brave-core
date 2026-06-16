@@ -35,3 +35,21 @@ optimize_ts("request_blocking_js") {
 
   deps = [ "//ios/web/public/js_messaging:util_scripts" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "request_blocking_javascript_feature_unittest.mm" ]
+
+  deps = [
+    ":request_blocking",
+    "//base",
+    "//base/test:test_support",
+    "//ios/chrome/browser/shared/model/profile/test",
+    "//ios/web/public",
+    "//ios/web/public/test",
+    "//net",
+    "//testing/gtest",
+    "//url",
+  ]
+}
