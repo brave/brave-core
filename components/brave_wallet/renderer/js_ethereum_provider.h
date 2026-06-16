@@ -52,8 +52,8 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                     base::Value result) override;
 
  private:
-  class MetaMask final : public content::RenderFrameObserver,
-                         public gin::Wrappable<MetaMask> {
+  class MetaMask final : public gin::Wrappable<MetaMask>,
+                         public content::RenderFrameObserver {
    public:
     static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                       gin::kMetaMask};
