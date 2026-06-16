@@ -20,7 +20,7 @@ struct FilterListsView: View {
 
     var body: some View {
       VStack(alignment: .leading, spacing: 4) {
-        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+        if #available(iOS 26.0, *) {
           Text(title)
           Text(description)
             .font(.caption)

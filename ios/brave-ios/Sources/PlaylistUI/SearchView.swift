@@ -87,7 +87,7 @@ struct SearchView: View {
         }
       }
       .toolbar {
-        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+        if #available(iOS 26.0, *) {
           ToolbarItemGroup(placement: .automatic) {
             SearchBar(
               text: $query,

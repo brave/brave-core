@@ -14,7 +14,7 @@ extension UIBarButtonItem {
         action()
       })
     )
-    if LiquidGlassMode.isEnabled {
+    if #available(iOS 26.0, *) {
       // Liquid Glass will turn this bar button into a prominent glass button by default, so we
       // want to use an explicit tint color
       item.tintColor = UIColor(braveSystemName: .primitivePrimary40)
@@ -24,7 +24,7 @@ extension UIBarButtonItem {
   /// Creates a done button that is themed correctly
   public static func doneButton(target: Any?, action: Selector?) -> UIBarButtonItem {
     let item = UIBarButtonItem(barButtonSystemItem: .done, target: target, action: action)
-    if LiquidGlassMode.isEnabled {
+    if #available(iOS 26.0, *) {
       // Liquid Glass will turn this bar button into a prominent glass button by default, so we
       // want to use an explicit tint color
       item.tintColor = UIColor(braveSystemName: .primitivePrimary40)
