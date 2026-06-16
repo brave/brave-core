@@ -536,23 +536,15 @@ bottomConstraint = view.bottomAnchor.constraint(
 
 ## ✅ Use Brave Design System Colors
 
-**Use `UIColor(braveSystemName:)` for colors, not hard-coded values or system
-colors.** This ensures consistency with the Brave design system and proper dark
-mode support.
+**Use `UIColor(braveSystemName:)` for colors, not hard-coded values.** This
+ensures consistency with the Brave design system and proper dark mode support.
 
-**Avoid deprecated legacy colors** such as `UIColor.braveBlurpleTint` /
-`Color(.braveBlurpleTint)` from
-[LegacyColors.swift](https://github.com/brave/brave-core/blob/00785ba10b5dea2f7ac4e1d66dafe0ddd6d1c0af/ios/brave-ios/Sources/DesignSystem/Colors/LegacyColors.swift).
-The only legacy colors still acceptable in the short-term are the "grouped"
-backgrounds: `braveGroupedBackground`, `secondaryBraveGroupedBackground`,
-`tertiaryBraveGroupedBackground`.
+Using system colors is acceptable in settings-like screens where we expect to
+match the default styling of iOS.
 
 ```swift
 // ❌ WRONG - hard-coded color
 view.backgroundColor = UIColor(red: 0.2, green: 0.4, blue: 0.8, alpha: 1)
-
-// ❌ WRONG - deprecated legacy color
-view.tintColor = UIColor.braveBlurpleTint
 
 // ✅ CORRECT - design system color
 view.backgroundColor = UIColor(braveSystemName: .primary20)
