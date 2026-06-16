@@ -101,7 +101,7 @@
 "SettingsGeneralSectionTitle" = "一般";
 
 /* Button displayed at the top of the search settings. */
-"SettingsSearchDoneButton" = "完成";
+"SettingsSearchDoneButton" = "已完成";
 
 /* The button to undo the delete all tabs */
 "TabsDeleteAllUndoAction" = "復原";

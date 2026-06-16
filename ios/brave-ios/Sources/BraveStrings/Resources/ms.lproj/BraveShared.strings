@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Enjin Carian Pantas";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Halaman Sebelumnya";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Halaman Seterusnya";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Buka dalam tab";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Tambahkan pada Senarai Main";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Dayakan Mod Pembaca";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Segar semula";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Kongsi";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Perisai";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Dayakan Terjemahan";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Berikan penarafan kepada Brave";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Pengesahan Peranti";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Anda telah mencapai bilangan maksimum peranti (10) yang dibenarkan dalam rantaian penyegerakan. Alih keluar peranti untuk meneruskan.";
+"sync.maximumDeviceReachedErrorDescription" = "Anda telah mencapai bilangan maksimum peranti (50) yang dibenarkan dalam rantaian penyegerakan. Alih keluar peranti untuk meneruskan.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Had peranti";

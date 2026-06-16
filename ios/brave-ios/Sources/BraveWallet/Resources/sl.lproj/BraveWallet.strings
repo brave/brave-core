@@ -74,7 +74,7 @@
 "wallet.addCustomTokenErrorMessage" = "Žetona po meri ni bilo mogoče dodati. Poskusite znova.";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorTitle" = "Ni mogoče dodati napaščenega žetona";
+"wallet.addCustomTokenErrorTitle" = "Prilagojene žetona ni mogoče dodati";
 
 /* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
 "wallet.addCustomTokenIconURL" = "URL ikone";
@@ -131,7 +131,7 @@
 "wallet.assetsDescription" = "%d sredstev";
 
 /* The text displayed when a user uses a query to search for assets that yields no results */
-"wallet.assetSearchEmpty" = "Ni sredstev za prikaz";
+"wallet.assetSearchEmpty" = "Nobenega sredstva ni bilo najdeno";
 
 /* The description of the assets row in Account Details when user has 1 Asset. */
 "wallet.assetsSingularDescription" = "%d sredstvo";
@@ -353,7 +353,7 @@
 "wallet.coinTypeUnknown" = "Neznano";
 
 /* One of the coin types for users to create an account to store ZEC assets */
-"wallet.coinTypeZCash" = "ZCash";
+"wallet.coinTypeZCash" = "Zcash";
 
 /* A description for ZCash coin type. */
 "wallet.coinTypeZCashDescription" = "Shranite sredstva ZEC";
@@ -665,7 +665,7 @@
 "wallet.editPermissionsApproveUnlimited" = "Neomejeno";
 
 /* The header text above the field to input a custom allowance value. */
-"wallet.editPermissionsCustomAllowanceHeader" = "Nastavite prilagojeno dovoljenj";
+"wallet.editPermissionsCustomAllowanceHeader" = "Nastavite dodatek po meri";
 
 /* The header text shown in the row that displays the proposed allowance value. */
 "wallet.editPermissionsProposedAllowanceHeader" = "Predlagani dodatek";
@@ -734,7 +734,7 @@
 "wallet.ensOffchainGatewayButton" = "Uporabite domeno ENS";
 
 /* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayDesc" = "Kaže, da ste vnesli naslov ENS. Ta zahteva bo razrešena s strani prehoda tretje osebe, ta pa bo morda lahko videla vaš naslov IP in domeno. To pomaga zagotoviti, da vaša .eth domena ni puščena, in da je vaša transakcija varna.";
+"wallet.ensOffchainGatewayDesc" = "Kaže, da ste vnesli naslov ENS. Za razrešitev te zahteve moramo uporabiti razreševalnik tretje osebe. To pomaga zagotoviti, da vaša domena .eth ne bo razkrita in da je vaša transakcija varna.";
 
 /* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayTitle" = "Brave podpira uporabo prehodov zunaj verige za razreševanje domen .eth.";
@@ -761,7 +761,7 @@
 "wallet.enterPasswordForBiometricsTitle" = "Vnesite geslo vaše denarnice za omogočanje biometrije za denarnico (vprašali vas bomo samo enkrat)";
 
 /* A placeholder for the text field that users will input the custom token Coingecko ID. */
-"wallet.enterTokenCoingeckoId" = "Vnesite ID storitve Coingecko za žeton";
+"wallet.enterTokenCoingeckoId" = "Vnesite ID žetona Coingecko";
 
 /* A placeholder for the text field that users will input the custom token icon URL */
 "wallet.enterTokenIconURL" = "Vnesite URL ikone žetona";
@@ -893,7 +893,7 @@
 "wallet.hideUnownedNFTsDescription" = "Skrij NFT-je, ki jih ne lastite";
 
 /* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideUnownedNFTsTitle" = "Skrij neizbor";
+"wallet.hideUnownedNFTsTitle" = "Skrij last()}";
 
 /* The title of a button that updates the filter to hide tokens with zero balances. */
 "wallet.hideZeroBalances" = "Skrij ničelna stanja";
@@ -1073,7 +1073,7 @@
 "wallet.newPasswordPlaceholder" = "Vnesite novo geslo";
 
 /* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
-"wallet.newSiteConnectConfirmationMessage" = "Oglejte si naslove vaših dovoljenj računi (obvezno)";
+"wallet.newSiteConnectConfirmationMessage" = "Prikaz naslovov vaših dovoljenih računov (obvezno)";
 
 /* The footer message displayed above the Next button in new site connection screen. */
 "wallet.newSiteConnectFooter" = "Povežite se samo s spletnimi mesti, ki jim zaupate.";
@@ -1334,7 +1334,7 @@
 "wallet.removeAccountErrorMessage" = "Neveljavno geslo";
 
 /* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
-"wallet.removeCustomTokenErrorMessage" = "Preverite, ali je to nov prilagojeni sredstvo, preverite internetno povezavo in poskusite znova.";
+"wallet.removeCustomTokenErrorMessage" = "Preverite, ali je to nova egenialna sredstva, preverite internetno povezavo in poskusite znova.";
 
 /* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
 "wallet.removeCustomTokenErrorTitle" = "Prilagojene žetona ni mogoče odstraniti";
@@ -1373,7 +1373,7 @@
 "wallet.restoreWalletPhrasePlaceholder" = "Beseda #%d";
 
 /* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
-"wallet.restoreWalletShowRecoveryPhrase" = "Prikažite fazo obnovitve";
+"wallet.restoreWalletShowRecoveryPhrase" = "Prikazi frazo obnovitve";
 
 /* The subtitle on the restore wallet screen. */
 "wallet.restoreWalletSubtitle" = "Celotno frazo za obnovitev lahko prilepite v poljubno polje.";
@@ -1622,7 +1622,7 @@
 "wallet.signatureRequestSubtitle" = "Zahtevan je bil vaš podpis";
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
-"wallet.signatureRequestTitle" = "Zahtevana podpis";
+"wallet.signatureRequestTitle" = "Podpis je bil zahtevan";
 
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
 "wallet.signCardanoTxRequestDetailsAddressLabel" = "Naslov";
@@ -1922,7 +1922,7 @@
 "wallet.swapDescription" = "Zamenjajte žetone in sredstva.";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
-"wallet.swapDexAggrigatorDisclaimer" = "%1$@ bo obdelal naslov Ethereum in naslov IP za izvedbo transakcije (vključno s pridobivanjem ponudb). %3$@ bo te podatke uporabil SAMO za namene obdelave transakcij.";
+"wallet.swapDexAggrigatorDisclaimer" = "%1$@ bo obdelal naslov %2$@ in naslov IP za izvedbo transakcije (vključno s pridobivanjem ponudb). %3$@ bo te podatke uporabil SAMO za namene obdelave transakcij.";
 
 /* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
 "wallet.swapDexAggrigatorNote" = "Brave uporablja %@ kot zbiralnik DEX.";
@@ -2024,13 +2024,13 @@
 "wallet.transactionFromToAccessibilityLabel" = "Od: %1$@. Za: %2$@";
 
 /* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
-"wallet.transactionsDescription" = "%d transakcije";
+"wallet.transactionsDescription" = "%d transakcij";
 
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: "Sent 0.0054 ETH ($22.44)" */
 "wallet.transactionSendTitle" = "Poslano %1$@ %2$@ (%3$@)";
 
 /* The description of the transactions row in Account Details when user has 1 Transaction. */
-"wallet.transactionsSingularDescription" = "%d transakcija";
+"wallet.transactionsSingularDescription" = "%d transakcij";
 
 /* A status that explains that the transaction has been approved by the user */
 "wallet.transactionStatusApproved" = "Potrjeno";
@@ -2327,7 +2327,7 @@
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Samodejno dodajte NFT-je, ki jih imate, v denarnico z uporabo API-jev tretjih oseb. [Preberite več](%@)";
 
 /* A description of an ZCash account, displayed in Accounts tab. */
-"wallet.zecAccountDescription" = "ZCash";
+"wallet.zecAccountDescription" = "Zcash";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Od Z do A";
