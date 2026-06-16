@@ -363,6 +363,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                         )}
                         <AssistantResponse
                           key={entry.uuid || i}
+                          entryUuid={entry.uuid}
                           events={
                             currentEntryEdit.events?.filter(Boolean) ?? []
                           }

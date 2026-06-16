@@ -222,6 +222,43 @@ export const normalizeCitationSpacing = (text: string): string =>
   })
 
 /**
+ * Returns the source offset of the `[` character for every GFM task-list
+ * checkbox in `text`, in document order. Task list items inside `<think>`
+ * reasoning blocks are excluded so the order matches what the markdown
+ * renderer produces (it operates on text with reasoning stripped).
+ */
+export const findTaskCheckboxBracketOffsets = (text: string): number[] => {
+  const reasoningRanges: Array<[number, number]> = []
+  let cursor = 0
+  while (cursor < text.length) {
+    const open = text.indexOf('<think>', cursor)
+    if (open === -1) break
+    const close = text.indexOf('</think>', open + '<think>'.length)
+    if (close === -1) {
+      reasoningRanges.push([open, text.length])
+      break
+    }
+    const endExclusive = close + '</think>'.length
+    reasoningRanges.push([open, endExclusive])
+    cursor = endExclusive
+  }
+  const isInReasoning = (offset: number) =>
+    reasoningRanges.some(([a, b]) => offset >= a && offset < b)
+
+  const tree = unified().use(remarkParse).use(remarkGfm).parse(text)
+  const offsets: number[] = []
+  visit(tree, 'listItem', (node: any) => {
+    if (node.checked === null || node.checked === undefined) return
+    const start = node.position?.start?.offset
+    if (start === undefined) return
+    if (isInReasoning(start)) return
+    const bracket = text.indexOf('[', start)
+    if (bracket >= 0) offsets.push(bracket)
+  })
+  return offsets
+}
+
+/**
  * Replaces citation numbers `[1]`, `[2]`, etc. with URLs from `allowedLinks`,
  * skipping matches that fall inside fenced code blocks or inline code spans —
  * where `[N]` is typically array indexing rather than a citation.

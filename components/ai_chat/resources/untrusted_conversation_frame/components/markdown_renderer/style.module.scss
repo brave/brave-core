@@ -140,6 +140,18 @@
     }
   }
 
+  // Suppress blockReveal when a render is triggered by an in-place edit
+  // (e.g. user toggled a task-list checkbox). The DOM nodes are remounted
+  // by react-markdown's re-parse, which would otherwise refire the
+  // entry-reveal animation across every block in the response.
+  &.noAnimation {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+    }
+  }
+
   // Table styles
   .tableWrapper {
     margin: var(--leo-spacing-xl) 0;

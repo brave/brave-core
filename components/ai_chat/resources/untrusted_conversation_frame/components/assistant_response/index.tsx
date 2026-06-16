@@ -15,9 +15,10 @@ import DeepResearchEvent from './deep_research_event'
 import { extractDeepResearchEvents } from './deep_research_utils'
 import styles from './style.module.scss'
 import {
-  removeReasoning,
-  removeCitationsWithMissingLinks,
+  findTaskCheckboxBracketOffsets,
   normalizeCitationSpacing,
+  removeCitationsWithMissingLinks,
+  removeReasoning,
 } from '../conversation_entries/conversation_entries_utils'
 import RichSearchWidget from './rich_search_widget'
 import AssistantResponseContextProvider from './assistant_response_context'
@@ -36,9 +37,11 @@ function AssistantEvent(
   props: BaseProps & {
     event: Mojom.ConversationEntryEvent
     hasCompletionStarted: boolean
+    entryUuid?: string
   },
 ) {
-  const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
+  const { allowedLinks, event, isEntryInProgress, isLeoModel, entryUuid } =
+    props
   const context = useUntrustedConversationContext()
 
   if (event.completionEvent) {
@@ -59,12 +62,39 @@ function AssistantEvent(
 
     const fullText = `${numberedLinks}${removeReasoning(processedCompletion)}`
 
+    // Persist a checkbox toggle back to the conversation. The renderer
+    // identifies the checkbox by its position among GFM task items in
+    // document order, which is invariant to the numbered-links prefix
+    // and to reasoning being stripped. We save `processedCompletion`
+    // (reasoning preserved, no numbered-links block) — citations that
+    // were dropped because their link is missing stay dropped, and
+    // citation spacing stays normalized.
+    const onToggleCheckbox =
+      entryUuid && !isEntryInProgress
+        ? (index: number, checked: boolean) => {
+            const offsets = findTaskCheckboxBracketOffsets(processedCompletion)
+            const at = offsets[index]
+            if (at === undefined) return
+            const next =
+              processedCompletion.slice(0, at + 1)
+              + (checked ? 'x' : ' ')
+              + processedCompletion.slice(at + 2)
+            if (next === processedCompletion) return
+            context.conversationHandler?.modifyConversation(
+              entryUuid,
+              next,
+              null,
+            )
+          }
+        : undefined
+
     return (
       <MarkdownRenderer
         shouldShowTextCursor={isEntryInProgress}
         text={fullText}
         allowedLinks={allowedLinks}
         disableLinkRestrictions={!isLeoModel}
+        onToggleCheckbox={onToggleCheckbox}
       />
     )
   }
@@ -89,6 +119,10 @@ function AssistantEvent(
 export type AssistantResponseProps = BaseProps & {
   events: Mojom.ConversationEntryEvent[]
   toolArtifacts?: Mojom.ToolArtifact[] | null
+  // The UUID of the original conversation turn this response renders.
+  // Required to persist edits (e.g. checkbox toggles) back via
+  // ModifyConversation. When omitted, checkbox toggles are inert.
+  entryUuid?: string
 }
 
 export default function AssistantResponse(props: AssistantResponseProps) {
@@ -129,6 +163,7 @@ export default function AssistantResponse(props: AssistantResponseProps) {
             isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
             allowedLinks={props.allowedLinks}
             isLeoModel={props.isLeoModel}
+            entryUuid={props.entryUuid}
           />
         ))}
 
