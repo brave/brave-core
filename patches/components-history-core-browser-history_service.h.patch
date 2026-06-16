@@ -1,0 +1,21 @@
+diff --git a/components/history/core/browser/history_service.h b/components/history/core/browser/history_service.h
+index 81dee06f3aab6e1aa455003a7ee46fc936219e6b..9f18d725a437e2fa24487c8ce6e206a9627bd796 100644
+--- a/components/history/core/browser/history_service.h
++++ b/components/history/core/browser/history_service.h
+@@ -313,6 +313,16 @@ class HistoryService : public KeyedService,
+       QueryURLCallback callback,
+       base::CancelableTaskTracker* tracker);
+ 
++  // Returns one URLID per input URL, in input order; unknown URLs map to 0.
++  using QueryUrlIdsCallback = base::OnceCallback<void(std::vector<URLID>)>;
++
++  // Bulk variant of `QueryURL` that resolves many URLs in a single backend
++  // round trip.
++  base::CancelableTaskTracker::TaskId QueryUrlIds(
++      const std::vector<GURL>& urls,
++      QueryUrlIdsCallback callback,
++      base::CancelableTaskTracker* tracker);
++
+   // Queries the basic information about the URL in the history database, and
+   // includes the visits (each time the URL is visited). If visits are not
+   // needed, use `QueryURL()` instead, as it's faster.
