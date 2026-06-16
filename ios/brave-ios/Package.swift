@@ -662,7 +662,7 @@ var package = Package(
   cxxLanguageStandard: .cxx17
 )
 
-let iosRootDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString.dropLast()
+let iosRootDirectory = URL(string: PackageDescription.Context.packageDirectory)!.absoluteString
 let isStripAbsolutePathsFromDebugSymbolsEnabled = {
   do {
     let env = try String(contentsOfFile: "\(iosRootDirectory)/../../.env", encoding: .utf8)
