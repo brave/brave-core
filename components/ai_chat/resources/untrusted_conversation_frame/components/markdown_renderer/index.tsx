@@ -22,6 +22,7 @@ import {
   directiveComponents,
   remarkDirectives,
 } from './remark_directives'
+import Checkbox from '@brave/leo/react/checkbox'
 import { remarkColor, ColorChip } from './remark_color'
 
 const CodeBlock = React.lazy(async () => ({
@@ -39,6 +40,9 @@ const allowedElements = [
   'h4',
   'h5',
   'h6',
+
+  // Checkboxes
+  'input',
 
   // Text formatting
   'blockquote',
@@ -84,13 +88,14 @@ interface CursorDecoratorProps {
   as: React.ElementType
   children: React.ReactNode
   isCursorVisible: boolean
+  onClickCapture?: React.MouseEventHandler
 }
 
 function CursorDecorator(props: CursorDecoratorProps) {
   const Tag = props.as
 
   return (
-    <Tag>
+    <Tag onClickCapture={props.onClickCapture}>
       {props.children}
       {props.isCursorVisible && (
         <span className={styles.textCursor}>
@@ -322,6 +327,18 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
       li: (props: React.ComponentProps<'li'> & { node?: HastElement }) => (
         <CursorDecorator
           as='li'
+          onClickCapture={(e) => {
+            // Note: Unfortunately we need to handle the checkboxes checking here
+            // as the generated markdown doesn't generate this as the label.
+            // We also need to call `preventDefault` so when the user clicks the checkbox
+            // we don't instantaneously check and uncheck it.
+            e.preventDefault()
+            const checkBox = e.currentTarget?.querySelector<
+              HTMLElement & { checked: boolean }
+            >('leo-checkbox')
+            if (!checkBox) return
+            checkBox.checked = !checkBox.checked
+          }}
           children={props.children}
           isCursorVisible={props.node === lastElementRef.current}
         />
@@ -349,6 +366,17 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
           disableLinkRestrictions={disableLinkRestrictionsRef.current}
         />
       ),
+      input: (props: any) => {
+        if (props.type !== 'checkbox') {
+          return null
+        }
+
+        // Note: Checkbox has `checked` marked as a required prop. We don't
+        // want to specify it here, as that will cause the checkbox to reset
+        // when rerendering it.
+        const C: any = Checkbox
+        return <C />
+      },
       colorchip: ColorChip,
       ...buildTableRenderer(),
       ...directiveComponents,
