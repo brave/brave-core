@@ -58,8 +58,7 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
 
   MOCK_METHOD(void,
               ResetPasswordVerifyInit,
-              (mojom::Service initiating_service,
-               const std::string& email,
+              (const std::string& email,
                ResetPasswordVerifyInitCallback callback),
               (override));
 
@@ -71,8 +70,7 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
 
   MOCK_METHOD(void,
               ResetPasswordPasswordInit,
-              (mojom::Service initiating_service,
-               const std::string& blinded_message,
+              (const std::string& blinded_message,
                ResetPasswordPasswordInitCallback callback),
               (override));
 

@@ -43,7 +43,6 @@ class ResetPassword {
   ~ResetPassword();
 
   void VerifyInit(
-      mojom::Service initiating_service,
       const std::string& email,
       mojom::Authentication::ResetPasswordVerifyInitCallback callback);
 
@@ -52,7 +51,6 @@ class ResetPassword {
       mojom::Authentication::ResetPasswordVerifyCompleteCallback callback);
 
   void PasswordInit(
-      mojom::Service initiating_service,
       const std::string& blinded_message,
       mojom::Authentication::ResetPasswordPasswordInitCallback callback);
 

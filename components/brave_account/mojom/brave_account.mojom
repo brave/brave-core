@@ -432,12 +432,10 @@ interface Authentication {
   CancelVerification(VerificationIntent intent);
 
   // First step of the password reset process.
-  // `initiatingService`: the service that
-  //                      initiated the password reset process.
   // `email`: user's email address.
   // Returns `ResetPasswordVerifyInitResult` on success, or
   //         `ResetPasswordError` on failure.
-  ResetPasswordVerifyInit(Service initiatingService, string email)
+  ResetPasswordVerifyInit(string email)
     => result<ResetPasswordVerifyInitResult, ResetPasswordError>;
 
   // Second step of the password reset process.
@@ -449,14 +447,12 @@ interface Authentication {
     => result<ResetPasswordVerifyCompleteResult, ResetPasswordError>;
 
   // Third step of the password reset process.
-  // `initiatingService`: the service that
-  //                      initiated the password reset process.
   // `blindedMessage`: initial blinded request
   //                   produced by the OPAQUE library,
   //                   to be sent to the server.
   // Returns `ResetPasswordPasswordInitResult` on success, or
   //         `ResetPasswordError` on failure.
-  ResetPasswordPasswordInit(Service initiatingService, string blindedMessage)
+  ResetPasswordPasswordInit(string blindedMessage)
     => result<ResetPasswordPasswordInitResult, ResetPasswordError>;
 
   // Fourth step of the password reset process.

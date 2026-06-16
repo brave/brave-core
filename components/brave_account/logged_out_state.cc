@@ -109,10 +109,9 @@ void LoggedOutState::RegisterVerify(const std::string& code,
 }
 
 void LoggedOutState::ResetPasswordVerifyInit(
-    mojom::Service initiating_service,
     const std::string& email,
     ResetPasswordVerifyInitCallback callback) {
-  reset_password_.VerifyInit(initiating_service, email, std::move(callback));
+  reset_password_.VerifyInit(email, std::move(callback));
 }
 
 void LoggedOutState::ResetPasswordVerifyComplete(
@@ -122,11 +121,9 @@ void LoggedOutState::ResetPasswordVerifyComplete(
 }
 
 void LoggedOutState::ResetPasswordPasswordInit(
-    mojom::Service initiating_service,
     const std::string& blinded_message,
     ResetPasswordPasswordInitCallback callback) {
-  reset_password_.PasswordInit(initiating_service, blinded_message,
-                               std::move(callback));
+  reset_password_.PasswordInit(blinded_message, std::move(callback));
 }
 
 void LoggedOutState::ResetPasswordPasswordFinalize(

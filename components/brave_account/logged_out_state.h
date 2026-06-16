@@ -61,7 +61,6 @@ class LoggedOutState : public StateBase {
                       RegisterVerifyCallback callback) override;
 
   void ResetPasswordVerifyInit(
-      mojom::Service initiating_service,
       const std::string& email,
       ResetPasswordVerifyInitCallback callback) override;
 
@@ -70,7 +69,6 @@ class LoggedOutState : public StateBase {
       ResetPasswordVerifyCompleteCallback callback) override;
 
   void ResetPasswordPasswordInit(
-      mojom::Service initiating_service,
       const std::string& blinded_message,
       ResetPasswordPasswordInitCallback callback) override;
 

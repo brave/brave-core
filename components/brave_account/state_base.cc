@@ -135,7 +135,6 @@ void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
 }
 
 void StateBase::ResetPasswordVerifyInit(
-    mojom::Service initiating_service,
     const std::string& email,
     ResetPasswordVerifyInitCallback callback) {
   std::move(callback).Run(
@@ -150,7 +149,6 @@ void StateBase::ResetPasswordVerifyComplete(
 }
 
 void StateBase::ResetPasswordPasswordInit(
-    mojom::Service initiating_service,
     const std::string& blinded_message,
     ResetPasswordPasswordInitCallback callback) {
   std::move(callback).Run(

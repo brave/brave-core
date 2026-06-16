@@ -60,7 +60,7 @@ struct ResetPasswordVerifyInitTestCase {
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     authentication->ResetPasswordVerifyInit(
-        mojom::Service::kAccounts, kEmailAddress,
+        kEmailAddress,
         std::move(callback).Then(base::BindOnce(
             [](PrefService* pref_service, bool success) {
               AccountStatePrefs account_state_prefs(*pref_service);
@@ -523,8 +523,8 @@ struct ResetPasswordPasswordInitTestCase {
       SeedResetPasswordVerification(pref_service);
     }
 
-    authentication->ResetPasswordPasswordInit(
-        mojom::Service::kAccounts, "blinded_message", std::move(callback));
+    authentication->ResetPasswordPasswordInit("blinded_message",
+                                              std::move(callback));
   }
 
   std::string test_name;

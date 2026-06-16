@@ -205,7 +205,6 @@ class StateBase : public mojom::Authentication {
   void CancelVerification(mojom::VerificationIntentPtr intent) override;
 
   void ResetPasswordVerifyInit(
-      mojom::Service initiating_service,
       const std::string& email,
       ResetPasswordVerifyInitCallback callback) override;
 
@@ -214,7 +213,6 @@ class StateBase : public mojom::Authentication {
       ResetPasswordVerifyCompleteCallback callback) override;
 
   void ResetPasswordPasswordInit(
-      mojom::Service initiating_service,
       const std::string& blinded_message,
       ResetPasswordPasswordInitCallback callback) override;
 

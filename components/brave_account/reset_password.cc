@@ -11,7 +11,6 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
@@ -29,7 +28,6 @@ ResetPassword::ResetPassword(StateBase& state) : state_(state) {}
 ResetPassword::~ResetPassword() = default;
 
 void ResetPassword::VerifyInit(
-    mojom::Service initiating_service,
     const std::string& email,
     mojom::Authentication::ResetPasswordVerifyInitCallback callback) {
   CHECK(!email.empty());
@@ -40,7 +38,7 @@ void ResetPassword::VerifyInit(
   // Server side will determine locale based on the Accept-Language request
   // header (which is included automatically by upstream).
   request.body.locale = "";
-  request.body.service = kServiceToString.at(initiating_service);
+  request.body.service = "accounts";
 
   state_->SendStateOwnedRequest<endpoints::VerifyInit>(
       std::move(request),
@@ -73,7 +71,6 @@ void ResetPassword::VerifyComplete(
 }
 
 void ResetPassword::PasswordInit(
-    mojom::Service initiating_service,
     const std::string& blinded_message,
     mojom::Authentication::ResetPasswordPasswordInitCallback callback) {
   CHECK(!blinded_message.empty());
@@ -90,8 +87,7 @@ void ResetPassword::PasswordInit(
   auto request = MakeRequest<WithHeaders<endpoints::PasswordInit::Request>>();
   SetBearerToken(request, *verification_token);
   request.body.blinded_message = blinded_message;
-  request.body.initiating_service_name =
-      kServiceToString.at(initiating_service);
+  request.body.initiating_service_name = "accounts";
   request.body.serialize_response = true;
 
   state_->SendStateOwnedRequest<endpoints::PasswordInit>(
