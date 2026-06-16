@@ -14,6 +14,7 @@ struct QuickViewToolbarView: View {
   let viewModel: QuickViewToolbarModel
   /// An invisible `UIView` background lives in SwiftUI for UIKit API to reference later
   var shieldBackgroundView: InvisibleUIView = .init()
+  var shareBackgroundView: InvisibleUIView = .init()
 
   var body: some View {
     VStack(spacing: 0) {
@@ -186,9 +187,10 @@ struct QuickViewToolbarView: View {
       Spacer()
 
       if viewModel.canGoForward {
-        shareButton
-      } else {
         forwardButton
+      } else {
+        shareButton
+          .background(shareBackgroundView)
       }
 
       Spacer()

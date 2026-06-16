@@ -141,14 +141,22 @@ extension BrowserViewController: TabManagerDelegate {
       guard let self else { return }
       let quickViewController = QuickViewController(
         url: url,
-        profileController: profileController
-      ) { [weak self] request in
-        guard let self else { return }
-        self.tabManager.addTabAndSelect(
-          request,
-          isPrivate: self.privateBrowsingManager.isPrivateBrowsing
-        )
-      }
+        profileController: profileController,
+        onOpenInNewTab: { [weak self] request in
+          guard let self else { return }
+          self.tabManager.addTabAndSelect(
+            request,
+            isPrivate: self.privateBrowsingManager.isPrivateBrowsing
+          )
+        },
+        onAttachTab: { [weak self] tab in
+          guard let self else { return }
+          let request = tab.visibleURL.map { URLRequest(url: $0) }
+          self.tabManager.configureTab(tab, request: request, flushToDisk: false, zombie: true)
+          self.tabManager.saveTab(tab, saveOrder: true)
+          self.tabManager.selectTab(tab)
+        }
+      )
       self.present(quickViewController, animated: true)
     }
   }

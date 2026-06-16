@@ -31,16 +31,19 @@ class QuickViewController: UIViewController {
     return manager
   }()
   private let onOpenInNewTab: ((URLRequest) -> Void)?
+  private let onAttachTab: ((any TabState) -> Void)?
 
   init(
     url: URL,
     profileController: BraveProfileController,
-    onOpenInNewTab: ((URLRequest) -> Void)?
+    onOpenInNewTab: ((URLRequest) -> Void)?,
+    onAttachTab: ((any TabState) -> Void)?
   ) {
     self.url = url
     self.toolbarViewModel = QuickViewToolbarModel(url: url)
     self.profileController = profileController
     self.onOpenInNewTab = onOpenInNewTab
+    self.onAttachTab = onAttachTab
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
   }
@@ -101,8 +104,42 @@ class QuickViewController: UIViewController {
         self?.presentBraveShieldsView()
       case .readerMode:
         self?.currentTab?.readerMode?.toggleReaderMode()
-      case .refresh, .playlist,
-        .translate, .share, .openTab:
+      case .refresh:
+        guard let currentTab = self?.currentTab else { return }
+        currentTab.reload()
+      case .openTab:
+        self?.dismiss(animated: true) {
+          guard let self, let currentTab = self.currentTab else { return }
+          currentTab.removeObserver(self.toolbarViewModel)
+          currentTab.removeObserver(self)
+          self.onAttachTab?(currentTab)
+        }
+      case .share:
+        guard let self, let visibleURL = self.currentTab?.visibleURL
+        else { return }
+        let anchorView = self.toolbarHostingController.rootView.shareBackgroundView.uiView
+        self.presentShareActivity(
+          url: visibleURL,
+          tab: currentTab,
+          syncAPI: profileController.syncAPI,
+          sendTabAPI: profileController.sendTabAPI,
+          feedDataSource: nil,
+          isBraveNewsAvailable: false,
+          source: .init(
+            view: anchorView,
+            rect: anchorView.bounds,
+            arrowDirection: [.down]
+          ),
+          callbacks: .init(
+            onToggleReaderMode: { [weak self] in
+              self?.currentTab?.readerMode?.toggleReaderMode()
+            },
+            onShowSubmitReport: { [weak self] url in
+              self?.showSubmitReportView(for: url)
+            }
+          )
+        )
+      case .playlist, .translate:
         break
       }
     }
@@ -286,7 +323,11 @@ extension QuickViewController: TabDelegate {
   ) -> (any TabState)? {
     // window.open should open in a regular tab
     dismiss(animated: true) { [weak self] in
-      self?.onOpenInNewTab?(request)
+      guard let self, let currentTab = self.currentTab else { return }
+      currentTab.removeObserver(self.toolbarViewModel)
+      currentTab.removeObserver(self)
+      self.onAttachTab?(currentTab)
+      self.onOpenInNewTab?(request)
     }
     return nil
   }
