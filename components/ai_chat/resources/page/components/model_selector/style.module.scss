@@ -39,7 +39,7 @@
 }
 
 .buttonMenu {
-  --leo-menu-max-height: calc(100vh - 136px);
+  --leo-menu-max-height: calc(100svh - 136px);
   leo-menu-item {
     display: flex;
     align-items: center;
