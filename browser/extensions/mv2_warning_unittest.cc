@@ -5,10 +5,15 @@
 
 #include <optional>
 
+#include "base/files/file_path.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/path_service.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
+#include "chrome/browser/extensions/extension_service_test_with_install.h"
+#include "extensions/browser/extension_registry.h"
 #include "extensions/common/extension.h"
+#include "extensions/common/manifest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class Mv2WarningUnitTest : public testing::Test {
@@ -42,5 +47,33 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
   ASSERT_NE(extension, nullptr);
 
   auto& warnings = extension->install_warnings();
-  EXPECT_EQ(warnings.size(), 0UL);
+  // MV2 deprecation warning is no longer suppressed for unplacked extensions.
+  EXPECT_EQ(warnings.size(), 1UL);
+  EXPECT_EQ(warnings.front().message,
+            extensions::manifest_errors::kManifestV2IsDeprecatedWarning);
+}
+
+class Mv2WarningCrxUnitTest
+    : public extensions::ExtensionServiceTestWithInstall {
+ public:
+  Mv2WarningCrxUnitTest() = default;
+};
+
+TEST_F(Mv2WarningCrxUnitTest, InstallMV2CrxWithoutWarnings) {
+  InitializeEmptyExtensionService();
+
+  base::FilePath path = data_dir().AppendASCII("good.crx");
+  const extensions::Extension* extension = InstallCRX(path, INSTALL_NEW);
+  ASSERT_TRUE(extension);
+  ASSERT_EQ(extension->manifest_version(), 2);
+
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(profile());
+  ASSERT_TRUE(registry->enabled_extensions().Contains(extension->id()));
+
+  // Verify there are no install warnings.
+  EXPECT_TRUE(extension->install_warnings().empty());
+  for (const auto& warning : extension->install_warnings()) {
+    ADD_FAILURE() << "Install warning: " << warning.message;
+  }
 }
