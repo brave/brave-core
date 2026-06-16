@@ -323,7 +323,11 @@ extension QuickViewController: TabDelegate {
   ) -> (any TabState)? {
     // window.open should open in a regular tab
     dismiss(animated: true) { [weak self] in
-      self?.onOpenInNewTab?(request)
+      guard let self, let currentTab = self.currentTab else { return }
+      currentTab.removeObserver(self.toolbarViewModel)
+      currentTab.removeObserver(self)
+      self.onAttachTab?(currentTab)
+      self.onOpenInNewTab?(request)
     }
     return nil
   }
