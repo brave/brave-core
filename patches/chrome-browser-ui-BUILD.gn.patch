@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..6fde08624e866c361d27b5d0fbdc80582be46ef1 100644
+index 949cbc967714c2d8b4471e2340e332f109929f77..62839d45e46e67d8e79777b4c033be198e206b16 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -921,6 +921,7 @@ static_library("ui") {
+@@ -1047,6 +1047,7 @@ static_library("ui") {
      # split out yet.
      "//chrome/browser/webauthn:impl",
    ]
@@ -10,19 +10,7 @@ index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..6fde08624e866c361d27b5d0fbdc8058
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3371,7 +3372,10 @@ static_library("ui") {
-         "//chrome/updater/app/server/win:updater_legacy_idl",
-       ]
-     } else {
--      sources += [ "webui/help/version_updater_basic.cc" ]
-+      if (!is_official_build) {
-+        # In official build, //brave/browser/ui handles.
-+        sources += [ "webui/help/version_updater_basic.cc" ]
-+      }
-     }
-   }
- 
-@@ -5423,6 +5427,7 @@ group("ui_public_dependencies") {
+@@ -5395,6 +5396,7 @@ group("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -30,7 +18,7 @@ index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..6fde08624e866c361d27b5d0fbdc8058
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5435,6 +5440,7 @@ group("ui_public_dependencies") {
+@@ -5407,6 +5409,7 @@ group("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
