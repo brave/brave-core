@@ -86,9 +86,6 @@ public struct StoreKitReceiptSimpleView: View {
     }
     .navigationTitle(Strings.ReceiptViewer.receiptViewerTitle)
     .navigationViewStyle(.stack)
-    .introspectNavigationController { controller in
-      controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
-    }
     .toolbar {
       if let base64EncodedReceipt {
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -129,9 +126,6 @@ public struct StoreKitReceiptSimpleView: View {
             purchaseView(for: product.purchase)
           }
           .navigationTitle(productName(from: product.productId))
-          .introspectNavigationController { controller in
-            controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
-          }
         },
         label: {
           Text(productName(from: product.productId))

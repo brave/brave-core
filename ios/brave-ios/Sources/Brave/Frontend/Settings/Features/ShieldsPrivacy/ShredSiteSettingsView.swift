@@ -62,7 +62,6 @@ struct ShredSiteSettingsView: View {
       }
     }
     .navigationTitle(Strings.Shields.shredSiteData)
-    .toolbar(.visible)
   }
 
   private var confirmationAlert: Alert {

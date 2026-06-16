@@ -182,16 +182,6 @@ struct PlaylistChangeFoldersContainerView: View {
       PlaylistChangeFoldersView(item: item)
     }
     .navigationViewStyle(.stack)
-    .introspectNavigationController { nc in
-      DispatchQueue.main.async {
-        let appearance = UIToolbarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
-        nc.toolbar.standardAppearance = appearance
-        nc.toolbar.scrollEdgeAppearance = appearance
-        nc.toolbar.compactAppearance = appearance
-      }
-    }
     .environment(\.managedObjectContext, DataController.swiftUIContext)
   }
 }
