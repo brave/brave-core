@@ -2265,6 +2265,10 @@ struct PolkadotAccountInfo {
   PolkadotAccountBalance data;
 };
 
+struct PolkadotAssetAccountInfo {
+  uint128 balance;
+};
+
 enum PolkadotValidationStatus {
   kNoError = 0,
   kInvalidPrefix = 1,
@@ -2280,6 +2284,11 @@ interface PolkadotWalletService {
 
   GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
+
+  GetAssetAccountBalances(
+      AccountId account_id, array<uint32> asset_ids, string chain_id)
+      => (array<PolkadotAssetAccountInfo>? asset_accounts,
+          string? error_message);
 
   ValidateAddressForTransaction(string chain_id, string address)
       => (PolkadotValidationStatus status);

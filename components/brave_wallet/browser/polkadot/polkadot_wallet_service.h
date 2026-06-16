@@ -73,6 +73,12 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                          const std::string& chain_id,
                          GetAccountBalanceCallback callback) override;
 
+  void GetAssetAccountBalances(
+      mojom::AccountIdPtr account_id,
+      const std::vector<uint32_t>& asset_ids,
+      const std::string& chain_id,
+      GetAssetAccountBalancesCallback callback) override;
+
   void ValidateAddressForTransaction(
       const std::string& chain_id,
       const std::string& address,
