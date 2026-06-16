@@ -259,10 +259,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       if (!combinedTokenRegistry) {
         return []
       }
+      const hiddenTokenIds = new Set(
+        combinedTokenRegistry.fungibleHiddenTokenIds,
+      )
       return getEntitiesListFromEntityState(
         combinedTokenRegistry,
         combinedTokenRegistry.fungibleVisibleTokenIds,
-      )
+      ).filter((token) => !hiddenTokenIds.has(getAssetIdKey(token)))
     }, [combinedTokenRegistry])
 
     const { userVisibleFungibleTokens, userVisibleNfts } =
