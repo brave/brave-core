@@ -37,6 +37,8 @@ constexpr char kOHTTPRelayPathFormat[] = "v1/models/%s/relay";
 constexpr char kNEARToolResultKey[] = "nearai_tool_result";
 constexpr char kNEAROutputKey[] = "output";
 constexpr char kNEARToolCallIdKey[] = "tool_call_id";
+constexpr char kChatTemplateKwargsKey[] = "chat_template_kwargs";
+constexpr char kEnableThinkingKey[] = "enable_thinking";
 
 constexpr base::TimeDelta kRequestTimeout = base::Minutes(5);
 
@@ -236,9 +238,17 @@ void ObliviousHttpAPIClient::PerformRequest(
     oai_tool_definitions->Append(std::move(web_context_search_tool));
   }
 
+  base::DictValue additional_fields;
+  base::DictValue chat_template_kwargs;
+  chat_template_kwargs.Set(kEnableThinkingKey,
+                           features::kNEARModelsThinking.Get());
+  additional_fields.Set(kChatTemplateKwargsKey,
+                        std::move(chat_template_kwargs));
+
   std::string request_body = CreateJSONRequestBody(
       SerializeOAIMessages(std::move(messages)), is_streaming_enabled,
-      leo_opts.name, std::move(oai_tool_definitions), stop_sequences);
+      leo_opts.name, std::move(oai_tool_definitions), stop_sequences,
+      std::move(additional_fields));
 
   credential_manager_->FetchPremiumCredential(base::BindOnce(
       &ObliviousHttpAPIClient::OnCredentialFetched, weak_factory_.GetWeakPtr(),

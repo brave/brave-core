@@ -14,11 +14,14 @@
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -357,6 +360,41 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_BadOuterResponseCode) {
     ASSERT_FALSE(result_.has_value());
     EXPECT_EQ(c.expected_error, result_.error());
   }
+}
+
+TEST_F(ObliviousHttpAPIClientUnitTest,
+       PerformRequest_ChatTemplateKwargs_FollowsThinkingParam) {
+  base::test::ScopedFeatureList feature_list;
+
+  // thinking=true: enable_thinking should be true.
+  feature_list.InitAndEnableFeatureWithParameters(features::kNEARModels,
+                                                  {{"thinking", "true"}});
+
+  PerformRequest();
+
+  ASSERT_FALSE(last_request_.is_null());
+  ASSERT_TRUE(last_request_->request_body);
+
+  auto parsed = base::test::ParseJsonDict(last_request_->request_body->content);
+  const auto* chat_template_kwargs = parsed.FindDict("chat_template_kwargs");
+  ASSERT_TRUE(chat_template_kwargs);
+  EXPECT_EQ(true, chat_template_kwargs->FindBool("enable_thinking"));
+
+  // thinking=false: enable_thinking should be false.
+  completion_client_.reset();
+  feature_list.Reset();
+  feature_list.InitAndEnableFeatureWithParameters(features::kNEARModels,
+                                                  {{"thinking", "false"}});
+
+  PerformRequest();
+
+  ASSERT_FALSE(last_request_.is_null());
+  ASSERT_TRUE(last_request_->request_body);
+
+  parsed = base::test::ParseJsonDict(last_request_->request_body->content);
+  chat_template_kwargs = parsed.FindDict("chat_template_kwargs");
+  ASSERT_TRUE(chat_template_kwargs);
+  EXPECT_EQ(false, chat_template_kwargs->FindBool("enable_thinking"));
 }
 
 }  // namespace ai_chat

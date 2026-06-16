@@ -156,6 +156,9 @@ const base::FeatureParam<bool> kNEARModelsEncryption{&kNEARModels, "encryption",
 const base::FeatureParam<bool> kNEARModelsEncryptionSearch{
     &kNEARModels, "encryption_search", false};
 
+const base::FeatureParam<bool> kNEARModelsThinking{&kNEARModels, "thinking",
+                                                   false};
+
 bool IsNEARModelsEnabled() {
   return base::FeatureList::IsEnabled(features::kNEARModels);
 }

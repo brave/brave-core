@@ -131,6 +131,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kNEARModelsEncryption;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kNEARModelsEncryptionSearch;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kNEARModelsThinking;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsNEARModelsEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
