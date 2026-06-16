@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Tetaplah menikmati video: Tambahkan video sementara Anda menjelajah, dan tonton di lain waktu.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Tambahkan video ke Daftar Putar Brave. Putar Ulang kapan saja. Bahkan saat luring";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Putar Ulang lebih baik di Daftar Putar";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Cukup ketuk tombol untuk menambahkan video ke daftar putar";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Membuat daftar putar dengan konten yang Anda sukai. Tambahkan media dari halaman mana pun.\nPutar kapan saja. Bahkan saat offline!";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Ketuk %@ untuk menambah item pertama Anda";

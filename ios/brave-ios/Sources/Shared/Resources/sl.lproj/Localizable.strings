@@ -32,7 +32,7 @@
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Odprt je bil nov zavihek";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
-"DownloadCancelledToastLabelText" = "Prenos je bil preklic";
+"DownloadCancelledToastLabelText" = "Prenos je bil preklican";
 
 /* The label text in the Download Failed toast for showing confirmation that the download has failed. */
 "DownloadFailedToastLabelText" = "Prenos ni uspel";
@@ -71,7 +71,7 @@
 "OKString" = "V redu";
 
 /* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
-"ReaderModeAvailableVoiceOverAnnouncement" = "Načini branja je na voljo";
+"ReaderModeAvailableVoiceOverAnnouncement" = "Bralnik je na voljo";
 
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "Ponastavi velikost besedila";
@@ -122,7 +122,7 @@
 "UnableToOpenURLError" = "Brave ne more odpreti strani, ker ima neveljaven naslov.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
-"UnableToOpenURLErrorTitle" = "Ne mogu odpreti strani";
+"UnableToOpenURLErrorTitle" = "Strani ni mogoče odpreti";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
 "UpdateLoginPrompt" = "Posodabljam prijavo %1$@ za %2$@?";

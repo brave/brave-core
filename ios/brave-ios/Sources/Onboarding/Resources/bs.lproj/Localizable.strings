@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Ne prekidajte ono što radite: dodajte videozapise dok upotrebljavate preglednik i pogledajte ih kasnije.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Dodajte videozapise na popis za reprodukciju preglednika Brave. Reproducirajte bilo kada, čak izvan mreže";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Reprodukcija s popisa je bolja";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Samo dodirnite tipku za dodavanje videozapisa na popis";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Izradite popise za reprodukciju sa sadržajem koji volite. Dodajte medije s bilo koje stranice.\nReproducirajte bilo kada. Čak izvan mreže!";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Dodirnite %@ za dodavanje prve stavke";

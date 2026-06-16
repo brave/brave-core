@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "Купи сега";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "Тази функция е активирана, защото сте се включили в нея.";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Активирането или деактивирането на функция на Brave изисква рестартиране на браузъра, за да се приложат промените. Моля, затворете (плъзнете нагоре в превключвателя на приложения) и след това отворете отново Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Промяна на функциите на Brave";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin е версия на браузъра Brave, която ви позволява лесно да деактивирате генериращите приходи функции, които иначе поддържат Brave като бизнес. Потребителите на Brave Origin ще продължат да се възползват от нашите водещи в индустрията функции за защита на личните данни, блокиране на реклами и скорост (чрез Brave защити), както и от редовните актуализации на софтуера, Chromium кръпки и подобренията в сигурността и защитата на личните данни. Те също така ще отключат възможността за деактивиране на функции като Brave Leo, Rewards, Wallet, VPN, Web3 домейни и др.\n\nСлед закупуване потребителите ще видят нов контролен панел в менюто за настройки на браузъра. Съществуващите функции – както и всички нови функции, които ще доставим в бъдеще – ще се появят тук и ще бъдат изключени по подразбиране.\n\n**Забележка: Brave Origin няма да деактивира функциите на браузъра, които използвате в момента, и няма да засегне функциите на Brave търсене или рекламите на Brave търсене.**";
+"featuresFooter" = "**Персонализирай браузъра си, докато продължаваш да поддържаш Brave**\n\nBrave Origin е платена версия на браузъра за потребители, които не се нуждаят от всички функции, които поддържат Brave като бизнес, но все пак искат конфиденциалността, която само Brave предлага. Origin потребителите ще продължат да се ползват от нашата водеща в индустрията конфиденциалност, блокирането на реклами и скоростта (чрез Защити), както и от редовни актуализации на софтуера, кръпки за Chromium и подобрения в сигурността и конфиденциалността. Origin ще премахне повечето други функции от браузъра.";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Функции";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "Получете код за вход";
+"getLoginCodeButton" = "Потвърждаване на покупката на Brave Origin";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "Еднократна покупка";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Персонализирайте браузъра си, като същевременно продължавате да подкрепяте Brave**\n\nBrave Origin е платена версия на браузъра за потребители, които не се нуждаят от всички функции, които поддържат Brave като бизнес, но все пак искат поверителността, която само Brave предлага. Потребителите на Brave Origin ще продължат да се възползват от нашите водещи в индустрията функции за защита на личните данни, блокиране на реклами и скорост (чрез Brave защити), както и от редовните актуализации на софтуера, Chromium кръпки и подобренията в сигурността и защитата на личните данни. Те също така ще отключат възможността за деактивиране на функции като AI, Rewards, Wallet, VPN, Web3 домейни и др.\n\n**Brave Origin е достъпен чрез еднократна покупка. На мобилни устройства (Android и iOS) и настолни компютри Origin може да бъде закупен като надстройка на съществуващата ви версия.** На настолни компютри Origin е достъпен и като отделно, самостоятелно приложение. Независимо дали е закупен като надстройка или отделно приложение, потребителите на Origin ще видят нов контролен панел в менюто Настройки. Съществуващите функции – както и всички нови функции, които ще доставим в бъдеще – ще се появят тук и ще бъдат изключени по подразбиране.*\n\n* Имайте предвид, че ако сте закупили Origin като надстройка на съществуващата ви версия на Brave, Origin няма да деактивира функциите на браузъра, които използвате в момента. Както за надстройката, така и за самостоятелната версия, Origin няма да засегне функциите на Brave търсене или рекламите на Brave търсене.";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Плейлист";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "Имаш ли код за промоция?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Избери най-подходящия за теб начин на плащане:";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Не можеш да завършиш покупката. Моля, опитай отново или провери данните си за плащане в Apple и опитай отново.";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "Поддържане на основния блокер на реклами, конфиденциалност и скорост";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "Минимален потребителски интерфейс на браузъра, съсредоточен върху щитовете";
+"upsellMinimalUI" = "Минимален потребителски интерфейс на браузъра, съсредоточен върху Brave защити";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "Еднократно закупуване, без допълнителни разходи за абонамент";
+"upsellOneTimePurchase" = "Еднократната покупка може да се активира многократно на всички ваши устройства";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Подкрепете нашата мисия & работа с отворен код";

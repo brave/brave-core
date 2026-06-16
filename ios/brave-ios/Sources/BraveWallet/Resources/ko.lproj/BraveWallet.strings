@@ -1301,7 +1301,7 @@
 "wallet.providerListPrice" = "가격";
 
 /* One of title that displays under provider option. The total cost of this purchase. */
-"wallet.providerListTotal" = "합계";
+"wallet.providerListTotal" = "총액";
 
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
 "wallet.providerSelectionButtonTitle" = "%@로 구매";

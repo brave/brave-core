@@ -674,7 +674,7 @@
 "DisplaySettingsSection" = "顯示";
 
 /* No comment provided by engineer. */
-"Done" = "完成";
+"Done" = "已完成";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "不要傳送";
@@ -791,7 +791,7 @@
 "FindInPage" = "在頁面中尋找";
 
 /* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "完成";
+"FindInPageDoneButtonAccessibilityLabel" = "已完成";
 
 /* Find `search query` */
 "FindInPageFormat" = "尋找 ";
@@ -1839,6 +1839,33 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "快速搜尋引擎";
+
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "上一頁";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "下一頁";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "在分頁中開啟";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "新增至播放清單";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "啟用閱讀器模式";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "重新整理";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "共享";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "盾牌";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "啟用翻譯";
 
 /* Open the App Store to rate Brave. */
 "RateBrave" = "為 Brave 評分";
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "裝置確認";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "您已達同步鏈中允許的裝置數量上限 (10 個)。請移除裝置以繼續操作。";
+"sync.maximumDeviceReachedErrorDescription" = "您已達同步鏈中允許的裝置數量上限 (50 個)。請移除裝置以繼續操作。";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "裝置上限";

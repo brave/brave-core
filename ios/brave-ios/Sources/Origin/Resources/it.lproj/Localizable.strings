@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "Acquista ora";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "Questa funzione è abilitata perché lei vi ha aderito.";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "L'abilitazione o la disabilitazione di una funzione di Brave richiede il riavvio del browser per applicare le modifiche. Chiudi (scorri verso l'alto nel selettore di app) e poi riapri Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Modifica delle funzionalità Brave";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin è una versione del browser Brave che ti consente di disabilitare facilmente le funzioni che generano entrate e che altrimenti supportano Brave come azienda. Gli utenti di Brave Origin continueranno a beneficiare della nostra privacy leader del settore, blocco annunci e velocità (tramite Protezioni Brave), nonché aggiornamenti software regolari, patch Chromium e miglioramenti della sicurezza e della privacy. Potranno anche sbloccare l'opzione per disabilitare funzioni come Brave Leo, Ricompense, Portafoglio, VPN, domini Web3 e altro ancora.\n\nUna volta acquistato, gli utenti vedranno un nuovo pannello di controllo nel menu Impostazioni del browser. Le funzioni esistenti, così come tutte le nuove funzioni che lanceremo in futuro, appariranno qui e saranno disabilitate per impostazione predefinita.\n\n**Nota: Brave Origin non disabiliterà le funzioni del browser che utilizzi attualmente e non influenzerà le funzioni di Ricerca Brave o gli Annunci di ricerca Brave.**";
+"featuresFooter" = "**Personalizza il tuo browser pur continuando a supportare Brave**\n\nBrave Origin è una versione a pagamento del browser per gli utenti che non hanno bisogno di tutte le funzionalità che supportano Brave come azienda, ma desiderano comunque la privacy che solo Brave offre. Gli utenti di Origin continueranno a beneficiare della nostra privacy leader del settore, adblock e velocità (tramite Protezioni), nonché degli aggiornamenti software regolari, delle patch Chromium e dei miglioramenti di sicurezza e privacy. Origin rimuoverà la maggior parte delle altre funzionalità dal browser.";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funzioni";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "Ottieni un codice di accesso";
+"getLoginCodeButton" = "Verifica acquisto di Brave Origin";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "IA di Leo";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "Acquisto una tantum";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Personalizza il tuo browser continuando a supportare Brave**\n\nBrave Origin è una versione a pagamento del browser per gli utenti che non hanno bisogno di tutte le funzioni che supportano Brave come azienda, ma desiderano comunque la privacy che solo Brave offre. Gli utenti di Brave Origin continueranno a beneficiare della nostra privacy leader del settore, blocco annunci e velocità (tramite Protezioni Brave), nonché aggiornamenti software regolari, patch Chromium e miglioramenti della sicurezza e della privacy. Potranno anche sbloccare l'opzione per disabilitare funzioni come IA, Ricompense, Portafoglio, VPN, domini Web3 e altro ancora.\n\n**Brave Origin è disponibile tramite acquisto una tantum. Su mobile (Android e iOS) e desktop, Origin può essere acquistato come aggiornamento alla tua versione di rilascio esistente.** Su desktop, Origin è disponibile anche come app separata e autonoma. Sia che venga acquistato come aggiornamento o come app separata, gli utenti di Origin vedranno un nuovo pannello di controllo nel menu Impostazioni. Le funzioni esistenti, così come tutte le nuove funzioni che lanceremo in futuro, appariranno qui e saranno disabilitate per impostazione predefinita.*\n\n* Tieni presente che se hai acquistato Origin come aggiornamento alla tua versione esistente di Brave, Origin non disabiliterà le funzioni del browser che utilizzi attualmente. Sia per la versione di aggiornamento che per quella autonoma, Origin non influenzerà le funzioni di Ricerca Brave o gli Annunci di ricerca Brave.";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "Hai un codice promo?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Scegli il tuo metodo di pagamento preferito:";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Impossibile completare l’acquisto. Riprova o controlla i dati di pagamento usati per Apple e riprova.";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "Solo puro adblock, privacy e velocità";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "UI del browser compatta incentrata su Protezioni";
+"upsellMinimalUI" = "UI del browser minimalista incentrata su Protezioni Brave";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "Acquisto una tantum, nessun costo di abbonamento aggiuntivo";
+"upsellOneTimePurchase" = "L'acquisto una tantum può essere attivato più volte su tutti i tuoi dispositivi";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Sostenere la nostra missione & lavoro open-source";

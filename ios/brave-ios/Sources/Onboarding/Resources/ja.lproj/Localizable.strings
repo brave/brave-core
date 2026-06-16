@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "気になったらいつでも追加: 視聴中に別の動画を追加して、後で視聴できます。";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Braveプレイリストから動画を追加しましょう。好きなときに、オフラインでも視聴できます。";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "プレイリストで動画再生をもっと快適に";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "ボタンをタップするだけでプレイリストに動画を追加できます";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "大好きなコンテンツを集めてプレイリストを作成し、あらゆるページからメディアを追加しましょう。\nいつでも好きなときに、オフラインでも視聴できます。";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "%@をタップして最初のアイテムを追加";
