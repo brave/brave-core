@@ -87,7 +87,8 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getAdditionalText(),
                     suggestion.getTabGroupUuid(),
                     suggestion.getAssociatedKeyword(),
-                    /* serializedSuggestTemplate */ null);
+                    /* serializedSuggestTemplate */ null,
+                    suggestion.getDocumentType());
         }
         return suggestion;
     }
