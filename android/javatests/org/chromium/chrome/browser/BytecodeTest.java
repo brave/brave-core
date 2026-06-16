@@ -1544,7 +1544,8 @@ public class BytecodeTest {
                         OmniboxChipManager.class,
                         BottomBarHostManager.class,
                         ActionRegistry.class,
-                        GlicButtonDelegate.class));
+                        GlicButtonDelegate.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1708,7 +1709,9 @@ public class BytecodeTest {
                         DeviceLockActivityLauncher.class,
                         BottomSheetController.class,
                         ModalDialogManager.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class,
+                        Runnable.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
