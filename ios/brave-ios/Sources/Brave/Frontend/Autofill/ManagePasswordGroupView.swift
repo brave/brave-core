@@ -107,7 +107,7 @@ struct ManagePasswordGroupView: View {
         }
       }
 
-      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+      if #available(iOS 26.0, *) {
         ToolbarSpacer(.flexible, placement: .bottomBar)
       } else {
         ToolbarItem(placement: .bottomBar) {

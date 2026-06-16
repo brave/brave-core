@@ -269,7 +269,7 @@ struct CustomModelForm: View {
       }
       ToolbarItemGroup(placement: .confirmationAction) {
         Group {
-          if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+          if #available(iOS 26.0, *) {
             Button(role: .confirm) {
               Task {
                 await save()
