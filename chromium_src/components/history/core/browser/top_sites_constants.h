@@ -8,25 +8,9 @@
 
 #include "build/build_config.h"
 
-#if BUILDFLAG(IS_ANDROID)
-
-// We want 15 items for our NTP top site tiles on Android:
-// 4 rows x 4 element -1 for plus button.
-#define kTopSitesNumber \
-  kTopSitesNumber = 15; \
-  static constexpr size_t kTopSitesNumber_Unused
-
-#else
-
-// Needs 12 items for our NTP top site tiles.
-#define kTopSitesNumber \
-  kTopSitesNumber = 12; \
-  static constexpr size_t kTopSitesNumber_Unused
-
-#endif  // BUILDFLAG(IS_ANDROID)
+// This chromium_src override is required only to include ^ build_config.h to
+// be used at top_sites_constants.h.yaml plaster for #if BUILDFLAG(IS_ANDROID)
 
 #include <components/history/core/browser/top_sites_constants.h>  // IWYU pragma: export
-
-#undef kTopSitesNumber
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_TOP_SITES_CONSTANTS_H_
