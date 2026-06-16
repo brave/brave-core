@@ -1,18 +1,35 @@
 diff --git a/components/history/core/browser/history_backend.cc b/components/history/core/browser/history_backend.cc
-index 9a8cd38cd00831675c1b7cd2fea7ff4fd7194ac8..852f2d82eedd838f1daf742a2c3bcc84f878209f 100644
+index 9a8cd38cd00831675c1b7cd2fea7ff4fd7194ac8..d3784834acf15c2f52a5f2d288b94535d32f8048 100644
 --- a/components/history/core/browser/history_backend.cc
 +++ b/components/history/core/browser/history_backend.cc
-@@ -1988,6 +1988,17 @@ QueryURLResult HistoryBackend::QueryURL(const GURL& url) {
+@@ -10,6 +10,7 @@
+ #include <limits>
+ #include <map>
+ #include <memory>
++#include <optional>
+ #include <set>
+ #include <utility>
+ #include <vector>
+@@ -38,6 +39,7 @@
+ #include "base/trace_event/trace_event.h"
+ #include "base/trace_event/typed_macros.h"
+ #include "base/tracing/protos/chrome_track_event.pbzero.h"
++#include "base/types/zip.h"
+ #include "build/build_config.h"
+ #include "build/ios_buildflags.h"
+ #include "components/favicon/core/favicon_backend.h"
+@@ -1988,6 +1990,18 @@ QueryURLResult HistoryBackend::QueryURL(const GURL& url) {
    return result;
  }
  
-+std::vector<URLID> HistoryBackend::QueryUrlIds(const std::vector<GURL>& urls) {
-+  std::vector<URLID> result(urls.size(), 0);
++std::optional<std::vector<URLID>> HistoryBackend::QueryUrlIds(
++    const std::vector<GURL>& urls) {
 +  if (!db_) {
-+    return result;
++    return std::nullopt;
 +  }
-+  for (size_t i = 0; i < urls.size(); ++i) {
-+    result[i] = db_->GetRowForURL(urls[i], nullptr);
++  std::vector<URLID> result(urls.size(), 0);
++  for (auto [url, id] : base::zip(urls, result)) {
++    id = db_->GetRowForURL(url, nullptr);
 +  }
 +  return result;
 +}
