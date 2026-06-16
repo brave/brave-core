@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
 #include "ui/base/page_transition_types.h"
@@ -62,6 +63,12 @@ void BackgroundWebContentsImpl::CloseContents(content::WebContents* source) {
 }
 
 // content::WebContentsObserver:
+
+void BackgroundWebContentsImpl::RenderViewReady() {
+  VLOG(3)
+      << "BackgroundWebContentsImpl: renderer ready, pid="
+      << web_contents_->GetPrimaryMainFrame()->GetProcess()->GetProcess().Pid();
+}
 
 void BackgroundWebContentsImpl::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,

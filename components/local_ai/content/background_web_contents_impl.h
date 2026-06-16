@@ -57,6 +57,7 @@ class BackgroundWebContentsImpl : public BackgroundWebContents,
   void CloseContents(content::WebContents* source) override;
 
   // content::WebContentsObserver:
+  void RenderViewReady() override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
   void PrimaryMainFrameRenderProcessGone(
