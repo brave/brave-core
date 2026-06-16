@@ -25,6 +25,9 @@
   <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
     Get started
   </message>
+  <message name="IDS_SETTINGS_BRAVE_NEWS_SYNC_LABEL" desc="The label for the sync toggle controlling whether Brave News settings are synced across devices">
+    Brave News
+  </message>
 
   <!-- Settings / Get started / Profile name and icon -->
   <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">

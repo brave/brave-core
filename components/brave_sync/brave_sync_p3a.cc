@@ -21,7 +21,7 @@ void RecordEnabledTypes(bool sync_everything_enabled,
        UserSelectableType::kExtensions, UserSelectableType::kApps,
        UserSelectableType::kPasswords, UserSelectableType::kPreferences,
        UserSelectableType::kThemes, UserSelectableType::kTabs,
-       UserSelectableType::kAutofill});
+       UserSelectableType::kAutofill, UserSelectableType::kBraveNews});
   if (sync_everything_enabled ||
       selected_types.HasAll(all_brave_supported_types)) {
     // Sync All

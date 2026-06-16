@@ -1,0 +1,26 @@
+diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
+index a2f774daaf70474d80acafc9d1f2e58163dbe418..eb95a82796222ade61f936f84420328d8281794b 100644
+--- a/components/sync/base/data_type.h
++++ b/components/sync/base/data_type.h
+@@ -204,7 +204,10 @@ enum DataType {
+   // A theme object specifically for Android devices.
+   THEMES_ANDROID,
+ 
+-  LAST_USER_DATA_TYPE = THEMES_ANDROID,
++  // Brave News subscriptions and settings (Brave-specific).
++  BRAVE_NEWS,
++
++  LAST_USER_DATA_TYPE = BRAVE_NEWS,
+ 
+   // ---- Control Types ----
+   // An object representing a set of Nigori keys.
+@@ -314,7 +317,8 @@ enum class DataTypeForHistograms {
+   kThemesIos = 78,
+   kAccessibilityAnnotation = 79,
+   kThemesAndroid = 80,
+-  kMaxValue = kThemesAndroid,
++  kBraveNews = 81,
++  kMaxValue = kBraveNews,
+ };
+ // LINT.ThenChange(/tools/metrics/histograms/metadata/sync/enums.xml:SyncDataTypes)
+ 

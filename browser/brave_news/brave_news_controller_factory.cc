@@ -17,7 +17,9 @@
 #include "chrome/browser/policy/profile_policy_connector.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/data_type_store_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/sync/model/data_type_store_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/policy/core/common/policy_service.h"
 #include "content/public/browser/browser_context.h"
@@ -55,6 +57,7 @@ BraveNewsControllerFactory::BraveNewsControllerFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(HostContentSettingsMapFactory::GetInstance());
+  DependsOn(DataTypeStoreServiceFactory::GetInstance());
 }
 
 BraveNewsControllerFactory::~BraveNewsControllerFactory() = default;
@@ -90,7 +93,8 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
       profile->GetPrefs(), std::move(policy_initialization_waiter),
       history_service, profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
-          host_content_settings_map));
+          host_content_settings_map),
+      DataTypeStoreServiceFactory::GetForProfile(profile)->GetStoreFactory());
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {

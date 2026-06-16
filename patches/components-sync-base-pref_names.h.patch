@@ -1,0 +1,12 @@
+diff --git a/components/sync/base/pref_names.h b/components/sync/base/pref_names.h
+index 343d61863e8787db1edf3bc3c311bf31e0dcf598..7d004e407512a550e3b7736c604d0828bac9e276 100644
+--- a/components/sync/base/pref_names.h
++++ b/components/sync/base/pref_names.h
+@@ -76,6 +76,7 @@ inline constexpr char kSyncWifiConfigurations[] = "sync.wifi_configurations";
+ inline constexpr char kSyncApps[] = "sync.apps";
+ inline constexpr char kSyncAutofill[] = "sync.autofill";
+ inline constexpr char kSyncBookmarks[] = "sync.bookmarks";
++inline constexpr char kSyncBraveNews[] = "sync.brave_news";
+ inline constexpr char kSyncCookies[] = "sync.cookies";
+ inline constexpr char kSyncExtensions[] = "sync.extensions";
+ // Note: The pref for history is called "typed_urls" for historic reasons - not
