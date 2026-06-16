@@ -377,12 +377,6 @@ extension QuickViewController: TabDelegate {
     }
     return nil
   }
-
-  func tabDidStartNavigation(_ tab: some TabState) {
-    if tab.visibleURL?.isInternalURL(for: .readermode) != true {
-      hideReaderModeBar()
-    }
-  }
 }
 
 // MARK: - TabObserver
@@ -400,6 +394,9 @@ extension QuickViewController: TabObserver {
   }
 
   func tabDidStartNavigation(_ tab: some TabState) {
+    if tab.visibleURL?.isInternalURL(for: .readermode) != true {
+      hideReaderModeBar()
+    }
     toolbarVisibilityViewModel.toolbarState = .expanded
   }
 

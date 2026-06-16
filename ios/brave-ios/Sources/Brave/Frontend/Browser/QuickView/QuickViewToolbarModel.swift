@@ -36,6 +36,8 @@ class QuickViewToolbarModel {
   var isLoading: Bool = true
   var loadingProgress: Double = 0.0
   var onActionButton: ((QuickViewActionButton) -> Void)?
+  var collapseProgress: CGFloat = 0.0
+  private var loadingCompletionTask: Task<Void, Never>?
 
   init(
     url: URL,
