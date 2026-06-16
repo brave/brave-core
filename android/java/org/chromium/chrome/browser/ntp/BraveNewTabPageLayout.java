@@ -74,6 +74,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.FetchWallpaperWorkerTask;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -1127,16 +1128,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mSponsoredRichMediaWebView.destroy();
         mSponsoredRichMediaWebView = null;
 
-        // Only fall back to the static image when we were showing rich media.
-        // The non-rich path in maybeShowNTPImage() calls setBackgroundImage() itself.
-        if (mNtpImageGlobal instanceof Wallpaper
-                && ((Wallpaper) mNtpImageGlobal).isRichMedia()
-                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                && mSponsoredTab != null
-                && NTPImageUtil.shouldEnableNTPFeature()) {
-            setBackgroundImage(mNtpImageGlobal);
-        }
+        setBackgroundImage(SponsoredImageUtil.getBackgroundImage());
     }
 
     private void setBackgroundImage(NTPImage ntpImage) {
