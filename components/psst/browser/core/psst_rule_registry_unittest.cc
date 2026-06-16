@@ -18,7 +18,6 @@
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry_impl.h"
 #include "brave/components/psst/common/features.h"
-#include "build/buildflag.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -78,21 +77,7 @@ class PsstRuleRegistryUnitTest : public testing::Test {
   base::FilePath test_data_dir_base_;
 };
 
-// https://github.com/brave/brave-browser/issues/56372
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_LoadConcreteRule DISABLED_LoadConcreteRule
-#define MAYBE_RulesLoading DISABLED_RulesLoading
-#define MAYBE_RuleReferencesToNotExistedPath \
-  DISABLED_RuleReferencesToNotExistedPath
-#define MAYBE_DoNotMatchRuleIfNotExists DISABLED_DoNotMatchRuleIfNotExists
-#else
-#define MAYBE_LoadConcreteRule LoadConcreteRule
-#define MAYBE_RulesLoading RulesLoading
-#define MAYBE_RuleReferencesToNotExistedPath RuleReferencesToNotExistedPath
-#define MAYBE_DoNotMatchRuleIfNotExists DoNotMatchRuleIfNotExists
-#endif  // BUILDFLAG(IS_MAC)
-
-TEST_F(PsstRuleRegistryUnitTest, MAYBE_LoadConcreteRule) {
+TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
   {
     LoadRulesTestCallback mock_callback;
     base::RunLoop run_loop;
@@ -142,7 +127,7 @@ TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
                                     mock_callback.Get());
 }
 
-TEST_F(PsstRuleRegistryUnitTest, MAYBE_RulesLoading) {
+TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
   LoadRulesTestCallback mock_callback;
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -214,7 +199,7 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
   run_loop.Run();
 }
 
-TEST_F(PsstRuleRegistryUnitTest, MAYBE_RuleReferencesToNotExistedPath) {
+TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
   {
     LoadRulesTestCallback mock_callback;
     base::RunLoop run_loop;
@@ -249,7 +234,7 @@ TEST_F(PsstRuleRegistryUnitTest, MAYBE_RuleReferencesToNotExistedPath) {
   run_loop.Run();
 }
 
-TEST_F(PsstRuleRegistryUnitTest, MAYBE_DoNotMatchRuleIfNotExists) {
+TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
   {
     LoadRulesTestCallback mock_callback;
     base::RunLoop run_loop;

@@ -56,6 +56,8 @@ source_set("unit_tests") {
     "rule_data_reader_unittest.cc",
   ]
 
+  data = [ "//brave/components/test/data/psst" ]
+
   deps = [
     ":core",
     "//base/test:test_support",
