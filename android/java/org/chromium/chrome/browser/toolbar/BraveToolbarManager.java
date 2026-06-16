@@ -236,7 +236,8 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable OmniboxChipManager omniboxChipManager,
             @Nullable BottomBarHostManager bottomBarHostManager,
             @Nullable ActionRegistry actionRegistry,
-            GlicButtonDelegate toggleGlicCallback) {
+            GlicButtonDelegate toggleGlicCallback,
+            boolean suppressTabStripAtStart) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -296,7 +297,8 @@ public class BraveToolbarManager extends ToolbarManager
                 omniboxChipManager,
                 bottomBarHostManager,
                 actionRegistry,
-                toggleGlicCallback);
+                toggleGlicCallback,
+                suppressTabStripAtStart);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
