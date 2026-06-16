@@ -4,20 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {injectStyle} from '//resources/brave/lit_overriding.js'
-import {loadTimeData} from '//resources/js/load_time_data.js'
 import {css} from '//resources/lit/v3_0/lit.rollup.js'
 
 import {HistoryAppElement} from './app-chromium.js'
+
+// <if expr="enable_local_ai">
+import {loadTimeData} from '//resources/js/load_time_data.js'
 import {
   getBraveHistoryEmbeddingsBrowserProxy,
 } from './brave_history_embeddings_browser_proxy.js'
-
-injectStyle(HistoryAppElement, css`
-        #tabs-content, #tabs-content>* {
-            height: 100%;
-        }
-    </style>
-`)
 
 // Subscribe directly to the Mojo `onEnabledChanged` notification so the
 // chrome://history UI reacts even when the side bar isn't rendered. Update
@@ -41,5 +36,13 @@ getBraveHistoryEmbeddingsBrowserProxy()
         ;(el as unknown as {requestUpdate?: () => void}).requestUpdate?.()
       }
     })
+// </if>
+
+injectStyle(HistoryAppElement, css`
+        #tabs-content, #tabs-content>* {
+            height: 100%;
+        }
+    </style>
+`)
 
 export * from './app-chromium.js'

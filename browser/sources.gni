@@ -48,6 +48,7 @@ import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -148,7 +149,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/brave_stats",
   "//brave/browser/component_updater",
-  "//brave/browser/history_embeddings",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
@@ -162,7 +162,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/brave_account",
-  "//brave/browser/ui/webui/local_ai",
   "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",
@@ -227,9 +226,7 @@ brave_chrome_browser_deps = [
   "//brave/components/ipfs",
   "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",
-  "//brave/components/local_ai/core",
-  "//brave/components/local_ai/core:features",
-  "//brave/components/local_ai/core:mojom",
+  "//brave/components/local_ai/buildflags",
   "//brave/components/ntp_background_images/browser",
   "//brave/components/ntp_background_images/buildflags",
   "//brave/components/ntp_background_images/common",
@@ -369,6 +366,16 @@ if (enable_email_aliases) {
     "//brave/components/email_aliases:mojom",
     "//brave/components/email_aliases:pref_names",
     "//brave/components/email_aliases:service",
+  ]
+}
+
+if (enable_local_ai) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/history_embeddings",
+    "//brave/browser/ui/webui/local_ai",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:features",
+    "//brave/components/local_ai/core:mojom",
   ]
 }
 
@@ -771,13 +778,17 @@ brave_chrome_browser_ui_allow_circular_includes_from +=
 
 brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_shields:brave_shields_impl",
-  "//brave/browser/history_embeddings",
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
   "//brave/browser/serp_metrics:impl",
   "//brave/browser:brave_global_features_impl",
 ]
+
+if (enable_local_ai) {
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/history_embeddings" ]
+}
 
 if (enable_ai_chat) {
   # TODO(https://github.com/brave/brave-browser/issues/50507):

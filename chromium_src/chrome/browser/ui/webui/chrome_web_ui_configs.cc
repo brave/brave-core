@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
@@ -41,7 +42,9 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ui/webui/history/brave_history_ui.h"
+#endif
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 
@@ -97,9 +100,11 @@ void RemoveOverridenWebUIs(content::WebUIConfigMap& map) {
   // Remove SettingsUIConfig. It will be replaced with BraveSettingsUIConfig.
   map.RemoveConfig(GetWebUIConfigURL(content::kChromeUIScheme,
                                      chrome::kChromeUISettingsHost));
+#if BUILDFLAG(ENABLE_LOCAL_AI)
   // Remove HistoryUIConfig. It will be replaced with BraveHistoryUIConfig.
   map.RemoveConfig(GetWebUIConfigURL(content::kChromeUIScheme,
                                      chrome::kChromeUIHistoryHost));
+#endif
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
@@ -127,7 +132,9 @@ void RegisterChromeWebUIConfigs() {
 #endif
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
+#if BUILDFLAG(ENABLE_LOCAL_AI)
   map.AddWebUIConfig(std::make_unique<BraveHistoryUIConfig>());
+#endif
   map.AddWebUIConfig(std::make_unique<BraveWelcomePageUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
 #if BUILDFLAG(ENABLE_SPEEDREADER)

@@ -9,6 +9,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -42,7 +43,6 @@ test("brave_components_unittests") {
     "//brave/components/component_updater:unit_tests",
     "//brave/components/https_upgrade_exceptions/browser:unit_tests",
     "//brave/components/json:unit_tests",
-    "//brave/components/local_ai/core:unit_tests",
     "//brave/components/oblivious_http:unit_tests",
     "//brave/components/screenshot/core/browser:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
@@ -97,12 +97,18 @@ test("brave_components_unittests") {
     deps += [ "//brave/components/email_aliases:unit_tests" ]
   }
 
+  if (enable_local_ai) {
+    deps += [ "//brave/components/local_ai/core:unit_tests" ]
+  }
+
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/core/browser:unit_tests" ]
   }
 
   if (use_blink) {
-    deps += [ "//brave/components/local_ai/content:unit_tests" ]
+    if (enable_local_ai) {
+      deps += [ "//brave/components/local_ai/content:unit_tests" ]
+    }
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }

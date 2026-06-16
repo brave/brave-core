@@ -4,7 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//tools/grit/repack.gni")
+
+assert(enable_local_ai)
 
 transpile_web_ui("candle_embedding_module") {
   resource_name = "candle_embedding_module"

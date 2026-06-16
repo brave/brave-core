@@ -3,22 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(!is_android)
 
-mojom("mojom") {
-  sources = [ "brave_history_embeddings.mojom" ]
-  webui_module_path = "/"
-}
-
 source_set("history") {
-  sources = [
-    "brave_history_embeddings_page_handler.cc",
-    "brave_history_embeddings_page_handler.h",
-    "brave_history_ui.cc",
-    "brave_history_ui.h",
-  ]
+  sources = []
 
   public_deps = [
     ":mojom",
@@ -31,10 +22,25 @@ source_set("history") {
 
   deps = [
     "//base",
-    "//brave/components/local_ai/core",
     "//chrome/browser/profiles:profile",
     "//chrome/common:constants",
     "//components/prefs",
     "//content/public/common",
   ]
+
+  if (enable_local_ai) {
+    sources += [
+      "brave_history_embeddings_page_handler.cc",
+      "brave_history_embeddings_page_handler.h",
+      "brave_history_ui.cc",
+      "brave_history_ui.h",
+    ]
+
+    deps += [ "//brave/components/local_ai/core" ]
+  }
+}
+
+mojom("mojom") {
+  sources = [ "brave_history_embeddings.mojom" ]
+  webui_module_path = "/"
 }

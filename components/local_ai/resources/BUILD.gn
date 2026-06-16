@@ -4,9 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
+
+assert(enable_local_ai)
 
 # Untrusted WebUI for WASM execution at
 # chrome-untrusted://local-ai/

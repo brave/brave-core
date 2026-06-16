@@ -5,6 +5,7 @@
 
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -33,13 +34,17 @@ source_set("browser_process") {
     "//brave/browser/brave_stats:buildflags",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/buildflags",
     "//brave/components/request_otr/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/browser:browser_process",
     "//extensions/buildflags",
   ]
+
+  if (enable_local_ai) {
+    deps += [ "//brave/components/local_ai/core" ]
+  }
 }
 
 source_set("brave_global_features") {

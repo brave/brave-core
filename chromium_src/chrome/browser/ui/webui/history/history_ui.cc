@@ -11,7 +11,6 @@
 // Mojo interface for write/observer plumbing lives in BraveHistoryUI; this
 // override only augments the data source.
 
-#include "brave/components/local_ai/core/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"

@@ -15,11 +15,15 @@
 // referenced after the swap.
 #include "base/feature_list.h"
 #include "base/feature_override.h"
-#include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
+#endif
 
 #define IsHistoryEmbeddingsEnabledForProfile \
   IsHistoryEmbeddingsEnabledForProfile_ChromiumImpl
@@ -38,11 +42,15 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
   if (!IsHistoryEmbeddingsFeatureEnabled()) {
     return false;
   }
   return profile->GetPrefs()->GetBoolean(
       local_ai::prefs::kBraveHistoryEmbeddingsEnabled);
+#else
+  return false;
+#endif
 }
 
 bool IsHistoryEmbeddingsSettingVisible(Profile* profile) {
