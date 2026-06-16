@@ -4,6 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Expand MAX_TILE_COUNT to 15
-    re_pattern: '(MAX_TILE_COUNT\s+=\s+)8'
-    replace: '\g<1>15'
+  - description: |
+      Expand MAX_TILE_COUNT to 15
+
+      We want 15 items for our NTP top site tiles on Android:
+      4 rows x 4 element -1 for plus button.
+    re_pattern: '(MAX_TILE_COUNT\s+=\s+)8;'
+    replace: '\g<1>15;  // We want 15 tiles for Brave NTP'
