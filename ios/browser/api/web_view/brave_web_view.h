@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BraveSearchMakeDefaultTabHelperBridge;
 @protocol PlaylistTabHelperBridge;
 @protocol PrintHandler;
+@protocol RequestBlockingTabHelperBridge;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
                                            WKWebViewConfiguration*);
@@ -252,6 +253,13 @@ CWV_EXPORT
 - (void)playlistLongPressedAtPoint:(CGPoint)point;
 /// Enables playlist compatibility mode for this web view
 - (void)enablePlaylistCompatibilityMode;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (RequestBlocking)
+/// A bridge for Request Blocking javascript feature
+- (void)setRequestBlockingTabHelperBridge:
+    (id<RequestBlockingTabHelperBridge>)bridge;
 @end
 
 NS_ASSUME_NONNULL_END
