@@ -503,6 +503,9 @@ if (is_mac) {
     "//brave/browser/updater:buildflags",
     "//chrome:strings",
     "//chrome/app:generated_resources",
+    "//chrome/browser:app_controller_mac",
+    "//chrome/browser:chrome_browser_main_mac",
+    "//chrome/browser/mac",
     "//chrome/common:non_code_constants",
   ]
   brave_chrome_framework_contents = []
