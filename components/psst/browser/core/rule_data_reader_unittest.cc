@@ -13,7 +13,6 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "build/buildflag.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {
@@ -54,14 +53,7 @@ class RuleDataReaderUnitTest : public testing::Test {
   base::FilePath test_data_dir_base_;
 };
 
-// https://github.com/brave/brave-browser/issues/56372
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_LoadComponentScripts DISABLED_LoadComponentScripts
-#else
-#define MAYBE_LoadComponentScripts LoadComponentScripts
-#endif  // BUILDFLAG(IS_MAC)
-
-TEST_F(RuleDataReaderUnitTest, MAYBE_LoadComponentScripts) {
+TEST_F(RuleDataReaderUnitTest, LoadComponentScripts) {
   RuleDataReader crr(GetBasePath());
   auto scripts_path =
       GetBasePath()

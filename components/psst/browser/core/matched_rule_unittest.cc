@@ -10,7 +10,6 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
-#include "build/buildflag.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {
@@ -90,14 +89,7 @@ class MatchedRuleTest : public testing::Test {
   base::FilePath test_data_dir_base_;
 };
 
-// https://github.com/brave/brave-browser/issues/56372
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_LoadSimpleMatchedRule DISABLED_LoadSimpleMatchedRule
-#else
-#define MAYBE_LoadSimpleMatchedRule LoadSimpleMatchedRule
-#endif  // BUILDFLAG(IS_MAC)
-
-TEST_F(MatchedRuleTest, MAYBE_LoadSimpleMatchedRule) {
+TEST_F(MatchedRuleTest, LoadSimpleMatchedRule) {
   const auto psst_rules = PsstRule::ParseRules(kPsstJsonFileContent);
   ASSERT_EQ(psst_rules->size(), 1u);
 
