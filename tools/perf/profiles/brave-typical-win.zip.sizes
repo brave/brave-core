@@ -1,45 +1,47 @@
-Total size 105756K
+Total size 107313K
 
-GROUP Adblock [11061K total]
-   263K Brave Ad Block Updater (Brave First Party Adblock Filters (plaintext)) 1.0.461 [adcocjohghhfpidemphmcmlmhnfgikei]
-    49K Brave Ad Block Updater (Mobile app promo blocker (plaintext)) 1.0.16859 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1517K Brave Ad Block Updater (Cookie notice blocker (plaintext)) 1.0.19688 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
-   102K Brave Ad Block Updater (Regional Catalog) 1.0.91 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5090K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.20089 [iodkpdagapdfkphljnddpjlldadblomo]
-     3K Brave Ad Block Updater (Experimental ad blocker (plaintext)) 1.0.85 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
-  1614K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.5669 [kihnoaefogbkmblfimmibknnmkllbhlf]
-  2420K Brave Ad Block Updater (Resources) 1.0.144 [mfddibmblmbccpadfndgakiopmmhebop]
+GROUP Adblock [9473K total]
+   264K Brave Ad Block Updater (Brave First Party Adblock Filters (plaintext)) 1.0.466 [adcocjohghhfpidemphmcmlmhnfgikei]
+    49K Brave Ad Block Updater (Mobile app promo blocker (plaintext)) 1.0.16863 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1532K Brave Ad Block Updater (Cookie notice blocker (plaintext)) 1.0.19745 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+     1K Brave Ad Block Updater (Allow X/Twitter Embeds (plaintext)) 1.0.0 [dkpggglmbjhgjhachikgmohmecomjndo]
+   107K Brave Ad Block Updater (Regional Catalog) 1.0.92 [gkboaolpopklhgplhaaiboijnklogmbc]
+  4963K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.20352 [iodkpdagapdfkphljnddpjlldadblomo]
+     3K Brave Ad Block Updater (Experimental ad blocker (plaintext)) 1.0.86 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
+     1K Brave Ad Block Updater (Allow Facebook Embeds (plaintext)) 1.0.0 [jmfhneobcdckobmonkfjkbknnjjnegoh]
+  1616K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.5932 [kihnoaefogbkmblfimmibknnmkllbhlf]
+   933K Brave Ad Block Updater (Resources) 1.0.145 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22954K total]
     50K Brave Ads Resources 1.0.110 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.68 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [19251K total]
+GROUP Ntp [22243K total]
  18206K Brave NTP background images 1.0.23 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-  1045K Brave NTP sponsored images 1.0.2467 [gccbbckogglekeggclmmekihdgdpdgoe]
+  4036K Brave NTP sponsored images 1.0.2485 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [57K total]
-    49K Brave Local Data Files Updater 1.0.1447 [afalakplffnnnlkncjhbmahjfjhmlkal]
-     2K Query Filter 1.0.50 [cemdlagocoimleflkfkjoihojfainiho]
-     5K Brave User Agent 1.0.454 [nlpaeekllejnmhoonlpcefpfnpbajbpe]
+    49K Brave Local Data Files Updater 1.0.1463 [afalakplffnnnlkncjhbmahjfjhmlkal]
+     2K Query Filter 1.0.64 [cemdlagocoimleflkfkjoihojfainiho]
+     5K Brave User Agent 1.0.468 [nlpaeekllejnmhoonlpcefpfnpbajbpe]
 
-GROUP chromium [13324K total]
-  1388K crl-set-13704469857691349784.data 10562 [CertificateRevocation]
-   245K Crowd Deny 2026.6.1.61 [Crowd Deny]
+GROUP chromium [13430K total]
+  1488K crl-set-2297851484941995940.data 10588 [CertificateRevocation]
+   251K Crowd Deny 2026.6.15.61 [Crowd Deny]
      9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
      9K MEI Preload 1.1.0.3 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
      0K P3A Configuration 1.0.5 [P3AConfig]
-   368K pkiMetadata 1685 [PKIMetadata]
+   369K pkiMetadata 1694 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    181K safetyTips 3091 [SafetyTips]
   1642K zxcvbnData 3 [ZxcvbnData]
   1728K hyphens-data 120.0.6050.0 [hyphen-data]
 
-GROUP large_files [33048K total]
+GROUP large_files [33128K total]
   3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
   1022K Default\Local Storage\leveldb\000003.ldb
-  6555K Default\RewardsCreators.db
+  6556K Default\RewardsCreators.db
   1010K Default\Session Storage\000003.ldb
-  1861K Safe Browsing\ChromeExtMalware.store.32_13424891675111678
- 19335K Safe Browsing\UrlSoceng.store.4_13424891674570084
+  1862K Safe Browsing\ChromeExtMalware.store.32_13426104268060645
+ 19414K Safe Browsing\UrlSoceng.store.4_13426104267715478
