@@ -118,6 +118,46 @@ public class BraveOriginDeepLinkHandlerTest {
         assertFalse(BraveOriginDeepLinkHandler.consumeFromIntent(intent));
     }
 
+    @Test
+    @SmallTest
+    public void consumeFromIntent_arbitraryHost_returnsFalseAndDoesNotMutate() {
+        // An attacker-controlled host ending with the expected path segment must not trigger the
+        // first-party Origin flow, even though the last path segment matches.
+        Uri uri = Uri.parse("https://example.invalid/" + BraveOriginDeepLinkHandler.PATH_TOKEN);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+        assertFalse(BraveOriginDeepLinkHandler.consumeFromIntent(intent));
+        // Intent must be left intact so normal navigation to the URL proceeds.
+        assertEquals(Intent.ACTION_VIEW, intent.getAction());
+        assertEquals(uri, intent.getData());
+    }
+
+    @Test
+    @SmallTest
+    public void consumeFromIntent_nonHttpsScheme_returnsFalse() {
+        // Only the verified https scheme is accepted; http (or any other scheme) is rejected.
+        Intent intent =
+                new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://brave.com/" + BraveOriginDeepLinkHandler.PATH_TOKEN));
+
+        assertFalse(BraveOriginDeepLinkHandler.consumeFromIntent(intent));
+    }
+
+    @Test
+    @SmallTest
+    public void consumeFromIntent_subdomainHost_returnsFalse() {
+        // Host must match exactly; subdomains and look-alikes are rejected.
+        Intent intent =
+                new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                                "https://evil.brave.com.attacker.test/"
+                                        + BraveOriginDeepLinkHandler.PATH_TOKEN));
+
+        assertFalse(BraveOriginDeepLinkHandler.consumeFromIntent(intent));
+    }
+
     // consumeDeferred
 
     @Test
