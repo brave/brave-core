@@ -95,10 +95,7 @@ void RequestBlockingJavaScriptFeature::ScriptMessageReceivedWithReply(
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/56116)
-  // Use security_origin
-  // https://source.chromium.org/chromium/chromium/src/+/f25be9b3246ed08b4b853435b40eb3380dc0e7bb
-  const GURL window_origin_url = message.request_url().value_or(GURL());
+  const GURL window_origin_url = message.security_origin().GetURL();
   if (!window_origin_url.is_valid()) {
     std::move(reply_handler).Run(false);
     return;
