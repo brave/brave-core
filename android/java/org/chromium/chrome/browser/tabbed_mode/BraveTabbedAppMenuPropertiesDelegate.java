@@ -793,13 +793,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     0)));
         }
 
-        // RDS
-        modelList.add(
-                new MVCListAdapter.ListItem(
-                        AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.reader_mode_prefs_id, R.string.menu_reader_mode_prefs, 0)));
-
         // Auto Dark
         if (ChromeFeatureList.isEnabled(
                 ChromeFeatureList.DARKEN_WEBSITES_CHECKBOX_IN_THEMES_SETTING)) {

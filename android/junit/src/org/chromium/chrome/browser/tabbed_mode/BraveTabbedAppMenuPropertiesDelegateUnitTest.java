@@ -478,9 +478,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                 .shouldEnableDownloadPage(any(Tab.class));
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)
-                .shouldShowReaderModePrefs(any(Tab.class));
-        doReturn(false)
-                .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowManagedByMenuItem(any(Tab.class));
         doReturn(true)
                 .when(mTabbedAppMenuPropertiesDelegate)
@@ -518,15 +515,14 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     }
 
     /** Options for tests that control how Menu is being rendered. */
-    // Suppressed warnings for withShowUpdate / withShowPaintPreview / withNativePage /
-    // withShowReaderModePrefs as we may want to use it when will expand the tests
+    // Suppressed warnings for withShowUpdate / withShowPaintPreview / withNativePage
+    // as we may want to use it when will expand the tests
     @SuppressWarnings("UnusedMethod")
     private static class MenuOptions {
         private boolean mIsNativePage;
         private boolean mShowTranslate;
         private boolean mShowUpdate;
         private boolean mShowMoveToOtherWindow;
-        private boolean mShowReaderModePrefs;
         private boolean mShowAddToHomeScreen;
         private boolean mShowPaintPreview;
         private boolean mIsAutoDarkEnabled;
@@ -545,10 +541,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
         protected boolean showMoveToOtherWindow() {
             return mShowMoveToOtherWindow;
-        }
-
-        protected boolean showReaderModePrefs() {
-            return mShowReaderModePrefs;
         }
 
         protected boolean showPaintPreview() {
@@ -599,9 +591,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         doReturn(options.showMoveToOtherWindow())
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowMoveToOtherWindow();
-        doReturn(options.showReaderModePrefs())
-                .when(mTabbedAppMenuPropertiesDelegate)
-                .shouldShowReaderModePrefs(any(Tab.class));
         doReturn(options.showPaintPreview())
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowPaintPreview(anyBoolean(), any(Tab.class));
