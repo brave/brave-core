@@ -239,7 +239,7 @@ export const CreateAccountOptions: NavOption[] = [
   {
     id: 'accounts',
     name: 'braveWalletImportAccount',
-    icon: 'product-brave-wallet',
+    icon: 'import-arrow',
     route: WalletRoutes.ImportAccountModalStart,
   },
   {
@@ -251,7 +251,7 @@ export const CreateAccountOptions: NavOption[] = [
   {
     id: 'accounts',
     name: 'braveWalletWelcomeRestoreButton',
-    icon: 'eye-on',
+    icon: 'reload',
     route: WalletRoutes.RestoreAccountsModal,
   },
 ]
