@@ -50,7 +50,7 @@ public struct InstallVPNProfileView: View {
         }
       }
       .osAvailabilityModifiers { content in
-        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+        if #available(iOS 26.0, *) {
           content.safeAreaBar(edge: .bottom, spacing: 0) {
             actions
           }
