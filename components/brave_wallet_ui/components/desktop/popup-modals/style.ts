@@ -35,7 +35,7 @@ export const Modal = styled.div<{
   justify-content: center;
   min-width: ${(p) => (p.width ? p.width : '580px')};
   max-width: ${(p) => (p.width ? p.width : '580px')};
-  max-height: 90vh;
+  max-height: min(90vh, 90dvh);
   height: ${(p) => p.height ?? 'unset'};
   background-color: ${leo.color.container.background};
   border-radius: ${leo.radius.xl};
