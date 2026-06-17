@@ -15,6 +15,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.BraveOriginPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+import org.chromium.components.embedder_support.util.UrlConstants;
 
 /**
  * Routes the Origin promo deep link (https://brave.com/deeplink-android-origin-promo) to the right
@@ -26,18 +27,28 @@ public final class BraveOriginDeepLinkHandler {
     /** Path token used by both the App Link URL and the Play Install Referrer string. */
     public static final String PATH_TOKEN = "deeplink-android-origin-promo";
 
+    /** Only the verified brave.com App Link is allowed to trigger the first-party Origin flow. */
+    private static final String VERIFIED_HOST = "brave.com";
+
     private BraveOriginDeepLinkHandler() {}
 
     /**
      * If {@code intent} is the Origin promo deep link, neutralize its action/data so upstream URL
      * handling skips it and return {@code true}. Caller should then call {@link #open}.
+     *
+     * <p>The action is constrained to the verified App Link (https://brave.com/...) so that
+     * attacker-controlled links from arbitrary, non-verified hosts cannot trigger the first-party
+     * Origin purchase flow.
      */
     public static boolean consumeFromIntent(@Nullable Intent intent) {
         if (intent == null || !Intent.ACTION_VIEW.equals(intent.getAction())) {
             return false;
         }
         Uri data = intent.getData();
-        if (data == null || !PATH_TOKEN.equalsIgnoreCase(data.getLastPathSegment())) {
+        if (data == null
+                || !UrlConstants.HTTPS_SCHEME.equals(data.getScheme())
+                || !VERIFIED_HOST.equals(data.getHost())
+                || !PATH_TOKEN.equalsIgnoreCase(data.getLastPathSegment())) {
             return false;
         }
         intent.setData(null);
