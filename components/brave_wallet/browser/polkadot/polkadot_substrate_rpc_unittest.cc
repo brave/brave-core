@@ -752,6 +752,334 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetMetadata) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotPaseoAssetHub;
+  std::string testnet_url =
+      network_manager_->GetKnownChain(chain_id, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-paseo-asset-hub.wallet.brave.com/");
+
+  // https://assethub-paseo.subscan.io/assets/50001010
+  constexpr uint32_t kBATCAssetId = 50001010;
+
+  // https://assethub-paseo.subscan.io/assets/50001011
+  constexpr uint32_t kXBBCAssetId = 50001011;
+
+  // constexpr uint32_t kNonExistent = 60001011;
+  /*
+  {"id":1,"jsonrpc":"2.0","method":"state_queryStorageAt","params":[["0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa02","0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26d0d81c87459ce80ea9d277dcb385a8173f4fa02","0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd23b721bf99b5ee4d67e2ebb330963e755f38a9303"]]}
+
+  {"jsonrpc":"2.0","id":1,"result":[{"block":"0x2d1bab4e2c9be6b1791cc9910ad8feaf17f7873d057ab21022147133392b829b","changes":[["0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa02","0x6054ba770000000000000000000000003c42726176652054657374205553444310424154430600"],["0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26d0d81c87459ce80ea9d277dcb385a8173f4fa02","0xa061bd77000000000000000000000000444f757465722048656176656e20436f696e10584242430c00"],["0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd23b721bf99b5ee4d67e2ebb330963e755f38a9303",null]]}]}
+
+  */
+
+  static constexpr uint32_t kAssetIds[] = {kBATCAssetId, kXBBCAssetId};
+
+  base::test::TestFuture<std::optional<std::vector<mojom::BlockchainTokenPtr>>,
+                         const std::optional<std::string>&>
+      future;
+
+  constexpr const char kPubKey[] =
+      "f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840";
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  base::HexStringToSpan(kPubKey, pubkey);
+
+  {
+    // Account exists.
+
+    polkadot_substrate_rpc_->GetAssetMetadata(chain_id, kAssetIds,
+                                              future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "method":"state_queryStorageAt",
+        "params":[[
+          "0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa02",
+          "0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26d0d81c87459ce80ea9d277dcb385a8173f4fa02"
+        ]]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(network::GetUploadData(req.request)),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": [ {
+            "block":
+            "0x2d1bab4e2c9be6b1791cc9910ad8feaf17f7873d057ab21022147133392b829b",
+            "changes":[
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa02",
+              "0x6054ba770000000000000000000000003c42726176652054657374205553444310424154430600"],
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd26d0d81c87459ce80ea9d277dcb385a8173f4fa02",
+              "0xa061bd77000000000000000000000000444f757465722048656176656e20436f696e10584242430c00"]
+            ]
+        } ]
+      })");
+
+    auto [tokens, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+
+    ASSERT_TRUE(tokens.has_value());
+    ASSERT_EQ(tokens->size(), 2u);
+
+    // https://assethub-paseo.subscan.io/assets/50001010
+    const auto& batc_token = tokens->at(0);
+
+    EXPECT_EQ(batc_token->contract_address, "50001010");
+    EXPECT_EQ(batc_token->name, "Brave Test USDC");
+    EXPECT_EQ(batc_token->logo, "");
+    EXPECT_EQ(batc_token->is_compressed, false);
+    EXPECT_EQ(batc_token->is_erc20, false);
+    EXPECT_EQ(batc_token->is_erc721, false);
+    EXPECT_EQ(batc_token->is_erc1155, false);
+    EXPECT_EQ(batc_token->spl_token_program,
+              mojom::SPLTokenProgram::kUnsupported);
+    EXPECT_EQ(batc_token->is_nft, false);
+    EXPECT_EQ(batc_token->is_spam, false);
+    EXPECT_EQ(batc_token->symbol, "BATC");
+    EXPECT_EQ(batc_token->decimals, 6);
+    EXPECT_EQ(batc_token->visible, true);
+    EXPECT_EQ(batc_token->token_id, "");
+    EXPECT_EQ(batc_token->coingecko_id, "");
+    EXPECT_EQ(batc_token->chain_id, mojom::kPolkadotPaseoAssetHub);
+    EXPECT_EQ(batc_token->coin, mojom::CoinType::DOT);
+    EXPECT_EQ(batc_token->is_shielded, false);
+
+    // https://assethub-paseo.subscan.io/assets/50001011
+    const auto& xbbc_token = tokens->at(1);
+
+    EXPECT_EQ(xbbc_token->contract_address, "50001011");
+    EXPECT_EQ(xbbc_token->name, "Outer Heaven Coin");
+    EXPECT_EQ(xbbc_token->logo, "");
+    EXPECT_EQ(xbbc_token->is_compressed, false);
+    EXPECT_EQ(xbbc_token->is_erc20, false);
+    EXPECT_EQ(xbbc_token->is_erc721, false);
+    EXPECT_EQ(xbbc_token->is_erc1155, false);
+    EXPECT_EQ(xbbc_token->spl_token_program,
+              mojom::SPLTokenProgram::kUnsupported);
+    EXPECT_EQ(xbbc_token->is_nft, false);
+    EXPECT_EQ(xbbc_token->is_spam, false);
+    EXPECT_EQ(xbbc_token->symbol, "XBBC");
+    EXPECT_EQ(xbbc_token->decimals, 12);
+    EXPECT_EQ(xbbc_token->visible, true);
+    EXPECT_EQ(xbbc_token->token_id, "");
+    EXPECT_EQ(xbbc_token->coingecko_id, "");
+    EXPECT_EQ(xbbc_token->chain_id, mojom::kPolkadotPaseoAssetHub);
+    EXPECT_EQ(xbbc_token->coin, mojom::CoinType::DOT);
+    EXPECT_EQ(xbbc_token->is_shielded, false);
+  }
+
+  // {
+  //   // Account does not exist.
+
+  //   url_loader_factory_.AddResponse(testnet_url,
+  //                                   R"(
+  //     {
+  //       "id": 1,
+  //       "jsonrpc": "2.0",
+  //       "result": [ {
+  //           "block":
+  //           "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+  //           "changes": [
+  //             ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+  //              null],
+  //             ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96d0d81c87459ce80ea9d277dcb385a8173f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+  //              null]
+  //           ]
+  //       } ]
+  //     })");
+
+  //   polkadot_substrate_rpc_->GetAssetAccountBalances(
+  //       chain_id, kAssetIds, pubkey, future.GetCallback());
+
+  //   auto [asset_accounts, error] = future.Take();
+
+  //   EXPECT_EQ(error, std::nullopt);
+
+  //   ASSERT_TRUE(asset_accounts.has_value());
+  //   ASSERT_EQ(asset_accounts->size(), 2u);
+
+  //   EXPECT_EQ(MojomToUint128(asset_accounts.value()[0]->balance), 0u);
+  //   EXPECT_EQ(MojomToUint128(asset_accounts.value()[1]->balance), 0u);
+  // }
+
+  // {
+  //   // Account data is too short.
+
+  //   url_loader_factory_.AddResponse(testnet_url,
+  //                                   R"(
+  //     {
+  //       "id":1,
+  //       "jsonrpc":"2.0",
+  //       "result":[
+  //         {
+  //           "block":"0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+  //           "changes":[["", "0x1234"]]
+  //         }
+  //       ]
+  //     })");
+
+  //   polkadot_substrate_rpc_->GetAssetAccountBalances(
+  //       chain_id, kAssetIds, pubkey, future.GetCallback());
+
+  //   auto [asset_accounts, error] = future.Take();
+
+  //   EXPECT_EQ(error, WalletParsingErrorMessage());
+  //   EXPECT_FALSE(asset_accounts);
+  // }
+
+  // {
+  //   // Changes array is empty.
+
+  //   url_loader_factory_.AddResponse(testnet_url,
+  //                                   R"(
+  //     {
+  //       "id":1,
+  //       "jsonrpc":"2.0",
+  //       "result":[
+  //         {
+  //           "block":"0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+  //           "changes":[]
+  //         }
+  //       ]
+  //     })");
+
+  //   polkadot_substrate_rpc_->GetAssetAccountBalances(
+  //       chain_id, kAssetIds, pubkey, future.GetCallback());
+
+  //   auto [asset_accounts, error] = future.Take();
+
+  //   EXPECT_EQ(error, WalletParsingErrorMessage());
+  //   EXPECT_FALSE(asset_accounts);
+  // }
+
+  // {
+  //   // Changes array contains empty pair (no storage key, no account
+  //   // information).
+
+  //   url_loader_factory_.AddResponse(testnet_url,
+  //                                   R"(
+  //     {
+  //       "id":1,
+  //       "jsonrpc":"2.0",
+  //       "result":[
+  //         {
+  //           "block":
+  //           "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+  //           "changes":[[]]
+  //         }
+  //       ]
+  //     })");
+
+  //   polkadot_substrate_rpc_->GetAssetAccountBalances(
+  //       chain_id, kAssetIds, pubkey, future.GetCallback());
+
+  //   auto [asset_accounts, error] = future.Take();
+
+  //   EXPECT_EQ(error, WalletParsingErrorMessage());
+  //   EXPECT_FALSE(asset_accounts);
+  // }
+
+  // {
+  //   // Contains invalid hex in asset account info.
+
+  //   url_loader_factory_.AddResponse(testnet_url,
+  //                                   R"(
+  //     {
+  //       "id":1,
+  //       "jsonrpc":"2.0",
+  //       "result":[
+  //         {
+  //           "block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+  //           "changes":[
+  //             ["",
+  //             "0xcat0a5d4e800000000000000000000000000"]
+  //           ]
+  //         }
+  //       ]
+  //     })");
+
+  //   polkadot_substrate_rpc_->GetAssetAccountBalances(
+  //       chain_id, kAssetIds, pubkey, future.GetCallback());
+
+  //   auto [asset_accounts, error] = future.Take();
+
+  //   EXPECT_EQ(error, WalletParsingErrorMessage());
+  //   EXPECT_FALSE(asset_accounts);
+  // }
+
+  // {
+  //   // Server contained invalid response.
+
+  //   url_loader_factory_.AddResponse(
+  //       testnet_url, "some invalid data goes here",
+  //       net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR);
+
+  //   polkadot_substrate_rpc_->GetAssetAccountBalances(
+  //       chain_id, kAssetIds, pubkey, future.GetCallback());
+
+  //   auto [asset_accounts, error] = future.Take();
+
+  //   EXPECT_EQ(error, WalletInternalErrorMessage());
+  //   EXPECT_FALSE(asset_accounts);
+  // }
+
+  // {
+  //   // Numeric limits.
+
+  //   url_loader_factory_.AddResponse(testnet_url,
+  //                                   R"(
+  //     {
+  //       "id": 1,
+  //       "jsonrpc": "2.0",
+  //       "result": [ {
+  //           "block":
+  //           "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+  //           "changes": [
+  //             ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+  //              "0xffffffffffffffffffffffffffffffff0000"],
+  //             ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96d0d81c87459ce80ea9d277dcb385a8173f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+  //              "0x000000000000000000000000000000000000"]
+  //           ]
+  //       } ]
+  //     })");
+
+  //   polkadot_substrate_rpc_->GetAssetAccountBalances(
+  //       chain_id, kAssetIds, pubkey, future.GetCallback());
+
+  //   auto [asset_accounts, error] = future.Take();
+
+  //   EXPECT_EQ(error, std::nullopt);
+
+  //   ASSERT_TRUE(asset_accounts.has_value());
+  //   ASSERT_EQ(asset_accounts->size(), 2u);
+
+  //   // This asset has 6 decimal places, total minted was 1'000'000.
+  //   EXPECT_EQ(MojomToUint128(asset_accounts.value()[0]->balance),
+  //             std::numeric_limits<uint128_t>::max());
+
+  //   // This asset has 12 decimal places, total minted was 1'000'000.
+  //   EXPECT_EQ(MojomToUint128(asset_accounts.value()[1]->balance), 0u);
+  // }
+}
+
 TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
   url_loader_factory_.ClearResponses();
 
