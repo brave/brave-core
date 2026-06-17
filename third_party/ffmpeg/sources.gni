@@ -21,7 +21,8 @@ brave_third_party_ffmpeg_gas_sources = []
 
 if (enable_ffmpeg_hevc_support) {
   brave_third_party_ffmpeg_c_sources += [
-    # Byte-swap DSP (renamed to avoid duplicate object name with x86/bswapdsp.asm)
+    # Byte-swap DSP (renamed to avoid duplicate object name with
+    # x86/bswapdsp.asm)
     "//brave/third_party/ffmpeg/libavcodec/libavcodec_bswapdsp.c",
 
     # HEVC core decoder
@@ -70,8 +71,10 @@ if (enable_ffmpeg_hevc_support) {
 
   # HEVC arm64 NEON optimizations.
   if (current_cpu == "arm64") {
-    brave_third_party_ffmpeg_c_sources +=
-        [ "libavcodec/aarch64/hevcdsp_init_aarch64.c" ]
+    brave_third_party_ffmpeg_c_sources += [
+      "libavcodec/aarch64/hevcdsp_init_aarch64.c",
+      "libavcodec/aarch64/hevcpred_init_aarch64.c",
+    ]
     brave_third_party_ffmpeg_gas_sources += [
       "libavcodec/aarch64/h26x/epel_neon.S",
       "libavcodec/aarch64/h26x/qpel_neon.S",
@@ -79,6 +82,7 @@ if (enable_ffmpeg_hevc_support) {
       "libavcodec/aarch64/hevcdsp_deblock_neon.S",
       "libavcodec/aarch64/hevcdsp_dequant_neon.S",
       "libavcodec/aarch64/hevcdsp_idct_neon.S",
+      "libavcodec/aarch64/hevcpred_neon.S",
     ]
   }
 }
