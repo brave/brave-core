@@ -20,9 +20,11 @@
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
+#include "brave/components/local_ai/core/pref_names.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/mock_component_updater_service.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -46,6 +48,9 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
 
   void SetUp() override {
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
+    local_state_ = std::make_unique<TestingPrefServiceSimple>();
+    prefs::RegisterLocalStatePrefs(local_state_->registry());
+    local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
     auto component_dir =
         base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
     install_dir_ = component_dir.Append(kComponentInstallDir);
@@ -69,6 +74,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  protected:
   brave_component_updater::MockOnDemandUpdater on_demand_updater_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
+  std::unique_ptr<TestingPrefServiceSimple> local_state_;
   base::test::TaskEnvironment task_environment_;
   base::FilePath install_dir_;
 
@@ -87,7 +93,7 @@ TEST_F(LocalModelsUpdaterUnitTest, Register) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(1)
       .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
-  ManageLocalModelsComponentRegistration(cus_.get());
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
   run_loop.Run();
 }
 
@@ -130,7 +136,7 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(cus_.get());
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
   EXPECT_FALSE(PathExists(install_dir_));
@@ -144,7 +150,7 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(cus_.get());
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
 }
 
 // Tests that the component is not registered when ComponentUpdateService is
@@ -152,7 +158,22 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
 TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenCUSIsNull) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(nullptr);
+  ManageLocalModelsComponentRegistration(nullptr, local_state_.get());
+}
+
+// Tests that the component is not registered when the local AI master switch
+// is off, and the component directory is deleted.
+TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenMasterSwitchOff) {
+  CreateDirectory(install_dir_);
+  EXPECT_TRUE(PathExists(install_dir_));
+
+  local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(0);
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
 }
 
 }  // namespace local_ai

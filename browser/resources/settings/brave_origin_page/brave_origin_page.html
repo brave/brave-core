@@ -115,6 +115,15 @@
     </origin-toggle-button>
   </if>
 
+  <if expr="enable_local_ai">
+    <origin-toggle-button id="toggleLocalAiButton"
+        policy-key="BraveLocalAIEnabled"
+        label="$i18n{braveOriginLocalAiToggleTitle}"
+        sub-label="$i18n{braveOriginCrossProfileSubLabel}"
+        icon="leo-local">
+    </origin-toggle-button>
+  </if>
+
   <if expr="enable_brave_news">
     <origin-toggle-button id="toggleNewsButton"
         policy-key="BraveNewsDisabled"

@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/prefs.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
@@ -69,6 +70,10 @@
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -171,6 +176,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefs(registry);
 #endif
   brave_origin::RegisterLocalStatePrefs(registry);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  local_ai::prefs::RegisterLocalStatePrefs(registry);
+#endif
   ntp_background_images::RegisterLocalStatePrefs(registry);
   RegisterPrefsForBraveReferralsService(registry);
   brave_l10n::RegisterLocalStatePrefsForMigration(registry);

@@ -23,7 +23,8 @@ class BraveHistoryEmbeddingsPageHandler
       mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
           receiver,
       mojo::PendingRemote<brave_history_embeddings::mojom::Page> page,
-      PrefService* prefs);
+      PrefService* prefs,
+      PrefService* local_state);
 
   BraveHistoryEmbeddingsPageHandler(const BraveHistoryEmbeddingsPageHandler&) =
       delete;
@@ -41,7 +42,9 @@ class BraveHistoryEmbeddingsPageHandler
   mojo::Receiver<brave_history_embeddings::mojom::PageHandler> receiver_;
   mojo::Remote<brave_history_embeddings::mojom::Page> page_;
   raw_ptr<PrefService> prefs_;
+  raw_ptr<PrefService> local_state_;
   PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar local_state_change_registrar_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_HISTORY_BRAVE_HISTORY_EMBEDDINGS_PAGE_HANDLER_H_

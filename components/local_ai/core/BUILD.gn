@@ -91,6 +91,7 @@ source_set("unit_tests") {
     "//brave/components/brave_component_updater/browser:test_support",
     "//components/component_updater:test_support",
     "//components/history_embeddings/core",
+    "//components/prefs:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]

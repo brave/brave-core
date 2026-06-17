@@ -306,6 +306,7 @@ leo_icons_sources = [
   "launch.svg",
   "leo-cursor-filled.svg",
   "leo-cursor.svg",
+  "leo-local.svg",
   "link-broken.svg",
   "link-normal.svg",
   "list-bullet-default.svg",

@@ -61,7 +61,8 @@ void RegisterComponentsForUpdate() {
 #endif  // BUILDFLAG(IS_ANDROID)
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  local_ai::ManageLocalModelsComponentRegistration(cus);
+  local_ai::ManageLocalModelsComponentRegistration(
+      cus, g_browser_process->local_state());
   local_ai::RegisterOnDeviceSpeechModelsComponent(cus);
 #endif
   RegisterQueryFilterComponent(cus);
