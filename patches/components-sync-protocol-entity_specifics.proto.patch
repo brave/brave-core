@@ -1,0 +1,20 @@
+diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
+index 90493a37b95912527237612b6dce308aaadd95a7..3bc5c047effa97e856aa9acc74acc805994fefa5 100644
+--- a/components/sync/protocol/entity_specifics.proto
++++ b/components/sync/protocol/entity_specifics.proto
+@@ -11,6 +11,7 @@ option optimize_for = LITE_RUNTIME;
+ 
+ package sync_pb;
+ 
++import "brave/components/sync/protocol/ai_chat_specifics.proto";
+ import "components/sync/protocol/ai_thread_specifics.proto";
+ import "components/sync/protocol/contextual_task_specifics.proto";
+ import "components/sync/protocol/encryption.proto";
+@@ -174,6 +175,7 @@ message EntitySpecifics {
+     AutofillValuableMetadataSpecifics autofill_valuable_metadata = 1520954;
+     SkillSpecifics skill = 1564245;
+     GeminiThreadSpecifics gemini_thread = 1569348;
++    AIChatConversationSpecifics ai_chat_conversation = 10000001;
+     // When adding a new type, follow the docs below and keep this comment as
+     // the last entry.
+     // https://www.chromium.org/developers/design-documents/sync/integration-checklist/

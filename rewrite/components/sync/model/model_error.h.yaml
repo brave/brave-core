@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Append the AI Chat model error as the new kMaxValue. Anchored on the enum
+      and the existing kMaxValue, value-agnostically. The new value and kMaxValue
+      share a line so the upstream java_cpp_enum parser still emits kMaxValue.
+    re_pattern: '(enum class Type \{.+?,)(\s+)kMaxValue = \w+'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          kAIChatFailedToLoadMetadata = 193, kMaxValue = kAIChatFailedToLoadMetadata

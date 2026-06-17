@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the kAIChat selectable type at the end of the always_enabled_sync_types
+      set in the AllSyncTypesChecked test. Anchored on the container rather than
+      a sibling key, so it is undisturbed when upstream adds or removes keys.
+    re_pattern: '(always_enabled_sync_types\s*=\s*\{.*?)(\};)'
+    re_flags: [DOTALL]
+    replace: '\1, syncer::UserSelectableType::kAIChat\2'

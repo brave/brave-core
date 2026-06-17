@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Account for Brave's extra data type in the GetNumDataTypes static_assert.
+      Add one to the upstream count rather than matching its value, so the
+      assert is undisturbed when upstream adds or removes data types.
+    re_pattern: 'static_assert\((\d+) == syncer::GetNumDataTypes\(\),'
+    replace: 'static_assert(\1 + 1 == syncer::GetNumDataTypes(),'
+
+  - description: |-
+      Add the AI Chat conversation specifics-to-value test after the last
+      existing DEFINE_SPECIFICS_TO_VALUE_TEST, so it does not depend on any
+      particular upstream entry.
+    re_pattern: '(DEFINE_SPECIFICS_TO_VALUE_TEST\([^)]*\))(?![\s\S]*DEFINE_SPECIFICS_TO_VALUE_TEST\()'
+    replace: |-
+      \1
+      DEFINE_SPECIFICS_TO_VALUE_TEST(ai_chat_conversation)
