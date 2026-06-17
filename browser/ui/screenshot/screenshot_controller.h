@@ -32,7 +32,7 @@ class PrintPreviewExtractor;
 
 // Owned by BrowserWindowFeatures (one per Browser). Orchestrates capture of a
 // screenshot (visible area or full page), encodes the result as PNG, and
-// drives a Save As dialog. Does not expose ai_chat:: types to callers.
+// drives a Save As dialog.
 class ScreenshotController : public ui::SelectFileDialog::Listener {
  public:
   enum class Error {
