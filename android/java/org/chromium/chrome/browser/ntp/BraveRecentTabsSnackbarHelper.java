@@ -308,7 +308,7 @@ public class BraveRecentTabsSnackbarHelper {
                                                 return;
                                             }
                                             // Dismiss snackbar when tab switcher is opened
-                                            if (layoutType == LayoutType.TAB_SWITCHER) {
+                                            if (layoutType == LayoutType.HUB) {
                                                 dismissSnackbar();
                                             }
                                         }
