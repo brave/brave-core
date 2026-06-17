@@ -5,7 +5,7 @@
 
 import("//build/config/android/rules.gni")
 
-# Brave overrides for NtpCustomizationUtils.isInNarrowWindowOnTablet and
+# Brave overrides for NtpCustomizationUtils.isInNarrowWindowOnLff and
 # NtpCustomizationPromoManager.canShowCustomizationIph (bytecode redirects calls
 # to these). Depends only on the minimum needed to avoid circular deps with
 # //chrome/browser/ntp_customization:java.

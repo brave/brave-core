@@ -118,12 +118,12 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
-    *** isInNarrowWindowOnTablet(...);
+    *** isInNarrowWindowOnLff(...);
     *** isNtpThemeCustomizationEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
-    *** isInNarrowWindowOnTablet(...);
+    *** isInNarrowWindowOnLff(...);
     *** isNtpThemeCustomizationEnabled(...);
 }
 
