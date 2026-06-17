@@ -132,6 +132,10 @@ export function ConfirmSendTransaction() {
           .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
       || selectedPendingTransaction.txType
         === BraveWallet.TransactionType.CardanoSendToken
+      // A Polkadot asset transfer sends the asset while the fee is paid in the
+      // native token, so the total must show them separately rather than summing
+      // (a native DOT send has no asset_id and uses the native path below).
+      || Boolean(selectedPendingTransaction.txDataUnion.polkadotTxData?.assetId)
     ) {
       return (
         new Amount(transactionDetails.valueExact).formatAsAsset(

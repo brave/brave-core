@@ -106,6 +106,7 @@ void PolkadotTxManager::ApproveTransaction(
       recipient,
       base::BindOnce(&PolkadotTxManager::OnApprovePolkadotTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(tx_meta),
+
                      std::move(callback)));
 }
 

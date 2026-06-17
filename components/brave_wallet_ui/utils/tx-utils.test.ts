@@ -733,6 +733,111 @@ describe('check for insufficient funds errors', () => {
       expect(insufficientFundsForGasError).toBeFalsy()
     })
   })
+
+  describe('Polkadot', () => {
+    // Builds a Polkadot transaction. `amount`/`fee` are raw base-unit strings;
+    // values here fit within 64 bits so `high` is always 0.
+    const makePolkadotTx = ({
+      amount,
+      fee,
+      assetId,
+    }: {
+      amount: string
+      fee: string
+      assetId?: number
+    }): SerializableTransactionInfo => ({
+      ...getMockedTransactionInfo(),
+      txType: BraveWallet.TransactionType.Other,
+      txDataUnion: {
+        ethTxData: undefined,
+        ethTxData1559: undefined,
+        filTxData: undefined,
+        solanaTxData: undefined,
+        btcTxData: undefined,
+        zecTxData: undefined,
+        cardanoTxData: undefined,
+        polkadotTxData: {
+          to: 'mockRecipient',
+          amount: { high: BigInt(0), low: BigInt(amount) },
+          fee: { high: BigInt(0), low: BigInt(fee) },
+          sendingMaxAmount: true,
+          assetId: assetId === undefined ? undefined : { id: assetId },
+        },
+      } as any,
+    })
+
+    it(
+      'should be false for a max-amount asset send even when the asset '
+        + 'balance exceeds the native balance',
+      () => {
+        // A max asset send: amount equals the full asset balance. The native
+        // fee is paid in PAS and must NOT be added to the asset amount, nor
+        // compared against the (smaller) native balance. This reproduces the
+        // reported bug where max asset sends were wrongly blocked.
+        const assetBalance = '5000000000000' // 5 tokens @ 12 decimals
+        const tx = makePolkadotTx({
+          amount: assetBalance,
+          fee: '1000000',
+          assetId: 1984,
+        })
+
+        const insufficientFundsError =
+          accountHasInsufficientFundsForTransaction({
+            accountNativeBalance: '100000000', // 0.01 PAS — smaller in raw units
+            accountTokenBalance: assetBalance,
+            gasFee: '1000000',
+            sourceAmount: Amount.empty(),
+            sourceTokenBalance: '',
+            tx,
+            txAccount: mockAccount,
+          })
+
+        expect(insufficientFundsError).toBeFalsy()
+      },
+    )
+
+    it('should be true when the asset send amount exceeds the asset balance', () => {
+      const tx = makePolkadotTx({
+        amount: '6000000000000', // 6 tokens
+        fee: '1000000',
+        assetId: 1984,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '100000000000',
+        accountTokenBalance: '5000000000000', // only 5 tokens
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockAccount,
+      })
+
+      expect(insufficientFundsError).toBeTruthy()
+    })
+
+    it('should compare a native DOT send against the native balance + fee', () => {
+      // No asset_id: falls through to the native balance + gasFee check. For a
+      // max native send the backend subtracts the fee, so amount + fee equals
+      // the balance exactly and is not insufficient.
+      const tx = makePolkadotTx({
+        amount: '9999000000', // balance (10000000000) - fee (1000000)
+        fee: '1000000',
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '10000000000', // 1 PAS @ 10 decimals
+        accountTokenBalance: '10000000000',
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockAccount,
+      })
+
+      expect(insufficientFundsError).toBeFalsy()
+    })
+  })
 })
 
 describe('getIsRevokeApprovalTx', () => {
@@ -875,6 +980,47 @@ describe('Cardano send token transfer formatting', () => {
     ).toBe(mockCardanoMinswapToken)
   })
 
+  it(
+    'getTransactionTransferredToken returns the asset token for a Polkadot '
+      + 'asset send, not the native token',
+    () => {
+      // A DOT asset transfer has txType === Other and no dedicated token
+      // txType, so the transferred token must be the resolved asset (used to
+      // render the amount + symbol in Transaction Details), not the native
+      // network asset.
+      const assetToken = { symbol: 'XBBC' } as BraveWallet.BlockchainToken
+      const tx: SerializableTransactionInfo = {
+        ...getMockedTransactionInfo(),
+        txType: BraveWallet.TransactionType.Other,
+        txDataUnion: {
+          ethTxData: undefined,
+          ethTxData1559: undefined,
+          filTxData: undefined,
+          solanaTxData: undefined,
+          btcTxData: undefined,
+          zecTxData: undefined,
+          cardanoTxData: undefined,
+          polkadotTxData: {
+            to: 'mockRecipient',
+            amount: { high: BigInt(0), low: BigInt('1000000000000') },
+            fee: { high: BigInt(0), low: BigInt('1000000') },
+            sendingMaxAmount: false,
+            assetId: { id: 1984 },
+          },
+        } as any,
+      }
+
+      expect(
+        getTransactionTransferredToken({
+          tx,
+          txNetwork: undefined,
+          token: assetToken,
+          sourceToken: undefined,
+        }),
+      ).toBe(assetToken)
+    },
+  )
+
   it('getTransactionTransferredValue uses token decimals', () => {
     const { normalized, wei } = getTransactionTransferredValue({
       tx: mockCardanoSendTokenTransaction,
@@ -908,6 +1054,74 @@ describe('Cardano send token transfer formatting', () => {
         txNetwork: { symbol: 'ADA' },
       }),
     ).toBe('MIN')
+  })
+
+  it('uses the asset token symbol for a Polkadot asset send, not the network', () => {
+    // A DOT asset transfer has txType === Other and no dedicated token txType,
+    // so it must resolve the symbol from the asset token rather than falling
+    // through to the native network symbol (PAS).
+    const tx: SerializableTransactionInfo = {
+      ...getMockedTransactionInfo(),
+      txType: BraveWallet.TransactionType.Other,
+      txDataUnion: {
+        ethTxData: undefined,
+        ethTxData1559: undefined,
+        filTxData: undefined,
+        solanaTxData: undefined,
+        btcTxData: undefined,
+        zecTxData: undefined,
+        cardanoTxData: undefined,
+        polkadotTxData: {
+          to: 'mockRecipient',
+          amount: { high: BigInt(0), low: BigInt('1000000000000') },
+          fee: { high: BigInt(0), low: BigInt('1000000') },
+          sendingMaxAmount: false,
+          assetId: { id: 1984 },
+        },
+      } as any,
+    }
+
+    expect(
+      getTransactionTokenSymbol({
+        tx,
+        token: { symbol: 'XBBC' } as BraveWallet.BlockchainToken,
+        sourceToken: undefined,
+        txNetwork: { symbol: 'PAS' },
+      }),
+    ).toBe('XBBC')
+  })
+
+  it('uses the network symbol for a native DOT send', () => {
+    // No asset_id: falls through to the network symbol.
+    const tx: SerializableTransactionInfo = {
+      ...getMockedTransactionInfo(),
+      txType: BraveWallet.TransactionType.Other,
+      txDataUnion: {
+        ethTxData: undefined,
+        ethTxData1559: undefined,
+        filTxData: undefined,
+        solanaTxData: undefined,
+        btcTxData: undefined,
+        zecTxData: undefined,
+        cardanoTxData: undefined,
+        polkadotTxData: {
+          to: 'mockRecipient',
+          amount: { high: BigInt(0), low: BigInt('1000000000000') },
+          fee: { high: BigInt(0), low: BigInt('1000000') },
+          sendingMaxAmount: false,
+          assetId: undefined,
+        },
+      } as any,
+    }
+
+    expect(
+      getTransactionTokenSymbol({
+        tx,
+        token: undefined,
+        sourceToken: undefined,
+        txNetwork: { symbol: 'PAS' },
+      }),
+    ).toBe('PAS')
   })
 })
 

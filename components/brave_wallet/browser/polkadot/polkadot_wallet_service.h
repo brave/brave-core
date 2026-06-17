@@ -7,7 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
 #include <array>
+#include <optional>
+#include <string>
+#include <vector>
 
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
@@ -34,6 +39,12 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                               KeyringServiceObserverBase {
  public:
   using TransferAll = PolkadotSignedTransferTask::TransferAll;
+
+  // Persists a discovered asset into the user-asset registry and notifies
+  // token observers. Bound by BraveWalletService to AddUserAssetInternal so
+  // that discovered assets flow through the same path as user-added ones.
+  using AddUserAssetCallback =
+      base::RepeatingCallback<void(mojom::BlockchainTokenPtr)>;
 
   using GetChainMetadataCallback = base::OnceCallback<void(
       base::expected<PolkadotChainMetadata, std::string>)>;
@@ -62,8 +73,14 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   NetworkManager& GetNetworkManager();
   PolkadotSubstrateRpc* GetPolkadotRpc();
 
+  void SetNewAssetDiscoveredCallback(AddUserAssetCallback callback);
+
   void GetCompatibleNetworks(mojom::AccountIdPtr account_id,
                              GetCompatibleNetworksCallback callback) override;
+
+  void GetAssetMetadata(const std::vector<uint32_t>& asset_ids,
+                        const std::string& chain_id,
+                        GetAssetMetadataCallback callback) override;
 
   void GetAddress(mojom::AccountIdPtr account_id,
                   const std::string& chain_id,
@@ -128,6 +145,11 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   // KeyringServiceObserverBase:
   void Unlocked() override;
 
+  // Persists asset metadata discovered on unlock into the user-asset registry.
+  void OnDiscoveredAssetMetadata(
+      std::optional<std::vector<mojom::BlockchainTokenPtr>> tokens,
+      const std::optional<std::string>& error);
+
   void GenerateSignedTransferExtrinsicImpl(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
@@ -171,6 +193,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
 
   const raw_ref<KeyringService> keyring_service_;
   const raw_ref<NetworkManager> network_manager_;
+  AddUserAssetCallback add_user_asset_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
