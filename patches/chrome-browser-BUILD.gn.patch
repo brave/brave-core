@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 2203610c864eef6042936a83eb2b9797be93a0e0..a135c3be627048482127f584b7ab95d504eeb2ff 100644
+index 311a3dfebc076092e33ff29c502ed77f1b0836c3..949658ee3a54cd00e7c062bff4c9f7f304b16c64 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2642,6 +2642,7 @@ static_library("browser") {
+@@ -2643,6 +2643,7 @@ static_library("browser") {
      "//chrome/browser/sharing/glic_experimental_triggering:impl",
      "//chrome/browser/ui/webauthn:impl",
    ]
@@ -10,7 +10,7 @@ index 2203610c864eef6042936a83eb2b9797be93a0e0..a135c3be627048482127f584b7ab95d5
  
    if (enable_webui_ntp) {
      deps += [
-@@ -5354,6 +5355,7 @@ group("browser_public_dependencies") {
+@@ -5355,6 +5356,7 @@ group("browser_public_dependencies") {
        "//components/offline_pages/core/background:background_offliner",
      ]
    }

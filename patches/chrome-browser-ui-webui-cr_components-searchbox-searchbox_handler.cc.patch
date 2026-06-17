@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 844abd0853e9ed8fb54e756423e4c2a130f066a9..1c3074e8df41d4bad7630a6d00c7f76e50341980 100644
+index 388c82166d32f560f001b59a92f935e7447424c1..7bc6976de6cda332efd98bc6aff8e46a928df45c 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 @@ -803,6 +803,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
@@ -18,7 +18,7 @@ index 844abd0853e9ed8fb54e756423e4c2a130f066a9..1c3074e8df41d4bad7630a6d00c7f76e
    NOTREACHED() << "Every autocomplete icon must have an equivalent SVG "
                    "resource for the NTP Realbox. icon.name: '"
                 << icon.name << "'";
-@@ -1121,8 +1130,9 @@ void SearchboxHandler::QueryAutocomplete(const std::u16string& input,
+@@ -1120,8 +1129,9 @@ void SearchboxHandler::QueryAutocomplete(const std::u16string& input,
    autocomplete_input.set_prevent_inline_autocomplete(
        prevent_inline_autocomplete);
    // Disable keyword matches as NTP realbox has no UI affordance for it.
