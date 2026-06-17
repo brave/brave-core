@@ -15,6 +15,7 @@ import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -39,7 +40,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
             TopUiThemeColorProvider topUiThemeColorProvider,
             EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
-            NonNullObservableSupplier<Integer> overviewColorSupplier) {
+            NonNullObservableSupplier<Integer> overviewColorSupplier,
+            BrowserControlsStateProvider browserControlsStateProvider) {
         super(
                 activity,
                 isTablet,
@@ -50,7 +52,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
                 topUiThemeColorProvider,
                 edgeToEdgeSystemBarColorHelper,
                 desktopWindowStateManager,
-                overviewColorSupplier);
+                overviewColorSupplier,
+                browserControlsStateProvider);
 
         // Dark theme doesn't have the regression, apply adjustment to light one only.
         // Skip when dynamic colors are enabled — the themed surface color should be used instead.

@@ -14,8 +14,8 @@
     *** maybeHandleUrlIntent(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator {
-    *** createViewProvider(...);
+-keep class org.chromium.chrome.browser.omnibox.suggestions.OmniboxViewHolderFactory {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
@@ -109,3 +109,11 @@
 # Keep Play Core App Update classes to prevent ClassNotFoundException during Parcelable deserialization
 -keep class com.google.android.play.core.appupdate.** { *; }
 -keep class com.google.android.play.core.install.** { *; }
+
+# Prevent R8 from inlining DeferredContentViewStub.<init> into TabImpl.initWebContents.
+# R8 inlining a constructor that calls super() incorrectly inserts check-cast on an
+# uninitialized reference before invoke-direct <init>, causing a VerifyError on tab
+# restore in release arm64 builds (crrev.com/c/7837252).
+-keep class org.chromium.chrome.browser.tab.TabImpl$DeferredContentViewStub {
+    <init>(android.content.Context, org.chromium.content_public.browser.WebContents);
+}

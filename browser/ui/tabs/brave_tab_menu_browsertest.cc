@@ -45,8 +45,9 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
             ->horizontal_tab_strip_for_testing()
             ->controller());
 
-    auto context_menu_controller =
-        std::make_unique<TabContextMenuController>(tab_index, controller);
+    auto context_menu_controller = std::make_unique<TabContextMenuController>(
+        browser()->tab_strip_model()->GetTabAtIndex(tab_index)->GetHandle(),
+        controller);
 
     return context_menu_controller;
   }
@@ -283,7 +284,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   EXPECT_EQ(1, tab_strip_model->active_index());
 
   // Create split tabs with tab at 1 and 2.
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
 
   // Now we have one normal tab at 0 and split tab at 1 and 2.
@@ -310,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   }
 
   // Create split tabs with tab at 1 and 2.
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
 
   // Now we have one normal tab at 0 and split tab at 1 and 2.
@@ -332,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   }
 
   // Create split tabs with tab at 1 and 2.
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
 
   // Now we have one normal tab at 0 and split tab at 1 and 2.
@@ -452,7 +453,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   // Add a second tab and open a split view so we can test the remaining cases.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground=*/true);
   ASSERT_EQ(2, tab_strip_model->count());
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
   ASSERT_EQ(3, tab_strip_model->count());
   ASSERT_EQ(2, tab_strip_model->active_index());

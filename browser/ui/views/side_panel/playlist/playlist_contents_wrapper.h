@@ -9,9 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "base/scoped_observation.h"
+#include "base/callback_list.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
-#include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
 
 class BrowserView;
@@ -20,8 +19,7 @@ class FullscreenController;
 
 // Implements WebContentsDelegate parts for Playlist features.
 class PlaylistContentsWrapper
-    : public WebUIContentsWrapperT<playlist::PlaylistUI>,
-      public FullscreenObserver {
+    : public WebUIContentsWrapperT<playlist::PlaylistUI> {
  public:
   PlaylistContentsWrapper(const GURL& webui_url,
                           Profile* profile,
@@ -60,8 +58,7 @@ class PlaylistContentsWrapper
   std::string GetTitleForMediaControls(
       content::WebContents* web_contents) override;
 
-  // FullscreenObserver:
-  void OnFullscreenStateChanged() override;
+  void OnFullscreenStateChanged();
 
  private:
   bool IsFullscreenForPlaylist() const;
@@ -74,8 +71,8 @@ class PlaylistContentsWrapper
   bool was_browser_fullscreen_ = false;
   int64_t fullscreen_display_id_ = display::kInvalidDisplayId;
 
-  base::ScopedObservation<FullscreenController, FullscreenObserver>
-      fullscreen_observation_{this};
+  // Subscription to be notified when the browser window enters fullscreen.
+  base::CallbackListSubscription fullscreen_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_CONTENTS_WRAPPER_H_

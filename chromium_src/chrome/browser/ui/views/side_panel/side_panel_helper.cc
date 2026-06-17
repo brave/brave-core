@@ -24,7 +24,7 @@
 
 // static
 void SidePanelHelper::PopulateGlobalEntries(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     SidePanelRegistry* global_registry) {
   PopulateGlobalEntries_ChromiumImpl(browser, global_registry);
 
@@ -42,12 +42,13 @@ void SidePanelHelper::PopulateGlobalEntries(
   // for now.
   // TODO(https://github.com/brave/brave-browser/issues/48526): Remove the
   // condition when the feature flag is removed.
-  if (ai_chat::AIChatServiceFactory::GetForBrowserContext(browser->profile()) &&
-      ai_chat::ShouldSidePanelBeGlobal(browser->profile())) {
+  if (ai_chat::AIChatServiceFactory::GetForBrowserContext(
+          browser->GetProfile()) &&
+      ai_chat::ShouldSidePanelBeGlobal(browser->GetProfile())) {
     global_registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
         base::BindRepeating(&AIChatSidePanelWebView::CreateView,
-                            browser->profile(),
+                            browser->GetProfile(),
                             /*is_tab_associated=*/false),
         base::NullCallback()));
   }

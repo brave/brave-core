@@ -5,9 +5,7 @@
 
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
 
-#include "base/check_op.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "ui/views/layout/layout_provider.h"
 
 // Replacing for `ShapeContextTokensOverride` to select the override call for
 // the desired value, which is mapped to a particular value for Brave.
@@ -16,9 +14,3 @@
 #include <chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc>
 
 #undef ShapeContextTokens
-
-// static
-int RoundedOmniboxResultsFrame::GetShadowElevation() {
-  // Expose a constant defined in cc file.
-  return kElevation;
-}

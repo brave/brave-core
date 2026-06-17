@@ -25,7 +25,9 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
@@ -52,7 +54,7 @@ void BraveSidePanelCoordinator::Show(
     const UniqueKey& entry,
     std::optional<SidePanelOpenTrigger> open_trigger,
     bool suppress_animations) {
-  sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
+  sidebar::SetLastUsedSidePanel(browser_->GetProfile()->GetPrefs(),
                                 entry.key.id());
 
   SidePanelCoordinator::Show(entry, open_trigger, suppress_animations);
@@ -62,12 +64,9 @@ void BraveSidePanelCoordinator::Show(
   // asks SidebarController to update the active item state. In sidebar v2,
   // SidebarContainerView does not monitor panel state, so the coordinator
   // must update it directly here.
-  CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
-  browser_view_->browser()
-      ->GetFeatures()
-      .sidebar_controller()
-      ->UpdateActiveItemState(
-          sidebar::BuiltInItemTypeFromSidePanelId(entry.key.id()));
+  CHECK(browser_->GetFeatures().sidebar_controller());
+  browser_->GetFeatures().sidebar_controller()->UpdateActiveItemState(
+      sidebar::BuiltInItemTypeFromSidePanelId(entry.key.id()));
 #endif
 }
 
@@ -76,11 +75,8 @@ void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Same as Show(): sidebar v2 does not rely on SidebarContainerView to
   // propagate panel close events, so clear the active item state here.
-  CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
-  browser_view_->browser()
-      ->GetFeatures()
-      .sidebar_controller()
-      ->UpdateActiveItemState();
+  CHECK(browser_->GetFeatures().sidebar_controller());
+  browser_->GetFeatures().sidebar_controller()->UpdateActiveItemState();
 #endif
 
   SidePanelCoordinator::Close(hide_reason, suppress_animations);
@@ -90,7 +86,7 @@ void BraveSidePanelCoordinator::OnActiveTabChanged(
     content::WebContents* old_contents,
     content::WebContents* new_contents,
     bool tab_removed_for_deletion) {
-  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
+  auto* brave_browser_view = GetBraveBrowserView();
   brave_browser_view->SetSidePanelOperationByActiveTabChange(true);
 
   SidePanelCoordinator::OnActiveTabChanged(old_contents, new_contents,
@@ -102,7 +98,7 @@ void BraveSidePanelCoordinator::OnActiveTabChanged(
 }
 
 void BraveSidePanelCoordinator::Toggle() {
-  if (IsSidePanelShowing() && !browser_view_->side_panel()->IsClosing()) {
+  if (IsSidePanelShowing() && !GetSidePanel()->IsClosing()) {
     SidePanelCoordinator::Close();
   } else if (const auto key = GetLastActiveEntryKey()) {
     SidePanelUIBase::Show(*key, SidePanelOpenTrigger::kToolbarButton);
@@ -131,22 +127,28 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
                                                 visible);
 
   if (update_items_state) {
-    GetBraveBrowserView()->sidebar_container_view()->UpdateActiveItemState();
+    // Workaround to prevent crashing while window closing.
+    // See https://github.com/brave/brave-browser/issues/34334
+    auto* brave_browser_view = GetBraveBrowserView();
+    if (brave_browser_view && brave_browser_view->GetWidget() &&
+        !brave_browser_view->GetWidget()->IsClosed() &&
+        brave_browser_view->sidebar_container_view()) {
+      brave_browser_view->sidebar_container_view()->UpdateActiveItemState();
+    }
   }
 }
 
 std::optional<SidePanelEntry::Key>
 BraveSidePanelCoordinator::GetLastActiveEntryKey() const {
   // Don't give last active if user removed all panel items.
-  const auto default_entry_id = GetDefaultEntryId(browser_view_->GetProfile());
+  const auto default_entry_id = GetDefaultEntryId(browser_->GetProfile());
   if (!default_entry_id) {
     return std::nullopt;
   }
 
   // Use last used one from previous launch instead of default entry if we have
   // it.
-  if (const auto entry_id =
-          sidebar::GetLastUsedSidePanel(browser_view_->browser())) {
+  if (const auto entry_id = sidebar::GetLastUsedSidePanel(&*browser_)) {
     return SidePanelEntryKey(*entry_id);
   }
 
@@ -160,13 +162,14 @@ void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
 #if !BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Workaround to prevent crashing while window closing.
   // See https://github.com/brave/brave-browser/issues/34334
-  if (!browser_view_ || !browser_view_->GetWidget() ||
-      browser_view_->GetWidget()->IsClosed()) {
+  auto* brave_browser_view = GetBraveBrowserView();
+  if (!brave_browser_view || !brave_browser_view->GetWidget() ||
+      brave_browser_view->GetWidget()->IsClosed()) {
     return;
   }
 
   auto* brave_toolbar =
-      static_cast<BraveToolbarView*>(browser_view_->toolbar());
+      static_cast<BraveToolbarView*>(brave_browser_view->toolbar());
   if (auto* side_panel_button = brave_toolbar->side_panel_button()) {
     side_panel_button->SetHighlighted(side_panel_visible);
     side_panel_button->SetTooltipText(l10n_util::GetStringUTF16(
@@ -188,7 +191,7 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   entry->set_should_show_header(false);
 
   actions::ActionItem* const action_item =
-      SidePanelHelper::GetActionItem(browser_view_->browser(), entry->key());
+      SidePanelHelper::GetActionItem(&*browser_, entry->key());
   if (!action_item) {
     const std::string entry_id = SidePanelEntryIdToString(entry->key().id());
     LOG(ERROR) << __func__ << " no side panel action item for " << entry_id;
@@ -206,11 +209,10 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   if (ShouldShowBraveHeader(entry)) {
-    SidePanel* side_panel = browser_view_->side_panel();
+    SidePanel* side_panel = GetSidePanel();
     CHECK(side_panel);
     side_panel->AddHeaderView(std::make_unique<BraveSidePanelHeader>(
-        std::make_unique<BraveSidePanelHeaderController>(
-            *browser_view_->browser(), entry)));
+        std::make_unique<BraveSidePanelHeaderController>(*browser_, entry)));
   }
 #endif
 }
@@ -225,5 +227,6 @@ bool BraveSidePanelCoordinator::ShouldShowBraveHeader(
 #endif
 
 BraveBrowserView* BraveSidePanelCoordinator::GetBraveBrowserView() {
-  return static_cast<BraveBrowserView*>(browser_view_);
+  return static_cast<BraveBrowserView*>(
+      BrowserView::GetBrowserViewForBrowser(&*browser_));
 }

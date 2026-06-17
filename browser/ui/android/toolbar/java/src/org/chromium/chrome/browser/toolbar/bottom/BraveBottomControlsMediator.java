@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.toolbar.bottom;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
@@ -14,6 +15,8 @@ import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.overlay_panel.PanelState;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
@@ -45,8 +48,9 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
             int bottomControlsShadowHeight,
-            NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            NonNullObservableSupplier<@PanelState Integer> overlayPanelStateSupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            NullableObservableSupplier<Tab> tabSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
         super(
                 windowAndroid,
@@ -59,8 +63,9 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
                 tabObscuringHandler,
                 bottomControlsHeight,
                 bottomControlsShadowHeight,
-                overlayPanelVisibilitySupplier,
+                overlayPanelStateSupplier,
                 edgeToEdgeControllerSupplier,
+                tabSupplier,
                 readAloudRestoringSupplier);
 
         mBottomControlsHeightSingle = bottomControlsHeight;

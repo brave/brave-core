@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Append `*browser` to the WindowFeatureController CreateInstance call
+
+`WindowFeatureController` takes the owning `BrowserWindowInterface&` as its
+last constructor argument so Brave-specific code can reach the browser
+without walking `BrowserList`. The non-greedy regex captures the full
+argument list (no matter how many arguments upstream chooses to pass) and
+appends `*browser` immediately before the closing `);`.
+'''
+re_pattern = '(CreateInstance<WindowFeatureController>\(.*?)(\);)'
+re_flags = ['DOTALL']
+replace = '''\1, *browser\2'''

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 
-#include <optional>
 #include <variant>
 #include <vector>
 
@@ -78,7 +77,7 @@ class BraveAccountService : public KeyedService {
   base::OneShotTimer* AuthValidateTimerForTesting();
 
  private:
-  void FinishInitialization(os_crypt_async::Encryptor encryptor);
+  void FinishInitialization(scoped_refptr<os_crypt_async::Encryptor> encryptor);
 
   void AddObserver(mojo::PendingRemote<mojom::AuthenticationObserver> observer);
 
@@ -90,7 +89,7 @@ class BraveAccountService : public KeyedService {
 
   AccountStatePrefs account_state_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::optional<os_crypt_async::Encryptor> encryptor_;
+  scoped_refptr<os_crypt_async::Encryptor> encryptor_;
   std::vector<mojo::PendingReceiver<mojom::Authentication>> pending_receivers_;
   mojo::RemoteSet<mojom::AuthenticationObserver> observers_;
   std::variant<std::monostate, LoggedOutState, LoggedInState> state_;

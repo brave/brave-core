@@ -21,7 +21,7 @@
 namespace {
 
 // Minimal fake for BrowserViewLayoutDelegate methods that are not exercised by
-// GetTopSeparatorType() on the "no top UI" path (Brave returns early).
+// CalculateSeparatorInfo() on the "no top UI" path (Brave returns early).
 class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
  public:
   FakeBrowserViewLayoutDelegate() = default;
@@ -31,7 +31,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool ShouldDrawVerticalTabStrip() const override { return false; }
   bool IsVerticalTabStripCollapsed() const override { return false; }
   bool ShouldDrawWebAppFrameToolbar() const override { return false; }
-  bool GetBorderlessModeEnabled() const override { return false; }
+  bool GetUnframedModeEnabled() const override { return false; }
   BrowserLayoutParams GetBrowserLayoutParams(bool) const override {
     return BrowserLayoutParams();
   }
@@ -80,8 +80,8 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsFullscreen() const override { return false; }
 };
 
-// Only the two visibility hooks matter for GetTopSeparatorType(); gmock makes
-// the test spell that out with EXPECT_CALL.
+// Only the two visibility hooks matter for the CalculateSeparatorInfo() "no
+// top UI" early return; gmock makes the test spell that out with EXPECT_CALL.
 class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
  public:
   MOCK_METHOD(bool, IsToolbarVisible, (), (const, override));
@@ -215,19 +215,24 @@ TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,
-     GetTopSeparatorTypeNoneWhenNoVisibleTopUI) {
+     CalculateSeparatorInfoNoneWhenNoVisibleTopUI) {
   auto mock =
       std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
-  EXPECT_CALL(*mock, IsToolbarVisible()).WillOnce(::testing::Return(false));
-  EXPECT_CALL(*mock, IsBookmarkBarVisible()).WillOnce(::testing::Return(false));
+  EXPECT_CALL(*mock, IsToolbarVisible())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, IsBookmarkBarVisible())
+      .WillRepeatedly(::testing::Return(false));
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
       std::move(mock), nullptr, std::move(views));
 
-  // TopSeparatorType::kNone (0) - no top separator when top UI is hidden.
-  // TopSeparatorType is private member.
-  EXPECT_EQ(0, static_cast<int>(layout->GetTopSeparatorType()));
+  // With no visible top UI, Brave's override returns a default-constructed
+  // SeparatorInfo (no separators, no shadow box) before consulting upstream -
+  // which would otherwise crash because `layout_data_` has not been populated.
+  EXPECT_FALSE(layout->GetTopContainerSeparatorForTesting());
+  EXPECT_FALSE(layout->GetMultiContentsSeparatorForTesting());
+  EXPECT_FALSE(layout->GetShadowBoxForTesting());
 }
 
 #if BUILDFLAG(IS_MAC)

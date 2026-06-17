@@ -572,14 +572,8 @@
           =1 {Brave will block cookies again tomorrow}
           other {# days until cookies are blocked again}}
       </message>
-      <message name="IDS_PAGE_INFO_COOKIES_SEND_FEEDBACK_DESCRIPTION" desc="Text asking the user for feedback on why they allowed third-party cookies for this particular site.">
-        Help us improve Brave by telling us why you allowed third-party cookies. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Send feedback<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
       <message name="IDS_PAGE_INFO_COOKIES_PERMANENT_ALLOWED_TITLE" desc="A subtitle in the Page Info UI if cookies were allowed by the user and they won't be automatically blocked again the future.">
         You allowed third-party cookies on this site
-      </message>
-      <message name="IDS_PAGE_INFO_COOKIES_TRACKING_PROTECTION_PERMANENT_ALLOWED_DESCRIPTION" desc="Descriptive text in the page info third-party cookies subpage if the user is visiting a site on their third-party cookies allow list." formatter_data="android_java">
-        This means site features should work as expected, but you may have less browsing protection. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Send feedback<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_TITLE" desc="Label shown on a dialog that allows users to turn off third-party cookie blocking for a specific site.">
         Site not working?
@@ -715,9 +709,6 @@
       <!-- Bookmarks -->
       <message name="IDS_BOOKMARKS_BAR_EMPTY_MESSAGE" desc="Message shown in a popup menu when a bookmarks bar folder is opened and contains no bookmarks.">
         This folder is empty
-      </message>
-      <message name="IDS_BOOKMARKS_BAR_IPH_MESSAGE" desc="IPH text bubble encouraging users to turn on the bookmarks bar in settings.">
-        You can turn on the bookmarks bar in Settings &gt; Appearance
       </message>
       <!-- USB -->
       <message name="IDS_CONNECTED_TO_USB_DEVICE_NOTIFICATION_TITLE" desc="Text to be shown as a notification when a website is connected to a USB device.">
@@ -1315,15 +1306,6 @@
       <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_BUTTON_LETS_GO" desc="Text on the clickable button on the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
         Let’s go
       </message>
-      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_TITLE" desc="Title of the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
-        Get Brave tips notifications
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_DESCRIPTION" desc="Description of the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
-        Turn on notifications for useful tips to help you get the best of Brave
-      </message>
-      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_BUTTON" desc="Text on the clickable button on the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
-        Notify me
-      </message>
 
       <!-- Setup List strings -->
 
@@ -1487,6 +1469,18 @@
       <message name="IDS_NTP_CUSTOMIZATION_THEME_TITLE" desc="Open setting page for NTP appearance customization when clicked">
         Appearance
       </message>
+      <message name="IDS_NTP_CUSTOMIZATION_THEME_TIP_TITLE" desc="Title for the NTP theme tip bottom sheet.">
+        Now you can customize your homepage
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_THEME_TIP_DESCRIPTION" desc="Description for the NTP theme tip bottom sheet.">
+        Make Brave your own by choosing a custom theme
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_THEME_TIP_CUSTOMIZE_BUTTON" desc="Button text for the NTP theme tip bottom sheet to go to customization.">
+        Customize my homepage
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_THEME_SNACKBAR_TEXT" desc="A notification snackbar message advising the user that they can customize their homepage later from the three dots menu.">
+        Edit your homepage later via the 3-dots menu.
+      </message>
       <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes the new tab page customization main bottom sheet is fully opened.">
         Customize your new tab page bottom sheet opened at full height
       </message>
@@ -1525,6 +1519,12 @@
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_CLOSED" desc="Accessibility string that describes a new tab page customization bottom sheet is closed">
         Customize your new tab page bottom sheet closed
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_THEME_TIP_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes the new tab page customization theme tip bottom sheet is fully opened.">
+        Customize your homepage promo bottom sheet opened at full height
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_THEME_TIP_BOTTOM_SHEET_OPENED_HALF" desc="Accessibility string that describes the new tab page customization theme tip bottom sheet is fully opened.">
+        Customize your homepage promo bottom sheet opened at half height
       </message>
       <message name="IDS_NTP_CUSTOMIZATION_FEED_SWITCH_DESCRIPTION" desc="Title of the list items in the new tab page customization discover feed bottom sheet">
         Get suggested articles on the New Tab page

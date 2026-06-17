@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/renderer/rss_link_reader.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -28,7 +29,6 @@
 #include "chrome/renderer/chrome_render_thread_observer.h"
 #include "chrome/renderer/process_state.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
-#include "components/feed/content/renderer/rss_link_reader.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
@@ -113,6 +113,8 @@ void BraveContentRendererClient::
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("AIClassifierAPI", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString(
+      "ApproximateGeolocationPermissionAccuracyMode", true);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
@@ -154,7 +156,11 @@ void BraveContentRendererClient::RenderFrameCreated(
   auto* rfo = new BraveRenderFrameObserver(render_frame);
   auto* registry = rfo->registry();
 
-  new feed::RssLinkReader(render_frame, registry);
+  // Only the main frame is queried by `brave_news::FetchRssLinks`, so binding
+  // a receiver on subframes would just be dead weight.
+  if (render_frame->IsMainFrame()) {
+    new brave_news::RssLinkReader(render_frame, registry);
+  }
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCosmeticFiltering)) {

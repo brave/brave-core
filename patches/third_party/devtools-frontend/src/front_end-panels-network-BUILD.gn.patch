@@ -1,12 +1,12 @@
 diff --git a/front_end/panels/network/BUILD.gn b/front_end/panels/network/BUILD.gn
-index fbcc1ad4b6b95d9f579cc10860dea00b85fcfada..6da6002fa71b07b49622881617e9bf1e3144a2c6 100644
+index 28d0d5613455f9f427e80fc169a8db514cb019e4..3c18b4626acde825f36ac211978d2cc3a2342c8c 100644
 --- a/front_end/panels/network/BUILD.gn
 +++ b/front_end/panels/network/BUILD.gn
-@@ -116,6 +116,7 @@ devtools_ui_module("network") {
+@@ -112,6 +112,7 @@ devtools_ui_module("network") {
      "./components:bundle",
      "./forward:bundle",
    ]
-+  import("//brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni")  sources += brave_devtools_front_end_panels_network_source
++  import("//brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni") sources += brave_devtools_front_end_panels_network_sources deps += brave_devtools_front_end_panels_network_deps
  }
  
  devtools_entrypoint("bundle") {

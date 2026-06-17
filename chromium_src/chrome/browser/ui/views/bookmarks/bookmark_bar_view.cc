@@ -7,7 +7,6 @@
 #include "base/check_op.h"
 #include "brave/browser/ui/brave_view_ids.h"
 #include "brave/browser/ui/views/bookmarks/bookmark_bar_instructions_view.h"
-#include "brave/browser/ui/views/bookmarks/brave_bookmark_context_menu.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
@@ -66,7 +65,5 @@ void LayoutBookmarkBarInstructionsView(views::View* bookmark_bar_view,
 #define BRAVE_LAYOUT                                                           \
   LayoutBookmarkBarInstructionsView(this, bookmark_service_->bookmark_model(), \
                                     browser(), button_height, x, max_x, y);
-#define BookmarkContextMenu BraveBookmarkContextMenu
 #include <chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc>
-#undef BookmarkContextMenu
 #undef BRAVE_LAYOUT

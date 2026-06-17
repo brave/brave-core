@@ -78,7 +78,6 @@
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -319,11 +318,6 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   contents_background_view_ =
       AddChildViewAt(std::make_unique<ContentsBackground>(), 0);
 
-#if BUILDFLAG(IS_MAC)
-  vertical_tabs_on_at_startup_ =
-      tabs::utils::ShouldShowBraveVerticalTabs(browser_);
-#endif
-
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
   pref_change_registrar_.Add(
       kTabsSearchShow,
@@ -356,9 +350,8 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
     if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
-      sidebar_container_view_ =
-          AddChildView(std::make_unique<SidebarContainerView>(
-              browser_, SidePanelCoordinator::From(browser_), nullptr));
+      sidebar_container_view_ = AddChildView(
+          std::make_unique<SidebarContainerView>(browser_, nullptr));
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
       side_panel_->SetResizeArea(
           std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
@@ -368,8 +361,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
       auto side_panel = RemoveChildViewT(side_panel_.get());
       sidebar_container_view_ =
           AddChildView(std::make_unique<SidebarContainerView>(
-              browser_, SidePanelCoordinator::From(browser_),
-              std::move(side_panel)));
+              browser_, std::move(side_panel)));
       side_panel_ = sidebar_container_view_->side_panel();
     }
 
@@ -1292,30 +1284,6 @@ ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
   }
   return info;
 }
-
-#if BUILDFLAG(IS_MAC)
-bool BraveBrowserView::UsesImmersiveFullscreenMode() const {
-  // Disable immersive when vertical tabs were on at startup overlay_widget_ is
-  // not created in that case, so immersive would crash.
-  if (vertical_tabs_on_at_startup_) {
-    return false;
-  }
-  // Immersive is also incompatible with vertical tabs at runtime.
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
-    return false;
-  }
-
-  return BrowserView::UsesImmersiveFullscreenMode();
-}
-
-bool BraveBrowserView::UsesImmersiveFullscreenTabbedMode() const {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
-    return false;
-  }
-
-  return BrowserView::UsesImmersiveFullscreenTabbedMode();
-}
-#endif
 
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();

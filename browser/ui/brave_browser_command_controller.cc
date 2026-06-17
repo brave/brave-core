@@ -401,8 +401,8 @@ void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
 // On macOS, we block vertical tab mode toggling in fullscreen.
 // Immersive fullscreen feeature is enabled by default but
 // it's not compatible with vertical tab. See the comments in
-// BraveBrowserView::UsesImmersiveFullscreenMode() for more datail. Otherwise,
-// crash happens when turn on vertical tab while fullscreen.
+// WindowFeatureController::UsesImmersiveFullscreenMode() for more detail.
+// Otherwise, crash happens when turn on vertical tab while fullscreen.
 #if BUILDFLAG(IS_MAC)
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS,
                        window() && !window()->IsFullscreen());
@@ -819,6 +819,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_NEW_SPLIT_VIEW: {
       chrome::NewSplitTab(base::to_address(browser_),
+                          split_tabs::SplitTabLayout::kSideBySide,
                           split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }

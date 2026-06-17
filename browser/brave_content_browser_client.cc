@@ -130,6 +130,7 @@
 #include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
@@ -1431,7 +1432,8 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
   if (!host_content_settings_map) {
     return false;
   }
-  const GURL url = main_frame_site.GetSiteURL();
+  const GURL url =
+      main_frame_site.GetSecurityPrincipal().GetDeprecatedSiteURL();
   const bool shields_up =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(

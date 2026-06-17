@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc
-index f2650d03def4b69b2e2427f962a03084be0df021..1e032fe5395d99084e153e8dc78c224976199d08 100644
+index 0d40b15b9289cdc7578cc95448d1bce98aa1969f..2e427327d96fe85c163dda48de819f8b5c4eb371 100644
 --- a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc
 +++ b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc
-@@ -91,6 +91,7 @@ void SendTabToSelfDevicePickerBubbleView::Init() {
+@@ -138,6 +138,7 @@ void SendTabToSelfDevicePickerBubbleView::InitInstantSendBubble() {
    CreateHintTextLabel();
    CreateDevicesScrollView();
  

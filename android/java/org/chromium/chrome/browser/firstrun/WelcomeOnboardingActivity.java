@@ -227,11 +227,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                 .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
-    private void setMetricsReportingConsent(final boolean consent, final boolean markAsShown) {
+    private void setMetricsReportingConsent(final boolean enabled, final boolean markAsShown) {
         try {
             // Updates reporting consent for first run.
-            UmaSessionStats.changeMetricsReportingConsent(
-                    consent, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+            UmaSessionStats.changeMetricsReportingState(
+                    enabled, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
         } catch (Exception e) {
             Log.e(TAG, "CrashReportingOnboarding", e);
         }

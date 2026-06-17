@@ -36,10 +36,10 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
 
@@ -188,7 +188,8 @@ void CommanderService::Reset() {
 }
 
 void CommanderService::UpdateTextFromCurrentBrowserOmnibox() {
-  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile_)->GetLastActiveBrowser();
 
   // The last active browser can have no tabs, if we're in the process of moving
   // the last tab from the current window into another one.
@@ -202,7 +203,8 @@ void CommanderService::UpdateTextFromCurrentBrowserOmnibox() {
 }
 
 void CommanderService::UpdateText(const std::u16string& text, bool force) {
-  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile_)->GetLastActiveBrowser();
   if (!browser) {
     return;
   }
@@ -239,7 +241,8 @@ void CommanderService::UpdateText(const std::u16string& text, bool force) {
 }
 
 OmniboxView* CommanderService::GetOmnibox() const {
-  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile_)->GetLastActiveBrowser();
   if (!browser) {
     return nullptr;
   }

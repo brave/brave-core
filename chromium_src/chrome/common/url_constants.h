@@ -331,6 +331,9 @@ inline constexpr char16_t kGeminiPersonalContextUrl[] =
 inline constexpr char16_t kMyActivityGeminiAppsUrl[] =
     u"https://support.brave.app/";
 
+// The URL for Glic activity button.
+inline constexpr char kGlicActivityUrl[] = "https://support.brave.app/";
+
 // The URL for the AI Mode activity page.
 inline constexpr char16_t kMyActivityAiModeUrl[] =
     u"https://support.brave.app/";

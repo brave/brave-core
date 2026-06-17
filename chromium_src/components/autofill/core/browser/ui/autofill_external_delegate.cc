@@ -11,6 +11,7 @@
 #include "base/containers/map_util.h"
 #include "components/autofill/core/browser/foundations/autofill_driver.h"
 #include "components/autofill/core/browser/foundations/autofill_manager.h"
+#include "components/autofill/core/browser/integrators/password_form_classification.h"
 #include "components/autofill/core/browser/suggestions/suggestion.h"
 
 // This patch allows us to add the additional autofill suggestions.

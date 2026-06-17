@@ -57,6 +57,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core/buildflags",
     "//chrome/browser/new_tab_page",
+    "//chrome/browser/ui/webui:plural_string_handler",
 
     # Unconditional for gn check as the NTP WebUI always needs the mojom
     # types since typescript cannnot yet conditionally import during typecheck.

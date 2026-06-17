@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Append Brave values to the `InfoBarIdentifier` enum.
+
+Brave values start at 500 to keep clear of upstream's append-only range. When
+adding a new identifier, also add the corresponding entry to:
+  brave/android/java/org/chromium/chrome/browser/infobar/BraveInfoBarIdentifier.java
+When the list grows too large, switch to `java_cpp_enum.py` to generate it.
+'''
+re_pattern = '(enum InfoBarIdentifier\s*\{.*?)(\s*\};)'
+re_flags = ['DOTALL']
+replace = '''\1
+    BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE = 500,
+    // WAYBACK_MACHINE_INFOBAR_DELEGATE = 502
+    // SYNC_V2_MIGRATE_INFOBAR_DELEGATE = 503
+    // ANDROID_SYSTEM_SYNC_DISABLED_INFOBAR = 504
+    SYNC_CANNOT_RUN_INFOBAR = 505,
+    WEB_DISCOVERY_INFOBAR_DELEGATE = 506,
+    BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507,
+    BRAVE_REQUEST_OTR_INFOBAR_DELEGATE = 508,
+    // DEV_CHANNEL_DEPRECATION_INFOBAR_DELEGATE = 509
+    SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE = 510,
+    NEW_TAB_TAKEOVER_INFOBAR_DELEGATE = 511,
+    BRAVE_PSST_INFOBAR_DELEGATE = 512,\2'''

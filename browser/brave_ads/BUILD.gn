@@ -63,6 +63,7 @@ source_set("impl") {
     "//brave/components/p3a_utils",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser:fullscreen",
     "//chrome/browser:primitives",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/history",
@@ -114,6 +115,7 @@ source_set("impl") {
       "//brave/browser/brave_ads/android:jni_headers",
       "//brave/browser/notifications",
       "//brave/build/android:jni_headers",
+      "//chrome/browser/android",
       "//chrome/browser/notifications:jni_headers",
       "//chrome/browser/notifications:notifications_java_enum_srcjar",
     ]

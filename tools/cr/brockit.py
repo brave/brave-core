@@ -1620,6 +1620,8 @@ class Upgrade(Versioned):
             revision=updated_version)
 
         try:
+            logging.debug('Checking rust toolchain URL: %s',
+                          rust_toolchain_url)
             response = requests.head(rust_toolchain_url,
                                      allow_redirects=True,
                                      timeout=5)

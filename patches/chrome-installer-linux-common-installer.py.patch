@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
-index 3ff596f3f9c58b4bb68de7206f2cf55da55928ad..263b0c40cad0d42dd4b1695b1ae4bb3c30c6a3c6 100644
+index a9bbec28188c9a86c892f604c28ce278e26a8515..caf37bbf8416715ff6404b6b10688bf6d126529e 100644
 --- a/chrome/installer/linux/common/installer.py
 +++ b/chrome/installer/linux/common/installer.py
 @@ -193,6 +193,8 @@ def gen_changelog(config: "InstallerConfig",
@@ -19,7 +19,7 @@ index 3ff596f3f9c58b4bb68de7206f2cf55da55928ad..263b0c40cad0d42dd4b1695b1ae4bb3c
  
      @classmethod
      def from_args(cls, args: argparse.Namespace,
-@@ -681,6 +684,7 @@ class InstallerConfig:
+@@ -680,6 +683,7 @@ class InstallerConfig:
                  icon_suffix = "_dev"
              elif self.channel == "canary":
                  icon_suffix = "_canary"
@@ -27,7 +27,7 @@ index 3ff596f3f9c58b4bb68de7206f2cf55da55928ad..263b0c40cad0d42dd4b1695b1ae4bb3c
  
          icon_sizes = [16, 24, 32, 48, 64, 128, 256]
          logo_resources_png = []
-@@ -1159,3 +1163,4 @@ class Installer:
+@@ -1158,3 +1162,4 @@ class Installer:
                          msg += f", but they were {oct(actual_perms)}"
                          print(msg, file=sys.stderr)
                          sys.exit(1)

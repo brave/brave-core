@@ -392,6 +392,13 @@ CHAR_LIMIT guidelines:
           =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> other tab will be closed}
           other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> other tabs will be closed}}
       </message>
+      <message name="IDS_IPH_INCOGNITO_INDICATOR_CLOSE_ALL_WINDOWS_TEXT" desc="The in-product-help message to inform users that they can close all private windows by tapping the private indicator.">
+        Tap here to close all Private windows
+      </message>
+      <message name="IDS_IPH_INCOGNITO_INDICATOR_CLOSE_ALL_WINDOWS_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to inform users that they can close all private windows by tapping the private indicator.">
+        To close all Private windows, tap the Private indicator
+      </message>
+
       <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
         Touch and hold to switch to Private
       </message>
@@ -421,6 +428,10 @@ CHAR_LIMIT guidelines:
       <message name="IDS_HUB_SEARCH_EMPTY_HINT_INCOGNITO" desc="The text displayed in the private search box when it's empty.">
         Search your Private tabs
       </message>
+      <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic toolbar button in a Private tab.">
+        Gemini isn’t available in Private mode
+      </message>
+
       </messages>
   </release>
 </grit>

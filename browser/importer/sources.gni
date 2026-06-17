@@ -35,6 +35,7 @@ if (!is_android) {
       "//chrome/browser/extensions",
       "//components/value_store",
       "//extensions/browser",
+      "//extensions/browser:webstore_installer",
       "//extensions/common:common_constants",
     ]
   }

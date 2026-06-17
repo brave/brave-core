@@ -203,10 +203,21 @@ const update = () => {
   // Replace omnibox product vector icons with the Brave or Brave Origin
   // variant. These icons are used in places like the default browser infobar;
   // upstream does not have a branding selector for them.
+  //
+  // Upstream's [GlowUp] series (Chromium 150) renamed `product.icon` and
+  // `product_chrome_refresh.icon` to `*_old.icon` and added a new rounded
+  // `chrome_product.icon` variant, so map our sources onto all three
+  // destinations.
   const omniboxIconsBranding = config.isBraveOriginBranded
     ? 'brave_origin'
     : 'brave'
-  for (const iconName of ['product.icon', 'product_chrome_refresh.icon']) {
+  /** @type {[string, string][]} */
+  const omniboxIconMappings = [
+    ['product.icon', 'product_old.icon'],
+    ['product.icon', 'chrome_product.icon'],
+    ['product_chrome_refresh.icon', 'product_chrome_refresh_old.icon'],
+  ]
+  for (const [srcIconName, dstIconName] of omniboxIconMappings) {
     fileMap.add([
       path.join(
         config.braveCoreDir,
@@ -215,7 +226,7 @@ const update = () => {
         'browser',
         'vector_icons',
         omniboxIconsBranding,
-        iconName,
+        srcIconName,
       ),
       path.join(
         config.srcDir,
@@ -223,7 +234,7 @@ const update = () => {
         'omnibox',
         'browser',
         'vector_icons',
-        iconName,
+        dstIconName,
       ),
     ])
   }

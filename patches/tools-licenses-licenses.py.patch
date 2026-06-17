@@ -1,16 +1,16 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index 5cd3128beeac4072723d99d75cae7435a3511f97..573a926f7a07c68eb7391186c1ffefb313a06ec9 100755
+index d62ef1c2ddaa837c2b85c675b91f2d73f283edd2..4f3a36172e94f40e79a22e3ce5c297ff831adc26 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
-@@ -27,6 +27,7 @@ _REPOSITORY_ROOT = os.path.abspath(
-     os.path.join(os.path.dirname(__file__), '..', '..'))
- sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build'))
- import action_helpers
+@@ -32,6 +32,7 @@ import find_depot_tools
+ find_depot_tools.add_depot_tools_to_path()
+ 
+ import metadata.fields.custom.license_allowlist as depot_tools_allowlist
 +from brave_license_helper import AddBraveCredits, BRAVE_THIRD_PARTY_DIRS, CheckBraveMissingLicense, IsBraveRustCrate, ReportBraveIncompleteMetadataFile
  
  METADATA_FILE_NAMES = frozenset({
      "README.chromium", "README.crashpad", "README.v8", "README.pdfium",
-@@ -355,6 +356,7 @@ SPECIAL_CASES = {
+@@ -364,6 +365,7 @@ SPECIAL_CASES = {
          "License File": ["//third_party/sample3/the_license"],
      },
  }
@@ -18,7 +18,7 @@ index 5cd3128beeac4072723d99d75cae7435a3511f97..573a926f7a07c68eb7391186c1ffefb3
  
  # These buildtools/third_party directories only contain
  # chromium build files. The actual third_party source files and their
-@@ -814,7 +816,8 @@ def FindThirdPartyDirs(root,
+@@ -840,7 +842,8 @@ def FindThirdPartyDirs(root,
          if skip in dirs:
            dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index 5cd3128beeac4072723d99d75cae7435a3511f97..573a926f7a07c68eb7391186c1ffefb3
        # Add all subdirectories that are not marked for skipping.
        for d in dirs:
          dirpath = os.path.join(path, d)
-@@ -998,6 +1001,7 @@ def _DiscoverMetadatas(args):
+@@ -1025,6 +1028,7 @@ def _DiscoverMetadatas(args):
          m['dir'] = d
          metadatas.append(m)
      except LicenseError as lic_exp:

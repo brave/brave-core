@@ -6,6 +6,7 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "components/password_manager/core/browser/affiliation/affiliated_match_helper.h"
 #include "components/password_manager/core/browser/password_store/login_database.h"
 #include "components/password_manager/core/browser/password_store/password_store_built_in_backend.h"
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -17,10 +18,12 @@
 #undef CreatePasswordStoreBackend
 
 std::unique_ptr<password_manager::PasswordStoreBackend>
-CreatePasswordStoreBackend(password_manager::IsAccountStore is_account_store,
-                           const base::FilePath& login_db_directory,
-                           PrefService* prefs,
-                           os_crypt_async::OSCryptAsync* os_crypt_async) {
+CreatePasswordStoreBackend(
+    password_manager::IsAccountStore is_account_store,
+    const base::FilePath& login_db_directory,
+    PrefService* prefs,
+    os_crypt_async::OSCryptAsync* os_crypt_async,
+    affiliations::AffiliationService* affiliation_service) {
 #if BUILDFLAG(IS_ANDROID)
   std::unique_ptr<password_manager::LoginDatabase> login_db(
       password_manager::CreateLoginDatabase(is_account_store,
@@ -28,10 +31,16 @@ CreatePasswordStoreBackend(password_manager::IsAccountStore is_account_store,
   auto behavior = is_account_store
                       ? syncer::WipeModelUponSyncDisabledBehavior::kAlways
                       : syncer::WipeModelUponSyncDisabledBehavior::kNever;
+  CHECK(affiliation_service);
+  auto affiliated_match_helper =
+      std::make_unique<password_manager::AffiliatedMatchHelper>(
+          affiliation_service);
   return std::make_unique<password_manager::PasswordStoreBuiltInBackend>(
-      std::move(login_db), behavior, prefs, os_crypt_async);
+      std::move(login_db), behavior, prefs, os_crypt_async,
+      std::move(affiliated_match_helper));
 #else
   return CreatePasswordStoreBackend_ChromiumImpl(
-      is_account_store, login_db_directory, prefs, os_crypt_async);
+      is_account_store, login_db_directory, prefs, os_crypt_async,
+      affiliation_service);
 #endif
 }

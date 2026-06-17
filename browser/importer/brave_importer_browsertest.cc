@@ -104,7 +104,7 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
         extensions::ExtensionBuilder("extension")
             .AddFlags(extensions::Extension::FROM_WEBSTORE)
             .SetID(id)
-            .AddJSON(R"("manifest_version": 2, "version": "1.0.0")")
+            .AddJSON(R"("manifest_version": 3, "version": "1.0.0")")
             .SetLocation(extensions::mojom::ManifestLocation::kInternal)
             .Build());
     extensions::ExtensionRegistrar::Get(profile)->AddExtension(extension);

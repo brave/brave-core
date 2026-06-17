@@ -90,8 +90,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mReadAloudControllerSupplier");
         makeProtectedField(sToolbarManagerClassName, "mReadAloudControllerSupplier");
 
-        deleteField(sBraveToolbarManagerClassName, "mTopUiThemeColorProvider");
-        makeProtectedField(sToolbarManagerClassName, "mTopUiThemeColorProvider");
+        deleteField(sBraveToolbarManagerClassName, "mToolbarThemeColorProvider");
+        makeProtectedField(sToolbarManagerClassName, "mToolbarThemeColorProvider");
 
         deleteField(sBraveToolbarManagerClassName, "mCurrentOrientation");
         makeProtectedField(sToolbarManagerClassName, "mCurrentOrientation");

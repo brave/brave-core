@@ -26,8 +26,10 @@
 #include "ui/base/webui/web_ui_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/grit/branded_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -109,9 +111,9 @@ void AddBackgroundColorToSource(content::WebUIDataSource* source,
     // which is fine for color provider.
     Profile* profile =
         Profile::FromBrowserContext(contents->GetBrowserContext());
-    const Browser* browser = chrome::FindBrowserWithProfile(profile);
-    if (browser) {
-      browser_window = browser->window();
+    if (auto* browser = ProfileBrowserCollection::GetForProfile(profile)
+                            ->GetLastActiveBrowser()) {
+      browser_window = browser->GetBrowserForMigrationOnly()->window();
     }
   }
   if (!browser_window) {

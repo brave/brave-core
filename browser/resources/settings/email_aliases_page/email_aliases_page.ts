@@ -11,7 +11,7 @@ import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 // it expects loadTimeData to be on the globalThis. The settings page has been
 // migrated to use the ESModule version of loadTimeData and strings.m.js. For
 // now, this provides a shim between the old and the new system.
-;(window as any).loadTimeData = loadTimeData
+window.loadTimeData = loadTimeData
 
 class EmailAliasesPage extends HTMLElement {
   connectedCallback() {
@@ -26,7 +26,8 @@ class EmailAliasesPage extends HTMLElement {
     this.shadowRoot!.appendChild(subpage)
 
     customElements.whenDefined('settings-brave-account-row').then(() => {
-      import('/email_aliases.bundle.js' as any).then(({ mount }) => {
+      const bundlePath = '/email_aliases.bundle.js'
+      import(bundlePath).then(({ mount }) => {
         const signInSection = document.createElement('settings-section')
         subpage.appendChild(signInSection)
 
@@ -38,8 +39,8 @@ class EmailAliasesPage extends HTMLElement {
     })
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-      ;(window as any).testing = (window as any).testing || {}
-      ;(window as any).testing[`emailAliases`] = this.shadowRoot
+      window.testing = window.testing || {}
+      window.testing[`emailAliases`] = this.shadowRoot
     }
   }
 }

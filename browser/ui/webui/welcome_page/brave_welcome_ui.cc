@@ -29,7 +29,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/webui/settings/privacy_sandbox_handler.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
 #include "chrome/browser/ui/webui/theme_source.h"
@@ -95,8 +96,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWelcomeHelpWDPReject", IDS_BRAVE_WELCOME_HELP_WDP_REJECT}};
 
 void OpenJapanWelcomePage(Profile* profile) {
-  CHECK(profile);
-  Browser* browser = chrome::FindBrowserWithProfile(profile);
+  auto* browser = ProfileBrowserCollection::GetForProfile(profile)
+                      ->FindTabbedBrowser()
+                      ->GetBrowserForMigrationOnly();
   if (browser) {
     content::OpenURLParams open_params(
         GURL("https://brave.com/ja/desktop-ntp-tutorial"), content::Referrer(),

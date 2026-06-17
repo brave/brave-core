@@ -56,7 +56,7 @@ SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
     };
   }
 
-  declare prefs: { [key: string]: any };
+  declare prefs: Record<string, unknown>;
   declare private pageVisibility_: PageVisibility;
 
   private showDefaultViews_() {

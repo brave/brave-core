@@ -1,12 +1,47 @@
 diff --git a/chrome/browser/actor/ui/handoff_button_controller.cc b/chrome/browser/actor/ui/handoff_button_controller.cc
-index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..232a0f87ffeccdd25b35181a54753af59afecb61 100644
+index 1066daf0c02572bf97a42c2b5dd3322c5d406bb6..1e346f06cfdca597bf1f421d11b21e0215c3bac6 100644
 --- a/chrome/browser/actor/ui/handoff_button_controller.cc
 +++ b/chrome/browser/actor/ui/handoff_button_controller.cc
-@@ -141,6 +141,7 @@ class GradientBubbleFrameView : public views::BubbleFrameView {
-       auto blur_filter = sk_make_sp<cc::BlurPaintFilter>(
-           kShadowBlurSigma, kShadowBlurSigma, SkTileMode::kDecal, nullptr);
-       shadow_flags.setImageFilter(std::move(blur_filter));
-+      BRAVE_GRADIENT_BUBBLE_FRAME_VIEW_ON_PAINT_SHADOW_BEFORE_DRAW
-       paint_canvas->drawRRect(rrect, shadow_flags);
-     }
+@@ -59,7 +59,7 @@ constexpr float kBackgroundInset = 2.0f;
+ constexpr float kHandoffButtonCornerRadius = 48.0f;
+ constexpr int kHandoffButtonIconSize = 20;
+ constexpr gfx::Insets kHandoffButtonContentPadding =
+-    gfx::Insets::TLBR(10, 10, 10, 14);
++    gfx::Insets::TLBR(4, 6, 4, 10);
  
+ // A customized LabelButton that shows a hand cursor on hover.
+ class HandoffLabelButton : public views::LabelButton {
+@@ -119,18 +119,12 @@ class GradientBubbleFrameView : public views::BubbleFrameView {
+       shadow_flags.setAntiAlias(true);
+       SkPoint center = SkPoint::Make(button_bounds_f.CenterPoint().x(),
+                                      button_bounds_f.CenterPoint().y());
+-      std::vector<SkColor> colors;
+-      if (base::FeatureList::IsEnabled(features::kActorUiThemed)) {
+-        SkColor primary_color =
+-            GetColorProvider()->GetColor(kColorActorUiHandoffButtonBorder);
+-        colors = {primary_color, primary_color, primary_color, primary_color};
+-      } else {
+-        colors = {SkColorSetARGB(255, 79, 161, 255),
+-                  SkColorSetARGB(255, 79, 161, 255),
+-                  SkColorSetARGB(255, 52, 107, 241),
+-                  SkColorSetARGB(255, 52, 107, 241)};
+-      }
+-      const SkScalar pos[] = {0.0f, 0.4f, 0.6f, 1.0f};
++      std::vector<SkColor> colors = {
++          SkColorSetARGB(255, 250, 114, 80),
++          SkColorSetARGB(255, 255, 24, 147),
++          SkColorSetARGB(255, 167, 138, 255),
++      };
++      const SkScalar pos[] = {0.0f, 0.5f, 1.0f};
+       std::vector<SkColor4f> color4fs;
+       for (const auto& color : colors) {
+         color4fs.push_back(SkColor4f::FromColor(color));
+@@ -385,7 +379,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
+           // Position with a fixed offset from the top of the anchor.
+           : anchor_bounds.y() - kHandoffButtonTopOffset;
+ 
+-  return gfx::Rect({x, y}, preferred_size);
++  return gfx::Rect({x, y + (is_tab_strip_visible ? kHandoffButtonPreferredHeight / 3 : 0)}, preferred_size);
+ }
+ 
+ void HandoffButtonController::OnWidgetDestroying(

@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Grant //brave/ios/browser/svg visibility into expat on iOS.'''
+re_pattern = '(expat_visibility = \[.*?\])'
+re_flags = ['DOTALL']
+replace = '''\1
+if (is_ios) {
+  expat_visibility += ["//brave/ios/browser/svg:*" ]
+}'''

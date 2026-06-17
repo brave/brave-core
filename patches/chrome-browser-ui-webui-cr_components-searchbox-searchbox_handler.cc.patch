@@ -1,12 +1,32 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 3144f6e6de29b1a6175fbcb71399825bd4c12443..db752813bf4271b1119357eec59ab449aca16bfc 100644
+index 844abd0853e9ed8fb54e756423e4c2a130f066a9..1c3074e8df41d4bad7630a6d00c7f76e50341980 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-@@ -707,6 +707,7 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+@@ -803,6 +803,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
    // TODO(446953331): It's error-prone to keep the above if's up to date. When
    //   omnibox input and popup views are replaced with webUI, matches and
    //   actions can store an icon enum instead of `VectorIcon`.
-+  BRAVE_AUTOCOMPLETE_ICON_TO_RESOURCE_NAME_OVERRIDE
++  if (icon.name == kLeoWindowTabNewIcon.name) {
++    return kLeoWindowTabNewIconResourceName;
++  } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
++    return kLeoMessageBubbleAskIconResourceName;
++  }
++  // This function is used for the WebUI Omnibox which isn't enabled in Brave,
++  // so its okay to disable the NOTREACHED() check here and use the default icon
++  // instead.
++  if ((true)) return "";
    NOTREACHED() << "Every autocomplete icon must have an equivalent SVG "
                    "resource for the NTP Realbox. icon.name: '"
                 << icon.name << "'";
+@@ -1121,8 +1130,9 @@ void SearchboxHandler::QueryAutocomplete(const std::u16string& input,
+   autocomplete_input.set_prevent_inline_autocomplete(
+       prevent_inline_autocomplete);
+   // Disable keyword matches as NTP realbox has no UI affordance for it.
+-  autocomplete_input.set_prefer_keyword(false);
+-  autocomplete_input.set_allow_exact_keyword_match(false);
++  autocomplete_input.set_in_keyword_mode(true);
++  autocomplete_input.set_prefer_keyword(true);
++  autocomplete_input.set_allow_exact_keyword_match(true);
+   // Set the lens overlay suggest inputs, if available.
+   if (std::optional<lens::proto::LensOverlaySuggestInputs> suggest_inputs =
+           controller_->client()->GetLensOverlaySuggestInputs()) {

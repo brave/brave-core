@@ -1,8 +1,8 @@
 diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
-index d1289a78081f6333a46d0fad4aed5079faa5edad..fe1fbcd22ac7d26946739f5edbd397a0acbaf36a 100644
+index 66573c8e3072fb230980e3db6e14da1b897a6a4a..b4f94892b9435abe1b1f3fab8cb4ec596e100992 100644
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
-@@ -397,6 +397,7 @@ static_library("test_support") {
+@@ -426,6 +426,7 @@ static_library("test_support") {
    # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
    # enable the diagnostic by removing this line.
    configs += [ "//build/config/compiler:no_exit_time_destructors" ]

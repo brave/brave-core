@@ -57,8 +57,8 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     super.ready()
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-      (window as any).testing = (window as any).testing || {};
-      (window as any).testing[`adblockScriptletList`] = this.shadowRoot;
+      window.testing = window.testing || {};
+      window.testing[`adblockScriptletList`] = this.shadowRoot;
     }
 
     this.isEditing_ = false
@@ -76,17 +76,17 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     )
   }
 
-  handleAdd_(_: any) {
+  handleAdd_(_: Event) {
     this.editingScriptlet_ = new Scriptlet()
     this.isEditing_ = true
   }
 
-  handleEdit_(e: any) {
+  handleEdit_(e: Event & {model: {index: number}}) {
     this.editingScriptlet_ = this.customScriptletsList_[e.model.index]
     this.isEditing_ = true
   }
 
-  handleDelete_(e: any) {
+  handleDelete_(e: Event & {model: {index: number}}) {
     if (!loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       const messageText = this.i18n('adblockCustomScriptletDeleteConfirmation')
       if (!confirm(messageText)) {
@@ -99,7 +99,7 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     )
   }
 
-  scriptletEditorClosed_(_: any) {
+  scriptletEditorClosed_(_: Event) {
     this.editingScriptlet_ = null
     this.isEditing_ = false
   }

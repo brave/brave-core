@@ -138,7 +138,7 @@ std::vector<net::IPEndPoint> MaybeOverrideFallbackDohNameservers(
 #define ConfigureStubHostResolver(                                             \
     INSECURE_DNS_CLIENT_ENABLED, HAPPY_EYEBALLS_V3_ENABLED, SECURE_DNS_MODE,   \
     DNS_OVER_HTTPS_CONFIG, ADDITIONAL_DNS_TYPES_ENABLED,                       \
-    FALLBACK_DOH_NAMESERVERS)                                                  \
+    FALLBACK_DOH_NAMESERVERS, INSECURE_DNS_VIA_PLATFORM_APIS_ENABLED)          \
   ConfigureStubHostResolver(                                                   \
       MaybeOverrideDnsClientEnabled(SECURE_DNS_MODE,                           \
                                     INSECURE_DNS_CLIENT_ENABLED, local_state_, \
@@ -152,8 +152,8 @@ std::vector<net::IPEndPoint> MaybeOverrideFallbackDohNameservers(
       ADDITIONAL_DNS_TYPES_ENABLED,                                            \
       MaybeOverrideFallbackDohNameservers(SECURE_DNS_MODE, local_state_,       \
                                           forced_management_mode, is_managed,  \
-                                          FALLBACK_DOH_NAMESERVERS))
-
+                                          FALLBACK_DOH_NAMESERVERS),           \
+      INSECURE_DNS_VIA_PLATFORM_APIS_ENABLED)
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #define StubResolverConfigReader StubResolverConfigReader_ChromiumImpl

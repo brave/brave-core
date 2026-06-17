@@ -1850,7 +1850,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, CreateSplit_FromRootNode) {
   SetTreeTabsEnabled(true);
 
   // Two tabs without opener: each is a root (top-level) tree node.
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
 
   ASSERT_EQ(2, tab_strip_model().count());

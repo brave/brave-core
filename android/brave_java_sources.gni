@@ -75,6 +75,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbar.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtilsDummySuper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_account/BraveAccountServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPlansActivity.java",
@@ -100,6 +101,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/browsing_data/BraveShortcutsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveToolbarSwipeLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationData.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewTabAnimationLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator.java",
   "../../brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
@@ -531,7 +533,8 @@ brave_browser_ui_android_appmenu_internal_sources = [
 ]
 
 brave_browser_ui_android_default_browser_promo_java_sources = [
-  # TODO(alexeybarabash): BraveDefaultBrowserPromoUtils now causes crash on debug build at start app
+  # TODO(alexeybarabash): BraveDefaultBrowserPromoUtils now causes crash on
+  # debug build at start app
   # "//brave/browser/ui/android/default_browser_promo/java/src/org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils.java"
 ]
 
@@ -563,6 +566,7 @@ brave_java_base_module_sources = [
 ]
 
 brave_java_base_module_deps = [
+  "//base:split_compat_java",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//third_party/androidx:androidx_core_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",

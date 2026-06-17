@@ -26,12 +26,12 @@
     return RequestTypeForUma::PERMISSION_VR;
 
 // These requests may be batched together, so we must handle them explicitly as
-// GetUmaValueForRequests expects only a few specific request types to be
-// batched
-#define BRAVE_GET_UMA_VALUE_FOR_REQUESTS             \
-  if (request_type >= RequestType::kBraveMinValue && \
-      request_type <= RequestType::kBraveMaxValue) { \
-    return GetUmaValueForRequestType(request_type);  \
+// GetUmaValueForMultipleRequests expects only a few specific request types to
+// be batched.
+#define BRAVE_GET_UMA_VALUE_FOR_REQUESTS              \
+  if (first_request >= RequestType::kBraveMinValue && \
+      first_request <= RequestType::kBraveMaxValue) { \
+    return GetUmaValueForRequestType(first_request);  \
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

@@ -24,8 +24,8 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
@@ -46,7 +46,8 @@ class CaptchaDelegate
     // isn't associated with any particular `Browser` instance and we can use
     // the last active browser for this profile.
     auto* profile = Profile::FromBrowserContext(context_);
-    auto* browser = chrome::FindTabbedBrowser(profile, false);
+    auto* browser =
+        ProfileBrowserCollection::GetForProfile(profile)->FindTabbedBrowser();
     if (!browser) {
       return false;
     }

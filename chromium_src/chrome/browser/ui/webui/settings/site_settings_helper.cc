@@ -5,126 +5,15 @@
 
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 
-#include <string_view>
-#include <vector>
-
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
-#include "components/content_settings/core/common/content_settings_pattern.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #endif
 
-#define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
-#define GetVisiblePermissionCategories \
-  GetVisiblePermissionCategories_ChromiumImpl
-
-// Define wallet content settings types first before using them
-// Note: These enum values always exist, but only have UI when wallet is enabled
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// CHROMIUM_SRC_INTERNAL_USE
-#define BRAVE_WALLET_CONTENT_SETTINGS_TYPES          \
-  {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"}, \
-      {ContentSettingsType::BRAVE_SOLANA, "solana"}, \
-      {ContentSettingsType::BRAVE_CARDANO, "cardano"},
-#else
-// CHROMIUM_SRC_INTERNAL_USE
-#define BRAVE_WALLET_CONTENT_SETTINGS_TYPES         \
-  {ContentSettingsType::BRAVE_ETHEREUM, nullptr},   \
-      {ContentSettingsType::BRAVE_SOLANA, nullptr}, \
-      {ContentSettingsType::BRAVE_CARDANO, nullptr},
-#endif
-
-// clang-format off
-#define BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST                  \
-  {ContentSettingsType::BRAVE_ADS, nullptr},                          \
-  {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},           \
-  {ContentSettingsType::BRAVE_TRACKERS, nullptr},                     \
-  {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr},    \
-  {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},            \
-  {ContentSettingsType::BRAVE_SHIELDS, brave_shields::kBraveShields}, \
-  {ContentSettingsType::BRAVE_REFERRERS, nullptr},                    \
-  {ContentSettingsType::BRAVE_COOKIES, nullptr},                      \
-  {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},                  \
-  BRAVE_WALLET_CONTENT_SETTINGS_TYPES                                 \
-  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},        \
-  {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
-  {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
-  {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},       \
-  {ContentSettingsType::BRAVE_AUTO_SHRED, nullptr},                   \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_FONT, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
-  {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
-  {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \
-  {ContentSettingsType::BRAVE_PSST, nullptr},
-// clang-format on
-
-#define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
-  if (name == "autoplay")                                                \
-    return ContentSettingsType::AUTOPLAY;
-
-#define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_TO_GROUP_NAME \
-  if (type == ContentSettingsType::AUTOPLAY)                           \
-    return "autoplay";
-
-#define BRAVE_PROVIDER_TYPE_TO_SITE_SETTINGS_SOURCE \
-  case ProviderType::kRemoteListProvider:           \
-    return SiteSettingSource::kRemoteList;
-
-#define BRAVE_PROVIDER_TO_DEFAULT_SETTINGS_STRING \
-  case ProviderType::kRemoteListProvider:         \
-    return "remote_list";
-
-#define BRAVE_GET_EXCEPTION_FOR_PAGE                                  \
-  BraveGetExceptionForPage(content_type, profile, incognito, pattern, \
-                           secondary_pattern, setting, exception);
-
-#define kNumSources     \
-  kRemoteList:          \
-  return "remote-list"; \
-  case SiteSettingSource::kNumSources
-
-namespace {
-// Forward declaration.
-void BraveGetExceptionForPage(ContentSettingsType type,
-                              Profile* profile,
-                              bool incognito,
-                              const ContentSettingsPattern& pattern,
-                              const ContentSettingsPattern& secondary_pattern,
-                              const ContentSetting& setting,
-                              base::DictValue& exception);
-}  // namespace
-
 #include <chrome/browser/ui/webui/settings/site_settings_helper.cc>
-
-#undef kNumSources
-#undef BRAVE_PROVIDER_TYPE_TO_SITE_SETTINGS_SOURCE
-#undef BRAVE_PROVIDER_TO_DEFAULT_SETTINGS_STRING
-#undef BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
-#undef BRAVE_WALLET_CONTENT_SETTINGS_TYPES
-#undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
-#undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_TO_GROUP_NAME
-#undef GetVisiblePermissionCategories
-#undef HasRegisteredGroupName
-#undef BRAVE_GET_EXCEPTION_FOR_PAGE
 
 namespace site_settings {
 
@@ -173,25 +62,30 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
 
   return types;
 }
-}  // namespace site_settings
 
-namespace {
-void BraveGetExceptionForPage(ContentSettingsType type,
-                              Profile* profile,
-                              bool incognito,
-                              const ContentSettingsPattern& pattern,
-                              const ContentSettingsPattern& secondary_pattern,
-                              const ContentSetting& setting,
-                              base::DictValue& exception) {
-  constexpr char kBraveCookieType[] = "braveCookieType";
+base::DictValue GetExceptionForPage(
+    ContentSettingsType content_type,
+    Profile* profile,
+    const ContentSettingsPattern& pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    const std::string& display_name,
+    const ContentSetting& setting,
+    const SiteSettingSource source,
+    const base::Time& expiration,
+    bool incognito,
+    bool is_embargoed) {
+  auto exception = GetExceptionForPage_ChromiumImpl(
+      content_type, profile, pattern, secondary_pattern, display_name, setting,
+      source, expiration, incognito, is_embargoed);
 
   // Update the RawSiteException.braveCookieType declaration in
   // site_settings_prefs_browser_proxy.ts if you want to change or add values.
+  constexpr char kBraveCookieType[] = "braveCookieType";
   constexpr char kShieldsDown[] = "shields down";
   constexpr char kShieldsSettings[] = "shields settings";
   constexpr char kGoogleSignIn[] = "google sign-in";
 
-  if (type == ContentSettingsType::COOKIES) {
+  if (content_type == ContentSettingsType::COOKIES) {
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
     auto* provider = static_cast<content_settings::BravePrefProvider*>(
         map->GetPrefProvider());
@@ -211,6 +105,8 @@ void BraveGetExceptionForPage(ContentSettingsType type,
         break;
     }
   }
+
+  return exception;
 }
 
-}  // namespace
+}  // namespace site_settings

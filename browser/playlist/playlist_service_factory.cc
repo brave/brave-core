@@ -46,9 +46,9 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
@@ -82,7 +82,8 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
     DCHECK_EQ(active_contents->GetBrowserContext(), profile_.get());
     return active_contents;
 #else
-    auto* browser = chrome::FindLastActiveWithProfile(profile_);
+    auto* browser = ProfileBrowserCollection::GetForProfile(profile_)
+                        ->GetLastActiveBrowser();
     if (!browser) {
       return nullptr;
     }

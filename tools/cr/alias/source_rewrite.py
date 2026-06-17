@@ -160,6 +160,7 @@ def update_shadow_include(path: Path, old_chromium_path: Path,
     """Updates the upstream angle-bracket include inside a chromium_src/ file.
 
     Replaces '#include <old_chromium_path>' with '#include <new_chromium_path>'.
+    For .h shadow files, appends '  // IWYU pragma: export' if not already present.
     No-op if the include is absent. Callers are responsible for verifying the
     file extension is a C++ type before calling.
     """
@@ -167,10 +168,16 @@ def update_shadow_include(path: Path, old_chromium_path: Path,
     content = path.read_bytes().decode('utf-8')
     if old_include not in content:
         return
-    path.write_text(content.replace(
-        old_include, f'#include <{new_chromium_path.as_posix()}>'),
-                    encoding='utf-8',
-                    newline='\n')
+    new_include = f'#include <{new_chromium_path.as_posix()}>'
+    new_content = content.replace(old_include, new_include)
+
+    # For .h shadow files, add IWYU pragma if not already present.
+    if path.suffix == '.h':
+        pragma_line = f'{new_include}  // IWYU pragma: export'
+        if pragma_line not in new_content:
+            new_content = new_content.replace(new_include, pragma_line)
+
+    path.write_text(new_content, encoding='utf-8', newline='\n')
 
 
 def update_references(old_path: Path, new_path: Path) -> None:

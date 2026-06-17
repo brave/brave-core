@@ -40,6 +40,7 @@
 #include "components/password_manager/core/browser/import/password_importer.h"
 #include "components/password_manager/core/browser/leak_detection/leak_detection_check_impl.h"
 #include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/password_ui_utils.h"
 #include "components/password_manager/core/browser/ui/credential_provider_interface.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
@@ -158,7 +159,7 @@ void PasswordUiViewAndroid::InsertPasswordEntryForTesting(
   form.username_value = username;
   form.password_value = password;
 
-  profile_store_->AddLogin(form);
+  profile_store_->AddLogin(password_manager::FromPasswordForm(form));
 }
 
 void PasswordUiViewAndroid::UpdatePasswordLists(JNIEnv* env) {

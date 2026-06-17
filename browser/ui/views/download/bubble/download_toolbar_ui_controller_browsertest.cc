@@ -121,7 +121,7 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
       {.new_active = DownloadDisplay::IconActive::kActive});
   EXPECT_FALSE(btn->HasIconEnabledColorsOverride()) << "state: no items";
   EXPECT_TRUE(!btn->HasVectorIcons() ||
-              &btn->GetVectorIcon() != &vector_icons::kNotSecureWarningIcon)
+              &btn->GetVectorIcon() != &vector_icons::kNotSecureWarningOldIcon)
       << "state: no items; HasVectorIcons=" << btn->HasVectorIcons();
 
   // WARN status: warning colour override and warning vector icon must be set.
@@ -132,7 +132,7 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
   ctrl->UpdateDownloadIcon(
       {.new_state = DownloadDisplay::IconState::kProgress});
   EXPECT_TRUE(btn->HasIconEnabledColorsOverride()) << "state: WARN";
-  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningIcon)
+  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningOldIcon)
       << "state: WARN";
 
   // BLOCK status is treated the same way.
@@ -142,6 +142,6 @@ IN_PROC_BROWSER_TEST_F(DownloadToolbarInsecureIconTest, InsecureDownloadIcon) {
   ctrl->UpdateDownloadIcon(
       {.new_state = DownloadDisplay::IconState::kComplete});
   EXPECT_TRUE(btn->HasIconEnabledColorsOverride()) << "state: BLOCK";
-  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningIcon)
+  EXPECT_EQ(&btn->GetVectorIcon(), &vector_icons::kNotSecureWarningOldIcon)
       << "state: BLOCK";
 }

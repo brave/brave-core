@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
@@ -84,8 +85,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void StopAndClearWithResetLocalDataReason();
 
   // Returns the original encryptor
-  std::unique_ptr<os_crypt_async::Encryptor> SetEncryptorForTesting(
-      os_crypt_async::Encryptor encryptor_for_tests);
+  scoped_refptr<os_crypt_async::Encryptor> SetEncryptorForTesting(
+      scoped_refptr<os_crypt_async::Encryptor> encryptor_for_tests);
   void ResetEncryptorForTesting();
   void RemoveAllPrefsChangeRegistrarForTesting();
   SyncServiceCrypto* GetCryptoForTesting();
@@ -109,7 +110,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
-  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor);
+  void OnOsCryptAsyncReady(scoped_refptr<os_crypt_async::Encryptor> encryptor);
   void OnEncryptorReady();
 
   void PermanentlyDeleteAccountImpl(
@@ -181,7 +182,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   // StopAndClear, but we don't want to invoke AddLeaveChainDetail in that case
   bool is_initializing_ = false;
 
-  std::unique_ptr<os_crypt_async::Encryptor> encryptor_;
+  scoped_refptr<os_crypt_async::Encryptor> encryptor_;
 
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
   base::OnceCallback<void(bool)> join_chain_result_callback_;

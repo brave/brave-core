@@ -35,9 +35,9 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
@@ -332,12 +332,12 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonVisibility_GuestProfile) {
   // Open a Guest window.
-  EXPECT_EQ(1U, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
-  EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   // Retrieve the new Guest profile.
   Profile* guest = g_browser_process->profile_manager()->GetProfileByPath(
@@ -455,12 +455,12 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonTextWithOTRTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
   // Open a Guest window.
-  EXPECT_EQ(1U, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
-  EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   // Retrieve the new Guest profile.
   Profile* guest = g_browser_process->profile_manager()->GetProfileByPath(
@@ -492,7 +492,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(true, is_avatar_button_shown());
 
   // Open the new profile
-  EXPECT_EQ(1U, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::OpenBrowserWindowForProfile(
       base::DoNothing(),
@@ -500,7 +500,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
       /*is_new_profile=*/true, /*open_command_line_urls=*/false, &new_profile);
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
-  EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   // Check it's shown in second profile
   BrowserWindowInterface* browser =

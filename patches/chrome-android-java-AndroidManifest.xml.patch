@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 68905d8261d71d5d218c1154d632469b521acd04..11408400a3b48cb1222e315c919c70c4b878a02d 100644
+index f8574cef5cb32b99779aed0210eccee20cfc4ccb..dd2d4e0bd3fdc16eaa14c360fa1899a058fb6f37 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -52,10 +52,10 @@ index 68905d8261d71d5d218c1154d632469b521acd04..11408400a3b48cb1222e315c919c70c4
  
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-@@ -104,12 +116,14 @@ by a child template that "extends" this file.
+@@ -103,12 +115,14 @@ by a child template that "extends" this file.
+       resizeTo, moveBy}|).
      -->
      <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
-     <uses-permission android:name="android.permission.REQUEST_FULLSCREEN_MODE"/>
 +<!--
      <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 +-->
@@ -68,7 +68,7 @@ index 68905d8261d71d5d218c1154d632469b521acd04..11408400a3b48cb1222e315c919c70c4
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -162,7 +176,9 @@ by a child template that "extends" this file.
+@@ -161,7 +175,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -78,7 +78,7 @@ index 68905d8261d71d5d218c1154d632469b521acd04..11408400a3b48cb1222e315c919c70c4
  
      <!-- Permission for using pinned windowing layer for document picture-in-picture. -->
      <uses-permission android:name="android.permission.USE_PINNED_WINDOWING_LAYER" />
-@@ -378,6 +394,7 @@ by a child template that "extends" this file.
+@@ -377,6 +393,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -102,7 +102,7 @@ index 68905d8261d71d5d218c1154d632469b521acd04..11408400a3b48cb1222e315c919c70c4
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1196,7 +1215,7 @@ by a child template that "extends" this file.
+@@ -1204,7 +1223,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}

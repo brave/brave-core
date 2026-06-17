@@ -35,6 +35,7 @@ class SidebarBrowserTest;
 
 class BraveBrowser;
 class SidePanelEntry;
+class Browser;
 
 // This view is the parent view of all sidebar ui.
 // Direct child views are control view and panel view.
@@ -54,9 +55,7 @@ class SidebarContainerView : public sidebar::Sidebar,
                              public TabStripModelObserver {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  SidebarContainerView(Browser* browser,
-                       SidePanelCoordinator* side_panel_coordinator,
-                       std::unique_ptr<SidePanel> side_panel);
+  SidebarContainerView(Browser* browser, std::unique_ptr<SidePanel> side_panel);
   ~SidebarContainerView() override;
 
   SidebarContainerView(const SidebarContainerView&) = delete;

@@ -7,6 +7,37 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+// The above license applies to code in this file. The label data in
+// this file is generated from WHATWG's encodings.json, which came under
+// the following license:
+
+// Copyright © WHATWG (Apple, Google, Mozilla, Microsoft).
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
+//
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// 3. Neither the name of the copyright holder nor the names of its
+//    contributors may be used to endorse or promote products derived from
+//    this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 #![cfg_attr(
     feature = "cargo-clippy",
     allow(doc_markdown, inline_always, new_ret_no_self)
@@ -689,7 +720,7 @@
 //! for discussion about the UTF-16 family.
 
 #![no_std]
-#![cfg_attr(feature = "simd-accel", feature(core_intrinsics))]
+#![cfg_attr(feature = "simd-accel", feature(core_intrinsics, portable_simd))]
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(test, macro_use)]
@@ -698,17 +729,6 @@ extern crate alloc;
 extern crate core;
 #[macro_use]
 extern crate cfg_if;
-
-#[cfg(all(
-    feature = "simd-accel",
-    any(
-        target_feature = "sse2",
-        all(target_endian = "little", target_arch = "aarch64"),
-        all(target_endian = "little", target_feature = "neon")
-    )
-))]
-#[macro_use(shuffle)]
-extern crate packed_simd;
 
 #[cfg(feature = "serde")]
 extern crate serde;
@@ -741,6 +761,7 @@ mod big5;
 mod euc_jp;
 mod euc_kr;
 mod gb18030;
+mod gb18030_2022;
 mod iso_2022_jp;
 mod replacement;
 mod shift_jis;
@@ -925,9 +946,10 @@ pub static GBK_INIT: Encoding = Encoding {
 ///
 /// The decoder for this encoding is the same as the decoder for gb18030.
 /// The encoder side of this encoding is GBK with Windows code page 936 euro
-/// sign behavior. GBK extends GB2312-80 to cover the CJK Unified Ideographs
-/// Unicode block as well as a handful of ideographs from the CJK Unified
-/// Ideographs Extension A and CJK Compatibility Ideographs blocks.
+/// sign behavior and with the changes to two-byte sequences made in GB18030-2022.
+/// GBK extends GB2312-80 to cover the CJK Unified Ideographs Unicode block as
+/// well as a handful of ideographs from the CJK Unified Ideographs Extension A
+/// and CJK Compatibility Ideographs blocks.
 ///
 /// Unlike e.g. in the case of ISO-8859-1 and windows-1252, GBK encoder wasn't
 /// unified with the gb18030 encoder in the Encoding Standard out of concern
@@ -1669,10 +1691,11 @@ pub static GB18030_INIT: Encoding = Encoding {
 
 /// The gb18030 encoding.
 ///
-/// This encoding matches GB18030-2005 except the two-byte sequence 0xA3 0xA0
-/// maps to U+3000 for compatibility with existing Web content. As a result,
-/// this encoding can represent all of Unicode except for the private-use
-/// character U+E5E5.
+/// This encoding matches GB18030-2022 except the two-byte sequence 0xA3 0xA0
+/// maps to U+3000 for compatibility with existing Web content and the four-byte
+/// sequences for the non-PUA characters that got two-byte sequences still decode
+/// to the same non-PUA characters as in GB18030-2005. As a result, this encoding
+/// can represent all of Unicode except for 19 private-use characters.
 ///
 /// [Index visualization for the two-byte sequences](https://encoding.spec.whatwg.org/gb18030.html),
 /// [Visualization of BMP coverage of the two-byte index](https://encoding.spec.whatwg.org/gb18030-bmp.html)

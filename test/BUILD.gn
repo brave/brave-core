@@ -65,6 +65,9 @@ static_library("test_support") {
   if (enable_brave_vpn) {
     deps += [ "//brave/components/brave_vpn/browser/connection:api" ]
   }
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor" ]
+  }
 }
 
 static_library("brave_test_support_unit") {
@@ -266,6 +269,7 @@ test("brave_unit_tests") {
     "//chrome:resources",
     "//chrome:strings",
     "//chrome/app:command_ids",
+    "//chrome/browser:chrome_content_browser_client",
     "//chrome/browser/bookmarks",
     "//chrome/browser/bookmarks:test_support",
     "//chrome/browser/browsing_data:constants",
@@ -469,7 +473,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/toolbar/brave_bookmark_sub_menu_model_unittest.cc",
       "//brave/browser/ui/toolbar/brave_location_bar_model_delegate_unittest.cc",
       "//brave/browser/ui/views/accelerator_table_unittest.cc",
-      "//brave/browser/ui/views/bookmarks/brave_bookmark_context_menu_unittest.cc",
       "//brave/chromium_src/chrome/browser/devtools/url_constants_unittest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_avatar_icon_util_unittest.cc",
       "//brave/chromium_src/components/update_client/request_sender_unittest.cc",
@@ -487,7 +490,8 @@ test("brave_unit_tests") {
       "//components/gcm_driver/gcm_driver_unittest.cc",
       "//components/password_manager/core/browser/ui/weak_check_utility_unittest.cc",
 
-      # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
+      # TODO(samartnik): this should work on Android, we will review it once
+      # unit tests are set up on CI
       "//brave/browser/ui/brave_shields_data_controller_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
@@ -520,12 +524,14 @@ test("brave_unit_tests") {
       "//brave/components/commands/browser:unit_tests",
       "//brave/components/commands/common:unit_tests",
       "//brave/ui/views:unit_tests",
+      "//chrome/browser:resources_util",
       "//chrome/browser/gcm",
       "//chrome/browser/history",
       "//chrome/browser/profile_resetter",
       "//chrome/browser/push_messaging",
       "//chrome/browser/push_messaging:service_impl_public",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/webui/devtools",
       "//components/favicon/content",
       "//components/push_messaging:test_support",
       "//components/user_data_importer/common",
@@ -1290,7 +1296,8 @@ test("brave_browser_tests") {
     }
 
     deps += [
-      # Required for brave_perf_features_processor_browsertest.cc & ad_block_service_browsertest.cc
+      # Required for brave_perf_features_processor_browsertest.cc &
+      # ad_block_service_browsertest.cc
       "//brave/browser/speedreader",
       "//brave/components/speedreader",
     ]
@@ -1576,6 +1583,7 @@ if (is_android) {
       "//chrome/browser/feed/android:java",
       "//chrome/browser/flags:java",
       "//chrome/browser/fullscreen/android:java",
+      "//chrome/browser/glic/android:common_java",
       "//chrome/browser/glic/android:java",
       "//chrome/browser/hub:java",
       "//chrome/browser/keyboard_accessory/android/java",

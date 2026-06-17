@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use the Brave drag handle extension height for compact horizontal tabs.
+
+      This used to be provided by `TabStyle::GetDragHandleExtension()`, which
+      we had an override for, but upstream removed that method, so now we have
+      to patch it in. The decision itself lives in `GetBraveDragHandleExtension`
+      in the chromium_src shadow of this file.
+    # Match every use of the constant, but not its declaration (`... = 6;`).
+    re_pattern: '\bkDragHandleExtension\b(?!\s*=)'
+    replace: 'GetBraveDragHandleExtension(kDragHandleExtension)'
+    count: 0 # Any current or future use of the constant wants the Brave value.

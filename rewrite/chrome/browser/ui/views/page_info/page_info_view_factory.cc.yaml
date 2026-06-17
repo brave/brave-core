@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add AUTOPLAY handling to the fallback `switch (permission.type)`
+      in `PageInfoViewFactory::GetPermissionIcon`.
+
+      Brave introduces its own `AUTOPLAY` content setting and renders it
+      with `kAutoplayStatusIcon`. The icon symbol is brought into scope
+      by the chromium_src shadow file's
+      `brave/components/vector_icons/vector_icons.h` include — keeping
+      this plaster to the in-function insertion that cannot be expressed
+      at file scope.
+
+      The anchor pairs `icon = &gfx::VectorIcon::EmptyIcon();` with the
+      following `switch (permission.type)` to single out the fallback
+      switch (the function also has an earlier switch on the same
+      variable).
+    re_pattern:
+      '(icon = &gfx::VectorIcon::EmptyIcon\(\);\s+switch \(permission\.type\)
+      \{\n)'
+    replace: |
+      \1    case ContentSettingsType::AUTOPLAY:
+            icon = &kAutoplayStatusIcon;
+            break;

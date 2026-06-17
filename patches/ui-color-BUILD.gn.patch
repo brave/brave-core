@@ -1,20 +1,24 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index 7b92c79659f19fd5ffa68c034b97d4a16905415c..ac86e9ff3a7238cb2a299f59a7e5cb30803280c0 100644
+index 035c15036cdcdb8df04028eef46f022f28c4c736..3480e78f17cd2323953ed32ecde2932577cb45ed 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
-@@ -87,6 +87,7 @@ component("color") {
+@@ -97,6 +97,9 @@ component("color") {
      ]
-     frameworks = [ "AppKit.framework" ]
+     deps += [ ":ui_color_jni_headers" ]
    }
-+  import("//brave/ui/color/sources.gni") sources += brave_ui_color_sources public_deps += brave_ui_color_public_deps
++  import("//brave/ui/color/sources.gni")
++  sources += brave_ui_color_sources
++  public_deps += brave_ui_color_public_deps
  }
  
  source_set("test_support") {
-@@ -200,6 +201,7 @@ component("mixers") {
+@@ -210,6 +213,9 @@ component("mixers") {
      ]
      deps += [ ":accent_color_observer" ]
    }
-+  import("//brave/ui/color/sources.gni") sources += brave_ui_color_mixer_sources public_deps += brave_ui_color_mixer_public_deps
++  import("//brave/ui/color/sources.gni")
++  sources += brave_ui_color_mixer_sources
++  public_deps += brave_ui_color_mixer_public_deps
  }
  
- mojom("mojom") {
+ if (is_android) {
