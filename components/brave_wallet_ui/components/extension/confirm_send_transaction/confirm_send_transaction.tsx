@@ -132,6 +132,7 @@ export function ConfirmSendTransaction() {
           .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
       || selectedPendingTransaction.txType
         === BraveWallet.TransactionType.CardanoSendToken
+      || Boolean(selectedPendingTransaction.txDataUnion.polkadotTxData?.assetId)
     ) {
       return (
         new Amount(transactionDetails.valueExact).formatAsAsset(

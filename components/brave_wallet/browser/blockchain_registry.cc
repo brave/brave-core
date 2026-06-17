@@ -7,6 +7,8 @@
 
 #include <algorithm>
 #include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/containers/flat_set.h"
@@ -14,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -124,6 +127,49 @@ void DoParseTokenList(const base::FilePath& dir, ParseListsResult& out) {
   }
 }
 
+// TODO(polkadot): remove before review. Hand-minted test assets on the testnet
+// Asset Hubs, seeded here so asset discovery has something to find until the
+// wallet data files ship Polkadot Asset Hub tokens. The registry carries the
+// pallet_assets asset id as the token's contract address.
+void DoSeedPolkadotTestnetAssets(ParseListsResult& out) {
+  struct TestnetAsset {
+    std::string_view chain_id;
+    uint32_t asset_id;
+    std::string_view name;
+    std::string_view symbol;
+    int32_t decimals;
+  };
+
+  static constexpr TestnetAsset kTestnetAssets[] = {
+      // https://assethub-paseo.subscan.io/assets/50001010
+      {mojom::kPolkadotPaseoAssetHub, 50001010, "Brave Test USDC", "BATC", 6},
+      // https://assethub-paseo.subscan.io/assets/50001011
+      {mojom::kPolkadotPaseoAssetHub, 50001011, "Outer Heaven Coin", "XBBC",
+       12},
+      // https://assethub-westend.subscan.io/assets/50000345
+      {mojom::kPolkadotTestnetAssetHub, 50000345, "Outer Heaven Coin", "XBB",
+       12},
+      // https://assethub-westend.subscan.io/assets/50000346
+      {mojom::kPolkadotTestnetAssetHub, 50000346, "Brave USDC Test", "BATC", 6},
+  };
+
+  for (const auto& asset : kTestnetAssets) {
+    auto token = mojom::BlockchainToken::New();
+    token->chain_id = std::string(asset.chain_id);
+    token->coin = mojom::CoinType::DOT;
+    token->contract_address = base::NumberToString(asset.asset_id);
+    token->name = std::string(asset.name);
+    token->symbol = std::string(asset.symbol);
+    token->decimals = asset.decimals;
+    token->visible = true;
+    token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+
+    out.token_list_map[GetTokenListKey(mojom::CoinType::DOT,
+                                       std::string(asset.chain_id))]
+        .push_back(std::move(token));
+  }
+}
+
 void DoParseChainList(const base::FilePath& dir, ParseListsResult& out) {
   auto result = ParseJsonFile(dir, "chainlist.json");
   if (!result) {
@@ -210,6 +256,8 @@ ParseListsResult DoParseLists(const base::FilePath& install_dir) {
   DoParseDappLists(absolute_install_dir, result);
   DoParseOnRampLists(absolute_install_dir, result);
   DoParseRestrictedAddressesLists(absolute_install_dir, result);
+  // TODO(polkadot): remove before review.
+  DoSeedPolkadotTestnetAssets(result);
   return result;
 }
 

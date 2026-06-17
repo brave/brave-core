@@ -319,6 +319,41 @@ BraveWalletService::BraveWalletService(
 
   DCHECK(profile_prefs_);
 
+  struct TestnetAsset {
+    std::string_view chain_id;
+    uint32_t asset_id;
+    std::string_view name;
+    std::string_view symbol;
+    int32_t decimals;
+  };
+
+  static constexpr TestnetAsset kTestnetAssets[] = {
+      // https://assethub-paseo.subscan.io/assets/50001010
+      {mojom::kPolkadotPaseoAssetHub, 50001010, "Brave Test USDC", "BATC", 6},
+      // https://assethub-paseo.subscan.io/assets/50001011
+      {mojom::kPolkadotPaseoAssetHub, 50001011, "Outer Heaven Coin", "XBBC",
+       12},
+      // https://assethub-westend.subscan.io/assets/50000345
+      {mojom::kPolkadotTestnetAssetHub, 50000345, "Outer Heaven Coin", "XBB",
+       12},
+      // https://assethub-westend.subscan.io/assets/50000346
+      {mojom::kPolkadotTestnetAssetHub, 50000346, "Brave USDC Test", "BATC", 6},
+  };
+
+  for (const auto& asset : kTestnetAssets) {
+    auto token = mojom::BlockchainToken::New();
+    token->chain_id = std::string(asset.chain_id);
+    token->coin = mojom::CoinType::DOT;
+    token->contract_address = base::NumberToString(asset.asset_id);
+    token->name = std::string(asset.name);
+    token->symbol = std::string(asset.symbol);
+    token->decimals = asset.decimals;
+    token->visible = true;
+    token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+
+    RemoveUserAsset(std::move(token));
+  }
+
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
       kDefaultEthereumWallet,
@@ -1829,12 +1864,15 @@ void BraveWalletService::DiscoverAssetsOnAllSupportedChains(
   for (auto& account_info : all_accounts) {
     auto& account_id = account_info->account_id;
     if (account_id->coin == mojom::CoinType::ETH ||
-        account_id->coin == mojom::CoinType::SOL) {
+        account_id->coin == mojom::CoinType::SOL ||
+        (account_id->coin == mojom::CoinType::DOT &&
+         IsPolkadotAssetDiscoveryEnabled())) {
       accounts.push_back(account_id.Clone());
     }
   }
 
-  // Discover assets owned by the SOL and ETH addresses on all supported chains
+  // Discover assets owned by the SOL, ETH and DOT addresses on all supported
+  // chains
   asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
       std::move(accounts), bypass_rate_limit);
 }
