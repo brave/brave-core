@@ -19,9 +19,12 @@ source_set("market") {
     "//brave/components/brave_wallet_ui/market:market_display_generated",
     "//brave/components/resources:static_resources_grit",
     "//chrome/browser/profiles",
-    "//chrome/browser/ui/webui:theme_source",
     "//content/public/browser",
     "//ui/webui",
     "//ui/webui/resources:resources_grit",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/webui:theme_source" ]
+  }
 }

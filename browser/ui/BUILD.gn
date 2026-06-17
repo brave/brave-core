@@ -186,10 +186,13 @@ source_set("ui") {
       "//brave/browser/brave_rewards",
       "//chrome/browser:flags",
       "//chrome/browser/lifetime",
-      "//chrome/browser/ui/webui:theme_source",
     ]
 
     public_deps += [ "//chrome/browser/ui/webui:favicon_source" ]
+
+    if (!is_android || enable_webui_ntp) {
+      deps += [ "//chrome/browser/ui/webui:theme_source" ]
+    }
 
     sources += [
       "webui/brave_rewards/rewards_page_data_source.cc",
