@@ -52,6 +52,9 @@
 /* Title of Brave Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "隐私统计数据";
 
+/* A label shown on the widget has no available shortcuts to display. */
+"widgets.shortcutsEmptyState" = "您的快捷方式将在这里显示";
+
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "搜索或输入 URL";
 

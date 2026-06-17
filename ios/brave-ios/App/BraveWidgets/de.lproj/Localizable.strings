@@ -52,6 +52,9 @@
 /* Title of Brave Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Datenschutzstatistik";
 
+/* A label shown on the widget has no available shortcuts to display. */
+"widgets.shortcutsEmptyState" = "Ihre Tastenkombinationen werden hier angezeigt";
+
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "URL suchen oder eingeben";
 

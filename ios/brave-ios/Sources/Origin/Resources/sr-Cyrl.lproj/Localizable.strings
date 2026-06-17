@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "Купи сада";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "Ова функција је активирана јер сте је добровољно укључили";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Омогућавање или искључивање Brave функције захтева рестартовање прегледача да би се промене примениле. Молимо вас да затворите (превуците нагоре у Прекидачу апликација) и затим поново отворите Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Промена Brave функција";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin је верзија Brave прегледача која вам омогућава да лако онемогућите функције за генерисање прихода које иначе подржавају Brave као пословање. Корисници Brave Origin-а ће наставити да имају користи од наше водеће приватности у индустрији, блокатора огласа и брзине (преко Brave штитова), као и редовних ажурирања софтвера, Chromium исправки и побољшања безбедности и приватности. Такође ће откључати опцију да онемогуће функције као што су Brave Leo, Rewards, Wallet, VPN, Web3 домени и још много тога.\n\nНакон куповине, корисници ће видети нову контролну таблу у менију Параметри прегледача. Постојеће функције—као и све нове функције које ћемо пустити у будућности—појављивале би се овде и биле би подразумевано искључене.\n\n**Напомена: Brave Origin неће онемогућити функције прегледача које тренутно користите, и неће утицати на функције Brave претраге или Brave Search огласа.**";
+"featuresFooter" = "**Прилагодите свој прегледач док и даље подржавате Brave**\n\nBrave Origin је плаћена верзија прегледача за кориснике којима нису потребне све функције које подржавају Brave као посао, али и даље желе приватност коју само Brave нуди. Корисници Origin-а наставиће да имају користи од наше водеће заштите приватности, адблока и брзине (путем штитова), као и редовних ажурирања софтвера, Chromium исправки и унапређења безбедности и приватности. Origin ће уклонити већину других функција из прегледача.";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Функције";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "Добиј код за пријаву";
+"getLoginCodeButton" = "Верификуј Brave Origin куповину";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "Једнократна куповина";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Прилагодите свој прегледач уз наставак подршке Brave-у**\n\nBrave Origin је плаћена верзија прегледача за кориснике којима нису потребне све функције које подржавају Brave као пословање, али и даље желе приватност коју само Brave нуди. Корисници Brave Origin-а ће наставити да имају користи од наше водеће приватности у индустрији, блокатора огласа и брзине (преко Brave штитова), као и редовних ажурирања софтвера, Chromium исправки и побољшања безбедности и приватности. Такође ће откључати опцију да онемогуће функције као што су AI, Rewards, Wallet, VPN, Web3 домени и још много тога.\n\n**Brave Origin је доступан путем једнократне куповине. На мобилним уређајима (Android и iOS) и десктоп рачунарима, Origin се може купити као надоградња на вашу постојећу издату верзију.** На десктоп рачунарима, Origin је такође доступан као засебна, самостална апликација. Без обзира да ли је купљен као надоградња или засебна апликација, корисници Origin-а ће видети нову контролну таблу у менију Параметри. Постојеће функције—као и све нове функције које ћемо пустити у будућности—појављивале би се овде и биле би подразумевано искључене.*\n\n* Имајте на уму да ако сте купили Origin као надоградњу на своју постојећу верзију Brave-а, Origin неће онемогућити функције прегледача које тренутно користите. И за надограђену и за самосталну верзију, Origin неће утицати на функције Brave претраге или Brave Search огласа.";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Плејлиста";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "Имате промотивни код?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Изаберите начин плаћања који вам одговара:";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Куповина није успешно обављена. Пробајте поново или проверите детаље за плаћање у Apple-у и пробајте поново.";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "Одржавање основног блокирања огласа, приватности и брзине";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "Минималан кориснички интерфејс браузера фокусиран на штитове";
+"upsellMinimalUI" = "Минималан кориснички интерфејс браузера фокусиран на Brave штитове";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "Једнократна куповина, без додатних трошкова претплате";
+"upsellOneTimePurchase" = "Једнократна куповина се може активирати више пута на свим вашим уређајима";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Подржите нашу мисију и рад на отвореном коду";

@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Залишайтеся в потоці: додавайте відео під час перегляду сторінок, щоб подивитися його пізніше.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Додавайте відео до списку відтворення. Відтворюйте в будь-який момент і навіть в автономному режимі";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Відтворювати краще в списку відтворення";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Торкніться кнопки, щоб додати відео до списку відтворення.";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Створюйте списки відтворення з улюбленим умістом. Додавайте медіафайли з будь-якої сторінки.\nВідтворюйте будь-якої миті, навіть в автономному режимі!";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Торкніться кнопки «%@», щоб додати перший елемент";

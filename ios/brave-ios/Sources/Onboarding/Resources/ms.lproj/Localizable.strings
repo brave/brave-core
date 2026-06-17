@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Kekal dalam aliran: Tambah video semasa anda menyemak imbas, tonton kemudian.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Tambahkan video pada Senarai Main Brave. Main semula pada bila-bila masa. Walaupun di luar talian";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Main semula berfungsi lebih baik dalam Senarai Main";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Hanya ketik butang untuk menambahkan video pada senarai main";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Cipta senarai main dengan kandungan yang anda sukai. Tambah media daripada mana-mana halaman.\nMain pada bila-bila masa. Walaupun di luar talian!";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Ketik %@ untuk menambah item pertama anda";

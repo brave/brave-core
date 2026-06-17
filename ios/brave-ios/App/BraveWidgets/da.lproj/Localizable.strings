@@ -52,6 +52,9 @@
 /* Title of Brave Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Databeskyttelsesstatistik";
 
+/* A label shown on the widget has no available shortcuts to display. */
+"widgets.shortcutsEmptyState" = "Dine genveje vises her";
+
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Søg eller skriv en URL";
 

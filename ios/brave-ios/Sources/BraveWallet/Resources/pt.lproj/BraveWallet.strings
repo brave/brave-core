@@ -1385,7 +1385,7 @@
 "wallet.retryTransactionButtonTitle" = "Tentar transação novamente";
 
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
-"wallet.saveButtonTitle" = "Guardar";
+"wallet.saveButtonTitle" = "Salvar";
 
 /* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
 "wallet.saveChangesButtonTitle" = "Guardar alterações";
@@ -1628,7 +1628,7 @@
 "wallet.signCardanoTxRequestDetailsAddressLabel" = "Endereço";
 
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
-"wallet.signCardanoTxRequestDetailsTokenLabel" = "Token";
+"wallet.signCardanoTxRequestDetailsTokenLabel" = "Símbolo";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "A transação foi assinada e será enviada para a rede pelas dapps, estando a aguardar confirmação.";

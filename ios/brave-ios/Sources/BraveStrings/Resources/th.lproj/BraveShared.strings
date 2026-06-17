@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "เครื่องมือค้นหาด่วน";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "หน้าก่อนหน้า";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "หน้าถัดไป";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "เปิดในแท็บ";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "เพิ่มไปยังเพลย์ลิสต์";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "เปิดใช้งานโหมดผู้อ่าน";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "รีเฟรช";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "แบ่งปัน";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Shield";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "เปิดใช้งานการแปล";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "ให้คะแนน Brave";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "การยืนยันอุปกรณ์";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "คุณมีจำนวนอุปกรณ์ในซิงค์เชนถึงจำนวนสูงสุดแล้ว (10) ลบอุปกรณ์ออกบางอันเพื่อดำเนินการต่อ";
+"sync.maximumDeviceReachedErrorDescription" = "คุณมีจำนวนอุปกรณ์ในซิงค์เชนถึงจำนวนสูงสุดแล้ว (50) ลบอุปกรณ์ออกบางอันเพื่อดำเนินการต่อ";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "ขีดจำกัดอุปกรณ์";
