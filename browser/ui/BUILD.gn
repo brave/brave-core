@@ -186,9 +186,10 @@ source_set("ui") {
       "//brave/browser/brave_rewards",
       "//chrome/browser:flags",
       "//chrome/browser/lifetime",
-      "//chrome/browser/ui/webui:favicon_source",
       "//chrome/browser/ui/webui:theme_source",
     ]
+
+    public_deps += [ "//chrome/browser/ui/webui:favicon_source" ]
 
     sources += [
       "webui/brave_rewards/rewards_page_data_source.cc",
@@ -471,6 +472,7 @@ source_set("ui") {
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
+      "//chrome/browser/ui/webui:favicon_source",
       "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
       "//chrome/browser/ui/webui/searchbox",
@@ -1097,27 +1099,22 @@ source_set("ui") {
     ]
   }
 
-  # These are no longer compiled into Chromium on Android, but we still
-  # need them
+  # FaviconSource now comes from the //chrome/browser/ui/webui:favicon_source
+  # target, which is enabled on Android via a Brave patch. SanitizedImageSource
+  # is still not compiled into Chromium on Android, so include it here.
   if (is_android) {
     sources += [
-      "//chrome/browser/ui/webui/favicon_source.cc",
-      "//chrome/browser/ui/webui/favicon_source.h",
       "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc",
       "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h",
     ]
 
     deps += [
-      "//chrome/browser/favicon",
       "//chrome/browser/signin",
-      "//chrome/browser/ui/webui:favicon_source",
-      "//components/favicon/core",
-      "//components/favicon_base",
-      "//components/history/core/browser",
       "//net",
-      "//ui/native_theme",
       "//url",
     ]
+
+    public_deps += [ "//chrome/browser/ui/webui:favicon_source" ]
   }
 
   if (enable_brave_wayback_machine) {
