@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index b1c6b05cb71b6c97215c3659775d8996ad2293c0..771943c8043b91c327b6f8b96c7e20aeb509a779 100644
+index 28a7f24fabbd410307499912c112bc830d192f85..07c839ada1e69d000ad36f4a62cbc5532237642a 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
 @@ -286,6 +286,8 @@ source_set("configs") {
@@ -11,3 +11,12 @@ index b1c6b05cb71b6c97215c3659775d8996ad2293c0..771943c8043b91c327b6f8b96c7e20ae
  }
  
  source_set("webui") {
+@@ -333,7 +335,7 @@ source_set("webui_util") {
+ # //ui/resources only defines under "not is_android or is_desktop_android or
+ # enable_webui_ntp"; gate the target to where it was compiled inside :ui.
+ if (enable_extensions_core || enable_webui_ntp ||
+-    enable_webui_contextual_tasks_composebox) {
++    enable_webui_contextual_tasks_composebox || is_android) {
+   source_set("favicon_source") {
+     sources = [ "favicon_source.cc" ]
+     public = [ "favicon_source.h" ]

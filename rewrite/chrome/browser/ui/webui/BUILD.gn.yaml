@@ -12,3 +12,16 @@ substitutions:
         import("//brave/browser/ui/webui/sources.gni")
         deps += brave_browser_ui_webui_configs_deps
       }
+  - description: |
+      Define `favicon_source` on regular Android too.
+
+      Upstream only builds FaviconSource where it was previously compiled into
+      //chrome/browser/ui:ui, which excludes regular Android. Brave's WebUIs
+      (wallet, AI chat, rewards, etc.) need FaviconSource on Android; the
+      chromium_src override of favicon_source.cc maps the default favicon
+      resources so the source compiles there.
+    re_pattern: 'if \(enable_extensions_core \|\| enable_webui_ntp \|\|\n    enable_webui_contextual_tasks_composebox\) \{\n  source_set\("favicon_source"\)'
+    replace: |-
+      if (enable_extensions_core || enable_webui_ntp ||
+          enable_webui_contextual_tasks_composebox || is_android) {
+        source_set("favicon_source")
