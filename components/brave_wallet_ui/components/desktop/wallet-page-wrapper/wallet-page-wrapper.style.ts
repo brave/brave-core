@@ -125,7 +125,7 @@ export const ContainerCard = styled.div<{
   width: 100%;
   min-height: ${(p) => (p.noMinCardHeight ? 'unset' : `${minCardHeight}px`)};
   height: ${(p) =>
-    p.useFullHeight ? 'calc(100vh - var(--top-position))' : 'unset'};
+    p.useFullHeight ? 'calc(100svh - var(--top-position))' : 'unset'};
   max-width: ${maxCardWidth}px;
   position: relative;
   @media screen and (max-width: ${layoutSmallWidth}px) {
@@ -133,11 +133,11 @@ export const ContainerCard = styled.div<{
     width: 100%;
     height: ${(p) =>
       p.useFullHeight
-        ? 'calc(100vh - var(--top-position) - var(--bottom-position))'
+        ? 'calc(100svh - var(--top-position) - var(--bottom-position))'
         : 'unset'};
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    min-height: calc(100vh - var(--bottom-position) - var(--top-position));
+    min-height: calc(100svh - var(--bottom-position) - var(--top-position));
     padding: ${(p) => (p.noPadding ? 0 : 16)}px;
     border-radius: ${(p) =>
       p.noBorderRadius
