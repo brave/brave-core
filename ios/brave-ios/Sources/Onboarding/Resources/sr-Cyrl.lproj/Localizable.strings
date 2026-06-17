@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Будите у току: Додајте видео садржаје док прегледате веб, а гледајте их касније.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Додајте видео садржаје на Brave плејлисту. Гледајте их било кад. Чак и када сте офлајн";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Пуштање је боље у плејлисти";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Само додирните дугме да бисте додали видео садржаје на плејлисту";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Направите плејлисте са садржајем који волите. Додајте медије са било које странице.\nПуштајте било када, чак и офлајн!";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Додирните %@ да додате прву ставку";

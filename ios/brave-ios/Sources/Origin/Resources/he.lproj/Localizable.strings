@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "קנה עכשיו";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "תכונה זו מופעלת מכיוון שבחרת בה.";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "הפעלה או השבתה של תכונת Brave דורשת הפעלה מחדש של הדפדפן כדי להחיל שינויים. אנא סגור (החלק כלפי מעלה במחליף האפליקציות) ולאחר מכן פתח מחדש את Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "שינוי תכונות Brave";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin היא גרסה של דפדפן Brave המאפשרת לך להשבית בקלות את התכונות המייצרות הכנסות שאחרת תומכות ב-Brave כעסק. משתמשי Brave Origin ימשיכו להינות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות (באמצעות מגיני Brave), כמו גם עדכוני תוכנה קבועים, תיקוני Chromium ושיפורי אבטחה ופרטיות. הם גם יוכלו לפתוח את האפשרות להשבית תכונות כמו Brave Leo, Rewards, ארנק, VPN, דומיינים של Web3 ועוד.\n\nלאחר הרכישה, המשתמשים יראו לוח בקרה חדש בתפריט ההגדרות של הדפדפן. תכונות קיימות—כמו גם כל תכונה חדשה שנשיק בעתיד—יופיעו כאן, ויהיו מושבתות כברירת מחדל.\n\n**הערה: Brave Origin לא ישבית תכונות דפדפן שאתה משתמש בהן כרגע, ולא ישפיע על תכונות חיפוש Brave או על מודעות חיפוש Brave.**";
+"featuresFooter" = "**התאם אישית את הדפדפן שלך תוך המשך התמיכה ב-Brave**\n\nBrave Origin היא גרסה בתשלום של הדפדפן למשתמשים שלא זקוקים לכל התכונות התומכות ב-Brave כעסק, אך עדיין רוצים את הפרטיות שרק Brave מציעה. משתמשי Origin ימשיכו ליהנות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות שלנו (דרך מגנים), כמו גם עדכוני תוכנה רגילים, תיקוני Chromium ושיפורי אבטחה ופרטיות. Origin יסיר את רוב התכונות האחרות מהדפדפן.";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "תכונות";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "קבל קוד כניסה";
+"getLoginCodeButton" = "אמת רכישת Brave Origin";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo המבוסס בינה מלאכותית";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "רכישה חד-פעמית";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**התאם את הדפדפן שלך אישית תוך המשך תמיכה ב-Brave**\n\nBrave Origin היא גרסה בתשלום של הדפדפן עבור משתמשים שאינם זקוקים לכל התכונות התומכות ב-Brave כעסק, אך עדיין רוצים את הפרטיות ש-Brave לבד מציעה. משתמשי Brave Origin ימשיכו להינות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות (באמצעות מגיני Brave), כמו גם עדכוני תוכנה קבועים, תיקוני Chromium ושיפורי אבטחה ופרטיות. הם גם יוכלו לפתוח את האפשרות להשבית תכונות כמו AI, Rewards, ארנק, VPN, דומיינים של Web3 ועוד.\n\n**Brave Origin זמינה ברכישה חד-פעמית. במכשירים ניידים (Android ו-iOS) ובמחשבים שולחניים, ניתן לרכוש את Origin כשדרוג לגרסת ההפצה הקיימת שלך.** במחשבים שולחניים, Origin זמינה גם כיישום עצמאי ונפרד. בין אם נרכשה כשדרוג ובין אם כיישום נפרד, משתמשי Origin יראו לוח בקרה חדש בתפריט ההגדרות. תכונות קיימות—כמו גם כל תכונה חדשה שנשיק בעתיד—יופיעו כאן, ויהיו מושבתות כברירת מחדל.*\n\n* שים לב שאם רכשת את Origin כשדרוג לגרסה הקיימת שלך של Brave, Origin לא ישבית תכונות דפדפן שאתה משתמש בהן כרגע. הן עבור גרסת השדרוג והן עבור הגרסה העצמאית, Origin לא ישפיע על תכונות חיפוש Brave או על מודעות חיפוש Brave.";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "רשימת השמעה";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "יש לך קוד מבצע?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "יש לבחור את אמצעי התשלום שמתאים לך:";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "לא ניתן להשלים את הרכישה. יש לנסות שוב או לבדוק את פרטי התשלום שלך ב-Apple ואז לנסות שוב.";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "שמירה על חסימת פרסומות, פרטיות, & מהירות";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "ממשק דפדפן מינימליסטי שממוקד על מגנים";
+"upsellMinimalUI" = "ממשק דפדפן מינימליסטי שממוקד על מגיני Brave";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "רכישה חד-פעמית, ללא עלות הירשמות נוספת";
+"upsellOneTimePurchase" = "רכישה חד-פעמית ניתנת להפעלה מספר פעמים בכל המכשירים שלך";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "תמכו במשימה שלנו & עבודה בקוד פתוח";

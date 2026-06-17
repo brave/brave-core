@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Brze tražilice";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Prethodna stranica";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Sledeća stranica";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Otvori u kartici";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Dodaj na popis za reprodukciju";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Omogući način čitača";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Osvježi";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Podijeli";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Štit";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Omogući prevođenje";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Ocijenite preglednik Brave";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Potvrda uređaja";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Dosegli ste najveći dopušteni broj uređaja (10) u lancu sinkronizacije. Uklonite uređaj za nastavak.";
+"sync.maximumDeviceReachedErrorDescription" = "Dosegli ste najveći dopušteni broj uređaja (50) u lancu sinkronizacije. Uklonite uređaj za nastavak.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Ograničenje uređaja";

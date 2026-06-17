@@ -52,6 +52,9 @@
 /* Title of Brave Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Στατιστικά απορρήτου";
 
+/* A label shown on the widget has no available shortcuts to display. */
+"widgets.shortcutsEmptyState" = "Οι συντομεύσεις σας θα εμφανιστούν εδώ";
+
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Αναζήτηση ή πληκτρολόγηση διεύθυνσης URL";
 

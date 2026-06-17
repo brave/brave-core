@@ -71,7 +71,7 @@
 "playlist.deletePlaylistConfirmationMessage" = "此播放清單中的所有影片都將被移除";
 
 /* A button call to action that allows the user to dismiss the active modal */
-"playlist.doneButtonTitle" = "完成";
+"playlist.doneButtonTitle" = "已完成";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylist" = "編輯播放清單";

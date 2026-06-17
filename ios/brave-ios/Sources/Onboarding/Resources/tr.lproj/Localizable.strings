@@ -47,16 +47,10 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Akışta kalın: Gezinirken videolar ekleyin, sonra izleyin.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Brave Oynatma Listesine videolar ekleyin. İstediğiniz zaman tekrar oynatın. Çevrimdışıyken bile";
-
-/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Oynatma Listesinde tekrar oynatma daha güzel";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Oynatma listesine videolar eklemek için düğmeye dokunun";
-
-/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Sevdiğiniz içeriklerle oynatma listeleri oluşturun. İstediğiniz sayfadan medya ekleyin.\nİstediğiniz zaman oynatın. Çevrimdışıyken bile!";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "İlk ögenizi eklemek için %@ simgesine dokunun";

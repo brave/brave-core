@@ -1840,6 +1840,33 @@
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Hızlı Arama Motorları";
 
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Önceki Sayfa";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Sonraki Sayfa";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Sekmede aç";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Oynatma Listesine ekle";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Okuyucu Modunu Etkinleştir";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Yenile";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Paylaş";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Kalkan";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Çeviriyi Etkinleştir";
+
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Brave'i Değerlendirin";
 
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Cihaz Doğrulaması";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Bir senkronizasyon zincirinde izin verilen maksimum cihaz sayısına (10) ulaştınız. Devam etmek için bir cihazı kaldırın.";
+"sync.maximumDeviceReachedErrorDescription" = "Bir senkronizasyon zincirinde izin verilen maksimum cihaz sayısına (50) ulaştınız. Devam etmek için bir cihazı kaldırın.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Cihaz sınırı";

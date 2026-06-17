@@ -5,10 +5,10 @@
 "AboutBraveShields" = "À propos des boucliers Brave";
 
 /* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Les sites comprennent souvent des cookies et des scripts qui tentent de vous identifier et d'identifier votre appareil. Ils cherchent à savoir qui vous êtes et vous suivent sur le Web, traquant vos actions sur chaque site.\n\nBrave bloque cela pour que vous puissiez naviguer sans vous sentir épié.";
+"AboutBraveShieldsBody" = "Les sites comprennent souvent des cookies et des scripts qui tentent de vous identifier et d’identifier votre appareil. Ils cherchent à savoir qui vous êtes et vous suivent sur le Web, traquant vos actions sur chaque site.\n\nBrave bloque cela pour que vous puissiez naviguer sans vous sentir épié.";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertMessage" = "Cette action vous permet d'enregistrer l'image dans Pellicule.";
+"AccessPhotoDeniedAlertMessage" = "Cette action vous permet d’enregistrer l’image dans Pellicule.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave souhaite accéder à vos photos";
@@ -62,7 +62,7 @@
 "AuthPromptAlertLogInButtonTitle" = "Se connecter";
 
 /* Authentication prompt message with no realm. Parameter is the hostname of the site */
-"AuthPromptAlertMessageText" = "%@ demande un nom d'utilisateur et un mot de passe.";
+"AuthPromptAlertMessageText" = "%@ demande un nom d’utilisateur et un mot de passe.";
 
 /* Password textbox in Authentication prompt */
 "AuthPromptAlertPasswordPlaceholderText" = "Mot de passe";
@@ -71,7 +71,7 @@
 "AuthPromptAlertTitle" = "Authentification requise";
 
 /* Username textbox in Authentication prompt */
-"AuthPromptAlertUsernamePlaceholderText" = "Nom d'utilisateur";
+"AuthPromptAlertUsernamePlaceholderText" = "Nom d’utilisateur";
 
 /* Settings autofill section title */
 "Autofill" = "Saisie automatique";
@@ -932,7 +932,7 @@
 "login.loginInfoDetailsPasswordFieldTitle" = "Mot de passe";
 
 /* Title for the username field in password detail page */
-"login.loginInfoDetailsUsernameFieldTitle" = "Nom d'utilisateur";
+"login.loginInfoDetailsUsernameFieldTitle" = "Nom d’utilisateur";
 
 /* Title for the website field in password detail page */
 "login.loginInfoDetailsWebsiteFieldTitle" = "Site Web";
@@ -1839,6 +1839,33 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Moteurs de recherche";
+
+/* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
+"quickview.back.accessibility.label" = "Page précédente";
+
+/* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
+"quickview.forward.accessibility.label" = "Page suivante";
+
+/* Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab. */
+"quickview.open.tab.accessibility.label" = "Ouvrir dans un onglet";
+
+/* Accessibility text for an icon button which will add media source to Playlist in QuickView mode. */
+"quickview.playlist.accessibility.label" = "Ajouter à la playlist";
+
+/* Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode. */
+"quickview.reader.mode.accessibility.label" = "Activer le mode Lecture";
+
+/* Accessibility text for an icon button which will refresh the current page in QuickView mode. */
+"quickview.refresh.accessibility.label" = "Actualiser";
+
+/* Accessibility text for an icon button which will share the current page in QuickView mode. */
+"quickview.share.accessibility.label" = "Partager";
+
+/* Accessibility text for an icon button which will open shield screen in QuickView mode. */
+"quickview.shield.accessibility.label" = "Bouclier";
+
+/* Accessibility text for an icon button which will translate the current page in QuickView mode. */
+"quickview.translate.accessibility.label" = "Activer la traduction";
 
 /* Open the App Store to rate Brave. */
 "RateBrave" = "Noter Brave";
@@ -2933,7 +2960,7 @@
 "sync.joinChainWarningTitle" = "Confirmation de l’appareil";
 
 /* The message displayed in alert when the maxmium of devices is reached */
-"sync.maximumDeviceReachedErrorDescription" = "Vous avez atteint le nombre maximum d’appareils (10) autorisés dans une chaîne de synchronisation. Retirez un appareil pour continuer.";
+"sync.maximumDeviceReachedErrorDescription" = "Vous avez atteint le nombre maximum d'appareils (50) autorisés dans une chaîne de synchronisation. Retirez un appareil pour continuer.";
 
 /* The warning displayed in alert when the maxmium of devices is reached */
 "sync.maximumDeviceReachedErrorTitle" = "Limite de l’appareil";

@@ -155,7 +155,7 @@
 "vpn.paywallMonthlyPriceDividend" = "mois";
 
 /* The text which will be used to indicate period of payments like 150 / year */
-"vpn.paywallYearlyPriceDividend" = "an";
+"vpn.paywallYearlyPriceDividend" = "année";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Expiré";
@@ -362,5 +362,5 @@
 "vpn.yearlySubDisclaimer" = "MEILLEURE OFFRE";
 
 /* One year length vpn subcription */
-"vpn.yearlySubTitle" = "Annuel";
+"vpn.yearlySubTitle" = "Un an";
 

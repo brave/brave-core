@@ -10,17 +10,20 @@
 /* A button label to purchase Brave Origin */
 "buyNowButton" = "Kúpiť teraz";
 
-/* A note that indicates a feature is enabled */
-"enabledFeatureNote" = "Táto funkcia je povolená, pretože ste sa k nej prihlásili";
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Zapnutie alebo vypnutie funkcie Brave vyžaduje reštart prehliadača, aby sa zmeny uplatnili. Zatvorte (potiahnutím nahor v Prepínači aplikácií) a potom znova otvorte Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Zmena funkcií Brave";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin je verzia prehliadača Brave, ktorá vám umožňuje jednoducho deaktivovať funkcie generujúce príjmy, ktoré inak podporujú spoločnosť Brave. Používatelia Brave Origin budú naďalej profitovať z našej špičkovej ochrany súkromia, blokátora reklám a rýchlosti (prostredníctvom Štítov Brave), ako aj z pravidelných aktualizácií softvéru, záplat Chromium a vylepšení bezpečnosti a ochrany súkromia. Odomknú si tiež možnosť deaktivovať funkcie, ako sú Brave Leo, Rewards, Wallet, VPN, Web3 domény a ďalšie.\n\nPo zakúpení používatelia uvidia nový ovládací panel v ponuke Nastavenia prehliadača. Existujúce funkcie – ako aj všetky nové funkcie, ktoré v budúcnosti spustíme – by sa tu zobrazili a boli by predvolene vypnuté.\n\n**Poznámka: Brave Origin nedeaktivuje funkcie prehliadača, ktoré v súčasnosti používate, a nebude mať vplyv na funkcie Vyhľadávania Brave alebo Ads Vyhľadávania Brave.**";
+"featuresFooter" = "**Prispôsobte si prehliadač a zároveň naďalej podporujte Brave**\n\nBrave Origin je platená verzia prehliadača pre používateľov, ktorí nepotrebujú všetky funkcie, ktoré podporujú Brave ako podnikanie, ale stále chcú súkromie, ktoré ponúka iba Brave. Používatelia Origin budú naďalej profitovať z našej špecializovanej ochrany súkromia, blokovania reklám a rýchlosti (prostredníctvom Štítov), ako aj z pravidelných aktualizácií softvéru, opráv Chromium a zlepšení bezpečnosti a súkromia. Origin odstráni väčšinu ďalších funkcií z prehliadača.";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funkcie";
 
 /* A button label to get a login code for users who purchased on brave.com */
-"getLoginCodeButton" = "Získať kód na prihlásenie";
+"getLoginCodeButton" = "Overiť nákup Brave Origin";
 
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
@@ -34,9 +37,6 @@
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "Jednorazový nákup";
 
-/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Prispôsobte si prehliadač a zároveň podporujte Brave**\n\nBrave Origin je platená verzia prehliadača pre používateľov, ktorí nepotrebujú všetky funkcie, ktoré podporujú spoločnosť Brave, ale stále chcú súkromie, ktoré ponúka iba Brave. Používatelia Brave Origin budú naďalej profitovať z našej špičkovej ochrany súkromia, blokátora reklám a rýchlosti (prostredníctvom Štítov Brave), ako aj z pravidelných aktualizácií softvéru, záplat Chromium a vylepšení bezpečnosti a ochrany súkromia. Odomknú si tiež možnosť deaktivovať funkcie ako AI, Rewards, Wallet, VPN, Web3 domény a ďalšie.\n\n**Brave Origin je k dispozícii prostredníctvom jednorazového nákupu. Na mobile (Android a iOS) a počítači je možné Origin zakúpiť ako vylepšenie vašej existujúcej verzie.** Na počítači je Origin tiež dostupný ako samostatná aplikácia. Či už si Origin zakúpite ako vylepšenie alebo ako samostatnú aplikáciu, používatelia Origin uvidia nový ovládací panel v ponuke Nastavenia. Existujúce funkcie – ako aj všetky nové funkcie, ktoré v budúcnosti spustíme – by sa tu zobrazili a boli by predvolene vypnuté.*\n\n* Upozorňujeme, že ak ste si Origin zakúpili ako vylepšenie vašej existujúcej verzie Brave, Origin nedeaktivuje funkcie prehliadača, ktoré v súčasnosti používate. Pre verziu vylepšenia aj samostatnú verziu nebude mať Origin vplyv na funkcie Vyhľadávania Brave alebo Ads Vyhľadávania Brave.";
-
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Zoznam";
 
@@ -45,6 +45,9 @@
 
 /* A title asking if the user has a promo code */
 "promoCodeTitle" = "Máte promo kód?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Vyberte si spôsob platby, ktorý vám vyhovuje:";
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Nákup nie je možné dokončiť. Skúste to znova alebo skontrolujte svoje platobné informácie Apple a skúste to znova.";
@@ -77,10 +80,10 @@
 "upsellCoreFeatures" = "Zachovanie jadra blokovania reklám, súkromia, rýchlosti &";
 
 /* An upsell point about minimal browser UI */
-"upsellMinimalUI" = "Minimálne užívateľské rozhranie prehliadača zamerané na Štíty";
+"upsellMinimalUI" = "Minimalistické užívateľské rozhranie prehliadača zamerané na Štíty Brave";
 
 /* An upsell point about the one-time purchase model */
-"upsellOneTimePurchase" = "Jednorazový nákup bez dodatočných nákladov na predplatné";
+"upsellOneTimePurchase" = "Jednorazový nákup je možné aktivovať viackrát na všetkých vašich zariadeniach";
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Podporte našu misiu & práce s otvoreným zdrojovým kódom";
