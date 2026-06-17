@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/run_loop.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
@@ -993,5 +994,52 @@ INSTANTIATE_TEST_SUITE_P(
       }
       NOTREACHED();
     });
+
+TEST_F(BraveSyncServiceImplTest, SetSeedUsesDefaultEncryptionProvider) {
+  CreateSyncService();
+
+  ASSERT_TRUE(brave_sync_service_impl()->SetSyncCode(kValidSyncCode));
+
+  const std::string& encoded_seed =
+      pref_service()->GetString(brave_sync::Prefs::GetSeedPath());
+  std::string encrypted_seed;
+  ASSERT_TRUE(base::Base64Decode(encoded_seed, &encrypted_seed));
+
+  // Without kBraveSyncEncryptSyncCompat the seed must be encrypted with the
+  // default provider ("k1"), not the sync-compat one ("k2").
+  EXPECT_TRUE(base::StartsWith(encrypted_seed,
+                               os_crypt_async::kDefaultTestKeyPrefix,
+                               base::CompareCase::SENSITIVE));
+}
+
+class BraveSyncServiceImplTest_EncryptSyncCompatTest
+    : public BraveSyncServiceImplTest {
+ public:
+  BraveSyncServiceImplTest_EncryptSyncCompatTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_sync::features::kBraveSyncEncryptSyncCompat);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(BraveSyncServiceImplTest_EncryptSyncCompatTest,
+       SetSeedUsesSyncCompatEncryptionProvider) {
+  CreateSyncService();
+
+  ASSERT_TRUE(brave_sync_service_impl()->SetSyncCode(kValidSyncCode));
+
+  const std::string& encoded_seed =
+      pref_service()->GetString(brave_sync::Prefs::GetSeedPath());
+  std::string encrypted_seed;
+  ASSERT_TRUE(base::Base64Decode(encoded_seed, &encrypted_seed));
+
+  // With kBraveSyncEncryptSyncCompat enabled the seed must be encrypted with
+  // the sync-compatible provider ("k2"), not the default one ("k1").
+  EXPECT_TRUE(base::StartsWith(
+      encrypted_seed, os_crypt_async::kOsCryptSyncCompatibleTestKeyPrefix,
+      base::CompareCase::SENSITIVE));
+}
 
 }  // namespace syncer

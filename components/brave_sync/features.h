@@ -13,6 +13,7 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveSync);
 BASE_DECLARE_FEATURE(kBraveSyncDefaultPasswords);
+BASE_DECLARE_FEATURE(kBraveSyncEncryptSyncCompat);
 
 }  // namespace features
 }  // namespace brave_sync

@@ -1366,6 +1366,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_sync::features::kBraveSyncDefaultPasswords),               \
       },                                                                       \
       {                                                                        \
+          "brave-sync-encrypt-sync-compat",                                    \
+          "Use sync-compatible encryption for sync seed",                      \
+          "Encrypt the sync seed using the legacy OSCrypt-compatible key "     \
+          "provider instead of the newer OS-level key provider.",              \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_sync::features::kBraveSyncEncryptSyncCompat),              \
+      },                                                                       \
+      {                                                                        \
           "brave-shred",                                                       \
           "Enable Brave 'Shred' Feature",                                      \
           "Enable the Brave 'Shred' feature which will allow a user to "       \

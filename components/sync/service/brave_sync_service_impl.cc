@@ -51,9 +51,15 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(
       brave_sync_prefs_(sync_client_->GetPrefService()),
       sync_service_impl_delegate_(std::move(sync_service_impl_delegate)),
       weak_ptr_factory_(this) {
+  const auto encryptor_option =
+      base::FeatureList::IsEnabled(
+          brave_sync::features::kBraveSyncEncryptSyncCompat)
+          ? os_crypt_async::Encryptor::Option::kEncryptSyncCompat
+          : os_crypt_async::Encryptor::Option::kNone;
   os_crypt_async->GetInstance(
       base::BindOnce(&BraveSyncServiceImpl::OnOsCryptAsyncReady,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr()),
+      encryptor_option);
   sync_service_impl_delegate_->set_profile_sync_service(this);
 }
 
