@@ -939,7 +939,9 @@ class GitHubIssue(Versioned):
             current_branch, '--title', f'{tag}{self.compose_issue_title()}',
             '--body', f'Resolves {issue_url}', '--label',
             '"CI/run-audit-deps"', '--label', '"CI/run-network-audit"',
-            '--assignee', 'cdesouza-chromium'
+            '--label', '"CI/run-linux-arm64"', '--label', '"CI/run-macos-x64"',
+            '--label', '"CI/run-windows-x86"', '--label',
+            '"CI/run-windows-arm64"', '--assignee', 'cdesouza-chromium'
         ]
         # Emerick and Alexey take care of even-numbered major versions, while
         # Max and Sam do the odd ones.
