@@ -173,7 +173,6 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
               return bv->GetNativeWindow();
             },
             browser_view),
-        base::BindRepeating([]() { return base::FilePath(); }),
         std::move(extractor));
   }
 #else

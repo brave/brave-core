@@ -46,24 +46,14 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
       base::OnceCallback<void(base::expected<base::FilePath, Error>)>;
 
   // `parent_window_getter` is invoked just-in-time at Save-As dialog
-  // creation, after the browser window is fully initialized. Constructing the
-  // controller during BraveToolbarView::Init() (when browser->window() is
-  // still null) is intentional.
+  // creation, after the browser window is fully initialized.
   using NativeWindowGetter = base::RepeatingCallback<gfx::NativeWindow()>;
 
-  // Returns the directory used as the default Save As path. If empty, falls
-  // back to DownloadPrefs::FromBrowserContext(profile_)->DownloadPath().
-  // Tests can inject a simpler implementation to avoid the full download
-  // service stack.
-  using DownloadDirGetter = base::RepeatingCallback<base::FilePath()>;
-
   ScreenshotController(content::BrowserContext* profile,
-                       NativeWindowGetter parent_window_getter,
-                       DownloadDirGetter download_dir_getter = {});
+                       NativeWindowGetter parent_window_getter);
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   ScreenshotController(content::BrowserContext* profile,
                        NativeWindowGetter parent_window_getter,
-                       DownloadDirGetter download_dir_getter,
                        std::unique_ptr<screenshot::PrintPreviewExtractor>
                            print_preview_extractor);
 #endif
@@ -84,6 +74,10 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void CaptureFullPage(content::WebContents* web_contents, ResultCallback done);
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
+
+  void set_download_dir_for_testing(base::FilePath path) {
+    download_dir_for_testing_ = path;
+  }
 
   // ui::SelectFileDialog::Listener:
   void FileSelected(const ui::SelectedFileInfo& file, int index) override;
@@ -109,7 +103,6 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   void Reset();
 
   NativeWindowGetter parent_window_getter_;
-  DownloadDirGetter download_dir_getter_;
   bool busy_ = false;
 
   // Pending operation state. Set on entry, cleared on Reset().
@@ -119,6 +112,8 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   std::unique_ptr<screenshot::PrintPreviewExtractor> print_preview_extractor_;
 #endif
+
+  std::optional<base::FilePath> download_dir_for_testing_;
 
   raw_ptr<content::BrowserContext> profile_;
 

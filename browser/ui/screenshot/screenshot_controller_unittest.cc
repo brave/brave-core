@@ -55,9 +55,8 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
     // DownloadPrefs (which requires a full download-service stack).
     const base::FilePath download_dir = temp_dir_.GetPath();
     controller_ = std::make_unique<ScreenshotController>(
-        profile(), base::BindRepeating([]() { return gfx::NativeWindow(); }),
-        base::BindRepeating([](base::FilePath dir) { return dir; },
-                            download_dir));
+        profile(), base::BindRepeating([]() { return gfx::NativeWindow(); }));
+    controller_->set_download_dir_for_testing(download_dir);
   }
 
   void TearDown() override {

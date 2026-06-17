@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/containers/span.h"
+#include "base/files/file.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -126,10 +127,8 @@ base::FilePath BuildDefaultPath(const base::FilePath& download_dir) {
 
 ScreenshotController::ScreenshotController(
     content::BrowserContext* profile,
-    NativeWindowGetter parent_window_getter,
-    DownloadDirGetter download_dir_getter)
+    NativeWindowGetter parent_window_getter)
     : parent_window_getter_(std::move(parent_window_getter)),
-      download_dir_getter_(std::move(download_dir_getter)),
       profile_(profile) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
@@ -138,10 +137,8 @@ ScreenshotController::ScreenshotController(
 ScreenshotController::ScreenshotController(
     content::BrowserContext* profile,
     NativeWindowGetter parent_window_getter,
-    DownloadDirGetter download_dir_getter,
     std::unique_ptr<screenshot::PrintPreviewExtractor> print_preview_extractor)
     : parent_window_getter_(std::move(parent_window_getter)),
-      download_dir_getter_(std::move(download_dir_getter)),
       print_preview_extractor_(std::move(print_preview_extractor)),
       profile_(profile) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -261,7 +258,7 @@ void ScreenshotController::ShowSaveDialog(std::vector<uint8_t> png) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   pending_png_ = std::move(png);
   base::FilePath download_dir =
-      download_dir_getter_ ? download_dir_getter_.Run() : base::FilePath();
+      download_dir_for_testing_.value_or(base::FilePath());
   if (download_dir.empty()) {
     download_dir = DownloadPrefs::FromBrowserContext(profile_)->DownloadPath();
   }
