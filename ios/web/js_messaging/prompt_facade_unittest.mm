@@ -11,6 +11,8 @@
 #include <optional>
 #include <string>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
@@ -111,10 +113,32 @@ class PromptFacadeTest : public WebTest {
     WebTest::TearDown();
   }
 
+  // Dispatches `prompt` and returns the JSON-encoded reply if a feature handled
+  // it, or std::nullopt if it was not handled. The reply is captured
+  // synchronously because the test feature invokes the callback inline.
   std::optional<std::string> HandlePrompt(const std::string& prompt) {
     GURL url("https://example.com/");
-    return handler_->HandleJavaScriptPrompt(url, url::Origin::Create(url),
-                                            /*is_main_frame=*/true, prompt);
+    return HandlePrompt(url, url::Origin::Create(url),
+                        /*is_main_frame=*/true, prompt);
+  }
+
+  std::optional<std::string> HandlePrompt(const GURL& url,
+                                          const url::Origin& origin,
+                                          bool is_main_frame,
+                                          const std::string& prompt) {
+    // For testing purposes, the JS feature will always callback synchronously
+    std::optional<std::string> reply;
+    bool handled = handler_->HandleJavaScriptPrompt(
+        url, origin, is_main_frame, prompt,
+        base::BindOnce(
+            [](std::optional<std::string>* reply, std::string response) {
+              *reply = std::move(response);
+            },
+            &reply));
+    if (!handled) {
+      return std::nullopt;
+    }
+    return reply;
   }
 
   std::unique_ptr<TestPromptFeature> feature_;
@@ -165,7 +189,7 @@ TEST_F(PromptFacadeTest, ValidPromptDispatchesToFeature) {
   message.Set("key", "value");
   std::string prompt = BuildPromptJSON(kHandlerName, std::move(message));
   GURL url("https://example.com/foo");
-  std::optional<std::string> result = handler_->HandleJavaScriptPrompt(
+  std::optional<std::string> result = HandlePrompt(
       url, url::Origin::Create(url), /*is_main_frame=*/true, prompt);
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ("\"hello\"", *result);
@@ -192,7 +216,7 @@ TEST_F(PromptFacadeTest, SubFramePropagatedToMessage) {
 
   std::string prompt = BuildPromptJSON(kHandlerName, base::DictValue());
   GURL url("https://example.com/");
-  std::optional<std::string> result = handler_->HandleJavaScriptPrompt(
+  std::optional<std::string> result = HandlePrompt(
       url, url::Origin::Create(url), /*is_main_frame=*/false, prompt);
   EXPECT_TRUE(result.has_value());
   ASSERT_NE(nullptr, feature_->last_message());

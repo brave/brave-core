@@ -53,13 +53,16 @@
   // by a configured `JavaScriptFeature` to handle immediately without actually
   // displaying a JS prompt to the user
   if (web::UrlHasWebScheme(origin_url)) {
-    std::optional<std::string> result =
-        self.promptFacade->HandleJavaScriptPrompt(
-            net::GURLWithNSURL(frame.request.URL),
-            web::OriginWithWKSecurityOrigin(frame.securityOrigin),
-            frame.isMainFrame, base::SysNSStringToUTF8(prompt));
-    if (result) {
-      completionHandler(base::SysUTF8ToNSString(*result));
+    bool handled = self.promptFacade->HandleJavaScriptPrompt(
+        net::GURLWithNSURL(frame.request.URL),
+        web::OriginWithWKSecurityOrigin(frame.securityOrigin),
+        frame.isMainFrame, base::SysNSStringToUTF8(prompt),
+        base::BindOnce(
+            [](void (^handler)(NSString*), std::string response) {
+              handler(base::SysUTF8ToNSString(response));
+            },
+            completionHandler));
+    if (handled) {
       return;
     }
   }

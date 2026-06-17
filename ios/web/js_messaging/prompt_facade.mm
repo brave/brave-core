@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -53,25 +54,26 @@ const JavaScriptFeature* GetFeatureReplyingToPrompts(
 
 PromptFacade::PromptFacade(web::WebState* web_state) : web_state_(web_state) {}
 
-std::optional<std::string> PromptFacade::HandleJavaScriptPrompt(
+bool PromptFacade::HandleJavaScriptPrompt(
     GURL request_url,
     url::Origin security_origin,
     bool is_main_frame,
-    const std::string& prompt) {
+    const std::string& prompt,
+    base::OnceCallback<void(std::string)> callback) {
   if (!request_url.is_valid()) {
-    return std::nullopt;
+    return false;
   }
 
   std::optional<base::DictValue> dict = base::JSONReader::ReadDict(
       prompt, base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {
-    return std::nullopt;
+    return false;
   }
 
   const std::string* handler_name = dict->FindString(kHandlerNameKey);
   const base::Value* message = dict->Find(kMessageKey);
   if (!handler_name || !message) {
-    return std::nullopt;
+    return false;
   }
 
   // Typically upstream binds `ScriptMessageReceivedWithReply` to the mutable
@@ -83,29 +85,26 @@ std::optional<std::string> PromptFacade::HandleJavaScriptPrompt(
           web_state_->GetBrowserState(), *handler_name));
 
   if (!feature || !feature->ShouldHandleMessageFromOrigin(security_origin)) {
-    return std::nullopt;
+    return false;
   }
 
   ScriptMessage script_message(std::make_unique<base::Value>(message->Clone()),
                                /*is_user_interacting=*/false, is_main_frame,
                                std::move(request_url), security_origin);
 
-  bool replied = false;
-  std::string reply_json;
   feature->ScriptMessageReceivedWithReply(
       web_state_, script_message,
       base::BindOnce(
-          [](bool* replied, std::string* reply_json, const base::Value* reply,
-             NSString* error) {
-            *replied = true;
+          [](base::OnceCallback<void(std::string)> callback,
+             const base::Value* reply, NSString* error) {
+            std::string reply_json;
             if (reply) {
-              base::JSONWriter::Write(*reply, reply_json);
+              base::JSONWriter::Write(*reply, &reply_json);
             }
+            std::move(callback).Run(reply_json);
           },
-          &replied, &reply_json));
-  DCHECK(replied)
-      << "JavaScriptFeature replying to window.prompt must reply synchronously";
-  return reply_json;
+          std::move(callback)));
+  return true;
 }
 
 }  // namespace web
