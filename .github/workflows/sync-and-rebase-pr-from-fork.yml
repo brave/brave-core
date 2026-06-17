@@ -37,23 +37,20 @@ jobs:
         run: |
           set -x
 
-          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then 
+          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then
             echo "Provide a full commit hash; got: $COMMIT_HASH"
             exit 1
           fi
 
           pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
-          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,url)
 
           JQ="jq -e -r"
           baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
           headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
           headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
           headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
-          isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
           url=$($JQ ".url" <<<"$gh_pr_view")
-
-          [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
 
           git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
@@ -61,7 +58,7 @@ jobs:
           # Note we are checking out the provided commit hash instead of the pr-branch to avoid race condition
           # The author could have commited malicious code between the last review and the execution of this workflow
           git checkout "$COMMIT_HASH"
-          
+
           # Rebase the branch with the latest targeting branch HEAD
           git fetch origin "$baseRefName"
           if ! git rebase FETCH_HEAD; then
