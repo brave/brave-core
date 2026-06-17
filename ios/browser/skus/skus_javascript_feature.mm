@@ -150,8 +150,8 @@ void SkusJavaScriptFeature::ScriptMessageReceivedWithReply(
     web::WebState* web_state,
     const web::ScriptMessage& message,
     ScriptMessageReplyCallback callback) {
-  GURL request_url = message.request_url().value_or(GURL());
-  if (!message.is_main_frame() || !request_url.is_valid()) {
+  url::Origin security_origin = message.security_origin();
+  if (!message.is_main_frame() || security_origin.opaque()) {
     std::move(callback).Run(nullptr, nil);
     return;
   }
@@ -176,7 +176,7 @@ void SkusJavaScriptFeature::ScriptMessageReceivedWithReply(
     return;
   }
 
-  const std::string host = request_url.GetHost();
+  const std::string host = security_origin.host();
 
   if (*method_id == kMethodRefreshOrder) {
     const std::string* order_id = data->FindString(kOrderIdKey);
