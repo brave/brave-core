@@ -9,9 +9,7 @@
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
-#define LookupSuffixInReversedSet LookupSuffixInReversedSet_ChromiumImpl
-#include <net/base/lookup_string_in_fixed_set.cc>
-#undef LookupSuffixInReversedSet
+#include <net/base/lookup_string_in_fixed_set.cc>  // IWYU pragma: keep
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/net/decentralized_dns/constants.h"
