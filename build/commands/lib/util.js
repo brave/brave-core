@@ -14,7 +14,6 @@ import crypto from 'node:crypto'
 import * as Log from './log.ts'
 import * as GitPatcherLog from './gitPatcherLog.ts'
 import assert from 'node:assert'
-import updateChromeVersion from './updateChromeVersion.js'
 import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
 import { getBuildArgs } from './buildArgs.ts'
@@ -137,7 +136,17 @@ async function applyPatches(printPatchFailuresInJson) {
     process.exit(1)
   }
 
-  updateChromeVersion()
+  util.run(
+    'python3',
+    [
+      path.join(config.braveCoreDir, 'build', 'util', 'version.py'),
+      'update',
+      path.join(config.srcDir, 'chrome', 'VERSION'),
+      '--brave-version',
+      config.braveVersion,
+    ],
+    config.defaultOptions,
+  )
   Log.progressFinish('apply patches')
 }
 
