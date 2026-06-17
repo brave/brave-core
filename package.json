@@ -60,9 +60,7 @@
     "type": "git",
     "url": "git+https://github.com/brave/brave-core.git"
   },
-  "author": {
-    "name": "Brave Software <support@brave.com>"
-  },
+  "author": "Brave Software <support@brave.com>",
   "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/brave/brave-browser/issues"
@@ -250,5 +248,12 @@
     "protobufjs": "7.6.3",
     "tiny-secp256k1": "1.1.7",
     "uuid": "14.0.0"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "keywords": [
+    "jaat"
+  ]
 }
