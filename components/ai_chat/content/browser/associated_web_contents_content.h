@@ -162,9 +162,11 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   void OnAIPageContentResult(FetchPageContentCallback callback,
                              blink::mojom::AIPageContentPtr result);
 
-  void OnContentToolsFetched(GetContentToolsCallback callback,
-                             content::WeakDocumentPtr rfh,
-                             blink::mojom::AIPageContentPtr result);
+  void OnContentToolsFetched(
+      GetContentToolsCallback callback,
+      content::WeakDocumentPtr rfh,
+      mojo::Remote<blink::mojom::AIPageContentAgent> agent,
+      blink::mojom::AIPageContentPtr result);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
