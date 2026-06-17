@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.settings;
 import static org.chromium.build.NullUtil.assertNonNull;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 
@@ -237,12 +238,10 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                     return true;
                 });
 
+        CharSequence summary = learnMoreTextMessagePreference.getSummary();
         learnMoreTextMessagePreference.setSummary(
                 SpanApplier.applySpans(
-                        getResources()
-                                .getString(
-                                        R.string
-                                                .share_titles_and_urls_with_os_learn_more_setting_text),
+                        assertNonNull(summary).toString(),
                         new SpanApplier.SpanInfo(
                                 "<link>",
                                 "</link>",
@@ -271,21 +270,24 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
         Preference tabArchiveSettingsPref =
                 assertNonNull(findPreference(PREF_TAB_ARCHIVE_SETTINGS));
 
+        String summary = getTabArchiveSettingsSummary(getResources());
+        tabArchiveSettingsPref.setSummary(summary);
+    }
+
+    private static String getTabArchiveSettingsSummary(Resources resources) {
         TabArchiveSettings archiveSettings =
                 new TabArchiveSettings(ChromeSharedPreferences.getInstance());
-        if (archiveSettings.getArchiveEnabled()) {
-            int tabArchiveTimeDeltaDays = archiveSettings.getArchiveTimeDeltaDays();
-            tabArchiveSettingsPref.setSummary(
-                    getResources()
-                            .getQuantityString(
-                                    R.plurals.archive_settings_summary,
-                                    tabArchiveTimeDeltaDays,
-                                    tabArchiveTimeDeltaDays));
-        } else {
-            tabArchiveSettingsPref.setSummary(
-                    getResources().getString(R.string.archive_settings_time_delta_never));
+        try {
+            if (archiveSettings.getArchiveEnabled()) {
+                int days = archiveSettings.getArchiveTimeDeltaDays();
+                int summaryId = R.plurals.archive_settings_summary;
+                return resources.getQuantityString(summaryId, days, days);
+            }
+            int neverSummaryId = R.string.archive_settings_time_delta_never;
+            return resources.getString(neverSummaryId);
+        } finally {
+            archiveSettings.destroy();
         }
-        archiveSettings.destroy();
     }
 
     private static boolean isTabGroupSyncAutoOpenConfigurable(Profile profile) {
@@ -375,6 +377,18 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                         TabsSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
                                 context, indexData, profile);
                         return;
+                    }
+
+                    String id = getUniqueId(PREF_TAB_ARCHIVE_SETTINGS);
+                    SettingsIndexData.Entry entry = indexData.getEntry(id);
+                    if (entry != null) {
+                        indexData.updateEntry(
+                                id,
+                                new SettingsIndexData.Entry.Builder(entry)
+                                        .setSummary(
+                                                getTabArchiveSettingsSummary(
+                                                        context.getResources()))
+                                        .build());
                     }
 
                     // LINT.IfChange(isTabGroupSyncAutoOpenConfigurableIndex)
