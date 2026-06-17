@@ -469,7 +469,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
     private void setUpMocksForPageMenu() {
         mActivityTabProvider.setForTesting(mTab);
-        when(mLayoutStateProvider.isLayoutVisible(LayoutType.TAB_SWITCHER)).thenReturn(false);
+        when(mLayoutStateProvider.isLayoutVisible(LayoutType.HUB)).thenReturn(false);
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldCheckBookmarkStar(any(Tab.class));
