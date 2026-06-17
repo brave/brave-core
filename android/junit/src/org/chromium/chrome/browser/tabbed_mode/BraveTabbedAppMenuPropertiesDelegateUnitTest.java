@@ -395,6 +395,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.find_in_page_id);
         expectedItems.add(R.id.translate_id);
+        expectedItems.add(R.id.reader_mode_menu_id);
         expectedItems.add(R.id.universal_install);
         expectedItems.add(R.id.request_desktop_site_id);
         expectedItems.add(R.id.auto_dark_web_contents_id);
