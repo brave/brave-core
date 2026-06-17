@@ -9,7 +9,11 @@ namespace actor {
 
 std::unique_ptr<ToolRequest> CreateToolRequestForTesting(
     const optimization_guide::proto::Action& action) {
-  return CreateToolRequest(action);
+  auto result = CreateToolRequest(action);
+  if (auto* request = std::get_if<std::unique_ptr<ToolRequest>>(&result)) {
+    return std::move(*request);
+  }
+  return nullptr;
 }
 
 }  // namespace actor

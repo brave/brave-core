@@ -195,6 +195,17 @@ void PermissionLifetimeManager::OnContentSettingChanged(
             !secondary_pattern->Matches(origins.embedding_origin())) {
           return false;
         }
+        // Types registered only in PermissionSettingsRegistry (e.g.
+        // GEOLOCATION_WITH_OPTIONS) cannot be queried via GetContentSetting(),
+        // which requires ContentSettingsRegistry registration.
+        // ContentSettingsPref only fires the notification when the value
+        // actually changed, so a matching pattern is sufficient to remove
+        // the expiration. PLM's own resets are already guarded by
+        // is_currently_removing_permissions_.
+        if (!content_settings::ContentSettingsRegistry::GetInstance()->Get(
+                content_type)) {
+          return true;
+        }
         return host_content_settings_map->GetContentSetting(
                    origins.requesting_origin(), origins.embedding_origin(),
                    content_type) != origins.content_setting();
@@ -306,9 +317,12 @@ void PermissionLifetimeManager::ResetPermission(
     ContentSettingsType content_type,
     const GURL& requesting_origin,
     const GURL& embedding_origin) {
-  host_content_settings_map_->SetContentSettingDefaultScope(
-      requesting_origin, embedding_origin, content_type,
-      CONTENT_SETTING_DEFAULT);
+  // Use SetPermissionSettingDefaultScope (nullopt = delete/reset) rather than
+  // SetContentSettingDefaultScope: the latter CHECKs the type is in
+  // ContentSettingsRegistry, which excludes types like GEOLOCATION_WITH_OPTIONS
+  // that are registered only in PermissionSettingsRegistry.
+  host_content_settings_map_->SetPermissionSettingDefaultScope(
+      requesting_origin, embedding_origin, content_type, std::nullopt);
 }
 
 }  // namespace permissions

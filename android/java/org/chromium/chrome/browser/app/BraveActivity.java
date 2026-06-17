@@ -475,7 +475,10 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public boolean onMenuOrKeyboardAction(
-            int id, boolean fromMenu, @Nullable MotionEventInfo triggeringMotion) {
+            int id,
+            boolean fromMenu,
+            @Nullable Bundle menuItemData,
+            @Nullable MotionEventInfo triggeringMotion) {
         final Tab currentTab = getActivityTab();
         // Handle items replaced by Brave.
         if (id == R.id.info_menu_id && currentTab != null) {
@@ -504,7 +507,7 @@ public abstract class BraveActivity extends ChromeActivity
             return true;
         }
 
-        if (super.onMenuOrKeyboardAction(id, fromMenu, triggeringMotion)) {
+        if (super.onMenuOrKeyboardAction(id, fromMenu, menuItemData, triggeringMotion)) {
             return true;
         }
 

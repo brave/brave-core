@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-index 236073dbb46d964e88cde4932fdc06641dd6aeb0..8548d3b44d97b5ed586150086a2b606740c29823 100644
+index 2647683731a83807601775ebca2f3dc0edaa19cc..e59443a80e49227d5e8d0dc3f40454f9f1ed62a8 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 +++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-@@ -237,7 +237,7 @@ views::ProposedLayout IconLabelBubbleView::CalculateProposedLayout(
+@@ -240,7 +240,7 @@ views::ProposedLayout IconLabelBubbleView::CalculateProposedLayout(
      preferred_size = GetMinimumSize();
      // If the label should be shown, and supports elision, then extend the
      // width to whatever space is available.
@@ -11,7 +11,7 @@ index 236073dbb46d964e88cde4932fdc06641dd6aeb0..8548d3b44d97b5ed586150086a2b6067
        preferred_size.set_width(
            std::max(preferred_size.width(), size_bounds.width().value()));
      } else {
-@@ -300,8 +300,9 @@ views::ProposedLayout IconLabelBubbleView::CalculateProposedLayout(
+@@ -303,8 +303,9 @@ views::ProposedLayout IconLabelBubbleView::CalculateProposedLayout(
    // If the fully expanded label fits, or it is mid-animation, then we
    // accept the "_with_label" image bounds.
    const bool can_label_expand = available_label_width >= preferred_label_width;
@@ -22,7 +22,7 @@ index 236073dbb46d964e88cde4932fdc06641dd6aeb0..8548d3b44d97b5ed586150086a2b6067
    layout.child_layouts.emplace_back(
        const_cast<views::View*>(this->image_container_view()), true,
        should_use_label_bounds ? image_bounds_with_label : image_bounds);
-@@ -814,14 +815,10 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+@@ -817,14 +818,10 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
    }
    highlight_bounds = GetMirroredRect(highlight_bounds);
  

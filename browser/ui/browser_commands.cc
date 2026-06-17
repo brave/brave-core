@@ -147,7 +147,7 @@ namespace {
 
 bool CanTakeTabs(const Browser* from, const Browser* to) {
   return from != to && from->type() == Browser::TYPE_NORMAL &&
-         !from->IsAttemptingToCloseBrowser() && !from->is_delete_scheduled() &&
+         !from->IsAttemptingToCloseBrowser() && !from->IsDeleteScheduled() &&
          to->profile() == from->profile();
 }
 
@@ -363,8 +363,9 @@ void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url) {
 // - Debouncer (potentially debouncing many levels)
 // - Query filter
 // - URLSanitizerService
-void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
-  if (!browser || !browser->profile()) {
+void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
+                                const GURL& url) {
+  if (!browser || !browser->GetProfile()) {
     return;
   }
   DCHECK(url.SchemeIsHTTPOrHTTPS());
@@ -372,7 +373,7 @@ void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
   // Apply debounce rules.
   auto* debounce_service =
       debounce::DebounceServiceFactory::GetForBrowserContext(
-          browser->profile());
+          browser->GetProfile());
   if (debounce_service && !debounce_service->Debounce(url, &final_url)) {
     VLOG(1) << "Unable to apply debounce rules";
     final_url = url;
@@ -384,7 +385,7 @@ void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url) {
   }
   // Sanitize url.
   final_url = brave::URLSanitizerServiceFactory::GetForBrowserContext(
-                  browser->profile())
+                  browser->GetProfile())
                   ->SanitizeURL(final_url);
 
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
@@ -1096,7 +1097,7 @@ void SplitTabsWithSideBySide(Browser* browser,
                                           : selected_indices[0];
   tab_strip_model->AddToNewSplit(
       {non_active_index_from_selected_indices},
-      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kVertical),
+      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kSideBySide),
       source);
 }
 

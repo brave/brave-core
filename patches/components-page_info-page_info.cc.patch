@@ -1,12 +1,24 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index dbfe4d918c86c0a90010915ca7f17461064a0570..81b6e3c5cb2c51e599636e0ef70ed6142b7eb26a 100644
+index 43a1a6e2697d16577077e9b175eea4a8962ead5f..0b7e76c1099957f0965138601e5bf5e9cc6eb491 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1386,6 +1386,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+@@ -1400,6 +1400,9 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
  // second section, the default behavior used when no per-type exception applies.
  bool PageInfo::ShouldShowPermission(
      const PageInfo::PermissionInfo& info) const {
-+  BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
-   // For the Clapper experiment Chrome should display NOTIFICATIONS
-   // permission while it is being requested.
++  if (!delegate_->BraveShouldShowPermission(info.type)) {
++    return false;
++  }
  #if BUILDFLAG(IS_ANDROID)
+   if (info.type == ContentSettingsType::NOTIFICATIONS) {
+     // `is_requested` is only populated if
+@@ -1636,6 +1639,9 @@ void PageInfo::PresentSitePermissions() {
+ 
+ std::set<net::SchemefulSite> PageInfo::GetTwoSitePermissionRequesters(
+     ContentSettingsType type) {
++  if (type == ContentSettingsType::STORAGE_ACCESS) {
++    return {};
++  }
+   std::set<net::SchemefulSite> requesters;
+   // Collect sites that have tried to request a permission.
+   auto* pscs = GetPageSpecificContentSettings();

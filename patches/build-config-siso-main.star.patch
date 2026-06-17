@@ -1,8 +1,8 @@
 diff --git a/build/config/siso/main.star b/build/config/siso/main.star
-index c87d0eef4b56952a318868bab5d6d17eaa6a57b4..d6d9203eb2213594032aba24e3ebd1a131d535db 100644
+index 548330e241485073c1cb0dd0366018137d4117b0..36d10f6d48b3fd432d81b2053d588a9f5c923e06 100644
 --- a/build/config/siso/main.star
 +++ b/build/config/siso/main.star
-@@ -22,6 +22,7 @@ load("./rust.star", "rust")
+@@ -23,6 +23,7 @@ load("./rust.star", "rust")
  load("./simple.star", "simple")
  load("./typescript_all.star", "typescript_all")
  load("./windows.star", chromium_windows = "chromium")
@@ -10,7 +10,7 @@ index c87d0eef4b56952a318868bab5d6d17eaa6a57b4..d6d9203eb2213594032aba24e3ebd1a1
  
  def __disable_remote(ctx, step_config):
      gn_logs_data = gn_logs.read(ctx)
-@@ -103,6 +104,7 @@ def init(ctx):
+@@ -106,6 +107,7 @@ def init(ctx):
      handlers.update(reproxy.handlers)
      handlers.update(typescript_all.handlers)
  

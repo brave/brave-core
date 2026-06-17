@@ -1,8 +1,8 @@
 diff --git a/media/ffmpeg/ffmpeg_common.cc b/media/ffmpeg/ffmpeg_common.cc
-index 5e50769855c030599ab9b7fa939ec32c65b00380..e2f683d024c4236848efbecc5870a3df108d5c39 100644
+index 4bf77b0acb5ae94ff0eb26d953203e4c2280a138..69e242045ee97c2bc4fcfbe6b37cb7c087b769c6 100644
 --- a/media/ffmpeg/ffmpeg_common.cc
 +++ b/media/ffmpeg/ffmpeg_common.cc
-@@ -69,6 +69,7 @@ VideoColorSpace GetGuessedColorSpace(const VideoColorSpace& color_space) {
+@@ -70,6 +70,7 @@ VideoColorSpace GetGuessedColorSpace(const VideoColorSpace& color_space) {
  const char* GetAllowedVideoDecoders() {
    // This should match the configured lists in //third_party/ffmpeg.
  #if BUILDFLAG(USE_PROPRIETARY_CODECS) && BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS)

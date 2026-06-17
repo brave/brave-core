@@ -83,7 +83,7 @@ export class SettingsBraveClearBrowsingDataOnExitPageV2Element
     }
   }
 
-  declare prefs: any
+  declare prefs: Record<string, unknown>
   declare isModified_: boolean
   declare private browsingDataTypeOptionsList_: BrowsingDataTypeOption[]
 

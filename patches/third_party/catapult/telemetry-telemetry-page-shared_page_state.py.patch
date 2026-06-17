@@ -1,8 +1,8 @@
 diff --git a/telemetry/telemetry/page/shared_page_state.py b/telemetry/telemetry/page/shared_page_state.py
-index 9182ec48bb61d42c80fbc20ca0833bd6b02aaceb..1b1bccb7fd1404dcaf15d6e00fe65214ebceff50 100644
+index 413881bd984c41a040007ca1fec6e6020a5a8e68..b0377c038f12e808b8ba6bfc1a6ec8eeeb8521d0 100644
 --- a/telemetry/telemetry/page/shared_page_state.py
 +++ b/telemetry/telemetry/page/shared_page_state.py
-@@ -219,6 +219,7 @@ class SharedPageState(story_module.SharedState):
+@@ -216,6 +216,7 @@ class SharedPageState(story_module.SharedState):
      if archive_path is not None and not os.path.isfile(archive_path):
        logging.warning('WPR archive missing: %s', archive_path)
        archive_path = None

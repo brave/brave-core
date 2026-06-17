@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..1593ea34e68a6214a0684a8c16ac6850031cc40c 100644
+index 4e231b5bcfd28947549afb3acd7c8522f2ac6de6..6c7f3248da0419e7b729d18c5987cb6a7044604a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -319,6 +319,11 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {
@@ -14,7 +14,7 @@ index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..1593ea34e68a6214a0684a8c16ac6850
                          // Clean up any fullscreen state that might impact other tabs.
                          mFullscreenManagerDelegate.onExitFullscreen(null);
                      }
-@@ -885,6 +890,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -884,6 +889,10 @@ public abstract class FullscreenHtmlApiHandlerBase
      @Override
      public void onActivityStateChange(Activity activity, int newState) {
          if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {

@@ -121,7 +121,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       })
     }
 
-    onLeoAssistantShowOnToolbarChange_(e: any) {
+    onLeoAssistantShowOnToolbarChange_(e: Event) {
       e.stopPropagation()
       this.browserProxy_.toggleLeoIcon()
     }

@@ -57,7 +57,7 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
   if (minimize_button_) {
     minimize_button_->SetImageModel(
         views::Button::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(kChromiumMinimizeIcon,
+        ui::ImageModel::FromVectorIcon(kChromiumMinimizeOldIcon,
                                        kColorPipWindowForeground,
                                        kTopControlIconSize));
   }

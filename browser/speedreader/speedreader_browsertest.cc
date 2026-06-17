@@ -1142,7 +1142,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
   auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
   EXPECT_EQ(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty(),
             !rounded_contents);
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
 
   // Tab at 1 is newly created tab with split view and it's not distilled.
@@ -1169,7 +1169,7 @@ class SpeedReaderWithSplitViewBrowserTest : public SpeedReaderBrowserTest {
   ~SpeedReaderWithSplitViewBrowserTest() override = default;
 
   void NewSplitTab() {
-    chrome::NewSplitTab(browser(),
+    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                         split_tabs::SplitTabCreatedSource::kTabContextMenu);
   }
 

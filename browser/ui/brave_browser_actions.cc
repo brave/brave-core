@@ -39,7 +39,7 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/common/features.h"
-#include "chrome/browser/ui/page_actions/page_action_triggers.h"
+#include "chrome/browser/ui/page_action/page_action_triggers.h"
 #endif
 
 namespace {

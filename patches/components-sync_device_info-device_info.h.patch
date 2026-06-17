@@ -1,19 +1,20 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 1b3c17ca587d408561b52edbd7130fbd3c684aac..c74008d68bd48fd06039b10634bdd39107e2f52b 100644
+index 980032a34b76c3e4f25c923812b37b2f3da57dc3..2d552fb0a68960a0c28bc9488e237100189f441e 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -202,12 +202,27 @@ class DeviceInfo {
-       bool desktop_to_ios_promo_receiving_enabled,
-       const MobilePromoOnDesktopPromoTypeSet&
-           desktop_to_ios_promo_receiving_types,
--      GlicExperimentalTriggeringState glic_experimental_triggering_state);
-+      GlicExperimentalTriggeringState glic_experimental_triggering_state,
+@@ -208,11 +208,28 @@ class DeviceInfo {
+              const MobilePromoOnDesktopPromoTypeSet&
+                  desktop_to_ios_promo_receiving_types,
+              GlicExperimentalTriggeringState glic_experimental_triggering_state,
+-             std::optional<int> glic_experimental_triggering_version);
++             std::optional<int> glic_experimental_triggering_version,
 +             SelfDeleteSupport self_delete_support =
 +                 SelfDeleteSupport::kNotSupported);
  
-   DeviceInfo(const DeviceInfo&) = delete;
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  
++  DeviceInfo(DeviceInfo&&);
++
    ~DeviceInfo();
 +  SelfDeleteSupport self_delete_support() const {
 +    return self_delete_support_;
@@ -29,9 +30,9 @@ index 1b3c17ca587d408561b52edbd7130fbd3c684aac..c74008d68bd48fd06039b10634bdd391
 +  // which extension APIs can expose to third party apps.
 +  base::DictValue ToValue() const;
  
-   // Sync specific unique identifier for the device. Note if a device
-   // is wiped and sync is set up again this id WILL be different.
-@@ -390,6 +405,7 @@ class DeviceInfo {
+   std::unique_ptr<DeviceInfo> DeepCopyForTesting() const;
+ 
+@@ -414,6 +431,7 @@ class DeviceInfo {
    // NOTE: when adding a member, don't forget to update
    // |StoredDeviceInfoStillAccurate| in device_info_sync_bridge.cc or else
    // changes in that member might not trigger uploads of updated DeviceInfos.

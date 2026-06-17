@@ -10,6 +10,7 @@
 #include "brave/ios/browser/api/password/brave_password_api.h"
 #include "brave/ios/browser/api/password/brave_password_observer.h"
 #include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
 #include "net/base/apple/url_conversions.h"
 
@@ -65,10 +66,13 @@ void PasswordStoreListenerIOS::OnLoginsChanged(
 
 void PasswordStoreListenerIOS::OnLoginsRetained(
     password_manager::PasswordStoreInterface* store,
-    const std::vector<password_manager::PasswordForm>& retained_forms) {
+    const std::vector<password_manager::StoredCredential>& retained_passwords) {
   NSMutableArray<IOSPasswordForm*>* forms = [[NSMutableArray alloc] init];
 
-  for (const password_manager::PasswordForm& form : retained_forms) {
+  for (const password_manager::StoredCredential& credential :
+       retained_passwords) {
+    password_manager::PasswordForm form =
+        password_manager::ToPasswordForm(credential);
     IOSPasswordForm* passwordForm = [[IOSPasswordForm alloc]
                 initWithURL:net::NSURLWithGURL(form.url)
                 signOnRealm:base::SysUTF8ToNSString(form.signon_realm)

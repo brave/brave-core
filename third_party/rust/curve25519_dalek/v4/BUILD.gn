@@ -111,6 +111,9 @@ cargo_crate("lib") {
   rustenv = []
   rustflags = []
 
+  # `gnrt_config.toml` for this crate specifies `allow_unstable_features`.
+  rustflags += [ "-Zallow-features=stdarch_x86_avx512" ]
+
   #####################################################################
   # Tweaking which GN `config`s apply to this target.
 
@@ -126,6 +129,9 @@ cargo_crate("lib") {
     "//build/config/compiler:chromium_code",
   ]
   _configs_to_add = []
+
+  # `gnrt_config.toml` for this crate specifies `allow_unstable_features`.
+  _configs_to_remove += [ "//build/config/compiler:disallow_unstable_features" ]
 
   # Changing (if needed) which configs apply to this specific crate (based on
   # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from

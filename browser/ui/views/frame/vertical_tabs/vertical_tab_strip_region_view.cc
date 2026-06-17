@@ -451,11 +451,17 @@ void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
 void BraveVerticalTabStripRegionView::ListenFullscreenChanges() {
   auto* fullscreen_controller = GetFullscreenController();
   DCHECK(fullscreen_controller);
-  fullscreen_observation_.Observe(fullscreen_controller);
+  // Observe changes to fullscreen state.
+  fullscreen_subscription_ =
+      ExclusiveAccessManager::From(browser_view_->browser())
+          ->fullscreen_controller()
+          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &BraveVerticalTabStripRegionView::OnFullscreenStateChanged,
+              base::Unretained(this)));
 }
 
 void BraveVerticalTabStripRegionView::StopListeningFullscreenChanges() {
-  fullscreen_observation_.Reset();
+  fullscreen_subscription_ = {};
 }
 
 FullscreenController* BraveVerticalTabStripRegionView::GetFullscreenController()

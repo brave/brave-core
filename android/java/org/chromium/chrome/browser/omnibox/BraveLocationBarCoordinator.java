@@ -84,7 +84,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             OmniboxActionDelegateImpl omniboxActionDelegate,
             @Nullable BrowserStateBrowserControlsVisibilityDelegate
                     browserControlsVisibilityDelegate,
-            @Nullable BackPressManager backPressManager,
+            BackPressManager backPressManager,
             @Nullable OmniboxSuggestionsDropdownScrollListener
                     omniboxSuggestionsDropdownScrollListener,
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,

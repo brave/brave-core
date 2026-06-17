@@ -91,9 +91,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Origin PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{F1EF32DE-F987-4289-81D2-6C4780027F9B}",  // Active Setup GUID.
-        .legacy_command_execute_clsid =
-            L"{A7B3C8D1-E2F4-5A6B-9C8D-1E2F3A4B5C6D}",  // CommandExecuteImpl
-                                                        // CLSID.
         .toast_activator_clsid = {0x8a7b6c5d,
                                   0x4e3f,
                                   0x2a1b,
@@ -140,7 +137,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Origin Beta PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{56DA94FD-D872-416B-BFC4-1D7011DA7473}",  // Active Setup GUID.
-        .legacy_command_execute_clsid = L"",  // CommandExecuteImpl CLSID.
         .toast_activator_clsid = {0x3c4d5e6f,
                                   0x7a8b,
                                   0x9c0d,
@@ -187,7 +183,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Origin Dev PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{716D6A4A-D071-47A8-AC64-DBDE3EE3797B}",  // Active Setup GUID.
-        .legacy_command_execute_clsid = L"",  // CommandExecuteImpl CLSID.
         .toast_activator_clsid = {0x6f7a8b9c,
                                   0x0d1e,
                                   0x2f3a,
@@ -236,9 +231,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Origin Nightly PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{50474E96-9CD2-4BC8-B0A7-0D4B6EF2E709}",  // Active Setup GUID.
-        .legacy_command_execute_clsid =
-            L"{B8C9D0E1-F2A3-4B5C-6D7E-8F9A0B1C2D3E}",  // CommandExecuteImpl
-                                                        // CLSID.
         .toast_activator_clsid = {0x9c0d1e2f,
                                   0x3a4b,
                                   0x5c6d,
@@ -289,9 +281,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}",  // Active Setup GUID.
-        .legacy_command_execute_clsid =
-            L"{B1C5AAC5-2B7C-4C9D-9E96-774C53151B20}",  // CommandExecuteImpl
-                                                        // CLSID.
         .toast_activator_clsid = {0x6c9646d,
                                   0x2807,
                                   0x44c0,
@@ -338,7 +327,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Beta PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{103BD053-949B-43A8-9120-2E424887DE11}",  // Active Setup GUID.
-        .legacy_command_execute_clsid = L"",  // CommandExecuteImpl CLSID.
         .toast_activator_clsid = {0x9560028d,
                                   0xcca,
                                   0x49f0,
@@ -385,7 +373,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Dev PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // Active Setup GUID.
-        .legacy_command_execute_clsid = L"",  // CommandExecuteImpl CLSID.
         .toast_activator_clsid = {0x20b22981,
                                   0xf63a,
                                   0x47a6,
@@ -433,9 +420,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Nightly PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // Active Setup GUID.
-        .legacy_command_execute_clsid =
-            L"{312ABB99-A176-4939-A39F-E8D34EA4D393}",  // CommandExecuteImpl
-                                                        // CLSID.
         .toast_activator_clsid = {0xf2edbc59,
                                   0x7217,
                                   0x4da5,
@@ -492,9 +476,6 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
             L"Brave Development PDF Document",  // PDF ProgID description.
         .active_setup_guid =
             L"{D6527C63-5CDD-4EF3-9299-1504E17CBD18}",  // Active Setup GUID.
-        .legacy_command_execute_clsid =
-            L"{B2863926-AF5D-43A2-99CC-29EC43790C89}",  // CommandExecuteImpl
-                                                        // CLSID.
         .toast_activator_clsid = {0xeb41c6e8,
                                   0xba35,
                                   0x4c06,

@@ -52,6 +52,8 @@ class SidePanel : public views::View,
   void SetPanelWidth(int width);
   void UpdateWidthOnEntryChanged();
   bool ShouldRestrictMaxWidth() const;
+  void UpdateHorizontalAlignment(
+      std::optional<SidePanelEntryId> entry_id = std::nullopt);
   double GetAnimationValue() const;
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   bool IsRightAligned() const;
@@ -121,8 +123,6 @@ class SidePanel : public views::View,
 
   // This method is the shared implementation of Open/Close.
   void UpdateVisibility(bool should_be_open);
-
-  void UpdateHorizontalAlignment();
 
   // views::ViewObserver:
   void OnChildViewAdded(View* observed_view, View* child) override;

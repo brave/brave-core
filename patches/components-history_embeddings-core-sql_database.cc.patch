@@ -1,8 +1,8 @@
 diff --git a/components/history_embeddings/core/sql_database.cc b/components/history_embeddings/core/sql_database.cc
-index 7d7c68304a49d551078a44ce8e5a09b035cab38b..0c626e5e44484508f92c9b6076344ae5f613d34a 100644
+index faf649f4d435c743d533f4cf479f5729d4e1ee5c..a68bc77628a3c8d580c3b033a28c214d5793906c 100644
 --- a/components/history_embeddings/core/sql_database.cc
 +++ b/components/history_embeddings/core/sql_database.cc
-@@ -430,39 +430,50 @@ constexpr char kSqlSelectPassagesAndEmbeddings[] =
+@@ -431,39 +431,50 @@ constexpr char kSqlSelectPassagesAndEmbeddings[] =
      "passages.passages_blob, embeddings.embeddings_blob "
      "FROM passages "
      "INNER JOIN embeddings ON passages.url_id = embeddings.url_id";
@@ -74,7 +74,7 @@ index 7d7c68304a49d551078a44ce8e5a09b035cab38b..0c626e5e44484508f92c9b6076344ae5
        }
      }
      ~RowDataIterator() override {
-@@ -541,7 +552,7 @@ SqlDatabase::MakeUrlDataIterator(std::optional<base::Time> time_range_start) {
+@@ -542,7 +553,7 @@ SqlDatabase::MakeUrlDataIterator(std::optional<base::Time> time_range_start) {
    };
  
    return std::make_unique<RowDataIterator>(weak_ptr_factory_.GetWeakPtr(),

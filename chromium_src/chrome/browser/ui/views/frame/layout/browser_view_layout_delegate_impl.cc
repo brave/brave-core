@@ -59,12 +59,15 @@ bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() const {
     return false;
   }
 
-  return browser_view()
-      .browser()
-      ->GetFeatures()
-      .side_panel_ui()
-      ->GetCurrentEntryId()
-      .has_value();
+  // SidePanelCoordinator (which implements SidePanelUI) is created in
+  // BWF::InitPostWindowConstruction, so it may be null during the early layout
+  // pass that happens while the widget is being initialized.
+  auto* side_panel_ui = browser_view().browser()->GetFeatures().side_panel_ui();
+  if (!side_panel_ui) {
+    return false;
+  }
+
+  return side_panel_ui->GetCurrentEntryId().has_value();
 }
 
 bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() const {

@@ -12,6 +12,7 @@
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #include "components/permissions/features.h"
@@ -93,6 +94,17 @@ void PermissionDialogJavaDelegate::BravePreCreateDialog(JNIEnv* env) {
   if (ShouldShowLifetimeOptions(permission_prompt_->delegate_public())) {
     SetLifetimeOptions(j_delegate_);
   }
+  const auto& requests = permission_prompt_->delegate_public()->Requests();
+  if (!requests.empty() && requests[0]->GetContentSettingsType() ==
+                               ContentSettingsType::GEOLOCATION_WITH_OPTIONS) {
+    Java_BravePermissionDialogDelegate_setIsGeolocationWithOptions(
+        env, j_delegate_, true);
+  }
+}
+
+int PermissionDialogJavaDelegate::GetGeolocationAccuracy(JNIEnv* env) {
+  return Java_BravePermissionDialogDelegate_getSelectedGeolocationAccuracy(
+      env, j_delegate_);
 }
 
 // static
@@ -108,7 +120,17 @@ std::unique_ptr<PermissionDialogDelegate> PermissionDialogDelegate::Create(
 
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                               \
   java_delegate_->ApplyLifetimeToPermissionRequests(env, permission_prompt_); \
-  java_delegate_->ApplyDontAskAgainOption(env, permission_prompt_);
+  java_delegate_->ApplyDontAskAgainOption(env, permission_prompt_);           \
+  if (std::holds_alternative<std::monostate>(prompt_options_) &&              \
+      !permission_prompt_->delegate_public()->Requests().empty() &&           \
+      permission_prompt_->delegate_public()                                   \
+              ->Requests()[0]                                                 \
+              ->GetContentSettingsType() ==                                   \
+          ContentSettingsType::GEOLOCATION_WITH_OPTIONS) {                    \
+    prompt_options_ = GeolocationPromptOptions{                               \
+        .selected_accuracy = static_cast<GeolocationAccuracy>(                \
+            java_delegate_->GetGeolocationAccuracy(env))};                    \
+  }
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                               \
   java_delegate_->ApplyLifetimeToPermissionRequests(env, permission_prompt_); \
   java_delegate_->ApplyDontAskAgainOption(env, permission_prompt_);

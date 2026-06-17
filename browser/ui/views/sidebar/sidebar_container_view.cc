@@ -127,11 +127,9 @@ class SidebarContainerView::BrowserWindowEventObserver
 
 SidebarContainerView::SidebarContainerView(
     Browser* browser,
-    SidePanelCoordinator* side_panel_coordinator,
     std::unique_ptr<SidePanel> side_panel)
     : views::AnimationDelegateViews(this),
       browser_(browser),
-      side_panel_coordinator_(side_panel_coordinator),
       browser_window_event_observer_(
           std::make_unique<BrowserWindowEventObserver>(*this)) {
   // Don't follow RTL layout.
@@ -142,7 +140,6 @@ SidebarContainerView::SidebarContainerView(
   width_animation_.SetSlideDuration(base::Milliseconds(kAnimationDurationMS));
 
   SetNotifyEnterExitOnChild(true);
-  CHECK(side_panel_coordinator_);
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
     CHECK(!side_panel);
@@ -159,6 +156,9 @@ SidebarContainerView::~SidebarContainerView() = default;
 
 void SidebarContainerView::Init() {
   initialized_ = true;
+
+  side_panel_coordinator_ = SidePanelCoordinator::From(browser_);
+  CHECK(side_panel_coordinator_);
 
   sidebar_model_ = browser_->GetFeatures().sidebar_controller()->model();
   sidebar_model_observation_.Observe(sidebar_model_);

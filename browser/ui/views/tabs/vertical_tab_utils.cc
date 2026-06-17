@@ -50,6 +50,12 @@ bool ShouldShowBraveVerticalTabs(const BrowserWindowInterface* browser) {
     return false;
   }
 
+  if (!browser->GetProfile()) {
+    // During unit tests, profile can be null.
+    CHECK_IS_TEST();
+    return false;
+  }
+
   return browser->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsEnabled);
 }

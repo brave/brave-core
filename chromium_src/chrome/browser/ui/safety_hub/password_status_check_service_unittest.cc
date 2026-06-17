@@ -9,14 +9,14 @@ TEST_P(PasswordStatusCheckServiceParameterizedCardTest,
        PasswordCardDataIsMarkedSafe) {
   // Based on test parameters, add different credential issues to the store.
   if (include_weak()) {
-    profile_store().AddLogin(WeakForm());
+    profile_store().AddLogin(password_manager::FromPasswordForm(WeakForm()));
   }
   if (include_compromised()) {
-    profile_store().AddLogin(LeakedForm());
+    profile_store().AddLogin(password_manager::FromPasswordForm(LeakedForm()));
   }
   if (include_reused()) {
-    profile_store().AddLogin(ReusedForm1());
-    profile_store().AddLogin(ReusedForm2());
+    profile_store().AddLogin(password_manager::FromPasswordForm(ReusedForm1()));
+    profile_store().AddLogin(password_manager::FromPasswordForm(ReusedForm2()));
   }
 
   // The password card data should always be marked safe

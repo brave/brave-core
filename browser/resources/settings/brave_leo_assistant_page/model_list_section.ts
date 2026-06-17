@@ -88,7 +88,10 @@ class ModelListSection extends ModelListSectionBase {
     const isEditing = this.isEditingModelIndex_ !== null
 
     // Since model-config-ui is conditionally rendered, we use this.$$ API to access the element
-    const modelConfigElement: any = this.$$('#model-config-ui')
+    const modelConfigElement = this.$$('#model-config-ui') as unknown as {
+      isUrlInvalid: boolean
+      invalidUrlErrorMessage: string
+    }
 
     if (!e.detail.modelConfig.options.customModelOptions) {
       console.error('Custom model options are missing')
@@ -127,7 +130,7 @@ class ModelListSection extends ModelListSectionBase {
     this.showModelConfig_ = false
   }
 
-  handleDelete_(e: any) {
+  handleDelete_(e: Event & {model: {index: number}}) {
     const messageText = this.i18n('braveLeoAssistantDeleteModelConfirmation')
     const shouldDeleteModel = confirm(messageText)
 
@@ -138,7 +141,7 @@ class ModelListSection extends ModelListSectionBase {
     this.browserProxy_.getSettingsHelper().deleteCustomModel(e.model.index)
   }
 
-  handleEdit_(e: any) {
+  handleEdit_(e: Event & {model: {index: number}}) {
     this.isEditingModelIndex_ = e.model.index
     this.showModelConfig_ = true
   }

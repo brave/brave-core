@@ -1,26 +1,26 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index eeb3bebff6ad576d588a85646af68bc0bc7c997a..4bc720eee0701eb918288d3e944c221427f7ff3b 100644
+index 65a5792397cd1db848c79c3ab5a7a78f00a06ca3..3250848a21f89fc24867362b11749927ec8078f3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -245,6 +245,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.EXIT_PICTURE_IN_PICTURE,
-             Action.OPEN_IN_INCOGNITO_WINDOW,
+@@ -250,6 +250,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.VIEW_PAGE_SOURCE,
+             Action.COPY_VIDEO_FRAME,
+             Action.DOWNLOAD_VIDEO_FRAME,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -301,7 +302,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int EXIT_PICTURE_IN_PICTURE = 50;
-             int OPEN_IN_INCOGNITO_WINDOW = 51;
+@@ -308,7 +309,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int VIEW_PAGE_SOURCE = 52;
--            int NUM_ENTRIES = 53;
-+            int COPY_CLEAN_LINK = 53;
+             int COPY_VIDEO_FRAME = 53;
+             int DOWNLOAD_VIDEO_FRAME = 54;
+-            int NUM_ENTRIES = 55;
++            int COPY_CLEAN_LINK = 55;
 +            int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
          }
  
          // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -540,6 +542,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -551,6 +553,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));

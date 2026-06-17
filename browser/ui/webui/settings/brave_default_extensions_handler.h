@@ -13,8 +13,8 @@
 #include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
-#include "chrome/common/extensions/webstore_install_result.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "extensions/browser/webstore_install_result.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 class Profile;

@@ -22,7 +22,6 @@ namespace installer {
 namespace {
 
 bool NavigateToUrlWithHttps(const std::wstring& url);
-void NavigateToUrlWithIExplore(const std::wstring& url);
 
 // This code is copied from `DoPostUninstallOperations` implementation in
 // `chrome/installer/setup/google_chrome_behaviors.cc` with the following
@@ -79,10 +78,7 @@ void DoPostUninstallOperations(const base::Version& version,
   auto url = base::StrCat({survey_url, L"&crversion=",
                            base::ASCIIToWide(version.GetString()), L"&os=",
                            os_version});
-  if (os_info->version() < base::win::Version::WIN10 ||
-      !NavigateToUrlWithHttps(url)) {
-    NavigateToUrlWithIExplore(url);
-  }
+  NavigateToUrlWithHttps(url);
 }
 
 class GoogleUpdateSettings_UNUSED {

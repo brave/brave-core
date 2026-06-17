@@ -1,11 +1,13 @@
 diff --git a/third_party/rust/regex_automata/v0_4/BUILD.gn b/third_party/rust/regex_automata/v0_4/BUILD.gn
-index ec0574d7d3b0cdaae43605bad34c7f036c4a0355..04ea098a81766afcf3c515f6ddc6f21009687e0c 100644
+index afa6c5172c0b2841d0d1bc938fa8bc1a19a896f8..29ca313e95cf795d370aa2b4a8411c0bc0dfe497 100644
 --- a/third_party/rust/regex_automata/v0_4/BUILD.gn
 +++ b/third_party/rust/regex_automata/v0_4/BUILD.gn
-@@ -135,4 +135,6 @@ cargo_crate("lib") {
-   executable_configs += _configs_to_add
-   proc_macro_configs -= _configs_to_remove
-   proc_macro_configs += _configs_to_add
-+  features += [ "alloc", "dfa-onepass", "dfa-search", "hybrid", "meta", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary" ]
-+  deps = [ "//brave/third_party/rust/aho_corasick/v1:lib", "//brave/third_party/rust/regex_syntax/v0_8:lib", "//third_party/rust/memchr/v2:lib" ]
- }
+@@ -134,7 +134,7 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
++  testonly = false
+ 
+   #####################################################################
+   # Tweaking which GN `config`s apply to this target.

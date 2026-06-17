@@ -44,7 +44,7 @@ void ToolbarButton::OnThemeChanged() {
   // Reset ink drop config as inkdrop has different config per themes.
   // Don't need to remove the observation for previous inkdrop before
   // destroying it as it's unchecked observer list.
-  ConfigureInkDropForToolbar(this);
+  ConfigureInkDrop(this);
   views::InkDrop::Get(this)->GetInkDrop()->AddObserver(this);
 
   SetHighlighted(activated_);

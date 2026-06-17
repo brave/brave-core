@@ -46,7 +46,7 @@ export class LeoModelSelectorElement extends CrLitElement {
     )
   }
 
-  onSelectionChange_(e: any) {
+  onSelectionChange_(e: {value: string}) {
     this.fire('model-changed', {value: e.value})
   }
 

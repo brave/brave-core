@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Load the Brave chromium_src override at the end of the module.
+
+      `inline_chromium_src_override` pulls in Brave's shadow of this file once
+      upstream has finished defining its own symbols, so it must be the very
+      last statement in the file. Anchoring on end-of-file keeps the match
+      independent of whatever upstream's final statement happens to be.
+    re_pattern: '\Z'
+    replace: |
+      from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

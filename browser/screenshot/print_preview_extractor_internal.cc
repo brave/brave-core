@@ -22,7 +22,6 @@
 #include "brave/browser/screenshot/print_preview_extractor.h"
 #include "brave/components/screenshot/core/browser/utils.h"
 #include "chrome/browser/pdf/pdf_pref_names.h"
-#include "chrome/browser/printing/print_compositor_util.h"
 #include "chrome/browser/printing/print_preview_data_service.h"
 #include "chrome/browser/printing/print_view_manager.h"
 #include "chrome/browser/printing/print_view_manager_common.h"
@@ -310,7 +309,7 @@ void PrintPreviewExtractorInternal::DidPrepareDocumentForPreview(
   }
 
   client->PrepareToCompositeDocument(
-      document_cookie, render_frame_host, printing::GetCompositorDocumentType(),
+      document_cookie, render_frame_host,
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
           base::BindOnce(
               &PrintPreviewExtractorInternal::OnPrepareForDocumentToPdfDone,

@@ -46,10 +46,6 @@
     </if>
   <if expr="use_titlecase">
     </if>
-  <if expr="is_win">
-    </if>
-  <if expr="is_macosx">
-    </if>
   <if expr="not use_titlecase">
     </if>
   <if expr="use_titlecase">

@@ -172,10 +172,9 @@
 # This test fails because we disable Actor Safety Lists component.
 -ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
 
-# These tests verify that source=chrome.ob/chrome.rb is appended to search
-# URLs, but Brave overrides UpdateMatchDestinationURLWithInvocationSource to
-# suppress this Chrome-specific attribution.
--AutocompleteControllerTest.UpdateMatchDestinationURLWithInvocationSource*
+# This test verifies that {google:searchSource} expands to source=chrome.ob /
+# source=chrome.rb, but Brave suppresses that Chrome-specific attribution.
+-TemplateURLTest.URLRefTestSearchSource
 
 # These tests assume the upstream 3-day significance/autocomplete age threshold
 # (kLowQualityMatchAgeLimitInDays). Brave raises that threshold to one year in

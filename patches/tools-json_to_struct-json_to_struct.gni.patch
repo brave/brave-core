@@ -1,8 +1,8 @@
 diff --git a/tools/json_to_struct/json_to_struct.gni b/tools/json_to_struct/json_to_struct.gni
-index 9548e2c5d748d386ff002fd48f11f380beb30f72..c04ad21da53863efd05545ba85748ba8f5479aae 100644
+index 4de6fdde2d207baab508e262ea4c36fbc5ccd2c1..cde4c29005e5878502cce4a8ec5e37ab1521bbdb 100644
 --- a/tools/json_to_struct/json_to_struct.gni
 +++ b/tools/json_to_struct/json_to_struct.gni
-@@ -69,6 +69,7 @@ template("json_to_struct") {
+@@ -70,6 +70,7 @@ template("json_to_struct") {
      }
  
      sources = get_target_outputs(":$action_name")

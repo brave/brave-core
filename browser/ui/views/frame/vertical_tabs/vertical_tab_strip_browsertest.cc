@@ -88,7 +88,7 @@
 
 namespace {
 
-class FullscreenNotificationObserver : public FullscreenObserver {
+class FullscreenNotificationObserver {
  public:
   explicit FullscreenNotificationObserver(Browser* browser);
 
@@ -97,27 +97,30 @@ class FullscreenNotificationObserver : public FullscreenObserver {
   FullscreenNotificationObserver& operator=(
       const FullscreenNotificationObserver&) = delete;
 
-  ~FullscreenNotificationObserver() override;
+  ~FullscreenNotificationObserver();
 
   // Runs a loop until a fullscreen change is seen (unless one has already been
   // observed, in which case it returns immediately).
   void Wait();
 
-  // FullscreenObserver:
-  void OnFullscreenStateChanged() override;
+  void OnFullscreenStateChanged();
 
  protected:
   bool observed_change_ = false;
-  base::ScopedObservation<FullscreenController, FullscreenObserver>
-      observation_{this};
+  // Subscription to be notified when the browser window enters fullscreen.
+  base::CallbackListSubscription fullscreen_subscription_;
   base::RunLoop run_loop_;
 };
 
 FullscreenNotificationObserver::FullscreenNotificationObserver(
     Browser* browser) {
-  observation_.Observe(browser->GetFeatures()
-                           .exclusive_access_manager()
-                           ->fullscreen_controller());
+  // Observe changes to fullscreen state.
+  fullscreen_subscription_ =
+      ExclusiveAccessManager::From(browser)
+          ->fullscreen_controller()
+          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &FullscreenNotificationObserver::OnFullscreenStateChanged,
+              base::Unretained(this)));
 }
 
 FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;
@@ -305,7 +308,7 @@ IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest,
   auto* model = browser()->tab_strip_model();
   ASSERT_EQ(model->count(), 2);
   model->SetTabPinned(0, true);
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   ASSERT_EQ(model->count(), 3);
   auto assert_tab_insets = [this]() {
@@ -1239,8 +1242,9 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
             ->horizontal_tab_strip_for_testing()
             ->controller());
 
-    auto context_menu_controller =
-        std::make_unique<TabContextMenuController>(tab_index, controller);
+    auto context_menu_controller = std::make_unique<TabContextMenuController>(
+        browser()->tab_strip_model()->GetTabAtIndex(tab_index)->GetHandle(),
+        controller);
 
     return context_menu_controller;
   }

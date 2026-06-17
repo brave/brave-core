@@ -289,6 +289,9 @@
   <message name="IDS_IDC_SHOW_BOOKMARK_SIDE_PANEL">
     Show bookmark side panel
   </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL">
+    Open all bookmarks
+  </message>
   <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW">
     Bookmark bar open all in new window
   </message>

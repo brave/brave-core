@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.playlist.hls_content;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +14,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 
-import androidx.annotation.Nullable;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
 import com.brave.playlist.local_database.PlaylistRepository;
@@ -25,9 +26,11 @@ import com.brave.playlist.util.PlaylistUtils;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.SplitCompatService;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.chrome.browser.base.SplitCompatService;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -37,11 +40,12 @@ import org.chromium.playlist.mojom.PlaylistService;
 
 import java.util.Queue;
 
+@NullMarked
 public class HlsServiceImpl extends SplitCompatService.Impl implements ConnectionErrorHandler {
     private static final String TAG = "Playlist/HlsServiceImpl";
     private final IBinder mBinder = new LocalBinder();
     private final Context mContext = ContextUtils.getApplicationContext();
-    private PlaylistService mPlaylistService;
+    @Nullable private PlaylistService mPlaylistService;
     public static String currentDownloadingPlaylistItemId = "";
 
     class LocalBinder extends Binder {
@@ -63,7 +67,7 @@ public class HlsServiceImpl extends SplitCompatService.Impl implements Connectio
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         startHlsContentFromQueue();
         return Service.START_NOT_STICKY;
     }
@@ -145,6 +149,8 @@ public class HlsServiceImpl extends SplitCompatService.Impl implements Connectio
                                                                                                             .parse(
                                                                                                                     "file://"
                                                                                                                             + mediaPath));
+                                                                            assertNonNull(
+                                                                                    mPlaylistService);
                                                                             mPlaylistService
                                                                                     .updateItemHlsMediaFilePath(
                                                                                             playlistItem
@@ -181,6 +187,7 @@ public class HlsServiceImpl extends SplitCompatService.Impl implements Connectio
     }
 
     private void addNewPlaylistItemModel(String playlistItemId) {
+        assertNonNull(mPlaylistService);
         mPlaylistService.getPlaylistItem(
                 playlistItemId,
                 playlistItem -> {

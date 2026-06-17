@@ -7,7 +7,8 @@
 # Add new entries here to override additional Chromium icons.
 nala_icon_overrides = [
   {
-    # Override Chromium's star icon in the bookmark bar with Brave's bookmark ribbon.
+    # Override Chromium's star icon in the bookmark bar with Brave's bookmark
+    # ribbon.
     source = "ic_browser_bookmark_normal.xml"
     dest = "ic_all_bookmarks_icon_16dp.xml"
   },
@@ -17,17 +18,20 @@ nala_icon_overrides = [
     dest = "ic_zoom.xml"
   },
   {
-    # Override Chromium's zoom in button at floating toolbar and app menu on tablets.
+    # Override Chromium's zoom in button at floating toolbar and app menu on
+    # tablets.
     source = "ic_add_circle_filled.xml"
     dest = "ic_add_24dp.xml"
   },
   {
-    # Override Chromium's zoom out button at floating toolbar and app menu on tablets.
+    # Override Chromium's zoom out button at floating toolbar and app menu on
+    # tablets.
     source = "ic_minus.xml"
     dest = "ic_remove.xml"
   },
   {
-    # Override Chromium's product icon in media notifications with the Brave shield.
+    # Override Chromium's product icon in media notifications with the Brave
+    # shield.
     source = "ic_brave_icon_monochrome.xml"
     dest = "chrome_product_vd_24.xml"
   },

@@ -5,15 +5,4 @@
 
 #include "brave/components/vector_icons/vector_icons.h"
 
-// Replaces vector_icon::kFooIcons with ours
-#define vector_icons
-#define kPlayArrowIcon kLeoPlayFilledIcon
-#define kPauseIcon kLeoPauseFilledIcon
-#define kReplayIcon kLeoReloadIcon
-
 #include <chrome/browser/ui/views/overlay/playback_image_button.cc>
-
-#undef kReplayIcon
-#undef kPauseIcon
-#undef kPlayArrowIcon
-#undef vector_icons

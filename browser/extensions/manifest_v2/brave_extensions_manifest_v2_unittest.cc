@@ -89,13 +89,9 @@ class BraveExtensionsManifestV2DeprecationTest
  public:
   BraveExtensionsManifestV2DeprecationTest() {
     switch (GetParam()) {
-      case extensions::MV2ExperimentStage::kWarning:
-        break;
       case extensions::MV2ExperimentStage::kDisableWithReEnable:
         feature_list_.InitWithFeatures(
-            {extensions_mv2::features::kExtensionsManifestV2,
-             extensions_features::kExtensionManifestV2Disabled},
-            {});
+            {extensions_mv2::features::kExtensionsManifestV2}, {});
         break;
       case extensions::MV2ExperimentStage::kUnsupported:
         feature_list_.InitWithFeatures(
@@ -115,15 +111,7 @@ INSTANTIATE_TEST_SUITE_P(
     ,
     BraveExtensionsManifestV2DeprecationTest,
     ::testing::Values(extensions::MV2ExperimentStage::kDisableWithReEnable,
-                      extensions::MV2ExperimentStage::kUnsupported,
-                      extensions::MV2ExperimentStage::kWarning));
-
-TEST_P(BraveExtensionsManifestV2DeprecationTest, CheckStages) {
-  auto* manager = extensions::ManifestV2ExperimentManager::Get(profile());
-
-  EXPECT_EQ(extensions::MV2ExperimentStage::kWarning,
-            manager->GetCurrentExperimentStage());
-}
+                      extensions::MV2ExperimentStage::kUnsupported));
 
 TEST_P(BraveExtensionsManifestV2DeprecationTest,
        KnownMV2ExtensionsNotDeprecated) {

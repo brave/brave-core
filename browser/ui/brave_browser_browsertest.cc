@@ -13,10 +13,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/startup/launch_mode_recorder.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
@@ -47,7 +49,9 @@ Browser* OpenNewBrowser(Profile* profile) {
                                     chrome::startup::IsFirstRun::kYes);
   creator.Launch(profile, chrome::startup::IsProcessStartup::kNo,
                  /*restore_tabbed_browser=*/true);
-  return chrome::FindBrowserWithProfile(profile);
+  return ProfileBrowserCollection::GetForProfile(profile)
+      ->FindTabbedBrowser()
+      ->GetBrowserForMigrationOnly();
 }
 
 void AddBookmarkNode(Profile* profile) {
@@ -105,14 +109,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
   auto* devtools_window = DevToolsWindowTesting::OpenDevToolsWindowSync(
       tab_strip->GetActiveWebContents(), false);
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 3u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 3u);
 
   // Close the last tab.
   tab_strip->GetActiveWebContents()->Close();
 
   ui_test_utils::WaitForBrowserToClose(
       DevToolsWindowTesting::Get(devtools_window)->browser());
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   ASSERT_EQ(1, tab_strip->count());
 
   // Expecting a new tab is opened.
@@ -129,11 +133,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
   chrome::AddTabAt(new_browser, new_browser->GetNewTabURL(), -1, true);
   ASSERT_EQ(3, tab_strip->count());
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   // Close the browser window.
   new_browser->window()->Close();
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
@@ -149,11 +153,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   ASSERT_EQ(1, tab_strip->count());
   EXPECT_EQ(page_url,
             tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   // Close the last tab.
   tab_strip->GetActiveWebContents()->Close();
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
@@ -171,7 +175,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Then other windows should be closed
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
@@ -189,8 +193,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   auto detached_tab = tab_strip2->DetachTabAtForInsertion(0);
   tab_strip->InsertDetachedTabAt(0, std::move(detached_tab),
                                  AddTabTypes::ADD_ACTIVE);
-  EXPECT_TRUE(
-      base::test::RunUntil([] { return chrome::GetTotalBrowserCount() == 1; }));
+  EXPECT_TRUE(base::test::RunUntil(
+      [] { return GlobalBrowserCollection::GetInstance()->GetSize() == 1; }));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,

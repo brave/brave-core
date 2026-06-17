@@ -12,6 +12,7 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
@@ -65,7 +66,8 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
             SnackbarManager snackbarManager,
             boolean isTablet,
             Supplier<Integer> tabStripHeightSupplier,
-            @Nullable HomeSurfaceTracker homeSurfaceTracker) {
+            @Nullable HomeSurfaceTracker homeSurfaceTracker,
+            BackPressManager backPressManager) {
         super(
                 manager,
                 activity,
@@ -81,7 +83,8 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
                 snackbarManager,
                 isTablet,
                 tabStripHeightSupplier,
-                homeSurfaceTracker);
+                homeSurfaceTracker,
+                backPressManager);
 
         mNewTabPageManager = manager;
 

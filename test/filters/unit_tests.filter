@@ -27,6 +27,8 @@
 -BrowsingHistoryHandlerTest.SendsUpdatedInfoOnAccountChange
 -CanOfferSigninTest.ProfileConnected
 -GlicButtonControllerTest.*
+-GlicEnablingAnchorEntryPointTestBase.*
+-GlicEnablingCombinedObserverTest.*
 -GlicEnablingStandardFreTest.NotConsented_Returns*
 -GlicEnablingTrustFirstOnboardingTest.*
 -GlicFreControllerTest.*
@@ -34,7 +36,9 @@
 -GlicMetricsFeaturesEnabledTest.*
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
+-GlicEnablingProfileReadyStateTestBase.*
 -MultistepFilterServiceFactoryTest.*
+-SkillsUiTabControllerTest.InvokeSkill_*
 -TabOrganizationServiceTest.*
 -TabStripActionContainerTest*.OrdersButtonsCorrectly*
 -TabStripActionContainerTest.Glic*
@@ -81,6 +85,7 @@
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
 -TemplateURLServiceTest.RepairStarterPackEngines
+-UrlUtilTest.ValidateGoogleChromeSchemeUrls
 
 # This test fails because we have different than expected default number of
 # prepopulated search engines
@@ -133,6 +138,7 @@
 -ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
 -DigitalIdentityLowRiskOriginsTest.*
+-FindsTabHelperTest.TestOmniboxRecentSearchSuggestionCountThresholdMet
 -FindsTabHelperTest.TestThresholdMet
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerTest.*
@@ -177,7 +183,7 @@
 -TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible
 
 # This test is disabled as we have our own ink drop configs.
--ToolbarInkDropUtilTest.ConfigureInkDropForToolbarTest
+-ToolbarInkDropUtilTest.ConfigureInkDropTest
 
 # Prerender is disabled
 -PrerenderManagerBasicRequirementTest.*
@@ -270,7 +276,7 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.ExtensionSyncDisabledWhileSignedIn
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
--All/DiceResponseHandlerParamTest.Signin/*
+-All/DiceResponseHandlerParamTest.Signin*/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
 -AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
@@ -340,15 +346,16 @@
 -DownloadProtectionUtilTest.ShouldSendDangerousDownloadReport
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
--ExtensionDataCollectionTest.CollectExtensionDataWithExtension
--ExtensionDataCollectionTest.CollectsLastInstalledExtension
+-ExtensionDataCollectionTest.*
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
 -GeminiAntiscamProtectionServiceFactoryTest.*
 -GeminiAntiscamProtectionServiceTest.*
+-GeneratedHttpsFirstModePrefTest.UpdateSafeBrowsingPreference
 -GeneratedSafeBrowsingPrefTest.ManagementState
 -GeneratedSafeBrowsingPrefTest.OnSettingsBundleChanged_PrefChangedExternally
 -GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GetUserPopulationForProfileTest.PopulatesPopulation_WithoutSBERDeprecation
+-HttpsFirstModeSettingsTrackerTest.BalancedModeEnabledForEsbUsers
 -NotificationTelemetryServiceTest.OnPushEventFinished/*
 -NotificationTelemetryServiceTest.SendsTelemetryReport/*
 -NotificationTelemetryServiceTest.ServiceWorkerSubscriptionSendsServiceWorkerBehavior/*
@@ -588,8 +595,7 @@
 -OmniboxControllerTest.CheckDefaultAutocompleteProviders
 -OmniboxEditModelPopupTest.*
 -OmniboxEditModelTest.*
--WebUIReadOnlyOmniboxTest.GetOmniboxTextLength
--WebUIReadOnlyOmniboxTest.StateManagement
+-WebUIReadOnlyOmniboxTest.*
 
 # These tests fail because we disable uploading these event logs
 # See WebRtcLogUploader::UploadCompressedLog patch as well as
@@ -616,6 +622,8 @@
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SkipsLensInputs_InToolModes
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
+-ContextualTasksEligibilityManagerTest.*
+-ContextualTasksUiServiceTest.*
 -EntryPointEligibilityManagerTest.AreEntryPointsEligible_True
 -EntryPointEligibilityManagerTest.NotifyEntryPointEligibilityChanged
 
@@ -628,7 +636,10 @@
 
 # Read anything is disabled
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
+-RenderViewContextMenuExtensionsTest.*
 -RenderViewContextMenuListenToThisPageTest.MenuItemPresentWhenEnabled
+-RenderViewContextMenuMenuSimplificationTest.PageMenuSeparators
+-RenderViewContextMenuMenuSimplificationTest.PureSelectionLayout
 
 # These tests fail because it's expected that the generated tabs have
 # suggestions like "Ask Google about this tab", whereas our results have
@@ -688,8 +699,10 @@
 
 # These tests fail because brave.omnibox.history_suggestions_enabled is not
 # registered.
+-ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
+-WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
 
 # These tests crash because the tests initialize profile first and then reset
 # the global features. The ephemeral_storage::ApplicationStateObserver created
@@ -763,7 +776,6 @@
 -HostContentSettingsMapTest.IncognitoPartialInheritDefault
 -HostContentSettingsMapTest.IncognitoPartialInheritPref
 -InstallVerifierTest.*
--InstantNTPURLRewriteTest.*
 -ManageProfileHandlerTest.*
 -MultiProfileCredentialsFilterTest.SyncCredentialsFilter
 -NoStatePrefetchTest.MaxConcurrencyTest
@@ -783,10 +795,8 @@
 -ProfileResetterTest.ResetContentSettings
 -ProfileResetterTest.ResetStartPagePartially
 -RealThemeSyncableServiceTest.*
--RenderViewContextMenuExtensionsTest.*
 -SearchProviderRequestTest.SendRequest*
--SearchProviderTest.*
--SearchTest.InstantCacheableNTPNavigationEntryNewProfile
+-SearchProvider*Test.*
 -SettingsOverriddenParamsProvidersUnitTest.GetExtensionControllingNewTab
 -StartupTabProviderTest.GetCommandLineTabs
 -StateStoreTest.ClearAll
@@ -795,6 +805,7 @@
 -StubResolverConfigReaderTest.*
 -SubresourceFilterComponentInstallerTest.TestComponentRegistrationWhenFeatureEnabled
 -TCPSocketUnitTest.SocketConnectDisconnectRace
+-TabStatsTrackerTest.*
 -TabTest.*
 -TemplateURLServiceSyncTest.MergeConflictingPrepopulatedEngine
 -ThemeLocalDataBatchUploaderTest.*

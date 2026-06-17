@@ -119,10 +119,12 @@
 
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
     *** isInNarrowWindowOnTablet(...);
+    *** isNtpThemeCustomizationEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
     *** isInNarrowWindowOnTablet(...);
+    *** isNtpThemeCustomizationEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
@@ -166,7 +168,7 @@
     *** mModalDialogManagerSupplier;
     *** mTabObscuringHandler;
     *** mReadAloudControllerSupplier;
-    *** mTopUiThemeColorProvider;
+    *** mToolbarThemeColorProvider;
     *** mCurrentOrientation;
     *** mInitializedWithNative;
     *** mTabGroupUiOneshotSupplier;
@@ -219,7 +221,7 @@
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
-    *** addOrEditBookmark(...);
+    *** addOrEditSingleBookmark(...);
     *** isSpecialFolder(...);
 }
 
@@ -371,7 +373,7 @@
 -keep class org.chromium.components.browser_ui.util.motion.MotionEventInfo
 
 -keep class org.chromium.chrome.browser.ChromeTabbedActivity {
-    boolean onMenuOrKeyboardAction(int, boolean, org.chromium.components.browser_ui.util.motion.MotionEventInfo);
+    boolean onMenuOrKeyboardAction(int, boolean, android.os.Bundle, org.chromium.components.browser_ui.util.motion.MotionEventInfo);
 }
 
 -keep class org.chromium.chrome.browser.app.BraveActivity
@@ -408,6 +410,14 @@
 }
 
 -keep class org.chromium.chrome.browser.notifications.BraveNotificationManagerProxyImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.phone.BraveNewBackgroundTabAnimationData {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.phone.NewBackgroundTabAnimationData {
     public <init>(...);
 }
 
@@ -508,8 +518,8 @@
     *** isVisibleToUser(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteCoordinator {
-    *** createViewProvider(...);
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveOmniboxViewHolderFactory {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
@@ -689,9 +699,8 @@
     public <init>(...);
     *** getUrlForCustomTab(...);
     *** getUrlForWebapp(...);
-    *** isJavascriptSchemeOrInvalidUrl(...);
     *** extractUrlFromIntent(...);
-    *** intentHasUnsafeUrl(...);
+    *** isUrlUnsafe(...);
 }
 
 -keep class org.chromium.chrome.browser.BraveIntentHandler {
@@ -711,7 +720,6 @@
 }
 
 -keep class org.chromium.components.cached_flags.CachedFlag {
-    *** mDefaultValue;
     <init>(...);
 }
 

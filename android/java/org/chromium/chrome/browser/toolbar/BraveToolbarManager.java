@@ -23,7 +23,6 @@ import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
-import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.Nullable;
@@ -48,6 +47,7 @@ import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -68,10 +68,9 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUiOneshotSupplier;
-import org.chromium.chrome.browser.theme.AdjustedTopUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
-import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsContentDelegate;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -137,7 +136,6 @@ public class BraveToolbarManager extends ToolbarManager
     private TopToolbarCoordinator mToolbar;
     private NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LayoutManagerImpl mLayoutManager;
-    private SettableNonNullObservableSupplier<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
     private IncognitoStateProvider mIncognitoStateProvider;
     private BottomSheetController mBottomSheetController;
@@ -147,7 +145,7 @@ public class BraveToolbarManager extends ToolbarManager
     private TabObscuringHandler mTabObscuringHandler;
 
     private MonotonicObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
-    private TopUiThemeColorProvider mTopUiThemeColorProvider;
+    private ToolbarThemeColorProvider mToolbarThemeColorProvider;
     private int mCurrentOrientation;
     private boolean mInitializedWithNative;
 
@@ -186,8 +184,10 @@ public class BraveToolbarManager extends ToolbarManager
             ToolbarControlContainer controlContainer,
             CompositorViewHolder compositorViewHolder,
             Callback<Boolean> urlFocusChangedCallback,
-            TopUiThemeColorProvider topUiThemeColorProvider,
-            @Nullable AdjustedTopUiThemeColorProvider adjustedTopUiThemeColorProvider,
+            ToolbarThemeColorProvider toolbarThemeColorProvider,
+            @Nullable ToolbarThemeColorProvider adjustedTopUiThemeColorProvider,
+            BottomUiThemeColorProvider bottomUiThemeColorProvider,
+            IncognitoStateProvider incognitoStateProvider,
             TabObscuringHandler tabObscuringHandler,
             MonotonicObservableSupplier<ShareDelegate> shareDelegateSupplier,
             List<ButtonDataProvider> buttonDataProviders,
@@ -234,7 +234,8 @@ public class BraveToolbarManager extends ToolbarManager
             SnackbarManager snackbarManager,
             @Nullable OmniboxChipManager omniboxChipManager,
             @Nullable BottomBarHostManager bottomBarHostManager,
-            @Nullable ActionRegistry actionRegistry) {
+            @Nullable ActionRegistry actionRegistry,
+            GlicButtonDelegate toggleGlicCallback) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -244,8 +245,10 @@ public class BraveToolbarManager extends ToolbarManager
                 controlContainer,
                 compositorViewHolder,
                 urlFocusChangedCallback,
-                topUiThemeColorProvider,
+                toolbarThemeColorProvider,
                 adjustedTopUiThemeColorProvider,
+                bottomUiThemeColorProvider,
+                incognitoStateProvider,
                 tabObscuringHandler,
                 shareDelegateSupplier,
                 buttonDataProviders,
@@ -291,7 +294,8 @@ public class BraveToolbarManager extends ToolbarManager
                 snackbarManager,
                 omniboxChipManager,
                 bottomBarHostManager,
-                actionRegistry);
+                actionRegistry,
+                toggleGlicCallback);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -355,7 +359,7 @@ public class BraveToolbarManager extends ToolbarManager
 
         ThemeColorProvider bottomUiThemeColorProvider =
                 new BottomUiThemeColorProvider(
-                        mTopUiThemeColorProvider,
+                        mToolbarThemeColorProvider,
                         mBrowserControlsSizer,
                         mBottomControlsStacker,
                         mIncognitoStateProvider,
@@ -414,12 +418,13 @@ public class BraveToolbarManager extends ToolbarManager
                         controlsVisibilityDelegate,
                         mFullscreenManager,
                         mEdgeToEdgeControllerSupplier,
+                        mActivityTabProvider.asObservable(),
                         mBottomControls,
                         LayerType.TABSTRIP_TOOLBAR,
                         R.dimen.brave_bottom_toolbar_height,
                         bottomControlsContentDelegateSupplier,
                         mTabObscuringHandler,
-                        mOverlayPanelVisibilitySupplier,
+                        mLayoutManager.getOverlayPanelManager().getPanelStateSupplier(),
                         getConstraintsProxy(),
                         /* readAloudRestoringSupplier= */ () -> {
                             final var readAloud = mReadAloudControllerSupplier.get();
@@ -444,7 +449,9 @@ public class BraveToolbarManager extends ToolbarManager
                                         mIncognitoStateProvider.isIncognitoSelected()
                                                 ? R.id.new_incognito_tab_menu_id
                                                 : R.id.new_tab_menu_id,
-                                        false);
+                                        false,
+                                        /* menuItemData= */ null,
+                                        /* triggeringMotion= */ null);
                     };
 
             bottomControlsCoordinator.initializeWithNative(
@@ -525,12 +532,22 @@ public class BraveToolbarManager extends ToolbarManager
 
     @Override
     public @Nullable View getMenuButtonView() {
-        if (mMenuButtonCoordinator.getMenuButton() == null) {
-            // Return fake view instead of null to avoid NullPointerException as some code within
-            // Chromium doesn't check for null.
-            return new View(mActivity);
+        if (mMenuButtonCoordinator.getMenuButton() != null) {
+            return super.getMenuButtonView();
         }
-        return super.getMenuButtonView();
+        // The menu button is in the bottom toolbar (isMenuFromBottom). Use the bottom toolbar's
+        // real menu button view so that IPH anchored to it finds an attached view.
+        if (mTabGroupUiBottomControlsCoordinatorSupplier != null) {
+            var coord = mTabGroupUiBottomControlsCoordinatorSupplier.get();
+            if (coord instanceof BraveBottomControlsCoordinator) {
+                View bottomMenuButton =
+                        ((BraveBottomControlsCoordinator) coord).getMenuButtonView();
+                if (bottomMenuButton != null) return bottomMenuButton;
+            }
+        }
+        // Fallback: keeps existing behaviour (satisfies the assert in TabbedRootUiCoordinator).
+        // In practice this path should not be reached when the bottom toolbar is fully set up.
+        return new View(mActivity);
     }
 
     @Override

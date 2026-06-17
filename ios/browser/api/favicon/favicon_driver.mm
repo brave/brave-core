@@ -22,6 +22,7 @@
 #include "ios/web/js_messaging/web_view_js_utils.h"
 #import "ios/web/navigation/navigation_context_impl.h"
 #include "ios/web/public/js_messaging/script_message.h"
+#include "ios/web/util/wk_security_origin_util.h"
 #import "ios/web/web_state/web_state_impl.h"
 #import "net/base/apple/url_conversions.h"
 
@@ -138,9 +139,10 @@ void FaviconDriverObserver::OnFaviconUpdated(
     url = net::GURLWithNSURL(ns_url);
   }
 
-  web::ScriptMessage message =
-      web::ScriptMessage(web::ValueResultFromWKResult(scriptMessage.body),
-                         false, scriptMessage.frameInfo.mainFrame, url);
+  web::ScriptMessage message = web::ScriptMessage(
+      web::ValueResultFromWKResult(scriptMessage.body), false,
+      scriptMessage.frameInfo.mainFrame, url,
+      web::OriginWithWKSecurityOrigin(scriptMessage.frameInfo.securityOrigin));
 
   DCHECK(message.is_main_frame());
   if (!message.body() || !message.body()->is_list() || !message.request_url()) {

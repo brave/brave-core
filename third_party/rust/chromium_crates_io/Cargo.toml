@@ -97,13 +97,13 @@ package = "document-extractor"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/anstyle-v1"
 package = "anstyle"
 
-[patch.crates-io.arrayvec_v0_7]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/arrayvec-v0_7"
-package = "arrayvec"
-
 [patch.crates-io.autocfg_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/autocfg-v1"
 package = "autocfg"
+
+[patch.crates-io.aho-corasick_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-v1"
+package = "aho-corasick"
 
 [patch.crates-io.base64_v0_22]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-v0_22"
@@ -112,10 +112,6 @@ package = "base64"
 [patch.crates-io.bytes_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1"
 package = "bytes"
-
-[patch.crates-io.bitflags_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-v1"
-package = "bitflags"
 
 [patch.crates-io.bitflags_v2]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-v2"
@@ -168,10 +164,6 @@ package = "cxxbridge-flags"
 [patch.crates-io.cxxbridge-macro_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-v1"
 package = "cxxbridge-macro"
-
-[patch.crates-io.encoding_rs_v0_8]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/encoding_rs-v0_8"
-package = "encoding_rs"
 
 [patch.crates-io.equivalent_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/equivalent-v1"

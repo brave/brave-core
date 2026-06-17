@@ -26,7 +26,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/check_is_test.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
 
@@ -39,7 +39,8 @@ bool IsAlreadyRegistered(ComponentUpdateService* cus) {
 }
 #if !BUILDFLAG(IS_LINUX)
 content::WebContents* GetActiveWebContents() {
-  if (BrowserWindowInterface* browser = chrome::FindLastActive()) {
+  if (BrowserWindowInterface* browser =
+          GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
     return browser->GetTabStripModel()->GetActiveWebContents();
   }
   return nullptr;

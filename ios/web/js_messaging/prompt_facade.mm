@@ -88,7 +88,7 @@ std::optional<std::string> PromptFacade::HandleJavaScriptPrompt(
 
   ScriptMessage script_message(std::make_unique<base::Value>(message->Clone()),
                                /*is_user_interacting=*/false, is_main_frame,
-                               std::move(request_url));
+                               std::move(request_url), security_origin);
 
   bool replied = false;
   std::string reply_json;

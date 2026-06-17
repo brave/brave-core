@@ -408,4 +408,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     public boolean isInTabSwitcherMode() {
         return mIsInTabSwitcherMode;
     }
+
+    /** Returns the bottom toolbar menu button view, or null if not present. */
+    @Nullable View getMenuButtonView() {
+        return mBrowsingModeCoordinator.getMenuButton();
+    }
 }

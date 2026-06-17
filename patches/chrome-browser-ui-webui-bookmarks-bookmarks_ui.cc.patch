@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index e78c6b1e873beaa596a4c75e0efe15cd9c362ed1..0bf32869e47e5f1ad75e15dd51eec6999324e56f 100644
+index 768ebacc0e87ff2620076585e9850eced25f5206..2ec1eda8e44a0106535b5d641df5891d8164d87a 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -152,6 +152,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
-       "images/batch_upload_bookmarks_promo_dark.svg",
-       IDR_BOOKMARKS_IMAGES_BATCH_UPLOAD_BOOKMARKS_PROMO_DARK_SVG);
- 
-+  BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE
-   return source;
- }
- 
+@@ -73,7 +73,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
+       {"editDialogInvalidUrl", IDS_BOOKMARK_MANAGER_INVALID_URL},
+       {"editDialogNameInput", IDS_BOOKMARK_MANAGER_NAME_INPUT_PLACE_HOLDER},
+       {"editDialogUrlInput", IDS_BOOKMARK_MANAGER_URL_INPUT_PLACE_HOLDER},
+-      {"emptyList", IDS_BOOKMARK_MANAGER_EMPTY_LIST},
++      {"emptyList", IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST},
+       {"emptyUnmodifiableList", IDS_BOOKMARK_MANAGER_EMPTY_UNMODIFIABLE_LIST},
+       {"folderLabel", IDS_BOOKMARK_MANAGER_FOLDER_LABEL},
+       {"importBegan", IDS_BOOKMARK_MANAGER_MENU_IMPORT_BEGAN},

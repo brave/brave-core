@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Tag NTP searchbox Brave Search navigations with `source=newtab`.
+
+      Wrap the params handed to the destination `web_contents_->OpenURL()` call
+      within `OnAutocompleteAccept()` with `MaybeOverrideURLParams()` (defined
+      in the chromium_src shadow), which appends the source marker for Brave
+      Search keyword matches. Anchored on `OnAutocompleteAccept` so the
+      identically-shaped `OpenURL()` call in `OpenUrl()` is left untouched.
+    re_pattern: '(SearchboxOmniboxClient::OnAutocompleteAccept\(.*?web_contents_->OpenURL\(\s*)(content::OpenURLParams\((?:[^()]|\([^()]*\))*\))'
+    re_flags: [DOTALL]
+    replace: '\1MaybeOverrideURLParams(\2, match, GetTemplateURLService())'

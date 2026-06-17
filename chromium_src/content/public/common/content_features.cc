@@ -17,6 +17,7 @@ BASE_FEATURE(kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kEmailVerificationProtocol, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},

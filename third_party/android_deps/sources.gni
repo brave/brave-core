@@ -14,5 +14,6 @@ brave_third_party_android_deps_visibility = [
   "//chrome/android:base_module_java__process_device",
   "//chrome/android:base_module_java__dex",
   "//chrome/android:base_module_java__validate",
+  "//chrome/android:base_module_java__validate_deps",
   "//chrome/android:base_module_java",
 ]

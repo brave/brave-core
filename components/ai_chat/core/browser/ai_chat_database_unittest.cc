@@ -45,7 +45,7 @@ class AIChatDatabaseTest : public testing::Test,
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
         /*is_sync_for_unittests=*/true);
 
-    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    base::test::TestFuture<scoped_refptr<os_crypt_async::Encryptor>> future;
     os_crypt_->GetInstance(future.GetCallback());
     db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
 
@@ -1188,7 +1188,7 @@ class AIChatDatabaseMigrationTest : public testing::Test,
         /*is_sync_for_unittests=*/true);
 
     // Create database when os_crypt is ready
-    base::test::TestFuture<os_crypt_async::Encryptor> future;
+    base::test::TestFuture<scoped_refptr<os_crypt_async::Encryptor>> future;
     os_crypt_->GetInstance(future.GetCallback());
     CreateDatabase(
         absl::StrFormat("aichat_database_dump_version_%d.sql", version()));

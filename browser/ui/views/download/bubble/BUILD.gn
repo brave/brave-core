@@ -14,6 +14,7 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//chrome/browser",
     "//chrome/browser/download",
+    "//chrome/browser/download/bubble",
     "//chrome/browser/ui",
     "//chrome/browser/ui/download",
     "//chrome/browser/ui/views/download",

@@ -1,0 +1,105 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pass `SelfDeleteSupport` to the `DeviceInfo` ctor in `SpecificsToModel`.
+
+      This plaster adds our own custom `DeviceInfo` values at the end of the
+      arg list instantiating it.
+    re_pattern:
+      '(DeviceInfo SpecificsToModel\([^)]*\)\s*\{.+?return DeviceInfo\(.+?)(\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1,
+            SpecificsToSelfDeleteSupport(specifics)\2
+
+  - description: |
+      Rename upstream `MakeLocalDeviceSpecifics` to `_ChromiumImpl`.
+
+      We rename this function, so we can wrap its calls, and insert our own
+      handling of `set_is_self_delete_supported`.
+    re_pattern: '(DeviceInfoSpecifics> )MakeLocalDeviceSpecifics(\()'
+    replace: '\1MakeLocalDeviceSpecifics_ChromiumImpl\2'
+
+  - description: |
+      `RefreshLocalDeviceInfoIfNeeded` early-return on `all_data_`.
+
+      Inserted as the first statement in the upstream body. After initiating
+      leaving the sync chain, `DeleteSpecifics` clears the `all_data_` map. If
+      the user closes the sync settings page or changes the data type before
+      `OnDeviceInfoDeleted` acknowledges the deletion, the upstream body would
+      access an invalidated iterator and crash.
+
+      The `DCHECK_CALLED_ON_VALID_SEQUENCE` is required for the thread-safety
+      analysis to allow reading `sequence_checker_`-guarded `all_data_`.
+    re_pattern:
+      '(void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded\(\)\s*\{)'
+    replace: |
+      \1
+        DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+        // After initiating leave the sync chain `DeleteSpecifics` cleans
+        // `all_data_` map.
+        // It is possible that user close sync settings page or change the data type
+        // before the confirmation `DeviceInfoSyncBridge::OnDeviceInfoDeleted()`
+        // comes - this leaded to access to the invalid iterator and crash.
+        if (const DeviceInfo* current_info =
+                local_device_info_provider_->GetLocalDeviceInfo();
+            current_info && !all_data_.contains(current_info->guid())) {
+          return;
+        }
+
+  - description: |
+      Disable the local-device re-upload block in `ApplyIncrementalSyncChanges`.
+
+      These macro guards disable Chromium's block which detects whether the
+      local device record should be re-uploaded to server. We disable it
+      because it breaks the ability to remove other device in sync chain for
+      Brave
+    re_pattern:
+      '(    // Reupload local device if it was deleted from the
+      server\.\n.+?has_tombstone_for_local_device = true;.+?\})'
+    re_flags: [DOTALL]
+    replace: |-
+      #if 0  // Brave: re-upload defeats removing other devices in the sync chain
+      \1
+      #endif
+
+  - description: |
+      Allow `ACTION_DELETE` changes for recent local cache guids.
+
+      Upstream unconditionally skips remote changes whose guid is or was the
+      local device. Brave needs the `ACTION_DELETE` path to still run on those
+      guids so that leaving the sync chain can complete.
+    re_pattern:
+      '(if \(device_info_prefs_->IsRecentLocalCacheGuid\(guid\)\)
+      \{\s+)continue;'
+    replace: '\1if (change->type() != EntityChange::ACTION_DELETE) continue;'
+
+  - description: |
+      Clear the metadata progress token after a forced device-list reset.
+
+      Guarded by `IsResetDevicesProgressTokenDone` so it only runs once per
+      reset. Clearing the token forces the next sync to re-fetch the full
+      device list rather than resuming from a stale incremental cursor.
+    re_pattern:
+      '(void DeviceInfoSyncBridge::OnReadAllMetadata\(.+?return;\n  \}\n)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        if (!device_info_prefs_->IsResetDevicesProgressTokenDone()) {
+          metadata_batch->ClearProgressToken();
+          device_info_prefs_->SetResetDevicesProgressTokenDone();
+        }
+
+  - description: |
+      Stop expiring old device-info entries.
+
+      Brave keeps stale device records around so the sync-chain UI can list
+      them and let the user remove them manually. Early-returning on the
+      first line of `ExpireOldEntries` is the simplest way to disable
+      upstream's time-based expiry without restructuring the function.
+    re_pattern: '(void DeviceInfoSyncBridge::ExpireOldEntries\(\) \{)'
+    replace: '\1\n  return;'

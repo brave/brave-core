@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1b987205f 100644
+index 6f1aa2dcd282279bc8135735fb10d514476a0ac4..15f129aa8a01de3baed13140e8c017cfa3f58729 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -164,6 +164,7 @@ if (_is_default_toolchain) {
@@ -10,7 +10,7 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -278,6 +279,7 @@ if (_is_default_toolchain) {
+@@ -277,6 +278,7 @@ if (_is_default_toolchain) {
      if (enable_extensions_core) {
        deps += [ "//chrome/browser/ui/android/extensions:java_resources" ]
      }
@@ -18,7 +18,7 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
    }
  
    android_resources("java_overlay_resources") {
-@@ -855,6 +857,7 @@ if (_is_default_toolchain) {
+@@ -864,6 +866,7 @@ if (_is_default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,7 +26,7 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
  
      srcjar_deps = [
        ":chrome_android_java_enums_srcjar",
-@@ -873,6 +876,7 @@ if (_is_default_toolchain) {
+@@ -882,6 +885,7 @@ if (_is_default_toolchain) {
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
        "//components/touch_to_search/core/browser:quick_action_category_enum_javagen",
      ]
@@ -34,7 +34,7 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -1015,6 +1019,7 @@ if (_is_default_toolchain) {
+@@ -1027,6 +1031,7 @@ if (_is_default_toolchain) {
        # TODO(crbug.com/434123514): see if we can remove these stub targets.
        deps += [ "//chrome/browser/ui/android/extensions/windowing/stub:java" ]
      }
@@ -42,7 +42,7 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
    }
  
    action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -1775,6 +1780,7 @@ if (_is_default_toolchain) {
+@@ -1792,6 +1797,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +50,7 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1927,6 +1933,7 @@ if (_is_default_toolchain) {
+@@ -1944,6 +1950,7 @@ if (_is_default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,7 +58,7 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
      }
    }
  
-@@ -2189,6 +2196,7 @@ if (_is_default_toolchain) {
+@@ -2208,6 +2215,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -66,9 +66,9 @@ index 4d58c64c73dfc2f95001a9159b69bce3c4fe0a53..c2ca0f60891fbbdbf8517b502ffe5fb1
  
      # More deps for DFMs.
      if (enable_chrome_android_internal) {
-@@ -3130,6 +3138,7 @@ if (_is_default_toolchain) {
-       "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
+@@ -3157,6 +3165,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
+       "java/src/org/chromium/chrome/browser/xr/scenecore/XrModuleBridge.java",
      ]
 +    sources += brave_jni_headers_sources
  

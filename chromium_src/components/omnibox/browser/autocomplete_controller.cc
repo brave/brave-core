@@ -104,9 +104,6 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 }  // namespace ai_chat
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-#define UpdateMatchDestinationURLWithInvocationSource \
-  UpdateMatchDestinationURLWithInvocationSource_Unused
-
 #define SearchProvider BraveSearchProvider
 #define HistoryQuickProvider BraveHistoryQuickProvider
 #define HistoryURLProvider BraveHistoryURLProvider
@@ -140,9 +137,3 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 #undef HistoryURLProvider
 #undef HistoryQuickProvider
 #undef SearchProvider
-#undef UpdateMatchDestinationURLWithInvocationSource
-
-// Suppress Chrome-specific source attribution (chrome.ob/chrome.rb) as it
-// clobbers Brave Search's own source param.
-void AutocompleteController::UpdateMatchDestinationURLWithInvocationSource(
-    AutocompleteMatch* match) const {}

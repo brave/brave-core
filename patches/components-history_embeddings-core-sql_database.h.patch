@@ -1,8 +1,8 @@
 diff --git a/components/history_embeddings/core/sql_database.h b/components/history_embeddings/core/sql_database.h
-index 0c9e524d6a7cbc903fb6ce4b5195f4608332d7e2..2e7d105ac63d7c2f60758f90841e658f70ea16ba 100644
+index 50336f1cae002f916deb770f9297c9c50b9094ef..14136007586c7322a8b8e0646ef2d6cd6958d968 100644
 --- a/components/history_embeddings/core/sql_database.h
 +++ b/components/history_embeddings/core/sql_database.h
-@@ -70,7 +70,8 @@ class SqlDatabase : public VectorDatabase {
+@@ -71,7 +71,8 @@ class SqlDatabase : public VectorDatabase {
    size_t GetEmbeddingDimensions() const override;
    bool AddUrlData(UrlData url_data) override;
    std::unique_ptr<UrlDataIterator> MakeUrlDataIterator(
