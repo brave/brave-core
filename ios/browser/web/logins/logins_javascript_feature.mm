@@ -79,15 +79,15 @@ void LoginsJavaScriptFeature::ScriptMessageReceivedWithReply(
   }
 
   if (*type == kMessageTypeRequest) {
-    const std::optional<GURL> request_url = message.request_url();
+    url::Origin security_origin = message.security_origin();
     const std::string* action_origin = body->FindString(kActionOriginKey);
-    if (!request_url || !action_origin) {
+    if (security_origin.opaque() || !action_origin) {
       std::move(callback).Run(nullptr, nil);
       return;
     }
 
     tab_helper->GetSavedLogins(
-        *request_url, *action_origin, message.is_main_frame(),
+        security_origin, *action_origin, message.is_main_frame(),
         base::BindOnce(
             [](ScriptMessageReplyCallback handler, std::string json) {
               auto parsed = base::JSONReader::Read(json, base::JSON_PARSE_RFC);

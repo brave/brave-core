@@ -55,9 +55,7 @@ BraveTalkLauncherJavaScriptFeature::GetScriptMessageHandlerName() const {
 void BraveTalkLauncherJavaScriptFeature::ScriptMessageReceived(
     web::WebState* web_state,
     const web::ScriptMessage& message) {
-  GURL request_url = message.request_url().value_or(GURL());
-
-  if (!message.is_main_frame() || !request_url.is_valid()) {
+  if (!message.is_main_frame()) {
     return;
   }
 
