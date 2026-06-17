@@ -14,15 +14,14 @@ namespace psst {
 
 inline constexpr char kPsstComponentName[] =
     "Brave Privacy Settings Selection for Sites Tool (PSST) Files";
-inline constexpr char kPsstComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
+inline constexpr char kPsstComponentId[] = "bchfnigamfmpeanhekjggkphjfobpipo";
 inline constexpr char kPsstComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAphUFFHyK+"
-    "qUOXSw3OJXRQwKs79bt7zqnmkeFp/szXmmhj6/"
-    "i4fmNiXVaxFuVOryM9OiaVxBIGHjN1BWYCQdylgbmgVTqLWpJAy/AAKEH9/"
-    "Q68yWfQnN5sg1miNir+0I1SpCiT/Dx2N7s28WNnzD2e6/"
-    "7Umx+zRXkRtoPX0xAecgUeyOZcrpZXJ4CG8dTJInhv7Fly/U8V/KZhm6ydKlibwsh2CB588/"
-    "FlvQUzi5ZykXnPfzlsNLyyQ8fy6/+8hzSE5x4HTW5fy3TIRvmDi/"
-    "7HmW+evvuMIPl1gtVe4HKOZ7G8UaznjXBfspszHU1fqTiZWeCPb53uemo1a+rdnSHXwIDAQAB";
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz7OnL/yxxX0a/"
+    "IKLJc2LCQ5k12S6uQFuSCkruf7mGLuDhepKo8lA5orJQI8dqUMivTmxXC7SWYVS9uj05b9LTcL"
+    "tmlcNiUjdYFoCzmdtRh6rBTCzTZ7wkyyhacUpY7N3BRIR5dRk1OLfx2ovm8BLQqak3YJ7dsPxD"
+    "29714xPlbaMXDCsXEgibaGlXSNpDuCKFtzhVuRhSD6hRRQ7OgLQ7vm0b5BECO/"
+    "jRuMHra4G4S9Z0rRN8KA9dC38t55O+FeOGZMhjJzBEJPk5AlQzlbPGq/"
+    "MVPUu+4XFNEUoaeu65PjoAc05apRFCQQ/lcNy5gQfzwVExTNyrdP62eoRf+ANhQIDAQAB";
 
 // Registers the PSST component with the component updater.
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus);
