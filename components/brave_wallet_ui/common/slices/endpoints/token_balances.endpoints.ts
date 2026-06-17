@@ -51,6 +51,7 @@ import { getIsRewardsNetwork } from '../../../utils/rewards_utils'
 import {
   blockchainTokenEntityAdaptorInitialState, //
 } from '../entities/blockchain-token.entity'
+import { Uint128ToBigInt } from '../../../utils/polkadot-utils'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -950,6 +951,32 @@ async function fetchAccountTokenCurrentBalance({
       return Amount.normalize(balance.totalBalance.toString())
     }
 
+    case BraveWallet.CoinType.DOT: {
+      // The asset id is stored as the (decimal) contract address.
+      const { assetAccounts, errorMessage } =
+        await polkadotWalletService.getAssetAccountBalances(
+          accountId,
+          [Number(token.contractAddress)],
+          token.chainId,
+        )
+
+      if (errorMessage || assetAccounts === null) {
+        throw new Error(
+          `getAssetAccountBalances (DOT) error: ${
+            errorMessage || 'Unknown error'
+          }`,
+        )
+      }
+
+      const assetAccount = assetAccounts[0]
+      if (!assetAccount) {
+        return Amount.zero().format()
+      }
+
+      const balance = Uint128ToBigInt(assetAccount.balance) ?? 0
+      return Amount.normalize(balance.toString())
+    }
+
     // Other network type tokens
     default: {
       return Amount.zero().format()
@@ -1112,6 +1139,53 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           isShielded: false,
         })
       }
+    }
+
+    return
+  }
+
+  if (arg.coin === CoinTypes.DOT) {
+    const assetTokens = arg.tokens.filter((token) => !isNativeAsset(token))
+
+    if (assetTokens.length) {
+      // The asset id is stored as the (decimal) contract address.
+      const assetIds = assetTokens.map((token) => Number(token.contractAddress))
+      const { assetAccounts, errorMessage } =
+        await polkadotWalletService.getAssetAccountBalances(
+          arg.accountId,
+          assetIds,
+          arg.chainId,
+        )
+
+      if (errorMessage || assetAccounts === null) {
+        throw new Error(
+          `getAssetAccountBalances (DOT) error: ${
+            errorMessage || 'Unknown error'
+          }`,
+        )
+      }
+
+      // The response is positional: assetAccounts[i] holds the balance for
+      // assetIds[i] (and therefore assetTokens[i]).
+      assetTokens.forEach((token, index) => {
+        const assetAccount = assetAccounts[index]
+        if (!assetAccount) {
+          return
+        }
+
+        const balance = Uint128ToBigInt(assetAccount.balance) ?? 0
+        if (balance > BigInt(0)) {
+          onBalance({
+            accountId: arg.accountId,
+            chainId: arg.chainId,
+            contractAddress: token.contractAddress,
+            balance: Amount.normalize(balance.toString()),
+            coinType: arg.coin,
+            tokenId: '',
+            isShielded: false,
+          })
+        }
+      })
     }
 
     return

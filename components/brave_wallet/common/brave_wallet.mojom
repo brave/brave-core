@@ -2282,6 +2282,8 @@ interface PolkadotWalletService {
   GetAddress(AccountId account, string chain_id)
       => (string? address, string? error_message);
 
+  GetAssetMetadata(array<uint32> asset_ids, string chain_id) => (array<BlockchainToken>? tokens, string? error_message);
+
   GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
 
