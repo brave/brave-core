@@ -62,6 +62,7 @@ import {
 import { getTrezorHardwareKeyring } from '../../api/hardware_keyrings'
 import { getLocale } from '../../../../common/locale'
 import { bigIntToUint128 } from '../../../utils/polkadot-utils'
+import { PolkadotAssetId } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 interface ProcessSignSolTransactionsRequestPayload {
   approved: boolean
@@ -745,6 +746,12 @@ export const transactionEndpoints = ({
         try {
           const { txService } = baseQuery(undefined).data
 
+          let assetId = undefined
+          if (payload.assetId) {
+            assetId = new PolkadotAssetId()
+            assetId.id = payload.assetId
+          }
+
           const params: BraveWallet.NewPolkadotTransactionParams = {
             chainId: payload.network.chainId,
             from: payload.fromAccount.accountId,
@@ -752,8 +759,11 @@ export const transactionEndpoints = ({
             amount: bigIntToUint128(BigInt(payload.value)),
             sendingMaxAmount: payload.sendingMaxAmount,
             swapInfo: payload.swapInfo,
-            assetId: undefined,
+            assetId,
           }
+
+        console.log('going to send these params:')
+        console.log(params)
 
           const { errorMessage, success } =
             await txService.addUnapprovedPolkadotTransaction(params)
