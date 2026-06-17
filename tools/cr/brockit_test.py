@@ -4,11 +4,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
+import json
 import os
+import subprocess
 import unittest
 from pathlib import Path
 import shutil
 from datetime import datetime
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import brockit
@@ -756,6 +761,427 @@ class MarkChangeTaskTest(unittest.TestCase):
                                                     self.brave)
         with self.assertRaises(brockit.InvalidInputException):
             brockit.Drop().execute(change='HEAD')
+
+
+ISSUE_URL = 'https://github.com/brave/brave-browser/issues/4242'
+PR_URL = 'https://github.com/brave/brave-core/pull/123'
+
+# The CI labels every PR opened by `GitHubIssue` must carry. They are stored
+# exactly as the command passes them to `gh` (i.e. wrapped in double quotes).
+REQUIRED_CI_LABELS = [
+    '"CI/run-linux-arm64"',
+    '"CI/run-macos-x64"',
+    '"CI/run-windows-x86"',
+    '"CI/run-windows-arm64"',
+]
+
+
+def _values_after(cmd: list[str], flag: str) -> list[str]:
+    """Returns every argument that immediately follows `flag` in `cmd`."""
+    return [cmd[i + 1] for i, arg in enumerate(cmd) if arg == flag]
+
+
+class _FakeGh:
+    """Stand-in for `terminal.run` that answers the `gh` calls `GitHubIssue`
+    makes.
+
+    Every invocation is recorded in `self.calls`, and the canned responses are
+    configured through the constructor so each test can drive a specific code
+    path without touching the network or the real `gh` CLI.
+    """
+
+    def __init__(self,
+                 *,
+                 logged_in: bool = True,
+                 issue_list: list | None = None,
+                 issue_create_url: str = ISSUE_URL,
+                 pr_list: list | None = None,
+                 pr_create_url: str = PR_URL,
+                 pr_create_error: Exception | None = None,
+                 milestones: list | None = None) -> None:
+        self.logged_in = logged_in
+        self.issue_list = issue_list if issue_list is not None else []
+        self.issue_create_url = issue_create_url
+        self.pr_list = pr_list if pr_list is not None else []
+        self.pr_create_url = pr_create_url
+        self.pr_create_error = pr_create_error
+        self.milestones = milestones if milestones is not None else []
+        self.calls: list[list[str]] = []
+
+    def __call__(self, cmd, **kwargs) -> SimpleNamespace:
+        cmd = [str(x) for x in cmd]
+        self.calls.append(cmd)
+        verb = cmd[1:3]
+        if verb == ['auth', 'status']:
+            if not self.logged_in:
+                raise subprocess.CalledProcessError(1, cmd, stderr='no auth')
+            return SimpleNamespace(
+                stdout='Logged in to github.com account fake')
+        if verb == ['issue', 'list']:
+            return SimpleNamespace(stdout=json.dumps(self.issue_list))
+        if verb == ['issue', 'create']:
+            return SimpleNamespace(stdout=f'{self.issue_create_url}\n')
+        if verb == ['issue', 'edit']:
+            return SimpleNamespace(stdout='')
+        if verb == ['pr', 'list']:
+            return SimpleNamespace(stdout=json.dumps(self.pr_list))
+        if verb == ['pr', 'create']:
+            if self.pr_create_error is not None:
+                raise self.pr_create_error
+            return SimpleNamespace(stdout=f'{self.pr_create_url}\n')
+        if cmd[1] == 'api':
+            if cmd[2] == '-X':  # PATCH to set the milestone.
+                return SimpleNamespace(stdout='')
+            return SimpleNamespace(stdout=json.dumps(self.milestones))
+        raise AssertionError(f'Unexpected gh call: {cmd}')
+
+    def call_matching(self, *prefix: str) -> list[str] | None:
+        """Returns the first recorded call whose start matches `prefix`."""
+        prefix = list(prefix)
+        return next((c for c in self.calls if c[:len(prefix)] == prefix), None)
+
+    def pr_create_cmd(self) -> list[str] | None:
+        return self.call_matching('gh', 'pr', 'create')
+
+    def issue_create_cmd(self) -> list[str] | None:
+        return self.call_matching('gh', 'issue', 'create')
+
+
+class GitHubIssueTest(unittest.TestCase):
+    """Tests for the `GitHubIssue` task (issue creation and PR pushing)."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        brockit.VERSION_UPGRADE_FILE = (self.fake_chromium_src.brave /
+                                        '.version_upgrade')
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    # -- helpers ---------------------------------------------------------------
+
+    def _make_issue(self,
+                    base: str = '134.0.7035.0',
+                    target: str = '134.0.7037.1') -> brockit.GitHubIssue:
+        return brockit.GitHubIssue(base_version=brockit.Version(base),
+                                   target_version=brockit.Version(target))
+
+    def _patch_gh(self, fake: _FakeGh) -> _FakeGh:
+        patcher = patch.object(brockit.terminal, 'run', side_effect=fake)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        return fake
+
+    def _patch_branch(self,
+                      *,
+                      upstream: str | None,
+                      uplift_branch: str = '1.0.x',
+                      current: str = 'cr-branch') -> None:
+        """Patches branch resolution so `create_push_request` runs hermetically.
+
+        `upstream` is returned verbatim by `_get_current_branch_upstream_name`
+        (use an `origin/...` value to exercise the remote-prefix stripping).
+        """
+        for patcher in (
+                patch.object(brockit.repository.Repository,
+                             'current_branch',
+                             return_value=current),
+                patch.object(brockit,
+                             '_get_current_branch_upstream_name',
+                             return_value=upstream),
+                patch.object(brockit.versioning,
+                             'get_uplift_branch_name_from_package',
+                             return_value=uplift_branch),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    ############################################################################
+    #### compose_issue_title
+
+    def test_compose_issue_title_minor(self):
+        title = self._make_issue('134.0.7035.0',
+                                 '134.0.7037.1').compose_issue_title()
+        self.assertEqual(
+            title, 'Upgrade from Chromium 134.0.7035.0 to Chromium '
+            '134.0.7037.1')
+
+    def test_compose_issue_title_major(self):
+        # Major upgrades only reference the major version numbers.
+        title = self._make_issue('134.0.7035.0',
+                                 '135.0.7037.1').compose_issue_title()
+        self.assertEqual(title, 'Upgrade from Chromium 134 to Chromium 135')
+
+    ############################################################################
+    #### lookup_issue
+
+    def test_lookup_issue_found(self):
+        title = 'Upgrade from Chromium 134.0.7035.0 to Chromium 134.0.7037.1'
+        gh = self._patch_gh(
+            _FakeGh(issue_list=[{
+                'number': 1,
+                'title': 'Some other issue',
+                'url': 'u1',
+                'body': 'b1'
+            }, {
+                'number': 2,
+                'title': title,
+                'url': ISSUE_URL,
+                'body': 'b2'
+            }]))
+        issue = self._make_issue().lookup_issue(title)
+        self.assertIsNotNone(issue)
+        self.assertEqual(issue['number'], 2)
+        self.assertEqual(issue['url'], ISSUE_URL)
+        # The search is delegated to `gh issue list`.
+        self.assertIsNotNone(gh.call_matching('gh', 'issue', 'list'))
+
+    def test_lookup_issue_not_found_when_title_differs(self):
+        # `gh` does fuzzy matching, so an exact-title check is applied locally.
+        self._patch_gh(
+            _FakeGh(issue_list=[{
+                'number': 1,
+                'title': 'A close but different title',
+                'url': 'u1',
+                'body': 'b1'
+            }]))
+        self.assertIsNone(self._make_issue().lookup_issue('Exact title'))
+
+    def test_lookup_issue_empty(self):
+        self._patch_gh(_FakeGh(issue_list=[]))
+        self.assertIsNone(self._make_issue().lookup_issue('Any title'))
+
+    ############################################################################
+    #### create_push_request
+
+    def test_create_push_request_raises_on_detached_head(self):
+        """A detached HEAD has no branch to open a PR from."""
+        repo = self.fake_chromium_src.brave
+        head = self.fake_chromium_src._run_git_command(['rev-parse', 'HEAD'],
+                                                       repo)
+        self.fake_chromium_src._run_git_command(['checkout', head], repo)
+
+        with self.assertRaises(brockit.InvalidInputException):
+            self._make_issue().create_push_request(ISSUE_URL)
+
+    def test_create_push_request_raises_without_upstream(self):
+        """A branch without an upstream cannot resolve a PR base."""
+        repo = self.fake_chromium_src.brave
+        self.fake_chromium_src._run_git_command(
+            ['checkout', '-b', 'no-upstream'], repo)
+
+        with self.assertRaises(brockit.InvalidInputException):
+            self._make_issue().create_push_request(ISSUE_URL)
+
+    def test_create_push_request_skips_when_pr_exists(self):
+        """An already-open PR for the branch short-circuits creation."""
+        self._patch_branch(upstream='origin/master')
+        gh = self._patch_gh(_FakeGh(pr_list=[{'number': 9, 'url': PR_URL}]))
+
+        self._make_issue().create_push_request(ISSUE_URL)
+
+        self.assertIsNone(gh.pr_create_cmd())
+
+    def test_create_push_request_minor_on_master(self):
+        self._patch_branch(upstream='origin/master', uplift_branch='134.0.x')
+        gh = self._patch_gh(_FakeGh())
+
+        self._make_issue('134.0.7035.0',
+                         '134.0.7037.1').create_push_request(ISSUE_URL)
+
+        cmd = gh.pr_create_cmd()
+        self.assertIsNotNone(cmd)
+        # The base is the upstream branch with the remote prefix stripped.
+        self.assertEqual(_values_after(cmd, '--base'), ['master'])
+        # The PR body links back to the issue.
+        self.assertIn(f'Resolves {ISSUE_URL}', cmd)
+        labels = _values_after(cmd, '--label')
+        for label in REQUIRED_CI_LABELS:
+            self.assertIn(label, labels)
+        self.assertIn('"CI/run-audit-deps"', labels)
+        self.assertIn('"CI/run-network-audit"', labels)
+        # `master` always runs upstream tests, but minor bumps are not drafts
+        # and carry no storybook label.
+        self.assertIn('"CI/run-upstream-tests"', labels)
+        self.assertNotIn('"CI/storybook-url"', labels)
+        self.assertNotIn('--draft', cmd)
+        # 134 is even, so Emerick and Alexey are assigned.
+        assignees = _values_after(cmd, '--assignee')
+        self.assertEqual(assignees,
+                         ['cdesouza-chromium', 'emerick', 'AlexeyBarabash'])
+        # A minor, non-uplift PR title carries no branch tag.
+        self.assertEqual(
+            _values_after(cmd, '--title'),
+            ['Upgrade from Chromium 134.0.7035.0 to Chromium 134.0.7037.1'])
+
+    def test_create_push_request_major_is_draft_with_extra_labels(self):
+        self._patch_branch(upstream='origin/master', uplift_branch='135.0.x')
+        gh = self._patch_gh(_FakeGh())
+
+        self._make_issue('134.0.7035.0',
+                         '135.0.7037.1').create_push_request(ISSUE_URL)
+
+        cmd = gh.pr_create_cmd()
+        labels = _values_after(cmd, '--label')
+        for label in REQUIRED_CI_LABELS:
+            self.assertIn(label, labels)
+        self.assertIn('"CI/run-upstream-tests"', labels)
+        self.assertIn('"CI/storybook-url"', labels)
+        self.assertIn('--draft', cmd)
+        # 135 is odd, so Max and Sam are assigned.
+        assignees = _values_after(cmd, '--assignee')
+        self.assertEqual(assignees,
+                         ['cdesouza-chromium', 'mkarolin', 'samartnik'])
+
+    def test_create_push_request_uplift_sets_milestone(self):
+        self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
+        gh = self._patch_gh(
+            _FakeGh(milestones=[{
+                'number': 77,
+                'title': '1.70.x - Some release'
+            }, {
+                'number': 1,
+                'title': '1.69.x - Older release'
+            }]))
+
+        self._make_issue('134.0.7035.0',
+                         '134.0.7037.1').create_push_request(ISSUE_URL)
+
+        cmd = gh.pr_create_cmd()
+        # Uplift PR titles are tagged with the target branch.
+        self.assertEqual(_values_after(cmd, '--title'), [
+            '[1.70.x] Upgrade from Chromium 134.0.7035.0 to Chromium '
+            '134.0.7037.1'
+        ])
+        # Uplifts of minor bumps don't run upstream tests.
+        self.assertNotIn('"CI/run-upstream-tests"',
+                         _values_after(cmd, '--label'))
+        # Required CI labels still apply to uplifts.
+        for label in REQUIRED_CI_LABELS:
+            self.assertIn(label, _values_after(cmd, '--label'))
+        # The milestone matching the upstream branch is PATCHed onto the PR.
+        patch_cmd = gh.call_matching('gh', 'api', '-X', 'PATCH')
+        self.assertIsNotNone(patch_cmd)
+        self.assertIn('repos/brave/brave-core/issues/123', patch_cmd)
+        self.assertIn('milestone=77', patch_cmd)
+
+    def test_create_push_request_uplift_no_milestones_raises(self):
+        self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
+        self._patch_gh(_FakeGh(milestones=[]))
+
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._make_issue().create_push_request(ISSUE_URL)
+
+    def test_create_push_request_uplift_milestone_not_found_raises(self):
+        self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
+        self._patch_gh(
+            _FakeGh(milestones=[{
+                'number': 1,
+                'title': '1.69.x - Older release'
+            }]))
+
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._make_issue().create_push_request(ISSUE_URL)
+
+    def test_create_push_request_pr_creation_failure_raises(self):
+        self._patch_branch(upstream='origin/master', uplift_branch='134.0.x')
+        self._patch_gh(
+            _FakeGh(pr_create_error=subprocess.CalledProcessError(
+                1, ['gh', 'pr', 'create'], stderr='gh blew up')))
+
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._make_issue().create_push_request(ISSUE_URL)
+
+    ############################################################################
+    #### create_or_update_version_issue
+
+    def test_create_or_update_creates_new_issue(self):
+        gh = self._patch_gh(_FakeGh(issue_list=[]))
+
+        with patch.object(brockit.GitHubIssue,
+                          'create_push_request') as mock_push:
+            self._make_issue().create_or_update_version_issue(with_pr=False)
+
+        cmd = gh.issue_create_cmd()
+        self.assertIsNotNone(cmd)
+        labels = _values_after(cmd, '--label')
+        self.assertIn('"Chromium/upgrade minor"', labels)
+        self.assertIn('"QA/Yes"', labels)
+        self.assertEqual(
+            _values_after(cmd, '--title'),
+            ['Upgrade from Chromium 134.0.7035.0 to Chromium 134.0.7037.1'])
+        # No PR is pushed when with_pr is False.
+        mock_push.assert_not_called()
+
+    def test_create_or_update_creates_issue_and_pushes_pr(self):
+        self._patch_gh(_FakeGh(issue_list=[]))
+
+        with patch.object(brockit.GitHubIssue,
+                          'create_push_request') as mock_push:
+            self._make_issue().create_or_update_version_issue(with_pr=True)
+
+        # The freshly created issue URL is passed to the push request.
+        mock_push.assert_called_once_with(ISSUE_URL)
+
+    def test_create_or_update_existing_issue_up_to_date(self):
+        issue = self._make_issue('134.0.7035.0', '134.0.7037.1')
+        title = issue.compose_issue_title()
+        link = issue.target_version.get_googlesource_diff_link(
+            from_version=str(issue.base_version))
+        # The existing body already points at the current diff link.
+        gh = self._patch_gh(
+            _FakeGh(issue_list=[{
+                'number': 5,
+                'title': title,
+                'url': ISSUE_URL,
+                'body': f'Some text\n{link}\nmore text'
+            }]))
+
+        with patch.object(brockit.GitHubIssue, 'create_push_request'):
+            issue.create_or_update_version_issue(with_pr=False)
+
+        # An up-to-date issue is neither edited nor recreated.
+        self.assertIsNone(gh.call_matching('gh', 'issue', 'edit'))
+        self.assertIsNone(gh.issue_create_cmd())
+
+    def test_create_or_update_existing_issue_updates_body(self):
+        issue = self._make_issue('134.0.7035.0', '134.0.7037.1')
+        title = issue.compose_issue_title()
+        stale_link = ('https://chromium.googlesource.com/chromium/src/+log/'
+                      '111.0.0.0..112.0.0.0')
+        gh = self._patch_gh(
+            _FakeGh(issue_list=[{
+                'number': 5,
+                'title': title,
+                'url': ISSUE_URL,
+                'body': f'Some text\n{stale_link}\nmore text'
+            }]))
+
+        with patch.object(brockit.GitHubIssue, 'create_push_request'):
+            issue.create_or_update_version_issue(with_pr=False)
+
+        # A stale diff link triggers an edit, not a brand new issue.
+        edit_cmd = gh.call_matching('gh', 'issue', 'edit')
+        self.assertIsNotNone(edit_cmd)
+        self.assertIn('5', edit_cmd)
+        self.assertIsNone(gh.issue_create_cmd())
+
+    ############################################################################
+    #### execute
+
+    def test_execute_raises_when_not_logged_in(self):
+        self._patch_gh(_FakeGh(logged_in=False))
+
+        with self.assertRaises(brockit.BadOutcomeException):
+            self._make_issue().execute()
+
+    def test_execute_creates_issue_with_pr_when_logged_in(self):
+        self._patch_gh(_FakeGh(logged_in=True))
+
+        with patch.object(brockit.GitHubIssue,
+                          'create_or_update_version_issue') as mock_create:
+            self._make_issue().execute()
+
+        mock_create.assert_called_once_with(with_pr=True)
 
 
 if __name__ == '__main__':
