@@ -496,8 +496,8 @@ if (!is_mac && !is_android && !is_ios) {
 
       public_deps = []
       foreach(locale, platform_pak_locales) {
-        # public_deps is used intentionaly because ":create_dist_zip" needs the all dependency
-        # of all locale files.
+        # public_deps is used intentionaly because ":create_dist_zip" needs the
+        # all dependency of all locale files.
         public_deps += [ ":brave_shields_locales_${locale}" ]
       }
     }
@@ -604,7 +604,8 @@ if (should_generate_symbols) {
   create_dist_template("create_brave_symbols_dist") {
     if (is_android) {
       # TODO(https://github.com/brave/brave-browser/issues/51200)
-      # Cleanup Mono once cr144 reaches stable channel, CI also needs to be updated
+      # Cleanup Mono once cr144 reaches stable channel, CI also needs to be
+      # updated
       output = "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-mono-$target_cpu-symbols-$target_android_output_format.zip"
     } else {
       output = "$brave_dist_dir/$brave_dist_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
@@ -650,8 +651,8 @@ action("create_dist_zips") {
   outputs = [ output ]
 
   if (is_win) {
-    # Repack a Chrome release archive to the Brave format.
-    # Besides changing from 7z to zip, the directory structure is a bit different.
+    # Repack a Chrome release archive to the Brave format. Besides changing from
+    # 7z to zip, the directory structure is a bit different.
     # TODO(atuchin): support other platforms.
 
     script = "//brave/script/repack-archive.py"

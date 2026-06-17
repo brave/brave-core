@@ -13,8 +13,8 @@ mojom("mojom") {
   sources = [ "brave_account.mojom" ]
 
   if (!is_android && !is_ios) {
-    # This is for desktop only.
-    # Mobile platforms should load the WebUI by navigating to it in a browser tab.
+    # This is for desktop only. Mobile platforms should load the WebUI by
+    # navigating to it in a browser tab.
     sources += [ "brave_account_row.mojom" ]
   }
 
