@@ -6,13 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_TOP_SITES_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_TOP_SITES_CONSTANTS_H_
 
-// Needs 12 items for our NTP top site tiles.
-#define kTopSitesNumber \
-  kTopSitesNumber = 12; \
-  static constexpr size_t kTopSitesNumber_Unused
+#include "build/build_config.h"
+
+// This chromium_src override is required only to include ^ build_config.h to
+// be used at top_sites_constants.h.yaml plaster for #if BUILDFLAG(IS_ANDROID)
 
 #include <components/history/core/browser/top_sites_constants.h>  // IWYU pragma: export
-
-#undef kTopSitesNumber
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_TOP_SITES_CONSTANTS_H_

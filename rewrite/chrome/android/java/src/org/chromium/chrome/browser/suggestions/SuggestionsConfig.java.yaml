@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Expand MAX_TILE_COUNT to 15
+
+      We want 15 items for our NTP top site tiles on Android:
+      4 rows x 4 element -1 for plus button.
+    re_pattern: '(MAX_TILE_COUNT\s+=\s+)8;'
+    replace: '\g<1>15;  // We want 15 tiles for Brave NTP'

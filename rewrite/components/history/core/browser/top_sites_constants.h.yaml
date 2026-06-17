@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Adjust kTopSitesNumber for Brave
+
+      kTopSitesNumber should be 12 for Desktop and 15 (4 rows x 4 element -1
+      for plus button) items for Android
+    re_pattern: '(static constexpr size_t kTopSitesNumber = )10;'
+    replace: |
+      \1
+      // Brave replacement: 12 for Desktop and 15 (4 rows x 4 element -1 for
+      // plus button) items for Android
+      #if BUILDFLAG(IS_ANDROID)
+        15;
+      #else
+        12;
+      #endif  // BUILDFLAG(IS_ANDROID)
