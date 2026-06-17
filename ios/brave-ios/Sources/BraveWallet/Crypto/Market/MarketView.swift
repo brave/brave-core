@@ -39,7 +39,7 @@ struct MarketView: View {
       } label: {
         Text(Strings.Wallet.failedToImportAccountErrorMessage)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
     }
     .multilineTextAlignment(.center)
     .frame(maxWidth: .infinity)

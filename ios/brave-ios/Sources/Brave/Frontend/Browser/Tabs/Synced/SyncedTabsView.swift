@@ -291,7 +291,7 @@ private struct NoSessionTabsView: View {
       } label: {
         Text(Strings.OpenTabs.openSyncSettingsButtonTitle)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
     }
   }
 }
@@ -319,7 +319,7 @@ private struct SyncDisabledView: View {
       } label: {
         Text(Strings.OpenTabs.syncChainStartButtonTitle)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
     }
   }
 }
@@ -348,7 +348,7 @@ private struct OpenTabSyncDisabled: View {
         } label: {
           Text(Strings.OpenTabs.tabSyncEnableButtonTitle)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
+        .buttonStyle(.filled)
         Text(Strings.OpenTabs.noSyncSessionPlaceHolderViewAdditionalDescription)
           .foregroundStyle(Color(braveSystemName: .textTertiary))
           .font(.footnote)

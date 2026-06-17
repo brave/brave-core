@@ -241,7 +241,8 @@ struct OnboardingNetworkSelectionView: View {
         )
       }
     )
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .buttonStyle(.filled)
+    .controlSize(.large)
     .frame(maxWidth: .infinity)
     .padding(.top)
     .background(

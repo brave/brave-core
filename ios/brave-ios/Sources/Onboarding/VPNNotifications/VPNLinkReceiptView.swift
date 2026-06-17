@@ -37,7 +37,8 @@ public struct VPNLinkReceiptView: View {
       } label: {
         Text(Strings.Onboarding.linkReceiptButton)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
 
       HStack(spacing: 8) {
         Text(Strings.VPN.poweredBy)

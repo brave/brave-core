@@ -195,7 +195,8 @@ struct AddAccountView: View {
             .hidden(isHidden: isCreatingAccount)
         }
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .small))
+      .buttonStyle(.filled)
+      .controlSize(.small)
       .disabled(!name.isValidAccountName || isCreatingAccount)
     )
     .alert(isPresented: $failedToImport) {

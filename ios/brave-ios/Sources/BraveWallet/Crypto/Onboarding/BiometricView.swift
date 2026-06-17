@@ -111,7 +111,8 @@ struct BiometricView: View {
             )
             .frame(maxWidth: .infinity)
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .buttonStyle(.filled)
+          .controlSize(.large)
           .padding(.top, 80)
           Button {
             keyringStore.passwordToSaveInBiometric = nil

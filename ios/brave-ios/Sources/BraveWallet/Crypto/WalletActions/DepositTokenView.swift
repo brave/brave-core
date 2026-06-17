@@ -371,7 +371,7 @@ private struct DepositDetailsView: View {
           }
           .foregroundColor(Color(braveSystemName: .textInteractive))
         }
-        .buttonStyle(BraveOutlineButtonStyle(size: .normal))
+        .buttonStyle(.outline)
         Button {
           addressToShare = viewModel.address
         } label: {
@@ -382,7 +382,7 @@ private struct DepositDetailsView: View {
           }
           .foregroundColor(Color(braveSystemName: .textInteractive))
         }
-        .buttonStyle(BraveOutlineButtonStyle(size: .normal))
+        .buttonStyle(.outline)
       }
       .padding(.top, 12)
     }

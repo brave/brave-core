@@ -105,7 +105,7 @@ public struct InstallVPNProfileView: View {
           }
       }
       .disabled(isLoading)
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
       NavigationLink {
         VPNContactFormView()
       } label: {

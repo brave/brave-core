@@ -51,7 +51,7 @@ struct WalletLoadingButton_Previews: PreviewProvider {
           Text("Preview")
         }
       )
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
       .disabled(true)
       .frame(maxWidth: .infinity)
       WalletLoadingButton(
@@ -63,7 +63,7 @@ struct WalletLoadingButton_Previews: PreviewProvider {
           Text("Preview")
         }
       )
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
       .disabled(false)
       .frame(maxWidth: .infinity)
     }

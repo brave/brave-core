@@ -231,7 +231,8 @@ struct NFTDetailView: View {
             } label: {
               Label(Strings.Wallet.nftDetailSendNFTButtonTitle, braveSystemImage: "leo.send")
             }
-            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .buttonStyle(.filled)
+            .controlSize(.large)
           }
           Button {
             if nftDetailStore.nft.visible {  // a collected visible NFT, mark as hidden

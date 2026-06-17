@@ -213,7 +213,8 @@ public struct VPNChurnPromoView: View {
           .padding(.vertical, 4)
           .frame(maxWidth: .infinity)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
 
       HStack(spacing: 8) {
         Text(Strings.VPN.poweredBy)

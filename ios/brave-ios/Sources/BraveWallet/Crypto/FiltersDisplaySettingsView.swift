@@ -399,7 +399,8 @@ struct FiltersDisplaySettingsView: View {
           .frame(maxWidth: .infinity)
           .padding(.vertical, 4)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
       .disabled(isSaveChangesDisabled)
 
       Button {

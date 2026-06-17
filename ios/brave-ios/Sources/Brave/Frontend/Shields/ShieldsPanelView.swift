@@ -186,7 +186,7 @@ struct ShieldsPanelView: View {
         Text(Strings.Shields.reportABrokenSite)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
       }
-      .buttonStyle(BraveOutlineButtonStyle(size: .normal))
+      .buttonStyle(.outline)
       .frame(maxWidth: .infinity, alignment: .center)
     }
     .padding(.horizontal)

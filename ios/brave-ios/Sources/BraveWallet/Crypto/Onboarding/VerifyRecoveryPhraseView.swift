@@ -106,7 +106,8 @@ struct VerifyRecoveryPhraseView: View {
           Text(Strings.Wallet.continueButtonTitle)
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .disabled(input.isEmpty)
         .padding(.top, 86)
         if keyringStore.isOnboardingVisible {

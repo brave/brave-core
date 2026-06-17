@@ -96,7 +96,7 @@ struct BackupWalletView: View {
         Button(action: continueToBackupPhrase) {
           Text(Strings.Wallet.continueButtonTitle)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
+        .buttonStyle(.filled)
         .disabled(isContinueButtonDisabled)
 
         if keyringStore.isOnboardingVisible {

@@ -94,7 +94,7 @@ struct PlaylistChangeFoldersView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 2)
         }
-        .buttonStyle(BraveOutlineButtonStyle(size: .normal))
+        .buttonStyle(.outline)
       }
     }
     .onChange(of: selectedFolderID) { _, newValue in

@@ -30,15 +30,17 @@ struct AuthenticateView: View {
             Text(Strings.CredentialProvider.authenticationUnlockButtonTitle)
               .frame(minWidth: 230)
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .buttonStyle(.filled)
+          .controlSize(.large)
           Button {
             onCancel()
           } label: {
             Text(Strings.CredentialProvider.cancelButtonTitle)
               .frame(minWidth: 230)
           }
-          .buttonStyle(BraveOutlineButtonStyle(size: .large))
+          .buttonStyle(.outline)
         }
+        .controlSize(.large)
         .transition(.opacity.animation(.default))
       }
     }

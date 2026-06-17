@@ -204,7 +204,8 @@ struct CreateWalletView: View {
           Text(Strings.Wallet.continueButtonTitle)
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .disabled(isContinueDisabled)
         .padding(.top, 60)
       }

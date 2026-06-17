@@ -215,7 +215,7 @@ struct DefaultBrowserActions: View {
         Text(Strings.FocusOnboarding.notNowActionButtonTitle)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
       }
-      .buttonStyle(BraveOutlineButtonStyle(size: .large))
+      .buttonStyle(.outline)
       Button {
         Task {
           if let openSettingsURL = URL(string: UIApplication.openSettingsURLString) {

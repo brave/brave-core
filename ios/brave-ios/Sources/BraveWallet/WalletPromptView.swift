@@ -51,7 +51,8 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
                 .font(.footnote.weight(.semibold))
                 .frame(maxWidth: .infinity)
             }
-            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .buttonStyle(.filled)
+            .controlSize(.large)
             .disabled(!isPrimaryButtonEnabled)
             Button {
               secondaryButton.action(nil)
@@ -72,7 +73,8 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
                 .foregroundColor(Color(braveSystemName: .textPrimary))
                 .frame(maxWidth: .infinity)
             }
-            .buttonStyle(BraveOutlineButtonStyle(size: .large))
+            .buttonStyle(.outline)
+            .controlSize(.large)
             Button {
               primaryButton.action(nil)
             } label: {
@@ -80,7 +82,8 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
                 .font(.footnote.weight(.semibold))
                 .frame(maxWidth: .infinity)
             }
-            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .buttonStyle(.filled)
+            .controlSize(.large)
             .disabled(!isPrimaryButtonEnabled)
           }
         }
@@ -92,7 +95,8 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
             .font(.footnote.weight(.semibold))
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .disabled(!isPrimaryButtonEnabled)
       }
       footer()

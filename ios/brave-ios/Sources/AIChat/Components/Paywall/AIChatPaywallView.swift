@@ -242,7 +242,7 @@ public struct AIChatPaywallView: View {
           .frame(minHeight: 52)
           .background(
             Color(braveSystemName: .primitiveBlurple35),
-            in: .rect(cornerRadius: 12, style: .continuous)
+            in: .capsule
           )
         }
         .disabled(paymentStatus == .ongoing)
@@ -280,7 +280,7 @@ public struct AIChatPaywallView: View {
               startPoint: .top,
               endPoint: .bottom
             ),
-            in: .rect(cornerRadius: 12, style: .continuous)
+            in: .capsule
           )
         }
       }
@@ -347,7 +347,7 @@ public struct AIChatPaywallView: View {
             startPoint: .top,
             endPoint: .bottom
           ),
-          in: .rect(cornerRadius: 12, style: .continuous)
+          in: .capsule
         )
       }
     )
@@ -539,7 +539,7 @@ private struct AIChatActionButton: View {
             lineWidth: 1.0
           )
       )
-      .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+      .containerShape(.capsule)
     }
     .padding([.horizontal], 16.0)
   }

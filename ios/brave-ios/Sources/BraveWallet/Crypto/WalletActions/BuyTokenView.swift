@@ -203,7 +203,7 @@ struct BuyTokenView: View {
             } label: {
               Text(Strings.Wallet.purchaseMethodButtonTitle)
             }
-            .buttonStyle(BraveFilledButtonStyle(size: .normal))
+            .buttonStyle(.filled)
             .frame(maxWidth: .infinity)
           }
           .resetListHeaderStyle()

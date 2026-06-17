@@ -183,7 +183,7 @@ struct PasswordEntryView: View {
           Button(action: validate) {
             Text(Strings.Wallet.confirm)
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .normal))
+          .buttonStyle(.filled)
           .disabled(!isPasswordValid)
         }
         .padding()

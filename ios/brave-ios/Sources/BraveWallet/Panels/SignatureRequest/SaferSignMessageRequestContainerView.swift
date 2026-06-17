@@ -229,7 +229,8 @@ struct SaferSignMessageRequestContainerView: View {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
     .disabled(requestIndex != 0)
     Button {  // approve
       action(true)
@@ -237,7 +238,8 @@ struct SaferSignMessageRequestContainerView: View {
       Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
         .imageScale(.large)
     }
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .buttonStyle(.filled)
+    .controlSize(.large)
     .disabled(requestIndex != 0)
   }
 }

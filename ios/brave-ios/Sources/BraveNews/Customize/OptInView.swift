@@ -49,7 +49,8 @@ struct OptInView: View {
             )
             .animation(.default, value: isLoading)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         Button(action: tappedLearnMore) {
           Text(Strings.BraveNews.learnMoreTitle)
             .font(.subheadline.weight(.semibold))

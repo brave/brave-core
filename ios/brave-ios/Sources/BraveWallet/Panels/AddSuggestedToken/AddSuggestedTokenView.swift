@@ -123,7 +123,8 @@ struct AddSuggestedTokenView: View {
         Text(Strings.cancelButtonTitle)
       }
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
     Button {  // approve
       cryptoStore.handleWebpageRequestResponse(
         .addSuggestedToken(approved: true, token: token)
@@ -136,7 +137,8 @@ struct AddSuggestedTokenView: View {
           .multilineTextAlignment(.center)
       }
     }
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .buttonStyle(.filled)
+    .controlSize(.large)
   }
 }
 

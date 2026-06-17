@@ -102,7 +102,8 @@ struct BackupRecoveryPhraseView: View {
           )
           .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .padding(.top, 72)
         .padding(.horizontal)
         if keyringStore.isOnboardingVisible {

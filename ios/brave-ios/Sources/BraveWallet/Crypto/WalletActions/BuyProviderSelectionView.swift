@@ -246,7 +246,7 @@ private struct ProviderView: View {
               Image(braveSystemName: "leo.launch")
             }
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .normal))
+          .buttonStyle(.filled)
           .frame(maxWidth: .infinity)
         }
       }
