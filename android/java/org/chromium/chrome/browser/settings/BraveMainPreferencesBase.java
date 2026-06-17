@@ -84,8 +84,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     // prefs
     @VisibleForTesting static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
+
     @VisibleForTesting
     static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";
+
     private static final String PREF_PRIVACY = "privacy";
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";

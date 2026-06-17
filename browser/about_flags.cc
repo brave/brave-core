@@ -425,9 +425,9 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
   EXPAND_FEATURE_ENTRIES({                                           \
       "brave-android-tab-groups-settings",                           \
       "Android tab groups settings",                                 \
-      "Expose Brave's replacement Tabs and tab groups settings UI.",  \
-      kOsAndroid,                                                     \
-      FEATURE_VALUE_TYPE(features::kBraveAndroidTabGroupsSettings),   \
+      "Expose Brave's replacement Tabs and tab groups settings UI.", \
+      kOsAndroid,                                                    \
+      FEATURE_VALUE_TYPE(features::kBraveAndroidTabGroupsSettings),  \
   })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
