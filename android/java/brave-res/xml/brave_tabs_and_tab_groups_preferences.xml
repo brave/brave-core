@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:key="tabs_section"
+        android:title="@string/tab_switcher_button_label" />
+
+    <Preference
+        android:key="archive_settings_entrypoint"
+        android:title="@string/archive_settings_section_title"
+        android:fragment="org.chromium.chrome.browser.tasks.tab_management.TabArchiveSettingsFragment"
+        app:allowDividerBelow="true" />
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="share_titles_and_urls_with_os_switch"
+        android:summary="@string/share_titles_and_urls_with_os_setting_text"
+        app:allowDividerBelow="false"
+        app:isPreferenceVisible="false" />
+    <org.chromium.components.browser_ui.settings.TextMessagePreference
+        android:key="share_titles_and_urls_with_os_learn_more"
+        android:summary="@string/share_titles_and_urls_with_os_learn_more_setting_text"
+        app:allowDividerBelow="true"
+        app:isPreferenceVisible="false" />
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="closing_all_tabs_closes_brave"
+        android:defaultValue="false"
+        android:icon="@drawable/ic_window_tab_close"
+        android:title="@string/prefs_closing_all_tabs_closes_brave" />
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="show_undo_when_tabs_closed"
+        android:icon="@drawable/ic_arrow_undo"
+        android:title="@string/show_undo_when_tabs_closed"
+        app:allowDividerBelow="false" />
+
+    <PreferenceCategory
+        android:key="groups_section"
+        android:title="@string/brave_tabs_settings_groups_section_title" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="enable_tab_groups"
+        android:icon="@drawable/ic_browser_group"
+        android:title="@string/tab_groups_enable_title" />
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="auto_open_synced_tab_groups_switch"
+        android:icon="@drawable/ic_smartphone_laptop"
+        android:title="@string/auto_open_synced_tab_groups_summary"
+        app:isPreferenceVisible="false" />
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="tab_groups_bar_switch"
+        android:icon="@drawable/ic_browser_mobile_bottom_tab_groups"
+        android:title="@string/tab_groups_bar_title"
+        android:summary="@string/tab_groups_bar_summary" />
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_enable_tab_groups"
+        android:icon="@drawable/ic_link_normal"
+        android:title="@string/open_links_in_current_tab_group_title"
+        android:summary="@string/enable_tab_groups_text"
+        app:allowDividerBelow="false" />
+</PreferenceScreen>

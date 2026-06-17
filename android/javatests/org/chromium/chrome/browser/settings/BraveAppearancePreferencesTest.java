@@ -19,8 +19,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.test.util.DoNotBatch;
+import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
@@ -47,6 +50,7 @@ public class BraveAppearancePreferencesTest {
     // or Portuguese failures directly.
     @Test
     @SmallTest
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
     public void testAppearancePreferencesOrder() {
         startSettings();
 
@@ -83,6 +87,36 @@ public class BraveAppearancePreferencesTest {
                     pref.getOrder() > prevPref.getOrder());
             prevPref = pref;
         }
+    }
+
+    @Test
+    @SmallTest
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testLegacyTabRowsShownWhenTabGroupSettingsFeatureDisabled() {
+        startSettings();
+
+        Assert.assertNotNull(
+                mAppearancePreferences.findPreference(
+                        AppearancePreferences.PREF_BRAVE_ENABLE_TAB_GROUPS));
+        Assert.assertNotNull(
+                mAppearancePreferences.findPreference(
+                        AppearancePreferences.PREF_SHOW_UNDO_WHEN_TABS_CLOSED));
+    }
+
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testLegacyTabRowsHiddenWhenTabGroupSettingsFeatureEnabled() {
+        startSettings();
+
+        Assert.assertNull(
+                mAppearancePreferences
+                        .getPreferenceScreen()
+                        .findPreference(AppearancePreferences.PREF_BRAVE_ENABLE_TAB_GROUPS));
+        Assert.assertNull(
+                mAppearancePreferences
+                        .getPreferenceScreen()
+                        .findPreference(AppearancePreferences.PREF_SHOW_UNDO_WHEN_TABS_CLOSED));
     }
 
     private void startSettings() {

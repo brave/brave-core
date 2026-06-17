@@ -19,6 +19,7 @@ import org.chromium.chrome.browser.download.settings.BraveDownloadSettings;
 import org.chromium.chrome.browser.download.settings.DownloadSettings;
 import org.chromium.chrome.browser.safe_browsing.settings.BraveStandardProtectionSettingsFragment;
 import org.chromium.chrome.browser.safe_browsing.settings.StandardProtectionSettingsFragment;
+import org.chromium.chrome.browser.tasks.tab_management.TabsSettings;
 
 public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
     public BraveSettingsLauncherImpl() {
@@ -31,14 +32,7 @@ public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
             @Nullable Class<? extends Fragment> fragment,
             @Nullable Bundle fragmentArgs) {
         if (fragment != null) {
-            // Substitute with our version of class
-            if (fragment.equals(StandardProtectionSettingsFragment.class)) {
-                fragment = BraveStandardProtectionSettingsFragment.class;
-            } else if (fragment.equals(DownloadSettings.class)) {
-                fragment = BraveDownloadSettings.class;
-            } else if (fragment.equals(ClearBrowsingDataFragment.class)) {
-                fragment = BraveClearBrowsingDataFragment.class;
-            }
+            fragment = substituteFragment(fragment);
         }
         super.startSettings(context, fragment, fragmentArgs);
     }
@@ -48,6 +42,9 @@ public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
             Context context,
             @Nullable Class<? extends Fragment> fragment,
             @Nullable Bundle fragmentArgs) {
+        if (fragment != null) {
+            fragment = substituteFragment(fragment);
+        }
         Intent intent = super.createSettingsIntent(context, fragment, fragmentArgs);
         intent.setClass(context, BraveSettingsActivity.class);
         if (!(context instanceof Activity)) {
@@ -61,5 +58,23 @@ public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
             intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS, fragmentArgs);
         }
         return intent;
+    }
+
+    private Class<? extends Fragment> substituteFragment(Class<? extends Fragment> fragment) {
+        // Substitute with our version of class.
+        if (fragment.equals(StandardProtectionSettingsFragment.class)) {
+            return BraveStandardProtectionSettingsFragment.class;
+        } else if (fragment.equals(DownloadSettings.class)) {
+            return BraveDownloadSettings.class;
+        } else if (fragment.equals(ClearBrowsingDataFragment.class)) {
+            return BraveClearBrowsingDataFragment.class;
+        } else if (fragment.equals(TabsSettings.class)
+                && BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+            return BraveTabsAndTabGroupsSettings.class;
+        } else if (fragment.equals(BraveTabsAndTabGroupsSettings.class)
+                && !BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+            return TabsSettings.class;
+        }
+        return fragment;
     }
 }
