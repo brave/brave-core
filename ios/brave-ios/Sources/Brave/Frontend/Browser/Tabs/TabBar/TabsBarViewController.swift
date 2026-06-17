@@ -28,7 +28,6 @@ class TabsBarViewController: UIViewController {
   private lazy var plusButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(braveSystemNamed: "leo.plus.add"), for: .normal)
-    button.tintColor = UIColor(braveSystemName: .textPrimary)
     button.contentMode = .scaleAspectFit
     button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
     button.addGestureRecognizer(
@@ -142,6 +141,7 @@ class TabsBarViewController: UIViewController {
       tabManager?.privateBrowsingManager.browserColors ?? .standard
     view.backgroundColor = browserColors.tabBarTabBackground
     collectionView.backgroundColor = view.backgroundColor
+    plusButton.tintColor = browserColors.iconDefault
   }
 
   override func viewWillAppear(_ animated: Bool) {
