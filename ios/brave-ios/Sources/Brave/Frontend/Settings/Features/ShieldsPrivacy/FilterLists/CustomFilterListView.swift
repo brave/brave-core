@@ -19,7 +19,11 @@ struct CustomFilterListView: View {
   /// A state for showing/hiding the cancelation alert
   @State private var showCancelAlert = false
   /// Indicates if our text content is empty which allows us to show the prompt text
+  #if compiler(>=6.4)
+  @State private var isTextEmpty: Bool
+  #else
   @State private var isTextEmpty = false
+  #endif
   /// Indicates if we are currently saving the custom filters
   @State private var isSaving = false
   /// Our coordinator manages the content of the input text and gives us information back
