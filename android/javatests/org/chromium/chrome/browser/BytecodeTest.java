@@ -519,7 +519,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
-                        "isInNarrowWindowOnTablet",
+                        "isInNarrowWindowOnLff",
                         MethodModifier.STATIC,
                         boolean.class,
                         boolean.class,
