@@ -48,10 +48,6 @@ public class FeedItemView: UIView {
   }
   /// The branding information (if applicable)
   public lazy var brandContainerView = BrandContainerView()
-  /// An optional promoted button for sponsored/partnered cards
-  public lazy var promotedButton = PromotedButton().then {
-    $0.setContentHuggingPriority(.required, for: .horizontal)
-  }
   public lazy var callToActionButton = CallToActionButton().then {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -90,8 +86,6 @@ public class FeedItemView: UIView {
       descriptionLabel.numberOfLines = configuration.numberOfLines
       descriptionLabel.font = configuration.font
       return descriptionLabel
-    case .promotedButton:
-      return promotedButton
     case .callToActionButton:
       return callToActionButton
     case .stack(let stack):
@@ -181,80 +175,6 @@ extension FeedItemView {
       layer.cornerRadius = bounds.height / 2
     }
   }
-
-  public class PromotedButton: UIControl {
-
-    private let image = UIImageView(
-      image: UIImage(named: "graph-up", in: .module, compatibleWith: nil)!.template
-    ).then {
-      $0.setContentHuggingPriority(.required, for: .horizontal)
-      $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-      $0.tintColor = UIColor(white: 1.0, alpha: 0.8)
-    }
-    private let label = UILabel().then {
-      $0.text = Strings.BraveNews.promoted
-      $0.numberOfLines = 1
-      $0.font = .systemFont(ofSize: 12)
-      $0.textColor = UIColor(white: 1.0, alpha: 0.8)
-      $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-    }
-
-    public override init(frame: CGRect) {
-      super.init(frame: frame)
-
-      backgroundColor = UIColor(white: 0.0, alpha: 0.2)
-      layer.cornerRadius = 4
-      layer.cornerCurve = .continuous
-
-      let stackView = UIStackView().then {
-        $0.spacing = 4
-        $0.alignment = .center
-        $0.isUserInteractionEnabled = false
-      }
-      addSubview(stackView)
-      stackView.addStackViewItems(
-        .view(image),
-        .view(label)
-      )
-      stackView.snp.makeConstraints {
-        $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 3, left: 5, bottom: 3, right: 5))
-      }
-
-      isAccessibilityElement = true
-      accessibilityTraits.insert(.button)
-    }
-
-    public override var accessibilityLabel: String? {
-      get { label.text }
-      set {
-        assertionFailure(
-          "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
-        )
-      }
-    }
-
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-      fatalError()
-    }
-
-    public override var isHighlighted: Bool {
-      didSet {
-        UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1.0) {
-          self.backgroundColor =
-            self.isHighlighted ? UIColor(white: 0.0, alpha: 0.6) : UIColor(white: 0.0, alpha: 0.2)
-        }
-        .startAnimation()
-      }
-    }
-
-    public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-      if bounds.inset(by: UIEdgeInsets(top: -8, left: -8, bottom: -8, right: -8)).contains(point) {
-        return true
-      }
-      return super.point(inside: point, with: event)
-    }
-  }
 }
 
 extension FeedItemView {
@@ -316,7 +236,6 @@ extension FeedItemView {
         viewingMode: BrandContainerView.ViewingMode = .automatic,
         labelConfiguration: LabelConfiguration = .brand
       )
-      case promotedButton
       case callToActionButton
     }
     /// The root stack for a given layout
@@ -351,8 +270,6 @@ extension FeedItemView {
             return configuration.font.pointSize
               * (configuration.numberOfLines == 0 ? 1 : CGFloat(configuration.numberOfLines))
           }
-        case .promotedButton:
-          return 22.0
         case .callToActionButton:
           return 36.0
         }
@@ -434,72 +351,6 @@ extension FeedItemView {
                 ),
                 .flexibleSpace(minHeight: 36),
                 .callToActionButton,
-              ]
-            )
-          ),
-        ]
-      )
-    )
-
-    /// Uses the same layout as a `brandedHeadline` but includes a promoted button
-    static let partner = Layout(
-      root: .init(
-        axis: .vertical,
-        children: [
-          .thumbnail(.aspectRatio(1.5)),
-          .stack(
-            .init(
-              axis: .vertical,
-              spacing: 4,
-              padding: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
-              children: [
-                .title(.init(numberOfLines: 5, font: .systemFont(ofSize: 18.0, weight: .semibold))),
-                .date(),
-                .flexibleSpace(minHeight: 12),
-                .stack(
-                  .init(
-                    axis: .horizontal,
-                    spacing: 10,
-                    alignment: .bottom,
-                    children: [
-                      .brand(),
-                      .promotedButton,
-                    ]
-                  )
-                ),
-              ]
-            )
-          ),
-        ]
-      )
-    )
-    /// Uses the same layout as a `brandedHeadline` but includes a call to action button and
-    /// has a slightly different thumbnail aspect ratio
-    static let ad = Layout(
-      root: .init(
-        axis: .vertical,
-        children: [
-          .thumbnail(.aspectRatio(1.2)),
-          .stack(
-            .init(
-              axis: .vertical,
-              spacing: 4,
-              padding: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
-              children: [
-                .title(.init(numberOfLines: 5, font: .systemFont(ofSize: 18.0, weight: .semibold))),
-                .date(),
-                .flexibleSpace(minHeight: 12),
-                .stack(
-                  .init(
-                    axis: .horizontal,
-                    spacing: 10,
-                    alignment: .center,
-                    children: [
-                      .brand(),
-                      .callToActionButton,
-                    ]
-                  )
-                ),
               ]
             )
           ),
