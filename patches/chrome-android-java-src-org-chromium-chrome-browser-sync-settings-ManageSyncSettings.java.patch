@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 2fab9bcfd639a13bc4ad9c65d25e0b1be79d464a..007518e217eee8463a838dd032e66b486c3ab9ff 100644
+index 2fab9bcfd639a13bc4ad9c65d25e0b1be79d464a..cdac79d75969a6c458c86cffaae4eacdc2094309 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -173,7 +173,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -177,7 +177,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
      private boolean mShouldUpdatePrefs;
  
      /** Maps {@link UserSelectableType} to the corresponding preference. */
