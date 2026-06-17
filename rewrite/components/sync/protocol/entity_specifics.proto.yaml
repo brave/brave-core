@@ -5,12 +5,10 @@
 
 substitutions:
   - description: 'Import the Brave AI Chat specifics proto.'
-    re_pattern:
-      'import
-      "components/sync/protocol/accessibility_annotation_specifics.proto";'
+    re_pattern: 'import "components/sync/protocol/ai_thread_specifics.proto";'
     replace: |-
-      import "components/sync/protocol/accessibility_annotation_specifics.proto";
       import "brave/components/sync/protocol/ai_chat_specifics.proto";
+      import "components/sync/protocol/ai_thread_specifics.proto";
 
   - description: |-
       Add the AI Chat conversation field to EntitySpecifics, before the trailing

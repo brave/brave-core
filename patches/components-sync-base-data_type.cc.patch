@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
-index 8624d8af6fd389016f029c129dfea55200311451..72fd9bf5a042ee85e3ef38c0211a9a4e35c57ddb 100644
+index c0e40a2d8cc1fc9d05a2ccfc569a42af5a3157d7..58de194f68dd7e2765d49c1532cc07c84099e812 100644
 --- a/components/sync/base/data_type.cc
 +++ b/components/sync/base/data_type.cc
-@@ -1108,10 +1108,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+@@ -1092,10 +1092,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
                  UnsyncedDataCheckOnSignoutPolicy::kNone,
              .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
          },
@@ -24,12 +24,12 @@ index 8624d8af6fd389016f029c129dfea55200311451..72fd9bf5a042ee85e3ef38c0211a9a4e
      }};
  
  // LINT.IfChange(DataTypeHistogramSuffix)
--static_assert(GetNumDataTypes() == 64,
-+static_assert(GetNumDataTypes() == 64 + 1,
+-static_assert(GetNumDataTypes() == 63,
++static_assert(GetNumDataTypes() == 63 + 1,
                "When adding a new type, update kDataTypeInfoTable, update "
                "histograms.xml and follow the integration checklist in "
                "https://www.chromium.org/developers/design-documents/sync/"
-@@ -1331,6 +1346,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+@@ -1312,6 +1327,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
      case THEMES_ANDROID:
        specifics->mutable_theme_android();
        break;
@@ -39,8 +39,8 @@ index 8624d8af6fd389016f029c129dfea55200311451..72fd9bf5a042ee85e3ef38c0211a9a4e
    }
  }
  
-@@ -1683,6 +1701,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
-       return DataTypeForHistograms::kAccessibilityAnnotation;
+@@ -1659,6 +1677,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
+       return DataTypeForHistograms::kGeminiThread;
      case THEMES_ANDROID:
        return DataTypeForHistograms::kThemesAndroid;
 +    case AI_CHAT_CONVERSATION:

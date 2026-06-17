@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
-index a2f774daaf70474d80acafc9d1f2e58163dbe418..2043669ce841fb48030aeb94dc70f6f4a76f2683 100644
+index 8a3e304e0608fb31939eef36546a0ccdfcede338..2e19720412d12d5f347aa2eea7f2bd089a375daf 100644
 --- a/components/sync/base/data_type.h
 +++ b/components/sync/base/data_type.h
-@@ -204,7 +204,8 @@ enum DataType {
+@@ -202,7 +202,8 @@ enum DataType {
    // A theme object specifically for Android devices.
    THEMES_ANDROID,
  
@@ -12,9 +12,9 @@ index a2f774daaf70474d80acafc9d1f2e58163dbe418..2043669ce841fb48030aeb94dc70f6f4
  
    // ---- Control Types ----
    // An object representing a set of Nigori keys.
-@@ -314,7 +315,8 @@ enum class DataTypeForHistograms {
+@@ -312,7 +313,8 @@ enum class DataTypeForHistograms {
    kThemesIos = 78,
-   kAccessibilityAnnotation = 79,
+   // kDeprecatedAccessibilityAnnotation = 79,
    kThemesAndroid = 80,
 -  kMaxValue = kThemesAndroid,
 +  kAIChatConversation = 81,

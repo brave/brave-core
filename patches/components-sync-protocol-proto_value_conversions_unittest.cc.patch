@@ -1,20 +1,20 @@
 diff --git a/components/sync/protocol/proto_value_conversions_unittest.cc b/components/sync/protocol/proto_value_conversions_unittest.cc
-index fa948f5d9ede7b12e0eb9b06fe04aed67b75b3de..b5122ecd4564d559d0d8f48d4f9a9c5bc7ee3ebd 100644
+index 60b5cae7b35e8bdabfaed90be2b05a23e258b7b2..4946d3d5c651bb337214602ae1f2c06a7d09c3bc 100644
 --- a/components/sync/protocol/proto_value_conversions_unittest.cc
 +++ b/components/sync/protocol/proto_value_conversions_unittest.cc
 @@ -71,7 +71,7 @@ using ::testing::Pointee;
  
  DEFINE_SPECIFICS_TO_VALUE_TEST(encrypted)
  
--static_assert(64 == syncer::GetNumDataTypes(),
-+static_assert(64 + 1 == syncer::GetNumDataTypes(),
+-static_assert(63 == syncer::GetNumDataTypes(),
++static_assert(63 + 1 == syncer::GetNumDataTypes(),
                "When adding a new field, add a DEFINE_SPECIFICS_TO_VALUE_TEST "
                "for your field below, and optionally a test for the specific "
                "conversions.");
-@@ -140,6 +140,7 @@ DEFINE_SPECIFICS_TO_VALUE_TEST(contextual_task)
+@@ -139,6 +139,7 @@ DEFINE_SPECIFICS_TO_VALUE_TEST(ai_thread)
+ DEFINE_SPECIFICS_TO_VALUE_TEST(contextual_task)
  DEFINE_SPECIFICS_TO_VALUE_TEST(skill)
  DEFINE_SPECIFICS_TO_VALUE_TEST(gemini_thread)
- DEFINE_SPECIFICS_TO_VALUE_TEST(accessibility_annotation)
 +DEFINE_SPECIFICS_TO_VALUE_TEST(ai_chat_conversation)
  
  TEST(ProtoValueConversionsTest, AutofillWalletSpecificsToValue) {

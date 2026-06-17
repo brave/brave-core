@@ -1,17 +1,17 @@
 diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
-index 6a3ce4c91a9e1cf130062fc4753c3dc6caf47cf6..f58a15f9d2ac905e13d85e37d4d969bb4805a17e 100644
+index bcc8b1b3b3bfe6a49a8ccfa6128e73fbb888ebf1..c3b6e5a6d48fba9b1f0760268999e2923aaa33a0 100644
 --- a/components/sync/base/user_selectable_type.cc
 +++ b/components/sync/base/user_selectable_type.cc
-@@ -60,7 +60,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
-   // TODO(crbug.com/488439751): In CL #3, map THEMES_ANDROID to an existing
+@@ -57,7 +57,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
+   // TODO(crbug.com/476335087): In CL #3, map GEMINI_THREAD to an existing
    // selectable type or to a new one. The first option should be trivial, the
    // second requires touching UI code across platforms.
--  static_assert(64 == syncer::GetNumDataTypes(),
-+  static_assert(64 + 1 == syncer::GetNumDataTypes(),
+-  static_assert(63 == syncer::GetNumDataTypes(),
++  static_assert(63 + 1 == syncer::GetNumDataTypes(),
                  "Almost always when adding a new Data, you must tie it to "
                  "a UserSelectableType below (new or existing) so the user can "
                  "disable syncing of that data. Today you must also update the "
-@@ -157,6 +157,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
+@@ -154,6 +154,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
            kProductComparisonTypeName, PRODUCT_COMPARISON, {PRODUCT_COMPARISON}};
      case UserSelectableType::kCookies:
        return {kCookiesTypeName, COOKIES, {COOKIES}};
@@ -20,7 +20,7 @@ index 6a3ce4c91a9e1cf130062fc4753c3dc6caf47cf6..f58a15f9d2ac905e13d85e37d4d969bb
    }
    NOTREACHED();
  }
-@@ -212,6 +214,7 @@ std::optional<UserSelectableType> GetUserSelectableTypeFromString(
+@@ -209,6 +211,7 @@ std::optional<UserSelectableType> GetUserSelectableTypeFromString(
            {kSavedTabGroupsTypeName, UserSelectableType::kSavedTabGroups},
            {kProductComparisonTypeName, UserSelectableType::kProductComparison},
            {kCookiesTypeName, UserSelectableType::kCookies},

@@ -24,5 +24,5 @@ substitutions:
     replace: 'static_assert(\1 + 1 == GetNumDataTypes(),'
 
   - description: 'Visit the AI Chat conversation field in EntitySpecifics.'
-    re_pattern: '(\n[ \t]*)VISIT\(accessibility_annotation\);'
-    replace: '\1VISIT(accessibility_annotation);\1VISIT(ai_chat_conversation);'
+    re_pattern: '(\n[ \t]*)VISIT\(gemini_thread\);'
+    replace: '\1VISIT(gemini_thread);\1VISIT(ai_chat_conversation);'
