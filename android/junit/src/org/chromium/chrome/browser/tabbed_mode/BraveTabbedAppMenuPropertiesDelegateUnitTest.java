@@ -87,6 +87,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.browser.ui.default_browser_promo.DefaultBrowserPromoUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePage;
+import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.accessibility.PageZoomUtils;
 import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
@@ -171,6 +172,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private PaneManager mPaneManager;
     @Mock private Pane mPane;
     @Mock private RecentlyClosedEntriesManager mRecentlyClosedEntriesManager;
+    @Mock private SideUiStateProvider mSideUiStateProvider;
     @Mock private GlicEnabling.Natives mGlicEnablingJniMock;
 
     private ShadowPackageManager mShadowPackageManager;
@@ -283,7 +285,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mHubManagerSupplier,
                         /* openInAppMenuItemProvider= */ null,
                         /* recentlyClosedEntriesManagerSupplier= */ () ->
-                                mRecentlyClosedEntriesManager);
+                                mRecentlyClosedEntriesManager,
+                        () -> mSideUiStateProvider);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
