@@ -1715,6 +1715,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_REOPEN_GROUP" desc="The text label of the Reopen Closed Group menu item">
           Reopen closed group
         </message>
+        <message name="IDS_REOPEN_SPLIT" desc="The text label of the Reopen Closed Split menu item">
+          Reopen closed split view
+        </message>
         <message name="IDS_RESTORE_WINDOW" desc="The text label of the Restore Window menu item">
           &amp;Restore window
         </message>
@@ -1764,6 +1767,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_REOPEN_GROUP" desc="In Title Case: The text label of the Reopen Closed Group menu item">
           Reopen Closed Group
+        </message>
+        <message name="IDS_REOPEN_SPLIT" desc="In Title Case: The text label of the Reopen Closed Split menu item">
+          Reopen Closed Split View
         </message>
         <message name="IDS_REPORT_UNSAFE_SITE" desc="In Title Case: Text label of the Report Unsafe Site menu item">
           Report an &amp;Unsafe Site...
@@ -11889,6 +11895,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_SEARCH_A11Y_TAB_CLOSED" desc="A11y message after user clicks on the close tab button in the list item.">
         Tab Closed
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_SPLIT_VIEW_CLOSED" is_accessibility_with_no_ui="true" desc="A11y message after user clicks on the close button of a split view row in the list item.">
+        Split View Closed
       </message>
       <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB" desc="Singular form of a11y message after user changes search field when search filed is empty.">
         Found <ph name="NUM">$1<ex>1</ex></ph> Tab
