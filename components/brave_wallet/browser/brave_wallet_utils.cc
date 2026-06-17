@@ -105,6 +105,12 @@ std::optional<std::string> GetUserAssetAddress(const std::string& address,
     }
   }
 
+  if (coin == mojom::CoinType::DOT) {
+    // Polkadot assets are keyed by a numeric pallet_assets asset id, which we
+    // carry verbatim as the contract address.
+    return address;
+  }
+
   return std::nullopt;
 }
 

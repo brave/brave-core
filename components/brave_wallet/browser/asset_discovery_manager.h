@@ -63,6 +63,12 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
 
   size_t GetQueueSizeForTesting() { return queue_.size(); }
 
+  // Stops account creation from kicking off a discovery run. Explicit
+  // DiscoverAssetsOnAllSupportedChains() calls are unaffected.
+  void SetAutoDiscoveryEnabledForTesting(bool enabled) {
+    auto_discovery_enabled_ = enabled;
+  }
+
  private:
   friend class AssetDiscoveryManagerUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
@@ -83,6 +89,7 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
   raw_ref<KeyringService> keyring_service_;
   raw_ref<SimpleHashClient> simple_hash_client_;
   raw_ptr<PrefService> prefs_;
+  bool auto_discovery_enabled_ = true;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
   base::WeakPtrFactory<AssetDiscoveryManager> weak_ptr_factory_;

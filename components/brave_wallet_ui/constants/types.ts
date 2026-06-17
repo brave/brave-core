@@ -293,6 +293,7 @@ export interface SendCardanoTransactionParams extends BaseTransactionParams {
 
 export interface SendPolkadotTransactionParams extends BaseTransactionParams {
   sendingMaxAmount: boolean
+  assetId: number | undefined
 }
 
 /**

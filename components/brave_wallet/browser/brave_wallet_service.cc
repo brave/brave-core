@@ -1703,12 +1703,14 @@ void BraveWalletService::DiscoverAssetsOnAllSupportedChains(
   for (auto& account_info : all_accounts) {
     auto& account_id = account_info->account_id;
     if (account_id->coin == mojom::CoinType::ETH ||
-        account_id->coin == mojom::CoinType::SOL) {
+        account_id->coin == mojom::CoinType::SOL ||
+        account_id->coin == mojom::CoinType::DOT) {
       accounts.push_back(account_id.Clone());
     }
   }
 
-  // Discover assets owned by the SOL and ETH addresses on all supported chains
+  // Discover assets owned by the SOL, ETH and DOT addresses on all supported
+  // chains
   asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
       std::move(accounts), bypass_rate_limit);
 }

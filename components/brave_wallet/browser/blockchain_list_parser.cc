@@ -257,9 +257,12 @@ bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
     }
 
     // Determine coin type based on chain_id
-    mojom::CoinType coin = chain_id == mojom::kSolanaMainnet
-                               ? mojom::CoinType::SOL
-                               : mojom::CoinType::ETH;
+    mojom::CoinType coin = mojom::CoinType::ETH;
+    if (chain_id == mojom::kSolanaMainnet) {
+      coin = mojom::CoinType::SOL;
+    } else if (chain_id == mojom::kPolkadotMainnetAssetHub) {
+      coin = mojom::CoinType::DOT;
+    }
 
     // Iterate through tokens in this chain
     for (const auto token_pair : *tokens_dict) {
