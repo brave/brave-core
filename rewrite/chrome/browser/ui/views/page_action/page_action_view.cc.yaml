@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Adding code to force show the label if it should be always shown in
+      OnPageActionModelChanged()'
+    re_pattern: 'else if \((model.ShouldShowSuggestionChip\(\))\)'
+    replace: 'else if (\1 || model.GetAlwaysShowLabel())'
+
+  - description: |
+      Call MaybeOverrideBorder() in UpdateBorder() right before the SetBorder() call
+      in it.
+    re_pattern: '(void PageActionView::UpdateBorder\(\).*?)(SetBorder\()'
+    re_flags: [DOTALL]
+    replace: |-
+      \1MaybeOverrideBorder(observation_.GetSource(), border_insets);
+        \2
+
+  - description: |
+      Add SetProperty(kBravePageActionEventFlagKey, ...) to the ActionInvocationContext
+      builder inside NotifyClick(), right before the .Build() call.
+    re_pattern: '(trigger_source\)\)\n)(\s*\.Build\(\)\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1          .SetProperty(kBravePageActionEventFlagKey,
+                             event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
+      \2

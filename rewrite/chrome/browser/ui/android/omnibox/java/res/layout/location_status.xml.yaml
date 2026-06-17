@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Inflate Brave's StatusView subclass so the search engine icon's outline
+# provider is attached and the favicon clips to a circle.
+
+substitutions:
+  - description: 'Use BraveStatusView in place of upstream StatusView'
+    pattern: 'org.chromium.chrome.browser.omnibox.status.StatusView'
+    count: 2
+    replace: 'org.chromium.chrome.browser.omnibox.status.BraveStatusView'

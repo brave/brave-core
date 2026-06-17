@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add `ECDSA_SHA384` handling to `VerifyInit`.
+
+      Sets EVP_PKEY_EC with SHA-384 digest, mirroring the ECDSA_SHA256 case.
+    re_pattern: '(VerifyInit\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case ECDSA_SHA384:
+            pkey_type = EVP_PKEY_EC;
+            digest = EVP_sha384();
+            break;\2

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Moving `PermissionContextBase` into `chromium_impl` as in the header.'
+    pattern: 'namespace permissions'
+    count: 2
+    replace: 'namespace permissions::chromium_impl'
+
+  - description: 'Calls BraveCanBypassEmbeddingOriginCheck for wallet handling'
+    pattern: 'CanBypassEmbeddingOriginCheck('
+    count: 2
+    replace: 'BraveCanBypassEmbeddingOriginCheck(content_settings_type_, '

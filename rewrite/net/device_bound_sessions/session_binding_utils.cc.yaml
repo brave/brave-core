@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add `ECDSA_SHA384` to `SignatureAlgorithmToString`.
+
+      Returns "SHA384" to identify the hash algorithm used for ECDSA_SHA384 keys.
+    re_pattern: '(SignatureAlgorithmToString\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case crypto::SignatureVerifier::ECDSA_SHA384:
+            return "SHA384";\2
