@@ -159,8 +159,10 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   // enabled by default.
   void FetchPageContentFromAIPageContentAgent(
       FetchPageContentCallback callback);
-  void OnAIPageContentResult(FetchPageContentCallback callback,
-                             blink::mojom::AIPageContentPtr result);
+  void OnAIPageContentResult(
+      FetchPageContentCallback callback,
+      mojo::Remote<blink::mojom::AIPageContentAgent> agent,
+      blink::mojom::AIPageContentPtr result);
 
   void OnContentToolsFetched(
       GetContentToolsCallback callback,
@@ -188,8 +190,6 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
-
-  mojo::Remote<blink::mojom::AIPageContentAgent> ai_page_content_agent_;
 
   base::WeakPtrFactory<AssociatedWebContentsContent> weak_ptr_factory_{this};
 };

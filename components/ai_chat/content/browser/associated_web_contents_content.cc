@@ -44,6 +44,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "pdf/buildflags.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -290,27 +291,30 @@ void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
     return;
   }
 
-  ai_page_content_agent_.reset();
-  rfh->GetRemoteInterfaces()->GetInterface(
-      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+  // |AIPageContentAgent| is bound to the RenderFrameHost so we just keep the
+  // remote for one request by storing it in the callback to avoid talking to
+  // the wrong RFH.
+  mojo::Remote<blink::mojom::AIPageContentAgent> agent;
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
 
   auto options = blink::mojom::AIPageContentOptions::New();
   options->mode = blink::mojom::AIPageContentMode::kDefault;
   options->on_critical_path = true;
 
-  ai_page_content_agent_->GetAIPageContent(
+  auto* agent_ptr = agent.get();
+  agent_ptr->GetAIPageContent(
       std::move(options),
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
           base::BindOnce(&AssociatedWebContentsContent::OnAIPageContentResult,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         std::move(agent)),
           nullptr));
 }
 
 void AssociatedWebContentsContent::OnAIPageContentResult(
     FetchPageContentCallback callback,
+    mojo::Remote<blink::mojom::AIPageContentAgent> agent,
     blink::mojom::AIPageContentPtr result) {
-  ai_page_content_agent_.reset();
-
   std::string content;
   if (result) {
     ExtractTextFromAIPageContentNode(*result->root_node, content);
@@ -345,12 +349,10 @@ void AssociatedWebContentsContent::GetContentTools(
     std::move(callback).Run({});
     return;
   }
-  // Use a local Remote rather than the `ai_page_content_agent_` member: the
-  // member is also used by FetchPageContentFromAIPageContentAgent (the
-  // GetContent fallback path). If GetContent's fallback was in flight when
-  // GetContentTools is called, the shared remote gets reset and the in-flight
-  // response is dropped — and vice versa. Owning the remote in the bound
-  // callback keeps each call independent.
+
+  // |AIPageContentAgent| is bound to the RenderFrameHost so we just keep the
+  // remote for one request by storing it in the callback to avoid talking to
+  // the wrong RFH.
   mojo::Remote<blink::mojom::AIPageContentAgent> agent;
   rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
   auto* agent_ptr = agent.get();
