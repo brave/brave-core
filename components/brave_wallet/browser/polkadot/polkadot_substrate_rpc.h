@@ -46,6 +46,10 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(std::vector<mojom::PolkadotAssetAccountInfoPtr>,
                               const std::optional<std::string>&)>;
 
+  using GetAssetMetadataCallback = base::OnceCallback<void(
+      std::optional<std::vector<mojom::BlockchainTokenPtr>>,
+      const std::optional<std::string>&)>;
+
   using GetFinalizedHeadCallback = base::OnceCallback<void(
       std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
       std::optional<std::string>)>;
@@ -93,6 +97,10 @@ class PolkadotSubstrateRpc {
       base::span<const uint32_t> asset_ids,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
       GetAssetAccountBalancesCallback callback);
+
+  void GetAssetMetadata(std::string_view chain_id,
+                        base::span<const uint32_t> asset_ids,
+                        GetAssetMetadataCallback callback);
 
   // Get the hash of the last finalized block in the canon chain. This is used
   // during extrinsic creation where the blockhash is used as a portion of the
@@ -206,6 +214,10 @@ class PolkadotSubstrateRpc {
   void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
   void OnGetAssetAccountBalances(GetAssetAccountBalancesCallback,
                                  APIRequestResult res);
+  void OnGetAssetMetadata(std::string chain_id,
+                          std::vector<uint32_t> asset_ids,
+                          GetAssetMetadataCallback callback,
+                          APIRequestResult api_result);
   void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
   void OnGetBlockHeader(GetBlockHeaderCallback callback, APIRequestResult res);
   void OnGetBlock(GetBlockCallback callback, APIRequestResult res);

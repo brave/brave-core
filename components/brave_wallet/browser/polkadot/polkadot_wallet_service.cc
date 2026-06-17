@@ -61,6 +61,23 @@ void PolkadotWalletService::Reset() {
 
 void PolkadotWalletService::Unlocked() {
   metadata_provider_.Init();
+
+  // https://assethub-paseo.subscan.io/assets/50001010
+  constexpr uint32_t kBATCAssetId = 50001010;
+
+  // https://assethub-paseo.subscan.io/assets/50001011
+  constexpr uint32_t kXBBCAssetId = 50001011;
+
+  static constexpr uint32_t kAssetIds[] = {kBATCAssetId, kXBBCAssetId};
+
+  polkadot_substrate_rpc_.GetAssetMetadata(
+      mojom::kPolkadotPaseoAssetHub, kAssetIds,
+      base::BindOnce(
+          [](std::optional<std::vector<mojom::BlockchainTokenPtr>> tokens,
+             const std::optional<std::string>&) {
+            LOG(INFO) << "all done!";
+            LOG(INFO) << "got " << tokens->size() << " token metadata!!!!!";
+          }));
 }
 
 NetworkManager& PolkadotWalletService::GetNetworkManager() {
