@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/span.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -103,6 +104,10 @@ std::optional<std::string> GetUserAssetAddress(const std::string& address,
         bytes.size() >= kCardanoScriptHashSize + 1) {
       return address;
     }
+  }
+
+  if (coin == mojom::CoinType::DOT) {
+    return address;
   }
 
   return std::nullopt;
@@ -736,7 +741,6 @@ mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
   }
 
   update->Append(BlockchainTokenToValue(token));
-
   return token;
 }
 

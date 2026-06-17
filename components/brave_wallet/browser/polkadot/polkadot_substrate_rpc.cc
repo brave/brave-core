@@ -289,6 +289,84 @@ ParseAssetAccountInfoFromJson(
   return asset_accounts;
 }
 
+std::optional<std::vector<mojom::BlockchainTokenPtr>>
+ParseAssetMetadataInfoFromJson(
+    std::string_view chain_id,
+    base::span<const uint32_t> asset_ids,
+    const std::optional<
+        std::vector<polkadot_substrate_rpc_responses::AccountInfo>>& result) {
+  if (!result) {
+    return std::nullopt;
+  }
+
+  auto& accounts = *result;
+  if (accounts.size() != 1) {
+    return std::nullopt;
+  }
+
+  auto& changes = accounts[0].changes;
+  if (changes.empty()) {
+    return std::nullopt;
+  }
+
+  // `changes` is returned in the same order as the storage keys we built from
+  // `asset_ids` (one entry per key), so the two are positionally aligned.
+  if (changes.size() != asset_ids.size()) {
+    return std::nullopt;
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+
+  // "changes" in the JSON is: [ [<StorageKey>, <AssetAccount> | null], ...].
+  for (size_t i = 0; i < changes.size(); ++i) {
+    const auto& change = changes[i];
+    uint32_t asset_id = asset_ids[i];
+
+    auto* list = change.GetIfList();
+    if (!list || list->size() != 2) {
+      return std::nullopt;
+    }
+
+    const auto* str = (*list)[1].GetIfString();
+    if (!str) {
+      return std::nullopt;
+    }
+
+    std::string_view sv = *str;
+    std::vector<uint8_t> hex_bytes;
+    if (!PrefixedHexStringToBytes(sv, &hex_bytes)) {
+      return std::nullopt;
+    }
+
+    auto asset_metadata =
+        decode_asset_metadata(::rust::Slice<const uint8_t>(hex_bytes));
+
+    if (!asset_metadata->is_ok()) {
+      return std::nullopt;
+    }
+
+    auto token_info = asset_metadata->unwrap();
+
+    auto token = mojom::BlockchainToken::New();
+    token->chain_id = chain_id;
+    token->coin = mojom::CoinType::DOT;
+    token->contract_address = base::NumberToString(asset_id);
+    token->name = std::string(base::as_string_view(token_info->name));
+    token->symbol = std::string(base::as_string_view(token_info->symbol));
+    token->decimals = token_info->decimals;  // Placeholder, see TODO above.
+    token->visible = true;
+    token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+
+    tokens.push_back(std::move(token));
+
+    LOG(INFO) << std::string(base::as_string_view(token_info->name));
+    LOG(INFO) << std::string(base::as_string_view(token_info->symbol));
+    LOG(INFO) << static_cast<int>(token_info->decimals);
+  }
+
+  return tokens;
+}
+
 template <class RpcResponse>
 base::expected<RpcResponse, std::string> HandleRpcCall(
     const APIRequestResult& api_result) {
@@ -547,6 +625,71 @@ void PolkadotSubstrateRpc::OnGetAssetAccountBalances(
   }
 
   return std::move(callback).Run(std::move(asset_accounts.value()), {});
+}
+
+void PolkadotSubstrateRpc::GetAssetMetadata(
+    std::string_view chain_id,
+    base::span<const uint32_t> asset_ids,
+    GetAssetMetadataCallback callback) {
+  // The shape of the storage key is described here:
+  // https://github.com/paritytech/polkadot-sdk/blob/fc2028840cf2a2dc2d44f41f099492797269c63d/substrate/frame/assets/src/lib.rs#L470-L478
+
+  static constexpr const char kAssetsPallet[] =
+      "682a59d51ab9e48a8c8cc418ff9708d2";
+  static constexpr const char kMetadataQuery[] =
+      "b5f3822e35ca2f31ce3526eab1363fd2";
+
+  base::ListValue storage_keys;
+  storage_keys.reserve(asset_ids.size());
+
+  for (auto asset_id : asset_ids) {
+    auto le_asset_id = base::byte_span_from_ref(asset_id);
+
+    auto asset_id_checksum =
+        base::HexEncodeLower(Blake2bHash<16>({le_asset_id}));
+
+    storage_keys.Append(
+        base::StrCat({"0x", kAssetsPallet, kMetadataQuery, asset_id_checksum,
+                      base::HexEncodeLower(le_asset_id)}));
+  }
+
+  auto payload = base::WriteJson(MakeRpcRequestJson(
+      "state_queryStorageAt",
+      base::ListValue().Append(base::Value(std::move(storage_keys)))));
+
+  CHECK(payload);
+
+  LOG(INFO) << "request:";
+  LOG(INFO) << *payload;
+
+  auto url = GetNetworkURL(chain_id);
+
+  MakePostRequestInternal(
+      url, *payload,
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetAssetMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), std::string(chain_id),
+                     base::ToVector(asset_ids), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetAssetMetadata(std::string chain_id,
+                                              std::vector<uint32_t> asset_ids,
+                                              GetAssetMetadataCallback callback,
+                                              APIRequestResult api_result) {
+  auto res = HandleRpcCall<
+      polkadot_substrate_rpc_responses::PolkadotAssetMetadataResponse>(
+      api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  auto tokens =
+      ParseAssetMetadataInfoFromJson(chain_id, asset_ids, res->result);
+  if (!tokens) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(std::move(tokens.value()), std::nullopt);
 }
 
 void PolkadotSubstrateRpc::GetFinalizedHead(std::string_view chain_id,

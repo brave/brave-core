@@ -515,6 +515,18 @@ export const findTransactionToken = <
     return undefined
   }
 
+  // Polkadot asset transfer: resolve the asset token by its id. DOT asset user
+  // tokens are keyed by their (decimal) asset id as the contract address (see
+  // GetUserAssetAddress). This must precede the "Native Asset Send" branch
+  // below, which matches DOT's txType === Other. A native DOT send has no
+  // asset_id and falls through to it.
+  if (tx.txDataUnion.polkadotTxData?.assetId) {
+    return findTokenByContractAddress(
+      String(tx.txDataUnion.polkadotTxData.assetId.id),
+      tokensList,
+    )
+  }
+
   // Native Asset Send
   if (
     tx.txType === BraveWallet.TransactionType.SolanaSystemTransfer
@@ -870,6 +882,17 @@ export function getTransactionTransferredValue(
 
   // Cardano Send Token
   if (isCardanoSendTokenTransaction(tx)) {
+    const wei = new Amount(getTransactionBaseValue(tx))
+    return {
+      wei,
+      normalized: wei.divideByDecimals(token?.decimals ?? txNetwork.decimals),
+    }
+  }
+
+  // Polkadot: an asset transfer uses the asset token's decimals (resolved via
+  // its asset_id), while a native DOT send resolves `token` to the native asset.
+  // Either way prefer the token decimals, falling back to the network's.
+  if (isPolkadotTransaction(tx)) {
     const wei = new Amount(getTransactionBaseValue(tx))
     return {
       wei,
@@ -1390,6 +1413,19 @@ export const accountHasInsufficientFundsForTransaction = ({
     return sourceTokenBalance !== '' && sourceAmount.gt(sourceTokenBalance)
   }
 
+  // Polkadot asset transfer: the amount is denominated in the asset's own units
+  // and the network fee is paid separately in the native token (validated via
+  // `accountHasInsufficientFundsForGas`). Compare the transferred amount against
+  // the asset balance only — adding the native fee here would be dimensionally
+  // wrong and falsely block max-amount asset sends. A native DOT send has no
+  // asset_id and falls through to the native balance + gasFee check below.
+  if (isPolkadotTransaction(tx) && tx.txDataUnion.polkadotTxData?.assetId) {
+    return (
+      accountTokenBalance !== ''
+      && new Amount(getTransactionBaseValue(tx)).gt(accountTokenBalance)
+    )
+  }
+
   if (
     tx.chainId === BraveWallet.Z_CASH_MAINNET
     || tx.chainId === BraveWallet.Z_CASH_TESTNET
@@ -1439,6 +1475,13 @@ export function getTransactionTransferredToken({
     return token
   }
 
+  // Polkadot asset transfer: the transferred token is the resolved asset (via
+  // findTransactionToken), not the native network token. A native DOT send has
+  // no asset_id and falls through to the native asset default below.
+  if (isPolkadotTransaction(tx) && tx.txDataUnion.polkadotTxData?.assetId) {
+    return token
+  }
+
   // default
   const nativeAsset = txNetwork ? makeNetworkAsset(txNetwork) : undefined
   return nativeAsset
@@ -1471,6 +1514,14 @@ export function getTransactionTokenSymbol({
     || isSolanaSplTransaction(tx)
     || isCardanoSendTokenTransaction(tx)
   ) {
+    return token?.symbol || ''
+  }
+
+  // Polkadot asset transfer: the amount is denominated in the asset's own units,
+  // so the symbol must come from the resolved asset token (via
+  // findTransactionToken), not the native network token. A native DOT send has
+  // no asset_id and falls through to the network symbol below.
+  if (isPolkadotTransaction(tx) && tx.txDataUnion.polkadotTxData?.assetId) {
     return token?.symbol || ''
   }
 

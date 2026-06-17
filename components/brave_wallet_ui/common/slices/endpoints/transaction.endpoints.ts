@@ -767,7 +767,11 @@ export const transactionEndpoints = ({
             amount: bigIntToUint128(BigInt(payload.value)),
             sendingMaxAmount: payload.sendingMaxAmount,
             swapInfo: payload.swapInfo,
+            assetId: payload.assetId,
           }
+
+        console.log('going to send these params:')
+        console.log(params)
 
           const { errorMessage, success } =
             await txService.addUnapprovedPolkadotTransaction(params)

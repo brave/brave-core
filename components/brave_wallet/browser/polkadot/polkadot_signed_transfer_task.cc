@@ -21,13 +21,15 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
     bool use_dummy_signature,
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
-    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient)
+    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+    std::optional<uint32_t> asset_id)
     : polkadot_wallet_service_(polkadot_wallet_service),
       keyring_service_(keyring_service),
       sender_account_id_(std::move(sender_account_id)),
       chain_id_(std::move(chain_id)),
       use_dummy_signature_{use_dummy_signature},
-      transfer_amount_(std::move(transfer_amount)) {
+      transfer_amount_(std::move(transfer_amount)),
+      asset_id_(asset_id) {
   base::span(sender_).copy_from_nonoverlapping(sender);
   base::span(recipient_).copy_from_nonoverlapping(recipient);
 }
@@ -243,11 +245,22 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
     transfer_all = true;
   }
 
-  auto signature_payload = generate_extrinsic_signature_payload(
-      *chain_metadata_.value(), account_info_->nonce, send_amount_bytes,
-      transfer_all, recipient_, runtime_version_->spec_version,
-      runtime_version_->transaction_version, signing_header_->block_number,
-      *genesis_hash_, *signing_block_hash_);
+  ::rust::Vec<uint8_t> signature_payload;
+
+  if (asset_id_.has_value()) {
+    signature_payload = generate_assets_extrinsic_signature_payload(
+        *chain_metadata_.value(), account_info_->nonce, send_amount_bytes,
+        transfer_all, recipient_, *asset_id_, runtime_version_->spec_version,
+        runtime_version_->transaction_version, signing_header_->block_number,
+        *genesis_hash_, *signing_block_hash_);
+
+  } else {
+    signature_payload = generate_extrinsic_signature_payload(
+        *chain_metadata_.value(), account_info_->nonce, send_amount_bytes,
+        transfer_all, recipient_, runtime_version_->spec_version,
+        runtime_version_->transaction_version, signing_header_->block_number,
+        *genesis_hash_, *signing_block_hash_);
+  }
 
   std::array<uint8_t, kSr25519SignatureSize> signature = {};
 
@@ -267,10 +280,17 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
     return StopWithError(WalletInternalErrorMessage());
   }
 
-  extrinsic_ = base::ToVector(make_signed_extrinsic(
-      *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
-      transfer_all, signature, signing_header_->block_number,
-      account_info_->nonce));
+  if (asset_id_.has_value()) {
+    extrinsic_ = base::ToVector(make_signed_asset_transfer_extrinsic(
+        *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
+        transfer_all, signature, signing_header_->block_number,
+        account_info_->nonce, *asset_id_));
+  } else {
+    extrinsic_ = base::ToVector(make_signed_extrinsic(
+        *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
+        transfer_all, signature, signing_header_->block_number,
+        account_info_->nonce));
+  }
 
   std::move(callback_).Run(base::ok(GetMetadata()));
 }

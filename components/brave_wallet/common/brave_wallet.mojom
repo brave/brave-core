@@ -2284,6 +2284,8 @@ interface PolkadotWalletService {
   GetAddress(AccountId account, string chain_id)
       => (string? address, string? error_message);
 
+  GetAssetMetadata(array<uint32> asset_ids, string chain_id) => (array<BlockchainToken>? tokens, string? error_message);
+
   GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
 
@@ -2568,6 +2570,7 @@ struct NewPolkadotTransactionParams {
   uint128 amount;
   bool sending_max_amount;
   SwapInfo? swap_info;
+  uint32? asset_id;
 };
 
 // For transaction management such as creation, broadcasting, and storing

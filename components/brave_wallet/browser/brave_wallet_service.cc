@@ -282,6 +282,9 @@ BraveWalletService::BraveWalletService(
     polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
         *keyring_service(), *network_manager(), *profile_prefs,
         url_loader_factory);
+    polkadot_wallet_service_->SetNewAssetDiscoveredCallback(base::BindRepeating(
+        base::IgnoreResult(&BraveWalletService::AddUserAssetInternal),
+        weak_ptr_factory_.GetWeakPtr()));
   }
 
   tx_service_ = std::make_unique<TxService>(

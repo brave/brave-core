@@ -61,6 +61,36 @@ void PolkadotWalletService::Reset() {
 
 void PolkadotWalletService::Unlocked() {
   metadata_provider_.Init();
+
+  // Hardcoded discovery set on Paseo Asset Hub until on-chain asset
+  // enumeration / balance-driven discovery lands.
+  // https://assethub-paseo.subscan.io/assets/50001010
+  constexpr uint32_t kBATCAssetId = 50001010;
+
+  // https://assethub-paseo.subscan.io/assets/50001011
+  constexpr uint32_t kXBBCAssetId = 50001011;
+
+  static constexpr uint32_t kAssetIds[] = {kBATCAssetId, kXBBCAssetId};
+
+  polkadot_substrate_rpc_.GetAssetMetadata(
+      mojom::kPolkadotPaseoAssetHub, kAssetIds,
+      base::BindOnce(&PolkadotWalletService::OnDiscoveredAssetMetadata,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void PolkadotWalletService::OnDiscoveredAssetMetadata(
+    std::optional<std::vector<mojom::BlockchainTokenPtr>> tokens,
+    const std::optional<std::string>& error) {
+  if (!tokens || error.has_value() || !add_user_asset_) {
+    // RPC failed; nothing to persist. Retried on the next unlock.
+    return;
+  }
+
+  for (auto& token : *tokens) {
+    // Idempotent: AddUserAsset dedupes on coin + chain_id + contract_address,
+    // so re-running on every unlock won't create duplicate entries.
+    add_user_asset_.Run(std::move(token));
+  }
 }
 
 NetworkManager& PolkadotWalletService::GetNetworkManager() {
@@ -69,6 +99,11 @@ NetworkManager& PolkadotWalletService::GetNetworkManager() {
 
 PolkadotSubstrateRpc* PolkadotWalletService::GetPolkadotRpc() {
   return &polkadot_substrate_rpc_;
+}
+
+void PolkadotWalletService::SetNewAssetDiscoveredCallback(
+    AddUserAssetCallback callback) {
+  add_user_asset_ = std::move(callback);
 }
 
 void PolkadotWalletService::GetCompatibleNetworks(
@@ -98,6 +133,14 @@ void PolkadotWalletService::GetCompatibleNetworks(
   }
 
   std::move(callback).Run(std::move(compatible_networks));
+}
+
+void PolkadotWalletService::GetAssetMetadata(
+    const std::vector<uint32_t>& asset_ids,
+    const std::string& chain_id,
+    GetAssetMetadataCallback callback) {
+  polkadot_substrate_rpc_.GetAssetMetadata(chain_id, asset_ids,
+                                           std::move(callback));
 }
 
 void PolkadotWalletService::GetAddress(mojom::AccountIdPtr account_id,
@@ -185,6 +228,7 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
     bool use_dummy_signature,
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+    std::optional<uint32_t> asset_id,
     GenerateSignedTransferExtrinsicCallback callback) {
   auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
   if (!pubkey) {
@@ -194,7 +238,8 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
 
   auto transaction_state = std::make_unique<PolkadotSignedTransferTask>(
       *this, *keyring_service_, std::move(account_id), std::move(chain_id),
-      use_dummy_signature, std::move(transfer_amount), *pubkey, recipient);
+      use_dummy_signature, std::move(transfer_amount), *pubkey, recipient,
+      asset_id);
 
   auto& transaction = *transaction_state;
 
@@ -212,10 +257,11 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsic(
     mojom::AccountIdPtr account_id,
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+    std::optional<uint32_t> asset_id,
     GenerateSignedTransferExtrinsicCallback callback) {
   GenerateSignedTransferExtrinsicImpl(
       std::move(chain_id), std::move(account_id), false,
-      std::move(transfer_amount), recipient, std::move(callback));
+      std::move(transfer_amount), recipient, asset_id, std::move(callback));
 }
 
 void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
@@ -231,9 +277,11 @@ void PolkadotWalletService::SignAndSendTransaction(
     mojom::AccountIdPtr account_id,
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+    std::optional<uint32_t> asset_id,
     SignAndSendTransactionCallback callback) {
   GenerateSignedTransferExtrinsic(
       chain_id, std::move(account_id), std::move(transfer_amount), recipient,
+      asset_id,
       base::BindOnce(&PolkadotWalletService::OnGenerateSignedTransfer,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
@@ -280,10 +328,11 @@ void PolkadotWalletService::GetFeeEstimate(
     mojom::AccountIdPtr account_id,
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+    std::optional<uint32_t> asset_id,
     GetFeeEstimateCallback callback) {
   GenerateSignedTransferExtrinsicImpl(
       chain_id, std::move(account_id), true, std::move(transfer_amount),
-      recipient,
+      recipient, asset_id,
       base::BindOnce(&PolkadotWalletService::OnGenerateTransferForFee,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));

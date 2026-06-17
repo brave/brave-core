@@ -49,15 +49,27 @@ mod ffi {
         pub asset_tx_payment: bool,
     }
 
+    pub struct CxxPolkadotAssetMetadata {
+        pub deposit: [u8; 16],
+        pub name: Vec<u8>,
+        pub symbol: Vec<u8>,
+        pub decimals: u8,
+    }
+
     extern "Rust" {
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
         fn scale_encode_string(value: &[u8]) -> Vec<u8>;
 
         type CxxPolkadotChainMetadataResult;
+        type CxxPolkadotAssetMetadataResult;
 
         fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
         fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
         fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
+
+        fn is_ok(self: &CxxPolkadotAssetMetadataResult) -> bool;
+        fn error_message(self: &CxxPolkadotAssetMetadataResult) -> String;
+        fn unwrap(self: &mut CxxPolkadotAssetMetadataResult) -> Box<CxxPolkadotAssetMetadata>;
 
         fn parse_chain_metadata_from_scale(
             metadata_bytes: &[u8],
@@ -125,11 +137,13 @@ mod ffi {
             actual_fee: &mut [u8; 16],
         ) -> bool;
 
+        fn decode_asset_metadata(input: &[u8]) -> Box<CxxPolkadotAssetMetadataResult>;
     }
 }
 
-use ffi::CxxPolkadotChainMetadata;
+use ffi::{CxxPolkadotAssetMetadata, CxxPolkadotChainMetadata};
 impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
+impl_result!(CxxPolkadotAssetMetadata, CxxPolkadotAssetMetadataResult);
 
 use crate::polkadot_chain_metadata::parse_chain_metadata_from_scale;
 
@@ -172,6 +186,8 @@ pub enum Error {
     InvalidMetadata,
     /// Invalid length.
     InvalidLength,
+    /// Invalid AssetMetadata
+    InvalidAssetMetadata,
 }
 
 impl fmt::Display for Error {
@@ -181,6 +197,7 @@ impl fmt::Display for Error {
             Error::InvalidScale => write!(f, "Invalid SCALE-encoded bytes were found."),
             Error::InvalidMetadata => write!(f, "Invalid chain metadata was encountered."),
             Error::InvalidLength => write!(f, "Invalid length."),
+            Error::InvalidAssetMetadata => write!(f, "Invalid AssetMetadata was encountered."),
         }
     }
 }
@@ -748,4 +765,50 @@ fn was_extrinsic_successful(
 
     actual_fee.copy_from_slice(fee);
     call_index[1] == EXTRINSIC_SUCCESS_VARIANT_INDEX
+}
+
+fn decode_asset_metadata_impl(mut input: &[u8]) -> Result<CxxPolkadotAssetMetadata, Error> {
+    let Ok(deposit_slice) = next_n_bytes(&mut input, 16) else {
+        return Err(Error::InvalidAssetMetadata);
+    };
+
+    let mut deposit = [0_u8; 16];
+    deposit.copy_from_slice(deposit_slice);
+
+    let Ok(name_len) = Compact::<u32>::decode(&mut input) else {
+        return Err(Error::InvalidAssetMetadata);
+    };
+
+    // We can use an `as` cast here as `usize` will never be 16-bit for us.
+    let Ok(name_bytes) = next_n_bytes(&mut input, name_len.0 as usize) else {
+        return Err(Error::InvalidAssetMetadata);
+    };
+
+    let name: Vec<u8> = name_bytes.to_owned();
+
+    let Ok(symbol_len) = Compact::<u32>::decode(&mut input) else {
+        return Err(Error::InvalidAssetMetadata);
+    };
+
+    // We can use an `as` cast here as `usize` will never be 16-bit for us.
+    let Ok(symbol_bytes) = next_n_bytes(&mut input, symbol_len.0 as usize) else {
+        return Err(Error::InvalidAssetMetadata);
+    };
+
+    let symbol: Vec<u8> = symbol_bytes.to_owned();
+
+    let Ok(remaining) = next_n_bytes(&mut input, 2) else {
+        return Err(Error::InvalidAssetMetadata);
+    };
+
+    let decimals = remaining[0];
+    if !input.is_empty() {
+        return Err(Error::InvalidAssetMetadata);
+    }
+
+    Ok(CxxPolkadotAssetMetadata { deposit, name, symbol, decimals })
+}
+
+fn decode_asset_metadata(input: &[u8]) -> Box<CxxPolkadotAssetMetadataResult> {
+    Box::new(CxxPolkadotAssetMetadataResult(decode_asset_metadata_impl(input)))
 }
