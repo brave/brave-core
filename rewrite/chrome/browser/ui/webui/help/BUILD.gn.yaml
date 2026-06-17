@@ -11,3 +11,12 @@ substitutions:
       Windows updater rather than the `version_updater_basic.cc` no-op.
     re_pattern: '(if \(is_win\) \{\s+if \()is_chrome_branded(\) \{)'
     replace: '\1is_official_build\2'
+  - description: |
+      Add dependency on sparkle build flag target
+
+      `brave/chromium_src/chrome/browser/ui/webui/help/version_updater.h`
+      includes `brave/browser/sparkle_buildflags.h` thus this build target needs
+      to depend on `//brave/browser:sparkle_buildflags`
+    re_pattern: '("version_updater\.h".*?  deps.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  deps += [ "//brave/browser:sparkle_buildflags" ]'

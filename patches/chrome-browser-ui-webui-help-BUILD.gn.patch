@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/webui/help/BUILD.gn b/chrome/browser/ui/webui/help/BUILD.gn
-index 17d8d3e2832c4d572054a7c866690703e9fe87a2..4716b9609e0d8279ca872459cec0115ee742f914 100644
+index 17d8d3e2832c4d572054a7c866690703e9fe87a2..aca3b84d13641685f2c7521293591947dea29f6c 100644
 --- a/chrome/browser/ui/webui/help/BUILD.gn
 +++ b/chrome/browser/ui/webui/help/BUILD.gn
-@@ -49,7 +49,7 @@ source_set("help") {
+@@ -8,6 +8,7 @@ source_set("help") {
+   public = [ "version_updater.h" ]
+   public_deps = [ "//base" ]
+   deps = [ "//chrome/browser/upgrade_detector" ]
++  deps += [ "//brave/browser:sparkle_buildflags" ]
+ 
+   if (is_chromeos) {
+     sources = [
+@@ -49,7 +50,7 @@ source_set("help") {
    }
  
    if (is_win) {
