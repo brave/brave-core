@@ -289,11 +289,12 @@ void ContentSettingsRegistry::BraveInit() {
   website_settings_registry_->Unregister(ContentSettingsType::SENSORS);
   Register(ContentSettingsType::SENSORS, "sensors", CONTENT_SETTING_BLOCK,
            WebsiteSettingsInfo::UNSYNCABLE, /*allowlisted_schemes=*/{},
-           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
-           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   // Disable idle detection by default (we used to disable feature flag

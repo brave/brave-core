@@ -222,7 +222,17 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
     info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
   }
-
+  {
+    SCOPED_TRACE("Content setting: SENSORS");
+    info = registry()->Get(ContentSettingsType::SENSORS);
+    ASSERT_TRUE(info);
+    EXPECT_EQ(CONTENT_SETTING_BLOCK, info->GetInitialDefaultSetting());
+    EXPECT_TRUE(info->IsSettingValid(CONTENT_SETTING_ALLOW));
+    EXPECT_TRUE(info->IsSettingValid(CONTENT_SETTING_ASK));
+    EXPECT_TRUE(info->IsSettingValid(CONTENT_SETTING_BLOCK));
+    EXPECT_EQ(ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+              info->incognito_behavior());
+  }
   {
     SCOPED_TRACE("Content setting: BRAVE_AUTO_SHRED");
     const WebsiteSettingsInfo* ws_info =
