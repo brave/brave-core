@@ -59,14 +59,6 @@ jobs:
           # The author could have commited malicious code between the last review and the execution of this workflow
           git checkout "$COMMIT_HASH"
 
-          # Rebase the branch with the latest targeting branch HEAD
-          git fetch origin "$baseRefName"
-          if ! git rebase FETCH_HEAD; then
-            echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
-            exit 1
-          fi
-          git push -f origin HEAD:"refs/heads/$contribHeadRefName"
-
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
           if [[ "$existing_prs" = "[]" ]]; then
             gh pr create \
@@ -79,4 +71,7 @@ jobs:
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
           **This PR should not be merged.**"
+          else
+            # Update the branch to new commit ref
+            gh api -X PATCH repos/brave/brave-core/git/refs/heads/$contribHeadRefName -f sha="$COMMIT_HASH" -F force=true
           fi
