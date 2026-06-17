@@ -39,12 +39,16 @@ namespace {
 constexpr char kTestModel[] = "test-model";
 constexpr char kTestKeyConfigRaw[] = "raw-hpke-key-bytes";
 constexpr char kTestEndpointUrl[] = "https://endpoint.test/inner";
+constexpr char kTestUpstreamModelName[] = "upstream-test-model";
 
-base::Value MakeConfigResponseValue(const std::string& raw_key,
-                                    const std::string& endpoint_url) {
+base::Value MakeConfigResponseValue(
+    const std::string& raw_key,
+    const std::string& endpoint_url,
+    const std::string& upstream_model_name = kTestUpstreamModelName) {
   base::DictValue body;
   body.Set("key_config", base::Base64Encode(raw_key));
   body.Set("endpoint_url", endpoint_url);
+  body.Set("upstream_model_name", upstream_model_name);
   return base::Value(std::move(body));
 }
 
@@ -102,6 +106,7 @@ class ObliviousHttpConfigManagerUnitTest : public testing::Test {
     base::DictValue entry;
     entry.Set("key_config", base::Base64Encode(kTestKeyConfigRaw));
     entry.Set("endpoint_url", kTestEndpointUrl);
+    entry.Set("upstream_model_name", kTestUpstreamModelName);
     base::Time expiry = expired ? base::Time::Now() - base::Seconds(1)
                                 : base::Time::Now() + base::Days(3);
     entry.Set("expires_at", base::TimeToValue(expiry));
@@ -128,6 +133,7 @@ TEST_F(ObliviousHttpConfigManagerUnitTest, RequestKeyConfig_FetchAndCache) {
   ASSERT_TRUE(key_config_result_.has_value());
   EXPECT_EQ(kTestKeyConfigRaw, key_config_result_->key_config);
   EXPECT_EQ(GURL(kTestEndpointUrl), key_config_result_->endpoint_url);
+  EXPECT_EQ(kTestUpstreamModelName, key_config_result_->upstream_model_name);
 
   const base::DictValue* entry =
       prefs_.GetDict(prefs::kAIChatObliviousHttpKeyConfigs)
@@ -139,6 +145,10 @@ TEST_F(ObliviousHttpConfigManagerUnitTest, RequestKeyConfig_FetchAndCache) {
   const std::string* endpoint_url = entry->FindString("endpoint_url");
   ASSERT_TRUE(endpoint_url);
   EXPECT_EQ(kTestEndpointUrl, *endpoint_url);
+  const std::string* upstream_model_name =
+      entry->FindString("upstream_model_name");
+  ASSERT_TRUE(upstream_model_name);
+  EXPECT_EQ(kTestUpstreamModelName, *upstream_model_name);
   const base::Value* expires_at_val = entry->Find("expires_at");
   ASSERT_TRUE(expires_at_val);
   std::optional<base::Time> expires_at = base::ValueToTime(expires_at_val);
@@ -162,6 +172,7 @@ TEST_F(ObliviousHttpConfigManagerUnitTest, RequestKeyConfig_ServesFromCache) {
   ASSERT_TRUE(key_config_result_.has_value());
   EXPECT_EQ(kTestKeyConfigRaw, key_config_result_->key_config);
   EXPECT_EQ(GURL(kTestEndpointUrl), key_config_result_->endpoint_url);
+  EXPECT_EQ(kTestUpstreamModelName, key_config_result_->upstream_model_name);
 }
 
 TEST_F(ObliviousHttpConfigManagerUnitTest,
@@ -227,6 +238,18 @@ TEST_F(ObliviousHttpConfigManagerUnitTest,
       net::HTTP_OK,
       MakeConfigResponseValue(kTestKeyConfigRaw, "http://endpoint.test/inner"),
       {}, net::OK, GURL()));
+  RequestKeyConfig();
+
+  EXPECT_FALSE(key_config_result_.has_value());
+}
+
+TEST_F(ObliviousHttpConfigManagerUnitTest,
+       RequestKeyConfig_MissingUpstreamModelName) {
+  base::DictValue body;
+  body.Set("key_config", base::Base64Encode(kTestKeyConfigRaw));
+  body.Set("endpoint_url", kTestEndpointUrl);
+  SetUpMock(api_request_helper::APIRequestResult(
+      net::HTTP_OK, base::Value(std::move(body)), {}, net::OK, GURL()));
   RequestKeyConfig();
 
   EXPECT_FALSE(key_config_result_.has_value());

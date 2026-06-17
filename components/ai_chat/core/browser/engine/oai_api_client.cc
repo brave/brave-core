@@ -69,7 +69,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }  // namespace
 
 // static
-std::string OAIAPIClient::CreateJSONRequestBody(
+base::DictValue OAIAPIClient::CreateJSONRequestBody(
     base::ListValue messages,
     bool is_sse_enabled,
     const std::string& model_request_name,
@@ -94,9 +94,7 @@ std::string OAIAPIClient::CreateJSONRequestBody(
     dict.Set("stop", std::move(stop_list));
   }
 
-  std::string json;
-  base::JSONWriter::Write(dict, &json);
-  return json;
+  return dict;
 }
 
 // static
@@ -346,9 +344,12 @@ void OAIAPIClient::PerformRequest(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-  const std::string request_body = CreateJSONRequestBody(
-      SerializeOAIMessages(std::move(messages)), is_sse_enabled,
-      opts.model_request_name, std::move(oai_tool_definitions), stop_sequences);
+  std::string request_body;
+  base::JSONWriter::Write(
+      CreateJSONRequestBody(SerializeOAIMessages(std::move(messages)),
+                            is_sse_enabled, opts.model_request_name,
+                            std::move(oai_tool_definitions), stop_sequences),
+      &request_body);
   base::flat_map<std::string, std::string> headers;
   if (!opts.api_key.empty()) {
     headers.emplace("Authorization", base::StrCat({"Bearer ", opts.api_key}));

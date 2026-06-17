@@ -64,7 +64,7 @@ class OAIAPIClient {
 
  protected:
   // Builds a JSON request body for the OAI chat completions API.
-  static std::string CreateJSONRequestBody(
+  static base::DictValue CreateJSONRequestBody(
       base::ListValue messages,
       bool is_sse_enabled,
       const std::string& model_request_name,

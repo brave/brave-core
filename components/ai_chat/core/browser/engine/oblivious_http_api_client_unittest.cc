@@ -96,7 +96,8 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
                            ObliviousHttpConfigManager::KeyConfigCallback cb) {
           std::move(cb).Run(ObliviousHttpConfigManager::KeyConfigResult{
               /*key_config=*/"test-key-config-bytes",
-              /*endpoint_url=*/GURL("https://endpoint.test/inner")});
+              /*endpoint_url=*/GURL("https://endpoint.test/inner"),
+              /*upstream_model_name=*/"upstream-test-model"});
         });
     client_->SetConfigManagerForTesting(std::move(config_manager));
   }
