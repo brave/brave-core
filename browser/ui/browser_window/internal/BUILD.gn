@@ -22,8 +22,10 @@ source_set("internal") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/email_aliases/buildflags",
     "//brave/components/playlist/core/common/buildflags",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui/browser_window",
+    "//printing/buildflags",
   ]
 
   if (enable_playlist) {
@@ -48,10 +50,6 @@ source_set("internal") {
     ]
   }
 
-  deps += [
-    "//chrome/browser/profiles:profile",
-    "//printing/buildflags",
-  ]
   if (enable_print_preview) {
     deps += [ "//brave/browser/screenshot" ]
   }

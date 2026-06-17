@@ -236,7 +236,7 @@ void ScreenshotController::OnFullPageChunks(ChunkResult result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!result.has_value()) {
-    VLOG(1) << "Full page capture failed: " << result.error();
+    DVLOG(1) << "Full page capture failed: " << result.error();
     FinishWithError(Error::kCaptureFailed);
     return;
   }
