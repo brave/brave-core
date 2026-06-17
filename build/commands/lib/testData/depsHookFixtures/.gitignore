@@ -1,0 +1,2 @@
+# Test dirs created by depsHook.test.ts (normally cleaned up in afterEach).
+_output-*

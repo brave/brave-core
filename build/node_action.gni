@@ -28,6 +28,7 @@ import("//brave/build/node_bin.gni")
 template("node_action") {
   assert(defined(invoker.script), "node_action requires script")
   _node_script = invoker.script
+  _deps_hook = "//brave/build/commands/lib/depsHook.ts"
 
   action(target_name) {
     script = "//brave/build/gn_run_rsp.py"
@@ -35,13 +36,22 @@ template("node_action") {
 
     inputs = [
       node_bin,
+      _deps_hook,
       _node_script,
     ]
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
     }
 
-    outputs = []
+    if (defined(invoker.depfile)) {
+      depfile = invoker.depfile
+    } else {
+      depfile = "$target_gen_dir/$target_name.d"
+    }
+
+    _stamp_file = "$target_gen_dir/$target_name.stamp"
+
+    outputs = [ _stamp_file ]
     if (defined(invoker.outputs)) {
       outputs += invoker.outputs
     }
@@ -56,14 +66,31 @@ template("node_action") {
                            [
                              "data",
                              "data_deps",
-                             "depfile",
                              "public_deps",
                              "testonly",
                              "visibility",
                            ])
 
     response_file_contents = [
+      "DEPS_HOOK_ROOT_BUILD_DIR=" + rebase_path(root_build_dir),
+      "DEPS_HOOK_DEP_FILE=" + rebase_path(depfile, root_build_dir),
+      "DEPS_HOOK_STAMP_FILE=" + rebase_path(_stamp_file, root_build_dir),
+    ]
+    if (defined(invoker.depfile)) {
+      response_file_contents += [ "DEPS_HOOK_APPEND_DEPS=1" ]
+    }
+
+    # Use absolute path for deps hook import to avoid issues on cwd changes
+    # inside the script.
+    if (host_os == "win") {
+      deps_hook_import_file_url = "file:///" + rebase_path(_deps_hook)
+    } else {
+      deps_hook_import_file_url = "file://" + rebase_path(_deps_hook)
+    }
+
+    response_file_contents += [
       rebase_path(node_bin, root_build_dir),
+      "--import=" + deps_hook_import_file_url,
       rebase_path(_node_script, root_build_dir),
     ]
 

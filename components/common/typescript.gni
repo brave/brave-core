@@ -28,23 +28,6 @@ brave_common_web_compile_inputs = [
   rebase_path("../definitions/torInternals.d.ts"),
   rebase_path("../definitions/welcome.d.ts"),
 
-  # webpack config changes warrant a re-build of all webpack builds
-  "//brave/build/webpack/webpack.config.ts",
-  "//brave/build/webpack/resolve.ts",
-  "//brave/build/webpack/rules.ts",
-  "//brave/build/webpack/plugins.ts",
-  "//brave/build/webpack/deterministic-output.ts",
-  "//brave/build/webpack/polyfill.ts",
-  "//brave/build/webpack/webpack-ts-transformers.js",
-  "//brave/build/webpack/gen-webpack-grd.ts",
-  "//brave/build/webpack/path-map.ts",
-  "//brave/build/webpack/webpack-plugin-depfile.js",
-  "//brave/build/webpack/xhr-compile-async-wasm-plugin.js",
-  "//brave/build/webpack/plugins/ifdef-loader.ts",
-  "//brave/build/webpack/transpile-web-ui-command.ts",
-  "//brave/build/webpack/verify-webpack-srcs.ts",
-  "//brave/build/webpack/webpack.ts",
-
   # typescript config changes warrant a re-build of all typescript builds
   "//brave/tsconfig.json",
   "//brave/tsconfig-webpack.json",

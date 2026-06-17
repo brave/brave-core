@@ -46,8 +46,6 @@ node_action("generate_tsconfig") {
     "$root_gen_dir/brave/components/common/package.json",
     "//brave/pnpm-lock.yaml",
     "//brave/tsconfig-webpack.json",
-    "path-map.ts",
-    "ts-config.ts",
   ]
   outputs = [ "$root_gen_dir/tsconfig-webpack.json" ]
   args = [
