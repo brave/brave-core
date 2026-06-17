@@ -86,7 +86,7 @@ extension BrowserViewController {
       installVPNProfile: { [weak self] in
         guard let self = self else { return }
         self.dismiss(animated: true) {
-          self.present(BraveVPNInstallViewController(), animated: true)
+          self.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
         }
       }
     )
