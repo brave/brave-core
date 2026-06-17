@@ -157,6 +157,7 @@ public class BraveMainSettingsFragmentTest {
 
         assertNotNull(tabsPreference);
         assertNotNull(closingAllTabsClosesBravePreference);
+        assertTrue(closingAllTabsClosesBravePreference.isVisible());
         assertEquals(TabsSettings.class.getName(), tabsPreference.getFragment());
     }
 

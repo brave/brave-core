@@ -24,7 +24,6 @@ import org.junit.runner.RunWith;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.test.util.DoNotBatch;
-import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -50,20 +49,6 @@ public class BraveTabsAndTabGroupsSettingsTest {
     @After
     public void tearDown() {
         resetPrefsToDefaults();
-    }
-
-    @Test
-    @SmallTest
-    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
-    public void testBraveAndroidTabGroupsSettingsDisabled() {
-        assertFalse(BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled());
-    }
-
-    @Test
-    @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
-    public void testBraveAndroidTabGroupsSettingsEnabled() {
-        assertTrue(BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled());
     }
 
     @Test

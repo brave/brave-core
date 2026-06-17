@@ -389,6 +389,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
             removePreferenceIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
         } else {
+            setPreferenceVisibleIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, true);
             setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
         }
 

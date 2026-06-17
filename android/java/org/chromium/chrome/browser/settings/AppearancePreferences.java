@@ -99,6 +99,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
             removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
             removePreferenceIfPresent(PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
+        } else {
+            setPreferenceVisibleIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS, true);
+            setPreferenceVisibleIfPresent(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, true);
         }
 
         applyOrdering();
@@ -107,6 +110,13 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         if (preference != null) getPreferenceScreen().removePreference(preference);
+    }
+
+    private void setPreferenceVisibleIfPresent(String key, boolean visible) {
+        Preference preference = getPreferenceScreen().findPreference(key);
+        if (preference != null) {
+            preference.setVisible(visible);
+        }
     }
 
     @Override

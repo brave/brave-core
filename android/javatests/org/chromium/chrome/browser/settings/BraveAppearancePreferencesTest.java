@@ -95,12 +95,17 @@ public class BraveAppearancePreferencesTest {
     public void testLegacyTabRowsShownWhenTabGroupSettingsFeatureDisabled() {
         startSettings();
 
-        Assert.assertNotNull(
+        Preference enableTabGroupsPreference =
                 mAppearancePreferences.findPreference(
-                        AppearancePreferences.PREF_BRAVE_ENABLE_TAB_GROUPS));
-        Assert.assertNotNull(
+                        AppearancePreferences.PREF_BRAVE_ENABLE_TAB_GROUPS);
+        Preference showUndoWhenTabsClosedPreference =
                 mAppearancePreferences.findPreference(
-                        AppearancePreferences.PREF_SHOW_UNDO_WHEN_TABS_CLOSED));
+                        AppearancePreferences.PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
+
+        Assert.assertNotNull(enableTabGroupsPreference);
+        Assert.assertNotNull(showUndoWhenTabsClosedPreference);
+        assertTrue(enableTabGroupsPreference.isVisible());
+        assertTrue(showUndoWhenTabsClosedPreference.isVisible());
     }
 
     @Test
