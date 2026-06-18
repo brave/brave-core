@@ -34,15 +34,14 @@ RegisterPolymerTemplateModifications({
       homeButtonOptionsTemplate.remove()
     }
 
-    const bookmarkBarToggle = templateContent.querySelector(
-      '[pref="{{prefs.bookmark_bar.show_on_all_tabs}}"]')
-    if (!bookmarkBarToggle) {
+    const bookmarkBarTemplate = templateContent.querySelector(
+        'template[is=dom-if][if="[[!ntpSimplificationBookmarksBarEnabled_]]"]')
+    if (!bookmarkBarTemplate) {
       console.error(
-        `[Settings] Couldn't find bookmark bar toggle`)
+        `[Settings] Couldn't find !ntpSimplificationBookmarksBarEnabled_ ` +
+        `template`)
     } else {
-      // Remove Chromium bookmark toggle becasue it is replaced by
-      // settings-brave-appearance-bookmark-bar
-      bookmarkBarToggle.remove()
+      bookmarkBarTemplate.remove()
     }
 
     // Hide or remove upstream's font options.
