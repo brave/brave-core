@@ -244,8 +244,8 @@ base::DictValue CardanoTransaction::TxInput::ToValue() const {
   // json_schema_compiler.
   dict.Set("utxo_address", utxo_address.ToString());
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
-  dict.Set("utxo_value", base::NumberToString(utxo_value));
-  dict.Set("utxo_tokens", TokensToValue(utxo_tokens));
+  dict.Set("utxo_value", base::NumberToString(coin_value.lovelace_amount));
+  dict.Set("utxo_tokens", TokensToValue(coin_value.tokens));
 
   return dict;
 }
@@ -267,12 +267,12 @@ CardanoTransaction::TxInput::FromValue(const base::DictValue& value) {
   }
 
   if (!base::OptionalUnwrapTo(ReadUint64String(value, "utxo_value"),
-                              result.utxo_value)) {
+                              result.coin_value.lovelace_amount)) {
     return std::nullopt;
   }
 
   if (!base::OptionalUnwrapTo(TokensFromValue(value.FindList("utxo_tokens")),
-                              result.utxo_tokens)) {
+                              result.coin_value.tokens)) {
     return std::nullopt;
   }
 
@@ -286,8 +286,7 @@ CardanoTransaction::TxInput CardanoTransaction::TxInput::FromRpcUtxo(
 
   result.utxo_outpoint.txid = utxo.tx_hash;
   result.utxo_outpoint.index = utxo.output_index;
-  result.utxo_value = utxo.lovelace_amount;
-  result.utxo_tokens = utxo.tokens;
+  result.coin_value = utxo.coin_value;
 
   return result;
 }
@@ -371,8 +370,8 @@ base::DictValue CardanoTransaction::TxOutput::ToValue() const {
   dict.Set("type", type == TxOutputType::kTarget ? kTargetOutputType
                                                  : kChangeOuputType);
   dict.Set("address", address.ToString());
-  dict.Set("amount", base::NumberToString(amount));
-  dict.Set("tokens", TokensToValue(tokens));
+  dict.Set("amount", base::NumberToString(coin_value.lovelace_amount));
+  dict.Set("tokens", TokensToValue(coin_value.tokens));
 
   return dict;
 }
@@ -398,30 +397,13 @@ CardanoTransaction::TxOutput::FromValue(const base::DictValue& value) {
   }
 
   if (!base::OptionalUnwrapTo(ReadUint64String(value, "amount"),
-                              result.amount)) {
+                              result.coin_value.lovelace_amount)) {
     return std::nullopt;
   }
 
   if (!base::OptionalUnwrapTo(TokensFromValue(value.FindList("tokens")),
-                              result.tokens)) {
+                              result.coin_value.tokens)) {
     return std::nullopt;
-  }
-
-  return result;
-}
-
-CardanoTxDecoder::SerializableTxOutput
-CardanoTransaction::TxOutput::ToSerializableTxOutput() const {
-  CardanoTxDecoder::SerializableTxOutput result;
-
-  result.address_bytes = address.ToCborBytes();
-  result.amount = amount;
-
-  result.tokens.reserve(tokens.size());
-  for (const auto& token : tokens) {
-    auto& token_result = result.tokens.emplace_back();
-    token_result.token_id = token.first;
-    token_result.amount = token.second;
   }
 
   return result;
@@ -521,7 +503,7 @@ void CardanoTransaction::SetupTargetOutput(CardanoAddress target_address) {
   CHECK(!TargetOutput());
   CardanoTransaction::TxOutput target_output(std::move(target_address));
   target_output.type = CardanoTransaction::TxOutputType::kTarget;
-  target_output.amount = 0;
+  target_output.coin_value.lovelace_amount = 0;
 
   AddOutput(std::move(target_output));
 }
@@ -530,7 +512,7 @@ void CardanoTransaction::SetupChangeOutput(CardanoAddress change_address) {
   CHECK(!ChangeOutput());
   CardanoTransaction::TxOutput change_output(std::move(change_address));
   change_output.type = CardanoTransaction::TxOutputType::kChange;
-  change_output.amount = 0;
+  change_output.coin_value.lovelace_amount = 0;
 
   AddOutput(std::move(change_output));
 }
@@ -539,7 +521,7 @@ base::CheckedNumeric<uint64_t> CardanoTransaction::GetTotalInputsAmount()
     const {
   base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& input : inputs_) {
-    result += input.utxo_value;
+    result += input.coin_value.lovelace_amount;
   }
   return result;
 }
@@ -548,41 +530,31 @@ base::CheckedNumeric<uint64_t> CardanoTransaction::GetTotalOutputsAmount()
     const {
   base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& output : outputs_) {
-    result += output.amount;
+    result += output.coin_value.lovelace_amount;
   }
   return result;
 }
 
 std::optional<cardano_rpc::Tokens>
 CardanoTransaction::GetTotalInputTokensAmount() const {
-  cardano_rpc::Tokens result;
+  cardano_rpc::CoinValue result;
   for (auto& input : inputs_) {
-    for (auto& token : input.utxo_tokens) {
-      uint64_t new_token_sum = 0;
-      if (!base::CheckAdd(result[token.first], token.second)
-               .AssignIfValid(&new_token_sum)) {
-        return std::nullopt;
-      }
-      result[token.first] = new_token_sum;
+    if (!result.Add(input.coin_value)) {
+      return std::nullopt;
     }
   }
-  return result;
+  return result.tokens;
 }
 
 std::optional<cardano_rpc::Tokens>
 CardanoTransaction::GetTotalOutputTokensAmount() const {
-  cardano_rpc::Tokens result;
+  cardano_rpc::CoinValue result;
   for (auto& output : outputs_) {
-    for (auto& token : output.tokens) {
-      uint64_t new_token_sum = 0;
-      if (!base::CheckAdd(result[token.first], token.second)
-               .AssignIfValid(&new_token_sum)) {
-        return std::nullopt;
-      }
-      result[token.first] = new_token_sum;
+    if (!result.Add(output.coin_value)) {
+      return std::nullopt;
     }
   }
-  return result;
+  return result.tokens;
 }
 
 std::optional<CardanoAddress> CardanoTransaction::GetToAddress() const {
@@ -595,7 +567,7 @@ std::optional<CardanoAddress> CardanoTransaction::GetToAddress() const {
 
 bool CardanoTransaction::IsSendTokenTransaction() const {
   if (auto* target_output = TargetOutput()) {
-    return !target_output->tokens.empty();
+    return !target_output->coin_value.tokens.empty();
   }
 
   return false;
@@ -690,7 +662,7 @@ bool CardanoTransaction::EnsureTokensInChangeOutput() {
   // We already assigned some input tokens to target output, should not move
   // them to change.
   CHECK(TargetOutput());
-  if (!SubtractTokens(*input_tokens, TargetOutput()->tokens)) {
+  if (!SubtractTokens(*input_tokens, TargetOutput()->coin_value.tokens)) {
     return false;
   }
 
@@ -706,7 +678,7 @@ bool CardanoTransaction::EnsureTokensInChangeOutput() {
     return false;
   }
 
-  ChangeOutput()->tokens = std::move(*input_tokens);
+  ChangeOutput()->coin_value.tokens = std::move(*input_tokens);
 
   DCHECK(GetTotalInputTokensAmount() == GetTotalOutputTokensAmount());
 
@@ -722,7 +694,8 @@ CardanoTransaction::ToSerializableTx() const {
     result.tx_body.inputs.back().index = input.utxo_outpoint.index;
   }
   for (auto& output : outputs_) {
-    result.tx_body.outputs.emplace_back(output.ToSerializableTxOutput());
+    result.tx_body.outputs.emplace_back(output.address.ToCborBytes(),
+                                        output.coin_value);
   }
 
   result.tx_body.fee = fee_;

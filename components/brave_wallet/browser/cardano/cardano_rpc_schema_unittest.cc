@@ -54,6 +54,30 @@ TEST(CardanoRpcSchema, TokenIdFromHex) {
   EXPECT_FALSE(TokenIdFromHex("not hex"));
 }
 
+TEST(CardanoRpcSchema, CoinValue_Add) {
+  CoinValue coin_value;
+  coin_value.lovelace_amount = 1000000u;
+  coin_value.tokens[GetMockTokenId("foo")] = 100000u;
+  coin_value.tokens[GetMockTokenId("bar")] = 100000u;
+
+  CoinValue other_coin_value;
+  other_coin_value.lovelace_amount = 2000000u;
+  other_coin_value.tokens[GetMockTokenId("foo")] = 2000000u;
+  other_coin_value.tokens[GetMockTokenId("bar")] = 2000000u;
+  other_coin_value.tokens[GetMockTokenId("baz")] = 2000000u;
+
+  EXPECT_TRUE(coin_value.Add(other_coin_value));
+  EXPECT_EQ(coin_value,
+            CoinValue(3000000u, {{GetMockTokenId("foo"), 2100000u},
+                                 {GetMockTokenId("bar"), 2100000u},
+                                 {GetMockTokenId("baz"), 2000000u}}));
+
+  EXPECT_FALSE(coin_value.Add(
+      CoinValue(UINT64_MAX, {{GetMockTokenId("foo"), 1u}})));  // Overflow
+  EXPECT_FALSE(coin_value.Add(
+      CoinValue(1u, {{GetMockTokenId("foo"), UINT64_MAX}})));  // Overflow
+}
+
 TEST(CardanoRpcSchema, EpochParameters) {
   EXPECT_FALSE(EpochParameters::FromBlockfrostApiValue(std::nullopt));
 
@@ -126,7 +150,7 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   EXPECT_EQ(base::HexEncode(converted->tx_hash),
             "000102030405060708090A0B0C0D0F0E000102030405060708090A0B0C0D0F0E");
   EXPECT_EQ(converted->output_index, 123u);
-  EXPECT_EQ(converted->lovelace_amount, 555u);
+  EXPECT_EQ(converted->coin_value.lovelace_amount, 555u);
   EXPECT_EQ(converted->address_to, addr);
 
   valid.amount.emplace_back();
@@ -150,16 +174,16 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().quantity = "555";
   valid.amount.back().unit = base::HexEncode(foo_token);
   converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
-  EXPECT_EQ(converted->tokens[foo_token], 555u);
-  EXPECT_EQ(converted->lovelace_amount, 1000u);
+  EXPECT_EQ(converted->coin_value.tokens[foo_token], 555u);
+  EXPECT_EQ(converted->coin_value.lovelace_amount, 1000u);
 
   valid.amount.emplace_back();
   valid.amount.back().quantity = "1";
   valid.amount.back().unit = base::HexEncode(bar_token);
   converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
-  EXPECT_EQ(converted->tokens[foo_token], 555u);
-  EXPECT_EQ(converted->tokens[bar_token], 1u);
-  EXPECT_EQ(converted->lovelace_amount, 1000u);
+  EXPECT_EQ(converted->coin_value.tokens[foo_token], 555u);
+  EXPECT_EQ(converted->coin_value.tokens[bar_token], 1u);
+  EXPECT_EQ(converted->coin_value.lovelace_amount, 1000u);
 
   // bar and baz have the same policy id, still parsed ok.
   ASSERT_EQ(base::span(bar_token).first(28u), base::span(baz_token).first(28u));
@@ -167,10 +191,10 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().quantity = "100000000000";
   valid.amount.back().unit = base::HexEncode(baz_token);
   converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
-  EXPECT_EQ(converted->tokens[foo_token], 555u);
-  EXPECT_EQ(converted->tokens[bar_token], 1u);
-  EXPECT_EQ(converted->tokens[baz_token], 100000000000u);
-  EXPECT_EQ(converted->lovelace_amount, 1000u);
+  EXPECT_EQ(converted->coin_value.tokens[foo_token], 555u);
+  EXPECT_EQ(converted->coin_value.tokens[bar_token], 1u);
+  EXPECT_EQ(converted->coin_value.tokens[baz_token], 100000000000u);
+  EXPECT_EQ(converted->coin_value.lovelace_amount, 1000u);
 
   // Empty name after policy id fails.
   valid.amount.emplace_back();

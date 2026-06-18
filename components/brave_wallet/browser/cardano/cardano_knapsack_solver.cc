@@ -29,10 +29,10 @@ bool CheckBalance(const std::vector<CardanoTransaction::TxInput>& inputs,
   base::CheckedNumeric<uint64_t> total_amount = 0;
   for (const auto& input : inputs) {
     if (!builder_params.token_to_send) {
-      total_amount += input.utxo_value;
+      total_amount += input.coin_value.lovelace_amount;
     } else {
-      auto it = input.utxo_tokens.find(*builder_params.token_to_send);
-      if (it != input.utxo_tokens.end()) {
+      auto it = input.coin_value.tokens.find(*builder_params.token_to_send);
+      if (it != input.coin_value.tokens.end()) {
         total_amount += it->second;
       }
     }
@@ -57,19 +57,20 @@ base::expected<void, std::string> CardanoKnapsackSolver::SetupOutput(
     const TxBuilderParms& builder_params) {
   tx.SetupTargetOutput(builder_params.send_to_address);
   if (!builder_params.token_to_send) {
-    tx.TargetOutput()->amount = builder_params.amount;
+    tx.TargetOutput()->coin_value.lovelace_amount = builder_params.amount;
     if (!CardanoTransactionSerializer().ValidateMinValue(
             *tx.TargetOutput(), builder_params.epoch_parameters)) {
       return base::unexpected(WalletAmountTooSmallErrorMessage());
     }
   } else {
-    tx.TargetOutput()->tokens[*builder_params.token_to_send] =
+    tx.TargetOutput()->coin_value.tokens[*builder_params.token_to_send] =
         builder_params.amount;
     auto min_ada_required_target =
         CardanoTransactionSerializer::CalcMinAdaRequired(
             *tx.TargetOutput(), builder_params.epoch_parameters);
-    if (!base::OptionalUnwrapTo(min_ada_required_target,
-                                tx.TargetOutput()->amount)) {
+    if (!base::OptionalUnwrapTo(
+            min_ada_required_target,
+            tx.TargetOutput()->coin_value.lovelace_amount)) {
       return base::unexpected(WalletInsufficientBalanceErrorMessage());
     }
   }
@@ -86,15 +87,17 @@ void CardanoKnapsackSolver::SortInputs(
                         const CardanoTransaction::TxInput& i2) {
         if (builder_params.token_to_send) {
           const auto& token_id = *builder_params.token_to_send;
-          auto it1 = i1.utxo_tokens.find(token_id);
-          auto it2 = i2.utxo_tokens.find(token_id);
-          uint64_t amount1 = it1 != i1.utxo_tokens.end() ? it1->second : 0;
-          uint64_t amount2 = it2 != i2.utxo_tokens.end() ? it2->second : 0;
+          auto it1 = i1.coin_value.tokens.find(token_id);
+          auto it2 = i2.coin_value.tokens.find(token_id);
+          uint64_t amount1 =
+              it1 != i1.coin_value.tokens.end() ? it1->second : 0;
+          uint64_t amount2 =
+              it2 != i2.coin_value.tokens.end() ? it2->second : 0;
           if (amount1 != amount2) {
             return amount1 > amount2;
           }
         }
-        return i1.utxo_value > i2.utxo_value;
+        return i1.coin_value.lovelace_amount > i2.coin_value.lovelace_amount;
       });
 }
 

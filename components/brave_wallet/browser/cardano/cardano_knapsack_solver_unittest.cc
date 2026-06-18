@@ -66,7 +66,7 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
-    tx_input.utxo_value = amount;
+    tx_input.coin_value.lovelace_amount = amount;
 
     return tx_input;
   }
@@ -118,8 +118,8 @@ TEST_F(CardanoKnapsackSolverUnitTest, SetupOutput) {
   tx = {};
   EXPECT_TRUE(
       CardanoKnapsackSolver::SetupOutput(tx, builder_params).has_value());
-  EXPECT_EQ(tx.TargetOutput()->amount, send_amount());
-  EXPECT_EQ(tx.TargetOutput()->tokens, cardano_rpc::Tokens());
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, send_amount());
+  EXPECT_EQ(tx.TargetOutput()->coin_value.tokens, cardano_rpc::Tokens());
   EXPECT_FALSE(tx.ChangeOutput());
 
   builder_params = MakeTxBuilderParams(10, GetMockTokenId("foo"));
@@ -128,9 +128,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, SetupOutput) {
 
   EXPECT_TRUE(
       CardanoKnapsackSolver::SetupOutput(tx, builder_params).has_value());
-  EXPECT_EQ(tx.TargetOutput()->amount,
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount,
             1133530u);  // Min ada required for an output with a token.
-  EXPECT_EQ(tx.TargetOutput()->tokens,
+  EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("foo"), 10}}));
   EXPECT_FALSE(tx.ChangeOutput());
 }
@@ -144,16 +144,16 @@ TEST_F(CardanoKnapsackSolverUnitTest, SortInputs) {
   auto baz_token = GetMockTokenId("baz");
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 1'000'000'000;
-  inputs.back().utxo_tokens[bar_token] = 1'000'000'000;
-  inputs.back().utxo_tokens[baz_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[foo_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[bar_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[baz_token] = 1'000'000'000;
 
   inputs.push_back(MakeMockTxInput(2'000'000));
-  inputs.back().utxo_tokens[foo_token] = 10;
-  inputs.back().utxo_tokens[bar_token] = 100'000'000;
+  inputs.back().coin_value.tokens[foo_token] = 10;
+  inputs.back().coin_value.tokens[bar_token] = 100'000'000;
 
   inputs.push_back(MakeMockTxInput(3'000'000));
-  inputs.back().utxo_tokens[foo_token] = 1;
+  inputs.back().coin_value.tokens[foo_token] = 1;
 
   inputs.push_back(MakeMockTxInput(4'000'000));
 
@@ -204,7 +204,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NotEnoughTokensToSend) {
 
   std::vector<CardanoTransaction::TxInput> inputs;
   inputs.push_back(MakeMockTxInput(10));
-  inputs.back().utxo_tokens[GetMockTokenId("brave")] = 5;
+  inputs.back().coin_value.tokens[GetMockTokenId("brave")] = 5;
   CardanoKnapsackSolver solver(builder_params, inputs);
 
   // Can't send exact amount of coin we have as we need to add some fee.
@@ -231,7 +231,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
     EXPECT_EQ(tx->fee(), min_fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), send_amount());
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -276,7 +276,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated_TokenSend) {
     uint32_t total_input = min_ada + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(min_ada + min_fee));
-    inputs.back().utxo_tokens[GetMockTokenId("brave")] = 10;
+    inputs.back().coin_value.tokens[GetMockTokenId("brave")] = 10;
     CardanoKnapsackSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
@@ -285,7 +285,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated_TokenSend) {
     EXPECT_EQ(tx->fee(), min_fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), min_ada);
-    EXPECT_EQ(tx->TargetOutput()->amount, min_ada);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, min_ada);
     EXPECT_FALSE(tx->ChangeOutput());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -295,7 +295,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated_TokenSend) {
     uint32_t total_input = min_ada + min_fee - 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    inputs.back().utxo_tokens[GetMockTokenId("brave")] = 10;
+    inputs.back().coin_value.tokens[GetMockTokenId("brave")] = 10;
     CardanoKnapsackSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     // We have a bit less than min_ada + fee. Can't create transaction.
@@ -307,7 +307,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated_TokenSend) {
     uint32_t total_input = min_ada + min_fee + 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    inputs.back().utxo_tokens[GetMockTokenId("brave")] = 10;
+    inputs.back().coin_value.tokens[GetMockTokenId("brave")] = 10;
     CardanoKnapsackSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
 
@@ -340,8 +340,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(),
               send_amount() + dust_change_threshold());
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
-    EXPECT_EQ(tx->ChangeOutput()->amount, dust_change_threshold());
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, send_amount());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              dust_change_threshold());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
   }
@@ -375,8 +376,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(),
               send_amount() + dust_change_threshold() + 1);
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
-    EXPECT_EQ(tx->ChangeOutput()->amount, dust_change_threshold() + 1);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, send_amount());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              dust_change_threshold() + 1);
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
   }
@@ -395,7 +397,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated_TokenSend) {
     uint32_t total_input = min_ada + min_fee + dust_change_threshold();
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    inputs.back().utxo_tokens[GetMockTokenId("brave")] = 10;
+    inputs.back().coin_value.tokens[GetMockTokenId("brave")] = 10;
     CardanoKnapsackSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
@@ -405,11 +407,12 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated_TokenSend) {
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(),
               min_ada + dust_change_threshold());
-    EXPECT_EQ(tx->TargetOutput()->amount, min_ada);
-    EXPECT_EQ(tx->TargetOutput()->tokens,
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, min_ada);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{GetMockTokenId("brave"), 10}}));
-    EXPECT_EQ(tx->ChangeOutput()->amount, dust_change_threshold());
-    EXPECT_EQ(tx->ChangeOutput()->tokens, cardano_rpc::Tokens());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              dust_change_threshold());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens, cardano_rpc::Tokens());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
   }
@@ -418,7 +421,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated_TokenSend) {
     uint32_t total_input = min_ada + min_fee + dust_change_threshold() - 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    inputs.back().utxo_tokens[GetMockTokenId("brave")] = 10;
+    inputs.back().coin_value.tokens[GetMockTokenId("brave")] = 10;
     CardanoKnapsackSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
 
@@ -432,7 +435,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated_TokenSend) {
     uint32_t total_input = min_ada + min_fee + dust_change_threshold() + 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input));
-    inputs.back().utxo_tokens[GetMockTokenId("brave")] = 10;
+    inputs.back().coin_value.tokens[GetMockTokenId("brave")] = 10;
     CardanoKnapsackSolver solver(builder_params, inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
@@ -442,11 +445,12 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated_TokenSend) {
     EXPECT_EQ(tx->fee(), min_fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - min_fee);
-    EXPECT_EQ(tx->TargetOutput()->amount, min_ada);
-    EXPECT_EQ(tx->TargetOutput()->tokens,
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, min_ada);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{GetMockTokenId("brave"), 10}}));
-    EXPECT_EQ(tx->ChangeOutput()->amount, dust_change_threshold() + 1);
-    EXPECT_EQ(tx->ChangeOutput()->tokens, cardano_rpc::Tokens());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              dust_change_threshold() + 1);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens, cardano_rpc::Tokens());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
   }
@@ -459,7 +463,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, RandomTest) {
 
   for (int i = 0; i < 50; ++i) {
     auto input = MakeMockTxInput(base::RandIntInclusive(1000000, 100000000));
-    total_inputs += input.utxo_value;
+    total_inputs += input.coin_value.lovelace_amount;
     inputs.push_back(std::move(input));
   }
 
@@ -480,16 +484,16 @@ TEST_F(CardanoKnapsackSolverUnitTest, TokensGoToChange) {
   std::vector<CardanoTransaction::TxInput> inputs;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 1'000'000'000;
-  inputs.back().utxo_tokens[bar_token] = 1'000'000'000;
-  inputs.back().utxo_tokens[baz_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[foo_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[bar_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[baz_token] = 1'000'000'000;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 10;
-  inputs.back().utxo_tokens[bar_token] = 100'000'000;
+  inputs.back().coin_value.tokens[foo_token] = 10;
+  inputs.back().coin_value.tokens[bar_token] = 100'000'000;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 1;
+  inputs.back().coin_value.tokens[foo_token] = 1;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
 
@@ -509,15 +513,16 @@ TEST_F(CardanoKnapsackSolverUnitTest, TokensGoToChange) {
     EXPECT_EQ(tx->fee(), fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
-    EXPECT_TRUE(tx->TargetOutput()->tokens.empty());
-    EXPECT_EQ(tx->ChangeOutput()->amount, total_input - send_amount() - fee);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, send_amount());
+    EXPECT_TRUE(tx->TargetOutput()->coin_value.tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              total_input - send_amount() - fee);
 
     // First input is not picked as it would produce larger tx and require more
     // fee.
-    EXPECT_FALSE(tx->ChangeOutput()->tokens.empty());
-    EXPECT_EQ(tx->ChangeOutput()->tokens[foo_token], 11u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[bar_token], 100'000'000u);
+    EXPECT_FALSE(tx->ChangeOutput()->coin_value.tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[foo_token], 11u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[bar_token], 100'000'000u);
 
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -542,15 +547,16 @@ TEST_F(CardanoKnapsackSolverUnitTest, TokensGoToChange) {
     EXPECT_EQ(tx->fee(), fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
-    EXPECT_TRUE(tx->TargetOutput()->tokens.empty());
-    EXPECT_EQ(tx->ChangeOutput()->amount, total_input - send_amount() - fee);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, send_amount());
+    EXPECT_TRUE(tx->TargetOutput()->coin_value.tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              total_input - send_amount() - fee);
 
     // First input is now picked.
-    EXPECT_FALSE(tx->ChangeOutput()->tokens.empty());
-    EXPECT_EQ(tx->ChangeOutput()->tokens[foo_token], 1'000'000'011u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[bar_token], 1'100'000'000u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[baz_token], 1'000'000'000u);
+    EXPECT_FALSE(tx->ChangeOutput()->coin_value.tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[foo_token], 1'000'000'011u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[bar_token], 1'100'000'000u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[baz_token], 1'000'000'000u);
 
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -565,16 +571,16 @@ TEST_F(CardanoKnapsackSolverUnitTest, TokensGoToChange_TokenSend) {
   std::vector<CardanoTransaction::TxInput> inputs;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 1'000;
-  inputs.back().utxo_tokens[bar_token] = 1'000;
-  inputs.back().utxo_tokens[baz_token] = 1'000;
+  inputs.back().coin_value.tokens[foo_token] = 1'000;
+  inputs.back().coin_value.tokens[bar_token] = 1'000;
+  inputs.back().coin_value.tokens[baz_token] = 1'000;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 10;
-  inputs.back().utxo_tokens[bar_token] = 1'000;
+  inputs.back().coin_value.tokens[foo_token] = 10;
+  inputs.back().coin_value.tokens[bar_token] = 1'000;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 5;
+  inputs.back().coin_value.tokens[foo_token] = 5;
 
   {
     uint32_t total_input = 1'000'000 * 3;
@@ -593,12 +599,13 @@ TEST_F(CardanoKnapsackSolverUnitTest, TokensGoToChange_TokenSend) {
     EXPECT_EQ(tx->fee(), fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
-    EXPECT_EQ(tx->TargetOutput()->amount, min_ada);
-    EXPECT_EQ(tx->TargetOutput()->tokens,
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, min_ada);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{foo_token, 1'011u}}));
-    EXPECT_EQ(tx->ChangeOutput()->amount, total_input - min_ada - fee);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              total_input - min_ada - fee);
     // Change output gets change for foo_token and all other tokens.
-    EXPECT_EQ(tx->ChangeOutput()->tokens,
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens,
               cardano_rpc::Tokens(
                   {{foo_token, 4u}, {bar_token, 2'000u}, {baz_token, 1'000u}}));
 

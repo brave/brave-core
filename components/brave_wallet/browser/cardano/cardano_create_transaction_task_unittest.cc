@@ -113,8 +113,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount) {
   task.Start(tx_future.GetCallback());
 
   auto tx = tx_future.Take().value();
-  EXPECT_EQ(tx.TargetOutput()->amount, 1000000u);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 5831595u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1000000u);
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 5831595u);
   EXPECT_EQ(tx.fee(), 168405u);
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
       tx, latest_epoch_parameters()));
@@ -131,8 +131,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount_ByronAddress) {
   task.Start(tx_future.GetCallback());
 
   auto tx = tx_future.Take().value();
-  EXPECT_EQ(tx.TargetOutput()->amount, 1000000u);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 5832211u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1000000u);
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 5832211u);
   EXPECT_EQ(tx.fee(), 167789u);
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
       tx, latest_epoch_parameters()));
@@ -149,8 +149,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount_EnterpriseAddress) {
   task.Start(tx_future.GetCallback());
 
   auto tx = tx_future.Take().value();
-  EXPECT_EQ(tx.TargetOutput()->amount, 1000000u);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 5832827u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1000000u);
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 5832827u);
   EXPECT_EQ(tx.fee(), 167173u);
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
       tx, latest_epoch_parameters()));
@@ -222,8 +222,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     task.Start(tx_future.GetCallback());
 
     auto tx = tx_future.Take().value();
-    EXPECT_EQ(tx.TargetOutput()->amount, 969750u);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 5861845u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 969750u);
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 5861845u);
     EXPECT_EQ(tx.fee(), 168405u);
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         tx, latest_epoch_parameters()));
@@ -239,8 +239,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     task.Start(tx_future.GetCallback());
 
     auto tx = tx_future.Take().value();
-    EXPECT_EQ(tx.TargetOutput()->amount, 969751u);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 5861844u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 969751u);
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 5861844u);
     EXPECT_EQ(tx.fee(), 168405u);
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         tx, latest_epoch_parameters()));
@@ -256,7 +256,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, MaxValue) {
   task.Start(tx_future.GetCallback());
 
   auto tx = tx_future.Take().value();
-  EXPECT_EQ(tx.TargetOutput()->amount, 9796593u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 9796593u);
   EXPECT_EQ(tx.ChangeOutput(), nullptr);
   EXPECT_EQ(tx.fee(), 173157u);
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(

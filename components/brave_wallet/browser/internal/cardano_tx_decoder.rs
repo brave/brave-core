@@ -21,6 +21,8 @@ use ciborium::{de::from_reader, Value as CborValue};
 
 // Re-export types for external use
 #[allow(unused_imports)]
+use crate::ffi::CxxSerializableCoinValue;
+#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTx;
 #[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxBody;
@@ -115,10 +117,15 @@ mod ffi {
     }
 
     #[derive(Clone)]
+    struct CxxSerializableCoinValue {
+        lovelace_amount: u64,
+        tokens: Vec<CxxSerializableTxOutputToken>,
+    }
+
+    #[derive(Clone)]
     struct CxxSerializableTxOutput {
         addr: Vec<u8>,
-        amount: u64,
-        tokens: Vec<CxxSerializableTxOutputToken>,
+        coin_value: CxxSerializableCoinValue,
     }
 
     #[derive(Clone)]
@@ -150,10 +157,14 @@ mod ffi {
     extern "Rust" {
         type CxxEncodedCardanoTransaction;
         type CxxEncodedCardanoTransactionOutput;
+        type CxxEncodedCardanoCoinValue;
+        type CxxDecodedCardanoCoinValue;
         type CxxDecodedCardanoTransaction;
         type CxxSignedCardanoTransaction;
         type CxxEncodedCardanoTransactionResult;
         type CxxEncodedCardanoTransactionOutputResult;
+        type CxxEncodedCardanoCoinValueResult;
+        type CxxDecodedCardanoCoinValueResult;
         type CxxDecodedCardanoTransactionResult;
         type CxxSignedCardanoTransactionResult;
 
@@ -162,6 +173,10 @@ mod ffi {
         fn encode_cardano_transaction(
             tx: &CxxSerializableTx,
         ) -> Box<CxxEncodedCardanoTransactionResult>;
+        fn encode_cardano_coin_value(
+            value: &CxxSerializableCoinValue,
+        ) -> Box<CxxEncodedCardanoCoinValueResult>;
+        fn decode_cardano_coin_value(value_bytes: &[u8]) -> Box<CxxDecodedCardanoCoinValueResult>;
         fn encode_cardano_transaction_output(
             output: &CxxSerializableTxOutput,
         ) -> Box<CxxEncodedCardanoTransactionOutputResult>;
@@ -178,6 +193,16 @@ mod ffi {
             self: &mut CxxEncodedCardanoTransactionResult,
         ) -> Box<CxxEncodedCardanoTransaction>;
         fn bytes(self: &CxxEncodedCardanoTransaction) -> Vec<u8>;
+
+        fn is_ok(self: &CxxEncodedCardanoCoinValueResult) -> bool;
+        fn error_message(self: &CxxEncodedCardanoCoinValueResult) -> String;
+        fn unwrap(self: &mut CxxEncodedCardanoCoinValueResult) -> Box<CxxEncodedCardanoCoinValue>;
+        fn bytes(self: &CxxEncodedCardanoCoinValue) -> Vec<u8>;
+
+        fn is_ok(self: &CxxDecodedCardanoCoinValueResult) -> bool;
+        fn error_message(self: &CxxDecodedCardanoCoinValueResult) -> String;
+        fn unwrap(self: &mut CxxDecodedCardanoCoinValueResult) -> Box<CxxDecodedCardanoCoinValue>;
+        fn value(self: &CxxDecodedCardanoCoinValue) -> CxxSerializableCoinValue;
 
         fn is_ok(self: &CxxEncodedCardanoTransactionOutputResult) -> bool;
         fn error_message(self: &CxxEncodedCardanoTransactionOutputResult) -> String;
@@ -242,6 +267,14 @@ struct CxxEncodedCardanoTransactionValue {
     tx_bytes: Vec<u8>,
 }
 
+struct CxxEncodedCardanoCoinValueValue {
+    value_bytes: Vec<u8>,
+}
+
+struct CxxDecodedCardanoCoinValueValue {
+    value: CxxSerializableCoinValue,
+}
+
 struct CxxEncodedCardanoTransactionOutputValue {
     output_bytes: Vec<u8>,
 }
@@ -256,12 +289,16 @@ struct CxxSignedCardanoTransactionValue {
     signed_bytes: Vec<u8>,
 }
 
+pub struct CxxEncodedCardanoCoinValue(CxxEncodedCardanoCoinValueValue);
+pub struct CxxDecodedCardanoCoinValue(CxxDecodedCardanoCoinValueValue);
 pub struct CxxEncodedCardanoTransaction(CxxEncodedCardanoTransactionValue);
 pub struct CxxEncodedCardanoTransactionOutput(CxxEncodedCardanoTransactionOutputValue);
 pub struct CxxDecodedCardanoTransaction(CxxDecodedCardanoTransactionValue);
 pub struct CxxSignedCardanoTransaction(CxxSignedCardanoTransactionValue);
 
 pub struct CxxEncodedCardanoTransactionResult(Result<CxxEncodedCardanoTransaction, Error>);
+pub struct CxxEncodedCardanoCoinValueResult(Result<CxxEncodedCardanoCoinValue, Error>);
+pub struct CxxDecodedCardanoCoinValueResult(Result<CxxDecodedCardanoCoinValue, Error>);
 pub struct CxxEncodedCardanoTransactionOutputResult(
     Result<CxxEncodedCardanoTransactionOutput, Error>,
 );
@@ -272,6 +309,17 @@ impl_result!(
     CxxEncodedCardanoTransaction,
     CxxEncodedCardanoTransactionResult,
     CxxEncodedCardanoTransactionValue
+);
+
+impl_result!(
+    CxxEncodedCardanoCoinValue,
+    CxxEncodedCardanoCoinValueResult,
+    CxxEncodedCardanoCoinValueValue
+);
+impl_result!(
+    CxxDecodedCardanoCoinValue,
+    CxxDecodedCardanoCoinValueResult,
+    CxxDecodedCardanoCoinValueValue
 );
 
 impl_result!(
@@ -319,6 +367,46 @@ pub fn encode_cardano_transaction(
     tx: &CxxSerializableTx,
 ) -> Box<CxxEncodedCardanoTransactionResult> {
     Box::new(CxxEncodedCardanoTransactionResult::from(encode_cardano_transaction_impl(tx)))
+}
+
+impl CxxEncodedCardanoCoinValue {
+    fn bytes(self: &CxxEncodedCardanoCoinValue) -> Vec<u8> {
+        self.0.value_bytes.clone()
+    }
+}
+
+fn encode_cardano_coin_value_impl(
+    value: &CxxSerializableCoinValue,
+) -> Result<CxxEncodedCardanoCoinValueValue, Error> {
+    let mut value_bytes = Vec::new();
+    ciborium::ser::into_writer(&encode_coin_value(value), &mut value_bytes)
+        .map_err(|_| Error::SerializationError)?;
+
+    Ok(CxxEncodedCardanoCoinValueValue { value_bytes })
+}
+
+pub fn encode_cardano_coin_value(
+    value: &CxxSerializableCoinValue,
+) -> Box<CxxEncodedCardanoCoinValueResult> {
+    Box::new(CxxEncodedCardanoCoinValueResult::from(encode_cardano_coin_value_impl(value)))
+}
+
+impl CxxDecodedCardanoCoinValue {
+    fn value(self: &CxxDecodedCardanoCoinValue) -> CxxSerializableCoinValue {
+        self.0.value.clone()
+    }
+}
+
+fn decode_cardano_coin_value_impl(
+    value_bytes: &[u8],
+) -> Result<CxxDecodedCardanoCoinValueValue, Error> {
+    let cbor_value: CborValue = from_reader(value_bytes).map_err(|_| Error::CborDecodeError)?;
+    let value = decode_coin_value(&cbor_value)?;
+    Ok(CxxDecodedCardanoCoinValueValue { value })
+}
+
+pub fn decode_cardano_coin_value(value_bytes: &[u8]) -> Box<CxxDecodedCardanoCoinValueResult> {
+    Box::new(CxxDecodedCardanoCoinValueResult::from(decode_cardano_coin_value_impl(value_bytes)))
 }
 
 impl CxxEncodedCardanoTransactionOutput {
@@ -405,22 +493,49 @@ fn encode_tx_output_tokens(tokens: &Vec<CxxSerializableTxOutputToken>) -> CborVa
     policies_map_to_cbor(&multiasset)
 }
 
-fn encode_tx_output(output: &CxxSerializableTxOutput) -> CborValue {
-    if output.tokens.is_empty() {
-        // No tokens, so return as [addr, amount]
-        return CborValue::Array(vec![
-            CborValue::Bytes(output.addr.clone()),
-            CborValue::Integer(output.amount.into()),
-        ]);
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L190
+fn encode_coin_value(amount: &CxxSerializableCoinValue) -> CborValue {
+    if amount.tokens.is_empty() {
+        // No tokens, so return as lovelace_amount
+        return CborValue::Integer(amount.lovelace_amount.into());
     }
 
-    // Have tokens, so return as [addr, [amount, multiasset]]
+    // Have tokens, so return as [lovelace_amount, multiasset]
+    return CborValue::Array(vec![
+        CborValue::Integer(amount.lovelace_amount.into()),
+        encode_tx_output_tokens(&amount.tokens),
+    ]);
+}
+
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L190
+fn decode_coin_value(value: &CborValue) -> Result<CxxSerializableCoinValue, Error> {
+    match value {
+        // Simple case: only ADA.
+        CborValue::Integer(i) => {
+            let lovelace_amount: u64 = (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?;
+            Ok(CxxSerializableCoinValue { lovelace_amount, tokens: Vec::new() })
+        }
+        // Multi-asset case: [ada, tokens_map].
+        CborValue::Array(arr) => {
+            if arr.len() != 2 {
+                return Err(Error::InvalidOutputFormat);
+            }
+            let lovelace_amount: u64 = match &arr[0] {
+                CborValue::Integer(i) => (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?,
+                _ => return Err(Error::InvalidOutputFormat),
+            };
+            let tokens = extract_tokens(&arr[1])?;
+            Ok(CxxSerializableCoinValue { lovelace_amount, tokens })
+        }
+        _ => Err(Error::InvalidOutputFormat),
+    }
+}
+
+//https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L146
+fn encode_tx_output(output: &CxxSerializableTxOutput) -> CborValue {
     return CborValue::Array(vec![
         CborValue::Bytes(output.addr.clone()),
-        CborValue::Array(vec![
-            CborValue::Integer(output.amount.into()),
-            encode_tx_output_tokens(&output.tokens),
-        ]),
+        encode_coin_value(&output.coin_value),
     ]);
 }
 
@@ -674,33 +789,9 @@ fn extract_outputs(
             _ => return Err(Error::InvalidOutputFormat),
         };
 
-        // The amount field can be either an Integer (ADA) or an Array [Integer,
-        // Map(tokens)]
-        let (amount, tokens) = match &output_array[1] {
-            // Simple case: only ADA
-            CborValue::Integer(i) => {
-                let amount: u64 = (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?;
-                (amount, Vec::new())
-            }
-            // Multi-asset case: [ada, tokens_map]
-            CborValue::Array(arr) => {
-                if arr.len() != 2 {
-                    return Err(Error::InvalidOutputFormat);
-                }
-                let amount: u64 = match &arr[0] {
-                    CborValue::Integer(i) => {
-                        (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?
-                    }
-                    _ => return Err(Error::InvalidOutputFormat),
-                };
+        let coin_value = decode_coin_value(&output_array[1])?;
 
-                let tokens = extract_tokens(&arr[1])?;
-                (amount, tokens)
-            }
-            _ => return Err(Error::InvalidOutputFormat),
-        };
-
-        outputs.push(CxxSerializableTxOutput { addr: addr_bytes, amount, tokens });
+        outputs.push(CxxSerializableTxOutput { addr: addr_bytes, coin_value });
     }
 
     Ok(outputs)

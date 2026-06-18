@@ -266,6 +266,22 @@ void CardanoTestRpcServer::AddUtxo(const std::string& address,
 }
 
 void CardanoTestRpcServer::AddUtxo(const std::string& address,
+                                   uint64_t amount,
+                                   const cardano_rpc::Tokens& tokens) {
+  auto& utxo = utxos_map_[address].emplace_back();
+  utxo.tx_hash = base::HexEncodeLower(CreateNewTxHash());
+  utxo.output_index = "13";
+  utxo.amount.emplace_back();
+  utxo.amount.back().quantity = base::NumberToString(amount);
+  utxo.amount.back().unit = "lovelace";
+  for (const auto& [token_id, quantity] : tokens) {
+    utxo.amount.emplace_back();
+    utxo.amount.back().quantity = base::NumberToString(quantity);
+    utxo.amount.back().unit = base::HexEncodeLower(token_id);
+  }
+}
+
+void CardanoTestRpcServer::AddUtxo(const std::string& address,
                                    const std::string& tx_hash,
                                    const std::string& index,
                                    const std::string& amount) {

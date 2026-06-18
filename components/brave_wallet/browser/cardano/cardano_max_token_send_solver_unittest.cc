@@ -73,7 +73,7 @@ class CardanoMaxTokenSendSolverUnitTest : public testing::Test {
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
-    tx_input.utxo_value = amount;
+    tx_input.coin_value.lovelace_amount = amount;
 
     return tx_input;
   }
@@ -91,8 +91,8 @@ class CardanoMaxTokenSendSolverUnitTest : public testing::Test {
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
-    tx_input.utxo_value = amount;
-    tx_input.utxo_tokens = tokens;
+    tx_input.coin_value.lovelace_amount = amount;
+    tx_input.coin_value.tokens = tokens;
 
     return tx_input;
   }
@@ -154,12 +154,13 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, SetupOutputs) {
   EXPECT_TRUE(CardanoMaxTokenSendSolver::SetupOutputs(tx, builder_params));
   EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-  EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);  // min ADA required.
-  EXPECT_EQ(tx.TargetOutput()->tokens,
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount,
+            1'142'150u);  // min ADA required.
+  EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("brave"), 9}}));
   EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 0u);
-  EXPECT_EQ(tx.ChangeOutput()->tokens,
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 0u);
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("foo"), 300},
                                  {GetMockTokenId("bar"), 777},
                                  {GetMockTokenId("baz"), 123}}));
@@ -245,11 +246,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, NotEnoughLovelaceForTwoOutputs) {
 
     auto tx = solver.Solve().value();
     EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-    EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-    EXPECT_EQ(tx.TargetOutput()->tokens, inputs[0].utxo_tokens);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
+              inputs[0].coin_value.tokens);
     EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 969'750u);
-    EXPECT_TRUE(tx.ChangeOutput()->tokens.empty());
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 969'750u);
+    EXPECT_TRUE(tx.ChangeOutput()->coin_value.tokens.empty());
     EXPECT_EQ(tx.fee(), 170'121u);
   }
 
@@ -262,11 +264,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, NotEnoughLovelaceForTwoOutputs) {
 
     auto tx = solver.Solve().value();
     EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-    EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-    EXPECT_EQ(tx.TargetOutput()->tokens, inputs[0].utxo_tokens);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
+              inputs[0].coin_value.tokens);
     EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 969'750u + 1'000u);
-    EXPECT_TRUE(tx.ChangeOutput()->tokens.empty());
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 969'750u + 1'000u);
+    EXPECT_TRUE(tx.ChangeOutput()->coin_value.tokens.empty());
     EXPECT_EQ(tx.fee(), 170'121u);
   }
 }
@@ -281,12 +284,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, TwoInputsWithToken) {
 
   auto tx = solver.Solve().value();
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-  EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-  EXPECT_EQ(tx.TargetOutput()->tokens,
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("brave"), 5}}));
   EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 4'686'101u);
-  EXPECT_TRUE(tx.ChangeOutput()->tokens.empty());
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 4'686'101u);
+  EXPECT_TRUE(tx.ChangeOutput()->coin_value.tokens.empty());
   EXPECT_EQ(tx.fee(), 171'749u);
 }
 
@@ -307,12 +310,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, TokensGoToChange) {
   auto tx = solver.Solve().value();
   EXPECT_EQ(tx.inputs().size(), 3u);
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-  EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-  EXPECT_EQ(tx.TargetOutput()->tokens,
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("brave"), 9}}));
   EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 7'681'041u);
-  EXPECT_EQ(tx.ChangeOutput()->tokens,
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 7'681'041u);
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens,
             cardano_rpc::Tokens(
                 {{GetMockTokenId("foo"), 300}, {GetMockTokenId("bar"), 777}}));
   EXPECT_EQ(tx.fee(), 176'809u);
@@ -342,12 +345,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, ExtraInputsPickOrder) {
     auto tx = solver.Solve().value();
     EXPECT_EQ(tx.inputs().size(), 2u);
     EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-    EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-    EXPECT_EQ(tx.TargetOutput()->tokens,
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{GetMockTokenId("brave"), 5}}));
     EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 2'824'995u);
-    EXPECT_EQ(tx.ChangeOutput()->tokens,
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 2'824'995u);
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens,
               cardano_rpc::Tokens(
                   {{GetMockTokenId("foo"), 5}, {GetMockTokenId("bar"), 7}}));
     EXPECT_EQ(tx.fee(), 175'005u);
@@ -362,12 +365,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, ExtraInputsPickOrder) {
     auto tx = solver.Solve().value();
     EXPECT_EQ(tx.inputs().size(), 2u);
     EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-    EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-    EXPECT_EQ(tx.TargetOutput()->tokens,
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{GetMockTokenId("brave"), 5}}));
     EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 2'826'579u);
-    EXPECT_EQ(tx.ChangeOutput()->tokens,
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 2'826'579u);
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{GetMockTokenId("foo"), 5}}));
     EXPECT_EQ(tx.fee(), 173'421u);
   }
@@ -381,12 +384,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, ExtraInputsPickOrder) {
     auto tx = solver.Solve().value();
     EXPECT_EQ(tx.inputs().size(), 2u);
     EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-    EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-    EXPECT_EQ(tx.TargetOutput()->tokens,
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{GetMockTokenId("brave"), 5}}));
     EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 2'828'251u);
-    EXPECT_EQ(tx.ChangeOutput()->tokens, cardano_rpc::Tokens({}));
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 2'828'251u);
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens, cardano_rpc::Tokens({}));
     EXPECT_EQ(tx.fee(), 171'749u);
   }
 
@@ -399,12 +402,12 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, ExtraInputsPickOrder) {
     auto tx = solver.Solve().value();
     EXPECT_EQ(tx.inputs().size(), 2u);
     EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-    EXPECT_EQ(tx.TargetOutput()->amount, 1'142'150u);
-    EXPECT_EQ(tx.TargetOutput()->tokens,
+    EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'142'150u);
+    EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
               cardano_rpc::Tokens({{GetMockTokenId("brave"), 5}}));
     EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-    EXPECT_EQ(tx.ChangeOutput()->amount, 4'828'251u);
-    EXPECT_EQ(tx.ChangeOutput()->tokens, cardano_rpc::Tokens({}));
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 4'828'251u);
+    EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens, cardano_rpc::Tokens({}));
     EXPECT_EQ(tx.fee(), 171'749u);
   }
 }
@@ -419,7 +422,7 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, ManyInputsManyTokens) {
 
     int n_tokens = rnd() % 10;
     for (auto t = 0; t < n_tokens; ++t) {
-      inputs.back().utxo_tokens[GetMockTokenId(
+      inputs.back().coin_value.tokens[GetMockTokenId(
           "brave_" + base::NumberToString(rnd() % 20))] = 1 + rnd() % 1000;
     }
   }
@@ -430,32 +433,33 @@ TEST_F(CardanoMaxTokenSendSolverUnitTest, ManyInputsManyTokens) {
   auto tx = solver.Solve().value();
   EXPECT_EQ(tx.inputs().size(), 24u);
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-  EXPECT_EQ(tx.TargetOutput()->amount, 1'159'390u);
-  EXPECT_EQ(tx.TargetOutput()->tokens,
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 1'159'390u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("brave_0"), 11898}}));
   EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 238'621'737u);
-  EXPECT_EQ(tx.ChangeOutput()->tokens, cardano_rpc::Tokens({
-                                           {GetMockTokenId("brave_1"), 2276},
-                                           {GetMockTokenId("brave_10"), 3669},
-                                           {GetMockTokenId("brave_11"), 6441},
-                                           {GetMockTokenId("brave_12"), 5058},
-                                           {GetMockTokenId("brave_13"), 5044},
-                                           {GetMockTokenId("brave_14"), 2737},
-                                           {GetMockTokenId("brave_15"), 1941},
-                                           {GetMockTokenId("brave_16"), 1810},
-                                           {GetMockTokenId("brave_17"), 2395},
-                                           {GetMockTokenId("brave_18"), 2009},
-                                           {GetMockTokenId("brave_19"), 3676},
-                                           {GetMockTokenId("brave_2"), 4623},
-                                           {GetMockTokenId("brave_3"), 1520},
-                                           {GetMockTokenId("brave_4"), 868},
-                                           {GetMockTokenId("brave_5"), 2402},
-                                           {GetMockTokenId("brave_6"), 1383},
-                                           {GetMockTokenId("brave_7"), 2369},
-                                           {GetMockTokenId("brave_8"), 3076},
-                                           {GetMockTokenId("brave_9"), 6028},
-                                       }));
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount, 238'621'737u);
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens,
+            cardano_rpc::Tokens({
+                {GetMockTokenId("brave_1"), 2276},
+                {GetMockTokenId("brave_10"), 3669},
+                {GetMockTokenId("brave_11"), 6441},
+                {GetMockTokenId("brave_12"), 5058},
+                {GetMockTokenId("brave_13"), 5044},
+                {GetMockTokenId("brave_14"), 2737},
+                {GetMockTokenId("brave_15"), 1941},
+                {GetMockTokenId("brave_16"), 1810},
+                {GetMockTokenId("brave_17"), 2395},
+                {GetMockTokenId("brave_18"), 2009},
+                {GetMockTokenId("brave_19"), 3676},
+                {GetMockTokenId("brave_2"), 4623},
+                {GetMockTokenId("brave_3"), 1520},
+                {GetMockTokenId("brave_4"), 868},
+                {GetMockTokenId("brave_5"), 2402},
+                {GetMockTokenId("brave_6"), 1383},
+                {GetMockTokenId("brave_7"), 2369},
+                {GetMockTokenId("brave_8"), 3076},
+                {GetMockTokenId("brave_9"), 6028},
+            }));
   EXPECT_EQ(tx.fee(), 218'873u);
 }
 

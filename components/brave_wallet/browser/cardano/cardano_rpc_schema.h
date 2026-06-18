@@ -31,6 +31,23 @@ using Tokens = base::flat_map<TokenId, uint64_t>;
 
 std::optional<TokenId> TokenIdFromHex(std::string_view hex);
 
+struct CoinValue {
+  CoinValue();
+  CoinValue(uint64_t lovelace_amount, Tokens tokens);
+  CoinValue(const CoinValue&);
+  CoinValue(CoinValue&&);
+  CoinValue& operator=(const CoinValue&) noexcept;
+  CoinValue& operator=(CoinValue&&) noexcept;
+  ~CoinValue();
+
+  auto operator<=>(const CoinValue& other) const = default;
+
+  [[nodiscard]] bool Add(const CoinValue& other);
+
+  uint64_t lovelace_amount = 0;
+  Tokens tokens;
+};
+
 // Adapter of Blockfrost's EpochParameters struct for wallet's use.
 struct EpochParameters {
   bool operator==(const EpochParameters& other) const = default;
@@ -68,8 +85,7 @@ struct UnspentOutput {
 
   std::array<uint8_t, 32> tx_hash = {};
   uint32_t output_index = 0;
-  uint64_t lovelace_amount = 0;
-  Tokens tokens;
+  CoinValue coin_value;
   CardanoAddress address_to;
 
   static std::optional<UnspentOutput> FromBlockfrostApiValue(

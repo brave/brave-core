@@ -12,7 +12,8 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/origin.h"
 
@@ -59,11 +60,11 @@ class CardanoApiImpl final : public mojom::CardanoApi {
                                      mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error);
 
-  void OnGetBalance(GetBalanceCallback callback,
-                    mojom::CardanoBalancePtr balance,
-                    const std::optional<std::string>& error);
+  void OnGetUtxosForBalance(
+      GetBalanceCallback callback,
+      base::expected<cardano_rpc::UnspentOutputs, std::string> all_utxos);
   void OnGetUtxos(
-      std::optional<uint64_t> amount,
+      std::optional<cardano_rpc::CoinValue> required_coin_value,
       mojom::CardanoProviderPaginationPtr paginate,
       GetUtxosCallback callback,
       base::expected<cardano_rpc::UnspentOutputs, std::string> all_utxos);

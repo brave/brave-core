@@ -104,9 +104,9 @@ TEST_F(CardanoGetUtxosTaskUnitTest, OneAddress) {
   auto utxos = utxos_future.Take().value();
   EXPECT_EQ(utxos.size(), 2u);
 
-  EXPECT_EQ(utxos[0].lovelace_amount, 969750u);
+  EXPECT_EQ(utxos[0].coin_value.lovelace_amount, 969750u);
   EXPECT_EQ(utxos[0].address_to, addr1);
-  EXPECT_EQ(utxos[1].lovelace_amount, 2000000u);
+  EXPECT_EQ(utxos[1].coin_value.lovelace_amount, 2000000u);
   EXPECT_EQ(utxos[1].address_to, addr1);
 }
 
@@ -126,12 +126,12 @@ TEST_F(CardanoGetUtxosTaskUnitTest, TwoAddresses) {
   auto utxos = utxos_future.Take().value();
   EXPECT_EQ(utxos.size(), 3u);
 
-  EXPECT_EQ(utxos[0].lovelace_amount, 969750u);
+  EXPECT_EQ(utxos[0].coin_value.lovelace_amount, 969750u);
   EXPECT_EQ(utxos[0].address_to, addr1);
-  EXPECT_EQ(utxos[1].lovelace_amount, 2000000u);
+  EXPECT_EQ(utxos[1].coin_value.lovelace_amount, 2000000u);
   EXPECT_EQ(utxos[1].address_to, addr1);
 
-  EXPECT_EQ(utxos[2].lovelace_amount, 7000000u);
+  EXPECT_EQ(utxos[2].coin_value.lovelace_amount, 7000000u);
   EXPECT_EQ(utxos[2].address_to, addr2);
 }
 

@@ -127,8 +127,7 @@ rust_static_library("polkadot_extrinsic_rs") {
 }
 
 rust_static_library("cardano_tx_decoder_rs") {
-  # This should only be used by internal wallet code
-  visibility = [ "//brave/components/brave_wallet/browser/internal:*" ]
+  visibility = [ "//brave/components/brave_wallet/browser:*" ]
 
   crate_name = "cardano_tx_decoder"
   crate_root = "cardano_tx_decoder.rs"
@@ -139,23 +138,5 @@ rust_static_library("cardano_tx_decoder_rs") {
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/ciborium/v0_2:lib",
-  ]
-}
-
-source_set("cardano_tx_decoder") {
-  sources = [
-    "cardano_tx_decoder.cc",
-    "cardano_tx_decoder.h",
-  ]
-
-  visibility = [
-    "//brave/components/brave_wallet/browser:*",
-    "//brave/components/brave_wallet/browser:unit_tests",
-  ]
-
-  deps = [
-    ":cardano_tx_decoder_rs",
-    "//base",
-    "//brave/components/brave_wallet/common",
   ]
 }

@@ -14,7 +14,6 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/containers/map_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
@@ -36,20 +35,19 @@ namespace {
 mojom::CardanoBalancePtr BalanceFromUtxos(
     const cardano_rpc::UnspentOutputs& utxos,
     const std::optional<cardano_rpc::TokenId>& token_id) {
-  base::CheckedNumeric<uint64_t> total_balance = 0;
+  cardano_rpc::CoinValue total_coin_value;
+
   for (const auto& utxo : utxos) {
-    if (token_id) {
-      if (auto* token_balance = base::FindOrNull(utxo.tokens, token_id)) {
-        total_balance += *token_balance;
-      }
-    } else {
-      total_balance += utxo.lovelace_amount;
+    if (!total_coin_value.Add(utxo.coin_value)) {
+      return nullptr;
     }
   }
 
   auto result = mojom::CardanoBalance::New();
-  if (!total_balance.AssignIfValid(&result->total_balance)) {
-    return nullptr;
+  if (token_id) {
+    result->total_balance = total_coin_value.tokens[*token_id];
+  } else {
+    result->total_balance = total_coin_value.lovelace_amount;
   }
 
   return result;
@@ -367,7 +365,7 @@ void CardanoWalletService::DiscoverNewTokens(
   }
 
   for (auto& output : outputs) {
-    for (auto& token : output.tokens) {
+    for (auto& token : output.coin_value.tokens) {
       if (discovered_tokens_.contains({chain_id, token.first})) {
         continue;
       }

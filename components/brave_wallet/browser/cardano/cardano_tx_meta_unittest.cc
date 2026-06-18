@@ -26,23 +26,23 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
       std::make_unique<CardanoTransaction>();
   CardanoTransaction::TxInput input(
       *CardanoAddress::FromString(kMockCardanoAddress1));
-  input.utxo_value = 200000;
+  input.coin_value.lovelace_amount = 200000;
   tx->AddInput(std::move(input));
 
   input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress2);
-  input.utxo_value = 400000;
-  input.utxo_tokens = {{GetMockTokenId("brave"), 123}};
+  input.coin_value.lovelace_amount = 400000;
+  input.coin_value.tokens = {{GetMockTokenId("brave"), 123}};
   tx->AddInput(std::move(input));
 
   CardanoTransaction::TxOutput output(
       *CardanoAddress::FromString(kMockCardanoAddress2));
-  output.amount = 300000 - 1000;
+  output.coin_value.lovelace_amount = 300000 - 1000;
   tx->AddOutput(std::move(output));
 
   output.type = CardanoTransaction::TxOutputType::kChange;
   output.address = *CardanoAddress::FromString(kMockCardanoAddress2);
-  output.amount = 300000;
-  output.tokens = {{GetMockTokenId("foo"), 1}};
+  output.coin_value.lovelace_amount = 300000;
+  output.coin_value.tokens = {{GetMockTokenId("foo"), 1}};
   tx->AddOutput(std::move(output));
 
   tx->set_fee(1000u);
@@ -104,23 +104,23 @@ TEST(CardanoTxMeta, ToValue) {
 
   CardanoTransaction::TxInput input(
       *CardanoAddress::FromString(kMockCardanoAddress2));
-  input.utxo_value = 200000;
+  input.coin_value.lovelace_amount = 200000;
   tx->AddInput(std::move(input));
 
   input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress2);
-  input.utxo_value = 400000;
-  input.utxo_tokens = {{GetMockTokenId("brave"), 123}};
+  input.coin_value.lovelace_amount = 400000;
+  input.coin_value.tokens = {{GetMockTokenId("brave"), 123}};
   tx->AddInput(std::move(input));
 
   CardanoTransaction::TxOutput output(
       *CardanoAddress::FromString(kMockCardanoAddress1));
-  output.amount = 200000 - 1000;
+  output.coin_value.lovelace_amount = 200000 - 1000;
   tx->AddOutput(std::move(output));
 
   output.type = CardanoTransaction::TxOutputType::kChange;
   output.address = *CardanoAddress::FromString(kMockCardanoAddress2);
-  output.amount = 300000;
-  output.tokens = {{GetMockTokenId("foo"), 1}};
+  output.coin_value.lovelace_amount = 300000;
+  output.coin_value.tokens = {{GetMockTokenId("foo"), 1}};
   tx->AddOutput(std::move(output));
 
   auto tx_value = tx->ToValue();

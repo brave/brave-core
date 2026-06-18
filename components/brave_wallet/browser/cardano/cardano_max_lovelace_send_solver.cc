@@ -48,7 +48,7 @@ bool CardanoMaxLovelaceSendSolver::SetupOutputs(
   if (!min_ada_required.has_value()) {
     return false;
   }
-  tx.ChangeOutput()->amount = min_ada_required.value();
+  tx.ChangeOutput()->coin_value.lovelace_amount = min_ada_required.value();
 
   return true;
 }

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_tx_decoder.h"
 
 #include <optional>
 #include <vector>
@@ -53,32 +53,40 @@ CardanoTxDecoder::SerializableTxInput FromRust(
   return result;
 }
 
-CxxSerializableTxOutputToken ToRust(
-    const CardanoTxDecoder::SerializableTxOutputToken& output) {
-  CxxSerializableTxOutputToken result;
-  result.token_id = ToRust(output.token_id);
-  result.amount = output.amount;
+CxxSerializableCoinValue ToRust(const cardano_rpc::CoinValue& coin_value) {
+  CxxSerializableCoinValue result;
+
+  result.lovelace_amount = coin_value.lovelace_amount;
+  result.tokens.reserve(coin_value.tokens.size());
+  for (const auto& token : coin_value.tokens) {
+    CxxSerializableTxOutputToken token_rust;
+    token_rust.token_id = ToRust(token.first);
+    token_rust.amount = token.second;
+    result.tokens.emplace_back(std::move(token_rust));
+  }
+
   return result;
 }
 
-CardanoTxDecoder::SerializableTxOutputToken FromRust(
-    const CxxSerializableTxOutputToken& output) {
-  CardanoTxDecoder::SerializableTxOutputToken result;
-  result.token_id = FromRust(output.token_id);
-  result.amount = output.amount;
+cardano_rpc::CoinValue FromRust(const CxxSerializableCoinValue& coin_value) {
+  cardano_rpc::CoinValue result;
+
+  result.lovelace_amount = coin_value.lovelace_amount;
+  result.tokens.reserve(coin_value.tokens.size());
+  for (const auto& token : coin_value.tokens) {
+    result.tokens.insert(
+        std::make_pair(FromRust(token.token_id), token.amount));
+  }
   return result;
 }
 
 CxxSerializableTxOutput ToRust(
     const CardanoTxDecoder::SerializableTxOutput& output) {
   CxxSerializableTxOutput result;
-  result.addr = ToRust(output.address_bytes);
-  result.amount = output.amount;
 
-  result.tokens.reserve(output.tokens.size());
-  for (const auto& token : output.tokens) {
-    result.tokens.push_back(ToRust(token));
-  }
+  result.addr = ToRust(output.address_bytes);
+  result.coin_value = ToRust(output.coin_value);
+
   return result;
 }
 
@@ -87,12 +95,7 @@ CardanoTxDecoder::SerializableTxOutput FromRust(
   CardanoTxDecoder::SerializableTxOutput result;
 
   result.address_bytes = FromRust(output.addr);
-  result.amount = output.amount;
-
-  result.tokens.reserve(output.tokens.size());
-  for (const auto& token : output.tokens) {
-    result.tokens.push_back(FromRust(token));
-  }
+  result.coin_value = FromRust(output.coin_value);
 
   return result;
 }
@@ -214,22 +217,12 @@ CardanoTxDecoder::SerializableTxInput&
 CardanoTxDecoder::SerializableTxInput::operator=(
     CardanoTxDecoder::SerializableTxInput&&) = default;
 
-CardanoTxDecoder::SerializableTxOutputToken::SerializableTxOutputToken() =
-    default;
-CardanoTxDecoder::SerializableTxOutputToken::~SerializableTxOutputToken() =
-    default;
-CardanoTxDecoder::SerializableTxOutputToken::SerializableTxOutputToken(
-    const CardanoTxDecoder::SerializableTxOutputToken&) = default;
-CardanoTxDecoder::SerializableTxOutputToken&
-CardanoTxDecoder::SerializableTxOutputToken::operator=(
-    const CardanoTxDecoder::SerializableTxOutputToken&) = default;
-CardanoTxDecoder::SerializableTxOutputToken::SerializableTxOutputToken(
-    CardanoTxDecoder::SerializableTxOutputToken&&) = default;
-CardanoTxDecoder::SerializableTxOutputToken&
-CardanoTxDecoder::SerializableTxOutputToken::operator=(
-    CardanoTxDecoder::SerializableTxOutputToken&&) = default;
-
 CardanoTxDecoder::SerializableTxOutput::SerializableTxOutput() = default;
+CardanoTxDecoder::SerializableTxOutput::SerializableTxOutput(
+    std::vector<uint8_t> address_bytes,
+    cardano_rpc::CoinValue coin_value)
+    : address_bytes(std::move(address_bytes)),
+      coin_value(std::move(coin_value)) {}
 CardanoTxDecoder::SerializableTxOutput::~SerializableTxOutput() = default;
 CardanoTxDecoder::SerializableTxOutput::SerializableTxOutput(
     const CardanoTxDecoder::SerializableTxOutput&) = default;
@@ -330,6 +323,27 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransactionOutput(
   }
 
   return base::ToVector(result->unwrap()->bytes());
+}
+
+// static
+std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeCoinValue(
+    const cardano_rpc::CoinValue& coin_value) {
+  auto result = encode_cardano_coin_value(ToRust(coin_value));
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+  return base::ToVector(result->unwrap()->bytes());
+}
+
+// static
+std::optional<cardano_rpc::CoinValue> CardanoTxDecoder::DecodeCoinValue(
+    const std::vector<uint8_t>& coin_value_bytes) {
+  auto result =
+      decode_cardano_coin_value(base::SpanToRustSlice(coin_value_bytes));
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+  return FromRust(result->unwrap()->value());
 }
 
 // static
