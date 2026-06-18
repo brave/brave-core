@@ -29,6 +29,7 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillProcessResponse() override;
   ThrottleCheckResult WillStartRequest() override;
+  ThrottleCheckResult WillRedirectRequest() override;
   const char* GetNameForLogging() override;
 
  private:

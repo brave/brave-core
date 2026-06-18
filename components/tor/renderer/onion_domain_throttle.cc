@@ -8,6 +8,7 @@
 #include "base/memory/ptr_util.h"
 #include "net/base/net_errors.h"
 #include "net/base/url_util.h"
+#include "net/url_request/redirect_info.h"
 #include "services/network/public/cpp/resource_request.h"
 
 namespace tor {
@@ -28,6 +29,16 @@ OnionDomainThrottle::MaybeCreateThrottle(bool is_onion_allowed) {
 void OnionDomainThrottle::WillStartRequest(network::ResourceRequest* request,
                                            bool* defer) {
   if (net::IsOnion(request->url)) {
+    delegate_->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
+  }
+}
+
+void OnionDomainThrottle::WillRedirectRequest(
+    net::RedirectInfo* redirect_info,
+    const network::mojom::URLResponseHead& /*response_head*/,
+    bool* /*defer*/,
+    network::HttpRequestHeadersUpdateParams* /*headers_update_params*/) {
+  if (net::IsOnion(redirect_info->new_url)) {
     delegate_->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
   }
 }

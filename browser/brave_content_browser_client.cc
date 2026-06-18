@@ -140,6 +140,7 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
@@ -272,7 +273,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
+#include "net/base/net_errors.h"
+#include "net/base/url_util.h"
+#include "services/network/public/mojom/websocket.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -1222,6 +1227,22 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
+#if BUILDFLAG(ENABLE_TOR)
+  if (frame) {
+    content::BrowserContext* browser_context = frame->GetBrowserContext();
+    Profile* profile = Profile::FromBrowserContext(browser_context);
+    if (!TorProfileServiceFactory::IsTorDisabled(browser_context) &&
+        !profile->IsTor() &&
+        profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
+        net::IsOnion(url)) {
+      mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
+          std::move(handshake_client));
+      client->OnFailure(std::string(), net::ERR_BLOCKED_BY_CLIENT, 0);
+      return;
+    }
+  }
+#endif
+
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
         frame, std::move(factory), url, site_for_cookies, user_agent);

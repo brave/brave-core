@@ -43,7 +43,7 @@ void OnionLocationNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     bool is_tor_disabled,
     bool is_tor_profile) {
-  if (is_tor_disabled || !registry.GetNavigationHandle().IsInMainFrame()) {
+  if (is_tor_disabled) {
     return;
   }
   registry.AddThrottle(std::make_unique<OnionLocationNavigationThrottle>(
@@ -59,6 +59,10 @@ OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() = default;
 
 content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillProcessResponse() {
+  if (!navigation_handle()->IsInMainFrame()) {
+    return content::NavigationThrottle::PROCEED;
+  }
+
   auto* headers = navigation_handle()->GetResponseHeaders();
   std::string onion_location;
   // The webpage defining the Onion-Location header must not be an onionsite.
@@ -90,22 +94,36 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
 
 content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillStartRequest() {
-  // Clear onion location.
-  OnionLocationTabHelper::SetOnionLocationByThrottle(
-      navigation_handle()->GetWebContents(), GURL());
+  const bool is_main_frame = navigation_handle()->IsInMainFrame();
+
+  if (is_main_frame) {
+    // Clear onion location.
+    OnionLocationTabHelper::SetOnionLocationByThrottle(
+        navigation_handle()->GetWebContents(), GURL());
+  }
 
   // If a user enters .onion address in non-Tor window, we block the request and
   // offer "Open in Tor" button or automatically opening it in Tor window.
   if (!is_tor_profile_) {
     const GURL& url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && net::IsOnion(url)) {
-      OnionLocationTabHelper::SetOnionLocationByThrottle(
-          navigation_handle()->GetWebContents(), url,
-          navigation_handle()->GetInitiatorOrigin());
-      return content::NavigationThrottle::BLOCK_REQUEST;
+      if (is_main_frame) {
+        OnionLocationTabHelper::SetOnionLocationByThrottle(
+            navigation_handle()->GetWebContents(), url,
+            navigation_handle()->GetInitiatorOrigin());
+        return content::NavigationThrottle::BLOCK_REQUEST;
+      }
+      // Subframes should use CANCEL_AND_IGNORE. BLOCK_REQUEST commits an error
+      // page that still reports the .onion URL as the last committed URL.
+      return content::NavigationThrottle::CANCEL_AND_IGNORE;
     }
   }
   return content::NavigationThrottle::PROCEED;
+}
+
+content::NavigationThrottle::ThrottleCheckResult
+OnionLocationNavigationThrottle::WillRedirectRequest() {
+  return WillStartRequest();
 }
 
 const char* OnionLocationNavigationThrottle::GetNameForLogging() {
