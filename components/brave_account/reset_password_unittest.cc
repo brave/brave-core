@@ -295,7 +295,7 @@ struct ResetPasswordVerifyCompleteTestCase {
               ASSERT_TRUE(state->get_logged_out()->verification);
               EXPECT_EQ(state->get_logged_out()->verification->intent,
                         mojom::LoggedOutVerificationIntent::kResetPassword);
-              EXPECT_EQ(state->get_logged_out()->verification->email,
+              EXPECT_EQ(state->get_logged_out()->verification->verified_email,
                         kEmailAddress);
             },
             base::Unretained(&pref_service),

@@ -27,14 +27,14 @@ union VerificationIntent {
 
 struct LoggedOutVerification {
   LoggedOutVerificationIntent intent;
-  // Empty until the email is verified.
-  string email;
+  // The verified email - empty until the email is verified.
+  string verified_email;
 };
 
 struct LoggedInVerification {
   LoggedInVerificationIntent intent;
-  // Empty until the email is verified.
-  string email;
+  // The verified email - empty until the email is verified.
+  string verified_email;
 };
 
 struct LoggedOutState {

@@ -236,7 +236,7 @@ void ResetPassword::OnVerifyComplete(
 
   if (success) {
     CHECK(!email.empty());
-    state_->account_state_prefs_->SetVerificationEmail(email);
+    state_->account_state_prefs_->SetVerificationVerifiedEmail(email);
   }
 }
 

@@ -23,7 +23,7 @@ namespace {
 
 template <typename VerificationPtr>
 auto MakeVerification(std::optional<int> verification_intent,
-                      const std::string* verification_email) {
+                      const std::string* verification_verified_email) {
   VerificationPtr verification;
 
   if (verification_intent) {
@@ -31,7 +31,8 @@ auto MakeVerification(std::optional<int> verification_intent,
             static_cast<decltype(verification->intent)>(*verification_intent);
         mojom::IsKnownEnumValue(intent)) {
       verification = VerificationPtr::Struct::New(
-          intent, verification_email ? *verification_email : "");
+          intent,
+          verification_verified_email ? *verification_verified_email : "");
     }
   }
 
@@ -83,12 +84,13 @@ void AccountStatePrefs::SetLoggedIn(
                encrypted_authentication_token));
 }
 
-void AccountStatePrefs::SetVerificationEmail(
-    const std::string& verification_email) {
-  CHECK(!verification_email.empty());
+void AccountStatePrefs::SetVerificationVerifiedEmail(
+    const std::string& verification_verified_email) {
+  CHECK(!verification_verified_email.empty());
   CHECK_DEREF(ScopedDictPrefUpdate(&*pref_service_, prefs::kBraveAccountState)
                   ->FindDict(prefs::keys::kVerification))
-      .Set(prefs::keys::kVerificationEmail, verification_email);
+      .Set(prefs::keys::kVerificationVerifiedEmail,
+           verification_verified_email);
 }
 
 void AccountStatePrefs::ClearVerification() {
@@ -108,36 +110,38 @@ mojom::AccountStatePtr AccountStatePrefs::GetAccountState() const {
   const auto* email = account_state.FindString(prefs::keys::kEmail);
   const auto* kind = account_state.FindString(prefs::keys::kKind);
   const auto* verification = account_state.FindDict(prefs::keys::kVerification);
-  const auto* verification_email =
-      verification ? verification->FindString(prefs::keys::kVerificationEmail)
-                   : nullptr;
   const auto verification_intent =
       verification ? verification->FindInt(prefs::keys::kVerificationIntent)
                    : std::nullopt;
   const auto* verification_token =
       verification ? verification->FindString(prefs::keys::kVerificationToken)
                    : nullptr;
+  const auto* verification_verified_email =
+      verification
+          ? verification->FindString(prefs::keys::kVerificationVerifiedEmail)
+          : nullptr;
 
   CHECK((!verification && !verification_intent && !verification_token &&
-         !verification_email) ||
+         !verification_verified_email) ||
         (verification && verification_intent && verification_token &&
          !verification_token->empty() &&
-         (!verification_email || !verification_email->empty())));
+         (!verification_verified_email ||
+          !verification_verified_email->empty())));
 
   if (kind && *kind == prefs::state_kinds::kLoggedIn) {
     CHECK(authentication_token && !authentication_token->empty());
     CHECK(email && !email->empty());
     auto logged_in_verification =
-        MakeVerification<mojom::LoggedInVerificationPtr>(verification_intent,
-                                                         verification_email);
+        MakeVerification<mojom::LoggedInVerificationPtr>(
+            verification_intent, verification_verified_email);
     CHECK(!verification == !logged_in_verification);
     return mojom::AccountState::NewLoggedIn(
         mojom::LoggedInState::New(*email, std::move(logged_in_verification)));
   }
 
   auto logged_out_verification =
-      MakeVerification<mojom::LoggedOutVerificationPtr>(verification_intent,
-                                                        verification_email);
+      MakeVerification<mojom::LoggedOutVerificationPtr>(
+          verification_intent, verification_verified_email);
   CHECK(!verification == !logged_out_verification);
   return mojom::AccountState::NewLoggedOut(
       mojom::LoggedOutState::New(std::move(logged_out_verification)));
