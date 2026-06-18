@@ -35,9 +35,9 @@ void OnionDomainThrottle::WillStartRequest(network::ResourceRequest* request,
 
 void OnionDomainThrottle::WillRedirectRequest(
     net::RedirectInfo* redirect_info,
-    const network::mojom::URLResponseHead& /*response_head*/,
-    bool* /*defer*/,
-    network::HttpRequestHeadersUpdateParams* /*headers_update_params*/) {
+    const network::mojom::URLResponseHead& response_head,
+    bool* defer,
+    network::HttpRequestHeadersUpdateParams* headers_update_params) {
   if (net::IsOnion(redirect_info->new_url)) {
     delegate_->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
   }

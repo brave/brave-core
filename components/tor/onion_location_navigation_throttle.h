@@ -20,7 +20,8 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
  public:
   static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
                                 bool is_tor_disabled,
-                                bool is_tor_profile);
+                                bool is_tor_profile,
+                                bool onion_only_in_tor_windows);
   explicit OnionLocationNavigationThrottle(
       content::NavigationThrottleRegistry& registry,
       bool is_tor_profile,

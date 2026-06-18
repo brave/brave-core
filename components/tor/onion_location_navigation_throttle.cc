@@ -9,15 +9,11 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
-#include "brave/components/tor/pref_names.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"
 
@@ -45,18 +41,12 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
 void OnionLocationNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     bool is_tor_disabled,
-    bool is_tor_profile) {
+    bool is_tor_profile,
+    bool onion_only_in_tor_windows) {
   if (is_tor_disabled) {
     return;
   }
   content::NavigationHandle& navigation_handle = registry.GetNavigationHandle();
-  bool onion_only_in_tor_windows = true;
-  if (PrefService* prefs =
-          user_prefs::UserPrefs::Get(
-              navigation_handle.GetWebContents()->GetBrowserContext())) {
-    onion_only_in_tor_windows =
-        prefs->GetBoolean(tor::prefs::kOnionOnlyInTorWindows);
-  }
   registry.AddThrottle(std::make_unique<OnionLocationNavigationThrottle>(
       registry, is_tor_profile, onion_only_in_tor_windows));
 }
