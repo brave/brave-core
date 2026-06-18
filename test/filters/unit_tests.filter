@@ -316,6 +316,10 @@
 # See ChromeBrowserFieldTrials.
 -ChromeBrowserFieldTrialsTest.SamplingTrials
 
+# These tests fail because we are modifying the HttpsUpgrades feature.
+-HttpsFirstModeSettingsTrackerTest.ImplicitTransition_EsbToggled
+-HttpsFirstModeSettingsTrackerTest.StartupDetailedState_EnabledBalancedEsbPairing
+
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
