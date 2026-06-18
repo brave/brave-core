@@ -15,4 +15,21 @@
 -MetricIntegrationTest.LargestContentfulPaint_SubframeInput
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 
+# These screen-capture / media-stream tests crash on x86 with a NOTREACHED in
+# base::win::AssertComInitialized. WebRTC's window capturer calls
+# CoCreateInstance on a thread-pool worker without COM initialization, which the
+# DCheckedCoCreateInstance hook fatally enforces.
+-CaptureHandleBrowserTest.*
+-CapturedSurfaceControl*.*
+-*DisplayMedia*.*
+-SubCapture*.*
+-WebRtcScreenCaptureBrowserTestUserRejection.*
+
+# These PDF JS tests time out (32 s) on x86.
+-All/PDFExtensionJSTest.*/*
+-All/PDFExtensionPacificTimeZoneJSTest.*
+-*PDFExtension*SaveToDrive*.*
+
+-ExtensionCspApiTest.ServiceWorkerIsConstrainedByMV3CSPEvenIfSandboxed
 -PageLoadMetricsBrowserTestTerminatedPage.UkmIsRecordedWhenRenderProcessShutsDown
+-PasswordChangeUIControllerBrowserTest.PageIsInteractableWhileToastIsShowing
