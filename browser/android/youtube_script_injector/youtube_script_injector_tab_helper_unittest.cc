@@ -143,6 +143,22 @@ TEST_F(YouTubeScriptInjectorTabHelperTest, YouTubeDomainCorrectPathSubdomain) {
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 }
 
+TEST_F(YouTubeScriptInjectorTabHelperTest,
+       MaybeSetFullscreenNoOpForNonYouTubeDomain) {
+  NavigateToURL(GURL("https://example.com/watch?v=abcdefg"));
+
+  ASSERT_TRUE(web_contents()->GetPrimaryMainFrame()->IsRenderFrameLive());
+  ASSERT_FALSE(GetHelper()->IsYouTubeDomain());
+
+  // This covers the injection-time revalidation used to close the toolbar
+  // click to renderer execution race. Reproducing the full async race would
+  // require a heavier browser test, but the behavior we need is that the final
+  // MaybeSetFullscreen() gate refuses non-YouTube committed pages.
+  GetHelper()->MaybeSetFullscreen();
+
+  EXPECT_FALSE(GetHelper()->HasFullscreenBeenRequested());
+}
+
 // Test fullscreen state management with PageUserData.
 TEST_F(YouTubeScriptInjectorTabHelperTest, FullscreenStateManagement) {
   // Navigate to a YouTube video.
