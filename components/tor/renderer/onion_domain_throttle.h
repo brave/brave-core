@@ -8,7 +8,16 @@
 
 #include <memory>
 
+#include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+
+namespace net {
+struct RedirectInfo;
+}
+
+namespace network {
+struct HttpRequestHeadersUpdateParams;
+}
 
 namespace tor {
 
