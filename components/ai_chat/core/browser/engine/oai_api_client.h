@@ -64,12 +64,14 @@ class OAIAPIClient {
 
  protected:
   // Builds a JSON request body for the OAI chat completions API.
+  // |additional_fields| entries are merged into the root request object.
   static std::string CreateJSONRequestBody(
       base::ListValue messages,
       bool is_sse_enabled,
       const std::string& model_request_name,
       std::optional<base::ListValue> oai_tool_definitions,
-      const std::optional<std::vector<std::string>>& stop_sequences);
+      const std::optional<std::vector<std::string>>& stop_sequences,
+      base::DictValue additional_fields = {});
 
   // Maps an HTTP response code to an APIError using the same conventions as
   // OAI / Anthropic.

@@ -74,7 +74,8 @@ std::string OAIAPIClient::CreateJSONRequestBody(
     bool is_sse_enabled,
     const std::string& model_request_name,
     std::optional<base::ListValue> oai_tool_definitions,
-    const std::optional<std::vector<std::string>>& stop_sequences) {
+    const std::optional<std::vector<std::string>>& stop_sequences,
+    base::DictValue additional_fields) {
   base::DictValue dict;
 
   dict.Set("messages", std::move(messages));
@@ -93,6 +94,8 @@ std::string OAIAPIClient::CreateJSONRequestBody(
     }
     dict.Set("stop", std::move(stop_list));
   }
+
+  dict.Merge(std::move(additional_fields));
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
