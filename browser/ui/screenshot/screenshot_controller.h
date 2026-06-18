@@ -37,6 +37,7 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
  public:
   enum class Error {
     kNoTab,
+    kBusy,
     kCaptureFailed,
     kEncodeFailed,
     kUserCancelled,
@@ -65,7 +66,8 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 
   // Returns false if `web_contents` has no live RenderWidgetHostView or a
   // capture is already in flight.
-  bool CanCapture(content::WebContents* web_contents) const;
+  base::expected<void, Error> CanCapture(
+      content::WebContents* web_contents) const;
 
   // Captures the visible viewport area or the full page of `web_contents`,
   // encodes the result as PNG, and drives a Save As dialog.

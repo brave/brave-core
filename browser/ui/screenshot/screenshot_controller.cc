@@ -16,6 +16,7 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "components/viz/common/frame_sinks/copy_output_result.h"
@@ -154,21 +155,24 @@ ScreenshotController::~ScreenshotController() {
   }
 }
 
-bool ScreenshotController::CanCapture(
-    content::WebContents* web_contents) const {
+base::expected<void, ScreenshotController::Error>
+ScreenshotController::CanCapture(content::WebContents* web_contents) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (busy_ || !web_contents) {
-    return false;
+  if (busy_) {
+    return base::unexpected(Error::kBusy);
   }
-  return web_contents->GetRenderWidgetHostView() != nullptr;
+  if (!web_contents || !web_contents->GetRenderWidgetHostView()) {
+    return base::unexpected(Error::kNoTab);
+  }
+  return base::ok();
 }
 
 void ScreenshotController::CaptureVisibleArea(
     content::WebContents* web_contents,
     ResultCallback done) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!CanCapture(web_contents)) {
-    std::move(done).Run(base::unexpected(Error::kNoTab));
+  if (auto result = CanCapture(web_contents); !result.has_value()) {
+    std::move(done).Run(base::unexpected(result.error()));
     return;
   }
   auto* view = web_contents->GetRenderWidgetHostView();
@@ -201,8 +205,8 @@ void ScreenshotController::CaptureVisibleArea(
 void ScreenshotController::CaptureFullPage(content::WebContents* web_contents,
                                            ResultCallback done) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!CanCapture(web_contents)) {
-    std::move(done).Run(base::unexpected(Error::kNoTab));
+  if (auto result = CanCapture(web_contents); !result.has_value()) {
+    std::move(done).Run(base::unexpected(result.error()));
     return;
   }
 
