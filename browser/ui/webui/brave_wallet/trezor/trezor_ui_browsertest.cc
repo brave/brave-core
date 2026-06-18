@@ -10,6 +10,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 
@@ -59,7 +60,15 @@ IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
 
     // Ensure there is non-null `opener` in opened window.
     EXPECT_TRUE(content::EvalJs(trezor_popup, "!!window.opener").ExtractBool());
+
+    // Close() is asynchronous. The next block reuses the same "modal" window
+    // name, so we must wait for this popup to be fully destroyed before opening
+    // the next one. Otherwise window.open() may reuse the still-alive named
+    // browsing context instead of creating a new WebContents, and the next
+    // block's WebContentsAddedObserver would never fire.
+    content::WebContentsDestroyedWatcher destroyed_watcher(trezor_popup);
     trezor_popup->Close();
+    destroyed_watcher.Wait();
   }
 
   {
