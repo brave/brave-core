@@ -28,7 +28,7 @@ brave_common_web_compile_inputs = [
   rebase_path("../definitions/welcome.d.ts"),
 
   # webpack config changes warrant a re-build of all webpack builds
-  rebase_path("../webpack/webpack.config.js"),
+  rebase_path("../webpack/webpack.config.ts"),
   rebase_path("../webpack/resolve.ts"),
   rebase_path("../webpack/rules.ts"),
   rebase_path("../webpack/plugins.ts"),

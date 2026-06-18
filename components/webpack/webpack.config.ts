@@ -24,14 +24,14 @@ import {
 import GenerateDepfilePlugin from './webpack-plugin-depfile'
 import XHRCompileAsyncWasmPlugin from './xhr-compile-async-wasm-plugin'
 
-const rootGenDir = process.env.ROOT_GEN_DIR
+const rootGenDir = process.env.ROOT_GEN_DIR as string
 const pathMap = generatePathMap(rootGenDir)
 const buildFlags = JSON.parse(
   fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
 )
 const tsConfigPath = path.join(rootGenDir, 'tsconfig-webpack.json')
 
-export default async function (env, argv) {
+export default async function (env: any, argv: any): Promise<Configuration> {
   const isDevMode = argv.mode === 'development'
   // webpack-cli no longer allows specifying entry name in cli args, so use
   // a custom env param and parse ourselves.
@@ -57,14 +57,14 @@ export default async function (env, argv) {
 
   if (env.extra_modules) {
     const extraModules = env.extra_modules.split(',')
-    resolve.modules = [...extraModules, ...(resolve.modules)]
+    resolve.modules = [...extraModules, ...(resolve.modules as string[])]
   }
 
   if (env.webpack_aliases) {
     resolve.aliasFields = env.webpack_aliases.split(',')
   }
 
-  const output = {
+  const output: Configuration['output'] = {
     iife: !env.no_iife,
     path: process.env.TARGET_GEN_DIR,
     filename: '[name].bundle.js',
@@ -81,7 +81,7 @@ export default async function (env, argv) {
     output.publicPath = env.output_public_path
   }
 
-  const experiments = {
+  const experiments: Configuration['experiments'] = {
     outputModule: Boolean(env.output_module),
   }
   if (env.sync_wasm) {
@@ -97,8 +97,8 @@ export default async function (env, argv) {
   // bundle. Returns a single externals function; add it to the `externals` array.
   //
   const chromeUrlExternals = function (
-    { request },
-    callback,
+    { request }: { context?: string; request?: string },
+    callback: (err?: null | Error, result?: string) => void,
   ) {
     if (
       env.output_module
@@ -111,7 +111,7 @@ export default async function (env, argv) {
   }
 
   // Serve common libraries from shared resources
-  const reactExternals =
+  const reactExternals: Configuration['externals'] =
     env.output_module && !('no_externals' in env)
       ? {
           // React and ReactDOM ship in a single bundle (see
