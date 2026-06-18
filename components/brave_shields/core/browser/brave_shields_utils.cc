@@ -299,7 +299,13 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
     return true;
   }
 
-  if (url.is_valid() && !IsSchemeSupportedForShields(url)) {
+  // By default we keep the shields enabled on invalid URLs as well. Making to
+  // more explicit to capture the intent.
+  if (!url.is_valid()) {
+    return true;
+  }
+
+  if (!IsSchemeSupportedForShields(url)) {
     return false;
   }
 
@@ -849,11 +855,7 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         const GURL& url) {
   DCHECK(map);
 
-  if (url.is_empty()) {
-    return false;
-  }
-
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.SchemeIsBlob()) {
+  if (!IsSchemeSupportedForShields(url)) {
     return false;
   }
 
