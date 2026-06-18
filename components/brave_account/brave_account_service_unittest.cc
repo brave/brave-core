@@ -35,33 +35,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace {
-
-constexpr char kAuthenticationToken[] = "authentication_token";
-constexpr char kEmailAddress[] = "email@address.com";
-constexpr char kLoginToken[] = "login_token";
-constexpr char kVerificationToken[] = "verification_token";
-
-const std::string& EncryptedAuthenticationToken() {
-  static const base::NoDestructor<std::string> kEncryptedAuthenticationToken(
-      base::Base64Encode(kAuthenticationToken));
-  return *kEncryptedAuthenticationToken;
-}
-
-const std::string& EncryptedLoginToken() {
-  static const base::NoDestructor<std::string> kEncryptedLoginToken(
-      base::Base64Encode(kLoginToken));
-  return *kEncryptedLoginToken;
-}
-
-const std::string& EncryptedVerificationToken() {
-  static const base::NoDestructor<std::string> kEncryptedVerificationToken(
-      base::Base64Encode(kVerificationToken));
-  return *kEncryptedVerificationToken;
-}
-
-}  // namespace
-
 namespace brave_account {
 
 using endpoints::AuthValidate;
@@ -156,7 +129,7 @@ mojom::AccountStatePtr LoggedOut() {
 mojom::AccountStatePtr LoggedOutWithVerification() {
   return mojom::AccountState::NewLoggedOut(
       mojom::LoggedOutState::New(mojom::LoggedOutVerification::New(
-          mojom::LoggedOutVerificationIntent::kRegistration)));
+          mojom::LoggedOutVerificationIntent::kRegistration, /*email=*/"")));
 }
 
 mojom::AccountStatePtr LoggedIn(const std::string& email) {

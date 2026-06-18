@@ -17,6 +17,7 @@
 #include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/endpoints/verify_complete.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/reset_password.h"
 #include "brave/components/brave_account/state_base.h"
 #include "components/os_crypt/async/common/encryptor.h"
 
@@ -28,7 +29,8 @@ namespace brave_account {
 
 // `mojom::Authentication` surface available before login:
 // `RegisterInitialize()`, `RegisterFinalize()`, `RegisterVerify()`,
-// `LoginInitialize()`, and `LoginFinalize()`.
+// `LoginInitialize()`, and `LoginFinalize()`, plus the password-reset steps,
+// which are delegated to the `reset_password_` helper.
 // `ResendVerificationEmail()` and `CancelVerification()` are fully
 // handled by `StateBase` for both states.
 // All other methods inherit `StateBase`'s wrong-state default.
@@ -58,6 +60,23 @@ class LoggedOutState : public StateBase {
   void RegisterVerify(const std::string& code,
                       RegisterVerifyCallback callback) override;
 
+  void ResetPasswordVerifyInit(
+      const std::string& email,
+      ResetPasswordVerifyInitCallback callback) override;
+
+  void ResetPasswordVerifyComplete(
+      const std::string& code,
+      ResetPasswordVerifyCompleteCallback callback) override;
+
+  void ResetPasswordPasswordInit(
+      const std::string& blinded_message,
+      ResetPasswordPasswordInitCallback callback) override;
+
+  void ResetPasswordPasswordFinalize(
+      const std::string& serialized_record,
+      const std::string& email,
+      ResetPasswordPasswordFinalizeCallback callback) override;
+
   void LoginInitialize(mojom::Service initiating_service,
                        const std::string& email,
                        const std::string& serialized_ke1,
@@ -77,12 +96,13 @@ class LoggedOutState : public StateBase {
   void OnRegisterVerify(RegisterVerifyCallback callback,
                         endpoints::VerifyComplete::Response response);
 
-
   void OnLoginInitialize(LoginInitializeCallback callback,
                          endpoints::LoginInit::Response response);
 
   void OnLoginFinalize(LoginFinalizeCallback callback,
                        endpoints::LoginFinalize::Response response);
+
+  ResetPassword reset_password_{*this};
 
   base::WeakPtrFactory<LoggedOutState> weak_factory_{this};
 };

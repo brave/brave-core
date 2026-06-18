@@ -9,11 +9,13 @@
 #include <memory>
 #include <string>
 
+#include "base/base64.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
+#include "base/no_destructor.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -36,6 +38,29 @@
 
 namespace brave_account {
 
+inline constexpr char kAuthenticationToken[] = "authentication_token";
+inline constexpr char kEmailAddress[] = "email@address.com";
+inline constexpr char kLoginToken[] = "login_token";
+inline constexpr char kVerificationToken[] = "verification_token";
+
+inline const std::string& EncryptedAuthenticationToken() {
+  static const base::NoDestructor<std::string> kEncryptedAuthenticationToken(
+      base::Base64Encode(kAuthenticationToken));
+  return *kEncryptedAuthenticationToken;
+}
+
+inline const std::string& EncryptedLoginToken() {
+  static const base::NoDestructor<std::string> kEncryptedLoginToken(
+      base::Base64Encode(kLoginToken));
+  return *kEncryptedLoginToken;
+}
+
+inline const std::string& EncryptedVerificationToken() {
+  static const base::NoDestructor<std::string> kEncryptedVerificationToken(
+      base::Base64Encode(kVerificationToken));
+  return *kEncryptedVerificationToken;
+}
+
 struct AuthenticationObserverTestCase;
 struct AuthValidateTestCase;
 struct CancelVerificationTestCase;
@@ -47,6 +72,10 @@ struct RegisterFinalizeTestCase;
 struct RegisterInitializeTestCase;
 struct RegisterVerifyTestCase;
 struct ResendVerificationEmailTestCase;
+struct ResetPasswordPasswordFinalizeTestCase;
+struct ResetPasswordPasswordInitTestCase;
+struct ResetPasswordVerifyCompleteTestCase;
+struct ResetPasswordVerifyInitTestCase;
 
 template <typename TestCase>
 class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
@@ -91,6 +120,12 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
                   std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
                   std::is_same_v<TestCase, RegisterVerifyTestCase> ||
                   std::is_same_v<TestCase, ResendVerificationEmailTestCase> ||
+                  std::is_same_v<TestCase, ResetPasswordVerifyInitTestCase> ||
+                  std::is_same_v<TestCase,
+                                 ResetPasswordVerifyCompleteTestCase> ||
+                  std::is_same_v<TestCase, ResetPasswordPasswordInitTestCase> ||
+                  std::is_same_v<TestCase,
+                                 ResetPasswordPasswordFinalizeTestCase> ||
                   std::is_same_v<TestCase, LoginInitializeTestCase> ||
                   std::is_same_v<TestCase, LoginFinalizeTestCase> ||
                   std::is_same_v<TestCase, GetServiceTokenTestCase>) {

@@ -50,10 +50,7 @@ void LoggedInState::LogOut() {
   // authentication tokens automatically (currently in 6 months of inactivity).
   // Not adopted into the state's in-flight bag:
   // best-effort with no callback that touches state.
-  const auto encrypted_authentication_token =
-      account_state_prefs_->GetAuthenticationToken();
-  CHECK(!encrypted_authentication_token.empty());
-  if (const auto authentication_token = Decrypt(encrypted_authentication_token);
+  if (const auto authentication_token = GetDecryptedAuthenticationToken();
       !authentication_token.empty()) {
     auto request = MakeRequest<WithHeaders<AuthLogout::Request>>();
     SetBearerToken(request, authentication_token);
@@ -77,19 +74,15 @@ void LoggedInState::GetServiceToken(mojom::Service service,
         mojom::GetServiceTokenResult::New(std::move(service_token)));
   }
 
-  const auto encrypted_authentication_token =
-      account_state_prefs_->GetAuthenticationToken();
-  CHECK(!encrypted_authentication_token.empty());
-  const auto authentication_token = Decrypt(encrypted_authentication_token);
-  if (authentication_token.empty()) {
+  auto authentication_token =
+      GetDecryptedAuthenticationToken<mojom::GetServiceTokenError>();
+  if (!authentication_token.has_value()) {
     return std::move(callback).Run(
-        base::unexpected(MakeClientError<mojom::GetServiceTokenError>(
-            mojom::GetServiceTokenClientErrorCode::
-                kAuthenticationTokenDecryptionFailed)));
+        base::unexpected(std::move(authentication_token).error()));
   }
 
   auto request = MakeRequest<WithHeaders<ServiceToken::Request>>();
-  SetBearerToken(request, authentication_token);
+  SetBearerToken(request, *authentication_token);
   request.body.service = service_name;
 
   SendStateOwnedRequest<ServiceToken>(
@@ -161,10 +154,7 @@ void LoggedInState::ScheduleAuthValidate(
 void LoggedInState::AuthValidate(RequestHandle current_auth_validate_request) {
   current_auth_validate_request.reset();
 
-  const auto encrypted_authentication_token =
-      account_state_prefs_->GetAuthenticationToken();
-  CHECK(!encrypted_authentication_token.empty());
-  const auto authentication_token = Decrypt(encrypted_authentication_token);
+  const auto authentication_token = GetDecryptedAuthenticationToken();
   if (authentication_token.empty()) {
     return;
   }

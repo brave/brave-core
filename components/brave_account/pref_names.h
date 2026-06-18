@@ -56,6 +56,21 @@ namespace brave_account::prefs {
 //   }
 // },
 //
+// Password change, email verified — logged-in, with verification carrying
+// the verified email:
+// "account": {
+//   "state": {
+//     "authentication_token": "...",
+//     "email": "...",
+//     "kind": "logged-in"
+//     "verification": {
+//       "intent": 0,
+//       "token": "...",
+//       "verified_email": "..."
+//     }
+//   }
+// },
+//
 // Logged out — logged-out:
 // "account": {
 //   "state": {
@@ -70,6 +85,19 @@ namespace brave_account::prefs {
 //     "verification": {
 //       "intent": 1,
 //       "token": "..."
+//     }
+//   }
+// },
+//
+// Password reset, email verified — logged-out, with verification carrying
+// the verified email:
+// "account": {
+//   "state": {
+//     "kind": "logged-out",
+//     "verification": {
+//       "intent": 1,
+//       "token": "...",
+//       "verified_email": "..."
 //     }
 //   }
 // },
@@ -88,6 +116,7 @@ inline constexpr char kVerification[] = "verification";
 // kBraveAccountState.
 inline constexpr char kVerificationIntent[] = "intent";
 inline constexpr char kVerificationToken[] = "token";
+inline constexpr char kVerificationVerifiedEmail[] = "verified_email";
 
 // Dictionary keys used within entries of the "service_tokens" sub-dict of
 // kBraveAccountState.

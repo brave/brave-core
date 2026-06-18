@@ -88,23 +88,16 @@ void StateBase::RegisterVerify(const std::string&,
 void StateBase::ResendVerificationEmail(
     mojom::VerificationIntentPtr intent,
     ResendVerificationEmailCallback callback) {
-  const auto encrypted_verification_token =
-      account_state_prefs_->GetVerificationToken(std::move(intent));
-  if (encrypted_verification_token.empty()) {
+  auto verification_token =
+      GetDecryptedVerificationToken<mojom::ResendConfirmationEmailError>(
+          std::move(intent));
+  if (!verification_token.has_value()) {
     return std::move(callback).Run(
-        MakeCalledInWrongStateError<mojom::ResendConfirmationEmailError>());
-  }
-
-  const auto verification_token = Decrypt(encrypted_verification_token);
-  if (verification_token.empty()) {
-    return std::move(callback).Run(
-        base::unexpected(MakeClientError<mojom::ResendConfirmationEmailError>(
-            mojom::ResendConfirmationEmailClientErrorCode::
-                kVerificationTokenDecryptionFailed)));
+        base::unexpected(std::move(verification_token).error()));
   }
 
   auto request = MakeRequest<WithHeaders<VerifyResend::Request>>();
-  SetBearerToken(request, verification_token);
+  SetBearerToken(request, *verification_token);
   // Server side will determine locale based on the Accept-Language request
   // header (which is included automatically by upstream).
   request.body.locale = "";
@@ -126,8 +119,8 @@ void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
     // verification tokens automatically (currently after 30 minutes).
     // Not adopted into the state's in-flight bag:
     // best-effort with no callback that touches state.
-    if (const auto verification_token = Decrypt(
-            account_state_prefs_->GetVerificationToken(std::move(intent)));
+    if (const auto verification_token =
+            GetDecryptedVerificationToken(std::move(intent));
         !verification_token.empty()) {
       auto request = MakeRequest<WithHeaders<VerifyDelete::Request>>();
       SetBearerToken(request, verification_token);
@@ -139,6 +132,35 @@ void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
   // LoggedOutWithVerification ==> LoggedOut (no state swap), or
   // LoggedInWithVerification ==> LoggedIn (no state swap).
   account_state_prefs_->ClearVerification();
+}
+
+void StateBase::ResetPasswordVerifyInit(
+    const std::string& email,
+    ResetPasswordVerifyInitCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
+}
+
+void StateBase::ResetPasswordVerifyComplete(
+    const std::string& code,
+    ResetPasswordVerifyCompleteCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
+}
+
+void StateBase::ResetPasswordPasswordInit(
+    const std::string& blinded_message,
+    ResetPasswordPasswordInitCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
+}
+
+void StateBase::ResetPasswordPasswordFinalize(
+    const std::string& serialized_record,
+    const std::string& email,
+    ResetPasswordPasswordFinalizeCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
 void StateBase::LoginInitialize(mojom::Service,
