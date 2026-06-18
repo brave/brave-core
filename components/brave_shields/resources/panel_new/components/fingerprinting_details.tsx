@@ -25,6 +25,20 @@ const webcompatSettingNames = new Map(
       )
     })
     .map(([key, value]) => {
+      if (value == ContentSettingsType.BRAVE_WEBCOMPAT_WEBGL) {
+        return [
+          value,
+          getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL_LABEL'),
+        ]
+      }
+
+      if (value == ContentSettingsType.BRAVE_WEBCOMPAT_WEBGL2) {
+        return [
+          value,
+          getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL2_LABEL'),
+        ]
+      }
+
       const name = key
         .replace('BRAVE_WEBCOMPAT_', '')
         .replaceAll('_', ' ')
