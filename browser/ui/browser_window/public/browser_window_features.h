@@ -32,6 +32,10 @@ class EmailAliasesController;
 }  // namespace email_aliases
 #endif
 
+namespace screenshot {
+class ScreenshotController;
+}  // namespace screenshot
+
 // This file doesn't include header file for BrowserWindowFeatures_ChromiumImpl
 // because this file only could be included at the bottom of
 // //chrome/browser/ui/browser_window/public/browser_window_features.h. So we
@@ -88,6 +92,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return tree_tab_session_manager_.get();
   }
 
+  screenshot::ScreenshotController* screenshot_controller() {
+    return screenshot_controller_.get();
+  }
+
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
@@ -106,6 +114,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<BraveNonClientHitTestHelper>
       brave_non_client_hit_test_helper_;
   std::unique_ptr<TreeTabSessionManager> tree_tab_session_manager_;
+  std::unique_ptr<screenshot::ScreenshotController> screenshot_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

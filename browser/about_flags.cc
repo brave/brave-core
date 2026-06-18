@@ -129,6 +129,7 @@
 #include "brave/browser/ui/darker_theme/features.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/screenshot/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -828,6 +829,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_WORKSPACE_FEATURE_ENTRY
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_SCREENSHOT_FEATURE_ENTRY                                        \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-screenshot",                                                     \
+      "Enable Brave Screenshot",                                              \
+      "Adds a toolbar button for capturing the visible area or full page as " \
+      "a PNG.",                                                               \
+      kOsDesktop,                                                             \
+      FEATURE_VALUE_TYPE(screenshot::features::kBraveScreenshot),             \
+  })
+#else
+#define BRAVE_SCREENSHOT_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1425,6 +1440,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       kOsDesktop | kOsAndroid,                                                 \
       FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),                \
   })                                                                           \
+  BRAVE_SCREENSHOT_FEATURE_ENTRY                                               \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

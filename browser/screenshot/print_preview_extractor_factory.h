@@ -15,19 +15,13 @@
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 namespace screenshot {
 
 // Constructs a PrintPreviewExtractor wired up with the default Extractor
 // factory used in production (PrintPreviewExtractorInternal).
 // Deps to callbacks are injected from the caller to avoid circular dependencies
-// between this module and the `chrome/browser/ui/` target. See
-// brave_tab_helpers.cc.
+// between this module and the `chrome/browser/ui/` target.
 std::unique_ptr<PrintPreviewExtractor> CreatePrintPreviewExtractor(
-    content::WebContents* web_contents,
     base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>
         id_map_callback,
     base::RepeatingCallback<base::flat_map<int, int>&()>

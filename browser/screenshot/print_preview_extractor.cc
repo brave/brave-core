@@ -17,17 +17,16 @@
 
 namespace screenshot {
 
-PrintPreviewExtractor::PrintPreviewExtractor(content::WebContents* web_contents,
-                                             CreateExtractorCallback callback)
-    : create_extractor_callback_(std::move(callback)),
-      web_contents_(web_contents) {}
+PrintPreviewExtractor::PrintPreviewExtractor(CreateExtractorCallback callback)
+    : create_extractor_callback_(std::move(callback)) {}
 
 PrintPreviewExtractor::~PrintPreviewExtractor() = default;
 
-void PrintPreviewExtractor::CaptureImages(CaptureImagesCallback callback) {
+void PrintPreviewExtractor::CaptureImages(content::WebContents* web_contents,
+                                          CaptureImagesCallback callback) {
   // Overwrite any existing extraction in progress, cancelling the operation.
   extractor_ = create_extractor_callback_.Run(
-      web_contents_, screenshot::IsPdf(web_contents_),
+      web_contents, screenshot::IsPdf(web_contents),
       CaptureImagesCallback(base::BindOnce(&PrintPreviewExtractor::OnComplete,
                                            weak_ptr_factory_.GetWeakPtr(),
                                            std::move(callback))));

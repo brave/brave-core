@@ -43,13 +43,13 @@ class PrintPreviewExtractor {
           bool is_pdf,
           CaptureImagesCallback&&)>;
 
-  PrintPreviewExtractor(content::WebContents* web_contents,
-                        CreateExtractorCallback callback);
+  explicit PrintPreviewExtractor(CreateExtractorCallback callback);
   ~PrintPreviewExtractor();
   PrintPreviewExtractor(const PrintPreviewExtractor&) = delete;
   PrintPreviewExtractor& operator=(const PrintPreviewExtractor&) = delete;
 
-  void CaptureImages(CaptureImagesCallback callback);
+  void CaptureImages(content::WebContents* web_contents,
+                     CaptureImagesCallback callback);
 
  private:
   friend class PrintPreviewExtractorTest;
@@ -59,7 +59,6 @@ class PrintPreviewExtractor {
 
   CreateExtractorCallback create_extractor_callback_;
   std::unique_ptr<Extractor> extractor_;
-  raw_ptr<content::WebContents> web_contents_;
 
   base::WeakPtrFactory<PrintPreviewExtractor> weak_ptr_factory_{this};
 };
