@@ -17,6 +17,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -326,6 +327,36 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   // Wait for the mutation observer to complete and trigger fullscreen mode.
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+}
+
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
+                       PictureInPictureUnavailableForInnerWebContents) {
+  const GURL outer_url = https_server_.GetURL("example.com", "/iframe.html");
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), outer_url,
+                                                      1, true);
+
+  content::RenderFrameHost* iframe =
+      content::ChildFrameAt(web_contents()->GetPrimaryMainFrame(), 0);
+  ASSERT_TRUE(iframe);
+
+  content::WebContents* inner_contents =
+      content::CreateAndAttachInnerContents(iframe);
+  ASSERT_TRUE(inner_contents);
+  ASSERT_EQ(web_contents(), inner_contents->GetOuterWebContents());
+
+  YouTubeScriptInjectorTabHelper::CreateForWebContents(inner_contents);
+  YouTubeScriptInjectorTabHelper* inner_helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(inner_contents);
+  ASSERT_TRUE(inner_helper);
+
+  const GURL inner_url =
+      https_server_.GetURL("m.youtube.com", "/watch?v=abcdefg");
+  content::NavigateToURLBlockUntilNavigationsComplete(inner_contents, inner_url,
+                                                      1, true);
+
+  ASSERT_TRUE(inner_helper->IsYouTubeVideo(/*mobileOnly=*/true));
+  ASSERT_TRUE(inner_contents->IsDocumentOnLoadCompletedInPrimaryMainFrame());
+  EXPECT_FALSE(inner_helper->IsPictureInPictureAvailable());
 }
 
 // The test is flaky on CI, but succeed on local environment including physical
