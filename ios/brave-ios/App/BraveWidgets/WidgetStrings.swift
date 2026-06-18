@@ -198,5 +198,17 @@ extension Strings {
       comment:
         "Title for Ask Brave shortcut. Brave is the company name and should not be translated"
     )
+    public static let newsUnavailableByPolicy = NSLocalizedString(
+      "widgets.newsUnavailableByPolicy",
+      bundle: widgetBundle,
+      value: "Brave News is Disabled",
+      comment: "Displayed on a news widget wont load due to admin policies"
+    )
+    public static let newsUnavailableByPolicyDescription = NSLocalizedString(
+      "widgets.newsUnavailableByPolicyDescription",
+      bundle: widgetBundle,
+      value: "Turned off by your organization's policy",
+      comment: "Displayed on a news widget wont load due to admin policies"
+    )
   }
 }

@@ -62,6 +62,8 @@ public class DisabledShortcutsWidgetData {
       }
       WidgetCenter.shared.reloadTimelines(ofKind: "ShortcutsWidget")
       WidgetCenter.shared.reloadTimelines(ofKind: "LockScreenShortcutWidget")
+      WidgetCenter.shared.reloadTimelines(ofKind: "TopNewsWidget")
+      WidgetCenter.shared.reloadTimelines(ofKind: "TopNewsListWidget")
     } catch {
       Logger.module.error("updateDisabledShortcuts error: \(error.localizedDescription)")
     }
