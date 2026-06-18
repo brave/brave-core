@@ -110,7 +110,7 @@ public class BraveAdsSignupDialog {
                             0,
                             intent,
                             PendingIntent.FLAG_UPDATE_CURRENT
-                                    | IntentUtils.getPendingIntentMutabilityFlag(true)));
+                                    | IntentUtils.getPendingIntentMutabilityFlag(false)));
         }
     }
 
