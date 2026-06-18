@@ -23,6 +23,7 @@
 #include "base/types/fixed_array.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/content_tool.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -43,6 +44,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "pdf/buildflags.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -289,27 +291,30 @@ void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
     return;
   }
 
-  ai_page_content_agent_.reset();
-  rfh->GetRemoteInterfaces()->GetInterface(
-      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+  // |AIPageContentAgent| is bound to the RenderFrameHost so we just keep the
+  // remote for one request by storing it in the callback to avoid talking to
+  // the wrong RFH.
+  mojo::Remote<blink::mojom::AIPageContentAgent> agent;
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
 
   auto options = blink::mojom::AIPageContentOptions::New();
   options->mode = blink::mojom::AIPageContentMode::kDefault;
   options->on_critical_path = true;
 
-  ai_page_content_agent_->GetAIPageContent(
+  auto* agent_ptr = agent.get();
+  agent_ptr->GetAIPageContent(
       std::move(options),
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
           base::BindOnce(&AssociatedWebContentsContent::OnAIPageContentResult,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         std::move(agent)),
           nullptr));
 }
 
 void AssociatedWebContentsContent::OnAIPageContentResult(
     FetchPageContentCallback callback,
+    mojo::Remote<blink::mojom::AIPageContentAgent> agent,
     blink::mojom::AIPageContentPtr result) {
-  ai_page_content_agent_.reset();
-
   std::string content;
   if (result) {
     ExtractTextFromAIPageContentNode(*result->root_node, content);
@@ -335,6 +340,46 @@ void AssociatedWebContentsContent::GetSearchSummarizerKey(
 void AssociatedWebContentsContent::GetOpenAIChatButtonNonce(
     mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
+}
+
+void AssociatedWebContentsContent::GetContentTools(
+    GetContentToolsCallback callback) {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // |AIPageContentAgent| is bound to the RenderFrameHost so we just keep the
+  // remote for one request by storing it in the callback to avoid talking to
+  // the wrong RFH.
+  mojo::Remote<blink::mojom::AIPageContentAgent> agent;
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
+  auto* agent_ptr = agent.get();
+  auto options = blink::mojom::AIPageContentOptions::New();
+  options->mode = blink::mojom::AIPageContentMode::kDefault;
+  options->on_critical_path = true;
+  agent_ptr->GetAIPageContent(
+      std::move(options),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AssociatedWebContentsContent::OnContentToolsFetched,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         rfh->GetWeakDocumentPtr(), std::move(agent)),
+          nullptr));
+}
+
+void AssociatedWebContentsContent::OnContentToolsFetched(
+    GetContentToolsCallback callback,
+    content::WeakDocumentPtr rfh,
+    mojo::Remote<blink::mojom::AIPageContentAgent> agent,
+    blink::mojom::AIPageContentPtr result) {
+  std::vector<std::unique_ptr<Tool>> tools;
+  if (result && result->frame_data) {
+    for (const auto& script_tool : result->frame_data->script_tools) {
+      tools.push_back(std::make_unique<ContentTool>(*script_tool, rfh));
+    }
+  }
+  std::move(callback).Run(std::move(tools));
 }
 
 bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {

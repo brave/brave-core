@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -125,6 +126,7 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
   void OnNewPage(int64_t navigation_id) override;
+  void GetContentTools(GetContentToolsCallback callback) override;
 
   // Called when an event of significance occurs that, if the page is a
   // same-document navigation, should result in that previous navigation
@@ -157,8 +159,16 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   // enabled by default.
   void FetchPageContentFromAIPageContentAgent(
       FetchPageContentCallback callback);
-  void OnAIPageContentResult(FetchPageContentCallback callback,
-                             blink::mojom::AIPageContentPtr result);
+  void OnAIPageContentResult(
+      FetchPageContentCallback callback,
+      mojo::Remote<blink::mojom::AIPageContentAgent> agent,
+      blink::mojom::AIPageContentPtr result);
+
+  void OnContentToolsFetched(
+      GetContentToolsCallback callback,
+      content::WeakDocumentPtr rfh,
+      mojo::Remote<blink::mojom::AIPageContentAgent> agent,
+      blink::mojom::AIPageContentPtr result);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
@@ -180,8 +190,6 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
-
-  mojo::Remote<blink::mojom::AIPageContentAgent> ai_page_content_agent_;
 
   base::WeakPtrFactory<AssociatedWebContentsContent> weak_ptr_factory_{this};
 };

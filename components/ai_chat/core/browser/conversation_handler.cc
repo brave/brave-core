@@ -221,9 +221,7 @@ ConversationHandler::ConversationHandler(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::vector<std::unique_ptr<ToolProvider>> tool_providers,
     std::optional<mojom::ConversationArchivePtr> initial_state)
-    : associated_content_manager_(
-          std::make_unique<AssociatedContentManager>(this)),
-      tool_providers_(std::move(tool_providers)),
+    : tool_providers_(std::move(tool_providers)),
       metadata_(conversation),
       ai_chat_service_(ai_chat_service),
       model_service_(model_service),
@@ -232,6 +230,11 @@ ConversationHandler::ConversationHandler(
       prefs_(prefs),
       url_loader_factory_(url_loader_factory) {
   BuildCapabilitiesSet();
+
+  auto associated_content_manager =
+      std::make_unique<AssociatedContentManager>(this);
+  associated_content_manager_ = associated_content_manager.get();
+  tool_providers_.push_back(std::move(associated_content_manager));
 
   // Observe tool providers
   for (const auto& tool_provider : tool_providers_) {
@@ -704,9 +707,6 @@ void ConversationHandler::SubmitHumanConversationEntry(
   if (latest_turn->selected_text) {
     engine_->SanitizeInput(*latest_turn->selected_text);
   }
-
-  // If it's a suggested question, replace with the prompt.
-  std::string prompt = latest_turn->prompt.value_or(latest_turn->text);
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
