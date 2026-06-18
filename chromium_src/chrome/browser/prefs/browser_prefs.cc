@@ -206,6 +206,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   }
 
   profile_prefs->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
+
+  // Added 2026-06
+  profile_prefs->ClearPref(sidebar::kSidePanelWidth);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)

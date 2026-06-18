@@ -3,10 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
-#include "build/buildflag.h"
-
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
 #include "base/i18n/rtl.h"
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -23,10 +19,6 @@
 
 #undef RemoveHeaderView
 #undef AddHeaderView
-
-#endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
-
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 namespace {
 
@@ -136,5 +128,3 @@ void SidePanel::RemoveHeaderView() {
   RemoveHeaderView_ChromiumImpl();
   UpdateBorder();
 }
-
-#endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)

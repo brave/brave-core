@@ -12,7 +12,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -36,10 +35,8 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
-#include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
 #include "chrome/browser/ui/test/test_browser_ui.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
@@ -49,6 +46,7 @@
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -300,16 +298,6 @@ class BraveBrowserViewWithRoundedCornersTest
               browser_view()->GetLocalBounds().bottom());
   }
 
-  void ExpectSidePanelMargins(views::View* side_panel,
-                              int bottom_margin,
-                              int right_margin) {
-    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
-    EXPECT_EQ(bottom_margin,
-              side_panel->GetProperty(views::kMarginsKey)->bottom());
-    EXPECT_EQ(right_margin,
-              side_panel->GetProperty(views::kMarginsKey)->right());
-  }
-
   void ExpectContentsViewRadii(float upper_left,
                                float upper_right,
                                float lower_left,
@@ -355,7 +343,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->side_panel();
   const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
@@ -366,12 +353,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     ExpectContentsContainerMargins(contents_container, rounded_corners_margin);
     EXPECT_EQ(rounded_corners_margin,
               BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
-
-    // Check side panel margins and radii
-    ExpectSidePanelMargins(side_panel, rounded_corners_margin,
-                           rounded_corners_margin);
-    EXPECT_EQ(gfx::RoundedCornersF(rounded_corners_border_radius),
-              side_panel->layer()->rounded_corner_radii());
 
     // Check contents view radii
     const auto contents_view_radii = browser_view()
@@ -398,11 +379,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     EXPECT_EQ(0,
               BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
 
-    // Check side panel has no margins
-    ExpectSidePanelMargins(side_panel, 0, 0);
-
-    // Panel doesn't have layer when its shadow is not set.
-    EXPECT_FALSE(side_panel->layer());
     EXPECT_EQ(gfx::RoundedCornersF(), browser_view()
                                           ->GetActiveContentsContainerView()
                                           ->contents_view()
@@ -410,10 +386,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   }
 }
 
-// Regression test: In Sidebar V2 the Chromium side panel can be visible while
+// Regression test: the Chromium side panel can be visible while
 // IsSidebarVisible() is false. Verify that the lower corner adjacent to the
 // panel still uses the border radius in that case.
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
 IN_PROC_BROWSER_TEST_P(
     BraveBrowserViewWithRoundedCornersTest,
     RoundedCornersWithSidePanelVisibleButSidebarControlViewHiddenTest) {
@@ -450,6 +425,8 @@ IN_PROC_BROWSER_TEST_P(
   panel_ui->Toggle();
   RunScheduledLayouts();
 
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
   ASSERT_TRUE(browser_view()->side_panel()->GetVisible());
   EXPECT_FALSE(brave_browser_view()->IsSidebarVisible());
 
@@ -463,13 +440,16 @@ IN_PROC_BROWSER_TEST_P(
 
   panel_ui->Toggle();
   RunScheduledLayouts();
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
 
   // --- Left-aligned panel (kSidePanelHorizontalAlignment = false) ---
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   panel_ui->Toggle();
   RunScheduledLayouts();
 
-  ASSERT_TRUE(browser_view()->side_panel()->GetVisible());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
   EXPECT_FALSE(brave_browser_view()->IsSidebarVisible());
 
   if (IsRoundedCornersEnabled()) {
@@ -480,7 +460,6 @@ IN_PROC_BROWSER_TEST_P(
     ExpectContentsViewRadii(0, 0, 0, 0);
   }
 }
-#endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 // Test 2: Rounded corners in split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
@@ -502,7 +481,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->side_panel();
   const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
@@ -512,12 +490,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   EXPECT_EQ(rounded_corners_margin,
             BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
   ExpectContentsContainerMargins(contents_container, rounded_corners_margin);
-
-  // Check side panel margins and radii
-  ExpectSidePanelMargins(side_panel, rounded_corners_margin,
-                         rounded_corners_margin);
-  EXPECT_EQ(gfx::RoundedCornersF(rounded_corners_border_radius),
-            side_panel->layer()->rounded_corner_radii());
 
   // Check radii for both start (left) and end (right) contents views
   ExpectSplitContentsViewRadii(0,
@@ -560,11 +532,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   // Verify behavior returns to normal after exiting split mode
   if (IsRoundedCornersEnabled()) {
     ExpectContentsContainerMargins(contents_container, rounded_corners_margin);
-    ExpectSidePanelMargins(side_panel, rounded_corners_margin,
-                           rounded_corners_margin);
-    EXPECT_EQ(gfx::RoundedCornersF(rounded_corners_border_radius),
-              side_panel->layer()->rounded_corner_radii());
-
     const auto contents_view_radii = browser_view()
                                          ->GetActiveContentsContainerView()
                                          ->contents_view()
@@ -581,7 +548,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
               browser_view()->GetLocalBounds().x());
     EXPECT_EQ(contents_container->bounds().bottom(),
               browser_view()->GetLocalBounds().bottom());
-    ExpectSidePanelMargins(side_panel, 0, 0);
     EXPECT_FALSE(side_panel->layer());
     EXPECT_EQ(gfx::RoundedCornersF(), browser_view()
                                           ->GetActiveContentsContainerView()

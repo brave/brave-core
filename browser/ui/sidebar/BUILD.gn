@@ -28,8 +28,6 @@ source_set("sidebar") {
 
 source_set("sidebar_impl") {
   sources = [
-    "features.cc",
-    "features.h",
     "sidebar_controller.cc",
     "sidebar_controller.h",
     "sidebar_model.cc",
@@ -48,7 +46,6 @@ source_set("sidebar_impl") {
   deps = [
     ":sidebar",
     "//base",
-    "//brave/browser/ui/sidebar/buildflags",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
@@ -84,17 +81,13 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "//brave/browser/ui/sidebar/sidebar_browsertest.cc",
-    "//brave/browser/ui/views/sidebar/sidebar_container_view_browsertest.cc",
-  ]
+  sources = [ "//brave/browser/ui/sidebar/sidebar_browsertest.cc" ]
 
   deps = [
     ":sidebar",
     ":sidebar_impl",
     "//base",
     "//brave/app:command_ids",
-    "//brave/browser/ui/sidebar/buildflags",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/side_panel",

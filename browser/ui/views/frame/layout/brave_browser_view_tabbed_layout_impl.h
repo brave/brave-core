@@ -96,7 +96,6 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void InsetContentsContainerBounds(ProposedLayout& layout) const;
 
   void UpdateInsetsForVerticalTabStrip();
-  void UpdateMarginsForSideBar();
 
   gfx::Insets GetContentsMargins() const;
   bool ShouldPushBookmarkBarForVerticalTabs() const;

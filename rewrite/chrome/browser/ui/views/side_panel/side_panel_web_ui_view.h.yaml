@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add more overrides to SidePanelWebUIView
+    re_pattern:
+      '(bool HandleKeyboardEvent\(content::WebContents\* source,\s+const
+      input::NativeWebKeyboardEvent& event\) override;)'
+    replace: |-
+      \1
+        bool HandleContextMenu(content::RenderFrameHost& render_frame_host, const content::ContextMenuParams& params) override;

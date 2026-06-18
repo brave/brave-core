@@ -8,13 +8,6 @@
 
 #include <memory>
 
-#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
-
-#if BUILDFLAG(ENABLE_SIDEBAR_V2)
-// V2: use upstream's SidePanel class directly.
-// Angle brackets are required here to resolve to the upstream file rather than
-// this chromium_src override (which would cause infinite recursion).
-
 // Need SetResizeArea() to replace resize area to customize its position, and
 // to support toggling the border at runtime (disabling it makes content fill
 // the panel).
@@ -35,11 +28,5 @@
 
 #undef did_resize_
 #undef GetContentParentView
-
-#else
-// V1: use Brave's custom SidePanel replacement, which also prevents
-// `chrome/browser/ui/views/side_panel/side_panel.cc` from being built.
-#include "brave/browser/ui/views/side_panel/side_panel.h"  // IWYU pragma: export
-#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_H_

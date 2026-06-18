@@ -3,13 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/ui/sidebar/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 assert(toolkit_views)
 
 source_set("side_panel") {
-  sources = [ "side_panel.h" ]
+  sources = [
+    "brave_side_panel_header.cc",
+    "brave_side_panel_header.h",
+    "brave_side_panel_header_controller.h",
+    "brave_side_panel_resize_area.cc",
+    "brave_side_panel_resize_area.h",
+    "side_panel_utils.h",
+  ]
 
   public_deps = [
     "//base",
@@ -21,75 +27,55 @@ source_set("side_panel") {
     "//ui/gfx",
     "//ui/views",
   ]
-
-  if (enable_sidebar_v2) {
-    sources += [
-      "brave_side_panel_header.cc",
-      "brave_side_panel_header.h",
-      "brave_side_panel_header_controller.h",
-      "brave_side_panel_resize_area.cc",
-      "brave_side_panel_resize_area.h",
-      "side_panel_utils.h",
-    ]
-  }
 }
 
 source_set("side_panel_impl") {
-  sources = []
-  deps = []
+  sources = [
+    "brave_side_panel_header_controller.cc",
+    "side_panel_utils.cc",
+  ]
 
-  if (enable_sidebar_v2) {
-    sources += [
-      "brave_side_panel_header_controller.cc",
-      "side_panel_utils.cc",
-    ]
-
-    deps += [
-      ":side_panel",
-      "//base",
-      "//brave/app:brave_generated_resources_grit_grit",
-      "//brave/components/vector_icons",
-      "//chrome/app:generated_resources",
-      "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui/browser_window",
-      "//chrome/browser/ui/color:mixers",
-      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
-      "//chrome/browser/ui/views/side_panel",
-      "//chrome/common",
-      "//components/prefs",
-      "//ui/base",
-      "//ui/views",
-    ]
-  }
+  deps = [
+    ":side_panel",
+    "//base",
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/components/vector_icons",
+    "//chrome/app:generated_resources",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/common",
+    "//components/prefs",
+    "//ui/base",
+    "//ui/views",
+  ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = []
-  deps = []
 
-  if (enable_sidebar_v2) {
-    sources += [
-      "brave_side_panel_header_controller_unittest.cc",
-      "side_panel_entry_unittest.cc",
-      "side_panel_utils_unittest.cc",
-    ]
+  sources = [
+    "brave_side_panel_header_controller_unittest.cc",
+    "side_panel_entry_unittest.cc",
+    "side_panel_utils_unittest.cc",
+  ]
 
-    deps += [
-      ":side_panel",
-      ":side_panel_impl",
-      "//base/test:test_support",
-      "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui/browser_window/test:test_support",
-      "//chrome/browser/ui/side_panel",
-      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
-      "//chrome/browser/ui/views/side_panel",
-      "//chrome/test:test_support",
-      "//components/prefs",
-      "//testing/gmock",
-      "//testing/gtest",
-      "//ui/gfx",
-      "//ui/views",
-    ]
-  }
+  deps = [
+    ":side_panel",
+    ":side_panel_impl",
+    "//base/test:test_support",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window/test:test_support",
+    "//chrome/browser/ui/side_panel",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/gfx",
+    "//ui/views",
+  ]
 }

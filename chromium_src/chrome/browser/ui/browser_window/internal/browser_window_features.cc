@@ -8,9 +8,7 @@
 #include "brave/browser/ui/brave_browser_actions.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
-#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
-#include "brave/browser/ui/views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 #include "chrome/browser/contextual_tasks/contextual_tasks_side_panel_coordinator.h"
 #include "chrome/browser/sessions/session_service_factory.h"
@@ -29,15 +27,7 @@
 #define BrowserActions BraveBrowserActions
 #define BrowserCommandController BraveBrowserCommandController
 
-#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
-#define BookmarksSidePanelCoordinator BraveBookmarksSidePanelCoordinator
-#endif
-
 #include <chrome/browser/ui/browser_window/internal/browser_window_features.cc>
-
-#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
-#undef BookmarksSidePanelCoordinator
-#endif
 
 #undef BrowserCommandController
 #undef BrowserActions
