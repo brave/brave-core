@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <optional>
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -22,14 +23,30 @@
 #include "third_party/blink/public/common/features.h"
 
 using brave_shields::ControlType;
-using content::TitleWatcher;
 
 namespace {
 
-constexpr gfx::Rect kTestWindowBounds(100, 100, 400, 400);
+enum class BlobContainerType { kPopUpWindow, kIFrame, kUnset };
 
 }  // namespace
 
+// The driver of test is basically on the JS side which simplifies testing a
+// lot. See brave_screen_farbling_browsertest for comparison.
+// The JS test basically does the following:
+// 1. Reads the various screen attributes from the parent window and writes to
+// the localStorage keyed under parent_.
+// 2. Opens a blob:// window or an iframe depending on the test.
+// 3. Reads the various screen attributes from the blob window and then writes
+// to the localStorage keyed under blob_.
+// 4. Compares the two and they should match for passing tests.
+// 4.1) For cases where fingerprinting was blocked: both the parent and the
+// blob window sees the same "farbled" value. 4.2) For cases where
+// fingerprinting was not blocked: both the parent and the blob window sees
+// the same "un-farbled" value.
+// The test design is taken from
+// https://test-website-a.pages.dev/blob-farbling-bypass/ which relies on local
+// storage as a medium to communicate the various attributes visible to blob and
+// the main frame.
 class BraveBlobScreenFarblingBrowserTest
     : public InProcessBrowserTest,
       public testing::WithParamInterface<bool> {
@@ -55,96 +72,122 @@ class BraveBlobScreenFarblingBrowserTest
 
     blob_test_url_ =
         embedded_test_server()->GetURL("a.com", "/blob-fingerprinting.html");
+
+    // Setup the test bound.
+    ui_test_utils::SetAndWaitForBounds(*browser(),
+                                       gfx::Rect(100, 100, 400, 400));
   }
 
-  HostContentSettingsMap* ContentSettings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  void TearDownOnMainThread() override {
+    if (pop_up_browser_) {
+      ClosePopup();
+    }
   }
 
-  void SetFingerprintingSetting(bool allow) {
+  void AllowFingerprinting(bool allow) {
+    fingerprinting_allowed_ = allow;
     brave_shields::SetFingerprintingControlType(
-        ContentSettings(), allow ? ControlType::ALLOW : ControlType::DEFAULT,
-        blob_test_url_);
+        HostContentSettingsMapFactory::GetForProfile(browser()->profile()),
+        allow ? ControlType::ALLOW : ControlType::DEFAULT, blob_test_url_);
   }
 
-  content::WebContents* Contents() const {
-    return browser()->tab_strip_model()->GetActiveWebContents();
+  content::RenderFrameHost* MainFrame() const {
+    return browser()
+        ->tab_strip_model()
+        ->GetActiveWebContents()
+        ->GetPrimaryMainFrame();
   }
 
-  content::RenderFrameHost* Parent() const {
-    return Contents()->GetPrimaryMainFrame();
+  void LoadPopupAndWait(ui_test_utils::BrowserCreatedObserver& observer) {
+    pop_up_browser_ = observer.Wait();
+    ASSERT_NE(pop_up_browser_, browser());
+    auto* popup_contents =
+        pop_up_browser_->tab_strip_model()->GetActiveWebContents();
+    ASSERT_TRUE(WaitForRenderFrameReady(popup_contents->GetPrimaryMainFrame()));
   }
 
-  // The driver of test is basically on the JS side which simplifies testing a
-  // lot. See brave_screen_farbling_browsertest for comparison.
-  // The JS test basically does the following:
-  // 1. Reads the various screen attributes from the parent window and writes to
-  // the localStorage keyed under parent_.
-  // 2. Opens a blob:// window.
-  // 3. Reads the various screen attributes from the blob window and then writes
-  // to the localStorage keyed under blob_.
-  // 4. Compares the two and they should match for passing tests.
-  // 4.1) For cases where fingerprinting was blocked: both the parent and the
-  // blob window sees the same "farbled" value. 4.2) For cases where
-  // fingerprinting was not blocked: both the parent and the blob window sees
-  // the same "un-farbled" value.
-  void FarbleScreenBlobURL() {
-    ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
-
-    SetFingerprintingSetting(/*allow=*/false);
-    // TODO(https://github.com/brave/brave-browser/issues/56048): Expect pass
-    // once Shields are supported on blob:// URLs.
-    NavigateToBlob(GetParam() ? u"fail" : u"pass");
-
-    SetFingerprintingSetting(/*allow=*/true);
-    NavigateToBlob(u"pass");
-  }
-
-  void NavigateToBlob(const std::u16string& expected_title) {
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
-    content::ExecuteScriptAsync(Parent(),
-                                "startBlobScreenFingerprintingTest()");
-    Browser* popup = ui_test_utils::WaitForBrowserToOpen();
-    EXPECT_NE(popup, browser());
-    auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
-
-    EXPECT_TRUE(WaitForRenderFrameReady(popup_contents->GetPrimaryMainFrame()));
-    TitleWatcher watcher(popup_contents, expected_title);
-    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  void ClosePopup() {
+    // Clear pop_up_browser_ before closing so the raw_ptr is not dangling
+    // when the Browser object is destroyed inside CloseBrowserSynchronously.
+    Browser* popup = pop_up_browser_;
+    pop_up_browser_ = nullptr;
     CloseBrowserSynchronously(popup);
   }
 
-  // Similar to FarbleScreenBlobURL but renders the blob in an iframe.
-  void FarbleScreenBlobURLIframe() {
-    ui_test_utils::SetAndWaitForBounds(*browser(), kTestWindowBounds);
-
-    SetFingerprintingSetting(/*allow=*/false);
-    NavigateToBlobIframe();
-
-    SetFingerprintingSetting(/*allow=*/true);
-    NavigateToBlobIframe();
-  }
-
-  void NavigateToBlobIframe() {
+  void NavigateToBlob() {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
-    content::ExecuteScriptAsync(Parent(),
-                                "startBlobScreenFingerprintingIframeTest()");
+    ASSERT_FALSE(blob_container_type_ == BlobContainerType::kUnset)
+        << "Blob container type not set.";
 
-    // Wait for the blob iframe to finish writing to localStorage.
+    // Navigate to the main frame first.
+    content::RenderFrameHost* parent = MainFrame();
+
+    std::optional<ui_test_utils::BrowserCreatedObserver> popup_observer;
+    if (blob_container_type_ == BlobContainerType::kPopUpWindow) {
+      popup_observer.emplace();
+    }
+
+    // Navigate to the blob.
+    ASSERT_TRUE(content::ExecJs(
+        parent, blob_container_type_ == BlobContainerType::kPopUpWindow
+                    ? "startBlobScreenFingerprintingPopUpTest()"
+                    : "startBlobScreenFingerprintingIframeTest()"));
+
+    // If pop-up we need to wait for the pop-up to open.
+    if (blob_container_type_ == BlobContainerType::kPopUpWindow) {
+      LoadPopupAndWait(*popup_observer);
+    }
+
+    // Wait for the blob to have emitted the 'blob_done' signal.
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return content::EvalJs(Parent(),
+      return content::EvalJs(parent,
                              "localStorage.getItem('blob_done') === 'true'")
           .ExtractBool();
     }));
 
-    EXPECT_EQ(true, content::EvalJs(Parent(),
-                                    "storedScreenValuesMatch('parent', 'blob')")
-                        .ExtractBool());
+    // Validate.
+    bool should_match = true;
+    // When the screen fingerprinting feature is enabled AND fingerprinting is
+    // blocked (DEFAULT) AND the blob is in a popup, the popup bypasses farbling
+    // and sees real values while the parent sees farbled values — so they won't
+    // match.
+    // TODO(https://github.com/brave/brave-browser/issues/56048): Remove this
+    // override once shields are supported on blob:// URLs.
+    if (GetParam() && !fingerprinting_allowed_ &&
+        blob_container_type_ == BlobContainerType::kPopUpWindow) {
+      should_match = false;
+    }
+
+    EXPECT_EQ(should_match,
+              content::EvalJs(MainFrame(),
+                              "storedScreenValuesMatch('parent', 'blob')")
+                  .ExtractBool());
+
+    // Close the popup after validation. NavigateToBlob is called twice inside
+    // RunTests
+    if (blob_container_type_ == BlobContainerType::kPopUpWindow) {
+      ClosePopup();
+    }
+  }
+
+  void RunTests() {
+    AllowFingerprinting(/*allow=*/false);
+    NavigateToBlob();
+
+    AllowFingerprinting(/*allow=*/true);
+    NavigateToBlob();
+  }
+
+  void set_blob_container_type(const BlobContainerType blob_container_type) {
+    blob_container_type_ = blob_container_type;
   }
 
  private:
   base::test::ScopedFeatureList feature_list_;
   GURL blob_test_url_;
+  BlobContainerType blob_container_type_ = BlobContainerType::kUnset;
+  bool fingerprinting_allowed_ = false;
+  raw_ptr<Browser> pop_up_browser_ = nullptr;
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -157,11 +200,13 @@ INSTANTIATE_TEST_SUITE_P(
     });
 
 IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
-                       FarbleScreenBlobURL) {
-  FarbleScreenBlobURL();
+                       FarbleScreenBlobURLPopup) {
+  set_blob_container_type(BlobContainerType::kPopUpWindow);
+  RunTests();
 }
 
 IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
                        FarbleScreenBlobURLIframe) {
-  FarbleScreenBlobURLIframe();
+  set_blob_container_type(BlobContainerType::kIFrame);
+  RunTests();
 }
