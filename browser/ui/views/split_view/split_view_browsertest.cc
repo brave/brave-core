@@ -362,6 +362,16 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(
       brave_multi_contents_view()->mini_toolbar_for_testing(1)->GetVisible());
 
+  // Load settings page on inactive split tab and check url displays brave
+  // scheme (chrome:// replaced with brave://).
+  ASSERT_TRUE(
+      content::NavigateToURL(browser()->tab_strip_model()->GetWebContentsAt(2),
+                             GURL("chrome://settings")));
+  EXPECT_EQ(u"brave://settings", brave_multi_contents_view()
+                                     ->mini_toolbar_for_testing(0)
+                                     ->domain_label_for_testing()
+                                     ->GetText());
+
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());

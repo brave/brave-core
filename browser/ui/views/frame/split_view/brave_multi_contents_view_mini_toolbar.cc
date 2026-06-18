@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 
 #include "base/i18n/rtl.h"
+#include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -20,6 +21,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/layout/flex_layout.h"
 
 namespace {
@@ -50,6 +52,16 @@ BraveMultiContentsViewMiniToolbar* BraveMultiContentsViewMiniToolbar::From(
 
 BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
     default;
+
+void BraveMultiContentsViewMiniToolbar::UpdateContents() {
+  MultiContentsViewMiniToolbar::UpdateContents();
+
+  // Display as brave scheme.
+  std::u16string domain{domain_label_->GetText()};
+  if (brave_utils::ReplaceChromeToBraveScheme(domain)) {
+    domain_label_->SetText(domain);
+  }
+}
 
 void BraveMultiContentsViewMiniToolbar::HideMenuButton() {
   close_button_->SetVisible(false);

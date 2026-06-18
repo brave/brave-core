@@ -24,6 +24,7 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
   // MultiContentsViewMiniToolbar:
+  void UpdateContents() override;
   void UpdateState(bool is_active, bool is_highlighted) override;
   void OnPaint(gfx::Canvas* canvas) override;
 
