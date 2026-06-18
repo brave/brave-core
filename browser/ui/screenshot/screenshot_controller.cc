@@ -269,7 +269,8 @@ void ScreenshotController::ShowSaveDialog(std::vector<uint8_t> png) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void ScreenshotController::ShowSaveDialogWithPath(base::FilePath default_path) {
+void ScreenshotController::ShowSaveDialogWithPath(
+    const base::FilePath& default_path) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (default_path.empty()) {
     FinishWithError(Error::kWriteFailed);
@@ -307,7 +308,7 @@ void ScreenshotController::FileSelected(const ui::SelectedFileInfo& file,
                      weak_factory_.GetWeakPtr(), path));
 }
 
-void ScreenshotController::OnFileWritten(base::FilePath path, bool ok) {
+void ScreenshotController::OnFileWritten(const base::FilePath& path, bool ok) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ResultCallback cb = std::move(pending_callback_);
   Reset();

@@ -75,7 +75,7 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   void CaptureFullPage(content::WebContents* web_contents, ResultCallback done);
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
-  void set_download_dir_for_testing(base::FilePath path) {
+  void set_download_dir_for_testing(const base::FilePath& path) {
     download_dir_for_testing_ = path;
   }
 
@@ -96,9 +96,9 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 
   void OnEncoded(std::optional<std::vector<uint8_t>> png);
   void ShowSaveDialog(std::vector<uint8_t> png);
-  void ShowSaveDialogWithPath(base::FilePath default_path);
+  void ShowSaveDialogWithPath(const base::FilePath& default_path);
   // Reply callback for WritePngFile posted from FileSelected().
-  void OnFileWritten(base::FilePath path, bool ok);
+  void OnFileWritten(const base::FilePath& path, bool ok);
   void FinishWithError(Error error);
   void Reset();
 
