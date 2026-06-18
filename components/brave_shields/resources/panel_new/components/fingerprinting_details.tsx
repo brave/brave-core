@@ -39,6 +39,13 @@ const webcompatSettingNames = new Map(
         ]
       }
 
+      if (value == ContentSettingsType.BRAVE_WEBCOMPAT_WEBGPU) {
+        return [
+          value,
+          getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGPU_LABEL'),
+        ]
+      }
+
       const name = key
         .replace('BRAVE_WEBCOMPAT_', '')
         .replaceAll('_', ' ')

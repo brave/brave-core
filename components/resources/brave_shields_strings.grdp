@@ -389,4 +389,8 @@
     WebGL2
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGPU_LABEL" desc="This label is associated with the WebGPU toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGPU APIs." formatter_data="webui=BraveShields">
+    WebGPU
+  </message>
+
 </grit-part>
