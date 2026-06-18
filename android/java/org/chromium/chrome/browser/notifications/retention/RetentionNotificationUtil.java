@@ -147,10 +147,13 @@ public class RetentionNotificationUtil {
         launchIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(context,
-                retentionNotification.getNotificationId(), launchIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-                        | IntentUtils.getPendingIntentMutabilityFlag(true));
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        launchIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                                | IntentUtils.getPendingIntentMutabilityFlag(false));
 
         builder.setContentIntent(resultPendingIntent);
 
@@ -221,8 +224,11 @@ public class RetentionNotificationUtil {
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
-                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+                PendingIntent.getBroadcast(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        notificationIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(false));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(Calendar.MINUTE, retentionNotification.getNotificationTime());
@@ -239,8 +245,11 @@ public class RetentionNotificationUtil {
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
-                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+                PendingIntent.getBroadcast(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        notificationIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(false));
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;
         alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliseconds, pendingIntent);
@@ -260,8 +269,11 @@ public class RetentionNotificationUtil {
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
-                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+                PendingIntent.getBroadcast(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        notificationIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(false));
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert am != null;
         am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);

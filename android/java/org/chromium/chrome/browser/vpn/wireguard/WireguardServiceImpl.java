@@ -113,9 +113,12 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
         Intent disconnectVpnIntent = new Intent(mContext, DisconnectVpnBroadcastReceiver.class);
         disconnectVpnIntent.setAction(DisconnectVpnBroadcastReceiver.DISCONNECT_VPN_ACTION);
         PendingIntent disconnectVpnPendingIntent =
-                PendingIntent.getBroadcast(mContext, 0, disconnectVpnIntent,
+                PendingIntent.getBroadcast(
+                        mContext,
+                        0,
+                        disconnectVpnIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
-                                | IntentUtils.getPendingIntentMutabilityFlag(true));
+                                | IntentUtils.getPendingIntentMutabilityFlag(false));
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(mContext, BraveActivity.CHANNEL_ID);
