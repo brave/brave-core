@@ -747,15 +747,6 @@ void BraveVerticalTabStripRegionView::OnThemeChanged() {
 
 void BraveVerticalTabStripRegionView::OnMouseExited(
     const ui::MouseEvent& event) {
-  DCHECK(GetWidget())
-      << "As widget is the event sink, this is expected to be true.";
-  if (!base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded) &&
-      GetWidget()->GetRootView()->IsMouseHovered() && !mouse_events_for_test_) {
-    // On Windows, when mouse moves into the area which intersects with web
-    // view, OnMouseExited() is invoked even mouse is on this view.
-    return;
-  }
-
   // This can be called when context menu is shown even if mouse is hovered
   // over vertical tab strip area. Don't want to collapse in that case.
   if (IsMouseHovered()) {
@@ -1033,7 +1024,7 @@ void BraveVerticalTabStripRegionView::
 
   // Call after setting visibility as region view's visibility is referred when
   // updating widget bounds at
-  // VerticalTabStripWidgetDelegateView::UpdateWidgetBounds().
+  // VerticalTabStripWidgetDelegateView::UpdateVerticalTabBounds().
   PreferredSizeChanged();
 }
 
@@ -1095,7 +1086,7 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
                                             calculate_expanded_width());
 #if BUILDFLAG(IS_MAC)
     // When region view's width is zero, widget gets hidden by
-    // VerticalTabStripWidgetDelegateView::UpdateWidgetBounds().
+    // VerticalTabStripWidgetDelegateView::UpdateVerticalTabBounds().
     // Then, width animation seems not working properly on macOS.
     // To avoid widget getting hidden, we set a minimum width when
     // animation goes for showing.

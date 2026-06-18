@@ -108,13 +108,6 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // (`side_panel_leading` in BrowserViewTabbedLayoutImpl).
   bool IsSidebarLeading() const;
   bool IsVerticalTabStripLeading() const;
-
-#if BUILDFLAG(IS_MAC)
-  gfx::Insets AddFrameBorderInsets(const gfx::Insets& insets) const;
-  gfx::Insets AddVerticalTabFrameBorderInsets(const gfx::Insets& insets) const;
-
-  friend class BraveBrowserViewTabbedLayoutImplMacTest;
-#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_LAYOUT_BRAVE_BROWSER_VIEW_TABBED_LAYOUT_IMPL_H_
