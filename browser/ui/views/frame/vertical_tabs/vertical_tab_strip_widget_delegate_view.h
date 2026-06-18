@@ -8,10 +8,9 @@
 
 #include <memory>
 
-#include "base/scoped_multi_source_observation.h"
+#include "base/scoped_observation.h"
+#include "ui/views/view.h"
 #include "ui/views/view_observer.h"
-#include "ui/views/widget/widget_delegate.h"
-#include "ui/views/widget/widget_observer.h"
 
 class BrowserView;
 class BraveVerticalTabStripRegionView;
@@ -33,28 +32,19 @@ class BraveVerticalTabStripRegionView;
 //                                                    // different based on
 //                                                    // state.
 //
-class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
-                                           public views::ViewObserver,
-                                           public views::WidgetObserver {
-  METADATA_HEADER(VerticalTabStripWidgetDelegateView, views::WidgetDelegateView)
+class VerticalTabStripWidgetDelegateView : public views::View,
+                                           public views::ViewObserver {
+  METADATA_HEADER(VerticalTabStripWidgetDelegateView, views::View)
  public:
-  static std::unique_ptr<views::Widget> Create(BrowserView* browser_view,
-                                               views::View* host_view);
-
-  // Embeds the vertical tab strip as a child of |browser_view| (no separate
-  // Widget). Bounds are updated via UpdateVerticalTabBounds().
-  static std::unique_ptr<VerticalTabStripWidgetDelegateView>
-  CreateEmbeddedInBrowserView(BrowserView* browser_view,
-                              views::View* host_view);
-
+  VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
+                                     views::View* host);
   ~VerticalTabStripWidgetDelegateView() override;
 
   BraveVerticalTabStripRegionView* vertical_tab_strip_region_view() const {
     return region_view_;
   }
 
-  // views::WidgetDelegateView:
-  void AddedToWidget() override;
+  // views::View:
   void ChildPreferredSizeChanged(views::View* child) override;
 
   // views::ViewObserver:
@@ -64,36 +54,16 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   void OnViewBoundsChanged(views::View* observed_view) override;
   void OnViewIsDeleting(views::View* observed_view) override;
 
-  // views::WidgetObserver:
-  void OnWidgetVisibilityChanged(views::Widget* widget, bool visible) override;
-  void OnWidgetBoundsChanged(views::Widget* widget,
-                             const gfx::Rect& new_bounds) override;
-  void OnWidgetDestroying(views::Widget* widget) override;
-
  private:
-  VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
-                                     views::View* host,
-                                     bool embedded_in_browser_view = false);
 
-  void UpdateWidgetBounds();
   void UpdateVerticalTabBounds();
-
-#if BUILDFLAG(IS_MAC)
-  void UpdateClip();
-  int GetVerticalTabStripCornerRadiusMac() const;
-#endif
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<views::View> host_ = nullptr;
   raw_ptr<BraveVerticalTabStripRegionView> region_view_ = nullptr;
 
-  const bool embedded_in_browser_view_ = false;
-
   base::ScopedObservation<views::View, views::ViewObserver>
       host_view_observation_{this};
-
-  base::ScopedMultiSourceObservation<views::Widget, views::WidgetObserver>
-      widget_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TABS_VERTICAL_TAB_STRIP_WIDGET_DELEGATE_VIEW_H_

@@ -7,15 +7,9 @@
 
 #include <memory>
 
-#include "base/test/scoped_feature_list.h"
-#include "build/build_config.h"
-#include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
-#include "chrome/browser/ui/views/frame/layout/browser_view_layout_params.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 
 namespace {
@@ -87,17 +81,6 @@ class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
   MOCK_METHOD(bool, IsToolbarVisible, (), (const, override));
   MOCK_METHOD(bool, IsBookmarkBarVisible, (), (const, override));
 };
-
-#if BUILDFLAG(IS_MAC)
-// Mock for AddFrameBorderInsets tests: controls vertical tab and fullscreen
-// state which are the only two conditions the method checks.
-class MockBrowserViewLayoutDelegateForMac
-    : public FakeBrowserViewLayoutDelegate {
- public:
-  MOCK_METHOD(bool, ShouldShowVerticalTabs, (), (const, override));
-  MOCK_METHOD(bool, IsFullscreen, (), (const, override));
-};
-#endif
 
 }  // namespace
 
@@ -262,71 +245,3 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   EXPECT_FALSE(layout->GetMultiContentsSeparatorForTesting());
   EXPECT_FALSE(layout->GetShadowBoxForTesting());
 }
-
-#if BUILDFLAG(IS_MAC)
-struct AddFrameBorderInsetsCase {
-  bool show_vertical_tabs;
-  bool is_fullscreen;
-  gfx::Insets input;
-  gfx::Insets expected;
-  bool enable_embedded_vertical_tab_strip_feature = true;
-};
-
-// Test fixture that grants access to the private AddFrameBorderInsets method
-// via the friend declaration in BraveBrowserViewTabbedLayoutImpl.
-class BraveBrowserViewTabbedLayoutImplMacTest
-    : public ::testing::TestWithParam<AddFrameBorderInsetsCase> {
- protected:
-  void SetUp() override {
-    auto mock = std::make_unique<
-        testing::NiceMock<MockBrowserViewLayoutDelegateForMac>>();
-    mock_ = mock.get();
-    BrowserViewLayoutViews views;
-    layout_ = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-        std::move(mock), nullptr, std::move(views));
-  }
-
-  gfx::Insets CallAddFrameBorderInsets(const gfx::Insets& insets) const {
-    return layout_->AddFrameBorderInsets(insets);
-  }
-
-  std::unique_ptr<BraveBrowserViewTabbedLayoutImpl> layout_;
-
-  // not owned
-  raw_ptr<testing::NiceMock<MockBrowserViewLayoutDelegateForMac>> mock_;
-};
-
-TEST_P(BraveBrowserViewTabbedLayoutImplMacTest, AddFrameBorderInsets) {
-  const auto& p = GetParam();
-  base::test::ScopedFeatureList scoped_feature_list;
-
-  // Nothing to do as it's enabled by default.
-  if (!p.enable_embedded_vertical_tab_strip_feature) {
-    scoped_feature_list.InitAndDisableFeature(
-        tabs::kBraveVerticalTabStripEmbedded);
-  }
-  ON_CALL(*mock_, ShouldShowVerticalTabs())
-      .WillByDefault(::testing::Return(p.show_vertical_tabs));
-  ON_CALL(*mock_, IsFullscreen())
-      .WillByDefault(::testing::Return(p.is_fullscreen));
-  EXPECT_EQ(p.expected, CallAddFrameBorderInsets(p.input));
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    ,
-    BraveBrowserViewTabbedLayoutImplMacTest,
-    ::testing::Values(
-        // Vertical tabs off: insets pass through unchanged regardless of
-        // fullscreen state.
-        AddFrameBorderInsetsCase{false, false, gfx::Insets(), gfx::Insets()},
-        // Fullscreen (browser or tab): frame border is not drawn, so insets
-        // pass through unchanged. IsFullscreen() covers both cases.
-        AddFrameBorderInsetsCase{true, true, gfx::Insets(), gfx::Insets()},
-        // Vertical tabs visible, not fullscreen: disable
-        // embedded feature to get 1px border on left, right, and bottom edges.
-        AddFrameBorderInsetsCase{true, false, gfx::Insets(),
-                                 gfx::Insets::TLBR(0, 1, 1, 1), false},
-        // Same delegate state with default embedded vertical strip on:
-        // AddFrameBorderInsets returns input unchanged.
-        AddFrameBorderInsetsCase{true, false, gfx::Insets(), gfx::Insets()}));
-#endif  // BUILDFLAG(IS_MAC)

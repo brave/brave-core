@@ -332,15 +332,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   vertical_tab_strip_bounds.SetVerticalBounds(
       get_vertical_tabs_top(), vertical_tab_strip_bounds.bottom());
 
-  // Account for any additional frame-border insets on Mac.
-  gfx::Insets insets;
-#if BUILDFLAG(IS_MAC)
-  insets = AddVerticalTabFrameBorderInsets(insets);
-#endif
-
-  const int width =
-      views().vertical_tab_strip_host->GetPreferredSize().width() +
-      insets.width();
+  const int width = views().vertical_tab_strip_host->GetPreferredSize().width();
   if (!IsVerticalTabStripLeading()) {
     vertical_tab_strip_bounds.set_x(vertical_tab_strip_bounds.right() - width);
   }
@@ -554,10 +546,6 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateInsetsForVerticalTabStrip() {
   }
 #endif  // BUILDFLAG(IS_LINUX)
 
-#if BUILDFLAG(IS_MAC)
-  insets = AddVerticalTabFrameBorderInsets(insets);
-#endif
-
   views().vertical_tab_strip_host->SetBorder(
       insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
 }
@@ -649,58 +637,5 @@ BraveBrowserViewTabbedLayoutImpl::GetInsetsConsideringVerticalTabHost() const {
         views().vertical_tab_strip_host->GetPreferredSize().width());
   }
 
-#if BUILDFLAG(IS_MAC)
-  insets = AddFrameBorderInsets(insets);
-#endif
-
   return insets;
 }
-
-#if BUILDFLAG(IS_MAC)
-gfx::Insets BraveBrowserViewTabbedLayoutImpl::AddFrameBorderInsets(
-    const gfx::Insets& insets) const {
-  if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
-    return insets;
-  }
-
-  // We need more care about frame border when vertical tab is visible.
-  // Frame border is not drawn in fullscreen.
-  if (!delegate().ShouldShowVerticalTabs() || delegate().IsFullscreen()) {
-    return insets;
-  }
-
-  // Frame border is drawn on this 1px padding as we set insets to
-  // contents container. Otherwise, frame border is drawn on the contents.
-  // Why we need this? When vertical tab is floating, vertical tab widget
-  // is moved by 1px from the border to prevent overlap with frame border.
-  // If the frame border is drawn over the contents, vertical tab widget seems
-  // like floating on the contents. See the screenshot at
-  // https://github.com/brave/brave-browser/issues/51464. If we give this insets
-  // to contents container, frame border is drawn over the background color. So,
-  // floated vertical tab widget seems like attached to windows border.
-  return insets + gfx::Insets::TLBR(0, 1, 1, 1);
-}
-
-gfx::Insets BraveBrowserViewTabbedLayoutImpl::AddVerticalTabFrameBorderInsets(
-    const gfx::Insets& insets) const {
-  if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
-    return insets;
-  }
-
-  if (!delegate().ShouldShowVerticalTabs() || delegate().IsFullscreen()) {
-    return insets;
-  }
-
-  // For frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
-  // that line.
-  gfx::Insets insets_for_frame_border;
-  if (delegate().IsVerticalTabOnRight()) {
-    insets_for_frame_border.set_right(1);
-  } else {
-    insets_for_frame_border.set_left(1);
-  }
-  insets_for_frame_border.set_bottom(1);
-
-  return insets + insets_for_frame_border;
-}
-#endif
