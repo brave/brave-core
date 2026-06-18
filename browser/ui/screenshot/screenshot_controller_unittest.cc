@@ -69,7 +69,6 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
   // Sets the controller into the same busy state that CaptureVisibleArea()
   // would set before dispatching CopyFromSurface.
   void InjectBitmap(SkBitmap bitmap, ScreenshotController::ResultCallback cb) {
-    controller_->busy_ = true;
     controller_->pending_callback_ = std::move(cb);
     controller_->OnVisibleAreaCopied(std::move(bitmap));
   }
@@ -80,7 +79,6 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
   void InjectChunks(
       base::expected<std::vector<std::vector<uint8_t>>, std::string> chunks,
       ScreenshotController::ResultCallback cb) {
-    controller_->busy_ = true;
     controller_->pending_callback_ = std::move(cb);
     controller_->OnFullPageChunks(std::move(chunks));
   }
@@ -92,6 +90,10 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
   }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
+  void SetPendingCallback(ScreenshotController::ResultCallback cb) {
+    controller_->pending_callback_ = std::move(cb);
+  }
+
   base::ScopedTempDir temp_dir_;
   raw_ptr<ui::FakeSelectFileDialog::Factory> dialog_factory_ = nullptr;
   std::unique_ptr<ScreenshotController> controller_;
@@ -102,11 +104,19 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
 // ---------------------------------------------------------------------------
 
 TEST_F(ScreenshotControllerTest, CanCapture_ReturnsFalseForNullWebContents) {
-  EXPECT_FALSE(controller_->CanCapture(nullptr));
+  EXPECT_FALSE(controller_->CanCapture(nullptr).has_value());
 }
 
 TEST_F(ScreenshotControllerTest, CanCapture_ReturnsTrueWhenViewExists) {
-  EXPECT_TRUE(controller_->CanCapture(web_contents()));
+  EXPECT_TRUE(controller_->CanCapture(web_contents()).has_value());
+}
+
+TEST_F(ScreenshotControllerTest, CanCapture_ReturnsBusyWhenPendingCallbackSet) {
+  base::test::TestFuture<Result> pending_callback_future;
+  SetPendingCallback(pending_callback_future.GetCallback());
+
+  auto result = controller_->CanCapture(web_contents());
+  EXPECT_EQ(result, base::unexpected(Error::kBusy));
 }
 
 TEST_F(ScreenshotControllerTest,
@@ -117,9 +127,9 @@ TEST_F(ScreenshotControllerTest,
 }
 
 // Calling CaptureVisibleArea twice before the first completes: the second call
-// should be rejected immediately with kNoTab because the controller is busy.
+// should be rejected immediately with kBusy because the controller is busy.
 TEST_F(ScreenshotControllerTest,
-       CaptureVisibleArea_AlreadyBusy_SecondCallReturnsNoTab) {
+       CaptureVisibleArea_AlreadyBusy_SecondCallReturnsBusy) {
   base::test::TestFuture<Result> future1;
   base::test::TestFuture<Result> future2;
 
@@ -130,7 +140,7 @@ TEST_F(ScreenshotControllerTest,
 
   // Second call sees busy_ == true and rejects immediately.
   controller_->CaptureVisibleArea(web_contents(), future2.GetCallback());
-  EXPECT_EQ(future2.Get(), base::unexpected(Error::kNoTab));
+  EXPECT_EQ(future2.Get(), base::unexpected(Error::kBusy));
 
   // Let the first pipeline drain (kNotImplemented → empty bitmap →
   // kCaptureFailed).
@@ -299,6 +309,9 @@ TEST_F(ScreenshotControllerTest,
   SkBitmap stitched = gfx::PNGCodec::Decode(*png_bytes);
   EXPECT_EQ(stitched.width(), 64);
   EXPECT_EQ(stitched.height(), 80);  // 48 + 32
+  // Verify vertical ordering: chunk 0 (red) is drawn above chunk 1 (green).
+  EXPECT_EQ(stitched.getColor(0, 0), SK_ColorRED);
+  EXPECT_EQ(stitched.getColor(0, 48), SK_ColorGREEN);
 }
 
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)

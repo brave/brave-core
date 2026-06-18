@@ -348,8 +348,9 @@ void ScreenshotController::FinishWithError(Error error) {
 
 void ScreenshotController::Reset() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(pending_callback_) << "Reset() called without a pending operation. The "
-                              "callback should be called before Reset()";
+  CHECK(pending_callback_.is_null())
+      << "Reset() called without a pending operation. The "
+         "callback should be called before Reset()";
   pending_png_.clear();
   if (select_dialog_) {
     select_dialog_->ListenerDestroyed();
