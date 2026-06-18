@@ -12,12 +12,14 @@ export class PluralStringProxyImpl {
   }
 
   /**
-   * 
-   * @param {string} key 
-   * @param {number} count 
+   *
+   * @param {string} key
+   * @param {number} count
    * @returns {Promise<string>}
    */
   getPluralString(key, count) {
+    // TODO(https://github.com/brave/brave-browser/issues/56440): Implement
+    // pluralization in Javascript.
     return Promise.resolve(`${key}(${count})`)
   }
 }
