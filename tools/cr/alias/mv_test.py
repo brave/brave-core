@@ -111,12 +111,12 @@ class ValidationTest(_Base):
         finally:
             os.chdir(saved)
 
-    def test_rewrite_toml_to_outside_rewrite(self) -> None:
-        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
+    def test_rewrite_yaml_to_outside_rewrite(self) -> None:
+        self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         with self.assertRaises(UserValidationError):
             cmd_mv([
-                self._brave_rel('rewrite/A/foo.h.toml'),
-                self._brave_rel('other/foo.h.toml')
+                self._brave_rel('rewrite/A/foo.h.yaml'),
+                self._brave_rel('other/foo.h.yaml')
             ])
 
 
@@ -407,62 +407,62 @@ class ReferencesTest(_Base):
 
 
 # ---------------------------------------------------------------------------
-# Plaster TOML handling tests (Step 5)
+# Plaster YAML handling tests (Step 5)
 # ---------------------------------------------------------------------------
 
 
 class PlasterTest(_Base):
-    """Plaster TOML and patch-file handling (spec §6.2 Step 5)."""
+    """Plaster YAML and patch-file handling (spec §6.2 Step 5)."""
 
-    def test_patch_deleted_on_toml_move(self) -> None:
-        """Moving rewrite/A/foo.h.toml deletes the corresponding patch."""
-        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
+    def test_patch_deleted_on_yaml_move(self) -> None:
+        """Moving rewrite/A/foo.h.yaml deletes the corresponding patch."""
+        self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         self._commit('patches/A-foo.h.patch', 'diff --git a/foo\n')
 
         cmd_mv([
             '--mkdir',
-            self._brave_rel('rewrite/A/foo.h.toml'),
-            self._brave_rel('rewrite/B/foo.h.toml')
+            self._brave_rel('rewrite/A/foo.h.yaml'),
+            self._brave_rel('rewrite/B/foo.h.yaml')
         ])
 
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
 
     def test_patchinfo_deleted_with_patch(self) -> None:
         """Sibling .patchinfo is removed when the patch is deleted."""
-        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         self._commit('patches/A-foo.h.patch', 'diff --git a/foo\n')
         patchinfo = self._brave / 'patches' / 'A-foo.h.patchinfo'
         patchinfo.write_text('{}', encoding='utf-8')
 
         cmd_mv([
             '--mkdir',
-            self._brave_rel('rewrite/A/foo.h.toml'),
-            self._brave_rel('rewrite/B/foo.h.toml')
+            self._brave_rel('rewrite/A/foo.h.yaml'),
+            self._brave_rel('rewrite/B/foo.h.yaml')
         ])
 
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
         self.assertFalse(patchinfo.exists())
 
     def test_missing_patch_warns_no_error(self) -> None:
-        """Moving a TOML whose patch is absent warns but does not raise."""
-        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        """Moving a YAML whose patch is absent warns but does not raise."""
+        self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         # No patches/A-foo.h.patch created.
         with self.assertLogs(level=logging.WARNING):
             cmd_mv([
                 '--mkdir',
-                self._brave_rel('rewrite/A/foo.h.toml'),
-                self._brave_rel('rewrite/B/foo.h.toml')
+                self._brave_rel('rewrite/A/foo.h.yaml'),
+                self._brave_rel('rewrite/B/foo.h.yaml')
             ])
-        # Command completed; TOML is at new location.
+        # Command completed; YAML is at new location.
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
 
-    def test_directory_move_handles_all_tomls(self) -> None:
-        """Moving a rewrite/ directory moves all TOMLs and deletes patches."""
-        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
-        self._commit('rewrite/A/bar.h.toml', '[substitution]\n')
+    def test_directory_move_handles_all_yamls(self) -> None:
+        """Moving a rewrite/ directory moves all YAMLs and deletes patches."""
+        self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
+        self._commit('rewrite/A/bar.h.yaml', 'substitutions:\n')
         self._commit('patches/A-foo.h.patch', 'diff\n')
         self._commit('patches/A-bar.h.patch', 'diff\n')
 
@@ -471,9 +471,9 @@ class PlasterTest(_Base):
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
         self.assertFalse((self._brave / 'patches' / 'A-bar.h.patch').exists())
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'bar.h.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'bar.h.yaml').exists())
 
 
 # ---------------------------------------------------------------------------
@@ -541,7 +541,7 @@ class NoGitTest(_Base):
 
     def test_no_git_patch_deletion_uses_unlink(self) -> None:
         """--no-git deletes the patch with Path.unlink() rather than git rm."""
-        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         # Patch written but not committed — git rm would fail on it.
         patch_file = self._brave / 'patches' / 'A-foo.h.patch'
         patch_file.write_text('dummy\n', encoding='utf-8')
@@ -549,8 +549,8 @@ class NoGitTest(_Base):
         (self._brave / 'rewrite' / 'B').mkdir(parents=True, exist_ok=True)
         cmd_mv([
             '--no-git',
-            self._brave_rel('rewrite/A/foo.h.toml'),
-            self._brave_rel('rewrite/B/foo.h.toml')
+            self._brave_rel('rewrite/A/foo.h.yaml'),
+            self._brave_rel('rewrite/B/foo.h.yaml')
         ])
 
         self.assertFalse(patch_file.exists())
@@ -565,7 +565,7 @@ class SubdirPatchDeletionTest(_Base):
     """git rm for patch deletion must succeed when CWD is not brave root."""
 
     def test_patch_deleted_from_subdirectory(self) -> None:
-        """Moving a TOML from a brave subdirectory deletes the patch file.
+        """Moving a YAML from a brave subdirectory deletes the patch file.
 
         Regression for the bug where _step5_plaster passed a brave-root-relative
         path to `git rm` but git ran from CWD (a subdirectory), causing git rm
@@ -577,7 +577,7 @@ class SubdirPatchDeletionTest(_Base):
         (matching production semantics, where the user's shell invocation is
         what sets cwd).
         """
-        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         self._commit('patches/A-foo.h.patch', 'diff --git a/foo\n')
         subdir = self._brave / 'chromium_src'
         subdir.mkdir(exist_ok=True)
@@ -590,8 +590,8 @@ class SubdirPatchDeletionTest(_Base):
                 'mv',
                 '--mkdir',
                 '--no-format',
-                '../rewrite/A/foo.h.toml',
-                '../rewrite/B/foo.h.toml',
+                '../rewrite/A/foo.h.yaml',
+                '../rewrite/B/foo.h.yaml',
             ],
             cwd=subdir,
             capture_output=True,
@@ -601,7 +601,7 @@ class SubdirPatchDeletionTest(_Base):
         self.assertEqual(result.returncode, 0,
                          f'git cr mv failed: {result.stderr}')
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
 
 
@@ -611,28 +611,28 @@ class SubdirPatchDeletionTest(_Base):
 
 
 class PlasterApplyTest(_Base):
-    """plaster.apply() is called after each TOML move by default."""
+    """plaster.apply() is called after each YAML move by default."""
 
-    _SUBST_TOML = ('[[substitution]]\n'
-                   'description = "Replace old_func"\n'
-                   'pattern = "old_func"\n'
-                   'replace = "new_func"\n')
+    _SUBST_YAML = ('substitutions:\n'
+                   '  - description: Replace old_func\n'
+                   '    pattern: old_func\n'
+                   '    replace: new_func\n')
 
     def _commit_chromium(self, rel: str, content: str) -> None:
         self._repo.write_and_stage_file(rel, content, self._repo.chromium)
         self._repo.commit(f'Add {rel}', self._repo.chromium)
 
     def test_patch_created_at_new_location(self) -> None:
-        """After TOML move, plaster writes a new patch at
+        """After YAML move, plaster writes a new patch at
         patches/B-foo.cc.patch."""
         self._commit_chromium('B/foo.cc', 'void old_func() {}\n')
-        self._commit('rewrite/A/foo.cc.toml', self._SUBST_TOML)
+        self._commit('rewrite/A/foo.cc.yaml', self._SUBST_YAML)
         self._commit('patches/A-foo.cc.patch', 'old patch\n')
 
         cmd_mv([
             '--mkdir',
-            self._brave_rel('rewrite/A/foo.cc.toml'),
-            self._brave_rel('rewrite/B/foo.cc.toml')
+            self._brave_rel('rewrite/A/foo.cc.yaml'),
+            self._brave_rel('rewrite/B/foo.cc.yaml')
         ])
 
         old_patch = self._brave / 'patches' / 'A-foo.cc.patch'
@@ -649,31 +649,31 @@ class PlasterApplyTest(_Base):
         """Warning is logged when the chromium source for the new path is
         absent."""
         # No chromium file at B/foo.cc — plaster cannot read the source.
-        self._commit('rewrite/A/foo.cc.toml', self._SUBST_TOML)
+        self._commit('rewrite/A/foo.cc.yaml', self._SUBST_YAML)
         self._commit('patches/A-foo.cc.patch', 'old patch\n')
 
         with self.assertLogs(level=logging.WARNING) as cm:
             cmd_mv([
                 '--mkdir',
-                self._brave_rel('rewrite/A/foo.cc.toml'),
-                self._brave_rel('rewrite/B/foo.cc.toml')
+                self._brave_rel('rewrite/A/foo.cc.yaml'),
+                self._brave_rel('rewrite/B/foo.cc.yaml')
             ])
 
         self.assertTrue(any('plaster failed' in msg for msg in cm.output))
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.cc.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.cc.yaml').exists())
         self.assertFalse((self._brave / 'patches' / 'B-foo.cc.patch').exists())
 
     def test_no_run_plaster_skips_patch_creation(self) -> None:
-        """--no-run-plaster: no new patch file is created after TOML move."""
+        """--no-run-plaster: no new patch file is created after YAML move."""
         self._commit_chromium('B/foo.cc', 'void old_func() {}\n')
-        self._commit('rewrite/A/foo.cc.toml', self._SUBST_TOML)
+        self._commit('rewrite/A/foo.cc.yaml', self._SUBST_YAML)
         self._commit('patches/A-foo.cc.patch', 'old patch\n')
 
         cmd_mv([
             '--mkdir', '--no-run-plaster',
-            self._brave_rel('rewrite/A/foo.cc.toml'),
-            self._brave_rel('rewrite/B/foo.cc.toml')
+            self._brave_rel('rewrite/A/foo.cc.yaml'),
+            self._brave_rel('rewrite/B/foo.cc.yaml')
         ])
 
         self.assertFalse((self._brave / 'patches' / 'B-foo.cc.patch').exists())

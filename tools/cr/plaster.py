@@ -16,11 +16,6 @@ import os
 import re
 import sys
 
-# TODO(https://github.com/brave/brave-browser/issues/55738): Remove all the
-# TOML-related code once every plaster under `rewrite/` has been migrated to
-# YAML.
-import tomllib
-
 import yaml
 
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
@@ -32,17 +27,8 @@ PLASTER_FILES_PATH = repository.brave.root / 'rewrite'
 # The path to the directory where patch files are stored in brave-core.
 PATCHES_PATH = repository.brave.root / 'patches'
 
-# Supported plaster file extensions.
-#
-# `.yaml` is the preferred format. `.toml` is the original syntax and is
-# **deprecated**.
-#
-# TODO(https://github.com/brave/brave-browser/issues/55738): Once every
-# plaster under `rewrite/` has been migrated to YAML, drop `'.toml'` from
-# this tuple and remove every other site tagged with the same issue
-# number (the `tomllib` import, `Substitution.from_toml`, and the
-# `.toml` branch in `PlasterFile.apply`).
-PLASTER_EXTENSIONS = ('.yaml', '.toml')
+# The plaster file extension.
+PLASTER_EXTENSION = '.yaml'
 
 
 @dataclass
@@ -130,8 +116,7 @@ class Patchinfo:
     # ever produce and accept a single entry.
     applies_to: Entry
 
-    # The plaster file that produced this patchinfo (`.yaml`, or the
-    # deprecated `.toml`).
+    # The plaster file that produced this patchinfo (`.yaml`).
     plaster: Entry
 
     @staticmethod
@@ -237,7 +222,7 @@ class PatchinfoBuilder:
         }
       ],
       "plaster": {
-        "path": "rewrite/browser/autocomplete_classifier_factory.cc.toml",
+        "path": "rewrite/browser/autocomplete_classifier_factory.cc.yaml",
         "checksum": "a11a8eed2bec0083f7c9be762fced0f6db372a47d40c20b93037db0473"
       }
     }
@@ -354,7 +339,6 @@ class Substitution:
     """A single substitution entry parsed from a plaster file.
 
     `from_yaml` instantiates all the substitutions from a YAML plaster
-    file, and `from_toml` does the same for a (deprecated) TOML plaster
     file.
     """
 
@@ -415,33 +399,11 @@ class Substitution:
             'tag:yaml.org,2002:map': _construct_mapping_strict,
         }
 
-    # TODO(https://github.com/brave/brave-browser/issues/55738): Remove
-    # `from_toml` (and its callers) once every plaster under `rewrite/`
-    # has been migrated to YAML.
-    @staticmethod
-    def from_toml(contents: str) -> list[Substitution]:
-        """Parse all substitutions from the contents of a TOML plaster file.
-
-        TOML plasters use `[[substitution]]` array-of-tables entries.
-        """
-        data = tomllib.loads(contents)
-        raw = data.get('substitution')
-        if raw is None:
-            raise ValueError(
-                'Plaster TOML is missing required `[[substitution]]` entries')
-        if not isinstance(raw, list):
-            raise ValueError('TOML `substitution` must be an array of tables')
-        if not raw:
-            raise ValueError(
-                'Plaster TOML must declare at least one `[[substitution]]`')
-        return [Substitution._from_dict(entry) for entry in raw]
-
     @staticmethod
     def from_yaml(contents: str) -> list[Substitution]:
         """Parse all substitutions from the contents of a YAML plaster file.
 
-        YAML plasters use a top-level `substitutions:` list whose items
-        have the same field names as their TOML counterparts.
+        YAML plasters use a top-level `substitutions:` list.
         """
         data = yaml.load(contents, Loader=Substitution._NoDupSafeLoader)
         if data is None:
@@ -464,8 +426,8 @@ class Substitution:
     def _from_dict(data: object) -> Substitution:
         """Validate a single substitution mapping and build a Substitution.
 
-        Both `from_toml` and `from_yaml` dispatch through this helper after
-        format-specific parsing produces a Python `dict` for each entry.
+        `from_yaml` dispatches through this helper after parsing produces a
+        Python `dict` for each entry.
 
         Raises:
             ValueError: if required fields are missing, a field has the
@@ -554,7 +516,7 @@ class PlasterFile:
 
         for root, _, files in os.walk(PLASTER_FILES_PATH):
             for file in files:
-                if file.endswith(PLASTER_EXTENSIONS):
+                if file.endswith(PLASTER_EXTENSION):
                     plaster_files.append(cls(Path(root) / file))
 
         return plaster_files
@@ -610,26 +572,9 @@ class PlasterFile:
     def apply(self, dry_run=False):
         suffix = self.path.suffix.lower()
 
-        # TODO(https://github.com/brave/brave-browser/issues/55738): Remove
-        # this collision check once every plaster under `rewrite/` has
-        # been migrated to YAML — only one extension will exist by then,
-        # so the twin can never appear.
-        if suffix in PLASTER_EXTENSIONS:
-            twin_ext = '.toml' if suffix == '.yaml' else '.yaml'
-            twin = self.path.with_suffix(twin_ext)
-            if twin.exists():
-                raise PlasterError(
-                    'Both `.yaml` and `.toml` plaster files exist for the '
-                    f'same source — remove one:\n  {self.path}\n  {twin}')
-
         info = PatchinfoBuilder(self.path)
         if suffix == '.yaml':
             substitutions = Substitution.from_yaml(info.plaster_contents)
-        elif suffix == '.toml':
-            # TODO(https://github.com/brave/brave-browser/issues/55738):
-            # Drop this entire `elif` branch once every plaster under
-            # `rewrite/` has been migrated to YAML.
-            substitutions = Substitution.from_toml(info.plaster_contents)
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
         contents = repository.chromium.read_file(info.source)
@@ -704,13 +649,9 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
         if filepath.startswith('patches/') and filepath.endswith('.patch'):
             base = filepath[len('patches/'):-len('.patch')]
             stem = f'rewrite/{base.replace("-", "/")}'
-            # The patch file does not tell us which plaster format produced
-            # it, so seed candidates for every supported extension and let
-            # the existence filter below pick the real one.
-            for ext in PLASTER_EXTENSIONS:
-                expected_plaster_files.add(f'{stem}{ext}')
+            expected_plaster_files.add(f'{stem}{PLASTER_EXTENSION}')
         elif (filepath.startswith('rewrite/')
-              and filepath.endswith(PLASTER_EXTENSIONS)):
+              and filepath.endswith(PLASTER_EXTENSION)):
             expected_plaster_files.add(filepath)
         else:
             raise ValueError(f'Unexpected file path: {filepath}')
