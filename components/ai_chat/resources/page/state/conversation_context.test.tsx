@@ -29,6 +29,7 @@ const stagedContent = (contentId: number): Mojom.AssociatedContent => ({
   url: { url: `https://example.com/${contentId}` },
   contentUsedPercentage: 0,
   conversationTurnUuid: undefined,
+  toolsAttached: false,
 })
 
 const committedContent = (

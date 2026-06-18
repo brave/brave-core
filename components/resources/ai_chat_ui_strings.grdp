@@ -681,6 +681,15 @@
   <message name="IDS_CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO" desc="Info tooltip for page attachment" formatter_data="webui=AiChat">
     This page's content will be sent to Leo along with your messages.
   </message>
+  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_LABEL" desc="Label for the section, shown above the input box, listing the tools provided by attached pages" formatter_data="webui=AiChat">
+    Tools
+  </message>
+  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_TOOLTIP_INFO" desc="Info tooltip explaining what attached page tools are and their privacy implications" formatter_data="webui=AiChat">
+    These sites expose tools that Leo can use to send data to and from this site. Do not attach or approve these tools if this conversation contains data that you don't want this site to see.
+  </message>
+  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_REMOVE_LABEL" desc="Accessible label for the button that removes an attached page's tools" formatter_data="webui=AiChat">
+    Remove tools
+  </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices" formatter_data="webui=AiChat">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>

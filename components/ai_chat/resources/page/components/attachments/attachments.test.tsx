@@ -60,6 +60,7 @@ const mockAssociatedContent: AssociatedContent[] = [
     contentType: ContentType.PageContent,
     contentUsedPercentage: 0.5,
     uuid: 'uuid-1',
+    toolsAttached: false,
   },
 ]
 

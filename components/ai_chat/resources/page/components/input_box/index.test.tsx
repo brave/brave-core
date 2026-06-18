@@ -93,6 +93,7 @@ describe('input box', () => {
                 url: { url: 'https://example.com' },
                 uuid: '1234',
                 conversationTurnUuid: undefined,
+                toolsAttached: false,
               },
             ],
           }}
@@ -143,6 +144,7 @@ describe('input box', () => {
                 url: { url: 'https://example.com' },
                 uuid: '1234',
                 conversationTurnUuid: 'turn-1',
+                toolsAttached: false,
               },
             ],
           }}
@@ -430,6 +432,7 @@ describe('input box', () => {
                 title: 'Page Content',
                 url: { url: 'https://example.com' },
                 uuid: '1234',
+                toolsAttached: false,
               },
             ],
             pendingMessageFiles: [

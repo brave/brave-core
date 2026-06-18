@@ -189,6 +189,19 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   },
   contentId: 1,
   conversationTurnUuid: 'turn-uuid',
+  toolsAttached: false,
+}
+
+// A staged (not yet committed) page attachment whose site provides tools, so it
+// shows both a page attachment chip and a "Tools" pill in the input box.
+const ASSOCIATED_CONTENT_WITH_TOOLS: Mojom.AssociatedContent = {
+  ...ASSOCIATED_CONTENT,
+  uuid: 'uuid-tools',
+  title: 'Invoicing',
+  url: { url: 'https://localhost:3000/' },
+  contentId: 2,
+  conversationTurnUuid: undefined,
+  toolsAttached: true,
 }
 
 const SAMPLE_SKILLS: Mojom.Skill[] = [
@@ -296,6 +309,7 @@ type CustomArgs = {
   conversationListCount: number
   hasSuggestedQuestions: boolean
   hasAssociatedContent: boolean
+  hasAttachedTools: boolean
   isFeedbackFormVisible: boolean
   isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
@@ -341,6 +355,7 @@ const args: CustomArgs = {
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
+  hasAttachedTools: false,
   editingConversationId: null,
   deletingConversationId: null,
   isFeedbackFormVisible: false,
@@ -482,10 +497,19 @@ function StoryContext(
   argsRef.current = args
 
   // Compute derived values from args for UntrustedConversationContext
-  const getAssociatedContent = () =>
-    argsRef.current.hasAssociatedContent
-      ? ASSOCIATED_CONTENT
-      : new Mojom.AssociatedContent()
+  const getAssociatedContent = (): Mojom.AssociatedContent[] => {
+    const content: Mojom.AssociatedContent[] = []
+    if (argsRef.current.hasAssociatedContent) {
+      content.push(ASSOCIATED_CONTENT)
+    }
+    if (argsRef.current.hasAttachedTools) {
+      content.push(ASSOCIATED_CONTENT_WITH_TOOLS)
+    }
+    if (content.length === 0) {
+      content.push(new Mojom.AssociatedContent())
+    }
+    return content
+  }
 
   const activeChatContext: SelectedChatDetails = {
     // api instance not needed when we're providing ConversationContext directly
@@ -571,11 +595,7 @@ function StoryContext(
                 Mojom.SuggestionGenerationStatus[
                   argsRef.current.suggestionStatus
                 ],
-              associatedContent: [
-                argsRef.current.hasAssociatedContent
-                  ? ASSOCIATED_CONTENT
-                  : new Mojom.AssociatedContent(),
-              ],
+              associatedContent: getAssociatedContent(),
               error: currentError,
               errorDetails: undefined,
               temporary: argsRef.current.isTemporaryChat,
@@ -663,7 +683,7 @@ function StoryContext(
           overrides={{
             isMobile: args.isMobile,
             isHistoryFeatureEnabled: args.isHistoryEnabled,
-            associatedContent: [getAssociatedContent()],
+            associatedContent: getAssociatedContent(),
           }}
           deps={[...Object.values(args)]}
         >
@@ -693,6 +713,11 @@ function GetPanelStory(withArgs: Partial<CustomArgs> = args): Story {
 
 export const _Panel = GetPanelStory({
   conversation_content: 'ALL',
+})
+
+export const _WithAttachedTools = GetPanelStory({
+  conversation_content: 'ALL',
+  hasAttachedTools: true,
 })
 
 export const _WithSearch = GetPanelStory({

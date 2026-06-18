@@ -1,0 +1,95 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.toolsAttachments {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+  // Round the top corners to match the input box (the form's radius).
+  border-radius: var(--leo-radius-xl) var(--leo-radius-xl) 0 0;
+  background-color: var(--leo-color-page-background);
+  min-width: 0;
+}
+
+.toolsLabel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  flex: 0 0 auto;
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+  --leo-icon-size: 16px;
+  --leo-icon-color: var(--leo-color-icon-default);
+}
+
+// Constrain the info tooltip so the long privacy message wraps into a bubble
+// rather than rendering as a single overflowing line.
+.toolsTooltipContent {
+  max-width: 320px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.toolsPills {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: var(--leo-spacing-s);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.toolPill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  // Pills size to their content, shrinking down to a 120px minimum, after
+  // which the row scrolls horizontally.
+  flex: 0 1 auto;
+  min-width: 120px;
+  max-width: max-content;
+  box-sizing: border-box;
+  padding: var(--leo-spacing-xs) var(--leo-spacing-s) var(--leo-spacing-xs)
+    var(--leo-spacing-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-full);
+  background-color: var(--leo-color-container-background);
+}
+
+.toolPillFavicon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  border-radius: var(--leo-radius-s);
+  object-fit: contain;
+}
+
+.toolPillTitleTooltip {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.toolPillTitle {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.toolPillRemove {
+  flex: 0 0 auto;
+  --leo-icon-size: 16px;
+}
