@@ -407,6 +407,7 @@ leo_icons_sources = [
   "radio-checked.svg",
   "radio-unchecked.svg",
   "refresh.svg",
+  "reload.svg",
   "remove-circle-filled.svg",
   "remove-circle-outline.svg",
   "rewind-15.svg",

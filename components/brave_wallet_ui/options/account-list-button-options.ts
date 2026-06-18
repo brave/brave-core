@@ -22,7 +22,7 @@ export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
   {
     id: 'details',
     name: 'braveWalletAllowSpendDetailsButton',
-    icon: 'eye-on',
+    icon: 'info-outline',
   },
   {
     id: 'edit',
