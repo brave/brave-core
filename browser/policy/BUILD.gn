@@ -18,11 +18,7 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("brave_simple_policy_map") {
-  sources = [
-    "brave_simple_policy_map.h",
-    "policy_pref_interceptor_utils.cc",
-    "policy_pref_interceptor_utils.h",
-  ]
+  sources = [ "brave_simple_policy_map.h" ]
 
   deps = [
     "//base",
