@@ -22,6 +22,9 @@ import {
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
   ResendConfirmationEmailServerErrorCode,
+  ResetPasswordClientErrorCode,
+  ResetPasswordError,
+  ResetPasswordServerErrorCode,
 } from './brave_account.mojom-webui.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
 
@@ -43,6 +46,7 @@ export type Error =
   | { kind: 'login'; details: LoginError }
   | { kind: 'register'; details: RegisterError }
   | { kind: 'resendConfirmationEmail'; details: ResendConfirmationEmailError }
+  | { kind: 'resetPassword'; details: ResetPasswordError }
 
 const LOGIN_CLIENT_ERROR_STRINGS: Partial<
   Record<LoginClientErrorCode, string>
@@ -100,15 +104,46 @@ const RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
 }
 
+const RESET_PASSWORD_CLIENT_ERROR_STRINGS: Partial<
+  Record<ResetPasswordClientErrorCode, string>
+> = {}
+
+const RESET_PASSWORD_SERVER_ERROR_STRINGS: Partial<
+  Record<ResetPasswordServerErrorCode, string>
+> = {
+  [ResetPasswordServerErrorCode.kTooManyVerifications]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
+  [ResetPasswordServerErrorCode.kAccountDoesNotExist]:
+    BraveAccountStrings.BRAVE_ACCOUNT_ACCOUNT_DOES_NOT_EXIST,
+  [ResetPasswordServerErrorCode.kEmailDomainNotSupported]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
+  [ResetPasswordServerErrorCode.kFailedToSendEmailDueToInvalidFormat]:
+    BraveAccountStrings.BRAVE_ACCOUNT_FAILED_TO_SEND_EMAIL_DUE_TO_INVALID_FORMAT,
+  [ResetPasswordServerErrorCode.kDailyVerificationLimitReachedForEmail]:
+    BraveAccountStrings.BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
+  [ResetPasswordServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
+    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
+  [ResetPasswordServerErrorCode.kEmailAlreadyVerified]:
+    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
+  [ResetPasswordServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
+    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+  [ResetPasswordServerErrorCode.kInvalidVerificationCode]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
+  [ResetPasswordServerErrorCode.kTokenHasExpired]:
+    BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
+}
+
 function getErrorMessageImpl<
   ClientErrorCode extends
     | LoginClientErrorCode
     | RegisterClientErrorCode
-    | ResendConfirmationEmailClientErrorCode,
+    | ResendConfirmationEmailClientErrorCode
+    | ResetPasswordClientErrorCode,
   ServerErrorCode extends
     | LoginServerErrorCode
     | RegisterServerErrorCode
-    | ResendConfirmationEmailServerErrorCode,
+    | ResendConfirmationEmailServerErrorCode
+    | ResetPasswordServerErrorCode,
 >(
   clientErrorStrings: Partial<Record<ClientErrorCode, string>>,
   serverErrorStrings: Partial<Record<ServerErrorCode, string>>,
@@ -169,6 +204,12 @@ function getErrorMessage(error: Error): string {
       return getErrorMessageImpl(
         RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS,
         RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS,
+        error.details,
+      )
+    case 'resetPassword':
+      return getErrorMessageImpl(
+        RESET_PASSWORD_CLIENT_ERROR_STRINGS,
+        RESET_PASSWORD_SERVER_ERROR_STRINGS,
         error.details,
       )
   }
