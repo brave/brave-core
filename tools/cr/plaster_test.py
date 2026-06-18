@@ -24,16 +24,16 @@ class PlasterTest(unittest.TestCase):
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
 
-    def test_original_expected_toml_rules(self):
-        """Test applying all .toml files in the test/ folder."""
+    def test_original_expected_yaml_rules(self):
+        """Test applying all .yaml files in the test/ folder."""
         test_folder = Path(__file__).parent / 'test/plasters'
-        toml_files = test_folder.rglob('*.toml')
+        yaml_files = test_folder.rglob('*.yaml')
 
-        for toml_file in toml_files:
-            with self.subTest(toml_file=toml_file):
-                # Deduce the path for the original file for the toml to be
+        for yaml_file in yaml_files:
+            with self.subTest(yaml_file=yaml_file):
+                # Deduce the path for the original file for the yaml to be
                 # applied to.
-                original_file_to = (toml_file.parent / toml_file.stem)
+                original_file_to = (yaml_file.parent / yaml_file.stem)
                 original_file_from = original_file_to.with_stem(
                     original_file_to.stem + '-original')
                 expected_file = original_file_to.with_stem(
@@ -48,12 +48,12 @@ class PlasterTest(unittest.TestCase):
                     commit_message=f'Add {original_file_from.name}',
                     repo_path=self.fake_chromium_src.chromium)
 
-                # Copy the .toml file to the fake Brave rewrite path.
-                rewrite_path = plaster.PLASTER_FILES_PATH / toml_file.name
+                # Copy the .yaml file to the fake Brave rewrite path.
+                rewrite_path = plaster.PLASTER_FILES_PATH / yaml_file.name
                 rewrite_path.parent.mkdir(parents=True, exist_ok=True)
-                rewrite_path.write_text(toml_file.read_text())
+                rewrite_path.write_text(yaml_file.read_text())
 
-                # Use PlasterFile to apply the .toml file to the committed file.
+                # Use PlasterFile to apply the .yaml file to the committed file.
                 plaster_file = plaster.PlasterFile(rewrite_path)
                 plaster_file.apply()
 
@@ -79,16 +79,16 @@ class PlasterTest(unittest.TestCase):
 
         # Create a PlasterFile instance for the test file
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Simple test substitution'
-          re_pattern = 'Chromium'
-          replace = 'Plaster'
+          substitutions:
+            - description: Simple test substitution
+              re_pattern: 'Chromium'
+              replace: 'Plaster'
         ''')
 
-        # Use PlasterFile to apply the .toml file to the committed file.
+        # Use PlasterFile to apply the .yaml file to the committed file.
         plaster_file = plaster.PlasterFile(plaster_path)
         plaster_file.apply()
 
@@ -150,8 +150,8 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(temp_file.read_text(), 'bar')
         temp_file.unlink()
 
-    def test_yaml_plaster_applies_like_toml(self):
-        """A .yaml plaster produces the same result as the equivalent .toml."""
+    def test_yaml_plaster_applies(self):
+        """A .yaml plaster applies its substitutions and emits patch files."""
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_yaml_plaster.idl')
 
@@ -175,15 +175,14 @@ class PlasterTest(unittest.TestCase):
             (self.fake_chromium_src.chromium / test_file_chromium).read_text(),
             'Initial content for Plaster file.')
 
-        # The patch file is named after the source, not the plaster
-        # extension, so it should be a sibling of where the .toml patch
-        # would have landed.
+        # The patch file is named after the source, so applying the plaster
+        # should produce both a patch and a patchinfo file.
         patchinfo = plaster.PatchinfoBuilder(plaster_path)
         self.assertTrue(patchinfo.patch.path.exists())
         self.assertTrue(patchinfo.patchinfo.path.exists())
 
     def test_yaml_plaster_validation_failures(self):
-        """YAML plasters surface the same validation errors as TOML."""
+        """YAML plasters surface validation errors for malformed entries."""
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_yaml_validation.idl')
 
@@ -219,43 +218,6 @@ class PlasterTest(unittest.TestCase):
                 with self.assertRaises(ValueError) as context:
                     plaster_file.apply()
                 self.assertIn(expected_error, str(context.exception))
-
-    def test_yaml_and_toml_collision_is_rejected(self):
-        """Having both .yaml and .toml plasters for the same source errors."""
-        test_file_chromium = Path(
-            'chrome/common/extensions/api/test_collision.idl')
-
-        self.fake_chromium_src.write_and_stage_file(
-            test_file_chromium, 'Content with Chromium word.',
-            self.fake_chromium_src.chromium)
-        self.fake_chromium_src.commit('Add test_collision.idl',
-                                      self.fake_chromium_src.chromium)
-
-        plaster_stem = (plaster.PLASTER_FILES_PATH / str(test_file_chromium))
-        plaster_stem.parent.mkdir(parents=True, exist_ok=True)
-
-        yaml_path = plaster_stem.with_suffix(plaster_stem.suffix + '.yaml')
-        yaml_path.write_text('substitutions:\n'
-                             '  - description: yaml form\n'
-                             "    re_pattern: 'Chromium'\n"
-                             "    replace: 'Brave'\n")
-
-        toml_path = plaster_stem.with_suffix(plaster_stem.suffix + '.toml')
-        toml_path.write_text("[[substitution]]\n"
-                             "description = 'toml form'\n"
-                             "re_pattern = 'Chromium'\n"
-                             "replace = 'Brave'\n")
-
-        with self.assertRaises(plaster.PlasterError) as context:
-            plaster.PlasterFile(yaml_path).apply()
-        message = str(context.exception)
-        self.assertIn('Both `.yaml` and `.toml`', message)
-        self.assertIn(str(yaml_path), message)
-        self.assertIn(str(toml_path), message)
-
-        # And the other direction: starting from the .toml file.
-        with self.assertRaises(plaster.PlasterError):
-            plaster.PlasterFile(toml_path).apply()
 
     def test_duplicate_yaml_keys_are_rejected(self):
         """A YAML mapping with a duplicate key surfaces as a ValueError.
@@ -320,7 +282,7 @@ class PlasterTest(unittest.TestCase):
 
     def test_check_success_multiple_up_to_date(self):
         """Test plaster check succeeds for 3 up-to-date plaster files."""
-        # Create 3 source files in chromium and matching .toml in brave/rewrite
+        # Create 3 source files in chromium and matching .yaml in brave/rewrite
         files = [
             ('chrome/common/extensions/api/test_file1.idl', 'foo1', 'bar1'),
             ('chrome/common/extensions/api/test_file2.idl', 'foo2', 'bar2'),
@@ -334,15 +296,15 @@ class PlasterTest(unittest.TestCase):
                 self.fake_chromium_src.chromium)
             self.fake_chromium_src.commit(f'Add {src_path}',
                                           self.fake_chromium_src.chromium)
-            # Write the .toml rewrite file
+            # Write the .yaml rewrite file
             rewrite_path = plaster.PLASTER_FILES_PATH / (str(src_path) +
-                                                         '.toml')
+                                                         '.yaml')
             rewrite_path.parent.mkdir(parents=True, exist_ok=True)
             rewrite_path.write_text(f'''
-              [[substitution]]
-              description = 'Replace {orig} with {repl}'
-              re_pattern = '{orig}'
-              replace = '{repl}'
+              substitutions:
+                - description: Replace {orig} with {repl}
+                  re_pattern: '{orig}'
+                  replace: '{repl}'
             ''')
             # Apply the rewrite so files are up-to-date
             plaster_file = plaster.PlasterFile(rewrite_path)
@@ -357,9 +319,9 @@ class PlasterTest(unittest.TestCase):
         args = DummyArgs()
         self.assertEqual(plaster.check(args), 0)
 
-    def test_check_fails_when_toml_changed(self):
+    def test_check_fails_when_yaml_changed(self):
         """Test plaster check fails when there's a mismatch."""
-        # Create 3 source files in chromium and matching .toml in brave/rewrite
+        # Create 3 source files in chromium and matching .yaml in brave/rewrite
         files = [
             ('chrome/common/extensions/api/test_file1.idl', 'foo1', 'bar1'),
             ('chrome/common/extensions/api/test_file2.idl', 'foo2', 'bar2'),
@@ -374,13 +336,13 @@ class PlasterTest(unittest.TestCase):
             self.fake_chromium_src.commit(f'Add {src_path}',
                                           self.fake_chromium_src.chromium)
             rewrite_path = plaster.PLASTER_FILES_PATH / (str(src_path) +
-                                                         '.toml')
+                                                         '.yaml')
             rewrite_path.parent.mkdir(parents=True, exist_ok=True)
             rewrite_path.write_text(f'''
-              [[substitution]]
-              description = 'Replace {orig} with {repl}'
-              re_pattern = '{orig}'
-              replace = '{repl}'
+              substitutions:
+                - description: Replace {orig} with {repl}
+                  re_pattern: '{orig}'
+                  replace: '{repl}'
             ''')
             plaster_file = plaster.PlasterFile(rewrite_path)
             plaster_file.apply()
@@ -395,13 +357,13 @@ class PlasterTest(unittest.TestCase):
 
         args = DummyArgs()
         self.assertEqual(plaster.check(args), 0)
-        # Now change one toml file to cause a failure
+        # Now change one yaml file to cause a failure
         changed_path = rewrite_paths[1]
         changed_path.write_text('''
-          [[substitution]]
-          description = 'Break the rule'
-          re_pattern = 'foo2'
-          replace = 'DIFFERENT'
+          substitutions:
+            - description: Break the rule
+              re_pattern: 'foo2'
+              replace: 'DIFFERENT'
         ''')
         # Now check should raise PlasterFileNeedsRegen with the path included.
         with self.assertRaises(plaster.PlasterFileNeedsRegen) as context:
@@ -422,14 +384,14 @@ class PlasterTest(unittest.TestCase):
 
         # Create a PlasterFile with multiple flags in array
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Test multiple flags in array work'
-          re_pattern = 'chromium'
-          replace = 'Brave'
-          re_flags = ['IGNORECASE', 'MULTILINE']
+          substitutions:
+            - description: Test multiple flags in array work
+              re_pattern: 'chromium'
+              replace: 'Brave'
+              re_flags: ['IGNORECASE', 'MULTILINE']
         ''')
 
         plaster_file = plaster.PlasterFile(plaster_path)
@@ -465,14 +427,14 @@ class PlasterTest(unittest.TestCase):
             with self.subTest(flag=invalid_flag):
                 # Create a PlasterFile with invalid flag
                 plaster_path = plaster.PLASTER_FILES_PATH / (
-                    str(test_file_chromium) + '.toml')
+                    str(test_file_chromium) + '.yaml')
                 plaster_path.parent.mkdir(parents=True, exist_ok=True)
                 plaster_path.write_text(f'''
-                  [[substitution]]
-                  description = 'Test invalid flag rejection'
-                  re_pattern = 'Chromium'
-                  replace = 'Brave'
-                  re_flags = ['{invalid_flag}']
+                  substitutions:
+                    - description: Test invalid flag rejection
+                      re_pattern: 'Chromium'
+                      replace: 'Brave'
+                      re_flags: ['{invalid_flag}']
                 ''')
 
                 plaster_file = plaster.PlasterFile(plaster_path)
@@ -496,14 +458,14 @@ class PlasterTest(unittest.TestCase):
 
         # Create a PlasterFile with empty flags list
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Test empty flags list'
-          re_pattern = 'chromium'
-          replace = 'Brave'
-          re_flags = []
+          substitutions:
+            - description: Test empty flags list
+              re_pattern: 'chromium'
+              replace: 'Brave'
+              re_flags: []
         ''')
 
         plaster_file = plaster.PlasterFile(plaster_path)
@@ -539,13 +501,13 @@ class PlasterTest(unittest.TestCase):
             with self.subTest(pattern=invalid_pattern):
                 # Create a PlasterFile with invalid regex
                 plaster_path = plaster.PLASTER_FILES_PATH / (
-                    str(test_file_chromium) + '.toml')
+                    str(test_file_chromium) + '.yaml')
                 plaster_path.parent.mkdir(parents=True, exist_ok=True)
                 plaster_path.write_text(f'''
-                  [[substitution]]
-                  description = 'Test invalid regex rejection'
-                  re_pattern = '{invalid_pattern}'
-                  replace = 'Brave'
+                  substitutions:
+                    - description: Test invalid regex rejection
+                      re_pattern: '{invalid_pattern}'
+                      replace: 'Brave'
                 ''')
 
                 plaster_file = plaster.PlasterFile(plaster_path)
@@ -569,33 +531,33 @@ class PlasterTest(unittest.TestCase):
 
         # Test various invalid validation cases
         validation_cases = [
-            # (toml_content, expected_error_message)
+            # (yaml_content, expected_error_message)
             ('''
-              [[substitution]]
-              description = 'Both patterns specified'
-              pattern = 'Chromium'
-              re_pattern = 'Chromium'
-              replace = 'Plaster'
+              substitutions:
+                - description: Both patterns specified
+                  pattern: 'Chromium'
+                  re_pattern: 'Chromium'
+                  replace: 'Plaster'
             ''', 'Please specify either pattern or re_pattern'),
             ('''
-              [[substitution]]
-              description = 'No pattern specified'
-              replace = 'Plaster'
+              substitutions:
+                - description: No pattern specified
+                  replace: 'Plaster'
             ''', 'No pattern specified'),
             ('''
-              [[substitution]]
-              description = 'No replace specified'
-              pattern = 'Chromium'
+              substitutions:
+                - description: No replace specified
+                  pattern: 'Chromium'
             ''', 'No replace value specified'),
         ]
 
-        for toml_content, expected_error in validation_cases:
+        for yaml_content, expected_error in validation_cases:
             with self.subTest(error=expected_error):
                 # Create a PlasterFile with invalid configuration
                 plaster_path = plaster.PLASTER_FILES_PATH / (
-                    str(test_file_chromium) + '.toml')
+                    str(test_file_chromium) + '.yaml')
                 plaster_path.parent.mkdir(parents=True, exist_ok=True)
-                plaster_path.write_text(toml_content)
+                plaster_path.write_text(yaml_content)
 
                 plaster_file = plaster.PlasterFile(plaster_path)
                 with self.assertRaises(ValueError) as context:
@@ -618,13 +580,13 @@ class PlasterTest(unittest.TestCase):
 
         # Create a PlasterFile using pattern (should escape special regex chars)
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Replace exact pattern'
-          pattern = 'Chromium++'
-          replace = 'Brave++'
+          substitutions:
+            - description: Replace exact pattern
+              pattern: 'Chromium++'
+              replace: 'Brave++'
         ''')
 
         # Apply the plaster file
@@ -652,14 +614,14 @@ class PlasterTest(unittest.TestCase):
 
         # Create a PlasterFile using re_pattern for regex matching
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Replace regex pattern'
-          re_pattern = 'Chromium\\w+'
-          replace = 'Brave'
-          count = 2
+          substitutions:
+            - description: Replace regex pattern
+              re_pattern: 'Chromium\\w+'
+              replace: 'Brave'
+              count: 2
         ''')
 
         # Apply the plaster file
@@ -686,13 +648,13 @@ class PlasterTest(unittest.TestCase):
                                       self.fake_chromium_src.chromium)
 
         plaster_path1 = plaster.PLASTER_FILES_PATH / (
-            str(test_file_chromium1) + '.toml')
+            str(test_file_chromium1) + '.yaml')
         plaster_path1.parent.mkdir(parents=True, exist_ok=True)
         plaster_path1.write_text('''
-          [[substitution]]
-          description = 'Replace exact brackets'
-          pattern = '[brackets]'
-          replace = '{braces}'
+          substitutions:
+            - description: Replace exact brackets
+              pattern: '[brackets]'
+              replace: '{braces}'
         ''')
 
         plaster_file1 = plaster.PlasterFile(plaster_path1)
@@ -712,13 +674,13 @@ class PlasterTest(unittest.TestCase):
                                       self.fake_chromium_src.chromium)
 
         plaster_path2 = plaster.PLASTER_FILES_PATH / (
-            str(test_file_chromium2) + '.toml')
+            str(test_file_chromium2) + '.yaml')
         plaster_path2.parent.mkdir(parents=True, exist_ok=True)
         plaster_path2.write_text('''
-          [[substitution]]
-          description = 'Replace using regex'
-          re_pattern = '\\[\\w+\\]'
-          replace = '{braces}'
+          substitutions:
+            - description: Replace using regex
+              re_pattern: '\\[\\w+\\]'
+              replace: '{braces}'
         ''')
 
         plaster_file2 = plaster.PlasterFile(plaster_path2)
@@ -743,14 +705,14 @@ class PlasterTest(unittest.TestCase):
 
         # Create a PlasterFile with count=2 but 3 matches exist
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Test count mismatch'
-          re_pattern = 'Chromium'
-          replace = 'Brave'
-          count = 2
+          substitutions:
+            - description: Test count mismatch
+              re_pattern: 'Chromium'
+              replace: 'Brave'
+              count: 2
         ''')
 
         # Should fail because there are 3 matches but count expects 2
@@ -774,13 +736,13 @@ class PlasterTest(unittest.TestCase):
                                       self.fake_chromium_src.chromium)
 
         plaster_path_correct = (plaster.PLASTER_FILES_PATH /
-                                (str(test_file_correct) + '.toml'))
+                                (str(test_file_correct) + '.yaml'))
         plaster_path_correct.parent.mkdir(parents=True, exist_ok=True)
         plaster_path_correct.write_text('''
-          [[substitution]]
-          description = 'Test default count with 1 match'
-          re_pattern = 'Chromium'
-          replace = 'Brave'
+          substitutions:
+            - description: Test default count with 1 match
+              re_pattern: 'Chromium'
+              replace: 'Brave'
         ''')
 
         # Should succeed because there's exactly 1 match (matches default)
@@ -802,13 +764,13 @@ class PlasterTest(unittest.TestCase):
                                       self.fake_chromium_src.chromium)
 
         plaster_path_incorrect = (plaster.PLASTER_FILES_PATH /
-                                  (str(test_file_incorrect) + '.toml'))
+                                  (str(test_file_incorrect) + '.yaml'))
         plaster_path_incorrect.parent.mkdir(parents=True, exist_ok=True)
         plaster_path_incorrect.write_text('''
-          [[substitution]]
-          description = 'Test default count with 2 matches'
-          re_pattern = 'Chromium'
-          replace = 'Brave'
+          substitutions:
+            - description: Test default count with 2 matches
+              re_pattern: 'Chromium'
+              replace: 'Brave'
         ''')
 
         # Should fail because there are 2 matches but default expects 1
@@ -839,14 +801,14 @@ class PlasterTest(unittest.TestCase):
 
         # Create a PlasterFile with count=0 (replace all)
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Test count 0 replaces all'
-          re_pattern = 'Chromium'
-          replace = 'Brave'
-          count = 0
+          substitutions:
+            - description: Test count 0 replaces all
+              re_pattern: 'Chromium'
+              replace: 'Brave'
+              count: 0
         ''')
 
         # Should succeed because count=0 means replace all and bypass validation
@@ -879,20 +841,18 @@ class PlasterTest(unittest.TestCase):
         # strategies - these counts must match the actual number of
         # matches for validation
         plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
+                                                     '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Replace single Chromium'
-          re_pattern = 'Chromium'
-          replace = 'Brave'
-          count = 1
-
-          [[substitution]]
-          description = 'Replace all browsers'
-          re_pattern = 'browser'
-          replace = 'application'
-          count = 3
+          substitutions:
+            - description: Replace single Chromium
+              re_pattern: 'Chromium'
+              replace: 'Brave'
+              count: 1
+            - description: Replace all browsers
+              re_pattern: 'browser'
+              replace: 'application'
+              count: 3
         ''')
 
         # Should succeed - first substitution finds 1 Chromium
@@ -910,18 +870,18 @@ class PlasterTest(unittest.TestCase):
 
     def _setup_applied_plaster(self, test_file: Path,
                                initial_content: str) -> plaster.PlasterFile:
-        """Stages a chromium source, writes a plaster toml, and applies it."""
+        """Stages a chromium source, writes a plaster yaml, and applies it."""
         self.fake_chromium_src.write_and_stage_file(
             test_file, initial_content, self.fake_chromium_src.chromium)
         self.fake_chromium_src.commit(f'Add {test_file.name}',
                                       self.fake_chromium_src.chromium)
-        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file) + '.toml')
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file) + '.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('''
-          [[substitution]]
-          description = 'Replace Chromium with Brave'
-          re_pattern = 'Chromium'
-          replace = 'Brave'
+          substitutions:
+            - description: Replace Chromium with Brave
+              re_pattern: 'Chromium'
+              replace: 'Brave'
         ''')
         plaster_file = plaster.PlasterFile(plaster_path)
         plaster_file.apply()
@@ -946,18 +906,18 @@ class PlasterTest(unittest.TestCase):
         os.utime(source_path, (later, later))
         self.assertTrue(plaster_file.needs_apply())
 
-    def test_needs_apply_true_after_toml_change(self):
-        """needs_apply returns True when the plaster toml is modified."""
+    def test_needs_apply_true_after_yaml_change(self):
+        """needs_apply returns True when the plaster yaml is modified."""
         test_file = Path(
-            'chrome/common/extensions/api/needs_apply_toml_change.idl')
+            'chrome/common/extensions/api/needs_apply_yaml_change.idl')
         plaster_file = self._setup_applied_plaster(
             test_file, 'Initial Chromium content.')
         later = plaster_file.path.stat().st_mtime + 10
         plaster_file.path.write_text('''
-          [[substitution]]
-          description = 'A different rule'
-          re_pattern = 'Brave'
-          replace = 'Lion'
+          substitutions:
+            - description: A different rule
+              re_pattern: 'Brave'
+              replace: 'Lion'
         ''')
         os.utime(plaster_file.path, (later, later))
         self.assertTrue(plaster_file.needs_apply())
@@ -1042,7 +1002,7 @@ class PatchinfoTest(unittest.TestCase):
         }
       ],
       "plaster": {
-        "path": "rewrite/chrome/updater/mac/.install.sh.toml",
+        "path": "rewrite/chrome/updater/mac/.install.sh.yaml",
         "checksum": "c8335aa0242a7f4426bb8e870239585063d20c2e3c1bfbe07a3060f003bd2a31"
       }
     }'''
@@ -1063,7 +1023,7 @@ class PatchinfoTest(unittest.TestCase):
             'aef9cc2e118501527bab9f46a652ba8c28009ea46771af219de45a680a4157ad')
         self.assertIsInstance(info.plaster, plaster.Patchinfo.Entry)
         self.assertEqual(info.plaster.path,
-                         'rewrite/chrome/updater/mac/.install.sh.toml')
+                         'rewrite/chrome/updater/mac/.install.sh.yaml')
         self.assertEqual(
             info.plaster.checksum,
             'c8335aa0242a7f4426bb8e870239585063d20c2e3c1bfbe07a3060f003bd2a31')
@@ -1195,7 +1155,7 @@ class PatchinfoTest(unittest.TestCase):
             schema_version=1,
             patch_checksum='pc',
             applies_to=plaster.Patchinfo.Entry(path='src.cc', checksum='sc'),
-            plaster=plaster.Patchinfo.Entry(path='r.toml', checksum='rc'),
+            plaster=plaster.Patchinfo.Entry(path='r.yaml', checksum='rc'),
         )
         self.assertEqual(
             json.loads(info.to_json()), {
@@ -1206,7 +1166,7 @@ class PatchinfoTest(unittest.TestCase):
                     'checksum': 'sc'
                 }],
                 'plaster': {
-                    'path': 'r.toml',
+                    'path': 'r.yaml',
                     'checksum': 'rc'
                 },
             })

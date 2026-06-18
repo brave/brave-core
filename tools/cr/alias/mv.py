@@ -186,15 +186,12 @@ def _step3_shadow_includes(file_pairs: list[_FilePair]) -> None:
 def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
                    run_plaster: bool) -> None:
     """Deletes stale patch files and optionally re-runs plaster for moved
-    plaster files (.yaml, or the deprecated .toml)."""
+    plaster files (.yaml)."""
     rewrite_path = plaster.PLASTER_FILES_PATH.resolve()
     patches_path = repository.brave.root / 'patches'
 
     for old_file, new_file in file_pairs:
-        # TODO(https://github.com/brave/brave-browser/issues/55738): Drop
-        # `'.toml'` from this tuple once every plaster under `rewrite/`
-        # has been migrated to YAML.
-        if old_file.suffix not in ('.yaml', '.toml'):
+        if old_file.suffix != '.yaml':
             continue
         if not old_file.is_relative_to(rewrite_path):
             continue

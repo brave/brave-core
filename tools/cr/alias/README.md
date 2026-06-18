@@ -74,9 +74,8 @@ What it repairs after the rename:
   file.
 - Quoted GN root references (`"//path/to/file"`) and relative GN references in
   `.gn` / `.gni` files.
-- Plaster files (`rewrite/…/foo.h.yaml`, or the deprecated
-  `rewrite/…/foo.h.toml`) and their associated patch files in `patches/`. The
-  new plaster file is re-applied so `patches/` is refreshed.
+- Plaster files (`rewrite/…/foo.h.yaml`) and their associated patch files in
+  `patches/`. The new plaster file is re-applied so `patches/` is refreshed.
 
 ### `git cr follow-renames`
 
@@ -96,10 +95,9 @@ extra things:
 
 1. Move `chromium_src/<old>` to `chromium_src/<new>` and refresh its include
    guard and shadow `#include` line.
-2. Move `rewrite/<old>.yaml` (or the deprecated `rewrite/<old>.toml`) to
-   `rewrite/<new>.yaml` (resp. `.toml`), delete the stale `patches/…` patch file
-   (and `.patchinfo`), then re-run plaster on the new plaster file so a fresh
-   patch is produced.
+2. Move `rewrite/<old>.yaml` to `rewrite/<new>.yaml`, delete the stale
+   `patches/…` patch file (and `.patchinfo`), then re-run plaster on the new
+   plaster file so a fresh patch is produced.
 3. Update every `#include`, `#import`, `// comment`, `BUILD.gn`, and `.gni`
    reference across `brave-core` (same logic as `git cr mv`).
 4. For any patch that is **not** managed by plaster, rewrite the patch's

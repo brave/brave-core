@@ -37,9 +37,9 @@ class Patchfile:
     # The repository the patch file is targeting to patch.
     repository: Repository = field(init=False)
 
-    # Path to the plaster file for this patch (`.yaml`, or the deprecated
-    # `.toml`), expressed via `PLASTER_FILES_PATH` (i.e. cwd-relative,
-    # the same shape every other path in tools/cr uses).
+    # Path to the plaster file for this patch (`.yaml`), expressed via
+    # `PLASTER_FILES_PATH` (i.e. cwd-relative, the same shape every other
+    # path in tools/cr uses).
     plaster: Path | None = field(init=False)
 
     def __post_init__(self):
@@ -58,14 +58,6 @@ class Patchfile:
             candidate = plaster_dir / (self.source.name + '.yaml')
             if candidate.exists():
                 plaster = candidate
-            else:
-                # TODO(https://github.com/brave/brave-browser/issues/55738):
-                # Remove this entire `else` branch once every plaster under
-                # `rewrite/` has been migrated to YAML. Only the `.yaml`
-                # lookup above should remain.
-                candidate = plaster_dir / (self.source.name + '.toml')
-                if candidate.exists():
-                    plaster = candidate
         object.__setattr__(self, 'plaster', plaster)
 
     def get_repository_from_patch_name(self) -> Repository:

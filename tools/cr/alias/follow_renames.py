@@ -193,24 +193,15 @@ def _repair_plaster_files(old_chromium: Path,
     """Moves the plaster file and deletes the corresponding patch file.
 
     Plaster file convention: chromium path A/foo.h lives at
-    rewrite/A/foo.h.yaml (or the deprecated rewrite/A/foo.h.toml). If no
-    plaster file exists, this is a no-op. The old patch file for that
-    plaster gets automatically deleted. The destination keeps the same
-    extension as the source.
+    rewrite/A/foo.h.yaml. If no plaster file exists, this is a no-op. The
+    old patch file for that plaster gets automatically deleted.
     """
     old_dir = plaster.PLASTER_FILES_PATH / old_chromium.parent
     new_dir = plaster.PLASTER_FILES_PATH / new_chromium.parent
     old_plaster = old_dir / (old_chromium.name + '.yaml')
     new_plaster = new_dir / (new_chromium.name + '.yaml')
     if not old_plaster.exists():
-        # TODO(https://github.com/brave/brave-browser/issues/55738): Remove
-        # this entire fallback once every plaster under `rewrite/` has
-        # been migrated to YAML — only the `.yaml` lookup above should
-        # remain, returning when it does not exist.
-        old_plaster = old_dir / (old_chromium.name + '.toml')
-        new_plaster = new_dir / (new_chromium.name + '.toml')
-        if not old_plaster.exists():
-            return
+        return
 
     new_plaster.parent.mkdir(parents=True, exist_ok=True)
 

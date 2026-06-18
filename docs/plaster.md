@@ -167,25 +167,3 @@ This is the equivalent of a dry run of `plaster.py apply`.
 
 See
 https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md
-
-### Legacy TOML format (deprecated)
-
-> [!IMPORTANT]
->
-> The `.toml` form is **deprecated** and kept only so existing plasters keep
-> working until they are migrated. New plasters must use `.yaml` while the
-> existing `.toml` ones are migrated. Migration progress is tracked in
-> [brave/brave-browser#55738](https://github.com/brave/brave-browser/issues/55738).
-
-Pre-existing plasters under `rewrite/` use a `.toml` file with the same fields
-as their YAML counterparts, written as TOML array-of-tables:
-
-```toml
-[[substitution]]
-description = ''
-re_pattern = ''
-pattern = ''
-replace = ''
-re_flags = []
-count = 1
-```

@@ -254,34 +254,34 @@ class ShadowFileTest(_Base):
 
 
 # ---------------------------------------------------------------------------
-# rewrite/ TOML and patch-file repair tests
+# rewrite/ YAML and patch-file repair tests
 # ---------------------------------------------------------------------------
 
 
-class TomlTest(_Base):
-    """_repair_plaster_files moves the TOML and deletes the patch."""
+class YamlTest(_Base):
+    """_repair_plaster_files moves the YAML and deletes the patch."""
 
-    def test_toml_moved_patch_deleted(self) -> None:
-        """rewrite/A/foo.h.toml moves to rewrite/B/foo.h.toml; patch deleted."""
+    def test_yaml_moved_patch_deleted(self) -> None:
+        """rewrite/A/foo.h.yaml moves to rewrite/B/foo.h.yaml; patch deleted."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.h', '// src\n')
-        self._brave_commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._brave_commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         self._brave_commit('patches/A-foo.h.patch', 'diff\n')
         self._chromium_rename('A/foo.h', 'B/foo.h')
 
         cmd_follow_renames([f'{before}..HEAD'])
 
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
         self.assertFalse(
-            (self._brave / 'rewrite' / 'A' / 'foo.h.toml').exists())
+            (self._brave / 'rewrite' / 'A' / 'foo.h.yaml').exists())
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
 
     def test_patchinfo_deleted_with_patch(self) -> None:
         """Sibling .patchinfo is removed when the patch is deleted."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.h', '// src\n')
-        self._brave_commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._brave_commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         self._brave_commit('patches/A-foo.h.patch', 'diff\n')
         patchinfo = self._brave / 'patches' / 'A-foo.h.patchinfo'
         patchinfo.write_text('{}', encoding='utf-8')
@@ -293,10 +293,10 @@ class TomlTest(_Base):
         self.assertFalse(patchinfo.exists())
 
     def test_missing_patch_warns_no_error(self) -> None:
-        """TOML exists but patch is absent: warning logged, TOML still moves."""
+        """YAML exists but patch is absent: warning logged, YAML still moves."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.h', '// src\n')
-        self._brave_commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._brave_commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         # No patches/A-foo.h.patch.
         self._chromium_rename('A/foo.h', 'B/foo.h')
 
@@ -304,10 +304,10 @@ class TomlTest(_Base):
             cmd_follow_renames([f'{before}..HEAD'])
 
         self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
+            (self._brave / 'rewrite' / 'B' / 'foo.h.yaml').exists())
 
-    def test_no_toml_is_noop(self) -> None:
-        """A Chromium rename with no TOML in rewrite/ does not raise."""
+    def test_no_yaml_is_noop(self) -> None:
+        """A Chromium rename with no YAML plaster in rewrite/ does not raise."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.h', '// src\n')
         self._chromium_rename('A/foo.h', 'B/foo.h')
@@ -390,7 +390,7 @@ class MultipleRenamesTest(_Base):
 
         # Second rename: C/bar.h → D/bar.h
         self._chromium_commit('C/bar.h', '// bar\n')
-        self._brave_commit('rewrite/C/bar.h.toml', '[substitution]\n')
+        self._brave_commit('rewrite/C/bar.h.yaml', 'substitutions:\n')
         self._brave_commit('patches/C-bar.h.patch', 'diff\n')
         self._chromium_rename('C/bar.h', 'D/bar.h')
 
@@ -402,9 +402,9 @@ class MultipleRenamesTest(_Base):
         self.assertFalse(
             (self._brave / 'chromium_src' / 'A' / 'foo.h').exists())
 
-        # Second rename: TOML moved, patch deleted.
+        # Second rename: YAML moved, patch deleted.
         self.assertTrue(
-            (self._brave / 'rewrite' / 'D' / 'bar.h.toml').exists())
+            (self._brave / 'rewrite' / 'D' / 'bar.h.yaml').exists())
         self.assertFalse((self._brave / 'patches' / 'C-bar.h.patch').exists())
 
 
@@ -433,13 +433,13 @@ class NoGitTest(_Base):
         staged = repository.brave.run_git('diff', '--cached', '--name-only')
         self.assertEqual(staged, '')
 
-    def test_no_git_toml_patch_uses_unlink(self) -> None:
+    def test_no_git_yaml_patch_uses_unlink(self) -> None:
         """--no-git: patch deleted with Path.unlink, no git rm."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.h', '// src\n')
-        # Stage + commit the TOML but only write (don't commit) the patch
+        # Stage + commit the YAML but only write (don't commit) the patch
         # so that git rm would fail on it.
-        self._brave_commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._brave_commit('rewrite/A/foo.h.yaml', 'substitutions:\n')
         patch_file = self._brave / 'patches' / 'A-foo.h.patch'
         patch_file.write_text('dummy\n', encoding='utf-8')
         self._chromium_rename('A/foo.h', 'B/foo.h')
@@ -456,18 +456,18 @@ class NoGitTest(_Base):
 
 
 class PlasterApplyTest(_Base):
-    """plaster.apply() is called after each TOML move by default."""
+    """plaster.apply() is called after each YAML move by default."""
 
-    _SUBST_TOML = ('[[substitution]]\n'
-                   'description = "Replace old_func"\n'
-                   'pattern = "old_func"\n'
-                   'replace = "new_func"\n')
+    _SUBST_YAML = ('substitutions:\n'
+                   '  - description: Replace old_func\n'
+                   '    pattern: old_func\n'
+                   '    replace: new_func\n')
 
     def test_patch_created_at_new_location(self) -> None:
         """Plaster writes patches/B-foo.cc.patch after an upstream rename."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.cc', 'void old_func() {}\n')
-        self._brave_commit('rewrite/A/foo.cc.toml', self._SUBST_TOML)
+        self._brave_commit('rewrite/A/foo.cc.yaml', self._SUBST_YAML)
         self._brave_commit('patches/A-foo.cc.patch', 'old patch\n')
         self._chromium_rename('A/foo.cc', 'B/foo.cc')
 
@@ -484,10 +484,10 @@ class PlasterApplyTest(_Base):
         self.assertIn('patches/B-foo.cc.patch', staged)
 
     def test_no_run_plaster_skips_patch_creation(self) -> None:
-        """--no-run-plaster: no new patch file is created after TOML move."""
+        """--no-run-plaster: no new patch file is created after YAML move."""
         before = self._chromium_head()
         self._chromium_commit('A/foo.cc', 'void old_func() {}\n')
-        self._brave_commit('rewrite/A/foo.cc.toml', self._SUBST_TOML)
+        self._brave_commit('rewrite/A/foo.cc.yaml', self._SUBST_YAML)
         self._brave_commit('patches/A-foo.cc.patch', 'old patch\n')
         self._chromium_rename('A/foo.cc', 'B/foo.cc')
 
@@ -597,13 +597,13 @@ class PatchFileRepairTest(_Base):
 
     def test_plaster_patch_not_double_processed(self) -> None:
         """Patch deleted by _repair_plaster_files is not re-renamed here."""
-        _SUBST_TOML = ('[[substitution]]\n'
-                       'description = "test"\n'
-                       'pattern = "old_func"\n'
-                       'replace = "new_func"\n')
+        _SUBST_YAML = ('substitutions:\n'
+                       '  - description: test\n'
+                       '    pattern: old_func\n'
+                       '    replace: new_func\n')
         before = self._chromium_head()
         self._chromium_commit(self._OLD_REL, 'void old_func() {}\n')
-        self._brave_commit('rewrite/A/foo.cc.toml', _SUBST_TOML)
+        self._brave_commit('rewrite/A/foo.cc.yaml', _SUBST_YAML)
         self._brave_commit('patches/A-foo.cc.patch', 'stale patch\n')
         self._chromium_rename(self._OLD_REL, self._NEW_REL)
 

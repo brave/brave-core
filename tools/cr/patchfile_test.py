@@ -639,7 +639,7 @@ class PatchfileTest(unittest.TestCase):
             (self.fake_chromium_src.chromium / renamed_file).resolve())
 
     def test_plaster_set_when_file_exists(self):
-        """Plaster path is set for a Chromium patch when the toml exists."""
+        """Plaster path is set for a Chromium patch when the yaml exists."""
         test_file = Path('chrome/browser/foo.cc')
         self.fake_chromium_src.write_and_stage_file(
             test_file, 'original\n', self.fake_chromium_src.chromium)
@@ -650,7 +650,7 @@ class PatchfileTest(unittest.TestCase):
         self.fake_chromium_src.run_update_patches()
 
         plaster_path = (self.fake_chromium_src.brave /
-                        'rewrite/chrome/browser/foo.cc.toml')
+                        'rewrite/chrome/browser/foo.cc.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('')
 
@@ -660,7 +660,7 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(patchfile.plaster.resolve(), plaster_path.resolve())
 
     def test_plaster_none_when_file_missing(self):
-        """Plaster is None for a Chromium patch when no toml file exists."""
+        """Plaster is None for a Chromium patch when no yaml file exists."""
         test_file = Path('chrome/browser/foo.cc')
         self.fake_chromium_src.write_and_stage_file(
             test_file, 'original\n', self.fake_chromium_src.chromium)
@@ -685,8 +685,8 @@ class PatchfileTest(unittest.TestCase):
         (v8 / test_file).write_text('original\nbrave_change\n')
         self.fake_chromium_src.run_update_patches()
 
-        # Create a toml file that would match if the repo check were absent.
-        plaster_path = self.fake_chromium_src.brave / 'rewrite/src/foo.cc.toml'
+        # Create a yaml file that would match if the repo check were absent.
+        plaster_path = self.fake_chromium_src.brave / 'rewrite/src/foo.cc.yaml'
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('')
 
@@ -705,34 +705,34 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
     _UPSTREAM_CONTENT = 'void old_func() {}\nstatic int x = 2;\n'
 
     # count = 0 means "replace all matches, bypass count validation".
-    _WORKING_TOML = ('[[substitution]]\n'
-                     'description = "Replace old_func"\n'
-                     'pattern = "old_func"\n'
-                     'replace = "new_func"\n'
-                     'count = 0\n')
+    _WORKING_YAML = ('substitutions:\n'
+                     '  - description: Replace old_func\n'
+                     '    pattern: old_func\n'
+                     '    replace: new_func\n'
+                     '    count: 0\n')
 
-    # No substitution key → TypeError iterating None → PLASTER_BROKEN.
-    _BROKEN_TOML = '# no substitution\n'
+    # No substitutions key → missing required key → PLASTER_BROKEN.
+    _BROKEN_YAML = '# no substitution\n'
 
     def setUp(self):
         self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
 
-    def _write_plaster_toml(self, content: str) -> None:
-        toml_path = (self.fake_chromium_src.brave / 'rewrite' /
+    def _write_plaster_yaml(self, content: str) -> None:
+        yaml_path = (self.fake_chromium_src.brave / 'rewrite' /
                      self._SOURCE_FILE.parent /
-                     (self._SOURCE_FILE.name + '.toml'))
-        toml_path.parent.mkdir(parents=True, exist_ok=True)
-        toml_path.write_text(content)
+                     (self._SOURCE_FILE.name + '.yaml'))
+        yaml_path.parent.mkdir(parents=True, exist_ok=True)
+        yaml_path.write_text(content)
 
     def _setup_conflict_and_patchfile(self) -> Patchfile:
         """Commits BASE_CONTENT, generates a brave patch (x=0→1), then commits
         UPSTREAM_CONTENT (x=0→2) so that applying the patch hits the conflict
         path in apply().
 
-        Must be called after _write_plaster_toml so the Patchfile constructor
-        finds the TOML and sets the plaster field.
+        Must be called after _write_plaster_yaml so the Patchfile constructor
+        finds the YAML and sets the plaster field.
         """
         chromium = self.fake_chromium_src.chromium
         self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
@@ -758,7 +758,7 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
         Patchfile and the absolute path to the patch file on disk.
 
         Strip the patch file after this call to trigger the broken-patch path
-        in apply().  Must be called after _write_plaster_toml.
+        in apply().  Must be called after _write_plaster_yaml.
         """
         chromium = self.fake_chromium_src.chromium
         self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
@@ -777,21 +777,21 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
 
     def test_apply_conflict_plaster_fixed(self):
         """Conflict path + working plaster → PLASTER_FIXED."""
-        self._write_plaster_toml(self._WORKING_TOML)
+        self._write_plaster_yaml(self._WORKING_YAML)
         patchfile = self._setup_conflict_and_patchfile()
         self.assertEqual(patchfile.apply(),
                          Patchfile.ApplyStatus.PLASTER_FIXED)
 
     def test_apply_conflict_plaster_broken(self):
         """Conflict path + broken plaster → PLASTER_BROKEN."""
-        self._write_plaster_toml(self._BROKEN_TOML)
+        self._write_plaster_yaml(self._BROKEN_YAML)
         patchfile = self._setup_conflict_and_patchfile()
         self.assertEqual(patchfile.apply(),
                          Patchfile.ApplyStatus.PLASTER_BROKEN)
 
     def test_apply_broken_patch_plaster_fixed(self):
         """Broken patch path + working plaster → PLASTER_FIXED."""
-        self._write_plaster_toml(self._WORKING_TOML)
+        self._write_plaster_yaml(self._WORKING_YAML)
         patchfile, patch_path = self._setup_broken_and_patchfile()
         patch_path.write_text(patch_path.read_text().strip())
         self.assertEqual(patchfile.apply(),
@@ -799,7 +799,7 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
 
     def test_apply_broken_patch_plaster_broken(self):
         """Broken patch path + broken plaster → PLASTER_BROKEN."""
-        self._write_plaster_toml(self._BROKEN_TOML)
+        self._write_plaster_yaml(self._BROKEN_YAML)
         patchfile, patch_path = self._setup_broken_and_patchfile()
         patch_path.write_text(patch_path.read_text().strip())
         self.assertEqual(patchfile.apply(),
