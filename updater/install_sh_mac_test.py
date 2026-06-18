@@ -321,10 +321,22 @@ class InstallShPatchTest(unittest.TestCase):
             for line in proc.stdout:
                 output_lines.append(line)
 
-        drain_thread = Thread(target=drain)
-        drain_thread.start()
         responses = fdopen(response_w, "w")
-        try:
+
+        # Answer the mocked commands' prompts on a dedicated thread. This loop
+        # only ends when the prompt pipe reaches EOF, which requires *every*
+        # process that inherited our copy of prompt_w (via pass_fds) to have
+        # closed it. install.sh backgrounds helpers that also inherit that fd -
+        # most notably the rsync-timeout watchdog (`perl ... &`), whose stdout
+        # and stderr are redirected away but whose copy of prompt_w is not - and
+        # we cannot guarantee install.sh reaps every such helper before it
+        # exits. So this read can block indefinitely and must never gate the
+        # test. Termination is instead driven by the install.sh process exiting
+        # (proc.wait below), a condition we own and can observe; a still-blocked
+        # prompt thread is abandoned, just like drain(). The thread is a daemon
+        # so a leaked, pipe-blocked copy can never stall interpreter shutdown
+        # (and thus hang the C++ harness that waits for this script to exit).
+        def serve_prompts():
             with fdopen(prompt_r, "r") as prompts:
                 for line in prompts:
                     name, *args = shlex.split(line)
@@ -332,14 +344,24 @@ class InstallShPatchTest(unittest.TestCase):
                     try:
                         responses.write(f"{exit_code}\n{stderr}\n")
                         responses.flush()
-                    except BrokenPipeError:
+                    except (BrokenPipeError, ValueError):
+                        # install.sh exited before we could respond: the pipe
+                        # has no readers, or responses was closed during
+                        # teardown. Either way there is nothing left to serve.
                         break
+
+        drain_thread = Thread(target=drain)
+        prompt_thread = Thread(target=serve_prompts, daemon=True)
+        drain_thread.start()
+        prompt_thread.start()
+        try:
             proc.wait(timeout=30)
         finally:
-            # Reap the subprocess if wait() timed out or the loop raised.
+            # Reap the subprocess if wait() timed out.
             if proc.poll() is None:
                 proc.kill()
                 proc.wait()
+            prompt_thread.join(timeout=5)
             try:
                 responses.close()
             except BrokenPipeError:
