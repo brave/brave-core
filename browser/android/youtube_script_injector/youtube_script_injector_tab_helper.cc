@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/android/android_info.h"
 #include "base/feature_list.h"
 #include "base/supports_user_data.h"
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
@@ -191,6 +192,16 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
           prefs->GetBoolean(kBackgroundVideoPlaybackEnabled));
 }
 
+// Mirrors the SDK gate that Java's PictureInPicture.isEnabled() applies before
+// any PiP entry attempt (see
+// chrome/android/java/src/.../media/PictureInPicture.java). PiP is
+// hard-disabled on Android < R to dodge a framework crash when entering PiP
+// immediately after exiting it.
+bool IsAndroidPictureInPictureSupported() {
+  return base::android::android_info::sdk_int() >=
+         base::android::android_info::SDK_VERSION_R;
+}
+
 }  // namespace
 
 YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
@@ -236,7 +247,8 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
         kYoutubeBackgroundPlayback, base::NullCallback());
   }
   if (base::FeatureList::IsEnabled(
-          ::preferences::features::kBravePictureInPictureForYouTubeVideos)) {
+          ::preferences::features::kBravePictureInPictureForYouTubeVideos) &&
+      IsAndroidPictureInPictureSupported()) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
   }
@@ -246,7 +258,8 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
     bool is_fullscreen) {
   if (is_fullscreen && HasFullscreenBeenRequested()) {
     SetFullscreenRequested(false);
-    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
+    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
+        IsAndroidPictureInPictureSupported()) {
       ::youtube_script_injector::EnterPictureInPicture(web_contents());
     }
   }
