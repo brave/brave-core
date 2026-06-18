@@ -5,6 +5,7 @@
 
 #include "base/base64.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/pref_names.h"
@@ -24,12 +25,28 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "net/test/embedded_test_server/install_default_websocket_handlers.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
 constexpr char kRedirectOnionPath[] = "/redirect-onion";
 constexpr char kSimplePagePath[] = "/simple.html";
+
+struct OnionAccessScenario {
+  bool tor_window = false;
+  bool onion_only_in_tor_windows = true;
+  bool expect_blocked = true;
+};
+
+std::string OnionAccessScenarioName(
+    const testing::TestParamInfo<OnionAccessScenario>& info) {
+  const OnionAccessScenario& scenario = info.param;
+  return base::StrCat(
+      {scenario.tor_window ? "TorWindow" : "NormalWindow",
+       scenario.onion_only_in_tor_windows ? "_PrefOn" : "_PrefOff",
+       scenario.expect_blocked ? "_Blocked" : "_Allowed"});
+}
 
 }  // namespace
 
@@ -46,6 +63,9 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
         base::Unretained(this)));
     net::test_server::InstallDefaultWebSocketHandlers(https_server_.get());
     ASSERT_TRUE(https_server_->Start());
+
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -69,12 +89,37 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void SetUpOnionRestrictionInNormalWindow() {
-    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+  Browser* GetBrowserForScenario(bool tor_window) {
+    if (!tor_window) {
+      return browser();
+    }
+    if (!tor_browser_) {
+      tor_browser_ = TorProfileManager::SwitchToTorProfile(browser()->profile());
+      DCHECK(tor_browser_);
+      DCHECK(tor_browser_->profile()->IsTor());
+    }
+    return tor_browser_;
+  }
+
+  content::WebContents* GetWebContentsForScenario(bool tor_window) {
+    return GetBrowserForScenario(tor_window)
+        ->tab_strip_model()
+        ->GetActiveWebContents();
+  }
+
+  void SetUpScenario(const OnionAccessScenario& scenario) {
     browser()->profile()->GetPrefs()->SetBoolean(
-        tor::prefs::kOnionOnlyInTorWindows, true);
+        tor::prefs::kOnionOnlyInTorWindows, scenario.onion_only_in_tor_windows);
+
     ASSERT_TRUE(ui_test_utils::NavigateToURL(
-        browser(), https_server_->GetURL("brave.com", kSimplePagePath)));
+        GetBrowserForScenario(scenario.tor_window),
+        https_server_->GetURL("brave.com", kSimplePagePath)));
+  }
+
+  void SetUpOnionRestrictionInNormalWindow() {
+    SetUpScenario(OnionAccessScenario{.tor_window = false,
+                                      .onion_only_in_tor_windows = true,
+                                      .expect_blocked = true});
   }
 
   GURL OnionResourceUrl() const {
@@ -103,7 +148,7 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
 
   std::string FetchLoadScript(const std::string& url) {
     return content::JsReplace(
-        R"(fetch($1, {redirect: 'follow'})
+        R"(fetch($1, {redirect: 'follow', mode: 'no-cors'})
             .then(() => true)
             .catch(() => false);)",
         url);
@@ -132,6 +177,7 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_content_type("image/png");
+    http_response->AddCustomHeader("Access-Control-Allow-Origin", "*");
     std::string image;
     std::string base64_image =
         "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2NIbbj6HwAF"
@@ -143,10 +189,33 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
 
  protected:
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  raw_ptr<Browser> tor_browser_ = nullptr;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
+
+class OnionDomainThrottleAccessBrowserTest
+    : public OnionDomainThrottleBrowserTest,
+      public ::testing::WithParamInterface<OnionAccessScenario> {};
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    OnionDomainThrottleAccessBrowserTest,
+    ::testing::Values(
+        OnionAccessScenario{.tor_window = false,
+                            .onion_only_in_tor_windows = true,
+                            .expect_blocked = true},
+        OnionAccessScenario{.tor_window = false,
+                            .onion_only_in_tor_windows = false,
+                            .expect_blocked = false},
+        OnionAccessScenario{.tor_window = true,
+                            .onion_only_in_tor_windows = true,
+                            .expect_blocked = false},
+        OnionAccessScenario{.tor_window = true,
+                            .onion_only_in_tor_windows = false,
+                            .expect_blocked = false}),
+    &OnionAccessScenarioName);
 
 // Control: direct subresource to .onion (already covered before the report's
 // bypass cases).
@@ -207,4 +276,79 @@ IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
   auto result = EvalJs(GetActiveWebContents(), WebSocketOpenScript(ws_url));
   ASSERT_TRUE(result.is_ok());
   EXPECT_EQ("error", result);
+}
+
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
+                       DirectSubresourceToOnion) {
+  const OnionAccessScenario scenario = GetParam();
+  SetUpScenario(scenario);
+  content::WebContents* web_contents =
+      GetWebContentsForScenario(scenario.tor_window);
+
+  auto loaded = EvalJs(web_contents, ImageLoadScript(OnionResourceUrl().spec()));
+  ASSERT_TRUE(loaded.is_ok());
+  EXPECT_EQ(!scenario.expect_blocked, loaded.ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
+                       ImgRedirectToOnion) {
+  const OnionAccessScenario scenario = GetParam();
+  SetUpScenario(scenario);
+  content::WebContents* web_contents =
+      GetWebContentsForScenario(scenario.tor_window);
+
+  auto loaded =
+      EvalJs(web_contents, ImageLoadScript(RedirectToOnionUrl().spec()));
+  ASSERT_TRUE(loaded.is_ok());
+  EXPECT_EQ(!scenario.expect_blocked, loaded.ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
+                       FetchRedirectToOnion) {
+  const OnionAccessScenario scenario = GetParam();
+  SetUpScenario(scenario);
+  content::WebContents* web_contents =
+      GetWebContentsForScenario(scenario.tor_window);
+
+  auto loaded =
+      EvalJs(web_contents, FetchLoadScript(RedirectToOnionUrl().spec()));
+  ASSERT_TRUE(loaded.is_ok());
+  EXPECT_EQ(!scenario.expect_blocked, loaded.ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
+                       IframeOnionNavigation) {
+  const OnionAccessScenario scenario = GetParam();
+  SetUpScenario(scenario);
+  content::WebContents* web_contents =
+      GetWebContentsForScenario(scenario.tor_window);
+
+  const GURL onion_url = OnionResourceUrl().GetWithEmptyPath();
+  ASSERT_TRUE(ExecJs(web_contents->GetPrimaryMainFrame(),
+                     content::JsReplace(
+                         R"(const iframe = document.createElement('iframe');
+                            iframe.src = $1;
+                            document.body.appendChild(iframe);)",
+                         onion_url)));
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+
+  content::RenderFrameHost* child_frame =
+      content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
+  ASSERT_TRUE(child_frame);
+  EXPECT_EQ(scenario.expect_blocked,
+            !net::IsOnion(child_frame->GetLastCommittedURL()));
+}
+
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
+                       WebSocketToOnion) {
+  const OnionAccessScenario scenario = GetParam();
+  SetUpScenario(scenario);
+  content::WebContents* web_contents =
+      GetWebContentsForScenario(scenario.tor_window);
+
+  const GURL ws_url = net::test_server::GetWebSocketURL(
+      *https_server_, "example.onion", "/echo-with-no-extension");
+  auto result = EvalJs(web_contents, WebSocketOpenScript(ws_url));
+  ASSERT_TRUE(result.is_ok());
+  EXPECT_EQ(scenario.expect_blocked ? "error" : "open", result);
 }
