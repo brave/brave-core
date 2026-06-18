@@ -39,6 +39,7 @@
 #include "services/network/public/cpp/url_loader_factory_builder.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/blink/public/common/loader/throttling_url_loader.h"
 #include "url/origin.h"
 
 namespace {
@@ -133,6 +134,10 @@ BraveProxyingURLLoaderFactory<T>::InProgressRequest::InProgressRequest(
       &BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnRequestError,
       weak_factory_.GetWeakPtr(),
       network::URLLoaderCompletionStatus(net::ERR_ABORTED)));
+  proxied_loader_receiver_.set_disconnect_with_reason_handler(
+      base::BindOnce(&BraveProxyingURLLoaderFactory<
+                         T>::InProgressRequest::OnLoaderDisconnected,
+                     weak_factory_.GetWeakPtr()));
 }
 
 template <template <typename> class T>
@@ -146,6 +151,24 @@ template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::Restart() {
   UpdateRequestInfo();
   RestartInternal();
+}
+
+template <template <typename> class T>
+void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnLoaderDisconnected(
+    uint32_t custom_reason,
+    const std::string& description) {
+  if (custom_reason == network::mojom::URLLoader::kClientDisconnectReason &&
+      description == blink::ThrottlingURLLoader::kFollowRedirectReason) {
+    // Propagate the redirect-restart signal to the inner loader
+    // (WebRequestProxyingURLLoaderFactory) so it can call
+    // DisassociateProxyWithRequestId and allow the next loader to register.
+    if (target_loader_.is_bound()) {
+      target_loader_.ResetWithReason(custom_reason, description);
+    }
+    factory_->RemoveRequest(this);
+  } else {
+    OnRequestError(network::URLLoaderCompletionStatus(net::ERR_ABORTED));
+  }
 }
 
 template <template <typename> class T>
