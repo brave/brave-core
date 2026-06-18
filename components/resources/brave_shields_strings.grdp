@@ -380,16 +380,20 @@
     Open settings
   </message>
 
-  <!-- Fingerprinting related strings inside the Brave shields panel > Block fingerprinting secondary UI. -->
-  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL_LABEL" desc="This label is associated with the WebGL toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGL APIs." formatter_data="webui=BraveShields">
+  <!-- Fingerprinting related strings corresponding to the different web compat types. -->
+
+  <!-- WebGL is an abbreviation referring to a specific technical library and therefore is not translatable. -->
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL_LABEL" desc="This label is associated with the WebGL toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGL APIs." formatter_data="webui=BraveShields" translateable="false">
     WebGL
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL2_LABEL" desc="This label is associated with the WebGL2 toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGL2 APIs." formatter_data="webui=BraveShields">
+  <!-- WebGL2 is an abbreviation referring to a specific technical library and therefore is not translatable. -->
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL2_LABEL" desc="This label is associated with the WebGL2 toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGL2 APIs." formatter_data="webui=BraveShields" translateable="false">
     WebGL2
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGPU_LABEL" desc="This label is associated with the WebGPU toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGPU APIs." formatter_data="webui=BraveShields">
+  <!-- WebGPU is an abbreviation referring to a specific technical library and therefore is not translatable. -->
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGPU_LABEL" desc="This label is associated with the WebGPU toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGPU APIs." formatter_data="webui=BraveShields" translateable="false">
     WebGPU
   </message>
 
