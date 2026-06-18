@@ -118,7 +118,14 @@ describe('ConfirmSendTransactionDApp', () => {
 
     // Verify origin info IS rendered for dapp transactions
     expect(screen.queryByTestId('origin-info-card')).toBeInTheDocument()
-    expect(screen.getByText('Uniswap NFT Aggregator')).toBeInTheDocument()
+
+    // The dapp name and verified label only appear once the top-dapps query
+    // resolves. That query is independent of the transaction loading panel, so
+    // use findByText to await it instead of asserting during the race window
+    // (the card renders the eTLD+1 fallback until the dapp data loads).
+    expect(
+      await screen.findByText('Uniswap NFT Aggregator'),
+    ).toBeInTheDocument()
     expect(screen.getByText('https://app.')).toBeInTheDocument()
     expect(screen.getByText('uniswap.org')).toBeInTheDocument()
     expect(screen.getByText('braveWalletVerified')).toBeInTheDocument()
