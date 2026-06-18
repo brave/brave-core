@@ -64,6 +64,16 @@
   }
   li {
     margin: var(--leo-spacing-l) 0 0 0;
+
+    /* If we have checkboxes, don't show a list style */
+    &:has(leo-checkbox) {
+      list-style: none;
+      cursor: pointer;
+
+      &:has(leo-checkbox[checked]) {
+        text-decoration: line-through;
+      }
+    }
   }
 
   hr {

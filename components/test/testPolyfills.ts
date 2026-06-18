@@ -40,6 +40,28 @@ if (typeof File.prototype.arrayBuffer !== 'function') {
   }
 }
 
+// jsdom resolves computed styles by matching every stylesheet rule's selector
+// with nwsapi, which cannot parse the `:has(input:where(...):checked)` selectors
+// that Leo's Svelte components (e.g. leo-checkbox) register on the document.
+// Such a rule makes nwsapi throw `... is not a valid selector` for *any*
+// getComputedStyle call, aborting otherwise-unrelated work such as floating-ui
+// measuring overflow ancestors. Fall back to an empty declaration so tests that
+// render Leo components alongside these stylesheets can proceed.
+const originalGetComputedStyle = window.getComputedStyle.bind(window)
+window.getComputedStyle = function (...args) {
+  try {
+    return originalGetComputedStyle(...args)
+  } catch (error) {
+    if (
+      error instanceof Error
+      && error.message.includes('is not a valid selector')
+    ) {
+      return document.createElement('div').style
+    }
+    throw error
+  }
+} as typeof window.getComputedStyle
+
 // jsdom does not implement the Web Animations API. Svelte 5's transition system
 // calls Element.animate() during mount/unmount and assigns onfinish to advance
 // its state machine, so the stub fires onfinish on the next microtask.
