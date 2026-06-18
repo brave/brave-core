@@ -128,7 +128,7 @@ private class DefaultBrowserCalloutView: SpringButton {
 
   private let label = UILabel().then {
     $0.text = Strings.setDefaultBrowserCalloutTitle
-    $0.textColor = .black
+    $0.textColor = UIColor.white
     $0.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
     $0.numberOfLines = 0
     $0.preferredMaxLayoutWidth = 280
@@ -141,7 +141,7 @@ private class DefaultBrowserCalloutView: SpringButton {
     clipsToBounds = true
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
-    backgroundColor = UIColor(braveSystemName: .systemfeedbackSuccessBackground)
+    backgroundColor = UIColor(white: 0.0, alpha: 0.25)
 
     addSubview(label)
     addSubview(closeButton)
