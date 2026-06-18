@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/task/bind_post_task.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
@@ -225,7 +226,9 @@ void ScreenshotController::OnVisibleAreaCopied(SkBitmap bitmap) {
     return;
   }
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::TaskPriority::USER_VISIBLE},
+      FROM_HERE,
+      {base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&EncodeBitmap, std::move(bitmap)),
       base::BindOnce(&ScreenshotController::OnEncoded,
                      weak_factory_.GetWeakPtr()));
@@ -241,7 +244,9 @@ void ScreenshotController::OnFullPageChunks(ChunkResult result) {
     return;
   }
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::TaskPriority::USER_VISIBLE},
+      FROM_HERE,
+      {base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&StitchAndEncode, std::move(result.value())),
       base::BindOnce(&ScreenshotController::OnEncoded,
                      weak_factory_.GetWeakPtr()));
@@ -266,7 +271,9 @@ void ScreenshotController::ShowSaveDialog(std::vector<uint8_t> png) {
     download_dir = DownloadPrefs::FromBrowserContext(profile_)->DownloadPath();
   }
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&BuildDefaultPath, download_dir),
       base::BindOnce(&ScreenshotController::ShowSaveDialogWithPath,
                      weak_factory_.GetWeakPtr()));
