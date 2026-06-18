@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_reader.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -39,6 +40,7 @@ namespace ai_chat {
 namespace {
 
 constexpr char kTestModelName[] = "test-model";
+constexpr char kTestUpstreamModelName[] = "upstream-test-model";
 
 // JSON body for a non-streaming OAI completion response.
 constexpr char kNonStreamingResponseBody[] =
@@ -96,7 +98,8 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
                            ObliviousHttpConfigManager::KeyConfigCallback cb) {
           std::move(cb).Run(ObliviousHttpConfigManager::KeyConfigResult{
               /*key_config=*/"test-key-config-bytes",
-              /*endpoint_url=*/GURL("https://endpoint.test/inner")});
+              /*endpoint_url=*/GURL("https://endpoint.test/inner"),
+              /*upstream_model_name=*/kTestUpstreamModelName});
         });
     client_->SetConfigManagerForTesting(std::move(config_manager));
   }
@@ -357,6 +360,20 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_BadOuterResponseCode) {
     ASSERT_FALSE(result_.has_value());
     EXPECT_EQ(c.expected_error, result_.error());
   }
+}
+
+TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_UsesUpstreamModelName) {
+  PerformRequest();
+
+  ASSERT_FALSE(last_request_.is_null());
+  ASSERT_TRUE(last_request_->request_body);
+
+  auto parsed = base::JSONReader::Read(last_request_->request_body->content,
+                                       base::JSON_PARSE_RFC);
+  ASSERT_TRUE(parsed.has_value() && parsed->is_dict());
+  const std::string* model = parsed->GetDict().FindString("model");
+  ASSERT_TRUE(model);
+  EXPECT_EQ(kTestUpstreamModelName, *model);
 }
 
 }  // namespace ai_chat

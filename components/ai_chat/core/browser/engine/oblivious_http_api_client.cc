@@ -9,6 +9,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
@@ -182,7 +183,7 @@ void ObliviousHttpAPIClient::InnerClient::OnPipeDisconnected() {
 
 ObliviousHttpAPIClient::Request::Request(
     std::string model_name,
-    std::string request_body,
+    base::DictValue request_body,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback)
     : model_name(std::move(model_name)),
@@ -236,7 +237,7 @@ void ObliviousHttpAPIClient::PerformRequest(
     oai_tool_definitions->Append(std::move(web_context_search_tool));
   }
 
-  std::string request_body = CreateJSONRequestBody(
+  base::DictValue request_body = CreateJSONRequestBody(
       SerializeOAIMessages(std::move(messages)), is_streaming_enabled,
       leo_opts.name, std::move(oai_tool_definitions), stop_sequences);
 
@@ -306,8 +307,11 @@ void ObliviousHttpAPIClient::DispatchOHTTPRequest(
   ohttp_request->key_config = key_config_result.key_config;
   ohttp_request->resource_url = key_config_result.endpoint_url;
   ohttp_request->method = net::HttpRequestHeaders::kPostMethod;
+  request.request_body.Set("model", key_config_result.upstream_model_name);
+  std::string serialized_body;
+  base::JSONWriter::Write(request.request_body, &serialized_body);
   ohttp_request->request_body = network::mojom::ObliviousHttpRequestBody::New(
-      std::move(request.request_body), "application/json");
+      std::move(serialized_body), "application/json");
 
   // Build outer (relay) request headers. These are sent to the relay in the
   // clear and are NOT encapsulated in the encrypted bhttp inner request.

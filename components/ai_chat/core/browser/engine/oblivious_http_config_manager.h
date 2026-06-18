@@ -35,6 +35,8 @@ class ObliviousHttpConfigManager {
   struct KeyConfigResult {
     std::string key_config;  // decoded raw HPKE key bytes
     GURL endpoint_url;       // inner-request resource URL from the server
+    std::string
+        upstream_model_name;  // model name to use in the inference request body
   };
 
   // Callback receives the key config result on success, or std::nullopt on
@@ -73,7 +75,10 @@ class ObliviousHttpConfigManager {
 
  private:
   std::optional<KeyConfigResult> GetCachedKeyConfig(
-      const std::string& model_name) const;
+      const std::string& model_name);
+  std::optional<KeyConfigResult> ParseKeyConfig(const base::Value& value,
+                                                const std::string& model_name,
+                                                bool save);
   void FetchKeyConfig(const std::string& model_name,
                       KeyConfigCallback callback);
   void OnKeyConfigFetched(std::string model_name,

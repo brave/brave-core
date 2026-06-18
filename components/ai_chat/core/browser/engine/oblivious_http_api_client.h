@@ -142,7 +142,7 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
 
   struct Request {
     Request(std::string model_name,
-            std::string request_body,
+            base::DictValue request_body,
             GenerationDataCallback data_received_callback,
             GenerationCompletedCallback completed_callback);
     Request(Request&&);
@@ -151,7 +151,7 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
     ~Request();
 
     std::string model_name;
-    std::string request_body;
+    base::DictValue request_body;
     GenerationDataCallback data_received_callback;
     GenerationCompletedCallback completed_callback;
     // Set in DispatchOHTTPRequest once the client is inserted into the list.

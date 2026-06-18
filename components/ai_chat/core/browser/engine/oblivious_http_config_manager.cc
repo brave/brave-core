@@ -32,6 +32,7 @@ constexpr base::TimeDelta kKeyConfigExpiresAfter = base::Days(3);
 
 constexpr char kKeyConfigKey[] = "key_config";
 constexpr char kEndpointUrlKey[] = "endpoint_url";
+constexpr char kUpstreamModelNameKey[] = "upstream_model_name";
 constexpr char kPrefExpiresAtField[] = "expires_at";
 
 bool IsExpired(const base::DictValue& entry) {
@@ -93,19 +94,21 @@ void ObliviousHttpConfigManager::DeleteExpiredKeyConfigs(
 }
 
 std::optional<ObliviousHttpConfigManager::KeyConfigResult>
-ObliviousHttpConfigManager::GetCachedKeyConfig(
-    const std::string& model_name) const {
-  const base::DictValue* entry =
-      profile_prefs_->GetDict(prefs::kAIChatObliviousHttpKeyConfigs)
-          .FindDict(model_name);
-  if (!entry || IsExpired(*entry)) {
+ObliviousHttpConfigManager::ParseKeyConfig(const base::Value& value,
+                                           const std::string& model_name,
+                                           bool save) {
+  if (!value.is_dict()) {
     return std::nullopt;
   }
+  const base::DictValue& dict = value.GetDict();
 
-  const std::string* key_config_b64 = entry->FindString(kKeyConfigKey);
-  const std::string* endpoint_url_str = entry->FindString(kEndpointUrlKey);
+  const std::string* key_config_b64 = dict.FindString(kKeyConfigKey);
+  const std::string* endpoint_url_str = dict.FindString(kEndpointUrlKey);
+  const std::string* upstream_model_name =
+      dict.FindString(kUpstreamModelNameKey);
   if (!key_config_b64 || key_config_b64->empty() || !endpoint_url_str ||
-      endpoint_url_str->empty()) {
+      endpoint_url_str->empty() || !upstream_model_name ||
+      upstream_model_name->empty()) {
     return std::nullopt;
   }
 
@@ -119,8 +122,32 @@ ObliviousHttpConfigManager::GetCachedKeyConfig(
     return std::nullopt;
   }
 
+  if (save) {
+    ScopedDictPrefUpdate update(profile_prefs_,
+                                prefs::kAIChatObliviousHttpKeyConfigs);
+    base::DictValue entry;
+    entry.Set(kKeyConfigKey, *key_config_b64);
+    entry.Set(kEndpointUrlKey, endpoint_url.spec());
+    entry.Set(kUpstreamModelNameKey, *upstream_model_name);
+    entry.Set(kPrefExpiresAtField,
+              base::TimeToValue(base::Time::Now() + kKeyConfigExpiresAfter));
+    update->Set(model_name, std::move(entry));
+  }
+
   return KeyConfigResult{std::string(decoded->begin(), decoded->end()),
-                         std::move(endpoint_url)};
+                         std::move(endpoint_url), *upstream_model_name};
+}
+
+std::optional<ObliviousHttpConfigManager::KeyConfigResult>
+ObliviousHttpConfigManager::GetCachedKeyConfig(const std::string& model_name) {
+  const base::DictValue* entry =
+      profile_prefs_->GetDict(prefs::kAIChatObliviousHttpKeyConfigs)
+          .FindDict(model_name);
+  if (!entry || IsExpired(*entry)) {
+    return std::nullopt;
+  }
+  return ParseKeyConfig(base::Value(entry->Clone()), model_name,
+                        /*save=*/false);
 }
 
 void ObliviousHttpConfigManager::RequestKeyConfig(const std::string& model_name,
@@ -166,44 +193,12 @@ void ObliviousHttpConfigManager::OnKeyConfigFetched(
     std::string model_name,
     KeyConfigCallback callback,
     api_request_helper::APIRequestResult result) {
-  if (!result.Is2XXResponseCode() || !result.value_body().is_dict()) {
+  if (!result.Is2XXResponseCode()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-
-  const base::DictValue& body = result.value_body().GetDict();
-  const std::string* key_config_b64 = body.FindString(kKeyConfigKey);
-  const std::string* endpoint_url_str = body.FindString(kEndpointUrlKey);
-
-  if (!key_config_b64 || key_config_b64->empty() || !endpoint_url_str ||
-      endpoint_url_str->empty()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  auto decoded = base::Base64Decode(*key_config_b64);
-  if (!decoded) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  GURL endpoint_url(*endpoint_url_str);
-  if (!endpoint_url.is_valid() || !endpoint_url.SchemeIs("https")) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  ScopedDictPrefUpdate update(profile_prefs_,
-                              prefs::kAIChatObliviousHttpKeyConfigs);
-  base::DictValue entry;
-  entry.Set(kKeyConfigKey, *key_config_b64);
-  entry.Set(kEndpointUrlKey, endpoint_url.spec());
-  entry.Set(kPrefExpiresAtField,
-            base::TimeToValue(base::Time::Now() + kKeyConfigExpiresAfter));
-  update->Set(model_name, std::move(entry));
-
-  std::move(callback).Run(KeyConfigResult{
-      std::string(decoded->begin(), decoded->end()), std::move(endpoint_url)});
+  std::move(callback).Run(
+      ParseKeyConfig(result.value_body(), model_name, /*save=*/true));
 }
 
 }  // namespace ai_chat
