@@ -1186,11 +1186,16 @@ test("brave_browser_tests") {
 
   if (!is_android) {
     deps += [
+      "//brave/test/data/webui/settings:browser_tests",
       "//chrome/browser/profile_resetter:profile_resetter_test_base",
       "//chrome/browser/ui/frame",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     ]
+
+    # browser_tests.pak provides the chrome://webui-test resources that
+    # WebUIMochaBrowserTest loads for the settings WebUI mocha tests.
+    data_deps = [ "//chrome:browser_tests_pak" ]
   }
 
   if (enable_widevine) {

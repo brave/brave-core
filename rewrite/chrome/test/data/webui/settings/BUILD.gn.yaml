@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make the settings WebUI test target composite so Brave test targets can
+      reference its build_ts and reuse its helpers (getSyncAllPrefs,
+      TestSyncBrowserProxy). Matches how cr_elements/chromeos test targets are
+      already composite.
+    re_pattern: '(build_webui_tests\("build"\) \{\n)'
+    replace: '\1  ts_composite = true\n'
+
+  - description: |-
+      Add Brave's settings TS definitions to the settings WebUI test build.
+    re_pattern: '(\n  \})(\n\n  ts_deps = \[)'
+    replace:
+      '\1\n  import("//brave/browser/resources/settings/sources.gni")
+      ts_definitions += brave_settings_ts_definitions\2'

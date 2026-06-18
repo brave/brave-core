@@ -49,8 +49,8 @@ resources outside this repository, go to:
   for us.
 - [WebUI Frontend](./webui_frontend.md) - General Web UI, React, webpack
   overview.
-- [WebUI Testing](./webui_testing.md) - Guide to creating and running
-  \*.test.ts(x) suites.
+- [WebUI Testing](./webui_testing.md) - Guide to creating and running Jest
+  \*.test.ts(x) standalone suites and Mocha `browser_tests`.
 - [WebUI Strings Overview](./webui_strings_explainer.md) - Including strings in
   a Web UI frontend.
 

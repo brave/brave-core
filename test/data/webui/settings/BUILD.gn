@@ -1,0 +1,59 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//chrome/test/data/webui/build_webui_tests.gni")
+
+# Builds the mocha test modules into the shared chrome://webui-test resource
+# pak (wired up in //chrome/test/data/webui/BUILD.gn via plaster). The matching
+# C++ fixtures are compiled into brave_browser_tests by the source_set below.
+build_webui_tests("brave_settings") {
+  resource_path_prefix = "brave_settings"
+
+  cc_test_files = [ "brave_settings_browsertest.cc" ]
+
+  files = [ "brave_sync_controls_test.ts" ]
+
+  # Mirror the upstream settings test mappings so the tests can import from
+  # chrome://settings/*, plus a mapping for the upstream settings test helpers
+  # (getSyncAllPrefs, TestSyncBrowserProxy) that we reuse via chrome://webui-test.
+  ts_path_mappings = [
+    "chrome://settings/settings.js|" +
+        rebase_path(
+            "$root_gen_dir/chrome/browser/resources/settings/tsc/settings.d.ts",
+            target_gen_dir),
+    "chrome://settings/lazy_load.js|" + rebase_path(
+            "$root_gen_dir/chrome/browser/resources/settings/tsc/lazy_load.d.ts",
+            target_gen_dir),
+    "chrome://webui-test/settings/*|" +
+        rebase_path("$root_gen_dir/chrome/test/data/webui/settings/tsc/*",
+                    target_gen_dir),
+  ]
+
+  ts_deps = [
+    "//chrome/browser/resources/settings:build_ts",
+    "//chrome/test/data/webui/cr_elements:build_ts",
+    "//chrome/test/data/webui/settings:build_ts",
+    "//third_party/polymer/v3_0:library",
+    "//ui/webui/resources/cr_elements:build_ts",
+    "//ui/webui/resources/js:build_ts",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "brave_settings_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
