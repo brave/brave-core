@@ -23,7 +23,8 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
                                 bool is_tor_profile);
   explicit OnionLocationNavigationThrottle(
       content::NavigationThrottleRegistry& registry,
-      bool is_tor_profile);
+      bool is_tor_profile,
+      bool onion_only_in_tor_windows);
   ~OnionLocationNavigationThrottle() override;
 
   // content::NavigationThrottle implementation:
@@ -34,6 +35,7 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
 
  private:
   bool is_tor_profile_ = false;
+  bool onion_only_in_tor_windows_ = true;
 
   OnionLocationNavigationThrottle(const OnionLocationNavigationThrottle&) =
       delete;
