@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Append Brave-specific entries to `RequestType`
+
+      This plaster is generic enough to guarantee that our entries are always last,
+      and that they also become the new kMaxValue.
+    re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        kWidevine,
+        kBraveEthereum,
+        kBraveSolana,
+        kBraveOpenAIChat,
+        kBraveGoogleSignInPermission,
+        kBraveCardano,
+        kBraveMinValue = kWidevine,
+        kBraveMaxValue = kBraveCardano,
+        kMaxValue = kBraveCardano

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add ECDSA_SHA384 to the EC key case in `AlgorithmToType`.
+
+      It is necessary to add `ECDSA_SHA384` to any types that get passed as a
+      signature algorithm.
+    re_pattern: '(AlgorithmToType\([^)]*\).*?)(\n\s*return BPKUR::EC_KEY;)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+          case crypto::SignatureVerifier::ECDSA_SHA384:\2

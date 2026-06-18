@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Each substitution anchors on the target function's qualified name, scans
+# through its body with DOTALL, and inserts a call on the line just above the
+# function's closing `return ...;`. Leading whitespace before `return` and any
+# trailing content between `return` and the function's closing `}` are
+# captured loosely, so reformatting of the surrounding lines does not break
+# the match.
+
+substitutions:
+  - description:
+      'Restore storage partition key from SerializedNavigationEntry for
+      containers'
+    re_pattern:
+      '(ContentSerializedNavigationBuilder::ToNavigationEntry\b.*?\n)([
+      \t]*return entry;.*?\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1  MaybeRestoreStoragePartitionKey(navigation, entry.get());
+      \2
+
+  - description:
+      'Set virtual URL prefix and storage partition key for containers'
+    re_pattern:
+      '(ContentSerializedNavigationBuilder::FromNavigationEntry\b.*?\n)([
+      \t]*return navigation;.*?\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1  MaybeSaveStoragePartitionKey(entry, &navigation);
+      \2
