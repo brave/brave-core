@@ -14,10 +14,7 @@ if (is_win || is_mac || is_linux) {
       "run_all_unittests.cc",
     ]
     if (is_mac) {
-      sources += [
-        "activity_impl_util_mac_unittest.cc",
-        "install_sh_mac_unittest.cc",
-      ]
+      sources += [ "install_sh_mac_unittest.cc" ]
       data = [
         "install_sh_mac_test.py",
         "//chrome/updater/mac/.install.sh",
