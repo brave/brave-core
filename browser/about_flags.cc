@@ -1335,7 +1335,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Insecure URLs that don't meet these requirements will be ignored "  \
           "in favor of the official Brave-hosted server",                      \
           kOsAll,                                                              \
-          ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
+          STRING_VALUE_TYPE(syncer::kSyncServiceURL, ""),                      \
           kBraveSyncImplLink,                                                  \
       },                                                                       \
       {                                                                        \
