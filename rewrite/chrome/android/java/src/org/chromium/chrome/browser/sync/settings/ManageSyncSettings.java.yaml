@@ -13,20 +13,23 @@ substitutions:
     replace: 'protected \1'
 
   - description: |-
-      Suppress the "addresses not encrypted" warning in onPreferenceChange,
-      which is not applicable to Brave's sync model.
+      Skip the isUsingExplicitPassphrase() block in onPreferenceChange()
+
+      It suppresses the "addresses not encrypted" warning, which is not
+      applicable to Brave's sync model.
     re_pattern:
-      '(onPreferenceChange\(Preference preference, Object newValue\) \{\n)([
-      \t]*)(if \(mSyncService\.isUsingExplicitPassphrase\(\))'
+      '(onPreferenceChange\(Preference preference, Object newValue\) \{)\n(
+      *)(if \(mSyncService\.isUsingExplicitPassphrase\(\))'
     replace: |-
-      \1\2if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
+      \1
+      \2if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
       \2\3
 
   - description: |-
       Force the signed-in account name to empty in updateSyncPreferences so the
       following Google-account check is always skipped for Brave.
     re_pattern:
-      '(String signedInAccountName =\n)([ \t]*)(CoreAccountInfo\.getEmailFrom\()'
+      '(String signedInAccountName =\n)( *)(CoreAccountInfo\.getEmailFrom\()'
     replace: |-
       \1\2mGoogleActivityControls != null ? "" : // We want the next `if` to be always false.
       \2\3
