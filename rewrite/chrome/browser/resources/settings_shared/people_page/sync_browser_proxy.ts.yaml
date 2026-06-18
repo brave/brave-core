@@ -5,16 +5,25 @@
 
 substitutions:
   - description: |-
-      Add the AI Chat flags to the SyncPrefs interface, grouped after the
-      wifiConfigurations type flags.
-    re_pattern: '(\n[ \t]*)wifiConfigurationsSynced: boolean;'
-    replace:
-      '\1wifiConfigurationsSynced: boolean;\1aiChatManaged:
-      boolean;\1aiChatRegistered: boolean;\1aiChatSynced: boolean;'
+      Add the AI Chat flags to the SyncPrefs interface.
+
+      Brave adds an AI Chat sync data type, so its managed/registered/synced
+      flags must be part of SyncPrefs alongside the other data types.
+    re_pattern:
+      '(export interface SyncPrefs \{.*?\n)( *)(wifiConfigurationsSynced:
+      boolean;)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1\2\3
+      \2aiChatManaged: boolean;
+      \2aiChatRegistered: boolean;
+      \2aiChatSynced: boolean;
 
   - description: |-
-      Add aiChatSynced to the end of the syncPrefsIndividualDataTypes list.
-      Anchored on the list, not a sibling entry.
+      Add aiChatSynced to the syncPrefsIndividualDataTypes list.
+
+      This list names the per-type prefs cached when "Sync All" is on, so the
+      AI Chat type must be present to be cached and restored correctly.
     re_pattern: '(syncPrefsIndividualDataTypes: string\[\] = \[.*?)(\n\];)'
     re_flags: [DOTALL]
     replace: |-
@@ -22,9 +31,10 @@ substitutions:
         'aiChatSynced',\2
 
   - description: |-
-      Append AI_CHAT to the UserSelectableType enum, mirroring the C++
-      UserSelectableType (kept in sync via the LINT.IfChange annotation).
-      Anchored on the enum and its last entry, value-agnostically.
+      Append AI_CHAT to the UserSelectableType enum.
+
+      Mirrors the C++ UserSelectableType, which is kept in sync via the
+      LINT.IfChange annotation; AI_CHAT = 14 follows COOKIES = 13.
     re_pattern: '(export enum UserSelectableType \{.*?[A-Z0-9_]+ = \d+)(\n\})'
     re_flags: [DOTALL]
     replace: |-
