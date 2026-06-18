@@ -62,9 +62,6 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   ScreenshotController& operator=(const ScreenshotController&) = delete;
   ~ScreenshotController() override;
 
-  bool busy() const { return busy_; }
-
-  // Returns false if `web_contents` has no live RenderWidgetHostView or a
   // capture is already in flight.
   base::expected<void, Error> CanCapture(
       content::WebContents* web_contents) const;
@@ -105,7 +102,6 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   void Reset();
 
   NativeWindowGetter parent_window_getter_;
-  bool busy_ = false;
 
   // Pending operation state. Set on entry, cleared on Reset().
   ResultCallback pending_callback_;

@@ -158,9 +158,10 @@ ScreenshotController::~ScreenshotController() {
 base::expected<void, ScreenshotController::Error>
 ScreenshotController::CanCapture(content::WebContents* web_contents) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (busy_) {
+  if (pending_callback_) {
     return base::unexpected(Error::kBusy);
   }
+
   if (!web_contents || !web_contents->GetRenderWidgetHostView()) {
     return base::unexpected(Error::kNoTab);
   }
@@ -178,7 +179,6 @@ void ScreenshotController::CaptureVisibleArea(
   auto* view = web_contents->GetRenderWidgetHostView();
   CHECK(view);
 
-  busy_ = true;
   pending_callback_ = std::move(done);
 
   // CopyFromSurface's callback isn't guaranteed to run on the calling sequence,
@@ -210,7 +210,6 @@ void ScreenshotController::CaptureFullPage(content::WebContents* web_contents,
     return;
   }
 
-  busy_ = true;
   pending_callback_ = std::move(done);
 
   auto on_chunks = base::BindOnce(&ScreenshotController::OnFullPageChunks,
@@ -342,7 +341,8 @@ void ScreenshotController::FinishWithError(Error error) {
 
 void ScreenshotController::Reset() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  busy_ = false;
+  CHECK(pending_callback_) << "Reset() called without a pending operation. The "
+                              "callback should be called before Reset()";
   pending_png_.clear();
   if (select_dialog_) {
     select_dialog_->ListenerDestroyed();
