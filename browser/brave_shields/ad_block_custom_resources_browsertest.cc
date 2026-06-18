@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -201,7 +202,13 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Add) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_Add DISABLED_Add
+#else
+#define MAYBE_Add Add
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Add) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
@@ -218,7 +225,13 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Add) {
                        "user-custom-script.js", kContent);
 }
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Edit) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_Edit DISABLED_Edit
+#else
+#define MAYBE_Edit Edit
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Edit) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
@@ -252,7 +265,13 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Edit) {
                        "user-Custom-Script-Edited.js", kEditedContent);
 }
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Delete) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_Delete DISABLED_Delete
+#else
+#define MAYBE_Delete Delete
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Delete) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
@@ -276,7 +295,13 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, Delete) {
   EXPECT_EQ(0u, custom_resources.GetList().size());
 }
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_ExecCustomScriptlet DISABLED_ExecCustomScriptlet
+#else
+#define MAYBE_ExecCustomScriptlet ExecCustomScriptlet
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_ExecCustomScriptlet) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
@@ -294,7 +319,13 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
   EXPECT_EQ("custom-script", EvalJs(web_contents(), "window.test"));
 }
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_NameConflicts DISABLED_NameConflicts
+#else
+#define MAYBE_NameConflicts NameConflicts
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_NameConflicts) {
   EnableDeveloperMode(true);
 
   constexpr const char kBraveFix[] = "window.test = 'default-script'";
@@ -324,7 +355,13 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
   EXPECT_EQ("default-script", EvalJs(web_contents(), "window.test"));
 }
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_NameCases DISABLED_NameCases
+#else
+#define MAYBE_NameCases NameCases
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_NameCases) {
   EnableDeveloperMode(true);
   auto* provider =
       g_brave_browser_process->ad_block_service()->custom_resource_provider();
@@ -363,7 +400,13 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
   EXPECT_EQ(true, EvalJs(web_contents(), "window.upper"));
 }
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, TwoProfiles) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_TwoProfiles DISABLED_TwoProfiles
+#else
+#define MAYBE_TwoProfiles TwoProfiles
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_TwoProfiles) {
   EnableDeveloperMode(true);
 
   UpdateAdBlockInstanceWithRules("a.com##+js(user-1)");
