@@ -202,9 +202,6 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "filsnap": "1.6.1",
-    "@polkagate/snap": "2.5.1",
-    "@cosmsnap/snap": "0.1.22",
     "@metamask/snaps-sdk": "6.17.1",
     "@metamask/snaps-execution-environments": "11.0.2",
     "@metamask/post-message-stream": "10.0.0",
