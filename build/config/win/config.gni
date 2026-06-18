@@ -1,0 +1,8 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# True for CPU targets whose PDB can exceed the 8 GiB limit imposed by the
+# upstream default /pdbpagesize:8192.
+brave_win_use_large_pdb = target_cpu == "x86"
