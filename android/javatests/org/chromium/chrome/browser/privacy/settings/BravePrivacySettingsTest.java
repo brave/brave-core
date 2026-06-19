@@ -8,7 +8,9 @@ package org.chromium.chrome.browser.privacy.settings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
+import androidx.preference.Preference;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
@@ -16,6 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
@@ -46,6 +49,9 @@ public class BravePrivacySettingsTest {
     private static final String PREF_SURVEY_PANELIST_LEARN_MORE = "survey_panelist_learn_more";
     private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
     private static final String PREF_ADVANCED_PROTECTION_INFO = "advanced_protection_info";
+    private static final String PREF_OTHER_PRIVACY_SETTINGS_SECTION =
+            "other_privacy_settings_section";
+    private static final String PREF_USE_CUSTOM_TABS = BravePreferenceKeys.BRAVE_USE_CUSTOM_TABS;
     private static final String PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS =
             "allow_elements_blocking_on_private_tabs";
 
@@ -83,6 +89,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_INCOGNITO_LOCK);
         checkPreferenceExists(PREF_SURVEY_PANELIST);
         checkPreferenceExists(PREF_SURVEY_PANELIST_LEARN_MORE);
+        checkPreferenceExists(PREF_USE_CUSTOM_TABS);
         checkPreferenceExists(PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS);
 
         checkPreferenceRemoved(PREF_NETWORK_PREDICTIONS);
@@ -92,6 +99,17 @@ public class BravePrivacySettingsTest {
         checkPreferenceVisibility(PREF_ADVANCED_PROTECTION_INFO, false);
 
         assertEquals(BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS, mItemsLeft);
+    }
+
+    @Test
+    @SmallTest
+    public void testOpenExternalLinksIsFirstOtherPrivacySetting() {
+        Preference otherPrivacySettings =
+                mFragment.findPreference(PREF_OTHER_PRIVACY_SETTINGS_SECTION);
+        Preference openExternalLinks = mFragment.findPreference(PREF_USE_CUSTOM_TABS);
+
+        assertTrue(openExternalLinks.getOrder() > otherPrivacySettings.getOrder());
+        assertEquals(otherPrivacySettings.getOrder() + 1, openExternalLinks.getOrder());
     }
 
     private void checkPreferenceExists(String pref) {

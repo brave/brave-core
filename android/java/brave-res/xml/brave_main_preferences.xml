@@ -159,19 +159,6 @@
         android:order="22"
         android:icon="@drawable/ic_product_sync"
         android:title="@string/sync_category_title"/>
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="use_custom_tabs"
-        android:order="20"
-        android:icon="@drawable/ic_window"
-        android:title="@string/prefs_use_custom_tabs_title"
-        android:summary="@string/prefs_use_custom_tabs_text"/>
-    <!-- <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveCustomTabsPreference"
-        android:key="use_custom_tabs"
-        android:order="20"
-        android:icon="@drawable/ic_custom_tabs"
-        android:title="@string/prefs_use_custom_tabs_title"
-        android:summary="@string/prefs_use_custom_tabs_text"/> -->
     <Preference
         android:fragment="org.chromium.chrome.browser.language.settings.BraveLanguageSettings"
         android:key="brave_languages"

@@ -98,7 +98,6 @@ public class BraveMainSettingsFragmentTest {
         "content_settings",
         "brave_downloads",
         "closing_all_tabs_closes_brave",
-        "use_custom_tabs",
         "display_section",
         "tabs",
         "media",
@@ -225,7 +224,7 @@ public class BraveMainSettingsFragmentTest {
                         // check
                         + "INDEX_DATA_PROVIDER.updateDynamicPreferences"
                         + " to exclude new from indexing.",
-                35,
+                34,
                 nonVpnCount);
     }
 
