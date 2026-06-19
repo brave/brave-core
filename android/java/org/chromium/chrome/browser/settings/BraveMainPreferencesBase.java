@@ -26,7 +26,6 @@ import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
@@ -110,7 +109,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @VisibleForTesting static final String PREF_BRAVE_VPN = "brave_vpn";
     @VisibleForTesting static final String PREF_BRAVE_LEO = "brave_leo";
     private static final String PREF_BRAVE_ORIGIN = "brave_origin";
-    private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
     private static final String PREF_BRAVE_LANGUAGES = "brave_languages";
     private static final String PREF_RATE_BRAVE = "rate_brave";
@@ -255,7 +253,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(PREF_BASICS_SECTION);
         // removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
 
-        // removePreferenceIfPresent(PREF_USE_CUSTOM_TABS);
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
@@ -279,7 +276,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void prepareBravePreferences() {
-        setCustomTabPreference();
         setAutofillPrivateWindowPreference();
         // Register the final containment update listener. This runs after the current call stack
         // completes (posted via PostTask), so it fires after any synchronous observer callbacks
@@ -298,14 +294,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         preference.setOnPreferenceChangeListener(this);
         if (preference instanceof ChromeSwitchPreference) {
             ((ChromeSwitchPreference) preference).setChecked(isAutofillPrivateWindow);
-        }
-    }
-
-    private void setCustomTabPreference() {
-        Preference preference = findPreference(PREF_USE_CUSTOM_TABS);
-        if (preference instanceof ChromeSwitchPreference) {
-            ((ChromeSwitchPreference) preference)
-                    .setChecked(BraveLaunchIntentDispatcher.useCustomTabs());
         }
     }
 
@@ -412,7 +400,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_CONTENT_SETTINGS, ++generalOrder);
         setPreferenceOrder(PREF_DOWNLOADS, ++generalOrder);
         setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
-        setPreferenceOrder(PREF_USE_CUSTOM_TABS, ++generalOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
             setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);
@@ -841,7 +828,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE));
                     indexData.removeEntry(getUniqueId(PREF_RATE_BRAVE));
                     indexData.removeEntry(getUniqueId(PREF_AUTOFILL_PRIVATE_WINDOW));
-                    indexData.removeEntry(getUniqueId(PREF_USE_CUSTOM_TABS));
                     // Leaf prefs from brave_main_preferences.xml that are conditionally hidden.
                     if (!BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
                         indexData.removeEntry(getUniqueId(PREF_HOME_SCREEN_WIDGET));

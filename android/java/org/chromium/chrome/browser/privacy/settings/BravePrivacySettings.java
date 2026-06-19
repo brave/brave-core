@@ -27,6 +27,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
+import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
@@ -107,6 +108,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_DE_AMP = "de_amp";
     private static final String PREF_DEBOUNCE = "debounce";
     private static final String PREF_BLOCK_SWITCH_TO_APP_NOTICES = "block_switch_to_app_notices";
+    private static final String PREF_USE_CUSTOM_TABS = BravePreferenceKeys.BRAVE_USE_CUSTOM_TABS;
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_BLOCK_SCRIPTS = "scripts_block";
     public static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
@@ -172,6 +174,7 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SOCIAL_BLOCKING_TWITTER,
         PREF_SOCIAL_BLOCKING_LINKEDIN,
         PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
+        PREF_USE_CUSTOM_TABS,
         PREF_SAFE_BROWSING,
         PREF_APP_LINKS,
         PREF_WEBRTC_POLICY,
@@ -234,6 +237,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mSocialBlockingFacebook;
     private ChromeSwitchPreference mSocialBlockingTwitter;
     private ChromeSwitchPreference mSocialBlockingLinkedin;
+    private ChromeSwitchPreference mUseCustomTabs;
     private ChromeSwitchPreference mAppLinks;
     private ChromeSwitchPreference mIncognitoScreenshot;
     private ChromeBasePreference mWebrtcPolicy;
@@ -476,6 +480,10 @@ public class BravePrivacySettings extends PrivacySettings {
                 (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
         mSocialBlockingLinkedin.setOnPreferenceChangeListener(this);
 
+        mUseCustomTabs = (ChromeSwitchPreference) findPreference(PREF_USE_CUSTOM_TABS);
+        mUseCustomTabs.setOnPreferenceChangeListener(this);
+        mUseCustomTabs.setChecked(BraveLaunchIntentDispatcher.useCustomTabs());
+
         mAppLinks = (ChromeSwitchPreference) findPreference(PREF_APP_LINKS);
         mAppLinks.setOnPreferenceChangeListener(this);
         boolean isAppLinksAllowed =
@@ -699,6 +707,8 @@ public class BravePrivacySettings extends PrivacySettings {
         } else if (PREF_CLEAR_ON_EXIT.equals(key)) {
             preferencesManager.writeBoolean(
                     BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, (boolean) newValue);
+        } else if (PREF_USE_CUSTOM_TABS.equals(key)) {
+            preferencesManager.writeBoolean(PREF_USE_CUSTOM_TABS, (boolean) newValue);
         } else if (PREF_APP_LINKS.equals(key)) {
             preferencesManager.writeBoolean(PREF_APP_LINKS, (boolean) newValue);
             preferencesManager.writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);

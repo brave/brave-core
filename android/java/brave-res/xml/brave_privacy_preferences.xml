@@ -133,6 +133,11 @@
         android:key="other_privacy_settings_section"
         android:title="@string/prefs_section_other_privacy_settings"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="use_custom_tabs"
+            android:title="@string/prefs_use_custom_tabs_title"
+            android:summary="@string/prefs_use_custom_tabs_text"
+            android:defaultValue="true"/>
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="app_links"
             android:title="@string/settings_app_links_label"
             android:defaultValue="true"/>
