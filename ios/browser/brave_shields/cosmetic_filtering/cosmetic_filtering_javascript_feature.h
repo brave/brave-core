@@ -7,6 +7,8 @@
 #define BRAVE_IOS_BROWSER_BRAVE_SHIELDS_COSMETIC_FILTERING_COSMETIC_FILTERING_JAVASCRIPT_FEATURE_H_
 
 #include "base/no_destructor.h"
+#include "brave/ios/web/js_messaging/message_handler_token.h"
+#include "brave/ios/web/js_messaging/randomized_message_handler_name.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 
 class CosmeticFilteringJavaScriptFeature : public web::JavaScriptFeature {
@@ -17,6 +19,7 @@ class CosmeticFilteringJavaScriptFeature : public web::JavaScriptFeature {
 
   // JavaScriptFeature:
   std::optional<std::string> GetScriptMessageHandlerName() const override;
+  bool GetFeatureRepliesToPrompts() const override;
   bool GetFeatureRepliesToMessages() const override;
   void ScriptMessageReceivedWithReply(
       web::WebState* web_state,
@@ -28,6 +31,13 @@ class CosmeticFilteringJavaScriptFeature : public web::JavaScriptFeature {
 
   CosmeticFilteringJavaScriptFeature();
   ~CosmeticFilteringJavaScriptFeature() override;
+
+  // Returns the placeholder replacements used to randomize the script's
+  // message handler name and token at injection time.
+  FeatureScript::PlaceholderReplacements GetReplacements();
+
+  web::RandomizedMessageHandlerName handler_name_;
+  web::MessageHandlerToken token_;
 };
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_SHIELDS_COSMETIC_FILTERING_COSMETIC_FILTERING_JAVASCRIPT_FEATURE_H_
