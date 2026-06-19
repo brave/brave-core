@@ -18,6 +18,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -54,7 +55,9 @@ std::unique_ptr<KeyedService> BuildVpnService_V2(
   return std::make_unique<v2::BraveVpnServiceImpl>();
 }
 
-#elif BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2)
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 
 std::unique_ptr<KeyedService> BuildVpnService_V1(
     content::BrowserContext* context) {
@@ -114,9 +117,14 @@ std::unique_ptr<KeyedService> BuildVpnService(
   if (!brave_vpn::IsAllowedForContext(context)) {
     return nullptr;
   }
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2)
-  return BuildVpnService_V2(context);
-#elif BUILDFLAG(ENABLE_BRAVE_VPN_V1)
+  if (base::FeatureList::IsEnabled(features::kBraveVPNExperimentalV2)) {
+    return BuildVpnService_V2(context);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   return BuildVpnService_V1(context);
 #else
   NOTREACHED() << "No VPN implementation available";
