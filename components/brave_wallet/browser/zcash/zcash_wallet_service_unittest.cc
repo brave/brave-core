@@ -1569,10 +1569,22 @@ TEST_F(ZCashWalletServiceUnitTest, ResetSyncStateWithAccountBirthday) {
           });
 
   base::test::TestFuture<const std::optional<std::string>&> reset_sync_future;
-  zcash_wallet_service_->ResetSyncState(account_id_1.Clone(),
-                                        std::optional<uint32_t>(100000u),
+  zcash_wallet_service_->ResetSyncState(account_id_1.Clone(), 100000u,
                                         reset_sync_future.GetCallback());
   EXPECT_EQ(std::nullopt, reset_sync_future.Take());
+
+  base::test::TestFuture<base::expected<
+      std::optional<OrchardStorage::AccountMeta>, OrchardStorage::Error>>
+      account_meta_future;
+  zcash_wallet_service_->sync_state()
+      .AsyncCall(&OrchardSyncState::GetAccountMeta)
+      .WithArgs(account_id_1.Clone())
+      .Then(account_meta_future.GetCallback());
+  auto account_meta = account_meta_future.Take();
+  ASSERT_TRUE(account_meta.has_value());
+  ASSERT_TRUE(account_meta.value());
+  EXPECT_EQ(100000u - kChainReorgBlockDelta,
+            account_meta.value()->account_birthday);
 
   base::test::TestFuture<bool> unlock_future;
   keyring_service()->Unlock(kTestWalletPassword, unlock_future.GetCallback());

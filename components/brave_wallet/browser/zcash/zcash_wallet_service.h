@@ -114,7 +114,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                       ShieldAllFundsCallback callback) override;
 
   void ResetSyncState(mojom::AccountIdPtr account_id,
-                      std::optional<uint32_t> account_birthday_block,
+                      uint32_t account_birthday_block,
                       ResetSyncStateCallback callback) override;
 
   void RunDiscovery(mojom::AccountIdPtr account_id,
@@ -185,7 +185,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   template <typename T>
   using TaskContainer = absl::flat_hash_set<std::unique_ptr<T>>;
   using AccountBirthdayCallback =
-      base::OnceCallback<void(const std::optional<std::string>&)>;
+      base::OnceCallback<void(mojom::ZCashAccountShieldBirthdayPtr,
+                              const std::optional<std::string>&)>;
 
   friend class ZCashCompleteTransactionTask;
   friend class ZCashCreateOrchardToOrchardTransactionTask;
@@ -308,6 +309,16 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       mojom::AccountIdPtr account_id,
       AccountBirthdayCallback callback,
       base::expected<zcash::mojom::TreeStatePtr, std::string> result);
+  void OnMakeAccountShieldedAccountBirthday(
+      mojom::AccountIdPtr account_id,
+      MakeAccountShieldedCallback callback,
+      mojom::ZCashAccountShieldBirthdayPtr account_birthday,
+      const std::optional<std::string>& error_message);
+  void OnGetAccountBirthdayForResetSyncState(
+      mojom::AccountIdPtr account_id,
+      ResetSyncStateCallback callback,
+      mojom::ZCashAccountShieldBirthdayPtr account_birthday,
+      const std::optional<std::string>& error_message);
 
   mojom::ZCashAccountShieldBirthdayPtr GetAccountShieldBirthday(
       const mojom::AccountIdPtr& account_id);
@@ -324,7 +335,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void OnResetSyncState(
       mojom::AccountIdPtr account_id,
-      std::optional<uint32_t> account_birthday_block,
+      mojom::ZCashAccountShieldBirthdayPtr account_birthday,
       ResetSyncStateCallback callback,
       base::expected<OrchardStorage::Result, OrchardStorage::Error> result);
 

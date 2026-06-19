@@ -435,7 +435,9 @@ OrchardStorage::HandleChainReorg(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::ResetAccountSyncState(
+    const mojom::AccountIdPtr& account_id,
+    std::optional<uint32_t> account_birthday_block) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -468,15 +470,35 @@ OrchardStorage::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
   clear_checkpoints_statement.BindString(0, account_id->unique_key);
 
   // Update account meta.
-  sql::Statement update_account_meta(database_.GetCachedStatement(
-      SQL_FROM_HERE, "UPDATE " kAccountMeta " "
-                     "SET latest_scanned_block = NULL, "
-                     "latest_scanned_block_hash = NULL WHERE account_id = ?;"));
-  update_account_meta.BindString(0, account_id->unique_key);
+  if (account_birthday_block) {
+    sql::Statement update_account_meta_statement(database_.GetCachedStatement(
+        SQL_FROM_HERE, "UPDATE " kAccountMeta
+                       " SET latest_scanned_block = NULL, "
+                       "latest_scanned_block_hash = NULL, account_birthday = ? "
+                       "WHERE account_id = ?;"));
+    update_account_meta_statement.BindInt64(0, *account_birthday_block);
+    update_account_meta_statement.BindString(1, account_id->unique_key);
+    if (!update_account_meta_statement.Run()) {
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_.GetErrorMessage()});
+    }
+  } else {
+    sql::Statement update_account_meta_statement(database_.GetCachedStatement(
+        SQL_FROM_HERE,
+        "UPDATE " kAccountMeta
+        " "
+        "SET latest_scanned_block = NULL, "
+        "latest_scanned_block_hash = NULL WHERE account_id = ?;"));
+    update_account_meta_statement.BindString(0, account_id->unique_key);
+    if (!update_account_meta_statement.Run()) {
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_.GetErrorMessage()});
+    }
+  }
 
   if (!clear_cap_statement.Run() || !clear_shards_statement.Run() ||
       !clear_discovered_notes.Run() || !clear_spent_notes.Run() ||
-      !clear_checkpoints_statement.Run() || !update_account_meta.Run()) {
+      !clear_checkpoints_statement.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                   database_.GetErrorMessage()});
   }

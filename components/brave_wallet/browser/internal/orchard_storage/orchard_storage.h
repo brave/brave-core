@@ -8,6 +8,7 @@
 
 #include <array>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -86,7 +87,8 @@ class OrchardStorage {
   base::expected<std::optional<AccountMeta>, Error> GetAccountMeta(
       const mojom::AccountIdPtr& account_id);
   base::expected<Result, Error> ResetAccountSyncState(
-      const mojom::AccountIdPtr& account_id);
+      const mojom::AccountIdPtr& account_id,
+      std::optional<uint32_t> account_birthday_block);
 
   // Removes database records which are under effect of chain reorg
   // Removes spendable notes and nullifiers with block_height > reorg_block

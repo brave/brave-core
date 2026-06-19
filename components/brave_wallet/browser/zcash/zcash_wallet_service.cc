@@ -128,10 +128,19 @@ void ZCashWalletService::MakeAccountShielded(
       }
     }
     if (account_birthday_block == 0) {
-      GetLatestBlockForAccountBirthday(account_id.Clone(), std::move(callback));
+      GetLatestBlockForAccountBirthday(
+          account_id.Clone(),
+          base::BindOnce(
+              &ZCashWalletService::OnMakeAccountShieldedAccountBirthday,
+              weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+              std::move(callback)));
     } else {
       GetTreeStateForAccountBirthday(
-          std::move(account_id), account_birthday_block, std::move(callback));
+          account_id.Clone(), account_birthday_block,
+          base::BindOnce(
+              &ZCashWalletService::OnMakeAccountShieldedAccountBirthday,
+              weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+              std::move(callback)));
     }
     return;
   }
@@ -593,21 +602,31 @@ void ZCashWalletService::ShieldAllFunds(mojom::AccountIdPtr account_id,
   }
 }
 
-void ZCashWalletService::ResetSyncState(
-    mojom::AccountIdPtr account_id,
-    std::optional<uint32_t> account_birthday_block,
-    ResetSyncStateCallback callback) {
+void ZCashWalletService::ResetSyncState(mojom::AccountIdPtr account_id,
+                                        uint32_t account_birthday_block,
+                                        ResetSyncStateCallback callback) {
   if (IsZCashShieldedTransactionsEnabled()) {
     if (shield_sync_services_.find(account_id) != shield_sync_services_.end()) {
       std::move(callback).Run("Sync in progress");
       return;
     }
+    if (account_birthday_block != 0) {
+      GetTreeStateForAccountBirthday(
+          account_id.Clone(), account_birthday_block,
+          base::BindOnce(
+              &ZCashWalletService::OnGetAccountBirthdayForResetSyncState,
+              weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+              std::move(callback)));
+      return;
+    }
+
     sync_state()
         .AsyncCall(&OrchardSyncState::ResetAccountSyncState)
-        .WithArgs(account_id.Clone())
+        .WithArgs(account_id.Clone(), std::nullopt)
         .Then(base::BindOnce(&ZCashWalletService::OnResetSyncState,
                              weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
-                             account_birthday_block, std::move(callback)));
+                             mojom::ZCashAccountShieldBirthdayPtr(),
+                             std::move(callback)));
   } else {
     std::move(callback).Run(
         l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
@@ -822,7 +841,7 @@ void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   CHECK(account_id);
   if (!result.has_value() || !result.value()) {
-    std::move(callback).Run("Failed to retrieve latest block");
+    std::move(callback).Run(nullptr, "Failed to retrieve latest block");
     return;
   }
 
@@ -838,7 +857,7 @@ void ZCashWalletService::GetTreeStateForAccountBirthday(
   // kChainReorgBlockDelta to ensure account birthday won't be affected by chain
   // reorg.
   if (block_id < kChainReorgBlockDelta) {
-    std::move(callback).Run("Failed to retrieve latest block");
+    std::move(callback).Run(nullptr, "Failed to retrieve latest block");
     return;
   }
 
@@ -858,17 +877,50 @@ void ZCashWalletService::OnGetTreeStateForAccountBirthday(
     AccountBirthdayCallback callback,
     base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
-    std::move(callback).Run("Failed to retrieve tree state");
+    std::move(callback).Run(nullptr, "Failed to retrieve tree state");
     return;
   }
 
-  keyring_service_->SetZCashAccountBirthday(
-      account_id, mojom::ZCashAccountShieldBirthday::New((*result)->height,
-                                                         (*result)->hash));
+  std::move(callback).Run(mojom::ZCashAccountShieldBirthday::New(
+                              (*result)->height, (*result)->hash),
+                          std::nullopt);
+}
+
+void ZCashWalletService::OnMakeAccountShieldedAccountBirthday(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldedCallback callback,
+    mojom::ZCashAccountShieldBirthdayPtr account_birthday,
+    const std::optional<std::string>& error_message) {
+  if (error_message) {
+    std::move(callback).Run(error_message);
+    return;
+  }
+  CHECK(account_birthday);
+
+  keyring_service_->SetZCashAccountBirthday(account_id,
+                                            std::move(account_birthday));
 
   MaybeInitAutoSyncManagers();
-
   std::move(callback).Run(std::nullopt);
+}
+
+void ZCashWalletService::OnGetAccountBirthdayForResetSyncState(
+    mojom::AccountIdPtr account_id,
+    ResetSyncStateCallback callback,
+    mojom::ZCashAccountShieldBirthdayPtr account_birthday,
+    const std::optional<std::string>& error_message) {
+  if (error_message) {
+    std::move(callback).Run(error_message);
+    return;
+  }
+  CHECK(account_birthday);
+
+  sync_state()
+      .AsyncCall(&OrchardSyncState::ResetAccountSyncState)
+      .WithArgs(account_id.Clone(), account_birthday->value)
+      .Then(base::BindOnce(&ZCashWalletService::OnResetSyncState,
+                           weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+                           std::move(account_birthday), std::move(callback)));
 }
 
 mojom::ZCashAccountShieldBirthdayPtr
@@ -910,7 +962,7 @@ void ZCashWalletService::OnSyncStatusUpdate(
 
 void ZCashWalletService::OnResetSyncState(
     mojom::AccountIdPtr account_id,
-    std::optional<uint32_t> account_birthday_block,
+    mojom::ZCashAccountShieldBirthdayPtr account_birthday,
     ResetSyncStateCallback callback,
     base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
   if (result.has_value()) {
@@ -918,11 +970,16 @@ void ZCashWalletService::OnResetSyncState(
       std::move(callback).Run("Account data wasn't deleted");
       return;
     }
-    if (account_birthday_block) {
-      GetTreeStateForAccountBirthday(
-          std::move(account_id), *account_birthday_block, std::move(callback));
-      return;
+
+    if (account_birthday) {
+      if (!keyring_service_->SetZCashAccountBirthday(
+              account_id, std::move(account_birthday))) {
+        std::move(callback).Run("Failed to persist account birthday");
+        return;
+      }
+      MaybeInitAutoSyncManagers();
     }
+
     std::move(callback).Run(std::nullopt);
     return;
   }
