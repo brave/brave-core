@@ -116,6 +116,7 @@ import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInj
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
@@ -1167,14 +1168,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             maybeShowWalletPanel();
         } else if (mYouTubePipButton == v && mYouTubePipButton != null) {
             Tab currentTab = getToolbarDataProvider().getTab();
-            if (currentTab != null
-                    && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
-                            currentTab.getWebContents())) {
+            final WebContents webContents = currentTab != null ? currentTab.getWebContents() : null;
+            if (webContents != null) {
+                final int navigationEntryId =
+                        BraveYouTubeScriptInjectorNativeHelper
+                                .getNavigationEntryIdIfPictureInPictureAvailable(webContents);
+                if (navigationEntryId
+                        == BraveYouTubeScriptInjectorNativeHelper.INVALID_NAVIGATION_ENTRY_ID) {
+                    return;
+                }
                 if (!PictureInPicture.isEnabled(getContext())) {
                     hideYouTubePipIcon();
                     return;
                 }
-                BraveYouTubeScriptInjectorNativeHelper.setFullscreen(currentTab.getWebContents());
+                BraveYouTubeScriptInjectorNativeHelper.setFullscreen(
+                        webContents, navigationEntryId);
             }
         }
     }

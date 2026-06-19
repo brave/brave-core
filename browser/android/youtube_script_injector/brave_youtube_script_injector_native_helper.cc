@@ -5,27 +5,70 @@
 
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 
+#include <cstdint>
+
 #include "base/android/jni_android.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "chrome/android/chrome_jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace youtube_script_injector {
+namespace {
+
+constexpr int32_t kInvalidNavigationEntryId = 0;
+
+}  // namespace
 
 // static
 void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     JNIEnv* env,
-    const base::android::JavaRef<jobject>& jweb_contents) {
+    const base::android::JavaRef<jobject>& jweb_contents,
+    int32_t expected_navigation_entry_id) {
+  if (expected_navigation_entry_id == kInvalidNavigationEntryId) {
+    return;
+  }
+
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
+  if (!web_contents) {
+    return;
+  }
+
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
   if (!helper) {
     return;
   }
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(expected_navigation_entry_id);
+}
+
+// static
+int32_t
+JNI_BraveYouTubeScriptInjectorNativeHelper_GetNavigationEntryIdIfPictureInPictureAvailable(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+  if (!web_contents) {
+    return kInvalidNavigationEntryId;
+  }
+
+  YouTubeScriptInjectorTabHelper* helper =
+      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
+  if (!helper || !helper->IsPictureInPictureAvailable()) {
+    return kInvalidNavigationEntryId;
+  }
+
+  content::NavigationEntry* entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  if (!entry) {
+    return kInvalidNavigationEntryId;
+  }
+
+  return entry->GetUniqueID();
 }
 
 // static
@@ -34,6 +77,9 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_HasFullscreenBeenRequested(
     const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
+  if (!web_contents) {
+    return false;
+  }
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
@@ -50,6 +96,9 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
     const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
+  if (!web_contents) {
+    return false;
+  }
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);

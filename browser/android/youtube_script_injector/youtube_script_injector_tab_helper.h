@@ -27,7 +27,7 @@ class YouTubeScriptInjectorTabHelper
   ~YouTubeScriptInjectorTabHelper() override;
   bool IsYouTubeDomain(bool mobileOnly = false) const;
   bool IsYouTubeVideo(bool mobileOnly = false) const;
-  void MaybeSetFullscreen();
+  void MaybeSetFullscreen(int expected_navigation_entry_id);
 
   // Fullscreen state management using PageUserData
   bool HasFullscreenBeenRequested() const;
@@ -38,6 +38,8 @@ class YouTubeScriptInjectorTabHelper
 
   // content::WebContentsObserver overrides:
   void PrimaryPageChanged(content::Page& page) override;
+  void RenderFrameHostChanged(content::RenderFrameHost* old_host,
+                              content::RenderFrameHost* new_host) override;
   void RenderFrameDeleted(content::RenderFrameHost* rfh) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;

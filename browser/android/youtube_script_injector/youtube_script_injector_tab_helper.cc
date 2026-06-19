@@ -217,6 +217,15 @@ void YouTubeScriptInjectorTabHelper::PrimaryPageChanged(content::Page& page) {
   SetFullscreenRequested(false);
 }
 
+void YouTubeScriptInjectorTabHelper::RenderFrameHostChanged(
+    content::RenderFrameHost* old_host,
+    content::RenderFrameHost*) {
+  if (old_host && old_host->GetGlobalId() == bound_rfh_id_) {
+    script_injector_remote_.reset();
+    bound_rfh_id_ = {};
+  }
+}
+
 void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(
     content::RenderFrameHost* rfh) {
   if (rfh->GetGlobalId() == bound_rfh_id_) {
@@ -265,14 +274,16 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
   }
 }
 
-void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
+void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen(
+    int expected_navigation_entry_id) {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  // Check if fullscreen has already been requested for this page. The
-  // IsYouTubeDomain guard closes a navigation race: callers gate at
-  // toolbar-click time, but the page may commit a cross-origin navigation
-  // before this Mojo IPC reaches the renderer, which would land the script in
-  // a non-YouTube document.
-  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested() ||
+  content::NavigationEntry* entry =
+      web_contents()->GetController().GetLastCommittedEntry();
+  // The navigation entry id is captured by the Java caller that initiates the
+  // fullscreen request. Refuse to inject if a different page load committed
+  // before this browser-side gate runs.
+  if (!entry || entry->GetUniqueID() != expected_navigation_entry_id || !rfh ||
+      !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested() ||
       !IsYouTubeDomain()) {
     return;
   }
@@ -407,15 +418,10 @@ void YouTubeScriptInjectorTabHelper::EnsureBound(
   DCHECK(rfh);
   DCHECK(rfh->IsRenderFrameLive());
 
-  if (!script_injector_remote_.is_bound() ||
-      !script_injector_remote_.is_connected() ||
-      bound_rfh_id_ != rfh->GetGlobalId()) {
-    script_injector_remote_.reset();
-    bound_rfh_id_ = rfh->GetGlobalId();
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &script_injector_remote_);
-    script_injector_remote_.reset_on_disconnect();
-  }
+  script_injector_remote_.reset();
+  bound_rfh_id_ = rfh->GetGlobalId();
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote_);
+  script_injector_remote_.reset_on_disconnect();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
