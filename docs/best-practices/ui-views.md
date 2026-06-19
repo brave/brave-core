@@ -106,3 +106,87 @@ if (views::IsViewClass<MyCustomView>(some_view)) {
 ```
 
 ---
+
+<a id="UV-004"></a>
+
+## ❌ Avoid `BubbleDialogDelegateView`
+
+**Do not inherit from `BubbleDialogDelegateView`; it is deprecated by
+Chromium.** Combining the delegate and view into one class makes ownership and
+lifetimes harder to reason about, and encourages mixing UI layout with business
+logic.
+
+For bubble dialogs, build a `ui::DialogModel` and return a
+`std::unique_ptr<views::BubbleDialogModelHost>` from a factory function. The
+caller transfers host ownership to the widget via `release()` and holds the
+widget itself. A close callback posted with `DeleteSoon` destroys the
+client-owned widget asynchronously.
+
+```cpp
+// ❌ WRONG
+class MyBubble : public views::BubbleDialogDelegateView { ... };
+
+// ✅ CORRECT
+
+// Factory (e.g. in a separate file):
+std::unique_ptr<views::BubbleDialogModelHost> ShowMyBubble(
+    views::View* anchor_view) {
+  auto model = ui::DialogModel::Builder()
+      .SetTitle(u"My Bubble")
+      .AddOkButton(base::DoNothing())
+      .Build();
+  return std::make_unique<views::BubbleDialogModelHost>(
+      std::move(model), anchor_view, views::BubbleBorder::TOP_RIGHT);
+}
+
+// Caller — host ownership is transferred to the widget:
+std::unique_ptr<views::BubbleDialogModelHost> host = ShowMyBubble(anchor_view);
+bubble_widget_ = views::BubbleDialogDelegate::CreateBubble(
+    host.release(),
+    base::BindOnce(&MyClass::OnBubbleClosing,
+                   weak_ptr_factory_.GetWeakPtr()));
+bubble_widget_->Show();
+
+// Close callback — use DeleteSoon to destroy the client-owned widget:
+void MyClass::OnBubbleClosing(views::Widget::ClosedReason reason) {
+  base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
+      FROM_HERE, bubble_widget_.release());
+}
+```
+
+---
+
+<a id="UV-005"></a>
+
+## ❌ Avoid `DialogDelegateView`
+
+**Do not inherit from `DialogDelegateView`; it is deprecated by Chromium.**
+Combining the delegate and view into one class makes ownership and lifetimes
+harder to reason about, and encourages mixing UI layout with business logic.
+
+For non-bubble modal dialogs, inherit from `DialogDelegate` alone, configure
+buttons and title in the constructor, call `SetContentsView()` with a separate
+`View`, and show via `DialogDelegate::CreateDialogWidget()`.
+
+```cpp
+// ❌ WRONG
+class MyDialog : public views::DialogDelegateView { ... };
+
+// ✅ CORRECT - separate delegate + view
+class MyDialog : public views::DialogDelegate {
+ public:
+  MyDialog() {
+    SetTitle(u"My Dialog");
+    SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk) |
+               static_cast<int>(ui::mojom::DialogButton::kCancel));
+    SetContentsView(std::make_unique<MyContentsView>());
+  }
+};
+
+// Show the dialog:
+views::Widget* widget = views::DialogDelegate::CreateDialogWidget(
+    new MyDialog(), /*context=*/nullptr, /*parent=*/nullptr);
+widget->Show();
+```
+
+---
