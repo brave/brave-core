@@ -21,6 +21,9 @@ resources outside this repository, go to:
 
 - [Claude Code Skills](claude_code_skills.md) - Slash commands for automating
   common development tasks (commit, review, preflight, CI, and more).
+- [Build-defaults matrix generator](../tools/bots/README.md) - Generate Brave's
+  generated GN build defaults from a declarative `configs.pyl` (an MB-style
+  mixins/configs/builder_groups matrix).
 
 ### Security and Privacy
 
