@@ -22,6 +22,7 @@
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/cookie_control_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/protection_stats_javascript_feature.h"
 #include "brave/ios/browser/global_privacy_control/gpc_javascript_feature.h"
 #include "brave/ios/browser/skus/skus_javascript_feature.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -158,6 +159,8 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
         MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(NightModeJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
+    features.push_back(
+        brave_shields::ProtectionStatsJavaScriptFeature::GetInstance());
     features.push_back(brave::ReaderModeJavaScriptFeature::GetInstance());
     features.push_back(
         skus::SkusJavaScriptFeature::FromBrowserState(browser_state));
