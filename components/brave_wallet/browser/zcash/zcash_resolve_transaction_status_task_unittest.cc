@@ -12,8 +12,8 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/mock_callback.h"
-#include "base/test/test_future.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -299,23 +299,16 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_Time_TransactionError) {
         std::move(callback).Run(base::unexpected("error"));
       });
 
-  base::MockCallback<ZCashResolveTransactionStatusTask::
-                         ZCashResolveTransactionStatusTaskCallback>
-      callback;
-
   auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
       CreatePassKey(), CreateContext(), zcash_wallet_service(),
       std::move(tx_meta));
-  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
-                 std::string>
-      tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
+  base::test::TestFuture<base::expected<
+      ZCashWalletService::ResolveTransactionStatusResult, std::string>>
+      tx_result_future;
 
-  task->Start(callback.Get());
+  task->Start(tx_result_future.GetCallback());
 
-  task_environment().RunUntilIdle();
-
-  EXPECT_EQ(tx_result.value(),
+  EXPECT_EQ(tx_result_future.Get().value(),
             ZCashWalletService::ResolveTransactionStatusResult::kExpired);
 }
 

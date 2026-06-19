@@ -30,7 +30,7 @@ std::optional<ResolveTransactionStatusResult> ResolveExpiredStatus(
     return ResolveTransactionStatusResult::kExpired;
   }
 
-  auto current_time = base::Time::Now();
+  base::Time current_time = base::Time::Now();
   if (expiry_height == 0 && !tx_meta.submitted_time().is_null() &&
       current_time >= tx_meta.submitted_time() &&
       current_time - tx_meta.submitted_time() >
@@ -156,7 +156,7 @@ void ZCashResolveTransactionStatusTask::GetTransaction() {
 
 void ZCashResolveTransactionStatusTask::OnGetTransactionResult(
     base::expected<zcash::mojom::RawTransactionPtr, std::string> result) {
-  if (!result.has_value()) {
+  if (!result.has_value() || !result.value()) {
     CHECK(chain_tip_);
     auto expired_status =
         ResolveExpiredStatus(chain_tip_.value()->height, *tx_meta_);
@@ -165,21 +165,8 @@ void ZCashResolveTransactionStatusTask::OnGetTransactionResult(
       return;
     }
 
-    error_ = result.error();
-    ScheduleWorkOnTask();
-    return;
-  }
-
-  if (!result.value()) {
-    CHECK(chain_tip_);
-    auto expired_status =
-        ResolveExpiredStatus(chain_tip_.value()->height, *tx_meta_);
-    if (expired_status) {
-      std::move(callback_).Run(base::ok(expired_status.value()));
-      return;
-    }
-
-    error_ = "Failed to resolve transaction";
+    error_ =
+        result.has_value() ? "Failed to resolve transaction" : result.error();
     ScheduleWorkOnTask();
     return;
   }
