@@ -52,12 +52,15 @@ OnionLocationTabHelper::~OnionLocationTabHelper() = default;
 // static
 void OnionLocationTabHelper::SetOnionLocationByThrottle(
     content::WebContents* web_contents,
-    const GURL& onion_location) {
+    const GURL& onion_location,
+    const std::optional<url::Origin>& initiator_origin) {
   auto* tab_helper = OnionLocationTabHelper::FromWebContents(web_contents);
   if (!tab_helper) {
     return;
   }
   tab_helper->throttle_reported_onion_location_ = onion_location;
+  tab_helper->throttle_reported_initiator_origin_ =
+      onion_location.is_empty() ? std::nullopt : initiator_origin;
 }
 
 OnionLocationTabHelper::OnionLocationTabHelper(
@@ -80,10 +83,13 @@ void OnionLocationTabHelper::DidFinishNavigation(
     // tried to open .onion domain in the normal window. In this case we should
     // show the error page with .onion location.
     onion_location_ = throttle_reported_onion_location_;
+    initiator_origin_ = throttle_reported_initiator_origin_;
   } else if (navigation_handle->IsServedFromBackForwardCache()) {
     onion_location_ = OnionLocation::Get(entry);
+    initiator_origin_.reset();
   } else {
     onion_location_ = throttle_reported_onion_location_;
+    initiator_origin_.reset();
     OnionLocation::Set(entry, throttle_reported_onion_location_);
   }
   if (auto* delegate = web_contents()->GetDelegate()) {
