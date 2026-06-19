@@ -623,9 +623,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // Navigates to `url`, waits for the PSST icon to appear in the location bar,
   // then clicks it with the specified `event_flags` to open its context menu
   // and waits for the menu to appear, or opens the consent dialog and waits
-  // for it to appear
-  void NavigateAndClickOnPsstLocationBarIcon(const GURL& url,
-                                             ui::EventFlags event_flags) {
+  // for it to appear. For a left-click, the opened consent dialog's WebContents
+  // is returned via `dialog_wc_out` when provided.
+  void NavigateAndClickOnPsstLocationBarIcon(
+      const GURL& url,
+      ui::EventFlags event_flags,
+      content::WebContents** dialog_wc_out = nullptr) {
     ASSERT_TRUE(event_flags == ui::EF_RIGHT_MOUSE_BUTTON ||
                 event_flags == ui::EF_LEFT_MOUSE_BUTTON);
     IconLabelBubbleView* const psst_view = GetPsstPageActionView();
@@ -668,6 +671,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
           WaitForAndGetDialogWebContents(new_web_contents_observer);
       ASSERT_TRUE(dialog_wc);
       WaitForPsstDialogUIReady(dialog_wc);
+      if (dialog_wc_out) {
+        *dialog_wc_out = dialog_wc;
+      }
     }
   }
 
@@ -952,6 +958,62 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
   ASSERT_NO_FATAL_FAILURE(
       NavigateAndClickOnPsstLocationBarIcon(url, ui::EF_LEFT_MOUSE_BUTTON));
+}
+
+// After navigating to the initial page and left-clicking the PSST location bar
+// icon, accepting the consent dialog runs both scripts across all task pages,
+// applies the PSST settings, and navigates the tab back to the initial page
+// where tuning started.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconLeftClickAppliesSettingsAndReturnsToPage) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  // Observe both scripts running across the initial page and each task page.
+  PsstWebContentsConsoleObserver console_observer(
+      web_contents(),
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_2.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_2.html")})});
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+
+  // Both scripts ran on every page, confirming all tasks were processed.
+  ASSERT_TRUE(console_observer.Wait());
+  EXPECT_TRUE(console_observer.CheckMessages());
+
+  // Once tuning completes, the tab returns to the initial page.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return web_contents()->GetLastCommittedURL() == url; }));
+
+  // PSST settings are applied for the signed-in user on this origin.
+  auto psst_website_settings = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_website_settings);
+  EXPECT_EQ(psst_website_settings->consent_status, ConsentStatus::kAllow);
+  EXPECT_EQ(psst_website_settings->user_id, kASiteSignedInUserId);
+  EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
+
+  ASSERT_TRUE(CloseModalDialog(dialog_wc));
 }
 
 }  // namespace psst
