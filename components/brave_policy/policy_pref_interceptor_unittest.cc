@@ -7,6 +7,8 @@
 
 #include <string_view>
 
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_policy/features.h"
 #include "brave/components/brave_policy/policy_pref_interceptor_list.h"
 #include "components/prefs/pref_value_map.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -86,6 +88,24 @@ TEST_F(PolicyPrefInterceptorTest, RemovesNewlyAddedPrefs) {
   interceptor_.InterceptPrefValues(&updated_map);
 
   EXPECT_FALSE(updated_map.GetBoolean(kManagedPref1, &value));
+}
+
+TEST_F(PolicyPrefInterceptorTest, DoesNotInterceptWhenFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kCacheNonDynamicPolicyPrefs);
+
+  PrefValueMap initial_map;
+  initial_map.SetBoolean(kManagedPref1, true);
+  interceptor_.InterceptPrefValues(&initial_map);
+
+  // Subsequent call should not restore cached values since feature is disabled.
+  PrefValueMap updated_map;
+  updated_map.SetBoolean(kManagedPref1, false);
+  interceptor_.InterceptPrefValues(&updated_map);
+
+  bool value;
+  ASSERT_TRUE(updated_map.GetBoolean(kManagedPref1, &value));
+  EXPECT_FALSE(value);
 }
 
 }  // namespace brave_policy
