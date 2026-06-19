@@ -14,6 +14,8 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -82,6 +84,13 @@ class YouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
 
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
+  }
+
+  int LastCommittedNavigationEntryId() {
+    return web_contents()
+        ->GetController()
+        .GetLastCommittedEntry()
+        ->GetUniqueID();
   }
 
   void InjectScript(const std::u16string_view script) {
@@ -164,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
 
@@ -198,7 +207,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
   EXPECT_TRUE(IsVideoPlaying());
@@ -233,7 +242,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
 
   // Verify that the video is still in fullscreen mode.
   EXPECT_TRUE(
@@ -261,7 +270,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   ASSERT_TRUE(helper);
 
   // Attempt to set fullscreen, which should not change anything.
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
 
   std::string dom_after =
       content::EvalJs(web_contents(), "document.body.innerHTML")
@@ -307,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
 
   // Inject a script to simulate delayed loading of the video element fullscreen
   // button.
@@ -347,7 +356,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   EXPECT_FALSE(helper->HasFullscreenBeenRequested());
 
   // First call should trigger fullscreen.
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
   EXPECT_TRUE(helper->HasFullscreenBeenRequested());
 
   // Wait for fullscreen to be triggered.
@@ -360,7 +369,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
 
   // Second call should work the same as first call.
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
 
   // Should still show fullscreen was requested a second time for this page.
   EXPECT_TRUE(helper->HasFullscreenBeenRequested());
@@ -388,7 +397,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   EXPECT_FALSE(helper->HasFullscreenBeenRequested());
 
   // Make fullscreen request on first page.
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
   EXPECT_TRUE(helper->HasFullscreenBeenRequested());
 
   // Navigate to second YouTube page
@@ -399,6 +408,6 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   EXPECT_FALSE(helper->HasFullscreenBeenRequested());
 
   // Verify MaybeSetFullscreen() works again on new page.
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullscreen(LastCommittedNavigationEntryId());
   EXPECT_TRUE(helper->HasFullscreenBeenRequested());
 }

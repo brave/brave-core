@@ -6,6 +6,8 @@
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -22,6 +24,13 @@ class YouTubeScriptInjectorTabHelperTest
 
   YouTubeScriptInjectorTabHelper* GetHelper() {
     return YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  }
+
+  int LastCommittedNavigationEntryId() {
+    return web_contents()
+        ->GetController()
+        .GetLastCommittedEntry()
+        ->GetUniqueID();
   }
 
   void NavigateToURL(const GURL& url) {
@@ -144,17 +153,13 @@ TEST_F(YouTubeScriptInjectorTabHelperTest, YouTubeDomainCorrectPathSubdomain) {
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest,
-       MaybeSetFullscreenNoOpForNonYouTubeDomain) {
-  NavigateToURL(GURL("https://example.com/watch?v=abcdefg"));
+       MaybeSetFullscreenNoOpForUnexpectedNavigationEntry) {
+  NavigateToURL(GURL("https://m.youtube.com/watch?v=abcdefg"));
 
-  ASSERT_TRUE(web_contents()->GetPrimaryMainFrame()->IsRenderFrameLive());
-  ASSERT_FALSE(GetHelper()->IsYouTubeDomain());
-
-  // This covers the injection-time revalidation used to close the toolbar
-  // click to renderer execution race. Reproducing the full async race would
-  // require a heavier browser test, but the behavior we need is that the final
-  // MaybeSetFullscreen() gate refuses non-YouTube committed pages.
-  GetHelper()->MaybeSetFullscreen();
+  // This covers the navigation entry identity revalidation used to reject a
+  // fullscreen request if a different page load committed after Java captured
+  // the request target.
+  GetHelper()->MaybeSetFullscreen(LastCommittedNavigationEntryId() + 1);
 
   EXPECT_FALSE(GetHelper()->HasFullscreenBeenRequested());
 }
