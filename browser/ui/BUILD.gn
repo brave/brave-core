@@ -805,6 +805,8 @@ source_set("ui") {
         "views/toolbar/ai_chat_button.h",
       ]
     }
+
+    deps += [ "//brave/browser/ui/views/toolbar:screenshot" ]
   }
 
   if (is_win || is_mac || is_linux) {
