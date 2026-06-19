@@ -56,7 +56,10 @@ class CreativeAdRoundRobin final {
 
       if (last_served_creative_instance_id_ && creative_ads.size() > 1) {
         // Exclude the last served creative ad to avoid an immediate repeat if
-        // there is more than one creative ad.
+        // there is more than one ad. `last_served_creative_instance_id_` may
+        // refer to a creative no longer in the candidate set; inserting it is
+        // safe because `erase_if` only removes creative instance IDs present in
+        // `creative_ads`.
         served_creative_instance_ids_.insert(
             *last_served_creative_instance_id_);
       }
