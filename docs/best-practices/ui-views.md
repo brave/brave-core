@@ -118,15 +118,15 @@ logic.
 
 For bubble dialogs, build a `ui::DialogModel` and return a
 `std::unique_ptr<views::BubbleDialogModelHost>` from a factory function. The
-caller stores the host and creates a client-owned widget via
-`BubbleDialogDelegate::CreateBubble()`, passing a close callback to clean up
-when the widget is destroyed.
+caller transfers host ownership to the widget via `release()` and holds the
+widget itself. A close callback posted with `DeleteSoon` destroys the
+client-owned widget asynchronously.
 
 ```cpp
 // ❌ WRONG
 class MyBubble : public views::BubbleDialogDelegateView { ... };
 
-// ✅ CORRECT - factory returns the host; caller owns both host and widget
+// ✅ CORRECT
 
 // Factory (e.g. in a separate file):
 std::unique_ptr<views::BubbleDialogModelHost> ShowMyBubble(
@@ -139,13 +139,19 @@ std::unique_ptr<views::BubbleDialogModelHost> ShowMyBubble(
       std::move(model), anchor_view, views::BubbleBorder::TOP_RIGHT);
 }
 
-// Caller:
-bubble_host_ = ShowMyBubble(anchor_view);
+// Caller — host ownership is transferred to the widget:
+std::unique_ptr<views::BubbleDialogModelHost> host = ShowMyBubble(anchor_view);
 bubble_widget_ = views::BubbleDialogDelegate::CreateBubble(
-    bubble_host_.get(),
+    host.release(),
     base::BindOnce(&MyClass::OnBubbleClosing,
                    weak_ptr_factory_.GetWeakPtr()));
 bubble_widget_->Show();
+
+// Close callback — use DeleteSoon to destroy the client-owned widget:
+void MyClass::OnBubbleClosing(views::Widget::ClosedReason reason) {
+  base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
+      FROM_HERE, bubble_widget_.release());
+}
 ```
 
 ---
