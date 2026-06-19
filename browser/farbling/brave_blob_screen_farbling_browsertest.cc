@@ -26,7 +26,7 @@ using brave_shields::ControlType;
 
 namespace {
 
-enum class BlobContainerType { kPopUpWindow, kIFrame, kUnset };
+enum class BlobContainerType { kPopUpWindow = 0, kIFrame = 1, kUnset = 2 };
 
 }  // namespace
 
@@ -161,7 +161,10 @@ class BraveBlobScreenFarblingBrowserTest
     EXPECT_EQ(should_match,
               content::EvalJs(MainFrame(),
                               "storedScreenValuesMatch('parent', 'blob')")
-                  .ExtractBool());
+                  .ExtractBool())
+        << "param=" << GetParam()
+        << ", container=" << static_cast<std::size_t>(blob_container_type_)
+        << ", allowed=" << fingerprinting_allowed_;
 
     // Close the popup after validation. NavigateToBlob is called twice inside
     // RunTests
