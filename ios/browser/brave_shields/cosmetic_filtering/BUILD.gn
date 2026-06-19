@@ -39,7 +39,23 @@ optimize_ts("cosmetic_filtering_js") {
   sources = [ "resources/cosmetic_filtering.ts" ]
 
   deps = [
+    ":procedural_filters",
     "//brave/ios/web/js_messaging:util_scripts",
     "//ios/web/public/js_messaging:util_scripts",
+  ]
+}
+
+# Shared with the non-iOS (webpack) cosmetic filtering build. Compiled here so
+# `cosmetic_filtering.ts` can import its procedural selector helpers.
+#
+# This source lives under //brave/components, whose nearest package.json is
+# treated as CommonJS, while //brave/ios sources are ESM (`"type": "module"`).
+# Under the default `nodenext` config that would emit CommonJS, which rollup
+# can't link against the ESM bundle. The custom tsconfig forces ESM output.
+compile_ts("procedural_filters") {
+  tsconfig_base = "procedural_filters.tsconfig.json"
+
+  sources = [
+    "//brave/components/cosmetic_filters/resources/data/procedural_filters.ts",
   ]
 }
