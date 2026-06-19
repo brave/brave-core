@@ -89,4 +89,5 @@ substitutions:
                           org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment.SEARCH_INDEX_DATA_PROVIDER,
                           org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment.SEARCH_INDEX_DATA_PROVIDER,
                           org.chromium.chrome.browser.settings.AppearancePreferences.SEARCH_INDEX_DATA_PROVIDER,
-                          org.chromium.chrome.browser.language.settings.BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER);
+                          org.chromium.chrome.browser.language.settings.BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER,
+                          org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER);

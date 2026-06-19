@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the AI Chat flags to the SyncPrefs interface.
+
+      Brave adds an AI Chat sync data type, so its managed/registered/synced
+      flags must be part of SyncPrefs alongside the other data types.
+    re_pattern:
+      '(export interface SyncPrefs \{.*?\n)( *)(wifiConfigurationsSynced:
+      boolean;)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1\2\3
+      \2aiChatManaged: boolean;
+      \2aiChatRegistered: boolean;
+      \2aiChatSynced: boolean;
+
+  - description: |-
+      Add aiChatSynced to the syncPrefsIndividualDataTypes list.
+
+      This list names the per-type prefs cached when "Sync All" is on, so the
+      AI Chat type must be present to be cached and restored correctly.
+    re_pattern: '(syncPrefsIndividualDataTypes: string\[\] = \[.*?)(\n\];)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        'aiChatSynced',\2
+
+  - description: |-
+      Append AI_CHAT to the UserSelectableType enum.
+
+      Mirrors the C++ UserSelectableType, which is kept in sync via the
+      LINT.IfChange annotation; AI_CHAT = 14 follows COOKIES = 13.
+    re_pattern: '(export enum UserSelectableType \{.*?[A-Z0-9_]+ = \d+)(\n\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1,
+        AI_CHAT = 14\2

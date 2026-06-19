@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the AI Chat flags to the getSyncAllPrefs() test fixture.
+
+      Brave extends SyncPrefs with AI Chat fields, so this fixture must populate
+      them to remain a complete SyncPrefs for the settings sync tests.
+    re_pattern:
+      '(getSyncAllPrefs\(\): SyncPrefs \{.*?\n)( *)(wifiConfigurationsSynced:
+      true,)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1\2\3
+      \2aiChatManaged: false,
+      \2aiChatRegistered: true,
+      \2aiChatSynced: true,
