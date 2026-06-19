@@ -162,9 +162,10 @@ public class PlaylistCoordinator: NSObject {
   ) {
     if let tab = tab,
       let item = tab.playlistItem,
-      let tag = tab.playlistItem?.tagId
+      let tag = tab.playlistItem?.tagId,
+      let playlist = tab.playlist
     {
-      PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: tag) {
+      playlist.getCurrentTime(nodeTag: tag) {
         [unowned self] currentTime in
         completion(
           self.getPlaylistController(
