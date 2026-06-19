@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
+#include "brave/components/misc_metrics/renderer/web3_metrics_render_frame_observer.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
@@ -172,6 +173,8 @@ void BraveContentRendererClient::RenderFrameCreated(
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL, dynamic_params_closure);
   }
+
+  new misc_metrics::Web3MetricsRenderFrameObserver(render_frame);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (IsBraveWalletAvailable()) {

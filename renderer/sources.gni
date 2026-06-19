@@ -32,6 +32,7 @@ brave_chrome_renderer_deps = [
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/cosmetic_filters/renderer",
+  "//brave/components/misc_metrics/renderer",
   "//brave/components/playlist/core/common/buildflags",
   "//brave/components/safe_builtins/renderer",
   "//brave/components/script_injector/renderer",

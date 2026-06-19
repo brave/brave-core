@@ -34,6 +34,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/features.h"
@@ -401,6 +402,16 @@ void BindBraveSearchFallbackHost(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchFallbackHost>(
           backup_results_service),
+      std::move(receiver));
+}
+
+void BindWeb3Metrics(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<misc_metrics::mojom::Web3Metrics> receiver) {
+  if (!g_brave_browser_process->process_misc_metrics()) {
+    return;
+  }
+  g_brave_browser_process->process_misc_metrics()->web3_metrics()->BindReceiver(
       std::move(receiver));
 }
 
@@ -941,6 +952,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       render_frame_host, map);
   map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
       base::BindRepeating(&BindCosmeticFiltersResources));
+  map->Add<misc_metrics::mojom::Web3Metrics>(
+      base::BindRepeating(&BindWeb3Metrics));
   if (brave_search::IsDefaultAPIEnabled()) {
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));

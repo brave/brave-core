@@ -185,7 +185,7 @@ source_set("unit_tests") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = []
+  sources = [ "web3_metrics_browsertest.cc" ]
 
   if (!is_android) {
     sources += [ "vertical_tab_metrics_browsertest.cc" ]
@@ -195,11 +195,16 @@ source_set("browser_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/components/constants",
+    "//brave/components/misc_metrics",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/test:test_support",
     "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
     "//testing/gtest",
+    "//url",
   ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

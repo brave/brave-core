@@ -18,6 +18,13 @@ enum OpeningScreenSwitchType {
   kOther,
 };
 
+// Handler for web3-related metric events reported from the renderer.
+interface Web3Metrics {
+  // Records that the current page interacted with a web3 provider (e.g.
+  // window.ethereum) or dispatched an EIP-6963 provider discovery request.
+  RecordDappVisit();
+};
+
 // Handler for Android misc metric events from UI.
 interface MiscAndroidMetrics {
   // Records view of Privacy Hub report.

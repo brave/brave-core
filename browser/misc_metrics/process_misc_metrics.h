@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/misc_metrics/web3_metrics.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -44,6 +45,8 @@ class ProcessMiscMetrics {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  Web3Metrics* web3_metrics();
+
 #if !BUILDFLAG(IS_ANDROID)
   MenuMetrics* menu_metrics();
   NewTabMetrics* new_tab_metrics();
@@ -62,6 +65,8 @@ class ProcessMiscMetrics {
 
   raw_ptr<PrefService> local_state_;
   PrefChangeRegistrar pref_change_registrar_;
+
+  Web3Metrics web3_metrics_;
 
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MenuMetrics> menu_metrics_;
