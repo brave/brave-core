@@ -25,6 +25,7 @@ extension JitsiMeetConferenceOptions {
       builder.setFeatureFlag("resolution", withValue: 360)
       builder.setFeatureFlag("add-people.enabled", withBoolean: false)
       builder.setFeatureFlag("invite-dial-in.enabled", withBoolean: false)
+      builder.setFeatureFlag("toolbox.alwaysVisible", withValue: true)
       builder.setSubject("Brave Talk")
       builder.setConfigOverride("localSubject", withValue: "Brave Talk")
       builder.setConfigOverride("analytics", with: ["disabled": true, "rtcstatsEnabled": false])
