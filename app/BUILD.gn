@@ -122,6 +122,9 @@ source_set("unit_tests") {
   if (!is_android) {
     sources += [ "command_utils_unittest.cc" ]
   }
+  if (enable_brave_vpn_v2) {
+    sources += [ "vpn_apps_branding_unittest.cc" ]
+  }
   deps = [
     "//base",
     "//base/test:test_support",
@@ -214,6 +217,9 @@ source_set("unit_tests") {
   }
   if (is_win) {
     deps += [ "//chrome/browser/startup" ]
+  }
+  if (enable_brave_vpn_v2) {
+    deps += [ "//brave/components/brave_vpn/app/v2/shared" ]
   }
 }
 

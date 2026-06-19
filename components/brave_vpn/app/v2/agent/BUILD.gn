@@ -41,6 +41,7 @@ executable("agent") {
     "//base",
     "//base:base_static",
     "//brave/components/brave_vpn/app/v2/shared",
+    "//brave/components/brave_vpn/app/v2/shared:crashrpt",
   ]
 
   if (is_mac) {
@@ -77,6 +78,7 @@ if (is_mac) {
       "//base",
       "//base:base_static",
       "//brave/components/brave_vpn/app/v2/shared",
+      "//brave/components/brave_vpn/app/v2/shared:crashrpt",
     ]
 
     ldflags = []

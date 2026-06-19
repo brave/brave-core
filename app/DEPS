@@ -99,4 +99,7 @@ specific_include_rules = {
     # code outside of content should not access content/common
     "!content/common",
   ],
+  "vpn_apps_branding_unittest\.cc": [
+    "+brave/components/brave_vpn/app/v2/shared/app_utils.h",
+  ],
 }
