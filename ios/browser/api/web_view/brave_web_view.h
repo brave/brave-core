@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ProtectionStatsTabHelperBridge;
 @protocol PrintHandler;
 @protocol RequestBlockingTabHelperBridge;
+@protocol CosmeticFilteringTabHelperBridge;
 @protocol BraveWalletProviderDelegate;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
@@ -272,6 +273,13 @@ CWV_EXPORT
 /// A bridge for Request Blocking javascript feature
 - (void)setRequestBlockingTabHelperBridge:
     (id<RequestBlockingTabHelperBridge>)bridge;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (CosmeticFiltering)
+/// A bridge for Cosmetic Filtering javascript feature
+- (void)setCosmeticFilteringTabHelperBridge:
+    (id<CosmeticFilteringTabHelperBridge>)bridge;
 @end
 
 NS_ASSUME_NONNULL_END
