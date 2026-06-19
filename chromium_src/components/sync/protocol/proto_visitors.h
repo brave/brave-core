@@ -31,8 +31,6 @@ VISIT(brave_fields);
     VISIT(model_key);                                                      \
     VISIT(total_tokens);                                                   \
     VISIT(trimmed_tokens);                                                 \
-    VISIT(created_time_unix_epoch_micros);                                 \
-    VISIT(last_modified_time_unix_epoch_micros);                           \
   }                                                                        \
   VISIT_PROTO_FIELDS(                                                      \
       const sync_pb::AIChatConversationSpecifics_Entry& proto) {           \
@@ -65,10 +63,6 @@ VISIT(brave_fields);
     VISIT_BYTES(data);                                                     \
     VISIT(data_truncated_for_sync);                                        \
     VISIT(extracted_text);                                                 \
-  }                                                                        \
-  VISIT_PROTO_FIELDS(const sync_pb::AIChatPermissionChallenge& proto) {    \
-    VISIT(assessment);                                                     \
-    VISIT(plan);                                                           \
   }                                                                        \
   VISIT_PROTO_FIELDS(const sync_pb::AIChatEntryEventProto& proto) {        \
     VISIT(event_order);                                                    \
@@ -103,7 +97,6 @@ VISIT(brave_fields);
     VISIT_REP(output);                                                     \
     VISIT(is_server_result);                                               \
     VISIT_REP(artifacts);                                                  \
-    VISIT(permission_challenge);                                           \
   }                                                                        \
   VISIT_PROTO_FIELDS(const sync_pb::AIChatContentBlock& proto) {           \
     VISIT(image_content_block);                                            \

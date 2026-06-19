@@ -63,8 +63,6 @@ message AIChatConversationSpecifics {
     optional string model_key = 3;
     optional uint64 total_tokens = 4;
     optional uint64 trimmed_tokens = 5;
-    optional int64 created_time_unix_epoch_micros = 6;
-    optional int64 last_modified_time_unix_epoch_micros = 7;
   }
 
   // A single conversation turn (human or assistant message), with the
@@ -137,16 +135,6 @@ message AIChatUploadedFile {
   optional AIChatCompressibleString extracted_text = 6;
 }
 
-// Permission challenge attached to a tool use event. Set by the server
-// (alignment check) or by the client tool to block execution until the
-// user approves.
-message AIChatPermissionChallenge {
-  // Server alignment reasoning (when the server blocks the tool).
-  optional string assessment = 1;
-  // Tool's explanation for why it needs permission.
-  optional string plan = 2;
-}
-
 // An event within a conversation entry.
 message AIChatEntryEventProto {
   optional int32 event_order = 1;
@@ -194,7 +182,6 @@ message AIChatToolUseEvent {
   repeated AIChatContentBlock output = 4;
   optional bool is_server_result = 5;
   repeated AIChatToolArtifact artifacts = 6;
-  optional AIChatPermissionChallenge permission_challenge = 7;
 }
 
 // A persisted tool output content block. Mirrors the subset of
