@@ -8,6 +8,10 @@ import {
   sendTokenizedWebKitMessageSynchronously,
   messageHandlerName,
 } from '//brave/ios/web/js_messaging/resources/utils.js'
+import {
+  applyCompiledSelector,
+  compileProceduralSelector,
+} from '//brave/components/cosmetic_filters/resources/data/procedural_filters.js'
 
 type Arguments = {
   hideFirstPartyContent: boolean
@@ -1365,10 +1369,13 @@ const executeProceduralActions = (added?: Element[]) => {
           performAction(elem, action)
         })
       } else {
-        // const filter = compileProceduralSelector(selector.slice(startOperator))
-        // applyCompiledSelector(filter, matchingElements).forEach((elem) => {
-        //   performAction(elem, action)
-        // })
+        const filter = compileProceduralSelector(selector.slice(startOperator))
+        applyCompiledSelector(
+          filter,
+          matchingElements as HTMLElement[],
+        ).forEach((elem) => {
+          performAction(elem, action)
+        })
       }
     } catch (e) {
       console.error(
