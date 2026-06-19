@@ -89,6 +89,11 @@ class ContentBlockerHelper: ObservableObject {
     self.tab = tab
   }
 
+  func clearPageStats() {
+    stats = TPPageStats()
+    blockedRequests.removeAll()
+  }
+
   @MainActor func set(ruleLists: Set<WKContentRuleList>) {
     guard ruleLists != setRuleLists else { return }
     var addedIds: [String] = []
