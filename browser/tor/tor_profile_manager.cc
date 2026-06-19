@@ -182,8 +182,8 @@ class TorTabNavigator final : public content::WebContentsObserver,
 
 // static
 Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile) {
-  return TorProfileManager::SwitchToTorProfile(original_profile, GURL::EmptyGURL(),
-                                             std::nullopt);
+  return TorProfileManager::SwitchToTorProfile(original_profile,
+                                               GURL::EmptyGURL(), std::nullopt);
 }
 
 // static

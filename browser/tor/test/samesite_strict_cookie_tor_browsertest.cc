@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/string_split.h"
-#include "base/strings/stringprintf.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
@@ -25,6 +24,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/views/test/button_test_api.h"
 #include "url/gurl.h"
@@ -46,7 +46,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLinkPage(
   auto response = std::make_unique<net::test_server::BasicHttpResponse>();
   response->set_code(net::HTTP_OK);
   response->set_content_type("text/html");
-  response->set_content(base::StringPrintf(
+  response->set_content(absl::StrFormat(
       R"(<html><body><a id="onion" href="%s">link</a></body></html>)",
       onion_echo_url.spec().c_str()));
   return response;
