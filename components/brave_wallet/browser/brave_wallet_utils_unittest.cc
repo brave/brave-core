@@ -598,6 +598,74 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
       )"));
 }
 
+TEST(BraveWalletUtilsUnitTest, PolkadotNativeAssets) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletPolkadotFeature, {{"parachains_enabled", "true"}});
+
+  // Relay chain DOT carries the "dot" coingecko_id for price lookups.
+  EXPECT_EQ(
+      BlockchainTokenToValue(GetPolkadotNativeToken(mojom::kPolkadotMainnet)),
+      ParseJsonDict(R"(
+      {
+        "address": "",
+        "chain_id": "polkadot_mainnet",
+        "coin": 354,
+        "coingecko_id": "dot",
+        "decimals": 10,
+        "is_compressed": false,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "spl_token_program": 1,
+        "is_nft": false,
+        "is_shielded": false,
+        "is_spam": false,
+        "logo": "dot.png",
+        "name": "Polkadot",
+        "symbol": "DOT",
+        "token_id": "",
+        "visible": true
+      }
+      )"));
+
+  // Asset Hub holds the same teleported DOT, so it shares the "dot"
+  // coingecko_id. Without it, Asset Hub DOT shows no price info.
+  EXPECT_EQ(BlockchainTokenToValue(
+                GetPolkadotNativeToken(mojom::kPolkadotMainnetAssetHub)),
+            ParseJsonDict(R"(
+      {
+        "address": "",
+        "chain_id": "polkadot_asset_hub",
+        "coin": 354,
+        "coingecko_id": "dot",
+        "decimals": 10,
+        "is_compressed": false,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "spl_token_program": 1,
+        "is_nft": false,
+        "is_shielded": false,
+        "is_spam": false,
+        "logo": "dot.png",
+        "name": "Polkadot",
+        "symbol": "DOT",
+        "token_id": "",
+        "visible": true
+      }
+      )"));
+
+  // Testnet chains (Westend relay, Westend Asset Hub, Paseo Asset Hub) hold
+  // valueless test tokens and intentionally have no coingecko_id.
+  for (const auto* chain_id :
+       {mojom::kPolkadotTestnet, mojom::kPolkadotTestnetAssetHub,
+        mojom::kPolkadotPaseoAssetHub}) {
+    EXPECT_EQ(GetPolkadotNativeToken(chain_id)->coingecko_id, "")
+        << "chain_id: " << chain_id;
+  }
+}
+
 TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeaturesAndParameters(
