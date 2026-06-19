@@ -7,7 +7,7 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import Button from '@brave/leo/react/button'
 import { renderConversation } from './render_conversation'
-import './demo.css'
+import styles from './demo.css'
 
 interface DemoSharedConversationInputProps {
   onLoad: (conversationRaw: string) => void
@@ -37,39 +37,17 @@ export default function DemoSharedConversationInput(
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--leo-spacing-m)',
-        padding: 'var(--leo-spacing-xl)',
-        maxWidth: '720px',
-        margin: '0 auto',
-      }}
-    >
-      <label htmlFor='demo-conversation-json'>
+    <div className={styles.demo}>
+      <label>
         Paste an exported conversation JSON below and load it:
+        <textarea
+          className={styles.demoInput}
+          value={value}
+          onChange={(e) => setValue(e.currentTarget.value)}
+          placeholder='{ "version": "1.92.408", "conversation": [ ... ] }'
+          spellCheck={false}
+        />
       </label>
-      <textarea
-        id='demo-conversation-json'
-        value={value}
-        onChange={(e) => setValue(e.currentTarget.value)}
-        placeholder='{ "version": "1.92.408", "conversation": [ ... ] }'
-        spellCheck={false}
-        style={{
-          width: '100%',
-          minHeight: '180px',
-          resize: 'vertical',
-          fontFamily: 'var(--leo-font-monospace-default)',
-          fontSize: '12px',
-          padding: 'var(--leo-spacing-m)',
-          borderRadius: 'var(--leo-radius-m)',
-          border: '1px solid var(--leo-color-divider-subtle)',
-          background: 'var(--leo-color-container-background)',
-          color: 'var(--leo-color-text-primary)',
-          boxSizing: 'border-box',
-        }}
-      />
       <div>
         <Button
           kind='filled'

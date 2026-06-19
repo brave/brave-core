@@ -16,14 +16,33 @@ body {
   font: var(--leo-font-default-regular);
 }
 
-button {
-  font: var(--leo-font-default-regular);
-}
-
-#demo {
+:global(#demo) {
   height: 100%;
 }
 
-#conversation {
+:global(#conversation) {
   height: 100%;
+}
+
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-xl);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.demoInput {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  font-family: var(--leo-font-monospace-default);
+  font-size: 12px;
+  padding: var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  background: var(--leo-color-container-background);
+  color: var(--leo-color-text-primary);
+  box-sizing: border-box;
 }
