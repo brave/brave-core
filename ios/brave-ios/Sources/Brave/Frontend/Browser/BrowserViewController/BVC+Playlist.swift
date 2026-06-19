@@ -17,7 +17,7 @@ import UIKit
 import Web
 import os.log
 
-extension BrowserViewController: PlaylistScriptHandlerDelegate {
+extension BrowserViewController: PlaylistTabHelperDelegate {
   static var didShowStorageFullWarning = false
   func createPlaylistPopover(item: PlaylistInfo, tab: (any TabState)?) -> PopoverController {
 
@@ -40,8 +40,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
           switch action {
           case .openPlaylist:
             DispatchQueue.main.async {
-              if let tab {
-                PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
+              if let tab, let playlist = tab.playlist {
+                playlist.getCurrentTime(nodeTag: item.tagId) {
                   [weak self] currentTime in
                   self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                 }
@@ -202,8 +202,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
     if !profileController.profile.prefs.isPlaylistAvailable {
       return
     }
-    if let item, let tab {
-      PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
+    if let item, let tab, let playlist = tab.playlist {
+      playlist.getCurrentTime(nodeTag: item.tagId) {
         [weak self] currentTime in
         self?.openPlaylist(
           tab: tab,
