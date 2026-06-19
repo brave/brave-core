@@ -6,7 +6,6 @@ index 08f79c4eb76e1b83cd7a8d39f8344d7c5b97d35b..1b64d5d75310e166f799b7af79c6b9e0
      "//net",
      "//third_party/icu",
    ]
-+
 +  deps += [ "//brave/components/brave_policy:policy_pref_interceptor" ]
  }
  
