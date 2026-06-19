@@ -5,7 +5,7 @@
 
 import BraveCore
 import BraveShields
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import os.log
 
 extension TabDataValues {
@@ -18,7 +18,7 @@ extension TabDataValues {
   }
 }
 
-public class CosmeticFilteringTabHelper {
+public class CosmeticFilteringTabHelper: TabObserver {
 
   private weak var tab: (any TabState)?
   /// Cached standard selectors. Key is the URL's `baseDomain`.
@@ -30,6 +30,19 @@ public class CosmeticFilteringTabHelper {
     tab: some TabState
   ) {
     self.tab = tab
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.addObserver(self)
+    }
+  }
+
+  // MARK: - TabObserver
+
+  public func tabDidCreateWebView(_ tab: some TabState) {
+    BraveWebView.from(tab: tab)?.setCosmeticFilteringTabHelperBridge(self)
+  }
+
+  public func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
   }
 
   /// Removes all selectors from the selectors caches.
@@ -131,6 +144,25 @@ public class CosmeticFilteringTabHelper {
     )
     return (setup, proceduralActions)
   }
+}
+
+@MainActor extension CosmeticFilteringTabHelper: @MainActor CosmeticFilteringTabHelperBridge {
+
+  public func cosmeticFilteringArgs(for url: URL) async -> CosmeticFilteringArgs? {
+    guard let (setup, proceduralFilters) = await self.cosmeticFilteringSetup(for: url) else {
+      return nil
+    }
+    return .init(
+      hideFirstPartyContent: setup.hideFirstPartyContent,
+      genericHide: setup.genericHide,
+      firstSelectorsPollingDelayMs: setup.firstSelectorsPollingDelayMs.toNSNumber,
+      switchToSelectorsPollingThreshold: setup.switchToSelectorsPollingThreshold.toNSNumber,
+      fetchNewClassIdRulesThrottlingMs: setup.fetchNewClassIdRulesThrottlingMs.toNSNumber,
+      aggressiveSelectors: setup.aggressiveSelectors,
+      standardSelectors: setup.standardSelectors,
+      proceduralFilters: proceduralFilters
+    )
+  }
 
   /// Given a `frameURL` and `Set<String>`'s of `ids` and `classes`, determines
   /// which ids and classes should be hidden for the frame using the Tab's
@@ -142,7 +174,7 @@ public class CosmeticFilteringTabHelper {
     for frameURL: URL,
     ids: Set<String>,
     classes: Set<String>,
-  ) async -> (Set<String>, Set<String>)? {
+  ) async -> (Set<String>?, Set<String>?) {
     guard let tab = tab,
       let tabPageData = tab.currentPageData,
       let braveShieldsHelper = tab.braveShieldsHelper,
@@ -154,7 +186,7 @@ public class CosmeticFilteringTabHelper {
       mainFrameShieldLevel.isEnabled,
       tabPageData.mainFrameURL.isWebPage(includeDataURIs: false)
     else {
-      return nil
+      return (nil, nil)
     }
     let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
       isAdBlockEnabled: mainFrameShieldLevel.isEnabled
@@ -197,5 +229,12 @@ public class CosmeticFilteringTabHelper {
       aggressiveSelectors: aggressiveSelectors
     )
     return (standardSelectors, aggressiveSelectors)
+  }
+}
+
+extension Int? {
+  fileprivate var toNSNumber: NSNumber? {
+    guard let self else { return nil }
+    return NSNumber(integerLiteral: self)
   }
 }

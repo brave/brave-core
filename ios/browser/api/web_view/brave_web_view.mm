@@ -31,6 +31,7 @@
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
+#include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
@@ -285,6 +286,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak) id<PrintHandler> printHandler;
 @property(nonatomic, weak) id<RequestBlockingTabHelperBridge>
     requestBlockingTabHelperBridge;
+@property(nonatomic, weak) id<CosmeticFilteringTabHelperBridge>
+    cosmeticFilteringTabHelperBridge;
 @end
 
 @implementation BraveWebView {
@@ -446,6 +449,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     RequestBlockingTabHelper::CreateForWebState(self.webState);
     RequestBlockingTabHelper::FromWebState(self.webState)
         ->SetBridge(self.requestBlockingTabHelperBridge);
+
+    CosmeticFilteringTabHelper::CreateForWebState(self.webState);
+    CosmeticFilteringTabHelper::FromWebState(self.webState)
+        ->SetBridge(self.cosmeticFilteringTabHelperBridge);
   }
 }
 
@@ -873,6 +880,19 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   _requestBlockingTabHelperBridge = bridge;
   if (RequestBlockingTabHelper* tab_helper =
           RequestBlockingTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(bridge);
+  }
+}
+
+@end
+
+@implementation BraveWebView (CosmeticFiltering)
+
+- (void)setCosmeticFilteringTabHelperBridge:
+    (id<CosmeticFilteringTabHelperBridge>)bridge {
+  _cosmeticFilteringTabHelperBridge = bridge;
+  if (CosmeticFilteringTabHelper* tab_helper =
+          CosmeticFilteringTabHelper::FromWebState(self.webState)) {
     tab_helper->SetBridge(bridge);
   }
 }
