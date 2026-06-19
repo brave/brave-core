@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BraveTalkTabHelperBridge;
 @protocol BraveSearchMakeDefaultTabHelperBridge;
 @protocol PlaylistTabHelperBridge;
+@protocol ProtectionStatsTabHelperBridge;
 @protocol PrintHandler;
 @protocol RequestBlockingTabHelperBridge;
 
@@ -232,6 +233,13 @@ CWV_EXPORT
 /// A bridge for handling Brave Search helper script messages
 @property(nonatomic, weak, nullable) id<BraveSearchMakeDefaultTabHelperBridge>
     braveSearchHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (ProtectionStats)
+/// A bridge for handling Shields protection stats script messages
+@property(nonatomic, weak, nullable) id<ProtectionStatsTabHelperBridge>
+    protectionStatsHelper;
 @end
 
 CWV_EXPORT
