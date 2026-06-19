@@ -3,13 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// import { sendWebKitMessageWithReply } from '//ios/web/public/js_messaging/resources/utils.js';
-
-// const sendMessage = (selector: URL) => {
-//   return sendWebKitMessageWithReply('CosmeticFilteringMessageHandler', {
-//     selector
-//   })
-// };
+import {
+  sendTokenizedWebKitMessageWithReply,
+  sendTokenizedWebKitMessageSynchronously,
+  messageHandlerName,
+} from '//brave/ios/web/js_messaging/resources/utils.js'
 
 type Arguments = {
   hideFirstPartyContent: boolean
@@ -19,18 +17,13 @@ type Arguments = {
   fetchNewClassIdRulesThrottlingMs: number
   aggressiveSelectors: Array<string>
   standardSelectors: Array<string>
+  proceduralFilters: Array<ProceduralActionFilter>
 }
 
-// TODO: fetch via `window.prompt`
-const args: Arguments = {
-  hideFirstPartyContent: false,
-  genericHide: false,
-  firstSelectorsPollingDelayMs: undefined,
-  switchToSelectorsPollingThreshold: 1000,
-  fetchNewClassIdRulesThrottlingMs: 100,
-  aggressiveSelectors: [],
-  standardSelectors: [],
-}
+const args: Arguments = sendTokenizedWebKitMessageSynchronously(
+  messageHandlerName,
+  { request_type: 'args' },
+)
 
 type OperatorType = string
 type StyleAction = {
@@ -63,9 +56,6 @@ type ProceduralActionFilter = {
   action?: CosmeticFilterAction
 }
 
-// TODO: fetch via `window.prompt`
-const proceduralFilters = new Array<ProceduralActionFilter>()
-
 /**
  * Send ids and classes to iOS and await new hide selectors
  * @param {Array} ids The ids found on this page
@@ -79,17 +69,12 @@ const sendSelectors = (
   standardSelectors: Array<string>
   aggressiveSelectors: Array<string>
 }> => {
-  let selector_data = {
-    ids: ids,
-    classes: classes,
-  }
-  console.log('sendSelectors - ', selector_data)
-  return new Promise<{
-    standardSelectors: Array<string>
-    aggressiveSelectors: Array<string>
-  }>((resolve) => {
-    // TODO: send to native-side for real response
-    resolve({ standardSelectors: [], aggressiveSelectors: [] })
+  return sendTokenizedWebKitMessageWithReply(messageHandlerName, {
+    request_type: 'selectors',
+    data: {
+      ids: ids,
+      classes: classes,
+    },
   })
 }
 
@@ -102,13 +87,11 @@ const sendSelectors = (
 const getPartiness = (
   urls: Array<string>,
 ): Promise<Record<string, boolean>> => {
-  let url_data = {
-    urls: urls,
-  }
-  console.log('getPartiness - ', url_data)
-  return new Promise<Record<string, boolean>>((resolve) => {
-    // TODO: send to native-side for real response
-    resolve(Object.fromEntries(urls.map((url) => [url, true])))
+  return sendTokenizedWebKitMessageWithReply(messageHandlerName, {
+    request_type: 'url_partiness',
+    data: {
+      urls: urls,
+    },
   })
 }
 
@@ -1434,8 +1417,8 @@ if (args.aggressiveSelectors) {
   processHideSelectors(args.aggressiveSelectors, false)
 }
 
-if (proceduralFilters && proceduralFilters.length > 0) {
-  CC.proceduralActionFilters = proceduralFilters
+if (args.proceduralFilters && args.proceduralFilters.length > 0) {
+  CC.proceduralActionFilters = args.proceduralFilters
   CC.hasProceduralActions = true
 }
 

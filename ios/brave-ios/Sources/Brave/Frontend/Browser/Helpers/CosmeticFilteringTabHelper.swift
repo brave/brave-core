@@ -5,7 +5,7 @@
 
 import BraveCore
 import BraveShields
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import os.log
 
 extension TabDataValues {
@@ -18,7 +18,7 @@ extension TabDataValues {
   }
 }
 
-public class CosmeticFilteringTabHelper {
+public class CosmeticFilteringTabHelper: TabObserver {
 
   private weak var tab: (any TabState)?
   /// Cached standard selectors. Key is the URL's `baseDomain`.
@@ -30,6 +30,19 @@ public class CosmeticFilteringTabHelper {
     tab: some TabState
   ) {
     self.tab = tab
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.addObserver(self)
+    }
+  }
+
+  // MARK: - TabObserver
+
+  public func tabDidCreateWebView(_ tab: some TabState) {
+    BraveWebView.from(tab: tab)?.setCosmeticFilteringTabHelperBridge(self)
+  }
+
+  public func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
   }
 
   // Removes all selectors from the selectors caches.
@@ -126,8 +139,25 @@ public class CosmeticFilteringTabHelper {
     )
     return (setup, proceduralActions)
   }
+}
 
-  @MainActor public func selectorsToHide(
+@MainActor extension CosmeticFilteringTabHelper: @MainActor CosmeticFilteringTabHelperBridge {
+
+  public func cosmeticFilteringArgs(for url: URL) async -> CosmeticFilteringArgs {
+    let (setup, proceduralFilters) = await self.cosmeticFilteringSetup(for: url)
+    return .init(
+      hideFirstPartyContent: setup.hideFirstPartyContent,
+      genericHide: setup.genericHide,
+      firstSelectorsPollingDelayMs: setup.firstSelectorsPollingDelayMs.toNSNumber,
+      switchToSelectorsPollingThreshold: setup.switchToSelectorsPollingThreshold.toNSNumber,
+      fetchNewClassIdRulesThrottlingMs: setup.fetchNewClassIdRulesThrottlingMs.toNSNumber,
+      aggressiveSelectors: setup.aggressiveSelectors,
+      standardSelectors: setup.standardSelectors,
+      proceduralFilters: proceduralFilters
+    )
+  }
+
+  public func selectorsToHide(
     for frameURL: URL,
     ids: Set<String>,
     classes: Set<String>,
@@ -192,4 +222,11 @@ extension UserScriptType.ContentCosmeticSetup {
     aggressiveSelectors: .init(),
     standardSelectors: .init()
   )
+}
+
+extension Int? {
+  fileprivate var toNSNumber: NSNumber? {
+    guard let self else { return nil }
+    return NSNumber(integerLiteral: self)
+  }
 }

@@ -29,6 +29,7 @@
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
+#include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
@@ -265,6 +266,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak) id<BraveSearchMakeDefaultTabHelperBridge>
     braveSearchHelper;
 @property(nonatomic, weak) id<PrintHandler> printHandler;
+@property(nonatomic, weak) id<CosmeticFilteringTabHelperBridge>
+    cosmeticFilteringTabHelperBridge;
 @end
 
 @implementation BraveWebView {
@@ -409,6 +412,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
             profile->GetOriginalProfile(), ServiceAccessType::IMPLICIT_ACCESS));
 
     youtube::YouTubeNetworkChangeObserver::CreateForWebState(self.webState);
+
+    CosmeticFilteringTabHelper::CreateForWebState(self.webState);
+    CosmeticFilteringTabHelper::FromWebState(self.webState)
+        ->SetBridge(self.cosmeticFilteringTabHelperBridge);
   }
 }
 
@@ -769,6 +776,19 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if (BraveSearchMakeDefaultTabHelper* tab_helper =
           BraveSearchMakeDefaultTabHelper::FromWebState(self.webState)) {
     tab_helper->SetBridge(braveSearchHelper);
+  }
+}
+
+@end
+
+@implementation BraveWebView (CosmeticFiltering)
+
+- (void)setCosmeticFilteringTabHelperBridge:
+    (id<CosmeticFilteringTabHelperBridge>)bridge {
+  _cosmeticFilteringTabHelperBridge = bridge;
+  if (CosmeticFilteringTabHelper* tab_helper =
+          CosmeticFilteringTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(bridge);
   }
 }
 

@@ -5,14 +5,20 @@
 
 import("//ios/web/public/js_messaging/optimize_ts.gni")
 
-static_library("cosmetic_filtering") {
+source_set("cosmetic_filtering") {
   sources = [
+    "cosmetic_filtering_args.h",
+    "cosmetic_filtering_args.mm",
     "cosmetic_filtering_javascript_feature.h",
     "cosmetic_filtering_javascript_feature.mm",
+    "cosmetic_filtering_tab_helper.h",
+    "cosmetic_filtering_tab_helper.mm",
+    "cosmetic_filtering_tab_helper_bridge.h",
   ]
   deps = [
     ":cosmetic_filtering_js",
     "//base",
+    "//brave/ios/browser/api/url",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public",
@@ -21,6 +27,8 @@ static_library("cosmetic_filtering") {
   ]
   public_deps = [
     "//base",
+    "//brave/ios/web/js_messaging:message_handler_token",
+    "//brave/ios/web/js_messaging:randomized_message_handler_name",
     "//ios/web/public/js_messaging",
   ]
 }
@@ -30,5 +38,8 @@ optimize_ts("cosmetic_filtering_js") {
 
   sources = [ "resources/cosmetic_filtering.ts" ]
 
-  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
+  deps = [
+    "//brave/ios/web/js_messaging:util_scripts",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
 }

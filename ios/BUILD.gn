@@ -136,6 +136,8 @@ brave_core_public_headers = [
   "//brave/ios/browser/youtube/youtube_pref_names_bridge.h",
   "//brave/ios/browser/global_privacy_control/gpc_pref_names_bridge.h",
   "//brave/ios/browser/shared/prefs/shared_pref_names_bridge.h",
+  "//brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper_bridge.h",
+  "//brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_args.h",
 ]
 
 brave_core_public_headers += ads_public_headers
