@@ -572,6 +572,76 @@ TEST_F(AssociatedContentManagerUnitTest,
 }
 
 TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_AttachesContentExposingTools) {
+  // When added content exposes tools, it should be attached so the tools pill
+  // can surface it without waiting for a generation loop.
+  NiceMock<MockAssociatedContent> content;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MockTool>>("a_tool"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  EXPECT_TRUE(content.tools_attached());
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_TRUE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolsAttached_UserDetachExcludesToolsFromGenerationLoop) {
+  // Content that exposes tools is attached on detection, but once the user
+  // detaches it (e.g. via the tools pill) its tools must not be loaded for
+  // generation.
+  NiceMock<MockAssociatedContent> content;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MockTool>>("a_tool"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_TRUE(content.tools_attached());
+
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
+  EXPECT_FALSE(content.tools_attached());
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+  EXPECT_TRUE(manager->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_DoesNotAttachContentWithoutTools) {
+  // Content that exposes no tools should not be attached (its default state),
+  // so it contributes nothing to a generation loop.
+  NiceMock<MockAssociatedContent> content;
+  // MockAssociatedContent's default GetContentTools returns no tools.
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  EXPECT_FALSE(content.tools_attached());
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_FALSE(associated[0]->tools_attached);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+  EXPECT_TRUE(manager->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
        AddContent_TriggersUpdateAndNotifiesConversation) {
   // Test that removed content doesn't appear in the cached contents map
   NiceMock<MockAssociatedContent> associated_content;

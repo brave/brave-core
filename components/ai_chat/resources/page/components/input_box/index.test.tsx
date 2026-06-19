@@ -50,6 +50,7 @@ const testContext: InputBoxProps['context'] = {
   removeFile: () => {},
   isUploadingFiles: false,
   disassociateContent: () => {},
+  setToolsAttached: () => {},
   associateDefaultContent: undefined,
   pauseTask: () => {},
   resumeTask: () => {},

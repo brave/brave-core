@@ -315,6 +315,17 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     }
   }
 
+  const setToolsAttached = (
+    content: Mojom.AssociatedContent,
+    toolsAttached: boolean,
+  ) => {
+    aiChat.api.uiHandler.setToolsAttached(
+      content,
+      conversationState.conversationUuid,
+      toolsAttached,
+    )
+  }
+
   // In global panel always mode (not standalone, not tab-associated), the
   // page handler no longer manages content associations directly. When the
   // active tab or page changes, clear staged content and attach the new tab.
@@ -679,6 +690,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     setGeneratedUrlToBeOpened,
     setIgnoreExternalLinkWarning,
     disassociateContent,
+    setToolsAttached,
     associateDefaultContent,
     attachFiles: processUploadedFiles,
 

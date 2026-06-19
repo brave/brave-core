@@ -13,6 +13,10 @@ import styles from './tools_attachments.module.scss'
 
 interface Props {
   toolsContent: Mojom.AssociatedContent[]
+  setToolsAttached: (
+    content: Mojom.AssociatedContent,
+    toolsAttached: boolean,
+  ) => void
 }
 
 // A row of pills, one per attached content that provides tools, shown above the
@@ -61,6 +65,7 @@ export default function ToolsAttachments(props: Props) {
               kind='plain-faint'
               className={styles.toolPillRemove}
               title={getLocale(S.CHAT_UI_TOOLS_ATTACHMENT_REMOVE_LABEL)}
+              onClick={() => props.setToolsAttached(content, false)}
             >
               <Icon name='close' />
             </Button>

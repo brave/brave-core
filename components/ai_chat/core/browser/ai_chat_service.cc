@@ -1255,7 +1255,8 @@ void AIChatService::AssociateOwnedContent(
 void AIChatService::DisassociateContent(
     const mojom::AssociatedContentPtr& content,
     const std::string& conversation_uuid) {
-  // Note: This will only work if the conversation is already loaded.
+  // Note: This will only work if the conversation is already loaded, which is
+  // fine because the content needs to be live to have associated tools.
   auto* conversation = GetConversation(conversation_uuid);
   if (!conversation) {
     return;
@@ -1267,6 +1268,18 @@ void AIChatService::DisassociateContent(
   if (content_conversations_[content->content_id] == conversation_uuid) {
     content_conversations_.erase(content->content_id);
   }
+}
+
+void AIChatService::SetToolsAttached(const mojom::AssociatedContentPtr& content,
+                                     const std::string& conversation_uuid,
+                                     bool tools_attached) {
+  // Note: This will only work if the conversation is already loaded.
+  auto* conversation = GetConversation(conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+  conversation->associated_content_manager()->SetToolsAttached(content->uuid,
+                                                               tools_attached);
 }
 
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,

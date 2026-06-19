@@ -245,6 +245,7 @@ export function createMockUIHandler(
     associateTab: () => {},
     associateUrlContent: () => {},
     disassociateContent: () => {},
+    setToolsAttached: () => {},
     openAIChatAgentProfile: () => {},
     showSoftKeyboard: () => {},
 

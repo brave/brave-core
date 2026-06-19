@@ -110,7 +110,8 @@ class AssociatedContentDelegate {
 
   // Whether tools provided by this content are enabled for the LLM. This is
   // live-only state (it relies on the content's WebContents being live) and is
-  // not persisted.
+  // not persisted. Content is attached when it is first found to expose tools,
+  // and can subsequently be overridden by the user.
   bool tools_attached() const { return tools_attached_; }
   void set_tools_attached(bool tools_attached) {
     tools_attached_ = tools_attached;
