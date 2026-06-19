@@ -31,6 +31,7 @@
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
@@ -367,6 +368,19 @@ class AIChatServiceUnitTest : public testing::Test,
   void WaitForConversationUnload() {
     task_environment_.AdvanceClock(base::Seconds(5));
     task_environment_.RunUntilIdle();
+  }
+
+  // Waits for asynchronous storage initialization to create the database, then
+  // flushes the database sequence so the sync bridge (re)install that
+  // OnOsCryptAsyncReady() posts behind it has run. Waits for that specific
+  // work rather than for the whole system to go idle.
+  void WaitForSyncBridgeReady() {
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return !ai_chat_service_->ai_chat_db_.is_null(); }));
+    base::RunLoop run_loop;
+    ai_chat_service_->db_task_runner_->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(), run_loop.QuitClosure());
+    run_loop.Run();
   }
 
   bool IsAIChatHistoryEnabled() { return GetParam(); }
@@ -882,6 +896,32 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
   // Conversations are no longer in persistant storage
   ExpectConversationsSize(FROM_HERE, 0);
+}
+
+// With AI Chat sync enabled, toggling the storage pref off
+// then on must not crash. Disabling storage tears down the sync bridge (and
+// drops its backend) on the database sequence, so re-enabling rebuilds a
+// fresh backend instead of re-installing a bridge into the existing one,
+// which could lead to a crash if this sequence is modified.
+TEST_P(AIChatServiceUnitTest, SyncBridgeRebuiltAfterStorageToggle) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  // Rebuild the service so it picks up the sync feature and installs a bridge
+  // on the database sequence.
+  ResetService();
+  WaitForSyncBridgeReady();
+
+  // Toggle storage off (tears the bridge down) and back on; the bridge must be
+  // rebuilt without tripping SetBridge()'s "installed at most once" CHECK.
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  WaitForSyncBridgeReady();
+
+  // Reaching here without a CHECK failure is the assertion; the service should
+  // still be usable.
+  EXPECT_TRUE(ai_chat_service_->CreateConversation());
 }
 
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {

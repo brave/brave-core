@@ -41,6 +41,8 @@
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -53,6 +55,8 @@
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/model/client_tag_based_data_type_processor.h"
+#include "components/sync/model/proxy_data_type_controller_delegate.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -186,6 +190,19 @@ void AIChatService::Shutdown() {
   // Disconnect remotes
   receivers_.ClearWithReason(0, "Shutting down");
   weak_ptr_factory_.InvalidateWeakPtrs();
+  // Tear down the sync bridge on the DB sequence BEFORE destroying the
+  // database. The bridge holds a raw_ptr<AIChatDatabase>; if the database
+  // were destroyed first, the raw_ptr would dangle until the
+  // AIChatSyncBackend's last reference (held by any still-alive
+  // ProxyDataTypeControllerDelegate) is released and the bridge destructor
+  // finally runs. Posting Shutdown() and ai_chat_db_.Reset() in order on the
+  // same sequenced task runner guarantees bridge-then-database destruction
+  // order.
+  if (sync_backend_ && db_task_runner_) {
+    db_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(&AIChatSyncBackend::Shutdown, sync_backend_));
+  }
+  sync_backend_.reset();
   if (ai_chat_db_) {
     ai_chat_db_.Reset();
   }
@@ -197,6 +214,23 @@ void AIChatService::Shutdown() {
 
   conversation_handlers_.clear();
   conversations_.clear();
+}
+
+std::unique_ptr<syncer::DataTypeControllerDelegate>
+AIChatService::CreateSyncControllerDelegate() {
+  // Trigger storage init eagerly so that |db_task_runner_| exists by the
+  // time we return — the proxy must be bound to a real task runner. The
+  // bridge itself may still be created asynchronously after the os_crypt
+  // encryptor is ready; the proxy's callback will resolve the bridge
+  // lazily once AIChatSyncBackend::SetBridge() runs on the same sequence.
+  MaybeInitStorage();
+  if (!db_task_runner_ || !sync_backend_) {
+    return nullptr;
+  }
+  return std::make_unique<syncer::ProxyDataTypeControllerDelegate>(
+      db_task_runner_,
+      base::BindRepeating(&AIChatSyncBackend::GetControllerDelegate,
+                          sync_backend_));
 }
 
 ConversationHandler* AIChatService::CreateConversation() {
@@ -424,14 +458,42 @@ void AIChatService::DeleteAssociatedWebContent(
 
 void AIChatService::MaybeInitStorage() {
   if (IsAIChatHistoryEnabled()) {
-    if (!ai_chat_db_) {
+    // Bring up the background sequence and the sync-bridge holder eagerly so
+    // CreateSyncControllerDelegate() can hand out a working
+    // ProxyDataTypeControllerDelegate even before the bridge itself has been
+    // constructed. The bridge installation happens later in
+    // OnOsCryptAsyncReady once the encryptor is available; until then,
+    // AIChatSyncBackend::GetControllerDelegate() returns null and the sync
+    // controller stays in the not-running state — but it is *registered*,
+    // which is what the settings UI's `aiChatRegistered` flag reflects.
+    if (!db_task_runner_) {
+      db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::WithBaseSyncPrimitives(),
+           base::TaskPriority::USER_BLOCKING,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    }
+    if (!sync_backend_ && features::IsBraveSyncAIChatEnabled()) {
+      sync_backend_ = base::MakeRefCounted<AIChatSyncBackend>(db_task_runner_);
+    }
+    if (!ai_chat_db_ && !os_crypt_init_pending_) {
       DVLOG(0) << "Initializing OS Crypt Async";
+      os_crypt_init_pending_ = true;
       os_crypt_async_->GetInstance(base::BindOnce(
           &AIChatService::OnOsCryptAsyncReady, weak_ptr_factory_.GetWeakPtr()));
       // Don't init DB until oscrypt is ready - we don't want to use the DB
       // if we can't use encryption.
     }
   } else {
+    // Tear down the bridge on the DB sequence before the database it holds a
+    // raw_ptr to is destroyed below (same ordering rule as Shutdown()), and
+    // drop the backend so a later re-enable rebuilds it — SetBridge() installs
+    // at most once.
+    if (sync_backend_ && db_task_runner_) {
+      db_task_runner_->PostTask(
+          FROM_HERE,
+          base::BindOnce(&AIChatSyncBackend::Shutdown, sync_backend_));
+      sync_backend_.reset();
+    }
     // Delete all stored data from database
     if (ai_chat_db_) {
       DVLOG(0) << "Unloading AI Chat database due to pref change";
@@ -448,17 +510,35 @@ void AIChatService::MaybeInitStorage() {
 void AIChatService::OnOsCryptAsyncReady(
     scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   CHECK(features::IsAIChatHistoryEnabled());
+  CHECK(db_task_runner_)
+      << "MaybeInitStorage() must run before the os_crypt callback";
+  os_crypt_init_pending_ = false;
   // Pref might have changed since we started this process
   if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
     return;
   }
+  auto database = std::make_unique<AIChatDatabase>(
+      profile_path_.Append(kDBFileName), std::move(encryptor));
+  AIChatDatabase* database_ptr = database.get();
   ai_chat_db_ = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
-      base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::WithBaseSyncPrimitives(),
-           base::TaskPriority::USER_BLOCKING,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN}),
-      std::make_unique<AIChatDatabase>(profile_path_.Append(kDBFileName),
-                                       std::move(encryptor)));
+      db_task_runner_, std::move(database));
+
+  // Hand the bridge to the sync backend on the same background sequence as
+  // the database. The backend was created in MaybeInitStorage() so any
+  // proxy delegates already handed out to the sync engine resolve to this
+  // bridge as soon as this task runs.
+  if (sync_backend_) {
+    db_task_runner_->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](scoped_refptr<AIChatSyncBackend> backend, AIChatDatabase* db) {
+              backend->SetBridge(std::make_unique<AIChatSyncBridge>(
+                  std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
+                      syncer::AI_CHAT_CONVERSATION, base::DoNothing()),
+                  db));
+            },
+            sync_backend_, database_ptr));
+  }
 }
 
 void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
