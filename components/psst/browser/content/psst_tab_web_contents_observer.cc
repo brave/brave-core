@@ -348,8 +348,7 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
                             script_result_parsed->psst.applied_tasks, status);
 
   auto next_url =
-      (status != mojom::PsstStatus::kCompleted &&
-       script_result_parsed->next_url.has_value() &&
+      (script_result_parsed->next_url.has_value() &&
        !script_result_parsed->next_url->empty())
           ? std::optional<GURL>(GURL(*script_result_parsed->next_url))
           : std::nullopt;
