@@ -25,7 +25,7 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -197,10 +197,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
-    // Resetting this test callback, as it gets stored in a discreet global, and
-    // in some cases it was causing stack-use-after-return.
-    SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>());
-
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     web_contents_ =
@@ -1381,7 +1377,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoPermission) {
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
   bool new_setup_callback_called = false;
-  SetCallbackForNewSetupNeededForTesting(
+  ScopedNewSetupNeededCallbackForTesting new_setup_callback(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
@@ -1412,7 +1408,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
 
-  SetCallbackForNewSetupNeededForTesting(
+  ScopedNewSetupNeededCallbackForTesting new_setup_callback(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
 
   provider()->RequestEthereumPermissions(
@@ -1438,7 +1434,8 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   Navigate(url);
 
   bool new_setup_callback_called = false;
-  SetCallbackForNewSetupNeededForTesting(
+  std::optional<ScopedNewSetupNeededCallbackForTesting> new_setup_callback;
+  new_setup_callback.emplace(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   base::RunLoop run_loop;
   provider()->RequestEthereumPermissions(
@@ -1458,7 +1455,7 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
 
   // Setup is called at most once
   new_setup_callback_called = false;
-  SetCallbackForNewSetupNeededForTesting(
+  new_setup_callback.emplace(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   base::RunLoop run_loop2;
   provider()->RequestEthereumPermissions(

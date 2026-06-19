@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IMPL_HELPER_H_
 
+#include <string_view>
+
+#include "base/auto_reset.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "build/build_config.h"
@@ -42,10 +45,16 @@ void WalletInteractionDetected(content::WebContents* web_contents);
 // show or not a permissions prompt dialog
 bool IsWeb3NotificationAllowed();
 
-void SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>);
+// These are test only functions for certain events, however prefer to use the
+// scope managers in
+// `brave_wallet_provider_delegate_impl_helper_test_util.h` rather than these
+// functions directly.
+[[nodiscard]] base::AutoReset<base::OnceCallback<void()>*>
+SetNewSetupNeededCallbackForTesting(base::OnceCallback<void()>* callback);
 
-void SetCallbackForAccountCreationForTesting(
-    base::OnceCallback<void(std::string_view)>);
+[[nodiscard]] base::AutoReset<base::OnceCallback<void(std::string_view)>*>
+SetAccountCreationCallbackForTesting(
+    base::OnceCallback<void(std::string_view)>* callback);
 
 }  // namespace brave_wallet
 

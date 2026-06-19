@@ -17,7 +17,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -637,7 +637,7 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
 
 TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   bool onboarding_callback_called = false;
-  SetCallbackForNewSetupNeededForTesting(
+  ScopedNewSetupNeededCallbackForTesting new_setup_callback(
       base::BindLambdaForTesting([&]() { onboarding_callback_called = true; }));
   Navigate(GURL("https://brave.com"));
 
@@ -651,7 +651,9 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_TRUE(onboarding_callback_called);
 
   base::test::TestFuture<std::string_view> account_creation_callback_future;
-  SetCallbackForAccountCreationForTesting(
+  std::optional<ScopedAccountCreationCallbackForTesting>
+      account_creation_callback;
+  account_creation_callback.emplace(
       account_creation_callback_future.GetCallback());
   // No solana account
   CreateWallet();
@@ -665,7 +667,7 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_TRUE(provider_->account_creation_shown_);
 
   // It should be shown at most once.
-  SetCallbackForAccountCreationForTesting(
+  account_creation_callback.emplace(
       account_creation_callback_future.GetCallback());
   account = Connect(std::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
@@ -673,8 +675,6 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_FALSE(IsConnected());
   EXPECT_FALSE(account_creation_callback_future.IsReady());
   EXPECT_TRUE(provider_->account_creation_shown_);
-  // Clear previous set callback which won't run in this test suite
-  SetCallbackForAccountCreationForTesting(base::DoNothing());
 }
 
 TEST_F(SolanaProviderImplUnitTest, Disconnect) {
