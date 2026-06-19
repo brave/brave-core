@@ -86,6 +86,7 @@
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/events/test/event_generator.h"
+#include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
@@ -118,6 +119,12 @@ class SidebarBrowserTest : public InProcessBrowserTest {
  public:
   SidebarBrowserTest() = default;
   ~SidebarBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    animation_resetter_ = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+        gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  }
 
   void PreRunTestOnMainThread() override {
     InProcessBrowserTest::PreRunTestOnMainThread();
@@ -321,6 +328,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
+  gfx::AnimationTestApi::RenderModeResetter animation_resetter_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
 };
 
