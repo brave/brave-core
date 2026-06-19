@@ -50,9 +50,26 @@
 # string), values here are typed Python literals (bool/str/int/list).
 #
 # ---------------------------------------------------------------------------
+# ONLY OVERRIDES, NEVER CHROMIUM DEFAULTS
+# ---------------------------------------------------------------------------
+# A value is listed here only when it *differs* from what Chromium would use on
+# its own. We never restate a Chromium default ("dead weight"). In particular,
+# Chromium's build-type chain is:
+#
+#   is_official_build = false              (default)
+#   is_debug          = !is_official_build (so true unless official)
+#   is_component_build = is_debug          (false on ios/watchos regardless)
+#
+# so a plain Debug build IS Chromium's default and overrides nothing; a Release
+# build only needs is_official_build=true (is_debug / is_component_build follow);
+# a non-official Static build only needs is_debug=false; etc. The same rule
+# prunes the sanitizer booleans (false by default), use_libfuzzer, output
+# formats that match the default, and so on.
+#
+# ---------------------------------------------------------------------------
 # WHAT IS DELIBERATELY NOT A "DEFAULT" (and so is omitted)
 # ---------------------------------------------------------------------------
-# These appear in buildArgs.ts but are NOT structural defaults; they are
+# These appear in buildArgs.ts but are NOT structural overrides; they are
 # injected per-build at gn-gen time and must NOT be baked into this matrix:
 #
 # * Secrets / env-forwarded values (FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS):
@@ -62,26 +79,27 @@
 #   brave_channel, brave_version_{major,minor,build}, chrome_version_string,
 #   android_channel, android_override_version_name, chrome_public_manifest_*,
 #   brave_ios_marketing_version_patch.
-# * Signing identity: mac_signing_*, notarize/notary_*, keystore/pkcs11,
-#   build_omaha/tag_*, last_chrome_installer.
+# * Signing identity / environment: skip_signing, mac_signing_*,
+#   notarize/notary_*, keystore/pkcs11, build_omaha/tag_*, last_chrome_installer.
+# * Build infrastructure, environment-driven: use_siso, use_remoteexec,
+#   use_reclient, reclient_bin_dir, cc_wrapper.
 # * CI-only toggles (these belong to the CI layer, not the defaults layer):
 #   devtools_skip_typecheck, enable_android_secondary_abi,
-#   android_static_analysis.
-# * Toolchain-/remoteexec-/coverage-gated values that depend on the local
-#   environment: reclient_bin_dir, cc_wrapper, use_clang_coverage,
-#   coverage_instrumentation_input_file, strip_absolute_paths_from_debug_symbols.
-# * use_dummy_lastchange (only set when ignorePatchVersionNumber is requested).
+#   android_static_analysis, dcheck_always_on (and the sanitizer "force off").
+# * Coverage-gated values: use_clang_coverage, coverage_instrumentation_input_file,
+#   strip_absolute_paths_from_debug_symbols. Plus use_dummy_lastchange (only set
+#   when ignorePatchVersionNumber is requested).
 #
 # Baseline assumption for this matrix: isBraveReleaseBuild == false (the
 # env-gated "real signed release" flag defaults to false). That is why
-# chrome_pgo_phase / enable_mojom_message_id_scrambling appear in `base`.
+# chrome_pgo_phase / enable_mojom_message_id_scrambling live in `release`.
 
 {
   'mixins': {
     # =====================================================================
-    # gni-file defaults (inlined from //brave/build/args/*.gni).
-    # These were previously consumed via `import(...)`; they are enumerated
-    # here so this file is a self-contained catalog.
+    # gni-file defaults (inlined from //brave/build/args/*.gni). These mirror
+    # the committed .gni files verbatim; each value there is already a genuine
+    # Chromium override.
     # =====================================================================
 
     # //brave/build/args/brave_defaults.gni -- applies to every build.
@@ -170,102 +188,63 @@
       },
     },
 
-    # =====================================================================
-    # Programmatic defaults from buildArgs.ts that are unconditional given
-    # the baseline assumption (isBraveReleaseBuild == false, no sanitizer,
-    # no signing creds, siso on / remoteexec off).
-    # =====================================================================
-    'base': {
-      'gn_args': {
-        # Sanitizers: off by default. The companion args track is_asan.
-        'is_asan': False,
-        'is_lsan': False,
-        'is_ubsan': False,
-        'is_ubsan_vptr': False,
-        'is_ubsan_no_recover': False,
-        'is_msan': False,
-        'enable_full_stack_frames_for_profiling': False,
-        'v8_enable_verify_heap': False,
-        'use_libfuzzer': False,
-        # mac universal binaries are opt-in.
-        'is_universal_binary': False,
-        # Needs signing certs; false without them.
-        'enable_cdm_host_verification': False,
-        # Build infra defaults (siso on, remote/reclient off).
-        'use_siso': True,
-        'use_remoteexec': False,
-        'use_reclient': False,
-        # No signing creds in the defaults layer.
-        'skip_signing': True,
-        # Update notifications/updater are official-build only (see 'release').
-        'enable_update_notifications': False,
-        # isBraveReleaseBuild == false branch: avoid PGO and don't randomize
-        # mojom message ids (the latter rebuilds ~23000 targets per bump).
-        'chrome_pgo_phase': 0,
-        'enable_mojom_message_id_scrambling': False,
-      },
-    },
-
-    # Composition convenience: everything every target gets.
+    # Composition convenience: the defaults applied to every target.
     'common': {
-      'mixins': ['brave_defaults', 'base'],
+      'mixins': ['brave_defaults'],
     },
 
     # =====================================================================
-    # Target CPU.
+    # Target CPU. (Chromium defaults target_cpu to host_cpu; an explicit
+    # selection is a real dimension, not dead weight.)
     # =====================================================================
     'x64': { 'gn_args': { 'target_cpu': 'x64' } },
     'arm64': { 'gn_args': { 'target_cpu': 'arm64' } },
     'x86': { 'gn_args': { 'target_cpu': 'x86' } },
 
     # =====================================================================
-    # Build type. Mirrors config.ts buildConfig semantics:
-    #   Release   -> official, not debug, not component
-    #   Static    -> not official, not debug, not component
-    #   Component -> not official, not debug, component
-    #   Debug     -> not official, debug, component
+    # Build type. Only the deltas vs Chromium's default chain are listed:
+    #   default (== 'debug') -> not official, debug, component
+    #   release   -> official (is_debug / is_component_build follow to false)
+    #   static    -> not official, NOT debug (component follows to false)
+    #   component -> not official, not debug, but component
     # =====================================================================
     'release': {
       'gn_args': {
         'is_official_build': True,
-        'is_debug': False,
-        'is_component_build': False,
         'enable_update_notifications': True,
         'enable_updater': True,
+        # isBraveReleaseBuild == false: skip PGO (official default is phase 2)
+        # and don't randomize mojom message ids (official default is on; it
+        # would rebuild ~23000 targets per version bump).
+        'chrome_pgo_phase': 0,
+        'enable_mojom_message_id_scrambling': False,
       },
     },
     'static': {
       'gn_args': {
-        'is_official_build': False,
         'is_debug': False,
-        'is_component_build': False,
       },
     },
     'component': {
       'gn_args': {
-        'is_official_build': False,
         'is_debug': False,
         'is_component_build': True,
       },
     },
+    # A Debug build is exactly Chromium's default chain, so there is nothing to
+    # override. Kept as an explicit (empty) build-type slot for matrix symmetry.
     'debug': {
-      'gn_args': {
-        'is_official_build': False,
-        'is_debug': True,
-        'is_component_build': True,
-      },
+      'gn_args': {},
     },
 
     # =====================================================================
-    # Sanitizers. buildArgs.ts also forces dcheck_always_on=false for these
-    # until they stabilise.
+    # Sanitizers (all off by default in Chromium; only the "on" deltas here).
     # =====================================================================
     'asan': {
       'gn_args': {
         'is_asan': True,
         'enable_full_stack_frames_for_profiling': True,
         'v8_enable_verify_heap': True,
-        'dcheck_always_on': False,
       },
     },
     'ubsan': {
@@ -273,13 +252,11 @@
         'is_ubsan': True,
         'is_ubsan_vptr': True,
         'is_ubsan_no_recover': True,
-        'dcheck_always_on': False,
       },
     },
     'msan': {
       'gn_args': {
         'is_msan': True,
-        'dcheck_always_on': False,
       },
     },
 
@@ -290,8 +267,8 @@
     # =====================================================================
     'desktop': {
       'gn_args': {
-        # Brave disables the hangout services extension on desktop. (It is
-        # deleted entirely on android/ios in buildArgs.ts.)
+        # Brave disables the hangout services extension on desktop (Chromium
+        # enables it). It is deleted entirely on android/ios in buildArgs.ts.
         'enable_hangout_services_extension': False,
       },
       'mixins': ['blink', 'desktop_defaults'],
@@ -307,7 +284,7 @@
     'mac': {
       'gn_args': {
         'target_os': 'mac',
-        # Always use hermetic xcode when present (CI/dev default).
+        # Always use hermetic xcode when present (Chromium defaults to true).
         'use_system_xcode': False,
       },
       'mixins': ['desktop'],
@@ -317,22 +294,14 @@
       'mixins': ['desktop'],
     },
     'android': {
-      'gn_args': {
-        'target_os': 'android',
-        'android_aab_to_apk': False,
-      },
+      'gn_args': { 'target_os': 'android' },
       'mixins': ['blink', 'android_defaults'],
     },
     'ios': {
-      'gn_args': {
-        'target_os': 'ios',
-        # Component builds are unsupported on iOS; force off regardless of
-        # build type. (Apply this mixin AFTER the build-type mixin.)
-        'is_component_build': False,
-        # Non-release iOS builds need dSYMs for Xcode source mapping.
-        'enable_dsyms': True,
-        'target_environment': 'simulator',
-      },
+      # is_component_build is already forced false on iOS and
+      # target_environment defaults to simulator, so neither is set here;
+      # dSYMs come from the 'dsyms' mixin.
+      'gn_args': { 'target_os': 'ios' },
       'mixins': ['ios_defaults'],
     },
     # iOS device target environment (overrides the simulator default).
@@ -341,41 +310,40 @@
     },
 
     # =====================================================================
-    # symbol_level / linker workarounds (buildArgs.ts).
+    # Symbols / linker. Names follow upstream //tools/mb/mb_config.pyl, where
+    # symbol_level=1 is 'minimal_symbols' (0 -> 'no_symbols', 2 ->
+    # 'full_symbols'). Chromium's default symbol_level is 2.
     # =====================================================================
-    # Linux Release: upstream skips symbol_level=2 unless use_debug_fission is
-    # set, and doesn't set it under a cc_wrapper; we set it manually.
-    'linux_release_symbols': {
-      'gn_args': {
-        'symbol_level': 1,
-        'use_debug_fission': True,
-      },
-    },
     # symbol_level=1 to dodge >4GiB ELF32 / "relocation out of range" issues
     # (linux x86, linux static, android release x64/arm64).
-    'symbol_level_1': {
+    'minimal_symbols': {
       'gn_args': { 'symbol_level': 1 },
     },
-
-    # =====================================================================
-    # Android packaging output format (Release -> aab, otherwise apk).
-    # =====================================================================
-    'android_aab': { 'gn_args': { 'target_android_output_format': 'aab' } },
-    'android_apk': { 'gn_args': { 'target_android_output_format': 'apk' } },
-
-    # mac official Release with isBraveReleaseBuild==false: disable dSYMs so
-    # compilation is relocatable and RBE can share its cache.
-    'mac_release_no_dsyms': {
-      'gn_args': { 'enable_dsyms': False },
+    # Linux Release: upstream skips symbol_level=2 unless use_debug_fission is
+    # set, and doesn't set it under a cc_wrapper; we set it manually alongside
+    # 'minimal_symbols'.
+    'debug_fission': {
+      'gn_args': { 'use_debug_fission': True },
     },
+
+    # =====================================================================
+    # dSYMs. Enabled on iOS (Chromium default off here) for Xcode source
+    # mapping; disabled for official mac Release (Chromium default on there)
+    # so compilation stays relocatable and RBE can share its cache.
+    # =====================================================================
+    'dsyms': { 'gn_args': { 'enable_dsyms': True } },
+    'no_dsyms': { 'gn_args': { 'enable_dsyms': False } },
+
+    # Android Release packages an .aab (Chromium default output is apk).
+    'android_aab': { 'gn_args': { 'target_android_output_format': 'aab' } },
   },
 
   'configs': {
     # ----- linux -----
     'linux-x64-release': ['common', 'linux', 'release', 'x64', 'linux_vaapi',
-                          'branding_brave', 'linux_release_symbols'],
+                          'branding_brave', 'minimal_symbols', 'debug_fission'],
     'linux-x64-static': ['common', 'linux', 'static', 'x64', 'linux_vaapi',
-                         'branding_brave', 'symbol_level_1'],
+                         'branding_brave', 'minimal_symbols'],
     'linux-x64-component': ['common', 'linux', 'component', 'x64',
                             'linux_vaapi', 'branding_brave'],
     'linux-x64-debug': ['common', 'linux', 'debug', 'x64', 'linux_vaapi',
@@ -383,23 +351,23 @@
     'linux-x64-asan': ['common', 'linux', 'component', 'x64', 'linux_vaapi',
                        'branding_brave', 'asan'],
     'linux-x86-static': ['common', 'linux', 'static', 'x86', 'branding_brave',
-                         'symbol_level_1'],
+                         'minimal_symbols'],
     'origin-linux-x64-release': ['common', 'linux', 'release', 'x64',
                                  'linux_vaapi', 'branding_origin',
-                                 'linux_release_symbols'],
+                                 'minimal_symbols', 'debug_fission'],
     'origin-linux-x64-component': ['common', 'linux', 'component', 'x64',
                                    'linux_vaapi', 'branding_origin'],
 
     # ----- macos -----
     'macos-arm64-release': ['common', 'mac', 'release', 'arm64',
-                            'branding_brave', 'mac_release_no_dsyms'],
+                            'branding_brave', 'no_dsyms'],
     'macos-x64-release': ['common', 'mac', 'release', 'x64', 'branding_brave',
-                          'mac_release_no_dsyms'],
+                          'no_dsyms'],
     'macos-arm64-component': ['common', 'mac', 'component', 'arm64',
                               'branding_brave'],
     'macos-arm64-debug': ['common', 'mac', 'debug', 'arm64', 'branding_brave'],
     'origin-macos-arm64-release': ['common', 'mac', 'release', 'arm64',
-                                   'branding_origin', 'mac_release_no_dsyms'],
+                                   'branding_origin', 'no_dsyms'],
     'origin-macos-arm64-component': ['common', 'mac', 'component', 'arm64',
                                      'branding_origin'],
 
@@ -417,21 +385,22 @@
     # ----- android -----
     'android-arm64-release': ['common', 'android', 'release', 'arm64',
                               'branding_brave', 'android_aab',
-                              'symbol_level_1'],
+                              'minimal_symbols'],
     'android-x64-release': ['common', 'android', 'release', 'x64',
-                            'branding_brave', 'android_aab', 'symbol_level_1'],
+                            'branding_brave', 'android_aab', 'minimal_symbols'],
     'android-arm64-component': ['common', 'android', 'component', 'arm64',
-                                'branding_brave', 'android_apk'],
+                                'branding_brave'],
     'android-arm64-debug': ['common', 'android', 'debug', 'arm64',
-                            'branding_brave', 'android_apk'],
+                            'branding_brave'],
     'origin-android-arm64-release': ['common', 'android', 'release', 'arm64',
                                      'branding_origin', 'android_aab',
-                                     'symbol_level_1'],
+                                     'minimal_symbols'],
 
-    # ----- ios (no branding/blink/desktop; 'ios' applied after build type so
-    # its is_component_build=false override wins) -----
-    'ios-arm64-release': ['common', 'release', 'ios', 'ios_device', 'arm64'],
-    'ios-x64-debug': ['common', 'debug', 'ios', 'x64'],
+    # ----- ios (no branding/blink/desktop; build type only contributes its
+    # delta, and is_component_build stays false by default on ios) -----
+    'ios-arm64-release': ['common', 'release', 'ios', 'ios_device', 'arm64',
+                          'dsyms'],
+    'ios-x64-debug': ['common', 'debug', 'ios', 'x64', 'dsyms'],
   },
 
   'builder_groups': {
