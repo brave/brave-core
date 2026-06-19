@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_layout_delegate_impl.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
@@ -80,16 +79,6 @@
 
 bool BrowserView::IsWebPanelContents(content::WebContents* contents) {
   NOTREACHED();
-}
-
-void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
-  // Sets a kBrowserWindowKey to given child |widget| so that we can get
-  // BrowserView from the |widget|.
-  DCHECK(GetWidget());
-  DCHECK_EQ(GetWidget(), widget->GetTopLevelWidget())
-      << "The |widget| should be child of BrowserView's widget.";
-
-  widget->SetNativeWindowProperty(kBrowserViewKey, this);
 }
 
 void BrowserView::ExclusiveAccessContextImpl::UpdateExclusiveAccessBubble(

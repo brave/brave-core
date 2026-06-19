@@ -24,29 +24,17 @@ class BraveTabDragController : public TabDragController {
                               const gfx::Point& offset_from_source_view,
                               ui::ListSelectionModel initial_selection_model,
                               ui::mojom::DragEventSource event_source) override;
-  views::Widget* GetAttachedBrowserWidget() override;
-  gfx::Vector2d CalculateWindowDragOffset() override;
   void StartDraggingTabsSession(bool initial_move,
                                 gfx::Point start_point_in_screen) override;
-  Liveness GetLocalProcessWindow(const gfx::Point& screen_point,
-                                 bool exclude_dragged_view,
-                                 gfx::NativeWindow* window) override;
-
   void DetachAndAttachToNewContext(ReleaseCapture release_capture,
                                    TabDragContext* target_context) override;
 
-  void RestoreAttachedWindowForDrag() override;
-
  private:
-  gfx::Vector2d GetVerticalTabStripWidgetOffset();
-
   gfx::Point offset_from_first_dragged_view_;
   bool is_showing_vertical_tabs_ = false;
 
   BraveVerticalTabStripRegionView::ScopedStateResetter
       vertical_tab_state_resetter_;
-
-  base::WeakPtrFactory<BraveTabDragController> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_

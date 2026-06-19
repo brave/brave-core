@@ -20,7 +20,6 @@
       (tabs::utils::ShouldShowBraveVerticalTabs(       \
            BrowserView::GetBrowserViewForNativeWindow( \
                attached_context_->GetWidget()          \
-                   ->GetTopLevelWidget()               \
                    ->GetNativeWindow())                \
                ->browser())                            \
            ? 0                                         \
