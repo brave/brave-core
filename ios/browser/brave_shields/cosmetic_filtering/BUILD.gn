@@ -59,3 +59,22 @@ compile_ts("procedural_filters") {
     "//brave/components/cosmetic_filters/resources/data/procedural_filters.ts",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "cosmetic_filtering_javascript_feature_unittest.mm" ]
+
+  deps = [
+    ":cosmetic_filtering",
+    "//base",
+    "//base/test:test_support",
+    "//ios/chrome/test:ios_chrome_test_with_web_state",
+    "//ios/web/public",
+    "//ios/web/public/test",
+    "//ios/web/public/test/fakes",
+    "//net",
+    "//testing/gtest",
+    "//url",
+  ]
+}
