@@ -36,7 +36,7 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
 
  private:
   bool is_tor_profile_ = false;
-  bool onion_only_in_tor_windows_ = true;
+  bool onion_only_in_tor_windows_;
 
   OnionLocationNavigationThrottle(const OnionLocationNavigationThrottle&) =
       delete;

@@ -29,7 +29,7 @@ OnionDomainThrottle::MaybeCreateThrottle(bool is_onion_allowed) {
 void OnionDomainThrottle::WillStartRequest(network::ResourceRequest* request,
                                            bool* defer) {
   if (net::IsOnion(request->url)) {
-    delegate_->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
+    delegate_->CancelWithError(net::ERR_NAME_NOT_RESOLVED);
   }
 }
 
@@ -39,7 +39,7 @@ void OnionDomainThrottle::WillRedirectRequest(
     bool* defer,
     network::HttpRequestHeadersUpdateParams* headers_update_params) {
   if (net::IsOnion(redirect_info->new_url)) {
-    delegate_->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
+    delegate_->CancelWithError(net::ERR_NAME_NOT_RESOLVED);
   }
 }
 

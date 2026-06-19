@@ -1236,7 +1236,7 @@ void BraveContentBrowserClient::CreateWebSocket(
         net::IsOnion(url)) {
       mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
           std::move(handshake_client));
-      client->OnFailure(std::string(), net::ERR_BLOCKED_BY_CLIENT, 0);
+      client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
       return;
     }
   }

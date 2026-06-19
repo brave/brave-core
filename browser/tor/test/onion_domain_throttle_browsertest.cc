@@ -49,7 +49,9 @@ std::string OnionAccessScenarioName(
 
 }  // namespace
 
-class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
+class OnionDomainThrottleBrowserTest
+    : public InProcessBrowserTest,
+      public ::testing::WithParamInterface<OnionAccessScenario> {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -84,14 +86,14 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* test_server() { return https_server_.get(); }
 
-  Browser* GetBrowserForScenario(bool tor_window) {
+  Browser* GetBrowser(bool tor_window) {
     if (!tor_window) {
       return browser();
     }
     return TorProfileManager::SwitchToTorProfile(browser()->profile());
   }
 
-  content::WebContents* GetActiveWebContents(Browser* browser = nullptr) {
+  content::WebContents* GetActiveWebContents(Browser* browser) {
     return (browser ? browser : this->browser())
         ->tab_strip_model()
         ->GetActiveWebContents();
@@ -101,19 +103,13 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
     browser()->profile()->GetPrefs()->SetBoolean(
         tor::prefs::kOnionOnlyInTorWindows, scenario.onion_only_in_tor_windows);
 
-    Browser* browser = GetBrowserForScenario(scenario.tor_window);
+    Browser* browser = GetBrowser(scenario.tor_window);
 
     [&]() {
       ASSERT_TRUE(ui_test_utils::NavigateToURL(
           browser, https_server_->GetURL("brave.com", kSimplePagePath)));
     }();
     return browser;
-  }
-
-  Browser* SetUpOnionRestrictionInNormalWindow() {
-    return SetUpScenario(OnionAccessScenario{.tor_window = false,
-                                             .onion_only_in_tor_windows = true,
-                                             .expect_blocked = true});
   }
 
   GURL OnionResourceUrl() const {
@@ -188,13 +184,9 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
-class OnionDomainThrottleAccessBrowserTest
-    : public OnionDomainThrottleBrowserTest,
-      public ::testing::WithParamInterface<OnionAccessScenario> {};
-
 INSTANTIATE_TEST_SUITE_P(
     ,
-    OnionDomainThrottleAccessBrowserTest,
+    OnionDomainThrottleBrowserTest,
     ::testing::Values(OnionAccessScenario{.tor_window = false,
                                           .onion_only_in_tor_windows = true,
                                           .expect_blocked = true},
@@ -209,68 +201,7 @@ INSTANTIATE_TEST_SUITE_P(
                                           .expect_blocked = false}),
     &OnionAccessScenarioName);
 
-// Control: direct subresource to .onion (already covered before the report's
-// bypass cases).
-IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
-                       DirectSubresourceToOnionBlocked) {
-  SetUpOnionRestrictionInNormalWindow();
-  auto loaded = EvalJs(GetActiveWebContents(),
-                       ImageLoadScript(OnionResourceUrl().spec()));
-  ASSERT_TRUE(loaded.is_ok());
-  EXPECT_FALSE(loaded.ExtractBool());
-}
-
-// Reproduces report bypass #1: <img> via 302 redirect to .onion.
-IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
-                       ImgRedirectToOnionBlocked) {
-  SetUpOnionRestrictionInNormalWindow();
-  auto loaded = EvalJs(GetActiveWebContents(),
-                       ImageLoadScript(RedirectToOnionUrl().spec()));
-  ASSERT_TRUE(loaded.is_ok());
-  EXPECT_FALSE(loaded.ExtractBool());
-}
-
-// Reproduces report bypass #2: fetch() via 302 redirect to .onion.
-IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
-                       FetchRedirectToOnionBlocked) {
-  SetUpOnionRestrictionInNormalWindow();
-  auto loaded = EvalJs(GetActiveWebContents(),
-                       FetchLoadScript(RedirectToOnionUrl().spec()));
-  ASSERT_TRUE(loaded.is_ok());
-  EXPECT_FALSE(loaded.ExtractBool());
-}
-
-// Reproduces report bypass #3: <iframe src="https://*.onion/"> in a subframe.
-IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
-                       IframeOnionNavigationBlocked) {
-  SetUpOnionRestrictionInNormalWindow();
-  const GURL onion_url = OnionResourceUrl().GetWithEmptyPath();
-  ASSERT_TRUE(ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
-                     content::JsReplace(
-                         R"(const iframe = document.createElement('iframe');
-                            iframe.src = $1;
-                            document.body.appendChild(iframe);)",
-                         onion_url)));
-  ASSERT_TRUE(content::WaitForLoadStop(GetActiveWebContents()));
-
-  content::RenderFrameHost* child_frame =
-      content::ChildFrameAt(GetActiveWebContents()->GetPrimaryMainFrame(), 0);
-  ASSERT_TRUE(child_frame);
-  EXPECT_FALSE(net::IsOnion(child_frame->GetLastCommittedURL()));
-}
-
-// Reproduces report bypass #4: new WebSocket("wss://*.onion/") from a page.
-IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
-                       WebSocketToOnionBlocked) {
-  SetUpOnionRestrictionInNormalWindow();
-  const GURL ws_url = net::test_server::GetWebSocketURL(
-      *https_server_, "example.onion", "/echo-with-no-extension");
-  auto result = EvalJs(GetActiveWebContents(), WebSocketOpenScript(ws_url));
-  ASSERT_TRUE(result.is_ok());
-  EXPECT_EQ("error", result);
-}
-
-IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest,
                        DirectSubresourceToOnion) {
   const OnionAccessScenario scenario = GetParam();
   Browser* browser = SetUpScenario(scenario);
@@ -282,8 +213,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
   EXPECT_EQ(!scenario.expect_blocked, loaded.ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
-                       ImgRedirectToOnion) {
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, ImgRedirectToOnion) {
   const OnionAccessScenario scenario = GetParam();
   Browser* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
@@ -294,8 +224,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
   EXPECT_EQ(!scenario.expect_blocked, loaded.ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
-                       FetchRedirectToOnion) {
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, FetchRedirectToOnion) {
   const OnionAccessScenario scenario = GetParam();
   Browser* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
@@ -306,8 +235,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
   EXPECT_EQ(!scenario.expect_blocked, loaded.ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
-                       IframeOnionNavigation) {
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, IframeOnionNavigation) {
   const OnionAccessScenario scenario = GetParam();
   Browser* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
@@ -328,7 +256,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest,
             !net::IsOnion(child_frame->GetLastCommittedURL()));
 }
 
-IN_PROC_BROWSER_TEST_P(OnionDomainThrottleAccessBrowserTest, WebSocketToOnion) {
+IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, WebSocketToOnion) {
   const OnionAccessScenario scenario = GetParam();
   Browser* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
