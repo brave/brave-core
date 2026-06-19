@@ -73,6 +73,8 @@ static_library("browser") {
     "remote_models_fetcher.h",
     "skills_metrics.cc",
     "skills_metrics.h",
+    "sync/ai_chat_sync_bridge.cc",
+    "sync/ai_chat_sync_bridge.h",
     "sync/ai_chat_sync_conversions.cc",
     "sync/ai_chat_sync_conversions.h",
     "tab_tracker_service.cc",
@@ -137,6 +139,7 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/os_crypt/async/browser",
     "//components/prefs",
+    "//components/sync/base",
     "//components/sync/protocol",
     "//components/update_client",
     "//components/user_prefs",
@@ -221,6 +224,7 @@ source_set("unit_tests") {
     "//components/history/core/test",
     "//components/os_crypt/async/browser:test_support",
     "//components/prefs:test_support",
+    "//components/sync:test_support",
     "//components/sync/protocol",
     "//components/sync_preferences:test_support",
     "//net/traffic_annotation:test_support",
@@ -237,6 +241,7 @@ source_set("unit_tests") {
     # to initialize the database
     sources += [
       "ai_chat_database_unittest.cc",
+      "sync/ai_chat_sync_bridge_unittest.cc",
       "sync/ai_chat_sync_conversions_unittest.cc",
     ]
   }
