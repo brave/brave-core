@@ -54,12 +54,12 @@ substitutions:
   - description: |-
       Square off the extension corner in TabStyleViewsImpl::GetPath, so Brave
       tabs don't carry upstream's rounded extension.
-    re_pattern: '(const bool compact_left_to_bottom =[^;]*;\n)'
-    replace: '\1  extension_corner_radius = 0;\n'
+    re_pattern:
+      '(  float left_extension_corner_radius = extension_corner_radius;)'
+    replace: '  extension_corner_radius = 0;\n\1'
 
   - description: |-
       Fully round the tab separators in TabStyleViewsImpl::PaintSeparators
-
 
       This patch computes a radius of half the separator width.
     re_pattern:
@@ -81,18 +81,11 @@ substitutions:
   - description: |-
       Disable the upstream `TabStyleViews::CreateForTab` factory.
 
-      We disable the definition of `TabStyleViews::CreateForTab` in upstream so
-      we can define it in `chromium_src` returning `BraveVerticalTabStyle`.
-
-      Unfortunately, `TabStyleViewsImpl` is declared in a `.cc` file, and
-      `BraveVerticalTabStyle` inherits from it, therefore the defintion of
-      `BraveVerticalTabStyle` has to occur after the definition of
-      `TabStyleViewsImpl`. That being the case, we cannot just replace
-      `return std::make_unique<TabStyleViewsImpl>(tab);` in upstream code with
-      `return std::make_unique<BraveVerticalTabStyle>(tab);` because that
-      requires the full definition of `BraveVerticalTabStyle` to be visible, not
-      just a forward declaration. So instead, we disable the entire definition
-      in upstream and re-define it in `chromium_src`.
+      It must return `BraveVerticalTabStyle`, which inherits from the `.cc`-local
+      `TabStyleViewsImpl` and so can only be defined after it. A forward
+      declaration isn't enough for `make_unique`, so we disable the whole
+      upstream factory and re-define it in `chromium_src` where the full type is
+      visible.
     re_pattern:
       '(// static\nstd::unique_ptr<TabStyleViews>
       TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'

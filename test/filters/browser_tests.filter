@@ -1755,6 +1755,7 @@
 # We show tab search on the right side of the tab strip, which this test does
 # not expect
 -FullscreenTabSearchBubbleDialogTest.InvokeUi_default
+-TabSearchButtonBrowserUITest.InvokeUi_default
 
 # These tests fail because we only allow adding downloads button to the pinned
 # toolbar buttons container.

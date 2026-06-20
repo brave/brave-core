@@ -139,8 +139,6 @@ class BraveVerticalTabStripRegionView : public views::View,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
-  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
-                           OriginalTabSearchButton);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,

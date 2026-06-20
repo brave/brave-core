@@ -38,7 +38,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -328,13 +327,11 @@ void BraveToolbarView::Init() {
             ? kVerticalTabStripToggleCollapsedIcon
             : kLeoWindowTabsVerticalExpandedIcon);
 
-    if (base::FeatureList::IsEnabled(tabs::kHorizontalTabStripComboButton)) {
-      auto target_index = GetIndexOf(vertical_tab_toggle_);
-      combo_button_ = AddChildViewAt(
-          std::make_unique<TabStripComboButton>(
-              browser(), TabStripComboButton::Context::kHorizontalTabStrip),
-          *target_index);
-    }
+    auto target_index = GetIndexOf(vertical_tab_toggle_);
+    combo_button_ = AddChildViewAt(
+        std::make_unique<TabStripComboButton>(
+            browser(), TabStripComboButton::Context::kHorizontalTabStrip),
+        *target_index);
 
     UpdateVerticalTabToggleVisibility();
     UpdateVerticalTabToggleState();
