@@ -3,6 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "chrome/browser/ui/views/tabs/vertical/vertical_tab_view.h"
+
+#include "base/notimplemented.h"
+
 #include <chrome/browser/ui/views/tabs/vertical/vertical_tab_view.cc>
 
 // This method is not reachable now as we don't use this class for our vertical
