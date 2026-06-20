@@ -68,6 +68,18 @@ SaveWorkspaceDialog::SaveWorkspaceDialog(Browser* browser) : browser_(browser) {
 
 SaveWorkspaceDialog::~SaveWorkspaceDialog() = default;
 
+void SaveWorkspaceDialog::OnAccept() {
+  std::string name = base::UTF16ToUTF8(name_field_->GetText());
+  if (name.empty()) {
+    return;
+  }
+
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
+  CHECK(service);
+
+  service->SaveWorkspace(name);
+}
+
 ui::mojom::ModalType SaveWorkspaceDialog::GetModalType() const {
   return ui::mojom::ModalType::kWindow;
 }
@@ -79,7 +91,7 @@ std::u16string SaveWorkspaceDialog::GetWindowTitle() const {
 bool SaveWorkspaceDialog::IsDialogButtonEnabled(
     ui::mojom::DialogButton button) const {
   if (button == ui::mojom::DialogButton::kOk) {
-    return name_field_ && !name_field_->GetText().empty();
+    return !name_field_->GetText().empty();
   }
   return true;
 }
@@ -87,23 +99,6 @@ bool SaveWorkspaceDialog::IsDialogButtonEnabled(
 void SaveWorkspaceDialog::ContentsChanged(views::Textfield* sender,
                                           const std::u16string& new_contents) {
   DialogModelChanged();
-}
-
-void SaveWorkspaceDialog::OnAccept() {
-  if (!name_field_) {
-    return;
-  }
-  std::string name = base::UTF16ToUTF8(name_field_->GetText());
-  if (name.empty()) {
-    return;
-  }
-
-  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
-  if (!service) {
-    return;
-  }
-
-  service->SaveWorkspace(name);
 }
 
 BEGIN_METADATA(SaveWorkspaceDialog)

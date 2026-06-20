@@ -33,6 +33,8 @@ class SaveWorkspaceDialog : public views::DialogDelegateView,
   SaveWorkspaceDialog(const SaveWorkspaceDialog&) = delete;
   SaveWorkspaceDialog& operator=(const SaveWorkspaceDialog&) = delete;
 
+  void OnAccept();
+
   // views::DialogDelegateView:
   ui::mojom::ModalType GetModalType() const override;
   std::u16string GetWindowTitle() const override;
@@ -41,8 +43,6 @@ class SaveWorkspaceDialog : public views::DialogDelegateView,
   // views::TextfieldController:
   void ContentsChanged(views::Textfield* sender,
                        const std::u16string& new_contents) override;
-
-  void OnAccept();
 
   raw_ptr<Browser> browser_;
   raw_ptr<views::Textfield> name_field_;

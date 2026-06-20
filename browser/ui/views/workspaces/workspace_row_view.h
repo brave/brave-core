@@ -19,21 +19,26 @@ class ImageButton;
 class MenuRunner;
 }  // namespace views
 
-using WorkspaceRowClickedCallback = base::RepeatingCallback<void()>;
+// Delta from regular size for the title text.
+inline constexpr int kTitleFontSizeDelta = 2;
 
 // A workspace list row that highlights its background on hover and shows a
 // darker tint when selected.  SetNotifyEnterExitOnChild propagates mouse
 // enter/exit from child buttons up to this view so the whole row responds.
 class WorkspaceRowView : public views::View,
                          public ui::SimpleMenuModel::Delegate {
+  using RowClickedCallback = base::RepeatingCallback<void()>;
+
   METADATA_HEADER(WorkspaceRowView, views::View)
  public:
   WorkspaceRowView(const WorkspaceMetadata& info,
-                   WorkspaceRowClickedCallback on_workspace_selected,
-                   WorkspaceRowClickedCallback on_delete_clicked);
+                   RowClickedCallback on_workspace_selected,
+                   RowClickedCallback on_delete_clicked);
   ~WorkspaceRowView() override;
 
   void SetSelected(bool selected);
+
+  // views::View:
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnMouseExited(const ui::MouseEvent& event) override;
 
@@ -48,7 +53,7 @@ class WorkspaceRowView : public views::View,
   bool hovered_ = false;
   bool selected_ = false;
 
-  WorkspaceRowClickedCallback on_delete_;
+  RowClickedCallback on_delete_;
   std::unique_ptr<ui::SimpleMenuModel> menu_model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
   raw_ptr<views::ImageButton> more_button_;

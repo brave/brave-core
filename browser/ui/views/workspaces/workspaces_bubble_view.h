@@ -37,7 +37,7 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegateView {
   void OnWorkspaceSelected(const std::string& name);
   void OnDeleteClicked(const std::string& name);
 
-  raw_ptr<Browser> browser_;
+  const raw_ref<Browser> browser_;
   base::WeakPtrFactory<WorkspacesBubbleView> weak_factory_{this};
 };
 

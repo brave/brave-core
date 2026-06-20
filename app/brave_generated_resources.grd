@@ -257,7 +257,7 @@
       <!-- Workspaces -->
       <if expr="use_titlecase">
         <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
-          Save Current Windows and Tabs as Workspace
+          Save Current Windows and Tabs as Space
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the save dialog">
           Name
@@ -266,7 +266,7 @@
           Enter Your Space Name
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
-          My Workspace
+          My Space
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON" desc="Accept button label in the save workspace dialog">
           Save
@@ -275,7 +275,7 @@
           Cancel
         </message>
         <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
-          Workspace Options
+          Space Options
         </message>
         <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
           Delete Space
@@ -316,7 +316,7 @@
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
-          Save current windows and tabs as workspace
+          Save current windows and tabs as space
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the save dialog">
           Name
@@ -325,7 +325,7 @@
           Enter your space name
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
-          My Workspace
+          My Space
         </message>
         <message name="IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON" desc="Accept button label in the save workspace dialog">
           Save
@@ -334,7 +334,7 @@
           Cancel
         </message>
         <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
-          Workspace options
+          Space options
         </message>
         <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
           Delete space

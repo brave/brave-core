@@ -70,9 +70,9 @@ class WorkspaceInfoButton : public views::Button {
 
     name_label_ = AddChildView(
         std::make_unique<views::Label>(base::UTF8ToUTF16(info.name)));
-    name_label_->SetFontList(
-        name_label_->font_list().DeriveWithSizeDelta(2).DeriveWithWeight(
-            gfx::Font::Weight::BOLD));
+    name_label_->SetFontList(name_label_->font_list()
+                                 .DeriveWithSizeDelta(kTitleFontSizeDelta)
+                                 .DeriveWithWeight(gfx::Font::Weight::BOLD));
     name_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
     stats_label_ =
@@ -103,24 +103,20 @@ END_METADATA
 
 }  // namespace
 
-WorkspaceRowView::WorkspaceRowView(
-    const WorkspaceMetadata& info,
-    WorkspaceRowClickedCallback on_workspace_selected,
-    WorkspaceRowClickedCallback on_delete_clicked)
+WorkspaceRowView::WorkspaceRowView(const WorkspaceMetadata& info,
+                                   RowClickedCallback on_workspace_selected,
+                                   RowClickedCallback on_delete_clicked)
     : on_delete_(std::move(on_delete_clicked)) {
   SetNotifyEnterExitOnChild(true);
 
-  auto row_box = std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 0);
-  row_box->set_cross_axis_alignment(
+  auto* row_layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 0));
+
+  row_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kCenter);
-  auto* row_layout = row_box.get();
 
-  SetLayoutManager(std::move(row_box));
-
-  auto info_btn = std::make_unique<WorkspaceInfoButton>(
-      std::move(on_workspace_selected), info);
-  auto* info_btn_raw = AddChildView(std::move(info_btn));
+  auto* info_btn_raw = AddChildView(std::make_unique<WorkspaceInfoButton>(
+      std::move(on_workspace_selected), info));
   row_layout->SetFlexForView(info_btn_raw, 1);
 
   auto more_btn = views::CreateVectorImageButtonWithNativeTheme(

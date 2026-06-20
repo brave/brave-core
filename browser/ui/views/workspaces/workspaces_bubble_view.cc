@@ -43,7 +43,7 @@ void WorkspacesBubbleView::Show(views::View* anchor_view, Browser* browser) {
 WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
                                            Browser* browser)
     : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::TOP_LEFT),
-      browser_(browser) {
+      browser_(*browser) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
   set_margins(gfx::Insets());
@@ -55,9 +55,7 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
       /*between_child_spacing=*/0));
 
   auto* service = WorkspaceServiceFactory::GetForProfile(browser->profile());
-  if (!service) {
-    return;
-  }
+  CHECK(service);
 
   std::vector<WorkspaceMetadata> workspaces = service->ListWorkspaces();
   auto* workspaces_container = AddChildView(std::make_unique<views::View>());
@@ -68,9 +66,9 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
     auto* empty_title =
         workspaces_container->AddChildView(std::make_unique<views::Label>(
             l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_EMPTY_TITLE)));
-    empty_title->SetFontList(
-        empty_title->font_list().DeriveWithSizeDelta(2).DeriveWithWeight(
-            gfx::Font::Weight::BOLD));
+    empty_title->SetFontList(empty_title->font_list()
+                                 .DeriveWithSizeDelta(kTitleFontSizeDelta)
+                                 .DeriveWithWeight(gfx::Font::Weight::BOLD));
     empty_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
     empty_title->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(8, 8, 4, 8));
 
@@ -121,24 +119,20 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
 }
 
 void WorkspacesBubbleView::OnSaveClicked() {
-  SaveWorkspaceDialog::Show(browser_);
+  SaveWorkspaceDialog::Show(base::to_address(browser_));
   GetWidget()->Close();
 }
 
 void WorkspacesBubbleView::OnWorkspaceSelected(const std::string& name) {
-  if (auto* service =
-          WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
-    service->RestoreWorkspace(name);
-  }
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
+  CHECK(service);
+  service->RestoreWorkspace(name);
   GetWidget()->Close();
 }
 
 void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
   auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
-  if (!service) {
-    GetWidget()->Close();
-    return;
-  }
+  CHECK(service);
 
   // The bubble closes once the modal confirmation appears; binding the
   // service's WeakPtr directly to the member function makes the delete
@@ -161,7 +155,7 @@ void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
                                    IDS_WORKSPACE_DIALOG_CANCEL_BUTTON)))
           .Build();
 
-  chrome::ShowBrowserModal(browser_, std::move(dialog));
+  chrome::ShowBrowserModal(base::to_address(browser_), std::move(dialog));
   GetWidget()->Close();
 }
 
