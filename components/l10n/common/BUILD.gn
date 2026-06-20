@@ -8,6 +8,7 @@ static_library("common") {
   # unless no equivalent is available.
   visibility = [
     ":*",
+    "//brave/browser:browser_impl",
     "//brave/browser/ui",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/brave_ads/browser",
@@ -22,7 +23,6 @@ static_library("common") {
     "//brave/ios/browser/api/ads",
     "//brave/ios/browser/shared/prefs",
     "//brave/test:*",
-    "//chrome/browser",
   ]
 
   friend = [

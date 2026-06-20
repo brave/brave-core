@@ -28,9 +28,9 @@ static_library("screenshot") {
 
 static_library("screenshot_internal") {
   visibility = [
+    "//brave/browser:browser_impl",
     "//brave/browser/screenshot",
     "//brave/browser/screenshot:unit_tests",
-    "//chrome/browser",
   ]
   sources = [
     "print_preview_extractor_factory.cc",  # uses extractor internal

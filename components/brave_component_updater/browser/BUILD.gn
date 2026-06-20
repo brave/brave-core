@@ -26,6 +26,7 @@ component("browser") {
   # All components should have their own InstallerPolicy and be
   # registered in RegisterComponentsForUpdate
   visibility = [
+    "//brave/browser:browser_impl",
     "//brave/browser/ephemeral_storage:browser_tests",
     "//brave/browser/extensions:component_loader",
     "//brave/browser/extensions:test_support",
@@ -48,7 +49,6 @@ component("browser") {
     "//brave/ios/app",
     "//brave/ios/browser/application_context",
     "//brave/test:*",
-    "//chrome/browser",
   ]
 
   sources = [

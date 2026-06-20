@@ -53,7 +53,7 @@ group("ui_public_dependencies") {
 source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
-    "//chrome/browser",
+    "//brave/browser:browser_impl",
     "//chrome/browser:core",
     "//chrome/browser/ui",
     "//chrome/browser/ui/webui:configs",
