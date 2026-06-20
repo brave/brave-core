@@ -213,6 +213,8 @@ source_set("unit_tests") {
   if (!is_android) {
     sources += [
       "brave_wallet_hid_chooser_unittest.cc",
+      "brave_wallet_provider_delegate_impl_helper_test_util.cc",
+      "brave_wallet_provider_delegate_impl_helper_test_util.h",
       "brave_wallet_tab_helper_unittest.cc",
       "ethereum_provider_impl_unittest.cc",
       "solana_provider_impl_unittest.cc",

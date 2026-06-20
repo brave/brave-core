@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/auto_reset.h"
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
@@ -17,18 +19,9 @@
 
 namespace {
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] base::OnceCallback<void()>
-    g_new_setup_needed_callback_for_testing;
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] base::OnceCallback<void(std::string_view coin_name)>
-    g_account_creation_callback_for_testing;
+base::OnceCallback<void()>* g_new_setup_needed_callback_for_testing = nullptr;
+base::OnceCallback<void(std::string_view coin_name)>*
+    g_account_creation_callback_for_testing = nullptr;
 
 // These are names of coins used by `create-account-options.ts`. We support only
 // Solana and Cardano account creation triggered by dApp.
@@ -67,7 +60,9 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
   if (browser) {
     brave::ShowBraveWalletOnboarding(browser);
   } else if (g_new_setup_needed_callback_for_testing) {
-    std::move(g_new_setup_needed_callback_for_testing).Run();
+    CHECK_IS_TEST();
+    CHECK(*g_new_setup_needed_callback_for_testing);
+    std::move(*g_new_setup_needed_callback_for_testing).Run();
   }
 }
 
@@ -85,7 +80,9 @@ void ShowAccountCreation(content::WebContents* web_contents,
   if (browser) {
     brave::ShowBraveWalletAccountCreation(browser, it->second);
   } else if (g_account_creation_callback_for_testing) {
-    std::move(g_account_creation_callback_for_testing).Run(it->second);
+    CHECK_IS_TEST();
+    CHECK(*g_account_creation_callback_for_testing);
+    std::move(*g_account_creation_callback_for_testing).Run(it->second);
   }
 }
 
@@ -97,14 +94,19 @@ bool IsWeb3NotificationAllowed() {
   return true;
 }
 
-void SetCallbackForNewSetupNeededForTesting(
-    base::OnceCallback<void()> callback) {
-  g_new_setup_needed_callback_for_testing = std::move(callback);
+base::AutoReset<base::OnceCallback<void()>*>
+SetNewSetupNeededCallbackForTesting(base::OnceCallback<void()>* callback) {
+  CHECK_IS_TEST();
+  return base::AutoReset<base::OnceCallback<void()>*>(
+      &g_new_setup_needed_callback_for_testing, callback);
 }
 
-void SetCallbackForAccountCreationForTesting(
-    base::OnceCallback<void(std::string_view)> callback) {
-  g_account_creation_callback_for_testing = std::move(callback);
+base::AutoReset<base::OnceCallback<void(std::string_view)>*>
+SetAccountCreationCallbackForTesting(
+    base::OnceCallback<void(std::string_view)>* callback) {
+  CHECK_IS_TEST();
+  return base::AutoReset<base::OnceCallback<void(std::string_view)>*>(
+      &g_account_creation_callback_for_testing, callback);
 }
 
 }  // namespace brave_wallet
