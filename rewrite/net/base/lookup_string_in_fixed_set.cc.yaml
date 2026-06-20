@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename LookupSuffixInReversedSet() to LookupSuffixInReversedSet_ChromiumImpl()
+
+      This lets us provide our own implementation of LookupSuffixInReversedSet()
+      in chromium_src that recognizes decentralized DNS suffixes (.crypto, .eth,
+      etc.) as known TLDs before falling back to the renamed upstream function.
+    re_pattern: '(std::optional<DomainRuleTags> LookupSuffixInReversedSet)(\()'
+    replace: '\1_ChromiumImpl\2'

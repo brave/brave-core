@@ -1,0 +1,10 @@
+diff --git a/net/base/BUILD.gn b/net/base/BUILD.gn
+index 9a9dbf4b16ea4bed083831991f49b3e39328178d..f6ba71c3036dfc237e3ddea57afa41407b90ac61 100644
+--- a/net/base/BUILD.gn
++++ b/net/base/BUILD.gn
+@@ -59,4 +59,5 @@ source_set("registry_controlled_domains") {
+     "//base",
+     "//url",
+   ]
++  deps += [ "//brave/components/brave_wallet/common/buildflags" ]
+ }

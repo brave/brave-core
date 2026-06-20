@@ -1,0 +1,13 @@
+diff --git a/net/base/lookup_string_in_fixed_set.cc b/net/base/lookup_string_in_fixed_set.cc
+index 090c9311889f5313a787c5292b407cf31065393e..ba6cacc8c398ce31f1e9497d0e0f561c76c64e2e 100644
+--- a/net/base/lookup_string_in_fixed_set.cc
++++ b/net/base/lookup_string_in_fixed_set.cc
+@@ -207,7 +207,7 @@ std::optional<int> LookupStringInFixedSet(base::span<const uint8_t> graph,
+ // LookupStringInFixedSet::Advance() at compile time. Tests on x86_64 linux
+ // indicated about 10% increased runtime cost for GetRegistryLength() in average
+ // if the implementation of this function was separated from the lookup methods.
+-std::optional<DomainRuleTags> LookupSuffixInReversedSet(
++std::optional<DomainRuleTags> LookupSuffixInReversedSet_ChromiumImpl(
+     base::span<const uint8_t> graph,
+     bool include_private,
+     std::string_view host,
