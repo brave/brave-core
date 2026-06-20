@@ -158,6 +158,15 @@ void SaveCreativeNewTabPageAdsCallback(
 }  // namespace
 
 void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
+  if (dict.empty()) {
+    database::table::CreativeNewTabPageAds database_table;
+    database_table.Save(
+        CreativeNewTabPageAdList(),
+        base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
+                       CreativeSetConversionList(), std::move(callback)));
+    return;
+  }
+
   std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     // Currently, only version 2 is supported. Update this code to maintain.
