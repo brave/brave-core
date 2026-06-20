@@ -29,10 +29,6 @@ export default class EthereumLedgerBridgeKeyring
   extends LedgerBridgeKeyring
   implements LedgerEthereumKeyring
 {
-  constructor(onAuthorized?: () => void) {
-    super(onAuthorized)
-  }
-
   bridgeType = (): BridgeType => {
     return BridgeTypes.EthLedger
   }
