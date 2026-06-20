@@ -52,8 +52,9 @@ substitutions:
   - description: |-
       Square off the extension corner in TabStyleViewsImpl::GetPath, so Brave
       tabs don't carry upstream's rounded extension.
-    re_pattern: '(const bool compact_left_to_bottom =[^;]*;\n)'
-    replace: '\1  extension_corner_radius = 0;\n'
+    re_pattern:
+      '(  float left_extension_corner_radius = extension_corner_radius;)'
+    replace: '  extension_corner_radius = 0;\n\1'
 
   - description: |-
       Fully round the tab separators in TabStyleViewsImpl::PaintSeparators

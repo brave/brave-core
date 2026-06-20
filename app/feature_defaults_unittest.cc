@@ -12,7 +12,6 @@
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
-#include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
@@ -158,7 +157,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
       &feature_engagement::kIPHSideBySidePinnableFeature,
       &feature_engagement::kIPHSideBySideTabSwitchFeature,
-      &feature_engagement::kIPHTabSearchToolbarButtonFeature,
 #endif
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
@@ -324,10 +322,4 @@ TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
 // it via its helper function
 TEST(FeatureDefaultsTest, IsOmniboxEntryPointEnabled) {
   EXPECT_FALSE(lens::features::IsOmniboxEntryPointEnabled());
-}
-
-TEST(FeatureDefaultsTest, HasTabSearchToolbarButton) {
-#if !BUILDFLAG(IS_ANDROID)
-  EXPECT_FALSE(features::HasTabSearchToolbarButton());
-#endif
 }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 949cbc967714c2d8b4471e2340e332f109929f77..62839d45e46e67d8e79777b4c033be198e206b16 100644
+index 366032899a92311ee574ce4980dda08584060344..a028eef4dd68e6aeb134bab207cd8b22790abdf6 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -1047,6 +1047,7 @@ static_library("ui") {
+@@ -1259,6 +1259,7 @@ static_library("ui") {
      # split out yet.
      "//chrome/browser/webauthn:impl",
    ]
@@ -10,7 +10,7 @@ index 949cbc967714c2d8b4471e2340e332f109929f77..62839d45e46e67d8e79777b4c033be19
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -5395,6 +5396,7 @@ group("ui_public_dependencies") {
+@@ -5608,6 +5609,7 @@ group("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -18,7 +18,7 @@ index 949cbc967714c2d8b4471e2340e332f109929f77..62839d45e46e67d8e79777b4c033be19
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5407,6 +5409,7 @@ group("ui_public_dependencies") {
+@@ -5620,6 +5622,7 @@ group("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -26,11 +26,3 @@ index 949cbc967714c2d8b4471e2340e332f109929f77..62839d45e46e67d8e79777b4c033be19
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5550,6 +5556,7 @@ source_set("tab_search_feature") {
-     "//chrome/common:buildflags",
-     "//components/variations/service",
-   ]
-+  if (!is_android) { deps += [ "//chrome/browser/ui/tabs:features" ] }
- }
- 
- if (!is_android) {

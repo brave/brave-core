@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
@@ -11,7 +10,6 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
@@ -24,17 +22,10 @@
 #include "ui/views/widget/widget_utils.h"
 
 // Tests for BraveHorizontalTabStripRegionView's combo-button trailing-edge
-// repositioning. The kHorizontalTabStripComboButton feature is disabled by
-// default in Brave, so it is enabled in the fixture constructor so the button
-// is created before the browser window is built.
+// repositioning.
 class BraveHorizontalTabStripRegionViewBrowserTest
     : public InProcessBrowserTest {
  public:
-  BraveHorizontalTabStripRegionViewBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        tabs::kHorizontalTabStripComboButton);
-  }
-
   BraveBrowserView* browser_view() {
     return static_cast<BraveBrowserView*>(browser()->window());
   }
@@ -48,9 +39,6 @@ class BraveHorizontalTabStripRegionViewBrowserTest
     return views::AsViewClass<BraveHorizontalTabStripRegionView>(
         tab_strip->parent());
   }
-
- protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveHorizontalTabStripRegionViewBrowserTest,

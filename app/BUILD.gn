@@ -137,7 +137,6 @@ source_set("unit_tests") {
     "//chrome/browser/policy:policy_util",
     "//chrome/browser/preloading",
     "//chrome/browser/ui",
-    "//chrome/browser/ui:tab_search_feature",
     "//chrome/browser/ui:ui_features",
     "//components/aggregation_service",
     "//components/attribution_reporting",

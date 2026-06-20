@@ -30,7 +30,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kIPHSideBySidePinnableFeature, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIPHSideBySideTabSwitchFeature, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIPHTabGroupsSaveV2IntroFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHTabSearchToolbarButtonFeature, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 }});
 
