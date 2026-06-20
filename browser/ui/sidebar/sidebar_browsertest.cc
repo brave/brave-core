@@ -1639,16 +1639,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
 
   // Panel sits immediately left of the sidebar control:
   //   [contents] [panel] [sidebar_control]
-  EXPECT_EQ(panel->bounds().right(), sidebar->bounds().x())
-      << "panel=" << panel->bounds().ToString()
-      << " sidebar=" << sidebar->bounds().ToString();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return panel->bounds().right() == sidebar->bounds().x(); }));
 
   // Panel top must align with the contents container — the upstream layout
   // offsets the panel -1px to overlap the toolbar separator; Brave removes
   // that offset so the separator is fully visible.
-  EXPECT_EQ(panel->bounds().y(), contents->bounds().y())
-      << "panel y=" << panel->bounds().y()
-      << " contents y=" << contents->bounds().y();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return panel->bounds().y() == contents->bounds().y(); }));
 
   // --- Sidebar on left (kSidePanelHorizontalAlignment = false)
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
