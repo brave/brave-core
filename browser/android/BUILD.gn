@@ -73,7 +73,7 @@ source_set("tabs_public") {
 }
 
 source_set("tabs_impl") {
-  visibility = [ "//chrome/browser" ]
+  visibility = [ "//brave/browser:core" ]
   sources = [ "brave_tab_features.cc" ]
 
   deps = [

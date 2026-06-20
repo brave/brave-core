@@ -15,7 +15,7 @@ deprecated_visibility_allowed = [
   "//brave/components/debounce/core/browser",
   "//brave/components/ntp_background_images/browser",
   "//brave/components/request_otr/browser",
-  "//chrome/browser",
+  "//brave/browser:core",
   "//chrome/browser/content_settings:unit_tests",
 ]
 

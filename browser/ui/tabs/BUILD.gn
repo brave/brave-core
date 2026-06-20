@@ -30,7 +30,7 @@ source_set("tabs_public") {
 
 if (!is_android) {
   source_set("impl") {
-    visibility = [ "//chrome/browser" ]
+    visibility = [ "//brave/browser:core" ]
 
     sources = [
       "brave_tab_features.cc",

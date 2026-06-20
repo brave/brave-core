@@ -163,7 +163,7 @@ if (enable_ai_chat_tab_management_tool) {
     visibility = [
       ":browser_tests",
       ":unit_tests",
-      "//chrome/browser",
+      "//brave/browser:core",
     ]
 
     sources = [ "tools/tab_management_tool.cc" ]
@@ -200,7 +200,7 @@ if (enable_brave_ai_chat_agent_profile) {
   source_set("ai_chat_agent_profile_impl") {
     visibility = [
       ":browser_tests",
-      "//chrome/browser",
+      "//brave/browser:core",
     ]
 
     sources = [
