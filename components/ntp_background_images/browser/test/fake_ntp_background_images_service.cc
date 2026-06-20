@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/files/file_path.h"
 #include "base/json/json_reader.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
 
@@ -29,6 +30,8 @@ void FakeNTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
 void FakeNTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     const std::string& json) {
+  sponsored_images_installed_dir_ =
+      base::FilePath::FromASCII("fake_sponsored_images_installed_dir");
   NTPBackgroundImagesService::OnHandledSponsoredComponentData(
       base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS));
 }
