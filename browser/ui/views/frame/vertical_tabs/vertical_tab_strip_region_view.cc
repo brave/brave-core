@@ -34,6 +34,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -135,7 +136,8 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
                           BrowserWindowInterface* browser_window_interface)
       : BraveNewTabButton(std::move(callback),
                           kLeoPlusAddIcon,
-                          browser_window_interface) {
+                          browser_window_interface),
+        browser_(browser_window_interface->GetBrowserForMigrationOnly()) {
     // Turn off inkdrop to have same bg color with tab's.
     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
 
@@ -209,6 +211,17 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   ~VerticalTabNewTabButton() override = default;
 
+  void OnMouseEvent(ui::MouseEvent* event) override {
+    if (event->IsOnlyMiddleMouseButton()) {
+      if (event->type() == ui::EventType::kMousePressed) {
+        chrome::NewTabFromClipboardURL(browser_);
+      }
+      event->SetHandled();
+      return;
+    }
+    BraveNewTabButton::OnMouseEvent(event);
+  }
+
   gfx::Insets GetInsets() const override {
     // This button doesn't need any insets. Invalidate parent's one.
     return gfx::Insets();
@@ -243,6 +256,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   raw_ptr<views::ImageView> plus_icon_ = nullptr;
   raw_ptr<views::Label> text_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
 };
 
 BEGIN_METADATA(VerticalTabNewTabButton)
