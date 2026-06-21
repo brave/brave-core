@@ -16,6 +16,7 @@ import stat
 import subprocess
 import sys
 import unittest
+from pathlib import Path
 
 import _boot  # noqa: F401
 from cmd_test import (CMD_SCRIPT, _GIT_ENV_OVERRIDES, _Sandbox)
@@ -189,6 +190,111 @@ class TestCommitIntegration(unittest.TestCase):
         result = self._sandbox.run_gc(['commit', '-m', '   '])
         # Either git or the hook rejects this; either way exit != 0.
         self.assertNotEqual(result.returncode, 0)
+
+
+# ---------------------------------------------------------------------------
+# Tests: --culprit upstream links (Chromium and subrepos)
+# ---------------------------------------------------------------------------
+
+
+class TestCulpritLinks(unittest.TestCase):
+    """The commit-msg hook resolves --culprit hashes to upstream links.
+
+    A bare hash resolves against the Chromium checkout ('../'); a
+    '<subrepo>:<hash>' value (e.g. 'v8/src:...') resolves against that subrepo
+    (e.g. '../v8/src') and links to its own googlesource project.
+    """
+
+    def setUp(self) -> None:
+        self._sandbox = _Sandbox()
+        self._sandbox.__enter__()
+        self._sandbox.install_hook()
+
+    def tearDown(self) -> None:
+        self._sandbox.__exit__(None, None, None)
+
+    def _commit_in(self, subject: str, repo_path: Path) -> str:
+        """Create an empty commit in repo_path and return its hash."""
+        return self._sandbox.repo.commit_empty(subject, repo_path)
+
+    def test_chromium_hash_adds_link_and_body(self) -> None:
+        """A bare culprit hash links to chromium/src and inlines the body."""
+        repo = self._sandbox.repo
+        culprit_hash = self._commit_in('Upstream chromium change',
+                                       repo.chromium)
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--culprit', culprit_hash, '-m', 'Fix'])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        self.assertIn('Chromium changes:', msg)
+        self.assertIn(
+            f'https://chromium.googlesource.com/chromium/src/+/{culprit_hash}',
+            msg)
+        # The full upstream commit body is inlined.
+        self.assertIn('Upstream chromium change', msg)
+
+    def test_v8_subrepo_hash_links_to_v8_project(self) -> None:
+        """A 'v8/src:<hash>' culprit resolves in ../v8/src, links to v8/v8."""
+        repo = self._sandbox.repo
+        repo.add_repo('v8/src')
+        culprit_hash = self._commit_in('Some v8 change',
+                                       repo.chromium / 'v8' / 'src')
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--culprit', f'v8/src:{culprit_hash}', '-m', 'Fix'])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        # The link points at the v8 project, not chromium/src.
+        self.assertIn(
+            f'https://chromium.googlesource.com/v8/v8/+/{culprit_hash}', msg)
+        self.assertNotIn('chromium/src/+/', msg)
+        self.assertIn('Some v8 change', msg)
+
+    def test_mixed_chromium_and_subrepo_culprits(self) -> None:
+        """A comma-separated mix of chromium and v8 culprits links both."""
+        repo = self._sandbox.repo
+        chromium_hash = self._commit_in('Chromium side', repo.chromium)
+        repo.add_repo('v8/src')
+        v8_hash = self._commit_in('V8 side', repo.chromium / 'v8' / 'src')
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc([
+            'commit', '--culprit', f'{chromium_hash},v8/src:{v8_hash}', '-m',
+            'Fix'
+        ])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        self.assertIn(
+            f'https://chromium.googlesource.com/chromium/src/+/{chromium_hash}',
+            msg)
+        self.assertIn(f'https://chromium.googlesource.com/v8/v8/+/{v8_hash}',
+                      msg)
+        self.assertIn('Chromium side', msg)
+        self.assertIn('V8 side', msg)
+
+    def test_unknown_subrepo_is_rejected(self) -> None:
+        """An unknown subrepo prefix aborts the commit with a helpful error."""
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc(
+            ['commit', '--culprit', 'skia:deadbeef', '-m', 'Fix'])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Unknown culprit subrepo 'skia'", result.stderr)
+        # The known subrepos are listed to guide the user.
+        self.assertIn('v8/src', result.stderr)
+
+    def test_culprit_already_in_message_is_not_duplicated(self) -> None:
+        """A culprit whose hash is already in the message adds no link block."""
+        repo = self._sandbox.repo
+        culprit_hash = self._commit_in('Should not be inlined', repo.chromium)
+        self._sandbox.stage_change()
+        result = self._sandbox.run_gc([
+            'commit', '--culprit', culprit_hash, '-m',
+            f'Fix (see {culprit_hash})'
+        ])
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        self.assertNotIn('Chromium changes:', msg)
+        self.assertNotIn('Should not be inlined', msg)
 
 
 # ---------------------------------------------------------------------------
