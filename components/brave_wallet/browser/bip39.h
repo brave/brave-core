@@ -19,7 +19,9 @@
 namespace brave_wallet::bip39 {
 
 inline constexpr uint32_t kSeedSize = 64;
-inline constexpr uint32_t kDefaultEntropySize = 16;
+inline constexpr uint32_t k12WordsEntropySize = 16;
+inline constexpr uint32_t k24WordsEntropySize = 32;
+inline constexpr uint32_t kDefaultEntropySize = k12WordsEntropySize;
 inline constexpr uint32_t kLegacyEthEntropySize = 32;
 
 // Generate mnemonic from entropy bytes following BIP39.

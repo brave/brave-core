@@ -82,13 +82,18 @@ class KeyringService : public mojom::KeyringService {
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
 
   // mojom::KeyringService
-  // Must unlock before using this API otherwise it will return empty string
+  void GenerateMnemonic(int32_t word_count,
+                        GenerateMnemonicCallback callback) override;
   void GetWalletMnemonic(const std::string& password,
                          GetWalletMnemonicCallback callback) override;
   void IsWalletCreated(IsWalletCreatedCallback callback) override;
   bool IsWalletCreatedSync();
   void CreateWallet(const std::string& password,
                     CreateWalletCallback callback) override;
+  void CreateWalletWithMnemonic(
+      const std::string& mnemonic,
+      const std::string& password,
+      CreateWalletWithMnemonicCallback callback) override;
   void RestoreWallet(const std::string& mnemonic,
                      const std::string& password,
                      bool is_legacy_eth_seed_format,
