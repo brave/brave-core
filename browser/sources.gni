@@ -911,6 +911,7 @@ if (enable_print_preview) {
   brave_chrome_browser_deps += [
     "//brave/browser/screenshot",  # brave_tab_helpers.cc uses screenshot
     "//brave/browser/screenshot:screenshot_internal",
+    "//chrome/browser/ui/webui/print_preview",
   ]
 }
 
