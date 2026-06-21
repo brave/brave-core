@@ -281,39 +281,6 @@ if sys.platform == 'win32':
     GIT_SH_PRESUMED_BIN_PATH = Path(r'C:\Program Files\Git\bin\sh.exe')
 
 
-@contextlib.contextmanager
-def _without_github_https_rewrite():
-    """Drop any global git `insteadOf` rule that rewrites `https://github.com/`.
-
-    CI bots commonly set `url.<ssh-base>.insteadOf = https://github.com/` as
-    github is a bit flaky over HTTPS, and SSH works better with git cache. This,
-    however, breaks the full toolchain build which relies on `build_rust.py`
-    which ends up hitting a ssh request that requires authentication, stopping
-    the process.
-
-    This function suspend that setting for a particular duration.
-    """
-    listed = _check_call('git',
-                         'config',
-                         '--global',
-                         '--get-regexp',
-                         r'\.insteadof$',
-                         check=False,
-                         capture_output=True)
-    removed = [(key, value)
-               for key, _, value in (line.partition(' ')
-                                     for line in listed.stdout.splitlines())
-               if value in ('https://github.com/', 'git://github.com/')]
-    for key, value in removed:
-        _check_call('git', 'config', '--global', '--unset', key,
-                    f'^{re.escape(value)}$')
-    try:
-        yield
-    finally:
-        for key, value in removed:
-            _check_call('git', 'config', '--global', '--add', key, value)
-
-
 def _check_call(*command,
                 cwd=None,
                 env=None,
@@ -1080,13 +1047,9 @@ class ToolchainBuilder:
         Raises:
             RuntimeError: if the expected archive is missing after the run.
         """
-        # `package_rust.py` runs `cargo vendor`, which fetches the toolchain's
-        # public crate git dependencies. Drop any `https://github.com/` SSH
-        # rewrite first so those stay HTTPS. See `_without_github_https_rewrite`.
-        with _without_github_https_rewrite():
-            _check_call(str(self._vpython_path),
-                        'package_rust.py',
-                        cwd=self._tools_rust)
+        _check_call(str(self._vpython_path),
+                    'package_rust.py',
+                    cwd=self._tools_rust)
 
         base_archive = (Path(self._build_rust_module.THIRD_PARTY_DIR) /
                         self._package_rust_module.RUST_TOOLCHAIN_PACKAGE_NAME)
