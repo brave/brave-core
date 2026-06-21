@@ -19,11 +19,11 @@
 // reference to chromium suggestions.
 
 #define BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS \
-  {                                                                              \
+  if (trigger_field.has_value()) {                                               \
     manager_->client().BraveAddSuggestions(                                      \
-        manager_->client().ClassifyAsPasswordForm(                               \
-            *manager_, query_form_.global_id(), query_field_.global_id()),       \
-        query_field_, suggestions);                                              \
+        manager_->client().ClassifyAsPasswordForm(*manager_, query_form_id_,     \
+                                                  query_field_id_),              \
+        *trigger_field, suggestions);                                            \
   }
 
 #define DidAcceptSuggestion(...) DidAcceptSuggestion_ChromiumImpl(__VA_ARGS__)
@@ -38,8 +38,7 @@ namespace autofill {
 void AutofillExternalDelegate::DidAcceptSuggestion(
     const Suggestion& suggestion,
     const SuggestionMetadata& metadata) {
-  if (manager_->client().BraveHandleSuggestion(suggestion,
-                                               query_field_.global_id())) {
+  if (manager_->client().BraveHandleSuggestion(suggestion, query_field_id_)) {
     return;
   }
 
