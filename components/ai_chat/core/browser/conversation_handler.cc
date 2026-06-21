@@ -1975,6 +1975,11 @@ void ConversationHandler::StopTask() {
   }
 }
 
+void ConversationHandler::SetToolsAttached(mojom::AssociatedContentPtr content,
+                                           bool tools_attached) {
+  associated_content_manager_->SetToolsAttached(content->uuid, tools_attached);
+}
+
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {
   // A ToolProvider's task state has changed. Propogate this to the
   // conversation's task state.

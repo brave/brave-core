@@ -133,6 +133,7 @@ export function createMockConversationHandler(
     pauseTask: () => {},
     resumeTask: () => {},
     stopTask: () => {},
+    setToolsAttached: () => {},
 
     // Apply overrides - these will replace defaults
     ...overrides,
@@ -245,7 +246,6 @@ export function createMockUIHandler(
     associateTab: () => {},
     associateUrlContent: () => {},
     disassociateContent: () => {},
-    setToolsAttached: () => {},
     openAIChatAgentProfile: () => {},
     showSoftKeyboard: () => {},
 

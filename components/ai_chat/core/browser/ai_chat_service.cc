@@ -1270,18 +1270,6 @@ void AIChatService::DisassociateContent(
   }
 }
 
-void AIChatService::SetToolsAttached(const mojom::AssociatedContentPtr& content,
-                                     const std::string& conversation_uuid,
-                                     bool tools_attached) {
-  // Note: This will only work if the conversation is already loaded.
-  auto* conversation = GetConversation(conversation_uuid);
-  if (!conversation) {
-    return;
-  }
-  conversation->associated_content_manager()->SetToolsAttached(content->uuid,
-                                                               tools_attached);
-}
-
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {
   if (!cached_focus_topics_.empty()) {

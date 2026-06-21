@@ -319,11 +319,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     content: Mojom.AssociatedContent,
     toolsAttached: boolean,
   ) => {
-    aiChat.api.uiHandler.setToolsAttached(
-      content,
-      conversationState.conversationUuid,
-      toolsAttached,
-    )
+    api.conversationHandler.setToolsAttached(content, toolsAttached)
   }
 
   // In global panel always mode (not standalone, not tab-associated), the

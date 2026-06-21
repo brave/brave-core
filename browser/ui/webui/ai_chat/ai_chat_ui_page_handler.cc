@@ -636,13 +636,6 @@ void AIChatUIPageHandler::DisassociateContent(
   service->DisassociateContent(content, conversation_uuid);
 }
 
-void AIChatUIPageHandler::SetToolsAttached(mojom::AssociatedContentPtr content,
-                                           const std::string& conversation_uuid,
-                                           bool tools_attached) {
-  auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
-  service->SetToolsAttached(content, conversation_uuid, tools_attached);
-}
-
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {

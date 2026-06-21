@@ -119,9 +119,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                            const std::string& conversation_uuid) override;
   void DisassociateContent(mojom::AssociatedContentPtr content,
                            const std::string& conversation_uuid) override;
-  void SetToolsAttached(mojom::AssociatedContentPtr content,
-                        const std::string& conversation_uuid,
-                        bool tools_attached) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
