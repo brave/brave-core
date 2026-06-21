@@ -8,12 +8,15 @@
 #include "base/functional/callback_helpers.h"
 #include "base/test/run_until.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "chrome/browser/ui/views/permissions/permission_prompt_style.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
 #include "components/permissions/test/mock_permission_prompt.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -97,9 +100,9 @@ class MockPermissionPromptBubbleBaseView
       public views::WidgetObserver {
  public:
   MockPermissionPromptBubbleBaseView(
-      Browser* browser,
+      content::WebContents* web_contents,
       base::WeakPtr<permissions::PermissionPrompt::Delegate> delegate)
-      : PermissionPromptBubbleBaseView(browser,
+      : PermissionPromptBubbleBaseView(web_contents,
                                        delegate,
                                        PermissionPromptStyle::kBubbleOnly) {
     CreateWidget();
@@ -140,7 +143,8 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
   MockPermissionPromptDelegate mock_delegate;
   auto create_permission_prompt = [&]() {
     auto* permission_prompt = new MockPermissionPromptBubbleBaseView(
-        browser(), mock_delegate.GetWeakPtr());
+        browser()->tab_strip_model()->GetActiveWebContents(),
+        mock_delegate.GetWeakPtr());
     // Wait until the prompt widget's native widget is created. Before that,
     // IsActive() will return false.
     EXPECT_TRUE(base::test::RunUntil(
