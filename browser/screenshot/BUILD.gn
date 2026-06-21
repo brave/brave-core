@@ -72,6 +72,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/text_recognition/common/buildflags",
+    "//chrome/browser/ui/webui/print_preview",
     "//chrome/services/printing/public/mojom",
     "//chrome/test:test_support",
     "//components/printing/browser",

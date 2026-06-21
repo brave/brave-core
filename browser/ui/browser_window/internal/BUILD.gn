@@ -52,7 +52,10 @@ source_set("internal") {
   }
 
   if (enable_print_preview) {
-    deps += [ "//brave/browser/screenshot" ]
+    deps += [
+      "//brave/browser/screenshot",
+      "//chrome/browser/ui/webui/print_preview",
+    ]
   }
 
   if (enable_brave_rewards) {

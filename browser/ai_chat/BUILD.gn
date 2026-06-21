@@ -432,7 +432,10 @@ source_set("browser_tests") {
         "//chrome/browser/printing/test_print_preview_observer.cc",
         "//chrome/browser/printing/test_print_preview_observer.h",
       ]
-      deps += [ "//printing:test_support" ]
+      deps += [
+        "//chrome/browser/ui/webui/print_preview",
+        "//printing:test_support",
+      ]
     }
 
     data = [
