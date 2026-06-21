@@ -33,6 +33,13 @@
 #    and add them to the commit message. The links will be in the format
 #    https://chromium.googlesource.com/chromium/src/+/{hash}.
 #
+#    A culprit may also target a subrepo (e.g. v8, that lives outside of the
+#    Chromium checkout) using the `<subrepo-path>:<hash>` syntax. For instance
+#    `culprit=v8/src:3ba47f111` looks up the commit in `../v8/src` and links to
+#    that subrepo's googlesource URL (e.g.
+#    https://chromium.googlesource.com/v8/v8/+/{hash}). A bare hash resolves
+#    against the Chromium checkout at `../`.
+#
 # 5. `issue` environment variable for "Resolves" links
 #
 #    The `issue` environment variable can be set to a comma-separated list of
@@ -74,6 +81,28 @@ PREFIXES_FOR_UPGRADE_COMMITS = [
     'Update patches from Chromium ',
     'Updated strings for Chromium ',
 ]
+
+# Known googlesource browse URLs keyed by the culprit's subrepo path (relative
+# to the Chromium checkout). A bare hash with no subrepo prefix maps to ''.
+# Add new subrepos here as needed.
+GOOGLESOURCE_URLS = {
+    '': 'https://chromium.googlesource.com/chromium/src',
+    'v8/src': 'https://chromium.googlesource.com/v8/v8',
+}
+
+
+def parse_culprit(culprit: str) -> tuple[str, str]:
+    """Splits a culprit value into its subrepo path and commit hash.
+
+    A bare hash (e.g. `abc123`) targets the Chromium checkout, returning a
+    subrepo of ''. A `<subrepo-path>:<hash>` value (e.g. `v8/src:abc123`)
+    targets a repo that lives outside the Chromium checkout, keyed in
+    GOOGLESOURCE_URLS.
+    """
+    repo, separator, commit_hash = culprit.partition(':')
+    if separator:
+        return repo, commit_hash
+    return '', repo
 
 
 def main():
@@ -131,20 +160,31 @@ def main():
 
     # These are the report links that are added to the commit message when
     # there's an upstream culprit.
-    culprit_hashes = []
+    culprits = []
     if os.getenv("culprit"):
-        culprit_hashes = os.getenv("culprit").split(',')
-    culprit_hashes = [
-        culprit_hash for culprit_hash in culprit_hashes
-        if culprit_hash not in commit_message
-    ]
+        culprits = [
+            parse_culprit(culprit)
+            for culprit in os.getenv("culprit").split(',')
+        ]
+    # Skip culprits whose hash is already present in the commit message.
+    culprits = [(repo, commit_hash) for repo, commit_hash in culprits
+                if commit_hash not in commit_message]
 
     culprit_output = []
-    for culprit_hash in culprit_hashes:
+    culprit_links = []
+    for repo, commit_hash in culprits:
+        if repo not in GOOGLESOURCE_URLS:
+            known = ', '.join(sorted(r for r in GOOGLESOURCE_URLS if r))
+            print(
+                f"Unknown culprit subrepo '{repo}'. Known subrepos: {known}.",
+                file=sys.stderr)
+            return 1
+        git_dir = os.path.join('..', repo)
         culprit_output.append(
             subprocess.check_output(
-                ['git', '-C', '../', 'log', '-1',
-                 culprit_hash]).decode().strip())
+                ['git', '-C', git_dir, 'log', '-1',
+                 commit_hash]).decode().strip())
+        culprit_links.append(f"{GOOGLESOURCE_URLS[repo]}/+/{commit_hash}")
 
     if tags:
         if commit_message[0] == '[':
@@ -176,13 +216,9 @@ def main():
         ])
 
     if culprit_output:
-        chromium_links = [
-            f"https://chromium.googlesource.com/chromium/src/+/{culprit_hash}"
-            for culprit_hash in culprit_hashes
-        ]
         commit_message += ('\n\nChromium changes:'
                            '\n{chromium_links}\n\n{culprits}'.format(
-                               chromium_links="\n".join(chromium_links),
+                               chromium_links="\n".join(culprit_links),
                                culprits="\n\n".join(culprit_output)))
 
     with commit_msg_file.open('w', encoding='utf-8', newline='') as f:
