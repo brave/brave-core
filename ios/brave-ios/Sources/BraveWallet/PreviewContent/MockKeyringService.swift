@@ -111,7 +111,7 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func createWalletWithMnemonic(
-    mnemonic: String,
+    _ mnemonic: String,
     password: String,
     completion: @escaping (String?) -> Void
   ) {
