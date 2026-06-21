@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/session_binding_utils.cc b/components/signin/public/base/session_binding_utils.cc
-index 083696c892d9b0ef177da3a2b9d05e71c80edab1..c5c165960ac773a62e748abb8fc840134e5f5a2c 100644
+index a9702d14da2ccd37a8998aa462659e123b21722d..c0671739d0b3a45cab5848e2becf860576d4ff2b 100644
 --- a/components/signin/public/base/session_binding_utils.cc
 +++ b/components/signin/public/base/session_binding_utils.cc
-@@ -44,6 +44,8 @@ std::string SignatureAlgorithmToString(
+@@ -46,6 +46,8 @@ std::string SignatureAlgorithmToString(
        return "PS256";
      case crypto::SignatureVerifier::RSA_PKCS1_SHA1:
        return "RS1";

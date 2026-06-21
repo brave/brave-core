@@ -1,5 +1,5 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index 5ff7afba50e4b1dbc7ff4a8d83a794e1d73a5317..a90c0e77d729d3afdee9e5c2d7ab1be4abffa69a 100644
+index 9367f8eb8a8226430d69ed8ce9ce320d9e157895..c17d3ec5169d220d4cecc9f595ac91caf2e7f43c 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
 @@ -74,6 +74,13 @@ int GetIconIdAndroid(RequestType type) {

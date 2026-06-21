@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -283,7 +284,14 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, HideNetworkInSettings) {
   ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(NeonEVMNetwork())).is_ok());
 }
 
-IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_CustomNetworkInSettings DISABLED_CustomNetworkInSettings
+#else
+#define MAYBE_CustomNetworkInSettings CustomNetworkInSettings
+#endif
+IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest,
+                       MAYBE_CustomNetworkInSettings) {
   CreateSettingsTab();
 
   ActivateWalletTab();
