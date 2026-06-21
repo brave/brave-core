@@ -412,6 +412,26 @@ IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest, NewTabVisibility) {
       tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 }
 
+IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest, MiddleClickNewTabButton) {
+  ToggleVerticalTabStrip();
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  auto* new_tab_button = region_view->new_tab_button_for_testing();
+  ASSERT_TRUE(new_tab_button);
+  ASSERT_TRUE(new_tab_button->GetVisible());
+
+  const int initial_count = browser()->tab_strip_model()->count();
+  MiddleClickView(new_tab_button);
+
+  EXPECT_EQ(initial_count + 1, browser()->tab_strip_model()->count());
+}
+
 IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest, MinHeight) {
   ToggleVerticalTabStrip();
 
@@ -1363,6 +1383,14 @@ class VerticalTabStripDragAndDropBrowserTest
   void ReleaseMouse() {
     ASSERT_TRUE(
         ui_controls::SendMouseEvents(ui_controls::LEFT, ui_controls::UP));
+  }
+
+  void MiddleClickView(views::View* view) {
+    ASSERT_TRUE(ui_test_utils::SendMouseMoveSync(GetCenterPointInScreen(view)));
+    ASSERT_TRUE(ui_test_utils::SendMouseEventsSync(ui_controls::MIDDLE,
+                                                   ui_controls::DOWN));
+    ASSERT_TRUE(ui_test_utils::SendMouseEventsSync(ui_controls::MIDDLE,
+                                                   ui_controls::UP));
   }
 
   void MoveMouseTo(
