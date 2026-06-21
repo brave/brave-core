@@ -476,6 +476,10 @@ TEST_F(AssociatedContentManagerUnitTest,
   manager->AddContent(&first_content);
   manager->AddContent(&second_content);
 
+  // Only tools from attached content are loaded for a generation loop.
+  manager->SetToolsAttached(first_content.uuid(), /*tools_attached=*/true);
+  manager->SetToolsAttached(second_content.uuid(), /*tools_attached=*/true);
+
   EXPECT_CALL(first_content, GetContentTools)
       .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
         std::vector<std::unique_ptr<Tool>> tools;
@@ -511,6 +515,9 @@ TEST_F(AssociatedContentManagerUnitTest,
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&content);
 
+  // Only tools from attached content are loaded for a generation loop.
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/true);
+
   EXPECT_CALL(content, GetContentTools)
       .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
         std::vector<std::unique_ptr<Tool>> tools;
@@ -542,6 +549,10 @@ TEST_F(AssociatedContentManagerUnitTest,
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&first_content);
   manager->AddContent(&second_content);
+
+  // Only tools from attached content are loaded for a generation loop.
+  manager->SetToolsAttached(first_content.uuid(), /*tools_attached=*/true);
+  manager->SetToolsAttached(second_content.uuid(), /*tools_attached=*/true);
 
   AssociatedContentDelegate::GetContentToolsCallback pending_callback;
   EXPECT_CALL(first_content, GetContentTools)
