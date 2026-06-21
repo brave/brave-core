@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index 21def20096edf5ab455009eeaf028e7fd62931c2..ba26d9e19ed30ee0626c3cf39518cba5e1811656 100644
+index 107796e919064b8f47b4efbc1b035bfa3a8401d1..f486bfe0316845b9fbce83681c2a70c0b1c07f82 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 @@ -712,6 +712,7 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {

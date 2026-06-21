@@ -28,6 +28,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -299,7 +300,13 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   RequestHandler request_handler_;
 };
 
-IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_EnableRewards DISABLED_EnableRewards
+#else
+#define MAYBE_EnableRewards EnableRewards
+#endif
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, MAYBE_EnableRewards) {
   // Writing a new test?
   //
   // First, set up the Rewards profile state. This may involve setting prefs and
@@ -335,7 +342,13 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
   ASSERT_EQ(GetPrefs().GetInteger(prefs::kTosVersion), 2);
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, TOSVersionRace) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_TOSVersionRace DISABLED_TOSVersionRace
+#else
+#define MAYBE_TOSVersionRace TOSVersionRace
+#endif
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, MAYBE_TOSVersionRace) {
   auto params =
       base::test::ParseJsonDict(R"({ "rate": 0.25, "tos_version": 2 })");
   GetPrefs().SetDict(prefs::kParameters, std::move(params));
@@ -346,7 +359,13 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, TOSVersionRace) {
   ASSERT_EQ(GetPrefs().GetInteger(prefs::kTosVersion), 2);
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewardsFromPanel) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_EnableRewardsFromPanel DISABLED_EnableRewardsFromPanel
+#else
+#define MAYBE_EnableRewardsFromPanel EnableRewardsFromPanel
+#endif
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, MAYBE_EnableRewardsFromPanel) {
   SetRequestHandler(base::BindRepeating(HandleEnableRewardsRequest));
   OpenRewardsPanel();
   LoadScript("enable_rewards_test.js");
@@ -354,7 +373,13 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewardsFromPanel) {
   ASSERT_FALSE(GetPrefs().GetString(prefs::kWalletBrave).empty());
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ResetRewards) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_ResetRewards DISABLED_ResetRewards
+#else
+#define MAYBE_ResetRewards ResetRewards
+#endif
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, MAYBE_ResetRewards) {
   GivenRewardsIsEnabled();
   StartRewardsEngine();
   NavigateToRewardsPage("/reset");
@@ -363,7 +388,13 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ResetRewards) {
   ASSERT_TRUE(GetPrefs().GetString(prefs::kWalletBrave).empty());
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ConnectAccount) {
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_ConnectAccount DISABLED_ConnectAccount
+#else
+#define MAYBE_ConnectAccount ConnectAccount
+#endif
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, MAYBE_ConnectAccount) {
   GivenRewardsIsEnabled();
   StartRewardsEngine();
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_icon_view.cc b/chrome/browser/ui/views/location_bar/location_icon_view.cc
-index c4e1a3a755a5e92269c4fde2e4f2d1751b66ac1b..16e0b9a9e5738803afcab20be529db7dd824d3ae 100644
+index 656b7a15e7862b624576b8714d6e8a0c1dec1838..95dc5937ffcea0813fb46c101fcc541a947c7ded 100644
 --- a/chrome/browser/ui/views/location_bar/location_icon_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_icon_view.cc
 @@ -340,6 +340,7 @@ void LocationIconView::UpdateBackground() {

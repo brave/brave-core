@@ -1784,12 +1784,13 @@
 
 # These tests fail because they conflict with our own split view layout,
 # specifically with how we currently manage our vertical tabs host view
--DeviceChooserBubbleSplitViewTest.ShowDeviceChooserDialog
+-DeviceChooserBubbleTest.ShowDeviceChooserDialogInSplitView
 -SafetyTipPageInfoBubbleViewBrowserTest.ShowLookalikeDialog
 
 # These tests fail because we disable contextual cueing service.
 -ContextualCueingControllerBrowserTest*.*
 -ContextualCueingControllerDoNotDiscardShoppingPdfsTest.*
+-ContextualCueingControllerShowInSplitViewBrowserTest.ShowCueInSplitView
 -ContextualCueingControllerTabListNeverTest.*
 -ContextualCueingControllerTabListOnlyIfMultipleTest.*
 -ContextualCueingServiceBrowserTest*.*

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/actor/ui/handoff_button_controller.cc b/chrome/browser/actor/ui/handoff_button_controller.cc
-index 1066daf0c02572bf97a42c2b5dd3322c5d406bb6..1e346f06cfdca597bf1f421d11b21e0215c3bac6 100644
+index 61c1ab9da1e6a38a3d6e5217a04755ca7e59a74e..fded0fb5b35971d5baff797ff1f2df5e1ce82387 100644
 --- a/chrome/browser/actor/ui/handoff_button_controller.cc
 +++ b/chrome/browser/actor/ui/handoff_button_controller.cc
 @@ -59,7 +59,7 @@ constexpr float kBackgroundInset = 2.0f;
@@ -36,7 +36,7 @@ index 1066daf0c02572bf97a42c2b5dd3322c5d406bb6..1e346f06cfdca597bf1f421d11b21e02
        std::vector<SkColor4f> color4fs;
        for (const auto& color : colors) {
          color4fs.push_back(SkColor4f::FromColor(color));
-@@ -385,7 +379,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
+@@ -386,7 +380,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
            // Position with a fixed offset from the top of the anchor.
            : anchor_bounds.y() - kHandoffButtonTopOffset;
  

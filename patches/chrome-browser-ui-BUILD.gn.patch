@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 2ef753e1dd31d3a8a802ea4ed6c8813b26e4cae7..4cb14ae988ec562ae2eeeaae0660dfde7a31b44c 100644
+index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..c05d5ac05874709ff2a9aa6f444475b86ea17912 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -921,6 +921,7 @@ static_library("ui") {
@@ -10,7 +10,7 @@ index 2ef753e1dd31d3a8a802ea4ed6c8813b26e4cae7..4cb14ae988ec562ae2eeeaae0660dfde
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3370,7 +3371,10 @@ static_library("ui") {
+@@ -3371,7 +3372,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -22,7 +22,7 @@ index 2ef753e1dd31d3a8a802ea4ed6c8813b26e4cae7..4cb14ae988ec562ae2eeeaae0660dfde
      }
    }
  
-@@ -5422,6 +5426,7 @@ group("ui_public_dependencies") {
+@@ -5423,6 +5427,7 @@ group("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -30,7 +30,7 @@ index 2ef753e1dd31d3a8a802ea4ed6c8813b26e4cae7..4cb14ae988ec562ae2eeeaae0660dfde
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5434,6 +5439,7 @@ group("ui_public_dependencies") {
+@@ -5435,6 +5440,7 @@ group("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
