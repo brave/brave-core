@@ -86,16 +86,6 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
           &DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "getHttpsUpgradeControlType",
-      base::BindRepeating(
-          &DefaultBraveShieldsHandler::GetHttpsUpgradeControlType,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setHttpsUpgradeControlType",
-      base::BindRepeating(
-          &DefaultBraveShieldsHandler::SetHttpsUpgradeControlType,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "getNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::GetNoScriptControlType,
                           base::Unretained(this)));
@@ -316,29 +306,6 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
-}
-
-void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
-    const base::ListValue& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-
-  ControlType setting = brave_shields::GetHttpsUpgradeControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
-
-  AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
-}
-
-void DefaultBraveShieldsHandler::SetHttpsUpgradeControlType(
-    const base::ListValue& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  std::string value = args[0].GetString();
-
-  brave_shields::SetHttpsUpgradeControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetNoScriptControlType(

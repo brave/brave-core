@@ -82,10 +82,6 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
     SetFingerprintingControlType(host_content_settings_map(),
                                  ControlType::DEFAULT, GURL());
 
-    // Set `Upgrade connections to HTTPS` to require HTTPS.
-    SetHttpsUpgradeControlType(host_content_settings_map(), ControlType::BLOCK,
-                               GURL());
-
     // Set forget first-party storage to enabled.
     brave_shields_settings()->SetForgetFirstPartyStorageEnabled(true, GURL());
 
@@ -116,10 +112,6 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
     // Verify that Brave Fingerprinting protection is enabled.
     EXPECT_EQ(GetFingerprintingControlType(host_content_settings_map(), GURL()),
               ControlType::DEFAULT);
-
-    // Verify that `Upgrade connections to HTTPS` is set to require HTTPS.
-    EXPECT_EQ(GetHttpsUpgradeControlType(host_content_settings_map(), GURL()),
-              ControlType::BLOCK);
 
     // Verify that referrer policy is capped.
     EXPECT_FALSE(brave_shields::AreReferrersAllowed(host_content_settings_map(),
@@ -175,10 +167,6 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
     // Verify that Brave Fingerprinting protection is disabled.
     EXPECT_EQ(GetFingerprintingControlType(host_content_settings_map(), GURL()),
               ControlType::ALLOW);
-
-    // Verify that `Upgrade connections to HTTPS` is set to standard mode.
-    EXPECT_EQ(GetHttpsUpgradeControlType(host_content_settings_map(), GURL()),
-              ControlType::BLOCK_THIRD_PARTY);
 
     // Verify that referrers are not capped.
     EXPECT_TRUE(brave_shields::AreReferrersAllowed(host_content_settings_map(),

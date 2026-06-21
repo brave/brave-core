@@ -25,7 +25,6 @@ public class BraveShieldsContentSettings {
     public static final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";
     public static final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
     public static final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
-    public static final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
     public static final String RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE =
             "forgetFirstPartyStorage";
     public static final String RESOURCE_IDENTIFIER_SHRED_SITE_DATA = "shredSiteData";
@@ -229,9 +228,6 @@ public class BraveShieldsContentSettings {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             BraveShieldsContentSettingsJni.get()
                     .setFingerprintingControlType(settingOption, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTPS_UPGRADE)) {
-            BraveShieldsContentSettingsJni.get()
-                    .setHttpsUpgradeControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
@@ -278,9 +274,6 @@ public class BraveShieldsContentSettings {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(
                     host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTPS_UPGRADE)) {
-            settings =
-                    BraveShieldsContentSettingsJni.get().getHttpsUpgradeControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
@@ -310,24 +303,6 @@ public class BraveShieldsContentSettings {
                 ProfileManager.getLastUsedRegularProfile(),
                 "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
-                value,
-                false);
-    }
-
-    public static void setHttpsUpgradePref(String value) {
-        setShieldsValue(
-                ProfileManager.getLastUsedRegularProfile(),
-                "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE,
-                value,
-                false);
-    }
-
-    public static void setCookiesPref(String value) {
-        setShieldsValue(
-                ProfileManager.getLastUsedRegularProfile(),
-                "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES,
                 value,
                 false);
     }
@@ -403,13 +378,6 @@ public class BraveShieldsContentSettings {
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
     }
 
-    public static String getHttpsUpgradePref() {
-        return getShieldsValue(
-                ProfileManager.getLastUsedRegularProfile(),
-                "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
-    }
-
     public static boolean getForgetFirstPartyStoragePref() {
         return getShields(
                 ProfileManager.getLastUsedRegularProfile(),
@@ -458,8 +426,6 @@ public class BraveShieldsContentSettings {
         String getCookieControlType(String url, Profile profile);
         void setFingerprintingControlType(String type, String url, Profile profile);
         String getFingerprintingControlType(String url, Profile profile);
-        void setHttpsUpgradeControlType(String type, String url, Profile profile);
-        String getHttpsUpgradeControlType(String url, Profile profile);
         void setNoScriptControlType(String type, String url, Profile profile);
         String getNoScriptControlType(String url, Profile profile);
         void setForgetFirstPartyStorageEnabled(boolean enabled, String url, Profile profile);
