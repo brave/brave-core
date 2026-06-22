@@ -62,8 +62,6 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
 ]
 
 export function getBuildArgs(config: Config) {
-  const versionParts = config.braveVersion.split('+')[0]!.split('.')
-
   let args: Record<string, any> = {
     'import("//brave/build/args/brave_defaults.gni")': null,
     is_asan: config.isAsan(),
@@ -80,10 +78,6 @@ export function getBuildArgs(config: Config) {
     is_official_build: config.isOfficialBuild(),
     is_debug: config.isDebug(),
     brave_channel: config.channel,
-    brave_version_major: versionParts[0],
-    brave_version_minor: versionParts[1],
-    brave_version_build: versionParts[2],
-    chrome_version_string: config.chromeVersion,
     enable_hangout_services_extension: config.enable_hangout_services_extension,
     enable_cdm_host_verification: config.enableCDMHostVerification(),
     skip_signing: !config.shouldSign(),
