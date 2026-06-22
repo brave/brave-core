@@ -373,12 +373,19 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 // Test that fullscreen state resets on navigation.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        FullscreenStateResetsOnNavigation) {
-  const GURL url1 = https_server_.GetURL("youtube.com", "/watch?v=something");
-  const GURL url2 = https_server_.GetURL("youtube.com", "/watch?v=different");
+  const GURL url1 =
+      https_server_.GetURL("youtube.com", "/yt_fullscreen_delayed.html");
+  const GURL url2 = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
 
   // Navigate to first YouTube page.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url1, 1,
                                                       true);
+
+  InjectScript(
+      uR"(
+    document.getElementById('movie_player').innerHTML =
+        '<video class="html5-main-video" src="mov_bbb.mp4" controls></video>';
+  )");
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
@@ -391,7 +398,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   helper->MaybeSetFullscreen();
   EXPECT_TRUE(helper->HasFullscreenBeenRequested());
 
-  // Navigate to second YouTube page
+  // Navigate before the first request can observe the missing fullscreen
+  // button and complete.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url2, 1,
                                                       true);
 
@@ -401,4 +409,6 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   // Verify MaybeSetFullscreen() works again on new page.
   helper->MaybeSetFullscreen();
   EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+  EXPECT_TRUE(
+      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 }
