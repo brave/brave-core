@@ -25,11 +25,30 @@ const webcompatSettingNames = new Map(
       )
     })
     .map(([key, value]) => {
-      const name = key
-        .replace('BRAVE_WEBCOMPAT_', '')
-        .replaceAll('_', ' ')
-        .toLowerCase()
-      return [value, name]
+      switch (value) {
+        case ContentSettingsType.BRAVE_WEBCOMPAT_WEBGL:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_WEBGL2:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL2_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_WEBGPU:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGPU_LABEL'),
+          ]
+        default: {
+          const name = key
+            .replace('BRAVE_WEBCOMPAT_', '')
+            .replaceAll('_', ' ')
+            .toLowerCase()
+          return [value, name]
+        }
+      }
     }),
 )
 
