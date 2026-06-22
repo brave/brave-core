@@ -47,6 +47,7 @@ class SafeBuiltins {
     const jsonStringify = JSON.stringify.bind(JSON)
     const jsonParse = JSON.parse.bind(JSON)
     const windowProtocol = window.location.protocol
+    const windowLocation = window.location.href
 
     this.windowHasWebScheme = () => {
       return (
@@ -66,9 +67,14 @@ class SafeBuiltins {
 
     const windowHasWebScheme = this.windowHasWebScheme
     this.sendWebKitMessageSynchronously = (handlerName, message) => {
-      // Drop the request immediately if not running on a web page scheme.
+      // Drop the request immediately if not running on a web page scheme, or local frame.
       // WebUI reserves its use of window.prompt for Mojo.
-      if (!windowHasWebScheme()) {
+      if (
+        !windowHasWebScheme()
+        && !(
+          windowLocation === 'about:blank' || windowLocation === 'about:srcdoc'
+        )
+      ) {
         return null
       }
       const response = windowPrompt(
