@@ -26,7 +26,7 @@ class BraveNewsSidePanelWebView : public SidePanelWebUIViewT<BraveNewsUI> {
       delete;
   ~BraveNewsSidePanelWebView() override;
 
-  // WebUIContentsWrapper::Host:
+  // SidePanelWebUIViewT:
   content::WebContents* AddNewContents(
       content::WebContents* source,
       std::unique_ptr<content::WebContents> new_contents,

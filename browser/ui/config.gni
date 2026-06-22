@@ -36,10 +36,8 @@ if (!is_android) {
         [ "//brave/browser/ui/webui/brave_education" ]
   }
   if (enable_brave_news) {
-    brave_ui_allow_circular_includes_from += [
-      "//brave/browser/ui/webui/brave_news",
-      "//brave/browser/ui/webui/brave_news_internals",
-    ]
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/webui/brave_news_internals" ]
   }
 }
 if (is_android) {

@@ -69,7 +69,7 @@ void SidePanelHelper::PopulateGlobalEntries(
     global_registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Key(SidePanelEntry::Id::kBraveNews),
         base::BindRepeating(&BraveNewsSidePanelWebView::CreateView,
-                            browser->profile()),
+                            browser->GetProfile()),
         base::NullCallback()));
   }
 #endif

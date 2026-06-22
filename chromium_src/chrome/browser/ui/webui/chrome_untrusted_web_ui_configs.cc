@@ -34,7 +34,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_news/brave_news_ui.h"
 #include "brave/components/brave_news/common/features.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #if !BUILDFLAG(IS_ANDROID)

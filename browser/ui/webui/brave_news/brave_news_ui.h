@@ -36,7 +36,7 @@ class BraveNewsUIConfig : public DefaultTopChromeWebUIConfig<BraveNewsUI> {
  public:
   BraveNewsUIConfig();
 
-  // TopChromeWebUIConfig:
+  // DefaultTopChromeWebUIConfig:
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
