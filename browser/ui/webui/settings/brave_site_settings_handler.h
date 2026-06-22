@@ -11,6 +11,10 @@
 
 #include "chrome/browser/ui/webui/settings/site_settings_handler.h"
 
+namespace content {
+class WebUI;
+}  // namespace content
+
 namespace settings {
 
 class BraveSiteSettingsHandler : public SiteSettingsHandler {
@@ -33,8 +37,8 @@ class BraveSiteSettingsHandler : public SiteSettingsHandler {
 
   void RemoveNonModelData(const std::vector<url::Origin>& origins) override;
 
- private:
-  friend class TestBraveSiteSettingsHandlerUnittest;
+  // Exposes the protected WebUIMessageHandler::set_web_ui() to tests.
+  void set_web_ui_for_testing(content::WebUI* web_ui) { set_web_ui(web_ui); }
 };
 
 }  // namespace settings
