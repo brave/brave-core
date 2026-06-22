@@ -213,24 +213,21 @@ YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::PrimaryPageChanged(content::Page& page) {
   script_injector_remote_.reset();
-  bound_rfh_id_ = {};
   SetFullscreenRequested(false);
 }
 
 void YouTubeScriptInjectorTabHelper::RenderFrameHostChanged(
     content::RenderFrameHost* old_host,
     content::RenderFrameHost*) {
-  if (old_host && old_host->GetGlobalId() == bound_rfh_id_) {
+  if (old_host && old_host->IsInPrimaryMainFrame()) {
     script_injector_remote_.reset();
-    bound_rfh_id_ = {};
   }
 }
 
 void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(
     content::RenderFrameHost* rfh) {
-  if (rfh->GetGlobalId() == bound_rfh_id_) {
+  if (rfh->IsInPrimaryMainFrame()) {
     script_injector_remote_.reset();
-    bound_rfh_id_ = {};
     SetFullscreenRequested(false);
   }
 }
@@ -412,7 +409,6 @@ void YouTubeScriptInjectorTabHelper::EnsureBound(
   DCHECK(rfh->IsRenderFrameLive());
 
   script_injector_remote_.reset();
-  bound_rfh_id_ = rfh->GetGlobalId();
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote_);
   script_injector_remote_.reset_on_disconnect();
 }

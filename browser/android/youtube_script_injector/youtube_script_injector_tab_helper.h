@@ -58,7 +58,6 @@ class YouTubeScriptInjectorTabHelper
   // The remote used to send the fullscreen script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
-  content::GlobalRenderFrameHostId bound_rfh_id_;
 
   base::WeakPtrFactory<YouTubeScriptInjectorTabHelper> weak_factory_{this};
 };
