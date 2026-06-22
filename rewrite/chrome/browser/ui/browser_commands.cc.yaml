@@ -13,9 +13,13 @@ substitutions:
   - description:
       Return nullptr in GetReadingListModel(). We don't want ReadingList panel
       in the side panel.
-    re_pattern: (ReadingListModel\* GetReadingListModel\(.*?)(return model;)
+    re_pattern: (ReadingListModel\* GetReadingListModel\(.*?{)
     re_flags: [DOTALL]
-    replace: \1model = nullptr;\n  \2
+    replace: |-
+      \1
+        if ((true)) {
+          return nullptr;
+        }
 
   - description:
       Replace chrome::kChromeUISplitViewNewTabPageURL to kChromeUINewTabURL in

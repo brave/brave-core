@@ -1,16 +1,18 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 5a4ab8862df3d5ccee46446220276fa8bb277638..6ac8f7ab61b8d88cd09ddba36e6d4fa4accdffa4 100644
+index f9032b114dfcc9a91a78add1e4c48e7244557e12..a900b01757b267c31e6a291f9ac925e85b07daf4 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -307,6 +307,7 @@ ReadingListModel* GetReadingListModel(BrowserWindowInterface* browser) {
-   if (!model || !model->loaded()) {
-     return nullptr;  // Ignore requests until model has loaded.
-   }
-+  model = nullptr;
-   return model;
+@@ -301,6 +301,9 @@ bool GetTabURLAndTitleToSave(content::WebContents* web_contents,
  }
  
-@@ -1007,7 +1008,7 @@ void Reload(BrowserWindowInterface* browser,
+ ReadingListModel* GetReadingListModel(BrowserWindowInterface* browser) {
++  if ((true)) {
++    return nullptr;
++  }
+   ReadingListModel* model =
+       ReadingListModelFactory::GetForBrowserContext(browser->GetProfile());
+   if (!model || !model->loaded()) {
+@@ -1006,7 +1009,7 @@ void Reload(BrowserWindowInterface* browser,
    ReloadInternal(browser, disposition, false);
  }
  
@@ -19,7 +21,7 @@ index 5a4ab8862df3d5ccee46446220276fa8bb277638..6ac8f7ab61b8d88cd09ddba36e6d4fa4
                            WindowOpenDisposition disposition) {
    base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
    ReloadInternal(browser, disposition, true);
-@@ -1285,6 +1286,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1284,6 +1287,7 @@ void CloseTab(BrowserWindowInterface* browser) {
    }
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();
@@ -27,7 +29,7 @@ index 5a4ab8862df3d5ccee46446220276fa8bb277638..6ac8f7ab61b8d88cd09ddba36e6d4fa4
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1588,7 +1590,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1587,7 +1591,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    // the regular NTP which renders special content when in Incognito.
    const GURL new_tab_url = browser->GetProfile()->IsIncognitoProfile()
                                 ? chrome::ChromeUINewTabURLAsGURL()
