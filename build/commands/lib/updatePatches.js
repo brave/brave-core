@@ -66,6 +66,7 @@ async function writePatchFiles(modifiedPaths, gitRepoPath, patchDirPath) {
       '--dst-prefix=b/',
       '--default-prefix',
       '--full-index',
+      '--ignore-space-at-eol',
       old,
     ]
     const patchContents = await util.runAsync('git', singleDiffArgs, {
