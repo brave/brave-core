@@ -1035,7 +1035,8 @@ mojom::BlockchainTokenPtr GetPolkadotNativeToken(std::string_view chain_id) {
 
   auto result = NetworkToNativeToken(*network);
   result->logo = "dot.png";
-  if (chain_id == mojom::kPolkadotMainnet) {
+  if (chain_id == mojom::kPolkadotMainnet ||
+      chain_id == mojom::kPolkadotMainnetAssetHub) {
     result->coingecko_id = "dot";
   } else {
     result->coingecko_id = "";
