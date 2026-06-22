@@ -146,22 +146,9 @@ class BraveBlobScreenFarblingBrowserTest
     }));
 
     // Validate.
-    bool should_match = true;
-    // When the screen fingerprinting feature is enabled AND fingerprinting is
-    // blocked (DEFAULT) AND the blob is in a popup, the popup bypasses farbling
-    // and sees real values while the parent sees farbled values — so they won't
-    // match.
-    // TODO(https://github.com/brave/brave-browser/issues/56048): Remove this
-    // override once shields are supported on blob:// URLs.
-    if (GetParam() && !fingerprinting_allowed_ &&
-        blob_container_type_ == BlobContainerType::kPopUpWindow) {
-      should_match = false;
-    }
-
-    EXPECT_EQ(should_match,
-              content::EvalJs(MainFrame(),
-                              "storedScreenValuesMatch('parent', 'blob')")
-                  .ExtractBool())
+    EXPECT_EQ(true, content::EvalJs(MainFrame(),
+                                    "storedScreenValuesMatch('parent', 'blob')")
+                        .ExtractBool())
         << "param=" << GetParam()
         << ", container=" << static_cast<std::size_t>(blob_container_type_)
         << ", allowed=" << fingerprinting_allowed_;
@@ -170,18 +157,6 @@ class BraveBlobScreenFarblingBrowserTest
     if (blob_container_type_ == BlobContainerType::kPopUpWindow) {
       ClosePopup();
     }
-  }
-
-  void RunTests() {
-    AllowFingerprinting(/*allow=*/false);
-    NavigateToBlob();
-
-    AllowFingerprinting(/*allow=*/true);
-    NavigateToBlob();
-  }
-
-  void set_blob_container_type(const BlobContainerType blob_container_type) {
-    blob_container_type_ = blob_container_type;
   }
 
   void RunTests() {
