@@ -51,7 +51,7 @@ function sendMessage(
       return
     }
 
-    sendWebKitMessage(messageHandlerName, { data: sendInfo })
+    sendWebKitMessage(messageHandlerName, sendInfo)
     sendInfo = []
   }, 500)
 }

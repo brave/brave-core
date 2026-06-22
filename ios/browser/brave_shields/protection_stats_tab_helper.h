@@ -24,6 +24,11 @@ class WebState;
 
 namespace brave_shields {
 
+struct BlockedResource {
+  std::string resource_url;
+  std::string resource_type;
+};
+
 // Tab helper that bridges blocked resource reports from the
 // ProtectionStatsJavaScriptFeature to the platform Shields stats handler.
 class ProtectionStatsTabHelper
@@ -36,9 +41,8 @@ class ProtectionStatsTabHelper
   // Forwards the resources reported by `frame_origin` to the bridge.
   // `resources` is a list of maps each containing a "resourceURL" and a
   // "resourceType" key.
-  void HandleBlockedResources(
-      const std::vector<base::flat_map<std::string, std::string>>& resources,
-      const GURL& frame_origin);
+  void HandleBlockedResources(const std::vector<BlockedResource>& resources,
+                              const GURL& frame_origin);
 
  private:
   friend class web::WebStateUserData<ProtectionStatsTabHelper>;

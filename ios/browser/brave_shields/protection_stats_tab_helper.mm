@@ -22,22 +22,20 @@ void ProtectionStatsTabHelper::SetBridge(
 }
 
 void ProtectionStatsTabHelper::HandleBlockedResources(
-    const std::vector<base::flat_map<std::string, std::string>>& resources,
+    const std::vector<BlockedResource>& resources,
     const GURL& frame_origin) {
   if (!bridge_) {
     return;
   }
 
-  NSMutableArray<NSDictionary<NSString*, NSString*>*>* ns_resources =
+  NSMutableArray<ProtectionStatsResource*>* ns_resources =
       [[NSMutableArray alloc] initWithCapacity:resources.size()];
   for (const auto& resource : resources) {
-    NSMutableDictionary<NSString*, NSString*>* ns_resource =
-        [[NSMutableDictionary alloc] initWithCapacity:resource.size()];
-    for (const auto& [key, value] : resource) {
-      ns_resource[base::SysUTF8ToNSString(key)] =
-          base::SysUTF8ToNSString(value);
-    }
-    [ns_resources addObject:ns_resource];
+    [ns_resources
+        addObject:[[ProtectionStatsResource alloc]
+                      initWithURL:base::SysUTF8ToNSString(resource.resource_url)
+                             type:base::SysUTF8ToNSString(
+                                      resource.resource_type)]];
   }
 
   [bridge_ handleBlockedResources:ns_resources

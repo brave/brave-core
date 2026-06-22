@@ -18,6 +18,7 @@ source_set("brave_shields") {
     "protection_stats_tab_helper.h",
     "protection_stats_tab_helper.mm",
     "protection_stats_tab_helper_bridge.h",
+    "protection_stats_tab_helper_bridge.mm",
   ]
 
   deps = [

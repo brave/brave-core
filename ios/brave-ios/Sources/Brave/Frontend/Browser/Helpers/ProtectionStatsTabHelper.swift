@@ -65,17 +65,15 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
   // MARK: - ProtectionStatsTabHelperBridge
 
   func handleBlockedResources(
-    _ resources: [[String: String]],
+    _ resources: [ProtectionStatsResource],
     securityOrigin: URL
   ) {
     let blockedResources = resources.compactMap { resource -> BlockedResource? in
-      guard let resourceURL = resource["resourceURL"],
-        let resourceTypeValue = resource["resourceType"],
-        let resourceType = AdblockEngine.ResourceType(rawValue: resourceTypeValue)
+      guard let resourceType = AdblockEngine.ResourceType(rawValue: resource.resourceType)
       else {
         return nil
       }
-      return BlockedResource(resourceURL: resourceURL, resourceType: resourceType)
+      return BlockedResource(resourceURL: resource.resourceURL, resourceType: resourceType)
     }
 
     handleBlockedResources(blockedResources, sourceURL: securityOrigin)

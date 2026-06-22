@@ -22,7 +22,6 @@ namespace brave_shields {
 namespace {
 constexpr char kScriptName[] = "protection_stats";
 constexpr char kScriptHandlerName[] = "ProtectionStatsMessageHandler";
-constexpr char kDataKey[] = "data";
 constexpr char kResourceURLKey[] = "resourceURL";
 constexpr char kResourceTypeKey[] = "resourceType";
 }  // namespace
@@ -53,14 +52,9 @@ ProtectionStatsJavaScriptFeature::GetScriptMessageHandlerName() const {
 void ProtectionStatsJavaScriptFeature::ScriptMessageReceived(
     web::WebState* web_state,
     const web::ScriptMessage& message) {
-  const base::DictValue* body =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+  const base::ListValue* body =
+      message.body() ? message.body()->GetIfList() : nullptr;
   if (!body) {
-    return;
-  }
-
-  const base::ListValue* data = body->FindList(kDataKey);
-  if (!data) {
     return;
   }
 
@@ -69,9 +63,8 @@ void ProtectionStatsJavaScriptFeature::ScriptMessageReceived(
     return;
   }
 
-  std::vector<base::flat_map<std::string, std::string>> resources;
-  resources.reserve(data->size());
-  for (const base::Value& value : *data) {
+  std::vector<BlockedResource> resources;
+  for (const base::Value& value : *body) {
     const base::DictValue* resource = value.GetIfDict();
     if (!resource) {
       continue;
@@ -81,8 +74,7 @@ void ProtectionStatsJavaScriptFeature::ScriptMessageReceived(
     if (!resource_url || !resource_type) {
       continue;
     }
-    resources.push_back(
-        {{kResourceURLKey, *resource_url}, {kResourceTypeKey, *resource_type}});
+    resources.push_back({*resource_url, *resource_type});
   }
 
   if (resources.empty()) {
