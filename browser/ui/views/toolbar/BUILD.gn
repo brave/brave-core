@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("screenshot") {
+  sources = [
+    "screenshot_bubble_view.cc",
+    "screenshot_bubble_view.h",
+    "screenshot_button.cc",
+    "screenshot_button.h",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/browser/ui/screenshot",
+    "//brave/components/vector_icons",
+    "//chrome/browser/ui/views/toolbar",
+  ]
+}
