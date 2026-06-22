@@ -5,22 +5,17 @@
 
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
-#include <memory>
 #include <string>
 
 #include "base/android/android_info.h"
 #include "base/feature_list.h"
-#include "base/supports_user_data.h"
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/content/public/browser/fullscreen_page_data.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -213,7 +208,7 @@ YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::PrimaryPageChanged(content::Page& page) {
   script_injector_remote_.reset();
-  SetFullscreenRequested(false);
+  pending_fullscreen_frame_token_.reset();
 }
 
 void YouTubeScriptInjectorTabHelper::RenderFrameHostChanged(
@@ -221,6 +216,7 @@ void YouTubeScriptInjectorTabHelper::RenderFrameHostChanged(
     content::RenderFrameHost*) {
   if (old_host && old_host->IsInPrimaryMainFrame()) {
     script_injector_remote_.reset();
+    pending_fullscreen_frame_token_.reset();
   }
 }
 
@@ -228,7 +224,7 @@ void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(
     content::RenderFrameHost* rfh) {
   if (rfh->IsInPrimaryMainFrame()) {
     script_injector_remote_.reset();
-    SetFullscreenRequested(false);
+    pending_fullscreen_frame_token_.reset();
   }
 }
 
@@ -236,12 +232,12 @@ void YouTubeScriptInjectorTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsSameDocument() &&
       navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted()) {
-    SetFullscreenRequested(false);
+    script_injector_remote_.reset();
+    pending_fullscreen_frame_token_.reset();
   }
 }
 
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
-  SetFullscreenRequested(false);
   content::WebContents* contents = web_contents();
   // Filter only YouTube videos.
   if (!IsYouTubeDomain()) {
@@ -260,26 +256,13 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   }
 }
 
-void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
-    bool is_fullscreen) {
-  if (is_fullscreen && HasFullscreenBeenRequested()) {
-    SetFullscreenRequested(false);
-    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
-        IsAndroidPictureInPictureSupported()) {
-      ::youtube_script_injector::EnterPictureInPicture(web_contents());
-    }
-  }
-}
-
 void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  // Check if fullscreen has already been requested for this page.
-  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested()) {
+  if (!rfh || !rfh->IsRenderFrameLive() || pending_fullscreen_frame_token_) {
     return;
   }
 
-  // Mark fullscreen as requested for this page
-  SetFullscreenRequested(true);
+  pending_fullscreen_frame_token_ = rfh->GetGlobalFrameToken();
   EnsureBound(rfh);
   script_injector_remote_->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
@@ -350,50 +333,39 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
   return !video_id.empty();
 }
 
-bool YouTubeScriptInjectorTabHelper::HasFullscreenBeenRequested() const {
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  if (!entry) {
-    return false;
-  }
-
-  auto* data = static_cast<content::FullscreenPageData*>(
-      entry->GetUserData(content::kFullscreenPageDataKey));
-  return data && data->fullscreen_requested();
-}
-
-void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  if (!entry) {
-    return;
-  }
-
-  auto* data = static_cast<content::FullscreenPageData*>(
-      entry->GetUserData(content::kFullscreenPageDataKey));
-  if (data) {
-    data->set_fullscreen_requested(requested);
-  } else {
-    entry->SetUserData(
-        content::kFullscreenPageDataKey,
-        std::make_unique<content::FullscreenPageData>(requested));
-  }
-}
-
 void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
     content::GlobalRenderFrameHostToken token,
     base::Value value) {
-  // If the tab is visible, the script result indicates fullscreen was
-  // triggered, and the callback is for the current main frame, return early
-  // without resetting the fullscreen state. This prevents unnecessary state
-  // changes when fullscreen was successfully entered.
-  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
-      value.is_string() && value.GetString() == "fullscreen_triggered" &&
-      token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
+  if (!pending_fullscreen_frame_token_ ||
+      *pending_fullscreen_frame_token_ != token) {
     return;
   }
 
-  SetFullscreenRequested(false);
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || token != rfh->GetGlobalFrameToken() || !value.is_string() ||
+      value.GetString() != "fullscreen_triggered") {
+    pending_fullscreen_frame_token_.reset();
+  }
+}
+
+void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
+    bool is_fullscreen) {
+  if (!pending_fullscreen_frame_token_) {
+    return;
+  }
+
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!is_fullscreen || !rfh ||
+      *pending_fullscreen_frame_token_ != rfh->GetGlobalFrameToken()) {
+    pending_fullscreen_frame_token_.reset();
+    return;
+  }
+
+  pending_fullscreen_frame_token_.reset();
+  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
+      IsAndroidPictureInPictureSupported()) {
+    ::youtube_script_injector::EnterPictureInPicture(web_contents());
+  }
 }
 
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {

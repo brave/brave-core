@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_ANDROID_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_TAB_HELPER_H_
 #define BRAVE_BROWSER_ANDROID_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_TAB_HELPER_H_
 
+#include <optional>
+
 #include "base/memory/weak_ptr.h"
 #include "base/supports_user_data.h"
 #include "base/values.h"
@@ -28,10 +30,6 @@ class YouTubeScriptInjectorTabHelper
   bool IsYouTubeDomain(bool mobileOnly = false) const;
   bool IsYouTubeVideo(bool mobileOnly = false) const;
   void MaybeSetFullscreen();
-
-  // Fullscreen state management using PageUserData
-  bool HasFullscreenBeenRequested() const;
-  void SetFullscreenRequested(bool requested);
 
   // Check if Picture-in-Picture is available for the current page.
   bool IsPictureInPictureAvailable() const;
@@ -58,6 +56,11 @@ class YouTubeScriptInjectorTabHelper
   // The remote used to send the fullscreen script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
+
+  // One-shot guard for the PiP button flow. It is set when the
+  // page enters fullscreen from the injected script.
+  std::optional<content::GlobalRenderFrameHostToken>
+      pending_fullscreen_frame_token_;
 
   base::WeakPtrFactory<YouTubeScriptInjectorTabHelper> weak_factory_{this};
 };
