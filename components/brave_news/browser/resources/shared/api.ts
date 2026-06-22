@@ -12,6 +12,14 @@ export * from 'gen/brave/components/brave_news/common/brave_news.mojom.m.js'
 export type Publishers = Record<string, BraveNews.Publisher>
 export type Channels = Record<string, BraveNews.Channel>
 
+declare global {
+  interface Window {
+    // In Storybook there's no Mojo backend, so a mock controller is registered
+    // here for getBraveNewsController() to return instead of a real connection.
+    storybookBraveNewsController?: BraveNews.BraveNewsControllerRemote
+  }
+}
+
 // Create singleton connection to browser interface
 let braveNewsControllerInstance: BraveNews.BraveNewsControllerRemote
 
@@ -22,10 +30,17 @@ export default function getBraveNewsController () {
   if (!braveNewsControllerInstance) {
     // In Storybook, we have a mocked BraveNewsController because none of the
     // mojo apis are available.
-    // @ts-expect-error
     braveNewsControllerInstance = window.storybookBraveNewsController || BraveNews.BraveNewsController.getRemote()
   }
   return braveNewsControllerInstance
+}
+
+// The listener wrappers (configuration/channels/publishers/feed) bind a Mojo
+// pipe to receive updates pushed from the browser. That isn't possible without
+// a real backend, which is absent both in unit tests and in Storybook (where a
+// mock controller stands in). Callers use this to skip binding in those cases.
+export function canBindMojoListeners () {
+  return process.env.NODE_ENV !== 'test' && !window.storybookBraveNewsController
 }
 
 export const isPublisherEnabled = (publisher: BraveNews.Publisher) => {

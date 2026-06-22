@@ -10,7 +10,7 @@ import {
   PublishersListenerReceiver,
   UserEnabled
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
-import getBraveNewsController, { isDirectFeed } from './api'
+import getBraveNewsController, { canBindMojoListeners, isDirectFeed } from './api'
 
 import { EntityCachingWrapper } from '$web-common/mojomCache'
 
@@ -27,8 +27,8 @@ export class PublishersCachingWrapper
 
     this.controller = getBraveNewsController()
 
-    // We can't set up  the mojo pipe in the test environment.
-    if (process.env.NODE_ENV !== 'test') {
+    // We can't set up the mojo pipe in the test or Storybook environment.
+    if (canBindMojoListeners()) {
       this.controller.addPublishersListener(
         this.receiver.$.bindNewPipeAndPassRemote()
       )

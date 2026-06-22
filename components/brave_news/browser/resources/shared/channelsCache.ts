@@ -10,7 +10,7 @@ import {
   ChannelsListenerInterface,
   ChannelsListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
-import getBraveNewsController from './api'
+import getBraveNewsController, { canBindMojoListeners } from './api'
 
 let instance: ChannelsCachingWrapper | null = null
 
@@ -25,8 +25,8 @@ export class ChannelsCachingWrapper
 
     this.controller = getBraveNewsController()
 
-    // We can't setup the mojom pipe in the test environment.
-    if (process.env.NODE_ENV !== 'test') {
+    // We can't set up the mojom pipe in the test or Storybook environment.
+    if (canBindMojoListeners()) {
       this.controller.addChannelsListener(
         this.receiver.$.bindNewPipeAndPassRemote()
       )
