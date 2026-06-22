@@ -205,6 +205,10 @@ bool HasDuplicateInputs(const CardanoTxDecoder::SerializableTx& tx) {
 }  // namespace
 
 CardanoTxDecoder::SerializableTxInput::SerializableTxInput() = default;
+CardanoTxDecoder::SerializableTxInput::SerializableTxInput(
+    std::array<uint8_t, kCardanoTxHashSize> tx_hash,
+    uint32_t index)
+    : tx_hash(tx_hash), index(index) {}
 CardanoTxDecoder::SerializableTxInput::~SerializableTxInput() = default;
 CardanoTxDecoder::SerializableTxInput::SerializableTxInput(
     const CardanoTxDecoder::SerializableTxInput&) = default;
@@ -318,6 +322,18 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransaction(
 std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransactionOutput(
     const SerializableTxOutput& output) {
   auto result = encode_cardano_transaction_output(ToRust(output));
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+
+  return base::ToVector(result->unwrap()->bytes());
+}
+
+// static
+std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeUtxo(
+    const SerializableTxInput& input,
+    const SerializableTxOutput& output) {
+  auto result = encode_cardano_utxo(ToRust(input), ToRust(output));
   if (!result->is_ok()) {
     return std::nullopt;
   }

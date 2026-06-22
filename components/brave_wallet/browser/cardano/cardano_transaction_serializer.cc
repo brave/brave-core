@@ -83,8 +83,7 @@ std::optional<uint64_t> CardanoTransactionSerializer::CalcRequiredCoin(
     const CardanoTransaction::TxOutput& output,
     const cardano_rpc::EpochParameters& epoch_parameters) {
   auto cbor_bytes = CardanoTxDecoder::EncodeTransactionOutput(
-      CardanoTxDecoder::SerializableTxOutput(output.address.ToCborBytes(),
-                                             output.coin_value));
+      output.ToSerializableTxOutput());
   if (!cbor_bytes) {
     return std::nullopt;
   }

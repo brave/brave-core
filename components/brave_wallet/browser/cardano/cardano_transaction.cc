@@ -409,6 +409,12 @@ CardanoTransaction::TxOutput::FromValue(const base::DictValue& value) {
   return result;
 }
 
+CardanoTxDecoder::SerializableTxOutput
+CardanoTransaction::TxOutput::ToSerializableTxOutput() const {
+  return CardanoTxDecoder::SerializableTxOutput(address.ToCborBytes(),
+                                                coin_value);
+}
+
 base::DictValue CardanoTransaction::ToValue() const {
   base::DictValue dict;
 

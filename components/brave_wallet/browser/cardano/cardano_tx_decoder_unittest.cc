@@ -796,11 +796,9 @@ TEST(CardanoTxDecoderTest, EncodeDecodeCoinValue) {
 }
 
 TEST(CardanoTxDecoderTest, EncodeTransactionOutput) {
-  auto address = *CardanoAddress::FromString(kMockCardanoAddress1);
-
-  CardanoTxDecoder::SerializableTxOutput output;
-  output.address_bytes = address.ToCborBytes();
-  output.coin_value = cardano_rpc::CoinValue(1000000u, {});
+  CardanoTxDecoder::SerializableTxOutput output(
+      CardanoAddress::FromString(kMockCardanoAddress1)->ToCborBytes(),
+      cardano_rpc::CoinValue(1000000u, {}));
 
   EXPECT_EQ(base::HexEncodeLower(
                 CardanoTxDecoder::EncodeTransactionOutput(output).value()),
@@ -832,6 +830,50 @@ TEST(CardanoTxDecoderTest, EncodeTransactionOutput) {
             "a2581c62626262626262626262626262626262626262626262626262626262a243"
             "626172187b4362617a1bffffffffffffffff581c66666666666666666666666666"
             "666666666666666666666666666666a143666f6f1a000f4240");
+}
+
+TEST(CardanoTxDecoderTest, EncodeUtxo) {
+  CardanoTxDecoder::SerializableTxInput input(
+      test::HexToArray<32>(kMockCardanoTxid), 7);
+
+  CardanoTxDecoder::SerializableTxOutput output(
+      CardanoAddress::FromString(kMockCardanoAddress1)->ToCborBytes(),
+      cardano_rpc::CoinValue(1000000u, {}));
+
+  EXPECT_EQ(
+      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
+      "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
+      "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace785391a000f4240");
+
+  output.coin_value.tokens.emplace(GetMockTokenId("foo"), 1000000u);
+  EXPECT_EQ(
+      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
+      "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
+      "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240a1581c6666"
+      "6666666666666666666666666666666666666666666666666666a143666f6f1a000f424"
+      "0");
+
+  output.coin_value.tokens.emplace(GetMockTokenId("bar"), 123u);
+  EXPECT_EQ(
+      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
+      "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
+      "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240a2581c6262"
+      "6262626262626262626262626262626262626262626262626262a143626172187b581c66"
+      "666666666666666666666666666666666666666666666666666666a143666f6f1a000f42"
+      "40");
+
+  output.coin_value.tokens.emplace(GetMockTokenId("baz"), UINT64_MAX);
+  EXPECT_EQ(
+      base::HexEncodeLower(CardanoTxDecoder::EncodeUtxo(input, output).value()),
+      "828258207e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29"
+      "078258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599b36deb2032"
+      "4c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace78539821a000f4240a2581c6262"
+      "6262626262626262626262626262626262626262626262626262a243626172187b436261"
+      "7a1bffffffffffffffff581c666666666666666666666666666666666666666666666666"
+      "66666666a143666f6f1a000f4240");
 }
 
 }  // namespace brave_wallet

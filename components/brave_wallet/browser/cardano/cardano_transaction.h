@@ -122,6 +122,8 @@ class CardanoTransaction {
     base::DictValue ToValue() const;
     static std::optional<TxOutput> FromValue(const base::DictValue& value);
 
+    CardanoTxDecoder::SerializableTxOutput ToSerializableTxOutput() const;
+
     TxOutputType type = TxOutputType::kTarget;
     CardanoAddress address;
     cardano_rpc::CoinValue coin_value;

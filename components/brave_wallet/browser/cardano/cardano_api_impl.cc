@@ -64,7 +64,7 @@ std::optional<cardano_rpc::UnspentOutputs> FilterUtxosByAmount(
   absl::flat_hash_set<const cardano_rpc::UnspentOutput*> selected_utxos;
   cardano_rpc::CoinValue accumulated_coin_value;
 
-  // Fore each required tokens iterate over utxos and pick them until required
+  // For each required token iterate over utxos and pick them until required
   // amount is reached.
   for (auto& [required_token_id, required_amount] :
        required_coin_value.tokens) {
@@ -424,7 +424,8 @@ void CardanoApiImpl::OnGetUtxos(
 
   std::vector<std::string> serialized_utxos;
   for (auto& utxo : paginated_utxos.value()) {
-    auto serialized_utxo = CardanoTxDecoder::EncodeTransactionOutput(
+    auto serialized_utxo = CardanoTxDecoder::EncodeUtxo(
+        CardanoTxDecoder::SerializableTxInput(utxo.tx_hash, utxo.output_index),
         CardanoTxDecoder::SerializableTxOutput(utxo.address_to.ToCborBytes(),
                                                std::move(utxo.coin_value)));
     if (!serialized_utxo) {

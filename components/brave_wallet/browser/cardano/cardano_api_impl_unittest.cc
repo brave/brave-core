@@ -52,12 +52,14 @@ std::vector<std::string> EncodedUtxosToVector(const auto& map) {
               *CardanoAddress::FromString(by_addr.first), utxo.Clone())
               .value();
 
-      result.push_back(
-          base::HexEncodeLower(CardanoTxDecoder::EncodeTransactionOutput(
-                                   CardanoTxDecoder::SerializableTxOutput(
-                                       unspent_output.address_to.ToCborBytes(),
-                                       unspent_output.coin_value))
-                                   .value()));
+      result.push_back(base::HexEncodeLower(
+          CardanoTxDecoder::EncodeUtxo(
+              CardanoTxDecoder::SerializableTxInput(
+                  unspent_output.tx_hash, unspent_output.output_index),
+              CardanoTxDecoder::SerializableTxOutput(
+                  unspent_output.address_to.ToCborBytes(),
+                  unspent_output.coin_value))
+              .value()));
     }
   }
   return result;

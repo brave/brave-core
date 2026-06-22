@@ -28,6 +28,8 @@ class CardanoTxDecoder {
  public:
   struct SerializableTxInput {
     SerializableTxInput();
+    SerializableTxInput(std::array<uint8_t, kCardanoTxHashSize> tx_hash,
+                        uint32_t index);
     SerializableTxInput(const SerializableTxInput&);
     SerializableTxInput& operator=(const SerializableTxInput&);
     SerializableTxInput(SerializableTxInput&&);
@@ -126,6 +128,11 @@ class CardanoTxDecoder {
 
   // Returns CBOR encoded transaction output.
   static std::optional<std::vector<uint8_t>> EncodeTransactionOutput(
+      const SerializableTxOutput& output);
+
+  // Returns CBOR encoded utxo.
+  static std::optional<std::vector<uint8_t>> EncodeUtxo(
+      const SerializableTxInput& input,
       const SerializableTxOutput& output);
 
   // Returns CBOR encoded amount.
