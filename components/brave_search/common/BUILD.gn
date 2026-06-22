@@ -7,6 +7,10 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 static_library("common") {
   sources = [
+    "brave_search_country.cc",
+    "brave_search_country.h",
+    "brave_search_url_processor.cc",
+    "brave_search_url_processor.h",
     "brave_search_utils.cc",
     "brave_search_utils.h",
     "features.cc",
@@ -15,6 +19,8 @@ static_library("common") {
 
   deps = [
     "//base",
+    "//base:i18n",
+    "//components/prefs",
     "//url",
   ]
 }
@@ -30,11 +36,16 @@ mojom("mojom") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_search_utils_unittest.cc" ]
+  sources = [
+    "brave_search_country_unittest.cc",
+    "brave_search_utils_unittest.cc",
+  ]
 
   deps = [
     "//brave/components/brave_search/common",
+    "//components/prefs:test_support",
     "//testing/gtest",
     "//url",
   ]
 }
+

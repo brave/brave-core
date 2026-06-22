@@ -31,3 +31,17 @@ TEST_F(BravePrepopulatedEnginesTest, ModifiedProviderTest) {
   // Check modified bing provider url.
   EXPECT_EQ(data->url(), "https://www.bing.com/search?q={searchTerms}");
 }
+
+TEST_F(BravePrepopulatedEnginesTest, BraveSearchHasCountryParam) {
+  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      search_engines_test_environment_.pref_service(),
+      search_engines_test_environment_.regional_capabilities_service()
+          .GetRegionalPrepopulatedEngines(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  ASSERT_TRUE(data);
+  // Verify the Brave Search URL template includes the country parameter.
+  // This ensures that the user's country code will be sent with every search.
+  std::string url = data->url();
+  EXPECT_NE(std::string::npos, url.find("country={brave:country}"));
+}
+
