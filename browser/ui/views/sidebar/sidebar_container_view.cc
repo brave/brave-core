@@ -371,6 +371,10 @@ void SidebarContainerView::ShowSidebar(AnimationStyle animation) {
   } else {
     PreferredSizeChanged();
   }
+
+  // Re-sync item highlight state; ink drops are reset when the control view
+  // becomes invisible during hide.
+  UpdateSidebarItemsState();
 }
 
 void SidebarContainerView::HideSidebar() {
