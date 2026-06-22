@@ -38,7 +38,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/common/pref_names.h"
@@ -1530,7 +1530,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_FALSE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->ShouldShowBraveVerticalTabs());
 
   auto* prefs = browser()->profile()->GetPrefs();
   auto* vertical_tabs_container = GetVerticalTabsContainer();
@@ -1683,9 +1686,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
   // between the panel and the contents container.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->ShouldShowBraveVerticalTabs());
   // VT defaults to left (kVerticalTabsOnRight = false).
-  ASSERT_FALSE(tabs::utils::IsVerticalTabOnRight(browser()));
+  ASSERT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->IsVerticalTabOnRight());
   RunScheduledLayouts();
 
   ASSERT_TRUE(sidebar->sidebar_on_left());
@@ -1702,7 +1711,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
   // --- VT and sidebar on the same right side (VT right, sidebar right).
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
-  ASSERT_TRUE(tabs::utils::IsVerticalTabOnRight(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->IsVerticalTabOnRight());
   RunScheduledLayouts();
 
   ASSERT_FALSE(sidebar->sidebar_on_left());

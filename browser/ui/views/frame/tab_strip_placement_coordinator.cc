@@ -7,7 +7,9 @@
 
 #include "base/check_deref.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/views/view.h"
 
 TabStripPlacementCoordinator::TabStripPlacementCoordinator(
@@ -49,9 +51,12 @@ void TabStripPlacementCoordinator::ClearPlacement(PlacementKind kind) {
 
 void TabStripPlacementCoordinator::UpdatePlacement() {
   auto* browser = base::to_address(browser_window_interface_);
+  auto* vertical_tab_controller =
+      browser ? browser->GetFeatures().vertical_tab_controller() : nullptr;
 
   auto get_placement = [&]() -> const Placement& {
-    if (tabs::utils::ShouldShowBraveVerticalTabs(browser)) {
+    if (vertical_tab_controller &&
+        vertical_tab_controller->ShouldShowBraveVerticalTabs()) {
       auto& placement = placements_[PlacementKind::kVerticalTabStrip];
       if (placement.parent) {
         return placement;

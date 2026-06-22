@@ -26,7 +26,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -108,7 +108,9 @@ BraveTabContainer::BraveTabContainer(
             base::Unretained(this)));
   }
 
-  if (!tabs::utils::SupportsBraveVerticalTabs(browser)) {
+  if (!browser->GetFeatures()
+           .vertical_tab_controller()
+           ->SupportsBraveVerticalTabs()) {
     return;
   }
 
@@ -170,8 +172,10 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 }
 
 bool BraveTabContainer::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(
-      tab_slot_controller_->GetBrowserWindowInterface());
+  auto* bwi = tab_slot_controller_->GetBrowserWindowInterface();
+  return bwi && bwi->GetFeatures()
+                    .vertical_tab_controller()
+                    ->ShouldShowBraveVerticalTabs();
 }
 
 views::ScrollView::ScrollBarMode BraveTabContainer::GetScrollBarMode() const {

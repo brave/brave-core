@@ -105,6 +105,9 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return vertical_tab_controller_.get();
   }
 
+  void SetVerticalTabControllerForTesting(
+      std::unique_ptr<VerticalTabController> controller);
+
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;

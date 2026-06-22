@@ -25,7 +25,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -272,19 +272,28 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
   // Pre-conditions
   // The default orientation is horizontal.
-  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->ShouldShowBraveVerticalTabs());
   ASSERT_EQ(browser_view()->GetWidget(),
             browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
 
   // Show vertical tab strip. This will move tabstrip to its own widget.
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  EXPECT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->ShouldShowBraveVerticalTabs());
   EXPECT_EQ(browser_view()->GetWidget(),
             browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
 
   // Hide vertical tab strip and restore to the horizontal tabstrip.
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  EXPECT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->ShouldShowBraveVerticalTabs());
   EXPECT_EQ(browser_view()->GetWidget(),
             browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
 }
@@ -307,14 +316,20 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   };
 
   // Horizontal mode (vertical tab off).
-  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->ShouldShowBraveVerticalTabs());
   browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
   assert_tab_insets();
 
   // Vertical mode (vertical tab on).
   ToggleVerticalTabStrip();
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->ShouldShowBraveVerticalTabs());
   browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
   InvalidateAndRunLayoutForVerticalTabStrip();
   assert_tab_insets();
@@ -346,9 +361,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   constexpr bool kWindowTitleVisibleByDefault = false;
 #endif
 
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->ShouldShowBraveVerticalTabs());
   ASSERT_EQ(kWindowTitleVisibleByDefault,
-            tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
+            browser()
+                ->GetFeatures()
+                .vertical_tab_controller()
+                ->ShouldShowWindowTitleForVerticalTabs());
   ASSERT_EQ(kWindowTitleVisibleByDefault,
             browser_view()->ShouldShowWindowTitle());
   ASSERT_EQ(kWindowTitleVisibleByDefault, IsWindowTitleViewVisible());
@@ -357,7 +378,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
     // Show window title bar
     brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
-    EXPECT_TRUE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
+    EXPECT_TRUE(browser()
+                    ->GetFeatures()
+                    .vertical_tab_controller()
+                    ->ShouldShowWindowTitleForVerticalTabs());
     EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
     EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
               0);
@@ -371,7 +395,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   // Hide window title bar
   brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
   browser_non_client_frame_view()->DeprecatedLayoutImmediately();
-  EXPECT_FALSE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
+  EXPECT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->ShouldShowWindowTitleForVerticalTabs());
   EXPECT_FALSE(browser_view()->ShouldShowWindowTitle());
 #if !BUILDFLAG(IS_LINUX)
   // TODO(sko) For now, we can't hide window title bar entirely on Linux.
@@ -434,7 +461,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
 
   // Pre-condition: Floating mode is enabled by default.
   using State = BraveVerticalTabStripRegionView::State;
-  ASSERT_TRUE(tabs::utils::IsFloatingVerticalTabsEnabled(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->IsFloatingVerticalTabsEnabled());
   auto* container_view =
       browser_view()->vertical_tab_strip_container_view_.get();
   ASSERT_TRUE(container_view);
@@ -724,7 +754,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarMode) {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
                        ScrollBarDisabledWhenHorizontal) {
   // Pre-condition: horizontal tab strip
-  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->ShouldShowBraveVerticalTabs());
 
   auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
       views::AsViewClass<BraveTabStrip>(
@@ -1928,12 +1961,21 @@ class VerticalTabStripSwitchTest : public VerticalTabStripBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
-  EXPECT_FALSE(tabs::utils::SupportsBraveVerticalTabs(browser()));
+  EXPECT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->SupportsBraveVerticalTabs());
 
-  EXPECT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  EXPECT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->ShouldShowBraveVerticalTabs());
   // Even when we toggle on the tab strip, this state should persist.
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  EXPECT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->ShouldShowBraveVerticalTabs());
 }
 
 class VerticalTabStripScrollBarFlagTest : public VerticalTabStripBrowserTest {
@@ -2139,7 +2181,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest,
 // is preserved regardless of locale directionality.
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   ToggleVerticalTabStrip();
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->ShouldShowBraveVerticalTabs());
 
   // Disable rounded corners as vertical tab is 1px-off when it's on right-side.
   // This could make this test flaky.
@@ -2165,7 +2210,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   RunScheduledLayouts();
 
   // --- Tab strip on left (default, kVerticalTabsOnRight = false) ---
-  ASSERT_FALSE(tabs::utils::IsVerticalTabOnRight(browser()));
+  ASSERT_FALSE(browser()
+                   ->GetFeatures()
+                   .vertical_tab_controller()
+                   ->IsVerticalTabOnRight());
 
   // GetMirroredBounds() returns the visually-rendered position within the
   // browser view. With the RTL layout fix, tab strip should still appear on
@@ -2181,7 +2229,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
 
   // --- Tab strip on right (kVerticalTabsOnRight = true) ---
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
-  ASSERT_TRUE(tabs::utils::IsVerticalTabOnRight(browser()));
+  ASSERT_TRUE(browser()
+                  ->GetFeatures()
+                  .vertical_tab_controller()
+                  ->IsVerticalTabOnRight());
 
   // Put sidebar on left to make vertical alone on right-side.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);

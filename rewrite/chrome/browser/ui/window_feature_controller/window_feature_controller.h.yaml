@@ -5,24 +5,24 @@
 
 substitutions:
   - description: |
-      Add `browser` to the ctor arg list
+      Add `vertical tab controller` to the ctor arg list
 
-      This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
     re_pattern: '(WindowFeatureController\((?=[^)]*ui::UnownedUserDataHost).*?)(\);)'
     re_flags: [DOTALL]
     replace: |-
       \1,
-            BrowserWindowInterface& browser\2
+            VerticalTabController& vertical_tab_controller\2
 
   - description: |
-      Add `browser_` as the last member of WindowFeatureController
+      Add `vertical_tab_controller_` as the last member of WindowFeatureController
 
-      This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
     re_pattern: '(class WindowFeatureController \{.*)(\n\};)'
     re_flags: [DOTALL]
     replace: |-
       \1
-        const raw_ref<BrowserWindowInterface> browser_;\2
+        const raw_ref<VerticalTabController> vertical_tab_controller_;\2
 
   - description: |
       Mirror NormalBrowserSupportsWindowFeature as `_ChromiumImpl`

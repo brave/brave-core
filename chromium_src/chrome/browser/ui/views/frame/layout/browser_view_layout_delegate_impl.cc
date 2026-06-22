@@ -7,8 +7,9 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -18,20 +19,29 @@
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.cc>
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowVerticalTabs() const {
-  return browser_view().browser() &&
-         tabs::utils::ShouldShowBraveVerticalTabs(browser_view().browser());
+  return browser_view().browser() && browser_view()
+                                         .browser()
+                                         ->GetFeatures()
+                                         .vertical_tab_controller()
+                                         ->ShouldShowBraveVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::ShouldShowWindowTitleForVerticalTabs()
     const {
   return browser_view().browser() &&
-         tabs::utils::ShouldShowWindowTitleForVerticalTabs(
-             browser_view().browser());
+         browser_view()
+             .browser()
+             ->GetFeatures()
+             .vertical_tab_controller()
+             ->ShouldShowWindowTitleForVerticalTabs();
 }
 
 bool BrowserViewLayoutDelegateImpl::IsVerticalTabOnRight() const {
-  return browser_view().browser() &&
-         tabs::utils::IsVerticalTabOnRight(browser_view().browser());
+  return browser_view().browser() && browser_view()
+                                         .browser()
+                                         ->GetFeatures()
+                                         .vertical_tab_controller()
+                                         ->IsVerticalTabOnRight();
 }
 
 bool BrowserViewLayoutDelegateImpl::

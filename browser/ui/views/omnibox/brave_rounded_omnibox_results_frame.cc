@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/bubble/bubble_border.h"
@@ -48,8 +50,11 @@ void BraveRoundedOmniboxResultsFrame::UpdateShadowBorder() {
   border->set_rounded_corners(gfx::RoundedCornersF(corner_radius));
   border->set_md_shadow_elevation(
       RoundedOmniboxResultsFrame::kDefaultElevation);
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_) &&
-      !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser_)) {
+  auto* vertical_tab_controller =
+      browser_ ? browser_->GetFeatures().vertical_tab_controller() : nullptr;
+  if (vertical_tab_controller &&
+      vertical_tab_controller->ShouldShowBraveVerticalTabs() &&
+      !vertical_tab_controller->ShouldShowWindowTitleForVerticalTabs()) {
     // Remove top shadow inset so that omnibox popup stays inside browser
     // widget. Especially on Mac, Widgets can't be out of screen so we need to
     // adjust popup position.

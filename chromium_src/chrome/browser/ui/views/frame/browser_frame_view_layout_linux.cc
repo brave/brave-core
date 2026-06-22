@@ -8,7 +8,8 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -47,9 +48,10 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
   auto* browser = view_->GetBrowserView()->browser();
   DCHECK(browser);
 
+  auto* vtc = browser->GetFeatures().vertical_tab_controller();
   const bool should_window_caption_buttons_overlap_toolbar =
-      tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
-      !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser);
+      vtc->ShouldShowBraveVerticalTabs() &&
+      !vtc->ShouldShowWindowTitleForVerticalTabs();
   if (!should_window_caption_buttons_overlap_toolbar) {
     return;
   }

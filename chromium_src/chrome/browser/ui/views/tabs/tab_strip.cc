@@ -11,7 +11,8 @@
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "brave/browser/ui/views/tabs/dragging/tab_drag_controller.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
@@ -37,8 +38,10 @@
 // seems to be the most efficient way for now. If we could split this into
 // another file or child class, that'd be great.
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX               \
-  if (tabs::utils::ShouldShowBraveVerticalTabs(                             \
-          tab_strip_->GetBrowserWindowInterface())) {                       \
+  if (tab_strip_->GetBrowserWindowInterface()                               \
+          ->GetFeatures()                                                   \
+          .vertical_tab_controller()                                        \
+          ->ShouldShowBraveVerticalTabs()) {                                \
     tabs::UpdateInsertionIndexForVerticalTabs(                              \
         dragged_bounds, first_dragged_tab_index, num_dragged_tabs,          \
         GetTabAt(first_dragged_tab_index)->group().has_value(),             \
@@ -49,8 +52,10 @@
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
-  if (tabs::utils::ShouldShowBraveVerticalTabs(                             \
-          tab_strip_->GetBrowserWindowInterface())) {                       \
+  if (tab_strip_->GetBrowserWindowInterface()                               \
+          ->GetFeatures()                                                   \
+          .vertical_tab_controller()                                        \
+          ->ShouldShowBraveVerticalTabs()) {                                \
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 

@@ -7,7 +7,7 @@ index f829637e458406aa6ea660a4af017e39df321c24..b19227e1283b9d37fbebf6dfa208931d
    // If this is a web app window, the window title will be part of the
    // BrowserView and thus we don't need to create another one here.
 -  if (!browser_view->GetIsWebAppType() && supports_title_bar) {
-+  if (!browser_view->GetIsWebAppType() && (supports_title_bar || tabs::utils::SupportsBraveVerticalTabs(browser))) {
++  if (!browser_view->GetIsWebAppType() && (supports_title_bar || browser->GetFeatures().vertical_tab_controller()->SupportsBraveVerticalTabs())) {
      window_title_ = new views::Label(browser_view->GetWindowTitle());
      window_title_->SetSubpixelRenderingEnabled(false);
      window_title_->SetHorizontalAlignment(gfx::ALIGN_LEFT);

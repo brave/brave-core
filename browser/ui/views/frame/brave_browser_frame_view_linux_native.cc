@@ -9,9 +9,10 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_layout_linux_native.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -56,8 +57,9 @@ void BraveBrowserFrameViewLinuxNative::PaintRestoredFrameBorder(
   auto* browser = GetBrowserView()->browser();
   CHECK(browser);
 
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser) ||
-      tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
+  auto* vtc = browser->GetFeatures().vertical_tab_controller();
+  if (!vtc->ShouldShowBraveVerticalTabs() ||
+      vtc->ShouldShowWindowTitleForVerticalTabs()) {
     BrowserFrameViewLinuxNative::PaintRestoredFrameBorder(canvas);
     return;
   }
@@ -83,8 +85,9 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
 
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser) ||
-      tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
+  auto* vtc = browser->GetFeatures().vertical_tab_controller();
+  if (!vtc->ShouldShowBraveVerticalTabs() ||
+      vtc->ShouldShowWindowTitleForVerticalTabs()) {
     BrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages();
     return;
   }

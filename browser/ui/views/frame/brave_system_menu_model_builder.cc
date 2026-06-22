@@ -7,9 +7,11 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/menus/simple_menu_model.h"
 
 BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
@@ -26,7 +28,9 @@ void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
     return insert_after;
   };
 
-  if (tabs::utils::SupportsBraveVerticalTabs(browser())) {
+  if (auto* b = browser();
+      b &&
+      b->GetFeatures().vertical_tab_controller()->SupportsBraveVerticalTabs()) {
     if (auto pos = get_next_position()) {
       model->InsertCheckItemWithStringIdAt(pos.value(),
                                            IDC_TOGGLE_VERTICAL_TABS,

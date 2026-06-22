@@ -6,8 +6,9 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 
 // Upstream is no longer centering the tab favicon vertically within the tab
@@ -34,11 +35,15 @@
 // Unfortunately, when in vertical tabs mode this will prevent the favicon and
 // close button from appearing. As a workaround, use `tabs::kVerticalTabHeight`
 // instead of LayoutConstant::kTabHeight when in vertical tabs mode.
-#define GetLayoutConstant(COMPONENT)                \
-  ((COMPONENT == LayoutConstant::kTabHeight &&      \
-    tabs::utils::ShouldShowBraveVerticalTabs(       \
-        controller()->GetBrowserWindowInterface())) \
-       ? tabs::kVerticalTabHeight                   \
+#define GetLayoutConstant(COMPONENT)             \
+  ((COMPONENT == LayoutConstant::kTabHeight &&   \
+    controller()->GetBrowserWindowInterface() && \
+    controller()                                 \
+        ->GetBrowserWindowInterface()            \
+        ->GetFeatures()                          \
+        .vertical_tab_controller()               \
+        ->ShouldShowBraveVerticalTabs())         \
+       ? tabs::kVerticalTabHeight                \
        : GetLayoutConstant(COMPONENT))
 
 #include <chrome/browser/ui/views/tabs/tab.cc>

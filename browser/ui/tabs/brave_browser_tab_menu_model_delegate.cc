@@ -5,13 +5,7 @@
 
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
 
-#include "base/notimplemented.h"
-#include "base/notreached.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
-#include "ui/compositor/compositor.h"
-#include "ui/views/widget/widget.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 
 namespace brave {
 
@@ -20,20 +14,17 @@ BraveBrowserTabMenuModelDelegate::BraveBrowserTabMenuModelDelegate(
     const Profile* profile,
     const web_app::AppBrowserController* app_controller,
     tab_groups::TabGroupSyncService* tgss,
-    BrowserWindowInterface* browser_window)
+    VerticalTabController* vertical_tab_controller)
     : chrome::BrowserTabMenuModelDelegate(session_id,
                                           profile,
                                           app_controller,
                                           tgss),
-      browser_window_(browser_window) {}
+      vertical_tab_controller_(vertical_tab_controller) {}
 
 BraveBrowserTabMenuModelDelegate::~BraveBrowserTabMenuModelDelegate() = default;
 
 bool BraveBrowserTabMenuModelDelegate::ShouldShowBraveVerticalTab() {
-  // TODO(https://github.com/brave/brave-browser/issues/51112): Avoid
-  // GetBrowserForMigrationOnly().
-  return tabs::utils::ShouldShowBraveVerticalTabs(
-      browser_window_->GetBrowserForMigrationOnly());
+  return vertical_tab_controller_->ShouldShowBraveVerticalTabs();
 }
 
 }  // namespace brave

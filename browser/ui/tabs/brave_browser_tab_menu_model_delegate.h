@@ -9,8 +9,8 @@
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/browser_tab_menu_model_delegate.h"
 
-class BrowserWindowInterface;
 class Profile;
+class VerticalTabController;
 
 namespace brave {
 
@@ -25,7 +25,7 @@ class BraveBrowserTabMenuModelDelegate
       const Profile* profile,
       const web_app::AppBrowserController* app_controller,
       tab_groups::TabGroupSyncService* tgss,
-      BrowserWindowInterface* browser_window);
+      VerticalTabController* vertical_tab_controller);
   ~BraveBrowserTabMenuModelDelegate() override;
 
   BraveBrowserTabMenuModelDelegate(const BraveBrowserTabMenuModelDelegate&) =
@@ -37,7 +37,7 @@ class BraveBrowserTabMenuModelDelegate
   bool ShouldShowBraveVerticalTab() override;
 
  private:
-  raw_ptr<BrowserWindowInterface> browser_window_ = nullptr;
+  raw_ptr<VerticalTabController> vertical_tab_controller_ = nullptr;
 };
 
 }  // namespace brave

@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_MAC)
@@ -27,13 +27,13 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
   // so this captures the startup state.
   if (!vertical_tabs_on_at_startup_.has_value()) {
     vertical_tabs_on_at_startup_ =
-        tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get());
+        vertical_tab_controller_->ShouldShowBraveVerticalTabs();
   }
   if (*vertical_tabs_on_at_startup_) {
     return false;
   }
   // Immersive is also incompatible with vertical tabs at runtime.
-  if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get())) {
+  if (vertical_tab_controller_->ShouldShowBraveVerticalTabs()) {
     return false;
   }
 
@@ -41,7 +41,7 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 }
 
 bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get())) {
+  if (vertical_tab_controller_->ShouldShowBraveVerticalTabs()) {
     return false;
   }
 
@@ -57,8 +57,8 @@ bool WindowFeatureController::NormalBrowserSupportsWindowFeature(
   if (feature == WindowFeature::kFeatureTitleBar) {
     // In case of vertical tab strip is allowed, we need to have ability to
     // show title bar on Windows.
-    return tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) &&
-           tabs::utils::ShouldShowWindowTitleForVerticalTabs(&browser_.get());
+    return vertical_tab_controller_->ShouldShowBraveVerticalTabs() &&
+           vertical_tab_controller_->ShouldShowWindowTitleForVerticalTabs();
   }
 #endif
 

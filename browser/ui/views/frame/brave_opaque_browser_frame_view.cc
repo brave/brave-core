@@ -10,10 +10,11 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
@@ -51,7 +52,11 @@ void BraveOpaqueBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserView()->browser())) {
+  if (GetBrowserView()
+          ->browser()
+          ->GetFeatures()
+          .vertical_tab_controller()
+          ->ShouldShowBraveVerticalTabs()) {
     auto hit_test_caption_button = [](views::Button* button,
                                       const gfx::Point& point) {
       return button && button->GetVisible() &&
@@ -91,9 +96,10 @@ void BraveOpaqueBrowserFrameView::
   DCHECK(GetBrowserView());
   auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
+  auto* vtc = browser->GetFeatures().vertical_tab_controller();
   const bool should_window_caption_buttons_overlap_toolbar =
-      tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
-      !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser);
+      vtc->ShouldShowBraveVerticalTabs() &&
+      !vtc->ShouldShowWindowTitleForVerticalTabs();
 
   for (auto& button :
        {close_button_, restore_button_, maximize_button_, minimize_button_}) {
@@ -165,7 +171,9 @@ bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
   DCHECK(GetBrowserView());
   auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
-  return tabs::utils::ShouldShowBraveVerticalTabs(browser);
+  return browser->GetFeatures()
+      .vertical_tab_controller()
+      ->ShouldShowBraveVerticalTabs();
 }
 
 BEGIN_METADATA(BraveOpaqueBrowserFrameView)

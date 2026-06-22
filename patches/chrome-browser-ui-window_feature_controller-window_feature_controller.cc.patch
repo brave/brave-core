@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
-index a4c56226d36b8c8ef418cbd6033251bcc01df426..24d3009e357427c916302c7f86f07bf334714fcc 100644
+index a4c56226d36b8c8ef418cbd6033251bcc01df426..4cdc8c1ff82f84addab1f1a2ec0788548f03ffe4 100644
 --- a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 +++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 @@ -17,12 +17,14 @@ WindowFeatureController::WindowFeatureController(
@@ -8,14 +8,14 @@ index a4c56226d36b8c8ef418cbd6033251bcc01df426..24d3009e357427c916302c7f86f07bf3
      bool is_trusted_source,
 -    ui::UnownedUserDataHost& host)
 +    ui::UnownedUserDataHost& host,
-+    BrowserWindowInterface& browser)
++    VerticalTabController& vertical_tab_controller)
      : fullscreen_controller_(CHECK_DEREF(fullscreen_controller)),
        app_controller_(app_controller),
        browser_type_(browser_type),
        is_trusted_source_(is_trusted_source),
 -      scoped_unowned_user_data_(host, *this) {}
 +      scoped_unowned_user_data_(host, *this),
-+      browser_(browser) {}
++      vertical_tab_controller_(vertical_tab_controller) {}
  
  WindowFeatureController::~WindowFeatureController() = default;
  

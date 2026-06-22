@@ -92,6 +92,7 @@ if (!is_android) {
 
     deps = [
       "//base",
+      "//brave/browser/ui/views/tabs",
       "//brave/components/containers/buildflags",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/tabs:tab_menu",

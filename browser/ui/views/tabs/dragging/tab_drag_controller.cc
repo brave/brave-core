@@ -17,7 +17,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -66,7 +66,9 @@ BraveTabDragController::Liveness BraveTabDragController::Init(
     }
   }
 
-  is_showing_vertical_tabs_ = tabs::utils::ShouldShowBraveVerticalTabs(browser);
+  is_showing_vertical_tabs_ = browser->GetFeatures()
+                                  .vertical_tab_controller()
+                                  ->ShouldShowBraveVerticalTabs();
 
   return BraveTabDragController::BraveTabDragController::Liveness::kAlive;
 }

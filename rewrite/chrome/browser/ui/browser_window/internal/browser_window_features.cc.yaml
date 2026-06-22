@@ -5,13 +5,12 @@
 
 substitutions:
   - description: |
-      Append `*browser` to the WindowFeatureController CreateInstance call
+      Pass `vertical tab controller` to the WindowFeatureController CreateInstance call
 
-      `WindowFeatureController` takes the owning `BrowserWindowInterface&` as its
-      last constructor argument so Brave-specific code can reach the browser
-      without walking `BrowserList`. The non-greedy regex captures the full
+      `WindowFeatureController` takes the owning `vertical_tab_controller` as its
+      last constructor argument for Brave-specific code. The non-greedy regex captures the full
       argument list (no matter how many arguments upstream chooses to pass) and
-      appends `*browser` immediately before the closing `);`.
+      appends `vertical tab controller` immediately before the closing `);`.
     re_pattern: '(CreateInstance<WindowFeatureController>\(.*?)(\);)'
     re_flags: [DOTALL]
-    replace: '\1, *browser\2'
+    replace: '\1, *browser->GetFeatures().vertical_tab_controller()\2'

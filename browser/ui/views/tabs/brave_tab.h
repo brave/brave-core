@@ -14,6 +14,7 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
@@ -203,6 +204,10 @@ class BraveTab : public Tab
   void MaybeStartObservingFullscreenChanges();
   void StopObservingFullscreenChanges();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  // Can return nullptr if the controller doesn't return valid
+  // BrowserWindowInterface. This typically happens in tests.
+  VerticalTabController* GetVerticalTabController() const;
 
   // Test accessors to reveal base class members.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }

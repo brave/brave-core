@@ -27,7 +27,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
@@ -256,7 +256,8 @@ void BraveTabStrip::AddedToWidget() {
   // When Chromium's upstream vertical tabs feature is active,
   // TabStrip::Initialize() is never called so tab_container_ remains null.
   // Skip UpdateOrientation() to avoid crashing when accessing it.
-  if (!tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface())) {
+  if (auto* vtc = GetVerticalTabController();
+      !vtc || !vtc->SupportsBraveVerticalTabs()) {
     return;
   }
 
@@ -323,7 +324,8 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 void BraveTabStrip::UpdateOrientation() {
   // Callers must guard against unsupported configurations (e.g. upstream
   // vertical tabs where tab_container_ is null).
-  CHECK(tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface()));
+  CHECK(GetVerticalTabController() &&
+        GetVerticalTabController()->SupportsBraveVerticalTabs());
 
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowserWindowInterface();
@@ -357,7 +359,12 @@ void BraveTabStrip::UpdateOrientation() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserWindowInterface());
+  if (auto* vtc = GetVerticalTabController();
+      vtc && vtc->ShouldShowBraveVerticalTabs()) {
+    return true;
+  }
+
+  return false;
 }
 
 void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
@@ -535,6 +542,15 @@ void BraveTabStrip::OnPinnedStateChanged(int model_index,
   if (new_pinned_state) {
     tab_at(model_index)->set_tree_tab_node(std::nullopt);
   }
+}
+
+VerticalTabController* BraveTabStrip::GetVerticalTabController() const {
+  auto* bwi = GetBrowserWindowInterface();
+  if (!bwi) {
+    return nullptr;
+  }
+
+  return bwi->GetFeatures().vertical_tab_controller();
 }
 
 BEGIN_METADATA(BraveTabStrip)

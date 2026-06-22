@@ -10,10 +10,11 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -377,8 +378,10 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   UpdateTabStripMargin();
   UpdateScrollButtonsVisibility();
 
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(
-          tab_strip_->GetBrowserWindowInterface())) {
+  if (!tab_strip_->GetBrowserWindowInterface()
+           ->GetFeatures()
+           .vertical_tab_controller()
+           ->ShouldShowBraveVerticalTabs()) {
     LayoutSuperclass<HorizontalTabStripRegionView>(this);
     // After layout, scroll button's visibility may need to be updated based on
     // the overflow state of tab container. In this case, schedule layout.
@@ -443,8 +446,10 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
 void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   HorizontalTabStripRegionView::UpdateTabStripMargin();
 
-  bool vertical_tabs = tabs::utils::ShouldShowBraveVerticalTabs(
-      tab_strip_->GetBrowserWindowInterface());
+  bool vertical_tabs = tab_strip_->GetBrowserWindowInterface()
+                           ->GetFeatures()
+                           .vertical_tab_controller()
+                           ->ShouldShowBraveVerticalTabs();
 
   UpdateTrailingScrollButtonMargin(vertical_tabs);
 
@@ -539,8 +544,10 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
 void BraveHorizontalTabStripRegionView::OnDragEntered(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(
-          tab_strip_->GetBrowserWindowInterface())) {
+  if (!tab_strip_->GetBrowserWindowInterface()
+           ->GetFeatures()
+           .vertical_tab_controller()
+           ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragEntered(event);
   }
 
@@ -557,8 +564,10 @@ void BraveHorizontalTabStripRegionView::OnDragEntered(
 int BraveHorizontalTabStripRegionView::OnDragUpdated(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(
-          tab_strip_->GetBrowserWindowInterface())) {
+  if (!tab_strip_->GetBrowserWindowInterface()
+           ->GetFeatures()
+           .vertical_tab_controller()
+           ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragUpdated(event);
   }
 

@@ -11,6 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -120,6 +121,11 @@ class BraveTabStrip : public TabStrip {
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
   // dedicated notification when pinning from a group.
   void OnPinnedStateChanged(int model_index, bool new_pinned_state);
+
+  // Returns the vertical tab controller if available, otherwise returns
+  // nullptr. This typically happens in tests where BrowserWindowInterface may
+  // not be available.
+  VerticalTabController* GetVerticalTabController() const;
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;

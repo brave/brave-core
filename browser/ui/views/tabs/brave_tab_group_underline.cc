@@ -8,8 +8,10 @@
 #include <algorithm>
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_controller.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
@@ -109,8 +111,10 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
 }
 
 bool BraveTabGroupUnderline::ShouldShowBraveVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(
-      tab_group_views_->GetBrowserWindowInterface());
+  auto* browser = tab_group_views_->GetBrowserWindowInterface();
+  return browser && browser->GetFeatures()
+                        .vertical_tab_controller()
+                        ->ShouldShowBraveVerticalTabs();
 }
 
 // static
