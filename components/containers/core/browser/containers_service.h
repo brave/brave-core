@@ -77,7 +77,8 @@ class ContainersService : public KeyedService {
   // Returns the list of user-editable containers.
   std::vector<mojom::ContainerPtr> GetContainers() const;
 
-  // Returns ids of containers that have been used in this profile.
+  // Returns ids of containers that have been used in this profile. Empty while
+  // orphaned-container cleanup is discovering candidates.
   std::vector<std::string> GetUsedContainerIds() const;
 
   // Whether the Containers controls (menus, management UI) should be shown.
@@ -108,10 +109,19 @@ class ContainersService : public KeyedService {
   // Called when the storage for the container with the given id is deleted.
   void OnContainerStorageDeleted(const std::string& id, bool success);
 
+  enum class OrphanedContainersCleanupState {
+    kIdle,
+    kDiscoveringOrphans,
+    kRemovingOrphans,
+  };
+
   raw_ref<PrefService> prefs_;
   std::unique_ptr<Delegate> delegate_;
   PrefChangeRegistrar pref_change_registrar_;
   base::ObserverList<ContainersServiceObserver> observers_;
+  OrphanedContainersCleanupState orphaned_cleanup_state_ =
+      OrphanedContainersCleanupState::kIdle;
+  base::flat_set<std::string> orphaned_containers_pending_removal_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
 

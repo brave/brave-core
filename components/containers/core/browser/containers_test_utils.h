@@ -10,6 +10,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
@@ -37,6 +39,29 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
   }
 
   void set_delete_result(bool delete_result) { delete_result_ = delete_result; }
+
+  void set_defer_referenced_container_ids_callback(bool defer) {
+    defer_referenced_container_ids_callback_ = defer;
+  }
+
+  void set_defer_delete_container_storage_callback(bool defer) {
+    defer_delete_container_storage_callback_ = defer;
+  }
+
+  void RunDeferredReferencedContainerIdsCallback() {
+    CHECK(deferred_referenced_container_ids_callback_);
+    std::move(deferred_referenced_container_ids_callback_)
+        .Run(referenced_container_ids_);
+    deferred_referenced_container_ids_callback_.Reset();
+  }
+
+  void RunDeferredDeleteContainerStorageCallback(const std::string& id) {
+    CHECK(deferred_delete_container_storage_callbacks_.contains(id));
+    std::move(deferred_delete_container_storage_callbacks_[id])
+        .Run(delete_result_);
+    deferred_delete_container_storage_callbacks_.erase(id);
+  }
+
   const std::vector<std::string>& delete_requests() const {
     return delete_requests_;
   }
@@ -44,6 +69,12 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
  private:
   base::flat_set<std::string> referenced_container_ids_;
   bool delete_result_ = true;
+  bool defer_referenced_container_ids_callback_ = false;
+  bool defer_delete_container_storage_callback_ = false;
+  OnReferencedContainerIdsReadyCallback
+      deferred_referenced_container_ids_callback_;
+  base::flat_map<std::string, DeleteContainerStorageCallback>
+      deferred_delete_container_storage_callbacks_;
   std::vector<std::string> delete_requests_;
 };
 

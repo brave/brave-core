@@ -203,6 +203,59 @@ TEST_F(ContainersServiceTest, GetUsedContainerIds) {
   EXPECT_THAT(service_->GetUsedContainerIds(), testing::ElementsAre("used-id"));
 }
 
+TEST_F(ContainersServiceTest, GetUsedContainerIds_EmptyWhileDiscovering) {
+  SetContainersToPrefs({}, prefs_);
+  service_->MarkContainerUsed("orphan-id");
+
+  delegate_->set_defer_referenced_container_ids_callback(true);
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "orphan-id"));
+  EXPECT_TRUE(service_->GetUsedContainerIds().empty());
+}
+
+TEST_F(ContainersServiceTest,
+       GetUsedContainerIds_ExcludesOrphansWhileRemoving) {
+  SetContainersToPrefs({}, prefs_);
+  service_->MarkContainerUsed("orphan-id");
+  service_->MarkContainerUsed("retained-id");
+
+  delegate_->SetReferencedContainersIds({"retained-id"});
+  delegate_->set_defer_referenced_container_ids_callback(true);
+  delegate_->set_defer_delete_container_storage_callback(true);
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  delegate_->RunDeferredReferencedContainerIdsCallback();
+
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "orphan-id"));
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "retained-id"));
+  EXPECT_THAT(service_->GetUsedContainerIds(),
+              testing::ElementsAre("retained-id"));
+}
+
+TEST_F(ContainersServiceTest, GetUsedContainerIds_IncludesFailedDelete) {
+  SetContainersToPrefs({}, prefs_);
+  service_->MarkContainerUsed("orphan-id");
+
+  delegate_->SetReferencedContainersIds({});
+  delegate_->set_delete_result(false);
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_THAT(service_->GetUsedContainerIds(),
+              testing::ElementsAre("orphan-id"));
+}
+
+TEST_F(ContainersServiceTest, GetUsedContainerIds_BackToIdleAfterRemoval) {
+  SetContainersToPrefs({}, prefs_);
+  service_->MarkContainerUsed("orphan-id");
+
+  delegate_->SetReferencedContainersIds({});
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_TRUE(service_->GetUsedContainerIds().empty());
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "orphan-id"));
+}
+
 TEST_F(ContainersServiceTest,
        MarkContainerUsed_DoesNotUpsertWhenAlreadyInUsedPrefs) {
   auto container = MakeContainer("used-id", "Local");
