@@ -6,6 +6,7 @@
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 
 #include "base/android/jni_android.h"
+#include "base/check.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "chrome/android/chrome_jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
 #include "content/public/browser/web_contents.h"
@@ -18,9 +19,7 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
-  if (!web_contents) {
-    return;
-  }
+  DCHECK(web_contents);
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
@@ -37,9 +36,7 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_HasFullscreenBeenRequested(
     const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
-  if (!web_contents) {
-    return false;
-  }
+  DCHECK(web_contents);
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
@@ -56,9 +53,7 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
     const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
-  if (!web_contents) {
-    return false;
-  }
+  DCHECK(web_contents);
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
