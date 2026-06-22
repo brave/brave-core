@@ -81,6 +81,10 @@
   // Files to skip per check.
   "per_check_files_to_skip": {
     // Permanent ignores.
+    // Disabling +x checks for `.bat` files, as bootstrap is introducing shims
+    // and setting +x on those polutes shell suggetions on POSIX systems.
+    "CheckFilePermissions": ["tools/cr/bootstrap/.*\\.bat$"],
+
     "CheckNewHeaderWithoutGnChangeOnUpload": ["chromium_src/.*\\.h"],
     "CheckForCcIncludes": ["chromium_src/"],
     "CheckForRelativeIncludes": ["chromium_src/"],
