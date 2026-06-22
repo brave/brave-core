@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveStore
+import Combine
 import SwiftUI
 
 @propertyWrapper
@@ -44,6 +45,7 @@ struct OriginPolicyBooleanValue {
 public class OriginSettingsViewModel {
   fileprivate let service: any BraveOriginService
   private let storeSDK: BraveStoreSDK
+  private var productUpdateCancellable: AnyCancellable?
 
   public init(service: any BraveOriginService, storeSDK: BraveStoreSDK) {
     self.service = service
@@ -52,6 +54,14 @@ public class OriginSettingsViewModel {
     Task {
       await updatePurchaseStatus()
     }
+
+    productUpdateCancellable = storeSDK.$originPurchaseProduct
+      .sink { [weak self] _ in
+        guard let self else { return }
+        Task {
+          await self.updatePurchaseStatus()
+        }
+      }
   }
 
   var isRestartToastVisible: Bool = false
