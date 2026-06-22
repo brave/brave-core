@@ -19,7 +19,7 @@ import Config from './config.ts'
  * @returns full path to created tsconfig file
  */
 export default async function createGenTsConfig(
-  genPath = process.env.ROOT_GEN_DIR,
+  genPath,
   name = 'tsconfig-webpack.json',
   atPath = genPath,
   extendsFrom = path.join(Config.braveCoreDir, 'tsconfig-webpack.json'),

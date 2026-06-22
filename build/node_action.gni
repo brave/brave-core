@@ -1,0 +1,88 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The Chromium-bundled Node.js binary path.
+if (host_os == "win") {
+  _node_bin = "//third_party/node/win/node.exe"
+} else if (host_os == "mac") {
+  if (host_cpu == "arm64") {
+    _node_bin = "//third_party/node/mac_arm64/node-darwin-arm64/bin/node"
+  } else {
+    _node_bin = "//third_party/node/mac/node-darwin-x64/bin/node"
+  }
+} else if (host_os == "linux") {
+  _node_bin = "//third_party/node/linux/node-linux-x64/bin/node"
+} else {
+  assert(false, "Unsupported host_os: $host_os")
+}
+
+# Runs a Node.js script as a GN action during the build. Use ONLY for build
+# steps that require Node.js (e.g. webpack, typescript, etc.). In other cases
+# use standard action() + python script.
+#
+# The script is executed with the Chromium-bundled //third_party/node binary.
+#
+# For now, scripts should live under //brave/build/commands/ and follow the
+# existing conventions in that directory (ESM entry scripts, shared logic in
+# lib/). This directory follows the erasable TypeScript syntax rules and is
+# type-checked as Node.js code (no web-specific types or features).
+#
+# Usage example:
+#
+#     import("//brave/build/node_action.gni")
+#
+#     node_action("generate_tsconfig") {
+#       script = "//brave/build/commands/scripts/genTsConfig.js"
+#       args = [ "--root-gen-dir=" + rebase_path(root_gen_dir) ]
+#       deps = [ ":build_flags_json" ]
+#       outputs = [ "$root_gen_dir/tsconfig-webpack.json" ]
+#     }
+template("node_action") {
+  assert(defined(invoker.script), "node_action requires script")
+  _node_script = invoker.script
+
+  action(target_name) {
+    script = "//brave/build/gn_run_rsp.py"
+    args = [ "{{response_file_name}}" ]
+
+    inputs = [
+      _node_bin,
+      _node_script,
+    ]
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
+
+    outputs = []
+    if (defined(invoker.outputs)) {
+      outputs += invoker.outputs
+    }
+
+    # Chromium's Node.js version check.
+    deps = [ "//third_party/node:check_version" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    forward_variables_from(invoker,
+                           [
+                             "data",
+                             "data_deps",
+                             "depfile",
+                             "public_deps",
+                             "testonly",
+                             "visibility",
+                           ])
+
+    response_file_contents = [
+      rebase_path(_node_bin, root_build_dir),
+      rebase_path(_node_script, root_build_dir),
+    ]
+
+    if (defined(invoker.args)) {
+      response_file_contents += invoker.args
+    }
+  }
+}
