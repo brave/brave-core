@@ -6,6 +6,7 @@
 import collections.abc
 import copy
 import os
+import re
 import sys
 
 import brave_chromium_utils
@@ -397,6 +398,70 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
                 long_text='app/theme and build/chromium/resources should only '
                 'be used for overrides of upstream files. Channel-specific '
                 'theme assets (e.g., dev/beta/nightly) are exempt.')
+        ]
+    return []
+
+
+def CheckNalaIconOverridesExistUpstream(input_api, output_api):
+    """Ensures every Nala icon override still maps to an upstream drawable.
+
+    nala_icon_overrides and nala_icon_raster_overrides in
+    android/nala/icons.gni replace upstream Chromium drawables via resource
+    overlays. aapt2 runs with --auto-add-overlay, so an override whose target no
+    longer exists upstream is silently added instead of rejected - leaving a
+    dead resource (and, for raster overrides, orphaned buckets) after a
+    Chromium roll removes the icon. Nothing else flags this: the overlay isn't a
+    patch, so it never conflicts during a roll. This check runs unconditionally
+    so such removals surface as a presubmit failure.
+    """
+    icons_gni = brave_chromium_utils.wspath('//brave/android/nala/icons.gni')
+    if not os.path.exists(icons_gni):
+        return []
+
+    with open(icons_gni, encoding='utf-8') as f:
+        gni_contents = f.read()
+
+    # Every override list uses `dest = "<chromium_drawable>"` entries (the
+    # vector lists include a .xml suffix; raster overrides omit the extension).
+    dests = sorted(set(re.findall(r'dest\s*=\s*"([^"]+)"', gni_contents)))
+    if not dests:
+        return []
+
+    # Resolve every override against the upstream tree in a single git call.
+    # `*/<stem>.*` anchors on the basename ('*' matches across directories), so
+    # it finds the drawable regardless of which module or density bucket (.xml
+    # or .png) it lives in.
+    stems = [input_api.os_path.splitext(d)[0] for d in dests]
+    pathspecs = ['*/%s.*' % stem for stem in stems]
+    try:
+        tracked = input_api.subprocess.check_output([
+            'git', '-C',
+            brave_chromium_utils.get_src_dir(), 'ls-files', '--'
+        ] + pathspecs,
+                                                    encoding='utf-8')
+    except Exception:  # pylint: disable=broad-except
+        # Upstream tree unavailable as a git repo (e.g. some CI envs); skip
+        # rather than fail the build.
+        return []
+
+    found_stems = set()
+    for line in tracked.splitlines():
+        if '/res' not in line:  # Limit to Android resource dirs.
+            continue
+        found_stems.add(
+            input_api.os_path.splitext(input_api.os_path.basename(line))[0])
+
+    missing = [d for d, stem in zip(dests, stems) if stem not in found_stems]
+    if missing:
+        return [
+            output_api.PresubmitError(
+                'Nala icon override target no longer exists upstream',
+                items=sorted(missing),
+                long_text='These drawables are overridden in '
+                'android/nala/icons.gni but no longer exist in upstream '
+                'Chromium (likely removed in a Chromium roll). Remove the '
+                'stale entries from nala_icon_overrides / '
+                'nala_icon_raster_overrides.')
         ]
     return []
 

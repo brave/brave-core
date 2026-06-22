@@ -52,6 +52,55 @@ nala_icon_overrides = [
   },
 ]
 
+# Raster overrides: for upstream icons that ship ONLY as density-qualified PNGs
+# (mdpi..xxxhdpi, optionally with ldrtl variants) and no default-bucket entry. A
+# vector placed in the default res/drawable/ bucket gets shadowed by the
+# denser-matching PNGs, and some of these icons are consumed as raster bitmaps
+# (e.g. via BitmapFactory.decodeResource(), which returns null for a vector), so
+# the override must itself be a PNG in each density bucket. To keep the Nala
+# vector as the single source of truth, those PNGs are generated from it at
+# build time (see android/nala/BUILD.gn and
+# //brave/build/android/nala_vd_rasterizer).
+#
+# Each entry lists the density buckets the upstream icon defines; the override
+# must cover every one of them, otherwise the unoverridden upstream PNG still
+# wins resource resolution on devices matching that density/direction. "ldrtl-"
+# (RTL) buckets are rendered horizontally mirrored, matching how upstream ships
+# its mirrored ldrtl PNGs.
+nala_icon_raster_overrides = [
+  {
+    # Override Chromium's share icon (share sheet, etc.); upstream ships LTR and
+    # RTL density PNGs in components/browser_ui/styles.
+    source = "ic_share.xml"
+    dest = "ic_share_white_24dp"
+    densities = [
+      "mdpi",
+      "hdpi",
+      "xhdpi",
+      "xxhdpi",
+      "xxxhdpi",
+      "ldrtl-mdpi",
+      "ldrtl-hdpi",
+      "ldrtl-xhdpi",
+      "ldrtl-xxhdpi",
+      "ldrtl-xxxhdpi",
+    ]
+  },
+  {
+    # Override Chromium's close ("X") button; upstream ships density PNGs in
+    # ui/android and several callers decode it as a raster bitmap.
+    source = "ic_close.xml"
+    dest = "btn_close"
+    densities = [
+      "mdpi",
+      "hdpi",
+      "xhdpi",
+      "xxhdpi",
+      "xxxhdpi",
+    ]
+  },
+]
+
 # Please keep this list sorted alphabetically.
 nala_icons = [
   "ic_accessibility.xml",

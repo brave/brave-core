@@ -8,14 +8,55 @@ import("//build/config/android/rules.gni")
 
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
 
-# Generate one copy() target per icon override and collect their dep labels.
-# To override a Chromium drawable, add an entry to nala_icon_overrides in icons.gni.
+# Generate one copy() target per icon override and collect their dep labels. To
+# override a Chromium drawable, add an entry to nala_icon_overrides in
+# icons.gni.
 _nala_override_deps = []
 foreach(override, nala_icon_overrides) {
   _name = "nala_override_" + string_replace(override.dest, ".xml", "")
   copy(_name) {
     sources = [ "$nala_base_path/drawable/${override.source}" ]
     outputs = [ "$target_gen_dir/res/drawable/${override.dest}" ]
+  }
+  _nala_override_deps += [ ":$_name" ]
+}
+
+# Generate a density PNG per bucket for each raster override, rasterizing the
+# Nala vector through Android's own VectorDrawable renderer at build time (see
+# //brave/build/android/nala_vd_rasterizer). A real PNG is required because
+# these upstream icons may be decoded as raster bitmaps; a vector placed in a
+# density bucket would return null from BitmapFactory.decodeResource().
+_rasterizer_target =
+    "//brave/build/android/nala_vd_rasterizer:nala_vd_rasterizer"
+_rasterizer_script = "$root_build_dir/bin/helper/nala_vd_rasterizer"
+foreach(override, nala_icon_raster_overrides) {
+  _name = "nala_raster_" + override.dest
+  _source = "$nala_base_path/drawable/${override.source}"
+  action(_name) {
+    script = "//brave/build/android/nala_vd_rasterizer/rasterize_nala_icon.py"
+    inputs = [
+      _rasterizer_script,
+      _source,
+    ]
+    outputs = []
+    args = [
+      "--rasterizer",
+      rebase_path(_rasterizer_script, root_build_dir),
+      "--input",
+      rebase_path(_source, root_build_dir),
+      "--output-dir",
+      rebase_path("$target_gen_dir/res", root_build_dir),
+      "--dest-name",
+      override.dest,
+    ]
+    foreach(bucket, override.densities) {
+      outputs += [ "$target_gen_dir/res/drawable-$bucket/${override.dest}.png" ]
+      args += [
+        "--density",
+        bucket,
+      ]
+    }
+    deps = [ _rasterizer_target ]
   }
   _nala_override_deps += [ ":$_name" ]
 }
@@ -61,6 +102,11 @@ android_resources("java_resources") {
   }
   foreach(override, nala_icon_overrides) {
     sources += [ "$target_gen_dir/res/drawable/${override.dest}" ]
+  }
+  foreach(override, nala_icon_raster_overrides) {
+    foreach(bucket, override.densities) {
+      sources += [ "$target_gen_dir/res/drawable-$bucket/${override.dest}.png" ]
+    }
   }
   resource_overlay = true
   deps = [ ":nala" ]
