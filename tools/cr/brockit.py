@@ -841,7 +841,7 @@ class Regen(Versioned):
 
         terminal.run_npm_command('init')
 
-        terminal.run_npm_command('update_patches')
+        terminal.run_npm_command('update_patches', '--', '--no-plaster-check')
         if not dry_run:
             self._save_updated_patches()
 
@@ -1405,7 +1405,7 @@ class Upgrade(Versioned):
         return:
           The GitStatus after running update_patches.
         """
-        terminal.run_npm_command('update_patches')
+        terminal.run_npm_command('update_patches', '--', '--no-plaster-check')
 
         status = GitStatus()
         if status.has_deleted_patch_files():
