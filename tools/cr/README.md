@@ -46,6 +46,8 @@ Shared abstractions used by the entry points and tests:
 
 - `alias/` — `git cr` git-alias subcommands (`commit`, `mv`, `follow-renames`,
   ...). See [`alias/README.md`](alias/README.md).
+- `bootstrap/` — An experiment to boostrap some of our python utils in the
+  user's PATH.
 - `test/` — Shared test fixtures, including `FakeChromiumRepo`.
 - `toolchain/` — Scripts to build platform-specific toolchains when rebasing
   Chromium.
