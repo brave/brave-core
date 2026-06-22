@@ -5,11 +5,11 @@
 
 /* global $Object */
 
+import EventEmitter from 'events'
 ;(function () {
   if (!window.braveEthereum) {
     return
   }
-  var EventEmitter = require('events')
   var BraveWeb3ProviderEventEmitter = new EventEmitter()
   $Object.defineProperties(window.braveEthereum, {
     on: {

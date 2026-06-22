@@ -9,10 +9,10 @@ import type { Configuration } from 'webpack'
 import {
   deterministicOptimization,
   deterministicIdsPlugins,
-} from './deterministic-output'
-import generatePathMap from './path-map'
-import { provideNodeGlobals, chromePrefixReplacers } from './plugins'
-import { baseResolve } from './resolve'
+} from './deterministic-output.ts'
+import generatePathMap from './path-map.js'
+import { provideNodeGlobals, chromePrefixReplacers } from './plugins.ts'
+import { baseResolve } from './resolve.ts'
 import {
   cssRules,
   tsLoaderRule,
@@ -20,9 +20,9 @@ import {
   fileLoaderRule,
   braveUiFullySpecifiedRule,
   htmlAssetRule,
-} from './rules'
-import GenerateDepfilePlugin from './webpack-plugin-depfile'
-import XHRCompileAsyncWasmPlugin from './xhr-compile-async-wasm-plugin'
+} from './rules.ts'
+import GenerateDepfilePlugin from './webpack-plugin-depfile.js'
+import XHRCompileAsyncWasmPlugin from './xhr-compile-async-wasm-plugin.js'
 
 const rootGenDir = process.env.ROOT_GEN_DIR as string
 const pathMap = generatePathMap(rootGenDir)

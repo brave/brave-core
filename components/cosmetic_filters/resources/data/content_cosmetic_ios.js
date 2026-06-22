@@ -8,7 +8,7 @@
 import {
   applyCompiledSelector,
   compileProceduralSelector,
-} from './procedural_filters'
+} from './procedural_filters.ts'
 
 /**
  * Send ids and classes to iOS and await new hide selectors

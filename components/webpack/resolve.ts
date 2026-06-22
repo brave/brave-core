@@ -5,7 +5,7 @@
 
 import path from 'path'
 import type { ResolveOptions } from 'webpack'
-import { fallback } from './polyfill'
+import { fallback } from './polyfill.ts'
 
 type PathMap = Record<string, string | string[]>
 

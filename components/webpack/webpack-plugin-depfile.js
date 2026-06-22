@@ -8,9 +8,9 @@
 // This can be useful to know which files to monitor for changes
 // to cause a re-build only when neccessary.
 
-const path = require('path')
-const fs = require('fs')
-const mkdirp = require('mkdirp')
+import path from 'path'
+import fs from 'fs'
+import mkdirp from 'mkdirp'
 
 function generateDepfileContent(outputName, depPaths) {
   // File format is "dependency information in the syntax of a Makefile"
@@ -48,4 +48,4 @@ class GenerateDepfilePlugin {
   }
 }
 
-module.exports = GenerateDepfilePlugin
+export default GenerateDepfilePlugin

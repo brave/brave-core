@@ -10,7 +10,7 @@ import path from 'path'
 import fs from 'fs'
 import ts from 'typescript'
 
-const baseDir = path.join(__dirname, '../../../')
+const baseDir = path.join(import.meta.dirname, '../../../')
 const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
 
 /**
@@ -32,7 +32,10 @@ const getTsConfigForFiles = (genDir: string, files: string[]) => {
 
   // Override the include path to only include the lit_mangler and the file
   // we want to check
-  tsConfig.include = [path.join(__dirname, 'lit_mangler.ts'), ...files]
+  tsConfig.include = [
+    path.join(import.meta.dirname, 'lit_mangler.ts'),
+    ...files,
+  ]
 
   // As the file is generated in the temp directory we need to set the baseUrl
   // so everything resolvese correctly.

@@ -5,11 +5,11 @@
 
 /* global $Object */
 
+import EventEmitter from 'events'
 ;(function () {
   if (!window.braveSolana) {
     return
   }
-  const EventEmitter = require('events')
   var SolanaEventEmitter = new EventEmitter()
   $Object.defineProperties(window.braveSolana, {
     on: {

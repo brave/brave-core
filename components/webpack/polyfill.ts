@@ -3,7 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { ProvidePlugin } from 'webpack'
+import { createRequire } from 'module'
+import webpack from 'webpack'
+
+const require = createRequire(import.meta.url)
 
 // NodeJS polyfills for the browser - these are only included when needed.
 export const fallback: { [key: string]: string | false } = {
@@ -23,7 +26,7 @@ export const fallback: { [key: string]: string | false } = {
 }
 
 // Provide globals from NodeJS polyfills
-export const provideNodeGlobals = new ProvidePlugin({
+export const provideNodeGlobals = new webpack.ProvidePlugin({
   'Buffer': ['buffer', 'Buffer'],
   'process': 'process/browser.js',
 })

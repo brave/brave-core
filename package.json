@@ -3,6 +3,7 @@
   "version": "1.93.95",
   "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "help": "node ./build/commands/scripts/commands.js --help",
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
@@ -36,7 +37,7 @@
     "eslint": "eslint --quiet .",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
-    "web-ui": "webpack --config components/webpack/webpack.config.ts",
+    "web-ui": "webpack --disable-interpret --config components/webpack/webpack.config.ts",
     "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
     "test-unit": "jest",

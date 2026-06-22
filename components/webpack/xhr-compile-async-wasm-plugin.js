@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const { WEBASSEMBLY_MODULE_TYPE_ASYNC } = require("webpack/lib/ModuleTypeConstants");
-const AsyncWasmLoadingRuntimeModule = require("webpack/lib/wasm-async/AsyncWasmLoadingRuntimeModule");
+import { WEBASSEMBLY_MODULE_TYPE_ASYNC } from "webpack/lib/ModuleTypeConstants.js";
+import AsyncWasmLoadingRuntimeModule from "webpack/lib/wasm-async/AsyncWasmLoadingRuntimeModule.js";
 
 const PLUGIN_NAME = "XHRCompileAsyncWasmPlugin";
 
@@ -72,4 +72,4 @@ class XHRCompileAsyncWasmPlugin {
   }
 }
 
-module.exports = XHRCompileAsyncWasmPlugin;
+export default XHRCompileAsyncWasmPlugin;

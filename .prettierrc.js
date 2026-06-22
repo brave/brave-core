@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 /** @type {import("prettier").Config} */
-module.exports = {
+export default {
   'trailingComma': 'all',
   'tabWidth': 2,
   'semi': false,
