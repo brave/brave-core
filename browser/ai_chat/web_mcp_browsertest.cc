@@ -8,6 +8,7 @@
 
 #include "base/files/file_path.h"
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -168,6 +169,11 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   auto* manager = conversation->associated_content_manager();
   manager->AddContent(content);
 
+  // AddContent attaches content that exposes tools, but the detection probe is
+  // an async round-trip to the renderer. The generation loop only fetches tools
+  // from attached content, so wait for detection to complete first.
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+
   auto tools = RefreshAndGetTools(manager);
   ASSERT_EQ(2u, tools.size());
 
@@ -232,7 +238,11 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server()->GetURL("a.com", kPageWithToolsPath)));
-  manager->AddContent(GetActiveContent());
+  auto* content = GetActiveContent();
+  manager->AddContent(content);
+  // Wait for the async tool-detection probe to attach the content before the
+  // generation loop, which only fetches tools from attached content.
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
   EXPECT_EQ(2u, RefreshAndGetTools(manager).size());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
