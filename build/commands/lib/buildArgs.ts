@@ -10,10 +10,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
-  'bitflyer_production_fee_address',
-  'bitflyer_production_url',
-  'bitflyer_sandbox_fee_address',
-  'bitflyer_sandbox_url',
   'brave_android_developer_options_code',
   'brave_google_api_endpoint',
   'brave_google_api_key',
@@ -32,9 +28,6 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'google_default_client_id',
   'google_default_client_secret',
   'msan_track_origins',
-  'rewards_grant_dev_endpoint',
-  'rewards_grant_prod_endpoint',
-  'rewards_grant_staging_endpoint',
   'safebrowsing_api_endpoint',
   'service_key_aichat',
   'service_key_search',
@@ -44,18 +37,8 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'sparkle_eddsa_public_key',
   'updater_dev_endpoint',
   'updater_prod_endpoint',
-  'uphold_production_api_url',
-  'uphold_production_fee_address',
-  'uphold_production_oauth_url',
-  'uphold_sandbox_api_url',
-  'uphold_sandbox_fee_address',
-  'uphold_sandbox_oauth_url',
   'use_prebuilt_omaha4',
   'webcompat_report_api_endpoint',
-  'zebpay_production_api_url',
-  'zebpay_production_oauth_url',
-  'zebpay_sandbox_api_url',
-  'zebpay_sandbox_oauth_url',
   'use_clang_coverage',
   'coverage_instrumentation_input_file',
   'is_brave_origin_branded',
@@ -355,20 +338,6 @@ export function getBuildArgs(config: Config) {
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_updater_url
-    delete args.bitflyer_production_fee_address
-    delete args.bitflyer_production_url
-    delete args.bitflyer_sandbox_fee_address
-    delete args.bitflyer_sandbox_url
-    delete args.uphold_production_api_url
-    delete args.uphold_production_fee_address
-    delete args.uphold_production_oauth_url
-    delete args.uphold_sandbox_api_url
-    delete args.uphold_sandbox_fee_address
-    delete args.uphold_sandbox_oauth_url
-    delete args.zebpay_production_api_url
-    delete args.zebpay_production_oauth_url
-    delete args.zebpay_sandbox_api_url
-    delete args.zebpay_sandbox_oauth_url
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
     delete args.service_key_stt
