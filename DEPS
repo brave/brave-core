@@ -132,6 +132,16 @@ hooks = [
                '07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51'],
   },
   {
+    # Prototype: deliver node + npm into brave/third_party/node so the
+    # tools/cr/bootstrap node/npm shims can resolve a checkout-local node. Must
+    # run before any hook that invokes npm (e.g. web_discovery_project_npm_deps)
+    # so the shims have a checkout-local node to resolve to.
+    'name': 'download_node',
+    'pattern': '.',
+    'condition': 'checkout_linux or checkout_mac or checkout_win',
+    'action': ['vpython3', 'third_party/node/download_node.py'],
+  },
+  {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
     'name': 'web_discovery_project_npm_deps',
     'pattern': '.',

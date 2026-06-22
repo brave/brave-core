@@ -1,0 +1,6 @@
+# The node distribution is delivered by `gclient sync` via download_node.py
+# (the `download_node` hook in brave/DEPS), not checked in. Ignore everything
+# here except the downloader and this file.
+/*
+!.gitignore
+!download_node.py
