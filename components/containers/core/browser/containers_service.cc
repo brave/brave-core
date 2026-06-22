@@ -7,6 +7,7 @@
 
 #include <utility>
 #include <variant>
+#include <vector>
 
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -106,8 +107,20 @@ std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
 }
 
 std::vector<std::string> ContainersService::GetUsedContainerIds() const {
-  return base::ToVector(GetLocallyUsedContainersFromPrefs(*prefs_),
-                        [](const auto& c) { return c->id; });
+  if (orphaned_cleanup_state_ ==
+      OrphanedContainersCleanupState::kDiscoveringOrphans) {
+    return {};
+  }
+
+  auto used_ids = base::ToVector(GetLocallyUsedContainersFromPrefs(*prefs_),
+                                 [](const auto& c) { return c->id; });
+  if (orphaned_cleanup_state_ ==
+      OrphanedContainersCleanupState::kRemovingOrphans) {
+    std::erase_if(used_ids, [&](const std::string& id) {
+      return orphaned_containers_pending_removal_.contains(id);
+    });
+  }
+  return used_ids;
 }
 
 bool ContainersService::ShouldShowContainerControls() const {
@@ -159,6 +172,10 @@ ContainersService::GetContainerIdFromContainerSpecifier(
 }
 
 void ContainersService::ScheduleOrphanedContainersCleanup() {
+  if (orphaned_cleanup_state_ != OrphanedContainersCleanupState::kIdle) {
+    return;
+  }
+
   bool should_cleanup = false;
 
   // Check if any locally used container is not referenced by the synced
@@ -179,6 +196,8 @@ void ContainersService::ScheduleOrphanedContainersCleanup() {
   // If any locally used container is not referenced by the synced containers
   // list, schedule the cleanup.
   if (should_cleanup) {
+    orphaned_cleanup_state_ =
+        OrphanedContainersCleanupState::kDiscoveringOrphans;
     delegate_->GetReferencedContainerIds(
         base::BindOnce(&ContainersService::OnReferencedContainerIdsReady,
                        weak_factory_.GetWeakPtr()));
@@ -197,14 +216,26 @@ void ContainersService::OnReferencedContainerIdsReady(
       continue;
     }
 
+    orphaned_containers_pending_removal_.insert(id);
     delegate_->DeleteContainerStorage(
         id, base::BindOnce(&ContainersService::OnContainerStorageDeleted,
                            weak_factory_.GetWeakPtr(), id));
+  }
+
+  if (orphaned_containers_pending_removal_.empty()) {
+    orphaned_cleanup_state_ = OrphanedContainersCleanupState::kIdle;
+  } else {
+    orphaned_cleanup_state_ = OrphanedContainersCleanupState::kRemovingOrphans;
   }
 }
 
 void ContainersService::OnContainerStorageDeleted(const std::string& id,
                                                   bool success) {
+  orphaned_containers_pending_removal_.erase(id);
+  if (orphaned_containers_pending_removal_.empty()) {
+    orphaned_cleanup_state_ = OrphanedContainersCleanupState::kIdle;
+  }
+
   if (!success) {
     LOG(WARNING) << "Failed to delete container storage for " << id
                  << " will retry on next launch";
