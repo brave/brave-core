@@ -7,8 +7,8 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -87,14 +87,14 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
 
   bool show_vertical_tab = tabs::utils::ShouldShowBraveVerticalTabs(
       browser_window_interface->GetBrowserForMigrationOnly());
-  auto* vertical_tab_strip_widget_delegate_view =
-      browser_view->vertical_tab_strip_widget_delegate_view();
+  auto* vertical_tab_strip_container_view =
+      browser_view->vertical_tab_strip_container_view();
 
   // When hide completely is on, we think vertical tab is invisible
   // except it's expanded.
-  if (show_vertical_tab && vertical_tab_strip_widget_delegate_view) {
-    auto* vtsr_view = vertical_tab_strip_widget_delegate_view
-                          ->vertical_tab_strip_region_view();
+  if (show_vertical_tab && vertical_tab_strip_container_view) {
+    auto* vtsr_view =
+        vertical_tab_strip_container_view->vertical_tab_strip_region_view();
     CHECK(vtsr_view);
     if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(
             browser_window_interface->GetBrowserForMigrationOnly())) {

@@ -19,8 +19,8 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_color_palette.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
@@ -115,9 +115,8 @@ BraveVerticalTabStripRegionView* BraveTabStrip::GetVerticalTabStripRegionView()
     return nullptr;
   }
 
-  auto* vertical_region_view =
-      browser_view->vertical_tab_strip_widget_delegate_view()
-          ->vertical_tab_strip_region_view();
+  auto* vertical_region_view = browser_view->vertical_tab_strip_container_view()
+                                   ->vertical_tab_strip_region_view();
 
   if (!vertical_region_view) {
     // Could be null while closing a window.
@@ -335,7 +334,7 @@ void BraveTabStrip::UpdateOrientation() {
         BrowserView::GetBrowserViewForBrowser(browser));
     DCHECK(browser_view);
     auto* vertical_region_view =
-        browser_view->vertical_tab_strip_widget_delegate_view()
+        browser_view->vertical_tab_strip_container_view()
             ->vertical_tab_strip_region_view();
     // `vertical_region_view` can be null if it's in destruction.
     if (vertical_region_view) {

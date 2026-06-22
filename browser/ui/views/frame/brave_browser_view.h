@@ -72,7 +72,7 @@ class ContentsLayoutManager;
 class SidebarContainerView;
 class SidePanelEntry;
 class TabStripPlacementCoordinator;
-class VerticalTabStripWidgetDelegateView;
+class BraveVerticalTabStripContainerView;
 class ViewShadow;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -145,9 +145,8 @@ class BraveBrowserView : public BrowserView,
   void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
 
-  VerticalTabStripWidgetDelegateView*
-  vertical_tab_strip_widget_delegate_view() {
-    return vertical_tab_strip_widget_delegate_view_;
+  BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
+    return vertical_tab_strip_container_view_;
   }
   bool ShowBraveHelpBubbleView(const std::string& text) override;
 
@@ -286,8 +285,8 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
-  raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>
-      vertical_tab_strip_widget_delegate_view_ = nullptr;
+  raw_ptr<BraveVerticalTabStripContainerView>
+      vertical_tab_strip_container_view_ = nullptr;
 
 #if defined(USE_AURA)
   raw_ptr<views::View> sidebar_host_view_ = nullptr;

@@ -3,39 +3,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/i18n/rtl.h"
-#include "base/memory/ptr_util.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_utils.h"
 
-#if defined(USE_AURA)
-#include "ui/views/view_constants_aura.h"
-#endif
-
-#if BUILDFLAG(IS_MAC)
-#include "third_party/skia/include/core/SkPathBuilder.h"
-#endif
-
-VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() {
+BraveVerticalTabStripContainerView::~BraveVerticalTabStripContainerView() {
   // Child views will be deleted after this. Marks `region_view_` nullptr
   // so that they dont' access the `region_view_` via this view.
   region_view_ = nullptr;
 }
 
-VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
+BraveVerticalTabStripContainerView::BraveVerticalTabStripContainerView(
     BrowserView* browser_view,
     views::View* host)
     : browser_view_(browser_view),
@@ -57,7 +46,7 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
   ChildPreferredSizeChanged(region_view_);
 }
 
-void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
+void BraveVerticalTabStripContainerView::ChildPreferredSizeChanged(
     views::View* child) {
   if (!host_) {
     return;
@@ -75,31 +64,28 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
   UpdateVerticalTabBounds();
 }
 
-void VerticalTabStripWidgetDelegateView::OnViewVisibilityChanged(
+void BraveVerticalTabStripContainerView::OnViewVisibilityChanged(
     views::View* observed_view,
     views::View* starting_view,
     bool visible) {
   UpdateVerticalTabBounds();
 }
 
-void VerticalTabStripWidgetDelegateView::OnViewBoundsChanged(
+void BraveVerticalTabStripContainerView::OnViewBoundsChanged(
     views::View* observed_view) {
   UpdateVerticalTabBounds();
 }
 
-void VerticalTabStripWidgetDelegateView::OnViewIsDeleting(
+void BraveVerticalTabStripContainerView::OnViewIsDeleting(
     views::View* observed_view) {
   host_view_observation_.Reset();
   host_ = nullptr;
 }
 
-void VerticalTabStripWidgetDelegateView::UpdateVerticalTabBounds() {
+void BraveVerticalTabStripContainerView::UpdateVerticalTabBounds() {
   if (!host_) {
     return;
   }
-
-  CHECK(host_->GetInsets().width() == 0)
-      << "No additional horizontal insets for embedded vertical tab strip";
 
   const gfx::Rect host_bounds = host_->bounds();
   gfx::Rect strip_bounds = host_bounds;
@@ -131,5 +117,5 @@ void VerticalTabStripWidgetDelegateView::UpdateVerticalTabBounds() {
   SetBoundsRect(strip_bounds);
 }
 
-BEGIN_METADATA(VerticalTabStripWidgetDelegateView)
+BEGIN_METADATA(BraveVerticalTabStripContainerView)
 END_METADATA

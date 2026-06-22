@@ -33,8 +33,8 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -434,7 +434,7 @@ void ToggleVerticalTabStripExpanded(Browser* browser) {
   if (!browser_view) {
     return;
   }
-  auto* vtsr_view = browser_view->vertical_tab_strip_widget_delegate_view()
+  auto* vtsr_view = browser_view->vertical_tab_strip_container_view()
                         ->vertical_tab_strip_region_view();
   if (!vtsr_view) {
     return;

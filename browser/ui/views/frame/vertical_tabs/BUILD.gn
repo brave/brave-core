@@ -8,10 +8,10 @@ import("//build/config/ui.gni")
 
 source_set("vertical_tabs") {
   sources = [
+    "vertical_tab_strip_container_view.cc",
+    "vertical_tab_strip_container_view.h",
     "vertical_tab_strip_region_view.cc",
     "vertical_tab_strip_region_view.h",
-    "vertical_tab_strip_widget_delegate_view.cc",
-    "vertical_tab_strip_widget_delegate_view.h",
   ]
 
   if (is_mac) {

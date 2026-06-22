@@ -7,7 +7,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -54,7 +54,7 @@ IN_PROC_BROWSER_TEST_F(TabStripPlacementCoordinatorBrowserTest,
   SetVerticalTabsEnabled(true);
   EXPECT_NE(default_parent, tab_strip_region_view_parent());
   EXPECT_TRUE(
-      brave_browser_view()->vertical_tab_strip_widget_delegate_view()->Contains(
+      brave_browser_view()->vertical_tab_strip_container_view()->Contains(
           tab_strip_region_view()));
 
   SetVerticalTabsEnabled(false);
@@ -75,7 +75,7 @@ IN_PROC_BROWSER_TEST_F(TabStripPlacementCoordinatorBrowserTest,
   auto* second_view =
       BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(second));
   ASSERT_TRUE(second_view);
-  ASSERT_TRUE(second_view->vertical_tab_strip_widget_delegate_view()->Contains(
+  ASSERT_TRUE(second_view->vertical_tab_strip_container_view()->Contains(
       second_view->tab_strip_view()));
 
   CloseBrowserSynchronously(second);

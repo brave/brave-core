@@ -5,8 +5,8 @@
 
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
@@ -57,9 +57,9 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
-  VerticalTabStripWidgetDelegateView* vtab_tab_strip_widget_delegate_view() {
+  BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
     return static_cast<BraveBrowserView*>(browser_view())
-        ->vertical_tab_strip_widget_delegate_view();
+        ->vertical_tab_strip_container_view();
   }
 
   void StartAndFinishDrag(const ui::OSExchangeData& data,
@@ -180,7 +180,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
   ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* region_view =
-      vtab_tab_strip_widget_delegate_view()->vertical_tab_strip_region_view();
+      vertical_tab_strip_container_view()->vertical_tab_strip_region_view();
 
   EXPECT_FALSE(region_view->IsMenuShowing());
 
@@ -209,7 +209,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
   ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
 
   auto* region_view =
-      vtab_tab_strip_widget_delegate_view()->vertical_tab_strip_region_view();
+      vertical_tab_strip_container_view()->vertical_tab_strip_region_view();
   ASSERT_FALSE(region_view->IsMenuShowing());
 
   region_view->ShowContextMenuForView(region_view, gfx::Point(),
