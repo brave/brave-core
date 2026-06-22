@@ -2287,7 +2287,7 @@ interface PolkadotWalletService {
 
   GetAssetAccountBalances(
       AccountId account_id, array<uint32> asset_ids, string chain_id)
-      => (array<PolkadotAssetAccountInfo>? asset_accounts,
+      => (array<PolkadotAssetAccountInfo> asset_accounts,
           string? error_message);
 
   ValidateAddressForTransaction(string chain_id, string address)

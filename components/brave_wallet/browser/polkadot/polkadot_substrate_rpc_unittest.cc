@@ -491,9 +491,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
 
   static constexpr uint32_t kAssetIds[] = {kBATCAssetId, kXBBCAssetId};
 
-  base::test::TestFuture<
-      std::optional<std::vector<mojom::PolkadotAssetAccountInfoPtr>>,
-      const std::optional<std::string>&>
+  base::test::TestFuture<std::vector<mojom::PolkadotAssetAccountInfoPtr>,
+                         const std::optional<std::string>&>
       future;
 
   constexpr const char kPubKey[] =
@@ -548,15 +547,13 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
 
     EXPECT_EQ(error, std::nullopt);
 
-    ASSERT_TRUE(asset_accounts.has_value());
-    ASSERT_EQ(asset_accounts->size(), 2u);
+    ASSERT_EQ(asset_accounts.size(), 2u);
 
     // This asset has 6 decimal places, total minted was 1'000'000.
-    EXPECT_EQ(MojomToUint128(asset_accounts.value()[0]->balance),
-              1'000'000'000'000ull);
+    EXPECT_EQ(MojomToUint128(asset_accounts[0]->balance), 1'000'000'000'000ull);
 
     // This asset has 12 decimal places, total minted was 1'000'000.
-    EXPECT_EQ(MojomToUint128(asset_accounts.value()[1]->balance),
+    EXPECT_EQ(MojomToUint128(asset_accounts[1]->balance),
               1'000'000'000'000'000'000ull);
   }
 
@@ -586,11 +583,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
 
     EXPECT_EQ(error, std::nullopt);
 
-    ASSERT_TRUE(asset_accounts.has_value());
-    ASSERT_EQ(asset_accounts->size(), 2u);
-
-    EXPECT_EQ(MojomToUint128(asset_accounts.value()[0]->balance), 0u);
-    EXPECT_EQ(MojomToUint128(asset_accounts.value()[1]->balance), 0u);
+    ASSERT_EQ(asset_accounts.size(), 2u);
+    EXPECT_EQ(MojomToUint128(asset_accounts[0]->balance), 0u);
+    EXPECT_EQ(MojomToUint128(asset_accounts[1]->balance), 0u);
   }
 
   {
@@ -615,7 +610,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
     auto [asset_accounts, error] = future.Take();
 
     EXPECT_EQ(error, WalletParsingErrorMessage());
-    EXPECT_FALSE(asset_accounts);
+    EXPECT_TRUE(asset_accounts.empty());
   }
 
   {
@@ -640,7 +635,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
     auto [asset_accounts, error] = future.Take();
 
     EXPECT_EQ(error, WalletParsingErrorMessage());
-    EXPECT_FALSE(asset_accounts);
+    EXPECT_TRUE(asset_accounts.empty());
   }
 
   {
@@ -666,7 +661,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
     auto [asset_accounts, error] = future.Take();
 
     EXPECT_EQ(error, WalletParsingErrorMessage());
-    EXPECT_FALSE(asset_accounts);
+    EXPECT_TRUE(asset_accounts.empty());
   }
 
   {
@@ -694,7 +689,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
     auto [asset_accounts, error] = future.Take();
 
     EXPECT_EQ(error, WalletParsingErrorMessage());
-    EXPECT_FALSE(asset_accounts);
+    EXPECT_TRUE(asset_accounts.empty());
   }
 
   {
@@ -710,7 +705,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
     auto [asset_accounts, error] = future.Take();
 
     EXPECT_EQ(error, WalletInternalErrorMessage());
-    EXPECT_FALSE(asset_accounts);
+    EXPECT_TRUE(asset_accounts.empty());
   }
 
   {
@@ -740,15 +735,14 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
 
     EXPECT_EQ(error, std::nullopt);
 
-    ASSERT_TRUE(asset_accounts.has_value());
-    ASSERT_EQ(asset_accounts->size(), 2u);
+    ASSERT_EQ(asset_accounts.size(), 2u);
 
     // This asset has 6 decimal places, total minted was 1'000'000.
-    EXPECT_EQ(MojomToUint128(asset_accounts.value()[0]->balance),
+    EXPECT_EQ(MojomToUint128(asset_accounts[0]->balance),
               std::numeric_limits<uint128_t>::max());
 
     // This asset has 12 decimal places, total minted was 1'000'000.
-    EXPECT_EQ(MojomToUint128(asset_accounts.value()[1]->balance), 0u);
+    EXPECT_EQ(MojomToUint128(asset_accounts[1]->balance), 0u);
   }
 }
 

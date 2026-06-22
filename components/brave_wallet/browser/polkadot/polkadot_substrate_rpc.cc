@@ -538,16 +538,15 @@ void PolkadotSubstrateRpc::OnGetAssetAccountBalances(
       api_result);
 
   if (!res.has_value()) {
-    return std::move(callback).Run(std::nullopt, res.error());
+    return std::move(callback).Run({}, res.error());
   }
 
   auto asset_accounts = ParseAssetAccountInfoFromJson(res->result);
   if (!asset_accounts) {
-    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+    return std::move(callback).Run({}, WalletParsingErrorMessage());
   }
 
-  return std::move(callback).Run(std::move(asset_accounts.value()),
-                                 std::nullopt);
+  return std::move(callback).Run(std::move(asset_accounts.value()), {});
 }
 
 void PolkadotSubstrateRpc::GetFinalizedHead(std::string_view chain_id,

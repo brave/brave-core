@@ -154,7 +154,7 @@ void PolkadotWalletService::GetAssetAccountBalances(
     GetAssetAccountBalancesCallback callback) {
   auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
   if (!pubkey) {
-    return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return std::move(callback).Run({}, WalletInternalErrorMessage());
   }
 
   polkadot_substrate_rpc_.GetAssetAccountBalances(chain_id, asset_ids, *pubkey,
