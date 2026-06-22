@@ -166,8 +166,7 @@ class BraveBlobScreenFarblingBrowserTest
         << ", container=" << static_cast<std::size_t>(blob_container_type_)
         << ", allowed=" << fingerprinting_allowed_;
 
-    // Close the popup after validation. NavigateToBlob is called twice inside
-    // RunTests
+    // Close the popup after validation.
     if (blob_container_type_ == BlobContainerType::kPopUpWindow) {
       ClosePopup();
     }
