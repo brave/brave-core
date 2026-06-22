@@ -8,17 +8,21 @@
 
 #include <string_view>
 
+#include "base/memory/raw_ptr.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "chrome/browser/ui/webui/top_chrome/untrusted_top_chrome_web_ui_controller.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+
+namespace brave_news {
+class BraveNewsController;
+}
 
 namespace content {
 class BrowserContext;
 class WebUI;
 }  // namespace content
 
-// Hosts the Brave News side panel page at chrome-untrusted://news/. The page
-// content is currently a placeholder; the React frontend is wired up in a
-// follow-up change.
 class BraveNewsUI : public UntrustedTopChromeWebUIController {
  public:
   explicit BraveNewsUI(content::WebUI* web_ui);
@@ -26,9 +30,13 @@ class BraveNewsUI : public UntrustedTopChromeWebUIController {
   BraveNewsUI& operator=(const BraveNewsUI&) = delete;
   ~BraveNewsUI() override;
 
+  void BindInterface(
+      mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+
   static constexpr std::string_view GetWebUIName() { return "BraveNewsPanel"; }
 
  private:
+  raw_ptr<brave_news::BraveNewsController> controller_ = nullptr;
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

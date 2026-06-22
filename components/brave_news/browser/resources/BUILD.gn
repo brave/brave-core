@@ -32,3 +32,27 @@ pack_web_resources("generated_resources") {
   output_dir = "$root_gen_dir/brave/components/brave_news/browser/resources"
   deps = [ ":brave_news_internals" ]
 }
+
+transpile_web_ui("brave_news_sidebar") {
+  entry_points = [ [
+        "brave_news_sidebar",
+        rebase_path("sidebar.tsx"),
+      ] ]
+
+  imports_from = [ "//brave/components/brave_news/browser/resources/" ]
+
+  deps = [
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:mojom",
+    "//brave/components/brave_news/common:mojom_js",
+  ]
+
+  resource_name = "brave_news_sidebar"
+}
+
+pack_web_resources("sidebar_generated_resources") {
+  resource_name = "brave_news_sidebar"
+
+  output_dir = "$root_gen_dir/brave/components/brave_news/browser/resources"
+  deps = [ ":brave_news_sidebar" ]
+}

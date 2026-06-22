@@ -12,14 +12,23 @@ source_set("brave_news") {
   sources = [
     "brave_news_ui.cc",
     "brave_news_ui.h",
+    "untrusted_brave_news_image_source.cc",
+    "untrusted_brave_news_image_source.h",
   ]
 
   deps = [
-    "//base",
+    "//brave/browser/brave_news",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/browser/resources:sidebar_generated_resources",
     "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:mojom",
     "//brave/components/constants",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings",
     "//chrome/browser/ui/webui/top_chrome",
     "//content/public/browser",
     "//content/public/common",
+    "//mojo/public/cpp/bindings",
+    "//ui/webui",
   ]
 }
