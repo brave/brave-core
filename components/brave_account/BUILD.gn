@@ -118,6 +118,7 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
+    "prefs_unittest.cc",
     "reset_password_unittest.cc",
     "state_base_unittest.cc",
   ]

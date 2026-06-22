@@ -128,7 +128,8 @@ mojom::AccountStatePtr AccountStatePrefs::GetAccountState() const {
          (!verification_verified_email ||
           !verification_verified_email->empty())));
 
-  if (kind && *kind == prefs::state_kinds::kLoggedIn) {
+  CHECK(kind);
+  if (*kind == prefs::state_kinds::kLoggedIn) {
     CHECK(authentication_token && !authentication_token->empty());
     CHECK(email && !email->empty());
     auto logged_in_verification =
@@ -139,6 +140,7 @@ mojom::AccountStatePtr AccountStatePrefs::GetAccountState() const {
         mojom::LoggedInState::New(*email, std::move(logged_in_verification)));
   }
 
+  CHECK_EQ(*kind, prefs::state_kinds::kLoggedOut);
   auto logged_out_verification =
       MakeVerification<mojom::LoggedOutVerificationPtr>(
           verification_intent, verification_verified_email);

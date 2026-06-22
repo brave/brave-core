@@ -7,10 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_PREFS_H_
 
 class PrefRegistrySimple;
+class PrefService;
 
 namespace brave_account::prefs {
 
 void RegisterPrefs(PrefRegistrySimple* registry);
+
+void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
 }  // namespace brave_account::prefs
 
