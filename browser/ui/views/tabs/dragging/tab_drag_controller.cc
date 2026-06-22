@@ -68,34 +68,7 @@ BraveTabDragController::Liveness BraveTabDragController::Init(
 
   is_showing_vertical_tabs_ = tabs::utils::ShouldShowBraveVerticalTabs(browser);
 
-  if (!is_showing_vertical_tabs_) {
-    return BraveTabDragController::BraveTabDragController::Liveness::kAlive;
-  }
-
-  // Update IsMaximized and IsFullscreen states for vertical mode.
-  auto* top_level_widget = widget->GetTopLevelWidget();
-  DCHECK(top_level_widget);
-  was_source_maximized_ = top_level_widget->IsMaximized();
-  was_source_fullscreen_ = top_level_widget->IsFullscreen();
-
   return BraveTabDragController::BraveTabDragController::Liveness::kAlive;
-}
-
-gfx::Vector2d BraveTabDragController::CalculateWindowDragOffset() {
-  gfx::Vector2d offset = TabDragController::CalculateWindowDragOffset();
-  if (!is_showing_vertical_tabs_) {
-    return offset;
-  }
-
-  // Re-calculate offset as above result is based on vertical tab widget.
-  // Convert it based on browser window widget(top level widget).
-  gfx::Point new_offset(offset.x(), offset.y());
-  views::View::ConvertPointFromWidget(attached_context_, &new_offset);
-  views::View::ConvertPointToScreen(attached_context_, &new_offset);
-  views::View::ConvertPointFromScreen(
-      attached_context_->GetWidget()->GetTopLevelWidget()->GetRootView(),
-      &new_offset);
-  return new_offset.OffsetFromOrigin();
 }
 
 void BraveTabDragController::StartDraggingTabsSession(
@@ -108,46 +81,6 @@ void BraveTabDragController::StartDraggingTabsSession(
       offset_from_first_dragged_view_.y());
   dragging_tabs_session_->set_is_showing_vertical_tabs(
       is_showing_vertical_tabs_);
-}
-
-views::Widget* BraveTabDragController::GetAttachedBrowserWidget() {
-  auto* widget = TabDragController::GetAttachedBrowserWidget();
-  if (!is_showing_vertical_tabs_) {
-    return widget;
-  }
-
-  // As vertical tab strip is attached to child widget of browser widget,
-  // we should return top level widget.
-  DCHECK(widget);
-  auto* top_level_widget = widget->GetTopLevelWidget();
-  DCHECK(top_level_widget);
-  return top_level_widget;
-}
-
-BraveTabDragController::Liveness BraveTabDragController::GetLocalProcessWindow(
-    const gfx::Point& screen_point,
-    bool exclude_dragged_view,
-    gfx::NativeWindow* window) {
-  if (is_showing_vertical_tabs_ && exclude_dragged_view) {
-    // In this case, we need to exclude a widget for vertical tab strip too.
-    std::set<gfx::NativeWindow> exclude;
-    auto* dragged_widget = attached_context_->GetWidget();
-    DCHECK(dragged_widget);
-    if (dragged_widget) {
-      exclude.insert(dragged_widget->GetNativeWindow());
-      auto* top_level_widget = dragged_widget->GetTopLevelWidget();
-      DCHECK(top_level_widget);
-      exclude.insert(top_level_widget->GetNativeWindow());
-    }
-    base::WeakPtr<TabDragController> ref(weak_factory_.GetWeakPtr());
-    *window =
-        window_finder_->GetLocalProcessWindowAtPoint(screen_point, exclude);
-    return ref ? BraveTabDragController::Liveness::kAlive
-               : BraveTabDragController::Liveness::kDeleted;
-  }
-
-  return TabDragController::GetLocalProcessWindow(screen_point,
-                                                  exclude_dragged_view, window);
 }
 
 void BraveTabDragController::DetachAndAttachToNewContext(
@@ -192,38 +125,4 @@ void BraveTabDragController::DetachAndAttachToNewContext(
   vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   // Relayout tabs with expanded bounds.
   attached_context_->GetPositioningDelegate()->ForceLayout();
-}
-
-gfx::Vector2d BraveTabDragController::GetVerticalTabStripWidgetOffset() {
-  auto* browser_widget = GetAttachedBrowserWidget();
-  DCHECK(browser_widget);
-  auto browser_widget_bounds = browser_widget->GetWindowBoundsInScreen();
-
-  auto* browser_view =
-      static_cast<BraveBrowserView*>(BrowserView::GetBrowserViewForNativeWindow(
-          browser_widget->GetNativeWindow()));
-  DCHECK(browser_view);
-
-  auto* tabstrip_widget =
-      browser_view->vertical_tab_strip_widget_delegate_view()->GetWidget();
-  DCHECK(tabstrip_widget);
-  auto tabstrip_widget_bounds = tabstrip_widget->GetWindowBoundsInScreen();
-
-  return browser_widget_bounds.origin() - tabstrip_widget_bounds.origin();
-}
-
-void BraveTabDragController::RestoreAttachedWindowForDrag() {
-  if (!is_showing_vertical_tabs_) {
-    TabDragController::RestoreAttachedWindowForDrag();
-    return;
-  }
-
-  const gfx::Size restored_size = CalculateDraggedWindowSize(attached_context_);
-
-  views::Widget* widget = GetAttachedBrowserWidget();
-  widget->SetVisibilityChangedAnimationsEnabled(false);
-  widget->Restore();
-  widget->SetVisibilityChangedAnimationsEnabled(true);
-
-  widget->SetSize(restored_size);
 }

@@ -15,7 +15,6 @@
 #define BrowserViewLayoutDelegateImplOld                        \
   BrowserViewLayoutDelegateImplOld;                             \
   friend class BraveBrowserView;                                \
-  void SetNativeWindowPropertyForWidget(views::Widget* widget); \
   virtual bool IsWebPanelContents(content::WebContents* contents)
 
 #define BrowserWindow BraveBrowserWindow

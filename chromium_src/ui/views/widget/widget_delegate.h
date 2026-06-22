@@ -22,14 +22,12 @@ class BraveTooltipPopup;
 }  // namespace brave_tooltips
 
 class MenuButtonDelegate;
-class VerticalTabStripWidgetDelegateView;
 
 #define CreatePassKey                                \
   CreatePassKey_Unused();                            \
   friend class ::brave_ads::NotificationAdPopup;     \
   friend class ::brave_tooltips::BraveTooltipPopup;  \
   friend class ::MenuButtonDelegate;                 \
-  friend class ::VerticalTabStripWidgetDelegateView; \
   static WdvPassKey CreatePassKey
 
 #include <ui/views/widget/widget_delegate.h>  // IWYU pragma: export
