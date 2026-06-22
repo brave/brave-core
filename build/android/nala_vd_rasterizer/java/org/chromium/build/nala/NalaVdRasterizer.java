@@ -40,6 +40,11 @@ public final class NalaVdRasterizer {
     private NalaVdRasterizer() {}
 
     public static void main(String[] args) throws Exception {
+        // VdPreview renders into an offscreen BufferedImage, which initializes
+        // AWT's GraphicsEnvironment. Force headless mode (before any AWT class
+        // loads) so it does not try to connect to an X11 display on build bots.
+        System.setProperty("java.awt.headless", "true");
+
         if (args.length < 4 || (args.length - 1) % 3 != 0) {
             throw new IllegalArgumentException(
                     "Usage: NalaVdRasterizer <input.xml> <output.png> <scale> "
