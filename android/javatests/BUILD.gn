@@ -45,10 +45,27 @@ android_library("brave_test_java_helper") {
 }
 
 android_library("brave_test_java_org.chromium.chrome.browser.download") {
-  sources =
-      [ "org/chromium/chrome/browser/download/BraveDownloadSettingsTest.java" ]
+  resources_package = "org.chromium.chrome.test"
 
-  deps = [ ":brave_test_java_helper" ]
+  sources = [
+    "org/chromium/chrome/browser/download/BraveDownloadSettingsTest.java",
+    "org/chromium/chrome/browser/download/dialogs/BraveDownloadLocationDialogTest.java",
+  ]
+
+  deps = [
+    ":brave_test_java_helper",
+    "//brave/browser/download/android:java",
+    "//chrome/android:chrome_app_java_resources",
+    "//chrome/android:chrome_unit_test_util_java",
+    "//chrome/browser/download/android:file_provider_java",
+    "//chrome/browser/download/android:java",
+    "//components/browser_ui/modaldialog/android:java",
+    "//content/public/android:content_full_java",
+    "//third_party/androidx:androidx_annotation_annotation_jvm_java",
+    "//third_party/hamcrest:hamcrest_core_java",
+    "//third_party/mockito:mockito_java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
 }
 
 android_library("brave_test_java_org.chromium.chrome.browser.site_settings") {

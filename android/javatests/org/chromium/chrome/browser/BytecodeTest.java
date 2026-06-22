@@ -2607,6 +2607,22 @@ public class BytecodeTest {
                         "mController"));
         Assert.assertTrue(
                 fieldExists(
+                        "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
+                        "mContext"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
+                        "mModalDialogManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
+                        "mSuggestedPath"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
+                        "mProfile"));
+        Assert.assertTrue(
+                fieldExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
                         "mLocationBarMediator"));
         Assert.assertTrue(
