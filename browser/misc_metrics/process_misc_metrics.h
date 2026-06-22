@@ -45,7 +45,7 @@ class ProcessMiscMetrics {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  Web3Metrics* web3_metrics();
+  Web3Metrics& web3_metrics();
 
 #if !BUILDFLAG(IS_ANDROID)
   MenuMetrics* menu_metrics();

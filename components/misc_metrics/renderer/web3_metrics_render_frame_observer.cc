@@ -159,20 +159,16 @@ void Web3MetricsRenderFrameObserver::DidClearWindowObject() {
 }
 
 void Web3MetricsRenderFrameObserver::OnWeb3Called() {
-  if (auto* web3_metrics = GetWeb3Metrics()) {
-    web3_metrics->RecordDappVisit();
-  }
+  GetWeb3Metrics().RecordDappVisit();
 }
 
-mojom::Web3Metrics* Web3MetricsRenderFrameObserver::GetWeb3Metrics() {
-  if (!render_frame()) {
-    return nullptr;
-  }
+mojom::Web3Metrics& Web3MetricsRenderFrameObserver::GetWeb3Metrics() {
+  CHECK(render_frame());
   if (!web3_metrics_.is_bound()) {
     render_frame()->GetBrowserInterfaceBroker().GetInterface(
         web3_metrics_.BindNewPipeAndPassReceiver());
   }
-  return web3_metrics_.get();
+  return *web3_metrics_.get();
 }
 
 void Web3MetricsRenderFrameObserver::OnDestruct() {

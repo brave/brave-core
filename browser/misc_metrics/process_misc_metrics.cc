@@ -96,8 +96,8 @@ MediaSessionMetrics* ProcessMiscMetrics::media_session_metrics() {
   return media_session_metrics_.get();
 }
 
-Web3Metrics* ProcessMiscMetrics::web3_metrics() {
-  return &web3_metrics_;
+Web3Metrics& ProcessMiscMetrics::web3_metrics() {
+  return web3_metrics_;
 }
 
 void ProcessMiscMetrics::ReportSimpleMetrics() {

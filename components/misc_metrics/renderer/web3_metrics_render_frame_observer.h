@@ -47,7 +47,7 @@ class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
   // called.
   void OnWeb3Called();
 
-  mojom::Web3Metrics* GetWeb3Metrics();
+  mojom::Web3Metrics& GetWeb3Metrics();
 
   GURL url_;
   mojo::Remote<mojom::Web3Metrics> web3_metrics_;

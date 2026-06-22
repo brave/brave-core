@@ -411,7 +411,7 @@ void BindWeb3Metrics(
   if (!g_brave_browser_process->process_misc_metrics()) {
     return;
   }
-  g_brave_browser_process->process_misc_metrics()->web3_metrics()->BindReceiver(
+  g_brave_browser_process->process_misc_metrics()->web3_metrics().BindReceiver(
       std::move(receiver));
 }
 

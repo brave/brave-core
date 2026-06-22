@@ -9,10 +9,8 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/run_until.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -24,29 +22,29 @@
 
 namespace misc_metrics {
 
-class Web3MetricsBrowserTest : public InProcessBrowserTest {
+class Web3MetricsBrowserTest : public PlatformBrowserTest {
  public:
   Web3MetricsBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
   ~Web3MetricsBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -57,7 +55,7 @@ class Web3MetricsBrowserTest : public InProcessBrowserTest {
   }
 
   content::WebContents* web_contents() {
-    return browser()->tab_strip_model()->GetActiveWebContents();
+    return chrome_test_utils::GetActiveWebContents(this);
   }
 
   content::RenderFrameHost* primary_main_frame() {
@@ -65,7 +63,7 @@ class Web3MetricsBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForDappVisits(int count) {
-    ASSERT_TRUE(base::test::RunUntil([&]() {
+    ASSERT_TRUE(base::test::RunUntil([this, count]() {
       return histogram_tester_.GetBucketCount(kWeb3DappVisitHistogramName, 1) ==
              count;
     }));
@@ -79,8 +77,8 @@ class Web3MetricsBrowserTest : public InProcessBrowserTest {
 
 // Dispatching an EIP-6963 provider discovery request is reported.
 IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, RequestProviderReported) {
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server_.GetURL("/simple.html")));
+  ASSERT_TRUE(content::NavigateToURL(web_contents(),
+                                     https_server_.GetURL("/simple.html")));
 
   histogram_tester_.ExpectTotalCount(kWeb3DappVisitHistogramName, 0);
 
@@ -93,8 +91,8 @@ IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, RequestProviderReported) {
 
 // Accessing a provider that the page itself installed is reported.
 IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, ProviderAccessReported) {
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server_.GetURL("/simple.html")));
+  ASSERT_TRUE(content::NavigateToURL(web_contents(),
+                                     https_server_.GetURL("/simple.html")));
 
   histogram_tester_.ExpectTotalCount(kWeb3DappVisitHistogramName, 0);
 
@@ -110,8 +108,8 @@ IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, ProviderAccessReported) {
 
 // Pages that never touch a web3 provider record nothing.
 IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, NoProviderUsageNotReported) {
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), https_server_.GetURL("/simple.html")));
+  ASSERT_TRUE(content::NavigateToURL(web_contents(),
+                                     https_server_.GetURL("/simple.html")));
 
   // Run benign script that should never trigger the proxy.
   ASSERT_TRUE(content::ExecJs(primary_main_frame(), "1 + 1;"));
