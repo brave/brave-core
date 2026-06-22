@@ -20,13 +20,13 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/color/color_provider.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -54,22 +54,24 @@ class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
 }  // namespace
 
 SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     mojo::PendingReceiver<speedreader::mojom::ToolbarDataHandler> receiver,
     mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler> events)
     : browser_(browser),
       receiver_(this, std::move(receiver)),
       events_(std::move(events)),
       browser_tab_strip_tracker_(this, this) {
-  if (!browser_ || !browser_->tab_strip_model() ||
-      !browser_->tab_strip_model()->GetActiveWebContents()) {
+  CHECK(browser_);
+  if (!browser_->GetTabStripModel() ||
+      !browser_->GetTabStripModel()->GetActiveWebContents()) {
     // We're initializing this handler while browser is shutting down. Do
     // nothing because we're going to die soon.
     return;
   }
   browser_tab_strip_tracker_.Init();
+
   active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
-      browser->tab_strip_model()->GetActiveWebContents());
+      browser_->GetTabStripModel()->GetActiveWebContents());
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
   tab_helper_observation_.Observe(active_tab_helper_);
@@ -129,8 +131,10 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
 
 void SpeedreaderToolbarDataHandlerImpl::ObserveThemeChange() {
   theme_observation_.Observe(
-      ThemeServiceFactory::GetForProfile(browser_->profile()));
-  native_theme_observation_.Observe(browser_->window()->GetNativeTheme());
+      ThemeServiceFactory::GetForProfile(browser_->GetProfile()));
+  if (auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_)) {
+    native_theme_observation_.Observe(browser_view->GetNativeTheme());
+  }
   OnThemeChanged();
 }
 
@@ -148,8 +152,8 @@ void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
 
 void SpeedreaderToolbarDataHandlerImpl::AiChat() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (!browser_ || !ai_chat::IsAIChatEnabled(browser_->profile()->GetPrefs()) ||
-      !browser_->profile()->IsRegularProfile()) {
+  if (!ai_chat::IsAIChatEnabled(browser_->GetProfile()->GetPrefs()) ||
+      !browser_->GetProfile()->IsRegularProfile()) {
     return;
   }
   auto* side_panel = browser_->GetFeatures().side_panel_ui();
@@ -214,9 +218,8 @@ void SpeedreaderToolbarDataHandlerImpl::OnToolbarStateChanged(
 
 speedreader::SpeedreaderService*
 SpeedreaderToolbarDataHandlerImpl::GetSpeedreaderService() {
-  DCHECK(browser_);
   return speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-      browser_->profile());
+      browser_->GetProfile());
 }
 
 speedreader::TtsPlayer::Controller*
@@ -292,7 +295,7 @@ void SpeedreaderToolbarDataHandlerImpl::OnSplitTabChanged(
 
 bool SpeedreaderToolbarDataHandlerImpl::ShouldTrackBrowser(
     BrowserWindowInterface* browser) {
-  return browser_ == browser->GetBrowserForMigrationOnly();
+  return browser_ == browser;
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
@@ -301,10 +304,14 @@ void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
 
 void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
     ui::NativeTheme* observed_theme) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  if (!browser_view) {
+    return;
+  }
   // There are two types of theme update. a) The observed theme change. e.g.
   // switch between light/dark mode. b) A different theme is enabled. e.g.
   // switch between GTK and classic theme on Linux. Reset observer in case b).
-  ui::NativeTheme* current_theme = browser_->window()->GetNativeTheme();
+  ui::NativeTheme* current_theme = browser_view->GetNativeTheme();
   if (observed_theme != current_theme) {
     native_theme_observation_.Reset();
     native_theme_observation_.Observe(current_theme);
@@ -323,7 +330,11 @@ void SpeedreaderToolbarDataHandlerImpl::OnContentsReady() {
 }
 
 void SpeedreaderToolbarDataHandlerImpl::UpdateToolbarTheme() {
-  const auto* color_provider = browser_->window()->GetColorProvider();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  if (!browser_view) {
+    return;
+  }
+  const auto* color_provider = browser_view->GetColorProvider();
   if (!color_provider) {
     return;
   }

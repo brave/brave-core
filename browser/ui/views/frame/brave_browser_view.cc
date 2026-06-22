@@ -287,16 +287,16 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
 }
 
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-    const Browser* browser) {
-  if (!browser->is_type_normal()) {
+    const BrowserWindowInterface* browser) {
+  if (browser->GetType() != BrowserWindowInterface::TYPE_NORMAL) {
     return false;
   }
 
-  if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
+  if (browser->GetProfile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
     return true;
   }
 
-  auto* model = browser->tab_strip_model();
+  auto* model = browser->GetTabStripModel();
   if (model->empty()) {
     return false;
   }
@@ -307,7 +307,7 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
 
   // Use rounded corners when browser view shows split view.
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  return browser_view->multi_contents_view()->IsInSplitView();
+  return browser_view && browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {

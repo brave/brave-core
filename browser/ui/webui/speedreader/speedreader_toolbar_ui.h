@@ -16,7 +16,6 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
-class Browser;
 class Profile;
 
 namespace content {
@@ -49,7 +48,6 @@ class SpeedreaderToolbarUI : public TopChromeWebUIController,
   std::unique_ptr<SpeedreaderToolbarDataHandlerImpl> toolbar_data_handler_;
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

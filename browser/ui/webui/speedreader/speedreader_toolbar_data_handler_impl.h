@@ -23,7 +23,7 @@
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 class SpeedreaderToolbarDataHandlerImpl
     : public speedreader::mojom::ToolbarDataHandler,
@@ -36,7 +36,7 @@ class SpeedreaderToolbarDataHandlerImpl
       public speedreader::SpeedreaderTabHelper::Observer {
  public:
   SpeedreaderToolbarDataHandlerImpl(
-      Browser* browser,
+      BrowserWindowInterface* browser,
       mojo::PendingReceiver<speedreader::mojom::ToolbarDataHandler> receiver,
       mojo::PendingRemote<speedreader::mojom::ToolbarEventsHandler> events);
   SpeedreaderToolbarDataHandlerImpl(const SpeedreaderToolbarDataHandlerImpl&) =
@@ -113,7 +113,7 @@ class SpeedreaderToolbarDataHandlerImpl
   // toolbar's bottom border should be updated.
   void UpdateToolbarTheme();
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   mojo::Receiver<speedreader::mojom::ToolbarDataHandler> receiver_;
   mojo::Remote<speedreader::mojom::ToolbarEventsHandler> events_;
 
