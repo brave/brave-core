@@ -216,7 +216,10 @@ source_set("ui") {
   }
 
   if (enable_brave_news) {
-    deps += [ "//brave/components/brave_news/common" ]
+    deps += [
+      "//brave/browser/brave_news",
+      "//brave/components/brave_news/common",
+    ]
   }
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
