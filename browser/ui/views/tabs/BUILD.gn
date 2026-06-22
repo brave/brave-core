@@ -5,6 +5,22 @@
 
 import("//build/config/ozone.gni")
 
+source_set("tabs") {
+  sources = [
+    "switches.h",
+    "vertical_tab_controller.cc",
+    "vertical_tab_controller.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//chrome/app:command_ids",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
