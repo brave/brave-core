@@ -1,0 +1,13 @@
+diff --git a/components/payments/core/features.cc b/components/payments/core/features.cc
+index 85ca62b367ed0fa167e5e9518aab11033fc995be..750124720ad8beab968a26206fc1fa1db78dc465 100644
+--- a/components/payments/core/features.cc
++++ b/components/payments/core/features.cc
+@@ -46,7 +46,7 @@ BASE_FEATURE(kSecurePaymentConfirmationUseCredentialStoreAPIs,
+ 
+ 
+ BASE_FEATURE(kPaymentRequestUseRendererUrlLoader,
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPaymentRequestRejectTooSmallWindows,
+              base::FEATURE_DISABLED_BY_DEFAULT);
