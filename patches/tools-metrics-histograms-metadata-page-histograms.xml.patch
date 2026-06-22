@@ -2,7 +2,7 @@ diff --git a/tools/metrics/histograms/metadata/page/histograms.xml b/tools/metri
 index 25228947d43dced91af2ffe48631e58e4a01e2a2..5f4de2199e018c68acda1d8fa43fee1a0002b2a4 100644
 --- a/tools/metrics/histograms/metadata/page/histograms.xml
 +++ b/tools/metrics/histograms/metadata/page/histograms.xml
-@@ -620,6 +620,18 @@ chromium-metrics-reviews@google.com.
+@@ -620,6 +620,19 @@ chromium-metrics-reviews@google.com.
    <variant name=".TabSearch"/>
    <variant name=".TabsFromOtherDevicesSidePanel"/>
    <variant name=".UserEducation"/>
@@ -10,6 +10,7 @@ index 25228947d43dced91af2ffe48631e58e4a01e2a2..5f4de2199e018c68acda1d8fa43fee1a
 +BubbleContentsWrapperT.
 +-->
 +  <variant name=".AIChatPanel"/>
++  <variant name=".BraveNewsPanel"/>
 +  <variant name=".CookieListOptInBubblePanel"/>
 +  <variant name=".EmailAliasesPanel"/>
 +  <variant name=".PlaylistPanel"/>

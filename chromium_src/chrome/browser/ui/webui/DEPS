@@ -3,6 +3,7 @@ include_rules = [
   "+brave/components/version_info",
   "+brave/components/ai_chat/core/common",
   "+brave/components/brave_account/features.h",
+  "+brave/components/brave_news/common",
   "+brave/components/brave_vpn/common",
   "+brave/components/playlist/core/common",
   "+brave/components/brave_vpn/common",
