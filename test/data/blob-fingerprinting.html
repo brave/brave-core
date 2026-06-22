@@ -46,45 +46,8 @@
       return Object.keys(left).every((key) => left[key] === right[key]);
     }
 
-    // Opens a pop-up window with a blob:// url which writes to the local
-    // storage the various screen attributes it sees. The popup sets its own
-    // title to "pass" or "fail".
-    window.startBlobScreenFingerprintingTest = function() {
-      document.title = 'Blob fingerprinting test';
-      localStorage.clear();
-      writeScreenValues('parent');
-      const html =
-`<!DOCTYPE html>
-    <html>
-    <head><meta charset="utf-8"></head>
-    <body>
-    <script>
-        const readScreenValues = ${readScreenValues.toString()};
-        const writeScreenValues = ${writeScreenValues.toString()};
-        const readStoredScreenValues = ${readStoredScreenValues.toString()};
-        const storedScreenValuesMatch = ${storedScreenValuesMatch.toString()};
-        writeScreenValues('blob');
-        document.title = storedScreenValuesMatch('parent', 'blob')
-            ? 'pass'
-            : 'fail';
-    <\/script>
-    </body>
-</html>`;
-
-      const blob = new Blob([html], {type: 'text/html'});
-      window.open(
-          URL.createObjectURL(blob), '_blank',
-          `left=${screenX},top=${screenY},width=${outerWidth},height=${outerHeight}`);
-    };
-
-    // Loads a blob:// url in an iframe which writes to the local storage the
-    // various screen attributes it sees. The C++ test polls localStorage for
-    // completion via EvalJs / base::test::RunUntil(), so no JS-side poller is
-    // needed here.
-    window.startBlobScreenFingerprintingIframeTest = function() {
-      localStorage.clear();
-      writeScreenValues('parent');
-      const html =
+    // The main html that would be loaded inside the iframe and inside as a new window.
+    const html =
 `<!DOCTYPE html>
     <html>
     <head><meta charset="utf-8"></head>
@@ -98,13 +61,29 @@
     </body>
 </html>`;
 
+    // Opens a pop-up window with a blob:// url which writes to the local
+    // storage the various screen attributes it sees. The C++ test polls localStorage for
+    // completion via EvalJs / base::test::RunUntil().
+    window.startBlobScreenFingerprintingPopUpTest = function() {
+      localStorage.clear();
+      writeScreenValues('parent');
+      const blob = new Blob([html], {type: 'text/html'});
+      window.open(
+          URL.createObjectURL(blob), '_blank',
+          `left=${screenX},top=${screenY},width=${outerWidth},height=${outerHeight}`);
+    };
+
+    // Loads a blob:// url in an iframe which writes to the local storage the
+    // various screen attributes it sees. The C++ test polls localStorage for
+    // completion via EvalJs / base::test::RunUntil().
+    window.startBlobScreenFingerprintingIframeTest = function() {
+      localStorage.clear();
+      writeScreenValues('parent');
       const blob = new Blob([html], {type: 'text/html'});
       const blobUrl = URL.createObjectURL(blob);
-
       const iframe = document.createElement('iframe');
       iframe.src = blobUrl;
       document.body.appendChild(iframe);
-      // Revoking after appendChild is safe: the navigation has already started.
       URL.revokeObjectURL(blobUrl);
     };
   </script>
