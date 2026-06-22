@@ -7,6 +7,7 @@
 
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
@@ -14,10 +15,12 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "services/network/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -30,6 +33,10 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
   ~PolkadotSubstrateRpcUnitTest() override = default;
 
   void SetUp() override {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        brave_wallet::features::kBraveWalletPolkadotFeature,
+        {{brave_wallet::features::kPolkadotParachainsEnabled.name, "true"}});
+
     RegisterProfilePrefs(prefs_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
 
@@ -39,6 +46,7 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
   }
 
  protected:
+  base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
@@ -461,6 +469,280 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     uint128_t flags = std::numeric_limits<uint128_t>::max();
     EXPECT_TRUE((uint128_t{account_info->data->flags->high} << 64 |
                  account_info->data->flags->low) == flags);
+  }
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotPaseoAssetHub;
+  std::string testnet_url =
+      network_manager_->GetKnownChain(chain_id, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-paseo-asset-hub.wallet.brave.com/");
+
+  // https://assethub-paseo.subscan.io/assets/50001010
+  constexpr uint32_t kBATCAssetId = 50001010;
+
+  // https://assethub-paseo.subscan.io/assets/50001011
+  constexpr uint32_t kXBBCAssetId = 50001011;
+
+  static constexpr uint32_t kAssetIds[] = {kBATCAssetId, kXBBCAssetId};
+
+  base::test::TestFuture<std::vector<mojom::PolkadotAssetAccountInfoPtr>,
+                         const std::optional<std::string>&>
+      future;
+
+  constexpr const char kPubKey[] =
+      "f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840";
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  base::HexStringToSpan(kPubKey, pubkey);
+
+  {
+    // Account exists.
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "method":"state_queryStorageAt",
+        "params":[[
+          "0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+          "0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96d0d81c87459ce80ea9d277dcb385a8173f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840"
+        ]]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(network::GetUploadData(req.request)),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": [ {
+            "block": "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+            "changes": [
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+               "0x0010a5d4e800000000000000000000000000" ],
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96d0d81c87459ce80ea9d277dcb385a8173f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+               "0x000064a7b3b6e00d00000000000000000000"]
+            ]
+        } ]
+      })");
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+
+    ASSERT_EQ(asset_accounts.size(), 2u);
+
+    // This asset has 6 decimal places, total minted was 1'000'000.
+    EXPECT_EQ(MojomToUint128(asset_accounts[0]->balance), 1'000'000'000'000ull);
+
+    // This asset has 12 decimal places, total minted was 1'000'000.
+    EXPECT_EQ(MojomToUint128(asset_accounts[1]->balance),
+              1'000'000'000'000'000'000ull);
+  }
+
+  {
+    // Account does not exist.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": [ {
+            "block": "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+            "changes": [
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+               null],
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96d0d81c87459ce80ea9d277dcb385a8173f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+               null]
+            ]
+        } ]
+      })");
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+
+    ASSERT_EQ(asset_accounts.size(), 2u);
+    EXPECT_EQ(MojomToUint128(asset_accounts[0]->balance), 0u);
+    EXPECT_EQ(MojomToUint128(asset_accounts[1]->balance), 0u);
+  }
+
+  {
+    // Account data is too short.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block":"0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+            "changes":[["", "0x1234"]]
+          }
+        ]
+      })");
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_TRUE(asset_accounts.empty());
+  }
+
+  {
+    // Changes array is empty.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block":"0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+            "changes":[]
+          }
+        ]
+      })");
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_TRUE(asset_accounts.empty());
+  }
+
+  {
+    // Changes array contains empty pair (no storage key, no account
+    // information).
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block": "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+            "changes":[[]]
+          }
+        ]
+      })");
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_TRUE(asset_accounts.empty());
+  }
+
+  {
+    // Contains invalid hex in asset account info.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[
+              ["",
+              "0xcat0a5d4e800000000000000000000000000"]
+            ]
+          }
+        ]
+      })");
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_TRUE(asset_accounts.empty());
+  }
+
+  {
+    // Server contained invalid response.
+
+    url_loader_factory_.AddResponse(
+        testnet_url, "some invalid data goes here",
+        net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR);
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+    EXPECT_TRUE(asset_accounts.empty());
+  }
+
+  {
+    // Numeric limits.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": [ {
+            "block":
+            "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+            "changes": [
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96f3cb8f9d0d9a74cd56633b4674ee4cf72f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+               "0xffffffffffffffffffffffffffffffff0000"],
+              ["0x682a59d51ab9e48a8c8cc418ff9708d2b99d880ec681799c0cf30e8886371da96d0d81c87459ce80ea9d277dcb385a8173f4fa0240ee39c7f32be41aaaf4106649c6fe42f8224098b97b27e917689228c41f23e2b06cc48666bc6eaec030169b44157840",
+               "0x000000000000000000000000000000000000"]
+            ]
+        } ]
+      })");
+
+    polkadot_substrate_rpc_->GetAssetAccountBalances(
+        chain_id, kAssetIds, pubkey, future.GetCallback());
+
+    auto [asset_accounts, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+
+    ASSERT_EQ(asset_accounts.size(), 2u);
+
+    // This asset has 6 decimal places, total minted was 1'000'000.
+    EXPECT_EQ(MojomToUint128(asset_accounts[0]->balance),
+              std::numeric_limits<uint128_t>::max());
+
+    // This asset has 12 decimal places, total minted was 1'000'000.
+    EXPECT_EQ(MojomToUint128(asset_accounts[1]->balance), 0u);
   }
 }
 

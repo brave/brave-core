@@ -33,6 +33,13 @@ namespace polkadot_substrate_rpc_responses {
     Error? error;
   };
 
+  dictionary PolkadotAssetAccountBalanceResponse {
+    DOMString jsonrpc;
+    long id;
+    AccountInfo[]? result;
+    Error? error;
+  };
+
   dictionary PolkadotFinalizedHead {
     DOMString jsonrpc;
     long id;

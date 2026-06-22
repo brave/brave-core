@@ -147,6 +147,20 @@ void PolkadotWalletService::GetAccountBalance(
                                             std::move(callback));
 }
 
+void PolkadotWalletService::GetAssetAccountBalances(
+    mojom::AccountIdPtr account_id,
+    const std::vector<uint32_t>& asset_ids,
+    const std::string& chain_id,
+    GetAssetAccountBalancesCallback callback) {
+  auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+  if (!pubkey) {
+    return std::move(callback).Run({}, WalletInternalErrorMessage());
+  }
+
+  polkadot_substrate_rpc_.GetAssetAccountBalances(chain_id, asset_ids, *pubkey,
+                                                  std::move(callback));
+}
+
 void PolkadotWalletService::ValidateAddressForTransaction(
     const std::string& chain_id,
     const std::string& address,

@@ -34,6 +34,9 @@ namespace {
 // Account info comes to us through the wire as 160 hex digits.
 inline constexpr size_t kPolkadotAccountInfoSize = 80;
 
+// AssetAccount info comes to us through the wire as 36 hex digits.
+inline constexpr size_t kPolkadotAssetAccountInfoSize = 18;
+
 base::flat_map<std::string, std::string> MakePolkadotRpcHeaders(
     const GURL& request_url) {
   return IsEndpointUsingBraveWalletProxy(request_url)
@@ -122,6 +125,37 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(
   return account;
 }
 
+mojom::PolkadotAssetAccountInfoPtr ParseAssetAccountInfoAsHex(
+    base::span<const uint8_t, kPolkadotAssetAccountInfoSize> bytes) {
+  // The AssetBalance struct is described here:
+  // https://github.com/paritytech/polkadot-sdk/blob/81e6d5ac17544a9b11a177e5e16c8ca5c3887a6f/substrate/frame/assets/src/types.rs#L175-L188
+  //
+  // Balance = u128
+  // Status = u8
+  // Reason = u8
+  // Extra = ()
+
+  base::SpanReader<const uint8_t> reader(bytes);
+  auto asset_account = mojom::PolkadotAssetAccountInfo::New();
+
+  if (!ReadU128(reader, asset_account->balance)) {
+    return nullptr;
+  }
+
+  uint8_t status = 0;
+  if (!reader.ReadU8LittleEndian(status)) {
+    return nullptr;
+  }
+
+  uint8_t reason = 0;
+  if (!reader.ReadU8LittleEndian(reason)) {
+    return nullptr;
+  }
+
+  DCHECK_EQ(reader.remaining(), 0u);
+  return asset_account;
+}
+
 mojom::PolkadotAccountInfoPtr MakeDefaultAccount() {
   // Default value defined here:
   // https://github.com/polkadot-js/api/blob/1c4c7c72e281da328084ae821218efb9fe7120ac/packages/types-support/src/metadata/v16/substrate-json.json#L23
@@ -201,6 +235,58 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
   }
 
   return nullptr;
+}
+
+std::optional<std::vector<mojom::PolkadotAssetAccountInfoPtr>>
+ParseAssetAccountInfoFromJson(
+    const std::optional<
+        std::vector<polkadot_substrate_rpc_responses::AccountInfo>>& result) {
+  if (!result) {
+    return std::nullopt;
+  }
+
+  auto& accounts = *result;
+  if (accounts.size() != 1) {
+    return std::nullopt;
+  }
+
+  auto& changes = accounts[0].changes;
+  if (changes.empty()) {
+    return std::nullopt;
+  }
+
+  std::vector<mojom::PolkadotAssetAccountInfoPtr> asset_accounts;
+
+  // "changes" in the JSON is: [ [<StorageKey>, <AssetAccount> | null], ...].
+  for (const auto& change : changes) {
+    auto* list = change.GetIfList();
+    if (!list || list->size() != 2) {
+      return std::nullopt;
+    }
+
+    const auto* str = (*list)[1].GetIfString();
+    if (!str) {
+      auto p = mojom::PolkadotAssetAccountInfo::New();
+      p->balance = Uint128ToMojom(uint128_t{0});
+      asset_accounts.push_back(std::move(p));
+      continue;
+    }
+
+    std::string_view sv = *str;
+    std::array<uint8_t, kPolkadotAssetAccountInfoSize> hex_bytes = {};
+    if (!PrefixedHexStringToFixed(sv, hex_bytes)) {
+      return std::nullopt;
+    }
+
+    auto account_asset = ParseAssetAccountInfoAsHex(hex_bytes);
+    if (!account_asset) {
+      return std::nullopt;
+    }
+
+    asset_accounts.push_back(std::move(account_asset));
+  }
+
+  return asset_accounts;
 }
 
 template <class RpcResponse>
@@ -398,6 +484,69 @@ void PolkadotSubstrateRpc::OnGetAccountBalance(
   }
 
   return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
+}
+
+void PolkadotSubstrateRpc::GetAssetAccountBalances(
+    std::string_view chain_id,
+    base::span<const uint32_t> asset_ids,
+    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
+    GetAssetAccountBalancesCallback callback) {
+  // The shape of the storage key is described here:
+  // https://github.com/paritytech/polkadot-sdk/blob/81e6d5ac17544a9b11a177e5e16c8ca5c3887a6f/substrate/frame/assets/src/lib.rs#L445-L454
+
+  static constexpr const char kAssetsPallet[] =
+      "682a59d51ab9e48a8c8cc418ff9708d2";
+  static constexpr const char kAccountQuery[] =
+      "b99d880ec681799c0cf30e8886371da9";
+
+  auto pubkey_checksum = base::HexEncodeLower(Blake2bHash<16>({pubkey}));
+  auto pubkey_hex = base::HexEncodeLower(pubkey);
+
+  base::ListValue storage_keys;
+  storage_keys.reserve(asset_ids.size());
+
+  for (auto asset_id : asset_ids) {
+    auto le_asset_id = base::byte_span_from_ref(asset_id);
+
+    auto asset_id_checksum =
+        base::HexEncodeLower(Blake2bHash<16>({le_asset_id}));
+
+    storage_keys.Append(base::StrCat(
+        {"0x", kAssetsPallet, kAccountQuery, asset_id_checksum,
+         base::HexEncodeLower(le_asset_id), pubkey_checksum, pubkey_hex}));
+  }
+
+  auto payload = base::WriteJson(MakeRpcRequestJson(
+      "state_queryStorageAt",
+      base::ListValue().Append(base::Value(std::move(storage_keys)))));
+
+  CHECK(payload);
+
+  auto url = GetNetworkURL(chain_id);
+
+  MakePostRequestInternal(
+      url, *payload,
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetAssetAccountBalances,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetAssetAccountBalances(
+    GetAssetAccountBalancesCallback callback,
+    APIRequestResult api_result) {
+  auto res = HandleRpcCall<
+      polkadot_substrate_rpc_responses::PolkadotAssetAccountBalanceResponse>(
+      api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run({}, res.error());
+  }
+
+  auto asset_accounts = ParseAssetAccountInfoFromJson(res->result);
+  if (!asset_accounts) {
+    return std::move(callback).Run({}, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(std::move(asset_accounts.value()), {});
 }
 
 void PolkadotSubstrateRpc::GetFinalizedHead(std::string_view chain_id,
