@@ -35,6 +35,7 @@
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -92,6 +93,7 @@
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/layout/layout_provider.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget_utils.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -2435,6 +2437,53 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelShadow) {
   RunScheduledLayouts();
   EXPECT_FALSE(overlay->GetVisible())
       << "Shadow should hide when the panel is closed";
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarItemHighlightState) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* side_panel = browser_view()->side_panel();
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto items_contents_view = GetSidebarItemsContentsView(controller());
+  SidebarContainerView* sidebar = GetSidebarContainerView();
+
+  side_panel->DisableAnimationsForTesting();
+
+  // Start with sidebar hidden so we can drive visibility entirely through
+  // ToggleSidebarPinning below.
+  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !sidebar->IsSidebarVisible(); }));
+
+  // Open a panel to establish an active sidebar item whose ink drop we can
+  // inspect. The sidebar must still be hidden afterwards (kShowNever).
+  panel_ui->Toggle();
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+  RunScheduledLayouts();
+  EXPECT_FALSE(sidebar->IsSidebarVisible());
+  const auto active_index = model()->active_index();
+  EXPECT_TRUE(active_index);
+
+  // Show the sidebar and verify the active item's ink drop is highlighted.
+  // This was broken: ShowSidebar() didn't re-sync item state, and
+  // SetActiveState() short-circuited when active_ hadn't changed, so the ink
+  // drop remained HIDDEN even though the item was active.
+  controller()->ToggleSidebarPinning();
+  EXPECT_TRUE(sidebar->IsSidebarVisible());
+  auto* active_item_view = views::AsViewClass<SidebarItemView>(
+      items_contents_view->children()[*active_index].get());
+  ASSERT_TRUE(active_item_view);
+  auto* ink_drop = views::InkDrop::Get(active_item_view)->GetInkDrop();
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
+
+  // Hide and re-show to confirm the fix holds across multiple toggle cycles.
+  controller()->ToggleSidebarPinning();
+  EXPECT_FALSE(sidebar->IsSidebarVisible());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop->GetTargetInkDropState());
+
+  controller()->ToggleSidebarPinning();
+  EXPECT_TRUE(sidebar->IsSidebarVisible());
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
 }
 
 // Verify that SidebarControlView::UpdateBorder() applies a negative inset on

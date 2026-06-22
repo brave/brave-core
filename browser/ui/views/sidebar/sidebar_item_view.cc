@@ -20,11 +20,9 @@ SidebarItemView::SidebarItemView(const std::u16string& accessible_name)
 SidebarItemView::~SidebarItemView() = default;
 
 void SidebarItemView::SetActiveState(bool active) {
-  if (active_ == active) {
-    return;
-  }
-
   active_ = active;
+  // Always call SetHighlighted to re-apply the state; the ink drop can be
+  // reset externally (e.g., when the view becomes invisible on sidebar hide).
   SetHighlighted(active_);
 }
 
