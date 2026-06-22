@@ -370,22 +370,16 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 }
 
-// Test that fullscreen state resets on navigation.
+// Test that MaybeSetFullscreen() works after navigation.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
-                       FullscreenStateResetsOnNavigation) {
-  const GURL url1 =
-      https_server_.GetURL("youtube.com", "/yt_fullscreen_delayed.html");
-  const GURL url2 = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
+                       MaybeSetFullscreenWorksAfterNavigation) {
+  const GURL url1 = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
+  const GURL url2 =
+      https_server_.GetURL("youtube.com", "/yt_fullscreen.html?next=1");
 
   // Navigate to first YouTube page.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url1, 1,
                                                       true);
-
-  InjectScript(
-      uR"(
-    document.getElementById('movie_player').innerHTML =
-        '<video class="html5-main-video" src="mov_bbb.mp4" controls></video>';
-  )");
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
@@ -397,11 +391,14 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   // Make fullscreen request on first page.
   helper->MaybeSetFullscreen();
   EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+  EXPECT_TRUE(
+      WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 
-  // Navigate before the first request can observe the missing fullscreen
-  // button and complete.
+  // Navigate to a new page after the first request completes.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url2, 1,
                                                       true);
+  EXPECT_TRUE(
+      WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
 
   // Verify fullscreen state resets on navigation.
   EXPECT_FALSE(helper->HasFullscreenBeenRequested());
