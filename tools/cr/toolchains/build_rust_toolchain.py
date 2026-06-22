@@ -134,6 +134,7 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import tempfile
 import tomllib
 from types import ModuleType
 import urllib.error
@@ -179,6 +180,24 @@ WASM32_UNKNOWN_UNKNOWN = 'wasm32-unknown-unknown'
 RUST_LLD_ARCNAME = f'bin/{RUST_LLD}'
 WASM32_ARCNAME = f'lib/rustlib/{WASM32_UNKNOWN_UNKNOWN}'
 LLVM_LIB_ARCNAME = f'bin/{LLVM_LIB}'
+
+# Minimal wasm32 sources used by `_smoke_test_wasm` to exercise the packaged
+# toolchain. The rlib variant is compile-only; the cdylib variant additionally
+# drives the packaged rust-lld over the wasm objects.
+WASM_SMOKE_RLIB_SRC = """\
+pub fn smoke() -> String {
+    let v = vec![1u32, 2, 3];
+    format!("{}", v.iter().sum::<u32>())
+}
+"""
+
+WASM_SMOKE_CDYLIB_SRC = """\
+#[no_mangle]
+pub extern "C" fn smoke() -> u32 {
+    let v = vec![1u32, 2, 3];
+    v.iter().sum()
+}
+"""
 
 # Relative path (within tools/rust/) of the Rust bootstrap configuration
 # template. build_rust.py generates config.toml from this file.
@@ -1138,6 +1157,83 @@ class ToolchainBuilder:
                 tar.add(llvm_bin / LLVM_LIB, arcname=LLVM_LIB_ARCNAME)
         return output_archive
 
+    def _smoke_test_wasm(self, archive_path: Path) -> None:
+        """Compile and link a wasm32 crate as a smoke test for the toolchain.
+
+        Extracts `archive_path` over `RUST_TOOLCHAIN_OUT_DIR` exactly as a
+        consumer would, then builds a small `std`-using crate for
+        `wasm32-unknown-unknown` with that toolchain's `rustc` in two steps:
+
+        * An rlib build loads `core`, `alloc` and `std` from the packaged
+          sysroot, so a sysroot whose crates were built by a different `rustc`
+          than the one consuming them fails with E0514 ("found crate `core`
+          compiled by an incompatible version of rustc").
+        * A cdylib build additionally links with the packaged `rust-lld`,
+          exercising the shipped linker and the self-contained wasm objects.
+
+        Either failure aborts before publishing, so a broken toolchain never
+        reaches a downstream Brave build.
+
+        Raises:
+            RuntimeError: if the wasm32 crate fails to compile or link.
+        """
+        toolchain = Path(self._build_rust_module.RUST_TOOLCHAIN_OUT_DIR)
+        wasm_sysroot = toolchain / 'lib' / 'rustlib' / WASM32_UNKNOWN_UNKNOWN
+
+        # Drop any prior wasm32 overlay so stale crates can neither mask a real
+        # mismatch nor fabricate one, then extract the archive as a consumer
+        # would so `rustc` finds the shipped sysroot inside its own sysroot.
+        if wasm_sysroot.exists():
+            shutil.rmtree(wasm_sysroot)
+        logging.info('Smoke test: extracting %s over %s', archive_path,
+                     toolchain)
+        with tarfile.open(archive_path, 'r:xz') as tar:
+            tar.extractall(toolchain)
+
+        rustc = toolchain / 'bin' / RUSTC
+        # rust-lld ships in the toolchain's bin/; putting it on PATH is how the
+        # real Brave build lets `rustc` find it for the wasm32 link step.
+        link_env = {
+            **os.environ,
+            'PATH': os.pathsep.join(
+                [str(toolchain / 'bin'), os.environ['PATH']]),
+        }
+
+        def _compile(label: str, crate_type: str, source: str, env=None):
+            with tempfile.TemporaryDirectory() as tmp:
+                src = Path(tmp) / 'wasm_smoke.rs'
+                src.write_text(source, encoding='utf-8', newline='')
+                out = Path(tmp) / 'wasm_smoke.out'
+                logging.info('Smoke test: %s', label)
+                try:
+                    _check_call(str(rustc),
+                                '--edition',
+                                '2021',
+                                '--target',
+                                WASM32_UNKNOWN_UNKNOWN,
+                                '--crate-type',
+                                crate_type,
+                                '-o',
+                                str(out),
+                                str(src),
+                                env=env)
+                except subprocess.CalledProcessError as e:
+                    raise RuntimeError(
+                        f'wasm32 toolchain smoke test failed ({label}): see the '
+                        f'rustc error above. Refusing to publish.') from e
+
+        # Compile-only only test.
+        _compile('compiling a wasm32 rlib', 'rlib', WASM_SMOKE_RLIB_SRC)
+
+        # Compile + link: drives the packaged rust-lld over the wasm objects.
+        _compile('linking a wasm32 cdylib (rust-lld check)',
+                 'cdylib',
+                 WASM_SMOKE_CDYLIB_SRC,
+                 env=link_env)
+
+        logging.info('Smoke test passed: the wasm32 toolchain compiles and '
+                     'links.')
+
     def _bootstrap_depot_tools(self):
         """Ensure `depot_tools` is on PATH if no existing install is found.
 
@@ -1355,6 +1451,9 @@ class ToolchainBuilder:
            * `_create_full_archive` when `full_toolchain` — overlay the wasm32
              sysroot onto the full-toolchain archive from step 1.
            * `_create_archive` otherwise — the minimal rust-lld + wasm32 subset.
+        3. `_smoke_test_wasm` — compile a wasm32 crate against the packaged
+           toolchain so a rustc/std mismatch fails before publishing.
+        4. `_publish_archive_index` — record the build in the sibling index.
 
         `config.toml.template` is returned to its original state always.
 
@@ -1486,6 +1585,10 @@ class ToolchainBuilder:
             archive_path = self._create_full_archive(base_archive, wasm_src)
         else:
             archive_path = self._create_archive(wasm_src)
+
+        # Verify the packaged toolchain compiles wasm32 before publishing.
+        self._smoke_test_wasm(archive_path)
+
         self._publish_archive_index(archive_path,
                                     force_overwrite=force_overwrite)
 
