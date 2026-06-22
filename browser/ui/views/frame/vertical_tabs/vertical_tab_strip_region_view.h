@@ -35,6 +35,7 @@ class BrowserView;
 class BrowserWindowInterface;
 class FullscreenController;
 class TabStyle;
+class WorkspacesBubbleController;
 
 // Wraps TabStripRegion and show it vertically.
 class BraveVerticalTabStripRegionView : public views::View,
@@ -217,6 +218,9 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   // Workspaces button shown below the new tab button when the feature is on.
   raw_ptr<views::View> workspaces_button_ = nullptr;
+
+  // Owns the workspaces bubble and save-dialog widgets while they are shown.
+  std::unique_ptr<WorkspacesBubbleController> workspaces_bubble_controller_;
 
   raw_ptr<views::View> resize_area_ = nullptr;
   std::optional<int> resize_offset_;

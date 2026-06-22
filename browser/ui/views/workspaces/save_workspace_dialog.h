@@ -34,16 +34,16 @@ class SaveWorkspaceDialog : public views::DialogDelegate,
   METADATA_HEADER(SaveWorkspaceDialog, views::View)
 
  public:
-  // Shows the dialog as a browser-modal window. The widget owns the dialog.
-  static void Show(Browser* browser);
-
- private:
+  // |browser| supplies the profile saved to and must outlive this dialog. The
+  // dialog configures its widget as CLIENT_OWNS_WIDGET; the caller owns the
+  // resulting Widget (see WorkspacesBubbleController).
   explicit SaveWorkspaceDialog(Browser* browser);
   ~SaveWorkspaceDialog() override;
 
   SaveWorkspaceDialog(const SaveWorkspaceDialog&) = delete;
   SaveWorkspaceDialog& operator=(const SaveWorkspaceDialog&) = delete;
 
+ private:
   void OnAccept();
 
   // views::DialogDelegate:

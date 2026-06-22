@@ -28,7 +28,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
+#include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -1387,7 +1387,11 @@ void BraveVerticalTabStripRegionView::OnBrowserClosing(
 }
 
 void BraveVerticalTabStripRegionView::OnWorkspacesButtonPressed() {
-  WorkspacesBubbleView::Show(workspaces_button_, browser_);
+  if (!workspaces_bubble_controller_) {
+    workspaces_bubble_controller_ =
+        std::make_unique<WorkspacesBubbleController>();
+  }
+  workspaces_bubble_controller_->ShowBubble(workspaces_button_, browser_);
 }
 
 BEGIN_METADATA(BraveVerticalTabStripRegionView)

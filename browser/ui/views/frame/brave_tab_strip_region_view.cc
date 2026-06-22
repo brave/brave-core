@@ -5,13 +5,15 @@
 
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 
+#include <memory>
+
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
+#include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
@@ -328,7 +330,11 @@ bool BraveHorizontalTabStripRegionView::ShouldShowHorizontalScrollButton()
 }
 
 void BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed() {
-  WorkspacesBubbleView::Show(
+  if (!workspaces_bubble_controller_) {
+    workspaces_bubble_controller_ =
+        std::make_unique<WorkspacesBubbleController>();
+  }
+  workspaces_bubble_controller_->ShowBubble(
       workspaces_button_,
       tab_strip_->GetBrowserWindowInterface()->GetBrowserForMigrationOnly());
 }

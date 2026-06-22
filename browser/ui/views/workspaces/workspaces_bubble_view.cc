@@ -6,11 +6,12 @@
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspace_row_view.h"
 #include "brave/browser/workspaces/workspace_service.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
@@ -33,21 +34,13 @@
 
 WorkspacesBubbleView::~WorkspacesBubbleView() = default;
 
-// static
-void WorkspacesBubbleView::Show(views::View* anchor_view, Browser* browser) {
-  // NATIVE_WIDGET_OWNS_WIDGET keeps the fire-and-forget ownership the bubble
-  // had under BubbleDialogDelegateView: the widget owns and deletes the
-  // delegate when it closes, so there is no lifetime to manage here.
-  views::Widget* widget = views::BubbleDialogDelegate::CreateBubbleDeprecated(
-      std::make_unique<WorkspacesBubbleView>(anchor_view, browser),
-      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET);
-  widget->Show();
-}
-
-WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
-                                           Browser* browser)
+WorkspacesBubbleView::WorkspacesBubbleView(
+    views::View* anchor_view,
+    Browser* browser,
+    base::RepeatingClosure on_save_workspace)
     : BubbleDialogDelegate(anchor_view, views::BubbleBorder::TOP_LEFT),
-      browser_(*browser) {
+      browser_(*browser),
+      on_save_workspace_(std::move(on_save_workspace)) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
   set_margins(gfx::Insets());
@@ -135,7 +128,9 @@ const views::Widget* WorkspacesBubbleView::GetWidget() const {
 }
 
 void WorkspacesBubbleView::OnSaveClicked() {
-  SaveWorkspaceDialog::Show(base::to_address(browser_));
+  if (on_save_workspace_) {
+    on_save_workspace_.Run();
+  }
   GetWidget()->Close();
 }
 

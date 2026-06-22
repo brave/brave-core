@@ -15,8 +15,6 @@
 #include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window.h"
-#include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
@@ -24,6 +22,7 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/layout/box_layout.h"
+#include "ui/views/widget/widget.h"
 
 namespace {
 constexpr int kDialogWidth = 360;
@@ -31,16 +30,9 @@ constexpr int kPadding = 20;
 constexpr int kSpacing = 8;
 }  // namespace
 
-// static
-void SaveWorkspaceDialog::Show(Browser* browser) {
-  auto* dialog = new SaveWorkspaceDialog(browser);
-  constrained_window::CreateBrowserModalDialogViews(
-      dialog, browser->window()->GetNativeWindow())
-      ->Show();
-}
-
-SaveWorkspaceDialog::SaveWorkspaceDialog(Browser* browser)
-    : browser_(browser) {
+SaveWorkspaceDialog::SaveWorkspaceDialog(Browser* browser) : browser_(browser) {
+  // The caller (WorkspacesBubbleController) owns the resulting Widget.
+  SetOwnershipOfNewWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
   SetModalType(ui::mojom::ModalType::kWindow);
   SetTitle(l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_TITLE));
   SetButtonLabel(
@@ -96,9 +88,8 @@ const views::Widget* SaveWorkspaceDialog::GetWidget() const {
   return View::GetWidget();
 }
 
-void SaveWorkspaceDialog::ContentsChanged(
-    views::Textfield* sender,
-    const std::u16string& new_contents) {
+void SaveWorkspaceDialog::ContentsChanged(views::Textfield* sender,
+                                          const std::u16string& new_contents) {
   SetButtonEnabled(ui::mojom::DialogButton::kOk, !new_contents.empty());
 }
 

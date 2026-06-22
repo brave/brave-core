@@ -12,7 +12,6 @@ class BraveNewsBubbleView;
 class BraveHelpBubbleDelegateView;
 class SplitViewMenuBubble;
 class WaybackMachineBubbleView;
-class WorkspacesBubbleView;
 class SidebarItemAddedFeedbackBubble;
 class SidebarEditItemBubbleDelegateView;
 class SidebarAddItemBubbleDelegateView;

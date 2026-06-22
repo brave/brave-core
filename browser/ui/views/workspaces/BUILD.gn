@@ -9,15 +9,18 @@ source_set("workspaces") {
     "save_workspace_dialog.h",
     "workspace_row_view.cc",
     "workspace_row_view.h",
+    "workspaces_bubble_controller.cc",
+    "workspaces_bubble_controller.h",
     "workspaces_bubble_view.cc",
     "workspaces_bubble_view.h",
   ]
 
-  # The save dialog is invoked only through the bubble view, so it stays
-  # private. The row view is referenced by browser tests, so it's part of
-  # the public surface.
+  # The save dialog is created only through the controller, so it stays
+  # private. The controller is the entry point used by the tab strip region
+  # views; the bubble and row views are referenced by browser tests.
   public = [
     "workspace_row_view.h",
+    "workspaces_bubble_controller.h",
     "workspaces_bubble_view.h",
   ]
 

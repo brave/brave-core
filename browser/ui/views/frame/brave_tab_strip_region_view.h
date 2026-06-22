@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_VIEW_H_
 
+#include <memory>
+
 #include "base/callback_list.h"
+#include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -69,6 +72,9 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   raw_ptr<TabStripControlButton> tab_scroll_previous_button_ = nullptr;
   raw_ptr<TabStripControlButton> tab_scroll_next_button_ = nullptr;
   raw_ptr<TabStripControlButton> workspaces_button_ = nullptr;
+
+  // Owns the workspaces bubble and save-dialog widgets while they are shown.
+  std::unique_ptr<WorkspacesBubbleController> workspaces_bubble_controller_;
 
   base::CallbackListSubscription horizontal_scroll_offset_changed_subscription_;
 
