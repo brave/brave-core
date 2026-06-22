@@ -80,7 +80,8 @@ struct UnlockWalletView: View {
               Text(Strings.Wallet.unlockWalletButtonTitle)
                 .frame(maxWidth: .infinity)
             }
-            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .buttonStyle(.filled)
+            .controlSize(.large)
             .disabled(!isPasswordValid)
 
             NavigationLink(

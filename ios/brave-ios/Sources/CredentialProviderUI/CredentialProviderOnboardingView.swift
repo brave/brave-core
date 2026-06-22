@@ -41,7 +41,8 @@ public struct CredentialProviderOnboardingView: View {
           Text(Strings.CredentialProvider.onboardingViewContinueCTA)
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
       }
     }
     .padding(.horizontal, 20)

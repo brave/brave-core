@@ -312,7 +312,8 @@ struct SuggestedNetworkView: View {
         Text(Strings.cancelButtonTitle)
       }
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
     .disabled(isLoading)
     WalletLoadingButton(
       isLoading: isLoading,
@@ -327,7 +328,8 @@ struct SuggestedNetworkView: View {
         }
       }
     )
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .buttonStyle(.filled)
+    .controlSize(.large)
     .disabled(isLoading)
   }
 

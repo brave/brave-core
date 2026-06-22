@@ -100,7 +100,8 @@ struct EditGasFeeView: View {
         Button(action: save) {
           Text(Strings.Wallet.saveButtonTitle)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .frame(maxWidth: .infinity)
         .disabled(isSaveButtonDisabled)
         .listRowInsets(.zero)

@@ -101,7 +101,8 @@ struct AIChatFeedbackPrivacyWarningView: View {
               .font(.subheadline.weight(.semibold))
               .frame(maxWidth: .infinity)
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .buttonStyle(.filled)
+          .controlSize(.large)
         }
       }
       .padding(24.0)

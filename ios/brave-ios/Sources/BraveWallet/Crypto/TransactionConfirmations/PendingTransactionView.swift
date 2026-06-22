@@ -497,7 +497,8 @@ struct PendingTransactionView: View {
     } label: {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
     .disabled(isTxSubmitting)
     WalletLoadingButton(
       isLoading: isTxSubmitting
@@ -510,7 +511,8 @@ struct PendingTransactionView: View {
     } label: {
       Label(confirmationStore.confirmButtonTitle, systemImage: "checkmark.circle.fill")
     }
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .buttonStyle(.filled)
+    .controlSize(.large)
     .disabled(
       !confirmationStore.isBalanceSufficient || confirmationStore.activeTxStatus == .approved
     )

@@ -522,7 +522,8 @@ struct TransactionStatusView: View {
               .font(.footnote.weight(.semibold))
               .frame(maxWidth: .infinity)
           }
-          .buttonStyle(BraveOutlineButtonStyle(size: .large))
+          .buttonStyle(.outline)
+          .controlSize(.large)
         }
         Button {
           onViewInActivity()
@@ -531,7 +532,8 @@ struct TransactionStatusView: View {
             .font(.footnote.weight(.semibold))
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
       }
     case .confirmed:
       Button {
@@ -541,7 +543,8 @@ struct TransactionStatusView: View {
           .font(.footnote.weight(.semibold))
           .frame(maxWidth: .infinity)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
     case .signed:
       explorerButton
     case .error:
@@ -549,7 +552,8 @@ struct TransactionStatusView: View {
         Text(Strings.Wallet.confirmedTransactionCloseButtonTitle)
           .frame(maxWidth: .infinity)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
     default:
       EmptyView()
     }
@@ -757,7 +761,8 @@ struct TxCancellationConfirmationView: View {
         Text(Strings.Wallet.cancelTransactionStatusButtonTitle)
           .frame(maxWidth: .infinity)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
     }
     .multilineTextAlignment(.center)
   }

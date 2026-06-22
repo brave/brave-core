@@ -72,7 +72,7 @@ public struct WalletPanelContainerView: View {
           Text(Strings.Wallet.unlockWallet)
         }
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
     }
     .padding()
     .padding()
@@ -97,7 +97,7 @@ public struct WalletPanelContainerView: View {
         } label: {
           Text(Strings.Wallet.learnMoreButton)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
+        .buttonStyle(.filled)
       }
       .padding()
       .padding()

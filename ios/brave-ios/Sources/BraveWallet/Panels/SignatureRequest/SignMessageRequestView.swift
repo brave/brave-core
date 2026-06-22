@@ -153,7 +153,8 @@ struct SignMessageRequestView: View {
       } label: {
         Text(Strings.Wallet.continueButtonTitle)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
     } else {
       cancelButton
       Button {  // approve
@@ -162,7 +163,8 @@ struct SignMessageRequestView: View {
         Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
           .imageScale(.large)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
       .disabled(requestIndex != 0)
     }
   }
@@ -174,7 +176,8 @@ struct SignMessageRequestView: View {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
     .disabled(requestIndex != 0)
   }
 }

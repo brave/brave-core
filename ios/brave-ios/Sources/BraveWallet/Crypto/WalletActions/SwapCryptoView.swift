@@ -526,7 +526,7 @@ struct SwapCryptoView: View {
             }
           )
           .disabled(isSwapButtonDisabled)
-          .buttonStyle(BraveFilledButtonStyle(size: .normal))
+          .buttonStyle(.filled)
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 16)

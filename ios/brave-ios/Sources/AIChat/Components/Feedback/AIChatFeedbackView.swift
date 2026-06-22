@@ -392,7 +392,8 @@ struct AIChatFeedbackView: View {
         } label: {
           Text(Strings.AIChat.feedbackSubmitActionTitle)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
       }
       .frame(maxWidth: .infinity, alignment: .trailing)
       .padding()

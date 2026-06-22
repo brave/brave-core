@@ -305,7 +305,8 @@ struct SignTransactionView: View {
       } label: {
         Text(Strings.Wallet.continueButtonTitle)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
       .disabled(txIndex != 0)
     } else {
       cancelButton
@@ -328,7 +329,8 @@ struct SignTransactionView: View {
           .fixedSize(horizontal: true, vertical: false)
           .imageScale(.large)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
       .disabled(txIndex != 0)
     }
   }
@@ -353,7 +355,8 @@ struct SignTransactionView: View {
         .fixedSize(horizontal: true, vertical: false)
         .imageScale(.large)
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
   }
 
   @ViewBuilder private var divider: some View {

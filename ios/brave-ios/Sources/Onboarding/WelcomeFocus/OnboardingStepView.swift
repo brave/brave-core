@@ -94,7 +94,8 @@ struct OnboardingStepView: View {
           // Need to remove the matchedGeometry on the hidden buttons
           .environment(\.onboardingNamespace, fallbackNamespace)
           .id(step.id)
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .buttonStyle(.filled)
+          .controlSize(.large)
           .hidden()
       }
       .opacity(isSplashVisible ? 0 : 1)
@@ -116,7 +117,8 @@ struct OnboardingStepView: View {
       .overlay(alignment: .bottom) {
         AnyView(step.makeActions(continueHandler: onContinue))
           .id(step.id)
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .buttonStyle(.filled)
+          .controlSize(.large)
           .padding(layoutStyle.isInset && horizontalSizeClass == .regular ? 40 : 20)
           .background {
             let color =
@@ -153,6 +155,6 @@ struct OnboardingStepView: View {
 
 #if DEBUG
 #Preview {
-  OnboardingStepView(step: .defaultBrowsing)
+  OnboardingStepView(step: .p3aOptIn)
 }
 #endif

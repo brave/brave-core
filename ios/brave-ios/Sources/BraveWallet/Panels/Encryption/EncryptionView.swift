@@ -122,7 +122,7 @@ struct EncryptionView: View {
                 } label: {
                   Text(Strings.Wallet.decryptRequestReveal)
                 }
-                .buttonStyle(BraveFilledButtonStyle(size: .normal))
+                .buttonStyle(.filled)
               }
             }
           )
@@ -219,14 +219,16 @@ struct EncryptionView: View {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
     Button {  // approve
       handleAction(approved: true)
     } label: {
       Label(approveButtonTitle, braveSystemImage: "leo.check.circle-filled")
         .imageScale(.large)
     }
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .buttonStyle(.filled)
+    .controlSize(.large)
   }
 
   private func handleAction(approved: Bool) {

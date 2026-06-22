@@ -45,7 +45,8 @@ struct EditNonceView: View {
         } label: {
           Text(Strings.Wallet.saveButtonTitle)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .disabled(Int(nonce) == nil)
         .frame(maxWidth: .infinity)
         .listRowInsets(.zero)

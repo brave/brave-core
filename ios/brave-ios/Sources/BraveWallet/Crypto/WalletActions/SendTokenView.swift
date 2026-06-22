@@ -326,7 +326,7 @@ struct SendTokenView: View {
                 Text(sendButtonTitle)
               }
             )
-            .buttonStyle(BraveFilledButtonStyle(size: .normal))
+            .buttonStyle(.filled)
             .disabled(isSendDisabled)
             .frame(maxWidth: .infinity)
             .resetListHeaderStyle()

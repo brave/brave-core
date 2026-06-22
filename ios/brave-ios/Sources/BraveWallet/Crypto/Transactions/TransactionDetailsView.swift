@@ -154,7 +154,8 @@ struct TransactionDetailsView: View {
                 .frame(maxWidth: .infinity)
               }
             )
-            .buttonStyle(BraveOutlineButtonStyle(size: .large))
+            .buttonStyle(.outline)
+            .controlSize(.large)
           }
           if transactionDetailsStore.isCancelOrSpeedupAvailable {
             Divider()
@@ -173,7 +174,8 @@ struct TransactionDetailsView: View {
                 .frame(maxWidth: .infinity)
               }
             )
-            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .buttonStyle(.filled)
+            .controlSize(.large)
 
             WalletLoadingButton(
               isLoading: transactionDetailsStore.isLoadingTransactionAction,
@@ -184,7 +186,7 @@ struct TransactionDetailsView: View {
                 Text(TransactionFollowUpAction.cancel.buttonTitle)
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(braveSystemName: .textInteractive))
-                  .font(BraveButtonSize.large.font)
+                  .font(.body.weight(.semibold))
                   .frame(maxWidth: .infinity)
               }
             )

@@ -158,7 +158,7 @@ struct PopupPreviews: PreviewProvider {
             Text(verbatim: "Test")
           }
           .padding(.top)
-          .buttonStyle(BraveFilledButtonStyle(size: .normal))
+          .buttonStyle(.filled)
         }
       }
       .previewLayout(.sizeThatFits)

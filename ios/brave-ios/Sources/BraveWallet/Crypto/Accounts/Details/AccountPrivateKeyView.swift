@@ -89,7 +89,7 @@ struct AccountPrivateKeyView: View {
               ? Strings.Wallet.hidePrivateKeyButtonTitle : Strings.Wallet.showPrivateKeyButtonTitle
           )
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
+        .buttonStyle(.filled)
         .disabled(isShowHideButtonDisabled)
       }
       .padding()

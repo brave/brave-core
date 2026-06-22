@@ -34,7 +34,8 @@ struct SignMessageErrorView: View {
           Text(Strings.Wallet.confirmedTransactionCloseButtonTitle)
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .disabled(currentIndex > 0)
       }
       .padding(.horizontal, 16)

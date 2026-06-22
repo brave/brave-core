@@ -135,7 +135,8 @@ struct EditPermissionsView: View {
       } label: {
         Text(Strings.Wallet.saveButtonTitle)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .buttonStyle(.filled)
+      .controlSize(.large)
       .frame(maxWidth: .infinity)
       .disabled(customAllowance.isEmpty)
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)

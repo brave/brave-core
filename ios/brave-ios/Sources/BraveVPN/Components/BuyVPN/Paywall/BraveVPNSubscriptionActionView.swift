@@ -40,16 +40,7 @@ struct BraveVPNSubscriptionActionView: View {
         Text(Strings.Paywall.braveVPNLearnMoreButtonTitle)
           .frame(maxWidth: .infinity)
       }
-      .buttonStyle(
-        BraveFilledButtonStyle(
-          size: .init(
-            font: .subheadline.weight(.semibold),
-            padding: .init(top: 12, leading: 12, bottom: 12, trailing: 12),
-            radius: 12,
-            minHeight: 20
-          )
-        )
-      )
+      .buttonStyle(.filled)
 
       BraveVPNTitleActionsView(
         actionType: .refreshCredentials,
@@ -83,7 +74,7 @@ struct BraveVPNTitleActionsView: View {
             .padding()
             .frame(maxWidth: .infinity)
             .overlay(
-              RoundedRectangle(cornerRadius: 8)
+              Capsule()
                 .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
             )
         }

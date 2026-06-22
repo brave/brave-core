@@ -40,7 +40,7 @@ struct NFTView: View {
       Button(Strings.Wallet.nftEmptyImportNFT) {
         isPresentingAddCustomNFT = true
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
       .hidden(isHidden: nftStore.displayType != .visible)
       .padding(.top, 8)
     }

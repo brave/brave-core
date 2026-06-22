@@ -147,7 +147,8 @@ public struct NewSiteConnectionView: View {
           } label: {
             Text(Strings.Wallet.next)
           }
-          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .buttonStyle(.filled)
+          .controlSize(.large)
           .disabled(selectedAccounts.isEmpty)
           .animation(.default, value: selectedAccounts.isEmpty)
           .frame(maxWidth: .infinity)
@@ -243,7 +244,8 @@ public struct NewSiteConnectionView: View {
         } label: {
           Text(Strings.Wallet.confirm)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .frame(maxWidth: .infinity)
       }
     }

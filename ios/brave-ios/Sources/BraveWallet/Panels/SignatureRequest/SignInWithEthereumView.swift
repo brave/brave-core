@@ -146,13 +146,15 @@ struct SignInWithEthereumView: View {
     } label: {
       Text(Strings.cancelButtonTitle)
     }
-    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .buttonStyle(.outline)
+    .controlSize(.large)
     Button {  // approve
       action(true)
     } label: {
       Text(Strings.Wallet.siweSignInButtonTitle)
     }
-    .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .buttonStyle(.filled)
+    .controlSize(.large)
   }
 }
 

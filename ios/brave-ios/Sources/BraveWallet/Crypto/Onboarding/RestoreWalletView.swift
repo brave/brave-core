@@ -202,7 +202,8 @@ struct RestoreWalletView: View {
           Text(Strings.Wallet.continueButtonTitle)
             .frame(maxWidth: .infinity)
         }
-        .buttonStyle(BraveFilledButtonStyle(size: .large))
+        .buttonStyle(.filled)
+        .controlSize(.large)
         .disabled(isContinueDisabled)
       }
     }

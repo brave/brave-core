@@ -41,7 +41,8 @@ struct OnboardingCompletedView: View {
               Text(Strings.Wallet.onboardingCompletedButtonTitle)
                 .frame(maxWidth: .infinity)
             }
-            .buttonStyle(BraveFilledButtonStyle(size: .large))
+            .buttonStyle(.filled)
+            .controlSize(.large)
             .padding(.top, 84)
           }
           .frame(maxWidth: .infinity, minHeight: geometry.size.height)

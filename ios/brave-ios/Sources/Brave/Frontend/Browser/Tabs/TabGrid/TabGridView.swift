@@ -548,7 +548,7 @@ struct TabGridView: View {
         Label(Strings.TabGrid.shredSelectedTabsButtonTitle, braveSystemImage: "leo.shred.data")
           .frame(maxWidth: .infinity)
       }
-      .buttonStyle(BraveOutlineButtonStyle(size: .normal))
+      .buttonStyle(.outline)
       .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
       Button {
         withAnimation {
@@ -564,7 +564,7 @@ struct TabGridView: View {
         Label(Strings.close, braveSystemImage: "leo.close")
           .frame(maxWidth: .infinity)
       }
-      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .buttonStyle(.filled)
       .disabled(selectedTabs.isEmpty)
     }
     .padding(.horizontal, 16)
