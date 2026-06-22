@@ -8,6 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
 import { Conversation } from '../../../common/mojom'
+import { serializeConversationForSharing } from '../../../common/conversation_serialization'
 import useCanStartNewConversation from '../../hooks/useCanStartNewConversation'
 import FeatureButtonMenu, {
   Props as FeatureButtonMenuProps,
@@ -39,6 +40,9 @@ const getTitle = (activeConversation?: Conversation) =>
 const newChatButtonLabel = getLocale(S.CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL)
 const closeButtonLabel = getLocale(S.CHAT_UI_LABEL_CLOSE)
 const openFullPageButtonLabel = getLocale(S.CHAT_UI_OPEN_LABEL)
+const shareConversationButtonLabel = getLocale(
+  S.CHAT_UI_SHARE_CONVERSATION_BUTTON_LABEL,
+)
 
 export const ConversationHeader = React.forwardRef(function (
   props: FeatureButtonMenuProps,
@@ -48,6 +52,7 @@ export const ConversationHeader = React.forwardRef(function (
   const conversationContext = useConversation()
   const { createNewConversation, isMainConversation, openMainConversation } =
     useActiveChat()
+  const conversationState = conversationContext.api.useGetStateData()
   const isMobile = useIsSmall() && aiChatContext.isMobile
 
   const canStartNewConversation = useCanStartNewConversation()
@@ -58,6 +63,21 @@ export const ConversationHeader = React.forwardRef(function (
   const activeConversation = aiChatContext.conversations.find(
     (c: Conversation) => c.uuid === conversationContext.conversationUuid,
   )
+
+  const conversationHistory = conversationContext.conversationHistory
+  const canShareConversation =
+    aiChatContext.isConversationShareEnabled
+    && conversationHistory.length > 0
+    && !conversationState.isRequestInProgress
+
+  const handleShareConversation = React.useCallback(() => {
+    // The serialized conversation will eventually be sent to the sharing
+    // server, which will encrypt it and return a shareable link. For now, copy
+    // the serialized string to the clipboard so the flow can be demoed.
+    const json = serializeConversationForSharing(conversationHistory)
+    navigator.clipboard.writeText(json)
+  }, [conversationHistory])
+
   const showTitle =
     (!isMainConversation || aiChatContext.isStandalone) && !isMobile
   const canShowFullScreenButton =
@@ -138,6 +158,17 @@ export const ConversationHeader = React.forwardRef(function (
                 }
               >
                 <Icon name='expand' />
+              </Button>
+            )}
+            {canShareConversation && (
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label={shareConversationButtonLabel}
+                title={shareConversationButtonLabel}
+                onClick={handleShareConversation}
+              >
+                <Icon name='share' />
               </Button>
             )}
             <FeatureButtonMenu {...props} />

@@ -424,6 +424,7 @@ leo_icons_sources = [
   "send.svg",
   "settings.svg",
   "share-macos.svg",
+  "share.svg",
   "shield-disable.svg",
   "shield-done-filled.svg",
   "shield-done.svg",

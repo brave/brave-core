@@ -68,6 +68,8 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean("isAIChatAgentProfileFeatureEnabled",
                      ai_chat::features::IsAIChatAgentProfileEnabled());
   source->AddBoolean("isAIChatAgentProfile", false);
+  source->AddBoolean("isConversationShareEnabled",
+                     ai_chat::features::IsAIChatConversationShareEnabled());
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

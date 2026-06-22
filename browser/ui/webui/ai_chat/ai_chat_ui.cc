@@ -100,6 +100,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isAIChatAgentProfileFeatureEnabled",
                      ai_chat::features::IsAIChatAgentProfileEnabled());
   source->AddBoolean("isAIChatAgentProfile", profile_->IsAIChatAgent());
+  source->AddBoolean("isConversationShareEnabled",
+                     ai_chat::features::IsAIChatConversationShareEnabled());
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
