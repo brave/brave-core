@@ -12,8 +12,10 @@ if (host_os == "win") {
   } else {
     _node_bin = "//third_party/node/mac/node-darwin-x64/bin/node"
   }
-} else {
+} else if (host_os == "linux") {
   _node_bin = "//third_party/node/linux/node-linux-x64/bin/node"
+} else {
+  assert(false, "Unsupported host_os: $host_os")
 }
 
 # Runs a Node.js script as a GN action during the build. Use ONLY for build
