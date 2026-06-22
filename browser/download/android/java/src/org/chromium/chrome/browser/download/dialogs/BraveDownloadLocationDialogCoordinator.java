@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.download.dialogs;
 import android.content.Context;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.download.DirectoryOption;
 import org.chromium.chrome.browser.download.DownloadDialogBridge;
 import org.chromium.chrome.browser.download.DownloadDirectoryProvider;
@@ -29,6 +30,10 @@ import java.util.ArrayList;
  * onDirectoryOptionsRetrieved} with a modified directory list ({@code dirs.size() > 1}) so the
  * parent's dialog display code runs normally. The actual directory UI is populated independently by
  * {@link org.chromium.chrome.browser.download.settings.DownloadLocationHelperImpl}.
+ *
+ * <p>Because the parent clears its per-dialog state ({@code resetDialogState()}) on the
+ * single-directory skip, and our re-fetch completes asynchronously after that, the wrapper restores
+ * the per-dialog fields it depends on before re-triggering the dialog.
  */
 @NullMarked
 public class BraveDownloadLocationDialogCoordinator extends DownloadLocationDialogCoordinator {
@@ -37,6 +42,23 @@ public class BraveDownloadLocationDialogCoordinator extends DownloadLocationDial
     // Suppressed because this field is removed by bytecode rewriting and never actually exists.
     @SuppressWarnings("NullAway")
     private DownloadLocationDialogController mController;
+
+    // Shadow the parent's private per-dialog fields, in the same way as mController above. These
+    // are written from the re-fetch callback in showDialog() to restore the state that the parent
+    // clears on the single-directory skip; the bytecode adapter deletes these declarations and
+    // makes the parent's fields protected, so the writes target the parent's fields at runtime.
+    // Suppressed because Brave only writes them — the parent reads them — so they look unused here.
+    @SuppressWarnings("UnusedVariable")
+    private @Nullable Context mContext;
+
+    @SuppressWarnings("UnusedVariable")
+    private @Nullable ModalDialogManager mModalDialogManager;
+
+    @SuppressWarnings("UnusedVariable")
+    private @Nullable String mSuggestedPath;
+
+    @SuppressWarnings("UnusedVariable")
+    private @Nullable Profile mProfile;
 
     // Stub matching parent's private method. The bytecode adapter deletes this and makes the
     // parent's method public, so calls resolve to the parent's implementation at runtime.
@@ -102,6 +124,17 @@ public class BraveDownloadLocationDialogCoordinator extends DownloadLocationDial
                                                 if (copy.size() == 1) {
                                                     copy.add(copy.get(0));
                                                 }
+                                                // The parent's onDirectoryOptionsRetrieved()
+                                                // ran resetDialogState() synchronously after the
+                                                // single-directory skip, nulling its per-dialog
+                                                // fields. Restore the ones the dialog needs before
+                                                // we re-enter onDirectoryOptionsRetrieved on this
+                                                // async callback, otherwise it dereferences a null
+                                                // profile/context.
+                                                mContext = context;
+                                                mModalDialogManager = modalDialogManager;
+                                                mSuggestedPath = suggestedPath;
+                                                mProfile = profile;
                                                 onDirectoryOptionsRetrieved(copy);
                                             });
                         } else {

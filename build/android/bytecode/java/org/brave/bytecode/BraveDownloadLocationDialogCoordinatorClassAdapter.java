@@ -23,6 +23,18 @@ public class BraveDownloadLocationDialogCoordinatorClassAdapter extends BraveCla
         deleteField(sBraveDownloadLocationDialogCoordinatorClassName, "mController");
         makeProtectedField(sDownloadLocationDialogCoordinatorClassName, "mController");
 
+        deleteField(sBraveDownloadLocationDialogCoordinatorClassName, "mContext");
+        makeProtectedField(sDownloadLocationDialogCoordinatorClassName, "mContext");
+
+        deleteField(sBraveDownloadLocationDialogCoordinatorClassName, "mModalDialogManager");
+        makeProtectedField(sDownloadLocationDialogCoordinatorClassName, "mModalDialogManager");
+
+        deleteField(sBraveDownloadLocationDialogCoordinatorClassName, "mSuggestedPath");
+        makeProtectedField(sDownloadLocationDialogCoordinatorClassName, "mSuggestedPath");
+
+        deleteField(sBraveDownloadLocationDialogCoordinatorClassName, "mProfile");
+        makeProtectedField(sDownloadLocationDialogCoordinatorClassName, "mProfile");
+
         deleteMethod(
                 sBraveDownloadLocationDialogCoordinatorClassName, "onDirectoryOptionsRetrieved");
         makePublicMethod(
