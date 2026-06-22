@@ -20,6 +20,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
+#include "ui/base/mojom/ui_base_types.mojom-shared.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/layout/box_layout.h"
@@ -38,15 +39,18 @@ void SaveWorkspaceDialog::Show(Browser* browser) {
       ->Show();
 }
 
-SaveWorkspaceDialog::SaveWorkspaceDialog(Browser* browser) : browser_(browser) {
+SaveWorkspaceDialog::SaveWorkspaceDialog(Browser* browser)
+    : browser_(browser) {
+  SetModalType(ui::mojom::ModalType::kWindow);
+  SetTitle(l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_TITLE));
   SetButtonLabel(
       ui::mojom::DialogButton::kOk,
       l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON));
   SetButtonLabel(ui::mojom::DialogButton::kCancel,
                  l10n_util::GetStringUTF16(IDS_WORKSPACE_DIALOG_CANCEL_BUTTON));
 
-  SetAcceptCallback(base::BindOnce(&SaveWorkspaceDialog::OnAccept,
-                                   weak_factory_.GetWeakPtr()));
+  SetAcceptCallback(
+      base::BindOnce(&SaveWorkspaceDialog::OnAccept, base::Unretained(this)));
 
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(kPadding),
@@ -62,43 +66,40 @@ SaveWorkspaceDialog::SaveWorkspaceDialog(Browser* browser) : browser_(browser) {
       l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME));
   textfield->SelectAll(false);
   textfield->SetPreferredSize(gfx::Size(kDialogWidth - kPadding * 2, 40));
+  textfield->SetController(this);
   name_field_ = AddChildView(std::move(textfield));
-  name_field_->SetController(this);
+
+  // Reflect the initial (pre-filled, non-empty) name in the OK button state.
+  SetButtonEnabled(ui::mojom::DialogButton::kOk,
+                   !name_field_->GetText().empty());
 }
 
 SaveWorkspaceDialog::~SaveWorkspaceDialog() = default;
 
 void SaveWorkspaceDialog::OnAccept() {
+  // The OK button is disabled while the name is empty, so this is non-empty.
   std::string name = base::UTF16ToUTF8(name_field_->GetText());
-  if (name.empty()) {
-    return;
-  }
-
   auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
   CHECK(service);
-
   service->SaveWorkspace(name);
 }
 
-ui::mojom::ModalType SaveWorkspaceDialog::GetModalType() const {
-  return ui::mojom::ModalType::kWindow;
+views::View* SaveWorkspaceDialog::GetContentsView() {
+  return this;
 }
 
-std::u16string SaveWorkspaceDialog::GetWindowTitle() const {
-  return l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_TITLE);
+views::Widget* SaveWorkspaceDialog::GetWidget() {
+  return View::GetWidget();
 }
 
-bool SaveWorkspaceDialog::IsDialogButtonEnabled(
-    ui::mojom::DialogButton button) const {
-  if (button == ui::mojom::DialogButton::kOk) {
-    return !name_field_->GetText().empty();
-  }
-  return true;
+const views::Widget* SaveWorkspaceDialog::GetWidget() const {
+  return View::GetWidget();
 }
 
-void SaveWorkspaceDialog::ContentsChanged(views::Textfield* sender,
-                                          const std::u16string& new_contents) {
-  DialogModelChanged();
+void SaveWorkspaceDialog::ContentsChanged(
+    views::Textfield* sender,
+    const std::u16string& new_contents) {
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, !new_contents.empty());
 }
 
 BEGIN_METADATA(SaveWorkspaceDialog)

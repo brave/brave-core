@@ -6,24 +6,35 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_WORKSPACES_SAVE_WORKSPACE_DIALOG_H_
 #define BRAVE_BROWSER_UI_VIEWS_WORKSPACES_SAVE_WORKSPACE_DIALOG_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/textfield/textfield_controller.h"
+#include "ui/views/view.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class Browser;
 
 namespace views {
 class Textfield;
+class Widget;
 }  // namespace views
 
-// A modal dialog that prompts the user to name a new workspace.  On accept,
-// the current state of all open windows for the profile is saved to disk.
-class SaveWorkspaceDialog : public views::DialogDelegateView,
+// A modal dialog that prompts the user to name a new workspace. On accept, the
+// current state of all open windows for the profile is saved to disk.
+//
+// This combines the dialog delegate and contents view by inheriting from both
+// views::DialogDelegate and views::View directly, rather than the deprecated
+// views::DialogDelegateView. It also serves as the name field's controller so
+// the OK button can be enabled only while a name has been entered.
+class SaveWorkspaceDialog : public views::DialogDelegate,
+                            public views::View,
                             public views::TextfieldController {
-  METADATA_HEADER(SaveWorkspaceDialog, views::DialogDelegateView)
+  METADATA_HEADER(SaveWorkspaceDialog, views::View)
+
  public:
-  // Shows the dialog as a browser-modal window.
+  // Shows the dialog as a browser-modal window. The widget owns the dialog.
   static void Show(Browser* browser);
 
  private:
@@ -35,18 +46,20 @@ class SaveWorkspaceDialog : public views::DialogDelegateView,
 
   void OnAccept();
 
-  // views::DialogDelegateView:
-  ui::mojom::ModalType GetModalType() const override;
-  std::u16string GetWindowTitle() const override;
-  bool IsDialogButtonEnabled(ui::mojom::DialogButton button) const override;
+  // views::DialogDelegate:
+  views::View* GetContentsView() override;
+
+  // views::View:
+  // Disambiguates the GetWidget() inherited from both base classes.
+  views::Widget* GetWidget() override;
+  const views::Widget* GetWidget() const override;
 
   // views::TextfieldController:
   void ContentsChanged(views::Textfield* sender,
                        const std::u16string& new_contents) override;
 
   raw_ptr<Browser> browser_;
-  raw_ptr<views::Textfield> name_field_;
-  base::WeakPtrFactory<SaveWorkspaceDialog> weak_factory_{this};
+  raw_ptr<views::Textfield> name_field_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_SAVE_WORKSPACE_DIALOG_H_

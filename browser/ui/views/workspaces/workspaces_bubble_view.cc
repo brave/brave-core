@@ -35,14 +35,18 @@ WorkspacesBubbleView::~WorkspacesBubbleView() = default;
 
 // static
 void WorkspacesBubbleView::Show(views::View* anchor_view, Browser* browser) {
-  views::Widget* widget = views::BubbleDialogDelegateView::CreateBubble(
-      std::make_unique<WorkspacesBubbleView>(anchor_view, browser));
+  // NATIVE_WIDGET_OWNS_WIDGET keeps the fire-and-forget ownership the bubble
+  // had under BubbleDialogDelegateView: the widget owns and deletes the
+  // delegate when it closes, so there is no lifetime to manage here.
+  views::Widget* widget = views::BubbleDialogDelegate::CreateBubbleDeprecated(
+      std::make_unique<WorkspacesBubbleView>(anchor_view, browser),
+      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET);
   widget->Show();
 }
 
 WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
                                            Browser* browser)
-    : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::TOP_LEFT),
+    : BubbleDialogDelegate(anchor_view, views::BubbleBorder::TOP_LEFT),
       browser_(*browser) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
@@ -116,6 +120,18 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
   new_space_button->SetStyle(ui::ButtonStyle::kProminent);
   new_space_button->SetProperty(views::kMarginsKey, gfx::Insets(4));
   button_row_layout->SetFlexForView(new_space_button, 1);
+}
+
+views::View* WorkspacesBubbleView::GetContentsView() {
+  return this;
+}
+
+views::Widget* WorkspacesBubbleView::GetWidget() {
+  return View::GetWidget();
+}
+
+const views::Widget* WorkspacesBubbleView::GetWidget() const {
+  return View::GetWidget();
 }
 
 void WorkspacesBubbleView::OnSaveClicked() {

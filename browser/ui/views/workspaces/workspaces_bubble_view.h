@@ -12,15 +12,25 @@
 #include "base/memory/weak_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/view.h"
 
 class Browser;
+
+namespace views {
+class Widget;
+}  // namespace views
 
 // Bubble that lists the saved workspaces ("spaces") for the active profile and
 // exposes actions to restore, delete, or save a new one. The bubble is the
 // primary entry point for the workspaces UI and is anchored to the workspaces
 // button in the tab strip. The widget is owned by the views framework.
-class WorkspacesBubbleView : public views::BubbleDialogDelegateView {
-  METADATA_HEADER(WorkspacesBubbleView, views::BubbleDialogDelegateView)
+//
+// This combines the bubble delegate and contents view by inheriting from both
+// views::BubbleDialogDelegate and views::View directly, rather than the
+// deprecated views::BubbleDialogDelegateView.
+class WorkspacesBubbleView : public views::BubbleDialogDelegate,
+                             public views::View {
+  METADATA_HEADER(WorkspacesBubbleView, views::View)
 
  public:
   // Creates and shows the bubble anchored to |anchor_view|. |browser| supplies
@@ -31,6 +41,14 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegateView {
 
   WorkspacesBubbleView(views::View* anchor_view, Browser* browser);
   ~WorkspacesBubbleView() override;
+
+  // views::BubbleDialogDelegate:
+  views::View* GetContentsView() override;
+
+  // views::View:
+  // Disambiguates the GetWidget() inherited from both base classes.
+  views::Widget* GetWidget() override;
+  const views::Widget* GetWidget() const override;
 
  private:
   void OnSaveClicked();

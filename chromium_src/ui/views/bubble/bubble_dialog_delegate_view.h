@@ -30,7 +30,6 @@ class BraveBubbleDialogDelegateView;
   friend class ::BraveNewsBubbleView;                  \
   friend class ::BraveHelpBubbleDelegateView;          \
   friend class ::WaybackMachineBubbleView;             \
-  friend class ::WorkspacesBubbleView;                 \
   friend class ::playlist::PlaylistBubbleView;         \
   friend class ::SplitViewMenuBubble;                  \
   friend class ::SidebarItemAddedFeedbackBubble;       \
