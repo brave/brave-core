@@ -9,8 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/span.h"
-#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -20,6 +18,7 @@
 #include "brave/components/local_ai/content/background_web_contents_impl.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "brave/components/local_ai/core/url_constants.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -83,51 +82,29 @@ void CreateBackgroundWebContents(
                      std::move(callback)));
 }
 
-// Reads a file directly into BigBuffer storage. For files >64KB
-// BigBuffer uses shared memory.
-std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
-    const base::FilePath& path) {
-  base::File file(path, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  if (!file.IsValid()) {
-    DVLOG(0) << "Failed to open: " << path;
-    return std::nullopt;
-  }
-  int64_t size = file.GetLength();
-  if (size <= 0) {
-    DVLOG(0) << "Empty or unreadable: " << path;
-    return std::nullopt;
-  }
-  mojo_base::BigBuffer buffer(static_cast<size_t>(size));
-  if (!file.ReadAndCheck(0, base::span<uint8_t>(buffer))) {
-    DVLOG(0) << "Failed to read: " << path;
-    return std::nullopt;
-  }
-  return buffer;
-}
-
 local_ai::mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
     const base::FilePath& weights_path,
     const base::FilePath& weights_dense1_path,
     const base::FilePath& weights_dense2_path,
     const base::FilePath& tokenizer_path,
     const base::FilePath& config_path) {
-  auto weights = ReadFileToBigBuffer(weights_path);
+  auto weights = local_ai::ReadFileToBigBuffer(weights_path);
   if (!weights) {
     return nullptr;
   }
-  auto weights_dense1 = ReadFileToBigBuffer(weights_dense1_path);
+  auto weights_dense1 = local_ai::ReadFileToBigBuffer(weights_dense1_path);
   if (!weights_dense1) {
     return nullptr;
   }
-  auto weights_dense2 = ReadFileToBigBuffer(weights_dense2_path);
+  auto weights_dense2 = local_ai::ReadFileToBigBuffer(weights_dense2_path);
   if (!weights_dense2) {
     return nullptr;
   }
-  auto tokenizer = ReadFileToBigBuffer(tokenizer_path);
+  auto tokenizer = local_ai::ReadFileToBigBuffer(tokenizer_path);
   if (!tokenizer) {
     return nullptr;
   }
-  auto config = ReadFileToBigBuffer(config_path);
+  auto config = local_ai::ReadFileToBigBuffer(config_path);
   if (!config) {
     return nullptr;
   }
