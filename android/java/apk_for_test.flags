@@ -503,6 +503,10 @@
 -keep class org.chromium.chrome.browser.download.dialogs.DownloadLocationDialogCoordinator {
     public <init>(...);
     *** mController;
+    *** mContext;
+    *** mModalDialogManager;
+    *** mSuggestedPath;
+    *** mProfile;
     *** onDirectoryOptionsRetrieved(...);
 }
 
