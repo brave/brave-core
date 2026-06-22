@@ -252,6 +252,7 @@
     "prismjs": "1.30.0",
     "protobufjs": "7.6.3",
     "tiny-secp256k1": "1.1.7",
-    "uuid": "14.0.0"
+    "uuid": "14.0.0",
+    "http-proxy-middleware": "2.0.10"
   }
 }
