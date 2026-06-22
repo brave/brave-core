@@ -78,6 +78,7 @@ export const RestoreAccountsModal = () => {
         <RestoreAccountsList
           fullWidth
           alignItems='flex-start'
+          justifyContent='flex-start'
         >
           {hiddenAccounts.map((account) => (
             <Checkbox
