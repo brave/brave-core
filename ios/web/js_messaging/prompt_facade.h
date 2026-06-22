@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 
 class GURL;
@@ -32,12 +33,15 @@ class PromptFacade {
   explicit PromptFacade(web::WebState* web_state);
 
   // If `prompt` targets a registered JavaScriptFeature on the bound WebState,
-  // dispatches the message and returns the JSON-encoded reply, otherwise
-  // returns nullptr
-  std::optional<std::string> HandleJavaScriptPrompt(GURL request_url,
-                                                    url::Origin security_origin,
-                                                    bool is_main_frame,
-                                                    const std::string& prompt);
+  // dispatches the message. Returns true if a JavaScriptFeature will handle the
+  // prompt and call the callback with the JSON-encoded reply, otherwise returns
+  // false and the prompt should be handled by MojoFacade or the user.
+  bool HandleJavaScriptPrompt(
+      GURL request_url,
+      url::Origin security_origin,
+      bool is_main_frame,
+      const std::string& prompt,
+      base::OnceCallback<void(std::string resposne)> callback);
 
  private:
   raw_ptr<WebState> web_state_;
