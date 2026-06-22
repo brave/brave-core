@@ -31,6 +31,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
@@ -604,6 +605,10 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case sidebar::SidebarItem::BuiltInItemType::kChatUI:
       return get_image_model(kLeoProductBraveLeoIcon, state);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case sidebar::SidebarItem::BuiltInItemType::kBraveNews:
+      return get_image_model(kLeoRssIcon, state);
 #endif
     default:
       break;

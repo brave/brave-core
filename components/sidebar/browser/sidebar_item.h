@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/common/features.h"
@@ -37,6 +38,9 @@ struct SidebarItem {
 #if BUILDFLAG(ENABLE_AI_CHAT)
     kChatUI = 7,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    kBraveNews = 8,
+#endif
   };
 
   // Count of built-in items based on enabled features.
@@ -47,6 +51,9 @@ struct SidebarItem {
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
       + 1  // kChatUI
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+      + 1  // kBraveNews
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
       + 1  // kBraveTalk

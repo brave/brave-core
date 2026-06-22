@@ -43,6 +43,7 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
@@ -98,6 +99,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -298,6 +303,13 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (!ai_chat::features::IsAIChatEnabled()) {
+      item_count -= 1;
+    }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    if (!base::FeatureList::IsEnabled(
+            brave_news::features::kBraveNewsSidebar)) {
       item_count -= 1;
     }
 #endif
