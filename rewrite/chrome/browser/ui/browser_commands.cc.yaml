@@ -25,9 +25,9 @@ substitutions:
       Replace chrome::kChromeUISplitViewNewTabPageURL to kChromeUINewTabURL in
       NewSplitTab(). We don't want to have a separate NTP URL for split view.
     re_pattern: |-
-      (void NewSplitTab\(.*?const GURL new_tab_url =.*?)GURL\(chrome::kChromeUISplitViewNewTabPageURL\);
-    re_flags: [DOTALL]
-    replace: \1GURL(chrome::kChromeUINewTabURL);
+      (void NewSplitTab\(.*?)(chrome::kChromeUISplitViewNewTabPageURL)(.*?^})
+    re_flags: [DOTALL, MULTILINE]
+    replace: \1chrome::kChromeUINewTabURL\3
 
   - description:
       Nullify toast controller in CloseTab() not to show toast when closing a
