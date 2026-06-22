@@ -1553,6 +1553,10 @@ class ToolchainBuilder:
         if sys.platform == 'darwin':
             os.environ['LZMA_API_STATIC'] = '1'
 
+        # Cargo should use git CLI for fetching, as there have been failures in
+        # CI relating to ssh fetches.
+        os.environ['CARGO_NET_GIT_FETCH_WITH_CLI'] = 'true'
+
         # In `--no-full-toolchain` mode, compile only the wasm32 std against the
         # prebuilt `rustc` gclient already synced rather than building one from
         # scratch (see USE_PREBUILT_RUSTC_FOR_WASM_STD). The full-toolchain build
