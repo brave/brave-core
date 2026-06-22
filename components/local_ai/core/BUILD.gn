@@ -39,6 +39,8 @@ static_library("core") {
   public = [
     "background_web_contents.h",
     "local_models_updater.h",
+    "on_device_speech_models_component_installer.h",
+    "on_device_speech_models_state.h",
     "pref_names.h",
     "url_constants.h",
   ]
@@ -47,6 +49,10 @@ static_library("core") {
     "background_web_contents.h",
     "local_models_updater.cc",
     "local_models_updater.h",
+    "on_device_speech_models_component_installer.cc",
+    "on_device_speech_models_component_installer.h",
+    "on_device_speech_models_state.cc",
+    "on_device_speech_models_state.h",
     "pref_names.cc",
     "pref_names.h",
   ]
@@ -73,7 +79,10 @@ static_library("core") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "local_models_updater_unittest.cc" ]
+  sources = [
+    "local_models_updater_unittest.cc",
+    "on_device_speech_models_component_installer_unittest.cc",
+  ]
 
   deps = [
     ":core",
