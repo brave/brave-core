@@ -5,31 +5,17 @@
 
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 
-#include <cstdint>
-
 #include "base/android/jni_android.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "chrome/android/chrome_jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
-#include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 
 namespace youtube_script_injector {
-namespace {
-
-constexpr int32_t kInvalidNavigationEntryId = 0;
-
-}  // namespace
 
 // static
 void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     JNIEnv* env,
-    const base::android::JavaRef<jobject>& jweb_contents,
-    int32_t expected_navigation_entry_id) {
-  if (expected_navigation_entry_id == kInvalidNavigationEntryId) {
-    return;
-  }
-
+    const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
   if (!web_contents) {
@@ -42,33 +28,7 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     return;
   }
 
-  helper->MaybeSetFullscreen(expected_navigation_entry_id);
-}
-
-// static
-int32_t
-JNI_BraveYouTubeScriptInjectorNativeHelper_GetNavigationEntryIdIfPictureInPictureAvailable(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& jweb_contents) {
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-  if (!web_contents) {
-    return kInvalidNavigationEntryId;
-  }
-
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
-  if (!helper || !helper->IsPictureInPictureAvailable()) {
-    return kInvalidNavigationEntryId;
-  }
-
-  content::NavigationEntry* entry =
-      web_contents->GetController().GetLastCommittedEntry();
-  if (!entry) {
-    return kInvalidNavigationEntryId;
-  }
-
-  return entry->GetUniqueID();
+  helper->MaybeSetFullscreen();
 }
 
 // static

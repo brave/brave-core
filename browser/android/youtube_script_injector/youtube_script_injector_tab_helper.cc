@@ -274,17 +274,10 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
   }
 }
 
-void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen(
-    int expected_navigation_entry_id) {
+void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  // The navigation entry id is captured by the Java caller that initiates the
-  // fullscreen request. Refuse to inject if a different page load committed
-  // before this browser-side gate runs.
-  if (!entry || entry->GetUniqueID() != expected_navigation_entry_id || !rfh ||
-      !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested() ||
-      !IsYouTubeDomain()) {
+  // Check if fullscreen has already been requested for this page.
+  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested()) {
     return;
   }
 

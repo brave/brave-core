@@ -26,16 +26,9 @@ import org.chromium.ui.base.WindowAndroid;
 @NullMarked
 public class BraveYouTubeScriptInjectorNativeHelper {
     private static final String TAG = "YouTubeNativeHelper";
-    public static final int INVALID_NAVIGATION_ENTRY_ID = 0;
 
-    public static void setFullscreen(WebContents webContents, int expectedNavigationEntryId) {
-        BraveYouTubeScriptInjectorNativeHelperJni.get()
-                .setFullscreen(webContents, expectedNavigationEntryId);
-    }
-
-    public static int getNavigationEntryIdIfPictureInPictureAvailable(WebContents webContents) {
-        return BraveYouTubeScriptInjectorNativeHelperJni.get()
-                .getNavigationEntryIdIfPictureInPictureAvailable(webContents);
+    public static void setFullscreen(WebContents webContents) {
+        BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
     }
 
     public static boolean hasFullscreenBeenRequested(WebContents webContents) {
@@ -90,9 +83,7 @@ public class BraveYouTubeScriptInjectorNativeHelper {
      */
     @NativeMethods
     public interface Natives {
-        void setFullscreen(WebContents webContents, int expectedNavigationEntryId);
-
-        int getNavigationEntryIdIfPictureInPictureAvailable(WebContents webContents);
+        void setFullscreen(WebContents webContents);
 
         boolean hasFullscreenBeenRequested(WebContents webContents);
 
