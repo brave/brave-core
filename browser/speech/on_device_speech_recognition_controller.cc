@@ -5,18 +5,80 @@
 
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 
+#include <optional>
+#include <utility>
+
+#include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/local_ai/background_web_contents_factory.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/url_constants.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "services/network/public/mojom/web_sandbox_flags.mojom-shared.h"
 #include "url/gurl.h"
 
 namespace speech {
+
+namespace {
+
+// Runs on a ThreadPool blocking sequence. Reads the Nemotron 0.6B streaming
+// model's graphs (encoder/decoder), the 128-mel filterbank and the token
+// list, all in full, and packs them into an OrtModelFiles. The worker builds
+// its ORT sessions directly from these bytes. Only the .onnx + .onnx.data
+// (external-data) export is supported as it lets ORT-Web reference the weights
+// in place instead of making an extra copy of the model files in WASM memory.
+local_ai::mojom::OrtModelFilesPtr ReadNemotronOrtFiles(
+    const base::FilePath& model_dir) {
+  auto encoder =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("encoder.onnx"));
+  if (!encoder) {
+    return nullptr;
+  }
+  auto decoder = local_ai::ReadFileToBigBuffer(
+      model_dir.AppendASCII("decoder_joint.onnx"));
+  if (!decoder) {
+    return nullptr;
+  }
+  auto encoder_data =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("encoder.onnx.data"));
+  if (!encoder_data) {
+    return nullptr;
+  }
+  auto decoder_data = local_ai::ReadFileToBigBuffer(
+      model_dir.AppendASCII("decoder_joint.onnx.data"));
+  if (!decoder_data) {
+    return nullptr;
+  }
+  auto filterbank =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("filterbank.bin"));
+  if (!filterbank) {
+    return nullptr;
+  }
+  auto tokens =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("tokens.txt"));
+  if (!tokens) {
+    return nullptr;
+  }
+
+  auto files = local_ai::mojom::OrtModelFiles::New();
+  files->encoder = std::move(*encoder);
+  files->decoder = std::move(*decoder);
+  files->encoder_data = std::move(*encoder_data);
+  files->decoder_data = std::move(*decoder_data);
+  files->mel_filters = std::move(*filterbank);
+  files->tokens = std::move(*tokens);
+  return files;
+}
+
+}  // namespace
 
 // static
 OnDeviceSpeechRecognitionController*
@@ -56,6 +118,27 @@ OnDeviceSpeechRecognitionController::OnDeviceSpeechRecognitionController(
 OnDeviceSpeechRecognitionController::~OnDeviceSpeechRecognitionController() =
     default;
 
+void OnDeviceSpeechRecognitionController::BindFactoryHost(
+    mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>
+        receiver) {
+  factory_host_receivers_.Add(this, std::move(receiver));
+}
+
+void OnDeviceSpeechRecognitionController::RegisterFactory(
+    mojo::PendingRemote<local_ai::mojom::SpeechRecognitionFactory> factory) {
+  if (state_ != State::kWorkerStarting || factory_.is_bound()) {
+    return;
+  }
+  startup_timer_.Stop();
+  factory_.Bind(std::move(factory));
+  // factory_ is a member, so its disconnect handler cannot outlive `this`.
+  factory_.set_disconnect_handler(base::BindOnce(
+      &OnDeviceSpeechRecognitionController::OnFactoryDisconnected,
+      base::Unretained(this)));
+  state_ = State::kModelLoading;
+  LoadOrtModel();
+}
+
 void OnDeviceSpeechRecognitionController::OnBackgroundContentsDestroyed(
     local_ai::BackgroundWebContents::DestroyReason reason) {
   // This is invoked from within the BackgroundWebContents'
@@ -81,6 +164,11 @@ void OnDeviceSpeechRecognitionController::StartWorker() {
     return;
   }
   state_ = State::kBwcStarting;
+  // startup_timer_ is a member, so it cannot fire after `this` is destroyed.
+  startup_timer_.Start(
+      FROM_HERE, kStartupTimeout,
+      base::BindOnce(&OnDeviceSpeechRecognitionController::OnStartupTimeout,
+                     base::Unretained(this)));
   // The created reply is free-floating (owned by the guest-profile async
   // creation), so it is bound weakly.
   create_background_web_contents_.Run(
@@ -114,6 +202,52 @@ void OnDeviceSpeechRecognitionController::OnBackgroundContentsCreated(
   state_ = State::kWorkerStarting;
 }
 
+void OnDeviceSpeechRecognitionController::LoadOrtModel() {
+  auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
+  // A ThreadPool reply is not stopped by resetting factory_, so bind it weakly.
+  // TearDown()'s InvalidateWeakPtrs() drops it before it can run against a
+  // reset or superseded factory.
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&ReadNemotronOrtFiles, state->GetModelDir()),
+      base::BindOnce(&OnDeviceSpeechRecognitionController::OnOrtFilesRead,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void OnDeviceSpeechRecognitionController::OnOrtFilesRead(
+    local_ai::mojom::OrtModelFilesPtr files) {
+  if (!files) {
+    VLOG(1)
+        << "OnDeviceSpeechRecognition: failed to read ORT model files from "
+        << local_ai::OnDeviceSpeechModelsState::GetInstance()->GetModelDir();
+    TearDown();
+    return;
+  }
+
+  // Defensive deref guard, consistent with ForwardSession(). The weak binding
+  // (dropped by TearDown()) means this reply does not run after teardown, so
+  // factory_ is expected to be bound here, but guard the raw Remote deref
+  // anyway.
+  if (!factory_.is_bound()) {
+    return;
+  }
+
+  // The Init reply is owned by factory_ (a member), so it cannot outlive
+  // `this`; it is dropped if factory_ is reset.
+  factory_->Init(
+      std::move(files),
+      base::BindOnce(&OnDeviceSpeechRecognitionController::OnOrtInitResult,
+                     base::Unretained(this)));
+}
+
+void OnDeviceSpeechRecognitionController::OnOrtInitResult(bool success) {
+  if (!success) {
+    TearDown();
+    return;
+  }
+  state_ = State::kReady;
+}
+
 void OnDeviceSpeechRecognitionController::StartIdleTimer() {
   // idle_timer_ is a member, so it cannot fire after `this` is destroyed.
   idle_timer_.Start(
@@ -126,11 +260,29 @@ void OnDeviceSpeechRecognitionController::OnIdleTimeout() {
   TearDown();
 }
 
+void OnDeviceSpeechRecognitionController::OnStartupTimeout() {
+  if (state_ != State::kBwcStarting && state_ != State::kWorkerStarting) {
+    return;
+  }
+  TearDown();
+}
+
+void OnDeviceSpeechRecognitionController::OnFactoryDisconnected() {
+  TearDown();
+}
+
 void OnDeviceSpeechRecognitionController::TearDown() {
+  // Drop outstanding weak-bound replies (BWC creation, deferred teardown, the
+  // model-file read) so none from this cycle can land in a later one. The
+  // singleton is never destroyed, so nothing else invalidates them.
+  weak_factory_.InvalidateWeakPtrs();
+  startup_timer_.Stop();
   idle_timer_.Stop();
+  factory_.reset();
   background_web_contents_.reset();
   profile_observation_.Reset();
   otr_profile_ = nullptr;
+  factory_host_receivers_.Clear();
   state_ = State::kIdle;
 }
 
