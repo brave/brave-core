@@ -54,8 +54,8 @@
     "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
     "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js",
     "coverage_report": "node ./build/commands/scripts/commands.js coverage_report",
-    "ai-chat-shared-conversation-lib-dev": "webpack serve --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=development",
-    "ai-chat-shared-conversation-lib-prod": "webpack --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=production",
+    "ai-chat-shared-conversation-lib-dev": "webpack serve --disable-interpret --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=development",
+    "ai-chat-shared-conversation-lib-prod": "webpack --disable-interpret --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=production",
     "generate_about_credits": "node ./build/commands/scripts/generateAboutCredits.js"
   },
   "repository": {
