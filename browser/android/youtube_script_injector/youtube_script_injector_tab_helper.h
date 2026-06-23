@@ -51,6 +51,10 @@ class YouTubeScriptInjectorTabHelper
   // Callback for when the fullscreen script completes.
   void OnFullscreenScriptComplete(base::Value value);
 
+  // Enters Picture-in-Picture for the page currently showing if a request is
+  // still armed for it, consuming the request.
+  void MaybeEnterPictureInPicture();
+
   void EnsureBound(content::RenderFrameHost* rfh);
 
   // The remote used to send the fullscreen script to the renderer.

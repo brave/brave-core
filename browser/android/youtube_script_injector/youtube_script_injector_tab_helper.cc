@@ -383,9 +383,19 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
 
 void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
     base::Value value) {
-  if (value.is_string() && value.GetString() == "fullscreen_triggered") {
+  const std::string* result = value.GetIfString();
+  if (result && *result == "fullscreen_triggered") {
     // Fullscreen is on its way; MediaEffectivelyFullscreenChanged() will pick
     // up the request and enter Picture-in-Picture.
+    return;
+  }
+  if (result && *result == "already_fullscreen") {
+    // The page was already fullscreen when the script ran, so there is no
+    // fullscreen transition and MediaEffectivelyFullscreenChanged() never
+    // fires. The prerequisite for PiP is already met, so enter it directly
+    // here; otherwise the armed request would fall through to the failure path
+    // below and the user would get no PiP despite the page being fullscreen.
+    MaybeEnterPictureInPicture();
     return;
   }
   // The script could not put the page into fullscreen (no player, timeout,
@@ -400,21 +410,25 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
   if (!is_fullscreen) {
     return;
   }
+  // Fullscreen was reached, most likely off the back of our request. Enter PiP
+  // if a request is still armed for the page currently showing.
+  MaybeEnterPictureInPicture();
+}
 
-  // Only follow up with PiP when fullscreen was reached off the back of our
-  // request for the page currently showing. If the user navigated in the
-  // meantime, the new entry carries no request and we leave it alone, keeping
-  // fullscreen and PiP consistent (both or neither).
+void YouTubeScriptInjectorTabHelper::MaybeEnterPictureInPicture() {
+  // Only act when a request is still armed for the page currently showing. If
+  // the user navigated in the meantime, the new entry carries no request and we
+  // leave it alone, keeping fullscreen and PiP consistent (both or neither).
   content::NavigationEntry* entry =
       web_contents()->GetController().GetLastCommittedEntry();
   if (!IsPictureInPictureRequested(entry)) {
     return;
   }
 
-  // Consume the one-shot request as we act on it. PiP here is a native Android
-  // activity mode, so the upstream MediaPictureInPictureChanged() signal never
-  // fires to clear it; clearing on the fullscreen transition is what lets the
-  // button work again after returning from a PiP session.
+  // Consume the request as we act on it. PiP here is a native Android activity
+  // mode, so the upstream MediaPictureInPictureChanged() signal never fires to
+  // clear it; clearing it here is what lets the button work again after
+  // returning from a PiP session.
   SetPictureInPictureRequested(entry, false);
 
   // Skip PiP for a backgrounded tab, and on Android versions where entering it
