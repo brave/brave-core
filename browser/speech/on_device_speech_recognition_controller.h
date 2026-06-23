@@ -38,7 +38,8 @@ namespace speech {
 // State machine:
 //   Idle -> BwcStarting -> ModelLoading -> Ready
 class OnDeviceSpeechRecognitionController
-    : public local_ai::BackgroundWebContents::Delegate,
+    : public local_ai::mojom::SpeechRecognitionFactoryHost,
+      public local_ai::BackgroundWebContents::Delegate,
       public ProfileObserver {
  public:
   static OnDeviceSpeechRecognitionController* Get();
@@ -47,6 +48,16 @@ class OnDeviceSpeechRecognitionController
       const OnDeviceSpeechRecognitionController&) = delete;
   OnDeviceSpeechRecognitionController& operator=(
       const OnDeviceSpeechRecognitionController&) = delete;
+
+  // Binds the FactoryHost receiver for the ORT worker WebUI.
+  void BindFactoryHost(
+      mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>
+          receiver);
+
+  // local_ai::mojom::SpeechRecognitionFactoryHost:
+  void RegisterFactory(
+      mojo::PendingRemote<local_ai::mojom::SpeechRecognitionFactory> factory)
+      override;
 
   // local_ai::BackgroundWebContents::Delegate:
   void OnBackgroundContentsDestroyed(
@@ -72,6 +83,12 @@ class OnDeviceSpeechRecognitionController
   void EnsureBackgroundContents();
   void OnGuestProfileCreated(Profile* guest_profile);
 
+  // Read the Nemotron graphs/companion files and whole-model weights off a
+  // blocking sequence, then build the worker's ORT sessions in Init.
+  void LoadOrtModel();
+  void OnOrtFilesRead(local_ai::mojom::OrtModelFilesPtr files);
+  void OnOrtInitResult(bool success);
+
   void StartIdleTimer();
   void OnIdleTimeout();
 
@@ -86,6 +103,10 @@ class OnDeviceSpeechRecognitionController
   base::ScopedObservation<Profile, ProfileObserver> profile_observation_{this};
 
   std::unique_ptr<local_ai::BackgroundWebContents> background_web_contents_;
+
+  mojo::ReceiverSet<local_ai::mojom::SpeechRecognitionFactoryHost>
+      factory_host_receivers_;
+  mojo::Remote<local_ai::mojom::SpeechRecognitionFactory> factory_;
 
   base::OneShotTimer idle_timer_;
   static constexpr base::TimeDelta kIdleTimeout = base::Seconds(60);

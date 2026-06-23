@@ -5,22 +5,82 @@
 
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 
+#include <optional>
+#include <utility>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/local_ai/content/background_web_contents_impl.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/url_constants.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/task_manager/web_contents_tags.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
 #include "url/gurl.h"
 
 namespace speech {
+
+namespace {
+
+// Runs on a ThreadPool blocking sequence. Reads the Nemotron 0.6B streaming
+// model's graphs (encoder/decoder), the 128-mel filterbank and the token
+// list, all in full, and packs them into an OrtModelFiles. The worker builds
+// its ORT sessions directly from these bytes. Only the .onnx + .onnx.data
+// (external-data) export is supported as it lets ORT-Web reference the weights
+// in place instead of making an extra copy of the model files in WASM memory.
+local_ai::mojom::OrtModelFilesPtr ReadNemotronOrtFiles(
+    const base::FilePath& model_dir) {
+  auto encoder =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("encoder.onnx"));
+  if (!encoder) {
+    return nullptr;
+  }
+  auto decoder = local_ai::ReadFileToBigBuffer(
+      model_dir.AppendASCII("decoder_joint.onnx"));
+  if (!decoder) {
+    return nullptr;
+  }
+  auto encoder_data =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("encoder.onnx.data"));
+  if (!encoder_data) {
+    return nullptr;
+  }
+  auto decoder_data = local_ai::ReadFileToBigBuffer(
+      model_dir.AppendASCII("decoder_joint.onnx.data"));
+  if (!decoder_data) {
+    return nullptr;
+  }
+  auto filterbank =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("filterbank.bin"));
+  if (!filterbank) {
+    return nullptr;
+  }
+  auto tokens =
+      local_ai::ReadFileToBigBuffer(model_dir.AppendASCII("tokens.txt"));
+  if (!tokens) {
+    return nullptr;
+  }
+
+  auto files = local_ai::mojom::OrtModelFiles::New();
+  files->encoder = std::move(*encoder);
+  files->decoder = std::move(*decoder);
+  files->encoder_data = std::move(*encoder_data);
+  files->decoder_data = std::move(*decoder_data);
+  files->mel_filters = std::move(*filterbank);
+  files->tokens = std::move(*tokens);
+  return files;
+}
+
+}  // namespace
 
 // static
 OnDeviceSpeechRecognitionController*
@@ -33,6 +93,25 @@ OnDeviceSpeechRecognitionController::OnDeviceSpeechRecognitionController() {}
 
 OnDeviceSpeechRecognitionController::~OnDeviceSpeechRecognitionController() =
     default;
+
+void OnDeviceSpeechRecognitionController::BindFactoryHost(
+    mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>
+        receiver) {
+  factory_host_receivers_.Add(this, std::move(receiver));
+}
+
+void OnDeviceSpeechRecognitionController::RegisterFactory(
+    mojo::PendingRemote<local_ai::mojom::SpeechRecognitionFactory> factory) {
+  if (state_ != State::kBwcStarting) {
+    return;
+  }
+  factory_.Bind(std::move(factory));
+  factory_.set_disconnect_handler(base::BindOnce(
+      &OnDeviceSpeechRecognitionController::OnFactoryDisconnected,
+      weak_factory_.GetWeakPtr()));
+  state_ = State::kModelLoading;
+  LoadOrtModel();
+}
 
 void OnDeviceSpeechRecognitionController::OnBackgroundContentsDestroyed(
     local_ai::BackgroundWebContents::DestroyReason reason) {
@@ -110,6 +189,38 @@ void OnDeviceSpeechRecognitionController::OnGuestProfileCreated(
           network::mojom::WebSandboxFlags::kNone);
 }
 
+void OnDeviceSpeechRecognitionController::LoadOrtModel() {
+  auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&ReadNemotronOrtFiles, state->GetModelDir()),
+      base::BindOnce(&OnDeviceSpeechRecognitionController::OnOrtFilesRead,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void OnDeviceSpeechRecognitionController::OnOrtFilesRead(
+    local_ai::mojom::OrtModelFilesPtr files) {
+  if (!files) {
+    VLOG(1)
+        << "OnDeviceSpeechRecognition: failed to read ORT model files from "
+        << local_ai::OnDeviceSpeechModelsState::GetInstance()->GetModelDir();
+    TearDown();
+    return;
+  }
+  factory_->Init(
+      std::move(files),
+      base::BindOnce(&OnDeviceSpeechRecognitionController::OnOrtInitResult,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void OnDeviceSpeechRecognitionController::OnOrtInitResult(bool success) {
+  if (!success) {
+    TearDown();
+    return;
+  }
+  state_ = State::kReady;
+}
+
 void OnDeviceSpeechRecognitionController::StartIdleTimer() {
   idle_timer_.Start(
       FROM_HERE, kIdleTimeout,
@@ -127,9 +238,11 @@ void OnDeviceSpeechRecognitionController::OnFactoryDisconnected() {
 
 void OnDeviceSpeechRecognitionController::TearDown() {
   idle_timer_.Stop();
+  factory_.reset();
   background_web_contents_.reset();
   profile_observation_.Reset();
   otr_profile_ = nullptr;
+  factory_host_receivers_.Clear();
   state_ = State::kIdle;
 }
 
