@@ -27,7 +27,7 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     return;
   }
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
 }
 
 // static
