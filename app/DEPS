@@ -85,6 +85,7 @@ specific_include_rules = {
     "+components/metrics/private_metrics/private_insights/private_insights_features.h",
     "+components/metrics/private_metrics/private_metrics_features.h",
     "+components/passage_embeddings/core/passage_embeddings_features.h",
+    "+components/payments/core/features.h",
     "+components/personal_context/core/personal_context_features.h",
     "+components/skills/features.h",
     "+components/variations/net/omnibox_autofocus_http_headers.h",

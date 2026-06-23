@@ -18,9 +18,11 @@
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/payments/core/features.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
@@ -448,17 +450,43 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
+// Parametrized on whether kPaymentRequestUseRendererUrlLoader is enabled.
+class BraveNavigatorLanguagesFarblingPaymentRequestBrowserTest
+    : public BraveNavigatorLanguagesFarblingBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  BraveNavigatorLanguagesFarblingPaymentRequestBrowserTest() {
+    const bool renderer_url_loader_enabled = GetParam();
+    // Reset the base-class feature list and re-initialize to also control
+    // kPaymentRequestUseRendererUrlLoader.
+    feature_list_.Reset();
+    if (renderer_url_loader_enabled) {
+      feature_list_.InitWithFeatures(
+          {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode,
+           payments::features::kPaymentRequestUseRendererUrlLoader},
+          {});
+    } else {
+      feature_list_.InitWithFeatures(
+          {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode},
+          {payments::features::kPaymentRequestUseRendererUrlLoader});
+    }
+  }
+};
+
 // Regression test for https://github.com/brave/brave-browser/issues/56266
 // See https://test-website-a.pages.dev/payment-request-language-bypass/
-IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
+IN_PROC_BROWSER_TEST_P(BraveNavigatorLanguagesFarblingPaymentRequestBrowserTest,
                        PaymentRequestManifestFetchDoesNotLeakLanguages) {
+  const bool renderer_url_loader_enabled = GetParam();
   const std::string domain = "b.test";
   const GURL page_url =
       https_server_.GetURL(domain, "/reduce-language/payment_request.html");
 
   SetAcceptLanguages("la,es,en");
+
   AllowFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
   ASSERT_TRUE(content::ExecJs(web_contents(), "doPaymentRequest()"));
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return payment_manifest_accept_language_.has_value(); }));
@@ -468,8 +496,22 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
 
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
   ASSERT_TRUE(content::ExecJs(web_contents(), "doPaymentRequest()"));
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return payment_manifest_accept_language_.has_value(); }));
-  EXPECT_EQ("la;q=0.8", payment_manifest_accept_language_);
+  if (renderer_url_loader_enabled) {
+    EXPECT_EQ("la;q=0.8", payment_manifest_accept_language_);
+  } else {
+    EXPECT_EQ("la,es;q=0.9,en;q=0.8", payment_manifest_accept_language_);
+  }
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveNavigatorLanguagesFarblingPaymentRequestBrowserTest,
+    testing::Bool(),
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param ? "RendererUrlLoaderEnabled"
+                        : "RendererUrlLoaderDisabled";
+    });
