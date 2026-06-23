@@ -10,15 +10,13 @@
 #include <vector>
 
 #include "base/path_service.h"
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
+#include "base/test/run_until.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/language/core/browser/pref_names.h"
@@ -121,6 +119,9 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   // Position of the Accept-Language header in the most recently observed main
   // document request (see `capture_accept_language_position_`).
   std::optional<size_t> accept_language_position_;
+  // Accept-Language header captured from the most recent PaymentRequest
+  // manifest HEAD fetch (see MonitorHTTPRequest).
+  std::optional<std::string> payment_manifest_accept_language_;
 
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
@@ -157,6 +158,17 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
+    // PaymentRequest.show() triggers a HEAD fetch to the supportedMethods URL;
+    // capture Accept-Language to verify it is properly farbled.
+    if (request.relative_url.find("/payment-method-test") !=
+        std::string::npos) {
+      auto it = request.headers.find("accept-language");
+      if (it != request.headers.end()) {
+        payment_manifest_accept_language_ = it->second;
+      }
+      return;
+    }
+
     if (request.relative_url.find("/reduce-language/") == std::string::npos) {
       return;
     }
@@ -434,4 +446,30 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   std::u16string expected_title(u"LOADED");
   TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/56266
+// See https://test-website-a.pages.dev/payment-request-language-bypass/
+IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
+                       PaymentRequestManifestFetchDoesNotLeakLanguages) {
+  const std::string domain = "b.test";
+  const GURL page_url =
+      https_server_.GetURL(domain, "/reduce-language/payment_request.html");
+
+  SetAcceptLanguages("la,es,en");
+  AllowFingerprinting(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+  ASSERT_TRUE(content::ExecJs(web_contents(), "doPaymentRequest()"));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return payment_manifest_accept_language_.has_value(); }));
+  EXPECT_EQ("la,es;q=0.9,en;q=0.8", payment_manifest_accept_language_);
+
+  payment_manifest_accept_language_.reset();
+
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+  ASSERT_TRUE(content::ExecJs(web_contents(), "doPaymentRequest()"));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return payment_manifest_accept_language_.has_value(); }));
+  EXPECT_EQ("la;q=0.8", payment_manifest_accept_language_);
 }
