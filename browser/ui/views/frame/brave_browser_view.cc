@@ -95,6 +95,7 @@
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/omnibox/browser/location_bar_model.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
