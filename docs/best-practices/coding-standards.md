@@ -1320,3 +1320,39 @@ This is a mojom-specific application of [CS-014](#CS-014). The
 target produces it.
 
 ---
+
+<a id="CS-071"></a>
+
+## ✅ Inject Scripts via `ScriptInjector`, Never `AllowInjectingJavaScript`
+
+**Do not call `content::RenderFrameHost::AllowInjectingJavaScript()` followed by
+`RenderFrameHost::ExecuteJavaScript()`. Inject through
+`script_injector::mojom::ScriptInjector` instead.** `AllowInjectingJavaScript()`
+flips a global, process-wide switch that upstream restricts to Android WebView,
+Fuchsia, and CastOS ("must not be used in other configurations"), and it only
+enables injection into the page's **main world** — so the script shares the
+page's JavaScript context, where it can collide with and be observed by page
+scripts. `ScriptInjector::RequestAsyncExecuteScript` runs in a chosen (isolated)
+world per-frame, with user-activation and promise-result control, and returns
+the result — with no global flag.
+
+```cpp
+// ❌ WRONG - global process-wide switch + main-world injection
+content::RenderFrameHost::AllowInjectingJavaScript();
+rfh->ExecuteJavaScript(kScript, base::NullCallback());
+
+// ✅ CORRECT - per-frame injection into an isolated world via the mojo interface
+mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector;
+rfh->GetRemoteAssociatedInterfaces()->GetInterface(&injector);
+injector->RequestAsyncExecuteScript(
+    ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(kScript),
+    blink::mojom::UserActivationOption::kDoNotActivate,
+    blink::mojom::PromiseResultOption::kDoNotWait,
+    base::BindOnce(&OnScriptResult));
+```
+
+`AllowInjectingJavaScript()` is a one-way global enable, so even a single call
+weakens main-world isolation process-wide. See `script_injector_browsertest.cc`
+for a complete example.
+
+---
