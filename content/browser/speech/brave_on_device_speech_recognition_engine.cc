@@ -5,17 +5,31 @@
 
 #include "brave/content/browser/speech/brave_on_device_speech_recognition_engine.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
+#include "components/speech/audio_buffer.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/common/content_client.h"
+#include "media/base/audio_bus.h"
+#include "media/base/audio_sample_types.h"
+#include "media/base/channel_layout.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
 
 namespace content {
+
+namespace {
+
+// The speech worker only accepts 16 kHz mono audio.
+constexpr int kModelSampleRateHz = 16000;
+
+}  // namespace
 
 BraveOnDeviceSpeechRecognitionEngine::BraveOnDeviceSpeechRecognitionEngine(
     const SpeechRecognitionSessionConfig& config)
@@ -34,6 +48,28 @@ BraveOnDeviceSpeechRecognitionEngine::~BraveOnDeviceSpeechRecognitionEngine() =
 
 void BraveOnDeviceSpeechRecognitionEngine::SetAudioParameters(
     media::AudioParameters audio_parameters) {
+  // Audio from recognition.start(track) arrives at the track's own rate,
+  // often 48 kHz, while microphone audio arrives already converted to 16 kHz
+  // by SpeechRecognizerImpl. The worker only accepts 16 kHz, so convert track
+  // audio here. ConvertingAudioFifo collects pieces of any size and converts
+  // them with the same media::AudioConverter the microphone path uses.
+  if (audio_parameters.sample_rate() != kModelSampleRateHz) {
+    // Converted audio goes out in the same chunk size as microphone audio.
+    // The chunk length is in milliseconds, so divide by 1000 to turn it into
+    // a fraction of a second.
+    const int frames_per_buffer =
+        kModelSampleRateHz * GetDesiredAudioChunkDurationMs() / 1000;
+    media::AudioParameters model_params(
+        media::AudioParameters::AUDIO_PCM_LOW_LATENCY,
+        media::ChannelLayoutConfig::Mono(), kModelSampleRateHz,
+        frames_per_buffer);
+    resampler_fifo_ = std::make_unique<media::ConvertingAudioFifo>(
+        audio_parameters, model_params);
+    // Label the audio 16 kHz from here on, so the stream and every chunk tell
+    // the worker the rate it really gets.
+    audio_parameters = model_params;
+  }
+
   // Call the grandparent, so the base class cannot pass the sample rate to its
   // Core and start an optimization guide session of its own.
   SpeechRecognitionEngine::SetAudioParameters(audio_parameters);
@@ -41,8 +77,57 @@ void BraveOnDeviceSpeechRecognitionEngine::SetAudioParameters(
   TryCreateSession();
 }
 
+void BraveOnDeviceSpeechRecognitionEngine::TakeAudioChunk(
+    const AudioChunk& data) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+
+  // No resampler means the audio is already 16 kHz, so the base takes it as
+  // it is.
+  if (!resampler_fifo_) {
+    OnDeviceSpeechRecognitionEngine::TakeAudioChunk(data);
+    return;
+  }
+
+  // Hand the audio to the resampler. It works on float samples, so convert
+  // this chunk's int16 samples first.
+  base::span<const int16_t> samples = data.SamplesData16AsSpan();
+  auto bus =
+      media::AudioBus::Create(/*channels=*/1, static_cast<int>(samples.size()));
+  bus->FromInterleaved<media::SignedInt16SampleTypeTraits>(samples);
+  resampler_fifo_->Push(std::move(bus));
+  // The base gets converted audio in place of `data`, whenever the resampler
+  // has a buffer ready. Most calls add too little to finish one.
+  ForwardResampledAudio();
+}
+
+void BraveOnDeviceSpeechRecognitionEngine::ForwardResampledAudio() {
+  // The base engine reads its chunks as int16 samples.
+  std::vector<int16_t> resampled;
+  while (resampler_fifo_->HasOutput()) {
+    const media::AudioBus* out = resampler_fifo_->PeekOutput();
+    const size_t offset = resampled.size();
+    resampled.resize(offset + static_cast<size_t>(out->frames()));
+    out->ToInterleaved<media::SignedInt16SampleTypeTraits>(
+        base::span(resampled).subspan(offset));
+    resampler_fifo_->PopOutput();
+  }
+  if (resampled.empty()) {
+    return;
+  }
+
+  auto chunk = base::MakeRefCounted<AudioChunk>(base::as_byte_span(resampled),
+                                                sizeof(int16_t));
+  OnDeviceSpeechRecognitionEngine::TakeAudioChunk(*chunk);
+}
+
 void BraveOnDeviceSpeechRecognitionEngine::AudioChunksEnded() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+  // Send what the resampler still holds, before the stream closes below.
+  if (resampler_fifo_) {
+    resampler_fifo_->Flush();
+    ForwardResampledAudio();
+  }
+
   audio_ended_ = true;
   // Closing the input stream makes the worker emit its final result, so the
   // responder stays bound for it. Upstream would end recognition with an empty

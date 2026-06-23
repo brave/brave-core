@@ -6,6 +6,7 @@
 #ifndef BRAVE_CONTENT_BROWSER_SPEECH_BRAVE_ON_DEVICE_SPEECH_RECOGNITION_ENGINE_H_
 #define BRAVE_CONTENT_BROWSER_SPEECH_BRAVE_ON_DEVICE_SPEECH_RECOGNITION_ENGINE_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -15,6 +16,7 @@
 #include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
 #include "content/common/content_export.h"
 #include "media/base/audio_parameters.h"
+#include "media/base/converting_audio_fifo.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
@@ -39,6 +41,7 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
 
   // SpeechRecognitionEngine:
   void SetAudioParameters(media::AudioParameters audio_parameters) override;
+  void TakeAudioChunk(const AudioChunk& data) override;
   void AudioChunksEnded() override;
   void EndRecognition() override;
 
@@ -65,6 +68,11 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
 
   void OnFinalResultTimeout();
 
+  // Passes whatever `resampler_fifo_` has ready, as one 16 kHz chunk, to the
+  // base class's TakeAudioChunk, which sends it to the worker or holds it
+  // until the stream opens. Does nothing when nothing is ready.
+  void ForwardResampledAudio();
+
   // This recognition's session with the speech worker.
   mojo::Remote<local_ai::mojom::AsrSession> asr_session_;
 
@@ -72,6 +80,11 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
   bool audio_ended_ = false;
 
   base::OneShotTimer final_result_timer_;
+
+  // Converts audio from recognition.start(track) to the 16 kHz the worker
+  // needs. Null when audio already arrives at 16 kHz, as microphone audio
+  // does. Audio always arrives mono, so only the rate changes.
+  std::unique_ptr<media::ConvertingAudioFifo> resampler_fifo_;
 
   base::WeakPtrFactory<BraveOnDeviceSpeechRecognitionEngine>
       brave_weak_factory_{this};

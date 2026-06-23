@@ -49,6 +49,25 @@ namespace {
 
 constexpr int kSampleRateHz = 16000;
 
+// A typical MediaStreamTrack rate. recognition.start(track) forwards audio at
+// the track's own rate, where the microphone path is already at kSampleRateHz.
+constexpr int kTrackSampleRateHz = 48000;
+
+// Samples in 10 ms of track audio, a hundredth of a second. That is the piece
+// size the renderer sends.
+constexpr int kTrackPieceFrames = kTrackSampleRateHz / 100;
+
+// A constant sample value, a quarter of 32768, the largest int16 sample
+// magnitude. Resampling a constant gives the same constant back, so every
+// converted sample has a known value.
+constexpr int16_t kLevel = 8192;
+// kLevel as the worker receives it. Upstream turns int16 samples into floats
+// from minus one to one by dividing them by 32768.
+constexpr float kLevelAsFloat = kLevel / 32768.0f;
+// Rounding moves a sample by about 0.00003, far less than this. It only has to
+// tell the level apart from silence or a wrong scale.
+constexpr float kLevelTolerance = 0.01f;
+
 // Stands in for BraveContentBrowserClient, which always hands out a session.
 // Built without one, it stands in for an embedder that does not implement
 // GetAsrSession, whose base version answers with an invalid remote.
@@ -119,11 +138,20 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
     engine_->set_delegate(&delegate_);
   }
 
-  void SetAudioParameters() {
-    engine_->SetAudioParameters(
-        media::AudioParameters(media::AudioParameters::AUDIO_PCM_LOW_LATENCY,
-                               media::ChannelLayoutConfig::Mono(),
-                               kSampleRateHz, kSampleRateHz / 100));
+  // Samples in one microphone chunk at 16 kHz. For mono audio, Chromium's
+  // "frame" is one sample. The resampler hands track audio to the worker in
+  // buffers of this size too. The chunk length is in milliseconds, so divide
+  // by 1000 to turn it into a fraction of a second.
+  int ChunkFrames() const {
+    return kSampleRateHz * engine_->GetDesiredAudioChunkDurationMs() / 1000;
+  }
+
+  // Passes the format SpeechRecognizerImpl hands the engine. It sizes buffers
+  // from its fixed 16 kHz rate, whatever the track's own rate is.
+  void SetAudioParameters(int sample_rate_hz = kSampleRateHz) {
+    engine_->SetAudioParameters(media::AudioParameters(
+        media::AudioParameters::AUDIO_PCM_LOW_LATENCY,
+        media::ChannelLayoutConfig::Mono(), sample_rate_hz, ChunkFrames()));
   }
 
   [[nodiscard]] bool WaitUntilSessionBound() {
@@ -191,6 +219,118 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, NormalFlow) {
       session_closed.GetCallback());
   engine_->EndRecognition();
   EXPECT_TRUE(session_closed.Wait());
+}
+
+// The worker only takes 16 kHz, so audio from a track at another rate has to be
+// resampled, not just labelled 16 kHz. Runs one second of track audio through
+// the engine the way a recognition does, then ends it.
+TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, ResamplesTrackAudio) {
+  local_ai::FakeAsrSession session;
+  CreateEngine(&session);
+  SetAudioParameters(kTrackSampleRateHz);
+  ASSERT_TRUE(session.started().Wait());
+  EXPECT_EQ(kSampleRateHz, static_cast<int>(session.options()->sample_rate_hz));
+
+  // Every chunk the worker gets, in order.
+  struct ReceivedChunk {
+    int sample_rate;
+    int frame_count;
+    std::vector<float> data;
+  };
+  std::vector<ReceivedChunk> chunks;
+  auto receive = [&](on_device_model::mojom::AudioDataPtr chunk) {
+    chunks.push_back(
+        {chunk->sample_rate, chunk->frame_count, std::move(chunk->data)});
+  };
+  // Pushes `frames` of track audio. Records the chunk if one went out, and
+  // returns whether one did.
+  auto push = [&](size_t frames) {
+    const std::vector<int16_t> samples(frames, kLevel);
+    engine_->TakeAudioChunk(*base::MakeRefCounted<AudioChunk>(
+        base::as_byte_span(samples), sizeof(int16_t)));
+    // Makes sure a chunk, if one was sent, has reached the fake.
+    session.stream_receiver().FlushForTesting();
+    if (!session.audio_chunk().IsReady()) {
+      return false;
+    }
+    receive(session.audio_chunk().Take());
+    return true;
+  };
+
+  // Half a second in the 10 ms pieces the renderer sends. Most are too small
+  // to finish a buffer, so the engine has to hold them until a later call
+  // completes one. A single big push would not test that. If held audio were
+  // lost, the total at the end would fall short.
+  const int pieces_in_half_second = kTrackSampleRateHz / 2 / kTrackPieceFrames;
+  for (int i = 0; i < pieces_in_half_second; ++i) {
+    push(kTrackPieceFrames);
+  }
+
+  // The other half in one piece, which finishes several buffers at once. They
+  // go out joined, as one chunk.
+  ASSERT_TRUE(push(kTrackSampleRateHz / 2));
+  const ReceivedChunk& joined = chunks.back();
+  // One buffer is ChunkFrames() long, so a longer chunk holds several of them.
+  // How many depends on the resampler, so only more than one is checked.
+  EXPECT_GT(joined.data.size(), static_cast<size_t>(ChunkFrames()));
+  // The input is constant, so every joined sample holds the level. A buffer
+  // copied to the wrong place leaves silence instead.
+  EXPECT_THAT(joined.data, testing::Each(testing::FloatNear(kLevelAsFloat,
+                                                            kLevelTolerance)));
+
+  // Ending the audio sends what the resampler still holds before the stream
+  // closes, and messages arrive before the close.
+  base::test::TestFuture<void> stream_closed;
+  session.stream_receiver().set_disconnect_handler(stream_closed.GetCallback());
+  engine_->AudioChunksEnded();
+  ASSERT_TRUE(stream_closed.Wait());
+  ASSERT_TRUE(session.audio_chunk().IsReady());
+  receive(session.audio_chunk().Take());
+
+  size_t total_frames = 0;
+  for (const ReceivedChunk& chunk : chunks) {
+    EXPECT_EQ(kSampleRateHz, chunk.sample_rate);
+    // Only whole buffers go out.
+    EXPECT_EQ(0, chunk.frame_count % ChunkFrames())
+        << "chunk of " << chunk.frame_count << " frames";
+    total_frames += chunk.data.size();
+  }
+  // The worker got the whole second, so no piece was lost. On top of that comes
+  // at most one buffer of the silence the flush adds to finish the last one.
+  EXPECT_GE(total_frames, static_cast<size_t>(kSampleRateHz));
+  EXPECT_LE(total_frames, static_cast<size_t>(kSampleRateHz + ChunkFrames()));
+}
+
+// Audio shorter than one buffer never fills one, so all of it is still in the
+// resampler when the audio ends, and only the flush then gets it to the
+// worker.
+TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
+       SendsResamplerTailWhenAudioEnds) {
+  local_ai::FakeAsrSession session;
+  CreateEngine(&session);
+  SetAudioParameters(kTrackSampleRateHz);
+  ASSERT_TRUE(session.started().Wait());
+
+  // 10 ms of track audio.
+  const std::vector<int16_t> samples(kTrackPieceFrames, kLevel);
+  engine_->TakeAudioChunk(*base::MakeRefCounted<AudioChunk>(
+      base::as_byte_span(samples), sizeof(int16_t)));
+  // Makes sure a chunk, if one was sent, has reached the fake.
+  session.stream_receiver().FlushForTesting();
+  ASSERT_FALSE(session.audio_chunk().IsReady());
+
+  base::test::TestFuture<void> stream_closed;
+  session.stream_receiver().set_disconnect_handler(stream_closed.GetCallback());
+  engine_->AudioChunksEnded();
+  ASSERT_TRUE(stream_closed.Wait());
+
+  // Messages arrive before the pipe closes, so the tail went out first.
+  ASSERT_TRUE(session.audio_chunk().IsReady());
+  const on_device_model::mojom::AudioDataPtr& tail =
+      session.audio_chunk().Get();
+  EXPECT_EQ(kSampleRateHz, tail->sample_rate);
+  // The flush tops the 10 ms up to one whole buffer.
+  EXPECT_EQ(ChunkFrames(), tail->frame_count);
 }
 
 // Nothing between the engine and blink consults interim_results, so honoring
