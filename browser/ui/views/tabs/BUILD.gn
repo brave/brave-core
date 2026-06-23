@@ -71,18 +71,23 @@ source_set("unit_tests") {
     "brave_tab_strip_unittest.cc",
     "brave_tab_unittest.cc",
     "tab_style_views_unittest.cc",
+    "vertical_tab_controller_unittest.cc",
   ]
 
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/views/tabs",
     "//brave/common",
     "//brave/components/tabs",
     "//brave/components/vector_icons",
     "//chrome/browser/ui",
     "//chrome/browser/ui:layout_constants",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:features",
     "//chrome/test:test_support",
+    "//components/prefs:test_support",
     "//components/tabs:public",
     "//components/tabs:test_support",
     "//content/test:test_support",

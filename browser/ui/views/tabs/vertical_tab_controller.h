@@ -13,6 +13,8 @@ class PrefService;
 class VerticalTabController {
  public:
   VerticalTabController(BrowserWindowInterface::Type type, PrefService* prefs);
+  VerticalTabController(const VerticalTabController&) = delete;
+  VerticalTabController& operator=(const VerticalTabController&) = delete;
   ~VerticalTabController();
 
   // Returns true if the current |browser| might ever support vertical tabs.
