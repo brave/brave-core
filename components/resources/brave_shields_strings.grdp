@@ -436,7 +436,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_USER_AGENT_LABEL" desc="This label is associated with the User Agent toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to User Agent APIs." formatter_data="webui=BraveShields" >
-    User agent
+    User Agent
   </message>
 
   <!-- WebGL is an abbreviation referring to a specific technical library and therefore is not translatable. -->
