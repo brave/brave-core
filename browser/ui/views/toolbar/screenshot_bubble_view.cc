@@ -70,6 +70,27 @@ std::unique_ptr<views::BubbleDialogModelHost> ShowScreenshotBubble(
       base::Unretained(web_contents), base::Unretained(controller),
       base::Unretained(visible_btn)));
 
+  auto* selected_btn =
+      container->AddChildView(std::make_unique<views::MdTextButton>(
+          views::Button::PressedCallback(),
+          l10n_util::GetStringUTF16(IDS_BRAVE_SCREENSHOT_SELECTED_AREA)));
+  selected_btn->SetImageModel(
+      views::Button::ButtonState::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(kLeoScreenshotIcon,
+                                     ui::kColorButtonForeground, kIconSize));
+  selected_btn->SetEnabled(can_capture);
+
+  selected_btn->SetCallback(base::BindRepeating(
+      [](content::WebContents* wc, ScreenshotController* c,
+         views::Button* btn) {
+        btn->SetCallback(views::Button::PressedCallback());
+        btn->GetWidget()->CloseWithReason(
+            views::Widget::ClosedReason::kUnspecified);
+        c->CaptureSelectedArea(wc, base::DoNothing());
+      },
+      base::Unretained(web_contents), base::Unretained(controller),
+      base::Unretained(selected_btn)));
+
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   auto* full_btn =
       container->AddChildView(std::make_unique<views::MdTextButton>(

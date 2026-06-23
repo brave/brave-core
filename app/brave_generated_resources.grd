@@ -530,6 +530,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_SCREENSHOT_FULL_PAGE" desc="Label for the screenshot action that captures the entire scrollable page">
         Full page
       </message>
+      <message name="IDS_BRAVE_SCREENSHOT_SELECTED_AREA" desc="Label for the screenshot action that lets the user drag to select a region of the page">
+        Selected area
+      </message>
 
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">

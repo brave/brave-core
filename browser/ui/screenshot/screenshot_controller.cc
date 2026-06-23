@@ -20,6 +20,7 @@
 #include "base/types/expected.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/download_prefs.h"
+#include "chrome/browser/image_editor/screenshot_flow.h"
 #include "components/viz/common/frame_sinks/copy_output_result.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
@@ -31,6 +32,7 @@
 #include "third_party/skia/include/core/SkRect.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/image/image.h"
 #include "ui/shell_dialogs/select_file_policy.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 
@@ -202,6 +204,49 @@ void ScreenshotController::CaptureVisibleArea(
                         std::move(on_copied));
 }
 
+void ScreenshotController::CaptureSelectedArea(
+    content::WebContents* web_contents,
+    ResultCallback done) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (auto result = CanCapture(web_contents); !result.has_value()) {
+    std::move(done).Run(base::unexpected(result.error()));
+    return;
+  }
+
+  pending_callback_ = std::move(done);
+
+  screenshot_flow_ =
+      std::make_unique<image_editor::ScreenshotFlow>(web_contents);
+  screenshot_flow_->Start(base::BindOnce(
+      &ScreenshotController::OnRegionCaptured, weak_factory_.GetWeakPtr()));
+}
+
+void ScreenshotController::OnRegionCaptured(
+    const image_editor::ScreenshotCaptureResult& result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (result.result_code !=
+          image_editor::ScreenshotCaptureResultCode::SUCCESS ||
+      result.image.IsEmpty()) {
+    FinishWithError(Error::kCaptureFailed);
+    return;
+  }
+
+  const SkBitmap* bitmap = result.image.ToSkBitmap();
+  if (!bitmap || bitmap->drawsNothing()) {
+    FinishWithError(Error::kCaptureFailed);
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&EncodeBitmap, *bitmap),
+      base::BindOnce(&ScreenshotController::OnEncoded,
+                     weak_factory_.GetWeakPtr()));
+}
+
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 void ScreenshotController::CaptureFullPage(content::WebContents* web_contents,
                                            ResultCallback done) {
@@ -356,6 +401,7 @@ void ScreenshotController::Reset() {
     select_dialog_->ListenerDestroyed();
     select_dialog_.reset();
   }
+  screenshot_flow_.reset();
 }
 
 }  // namespace screenshot
