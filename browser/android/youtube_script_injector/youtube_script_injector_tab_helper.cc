@@ -431,10 +431,7 @@ void YouTubeScriptInjectorTabHelper::MaybeEnterPictureInPicture() {
   // returning from a PiP session.
   SetPictureInPictureRequested(entry, false);
 
-  // Skip PiP for a backgrounded tab, and on Android versions where entering it
-  // is unsafe.
-  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
-      IsAndroidPictureInPictureSupported()) {
+  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
     ::youtube_script_injector::EnterPictureInPicture(web_contents());
   }
 }
