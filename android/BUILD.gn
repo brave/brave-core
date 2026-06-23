@@ -112,6 +112,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable-hdpi/ic_ad_free_videos.png",
     "java/brave-res/drawable-hdpi/share_activity_background.png",
     "java/brave-res/drawable-hdpi/vpn_install_bg.png",
+    "java/brave-res/drawable-ldrtl/modern_toolbar_background_grey_end_segment.xml",
     "java/brave-res/drawable-mdpi/brave_ads_launch_graphic.png",
     "java/brave-res/drawable-mdpi/brave_sync_btn_laptop.png",
     "java/brave-res/drawable-mdpi/btn_bat.png",
