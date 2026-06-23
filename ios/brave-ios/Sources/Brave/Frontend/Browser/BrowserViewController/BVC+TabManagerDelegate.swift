@@ -98,8 +98,8 @@ extension BrowserViewController: TabManagerDelegate {
     tab.nightMode = .init(tab: tab)
     // reader mode
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
-    tab.readerMode?.onStateChanged = { [weak self] in
-      guard let self, self.tabManager.selectedTab === tab else { return }
+    tab.readerMode?.onStateChanged = { [weak self, weak tab] in
+      guard let self, let tab, self.tabManager.selectedTab === tab else { return }
       self.topToolbar.updateReaderModeState(tab.readerMode?.state ?? .unavailable)
     }
     tab.readerMode?.onReaderModeDisplayed = { [weak self, weak tab] in
