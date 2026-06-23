@@ -26,6 +26,84 @@ const webcompatSettingNames = new Map(
     })
     .map(([key, value]) => {
       switch (value) {
+        case ContentSettingsType.BRAVE_WEBCOMPAT_AUDIO:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_AUDIO_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_CANVAS:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_CANVAS_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_DEVICE_MEMORY:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_DEVICE_MEMORY_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL:
+          return [
+            value,
+            getString(
+              'BRAVE_SHIELDS_BLOCK_FINGERPRINTING_EVENT_SOURCE_POOL_LABEL',
+            ),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_FONT:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_FONT_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY:
+          return [
+            value,
+            getString(
+              'BRAVE_SHIELDS_BLOCK_FINGERPRINTING_HARDWARE_CONCURRENCY_LABEL',
+            ),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_KEYBOARD:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_KEYBOARD_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_LANGUAGE:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_LANGUAGE_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_MEDIA_DEVICES:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_MEDIA_DEVICES_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_PLUGINS:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_PLUGINS_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_SCREEN:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_SCREEN_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS:
+          return [
+            value,
+            getString(
+              'BRAVE_SHIELDS_BLOCK_FINGERPRINTING_SPEECH_SYNTHESIS_LABEL',
+            ),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER:
+          return [
+            value,
+            getString(
+              'BRAVE_SHIELDS_BLOCK_FINGERPRINTING_USB_DEVICE_SERIAL_NUMBER_LABEL',
+            ),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_USER_AGENT:
+          return [
+            value,
+            getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_USER_AGENT_LABEL'),
+          ]
         case ContentSettingsType.BRAVE_WEBCOMPAT_WEBGL:
           return [
             value,
@@ -40,6 +118,13 @@ const webcompatSettingNames = new Map(
           return [
             value,
             getString('BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGPU_LABEL'),
+          ]
+        case ContentSettingsType.BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL:
+          return [
+            value,
+            getString(
+              'BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEB_SOCKETS_POOL_LABEL',
+            ),
           ]
         default: {
           const name = key

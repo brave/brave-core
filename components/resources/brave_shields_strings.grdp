@@ -380,7 +380,64 @@
     Open settings
   </message>
 
-  <!-- Fingerprinting related strings corresponding to the different web compat types. -->
+  <!-- Fingerprinting related strings corresponding to the different web compat types specified at chromium_src/components/content_settings/core/common/content_settings_types.mojom. 
+  Please note that the fingerprinting_details.style.ts auto applies capitalization on every word of these texts so we may need special attention when translating. -->
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_AUDIO_LABEL" desc="This label is associated with the Audio toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Audio APIs." formatter_data="webui=BraveShields">
+    Audio
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_CANVAS_LABEL" desc="This label is associated with the Canvas toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Canvas APIs." formatter_data="webui=BraveShields" >
+    Canvas
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_DEVICE_MEMORY_LABEL" desc="This label is associated with the Device Memory toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Device Memory APIs." formatter_data="webui=BraveShields" >
+    Device Memory
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_EVENT_SOURCE_POOL_LABEL" desc="This label is associated with the Event Source Pool toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Event Source Pool APIs." formatter_data="webui=BraveShields" >
+    Event Source Pool
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_FONT_LABEL" desc="This label is associated with the Font toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Font APIs." formatter_data="webui=BraveShields" >
+    Font
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_HARDWARE_CONCURRENCY_LABEL" desc="This label is associated with the Hardware Concurrency toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Hardware Concurrency APIs." formatter_data="webui=BraveShields" >
+    Hardware Concurrency
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_KEYBOARD_LABEL" desc="This label is associated with the Keyboard toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Keyboard APIs." formatter_data="webui=BraveShields" >
+    Keyboard
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_LANGUAGE_LABEL" desc="This label is associated with the Language toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Language APIs." formatter_data="webui=BraveShields" >
+    Language
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_MEDIA_DEVICES_LABEL" desc="This label is associated with the Media Devices toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Media Devices APIs." formatter_data="webui=BraveShields" >
+    Media Devices
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_PLUGINS_LABEL" desc="This label is associated with the Plugins toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Plugins APIs." formatter_data="webui=BraveShields" >
+    Plugins
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_SCREEN_LABEL" desc="This label is associated with the Screen toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Screen APIs." formatter_data="webui=BraveShields" >
+    Screen
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_SPEECH_SYNTHESIS_LABEL" desc="This label is associated with the Speech Synthesis toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Speech Synthesis APIs." formatter_data="webui=BraveShields" >
+    Speech Synthesis
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_USB_DEVICE_SERIAL_NUMBER_LABEL" desc="This label is associated with the USB Device Serial Number toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to USB Device Serial Number APIs." formatter_data="webui=BraveShields" >
+    Usb Device Serial Number
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_USER_AGENT_LABEL" desc="This label is associated with the User Agent toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to User Agent APIs." formatter_data="webui=BraveShields" >
+    User Agent
+  </message>
 
   <!-- WebGL is an abbreviation referring to a specific technical library and therefore is not translatable. -->
   <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGL_LABEL" desc="This label is associated with the WebGL toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGL APIs." formatter_data="webui=BraveShields" translateable="false">
@@ -395,6 +452,10 @@
   <!-- WebGPU is an abbreviation referring to a specific technical library and therefore is not translatable. -->
   <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEBGPU_LABEL" desc="This label is associated with the WebGPU toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to WebGPU APIs." formatter_data="webui=BraveShields" translateable="false">
     WebGPU
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_WEB_SOCKETS_POOL_LABEL" desc="This label is associated with the Web Sockets Pool toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Web Sockets Pool APIs." formatter_data="webui=BraveShields" >
+    Web Sockets Pool
   </message>
 
 </grit-part>
