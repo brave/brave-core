@@ -3,9 +3,9 @@ name: plaster-from-patch
 description:
   "Create a Plaster (`rewrite/*.yaml`) config for an existing Brave-core
   Chromium `.patch`, authoring an intent-conveying regex match per the Plaster
-  Dos and Don'ts, then verifying it reproduces the patch with `plaster.py
-  check`. Does not modify sources or create other files — its only output is the
-  plaster config. Triggers on: plaster from patch, convert patch to plaster,
+  Dos and Don'ts, then verifying it by running `plaster.py apply` and diffing
+  the regenerated patch against the original. Does not modify sources or create
+  other files. Triggers on: plaster from patch, convert patch to plaster,
   plasterize, make a plaster."
 argument-hint:
   '<patch file, source path, or nothing to infer from working tree>'
@@ -36,8 +36,11 @@ instead of a brittle context patch.
   already decided that by writing the patch. Author a config that reproduces the
   patch, following the guidelines.
 
-The single exception is verification: `plaster.py check` is a **dry run** that
-makes no changes (details in Step 3).
+The one thing it does beyond writing the config is **verify** (Step 3): it runs
+`plaster.py apply` to regenerate the patch from the config and confirms it is
+identical to the patch the user wrote. That regenerates the patch and its
+`.patchinfo` (plaster's own output) — it still never hand-edits sources or
+creates `chromium_src` files.
 
 ## Required reading
 
@@ -189,40 +192,40 @@ and why — not a restatement of the regex mechanics. Use a `|` / `|-` block
 scalar for multi-line text. This is the recovery note for whoever hits a future
 break.
 
-## Step 3 — Verify with `plaster.py check` (dry run)
+## Step 3 — Verify by regenerating the patch and diffing against the original
 
-The config is correct **iff** applying it to the pristine upstream source
-reproduces the patch. `check` confirms exactly that, as a **dry run that writes
-nothing**:
+The config is correct **iff** running plaster produces a patch byte-identical to
+the one the user wrote. Don't settle for a dry-run `check` — actually regenerate
+the patch and compare it to the original:
 
 ```bash
-tools/cr/plaster.py check rewrite/<path>.yaml
+# 1. Keep the user's original patch as the ground truth.
+cp patches/<dashed>.patch /tmp/plaster-original.patch
+
+# 2. Regenerate the patch from the config: this rewrites the source from
+#    git + the plaster and writes patches/<dashed>.patch + .patchinfo.
+tools/cr/plaster.py apply rewrite/<path>.yaml
+
+# 3. The regenerated patch MUST equal the original — empty diff.
+diff /tmp/plaster-original.patch patches/<dashed>.patch
 ```
 
-`check` / `apply` take the **plaster or patch path**, never the chromium source
-path — passing `../<source_path>` raises `ValueError: Unexpected file path`.
-Accepted forms are `rewrite/<path>.yaml` and `patches/<dashed>.patch` (or no
-argument to process every plaster).
+An empty `diff` means the plaster reproduces the user's change exactly — done. A
+non-empty diff (or a `count`/match error raised by `apply`) means the regex
+matched the wrong region, the replacement is off, or `count` didn't match (found
+0 or several). Fix the substitution and re-run the apply+diff. Iterate until the
+diff is empty.
 
-- A clean `check` means the plaster reproduces the user's existing patch/source
-  — done.
-- A mismatch means the regex matched the wrong region or the replacement is off,
-  or `count` didn't match (e.g. found 0 or several). Fix the substitution and
-  re-run `check`. Iterate until it is clean.
+`apply` / `check` take the **plaster or patch path**, never the chromium source
+path — passing `../<source_path>` raises `ValueError: Unexpected file path`.
+Accepted forms are `rewrite/<path>.yaml` and `patches/<dashed>.patch`.
 
 `plaster.py` needs PyYAML. If it fails with
 `ModuleNotFoundError: No module named 'yaml'`, retry with the depot_tools
 interpreter (`vpython3 tools/cr/plaster.py ...`) or install into the active env
 (`python3 -m pip install pyyaml`). If it still cannot run here, **do not claim
-success** — manually simulate each substitution against the pristine text
-(Python `re` reasoning), state that local verification was unavailable, and flag
-that the user must run `plaster.py check`.
-
-> Note: `plaster.py apply` is how the change becomes plaster-managed — it
-> rewrites the source from `git` + the plaster and regenerates
-> `patches/<dashed>.patch` + `.patchinfo`. That step **does** modify files, so
-> it is the user's to run (or run it only with their explicit go-ahead). This
-> skill stops at a verified config.
+success** — say local verification was unavailable and that the user must run
+the apply+diff above.
 
 ## Step 4 — Self-review
 
@@ -241,21 +244,20 @@ Fix anything it surfaces before moving on.
 
 ## Step 5 — Commit and offer a PR
 
-Stage and commit just the plaster config on the working branch (new commit;
-don't squash onto unrelated work):
+Stage the config plus the patch artifacts that `apply` regenerated in Step 3,
+and commit on the working branch (new commit; don't squash onto unrelated work):
 
 ```bash
-git add rewrite/<path>.yaml
+git add rewrite/<path>.yaml patches/<dashed>.patch patches/<dashed>.patchinfo
 git commit -m "Add plaster config for <path>"
 ```
 
 End the commit message with the standard trailer:
 `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
 
-If the user wants the change wired in as a plaster-managed patch, run
-`tools/cr/plaster.py apply rewrite/<path>.yaml` (with their go-ahead) and
-include the regenerated `patches/<dashed>.patch` + `.patchinfo` in the commit.
-Then offer to push and open a PR (`gh pr create`). Report the URL.
+The original hand-written patch is now plaster-managed (regenerated from the
+config and tied to it by `.patchinfo`). Then offer to push and open a PR
+(`gh pr create`). Report the URL.
 
 ## Guidelines
 
@@ -263,8 +265,9 @@ Then offer to push and open a PR (`gh pr create`). Report the URL.
   don't create `chromium_src` files, don't restructure the change.
 - **Match the pristine upstream, not the patched file** — Plaster reads the
   source from `git`.
-- **Verify with `check`** — a dry run. A config that "looks right" but doesn't
-  reproduce the patch is wrong.
+- **Verify by regeneration** — run `plaster.py apply` and diff the regenerated
+  patch against the original; they must be identical. A config that "looks
+  right" but doesn't reproduce the patch is wrong.
 - **Let intentional breakage stand.** Don't paper over a `count` mismatch; it is
   the safety mechanism working.
 - **Keep the regex minimal and intent-bearing.** The smallest match that is
