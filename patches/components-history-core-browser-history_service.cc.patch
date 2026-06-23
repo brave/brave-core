@@ -1,8 +1,8 @@
 diff --git a/components/history/core/browser/history_service.cc b/components/history/core/browser/history_service.cc
-index 30ab41fb9f8be24441cddc353d9246310489e6ff..c96fe6240cbac8de3ad058bc2f5cec45b1884734 100644
+index e998c7daf6ff7e0507fd9b9dcab79f689f1764bf..a202e1e96c0c26820168dd9860adecb03386ca0b 100644
 --- a/components/history/core/browser/history_service.cc
 +++ b/components/history/core/browser/history_service.cc
-@@ -1146,6 +1146,18 @@ base::CancelableTaskTracker::TaskId HistoryService::QueryURL(
+@@ -1144,6 +1144,18 @@ base::CancelableTaskTracker::TaskId HistoryService::QueryURL(
        std::move(callback));
  }
  
