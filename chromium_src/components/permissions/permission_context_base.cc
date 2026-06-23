@@ -36,7 +36,7 @@ void PermissionContextBase::PermissionDecided(
     const auto request_it = pending_requests_.find(request_data.id.ToString());
     if (request_it != pending_requests_.end()) {
       const PermissionRequest* permission_request =
-          request_it->second.first.get();
+          &*(request_it->second.first);
       CHECK(permission_request);
       if (auto* permission_lifetime_manager =
               permission_lifetime_manager_factory_.Run(browser_context_)) {

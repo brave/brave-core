@@ -8,6 +8,7 @@
 
 #include <optional>
 
+#include "base/memory/safe_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 
@@ -64,8 +65,8 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   // will affect this method's only parameter too, which will break subclasses.
   virtual bool IsDuplicateOf(PermissionRequest* other_request) const;
 
-  // Returns a weak pointer to this instance.
-  base::WeakPtr<PermissionRequest> GetWeakPtr();
+  // Returns a safe reference to this instance.
+  base::SafeRef<PermissionRequest> GetSafeRef();
 
  private:
   std::optional<base::TimeDelta> lifetime_;
