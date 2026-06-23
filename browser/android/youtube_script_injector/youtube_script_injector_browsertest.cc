@@ -332,7 +332,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 // device
 // TODO(alexeybarabash): https://github.com/brave/brave-browser/issues/48430
 // Enable if possible
-// Test that MaybeSetFullScreenAndPictureInPictureMode() works with multiple calls.
+// Test that MaybeSetFullScreenAndPictureInPictureMode() works with multiple
+// calls.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        DISABLED_MultipleFullscreenCalls) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
