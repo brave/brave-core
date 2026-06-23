@@ -50,11 +50,8 @@ cargo_crate("lib") {
   build_sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/indexmap-v1/build.rs",
   ]
-  rustenv = []
-  rustflags = [
-    "--cfg",
-    "has_std",
-  ]
+  rustenv = [ "CARGO_FEATURE_STD=1" ]
+  rustflags = []
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.
