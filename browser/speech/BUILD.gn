@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("speech") {
+  sources = [
+    "on_device_speech_recognition_controller.cc",
+    "on_device_speech_recognition_controller.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/local_ai",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//chrome/browser/profiles:profile",
+    "//mojo/public/cpp/base",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/mojom",
+    "//services/on_device_model/public/mojom",
+    "//url",
+  ]
+}
