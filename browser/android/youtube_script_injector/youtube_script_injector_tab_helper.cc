@@ -300,19 +300,17 @@ void YouTubeScriptInjectorTabHelper::
     return;
   }
 
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  // Tapping the button again while a request is still pending for this page is
-  // a no-op: the flag is one-shot and cleared either when PiP engages or when
-  // the script reports it could not reach fullscreen.
-  if (IsPictureInPictureRequested(entry)) {
-    return;
-  }
-
-  // Record the request against the page the user is looking at, then ask the
+  // Arm the request against the page the user is looking at, then ask the
   // renderer to go fullscreen. MediaEffectivelyFullscreenChanged() reads this
   // back to decide whether to follow up with Picture-in-Picture.
-  SetPictureInPictureRequested(entry, true);
+  //
+  // We deliberately do not block a repeated injection on an already armed
+  // request: the injected script is idempotent (it does nothing and resolves
+  // 'already_fullscreen' when the page is already fullscreen), so tapping again
+  // is safe, and not gating keeps the button working even if a prior request
+  // was left armed by an edge case we cannot observe here.
+  SetPictureInPictureRequested(
+      web_contents()->GetController().GetLastCommittedEntry(), true);
   EnsureBound(rfh);
   script_injector_remote_->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
