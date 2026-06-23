@@ -238,11 +238,23 @@ DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 # it is one of those reliable files that are always present in any version.
 CHROME_VERSION_FILE = Path('chrome/VERSION')
 
-# Cherry-pick hash for upstream's reproducibility fix for the committer details
-# used in a cherry-pick commit. See https://crrev.com/c/7914461. This CL was
-# provided once we reported to them mismatches on the `rustc` hash between our
-# toolchain and theirs due to cherry-picks.
-CLANG_GIT_METADATA_COMMIT = 'a710d2e1475f4c224290ce22f1a21c42d5fad900'
+# Upstream cherry-picks applied onto the checkout for the build's duration (see
+# `_cherry_picks`). Each is skipped automatically if the active Chromium ref
+# already contains it, so commits can stay listed here across version bumps
+# until they age out of the picks we still need.
+#
+#   * a710d2e1475f4c224290ce22f1a21c42d5fad900 — upstream's reproducibility fix
+#     for the committer details used in a cherry-pick commit. See
+#     https://crrev.com/c/7914461. This CL was provided once we reported to them
+#     mismatches on the `rustc` hash between our toolchain and theirs due to
+#     cherry-picks.
+#   * 0210b44659fd7251672077e9ab83b5324db0c08e — adds `--skip-test` to
+#     `package_rust.py` (plumbed into `build_rust.py`) so the packaging step can
+#     skip the rustc/libstd test suites. See https://crrev.com/c/7984649.
+CLANG_CHERRY_PICK_COMMITS = [
+    'a710d2e1475f4c224290ce22f1a21c42d5fad900',
+    '0210b44659fd7251672077e9ab83b5324db0c08e',
+]
 
 # Fixed git author/committer metadata applied when we cherry-pick onto the
 # checkout. A commit's hash includes this metadata, and `rustc` encodes the
@@ -1060,6 +1072,10 @@ class ToolchainBuilder:
         `.tar.xz` to `third_party/`. The wasm32 sysroot is overlaid onto this
         archive afterwards by `_create_full_archive`.
 
+        `--skip-test` is being passed because the test suite is causing the job
+        to hang. This is most likely an issue between the way these tests work
+        and the way jenkins is launching these processes without a TTY.
+
         Returns the absolute path of the toolchain archive produced under
         `third_party/` (`RUST_TOOLCHAIN_PACKAGE_NAME`).
 
@@ -1068,6 +1084,7 @@ class ToolchainBuilder:
         """
         _check_call(str(self._vpython_path),
                     'package_rust.py',
+                    '--skip-test',
                     cwd=self._tools_rust)
 
         base_archive = (Path(self._build_rust_module.THIRD_PARTY_DIR) /
@@ -1354,10 +1371,10 @@ class ToolchainBuilder:
 
         Ensures every commit in *commits* is in the checkout's history while the
         build runs, then restores the original HEAD afterwards. Used to pull in
-        upstream fixes the active Chromium ref may predate — e.g.
-        `CLANG_GIT_METADATA_COMMIT`, which pins the git author/committer
-        metadata that `tools/clang/scripts/build.py` stamps onto its LLVM
-        cherry-picks so the toolchain hash is reproducible across the
+        upstream fixes the active Chromium ref may predate — see
+        `CLANG_CHERRY_PICK_COMMITS`, which includes the commit that pins the git
+        author/committer metadata `tools/clang/scripts/build.py` stamps onto its
+        LLVM cherry-picks so the toolchain hash is reproducible across the
         full-toolchain and wasm32 builds.
 
         Protocol:
@@ -1436,7 +1453,7 @@ class ToolchainBuilder:
 
         Coordinates the phases in order:
 
-        1. Within `_cherry_picks` (which applies `CLANG_GIT_METADATA_COMMIT`
+        1. Within `_cherry_picks` (which applies `CLANG_CHERRY_PICK_COMMITS`
            so both builds cherry-pick to identical hashes):
            a. `_package_full_rust` (only when `full_toolchain`) — build and
               package the complete Rust toolchain via `package_rust.py`.
@@ -1564,9 +1581,9 @@ class ToolchainBuilder:
         use_prebuilt_rustc = (USE_PREBUILT_RUSTC_FOR_WASM_STD
                               and not full_toolchain)
 
-        # Cherry picks upstream commit for the committership reproducibility
-        # fix.
-        with self._cherry_picks([CLANG_GIT_METADATA_COMMIT]):
+        # Cherry picks upstream commits (committership reproducibility fix and
+        # any others) that the active Chromium ref may predate.
+        with self._cherry_picks(CLANG_CHERRY_PICK_COMMITS):
             # Build and package the full Rust toolchain first, the overlay the
             # wasm32 sysroot onto it.
             base_archive = None
