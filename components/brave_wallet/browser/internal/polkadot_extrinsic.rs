@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use ffi::CxxPolkadotDecodeUnsignedTransfer;
 use parity_scale_codec::{Compact, Decode, Encode};
 use std::fmt;
 
@@ -31,22 +30,8 @@ const EXTRINSIC_FAILED_VARIANT_INDEX: u8 = 0x01;
 // existential deposit.
 const TRANSFER_ALL_KEEP_ALIVE: bool = false;
 
-const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
-                                                   + 1  /* pallet index */
-                                                   + 1  /* call index */
-                                                   + 1  /* MultiAddress type */
-                                                   + 32 /* recipient pubkey */
-                                                   + 1  /* SCALE-encoded send amount */
-                                                   ;
-
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
-    #[derive(Clone, Copy)]
-    pub struct CxxPolkadotDecodeUnsignedTransfer {
-        pub recipient: [u8; 32],
-        pub send_amount_bytes: [u8; 16],
-    }
-
     #[derive(Clone, Copy, PartialEq)]
     pub struct CxxPolkadotChainMetadata {
         pub system_pallet_index: u8,
@@ -68,33 +53,15 @@ mod ffi {
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
         fn scale_encode_string(value: &[u8]) -> Vec<u8>;
 
-        type CxxPolkadotDecodeUnsignedTransferResult;
         type CxxPolkadotChainMetadataResult;
 
         fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
         fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
         fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
 
-        fn is_ok(self: &CxxPolkadotDecodeUnsignedTransferResult) -> bool;
-        fn error_message(self: &CxxPolkadotDecodeUnsignedTransferResult) -> String;
-        fn unwrap(
-            self: &mut CxxPolkadotDecodeUnsignedTransferResult,
-        ) -> Box<CxxPolkadotDecodeUnsignedTransfer>;
-
         fn parse_chain_metadata_from_scale(
             metadata_bytes: &[u8],
         ) -> Box<CxxPolkadotChainMetadataResult>;
-
-        fn encode_unsigned_transfer_allow_death(
-            chain_metadata: &CxxPolkadotChainMetadata,
-            send_amount_bytes: &[u8; 16],
-            pubkey: &[u8; 32],
-        ) -> Vec<u8>;
-
-        fn decode_unsigned_transfer_allow_death(
-            chain_metadata: &CxxPolkadotChainMetadata,
-            mut input: &[u8],
-        ) -> Box<CxxPolkadotDecodeUnsignedTransferResult>;
 
         fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2];
 
@@ -191,36 +158,6 @@ impl fmt::Display for Error {
     }
 }
 
-impl_result!(CxxPolkadotDecodeUnsignedTransfer, CxxPolkadotDecodeUnsignedTransferResult);
-
-fn encode_unsigned_transfer_allow_death(
-    chain_metadata: &CxxPolkadotChainMetadata,
-    send_amount_bytes: &[u8; 16],
-    pubkey: &[u8; 32],
-) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
-        chain_metadata;
-
-    let mut buf = Vec::<u8>::with_capacity(256);
-
-    buf.extend_from_slice(&[
-        EXTRINSIC_VERSION,
-        *balances_pallet_index,
-        *transfer_allow_death_call_index,
-        MULTIADDRESS_TYPE,
-    ]);
-
-    buf.extend_from_slice(pubkey);
-
-    Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
-
-    Compact(buf.len() as u64).using_encoded(|encoded_len| {
-        buf.splice(0..0, encoded_len.iter().copied());
-    });
-
-    buf
-}
-
 fn next_n_bytes<'a>(input: &mut &'a [u8], n: usize) -> Result<&'a [u8], Error> {
     let Some((first, last)) = input.split_at_checked(n) else {
         return Err(Error::InvalidLength);
@@ -228,60 +165,6 @@ fn next_n_bytes<'a>(input: &mut &'a [u8], n: usize) -> Result<&'a [u8], Error> {
 
     *input = last;
     Ok(first)
-}
-
-fn decode_unsigned_transfer_allow_death_impl(
-    chain_metadata: &CxxPolkadotChainMetadata,
-    mut input: &[u8],
-) -> Result<CxxPolkadotDecodeUnsignedTransfer, Error> {
-    let Ok(len) = Compact::<u64>::decode(&mut input) else {
-        return Err(Error::InvalidScale);
-    };
-
-    let Ok(len) = usize::try_from(len.0) else {
-        return Err(Error::InvalidLength);
-    };
-
-    if input.len() != len || len < UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN {
-        return Err(Error::InvalidLength);
-    }
-
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
-        chain_metadata;
-
-    if next_n_bytes(&mut input, 4)?
-        != &[
-            EXTRINSIC_VERSION,
-            *balances_pallet_index,
-            *transfer_allow_death_call_index,
-            MULTIADDRESS_TYPE,
-        ]
-    {
-        return Err(Error::InvalidMetadata);
-    }
-
-    let mut recipient = [0_u8; 32];
-    recipient.copy_from_slice(next_n_bytes(&mut input, 32)?);
-
-    debug_assert!(!input.is_empty());
-
-    let Ok(send_amount) = Compact::<u128>::decode(&mut input) else {
-        return Err(Error::InvalidScale);
-    };
-
-    let send_amount = send_amount.0;
-    let mut send_amount_bytes = [0_u8; 16];
-    send_amount_bytes.copy_from_slice(&send_amount.to_le_bytes());
-
-    Ok(CxxPolkadotDecodeUnsignedTransfer { recipient, send_amount_bytes })
-}
-
-fn decode_unsigned_transfer_allow_death(
-    chain_metadata: &CxxPolkadotChainMetadata,
-    input: &[u8],
-) -> Box<CxxPolkadotDecodeUnsignedTransferResult> {
-    let r = decode_unsigned_transfer_allow_death_impl(chain_metadata, input);
-    Box::new(CxxPolkadotDecodeUnsignedTransferResult(r))
 }
 
 /// Mortality tells the blockchain what range of blocks an extrinsic is valid
