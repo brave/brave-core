@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/brave_channel.gni")
+import("//brave/build/version.gni")
 import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//build/config/apple/symbols.gni")
 import("//build/util/branding.gni")
@@ -20,10 +21,6 @@ declare_args() {
 
   brave_product_name = "brave"
   brave_exe = ""
-  brave_version_major = ""
-  brave_version_minor = ""
-  brave_version_build = ""
-  chrome_version_string = ""
   target_android_output_format = ""
   brave_android_keystore_path = "."
   brave_android_keystore_name = ""
@@ -63,8 +60,6 @@ if (should_generate_symbols && is_mac) {
   assert(enable_dsyms && !is_component_build,
          "Incompatible args to generate symbols on MacOS")
 }
-
-brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 
 if (brave_exe == "") {
   brave_exe = brave_product_name
