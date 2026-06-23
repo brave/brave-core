@@ -145,12 +145,12 @@ brave_settings_ts_files = [
   "getting_started_page/brave_account_logged_out_row.ts",
   "getting_started_page/brave_account_row.html.ts",
   "getting_started_page/brave_account_row.ts",
+  "getting_started_page/brave_account_row_base.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 
 brave_settings_local_css_files = [
   "getting_started_page/brave_account_logged_in_row.css",
-  "getting_started_page/brave_account_logged_out_row.css",
   "getting_started_page/brave_account_row_common.css",
 ]
 

@@ -19,6 +19,7 @@ export function getHtml(this: SettingsBraveAccountRowElement) {
       ? html`
         <brave-account-logged-in-row
             .browserProxy=${this.browserProxy}
+            .initiatingServiceName=${this.initiatingServiceName}
             .state=${this.state.loggedIn}>
         </brave-account-logged-in-row>`
       : html`
