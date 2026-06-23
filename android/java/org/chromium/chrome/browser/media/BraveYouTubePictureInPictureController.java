@@ -595,6 +595,17 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
+        // The session was already tearing down when the screen locked: the user had
+        // deliberately expanded out of PiP. Resurrecting it would drop them back into
+        // a PiP window with the player no longer in fullscreen. Finish the exit that
+        // the lock deferred instead of entering PiP again.
+        if (mExiting) {
+            mInterruptedByScreenLock = false;
+            maybeRestoreFullscreenUi(mSessionId, webContents);
+            maybeSuspendDismissed(mSessionId, webContents);
+            return;
+        }
+
         if (mActivity.isInPictureInPictureMode()) {
             // The PiP window survived the lock, so there is no re-entry to drive. Consume the
             // interrupt so the next screen-off can pause playback again (the user may resume
