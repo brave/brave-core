@@ -6,10 +6,12 @@
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
 
 #include <memory>
+#include <optional>
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 
 namespace {
@@ -223,6 +225,62 @@ TEST(BraveBrowserViewTabbedLayoutImplSidebarTest,
           /*sidebar_leading=*/true, sidebar, panel, client);
   EXPECT_EQ(-110, adjusted.x());
   EXPECT_EQ(150, adjusted.right() - sidebar.right());  // 150px visible to user
+}
+
+// ---------------------------------------------------------------------------
+// ComputeAdjustedInfobarBounds
+//
+// Verifies that the infobar width is reset to the full browser window width
+// regardless of any panel-driven narrowing, and that vertical tab insets are
+// applied correctly on each side.
+// ---------------------------------------------------------------------------
+
+TEST(BraveBrowserViewTabbedLayoutImplInfobarTest,
+     FullWidthWhenPanelNarrowsContents) {
+  // Upstream narrowed the infobar to 700px (contents area with panel open).
+  // Full browser window is 1000px wide — the infobar must be reset to that.
+  gfx::Rect adjusted =
+      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
+          gfx::Rect(0, 50, 700, 30), /*full_window_width=*/1000,
+          /*vtab_insets=*/std::nullopt);
+  EXPECT_EQ(gfx::Rect(0, 50, 1000, 30), adjusted);
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplInfobarTest,
+     UnchangedWhenAlreadyFullWidth) {
+  // When no panel is open the infobar already spans the full width; the call
+  // must be a no-op for width.
+  gfx::Rect adjusted =
+      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
+          gfx::Rect(0, 50, 1000, 30), /*full_window_width=*/1000,
+          /*vtab_insets=*/std::nullopt);
+  EXPECT_EQ(gfx::Rect(0, 50, 1000, 30), adjusted);
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplInfobarTest, LeadingVtabInsetsFromLeft) {
+  // Vertical tabs on the left (leading) with width 150 → left inset of 150.
+  // Width is reset to 1000 first, then inset → x=150, width=850.
+  gfx::Insets insets;
+  insets.set_left(150);
+  gfx::Rect adjusted =
+      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
+          gfx::Rect(0, 50, 700, 30), /*full_window_width=*/1000,
+          std::make_optional(insets));
+  EXPECT_EQ(150, adjusted.x());
+  EXPECT_EQ(850, adjusted.width());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplInfobarTest, TrailingVtabInsetsFromRight) {
+  // Vertical tabs on the right (trailing) with width 150 → right inset of 150.
+  // Width is reset to 1000 first, then inset → x=0, width=850.
+  gfx::Insets insets;
+  insets.set_right(150);
+  gfx::Rect adjusted =
+      BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
+          gfx::Rect(0, 50, 700, 30), /*full_window_width=*/1000,
+          std::make_optional(insets));
+  EXPECT_EQ(0, adjusted.x());
+  EXPECT_EQ(850, adjusted.width());
 }
 
 TEST(BraveBrowserViewTabbedLayoutImplTest,

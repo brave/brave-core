@@ -104,6 +104,19 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
   return result;
 }
 
+// static
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
+    const gfx::Rect& current_bounds,
+    int full_window_width,
+    std::optional<gfx::Insets> vtab_insets) {
+  gfx::Rect bounds = current_bounds;
+  bounds.set_width(full_window_width);
+  if (vtab_insets) {
+    bounds.Inset(*vtab_insets);
+  }
+  return bounds;
+}
+
 int BraveBrowserViewTabbedLayoutImpl::GetIdealSideBarWidth() const {
   if (!views().sidebar_container) {
     return 0;
@@ -196,20 +209,27 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     layout.AddChild(views().vertical_tab_strip_host, gfx::Rect(), false);
   }
 
-  // Adjust infobar layout if vertical tabs are shown. i.e. sets insets to
-  // infobar_container considering vertical tab strip. On macOS, the insets can
-  // have bottom insets but it doesn't need for info bar.
-  if (views().vertical_tab_strip_host && delegate().IsInfobarVisible()) {
-    auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
-    CHECK(infobar_layout);
-    if (infobar_layout && infobar_layout->visibility.value_or(true)) {
-      gfx::Insets insets = GetInsetsConsideringVerticalTabHost();
-      insets.set_bottom(0);
-      infobar_layout->bounds.Inset(insets);
-    }
-  }
+  AdjustInfobarLayout(layout, params);
 
   return layout;
+}
+
+void BraveBrowserViewTabbedLayoutImpl::AdjustInfobarLayout(
+    ProposedLayout& layout,
+    const BrowserLayoutParams params) const {
+  if (!IsParentedTo(views().infobar_container, views().browser_view) ||
+      !delegate().IsInfobarVisible()) {
+    return;
+  }
+
+  auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
+  CHECK(infobar_layout);
+
+  infobar_layout->bounds = ComputeAdjustedInfobarBounds(
+      infobar_layout->bounds, params.visual_client_area.width(),
+      views().vertical_tab_strip_host
+          ? std::make_optional(GetInsetsConsideringVerticalTabHost())
+          : std::nullopt);
 }
 
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
