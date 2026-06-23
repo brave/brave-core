@@ -19,8 +19,10 @@ class ImageButton;
 class MenuRunner;
 }  // namespace views
 
-// Delta from regular size for the title text.
-inline constexpr int kTitleFontSizeDelta = 2;
+// Absolute size, in pixels, for the workspace title text. Using an absolute
+// size rather than a delta keeps the title consistent regardless of the
+// platform's default UI font size.
+inline constexpr int kTitleFontSize = 14;
 
 // A workspace list row that highlights its background on hover and shows a
 // darker tint when selected.  SetNotifyEnterExitOnChild propagates mouse

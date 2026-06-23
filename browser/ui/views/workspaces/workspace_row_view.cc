@@ -21,6 +21,7 @@
 #include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/color/color_id.h"
 #include "ui/gfx/font.h"
+#include "ui/gfx/font_list.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/image_button.h"
@@ -70,9 +71,10 @@ class WorkspaceInfoButton : public views::Button {
 
     name_label_ = AddChildView(
         std::make_unique<views::Label>(base::UTF8ToUTF16(info.name)));
-    name_label_->SetFontList(name_label_->font_list()
-                                 .DeriveWithSizeDelta(kTitleFontSizeDelta)
-                                 .DeriveWithWeight(gfx::Font::Weight::BOLD));
+    const gfx::FontList& base_font = name_label_->font_list();
+    name_label_->SetFontList(
+        base_font.Derive(kTitleFontSize - base_font.GetFontSize(),
+                         base_font.GetFontStyle(), gfx::Font::Weight::BOLD));
     name_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
     stats_label_ =

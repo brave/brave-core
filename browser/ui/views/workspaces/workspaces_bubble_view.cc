@@ -24,6 +24,7 @@
 #include "ui/base/models/dialog_model_field.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/font.h"
+#include "ui/gfx/font_list.h"
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/label.h"
@@ -63,9 +64,10 @@ WorkspacesBubbleView::WorkspacesBubbleView(
     auto* empty_title =
         workspaces_container->AddChildView(std::make_unique<views::Label>(
             l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_EMPTY_TITLE)));
-    empty_title->SetFontList(empty_title->font_list()
-                                 .DeriveWithSizeDelta(kTitleFontSizeDelta)
-                                 .DeriveWithWeight(gfx::Font::Weight::BOLD));
+    const gfx::FontList& base_font = empty_title->font_list();
+    empty_title->SetFontList(
+        base_font.Derive(kTitleFontSize - base_font.GetFontSize(),
+                         base_font.GetFontStyle(), gfx::Font::Weight::BOLD));
     empty_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
     empty_title->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(8, 8, 4, 8));
 
