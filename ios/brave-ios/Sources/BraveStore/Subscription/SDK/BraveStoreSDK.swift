@@ -584,9 +584,9 @@ public class BraveStoreSDK: AppStoreSDK {
     case .vpn:
       break
     case .leo:
-      Preferences.AIChat.subscriptionProductId.value = orderId
+      Preferences.AIChat.subscriptionOrderId.value = orderId
     case .origin:
-      Preferences.BraveOrigin.purchaseProductId.value = orderId
+      Preferences.BraveOrigin.purchaseOrderId.value = orderId
     }
 
     Logger.module.info("[BraveStoreSDK] - Order Completed")

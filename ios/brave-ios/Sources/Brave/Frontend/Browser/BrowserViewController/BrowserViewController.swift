@@ -946,7 +946,7 @@ public class BrowserViewController: UIViewController {
       Task.delayed(bySeconds: 1.0) { @MainActor in
         // Refresh Skus VPN Credentials before loading VPN state
         await BraveSkusManager(isPrivateMode: self.privateBrowsingManager.isPrivateBrowsing)?
-          .refreshVPNCredentials()
+          .refreshSkusCredentials()
 
         self.vpnProductInfo.load()
         if let customCredential = Preferences.VPN.skusCredential.value,

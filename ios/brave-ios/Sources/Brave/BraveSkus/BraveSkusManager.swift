@@ -28,8 +28,9 @@ public class BraveSkusManager {
   }
 
   @MainActor
-  public func refreshVPNCredentials() async {
-    if let domain = Preferences.VPN.skusCredentialDomain.value {
+  public func refreshSkusCredentials() async {
+    let domains = BraveStoreProductGroup.allCases.map(\.skusDomain)
+    for domain in domains {
       // Always refresh credentials and trust the credentials from Brave-Core rather than cached credentials
       _ = await credentialSummary(for: domain)
     }
@@ -116,22 +117,12 @@ public class BraveSkusManager {
           if Preferences.AIChat.subscriptionOrderId.value == nil {
             Preferences.AIChat.subscriptionOrderId.value = credentialSummary.orderId
           }
-
-          if Preferences.AIChat.subscriptionOrderId.value != nil {
-            Logger.module.debug("[SkusManager] - Preparing Leo Credentials")
-            _ = await prepareCredentialsPresentation(for: domain, path: "*")
-
-            Preferences.AIChat.subscriptionExpirationDate.value = credentialSummary.expiresAt
-          }
+          Preferences.AIChat.subscriptionProductId.value = credentialSummary.product?.rawValue
         case .origin:
           if Preferences.BraveOrigin.purchaseOrderId.value == nil {
             Preferences.BraveOrigin.purchaseOrderId.value = credentialSummary.orderId
           }
-
-          if Preferences.BraveOrigin.purchaseOrderId.value != nil {
-            Logger.module.debug("[SkusManager] - Preparing Origin Credentials")
-            _ = await prepareCredentialsPresentation(for: domain, path: "*")
-          }
+          Preferences.BraveOrigin.purchaseProductId.value = credentialSummary.product?.rawValue
         case .unknown:
           Logger.module.debug("[SkusManager] - Unknown Credentials")
           break
