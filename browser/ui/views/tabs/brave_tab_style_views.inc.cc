@@ -154,20 +154,11 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
   if (!ShouldShowVerticalTabs()) {
     // Horizontal tabs should have a visual gap between them, even if their view
     // bounds are touching or slightly overlapping. Create a visual gap by
-    // insetting the bounds of the tab by the required gap plus overlap before
-    // drawing the rectangle.
+    // insetting the bounds of the tab by the required gap before drawing the
+    // rectangle.
     aligned_bounds.Inset(
         gfx::InsetsF::VH(tabs::GetHorizontalTabVerticalSpacing() * scale,
                          tabs::kHorizontalTabInset * scale));
-
-    // |aligned_bounds| is tab's bounds(). So, it includes insets also.
-    // Shrink height more if it's overlapped.
-    if (path_type != TabStyle::PathType::kHitTest) {
-      aligned_bounds.Inset(gfx::InsetsF::TLBR(
-          0, 0,
-          GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) * scale,
-          0));
-    }
 
     // For hit testing, expand the rectangle so that the visual margins around
     // tabs can be used to select the tab. This will ensure that there is no
@@ -323,17 +314,7 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
   }
 
   if (HorizontalTabsUpdateEnabled()) {
-    // Ignore any stroke widths when determining the horizontal contents insets.
-    // To make contents vertically align evenly regardless of overlap in non
-    // vertical tab, use it as bottom inset in a tab as it's hidden by
-    // overlapping.
-    return insets +
-           gfx::Insets::TLBR(
-               0, 0,
-               is_vertical_tabs
-                   ? 0
-                   : GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap),
-               0);
+    return insets;
   }
 
   auto result = TabStyleViewsImpl::GetContentsInsets();
