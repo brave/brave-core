@@ -466,6 +466,114 @@ def CheckNalaIconOverridesExistUpstream(input_api, output_api):
     return []
 
 
+def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
+    """Verifies each Nala raster override still matches its upstream icon.
+
+    nala_icon_raster_overrides in android/nala/icons.gni generate density PNGs
+    from a Nala vector to override upstream Chromium icons that ship as
+    density-qualified PNGs (see //brave/build/android/nala_vd_rasterizer). Each
+    entry hard-codes that the upstream icon is PNG-only and which density
+    buckets it defines. A Chromium roll can silently invalidate either: convert
+    the icon to a vector, or add a density bucket the override does not cover
+    (so the upstream PNG wins on those devices). Neither conflicts during the
+    roll because the overlay isn't a patch. This check runs unconditionally so
+    such drift fails presubmit instead of shipping a stale or missing icon.
+    """
+    icons_gni = brave_chromium_utils.wspath('//brave/android/nala/icons.gni')
+    if not os.path.exists(icons_gni):
+        return []
+    with open(icons_gni, encoding='utf-8') as f:
+        gni_contents = f.read()
+
+    # Parse the raster override list: a GN list of scopes, each with a source
+    # vector, a dest drawable name, and the density buckets to generate.
+    block = re.search(r'nala_icon_raster_overrides\s*=\s*\[(.*?)\n\]',
+                      gni_contents, re.DOTALL)
+    if not block:
+        return []
+    overrides = []
+    for scope in re.findall(r'\{(.*?)\}', block.group(1), re.DOTALL):
+        source = re.search(r'source\s*=\s*"([^"]+)"', scope)
+        dest = re.search(r'dest\s*=\s*"([^"]+)"', scope)
+        densities = re.search(r'densities\s*=\s*\[(.*?)\]', scope, re.DOTALL)
+        if source and dest and densities:
+            overrides.append({
+                'source': source.group(1),
+                'dest': dest.group(1),
+                'densities': set(re.findall(r'"([^"]+)"', densities.group(1))),
+            })
+    if not overrides:
+        return []
+
+    src_dir = brave_chromium_utils.get_src_dir()
+    pathspecs = ['*/%s.*' % o['dest'] for o in overrides]
+    try:
+        tracked = input_api.subprocess.check_output(
+            ['git', '-C', src_dir, 'ls-files', '--'] + pathspecs,
+            encoding='utf-8')
+    except Exception:  # pylint: disable=broad-except
+        # Upstream tree unavailable as a git repo (e.g. some CI envs); skip.
+        return []
+
+    # Group the upstream resource files by drawable name.
+    files_by_dest = {o['dest']: [] for o in overrides}
+    for line in tracked.splitlines():
+        if '/res' not in line:  # Limit to Android resource dirs.
+            continue
+        bucket_dir = input_api.os_path.basename(
+            input_api.os_path.dirname(line))
+        if not bucket_dir.startswith('drawable'):
+            continue
+        stem = input_api.os_path.basename(line).split('.')[0]
+        if stem in files_by_dest:
+            files_by_dest[stem].append(line)
+
+    problems = []
+    for override in overrides:
+        dest = override['dest']
+        files = files_by_dest.get(dest, [])
+        if not files:
+            # Outright removal is reported by CheckNalaIconOverridesExist...
+            continue
+
+        # The upstream icon must still be PNG-only. A vector form (.xml,
+        # including anydpi) means it should move to nala_icon_overrides.
+        vectors = sorted(f for f in files
+                         if input_api.os_path.splitext(f)[1] == '.xml')
+        if vectors:
+            problems.append(
+                output_api.PresubmitError(
+                    'Nala raster override "%s" now ships as a vector upstream'
+                    % dest,
+                    items=vectors,
+                    long_text='Upstream now provides %s as a VectorDrawable. '
+                    'Move it from nala_icon_raster_overrides to '
+                    'nala_icon_overrides (a default-bucket vector override) '
+                    'instead of generating PNGs.' % dest))
+            continue
+
+        # The density buckets generated must match upstream exactly.
+        upstream_buckets = {}
+        for f in files:
+            bucket = input_api.os_path.basename(
+                input_api.os_path.dirname(f))[len('drawable'):].lstrip('-')
+            upstream_buckets[bucket] = f
+        missing = set(upstream_buckets) - override['densities']
+        extra = override['densities'] - set(upstream_buckets)
+        if missing or extra:
+            problems.append(
+                output_api.PresubmitError(
+                    'Nala raster override "%s" density buckets differ from '
+                    'upstream' % dest,
+                    long_text='The densities list for %s in '
+                    'android/nala/icons.gni must match the upstream buckets. '
+                    'Upstream-only (override missing): %s. Override-only '
+                    '(stale): %s.' % (dest, sorted(missing)
+                                      or 'none', sorted(extra) or 'none')))
+
+    return problems
+
+
 def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     """Checks newly added source files have corresponding GN changes."""
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
