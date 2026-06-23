@@ -672,6 +672,7 @@ const shouldUnhideElementAsync = async (element) => {
         return true
       }
     }
+    return false
   } else {
     return false
   }
