@@ -36,8 +36,8 @@
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
@@ -469,9 +469,9 @@ BraveBrowserView::~BraveBrowserView() {
   tab_cycling_event_handler_.reset();
 
   // Destroying delegate view to clear vertical tab state. See its dtor.
-  if (vertical_tab_strip_widget_delegate_view_) {
-    RemoveChildViewT(vertical_tab_strip_widget_delegate_view_);
-    vertical_tab_strip_widget_delegate_view_ = nullptr;
+  if (vertical_tab_strip_container_view_) {
+    auto container_view = RemoveChildViewT(vertical_tab_strip_container_view_);
+    vertical_tab_strip_container_view_ = nullptr;
   }
 }
 
@@ -771,8 +771,8 @@ void BraveBrowserView::AddedToWidget() {
   UpdateWebViewRoundedCorners();
 
   if (vertical_tab_strip_host_view_) {
-    vertical_tab_strip_widget_delegate_view_ =
-        AddChildView(std::make_unique<VerticalTabStripWidgetDelegateView>(
+    vertical_tab_strip_container_view_ =
+        AddChildView(std::make_unique<BraveVerticalTabStripContainerView>(
             this, vertical_tab_strip_host_view_));
     EnsureFindBarHostViewIsLastChild();
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
@@ -1083,8 +1083,8 @@ void BraveBrowserView::UpdateRoundedCornersUI() {
 
 void BraveBrowserView::UpdateVerticalTabStripBorder() {
   // Vertical tab strip's border could be toggled based on split view state.
-  if (vertical_tab_strip_widget_delegate_view_) {
-    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+  if (vertical_tab_strip_container_view_) {
+    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
         ->UpdateBorder();
   }
 }
@@ -1219,8 +1219,8 @@ bool BraveBrowserView::IsInTabDragging() const {
 void BraveBrowserView::ReadyToListenFullscreenChanges() {
   CHECK(browser_->GetFeatures().exclusive_access_manager());
 
-  if (vertical_tab_strip_widget_delegate_view_) {
-    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+  if (vertical_tab_strip_container_view_) {
+    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
         ->ListenFullscreenChanges();
   }
 }
@@ -1228,8 +1228,8 @@ void BraveBrowserView::ReadyToListenFullscreenChanges() {
 void BraveBrowserView::StopListeningFullscreenChanges() {
   CHECK(browser_->GetFeatures().exclusive_access_manager());
 
-  if (vertical_tab_strip_widget_delegate_view_) {
-    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+  if (vertical_tab_strip_container_view_) {
+    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
         ->StopListeningFullscreenChanges();
   }
 }
@@ -1248,9 +1248,9 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
     sidebar_container_view_->ShowSidebarOnMouseOver(point_in_screen);
   }
 
-  if (vertical_tab_strip_widget_delegate_view_ &&
+  if (vertical_tab_strip_container_view_ &&
       tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
-    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+    vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
         ->ShowVerticalTabStripOnMouseOver(point_in_screen);
   }
 }

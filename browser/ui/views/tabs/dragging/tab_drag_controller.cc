@@ -15,8 +15,8 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -98,11 +98,10 @@ void BraveTabDragController::DetachAndAttachToNewContext(
             GetAttachedBrowserWidget()->GetNativeWindow()));
     DCHECK(browser_view);
 
-    auto* widget_delegate_view =
-        browser_view->vertical_tab_strip_widget_delegate_view();
-    DCHECK(widget_delegate_view);
+    auto* container_view = browser_view->vertical_tab_strip_container_view();
+    DCHECK(container_view);
 
-    auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+    auto* region_view = container_view->vertical_tab_strip_region_view();
     DCHECK(region_view);
 
     return region_view;

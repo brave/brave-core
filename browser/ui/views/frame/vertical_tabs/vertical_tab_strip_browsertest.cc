@@ -18,8 +18,8 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
@@ -250,12 +250,12 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
   void InvalidateAndRunLayoutForVerticalTabStrip() {
-    auto* widget_delegate_view =
-        browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-    ASSERT_TRUE(widget_delegate_view);
-    widget_delegate_view->vertical_tab_strip_region_view()->InvalidateLayout();
+    auto* container_view =
+        browser_view()->vertical_tab_strip_container_view_.get();
+    ASSERT_TRUE(container_view);
+    container_view->vertical_tab_strip_region_view()->InvalidateLayout();
     views::test::RunScheduledLayout(
-        widget_delegate_view->vertical_tab_strip_region_view());
+        container_view->vertical_tab_strip_region_view());
   }
 
  protected:
@@ -435,11 +435,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   // Pre-condition: Floating mode is enabled by default.
   using State = BraveVerticalTabStripRegionView::State;
   ASSERT_TRUE(tabs::utils::IsFloatingVerticalTabsEnabled(browser()));
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-  ASSERT_TRUE(widget_delegate_view);
+  auto* container_view =
+      browser_view()->vertical_tab_strip_container_view_.get();
+  ASSERT_TRUE(container_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
   ASSERT_EQ(State::kExpanded, region_view->state());
 
@@ -584,11 +584,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
 
   AppendTab(browser());
 
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view();
-  ASSERT_TRUE(widget_delegate_view);
+  auto* container_view = browser_view()->vertical_tab_strip_container_view();
+  ASSERT_TRUE(container_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
   ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
             region_view->state());
@@ -622,11 +621,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
                        LayoutAfterFirstTabCreation) {
   ToggleVerticalTabStrip();
 
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view();
-  ASSERT_TRUE(widget_delegate_view);
+  auto* container_view = browser_view()->vertical_tab_strip_container_view();
+  ASSERT_TRUE(container_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
   ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
             region_view->state());
@@ -1110,7 +1108,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   // When clicking the toggle button,
   using State = BraveVerticalTabStripRegionView::State;
   auto* region_view_1 = browser_view()
-                            ->vertical_tab_strip_widget_delegate_view_
+                            ->vertical_tab_strip_container_view_
                             ->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view_1);
   ASSERT_EQ(State::kExpanded, region_view_1->state());
@@ -1127,7 +1125,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
       static_cast<BraveBrowserView*>(
           Browser::Create(Browser::CreateParams(browser()->profile(), true))
               ->window())
-          ->vertical_tab_strip_widget_delegate_view_
+          ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(State::kCollapsed, region_view_2->state());
 
@@ -1157,7 +1155,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
       static_cast<BraveBrowserView*>(
           Browser::Create(Browser::CreateParams(browser()->profile(), true))
               ->window())
-          ->vertical_tab_strip_widget_delegate_view_
+          ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(State::kCollapsed, region_view_3->state());
 }
@@ -1171,7 +1169,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
   // When setting the expanded width,
   using State = BraveVerticalTabStripRegionView::State;
   auto* region_view_1 = browser_view()
-                            ->vertical_tab_strip_widget_delegate_view_
+                            ->vertical_tab_strip_container_view_
                             ->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view_1);
   ASSERT_EQ(State::kExpanded, region_view_1->state());
@@ -1185,7 +1183,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
       static_cast<BraveBrowserView*>(
           Browser::Create(Browser::CreateParams(browser()->profile(), true))
               ->window())
-          ->vertical_tab_strip_widget_delegate_view_
+          ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(100, region_view_2->expanded_width_);
 
@@ -1206,7 +1204,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
       static_cast<BraveBrowserView*>(
           Browser::Create(Browser::CreateParams(browser()->profile(), true))
               ->window())
-          ->vertical_tab_strip_widget_delegate_view_
+          ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(200, region_view_3->expanded_width_);
 }
@@ -1378,9 +1376,9 @@ class VerticalTabStripDragAndDropBrowserTest
 #if BUILDFLAG(IS_WIN)
     aura::test::EnableUIControlsAuraWin();
 
-    auto* widget_delegate_view =
-        browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-    ASSERT_TRUE(widget_delegate_view);
+    auto* container_view =
+        browser_view()->vertical_tab_strip_container_view_.get();
+    ASSERT_TRUE(container_view);
 #endif  // defined(IS_WIN)
 
 #if BUILDFLAG(IS_OZONE)
@@ -1418,11 +1416,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
   // Pre-conditions ------------------------------------------------------------
   AppendTab(browser());
 
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-  ASSERT_TRUE(widget_delegate_view);
+  auto* container_view =
+      browser_view()->vertical_tab_strip_container_view_.get();
+  ASSERT_TRUE(container_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
   ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
             region_view->state());
@@ -1991,11 +1989,11 @@ class VerticalTabStripHideCompletelyTest : public VerticalTabStripBrowserTest {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   // Given vertical tab strip is enabled and collapsed with the flag is on
   ToggleVerticalTabStrip();
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-  ASSERT_TRUE(widget_delegate_view);
+  auto* container_view =
+      browser_view()->vertical_tab_strip_container_view_.get();
+  ASSERT_TRUE(container_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
 
   region_view->ToggleState();
@@ -2036,11 +2034,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
       gfx::AnimationTestApi::SetRichAnimationRenderMode(
           gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
 
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-  ASSERT_TRUE(widget_delegate_view);
+  auto* container_view =
+      browser_view()->vertical_tab_strip_container_view_.get();
+  ASSERT_TRUE(container_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
 
   region_view->ToggleState();
@@ -2082,11 +2080,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest,
 
   ToggleVerticalTabStrip();
 
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-  ASSERT_TRUE(widget_delegate_view);
+  auto* container_view =
+      browser_view()->vertical_tab_strip_container_view_.get();
+  ASSERT_TRUE(container_view);
 
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
 
   // Collapse the region view so it's hidden completely.
@@ -2148,10 +2146,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   // https://github.com/brave/brave-browser/issues/53498
   browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
 
-  auto* widget_delegate_view =
-      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
-  ASSERT_TRUE(widget_delegate_view);
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  auto* container_view =
+      browser_view()->vertical_tab_strip_container_view_.get();
+  ASSERT_TRUE(container_view);
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
 
   auto* host_view = browser_view()->vertical_tab_strip_host_view_.get();
@@ -2177,7 +2175,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
 
   gfx::Rect vertical_tab_bounds;
   // The embedded view should now be on the left in screen coordinates.
-  vertical_tab_bounds = widget_delegate_view->GetBoundsInScreen();
+  vertical_tab_bounds = container_view->GetBoundsInScreen();
   const gfx::Rect contents_bounds_in_screen = contents->GetBoundsInScreen();
   EXPECT_LE(vertical_tab_bounds.right(), contents_bounds_in_screen.x());
 
@@ -2196,7 +2194,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
 
   gfx::Rect vertical_tab_bounds_right;
   // The embedded view should now be on the left in screen coordinates.
-  vertical_tab_bounds_right = widget_delegate_view->GetBoundsInScreen();
+  vertical_tab_bounds_right = container_view->GetBoundsInScreen();
   const gfx::Rect contents_bounds_right = contents->GetBoundsInScreen();
   EXPECT_LE(contents_bounds_right.right(), vertical_tab_bounds_right.x());
 }

@@ -16,8 +16,8 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/common/pref_names.h"
@@ -268,11 +268,10 @@ class BraveBrowserViewWithRoundedCornersTest
   }
 
   BraveVerticalTabStripRegionView* vertical_tab_strip_region() {
-    auto* widget_delegate_view =
-        BraveBrowserView::From(browser_view())
-            ->vertical_tab_strip_widget_delegate_view();
+    auto* container_view = BraveBrowserView::From(browser_view())
+                               ->vertical_tab_strip_container_view();
 
-    return widget_delegate_view->vertical_tab_strip_region_view();
+    return container_view->vertical_tab_strip_region_view();
   }
 
   bool IsRoundedCornersEnabled() const { return GetParam(); }

@@ -19,8 +19,8 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -735,13 +735,13 @@ void BraveToolbarView::OnVerticalTabTogglePressed() {
     return;
   }
 
-  auto* delegate_view =
-      brave_browser_view->vertical_tab_strip_widget_delegate_view();
-  if (!delegate_view) {
+  auto* container_view =
+      brave_browser_view->vertical_tab_strip_container_view();
+  if (!container_view) {
     return;
   }
 
-  auto* region_view = delegate_view->vertical_tab_strip_region_view();
+  auto* region_view = container_view->vertical_tab_strip_region_view();
   if (!region_view) {
     return;
   }

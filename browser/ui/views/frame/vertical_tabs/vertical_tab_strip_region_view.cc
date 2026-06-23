@@ -619,7 +619,7 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
   auto target_state = state_;
 
   // Minimum size is used for host view's preferred size.
-  // See VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged().
+  // See BraveVerticalTabStripContainerView::ChildPreferredSizeChanged().
   // When floating, host view's size should not be changed during the floating.
   if (state_ == State::kFloating) {
     target_state = State::kCollapsed;
@@ -1023,7 +1023,7 @@ void BraveVerticalTabStripRegionView::
 
   // Call after setting visibility as region view's visibility is referred when
   // updating widget bounds at
-  // VerticalTabStripWidgetDelegateView::UpdateVerticalTabBounds().
+  // BraveVerticalTabStripContainerView::UpdateVerticalTabBounds().
   PreferredSizeChanged();
 }
 
@@ -1085,7 +1085,7 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
                                             calculate_expanded_width());
 #if BUILDFLAG(IS_MAC)
     // When region view's width is zero, widget gets hidden by
-    // VerticalTabStripWidgetDelegateView::UpdateVerticalTabBounds().
+    // BraveVerticalTabStripContainerView::UpdateVerticalTabBounds().
     // Then, width animation seems not working properly on macOS.
     // To avoid widget getting hidden, we set a minimum width when
     // animation goes for showing.
