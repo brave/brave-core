@@ -364,14 +364,18 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 }
 
-// Test that MaybeSetFullScreenAndPictureInPictureMode() works after navigation.
+// Watching one YouTube video and then opening another is an ordinary flow, not
+// an edge case: the user enters fullscreen and PiP on the first video, then
+// moves to a second video and expects the button to work there too. This
+// verifies the entry point still fires on the new page, so a completed request
+// on the previous page leaves no stale state behind that would block the next.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
-                       MaybeSetFullscreenWorksAfterNavigation) {
+                       WorksAfterNavigatingToAnotherVideo) {
   const GURL url1 = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
   const GURL url2 =
       https_server_.GetURL("youtube.com", "/yt_fullscreen.html?next=1");
 
-  // Navigate to first YouTube page.
+  // The user opens the first video.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url1, 1,
                                                       true);
 
@@ -379,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  // Make fullscreen request on first page.
+  // The user triggers fullscreen and PiP on the first video.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
@@ -390,11 +394,11 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
 
-  // Navigate to a new page after the first request completes.
+  // The user moves on to a second, different video.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url2, 1,
                                                       true);
 
-  // Verify MaybeSetFullScreenAndPictureInPictureMode() works again on new page.
+  // The entry point must work on the second video just as it did on the first.
   helper->MaybeSetFullScreenAndPictureInPictureMode();
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
