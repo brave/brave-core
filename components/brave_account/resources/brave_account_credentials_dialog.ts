@@ -12,14 +12,19 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_credentials_dialog.html.js'
 import {
-  LoggedOutVerification,
+  ChangePasswordClientErrorCode,
+  ChangePasswordError,
+  LoggedInVerificationIntent,
   LoggedOutVerificationIntent,
   RegisterClientErrorCode,
   RegisterError,
   ResetPasswordClientErrorCode,
   ResetPasswordError,
+  VerificationIntentFieldTags,
+  whichVerificationIntent,
 } from './brave_account.mojom-webui.js'
 import { showError } from './brave_account_common.js'
+import { CredentialsVerification } from './brave_account_dialogs.js'
 
 // @ts-expect-error: no type definitions are generated for opaque_ke.bundle.js
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
@@ -60,14 +65,31 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
     if (!this.verification) {
       await this.register()
     } else {
-      switch (this.verification.intent) {
-        case LoggedOutVerificationIntent.kResetPassword:
-          await this.resetPassword()
+      switch (whichVerificationIntent(this.verification.intent)) {
+        case VerificationIntentFieldTags.LOGGED_OUT_INTENT: {
+          const intent = this.verification.intent.loggedOutIntent!
+          switch (intent) {
+            case LoggedOutVerificationIntent.kResetPassword:
+              await this.resetPassword()
+              break
+            default:
+              // kRegistration never arrives with a verification - that's the
+              // registration path above, which has no verification at all.
+              assertNotReached(`Unexpected intent: ${intent}!`)
+          }
           break
-        default:
-          // kRegistration never arrives with a verification - that's the
-          // registration path above, which has no verification at all.
-          assertNotReached(`Unexpected intent: ${this.verification.intent}!`)
+        }
+        case VerificationIntentFieldTags.LOGGED_IN_INTENT: {
+          const intent = this.verification.intent.loggedInIntent!
+          switch (intent) {
+            case LoggedInVerificationIntent.kChangePassword:
+              await this.changePassword()
+              break
+            default:
+              assertNotReached(`Unexpected intent: ${intent}!`)
+          }
+          break
+        }
       }
     }
 
@@ -148,10 +170,59 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
     }
   }
 
+  private async changePassword() {
+    try {
+      const blindedMessage = this.registration.start(this.password)
+      const { serializedResponse } =
+        await this.browserProxy.authentication.changePasswordPasswordInit(
+          blindedMessage,
+        )
+      const serializedRecord = this.registration.finish(
+        serializedResponse,
+        this.password,
+        this.getEmail(),
+      )
+      await this.browserProxy.authentication.changePasswordPasswordFinalize(
+        serializedRecord,
+      )
+    } catch (e) {
+      let error: ChangePasswordError
+
+      if (e && typeof e === 'object') {
+        error = e as ChangePasswordError
+      } else if (typeof e === 'string') {
+        error = {
+          clientError: {
+            errorCode: ChangePasswordClientErrorCode.kOpaqueError,
+          },
+        }
+      } else {
+        console.error('Unexpected error:', e)
+        error = {
+          clientError: {
+            errorCode: ChangePasswordClientErrorCode.kUnexpected,
+          },
+        }
+      }
+
+      showError({ kind: 'changePassword', details: error })
+    }
+  }
+
   private getEmail(): string {
     const email = this.verification?.verifiedEmail ?? this.email
     assert(email)
     return email
+  }
+
+  protected isChangePassword(): boolean {
+    return (
+      this.verification !== undefined
+      && whichVerificationIntent(this.verification.intent)
+        === VerificationIntentFieldTags.LOGGED_IN_INTENT
+      && this.verification.intent.loggedInIntent
+        === LoggedInVerificationIntent.kChangePassword
+    )
   }
 
   private browserProxy: BraveAccountBrowserProxy =
@@ -165,7 +236,11 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
   protected accessor isSubmitting: boolean = false
   protected accessor password: string = ''
   protected accessor passwordConfirmation: string = ''
-  protected accessor verification: LoggedOutVerification | undefined = undefined
+  // The pending verification (tagged intent + verified email), or `undefined`
+  // during registration. Drives the password reset/change dispatch
+  // and the dialog's title/description/button text.
+  protected accessor verification: CredentialsVerification | undefined =
+    undefined
   protected registration = new Registration()
 }
 

@@ -15,12 +15,14 @@ import type { PasswordStrengthChangedEventDetail } from './brave_account_passwor
 export function getHtml(this: BraveAccountCredentialsDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      .dialogDescription=${this.verification
-        ? '$i18n{BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_DESCRIPTION}'
-        : '$i18n{BRAVE_ACCOUNT_DESCRIPTION}'}
-      .dialogTitle=${this.verification
-        ? '$i18n{BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_TITLE}'
-        : '$i18n{BRAVE_ACCOUNT_CREATE_DIALOG_TITLE}'}
+      .dialogDescription=${!this.verification
+        ? '$i18n{BRAVE_ACCOUNT_DESCRIPTION}'
+        : '$i18n{BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_DESCRIPTION}'}
+      .dialogTitle=${!this.verification
+        ? '$i18n{BRAVE_ACCOUNT_CREATE_DIALOG_TITLE}'
+        : this.isChangePassword()
+          ? '$i18n{BRAVE_ACCOUNT_CHANGE_PASSWORD_DIALOG_TITLE}'
+          : '$i18n{BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_TITLE}'}
       ?show-back-button=${!this.verification}
     >
       <div slot="inputs">
@@ -72,9 +74,11 @@ export function getHtml(this: BraveAccountCredentialsDialogElement) {
         || this.isSubmitting}
         @click=${this.onSubmitButtonClicked}
       >
-        ${this.verification
-          ? '$i18n{BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL}'
-          : '$i18n{BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL}'}
+        ${!this.verification
+          ? '$i18n{BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL}'
+          : this.isChangePassword()
+            ? '$i18n{BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL}'
+            : '$i18n{BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL}'}
       </leo-button>
     </brave-account-dialog>
     <!--_html_template_end_-->`
