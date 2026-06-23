@@ -12,6 +12,8 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/history_embeddings/brave_batch_passage_embedder.h"
@@ -22,6 +24,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/passage_embeddings/core/passage_embeddings_features.h"
+#include "components/passage_embeddings/core/passage_embeddings_service_launcher.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
@@ -105,6 +108,24 @@ local_ai::mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
   return model_files;
 }
 
+// `StubServiceLauncher` is provided to `PassageEmbeddingsServiceController`,
+// and is used to spin up a sandboxed process. We pass a stub because we manage
+// the embedding service in-process, and the launcher path is never taken.
+class StubServiceLauncher : public PassageEmbeddingsServiceLauncher {
+ public:
+  static PassageEmbeddingsServiceLauncher& Create() {
+    static base::NoDestructor<StubServiceLauncher> launcher;
+    return *launcher;
+  }
+
+  void LaunchService(mojo::PendingReceiver<mojom::PassageEmbeddingsService>
+                         receiver) override {
+    NOTREACHED();
+  }
+  void OnServiceDisconnected(bool is_idle) override { NOTREACHED(); }
+  bool AllowedToLaunch() const override { return false; }
+};
+
 }  // namespace
 
 // static
@@ -115,7 +136,8 @@ BravePassageEmbeddingsServiceController::Get() {
 }
 
 BravePassageEmbeddingsServiceController::
-    BravePassageEmbeddingsServiceController() {
+    BravePassageEmbeddingsServiceController()
+    : PassageEmbeddingsServiceController(StubServiceLauncher::Create()) {
   // AddObserver re-fires OnLocalModelsReady synchronously if the
   // component is already installed; our handler sets model_dir_ready_
   // and notifies observer_list_ via EmbedderMetadataUpdated.
