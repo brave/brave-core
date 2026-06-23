@@ -164,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
 
@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
   // Wait for the resize to complete triggered by fullscreen change.
   content::WaitForResizeComplete(web_contents());
   EXPECT_TRUE(IsVideoPlaying());
@@ -233,7 +233,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Verify that the video is still in fullscreen mode.
   EXPECT_TRUE(
@@ -261,7 +261,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   ASSERT_TRUE(helper);
 
   // Attempt to set fullscreen, which should not change anything.
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   std::string dom_after =
       content::EvalJs(web_contents(), "document.body.innerHTML")
@@ -307,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  helper->MaybeSetFullscreen();
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Inject a script to simulate delayed loading of the video element fullscreen
   // button.
@@ -332,7 +332,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 // device
 // TODO(alexeybarabash): https://github.com/brave/brave-browser/issues/48430
 // Enable if possible
-// Test that MaybeSetFullscreen() works with multiple calls.
+// Test that MaybeSetFullScreenAndPictureInPictureMode() works with multiple calls.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        DISABLED_MultipleFullscreenCalls) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
@@ -343,12 +343,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  // Verify initially no fullscreen request has been made.
-  EXPECT_FALSE(helper->HasFullscreenBeenRequested());
-
   // First call should trigger fullscreen.
-  helper->MaybeSetFullscreen();
-  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Wait for fullscreen to be triggered.
   EXPECT_TRUE(
@@ -360,17 +356,14 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
 
   // Second call should work the same as first call.
-  helper->MaybeSetFullscreen();
-
-  // Should still show fullscreen was requested a second time for this page.
-  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
 
   // Wait again for fullscreen to be triggered.
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 }
 
-// Test that MaybeSetFullscreen() works after navigation.
+// Test that MaybeSetFullScreenAndPictureInPictureMode() works after navigation.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                        MaybeSetFullscreenWorksAfterNavigation) {
   const GURL url1 = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
@@ -385,27 +378,23 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
   ASSERT_TRUE(helper);
 
-  // Verify initially no fullscreen request has been made.
-  EXPECT_FALSE(helper->HasFullscreenBeenRequested());
-
   // Make fullscreen request on first page.
-  helper->MaybeSetFullscreen();
-  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
+
+  // Exit fullscreen explicitly so this test does not assert browser fullscreen
+  // behavior across navigations.
+  ASSERT_TRUE(content::ExecJs(web_contents(), "document.exitFullscreen()"));
+  EXPECT_TRUE(
+      WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
 
   // Navigate to a new page after the first request completes.
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url2, 1,
                                                       true);
-  EXPECT_TRUE(
-      WaitForJsResult(web_contents(), "document.fullscreenElement === null"));
 
-  // Verify fullscreen state resets on navigation.
-  EXPECT_FALSE(helper->HasFullscreenBeenRequested());
-
-  // Verify MaybeSetFullscreen() works again on new page.
-  helper->MaybeSetFullscreen();
-  EXPECT_TRUE(helper->HasFullscreenBeenRequested());
+  // Verify MaybeSetFullScreenAndPictureInPictureMode() works again on new page.
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
   EXPECT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 }
