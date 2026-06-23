@@ -641,7 +641,7 @@ const shouldUnhideElement = (element, pendingSrcAttributes) => {
     return true
   } else if (
     queryResults.foundThirdPartyResource
-    || queryResults.pendingSrcAttributes.size > 0
+    || queryResults.pendingSrcAttributes.length > 0
   ) {
     if (pendingSrcAttributes !== undefined) {
       queryResults.pendingSrcAttributes.forEach((src) => {
