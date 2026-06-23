@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_AGENT_APP_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_AGENT_APP_H_
 
-namespace brave_vpn {
-namespace v2 {
+namespace brave_vpn::v2 {
 
 // The AgentApp class encapsulates the main application logic for the Brave VPN
 // agent process. It provides a stub method for running the main event loop.
@@ -25,7 +24,6 @@ class AgentApp final {
   int Run();
 };
 
-}  // namespace v2
-}  // namespace brave_vpn
+}  // namespace brave_vpn::v2
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_AGENT_APP_H_

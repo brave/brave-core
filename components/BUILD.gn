@@ -90,7 +90,10 @@ test("brave_components_unittests") {
   }
 
   if (enable_brave_vpn_v2) {
-    deps += [ "//brave/components/brave_vpn/app/v2/shared:unit_tests" ]
+    deps += [
+      "//brave/components/brave_vpn/app/v2/agent:unit_tests",
+      "//brave/components/brave_vpn/app/v2/shared:unit_tests",
+    ]
   }
 
   if (enable_email_aliases) {
