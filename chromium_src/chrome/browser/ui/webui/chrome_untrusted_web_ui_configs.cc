@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -29,6 +30,11 @@
 #include "brave/browser/ui/webui/ai_chat/code_sandbox_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_news/brave_news_ui.h"
+#include "brave/components/brave_news/common/features.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #if !BUILDFLAG(IS_ANDROID)
@@ -95,4 +101,10 @@ void RegisterChromeUntrustedWebUIConfigs() {
         std::make_unique<ai_chat::CodeSandboxUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<BraveNewsUIConfig>());
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
 }

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+
+assert(enable_brave_news)
+assert(!is_android)
+
+source_set("brave_news") {
+  sources = [
+    "brave_news_ui.cc",
+    "brave_news_ui.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_news/common",
+    "//brave/components/constants",
+    "//chrome/browser/ui/webui/top_chrome",
+    "//content/public/browser",
+    "//content/public/common",
+  ]
+}
