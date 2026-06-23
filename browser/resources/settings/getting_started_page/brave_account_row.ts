@@ -3,38 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '//resources/cr_components/localized_link/localized_link.js'
 import { assert } from '//resources/js/assert.js'
-import { CrLitElement, PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
-// @ts-expect-error
-import { leoShowAlert } from '//resources/brave/leo.bundle.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl
 } from './brave_account_browser_proxy.js'
-import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
-import {
-  AccountState,
-  AccountStateFieldTags,
-  ResendConfirmationEmailClientErrorCode,
-  ResendConfirmationEmailError,
-  ResendConfirmationEmailErrorFieldTags,
-  ResendConfirmationEmailServerErrorCode,
-  whichAccountState,
-  whichResendConfirmationEmailError,
-} from '../brave_account.mojom-webui.js'
-import { getCss } from './brave_account_row.css.js'
+import { AccountState } from '../brave_account.mojom-webui.js'
 import { getHtml } from './brave_account_row.html.js'
 
-export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
+export class SettingsBraveAccountRowElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-row'
-  }
-
-  static override get styles() {
-    return getCss()
   }
 
   override render() {
@@ -43,19 +24,17 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
 
   static override get properties() {
     return {
+      browserProxy: { type: Object },
       initiatingServiceName: { type: String },
       state: { type: Object },
     }
   }
 
+  protected accessor browserProxy: BraveAccountBrowserProxy =
+    new BraveAccountBrowserProxyImpl()
   protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
 
-  private browserProxy: BraveAccountBrowserProxy =
-    new BraveAccountBrowserProxyImpl()
-  private isResendingConfirmationEmail = false
-  private measure?: (text: string) => number
-  private resizeObserver?: ResizeObserver
   private accountStateListenerId: number | null = null
 
   override connectedCallback() {
@@ -75,184 +54,6 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
     assert(this.accountStateListenerId)
     this.browserProxy.authenticationObserverCallbackRouter.removeListener(
       this.accountStateListenerId)
-
-    this.cleanUpEmailTruncation()
-  }
-
-  override updated(changedProperties: PropertyValues<this>) {
-    super.updated(changedProperties)
-
-    if ((changedProperties as Map<PropertyKey, unknown>).has('state')) {
-      this.updateEmailTruncation()
-    }
-  }
-
-  protected onLogOutButtonClicked() {
-    this.browserProxy.authentication.logOut()
-  }
-
-  protected async onResendConfirmationEmailLinkClicked(
-        e: CustomEvent<{event: Event}>) {
-    e.detail.event.preventDefault()
-
-    if (this.isResendingConfirmationEmail) return
-    this.isResendingConfirmationEmail = true
-
-    let error: ResendConfirmationEmailError | undefined
-
-    assert(this.state?.loggedOut?.verification)
-    try {
-      await this.browserProxy.authentication.resendVerificationEmail(
-        { loggedOutIntent: this.state.loggedOut.verification.intent })
-    } catch (e) {
-      if (e && typeof e === 'object') {
-        error = e as ResendConfirmationEmailError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: {
-            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
-          },
-        }
-      }
-    }
-
-    leoShowAlert({
-      type: error ? 'error' : 'success',
-      title: this.i18n(
-        error ? BraveAccountSettingsStrings
-                     .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE :
-                BraveAccountSettingsStrings
-                     .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE),
-      content: error
-        ? this.getErrorMessage(error)
-        : this.i18n(
-              BraveAccountSettingsStrings
-                   .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS)
-    }, 30000)
-
-    this.isResendingConfirmationEmail = false
-  }
-
-  protected onCancelRegistrationButtonClicked() {
-    assert(this.state?.loggedOut?.verification)
-    this.browserProxy.authentication.cancelVerification(
-      { loggedOutIntent: this.state.loggedOut.verification.intent })
-  }
-
-  protected openBraveAccountDialog() {
-    this.browserProxy.rowHandler.openDialog(this.initiatingServiceName)
-  }
-
-  private getErrorMessage(error: ResendConfirmationEmailError): string {
-    const SERVER_ERROR_STRINGS: Partial<
-      Record<ResendConfirmationEmailServerErrorCode, string>
-    > = {
-      [ResendConfirmationEmailServerErrorCode
-          .kMaximumEmailSendAttemptsExceeded]:
-        BraveAccountSettingsStrings
-             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
-      [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
-        BraveAccountSettingsStrings
-             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
-      [ResendConfirmationEmailServerErrorCode.kTokenHasExpired]:
-        BraveAccountSettingsStrings
-             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
-    }
-
-    const errorLabel = this.i18n(
-        BraveAccountSettingsStrings.BRAVE_ACCOUNT_ERROR)
-
-    if (whichResendConfirmationEmailError(error)
-            === ResendConfirmationEmailErrorFieldTags.CLIENT_ERROR) {
-      return this.i18n(
-          BraveAccountSettingsStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
-          ` (${errorLabel}=${error.clientError!.errorCode})`,
-      )
-    }
-
-    const serverError = error.serverError!
-    const stringId = SERVER_ERROR_STRINGS[serverError.errorCode]
-    if (stringId) {
-      return this.i18n(stringId)
-    }
-
-    return this.i18n(
-        BraveAccountSettingsStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-        `${serverError.netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${
-          serverError.netErrorOrHttpStatus
-        }`,
-        `, ${errorLabel}=${serverError.errorCode}`,
-    )
-  }
-
-  private updateEmailTruncation() {
-    if (whichAccountState(this.state!) === AccountStateFieldTags.LOGGED_IN) {
-      if (!this.resizeObserver) {
-        const emailEl =
-            this.shadowRoot?.querySelector<HTMLElement>('#email')
-        if (!emailEl) return
-
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')!
-        ctx.font = getComputedStyle(emailEl).font
-        this.measure = (text: string) => ctx.measureText(text).width
-
-        this.resizeObserver = new ResizeObserver(() => {
-          this.truncateEmail(emailEl)
-        })
-        this.resizeObserver.observe(emailEl)
-        this.truncateEmail(emailEl)
-      }
-    } else {
-      this.cleanUpEmailTruncation()
-    }
-  }
-
-  private truncateEmail(emailEl: HTMLElement) {
-    if (!this.measure) return
-
-    const email = this.state?.loggedIn?.email
-    if (!email) return
-
-    const availableWidth = emailEl.clientWidth
-    if (!availableWidth) return
-
-    if (this.measure(email) <= availableWidth) {
-      emailEl.textContent = email
-      return
-    }
-
-    // Use binary search (O(log n)) to find the maximum number of characters
-    // that fit within available width. Characters are split evenly between
-    // the start and end of the email with '…' in the middle.
-    const chars = Array.from(email)
-    const makeCandidate = (kept: number): string => {
-      const prefixLen = Math.ceil(kept / 2)
-      const suffixLen = Math.floor(kept / 2)
-      return chars.slice(0, prefixLen).join('') + '…' +
-             chars.slice(-suffixLen).join('')
-    }
-
-    let truncatedEmail = ''
-    for (let low = 0, high = chars.length; low < high; ) {
-      const middle = Math.ceil((low + high) / 2)
-      const candidate = makeCandidate(middle)
-      if (this.measure(candidate) <= availableWidth) {
-        truncatedEmail = candidate
-        low = middle
-      } else {
-        high = middle - 1
-      }
-    }
-
-    emailEl.textContent = truncatedEmail
-  }
-
-  private cleanUpEmailTruncation() {
-    this.measure = undefined
-    this.resizeObserver?.disconnect()
-    this.resizeObserver = undefined
   }
 }
 

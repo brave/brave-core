@@ -3,6 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import {
+  assertNotReached,
+  assertNotReachedCase,
+} from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import {
@@ -15,9 +19,14 @@ import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
   RegisterClientErrorCode,
   RegisterError,
+  LoggedOutVerificationIntent,
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
+  ResetPasswordClientErrorCode,
+  ResetPasswordError,
   VerificationIntent,
+  VerificationIntentFieldTags,
+  whichVerificationIntent,
 } from './brave_account.mojom-webui.js'
 
 export class BraveAccountOtpDialogElement extends CrLitElement {
@@ -39,6 +48,29 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
   }
 
   protected async onConfirmCodeButtonClicked() {
+    switch (whichVerificationIntent(this.intent)) {
+      case VerificationIntentFieldTags.LOGGED_OUT_INTENT: {
+        const loggedOutIntent = this.intent.loggedOutIntent!
+        switch (loggedOutIntent) {
+          case LoggedOutVerificationIntent.kRegistration:
+            await this.confirmRegistrationCode()
+            break
+          case LoggedOutVerificationIntent.kResetPassword:
+            await this.confirmResetPasswordCode()
+            break
+          default:
+            assertNotReachedCase(loggedOutIntent)
+        }
+        break
+      }
+      case VerificationIntentFieldTags.LOGGED_IN_INTENT:
+        assertNotReached(
+          'Logged-in verification intents are not supported yet!',
+        )
+    }
+  }
+
+  private async confirmRegistrationCode() {
     try {
       await this.browserProxy.authentication.registerVerify(this.code)
     } catch (e) {
@@ -54,6 +86,27 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
       }
 
       showError({ kind: 'register', details: error })
+    }
+  }
+
+  private async confirmResetPasswordCode() {
+    try {
+      await this.browserProxy.authentication.resetPasswordVerifyComplete(
+        this.code,
+      )
+    } catch (e) {
+      let error: ResetPasswordError
+
+      if (e && typeof e === 'object') {
+        error = e as ResetPasswordError
+      } else {
+        console.error('Unexpected error:', e)
+        error = {
+          clientError: { errorCode: ResetPasswordClientErrorCode.kUnexpected },
+        }
+      }
+
+      showError({ kind: 'resetPassword', details: error })
     }
   }
 

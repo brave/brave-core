@@ -648,14 +648,15 @@ ResetPasswordPasswordInitKnownErrorCode() {
                                  .status_code = net::HTTP_BAD_REQUEST,
                                  .body = base::unexpected([] {
                                    PasswordInit::Response::ErrorBody body;
-                                   body.code = base::Value(13004);
+                                   body.code = base::Value(13001);
                                    return body;
                                  }())}},
           .mojo_expected =
               base::unexpected(mojom::ResetPasswordError::NewServerError(
                   mojom::ResetPasswordServerError::New(
                       net::HTTP_BAD_REQUEST,
-                      mojom::ResetPasswordServerErrorCode::kAccountExists))),
+                      mojom::ResetPasswordServerErrorCode::
+                          kTooManyVerifications))),
       });
   return kResetPasswordPasswordInitKnownErrorCode.get();
 }
