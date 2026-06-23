@@ -6,6 +6,7 @@
 #ifndef BRAVE_CONTENT_BROWSER_SPEECH_BRAVE_ON_DEVICE_SPEECH_RECOGNITION_ENGINE_H_
 #define BRAVE_CONTENT_BROWSER_SPEECH_BRAVE_ON_DEVICE_SPEECH_RECOGNITION_ENGINE_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -13,6 +14,7 @@
 // Compiled inside the content library (via content/browser/sources.gni)
 // because the base class header is content-internal.
 #include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
+#include "media/base/converting_audio_fifo.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -45,6 +47,7 @@ class BraveOnDeviceSpeechRecognitionEngine
 
   // SpeechRecognitionEngine:
   void SetAudioParameters(media::AudioParameters audio_parameters) override;
+  void TakeAudioChunk(const AudioChunk& data) override;
   void AudioChunksEnded() override;
   void EndRecognition() override;
   int GetDesiredAudioChunkDurationMs() const override;
@@ -54,6 +57,10 @@ class BraveOnDeviceSpeechRecognitionEngine
       mojo::PendingRemote<local_ai::mojom::AsrSession> pending);
   void MaybeCreateSession();
   void OnResponderDisconnect();
+
+  // Moves all converted (mono 16 kHz) output out of `resampler_fifo_` and
+  // appends it to the base's accumulated int16 buffer.
+  void DrainResampledOutput();
 
   // Bound on IO. Messages are dispatched to the browser-side
   // controller on UI via Mojo. Replies return to IO.
@@ -66,6 +73,13 @@ class BraveOnDeviceSpeechRecognitionEngine
 
   // Idempotency guard for MaybeCreateSession.
   bool session_created_ = false;
+
+  // Resamples the AudioForwarder path's native-rate audio to the model's
+  // 16 kHz rate. Null when capture is already 16 kHz (the mic path, which
+  // SpeechRecognizerImpl pre-resamples). Both paths arrive mono: the mic
+  // path via OnDataConverter and the forwarder path via the renderer's
+  // SpeechRecognitionMediaStreamAudioSink, so this only converts the rate.
+  std::unique_ptr<media::ConvertingAudioFifo> resampler_fifo_;
 
   base::WeakPtrFactory<BraveOnDeviceSpeechRecognitionEngine> weak_factory_{
       this};
