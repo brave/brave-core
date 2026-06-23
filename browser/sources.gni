@@ -158,6 +158,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/serp_metrics",
   "//brave/browser/serp_metrics:impl",
   "//brave/browser/skus",
+  "//brave/browser/speech",
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
