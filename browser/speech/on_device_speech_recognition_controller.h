@@ -39,6 +39,7 @@ namespace speech {
 //   Idle -> BwcStarting -> ModelLoading -> Ready
 class OnDeviceSpeechRecognitionController
     : public local_ai::mojom::SpeechRecognitionFactoryHost,
+      public local_ai::mojom::AsrSession,
       public local_ai::BackgroundWebContents::Delegate,
       public ProfileObserver {
  public:
@@ -49,6 +50,10 @@ class OnDeviceSpeechRecognitionController
   OnDeviceSpeechRecognitionController& operator=(
       const OnDeviceSpeechRecognitionController&) = delete;
 
+  // Returns a remote the engine holds for one recognition. Dropping it ends
+  // the session.
+  mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession();
+
   // Binds the FactoryHost receiver for the ORT worker WebUI.
   void BindFactoryHost(
       mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>
@@ -57,6 +62,13 @@ class OnDeviceSpeechRecognitionController
   // local_ai::mojom::SpeechRecognitionFactoryHost:
   void RegisterFactory(
       mojo::PendingRemote<local_ai::mojom::SpeechRecognitionFactory> factory)
+      override;
+
+  // local_ai::mojom::AsrSession:
+  void Start(
+      on_device_model::mojom::AsrStreamOptionsPtr options,
+      mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+      mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder)
       override;
 
   // local_ai::BackgroundWebContents::Delegate:
@@ -89,10 +101,18 @@ class OnDeviceSpeechRecognitionController
   void OnOrtFilesRead(local_ai::mojom::OrtModelFilesPtr files);
   void OnOrtInitResult(bool success);
 
+  void ForwardPendingSessions();
+  void ForwardSession(
+      on_device_model::mojom::AsrStreamOptionsPtr options,
+      mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+      mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
+          responder);
+
   void StartIdleTimer();
   void OnIdleTimeout();
 
   void OnFactoryDisconnected();
+  void OnAsrSessionDisconnected();
   void TearDown();
 
   State state_ = State::kIdle;
@@ -106,7 +126,20 @@ class OnDeviceSpeechRecognitionController
 
   mojo::ReceiverSet<local_ai::mojom::SpeechRecognitionFactoryHost>
       factory_host_receivers_;
+  mojo::ReceiverSet<local_ai::mojom::AsrSession> asr_session_receivers_;
   mojo::Remote<local_ai::mojom::SpeechRecognitionFactory> factory_;
+
+  struct PendingSession {
+    PendingSession();
+    PendingSession(PendingSession&&);
+    PendingSession& operator=(PendingSession&&);
+    ~PendingSession();
+
+    on_device_model::mojom::AsrStreamOptionsPtr options;
+    mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream;
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder;
+  };
+  std::vector<PendingSession> pending_sessions_;
 
   base::OneShotTimer idle_timer_;
   static constexpr base::TimeDelta kIdleTimeout = base::Seconds(60);
