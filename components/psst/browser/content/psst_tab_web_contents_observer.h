@@ -17,8 +17,8 @@
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 
 class PrefService;
 
@@ -27,7 +27,7 @@ namespace psst {
 class MatchedRule;
 class PsstRuleRegistry;
 
-class PsstTabWebContentsObserver : public content::WebContentsObserver {
+class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   using InsertScriptInPageTimeoutCallback =
@@ -63,7 +63,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
-      content::WebContents* contents,
+      tabs::TabInterface& tab,
       content::BrowserContext* browser_context,
       std::unique_ptr<PsstUiDelegate> ui_delegate,
       PrefService* prefs,
@@ -80,7 +80,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 
-  PsstTabWebContentsObserver(content::WebContents* web_contents,
+  PsstTabWebContentsObserver(tabs::TabInterface& tab,
                              PsstRuleRegistry* registry,
                              PrefService* prefs,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);

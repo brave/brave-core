@@ -100,12 +100,11 @@ void PrepareParametersForPolicyExecution(
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
-    content::WebContents* contents,
+    tabs::TabInterface& tab,
     content::BrowserContext* browser_context,
     std::unique_ptr<PsstUiDelegate> ui_delegate,
     PrefService* prefs,
     const int32_t world_id) {
-  CHECK(contents);
   CHECK(browser_context);
   CHECK(prefs);
   CHECK(ui_delegate);
@@ -116,7 +115,7 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
   }
 
   auto observer = base::WrapUnique<PsstTabWebContentsObserver>(
-      new PsstTabWebContentsObserver(contents, PsstRuleRegistry::GetInstance(),
+      new PsstTabWebContentsObserver(tab, PsstRuleRegistry::GetInstance(),
                                      prefs, std::move(ui_delegate)));
 
   auto inject_script_callback = base::BindRepeating(
@@ -165,11 +164,11 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
-    content::WebContents* web_contents,
+    tabs::TabInterface& tab,
     PsstRuleRegistry* registry,
     PrefService* prefs,
     std::unique_ptr<PsstUiDelegate> ui_delegate)
-    : WebContentsObserver(web_contents),
+    : tabs::ContentsObservingTabFeature(tab),
       registry_(registry),
       prefs_(prefs),
       ui_delegate_(std::move(ui_delegate)) {}

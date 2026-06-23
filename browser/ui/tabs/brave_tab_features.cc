@@ -70,7 +70,7 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             tab, *page_action_controller());
     psst_web_contents_observer_ =
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-            tab.GetContents(), profile,
+            tab, profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
                 PsstSettingsServiceFactory::GetForProfile(profile),
                 profile->GetPrefs(),
