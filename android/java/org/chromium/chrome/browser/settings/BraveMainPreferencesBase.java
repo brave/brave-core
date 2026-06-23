@@ -27,6 +27,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings;
+import org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsFragmentBase;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
@@ -40,7 +41,6 @@ import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPe
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.policy.PolicyServiceFactory;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -55,7 +55,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.components.brave_account.BraveAccountFeatures;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
-import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
@@ -63,7 +62,6 @@ import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase;
 import org.chromium.components.browser_ui.site_settings.SiteSettings;
 import org.chromium.components.policy.PolicyService;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
@@ -96,7 +94,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_NOTIFICATIONS = "notifications";
     private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
     private static final String PREF_ADDRESSES = "autofill_addresses";
-    private static final String PREF_AUTOFILL_PRIVATE_WINDOW = "autofill_private_window";
     private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "brave_appearance";
@@ -276,7 +273,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void prepareBravePreferences() {
-        setAutofillPrivateWindowPreference();
         // Register the final containment update listener. This runs after the current call stack
         // completes (posted via PostTask), so it fires after any synchronous observer callbacks
         // from MainSettings (e.g. onSignInAllowedChanged → updatePreferences →
@@ -284,17 +280,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // preferences before Brave's rearrangement. Also handles the back-navigation timing race
         // where GlobalLayout fires before onResume's organiseBravePreferences completes.
         notifyPreferencesUpdated();
-    }
-
-    private void setAutofillPrivateWindowPreference() {
-        boolean isAutofillPrivateWindow =
-                UserPrefs.get(getProfile()).getBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS);
-        Preference preference = findPreference(PREF_AUTOFILL_PRIVATE_WINDOW);
-        assumeNonNull(preference);
-        preference.setOnPreferenceChangeListener(this);
-        if (preference instanceof ChromeSwitchPreference) {
-            ((ChromeSwitchPreference) preference).setChecked(isAutofillPrivateWindow);
-        }
     }
 
     /** We need to override it to avoid NullPointerException in Chromium's child classes */
@@ -423,7 +408,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
         setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
         setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_AUTOFILL_PRIVATE_WINDOW, ++passwordsAndAutofillSectionOrder);
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
@@ -504,7 +488,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
         updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_bar_chart_search);
         updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_location_on);
-        updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_code);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_browser_home);
@@ -642,9 +625,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         String key = preference.getKey();
         if (PREF_CLOSING_ALL_TABS_CLOSES_BRAVE.equals(key)) {
             CloseBraveManager.setClosingAllTabsClosesBraveEnabled((boolean) newValue);
-        } else if (PREF_AUTOFILL_PRIVATE_WINDOW.equals(key)) {
-            UserPrefs.get(getProfile())
-                    .setBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS, (boolean) newValue);
         }
 
         return true;
@@ -800,6 +780,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         Context context, SettingsIndexData indexData, Profile profile) {
                     MainSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
                             context, indexData, profile);
+                    BraveAutofillOptionsFragmentBase.updateSearchIndexEntries(context, indexData);
                     // Remove upstream preferences hidden from the main settings UI.
                     // "languages" is safe to remove now that
                     // LanguageSettings.SEARCH_INDEX_DATA_PROVIDER
@@ -827,7 +808,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     // navigate to from search results, so exclude them from the index.
                     indexData.removeEntry(getUniqueId(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE));
                     indexData.removeEntry(getUniqueId(PREF_RATE_BRAVE));
-                    indexData.removeEntry(getUniqueId(PREF_AUTOFILL_PRIVATE_WINDOW));
                     // Leaf prefs from brave_main_preferences.xml that are conditionally hidden.
                     if (!BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
                         indexData.removeEntry(getUniqueId(PREF_HOME_SCREEN_WIDGET));

@@ -142,12 +142,6 @@
         android:order="18"
         android:icon="@drawable/ic_window_tab_new"
         android:title="@string/prefs_new_tab_page"/>
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="autofill_private_window"
-        android:order="21"
-        android:icon="@drawable/ic_autofill"
-        android:title="@string/prefs_autofill_private_window_title"
-        android:summary="@string/prefs_autofill_private_window_summary"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveSyncScreensPreference"
         android:key="brave_sync_layout"

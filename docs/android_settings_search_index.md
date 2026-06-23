@@ -292,7 +292,6 @@ in `BraveMainPreferencesBase.SEARCH_INDEX_DATA_PROVIDER`:
 | ------------------------------- | ----------------------------------------------------------------------- |
 | `closing_all_tabs_closes_brave` | Toggle switch — no sub-screen                                           |
 | `rate_brave`                    | Rate-app action — no sub-screen                                         |
-| `autofill_private_window`       | Toggle switch — no sub-screen                                           |
 | `home_screen_widget`            | Conditionally excluded when `isRequestPinAppWidgetSupported()` is false |
 
 ### Upstream XML references upstream class, not Brave subclass
