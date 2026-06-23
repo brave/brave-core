@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
-#define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
+#ifndef BRAVE_BROWSER_PSST_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
+#define BRAVE_BROWSER_PSST_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
 
 #include <memory>
 #include <string>
@@ -17,8 +17,8 @@
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 
 class PrefService;
 
@@ -126,4 +126,4 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
+#endif  // BRAVE_BROWSER_PSST_PSST_TAB_WEB_CONTENTS_OBSERVER_H_

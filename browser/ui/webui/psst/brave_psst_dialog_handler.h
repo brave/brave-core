@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
-#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "brave/components/psst/common/psst_ui_common.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"

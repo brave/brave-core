@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
 #include <algorithm>
 #include <memory>
@@ -23,19 +23,20 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
-#include "brave/components/psst/common/pref_names.h"
 #include "brave/components/psst/common/psst_script_responses.h"
+#include "brave/components/psst/core/pref_names.h"
+#include "brave/components/psst/core/psst_rule_registry.h"
 #include "build/build_config.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/navigation_simulator.h"
-#include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -186,15 +187,15 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
 };
 
 class PsstTabWebContentsObserverUnitTestBase
-    : public content::RenderViewHostTestHarness {
+    : public ChromeRenderViewHostTestHarness {
  public:
   PsstTabWebContentsObserverUnitTestBase()
-      : content::RenderViewHostTestHarness(
+      : ChromeRenderViewHostTestHarness(
             base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~PsstTabWebContentsObserverUnitTestBase() override = default;
 
   void SetUp() override {
-    content::RenderViewHostTestHarness::SetUp();
+    ChromeRenderViewHostTestHarness::SetUp();
 
     psst::RegisterProfilePrefs(prefs_.registry());
     rule_registry_ = std::make_unique<MockPsstRuleRegistry>();
@@ -202,9 +203,12 @@ class PsstTabWebContentsObserverUnitTestBase
     auto ui_delegate = std::make_unique<MockUiDelegate>();
     ui_delegate_ = ui_delegate.get();
 
+    ON_CALL(mock_tab, GetContents())
+        .WillByDefault(testing::Return(web_contents()));
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
-        new PsstTabWebContentsObserver(web_contents(), rule_registry_.get(),
-                                       &prefs_, std::move(ui_delegate)));
+        new PsstTabWebContentsObserver(mock_tab, rule_registry_.get(), &prefs_,
+                                       std::move(ui_delegate)));
     psst_web_contents_observer_->SetInjectScriptCallback(
         inject_script_callback_.Get());
     psst_web_contents_observer_->SetInjectAsyncScriptCallback(
@@ -212,7 +216,7 @@ class PsstTabWebContentsObserverUnitTestBase
   }
 
   void TearDown() override {
-    content::RenderViewHostTestHarness::TearDown();
+    ChromeRenderViewHostTestHarness::TearDown();
     ui_delegate_ = nullptr;
   }
 
@@ -236,6 +240,8 @@ class PsstTabWebContentsObserverUnitTestBase
 
   MockUiDelegate& ui_delegate() { return *ui_delegate_; }
 
+  tabs::MockTabInterface& mock_tab_interface() { return mock_tab; }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
@@ -248,6 +254,7 @@ class PsstTabWebContentsObserverUnitTestBase
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  tabs::MockTabInterface mock_tab;
 };
 
 class PsstTabWebContentsObserverUnitTest
@@ -261,7 +268,7 @@ class PsstTabWebContentsObserverUnitTest
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(),
+                mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
@@ -275,7 +282,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       &otr_browser_context, site_instance);
 
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents.get(), &otr_browser_context,
+                mock_tab_interface(), &otr_browser_context,
                 std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
@@ -970,7 +977,7 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(),
+                mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }

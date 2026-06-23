@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_REGISTRY_H_
-#define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_REGISTRY_H_
+#ifndef BRAVE_COMPONENTS_PSST_CORE_PSST_RULE_REGISTRY_H_
+#define BRAVE_COMPONENTS_PSST_CORE_PSST_RULE_REGISTRY_H_
 
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "brave/components/psst/browser/core/matched_rule.h"
-#include "brave/components/psst/browser/core/psst_rule.h"
+#include "brave/components/psst/core/matched_rule.h"
+#include "brave/components/psst/core/psst_rule.h"
 #include "url/gurl.h"
 
 namespace psst {
@@ -37,4 +37,4 @@ class PsstRuleRegistry {
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_REGISTRY_H_
+#endif  // BRAVE_COMPONENTS_PSST_CORE_PSST_RULE_REGISTRY_H_

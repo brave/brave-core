@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_H_
-#define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_H_
+#ifndef BRAVE_COMPONENTS_PSST_CORE_PSST_RULE_H_
+#define BRAVE_COMPONENTS_PSST_CORE_PSST_RULE_H_
 
 #include <optional>
 #include <string>
@@ -74,4 +74,4 @@ class PsstRule {
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_RULE_H_
+#endif  // BRAVE_COMPONENTS_PSST_CORE_PSST_RULE_H_

@@ -7,8 +7,8 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/components/psst/common/pref_names.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
+#include "brave/components/psst/core/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace {

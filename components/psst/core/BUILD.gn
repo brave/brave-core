@@ -10,6 +10,7 @@ assert(enable_psst)
 static_library("core") {
   public = [
     "matched_rule.h",
+    "pref_names.h",
     "psst_component_installer.h",
     "psst_rule.h",
     "psst_rule_registry.h",
@@ -20,6 +21,7 @@ static_library("core") {
 
   sources = [
     "matched_rule.cc",
+    "pref_names.cc",
     "psst_component_installer.cc",
     "psst_rule.cc",
     "psst_rule_registry_impl.cc",
@@ -40,6 +42,7 @@ static_library("core") {
     "//brave/extensions:common",
     "//components/component_updater",
     "//components/content_settings/core/browser",
+    "//components/pref_registry",
     "//components/prefs",
     "//crypto",
     "//net",

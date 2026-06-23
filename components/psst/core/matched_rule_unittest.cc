@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/core/matched_rule.h"
+#include "brave/components/psst/core/matched_rule.h"
 
 #include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "brave/components/psst/browser/core/rule_data_reader.h"
+#include "brave/components/psst/core/rule_data_reader.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {

@@ -16,13 +16,9 @@ static_library("common") {
   public = [
     "constants.h",
     "features.h",
-    "pref_names.h",
   ]
 
-  sources = [
-    "features.cc",
-    "pref_names.cc",
-  ]
+  sources = [ "features.cc" ]
 
   public_deps = [
     ":mojom",
@@ -32,8 +28,6 @@ static_library("common") {
 
   deps = [
     "//base",
-    "//components/pref_registry",
-    "//components/prefs",
     "//url",
   ]
 }

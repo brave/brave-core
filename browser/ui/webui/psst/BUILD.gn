@@ -17,7 +17,8 @@ static_library("psst") {
 
   public_deps = [
     "//brave/browser/psst",
-    "//brave/components/psst/browser/content",
+
+    #    "//brave/components/psst/browser/content",
     "//brave/components/psst/common",
     "//brave/components/psst/common:mojom",
   ]

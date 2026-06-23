@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/core/psst_rule_registry_impl.h"
+#include "brave/components/psst/core/psst_rule_registry_impl.h"
 
 #include <memory>
 #include <string>
@@ -17,10 +17,10 @@
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/psst/browser/core/matched_rule.h"
-#include "brave/components/psst/browser/core/psst_rule.h"
-#include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "brave/components/psst/common/features.h"
+#include "brave/components/psst/core/matched_rule.h"
+#include "brave/components/psst/core/psst_rule.h"
+#include "brave/components/psst/core/rule_data_reader.h"
 #include "url/origin.h"
 
 namespace psst {

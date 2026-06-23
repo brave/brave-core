@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
 #include <memory>
 #include <utility>
@@ -18,10 +18,10 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
-#include "brave/components/psst/browser/core/psst_rule.h"
-#include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
-#include "brave/components/psst/common/pref_names.h"
+#include "brave/components/psst/core/pref_names.h"
+#include "brave/components/psst/core/psst_rule.h"
+#include "brave/components/psst/core/psst_rule_registry.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
@@ -68,7 +68,7 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
   if (!params_json) {
     SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
     SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return rule->policy_script();
   }
 

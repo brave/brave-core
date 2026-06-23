@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
 #include <string>
 #include <vector>
@@ -20,12 +20,12 @@
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
-#include "brave/components/psst/browser/core/psst_rule.h"
-#include "brave/components/psst/browser/core/psst_rule_registry.h"
-#include "brave/components/psst/browser/core/psst_settings_service.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
-#include "brave/components/psst/common/pref_names.h"
+#include "brave/components/psst/core/pref_names.h"
+#include "brave/components/psst/core/psst_rule.h"
+#include "brave/components/psst/core/psst_rule_registry.h"
+#include "brave/components/psst/core/psst_settings_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
