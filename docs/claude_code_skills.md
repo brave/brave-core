@@ -18,6 +18,7 @@ Claude Code skills are slash commands that automate common development tasks in
 | `/force-push-downstream`  | Force-push branch + all downstream branches                                       |
 | `/impl-review`            | Implement PR review feedback                                                      |
 | `/make-ci-green`          | Re-run failed CI jobs (Experimental)                                              |
+| `/plaster-from-patch`     | Convert an existing Chromium `.patch` into a Plaster (`rewrite/*.yaml`) config    |
 | `/pr`                     | Create a pull request for the current branch                                      |
 | `/preflight`              | Run all preflight checks (format, build, test)                                    |
 | `/rebase-downstream`      | Rebase a tree of dependent branches                                               |
