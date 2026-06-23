@@ -10,6 +10,7 @@
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_account/prefs.h"
 #include "brave/components/brave_adaptive_captcha/prefs_util.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -270,6 +271,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Migration of social media blocking preferences in
   // `brave_shields::AdBlockPrefService`, which requires access to local
   // state and distinguishing between system/regular profiles.
+
+  // Added 2026-06
+  brave_account::prefs::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

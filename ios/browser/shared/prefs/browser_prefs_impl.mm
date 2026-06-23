@@ -138,6 +138,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  brave_account::prefs::MigrateObsoleteProfilePrefs(prefs);
   brave_ads::MigrateObsoleteProfilePrefs(prefs);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::MigrateObsoleteProfilePrefs(prefs);
