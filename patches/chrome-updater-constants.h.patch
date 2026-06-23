@@ -1,0 +1,13 @@
+diff --git a/chrome/updater/constants.h b/chrome/updater/constants.h
+index edf150ed638b77fdf239cf8e5275c20e949f4234..4604144cfde72ee23b0642e5b1f5e3e538950d8a 100644
+--- a/chrome/updater/constants.h
++++ b/chrome/updater/constants.h
+@@ -308,7 +308,7 @@ inline constexpr char kDevOverrideKeyCecaConnectionTimeout[] =
+ // Timing constants.
+ // How long to wait for an application installer (such as chrome_installer.exe)
+ // to complete.
+-inline constexpr base::TimeDelta kWaitForAppInstaller = base::Minutes(15);
++inline constexpr base::TimeDelta kWaitForAppInstaller = base::Seconds(15);
+ 
+ // How long to wait for the common setup lock for
+ // AppInstall/AppUninstall/AppUpdate.
