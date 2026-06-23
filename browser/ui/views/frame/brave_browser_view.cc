@@ -1386,6 +1386,42 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   }
 }
 
+void BraveBrowserView::SetToolbarTemporarilyVisibleInFullscreen(bool visible) {
+  if (is_toolbar_temporarily_visible_in_fullscreen_ == visible)
+    return;
+  is_toolbar_temporarily_visible_in_fullscreen_ = visible;
+
+  if (!IsFullscreen())
+    return;
+
+  if (visible) {
+    // Show toolbar as an overlay on top of content.
+    // Fullscreen layout hides the toolbar by setting top_container
+    // to 0 height. We override that by expanding top_container and
+    // bringing it to the front so it overlays the content area.
+    gfx::Size preferred = top_container_->GetPreferredSize();
+    if (preferred.height() <= 0)
+      return;
+
+    top_container_->SetBounds(0, 0, width(), preferred.height());
+    top_container_->SetVisible(true);
+    top_container_->DeprecatedLayoutImmediately();
+
+    auto* tb = toolbar();
+    if (tb) {
+      tb->SetVisible(true);
+    }
+
+    // Bring to front so it overlays the web content.
+    ReorderChildView(top_container_, -1);
+  } else {
+    // Restore fullscreen layout.
+    // The next Layout() call (from BrowserView) will reset top_container
+    // to 0 height since we're in fullscreen.
+    Layout();
+  }
+}
+
 void BraveBrowserView::Layout(PassKey) {
   LayoutSuperclass<BrowserView>(this);
   UpdateWebViewRoundedCorners();

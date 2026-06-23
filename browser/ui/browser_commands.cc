@@ -35,6 +35,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -1326,5 +1327,26 @@ void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
                             event_flags);
 }
 #endif  // BUILDFLAG(ENABLE_PSST)
+
+void FocusLocationBarInFullscreen(Browser* browser) {
+  if (!browser || !browser->window() || !browser->window()->IsFullscreen())
+    return;
+
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  if (!browser_view)
+    return;
+
+  ToolbarView* toolbar = browser_view->toolbar();
+  if (!toolbar)
+    return;
+
+  auto* brave_location_bar =
+      views::AsViewClass<BraveLocationBarView>(toolbar->location_bar());
+  if (!brave_location_bar)
+    return;
+
+  brave_location_bar->SetTemporaryVisibilityInFullscreen(true);
+  brave_location_bar->FocusLocation(false);
+}
 
 }  // namespace brave
