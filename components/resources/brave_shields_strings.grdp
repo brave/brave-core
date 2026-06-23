@@ -392,7 +392,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_DEVICE_MEMORY_LABEL" desc="This label is associated with the Device Memory toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Device Memory APIs." formatter_data="webui=BraveShields" >
-    Device memory
+    Device Memory
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTING_EVENT_SOURCE_POOL_LABEL" desc="This label is associated with the Event Source Pool toggle inside the Brave shields panel > Block Fingerprinting. It allows users to turn on / off the fingerprinting protections we have applied to Event Source Pool APIs." formatter_data="webui=BraveShields" >
