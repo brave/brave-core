@@ -210,7 +210,11 @@ bool IsAndroidPictureInPictureSupported() {
 // script and the media actually going fullscreen.
 class PictureInPictureRequest : public base::SupportsUserData::Data {};
 
-const void* const kPictureInPictureRequestKey = &kPictureInPictureRequestKey;
+// Only the address of this key identifies the user data; the string value is
+// incidental and never read. This follows the Chromium SupportsUserData key
+// idiom, e.g. kBackgroundSyncUserDataKey in
+// content/browser/background_sync/background_sync_manager.cc.
+const char kPictureInPictureRequestKey[] = "PictureInPictureRequest";
 
 // Callers pass the last committed NavigationEntry, which is contractually
 // non-null in WebContentsObserver callbacks once the FrameTree is initialized.
