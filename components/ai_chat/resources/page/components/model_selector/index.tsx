@@ -124,6 +124,7 @@ export function ModelSelector() {
       className={styles.buttonMenu}
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
+      positionStrategy='fixed'
     >
       <Button
         slot='anchor-content'
