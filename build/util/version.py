@@ -59,6 +59,9 @@ brave_version_build = "%(brave_version_build)s"
 # The full Brave version.
 brave_version = "%(brave_version)s"
 
+# The Chromium milestone (the MAJOR component of the upstream version).
+chromium_version_major = "%(chromium_version_major)s"
+
 # The full Chrome version.
 chrome_version_string = "%(chrome_version_string)s"
 """
@@ -171,8 +174,9 @@ class Versioner:
             'brave_version': (f"{patched['MINOR']}.{patched['BUILD']}."
                               f"{patched['PATCH']}"),
 
-            # The full upstream Chromium version comes from the .chromium
-            # sidecar.
+            # The upstream Chromium milestone and full version come from the
+            # .chromium sidecar.
+            'chromium_version_major': upstream['MAJOR'],
             'chrome_version_string': (
                 f"{upstream['MAJOR']}.{upstream['MINOR']}."
                 f"{upstream['BUILD']}.{upstream['PATCH']}"),
