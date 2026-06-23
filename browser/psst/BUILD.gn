@@ -21,11 +21,7 @@ static_library("psst") {
     "psst_ui_desktop_presenter.cc",
   ]
 
-  public_deps = [
-    "//content/public/browser",
-    "//content/public/common",
-    "//ui/web_dialogs",
-  ]
+  public_deps = [ "//ui/web_dialogs" ]
 
   deps = [
     "//base",
@@ -45,6 +41,8 @@ static_library("psst") {
     "//components/infobars/core",
     "//components/permissions",
     "//components/prefs",
+    "//content/public/browser",
+    "//content/public/common",
     "//ui/web_dialogs",
   ]
 }
@@ -64,6 +62,7 @@ source_set("unit_tests") {
     "//components/content_settings/core/browser",
     "//components/permissions",
     "//components/sync_preferences:test_support",
+    "//components/tabs:test_support",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",

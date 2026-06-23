@@ -8,8 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
@@ -66,9 +64,8 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
   std::optional<std::string> params_json = base::WriteJsonWithOptions(
       params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
   if (!params_json) {
-    SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
-    SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
-    DUMP_WILL_BE_NOTREACHED();
+    VLOG(1) << "PSST: failed to serialize params for rule " << rule->name()
+            << " (version " << rule->version() << ")";
     return rule->policy_script();
   }
 

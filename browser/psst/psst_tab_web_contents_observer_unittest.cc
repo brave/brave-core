@@ -275,14 +275,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        DontCreateForIncognitoBrowserContext) {
-  content::TestBrowserContext otr_browser_context;
-  otr_browser_context.set_is_off_the_record(true);
-  auto site_instance = content::SiteInstance::Create(&otr_browser_context);
+  TestingProfile profile;
+  auto* otr_profile = profile.GetPrimaryOTRProfile(/*create_if_needed=*/true);
+  auto site_instance = content::SiteInstance::Create(otr_profile);
   auto web_contents = content::WebContentsTester::CreateTestWebContents(
-      &otr_browser_context, site_instance);
+      otr_profile, site_instance);
 
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                mock_tab_interface(), &otr_browser_context,
+                mock_tab_interface(), otr_profile,
                 std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
