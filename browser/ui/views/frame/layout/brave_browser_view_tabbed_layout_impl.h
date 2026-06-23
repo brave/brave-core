@@ -7,8 +7,10 @@
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_LAYOUT_BRAVE_BROWSER_VIEW_TABBED_LAYOUT_IMPL_H_
 
 #include <memory>
+#include <optional>
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 
 // Provides a specialized layout implementation for Brave tabbed browsers
@@ -51,6 +53,13 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
       const gfx::Rect& sidebar_bounds,
       const gfx::Rect& panel_bounds,
       const gfx::Rect& visual_client_area);
+  // Returns the adjusted infobar bounds, resetting the width to
+  // |full_window_width| (undoing any panel-driven narrowing upstream applies)
+  // and then insetting by |vtab_insets| when vertical tabs are visible.
+  static gfx::Rect ComputeAdjustedInfobarBounds(
+      const gfx::Rect& current_bounds,
+      int full_window_width,
+      std::optional<gfx::Insets> vtab_insets);
 
   views::View* contents_container() { return views().contents_container; }
 
@@ -94,6 +103,8 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void CalculateSideBarLayout(ProposedLayout& layout,
                               const BrowserLayoutParams& params) const;
   void InsetContentsContainerBounds(ProposedLayout& layout) const;
+  void AdjustInfobarLayout(ProposedLayout& layout,
+                           const BrowserLayoutParams params) const;
 
   void UpdateInsetsForVerticalTabStrip();
 
