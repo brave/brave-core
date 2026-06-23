@@ -91,6 +91,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
@@ -966,7 +967,8 @@ void BraveBrowserView::UpdateContentsShadowVisibility() {
   // Fixed by hiding contents shadow when split view is active.
   // As split view has another border around contents, we don't need
   // contents shadow.
-  if (browser()->tab_strip_model()->IsActiveTabSplit() ||
+  auto* const active_tab = browser()->tab_strip_model()->GetActiveTab();
+  if ((active_tab && active_tab->IsSplit()) ||
       (sidebar::IsWebPanelFeatureEnabled() &&
        GetBraveMultiContentsView()->IsWebPanelVisible())) {
     show_contents_shadow = false;
