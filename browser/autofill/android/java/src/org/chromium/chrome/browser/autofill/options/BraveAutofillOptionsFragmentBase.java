@@ -9,9 +9,12 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -82,7 +85,7 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
         }
 
         ChromeSwitchPreference autofillPrivateWindowPreference =
-                new ChromeSwitchPreference(getPreferenceManager().getContext());
+                new AutofillPrivateWindowPreference(getPreferenceManager().getContext());
         autofillPrivateWindowPreference.setKey(PREF_AUTOFILL_PRIVATE_WINDOW);
         autofillPrivateWindowPreference.setIcon(R.drawable.ic_autofill);
         autofillPrivateWindowPreference.setTitle(R.string.prefs_autofill_private_window_title);
@@ -106,6 +109,40 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
 
         getPreferenceScreen().addPreference(autofillPrivateWindowPreference);
         notifyPreferencesUpdated();
+    }
+
+    /**
+     * Temporary workaround to ensure the preference text of the Brave backed preference aligns with
+     * the visual positioning of the labels of the existing chromium radio button items.
+     *
+     * <p>The intent is to rework the radio button items to place the indicator on the end side of
+     * the text, at which point the text inset can be standardized and this workaround can be
+     * removed.
+     */
+    private static class AutofillPrivateWindowPreference extends ChromeSwitchPreference {
+        AutofillPrivateWindowPreference(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onBindViewHolder(PreferenceViewHolder holder) {
+            super.onBindViewHolder(holder);
+
+            View iconFrame = holder.findViewById(R.id.icon_frame);
+            if (iconFrame == null) return;
+
+            ViewGroup.LayoutParams layoutParams = iconFrame.getLayoutParams();
+            if (layoutParams == null) return;
+
+            int alignedStartSlotWidth =
+                    getContext()
+                            .getResources()
+                            .getDimensionPixelSize(R.dimen.min_touch_target_size);
+            if (layoutParams.width == alignedStartSlotWidth) return;
+
+            layoutParams.width = alignedStartSlotWidth;
+            iconFrame.setLayoutParams(layoutParams);
+        }
     }
 
     private static Bundle createSettingsArgs() {
