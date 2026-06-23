@@ -9,7 +9,7 @@ import {
   ConfigurationListenerInterface,
   ConfigurationListenerReceiver,
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
-import getBraveNewsController from './api'
+import getBraveNewsController, { canBindMojoListeners } from './api'
 
 import { CachingWrapper } from '$web-common/mojomCache'
 
@@ -30,8 +30,8 @@ export class ConfigurationCachingWrapper
 
     this.controller = getBraveNewsController()
 
-    // We can't set up  the mojo pipe in the test environment.
-    if (process.env.NODE_ENV !== 'test') {
+    // We can't set up the mojo pipe in the test or Storybook environment.
+    if (canBindMojoListeners()) {
       this.controller.addConfigurationListener(
         this.receiver.$.bindNewPipeAndPassRemote()
       )

@@ -8,7 +8,7 @@ import {
   FeedListenerInterface,
   FeedListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
-import getBraveNewsController from './api'
+import getBraveNewsController, { canBindMojoListeners } from './api'
 
 export const addFeedListener = (listener: (feedHash: string) => void) =>
   new (class implements FeedListenerInterface {
@@ -18,7 +18,7 @@ export const addFeedListener = (listener: (feedHash: string) => void) =>
     constructor() {
       this.#controller = getBraveNewsController()
 
-      if (process.env.NODE_ENV !== 'test') {
+      if (canBindMojoListeners()) {
         this.#controller.addFeedListener(
           this.#receiver.$.bindNewPipeAndPassRemote()
         )
