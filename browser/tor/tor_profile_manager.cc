@@ -156,9 +156,8 @@ class TorTabNavigator final : public content::WebContentsObserver,
                       const std::optional<url::Origin>& initiator_origin) {
     content::NavigationController::LoadURLParams params(url);
     params.transition_type = ui::PAGE_TRANSITION_TYPED;
-    if (initiator_origin) {
-      params.initiator_origin = *initiator_origin;
-    }
+    params.initiator_origin = initiator_origin;
+
     web_contents->GetController().LoadURLWithParams(params);
     if (web_contents->GetDelegate()) {
       web_contents->GetDelegate()->NavigationStateChanged(
