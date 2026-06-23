@@ -212,11 +212,10 @@ class PictureInPictureRequest : public base::SupportsUserData::Data {};
 
 const void* const kPictureInPictureRequestKey = &kPictureInPictureRequestKey;
 
+// Callers pass the last committed NavigationEntry, which is contractually
+// non-null in WebContentsObserver callbacks once the FrameTree is initialized.
 void SetPictureInPictureRequested(content::NavigationEntry* entry,
                                   bool requested) {
-  if (!entry) {
-    return;
-  }
   if (requested) {
     entry->SetUserData(kPictureInPictureRequestKey,
                        std::make_unique<PictureInPictureRequest>());
@@ -226,7 +225,7 @@ void SetPictureInPictureRequested(content::NavigationEntry* entry,
 }
 
 bool IsPictureInPictureRequested(content::NavigationEntry* entry) {
-  return entry && entry->GetUserData(kPictureInPictureRequestKey);
+  return entry->GetUserData(kPictureInPictureRequestKey);
 }
 
 }  // namespace
