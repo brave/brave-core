@@ -497,7 +497,7 @@ extension SceneDelegate {
     Task { @MainActor in
       let isPrivateBrowsing =
         scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      await Skus.SkusServiceFactory.get(privateMode: isPrivateBrowsing)?.refreshVPNCredentials()
+      await Skus.SkusServiceFactory.get(privateMode: isPrivateBrowsing)?.refreshSkusCredentials()
     }
   }
 

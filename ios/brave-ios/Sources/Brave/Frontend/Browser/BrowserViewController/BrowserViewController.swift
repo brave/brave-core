@@ -982,7 +982,7 @@ public class BrowserViewController: UIViewController {
         let skusService = Skus.SkusServiceFactory.get(
           privateMode: self.privateBrowsingManager.isPrivateBrowsing
         )
-        await skusService?.refreshVPNCredentials()
+        await skusService?.refreshSkusCredentials()
 
         self.vpnProductInfo.load()
         if let customCredential = Preferences.VPN.skusCredential.value,
