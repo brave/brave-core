@@ -1013,6 +1013,7 @@ source_set("ui") {
       "views/brave_news/brave_news_feeds_container_view.h",
     ]
     deps += [
+      "//brave/browser/ui/views/side_panel/brave_news",
       "//brave/components/brave_news/browser",
       "//ui/base/metadata",
     ]
