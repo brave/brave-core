@@ -74,6 +74,17 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     ~InProgressRequest() override;
 
     void Restart();
+    // Called when ThrottlingURLLoader disconnects our proxied_loader_receiver_.
+    // For redirect-restart disconnects (kFollowRedirectReason), we forward the
+    // same disconnect reason to target_loader_ so that any inner proxy layer
+    // (e.g. WebRequestProxyingURLLoaderFactory) also receives the signal and
+    // can clean up its request-ID bookkeeping before the restarted loader
+    // registers the same ID. Without this propagation the inner proxy's
+    // AssociateProxyWithRequestId check fails on the new request, causing the
+    // navigation to hang. See
+    // https://github.com/brave/brave-browser/issues/56271.
+    void OnLoaderDisconnected(uint32_t custom_reason,
+                              const std::string& description);
 
     // network::mojom::URLLoader:
     void FollowRedirect(
