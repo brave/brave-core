@@ -1255,7 +1255,8 @@ void AIChatService::AssociateOwnedContent(
 void AIChatService::DisassociateContent(
     const mojom::AssociatedContentPtr& content,
     const std::string& conversation_uuid) {
-  // Note: This will only work if the conversation is already loaded.
+  // Note: This will only work if the conversation is already loaded, which is
+  // fine because the content needs to be live to have associated tools.
   auto* conversation = GetConversation(conversation_uuid);
   if (!conversation) {
     return;

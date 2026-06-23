@@ -35,6 +35,7 @@ export default function createConversationApi(
         'pauseTask',
         'resumeTask',
         'stopTask',
+        'setToolsAttached',
       ]),
     },
 

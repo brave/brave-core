@@ -151,6 +151,12 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
 
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
+
+    // Discover whether this content exposes tools so it can be attached and
+    // surfaced in the tools pill without waiting for a generation loop.
+    delegate->GetContentTools(
+        base::BindOnce(&AssociatedContentManager::OnContentToolsDetected,
+                       weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr()));
   }
 
   if (notify_updated) {
@@ -203,6 +209,39 @@ void AssociatedContentManager::RemoveContent(std::string_view content_uuid,
   if (it != content_delegates_.end()) {
     RemoveContent(*it, notify_updated);
   }
+}
+
+void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
+                                                bool tools_attached) {
+  DVLOG(1) << __func__;
+
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content_uuid](const auto& delegate) {
+                                   return delegate->uuid() == content_uuid;
+                                 });
+  if (it == content_delegates_.end() ||
+      (*it)->tools_attached() == tools_attached) {
+    return;
+  }
+
+  (*it)->set_tools_attached(tools_attached);
+  conversation_->OnAssociatedContentUpdated();
+}
+
+void AssociatedContentManager::OnContentToolsDetected(
+    base::WeakPtr<AssociatedContentDelegate> delegate,
+    std::vector<std::unique_ptr<Tool>> tools) {
+  // Attach content when it exposes any tools, detach it otherwise. The user
+  // can subsequently override this via SetToolsAttached.
+  if (!delegate) {
+    return;
+  }
+  bool tools_attached = !tools.empty();
+  if (delegate->tools_attached() == tools_attached) {
+    return;
+  }
+  delegate->set_tools_attached(tools_attached);
+  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::ClearContent() {
@@ -487,13 +526,22 @@ void AssociatedContentManager::OnTitleChanged(
 void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
     base::OnceClosure on_updated) {
   tools_.clear();
-  if (content_delegates_.empty()) {
+  // Only load tools from content the user has attached.
+  std::vector<AssociatedContentDelegate*> attached_delegates;
+  for (auto* content : content_delegates_) {
+    if (content->tools_attached()) {
+      attached_delegates.push_back(content);
+    }
+  }
+
+  if (attached_delegates.empty()) {
     std::move(on_updated).Run();
     return;
   }
+
   auto barrier =
-      base::BarrierClosure(content_delegates_.size(), std::move(on_updated));
-  for (auto* content : content_delegates_) {
+      base::BarrierClosure(attached_delegates.size(), std::move(on_updated));
+  for (auto* content : attached_delegates) {
     content->GetContentTools(base::BindOnce(
         [](base::WeakPtr<AssociatedContentManager> self,
            base::RepeatingClosure done,

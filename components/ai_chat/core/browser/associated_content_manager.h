@@ -75,6 +75,11 @@ class AssociatedContentManager : public ToolProvider,
   // delegates.
   void RemoveContent(std::string_view content_uuid, bool notify_updated = true);
 
+  // Sets whether the tools exposed by the content with |content_uuid| are
+  // attached (available to the LLM). Reflects an explicit user choice, e.g.
+  // detaching via the tools pill.
+  void SetToolsAttached(std::string_view content_uuid, bool tools_attached);
+
   // Clears all content from the conversation.
   void ClearContent();
 
@@ -129,6 +134,12 @@ class AssociatedContentManager : public ToolProvider,
 
  private:
   void DetachContent();
+
+  // Attaches |delegate| when the tools it exposes are non-empty (and detaches
+  // it otherwise), so its tools are surfaced (via the tools pill) before any
+  // generation occurs. Invoked with the result of GetContentTools().
+  void OnContentToolsDetected(base::WeakPtr<AssociatedContentDelegate> delegate,
+                              std::vector<std::unique_ptr<Tool>> tools);
 
   raw_ptr<ConversationHandler> conversation_;
 

@@ -180,6 +180,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void PauseTask() override;
   void ResumeTask() override;
   void StopTask() override;
+  void SetToolsAttached(mojom::AssociatedContentPtr content,
+                        bool tools_attached) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
                    RateMessageCallback callback) override;

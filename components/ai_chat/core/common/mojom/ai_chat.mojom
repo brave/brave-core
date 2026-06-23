@@ -366,6 +366,12 @@ interface ConversationHandler {
   // Manually stop the current task. This will stop the task and prevent any
   // future tool executions until the next message is sent.
   StopTask();
+
+  // Sets whether the tools exposed by a piece of associated content are
+  // attached (i.e. available for the LLM to use) for this conversation. The
+  // tools pill's close button uses this to detach a content's tools by passing
+  // false.
+  SetToolsAttached(AssociatedContent content, bool tools_attached);
 };
 
 interface ConversationUI {

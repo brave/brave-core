@@ -63,6 +63,7 @@ type Props = Pick<
   | 'associatedContentInfo'
   | 'isUploadingFiles'
   | 'disassociateContent'
+  | 'setToolsAttached'
   | 'associateDefaultContent'
   | 'setAttachmentsDialog'
   | 'pauseTask'
@@ -403,7 +404,10 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
           </div>
         )}
 
-        <ToolsAttachments toolsContent={toolsContent} />
+        <ToolsAttachments
+          toolsContent={toolsContent}
+          setToolsAttached={props.context.setToolsAttached}
+        />
         <div className={styles.inputBody}>
           {(showUploadedFiles || pendingContent.length > 0) && (
             <AttachmentChips
