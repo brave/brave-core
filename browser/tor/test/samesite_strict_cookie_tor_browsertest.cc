@@ -93,6 +93,14 @@ void ClickOnionLocationIcon(Browser* browser) {
   views::test::ButtonTestApi(onion_location_view).NotifyClick(released);
 }
 
+std::vector<std::string> GetEchoedHeaders(content::WebContents* web_contents) {
+  const std::string response_body =
+      content::EvalJs(web_contents, "document.body.textContent")
+          .ExtractString();
+  return base::SplitString(response_body, "\n", base::TRIM_WHITESPACE,
+                           base::SPLIT_WANT_NONEMPTY);
+}
+
 }  // namespace
 
 class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
@@ -113,7 +121,7 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &HandleSetStrictCookie,
-        onion_server_->GetURL(kOnion, "/echoheader?Cookie")));
+        onion_server_->GetURL(kOnion, "/echoheader?Cookie&Sec-Fetch-Site")));
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &HandleOnionLinkPage,
         onion_server_->GetURL(kOnion, "/echoheader?Cookie&Sec-Fetch-Site")));
@@ -188,7 +196,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
       browser(), https_server_->GetURL(kSiteA, "/set-strict-cookie")));
 
   const GURL view_cookies_url =
-      onion_server_->GetURL(kOnion, "/echoheader?Cookie");
+      onion_server_->GetURL(kOnion, "/echoheader?Cookie&Sec-Fetch-Site");
   content::TestNavigationObserver observer(view_cookies_url);
   observer.StartWatchingNewWebContents();
 
@@ -196,7 +204,11 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
   observer.Wait();
 
   auto* web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(content::EvalJs(web_contents, "document.body.textContent"), "None");
+  const std::vector<std::string> echoed_headers =
+      GetEchoedHeaders(web_contents);
+  ASSERT_EQ(echoed_headers.size(), 2u);
+  EXPECT_EQ(echoed_headers[0], "None");
+  EXPECT_EQ(echoed_headers[1], "cross-site");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -237,11 +249,8 @@ IN_PROC_BROWSER_TEST_F(
 
   content::WebContents* tor_web_contents =
       tor_browser->tab_strip_model()->GetActiveWebContents();
-  const std::string response_body =
-      content::EvalJs(tor_web_contents, "document.body.textContent")
-          .ExtractString();
-  const std::vector<std::string> echoed_headers = base::SplitString(
-      response_body, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  const std::vector<std::string> echoed_headers =
+      GetEchoedHeaders(tor_web_contents);
   ASSERT_EQ(echoed_headers.size(), 2u);
   EXPECT_EQ(echoed_headers[0], "None");
   EXPECT_EQ(echoed_headers[1], "cross-site");
