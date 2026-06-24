@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
@@ -948,10 +949,21 @@ TEST_F(OrchardStorageTest, ResetAccountSyncState) {
   }
 
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
-            orchard_storage_->ResetAccountSyncState(account_id).value());
+            orchard_storage_->ResetAccountSyncState(account_id, std::nullopt)
+                .value());
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id);
+    EXPECT_EQ(100u, account_meta.value()->account_birthday);
+    EXPECT_FALSE(account_meta.value()->latest_scanned_block_id);
+    EXPECT_FALSE(account_meta.value()->latest_scanned_block_hash);
+  }
+
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->ResetAccountSyncState(account_id, 200u).value());
+  {
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id);
+    EXPECT_EQ(200u, account_meta.value()->account_birthday);
     EXPECT_FALSE(account_meta.value()->latest_scanned_block_id);
     EXPECT_FALSE(account_meta.value()->latest_scanned_block_hash);
   }

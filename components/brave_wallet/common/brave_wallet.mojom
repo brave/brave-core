@@ -2239,7 +2239,9 @@ interface ZCashWalletService {
   IsSyncInProgress(AccountId account_id)
       => (bool result, string? error_message);
 
-  ResetSyncState(AccountId account_id) => (string? error_message);
+  // `account_birthday_block` is 0 if account birthday shouldn't be changed.
+  ResetSyncState(AccountId account_id, uint32 account_birthday_block)
+      => (string? error_message);
 
   GetChainTipStatus(AccountId account_id)
       => (ZCashChainTipStatus? status, string? error_message);

@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -87,9 +88,11 @@ class OrchardSyncState {
   GetSpendableNotes(const mojom::AccountIdPtr& account_id,
                     const OrchardAddrRawPart& change_address);
 
-  // Clears sync data related to the account except it's birthday.
+  // Clears sync data related to the account. Updates account birthday if
+  // `account_birthday_block` is provided.
   base::expected<OrchardStorage::Result, OrchardStorage::Error>
-  ResetAccountSyncState(const mojom::AccountIdPtr& account_id);
+  ResetAccountSyncState(const mojom::AccountIdPtr& account_id,
+                        std::optional<uint32_t> account_birthday_block);
 
   // Drops underlying database.
   void ResetDatabase();

@@ -219,7 +219,9 @@ OrchardSyncState::ApplyScanResults(
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardSyncState::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::ResetAccountSyncState(
+    const mojom::AccountIdPtr& account_id,
+    std::optional<uint32_t> account_birthday_block) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   {
     auto tx = storage_.Transactionally();
@@ -227,7 +229,7 @@ OrchardSyncState::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
       return base::unexpected(tx.error());
     }
     auto reset_account_sync_state_result =
-        storage_.ResetAccountSyncState(account_id);
+        storage_.ResetAccountSyncState(account_id, account_birthday_block);
     if (!reset_account_sync_state_result.has_value() ||
         reset_account_sync_state_result.value() !=
             OrchardStorage::Result::kSuccess) {

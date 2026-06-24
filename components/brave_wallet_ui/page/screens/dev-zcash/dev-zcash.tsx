@@ -54,6 +54,7 @@ const Balance = styled.div`
 
 interface GetBalanceSectionProps {
   accountId: BraveWallet.AccountId
+  onAccountInfoChanged: () => void
 }
 
 const GetBalanceSection = (props: GetBalanceSectionProps) => {
@@ -72,9 +73,10 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   const [syncBlockLimit, setSyncBlockLimit] = React.useState<string>()
 
   const makeAccountShielded = async () => {
+    const accountBirthdayBlock = Number(accountBirthdayValue || '0')
     const result = await getAPIProxy().zcashWalletService.makeAccountShielded(
       props.accountId,
-      Number(accountBirthdayValue || '0'),
+      accountBirthdayBlock,
     )
     setMakeAccountShieldableResult(result.errorMessage || 'Done')
   }
@@ -102,11 +104,15 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   }
 
   const resetAccountSyncState = async () => {
+    const accountBirthdayBlock = Number(accountBirthdayValue || '0')
     const result = await getAPIProxy().zcashWalletService.resetSyncState(
       props.accountId,
+      accountBirthdayBlock,
     )
     if (result.errorMessage) {
       setSyncStatusResult('Stop error ' + result.errorMessage)
+    } else {
+      props.onAccountInfoChanged()
     }
   }
 
@@ -240,10 +246,12 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
 
 interface GetZCashAccountInfoSectionProps {
   accountId: BraveWallet.AccountId
+  refreshCounter: number
 }
 
 const GetZCashAccountInfoSection: React.FC<GetZCashAccountInfoSectionProps> = ({
   accountId,
+  refreshCounter,
 }) => {
   const [loading, setLoading] = React.useState<boolean>(true)
   const [zcashAccountInfo, setZCashAccountInfo] = React.useState<
@@ -262,7 +270,7 @@ const GetZCashAccountInfoSection: React.FC<GetZCashAccountInfoSectionProps> = ({
   // effects
   React.useEffect(() => {
     fetchZCashAccountInfo()
-  }, [fetchZCashAccountInfo])
+  }, [fetchZCashAccountInfo, refreshCounter])
 
   const keyId = (keyId: BraveWallet.BitcoinKeyId | undefined) => {
     if (!keyId) {
@@ -298,7 +306,8 @@ const GetZCashAccountInfoSection: React.FC<GetZCashAccountInfoSectionProps> = ({
           <div>
             <code>Account shielded birthday: </code>
             <code>
-              {String(zcashAccountInfo?.accountShieldBirthday?.value) || '-'}
+              {zcashAccountInfo?.accountShieldBirthday?.value?.toString()
+                || '-'}
             </code>
           </div>
           <div>
@@ -338,14 +347,22 @@ interface AccountSectionProps {
 }
 
 const AccountSection = (props: AccountSectionProps) => {
+  const [accountInfoRefreshCounter, setAccountInfoRefreshCounter] =
+    React.useState(0)
+  const refreshAccountInfo = React.useCallback(() => {
+    setAccountInfoRefreshCounter((value) => value + 1)
+  }, [])
+
   return (
     <StyledWrapper>
       <h1>{props.accountInfo.name}</h1>
       <GetZCashAccountInfoSection
         accountId={props.accountInfo.accountId}
+        refreshCounter={accountInfoRefreshCounter}
       ></GetZCashAccountInfoSection>
       <GetBalanceSection
         accountId={props.accountInfo.accountId}
+        onAccountInfoChanged={refreshAccountInfo}
       ></GetBalanceSection>
     </StyledWrapper>
   )

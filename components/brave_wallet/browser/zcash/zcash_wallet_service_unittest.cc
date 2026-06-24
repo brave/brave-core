@@ -19,6 +19,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
@@ -1528,6 +1529,73 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
     task_environment_.RunUntilIdle();
     EXPECT_FALSE(auto_sync_managers().contains(account_id_2));
   }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, ResetSyncStateWithAccountBirthday) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  auto account_id_1 = account_id();
+  keyring_service()->SetZCashAccountBirthday(
+      account_id_1.Clone(),
+      mojom::ZCashAccountShieldBirthday::New(100u, "old_hash"));
+  base::test::TestFuture<
+      base::expected<OrchardStorage::Result, OrchardStorage::Error>>
+      register_account_future;
+  zcash_wallet_service_->sync_state()
+      .AsyncCall(&OrchardSyncState::RegisterAccount)
+      .WithArgs(account_id_1.Clone(), 100u)
+      .Then(register_account_future.GetCallback());
+  auto register_account_result = register_account_future.Take();
+  ASSERT_TRUE(register_account_result.has_value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess, register_account_result.value());
+  // Prevent auto-sync manager startup in OnGetTreeStateForAccountBirthday.
+  keyring_service()->Lock();
+
+  EXPECT_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillOnce(  //
+          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
+              ZCashRpc::GetTreeStateCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
+            EXPECT_EQ(block_id->height, 100000u - kChainReorgBlockDelta);
+            auto tree_state = zcash::mojom::TreeState::New(
+                "main" /* network */,
+                100000u - kChainReorgBlockDelta /* height */,
+                "new_hash" /* hash */, 123 /* time */, "" /* sapling tree */,
+                "" /* orchard tree */);
+            std::move(callback).Run(std::move(tree_state));
+          });
+
+  base::test::TestFuture<const std::optional<std::string>&> reset_sync_future;
+  zcash_wallet_service_->ResetSyncState(account_id_1.Clone(), 100000u,
+                                        reset_sync_future.GetCallback());
+  EXPECT_EQ(std::nullopt, reset_sync_future.Take());
+
+  base::test::TestFuture<base::expected<
+      std::optional<OrchardStorage::AccountMeta>, OrchardStorage::Error>>
+      account_meta_future;
+  zcash_wallet_service_->sync_state()
+      .AsyncCall(&OrchardSyncState::GetAccountMeta)
+      .WithArgs(account_id_1.Clone())
+      .Then(account_meta_future.GetCallback());
+  auto account_meta = account_meta_future.Take();
+  ASSERT_TRUE(account_meta.has_value());
+  ASSERT_TRUE(account_meta.value());
+  EXPECT_EQ(100000u - kChainReorgBlockDelta,
+            account_meta.value()->account_birthday);
+
+  base::test::TestFuture<bool> unlock_future;
+  keyring_service()->Unlock(kTestWalletPassword, unlock_future.GetCallback());
+  ASSERT_TRUE(unlock_future.Get());
+  base::ScopedClosureRunner lock_on_exit(
+      base::BindLambdaForTesting([&]() { keyring_service()->Lock(); }));
+  auto account_info = keyring_service()->GetZCashAccountInfo(account_id_1);
+  ASSERT_TRUE(account_info);
+  EXPECT_EQ(mojom::ZCashAccountShieldBirthday::New(
+                100000u - kChainReorgBlockDelta, "new_hash"),
+            account_info->account_shield_birthday);
 }
 
 // Disabled on android due timeout failures

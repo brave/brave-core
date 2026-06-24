@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -113,6 +114,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                       ShieldAllFundsCallback callback) override;
 
   void ResetSyncState(mojom::AccountIdPtr account_id,
+                      uint32_t account_birthday_block,
                       ResetSyncStateCallback callback) override;
 
   void RunDiscovery(mojom::AccountIdPtr account_id,
@@ -182,6 +184,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
  private:
   template <typename T>
   using TaskContainer = absl::flat_hash_set<std::unique_ptr<T>>;
+  using AccountBirthdayCallback =
+      base::OnceCallback<void(mojom::ZCashAccountShieldBirthdayPtr,
+                              const std::optional<std::string>&)>;
 
   friend class ZCashCompleteTransactionTask;
   friend class ZCashCreateOrchardToOrchardTransactionTask;
@@ -292,18 +297,28 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   // Methods for retrieving account birthday block
   void GetLatestBlockForAccountBirthday(mojom::AccountIdPtr account_id,
-                                        MakeAccountShieldedCallback callback);
+                                        AccountBirthdayCallback callback);
   void OnGetLatestBlockForAccountBirthday(
       mojom::AccountIdPtr account_id,
-      MakeAccountShieldedCallback callback,
+      AccountBirthdayCallback callback,
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
   void GetTreeStateForAccountBirthday(mojom::AccountIdPtr account_id,
                                       uint32_t block_id,
-                                      MakeAccountShieldedCallback callback);
+                                      AccountBirthdayCallback callback);
   void OnGetTreeStateForAccountBirthday(
       mojom::AccountIdPtr account_id,
-      MakeAccountShieldedCallback callback,
+      AccountBirthdayCallback callback,
       base::expected<zcash::mojom::TreeStatePtr, std::string> result);
+  void OnMakeAccountShieldedAccountBirthday(
+      mojom::AccountIdPtr account_id,
+      MakeAccountShieldedCallback callback,
+      mojom::ZCashAccountShieldBirthdayPtr account_birthday,
+      const std::optional<std::string>& error_message);
+  void OnGetAccountBirthdayForResetSyncState(
+      mojom::AccountIdPtr account_id,
+      ResetSyncStateCallback callback,
+      mojom::ZCashAccountShieldBirthdayPtr account_birthday,
+      const std::optional<std::string>& error_message);
 
   mojom::ZCashAccountShieldBirthdayPtr GetAccountShieldBirthday(
       const mojom::AccountIdPtr& account_id);
@@ -319,6 +334,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       const mojom::ZCashShieldSyncStatusPtr& status) override;
 
   void OnResetSyncState(
+      mojom::AccountIdPtr account_id,
+      mojom::ZCashAccountShieldBirthdayPtr account_birthday,
       ResetSyncStateCallback callback,
       base::expected<OrchardStorage::Result, OrchardStorage::Error> result);
 
