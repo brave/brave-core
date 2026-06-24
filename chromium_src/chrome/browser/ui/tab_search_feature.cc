@@ -13,6 +13,10 @@
 
 namespace features {
 bool HasTabSearchToolbarButton() {
+#if BUILDFLAG(IS_ANDROID)
+  return true;
+#else
   return !base::FeatureList::IsEnabled(tabs::kHorizontalTabStripComboButton);
+#endif
 }
 }  // namespace features

@@ -328,14 +328,22 @@ bool BraveHorizontalTabStripRegionView::ShouldShowHorizontalScrollButton()
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
   views::View::Views order =
       HorizontalTabStripRegionView::GetChildrenInZOrder();
-  if (!HaveScrollButtons()) {
-    return order;
+
+  if (HaveScrollButtons()) {
+    for (auto& scroll_button :
+         {tab_scroll_previous_button_, tab_scroll_next_button_}) {
+      order.push_back(scroll_button.get());
+    }
   }
 
-  for (auto& scroll_button :
-       {tab_scroll_previous_button_, tab_scroll_next_button_}) {
-    order.push_back(scroll_button.get());
+  // combo_button_ is repositioned to the trailing edge (see Layout) where it
+  // overlaps reserved_grab_handle_space_, which upstream stacks above it.
+  // Without this, the grab handle becomes the event target and swallows clicks.
+  if (combo_button_) {
+    std::erase(order, combo_button_.get());
+    order.push_back(combo_button_.get());
   }
+
   return order;
 }
 
@@ -400,7 +408,31 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
       }
     }
 
+    // Upstream positions combo_button_ at the leading edge via
+    // AdjustViewBoundsRect. Move it to the trailing edge so it appears as the
+    // first caption button (immediately left of minimize/maximize/close).
+    if (combo_button_) {
+      combo_button_->SetVisible(true);
+      int right_edge = width();
+
+#if BUILDFLAG(IS_MAC)
+      // On macOS, button is attached to the edge of window as it's
+      // last view. On Win/Linux, there are caption buttons right side of it
+      // and they have sufficient padding.
+      right_edge -= 10;
+#endif
+      const gfx::Size combo_size = combo_button_->GetPreferredSize();
+      combo_button_->SetBoundsRect(gfx::Rect(
+          gfx::Point(right_edge - combo_size.width(), GetInsets().top()),
+          combo_size));
+    }
+
     return;
+  }
+
+  // in vertical tabs mode, the combo button is repurposed away, so hide it.
+  if (combo_button_) {
+    combo_button_->SetVisible(false);
   }
 
   // in vertical tabs mode, we make tab strip's height is the same with this
@@ -419,11 +451,18 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   gfx::Insets margins;
 
   // In horizontal mode, take the current right margin. It is required so that
-  // the new tab button will not be covered by the frame grab handle.
+  // the new tab button will not be covered by the frame grab handle. Also
+  // reserve space for combo_button_ which is repositioned to the trailing edge.
   if (!vertical_tabs) {
+    int right = 0;
     if (auto* current = tab_strip_->GetProperty(views::kMarginsKey)) {
-      margins.set_right(current->right());
+      right = current->right();
     }
+    if (combo_button_) {
+      right += combo_button_->GetPreferredSize().width() +
+               GetLayoutConstant(LayoutConstant::kTabStripPadding);
+    }
+    margins.set_right(right);
   }
 
   // Ensure that the correct amount of left margin is applied to the tabstrip.

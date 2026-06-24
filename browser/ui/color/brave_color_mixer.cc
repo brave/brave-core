@@ -798,11 +798,14 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
                                     const ui::ColorProviderKey& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  mixer[kColorNewTabButtonCRBackgroundFrameActive] = {ui::kColorFrameActive};
+  mixer[kColorNewTabButtonCRBackgroundFrameInactive] = {ui::kColorFrameActive};
+
   if (key.custom_theme) {
     return;
   }
-
-  ui::ColorMixer& mixer = provider->AddMixer();
 
   mixer[kColorNewTabButtonFocusRing] = {ui::kColorFocusableBorderFocused};
   mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
