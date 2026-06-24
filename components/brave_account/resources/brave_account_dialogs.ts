@@ -6,7 +6,6 @@
 import {
   AccountState,
   AccountStateFieldTags,
-  LoggedOutVerification,
   VerificationIntent,
   whichAccountState,
 } from './brave_account.mojom-webui.js'
@@ -23,10 +22,28 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_dialogs.html.js'
 
+// The pending verification, threaded into the CREDENTIALS dialog.
+// `intent` is the tagged `VerificationIntent`, not a raw enum, because
+// `LoggedOutVerificationIntent` and `LoggedInVerificationIntent` are distinct
+// enums that share the same value space - the tag is what tells password reset
+// (logged-out) from password change (logged-in).
+// `verifiedEmail` is the email persisted once the OTP step completes.
+//
+// `verification` is absent for registration, present for password reset/change:
+// the flows set the password at opposite ends of OTP.
+// Registration sets it in CREDENTIALS *before* OTP, reached from ENTRY with
+// no verification yet; password reset/change reach CREDENTIALS *after* OTP,
+// always with one. So don't synthesize a registration intent here -
+// at that point none exists.
+export interface CredentialsVerification {
+  intent: VerificationIntent
+  verifiedEmail: string
+}
+
 export type Dialog =
   | { type: 'ENTRY' | 'PASSWORD_RESET' | 'SIGN_IN' }
   | { type: 'OTP'; intent: VerificationIntent }
-  | { type: 'CREDENTIALS'; verification?: LoggedOutVerification }
+  | { type: 'CREDENTIALS'; verification?: CredentialsVerification }
 
 export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
@@ -78,7 +95,10 @@ export class BraveAccountDialogsElement extends CrLitElement {
     // LOGGED_OUT (no verification): show the ENTRY dialog
     // LOGGED_OUT (with verification, email not yet verified): show OTP
     // LOGGED_OUT (with verification, email verified): show CREDENTIALS
-    // LOGGED_IN: close the native dialog
+    // LOGGED_IN (no verification): close the native dialog
+    // LOGGED_IN (with verification, email not yet verified): show OTP
+    // LOGGED_IN (with verification, email verified): show CREDENTIALS
+    //
     // Since account state is profile-wide, this automatically updates dialogs
     // across all tabs.
     this.accountStateListenerId =
@@ -88,20 +108,43 @@ export class BraveAccountDialogsElement extends CrLitElement {
             case AccountStateFieldTags.LOGGED_OUT: {
               const verification = state.loggedOut!.verification
               if (verification) {
+                const intent: VerificationIntent = {
+                  loggedOutIntent: verification.intent,
+                }
                 this.dialog = verification.verifiedEmail
-                  ? { type: 'CREDENTIALS', verification }
-                  : {
-                      type: 'OTP',
-                      intent: { loggedOutIntent: verification.intent },
+                  ? {
+                      type: 'CREDENTIALS',
+                      verification: {
+                        intent,
+                        verifiedEmail: verification.verifiedEmail,
+                      },
                     }
+                  : { type: 'OTP', intent }
               } else {
                 this.dialog = { type: 'ENTRY' }
               }
               break
             }
-            case AccountStateFieldTags.LOGGED_IN:
-              this.onCloseDialog()
+            case AccountStateFieldTags.LOGGED_IN: {
+              const verification = state.loggedIn!.verification
+              if (verification) {
+                const intent: VerificationIntent = {
+                  loggedInIntent: verification.intent,
+                }
+                this.dialog = verification.verifiedEmail
+                  ? {
+                      type: 'CREDENTIALS',
+                      verification: {
+                        intent,
+                        verifiedEmail: verification.verifiedEmail,
+                      },
+                    }
+                  : { type: 'OTP', intent }
+              } else {
+                this.onCloseDialog()
+              }
               break
+            }
           }
         },
       )

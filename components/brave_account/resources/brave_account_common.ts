@@ -13,6 +13,9 @@ import {
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
+  ChangePasswordClientErrorCode,
+  ChangePasswordError,
+  ChangePasswordServerErrorCode,
   LoginClientErrorCode,
   LoginError,
   LoginServerErrorCode,
@@ -43,10 +46,34 @@ class FreezeWhenDirective extends AsyncDirective {
 export const freezeWhen = directive(FreezeWhenDirective)
 
 export type Error =
+  | { kind: 'changePassword'; details: ChangePasswordError }
   | { kind: 'login'; details: LoginError }
   | { kind: 'register'; details: RegisterError }
   | { kind: 'resendConfirmationEmail'; details: ResendConfirmationEmailError }
   | { kind: 'resetPassword'; details: ResetPasswordError }
+
+const CHANGE_PASSWORD_CLIENT_ERROR_STRINGS: Partial<
+  Record<ChangePasswordClientErrorCode, string>
+> = {}
+
+const CHANGE_PASSWORD_SERVER_ERROR_STRINGS: Partial<
+  Record<ChangePasswordServerErrorCode, string>
+> = {
+  [ChangePasswordServerErrorCode.kTooManyVerifications]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
+  [ChangePasswordServerErrorCode.kDailyVerificationLimitReachedForEmail]:
+    BraveAccountStrings.BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
+  [ChangePasswordServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
+    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
+  [ChangePasswordServerErrorCode.kEmailAlreadyVerified]:
+    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
+  [ChangePasswordServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
+    BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+  [ChangePasswordServerErrorCode.kInvalidVerificationCode]:
+    BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
+  [ChangePasswordServerErrorCode.kTokenHasExpired]:
+    BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
+}
 
 const LOGIN_CLIENT_ERROR_STRINGS: Partial<
   Record<LoginClientErrorCode, string>
@@ -135,11 +162,13 @@ const RESET_PASSWORD_SERVER_ERROR_STRINGS: Partial<
 
 function getErrorMessageImpl<
   ClientErrorCode extends
+    | ChangePasswordClientErrorCode
     | LoginClientErrorCode
     | RegisterClientErrorCode
     | ResendConfirmationEmailClientErrorCode
     | ResetPasswordClientErrorCode,
   ServerErrorCode extends
+    | ChangePasswordServerErrorCode
     | LoginServerErrorCode
     | RegisterServerErrorCode
     | ResendConfirmationEmailServerErrorCode
@@ -188,6 +217,12 @@ function getErrorMessageImpl<
 
 function getErrorMessage(error: Error): string {
   switch (error.kind) {
+    case 'changePassword':
+      return getErrorMessageImpl(
+        CHANGE_PASSWORD_CLIENT_ERROR_STRINGS,
+        CHANGE_PASSWORD_SERVER_ERROR_STRINGS,
+        error.details,
+      )
     case 'login':
       return getErrorMessageImpl(
         LOGIN_CLIENT_ERROR_STRINGS,

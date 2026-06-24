@@ -3,10 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {
-  assertNotReached,
-  assertNotReachedCase,
-} from '//resources/js/assert.js'
+import { assertNotReachedCase } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import {
@@ -17,8 +14,11 @@ import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { showError, showSuccess } from './brave_account_common.js'
 import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
+  ChangePasswordClientErrorCode,
+  ChangePasswordError,
   RegisterClientErrorCode,
   RegisterError,
+  LoggedInVerificationIntent,
   LoggedOutVerificationIntent,
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
@@ -43,11 +43,15 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
       intent: { type: Object },
       code: { type: String },
       isCodeValid: { type: Boolean },
+      isConfirmingCode: { type: Boolean, state: true },
       isResendingConfirmationEmail: { type: Boolean, state: true },
     }
   }
 
   protected async onConfirmCodeButtonClicked() {
+    if (this.isConfirmingCode) return
+    this.isConfirmingCode = true
+
     switch (whichVerificationIntent(this.intent)) {
       case VerificationIntentFieldTags.LOGGED_OUT_INTENT: {
         const loggedOutIntent = this.intent.loggedOutIntent!
@@ -63,11 +67,20 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         }
         break
       }
-      case VerificationIntentFieldTags.LOGGED_IN_INTENT:
-        assertNotReached(
-          'Logged-in verification intents are not supported yet!',
-        )
+      case VerificationIntentFieldTags.LOGGED_IN_INTENT: {
+        const loggedInIntent = this.intent.loggedInIntent!
+        switch (loggedInIntent) {
+          case LoggedInVerificationIntent.kChangePassword:
+            await this.confirmChangePasswordCode()
+            break
+          default:
+            assertNotReachedCase(loggedInIntent)
+        }
+        break
+      }
     }
+
+    this.isConfirmingCode = false
   }
 
   private async confirmRegistrationCode() {
@@ -107,6 +120,27 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
       }
 
       showError({ kind: 'resetPassword', details: error })
+    }
+  }
+
+  private async confirmChangePasswordCode() {
+    try {
+      await this.browserProxy.authentication.changePasswordVerifyComplete(
+        this.code,
+      )
+    } catch (e) {
+      let error: ChangePasswordError
+
+      if (e && typeof e === 'object') {
+        error = e as ChangePasswordError
+      } else {
+        console.error('Unexpected error:', e)
+        error = {
+          clientError: { errorCode: ChangePasswordClientErrorCode.kUnexpected },
+        }
+      }
+
+      showError({ kind: 'changePassword', details: error })
     }
   }
 
@@ -154,6 +188,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
   protected accessor intent!: VerificationIntent
   protected accessor code = ''
   protected accessor isCodeValid = false
+  protected accessor isConfirmingCode = false
   protected accessor isResendingConfirmationEmail = false
 }
 

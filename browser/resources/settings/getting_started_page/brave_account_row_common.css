@@ -46,7 +46,22 @@
     .description {
       color: var(--leo-color-text-secondary);
       font: var(--leo-font-small-regular);
+
+      localized-link {
+        --cr-link-color: var(--leo-color-text-interactive);
+      }
     }
+  }
+}
+
+.second-row {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--leo-spacing-m);
+  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-l);
+
+  .cancel-verification-button {
+    --leo-button-color: var(--leo-color-systemfeedback-error-text);
   }
 }
 

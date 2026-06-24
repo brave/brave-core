@@ -19,6 +19,12 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_account.mojom.AccountState;
 import org.chromium.brave_account.mojom.Authentication;
 import org.chromium.brave_account.mojom.AuthenticationObserver;
+import org.chromium.brave_account.mojom.ChangePasswordError;
+import org.chromium.brave_account.mojom.ChangePasswordServerError;
+import org.chromium.brave_account.mojom.ChangePasswordServerErrorCode;
+import org.chromium.brave_account.mojom.ChangePasswordVerifyInitResult;
+import org.chromium.brave_account.mojom.LoggedInState;
+import org.chromium.brave_account.mojom.LoggedInVerificationIntent;
 import org.chromium.brave_account.mojom.LoggedOutState;
 import org.chromium.brave_account.mojom.LoggedOutVerificationIntent;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailError;
@@ -43,7 +49,31 @@ import java.util.Map;
 @NullMarked
 public class BraveAccountSectionController
         implements AuthenticationObserver, ConnectionErrorHandler {
-    private static final Map<Integer, Integer> SERVER_ERROR_STRINGS =
+    private static final Map<Integer, Integer> CHANGE_PASSWORD_CLIENT_ERROR_STRINGS = Map.of();
+
+    private static final Map<Integer, Integer> CHANGE_PASSWORD_SERVER_ERROR_STRINGS =
+            Map.of(
+                    ChangePasswordServerErrorCode.TOO_MANY_VERIFICATIONS,
+                    R.string.brave_account_register_too_many_verifications,
+                    ChangePasswordServerErrorCode.DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
+                    R.string.brave_account_daily_verification_limit_reached_for_email,
+                    ChangePasswordServerErrorCode.VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
+                    R.string
+                            .brave_account_password_reset_verification_not_found_or_invalid_id_or_code,
+                    ChangePasswordServerErrorCode.EMAIL_ALREADY_VERIFIED,
+                    R.string.brave_account_password_reset_email_already_verified,
+                    ChangePasswordServerErrorCode.MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
+                    R.string
+                            .brave_account_password_reset_maximum_code_verification_attempts_exceeded,
+                    ChangePasswordServerErrorCode.INVALID_VERIFICATION_CODE,
+                    R.string.brave_account_register_invalid_verification_code,
+                    ChangePasswordServerErrorCode.TOKEN_HAS_EXPIRED,
+                    R.string.brave_account_resend_confirmation_email_token_has_expired);
+
+    private static final Map<Integer, Integer> RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS =
+            Map.of();
+
+    private static final Map<Integer, Integer> RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS =
             Map.of(
                     ResendConfirmationEmailServerErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
                     R.string.brave_account_resend_confirmation_email_maximum_send_attempts_exceeded,
@@ -54,21 +84,23 @@ public class BraveAccountSectionController
 
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_USER_INFO = "user_info";
+    private static final String PREF_CHANGE_PASSWORD = "change_password";
     private static final String PREF_SIGN_OUT = "sign_out";
     private static final String PREF_ALMOST_THERE = "almost_there";
     private static final String PREF_ENTER_VERIFICATION_CODE = "enter_verification_code";
     private static final String PREF_RESEND_CONFIRMATION_EMAIL = "resend_confirmation_email";
-    private static final String PREF_CANCEL_REGISTRATION = "cancel_registration";
+    private static final String PREF_CANCEL_VERIFICATION = "cancel_verification";
     private static final String PREF_GET_STARTED = "get_started";
     public static final String[] ALL_PREFERENCE_KEYS =
             new String[] {
                 PREF_BRAVE_ACCOUNT_SECTION,
                 PREF_USER_INFO,
+                PREF_CHANGE_PASSWORD,
                 PREF_SIGN_OUT,
                 PREF_ALMOST_THERE,
                 PREF_ENTER_VERIFICATION_CODE,
                 PREF_RESEND_CONFIRMATION_EMAIL,
-                PREF_CANCEL_REGISTRATION,
+                PREF_CANCEL_VERIFICATION,
                 PREF_GET_STARTED
             };
 
@@ -154,29 +186,116 @@ public class BraveAccountSectionController
         }
 
         Preference userInfoPref = mFragment.findPreference(PREF_USER_INFO);
+        Preference changePasswordPref = mFragment.findPreference(PREF_CHANGE_PASSWORD);
         Preference signOutPref = mFragment.findPreference(PREF_SIGN_OUT);
         Preference almostTherePref = mFragment.findPreference(PREF_ALMOST_THERE);
         Preference enterVerificationCodePref =
                 mFragment.findPreference(PREF_ENTER_VERIFICATION_CODE);
         Preference resendConfirmationEmailPref =
                 mFragment.findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
-        Preference cancelRegistrationPref = mFragment.findPreference(PREF_CANCEL_REGISTRATION);
+        Preference cancelVerificationPref = mFragment.findPreference(PREF_CANCEL_VERIFICATION);
         Preference getStartedPref = mFragment.findPreference(PREF_GET_STARTED);
 
         // Hidden by default; each state re-shows only the rows it needs.
         setVisibility(userInfoPref, false);
+        setVisibility(changePasswordPref, false);
         setVisibility(signOutPref, false);
         setVisibility(almostTherePref, false);
         setVisibility(enterVerificationCodePref, false);
         setVisibility(resendConfirmationEmailPref, false);
-        setVisibility(cancelRegistrationPref, false);
+        setVisibility(cancelVerificationPref, false);
         setVisibility(getStartedPref, false);
 
         switch (state.which()) {
             case AccountState.Tag.LoggedIn:
-                userInfoPref.setTitle(state.getLoggedIn().email);
-                setVisibility(userInfoPref, true);
-                setVisibility(signOutPref, true);
+                LoggedInState loggedIn = state.getLoggedIn();
+                if (loggedIn.verification == null) {
+                    userInfoPref.setTitle(loggedIn.email);
+                    if (changePasswordPref != null) {
+                        changePasswordPref.setOnPreferenceClickListener(
+                                preference -> {
+                                    preference.setEnabled(false);
+                                    assert mBraveAccountService != null;
+                                    mBraveAccountService.changePasswordVerifyInit(
+                                            loggedIn.email,
+                                            result ->
+                                                    onChangePasswordVerifyInit(preference, result));
+                                    return true;
+                                });
+                    }
+                    setVisibility(userInfoPref, true);
+                    setVisibility(changePasswordPref, true);
+                    setVisibility(signOutPref, true);
+                    break;
+                }
+
+                {
+                    VerificationIntent intent = new VerificationIntent();
+                    intent.setLoggedInIntent(loggedIn.verification.intent);
+
+                    if (resendConfirmationEmailPref != null) {
+                        resendConfirmationEmailPref.setOnPreferenceClickListener(
+                                preference -> {
+                                    preference.setEnabled(false);
+                                    assert mBraveAccountService != null;
+                                    mBraveAccountService.resendVerificationEmail(
+                                            intent,
+                                            result ->
+                                                    onResendVerificationEmail(preference, result));
+                                    return true;
+                                });
+                    }
+
+                    if (cancelVerificationPref != null) {
+                        cancelVerificationPref.setOnPreferenceClickListener(
+                                preference -> {
+                                    assert mBraveAccountService != null;
+                                    mBraveAccountService.cancelVerification(intent);
+                                    return true;
+                                });
+                    }
+                }
+
+                switch (loggedIn.verification.intent) {
+                    case LoggedInVerificationIntent.CHANGE_PASSWORD:
+                        if (loggedIn.verification.verifiedEmail.isEmpty()) {
+                            setTitleAndSummary(
+                                    almostTherePref,
+                                    R.string.settings_brave_account_verification_row_title,
+                                    R.string
+                                            .settings_brave_account_change_password_row_description_1); // presubmit: ignore-long-line
+                            setTitleAndSummary(
+                                    enterVerificationCodePref,
+                                    R.string
+                                            .settings_brave_account_enter_verification_code_button_label, // presubmit: ignore-long-line
+                                    R.string.settings_brave_account_verification_row_description_2);
+                            setVisibility(resendConfirmationEmailPref, true);
+                        } else {
+                            setTitleAndSummary(
+                                    almostTherePref,
+                                    R.string.settings_brave_account_verification_row_title,
+                                    R.string
+                                            .settings_brave_account_change_password_verified_row_description); // presubmit: ignore-long-line
+                            setTitleAndSummary(
+                                    enterVerificationCodePref,
+                                    R.string
+                                            .settings_brave_account_set_new_password_button_label, // presubmit: ignore-long-line
+                                    0);
+                        }
+                        setTitleAndSummary(
+                                cancelVerificationPref,
+                                R.string
+                                        .settings_brave_account_cancel_change_password_button_label, // presubmit: ignore-long-line
+                                0);
+                        setVisibility(almostTherePref, true);
+                        setVisibility(enterVerificationCodePref, true);
+                        setVisibility(cancelVerificationPref, true);
+                        break;
+
+                    default:
+                        assert false : "Unhandled LoggedInVerificationIntent!";
+                        break;
+                }
                 break;
 
             case AccountState.Tag.LoggedOut:
@@ -186,30 +305,31 @@ public class BraveAccountSectionController
                     break;
                 }
 
-                // The in-progress verification, wired into the resend/cancel
-                // listeners. Re-set on every state change so the captured intent
-                // always reflects the current verification.
-                VerificationIntent intent = new VerificationIntent();
-                intent.setLoggedOutIntent(loggedOut.verification.intent);
+                {
+                    VerificationIntent intent = new VerificationIntent();
+                    intent.setLoggedOutIntent(loggedOut.verification.intent);
 
-                if (resendConfirmationEmailPref != null) {
-                    resendConfirmationEmailPref.setOnPreferenceClickListener(
-                            preference -> {
-                                preference.setEnabled(false);
-                                assert mBraveAccountService != null;
-                                mBraveAccountService.resendVerificationEmail(
-                                        intent, result -> showAlertDialog(preference, result));
-                                return true;
-                            });
-                }
+                    if (resendConfirmationEmailPref != null) {
+                        resendConfirmationEmailPref.setOnPreferenceClickListener(
+                                preference -> {
+                                    preference.setEnabled(false);
+                                    assert mBraveAccountService != null;
+                                    mBraveAccountService.resendVerificationEmail(
+                                            intent,
+                                            result ->
+                                                    onResendVerificationEmail(preference, result));
+                                    return true;
+                                });
+                    }
 
-                if (cancelRegistrationPref != null) {
-                    cancelRegistrationPref.setOnPreferenceClickListener(
-                            preference -> {
-                                assert mBraveAccountService != null;
-                                mBraveAccountService.cancelVerification(intent);
-                                return true;
-                            });
+                    if (cancelVerificationPref != null) {
+                        cancelVerificationPref.setOnPreferenceClickListener(
+                                preference -> {
+                                    assert mBraveAccountService != null;
+                                    mBraveAccountService.cancelVerification(intent);
+                                    return true;
+                                });
+                    }
                 }
 
                 switch (loggedOut.verification.intent) {
@@ -224,13 +344,13 @@ public class BraveAccountSectionController
                                         .settings_brave_account_enter_verification_code_button_label, // presubmit: ignore-long-line
                                 R.string.settings_brave_account_verification_row_description_2);
                         setTitleAndSummary(
-                                cancelRegistrationPref,
+                                cancelVerificationPref,
                                 R.string.settings_brave_account_cancel_registration_button_label,
                                 0);
                         setVisibility(almostTherePref, true);
                         setVisibility(enterVerificationCodePref, true);
                         setVisibility(resendConfirmationEmailPref, true);
-                        setVisibility(cancelRegistrationPref, true);
+                        setVisibility(cancelVerificationPref, true);
                         break;
 
                     case LoggedOutVerificationIntent.RESET_PASSWORD:
@@ -258,12 +378,12 @@ public class BraveAccountSectionController
                                     0);
                         }
                         setTitleAndSummary(
-                                cancelRegistrationPref,
+                                cancelVerificationPref,
                                 R.string.settings_brave_account_cancel_reset_password_button_label,
                                 0);
                         setVisibility(almostTherePref, true);
                         setVisibility(enterVerificationCodePref, true);
-                        setVisibility(cancelRegistrationPref, true);
+                        setVisibility(cancelVerificationPref, true);
                         break;
 
                     default:
@@ -302,19 +422,18 @@ public class BraveAccountSectionController
         }
     }
 
-    private String getAlertTitle(@Nullable ResendConfirmationEmailError error) {
-        return mFragment.getString(
-                error == null
-                        ? R.string.brave_account_resend_confirmation_email_success_title
-                        : R.string.brave_account_resend_confirmation_email_error_title);
-    }
+    private String getAlertMessage(
+            Map<Integer, Integer> clientErrorStrings,
+            Map<Integer, Integer> serverErrorStrings,
+            @Nullable Integer clientErrorCode,
+            @Nullable Integer serverErrorCode,
+            @Nullable Integer netErrorOrHttpStatus) {
+        if (clientErrorCode != null) {
+            Integer stringId = clientErrorStrings.get(clientErrorCode);
+            if (stringId != null) {
+                return mFragment.getString(stringId);
+            }
 
-    private String getAlertMessage(@Nullable ResendConfirmationEmailError error) {
-        if (error == null) {
-            return mFragment.getString(R.string.brave_account_resend_confirmation_email_success);
-        }
-
-        if (error.which() == ResendConfirmationEmailError.Tag.ClientError) {
             return mFragment
                     .getString(R.string.brave_account_client_error)
                     .replace(
@@ -323,11 +442,12 @@ public class BraveAccountSectionController
                                     Locale.ROOT,
                                     " (%s=%d)",
                                     mFragment.getString(R.string.brave_account_error),
-                                    error.getClientError().errorCode));
+                                    clientErrorCode));
         }
 
-        ResendConfirmationEmailServerError serverError = error.getServerError();
-        Integer stringId = SERVER_ERROR_STRINGS.get(serverError.errorCode);
+        assert serverErrorCode != null;
+        assert netErrorOrHttpStatus != null;
+        Integer stringId = serverErrorStrings.get(serverErrorCode);
         if (stringId != null) {
             return mFragment.getString(stringId);
         }
@@ -339,23 +459,23 @@ public class BraveAccountSectionController
                         String.format(
                                 Locale.ROOT,
                                 "%s=%d",
-                                serverError.netErrorOrHttpStatus > 0 ? "HTTP" : "NET",
-                                serverError.netErrorOrHttpStatus))
+                                netErrorOrHttpStatus > 0 ? "HTTP" : "NET",
+                                netErrorOrHttpStatus))
                 .replace(
                         "$2",
                         String.format(
                                 Locale.ROOT,
                                 ", %s=%d",
                                 mFragment.getString(R.string.brave_account_error),
-                                serverError.errorCode));
+                                serverErrorCode));
     }
 
-    private void showAlertDialog(
-            Preference preference,
-            Result<ResendConfirmationEmailResult, ResendConfirmationEmailError> result) {
+    private void showAlertDialog(Preference preference, String title, String message) {
         PostTask.postTask(
                 TaskTraits.UI_DEFAULT,
                 () -> {
+                    preference.setEnabled(true);
+
                     if (!mFragment.isAdded() || mFragment.isDetached()) {
                         return;
                     }
@@ -364,11 +484,6 @@ public class BraveAccountSectionController
                     if (activity == null || activity.isFinishing()) {
                         return;
                     }
-
-                    ResendConfirmationEmailError error =
-                            result.isSuccess() ? null : result.getError();
-                    String title = getAlertTitle(error);
-                    String message = getAlertMessage(error);
 
                     LayoutInflater inflater =
                             (LayoutInflater)
@@ -382,8 +497,65 @@ public class BraveAccountSectionController
                             .setView(view)
                             .setPositiveButton(R.string.ok, null)
                             .show();
-
-                    preference.setEnabled(true);
                 });
+    }
+
+    private void onResendVerificationEmail(
+            Preference preference,
+            Result<ResendConfirmationEmailResult, ResendConfirmationEmailError> result) {
+        ResendConfirmationEmailError error = result.isSuccess() ? null : result.getError();
+
+        String title =
+                mFragment.getString(
+                        error == null
+                                ? R.string.brave_account_resend_confirmation_email_success_title
+                                : R.string.brave_account_resend_confirmation_email_error_title);
+
+        String message;
+        if (error == null) {
+            message = mFragment.getString(R.string.brave_account_resend_confirmation_email_success);
+        } else {
+            boolean isClientError = error.which() == ResendConfirmationEmailError.Tag.ClientError;
+            ResendConfirmationEmailServerError serverError =
+                    isClientError ? null : error.getServerError();
+            message =
+                    getAlertMessage(
+                            RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS,
+                            RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS,
+                            isClientError ? error.getClientError().errorCode : null,
+                            serverError == null ? null : serverError.errorCode,
+                            serverError == null ? null : serverError.netErrorOrHttpStatus);
+        }
+
+        showAlertDialog(preference, title, message);
+    }
+
+    private void onChangePasswordVerifyInit(
+            Preference preference,
+            Result<ChangePasswordVerifyInitResult, ChangePasswordError> result) {
+        if (result.isSuccess()) {
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () -> {
+                        preference.setEnabled(true);
+                        openBraveAccountDialog();
+                    });
+            return;
+        }
+
+        ChangePasswordError error = result.getError();
+        boolean isClientError = error.which() == ChangePasswordError.Tag.ClientError;
+        ChangePasswordServerError serverError = isClientError ? null : error.getServerError();
+        String title =
+                mFragment.getString(R.string.settings_brave_account_change_password_error_title);
+        String message =
+                getAlertMessage(
+                        CHANGE_PASSWORD_CLIENT_ERROR_STRINGS,
+                        CHANGE_PASSWORD_SERVER_ERROR_STRINGS,
+                        isClientError ? error.getClientError().errorCode : null,
+                        serverError == null ? null : serverError.errorCode,
+                        serverError == null ? null : serverError.netErrorOrHttpStatus);
+
+        showAlertDialog(preference, title, message);
     }
 }

@@ -49,6 +49,21 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_RESET_PASSWORD_BUTTON_LABEL" desc="Label for the button that cancels the pending password reset when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Cancel password reset
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ROW_DESCRIPTION_1" desc="Instructions informing the user that a password change email has been sent and they need to enter the code to continue" formatter_data="webui=BraveAccountSettings android_java">
+    In order to change your password, please verify your email address.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_VERIFIED_ROW_DESCRIPTION" desc="Row description shown during password change after the user has already verified their email, prompting them to set a new password to finish" formatter_data="webui=BraveAccountSettings android_java">
+    Your email has been verified. Set a new password to complete your password change.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_CHANGE_PASSWORD_BUTTON_LABEL" desc="Label for the button that cancels the pending password change when clicked" formatter_data="webui=BraveAccountSettings android_java">
+    Cancel password change
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL" desc="Label for the button that starts the password change process when clicked" formatter_data="webui=BraveAccountSettings android_java">
+    Change password
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE" desc="Title for the alert shown when starting the password change process fails" formatter_data="webui=BraveAccountSettings android_java">
+    Unable to change password
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Log out
   </message>
@@ -109,6 +124,12 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_DIALOG_DESCRIPTION" desc="Description shown in the dialog where the user sets a new password after verifying their email during the password reset flow" formatter_data="webui=BraveAccount">
     Confirmation successful. Now enter your desired new password:
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL" desc="Label for the button that submits the new password during the password change flow" formatter_data="webui=BraveAccount">
+    Change password
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_CHANGE_PASSWORD_DIALOG_TITLE" desc="Title for the dialog where the user sets a new password after verifying their email during the password change flow" formatter_data="webui=BraveAccount">
+    Change password
   </message>
 
   <!-- 'Sign In' dialog: -->
@@ -181,7 +202,7 @@
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED" desc="" formatter_data="webui=BraveAccount">
     The domain of this email address is not supported. Please use a different email address.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS" desc="Error message shown when too many email verifications have been requested and the user must wait before trying again" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Email verification limit exceeded. Please wait 30 minutes before trying again.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE" desc="" formatter_data="webui=BraveAccount">
@@ -190,7 +211,7 @@
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="" formatter_data="webui=BraveAccount">
     Too many incorrect codes were entered. Start the registration process again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="Error message shown when the entered email verification code is incorrect" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Wrong code, please try again.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_REGISTRATION_VERIFICATION_ALREADY_PENDING_FOR_THIS_EMAIL" desc="" formatter_data="webui=BraveAccount">
@@ -202,16 +223,16 @@
   <message name="IDS_BRAVE_ACCOUNT_FAILED_TO_SEND_EMAIL_DUE_TO_INVALID_FORMAT" desc="Error message shown when the email could not be sent because the email address format is invalid" formatter_data="webui=BraveAccount">
     Invalid email address.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL" desc="Error message shown when the daily verification limit has been reached for this email address" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL" desc="Error message shown when the daily verification limit has been reached for this email address" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Too many verification attempts for this email address. Try again in 24 hours.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED" desc="Error message shown during password reset when the email is already verified, indicating an internal error" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED" desc="Error message shown during password reset when the email is already verified, indicating an internal error" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Internal error. Close the dialog, cancel the verification, and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE" desc="Error message shown during password reset when the verification could not be found or the ID/code is invalid" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE" desc="Error message shown during password reset when the verification could not be found or the ID/code is invalid" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Verification code expired. Start the password change process again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown during password reset when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown during password reset when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Too many incorrect codes were entered. Start the password change process again.
   </message>
 
