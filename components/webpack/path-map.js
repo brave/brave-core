@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-const path = require('path')
+import path from 'path'
+import dirName from './dirName.cjs'
 
 const allPrefixes = (path, searchPaths) => ['chrome://', 'chrome-untrusted://', ''].reduce((acc, prefix) => {
   acc[prefix + path] = searchPaths
@@ -14,7 +15,7 @@ const allPrefixes = (path, searchPaths) => ['chrome://', 'chrome-untrusted://', 
  * @param {string} genPath The path to the generated files in the build output.
  * @returns A map of path aliases
  */
-module.exports = function (genPath) {
+export default function (genPath) {
   return {
     // Find files in the current build configurations /gen directory
     'gen': genPath,
@@ -36,17 +37,17 @@ module.exports = function (genPath) {
       genPath, 'ui/webui/resources/tsc'),
     // We import brave-ui direct from source and not from package repo, so we need
     // direct path to the src/ directory.
-    'brave-ui': path.resolve(__dirname, '../../node_modules/@brave/brave-ui'),
+    'brave-ui': path.resolve(dirName, '../../node_modules/@brave/brave-ui'),
     // Force same styled-components module for brave-core and brave-ui
     // which ensure both repos code use the same singletons, e.g. ThemeContext.
     'styled-components': path.resolve(
-      __dirname, '../../node_modules/styled-components'),
+      dirName, '../../node_modules/styled-components'),
     // More helpful path for local web-components
     // TODO(petemill): Rename 'brave/components/common' dir to
     // 'brave/components/web-common'
-    '$web-common': path.resolve(__dirname, '../common'),
+    '$web-common': path.resolve(dirName, '../common'),
     // react-markdown uses this deep in its tree, and the browser variant uses innerHTML, conflicting with WebUIs that requires Trusted Types
     // We redirect to an alternative implementation that uses a lookup table to decode named chars instead of innerHTML
-    'decode-named-character-reference': path.resolve(__dirname, '../../node_modules/decode-named-character-reference/index.js'),
+    'decode-named-character-reference': path.resolve(dirName, '../../node_modules/decode-named-character-reference/index.js'),
   }
 }

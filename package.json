@@ -3,6 +3,7 @@
   "version": "1.93.100",
   "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "help": "node ./build/commands/scripts/commands.js --help",
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
@@ -36,7 +37,7 @@
     "eslint": "eslint --quiet .",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
-    "web-ui": "webpack --config components/webpack/webpack.config.ts",
+    "web-ui": "webpack --disable-interpret --config components/webpack/webpack.config.ts",
     "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
     "test-unit": "jest",
@@ -53,8 +54,8 @@
     "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
     "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js",
     "coverage_report": "node ./build/commands/scripts/commands.js coverage_report",
-    "ai-chat-shared-conversation-lib-dev": "webpack serve --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=development",
-    "ai-chat-shared-conversation-lib-prod": "webpack --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=production",
+    "ai-chat-shared-conversation-lib-dev": "webpack serve --disable-interpret --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=development",
+    "ai-chat-shared-conversation-lib-prod": "webpack --disable-interpret --config components/ai_chat/resources/shared_conversation_lib/webpack.config.ts --mode=production",
     "generate_about_credits": "node ./build/commands/scripts/generateAboutCredits.js"
   },
   "repository": {

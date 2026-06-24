@@ -5,9 +5,9 @@
 
 'use strict'
 
-const assert = require('assert')
-const path = require('path')
-const util = require('util')
+import assert from 'assert'
+import path from 'path'
+import util from 'util'
 
 /**
  * @typedef {import('@jest/types').Config.GlobalConfig} GlobalConfig
@@ -296,4 +296,4 @@ class TeamcityReporter {
   }
 }
 
-module.exports = TeamcityReporter
+export default TeamcityReporter

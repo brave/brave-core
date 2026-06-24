@@ -3,7 +3,4 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-export {
-  init,
-  Gemma3Embedder,
-} from 'gen/brave/components/local_ai/resources/candle_embedding_gemma/bundler/pkg'
+export { Gemma3Embedder } from 'gen/brave/components/local_ai/resources/candle_embedding_gemma/bundler/pkg'

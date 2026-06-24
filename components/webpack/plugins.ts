@@ -8,7 +8,7 @@ import path from 'path'
 import webpack from 'webpack'
 
 // Re-exported so consumers have a single import site for shared webpack pieces.
-export { provideNodeGlobals } from './polyfill'
+export { provideNodeGlobals } from './polyfill.ts'
 
 /**
  * Maps a scheme prefix to one or more real paths. We need this as Webpack5

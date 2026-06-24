@@ -8,25 +8,25 @@ import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
 import CopyPlugin from 'copy-webpack-plugin'
-import genTsConfig from '../../../../build/commands/lib/genTsConfig'
-import { genPath } from '../../../../build/commands/lib/guessConfig'
+import genTsConfig from '../../../../build/commands/lib/genTsConfig.js'
+import { genPath } from '../../../../build/commands/lib/guessConfig.js'
 import {
   deterministicOptimization,
   deterministicIdsPlugins,
-} from '../../../webpack/deterministic-output'
-import generatePathMap from '../../../webpack/path-map'
+} from '../../../webpack/deterministic-output.ts'
+import generatePathMap from '../../../webpack/path-map.js'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
-} from '../../../webpack/plugins'
-import { baseResolve, withMockOverrides } from '../../../webpack/resolve'
+} from '../../../webpack/plugins.ts'
+import { baseResolve, withMockOverrides } from '../../../webpack/resolve.ts'
 import {
   cssRules,
   tsLoaderRule,
   fileLoaderRule,
   braveUiFullySpecifiedRule,
   htmlAssetRule,
-} from '../../../webpack/rules'
+} from '../../../webpack/rules.ts'
 
 if (!fs.existsSync(genPath)) {
   throw new Error(
@@ -38,7 +38,7 @@ console.log(`Using brave-core generated dependency path of '${genPath}'`)
 // Mock browser-privileged functionality (e.g. string pluralization,
 // createSanitizedImageUrl) with the web-compatible implementations we share
 // with Storybook.
-const storybookDir = path.resolve(__dirname, '../../../../.storybook')
+const storybookDir = path.resolve(import.meta.dirname, '../../../../.storybook')
 const pathMap = withMockOverrides(generatePathMap(genPath), {
   chromeResourcesMockDir: path.join(storybookDir, 'chrome-resources-mock'),
   webCommonMockDir: path.join(storybookDir, 'web-common-mock'),
@@ -60,15 +60,18 @@ export default async function (
     genPath,
     'tsconfig-ai-chat-shared-conversation.json',
     genPath,
-    path.resolve(__dirname, '../../../../tsconfig-webpack.json'),
+    path.resolve(import.meta.dirname, '../../../../tsconfig-webpack.json'),
   )
 
   const entry: webpack.Configuration['entry'] = {
-    'render_conversation': path.join(__dirname, 'render_conversation.tsx'),
+    'render_conversation': path.join(
+      import.meta.dirname,
+      'render_conversation.tsx',
+    ),
   }
 
   if (isDevMode) {
-    entry.demo = path.join(__dirname, 'demo.tsx')
+    entry.demo = path.join(import.meta.dirname, 'demo.tsx')
   }
 
   const output: webpack.Configuration['output'] = {
@@ -90,7 +93,7 @@ export default async function (
 
   if (isDevMode) {
     copyPluginPatterns.push({
-      from: path.join(__dirname, 'demo.html'),
+      from: path.join(import.meta.dirname, 'demo.html'),
       to: 'demo.html',
     })
   }

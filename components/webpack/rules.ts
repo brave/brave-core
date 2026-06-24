@@ -5,11 +5,12 @@
 
 import path from 'path'
 import type { RuleSetRule } from 'webpack'
+import getTsCustomTransformers from './webpack-ts-transformers.js'
+import dirName from './dirName.cjs'
 
 // Resolved against this directory so the rules work regardless of which config
 // imports them.
-const tsCustomTransformers = path.join(__dirname, 'webpack-ts-transformers.js')
-const ifdefLoaderPath = path.join(__dirname, 'plugins', 'ifdef-loader.ts')
+const ifdefLoaderPath = path.join(dirName, 'plugins', 'ifdef-loader.ts')
 
 /**
  * Loaders for SASS / CSS. `.global.` files and anything from `node_modules` are
@@ -83,7 +84,7 @@ export function tsLoaderRule({
     loader: 'ts-loader',
     options: {
       transpileOnly,
-      getCustomTransformers: tsCustomTransformers,
+      getCustomTransformers: getTsCustomTransformers,
       // Use generated tsconfig so that we can point at gen/ output in the correct
       // build configuration output directory.
       configFile,
