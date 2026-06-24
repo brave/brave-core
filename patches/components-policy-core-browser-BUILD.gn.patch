@@ -1,8 +1,8 @@
 diff --git a/components/policy/core/browser/BUILD.gn b/components/policy/core/browser/BUILD.gn
-index 08f79c4eb76e1b83cd7a8d39f8344d7c5b97d35b..1b64d5d75310e166f799b7af79c6b9e014b19aff 100644
+index f0d467381da5e21372edefc9a68ecc95b7d0cf23..59bc9ef3df5b324702a500ef47ff499cffaaaee6 100644
 --- a/components/policy/core/browser/BUILD.gn
 +++ b/components/policy/core/browser/BUILD.gn
-@@ -111,6 +111,8 @@ source_set("internal") {
+@@ -121,6 +121,7 @@ source_set("internal") {
      "//net",
      "//third_party/icu",
    ]
