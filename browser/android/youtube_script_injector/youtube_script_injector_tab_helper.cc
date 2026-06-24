@@ -218,18 +218,18 @@ const char kPictureInPictureRequestKey[] = "PictureInPictureRequest";
 
 // Callers pass the last committed NavigationEntry, which is contractually
 // non-null in WebContentsObserver callbacks once the FrameTree is initialized.
-void SetPictureInPictureRequested(content::NavigationEntry* entry,
+void SetPictureInPictureRequested(content::NavigationEntry& entry,
                                   bool requested) {
   if (requested) {
-    entry->SetUserData(kPictureInPictureRequestKey,
-                       std::make_unique<PictureInPictureRequest>());
+    entry.SetUserData(kPictureInPictureRequestKey,
+                      std::make_unique<PictureInPictureRequest>());
   } else {
-    entry->RemoveUserData(kPictureInPictureRequestKey);
+    entry.RemoveUserData(kPictureInPictureRequestKey);
   }
 }
 
-bool IsPictureInPictureRequested(content::NavigationEntry* entry) {
-  return entry->GetUserData(kPictureInPictureRequestKey);
+bool IsPictureInPictureRequested(content::NavigationEntry& entry) {
+  return entry.GetUserData(kPictureInPictureRequestKey);
 }
 
 }  // namespace
@@ -271,7 +271,7 @@ void YouTubeScriptInjectorTabHelper::DidFinishNavigation(
     // different page.
     script_injector_remote_.reset();
     SetPictureInPictureRequested(
-        web_contents()->GetController().GetLastCommittedEntry(), false);
+        *web_contents()->GetController().GetLastCommittedEntry(), false);
   }
 }
 
@@ -310,7 +310,7 @@ void YouTubeScriptInjectorTabHelper::
   // is safe, and not gating keeps the button working even if a prior request
   // was left armed by an edge case we cannot observe here.
   SetPictureInPictureRequested(
-      web_contents()->GetController().GetLastCommittedEntry(), true);
+      *web_contents()->GetController().GetLastCommittedEntry(), true);
   EnsureBound(rfh);
   script_injector_remote_->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
@@ -402,7 +402,7 @@ void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
   // etc.), so clear the request: PiP must not be entered, and the user is free
   // to try again on the same page.
   SetPictureInPictureRequested(
-      web_contents()->GetController().GetLastCommittedEntry(), false);
+      *web_contents()->GetController().GetLastCommittedEntry(), false);
 }
 
 void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
@@ -419,8 +419,8 @@ void YouTubeScriptInjectorTabHelper::MaybeEnterPictureInPicture() {
   // Only act when a request is still armed for the page currently showing. If
   // the user navigated in the meantime, the new entry carries no request and we
   // leave it alone, keeping fullscreen and PiP consistent (both or neither).
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
+  content::NavigationEntry& entry =
+      *web_contents()->GetController().GetLastCommittedEntry();
   if (!IsPictureInPictureRequested(entry)) {
     return;
   }
@@ -446,7 +446,7 @@ void YouTubeScriptInjectorTabHelper::MediaPictureInPictureChanged(
   // which does not route through here, so MediaEffectivelyFullscreenChanged()
   // owns clearing the request in practice.
   SetPictureInPictureRequested(
-      web_contents()->GetController().GetLastCommittedEntry(), false);
+      *web_contents()->GetController().GetLastCommittedEntry(), false);
 }
 
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
