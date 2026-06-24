@@ -41,6 +41,7 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//base/version_info",
     "//brave/components/containers/core/common",
     "//brave/components/resources:strings",
     "//brave/third_party/bip39wally-core-native:bip39wally-core",
