@@ -46,6 +46,7 @@ source_set("internal") {
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tree_tab_session_manager",
       "//brave/browser/ui/views/page_info",
+      "//brave/browser/ui/views/tabs",
       "//chrome/browser/ui/tabs:features",
     ]
   }

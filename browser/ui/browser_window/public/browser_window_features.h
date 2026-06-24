@@ -17,6 +17,7 @@ class BraveVPNController;
 class FocusModeController;
 class PlaylistSidePanelCoordinator;
 class TreeTabSessionManager;
+class VerticalTabController;
 
 namespace brave_rewards {
 class RewardsPanelCoordinator;
@@ -96,6 +97,14 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return screenshot_controller_.get();
   }
 
+  VerticalTabController* vertical_tab_controller() {
+    return vertical_tab_controller_.get();
+  }
+
+  const VerticalTabController* vertical_tab_controller() const {
+    return vertical_tab_controller_.get();
+  }
+
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
@@ -115,6 +124,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
       brave_non_client_hit_test_helper_;
   std::unique_ptr<TreeTabSessionManager> tree_tab_session_manager_;
   std::unique_ptr<screenshot::ScreenshotController> screenshot_controller_;
+  std::unique_ptr<VerticalTabController> vertical_tab_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
