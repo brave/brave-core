@@ -273,7 +273,13 @@ bool WalletButton::IsShowingBubble() {
 bool WalletButton::IsBubbleClosedForTesting() {
   return brave_wallet::BraveWalletTabHelper::FromWebContents(
              GetActiveWebContents())
-      ->IsBubbleClosedForTesting();
+      ->IsBubbleClosedForTesting();  // IN-TEST
+}
+
+views::Widget* WalletButton::GetBubbleWidgetForTesting() {
+  return brave_wallet::BraveWalletTabHelper::FromWebContents(
+             GetActiveWebContents())
+      ->GetBubbleWidgetForTesting();  // IN-TEST
 }
 
 views::View* WalletButton::GetAsAnchorView() {

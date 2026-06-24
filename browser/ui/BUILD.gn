@@ -169,6 +169,7 @@ source_set("ui") {
         "//brave/browser/ui/webui/brave_wallet/ledger",
         "//brave/browser/ui/webui/brave_wallet/trezor",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel",
+        "//chrome/browser/picture_in_picture",
       ]
     }
   }
