@@ -163,6 +163,12 @@ hooks = [
                '--filter', '^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
   },
   {
+    # Generate //brave/build/version.gni from chrome/VERSION.
+    'name': 'brave_version_gni',
+    'pattern': '.',
+    'action': ['python3', 'build/util/version.py', 'gen', '../chrome/VERSION'],
+  },
+  {
     # Downloads & overwrites Chromium's swift-format dep on macOS only
     'name': 'download_swift_format',
     'pattern': '.',
