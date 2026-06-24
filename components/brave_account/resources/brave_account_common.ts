@@ -114,6 +114,8 @@ const REGISTER_SERVER_ERROR_STRINGS: Partial<
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
   [RegisterServerErrorCode.kRegistrationVerificationAlreadyPendingForThisEmail]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_REGISTRATION_VERIFICATION_ALREADY_PENDING_FOR_THIS_EMAIL,
+  [RegisterServerErrorCode.kDailyVerificationLimitReachedForEmail]:
+    BraveAccountStrings.BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
 }
 
 const RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS: Partial<
