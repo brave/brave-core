@@ -8,12 +8,16 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "services/service_manager/public/cpp/interface_provider.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/mojom/content_extraction/script_tools.mojom.h"
@@ -41,6 +45,39 @@ blink::mojom::ScriptToolPtr MakeScriptTool(
   return tool;
 }
 
+class MockPageContentExtractor : public mojom::PageContentExtractor {
+ public:
+  MockPageContentExtractor() = default;
+  ~MockPageContentExtractor() override = default;
+
+  MOCK_METHOD(void,
+              ExtractPageContent,
+              (ExtractPageContentCallback),
+              (override));
+  MOCK_METHOD(void,
+              GetSearchSummarizerKey,
+              (GetSearchSummarizerKeyCallback),
+              (override));
+  MOCK_METHOD(void,
+              GetOpenAIChatButtonNonce,
+              (GetOpenAIChatButtonNonceCallback),
+              (override));
+  MOCK_METHOD(void,
+              ExecuteContentTool,
+              (const std::string& name,
+               const std::string& input_json,
+               ExecuteContentToolCallback),
+              (override));
+
+  void Bind(mojo::ScopedMessagePipeHandle handle) {
+    receiver_.Bind(
+        mojo::PendingReceiver<mojom::PageContentExtractor>(std::move(handle)));
+  }
+
+ private:
+  mojo::Receiver<mojom::PageContentExtractor> receiver_{this};
+};
+
 }  // namespace
 
 class ContentToolTest : public content::RenderViewHostTestHarness {
@@ -54,6 +91,44 @@ class ContentToolTest : public content::RenderViewHostTestHarness {
   content::WeakDocumentPtr weak_document() {
     return main_rfh()->GetWeakDocumentPtr();
   }
+
+  // Binds a mock PageContentExtractor for the main frame so UseTool's mojo call
+  // can be intercepted.
+  MockPageContentExtractor* SetUpMockExtractor() {
+    content::RenderFrameHostTester::For(web_contents()->GetPrimaryMainFrame())
+        ->InitializeRenderFrameIfNeeded();
+    service_manager::InterfaceProvider::TestApi test_api(
+        web_contents()->GetPrimaryMainFrame()->GetRemoteInterfaces());
+    mock_extractor_ = std::make_unique<MockPageContentExtractor>();
+    test_api.SetBinderForName(
+        mojom::PageContentExtractor::Name_,
+        base::BindRepeating(&MockPageContentExtractor::Bind,
+                            base::Unretained(mock_extractor_.get())));
+    return mock_extractor_.get();
+  }
+
+  // Runs UseTool with `input_json` against a freshly-bound mock extractor and
+  // returns the input_json the tool actually forwarded to the renderer.
+  std::string ForwardedInputFor(const std::string& input_json) {
+    MockPageContentExtractor* extractor = SetUpMockExtractor();
+    auto mojo_tool = MakeScriptTool("noop", "");
+    ContentTool tool(*mojo_tool, weak_document());
+
+    base::test::TestFuture<std::string> input_future;
+    EXPECT_CALL(*extractor,
+                ExecuteContentTool(::testing::_, ::testing::_, ::testing::_))
+        .WillOnce(
+            [&](const std::string& name, const std::string& forwarded,
+                mojom::PageContentExtractor::ExecuteContentToolCallback cb) {
+              input_future.SetValue(forwarded);
+              std::move(cb).Run("ok");
+            });
+    tool.UseTool(input_json, base::DoNothing());
+    return input_future.Get();
+  }
+
+ private:
+  std::unique_ptr<MockPageContentExtractor> mock_extractor_;
 };
 
 TEST_F(ContentToolTest, NamePrefixesHostAndSanitizes) {
@@ -146,6 +221,26 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
   auto after = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<bool>(after));
   EXPECT_FALSE(std::get<bool>(after));
+}
+
+TEST_F(ContentToolTest, UseToolNormalizesEmptyInputToObject) {
+  // Models may emit an empty string for a tool that takes no parameters. The
+  // renderer fails to parse "" as JSON, so UseTool must forward "{}" instead.
+  EXPECT_EQ(ForwardedInputFor(/*input_json=*/""), "{}");
+}
+
+TEST_F(ContentToolTest, UseToolForwardsNonEmptyInputUnchanged) {
+  EXPECT_EQ(ForwardedInputFor(R"({"query":"weather"})"),
+            R"({"query":"weather"})");
+}
+
+TEST_F(ContentToolTest, UseToolForwardsEmptyIshJsonValuesUnchanged) {
+  // Only a truly empty string is normalized. Valid JSON values that merely look
+  // "empty" (null, an empty JSON string, an empty array, an empty object) are
+  // non-empty strings and must be forwarded verbatim.
+  for (const std::string args : {"null", R"("")", "[]", "{}"}) {
+    EXPECT_EQ(ForwardedInputFor(args), args) << "args=" << args;
+  }
 }
 
 TEST_F(ContentToolTest, UseToolAfterDocumentGoneReturnsEmpty) {

@@ -154,4 +154,69 @@ TEST(OAISerializationUtilsTest,
   EXPECT_EQ(*tool_call_id, "call_0");
 }
 
+TEST(OAISerializationUtilsTest,
+     SerializeToolCallsOnMessageDict_EmptyArgumentsNormalizedToObject) {
+  // Some models emit an empty string for the arguments of a tool that takes no
+  // parameters. An empty string is not valid JSON, so it must be normalized to
+  // an empty object before being echoed back to the server.
+  OAIMessage message;
+  message.tool_calls.push_back(
+      mojom::ToolUseEvent::New("no_args_tool", "call_1", /*arguments_json=*/"",
+                               std::nullopt, std::nullopt, nullptr, false));
+
+  base::DictValue dict;
+  SerializeToolCallsOnMessageDict(message, dict);
+
+  const base::ListValue* tool_calls = dict.FindList("tool_calls");
+  ASSERT_TRUE(tool_calls);
+  ASSERT_EQ(tool_calls->size(), 1u);
+  const base::DictValue* function =
+      (*tool_calls)[0].GetDict().FindDict("function");
+  ASSERT_TRUE(function);
+  EXPECT_EQ(*function->FindString("arguments"), "{}");
+}
+
+TEST(OAISerializationUtilsTest,
+     SerializeToolCallsOnMessageDict_NonEmptyArgumentsUnchanged) {
+  // Non-empty arguments must be passed through verbatim.
+  OAIMessage message;
+  message.tool_calls.push_back(
+      mojom::ToolUseEvent::New("search", "call_1", R"({"query":"weather"})",
+                               std::nullopt, std::nullopt, nullptr, false));
+
+  base::DictValue dict;
+  SerializeToolCallsOnMessageDict(message, dict);
+
+  const base::ListValue* tool_calls = dict.FindList("tool_calls");
+  ASSERT_TRUE(tool_calls);
+  ASSERT_EQ(tool_calls->size(), 1u);
+  const base::DictValue* function =
+      (*tool_calls)[0].GetDict().FindDict("function");
+  ASSERT_TRUE(function);
+  EXPECT_EQ(*function->FindString("arguments"), R"({"query":"weather"})");
+}
+
+TEST(OAISerializationUtilsTest,
+     SerializeToolCallsOnMessageDict_EmptyIshJsonValuesUnchanged) {
+  // Only a truly empty string is normalized. Valid JSON values that merely look
+  // "empty" (null, an empty JSON string, an empty array, an empty object) are
+  // non-empty strings and must be passed through verbatim.
+  for (const char* args : {"null", R"("")", "[]", "{}"}) {
+    OAIMessage message;
+    message.tool_calls.push_back(mojom::ToolUseEvent::New(
+        "tool", "call_1", args, std::nullopt, std::nullopt, nullptr, false));
+
+    base::DictValue dict;
+    SerializeToolCallsOnMessageDict(message, dict);
+
+    const base::ListValue* tool_calls = dict.FindList("tool_calls");
+    ASSERT_TRUE(tool_calls);
+    ASSERT_EQ(tool_calls->size(), 1u);
+    const base::DictValue* function =
+        (*tool_calls)[0].GetDict().FindDict("function");
+    ASSERT_TRUE(function);
+    EXPECT_EQ(*function->FindString("arguments"), args) << "args=" << args;
+  }
+}
+
 }  // namespace ai_chat
