@@ -148,7 +148,7 @@ group("all") {
   }
 }
 
-if (enable_brave_vpn_v2) {
+if (enable_brave_vpn_v2_apps) {
   group("brave_vpn_data_deps") {
     data_deps = [
       "//brave/components/brave_vpn/app/v2/agent",
@@ -178,7 +178,7 @@ if (!is_ios) {
 
     data_deps = [ ":unpacked_resources" ]
 
-    if (enable_brave_vpn_v2) {
+    if (enable_brave_vpn_v2_apps) {
       data_deps += [ ":brave_vpn_data_deps" ]
     }
 

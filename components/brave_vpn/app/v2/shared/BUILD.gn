@@ -5,7 +5,7 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
-assert(enable_brave_vpn_v2)
+assert(enable_brave_vpn_v2_apps)
 
 static_library("shared") {
   sources = [

@@ -12,12 +12,13 @@ declare_args() {
       (is_win || is_android || is_mac || is_ios) && !is_brave_origin_branded
 
   # Build with Brave VPN architecture 2.0 support.
-  enable_brave_vpn_v2 = false
+  enable_brave_vpn_v2 =
+      (is_win || is_android || is_mac || is_ios) && !is_brave_origin_branded
 }
 
 # Brave VPN is enabled, if at least one VPN architecture is enabled.
 # Both architectures can be enabled at compile time; in that case, the
-# right architecture will be selected at runtime.
+# right architecture will be selected at runtime using a feature flag.
 enable_brave_vpn = enable_brave_vpn_v1 || enable_brave_vpn_v2
 
 declare_args() {
@@ -27,6 +28,10 @@ declare_args() {
   # Wireguard is available only on Windows.
   enable_brave_vpn_wireguard = (is_mac || is_win) && enable_brave_vpn
 }
+
+# Enable VPN apps only on desktop platforms (Windows, Linux, and macOS)
+# which also support architecture 2.0.
+enable_brave_vpn_v2_apps = (is_win || is_linux || is_mac) && enable_brave_vpn_v2
 
 # Enable bundling of the dependencies for VPN architecture 2.0 into the final
 # package distributed to the customers. This should be set to 'false' until
