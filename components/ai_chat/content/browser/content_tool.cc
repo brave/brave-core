@@ -121,8 +121,12 @@ void ContentTool::UseTool(const std::string& input_json,
   rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
   auto* extractor_ptr = extractor.get();
+  // Models may emit an empty string for a tool that takes no parameters. The
+  // renderer parses this as JSON and fails ("Failed to parse input arguments"),
+  // so normalize it to an empty object.
+  const std::string& tool_input = input_json.empty() ? "{}" : input_json;
   extractor_ptr->ExecuteContentTool(
-      internal_tool_name_, input_json,
+      internal_tool_name_, tool_input,
       base::BindOnce(
           [](UseToolCallback cb, mojo::Remote<mojom::PageContentExtractor>,
              const std::optional<std::string>& result) {

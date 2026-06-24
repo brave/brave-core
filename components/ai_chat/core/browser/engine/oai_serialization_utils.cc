@@ -51,7 +51,12 @@ void SerializeToolCallsOnMessageDict(const OAIMessage& message,
 
       base::DictValue function_dict;
       function_dict.Set("name", tool_event->tool_name);
-      function_dict.Set("arguments", tool_event->arguments_json);
+      // Some models emit an empty string for the arguments of a tool that takes
+      // no parameters. An empty string is not valid JSON, so the server rejects
+      // the tool call ("invalid json arguments"). Normalize to an empty object.
+      function_dict.Set("arguments", tool_event->arguments_json.empty()
+                                         ? "{}"
+                                         : tool_event->arguments_json);
 
       tool_call_dict.Set("function", std::move(function_dict));
       tool_call_dicts.Append(std::move(tool_call_dict));
