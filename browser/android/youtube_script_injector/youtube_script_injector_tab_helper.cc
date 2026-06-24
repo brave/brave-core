@@ -262,17 +262,17 @@ void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(
 
 void YouTubeScriptInjectorTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->HasCommitted()) {
-    return;
+  if (navigation_handle->IsInPrimaryMainFrame() &&
+      navigation_handle->HasCommitted()) {
+    // A new entry committed in the main frame (cross document or same
+    // document). Drop the pipe bound to the previous document and clear any
+    // pending request up front, so a back/forward or same document navigation
+    // never re-enters Picture-in-Picture for a request that belonged to a
+    // different page.
+    script_injector_remote_.reset();
+    SetPictureInPictureRequested(
+        web_contents()->GetController().GetLastCommittedEntry(), false);
   }
-  // A new entry committed in the main frame (cross document or same document).
-  // Drop the pipe bound to the previous document and clear any pending request
-  // up front, so a back/forward or same document navigation never re-enters
-  // Picture-in-Picture for a request that belonged to a different page.
-  script_injector_remote_.reset();
-  SetPictureInPictureRequested(
-      web_contents()->GetController().GetLastCommittedEntry(), false);
 }
 
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
