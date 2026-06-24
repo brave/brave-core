@@ -379,14 +379,9 @@ class BraveExtensionsManifestV2ReplaceBrowserTest
   BraveExtensionsManifestV2ReplaceBrowserTest() {
     feature_list_.InitAndEnableFeatureWithParameters(
         extensions_mv2::features::kExtensionsManifestV2,
-        {{extensions_mv2::features::kExtensionsManifestV2BackupSettings.name,
-          "true"},
-         {extensions_mv2::features::
-              kExtensionsManifestV2BImportSettingsOnInstall.name,
-          "true"},
-         {extensions_mv2::features::kExtensionsManifestV2AutoInstallBraveHosted
-              .name,
-          "true"}});
+        {{extensions_mv2::features::kBackupSettings.name, "true"},
+         {extensions_mv2::features::kImportSettingsOnInstall.name, "true"},
+         {extensions_mv2::features::kAutoInstallBraveHosted.name, "true"}});
   }
 
  private:

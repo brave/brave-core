@@ -144,11 +144,9 @@ class BraveExtensionsManifestV2SettingsBackupTest
       feature_list_.InitAndEnableFeatureWithParameters(
           extensions_mv2::features::kExtensionsManifestV2,
           {
-              {extensions_mv2::features::kExtensionsManifestV2BackupSettings
-                   .name,
+              {extensions_mv2::features::kBackupSettings.name,
                (GetParam().backup_enabled ? "true" : "false")},
-              {extensions_mv2::features::
-                   kExtensionsManifestV2BImportSettingsOnInstall.name,
+              {extensions_mv2::features::kImportSettingsOnInstall.name,
                (GetParam().import_enabled ? "true" : "false")},
           });
     } else {
