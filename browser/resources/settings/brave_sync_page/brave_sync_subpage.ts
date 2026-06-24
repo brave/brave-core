@@ -221,7 +221,7 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
   private computeUnlockedSafeStorageCannotDecryptSeed_(): boolean {
     return this.syncStatus &&
       this.syncStatus.hasSyncWordsDecryptionError &&
-      !this.syncStatus.isOsEncryptionAvailable
+      this.syncStatus.isOsEncryptionAvailable
   }
 
   private isStatus_(expectedPageStatus: PageStatus): boolean {
