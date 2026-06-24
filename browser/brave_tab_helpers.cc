@@ -48,6 +48,7 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injection_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif
 
@@ -174,6 +175,11 @@ void AttachTabHelpers(content::WebContents* web_contents) {
         nullptr
 #endif
     );
+
+    // Injects Brave-provided WebMCP tools into pages matching a URL glob. The
+    // registered tools are then discovered via the same ContentTool pipeline as
+    // page-registered tools.
+    ai_chat::WebMcpInjectionTabHelper::MaybeCreateForWebContents(web_contents);
   }
 #endif
 
