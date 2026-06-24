@@ -132,7 +132,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kUserMediaElement,
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAndroidPageInfoAsAppMenuItem,
-      &chrome::android::kAndroidSearchInSettings,
 #endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
