@@ -35,7 +35,6 @@ constexpr auto kBraveDisabledTrialNames =
         "Prerender2CrossOriginIframes",
         "SignedExchangeSubresourcePrefetch",
         "SubresourceWebBundles",
-        "UserMediaElement",
     });
 
 constexpr auto kBraveDisabledTrialFeatures =
@@ -44,7 +43,6 @@ constexpr auto kBraveDisabledTrialFeatures =
         blink::mojom::OriginTrialFeature::kDigitalGoods,
         blink::mojom::OriginTrialFeature::kParakeet,
         blink::mojom::OriginTrialFeature::kPrerender2CrossOriginIframes,
-        blink::mojom::OriginTrialFeature::kUserMediaElement,
     });
 
 }  // namespace
