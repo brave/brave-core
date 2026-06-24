@@ -16,6 +16,11 @@ type CSSSelector = string
 type CSSInstruction = string
 type CSSValue = string
 
+interface ProceduralOperator {
+  type: OperatorType
+  arg: string
+}
+type ProceduralSelector = ProceduralOperator[]
 type OperatorType = string
 type OperatorArg = CSSSelector | ProceduralSelector | string
 type OperatorResult = HTMLElement[]
