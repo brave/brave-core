@@ -5,6 +5,7 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
+import { focusLeoInput } from './brave_account_common.js'
 import { getCss } from './brave_account_common.css.js'
 import { getHtml } from './brave_account_email_input.html.js'
 import { maybeSuggestEmailCorrection } from './brave_account_email_typo.js'
@@ -40,6 +41,10 @@ export class BraveAccountEmailInputElement extends CrLitElement {
       isFormatValid: { type: Boolean, state: true },
       suggestion: { type: String, state: true },
     }
+  }
+
+  override focus() {
+    focusLeoInput(this.shadowRoot?.querySelector('leo-input'))
   }
 
   protected onInput(detail: {
