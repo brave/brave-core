@@ -58,20 +58,20 @@ pub fn use_set_tag_for_testing(enable: bool) {
 
 #[macro_export]
 macro_rules! impl_result {
-    ($t:ident, $r:ident) => {
+    ($r:ident) => {
         impl $r {
             fn is_ok(self: &$r) -> bool {
                 self.0.is_ok()
             }
-
-            fn unwrap(self: &mut $r) -> Box<$t> {
-                match std::mem::replace(&mut self.0, Err(Error::AlreadyUnwrapped)) {
-                    Ok(v) => Box::new(v),
-                    Err(e) => panic!("{}", e.to_string()),
-                }
-            }
         }
     };
+}
+
+fn unwrap_or_panic<T>(result: &Result<T, Error>) -> &T {
+    match result {
+        Ok(v) => v,
+        Err(e) => panic!("{}", e.to_string()),
+    }
 }
 
 #[macro_export]
@@ -139,14 +139,6 @@ mod ffi {
     }
 
     extern "Rust" {
-        type CxxEncodedCardanoTransaction;
-        type CxxEncodedCardanoTransactionOutput;
-        type CxxEncodedCardanoUtxo;
-        type CxxEncodedCardanoCoinValue;
-        type CxxDecodedCardanoCoinValue;
-        type CxxDecodedCardanoTransaction;
-        type CxxSignedCardanoTransaction;
-
         type CxxEncodedCardanoTransactionResult;
         type CxxEncodedCardanoTransactionOutputResult;
         type CxxEncodedCardanoUtxoResult;
@@ -179,41 +171,27 @@ mod ffi {
         ) -> Box<CxxSignedCardanoTransactionResult>;
 
         fn is_ok(self: &CxxEncodedCardanoTransactionResult) -> bool;
-        fn unwrap(
-            self: &mut CxxEncodedCardanoTransactionResult,
-        ) -> Box<CxxEncodedCardanoTransaction>;
-        fn bytes(self: &CxxEncodedCardanoTransaction) -> Vec<u8>;
+        fn bytes(self: &CxxEncodedCardanoTransactionResult) -> Vec<u8>;
 
         fn is_ok(self: &CxxEncodedCardanoCoinValueResult) -> bool;
-        fn unwrap(self: &mut CxxEncodedCardanoCoinValueResult) -> Box<CxxEncodedCardanoCoinValue>;
-        fn bytes(self: &CxxEncodedCardanoCoinValue) -> Vec<u8>;
+        fn bytes(self: &CxxEncodedCardanoCoinValueResult) -> Vec<u8>;
 
         fn is_ok(self: &CxxDecodedCardanoCoinValueResult) -> bool;
-        fn unwrap(self: &mut CxxDecodedCardanoCoinValueResult) -> Box<CxxDecodedCardanoCoinValue>;
-        fn value(self: &CxxDecodedCardanoCoinValue) -> CxxSerializableCoinValue;
+        fn value(self: &CxxDecodedCardanoCoinValueResult) -> CxxSerializableCoinValue;
 
         fn is_ok(self: &CxxEncodedCardanoTransactionOutputResult) -> bool;
-        fn unwrap(
-            self: &mut CxxEncodedCardanoTransactionOutputResult,
-        ) -> Box<CxxEncodedCardanoTransactionOutput>;
-        fn bytes(self: &CxxEncodedCardanoTransactionOutput) -> Vec<u8>;
+        fn bytes(self: &CxxEncodedCardanoTransactionOutputResult) -> Vec<u8>;
 
         fn is_ok(self: &CxxEncodedCardanoUtxoResult) -> bool;
-        fn unwrap(self: &mut CxxEncodedCardanoUtxoResult) -> Box<CxxEncodedCardanoUtxo>;
-        fn bytes(self: &CxxEncodedCardanoUtxo) -> Vec<u8>;
+        fn bytes(self: &CxxEncodedCardanoUtxoResult) -> Vec<u8>;
 
         fn is_ok(self: &CxxDecodedCardanoTransactionResult) -> bool;
-        fn unwrap(
-            self: &mut CxxDecodedCardanoTransactionResult,
-        ) -> Box<CxxDecodedCardanoTransaction>;
-        fn tx(self: &CxxDecodedCardanoTransaction) -> CxxSerializableTx;
-        fn raw_body(self: &CxxDecodedCardanoTransaction) -> Vec<u8>;
-        fn raw_tx(self: &CxxDecodedCardanoTransaction) -> Vec<u8>;
+        fn tx(self: &CxxDecodedCardanoTransactionResult) -> CxxSerializableTx;
+        fn raw_body(self: &CxxDecodedCardanoTransactionResult) -> Vec<u8>;
+        fn raw_tx(self: &CxxDecodedCardanoTransactionResult) -> Vec<u8>;
 
         fn is_ok(self: &CxxSignedCardanoTransactionResult) -> bool;
-        fn unwrap(self: &mut CxxSignedCardanoTransactionResult)
-            -> Box<CxxSignedCardanoTransaction>;
-        fn bytes(self: &CxxSignedCardanoTransaction) -> Vec<u8>;
+        fn bytes(self: &CxxSignedCardanoTransactionResult) -> Vec<u8>;
     }
 }
 
@@ -232,8 +210,6 @@ pub enum Error {
     SerializationError,
     /// Failed to resolve witness array from transaction
     WitnessArrayResolutionError,
-    /// Already unwrapped
-    AlreadyUnwrapped,
 }
 
 impl fmt::Display for Error {
@@ -247,38 +223,37 @@ impl fmt::Display for Error {
             Error::WitnessArrayResolutionError => {
                 write!(f, "Failed to resolve witness array from transaction")
             }
-            Error::AlreadyUnwrapped => write!(f, "Already unwrapped"),
         }
     }
 }
 
-pub struct CxxEncodedCardanoCoinValue {
+struct CxxEncodedCardanoCoinValue {
     value_bytes: Vec<u8>,
 }
 
-pub struct CxxDecodedCardanoCoinValue {
+struct CxxDecodedCardanoCoinValue {
     value: CxxSerializableCoinValue,
 }
 
-pub struct CxxEncodedCardanoTransaction {
+struct CxxEncodedCardanoTransaction {
     tx_bytes: Vec<u8>,
 }
 
-pub struct CxxEncodedCardanoTransactionOutput {
+struct CxxEncodedCardanoTransactionOutput {
     output_bytes: Vec<u8>,
 }
 
-pub struct CxxEncodedCardanoUtxo {
+struct CxxEncodedCardanoUtxo {
     utxo_bytes: Vec<u8>,
 }
 
-pub struct CxxDecodedCardanoTransaction {
+struct CxxDecodedCardanoTransaction {
     tx: CxxSerializableTx,
     raw_body: Vec<u8>,
     raw_tx: Vec<u8>,
 }
 
-pub struct CxxSignedCardanoTransaction {
+struct CxxSignedCardanoTransaction {
     signed_bytes: Vec<u8>,
 }
 
@@ -292,20 +267,17 @@ pub struct CxxEncodedCardanoUtxoResult(Result<CxxEncodedCardanoUtxo, Error>);
 pub struct CxxDecodedCardanoTransactionResult(Result<CxxDecodedCardanoTransaction, Error>);
 pub struct CxxSignedCardanoTransactionResult(Result<CxxSignedCardanoTransaction, Error>);
 
-impl_result!(CxxEncodedCardanoTransaction, CxxEncodedCardanoTransactionResult);
-impl_result!(CxxEncodedCardanoCoinValue, CxxEncodedCardanoCoinValueResult);
-impl_result!(CxxDecodedCardanoCoinValue, CxxDecodedCardanoCoinValueResult);
-impl_result!(
-    CxxEncodedCardanoTransactionOutput,
-    CxxEncodedCardanoTransactionOutputResult
-);
-impl_result!(CxxEncodedCardanoUtxo, CxxEncodedCardanoUtxoResult);
-impl_result!(CxxDecodedCardanoTransaction, CxxDecodedCardanoTransactionResult);
-impl_result!(CxxSignedCardanoTransaction, CxxSignedCardanoTransactionResult);
+impl_result!(CxxEncodedCardanoTransactionResult);
+impl_result!(CxxEncodedCardanoCoinValueResult);
+impl_result!(CxxDecodedCardanoCoinValueResult);
+impl_result!(CxxEncodedCardanoTransactionOutputResult);
+impl_result!(CxxEncodedCardanoUtxoResult);
+impl_result!(CxxDecodedCardanoTransactionResult);
+impl_result!(CxxSignedCardanoTransactionResult);
 
-impl CxxEncodedCardanoTransaction {
-    fn bytes(self: &CxxEncodedCardanoTransaction) -> Vec<u8> {
-        self.tx_bytes.clone()
+impl CxxEncodedCardanoTransactionResult {
+    fn bytes(self: &CxxEncodedCardanoTransactionResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).tx_bytes.clone()
     }
 }
 
@@ -332,9 +304,9 @@ pub fn encode_cardano_transaction(
     Box::new(CxxEncodedCardanoTransactionResult(encode_cardano_transaction_impl(tx)))
 }
 
-impl CxxEncodedCardanoCoinValue {
-    fn bytes(self: &CxxEncodedCardanoCoinValue) -> Vec<u8> {
-        self.value_bytes.clone()
+impl CxxEncodedCardanoCoinValueResult {
+    fn bytes(self: &CxxEncodedCardanoCoinValueResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).value_bytes.clone()
     }
 }
 
@@ -354,9 +326,9 @@ pub fn encode_cardano_coin_value(
     Box::new(CxxEncodedCardanoCoinValueResult(encode_cardano_coin_value_impl(value)))
 }
 
-impl CxxDecodedCardanoCoinValue {
-    fn value(self: &CxxDecodedCardanoCoinValue) -> CxxSerializableCoinValue {
-        self.value.clone()
+impl CxxDecodedCardanoCoinValueResult {
+    fn value(self: &CxxDecodedCardanoCoinValueResult) -> CxxSerializableCoinValue {
+        unwrap_or_panic(&self.0).value.clone()
     }
 }
 
@@ -372,9 +344,9 @@ pub fn decode_cardano_coin_value(value_bytes: &[u8]) -> Box<CxxDecodedCardanoCoi
     Box::new(CxxDecodedCardanoCoinValueResult(decode_cardano_coin_value_impl(value_bytes)))
 }
 
-impl CxxEncodedCardanoTransactionOutput {
-    fn bytes(self: &CxxEncodedCardanoTransactionOutput) -> Vec<u8> {
-        self.output_bytes.clone()
+impl CxxEncodedCardanoTransactionOutputResult {
+    fn bytes(self: &CxxEncodedCardanoTransactionOutputResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).output_bytes.clone()
     }
 }
 
@@ -396,9 +368,9 @@ pub fn encode_cardano_transaction_output(
     ))
 }
 
-impl CxxEncodedCardanoUtxo {
-    fn bytes(self: &CxxEncodedCardanoUtxo) -> Vec<u8> {
-        self.utxo_bytes.clone()
+impl CxxEncodedCardanoUtxoResult {
+    fn bytes(self: &CxxEncodedCardanoUtxoResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).utxo_bytes.clone()
     }
 }
 
@@ -814,17 +786,17 @@ fn decode_cardano_transaction_impl(
     })
 }
 
-impl CxxDecodedCardanoTransaction {
-    fn tx(self: &CxxDecodedCardanoTransaction) -> CxxSerializableTx {
-        self.tx.clone()
+impl CxxDecodedCardanoTransactionResult {
+    fn tx(self: &CxxDecodedCardanoTransactionResult) -> CxxSerializableTx {
+        unwrap_or_panic(&self.0).tx.clone()
     }
 
-    fn raw_body(self: &CxxDecodedCardanoTransaction) -> Vec<u8> {
-        self.raw_body.clone()
+    fn raw_body(self: &CxxDecodedCardanoTransactionResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).raw_body.clone()
     }
 
-    fn raw_tx(self: &CxxDecodedCardanoTransaction) -> Vec<u8> {
-        self.raw_tx.clone()
+    fn raw_tx(self: &CxxDecodedCardanoTransactionResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).raw_tx.clone()
     }
 }
 
@@ -908,8 +880,8 @@ fn apply_signatures_impl(
     Ok(CxxSignedCardanoTransaction { signed_bytes })
 }
 
-impl CxxSignedCardanoTransaction {
-    fn bytes(self: &CxxSignedCardanoTransaction) -> Vec<u8> {
-        self.signed_bytes.clone()
+impl CxxSignedCardanoTransactionResult {
+    fn bytes(self: &CxxSignedCardanoTransactionResult) -> Vec<u8> {
+        unwrap_or_panic(&self.0).signed_bytes.clone()
     }
 }
