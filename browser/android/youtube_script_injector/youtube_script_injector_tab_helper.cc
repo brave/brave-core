@@ -201,6 +201,12 @@ bool IsAndroidPictureInPictureSupported() {
          base::android::android_info::SDK_VERSION_R;
 }
 
+// Only the address of this key identifies the user data; the string value is
+// incidental and never read. This follows the Chromium SupportsUserData key
+// idiom, e.g. kBackgroundSyncUserDataKey in
+// content/browser/background_sync/background_sync_manager.cc.
+const char kPictureInPictureRequestKey[] = "PictureInPictureRequest";
+
 // Marks a NavigationEntry as having a pending Picture-in-Picture request. The
 // state is attached to the NavigationEntry rather than the tab helper so its
 // lifetime matches the page the user acted on: same document navigations,
@@ -208,21 +214,13 @@ bool IsAndroidPictureInPictureSupported() {
 // leak onto a different page. This is what keeps fullscreen and
 // Picture-in-Picture in lockstep across the async gap between injecting the
 // script and the media actually going fullscreen.
-class PictureInPictureRequest : public base::SupportsUserData::Data {};
-
-// Only the address of this key identifies the user data; the string value is
-// incidental and never read. This follows the Chromium SupportsUserData key
-// idiom, e.g. kBackgroundSyncUserDataKey in
-// content/browser/background_sync/background_sync_manager.cc.
-const char kPictureInPictureRequestKey[] = "PictureInPictureRequest";
-
 // Callers pass the last committed NavigationEntry, which is contractually
 // non-null in WebContentsObserver callbacks once the FrameTree is initialized.
 void SetPictureInPictureRequested(content::NavigationEntry& entry,
                                   bool requested) {
   if (requested) {
     entry.SetUserData(kPictureInPictureRequestKey,
-                      std::make_unique<PictureInPictureRequest>());
+                      std::make_unique<base::SupportsUserData::Data>());
   } else {
     entry.RemoveUserData(kPictureInPictureRequestKey);
   }
