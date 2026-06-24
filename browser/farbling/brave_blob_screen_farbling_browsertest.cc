@@ -84,11 +84,12 @@ class BraveBlobScreenFarblingBrowserTest
     }
   }
 
-  void AllowFingerprinting(bool allow) {
+  void AllowFingerprinting(bool allow, std::optional<GURL> url = std::nullopt) {
     fingerprinting_allowed_ = allow;
     brave_shields::SetFingerprintingControlType(
         HostContentSettingsMapFactory::GetForProfile(browser()->profile()),
-        allow ? ControlType::ALLOW : ControlType::DEFAULT, blob_test_url_);
+        allow ? ControlType::ALLOW : ControlType::DEFAULT,
+        url.has_value() ? url.value() : blob_test_url_);
   }
 
   content::RenderFrameHost* MainFrame() const {
@@ -171,9 +172,11 @@ class BraveBlobScreenFarblingBrowserTest
     blob_container_type_ = blob_container_type;
   }
 
+ protected:
+  GURL blob_test_url_;
+
  private:
   base::test::ScopedFeatureList feature_list_;
-  GURL blob_test_url_;
   BlobContainerType blob_container_type_ = BlobContainerType::kUnset;
   bool fingerprinting_allowed_ = false;
   raw_ptr<Browser> pop_up_browser_ = nullptr;
@@ -198,4 +201,73 @@ IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
                        FarbleScreenBlobURLIframe) {
   set_blob_container_type(BlobContainerType::kIFrame);
   RunTests();
+}
+
+// Tests that a cross-origin popup (b.com opened from a.com) sees different
+// farbled screen attributes than the opener when fingerprinting protection is
+// active, and the same real values otherwise.
+IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
+                       FarbleScreenCrossOriginPopup) {
+  const GURL b_url =
+      embedded_test_server()->GetURL("b.com", "/blob-fingerprinting.html");
+
+  // Only compare stable screen-dimension properties; window.screenX/Y differ
+  // naturally between two separately-placed windows even without farbling.
+  constexpr char kReadScreenDimensionsJs[] = R"(
+    JSON.stringify({
+      width: screen.width,
+      height: screen.height,
+      availWidth: screen.availWidth,
+      availHeight: screen.availHeight,
+      availLeft: screen.availLeft,
+      availTop: screen.availTop
+    })
+  )";
+
+  for (bool allow : {false, true}) {
+    SCOPED_TRACE(testing::Message()
+                 << "GetParam()=" << GetParam() << " allow=" << allow);
+    // Update fingerprinting setting for a.com
+    AllowFingerprinting(allow);
+    // Update fingerprinting setting for b.com
+    AllowFingerprinting(allow, b_url);
+
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
+
+    // 1. Read screen attributes from a.com.
+    const std::string a_screen =
+        content::EvalJs(MainFrame(), kReadScreenDimensionsJs).ExtractString();
+
+    // 2. a.com opens b.com as a popup window.
+    ui_test_utils::BrowserCreatedObserver popup_observer;
+    ASSERT_TRUE(content::ExecJs(MainFrame(),
+                                "window.open('" + b_url.spec() +
+                                    "', '_blank', 'width=400,height=400')"));
+    Browser* popup = popup_observer.Wait();
+    ASSERT_NE(popup, browser());
+    ASSERT_TRUE(content::WaitForLoadStop(
+        popup->tab_strip_model()->GetActiveWebContents()));
+
+    // 3. Read screen attributes from b.com.
+    const std::string b_screen = content::EvalJs(popup->tab_strip_model()
+                                                     ->GetActiveWebContents()
+                                                     ->GetPrimaryMainFrame(),
+                                                 kReadScreenDimensionsJs)
+                                     .ExtractString();
+
+    // 4. Different origins get different per-origin farble seeds only when the
+    // feature is enabled AND fingerprinting is not allowed. In every other
+    // case (feature disabled, or fingerprinting explicitly allowed) both
+    // windows see the same real screen values.
+    const bool farbling_active = GetParam() && !allow;
+    if (farbling_active) {
+      EXPECT_NE(a_screen, b_screen)
+          << "a.com and b.com should see different farbled screen values";
+    } else {
+      EXPECT_EQ(a_screen, b_screen)
+          << "a.com and b.com should see the same real screen values";
+    }
+
+    CloseBrowserSynchronously(popup);
+  }
 }
