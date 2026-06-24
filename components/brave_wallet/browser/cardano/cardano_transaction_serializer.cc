@@ -15,7 +15,7 @@
 #include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_tx_decoder.h"
 
 namespace brave_wallet {
 
@@ -117,16 +117,16 @@ std::optional<uint64_t> CardanoTransactionSerializer::CalcMinAdaRequired(
       return std::nullopt;
     }
 
-    if (cur_output.amount < required_coin.value()) {
+    if (cur_output.coin_value.lovelace_amount < required_coin.value()) {
       // Current output amount is less than required lovelace. But larger
       // required lovelace may produce larger cbor binary for this output. So we
       // increase the amount and run loop again.
-      cur_output.amount = required_coin.value();
+      cur_output.coin_value.lovelace_amount = required_coin.value();
     } else {
       return required_coin.value();
     }
   }
-  cur_output.amount = std::numeric_limits<int64_t>::max();
+  cur_output.coin_value.lovelace_amount = std::numeric_limits<int64_t>::max();
   return CalcRequiredCoin(cur_output, epoch_parameters);
 }
 
@@ -136,7 +136,8 @@ bool CardanoTransactionSerializer::ValidateMinValue(
     const cardano_rpc::EpochParameters& epoch_parameters) {
   auto min_ada_required = CardanoTransactionSerializer::CalcMinAdaRequired(
       output, epoch_parameters);
-  return min_ada_required && output.amount >= min_ada_required.value();
+  return min_ada_required &&
+         output.coin_value.lovelace_amount >= min_ada_required.value();
 }
 
 // static
@@ -159,15 +160,15 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
     adjusted_output = result.ChangeOutput();
   }
   if (adjusted_output) {
-    CHECK_EQ(adjusted_output->amount, 0u);
+    CHECK_EQ(adjusted_output->coin_value.lovelace_amount, 0u);
   }
 
   // Do not distribute input amount which already designated to outputs.
   base::CheckedNumeric<uint64_t> amount_to_distribute =
       result.GetTotalInputsAmount();
-  amount_to_distribute -= result.TargetOutput()->amount;
+  amount_to_distribute -= result.TargetOutput()->coin_value.lovelace_amount;
   if (result.ChangeOutput()) {
-    amount_to_distribute -= result.ChangeOutput()->amount;
+    amount_to_distribute -= result.ChangeOutput()->coin_value.lovelace_amount;
   }
 
   // Add dummy witness set based on number of signatures we need. This ensures
@@ -188,7 +189,7 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
     // Basically: adjusted_output->amount = amount_to_distribute - fee
     if (adjusted_output) {
       if (!base::CheckSub(amount_to_distribute, result.fee())
-               .AssignIfValid(&adjusted_output->amount)) {
+               .AssignIfValid(&adjusted_output->coin_value.lovelace_amount)) {
         return std::nullopt;
       }
     }

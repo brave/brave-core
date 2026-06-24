@@ -38,7 +38,8 @@ bool CardanoMaxTokenSendSolver::SetupOutputs(
   auto token_sum = token_value->second;
   CHECK_GT(token_sum, 0u);
   tx.SetupTargetOutput(builder_params.send_to_address);
-  tx.TargetOutput()->tokens[builder_params.token_to_send.value()] = token_sum;
+  tx.TargetOutput()->coin_value.tokens[builder_params.token_to_send.value()] =
+      token_sum;
 
   auto min_ada_required_target =
       CardanoTransactionSerializer::CalcMinAdaRequired(
@@ -46,7 +47,8 @@ bool CardanoMaxTokenSendSolver::SetupOutputs(
   if (!min_ada_required_target.has_value()) {
     return false;
   }
-  tx.TargetOutput()->amount = min_ada_required_target.value();
+  tx.TargetOutput()->coin_value.lovelace_amount =
+      min_ada_required_target.value();
 
   tx.SetupChangeOutput(builder_params.change_address);
   if (!tx.EnsureTokensInChangeOutput()) {
@@ -65,7 +67,7 @@ CardanoMaxTokenSendSolver::SplitInputsByToken(
   std::vector<CardanoTransaction::TxInput> token_inputs;
   std::vector<CardanoTransaction::TxInput> other_inputs;
   for (auto& input : inputs) {
-    if (input.utxo_tokens.contains(token_id)) {
+    if (input.coin_value.tokens.contains(token_id)) {
       token_inputs.push_back(std::move(input));
     } else {
       other_inputs.push_back(std::move(input));
@@ -81,10 +83,10 @@ void CardanoMaxTokenSendSolver::SortInputsBySelectionPriority(
   std::sort(
       inputs.begin(), inputs.end(),
       [](CardanoTransaction::TxInput& i1, CardanoTransaction::TxInput& i2) {
-        if (i1.utxo_tokens.size() != i2.utxo_tokens.size()) {
-          return i1.utxo_tokens.size() < i2.utxo_tokens.size();
+        if (i1.coin_value.tokens.size() != i2.coin_value.tokens.size()) {
+          return i1.coin_value.tokens.size() < i2.coin_value.tokens.size();
         }
-        return i1.utxo_value > i2.utxo_value;
+        return i1.coin_value.lovelace_amount > i2.coin_value.lovelace_amount;
       });
 }
 

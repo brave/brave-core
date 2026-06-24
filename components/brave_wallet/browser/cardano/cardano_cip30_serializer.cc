@@ -10,9 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/numerics/checked_math.h"
-#include "base/numerics/safe_conversions.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "components/cbor/reader.h"
 #include "components/cbor/values.h"
@@ -109,75 +106,6 @@ std::vector<uint8_t> CardanoCip30Serializer::SerializeSignedDataSignature(
       cbor::Writer::Write(cbor::Value(std::move(cose_sign)));
   CHECK(cose_sign_serialized);
   return *cose_sign_serialized;
-}
-
-// static
-std::optional<std::string> CardanoCip30Serializer::SerializeAmount(
-    uint64_t amount) {
-  // Chromium cbor does not support uint64_t, but only int64_t.
-  int64_t amount_to_serialize = 0;
-  if (!base::CheckedNumeric(amount).AssignIfValid(&amount_to_serialize)) {
-    return std::nullopt;
-  }
-  auto amount_serialized =
-      cbor::Writer::Write(cbor::Value(amount_to_serialize));
-  CHECK(amount_serialized);
-  return base::HexEncodeLower(*amount_serialized);
-}
-
-// static
-std::optional<uint64_t> CardanoCip30Serializer::DeserializeAmount(
-    const std::string& amount_cbor) {
-  std::vector<uint8_t> amount_bytes;
-  if (!base::HexStringToBytes(amount_cbor, &amount_bytes)) {
-    return std::nullopt;
-  }
-
-  auto as_cbor = cbor::Reader::Read(amount_bytes);
-
-  if (!as_cbor) {
-    return std::nullopt;
-  }
-
-  if (!as_cbor->is_integer() || !as_cbor->is_unsigned()) {
-    return std::nullopt;
-  }
-
-  return base::CheckedNumeric<uint64_t>(as_cbor->GetUnsigned()).ValueOrDie();
-}
-
-// static
-std::optional<std::vector<std::string>> CardanoCip30Serializer::SerializeUtxos(
-    base::span<const cardano_rpc::UnspentOutput> utxos) {
-  std::vector<std::string> serialized_utxos;
-  for (const auto& item : utxos) {
-    cbor::Value::ArrayValue cbor_utxo;
-
-    {
-      cbor::Value::ArrayValue tx_input;
-      tx_input.emplace_back(item.tx_hash);
-      tx_input.emplace_back(base::strict_cast<int64_t>(item.output_index));
-      cbor_utxo.emplace_back(tx_input);
-    }
-
-    {
-      cbor::Value::ArrayValue tx_output;
-      tx_output.emplace_back(item.address_to.ToCborBytes());
-      int64_t val = 0;
-      if (!base::CheckedNumeric(item.lovelace_amount).AssignIfValid(&val)) {
-        return std::nullopt;
-      }
-      tx_output.emplace_back(val);
-      cbor_utxo.emplace_back(tx_output);
-    }
-
-    auto cbor_utxo_serialized =
-        cbor::Writer::Write(cbor::Value(std::move(cbor_utxo)));
-    CHECK(cbor_utxo_serialized);
-
-    serialized_utxos.push_back(base::HexEncodeLower(*cbor_utxo_serialized));
-  }
-  return serialized_utxos;
 }
 
 }  // namespace brave_wallet

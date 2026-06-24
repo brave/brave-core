@@ -60,7 +60,7 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
-    tx_input.utxo_value = amount;
+    tx_input.coin_value.lovelace_amount = amount;
 
     return tx_input;
   }
@@ -78,8 +78,8 @@ class CardanoMaxLovelaceSendSolverUnitTest : public testing::Test {
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
-    tx_input.utxo_value = amount;
-    tx_input.utxo_tokens = tokens;
+    tx_input.coin_value.lovelace_amount = amount;
+    tx_input.coin_value.tokens = tokens;
 
     return tx_input;
   }
@@ -128,7 +128,7 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, SetupOutputs) {
   EXPECT_TRUE(CardanoMaxLovelaceSendSolver::SetupOutputs(tx, builder_params));
   EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-  EXPECT_EQ(tx.TargetOutput()->amount, 0u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 0u);
   EXPECT_FALSE(tx.ChangeOutput());
 
   tx = {};
@@ -148,11 +148,12 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, SetupOutputs) {
   EXPECT_TRUE(CardanoMaxLovelaceSendSolver::SetupOutputs(tx, builder_params));
   EXPECT_EQ(tx.TargetOutput()->type, CardanoTransaction::TxOutputType::kTarget);
   EXPECT_EQ(tx.TargetOutput()->address, builder_params.send_to_address);
-  EXPECT_EQ(tx.TargetOutput()->amount, 0u);
-  EXPECT_EQ(tx.TargetOutput()->tokens, cardano_rpc::Tokens());
+  EXPECT_EQ(tx.TargetOutput()->coin_value.lovelace_amount, 0u);
+  EXPECT_EQ(tx.TargetOutput()->coin_value.tokens, cardano_rpc::Tokens());
   EXPECT_EQ(tx.ChangeOutput()->address, builder_params.change_address);
-  EXPECT_EQ(tx.ChangeOutput()->amount, 1'361'960u);  // min ADA required.
-  EXPECT_EQ(tx.ChangeOutput()->tokens,
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.lovelace_amount,
+            1'361'960u);  // min ADA required.
+  EXPECT_EQ(tx.ChangeOutput()->coin_value.tokens,
             cardano_rpc::Tokens({{GetMockTokenId("brave"), 9},
                                  {GetMockTokenId("foo"), 300},
                                  {GetMockTokenId("bar"), 777},
@@ -201,7 +202,7 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, NoChangeNeeded) {
     EXPECT_EQ(tx->fee(), min_fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), send_amount());
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount, send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -224,7 +225,8 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, NoChangeNeeded) {
     EXPECT_EQ(tx->fee(), min_fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), 2 * send_amount());
-    EXPECT_EQ(tx->TargetOutput()->amount, 2 * send_amount());
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount,
+              2 * send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -247,7 +249,8 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, NoChangeNeeded) {
     EXPECT_EQ(tx->fee(), min_fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), send_amount() - 1000);
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount() - 1000);
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount,
+              send_amount() - 1000);
     EXPECT_FALSE(tx->ChangeOutput());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -294,7 +297,8 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, ManyInputs) {
     EXPECT_EQ(tx->inputs().size(), 100u);
     EXPECT_EQ(uint64_t(tx->GetTotalOutputsAmount().ValueOrDie()),
               100 * send_amount());
-    EXPECT_EQ(tx->TargetOutput()->amount, 100 * send_amount());
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount,
+              100 * send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -309,16 +313,16 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, TokensGoToChange) {
   std::vector<CardanoTransaction::TxInput> inputs;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 1'000'000'000;
-  inputs.back().utxo_tokens[bar_token] = 1'000'000'000;
-  inputs.back().utxo_tokens[baz_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[foo_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[bar_token] = 1'000'000'000;
+  inputs.back().coin_value.tokens[baz_token] = 1'000'000'000;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 10;
-  inputs.back().utxo_tokens[bar_token] = 100'000'000;
+  inputs.back().coin_value.tokens[foo_token] = 10;
+  inputs.back().coin_value.tokens[bar_token] = 100'000'000;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
-  inputs.back().utxo_tokens[foo_token] = 1;
+  inputs.back().coin_value.tokens[foo_token] = 1;
 
   inputs.push_back(MakeMockTxInput(1'000'000));
 
@@ -341,16 +345,17 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, TokensGoToChange) {
     EXPECT_EQ(tx->inputs().size(), 4u);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
-    EXPECT_EQ(tx->TargetOutput()->amount,
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount,
               total_input - fee - min_ada_for_change);
-    EXPECT_TRUE(tx->TargetOutput()->tokens.empty());
+    EXPECT_TRUE(tx->TargetOutput()->coin_value.tokens.empty());
 
     // Change output has minimum ADA amount for given utxo.
-    EXPECT_EQ(tx->ChangeOutput()->amount, min_ada_for_change);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              min_ada_for_change);
     // All tokens appear in change output.
-    EXPECT_EQ(tx->ChangeOutput()->tokens[foo_token], 1'000'000'011u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[bar_token], 1'100'000'000u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[baz_token], 1'000'000'000u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[foo_token], 1'000'000'011u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[bar_token], 1'100'000'000u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[baz_token], 1'000'000'000u);
 
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
@@ -377,23 +382,24 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, TokensGoToChange) {
     EXPECT_EQ(tx->fee(), fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
-    EXPECT_EQ(tx->TargetOutput()->amount,
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount,
               total_input - fee - min_ada_for_change);
-    EXPECT_TRUE(tx->TargetOutput()->tokens.empty());
+    EXPECT_TRUE(tx->TargetOutput()->coin_value.tokens.empty());
 
     // Change output has minimum ADA amount for given utxo.
-    EXPECT_EQ(tx->ChangeOutput()->amount, min_ada_for_change);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              min_ada_for_change);
     // All tokens appear in change output.
-    EXPECT_EQ(tx->ChangeOutput()->tokens[foo_token], 1'000'000'011u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[bar_token], 1'100'000'000u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[baz_token], 1'000'000'000u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[foo_token], 1'000'000'011u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[bar_token], 1'100'000'000u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[baz_token], 1'000'000'000u);
 
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));
   }
 
   // Clear tokens from the first input.
-  inputs.front().utxo_tokens.clear();
+  inputs.front().coin_value.tokens.clear();
 
   {
     uint32_t total_input = 1'000'000 * 3;
@@ -413,16 +419,17 @@ TEST_F(CardanoMaxLovelaceSendSolverUnitTest, TokensGoToChange) {
     EXPECT_EQ(tx->fee(), fee);
     EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
-    EXPECT_EQ(tx->TargetOutput()->amount,
+    EXPECT_EQ(tx->TargetOutput()->coin_value.lovelace_amount,
               total_input - fee - min_ada_for_change);
-    EXPECT_TRUE(tx->TargetOutput()->tokens.empty());
+    EXPECT_TRUE(tx->TargetOutput()->coin_value.tokens.empty());
 
     // Change output has minimum ADA amount for given utxo.
-    EXPECT_EQ(tx->ChangeOutput()->amount, min_ada_for_change);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.lovelace_amount,
+              min_ada_for_change);
     // All tokens appear in change output.
-    EXPECT_EQ(tx->ChangeOutput()->tokens[foo_token], 11u);
-    EXPECT_EQ(tx->ChangeOutput()->tokens[bar_token], 100'000'000u);
-    EXPECT_FALSE(tx->ChangeOutput()->tokens.contains(baz_token));
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[foo_token], 11u);
+    EXPECT_EQ(tx->ChangeOutput()->coin_value.tokens[bar_token], 100'000'000u);
+    EXPECT_FALSE(tx->ChangeOutput()->coin_value.tokens.contains(baz_token));
 
     EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
         *tx, latest_epoch_parameters()));

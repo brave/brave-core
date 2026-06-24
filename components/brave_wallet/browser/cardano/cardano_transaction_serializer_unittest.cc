@@ -52,19 +52,19 @@ CardanoTransaction GetReferenceTransactionNoTag() {
   input.utxo_outpoint.txid = test::HexToArray<32>(
       "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
   input.utxo_outpoint.index = 0;
-  input.utxo_value = 34451133;
+  input.coin_value.lovelace_amount = 34451133;
   tx.AddInput(std::move(input));
 
   CardanoTransaction::TxOutput output1(*CardanoAddress::FromString(
       "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z53"
       "l7lh5u7z08l0rvp49ht88s5uskl6tsl"));
-  output1.amount = 10000000;
+  output1.coin_value.lovelace_amount = 10000000;
   tx.AddOutput(std::move(output1));
 
   CardanoTransaction::TxOutput output2(*CardanoAddress::FromString(
       "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefvjmpww7"
       "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg"));
-  output2.amount = 24282816;
+  output2.coin_value.lovelace_amount = 24282816;
   output2.type = CardanoTransaction::TxOutputType::kChange;
   tx.AddOutput(std::move(output2));
 
@@ -93,7 +93,7 @@ CardanoTransaction GetReferenceTransactionWithTag() {
   input1.utxo_outpoint.txid = test::HexToArray<32>(
       "cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc50023075e80f");
   input1.utxo_outpoint.index = 0;
-  input1.utxo_value = 1000000;
+  input1.coin_value.lovelace_amount = 1000000;
   tx.AddInput(std::move(input1));
 
   CardanoTransaction::TxInput input2(*CardanoAddress::FromString(
@@ -102,13 +102,13 @@ CardanoTransaction GetReferenceTransactionWithTag() {
   input2.utxo_outpoint.txid = test::HexToArray<32>(
       "cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc50023075e80f");
   input2.utxo_outpoint.index = 1;
-  input2.utxo_value = 10369265056;
+  input2.coin_value.lovelace_amount = 10369265056;
   tx.AddInput(std::move(input2));
 
   CardanoTransaction::TxOutput output1(*CardanoAddress::FromString(
       "addr1qxazrc6avxgumuzzq7ynunf9avkl5k972d0nk0s653m2jfsmqlr2xhd2s6w6m3y3r3l"
       "ruknyu39sa2js2nygaw03ffpsj554nm"));
-  output1.amount = 10370089635;
+  output1.coin_value.lovelace_amount = 10370089635;
   tx.AddOutput(std::move(output1));
 
   tx.set_fee(175421);
@@ -144,13 +144,13 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
   input1.utxo_outpoint.txid = test::HexToArray<32>(
       "0A7C65B36A437C4EF5C7C9A1C9EEF236DA1820AB9B2418900A5796E870CC5B0B");
   input1.utxo_outpoint.index = 44;
-  input1.utxo_value = 1146460;
+  input1.coin_value.lovelace_amount = 1146460;
   {
     cardano_rpc::TokenId token;
     base::HexStringToBytes(
         "269C0C6FB54095825E7F352EB667996872AF8D3A988E78595D5958F6544D494E7632",
         &token);  // "TMINv2"
-    input1.utxo_tokens[token] = 1u;
+    input1.coin_value.tokens[token] = 1u;
   }
   tx.AddInput(std::move(input1));
 
@@ -161,14 +161,14 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
   input2.utxo_outpoint.txid = test::HexToArray<32>(
       "0AA8B16C3D4ABB059F419913885CA5122798FEFC72615A64E1F4231B68C41E7C");
   input2.utxo_outpoint.index = 1;
-  input2.utxo_value = 1198180;
+  input2.coin_value.lovelace_amount = 1198180;
   {
     cardano_rpc::TokenId token;
     base::HexStringToBytes(
         "9E5E1B75675DD3824645325FDD7C1C2CFD4221A76640E8016EDA2A9F53756E64616552"
         "65776172645469636B6574",
         &token);  // "SundaeRewardTicket"
-    input2.utxo_tokens[token] = 1u;
+    input2.coin_value.tokens[token] = 1u;
   }
   tx.AddInput(std::move(input2));
 
@@ -179,7 +179,7 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
   input3.utxo_outpoint.txid = test::HexToArray<32>(
       "1D05BFEB8BB2015815284ED6644F56EE56B0D13206616C003959424B2670D310");
   input3.utxo_outpoint.index = 3;
-  input3.utxo_value = 4012253221;
+  input3.coin_value.lovelace_amount = 4012253221;
   tx.AddInput(std::move(input3));
 
   // Input 4
@@ -189,13 +189,13 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
   input4.utxo_outpoint.txid = test::HexToArray<32>(
       "65A253BC8A5AE2711FAE4A0402313FBB6EE64E29CDD127BC50DE3CB9081CC88E");
   input4.utxo_outpoint.index = 63;
-  input4.utxo_value = 1137840;
+  input4.coin_value.lovelace_amount = 1137840;
   {
     cardano_rpc::TokenId token;
     base::HexStringToBytes(
         "E4BBBAA875A797578044EF27713D23DFE07CE74F33163E7C40D7F480544D494E",
         &token);  // "TMIN"
-    input4.utxo_tokens[token] = 1u;
+    input4.coin_value.tokens[token] = 1u;
   }
   tx.AddInput(std::move(input4));
 
@@ -206,13 +206,13 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
   input5.utxo_outpoint.txid = test::HexToArray<32>(
       "D51E53B35A40D3A7A914A2C31DB6CDD0FDB3EF337A88DD63060344CA148A2EE0");
   input5.utxo_outpoint.index = 0;
-  input5.utxo_value = 1400750;
+  input5.coin_value.lovelace_amount = 1400750;
   {
     cardano_rpc::TokenId token;
     base::HexStringToBytes(
         "9A9693A9A37912A5097918F97918D15240C92AB729A0B7C4AA144D7753554E444145",
         &token);  // "SUNDAE"
-    input5.utxo_tokens[token] = 21740603699u;
+    input5.coin_value.tokens[token] = 21740603699u;
   }
   tx.AddInput(std::move(input5));
 
@@ -223,7 +223,7 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
       &addr1_bytes);
   CardanoTransaction::TxOutput output1(
       *CardanoAddress::FromCborBytes(addr1_bytes));
-  output1.amount = 4000000000;
+  output1.coin_value.lovelace_amount = 4000000000;
   tx.AddOutput(std::move(output1));
 
   // Output 2 - multi-asset output with 4 different tokens
@@ -234,21 +234,21 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
       &addr2_bytes);
   CardanoTransaction::TxOutput output2(
       *CardanoAddress::FromCborBytes(addr2_bytes));
-  output2.amount = 1728310;
+  output2.coin_value.lovelace_amount = 1728310;
 
   // Token 1: TMINv2 (amount: 1)
   cardano_rpc::TokenId token1;
   base::HexStringToBytes(
       "269C0C6FB54095825E7F352EB667996872AF8D3A988E78595D5958F6544D494E7632",
       &token1);  // "TMINv2"
-  output2.tokens[token1] = 1u;
+  output2.coin_value.tokens[token1] = 1u;
 
   // Token 2: SUNDAE (amount: 21740603699)
   cardano_rpc::TokenId token2;
   base::HexStringToBytes(
       "9A9693A9A37912A5097918F97918D15240C92AB729A0B7C4AA144D7753554E444145",
       &token2);  // "SUNDAE"
-  output2.tokens[token2] = 21740603699u;
+  output2.coin_value.tokens[token2] = 21740603699u;
 
   // Token 3: SundaeRewardTicket (amount: 1)
   cardano_rpc::TokenId token3;
@@ -256,14 +256,14 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
       "9E5E1B75675DD3824645325FDD7C1C2CFD4221A76640E8016EDA2A9F53756E64616552"
       "65776172645469636B6574",
       &token3);  // "SundaeRewardTicket"
-  output2.tokens[token3] = 1u;
+  output2.coin_value.tokens[token3] = 1u;
 
   // Token 4: TMIN (amount: 1)
   cardano_rpc::TokenId token4;
   base::HexStringToBytes(
       "E4BBBAA875A797578044EF27713D23DFE07CE74F33163E7C40D7F480544D494E",
       &token4);  // "TMIN"
-  output2.tokens[token4] = 1u;
+  output2.coin_value.tokens[token4] = 1u;
 
   tx.AddOutput(std::move(output2));
 
@@ -275,7 +275,7 @@ CardanoTransaction GetReferenceTransactionWithTokens() {
       &addr3_bytes);
   CardanoTransaction::TxOutput output3(
       *CardanoAddress::FromCborBytes(addr3_bytes));
-  output3.amount = 15219320;
+  output3.coin_value.lovelace_amount = 15219320;
   tx.AddOutput(std::move(output3));
 
   tx.set_fee(188821u);
@@ -443,24 +443,24 @@ TEST(CardanoTransactionSerializerTest, CalcMinAdaRequired) {
       "addr_"
       "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
       "xgjqnnj83ws8lhrn648jjxtwq2ytjqp"));
-  output.amount = 0;
+  output.coin_value.lovelace_amount = 0;
 
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
 
   // Amount matches min value.
-  output.amount = 969750u;
+  output.coin_value.lovelace_amount = 969750u;
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
 
   // Amount is slightly less than min value -> still same min value.
-  output.amount = 960000u;
+  output.coin_value.lovelace_amount = 960000u;
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
 
   // Amount is slightly larger than min value -> still same min value.
-  output.amount = 1000000u;
+  output.coin_value.lovelace_amount = 1000000u;
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
 
   // Larger amount would need 9 bytes (vs 5 bytes) and then larger min value.
-  output.amount = 5000000000;
+  output.coin_value.lovelace_amount = 5000000000;
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 986990u);
 
   // Unexpectedly large `coins_per_utxo_size` fails with no overflow.
@@ -478,25 +478,25 @@ TEST(CardanoTransactionSerializerTest, CalcMinAdaRequiredWithTokens) {
       "addr_"
       "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
       "xgjqnnj83ws8lhrn648jjxtwq2ytjqp"));
-  output.amount = 0;
+  output.coin_value.lovelace_amount = 0;
   cardano_rpc::TokenId token;
   base::HexStringToBytes(
       "8b8370c97ae17eb69a8c97f733888f7485b60fd820c69211c8bbeb56"
       "00",
       &token);
-  output.tokens[token] = 1u;
+  output.coin_value.tokens[token] = 1u;
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters),
             1'124'910u);
 
-  output.tokens[GetMockTokenId("foo")] = 1u;
+  output.coin_value.tokens[GetMockTokenId("foo")] = 1u;
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters),
             1'280'070u);
 
-  output.tokens[GetMockTokenId("bar")] = 1'000'000'000'000u;
+  output.coin_value.tokens[GetMockTokenId("bar")] = 1'000'000'000'000u;
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters),
             1'469'710u);
 
-  output.tokens[GetMockTokenId("baz")] = 1u;
+  output.coin_value.tokens[GetMockTokenId("baz")] = 1u;
   EXPECT_EQ(base::span(GetMockTokenId("bar")).first(28u),
             base::span(GetMockTokenId("baz")).first(28u));
   EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters),
@@ -512,24 +512,24 @@ TEST(CardanoTransactionSerializerTest, ValidateMinValue) {
       "addr_"
       "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
       "xgjqnnj83ws8lhrn648jjxtwq2ytjqp"));
-  output.amount = 0;
+  output.coin_value.lovelace_amount = 0;
   // Zero amount fails.
   EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
 
   // Amount matches min value.
-  output.amount = 969750u;
+  output.coin_value.lovelace_amount = 969750u;
   EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
 
   // Amount is slightly less than min value - validation fails.
-  output.amount = 969740u;
+  output.coin_value.lovelace_amount = 969740u;
   EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
 
   // Amount is slightly larger than min value - validation succeeds.
-  output.amount = 1000000u;
+  output.coin_value.lovelace_amount = 1000000u;
   EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
 
   // Very large amount succeeds.
-  output.amount = 5000000000;
+  output.coin_value.lovelace_amount = 5000000000;
   EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
 
   // Unexpectedly large `coins_per_utxo_size` fails with no overflow.
@@ -552,30 +552,30 @@ TEST(CardanoTransactionSerializerTest, ValidateMinValueWithTokens) {
       "8b8370c97ae17eb69a8c97f733888f7485b60fd820c69211c8bbeb56"
       "00",
       &token);
-  output.tokens[token] = 1u;
-  output.amount = 1'124'910u;
+  output.coin_value.tokens[token] = 1u;
+  output.coin_value.lovelace_amount = 1'124'910u;
   EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
-  output.amount--;
+  output.coin_value.lovelace_amount--;
   EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
 
-  output.amount = 1'280'070u;
-  output.tokens[GetMockTokenId("foo")] = 1u;
+  output.coin_value.lovelace_amount = 1'280'070u;
+  output.coin_value.tokens[GetMockTokenId("foo")] = 1u;
   EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
-  output.amount--;
+  output.coin_value.lovelace_amount--;
   EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
 
-  output.amount = 1'469'710u;
-  output.tokens[GetMockTokenId("bar")] = 1'000'000'000'000u;
+  output.coin_value.lovelace_amount = 1'469'710u;
+  output.coin_value.tokens[GetMockTokenId("bar")] = 1'000'000'000'000u;
   EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
-  output.amount--;
+  output.coin_value.lovelace_amount--;
   EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
 
-  output.amount = 1'491'260u;
-  output.tokens[GetMockTokenId("baz")] = 1u;
+  output.coin_value.lovelace_amount = 1'491'260u;
+  output.coin_value.tokens[GetMockTokenId("baz")] = 1u;
   EXPECT_EQ(base::span(GetMockTokenId("bar")).first(28u),
             base::span(GetMockTokenId("baz")).first(28u));
   EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
-  output.amount--;
+  output.coin_value.lovelace_amount--;
   EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
 }
 
@@ -586,29 +586,29 @@ TEST(CardanoTransactionSerializerTest, ValidateAmounts) {
 
   CardanoTransaction::TxInput input1(
       *CardanoAddress::FromString(kMockCardanoAddress1));
-  input1.utxo_value = 969750u;
+  input1.coin_value.lovelace_amount = 969750u;
   valid_tx.AddInput(std::move(input1));
 
   CardanoTransaction::TxInput input2(
       *CardanoAddress::FromString(kMockCardanoAddress2));
-  input2.utxo_value = 2000000u;
+  input2.coin_value.lovelace_amount = 2000000u;
   valid_tx.AddInput(std::move(input2));
   CardanoTransaction::TxInput input3(
       *CardanoAddress::FromString(kMockCardanoAddress2));
-  input3.utxo_value = 3000000u;
+  input3.coin_value.lovelace_amount = 3000000u;
   valid_tx.AddInput(std::move(input3));
   CardanoTransaction::TxOutput output1(*CardanoAddress::FromString(
       "addr_"
       "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
       "xgjqnnj83ws8lhrn648jjxtwq2ytjqp"));
-  output1.amount = 969750u;
+  output1.coin_value.lovelace_amount = 969750u;
   valid_tx.AddOutput(std::move(output1));
 
   CardanoTransaction::TxOutput output2(*CardanoAddress::FromString(
       "addr_"
       "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
       "xgjqnnj83ws8lhrn648jjxtwq2ytjqp"));
-  output2.amount = 4500000;
+  output2.coin_value.lovelace_amount = 4500000;
   valid_tx.AddOutput(std::move(output2));
 
   valid_tx.set_fee(500000);
@@ -618,19 +618,19 @@ TEST(CardanoTransactionSerializerTest, ValidateAmounts) {
   // Changing inputs, outputs or fee would fail validation.
   {
     CardanoTransaction tx = valid_tx;
-    tx.inputs_[0].utxo_value++;
+    tx.inputs_[0].coin_value.lovelace_amount++;
     EXPECT_FALSE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
 
-    tx.inputs_[1].utxo_value--;
+    tx.inputs_[1].coin_value.lovelace_amount--;
     EXPECT_TRUE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
 
-    tx.outputs_[0].amount++;
+    tx.outputs_[0].coin_value.lovelace_amount++;
     EXPECT_FALSE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
 
-    tx.outputs_[1].amount--;
+    tx.outputs_[1].coin_value.lovelace_amount--;
     EXPECT_TRUE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
 
@@ -646,12 +646,17 @@ TEST(CardanoTransactionSerializerTest, ValidateAmounts) {
   // Overflow test.
   {
     CardanoTransaction tx = valid_tx;
-    tx.inputs_[0].utxo_value = std::numeric_limits<uint64_t>::max();
-    tx.inputs_[1].utxo_value = std::numeric_limits<uint64_t>::max();
-    tx.inputs_[2].utxo_value = std::numeric_limits<uint64_t>::max();
+    tx.inputs_[0].coin_value.lovelace_amount =
+        std::numeric_limits<uint64_t>::max();
+    tx.inputs_[1].coin_value.lovelace_amount =
+        std::numeric_limits<uint64_t>::max();
+    tx.inputs_[2].coin_value.lovelace_amount =
+        std::numeric_limits<uint64_t>::max();
 
-    tx.outputs_[0].amount = std::numeric_limits<int64_t>::max();
-    tx.outputs_[1].amount = std::numeric_limits<int64_t>::max();
+    tx.outputs_[0].coin_value.lovelace_amount =
+        std::numeric_limits<uint64_t>::max();
+    tx.outputs_[1].coin_value.lovelace_amount =
+        std::numeric_limits<uint64_t>::max();
     tx.fee_ = std::numeric_limits<uint64_t>::max();
 
     // inputs = outputs + fee, but overflows and fails.
@@ -667,39 +672,39 @@ TEST(CardanoTransactionSerializerTest, ValidateAmountsWithTokens) {
 
   CardanoTransaction::TxInput input1(
       *CardanoAddress::FromString(kMockCardanoAddress1));
-  input1.utxo_value = 969'750u;
-  input1.utxo_tokens[GetMockTokenId("foo")] = 10u;
+  input1.coin_value.lovelace_amount = 969'750u;
+  input1.coin_value.tokens[GetMockTokenId("foo")] = 10u;
   valid_tx.AddInput(std::move(input1));
 
   CardanoTransaction::TxInput input2(
       *CardanoAddress::FromString(kMockCardanoAddress2));
-  input2.utxo_value = 2'000'000u;
-  input2.utxo_tokens[GetMockTokenId("bar")] = 20u;
+  input2.coin_value.lovelace_amount = 2'000'000u;
+  input2.coin_value.tokens[GetMockTokenId("bar")] = 20u;
   valid_tx.AddInput(std::move(input2));
 
   CardanoTransaction::TxInput input3(
       *CardanoAddress::FromString(kMockCardanoAddress2));
-  input3.utxo_value = 3'000'000u;
-  input3.utxo_tokens[GetMockTokenId("foo")] = 100u;
-  input3.utxo_tokens[GetMockTokenId("bar")] = 200u;
-  input3.utxo_tokens[GetMockTokenId("baz")] = 300u;
+  input3.coin_value.lovelace_amount = 3'000'000u;
+  input3.coin_value.tokens[GetMockTokenId("foo")] = 100u;
+  input3.coin_value.tokens[GetMockTokenId("bar")] = 200u;
+  input3.coin_value.tokens[GetMockTokenId("baz")] = 300u;
   valid_tx.AddInput(std::move(input3));
 
   CardanoTransaction::TxOutput output1(*CardanoAddress::FromString(
       "addr_"
       "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
       "xgjqnnj83ws8lhrn648jjxtwq2ytjqp"));
-  output1.amount = 2'000'000u;
-  output1.tokens[GetMockTokenId("foo")] = 110u;
-  output1.tokens[GetMockTokenId("bar")] = 220u;
+  output1.coin_value.lovelace_amount = 2'000'000u;
+  output1.coin_value.tokens[GetMockTokenId("foo")] = 110u;
+  output1.coin_value.tokens[GetMockTokenId("bar")] = 220u;
   valid_tx.AddOutput(std::move(output1));
 
   CardanoTransaction::TxOutput output2(*CardanoAddress::FromString(
       "addr_"
       "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
       "xgjqnnj83ws8lhrn648jjxtwq2ytjqp"));
-  output2.amount = 2'000'000u;
-  output2.tokens[GetMockTokenId("baz")] = 300u;
+  output2.coin_value.lovelace_amount = 2'000'000u;
+  output2.coin_value.tokens[GetMockTokenId("baz")] = 300u;
   valid_tx.AddOutput(std::move(output2));
 
   valid_tx.set_fee(1'969'750u);
@@ -709,19 +714,19 @@ TEST(CardanoTransactionSerializerTest, ValidateAmountsWithTokens) {
   // Changing inputs, outputs or fee would fail validation.
   {
     CardanoTransaction tx = valid_tx;
-    tx.inputs_[0].utxo_tokens[GetMockTokenId("foo")]--;
+    tx.inputs_[0].coin_value.tokens[GetMockTokenId("foo")]--;
     EXPECT_FALSE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
 
-    tx.inputs_[2].utxo_tokens[GetMockTokenId("foo")]++;
+    tx.inputs_[2].coin_value.tokens[GetMockTokenId("foo")]++;
     EXPECT_TRUE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
 
-    tx.outputs_[0].tokens[GetMockTokenId("bar")]--;
+    tx.outputs_[0].coin_value.tokens[GetMockTokenId("bar")]--;
     EXPECT_FALSE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
 
-    tx.outputs_[1].tokens[GetMockTokenId("bar")]++;
+    tx.outputs_[1].coin_value.tokens[GetMockTokenId("bar")]++;
     EXPECT_TRUE(
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
   }
@@ -729,9 +734,9 @@ TEST(CardanoTransactionSerializerTest, ValidateAmountsWithTokens) {
   // Overflow test.
   {
     CardanoTransaction tx = valid_tx;
-    tx.inputs_[0].utxo_tokens[GetMockTokenId("foo")] =
+    tx.inputs_[0].coin_value.tokens[GetMockTokenId("foo")] =
         std::numeric_limits<uint64_t>::max();
-    tx.inputs_[1].utxo_tokens[GetMockTokenId("foo")] =
+    tx.inputs_[1].coin_value.tokens[GetMockTokenId("foo")] =
         std::numeric_limits<uint64_t>::max();
 
     EXPECT_FALSE(
@@ -748,21 +753,21 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
       *CardanoAddress::FromString(kMockCardanoAddress1));
   input1.utxo_outpoint.txid = test::HexToArray<32>(
       "1111c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
-  input1.utxo_value = 1000000u;
+  input1.coin_value.lovelace_amount = 1000000u;
   base_tx.AddInput(std::move(input1));
 
   CardanoTransaction::TxInput input2(
       *CardanoAddress::FromString(kMockCardanoAddress2));
   input2.utxo_outpoint.txid = test::HexToArray<32>(
       "2222c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
-  input2.utxo_value = 2000000u;
+  input2.coin_value.lovelace_amount = 2000000u;
   base_tx.AddInput(std::move(input2));
 
   CardanoTransaction::TxInput input3(
       *CardanoAddress::FromString(kMockCardanoAddress2));
   input3.utxo_outpoint.txid = test::HexToArray<32>(
       "3333c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
-  input3.utxo_value = 3000000u;
+  input3.coin_value.lovelace_amount = 3000000u;
   base_tx.AddInput(std::move(input3));
 
   CardanoTransaction::TxOutput output(
@@ -772,20 +777,22 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
   // Some inputs, no change.
   {
     auto tx_no_change = base_tx;
-    tx_no_change.TargetOutput()->amount = 6000000 - 172981u;
+    tx_no_change.TargetOutput()->coin_value.lovelace_amount = 6000000 - 172981u;
 
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_no_change, epoch_parameters, false);
 
     EXPECT_EQ(found_tx->fee(), 172981u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
-    EXPECT_EQ(found_tx->TargetOutput()->amount, 6000000 - 172981u);
+    EXPECT_EQ(found_tx->TargetOutput()->coin_value.lovelace_amount,
+              6000000 - 172981u);
     EXPECT_EQ(found_tx->ChangeOutput(), nullptr);
     EXPECT_EQ(found_tx->witnesses().size(), 0u);
 
     // Slightly adjust output - doesn't work as inputs outputs and fee don't
     // match and we dont's have change.
-    tx_no_change.TargetOutput()->amount = 6000000u - 172981u - 1u;
+    tx_no_change.TargetOutput()->coin_value.lovelace_amount =
+        6000000u - 172981u - 1u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_no_change, epoch_parameters, false));
@@ -799,36 +806,38 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     change_output.type = CardanoTransaction::TxOutputType::kChange;
     tx_with_change.AddOutput(std::move(change_output));
 
-    tx_with_change.TargetOutput()->amount = 1000000u;
+    tx_with_change.TargetOutput()->coin_value.lovelace_amount = 1000000u;
 
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters, false);
 
     EXPECT_EQ(found_tx->fee(), 175841u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
-    EXPECT_EQ(found_tx->TargetOutput()->amount, 1000000u);
-    EXPECT_EQ(found_tx->ChangeOutput()->amount, 6000000u - 1000000u - 175841u);
+    EXPECT_EQ(found_tx->TargetOutput()->coin_value.lovelace_amount, 1000000u);
+    EXPECT_EQ(found_tx->ChangeOutput()->coin_value.lovelace_amount,
+              6000000u - 1000000u - 175841u);
 
     // Slightly adjust output - still works.
-    tx_with_change.TargetOutput()->amount = 1000000u + 123u;
+    tx_with_change.TargetOutput()->coin_value.lovelace_amount = 1000000u + 123u;
 
     found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters, false);
 
     EXPECT_EQ(found_tx->fee(), 175841u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
-    EXPECT_EQ(found_tx->TargetOutput()->amount, 1000000u + 123u);
-    EXPECT_EQ(found_tx->ChangeOutput()->amount,
+    EXPECT_EQ(found_tx->TargetOutput()->coin_value.lovelace_amount,
+              1000000u + 123u);
+    EXPECT_EQ(found_tx->ChangeOutput()->coin_value.lovelace_amount,
               6000000u - (1000000u + 123u) - 175841u);
 
     // Adjust output so it is larger than inputs we have - failure.
-    tx_with_change.TargetOutput()->amount = 10000000u;
+    tx_with_change.TargetOutput()->coin_value.lovelace_amount = 10000000u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters, false));
 
     // Adjust output so it is not possible to produce change large enough.
-    tx_with_change.TargetOutput()->amount = 5500000u;
+    tx_with_change.TargetOutput()->coin_value.lovelace_amount = 5500000u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters, false));
@@ -843,14 +852,15 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
 
     EXPECT_EQ(found_tx->fee(), 172981u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
-    EXPECT_EQ(found_tx->TargetOutput()->amount, 6000000u - 172981u);
+    EXPECT_EQ(found_tx->TargetOutput()->coin_value.lovelace_amount,
+              6000000u - 172981u);
     EXPECT_EQ(found_tx->ChangeOutput(), nullptr);
     EXPECT_EQ(found_tx->witnesses().size(), 0u);
 
     // Single input is not enough to cover fee.
     CardanoTransaction::TxInput input4(
         *CardanoAddress::FromString(kMockCardanoAddress1));
-    input4.utxo_value = 100000u;
+    input4.coin_value.lovelace_amount = 100000u;
     tx_max_send.ClearInputs();
     tx_max_send.AddInput(std::move(input4));
 
@@ -860,7 +870,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     // Single input is not enough to produce output large enough.
     CardanoTransaction::TxInput input5(
         *CardanoAddress::FromString(kMockCardanoAddress1));
-    input5.utxo_value = 1000000u;
+    input5.coin_value.lovelace_amount = 1000000u;
     tx_max_send.ClearInputs();
     tx_max_send.AddInput(std::move(input5));
 

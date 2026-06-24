@@ -25,8 +25,9 @@ mojom::CardanoTxDataPtr ToCardanoTxData(const CardanoTransaction& tx) {
     mojom_inputs.push_back(mojom::CardanoTxInput::New(
         input.utxo_address.ToString(),
         base::HexEncode(input.utxo_outpoint.txid), input.utxo_outpoint.index,
-        input.utxo_value, std::vector<mojom::CardanoTxTokenValuePtr>()));
-    for (auto& token : input.utxo_tokens) {
+        input.coin_value.lovelace_amount,
+        std::vector<mojom::CardanoTxTokenValuePtr>()));
+    for (auto& token : input.coin_value.tokens) {
       mojom_inputs.back()->tokens.push_back(mojom::CardanoTxTokenValue::New(
           base::HexEncodeLower(token.first), token.second));
     }
@@ -35,9 +36,9 @@ mojom::CardanoTxDataPtr ToCardanoTxData(const CardanoTransaction& tx) {
   std::vector<mojom::CardanoTxOutputPtr> mojom_outputs;
   for (auto& output : tx.outputs()) {
     mojom_outputs.push_back(mojom::CardanoTxOutput::New(
-        output.address.ToString(), output.amount,
+        output.address.ToString(), output.coin_value.lovelace_amount,
         std::vector<mojom::CardanoTxTokenValuePtr>()));
-    for (auto& token : output.tokens) {
+    for (auto& token : output.coin_value.tokens) {
       mojom_outputs.back()->tokens.push_back(mojom::CardanoTxTokenValue::New(
           base::HexEncodeLower(token.first), token.second));
     }
@@ -45,10 +46,10 @@ mojom::CardanoTxDataPtr ToCardanoTxData(const CardanoTransaction& tx) {
 
   mojom::CardanoTxTokenValuePtr sending_token;
   CHECK(tx.TargetOutput());
-  uint64_t sending_lovelace = tx.TargetOutput()->amount;
-  if (!tx.TargetOutput()->tokens.empty()) {
-    CHECK_EQ(tx.TargetOutput()->tokens.size(), 1u);
-    const auto& token = tx.TargetOutput()->tokens.begin();
+  uint64_t sending_lovelace = tx.TargetOutput()->coin_value.lovelace_amount;
+  if (!tx.TargetOutput()->coin_value.tokens.empty()) {
+    CHECK_EQ(tx.TargetOutput()->coin_value.tokens.size(), 1u);
+    const auto& token = tx.TargetOutput()->coin_value.tokens.begin();
     sending_token = mojom::CardanoTxTokenValue::New(
         base::HexEncodeLower(token->first), token->second);
   }

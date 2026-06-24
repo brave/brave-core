@@ -48,6 +48,9 @@ class CardanoTestRpcServer {
 
   void AddUtxo(const std::string& address, uint64_t amount);
   void AddUtxo(const std::string& address,
+               uint64_t amount,
+               const cardano_rpc::Tokens& tokens);
+  void AddUtxo(const std::string& address,
                const std::string& tx_hash,
                const std::string& index,
                const std::string& amount);

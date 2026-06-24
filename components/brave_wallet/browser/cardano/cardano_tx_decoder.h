@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_CARDANO_TX_DECODER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_CARDANO_TX_DECODER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_TX_DECODER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_TX_DECODER_H_
 
 #include <array>
 #include <optional>
@@ -12,6 +12,7 @@
 
 #include "base/containers/span.h"
 #include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 
 namespace brave_wallet {
 
@@ -27,6 +28,8 @@ class CardanoTxDecoder {
  public:
   struct SerializableTxInput {
     SerializableTxInput();
+    SerializableTxInput(std::array<uint8_t, kCardanoTxHashSize> tx_hash,
+                        uint32_t index);
     SerializableTxInput(const SerializableTxInput&);
     SerializableTxInput& operator=(const SerializableTxInput&);
     SerializableTxInput(SerializableTxInput&&);
@@ -38,20 +41,10 @@ class CardanoTxDecoder {
     uint32_t index = 0;
   };
 
-  struct SerializableTxOutputToken {
-    SerializableTxOutputToken();
-    SerializableTxOutputToken(const SerializableTxOutputToken&);
-    SerializableTxOutputToken& operator=(const SerializableTxOutputToken&);
-    SerializableTxOutputToken(SerializableTxOutputToken&&);
-    SerializableTxOutputToken& operator=(SerializableTxOutputToken&&);
-    ~SerializableTxOutputToken();
-
-    std::vector<uint8_t> token_id;
-    uint64_t amount = 0u;
-  };
-
   struct SerializableTxOutput {
     SerializableTxOutput();
+    SerializableTxOutput(std::vector<uint8_t> address_bytes,
+                         cardano_rpc::CoinValue coin_value);
     SerializableTxOutput(const SerializableTxOutput&);
     SerializableTxOutput& operator=(const SerializableTxOutput&);
     SerializableTxOutput(SerializableTxOutput&&);
@@ -59,8 +52,7 @@ class CardanoTxDecoder {
     ~SerializableTxOutput();
 
     std::vector<uint8_t> address_bytes;
-    uint64_t amount = 0u;
-    std::vector<SerializableTxOutputToken> tokens;
+    cardano_rpc::CoinValue coin_value;
   };
 
   struct SerializableTxBody {
@@ -138,6 +130,19 @@ class CardanoTxDecoder {
   static std::optional<std::vector<uint8_t>> EncodeTransactionOutput(
       const SerializableTxOutput& output);
 
+  // Returns CBOR encoded utxo.
+  static std::optional<std::vector<uint8_t>> EncodeUtxo(
+      const SerializableTxInput& input,
+      const SerializableTxOutput& output);
+
+  // Returns CBOR encoded amount.
+  static std::optional<std::vector<uint8_t>> EncodeCoinValue(
+      const cardano_rpc::CoinValue& value);
+
+  // Decodes CBOR encoded amount.
+  static std::optional<cardano_rpc::CoinValue> DecodeCoinValue(
+      const std::vector<uint8_t>& value_bytes);
+
   // Returns tx hash calculated from tx body.
   static std::optional<std::array<uint8_t, kCardanoTxHashSize>>
   GetTransactionHash(const SerializableTx& tx);
@@ -155,4 +160,4 @@ class CardanoTxDecoder {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_CARDANO_TX_DECODER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_TX_DECODER_H_

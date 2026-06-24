@@ -16,7 +16,7 @@
 #include "base/numerics/checked_math.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
-#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
@@ -84,8 +84,7 @@ class CardanoTransaction {
 
     CardanoAddress utxo_address;
     Outpoint utxo_outpoint;
-    uint64_t utxo_value = 0u;
-    cardano_rpc::Tokens utxo_tokens;
+    cardano_rpc::CoinValue coin_value;
   };
 
   // Transaction witness. Matches a TxInput within transaction based on its
@@ -127,8 +126,7 @@ class CardanoTransaction {
 
     TxOutputType type = TxOutputType::kTarget;
     CardanoAddress address;
-    uint64_t amount = 0;
-    cardano_rpc::Tokens tokens;
+    cardano_rpc::CoinValue coin_value;
   };
 
   CardanoTransaction();

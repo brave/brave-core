@@ -305,13 +305,13 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
   utxos.back().tx_hash = test::HexToArray<32>(
       "1fca84164f59606710ff4cf0fd660753bd299e30bb2c8194117fdb965ace67b9");
   utxos.back().output_index = 2;
-  utxos.back().lovelace_amount = 406560;
+  utxos.back().coin_value.lovelace_amount = 406560;
 
   utxos.emplace_back(address);
   utxos.back().tx_hash = test::HexToArray<32>(
       "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98");
   utxos.back().output_index = 1;
-  utxos.back().lovelace_amount = 2407560;
+  utxos.back().coin_value.lovelace_amount = 2407560;
 
   TestFuture<base::expected<cardano_rpc::UnspentOutputs, std::string>>
       utxos_future;

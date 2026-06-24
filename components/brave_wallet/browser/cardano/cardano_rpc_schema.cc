@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 
+#include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -19,6 +20,30 @@ constexpr size_t kCardanoScriptHashSize = 28u;
 constexpr size_t kCardanoMaxTokenNameSize = 32u;
 
 }  // namespace
+
+CoinValue::CoinValue() = default;
+CoinValue::CoinValue(uint64_t lovelace_amount, Tokens tokens)
+    : lovelace_amount(lovelace_amount), tokens(std::move(tokens)) {}
+CoinValue::CoinValue(const CoinValue&) = default;
+CoinValue::CoinValue(CoinValue&&) = default;
+CoinValue& CoinValue::operator=(const CoinValue&) noexcept = default;
+CoinValue& CoinValue::operator=(CoinValue&&) noexcept = default;
+CoinValue::~CoinValue() = default;
+
+bool CoinValue::Add(const CoinValue& other) {
+  if (!base::CheckAdd(lovelace_amount, other.lovelace_amount)
+           .AssignIfValid(&lovelace_amount)) {
+    return false;
+  }
+  for (const auto& [token_id, amount] : other.tokens) {
+    if (!base::CheckAdd(tokens[token_id], amount)
+             .AssignIfValid(&tokens[token_id])) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 std::optional<TokenId> TokenIdFromHex(std::string_view hex) {
   TokenId token_id;
@@ -116,7 +141,7 @@ std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
       if (found_lovelace) {
         return std::nullopt;
       }
-      result.lovelace_amount = amount;
+      result.coin_value.lovelace_amount = amount;
       found_lovelace = true;
     } else {
       auto token_id = TokenIdFromHex(asset.unit);
@@ -124,7 +149,8 @@ std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
         return std::nullopt;
       }
 
-      if (!result.tokens.emplace(std::move(token_id.value()), amount).second) {
+      if (!result.coin_value.tokens.emplace(std::move(token_id.value()), amount)
+               .second) {
         return std::nullopt;
       }
     }
