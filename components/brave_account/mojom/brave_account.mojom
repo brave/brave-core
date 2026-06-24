@@ -96,6 +96,7 @@ enum RegisterServerErrorCode {
   kAccountExists                                      = 13004,
   kEmailDomainNotSupported                            = 13006,
   kRegistrationVerificationAlreadyPendingForThisEmail = 13012,
+  kDailyVerificationLimitReachedForEmail              = 13013,
   // /v2/accounts/password/finalize:
   // - internal:
   kInterimPasswordStateNotFound                       = 14001,
@@ -188,6 +189,7 @@ enum ResetPasswordServerErrorCode {
   // - user-facing:
   // kTooManyVerifications                            = 13001,
   // kEmailDomainNotSupported                         = 13006,
+  // kDailyVerificationLimitReachedForEmail           = 13013,
 
   // /v2/accounts/password/finalize:
   // - internal:
@@ -378,6 +380,7 @@ enum ChangePasswordServerErrorCode {
   // kIntentNotAllowed                                = 13003,
   // - user-facing:
   // kTooManyVerifications                            = 13001,
+  // kDailyVerificationLimitReachedForEmail           = 13013,
 
   // /v2/accounts/password/finalize:
   // - internal:
