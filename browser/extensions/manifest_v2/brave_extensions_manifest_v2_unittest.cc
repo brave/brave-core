@@ -148,6 +148,7 @@ class BraveExtensionsManifestV2SettingsBackupTest
                (GetParam().backup_enabled ? "true" : "false")},
               {extensions_mv2::features::kImportSettingsOnInstall.name,
                (GetParam().import_enabled ? "true" : "false")},
+              {extensions_mv2::features::kAutoInstallBraveHosted.name, "false"},
           });
     } else {
       feature_list_.InitAndDisableFeature(
