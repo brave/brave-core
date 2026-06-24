@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -702,33 +703,213 @@ TEST_F(
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
-       FallThroughToLowerPriorityBucketWhenPacingDrainsHigherPriorityBucket) {
-  // Arrange: `creative_ad_1` (priority 1) has a zero pass-through rate so
-  // pacing always removes it, leaving an empty bucket. The pipeline must fall
-  // through to `creative_ad_2` (priority 2).
+       LowPtrCampaignDoesNotBlockHighPtrCampaignInSamePriorityBucket) {
+  // Arrange: an ad passes pacing when roll < `pass_through_rate` and is paced
+  // out when roll >= `pass_through_rate`.
+
+  // Campaign 1 (priority 1): two ads with a `pass_through_rate` of 0.01.
+  const std::string campaign_1_id =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
+
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
+  creative_ad_1.campaign_id = campaign_1_id;
   creative_ad_1.priority = 1;
-  creative_ad_1.pass_through_rate = 0.0;
+  creative_ad_1.pass_through_rate = 0.01;
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ad_2.priority = 2;
-  creative_ad_2.pass_through_rate = 1.0;
+  creative_ad_2.campaign_id = campaign_1_id;
+  creative_ad_2.priority = 1;
+  creative_ad_2.pass_through_rate = 0.01;
 
-  test::SaveCreativeNewTabPageAds({creative_ad_1, creative_ad_2});
+  // Campaign 2 (priority 1): one ad with a `pass_through_rate` of 0.42.
+  CreativeNewTabPageAdInfo creative_ad_3 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_3.priority = 1;
+  creative_ad_3.pass_through_rate = 0.42;
 
-  const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.5);
+  // Campaign 3 (priority 2): one ad with a `pass_through_rate` of 1.0.
+  CreativeNewTabPageAdInfo creative_ad_4 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_4.priority = 2;
+  creative_ad_4.pass_through_rate = 1.0;
 
-  // Act & Assert
-  base::test::TestFuture<CreativeNewTabPageAdList> test_future;
-  eligible_ads_->GetForUserModel(
-      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
-                    InterestUserModelInfo{}},
-      test_future.GetCallback());
-  EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_2));
+  test::SaveCreativeNewTabPageAds(
+      {creative_ad_1, creative_ad_2, creative_ad_3, creative_ad_4});
+
+  const UserModelInfo user_model{
+      IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+      InterestUserModelInfo{SegmentList{"untargeted"}}};
+
+  // NTT 1: cold start (no prior served state). Roll of 0.005 passes all three
+  // priority 1 ads. The round-robin starts fresh with no exclusions, so any
+  // priority 1 ad is eligible. `creative_ad_4` (priority 2) is not
+  // eligible while priority 1 has eligible ads. No ad is marked as served so
+  // the round-robin state remains empty for the regression sequence below.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.005);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    EXPECT_THAT(
+        test_future.Take(),
+        ::testing::AllOf(::testing::SizeIs(1),
+                         ::testing::Not(::testing::Contains(creative_ad_4))));
+  }
+
+  // NTT 2: roll of 0.2 paces campaign 1 out (its `pass_through_rate`
+  // of 0.01, 0.2 >= 0.01). Campaign 2's ad passes pacing (its
+  // `pass_through_rate` of 0.42, 0.2 < 0.42) and is served.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.2);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    ASSERT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_3));
+    SimulateServeAd(creative_ad_3);
+  }
+
+  // NTT 3: roll of 0.005 is below campaign 1's `pass_through_rate` (0.01) so
+  // all three priority 1 ads pass pacing. The round-robin removes
+  // `creative_ad_3` (already served), leaving `[creative_ad_1, creative_ad_2]`.
+  // `creative_ad_4` (priority 2) is not eligible while priority 1 has eligible
+  // ads. A campaign 1 ad is eligible.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.005);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    const CreativeNewTabPageAdList creative_ads = test_future.Take();
+    EXPECT_THAT(creative_ads,
+                ::testing::AllOf(::testing::SizeIs(1),
+                                 ::testing::Not(::testing::AnyOf(
+                                     ::testing::Contains(creative_ad_3),
+                                     ::testing::Contains(creative_ad_4)))));
+    SimulateServeAd(creative_ads);
+  }
+
+  // NTT 4: roll of 0.2 paces campaign 1 out again. Pacing produces
+  // `[creative_ad_3]`. The round-robin sees that all candidates in the
+  // post-pacing bucket have been served and resets, making `creative_ad_3`
+  // eligible. `creative_ad_3` serves.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.2);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_3));
+    SimulateServeAd(creative_ad_3);
+  }
+
+  // NTT 5: roll of 0.2 again; the same reset-and-serve pattern from NTT 4
+  // repeats. Pacing produces `[creative_ad_3]`, the round-robin resets on the
+  // single-element bucket, and `creative_ad_3` serves.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.2);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_3));
+    SimulateServeAd(creative_ad_3);
+  }
+
+  // NTT 6: all three priority 1 ads pass pacing. The round-robin removes
+  // `creative_ad_3` (served in NTT 5), leaving `[creative_ad_1,
+  // creative_ad_2]`. `creative_ad_4` (priority 2) is not eligible. A campaign 1
+  // ad serves, confirming campaign 1 is not permanently blocked.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.005);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    const CreativeNewTabPageAdList creative_ads = test_future.Take();
+    EXPECT_THAT(creative_ads,
+                ::testing::AllOf(::testing::SizeIs(1),
+                                 ::testing::Not(::testing::AnyOf(
+                                     ::testing::Contains(creative_ad_3),
+                                     ::testing::Contains(creative_ad_4)))));
+    SimulateServeAd(creative_ads);
+  }
+
+  // NTT 7: roll of 0.2 paces campaign 1 out; only `creative_ad_3` passes
+  // pacing. The round-robin resets because `creative_ad_3` is the only
+  // candidate in the post-pacing bucket and has already been served, starting
+  // the second rotation.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.2);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_3));
+    SimulateServeAd(creative_ad_3);
+  }
+
+  // NTT 8: campaign 1 resumes in the second rotation. `creative_ad_3` is
+  // excluded by the round-robin (last served in NTT 7); `creative_ad_4`
+  // (priority 2) is not eligible. A campaign 1 ad serves.
+  CreativeNewTabPageAdList ntt8_creative_ads;
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.005);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    ntt8_creative_ads = test_future.Take();
+    EXPECT_THAT(ntt8_creative_ads,
+                ::testing::AllOf(::testing::SizeIs(1),
+                                 ::testing::Not(::testing::AnyOf(
+                                     ::testing::Contains(creative_ad_3),
+                                     ::testing::Contains(creative_ad_4)))));
+    SimulateServeAd(ntt8_creative_ads);
+  }
+
+  // NTT 9: the other campaign 1 ad serves, confirming the full three-ad cycle
+  // repeats correctly after the reset. `creative_ad_4` (priority 2) is not
+  // eligible while priority 1 has eligible ads.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.005);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    const CreativeNewTabPageAdList creative_ads = test_future.Take();
+    EXPECT_THAT(creative_ads,
+                ::testing::AllOf(::testing::SizeIs(1),
+                                 ::testing::Not(::testing::AnyOf(
+                                     ::testing::Contains(creative_ad_3),
+                                     ::testing::Contains(creative_ad_4)))));
+    EXPECT_NE(ntt8_creative_ads, creative_ads);
+    SimulateServeAd(creative_ads);
+  }
+
+  // NTT 10: roll of 0.5 paces out all priority 1 ads; campaign 1 has a
+  // `pass_through_rate` of 0.01 and campaign 2 a `pass_through_rate` of 0.42.
+  // The priority 1 bucket is empty so the pipeline falls through to the
+  // priority 2 bucket where `creative_ad_4` (a `pass_through_rate` of 1.0)
+  // serves.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.5);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_4));
+    SimulateServeAd(creative_ad_4);
+  }
+
+  // NTT 11: priority 1 immediately resumes serving as soon as it has an
+  // eligible ad. Roll of 0.2 paces campaign 1 out but campaign 2 passes
+  // pacing (`pass_through_rate` of 0.42, 0.2 < 0.42). `creative_ad_3` serves
+  // from priority 1 rather than `creative_ad_4` from priority 2.
+  {
+    const ScopedPacingRandomNumberSetterForTesting scoped_pacing_random_number(
+        0.2);
+    base::test::TestFuture<CreativeNewTabPageAdList> test_future;
+    eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
+    EXPECT_THAT(test_future.Take(), ::testing::ElementsAre(creative_ad_3));
+  }
 }
 
 }  // namespace brave_ads

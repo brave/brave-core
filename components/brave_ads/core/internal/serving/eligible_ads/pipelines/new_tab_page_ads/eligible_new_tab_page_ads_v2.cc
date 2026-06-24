@@ -261,16 +261,20 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAdCallback(
   LogNumberOfCreativeAdsPerBucket(creative_ad_buckets);
 
   // For each bucket of prioritized ads attempt to predict the most suitable ad
-  // for the user in priority order. Round-robin is applied per bucket after
-  // exclusion rules but before pacing so that lower-priority campaigns are
-  // never served while higher-priority campaigns still have eligible ads.
+  // for the user in priority order. Pacing is applied before round-robin so
+  // that rotation only considers ads that are eligible to serve right now.
+  // Running round-robin after pacing means its reset logic is driven by
+  // pacing-eligible ads, preventing a fully-paced campaign from consuming
+  // served-set slots and blocking other campaigns in the same bucket.
   for (auto& [priority, creative_ad_bucket] : creative_ad_buckets) {
-    // Round-robin after exclusion rules ensures rotation operates on the
-    // actually-eligible set. Running it before pacing ensures rotation resets
-    // are driven by which ads have been served rather than pacing suppression.
+    PaceCreativeAds(creative_ad_bucket);
+
     creative_ad_round_robin_->Filter(creative_ad_bucket);
 
-    PaceCreativeAds(creative_ad_bucket);
+    if (creative_ad_bucket.empty()) {
+      BLOG(1, "No eligible ads in priority " << priority);
+      continue;
+    }
 
     if (creative_ad_bucket.empty()) {
       continue;
