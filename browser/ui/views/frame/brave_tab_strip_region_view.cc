@@ -400,19 +400,6 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
       }
     }
 
-    // In compact horizontal tabs mode, adjust the vertical positioning of the
-    // tabstrip control buttons so that they remain centered.
-    if (tabs::UseCompactHorizontalTabs()) {
-      auto offset_button = [](views::View* button) {
-        if (button) {
-          button->SetY(tabs::GetHorizontalTabButtonYOffset());
-        }
-      };
-      offset_button(new_tab_button_);
-      offset_button(tab_scroll_next_button_);
-      offset_button(tab_scroll_previous_button_);
-    }
-
     return;
   }
 

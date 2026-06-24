@@ -68,10 +68,14 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return std::nullopt;
     }
     case LayoutConstant::kTabstripToolbarOverlap: {
-      if (!HorizontalTabsUpdateEnabled()) {
-        return std::nullopt;
+      // Upstream extends tabs 1px into the toolbar to hide a fractional-scale
+      // gap at the tab/toolbar seam. Brave's tabs are free-floating pills with
+      // a deliberate gap below them, so there is no seam and no need for an
+      // overlap.
+      if (HorizontalTabsUpdateEnabled()) {
+        return 0;
       }
-      return UseCompactHorizontalTabs() ? 8 : 1;
+      return std::nullopt;
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
       return 4;
@@ -141,10 +145,6 @@ int GetHorizontalTabHeight() {
 
 int GetHorizontalTabVerticalSpacing() {
   return UseCompactHorizontalTabs() ? 2 : 4;
-}
-
-int GetHorizontalTabButtonYOffset() {
-  return UseCompactHorizontalTabs() ? -5 : -4;
 }
 
 int GetHorizontalTabStripHeight() {

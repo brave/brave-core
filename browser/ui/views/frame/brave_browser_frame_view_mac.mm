@@ -111,8 +111,6 @@ int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
 BrowserFrameViewMac::BoundsAndMargins
 BraveBrowserFrameViewMac::GetCaptionButtonBounds() const {
   auto bounds_and_margins = BrowserFrameViewMac::GetCaptionButtonBounds();
-  bounds_and_margins.bounds.set_y(bounds_and_margins.bounds.y() +
-                                  tabs::GetHorizontalTabButtonYOffset());
   // Compact: zero the caption button vertical margins so the leading
   // exclusion collapses around the buttons themselves, letting the shorter
   // tab strip sit centred against the traffic lights.

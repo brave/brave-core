@@ -277,9 +277,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserFrameViewTabStripHeightTest,
 
   RunScheduledLayouts();
 
-  // Default: 32 (height) + 2*4 (spacing) + 1 (overlap) = 41
-  // Compact: 26 (height) + 2*2 (spacing) + 8 (overlap) = 38
-  const int expected_height = GetParam() ? 38 : 41;
+  // Default: 32 (height) + 2*4 (spacing) + 0 (overlap) = 40
+  // Compact: 26 (height) + 2*2 (spacing) + 0 (overlap) = 30
+  const int expected_height = GetParam() ? 30 : 40;
   EXPECT_EQ(expected_height, GetLayoutConstant(LayoutConstant::kTabStripHeight))
       << "kTabStripHeight constant is wrong for "
       << (GetParam() ? "compact" : "default") << " mode";
