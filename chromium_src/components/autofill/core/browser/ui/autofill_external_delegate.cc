@@ -21,8 +21,8 @@
 #define BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS \
   if (trigger_field.has_value()) {                                               \
     manager_->client().BraveAddSuggestions(                                      \
-        manager_->client().ClassifyAsPasswordForm(*manager_, query_form_id_,     \
-                                                  query_field_id_),              \
+        manager_->client().ClassifyAsPasswordForm(                               \
+            *manager_, last_query_.form_id, last_query_.field_id),               \
         *trigger_field, suggestions);                                            \
   }
 
@@ -38,7 +38,8 @@ namespace autofill {
 void AutofillExternalDelegate::DidAcceptSuggestion(
     const Suggestion& suggestion,
     const SuggestionMetadata& metadata) {
-  if (manager_->client().BraveHandleSuggestion(suggestion, query_field_id_)) {
+  if (manager_->client().BraveHandleSuggestion(suggestion,
+                                               last_query_.field_id)) {
     return;
   }
 
