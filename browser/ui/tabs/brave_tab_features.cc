@@ -35,7 +35,7 @@
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
-#include "brave/components/psst/common/features.h"
+#include "brave/components/psst/core/common/features.h"
 #endif
 
 namespace tabs {

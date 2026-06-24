@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PSST_CORE_PSST_SETTINGS_SERVICE_H_
-#define BRAVE_COMPONENTS_PSST_CORE_PSST_SETTINGS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_PSST_CORE_BROWSER_PSST_SETTINGS_SERVICE_H_
+#define BRAVE_COMPONENTS_PSST_CORE_BROWSER_PSST_SETTINGS_SERVICE_H_
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/psst/common/psst_metadata_schema.h"
+#include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/origin.h"
@@ -43,4 +43,4 @@ class PsstSettingsService : public KeyedService {
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_CORE_PSST_SETTINGS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_PSST_CORE_BROWSER_PSST_SETTINGS_SERVICE_H_

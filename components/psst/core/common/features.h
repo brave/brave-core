@@ -3,10 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/psst/common/features.h"
+#ifndef BRAVE_COMPONENTS_PSST_CORE_COMMON_FEATURES_H_
+#define BRAVE_COMPONENTS_PSST_CORE_COMMON_FEATURES_H_
+
+#include "base/feature_list.h"
 
 namespace psst::features {
 
-BASE_FEATURE(kEnablePsst, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_DECLARE_FEATURE(kEnablePsst);
 
 }  // namespace psst::features
+
+#endif  // BRAVE_COMPONENTS_PSST_CORE_COMMON_FEATURES_H_

@@ -67,7 +67,7 @@ test("brave_components_unittests") {
   }
 
   if (enable_psst) {
-    deps += [ "//brave/components/psst/core:unit_tests" ]
+    deps += [ "//brave/components/psst/core/browser:unit_tests" ]
   }
 
   if (enable_brave_wayback_machine) {

@@ -25,7 +25,7 @@
 #include "chrome/browser/component_updater/component_updater_utils.h"
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/components/psst/core/psst_component_installer.h"
+#include "brave/components/psst/core/browser/psst_component_installer.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)

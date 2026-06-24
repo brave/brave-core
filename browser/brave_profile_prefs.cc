@@ -162,7 +162,7 @@ using extensions::FeatureSwitch;
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/components/psst/core/pref_names.h"
+#include "brave/components/psst/core/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

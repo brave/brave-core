@@ -323,7 +323,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
-#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
 #endif
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)

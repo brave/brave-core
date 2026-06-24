@@ -7,7 +7,7 @@
 
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/browser/ui/views/page_action/psst_action_controller.h"
-#include "brave/components/psst/common/constants.h"
+#include "brave/components/psst/core/common/constants.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/infobars/content/content_infobar_manager.h"

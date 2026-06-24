@@ -320,8 +320,8 @@ if (enable_psst) {
   brave_chrome_browser_deps += [
     "//brave/browser/psst",
     "//brave/browser/ui/webui/psst",
-    "//brave/components/psst/common",
-    "//brave/components/psst/core",
+    "//brave/components/psst/core/browser",
+    "//brave/components/psst/core/common",
   ]
 }
 

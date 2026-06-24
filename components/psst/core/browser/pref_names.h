@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_CORE_PREF_NAMES_H_
-#define BRAVE_COMPONENTS_PSST_CORE_PREF_NAMES_H_
+#ifndef BRAVE_COMPONENTS_PSST_CORE_BROWSER_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_PSST_CORE_BROWSER_PREF_NAMES_H_
 
 #include "components/prefs/pref_service.h"
 
@@ -22,4 +22,4 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_CORE_PREF_NAMES_H_
+#endif  // BRAVE_COMPONENTS_PSST_CORE_BROWSER_PREF_NAMES_H_

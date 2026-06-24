@@ -17,7 +17,7 @@ transpile_web_ui("dialog") {
       ] ]
 
   deps = [
-    "//brave/components/psst/common:mojom_js",
+    "//brave/components/psst/core/common:mojom_js",
     "//brave/components/resources:strings",
   ]
 

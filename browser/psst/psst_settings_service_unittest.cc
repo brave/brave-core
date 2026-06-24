@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/psst/core/psst_settings_service.h"
+#include "brave/components/psst/core/browser/psst_settings_service.h"
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
-#include "brave/components/psst/common/features.h"
-#include "brave/components/psst/common/psst_metadata_schema.h"
+#include "brave/components/psst/core/common/features.h"
+#include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
