@@ -116,7 +116,6 @@ public void runMenuItemEnterAnimations() {
 
 ```java
 // 💡 Note: you can still use Bytecode to replace the static method
-    changeSuperName(sManageAccountDevicesLinkView, sBraveManageAccountDevicesLinkView);
     changeMethodOwner(
             sManageAccountDevicesLinkView,
             "getSharingAccountInfo",
