@@ -166,13 +166,16 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 
 // Pref names that do not support dynamic policy refresh.
 inline constexpr std::string_view kNonDynamicPrefs[] = {
+    "",  // Sentinel ensuring the array is never zero-length.
 #if BUILDFLAG(ENABLE_AI_CHAT)
     ai_chat::prefs::kEnabledByPolicy,
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     brave_news::prefs::kBraveNewsDisabledByPolicy,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::prefs::kDisabledByPolicy,
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     brave_vpn::prefs::kManagedBraveVPNDisabled,
 #endif

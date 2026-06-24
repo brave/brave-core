@@ -19,7 +19,11 @@ PolicyPrefInterceptorList::~PolicyPrefInterceptorList() = default;
 
 void PolicyPrefInterceptorList::SetPrefs(
     base::span<const std::string_view> prefs) {
-  prefs_.assign(prefs.begin(), prefs.end());
+  for (const auto& pref : prefs) {
+    if (!pref.empty()) {
+      prefs_.push_back(pref);
+    }
+  }
 }
 
 base::span<const std::string_view> PolicyPrefInterceptorList::GetPrefs() const {
