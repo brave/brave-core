@@ -102,13 +102,13 @@ public void runMenuItemEnterAnimations() {
 }
 }
 // BraveAppMenu.java
-public class BraveAppMenu extends BraveAppMenuDummySuper
+public class BraveAppMenu extends BraveAppMenuDummySuper {
 
 @Override
 public void runMenuItemEnterAnimations() {
     // We do nothing here as we don't want any fancy animation for the menu.
 }
-
+}
 // BraveAppMenuClassAdapter.java
     changeSuperName(sBraveAppMenuClassName, sAppMenuClassName);
     makePublicMethod(sAppMenuClassName, "runMenuItemEnterAnimations");
