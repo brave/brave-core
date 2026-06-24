@@ -49,6 +49,15 @@
     *** setContentSetting(...);
 }
 
+-keep class org.chromium.chrome.browser.autofill.options.AutofillOptionsFragment {
+    *** createRequiredArgs(...);
+    *** onCreate(...);
+}
+
+-keep class org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsFragmentBase {
+    *** onCreate(...);
+}
+
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 
 -keep class org.chromium.chrome.browser.tabmodel.TabCollectionTabModelImpl {
