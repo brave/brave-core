@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import fs from 'node:fs'
+import { glob } from 'node:fs/promises'
 import path from 'node:path'
 import config from '../lib/config.ts'
 import updatePatches from '../lib/updatePatches.js'
@@ -54,7 +55,37 @@ const chromiumPathFilter = loadChromiumPathFilter(
   path.join(config.braveCoreDir, 'build', 'update_patches_exclusions.cfg'),
 )
 
-export default function RunCommand(filePaths, options) {
+// Extension of plaster files under `rewrite/`. Keep in sync with
+// `PLASTER_EXTENSION` in tools/cr/plaster.py.
+const plasterExtension = '.yaml'
+
+// A file that when present indicates that we are doing a lift with brockit.
+const versionUpgradeFile = '.version_upgrade'
+
+// Builds a predicate that tells whether a Chromium source path's patch is owned
+// by a plaster file. A plaster file at `rewrite/<source>.yaml` is responsible
+// for generating the patch for `<source>`, so `update_patches` must not
+// regenerate it.
+async function loadPlasterPathFilter(rewriteDir) {
+  const managedSources = new Set()
+
+  // The second pattern matches plaster files whose name starts with a dot (e.g.
+  // `chrome/updater/mac/.install.sh.yaml`); glob's `*` skips leading dots.
+  const patterns = [`**/*${plasterExtension}`, `**/.*${plasterExtension}`]
+  for await (const file of glob(patterns, { cwd: rewriteDir })) {
+    // `<source>.yaml` -> `<source>`, normalized to posix separators so it
+    // matches the paths reported by git.
+    const source = file
+      .split(path.sep)
+      .join('/')
+      .slice(0, -plasterExtension.length)
+    managedSources.add(source)
+  }
+
+  return (s) => managedSources.has(s)
+}
+
+export default async function RunCommand(filePaths, options) {
   config.update(options)
 
   const chromiumDir = config.srcDir
@@ -90,9 +121,41 @@ export default function RunCommand(filePaths, options) {
   )
   const ffmpegPatchDir = path.join(patchDir, 'third_party', 'ffmpeg')
 
+  // Plaster only applies to sources in Chromium's `src` repo, so the filter is
+  // passed to the chromium update only.
+  //
+  // The filter is skipped when a brockit lift is in progress, or when
+  // `--no-plaster-check` is passed, as in both cases we want update_patches to
+  // regenerate plaster-managed patches like any other patch.
+  const duringBrockitLift = fs.existsSync(
+    path.join(config.braveCoreDir, versionUpgradeFile),
+  )
+  const noPlasterCheckFlag = options.plasterCheck === false
+
+  // Warn when the check is disabled implicitly by a detected brockit lift, as
+  // opposed to the user explicitly asking for it via `--no-plaster-check`.
+  if (duringBrockitLift && !noPlasterCheckFlag) {
+    console.warn(
+      `Warning: a brockit lift is in progress (${versionUpgradeFile} present). `
+        + 'Enabling `--no-plaster-check` to prevent plaster checks.',
+    )
+  }
+
+  const skipPlasterCheck = duringBrockitLift || noPlasterCheckFlag
+  const plasterPathFilter = skipPlasterCheck
+    ? undefined
+    : await loadPlasterPathFilter(path.join(config.braveCoreDir, 'rewrite'))
+
   Promise.all([
     // chromium
-    updatePatches(chromiumDir, patchDir, filePaths, chromiumPathFilter),
+    updatePatches(
+      chromiumDir,
+      patchDir,
+      filePaths,
+      chromiumPathFilter,
+      [],
+      plasterPathFilter,
+    ),
     // v8
     updatePatches(v8Dir, v8PatchDir, filePaths),
     // third_party/catapult
@@ -104,11 +167,23 @@ export default function RunCommand(filePaths, options) {
     // third_party/ffmpeg
     updatePatches(ffmpegDir, ffmpegPatchDir, filePaths),
   ])
-    .then(() => {
+    .then((results) => {
+      const outdatedPlasterPaths = results.flat().filter(Boolean)
+      if (outdatedPlasterPaths.length) {
+        console.error('\nPlaster patches that could not be updated:')
+        for (const source of outdatedPlasterPaths) {
+          console.error(
+            `  - ${source} (managed by rewrite/${source}${plasterExtension})`,
+          )
+        }
+        console.error("\nRun 'tools/cr/plaster.py apply' to regenerate them.")
+        process.exitCode = 1
+      }
       console.log('Done.')
     })
     .catch((err) => {
       console.error('Error updating patch files:')
       console.error(err)
+      process.exitCode = 1
     })
 }
