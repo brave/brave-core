@@ -117,6 +117,7 @@ class ContainersBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
+    SetContainersEnabled(true, browser()->profile()->GetPrefs());
   }
 
   // JavaScript helper to set a cookie
