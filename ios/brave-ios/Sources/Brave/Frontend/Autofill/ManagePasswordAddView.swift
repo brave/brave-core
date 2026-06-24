@@ -50,7 +50,7 @@ struct ManagePasswordAddView: View {
         password: $password,
         isPasswordRevealed: $isPasswordRevealed,
         focusedField: $focusedField,
-        isSiteDisabled: isSitePrefilled
+        isSiteDisabled: false
       )
     }
     .navigationTitle(Strings.Autofill.managePasswordDetailAddCredentialTitle)
