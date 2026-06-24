@@ -58,7 +58,7 @@ pub fn use_set_tag_for_testing(enable: bool) {
 
 #[macro_export]
 macro_rules! impl_result {
-    ($t:ident, $r:ident, $f:ident) => {
+    ($t:ident, $r:ident) => {
         impl $r {
             fn error_message(self: &$r) -> String {
                 match &self.0 {
@@ -75,15 +75,6 @@ macro_rules! impl_result {
                 match std::mem::replace(&mut self.0, Err(Error::AlreadyUnwrapped)) {
                     Ok(v) => Box::new(v),
                     Err(e) => panic!("{}", e.to_string()),
-                }
-            }
-        }
-
-        impl From<Result<$f, Error>> for $r {
-            fn from(result: Result<$f, Error>) -> Self {
-                match result {
-                    Ok(v) => Self(Ok($t(v))),
-                    Err(e) => Self(Err(e)),
                 }
             }
         }
@@ -275,43 +266,35 @@ impl fmt::Display for Error {
     }
 }
 
-struct CxxEncodedCardanoTransactionValue {
-    tx_bytes: Vec<u8>,
-}
-
-struct CxxEncodedCardanoCoinValueValue {
+pub struct CxxEncodedCardanoCoinValue {
     value_bytes: Vec<u8>,
 }
 
-struct CxxDecodedCardanoCoinValueValue {
+pub struct CxxDecodedCardanoCoinValue {
     value: CxxSerializableCoinValue,
 }
 
-struct CxxEncodedCardanoTransactionOutputValue {
+pub struct CxxEncodedCardanoTransaction {
+    tx_bytes: Vec<u8>,
+}
+
+pub struct CxxEncodedCardanoTransactionOutput {
     output_bytes: Vec<u8>,
 }
 
-struct CxxEncodedCardanoUtxoValue {
+pub struct CxxEncodedCardanoUtxo {
     utxo_bytes: Vec<u8>,
 }
 
-struct CxxDecodedCardanoTransactionValue {
+pub struct CxxDecodedCardanoTransaction {
     tx: CxxSerializableTx,
     raw_body: Vec<u8>,
     raw_tx: Vec<u8>,
 }
 
-struct CxxSignedCardanoTransactionValue {
+pub struct CxxSignedCardanoTransaction {
     signed_bytes: Vec<u8>,
 }
-
-pub struct CxxEncodedCardanoCoinValue(CxxEncodedCardanoCoinValueValue);
-pub struct CxxDecodedCardanoCoinValue(CxxDecodedCardanoCoinValueValue);
-pub struct CxxEncodedCardanoTransaction(CxxEncodedCardanoTransactionValue);
-pub struct CxxEncodedCardanoTransactionOutput(CxxEncodedCardanoTransactionOutputValue);
-pub struct CxxEncodedCardanoUtxo(CxxEncodedCardanoUtxoValue);
-pub struct CxxDecodedCardanoTransaction(CxxDecodedCardanoTransactionValue);
-pub struct CxxSignedCardanoTransaction(CxxSignedCardanoTransactionValue);
 
 pub struct CxxEncodedCardanoTransactionResult(Result<CxxEncodedCardanoTransaction, Error>);
 pub struct CxxEncodedCardanoCoinValueResult(Result<CxxEncodedCardanoCoinValue, Error>);
@@ -323,52 +306,26 @@ pub struct CxxEncodedCardanoUtxoResult(Result<CxxEncodedCardanoUtxo, Error>);
 pub struct CxxDecodedCardanoTransactionResult(Result<CxxDecodedCardanoTransaction, Error>);
 pub struct CxxSignedCardanoTransactionResult(Result<CxxSignedCardanoTransaction, Error>);
 
-impl_result!(
-    CxxEncodedCardanoTransaction,
-    CxxEncodedCardanoTransactionResult,
-    CxxEncodedCardanoTransactionValue
-);
-
-impl_result!(
-    CxxEncodedCardanoCoinValue,
-    CxxEncodedCardanoCoinValueResult,
-    CxxEncodedCardanoCoinValueValue
-);
-impl_result!(
-    CxxDecodedCardanoCoinValue,
-    CxxDecodedCardanoCoinValueResult,
-    CxxDecodedCardanoCoinValueValue
-);
-
+impl_result!(CxxEncodedCardanoTransaction, CxxEncodedCardanoTransactionResult);
+impl_result!(CxxEncodedCardanoCoinValue, CxxEncodedCardanoCoinValueResult);
+impl_result!(CxxDecodedCardanoCoinValue, CxxDecodedCardanoCoinValueResult);
 impl_result!(
     CxxEncodedCardanoTransactionOutput,
-    CxxEncodedCardanoTransactionOutputResult,
-    CxxEncodedCardanoTransactionOutputValue
+    CxxEncodedCardanoTransactionOutputResult
 );
-
-impl_result!(CxxEncodedCardanoUtxo, CxxEncodedCardanoUtxoResult, CxxEncodedCardanoUtxoValue);
-
-impl_result!(
-    CxxDecodedCardanoTransaction,
-    CxxDecodedCardanoTransactionResult,
-    CxxDecodedCardanoTransactionValue
-);
-
-impl_result!(
-    CxxSignedCardanoTransaction,
-    CxxSignedCardanoTransactionResult,
-    CxxSignedCardanoTransactionValue
-);
+impl_result!(CxxEncodedCardanoUtxo, CxxEncodedCardanoUtxoResult);
+impl_result!(CxxDecodedCardanoTransaction, CxxDecodedCardanoTransactionResult);
+impl_result!(CxxSignedCardanoTransaction, CxxSignedCardanoTransactionResult);
 
 impl CxxEncodedCardanoTransaction {
     fn bytes(self: &CxxEncodedCardanoTransaction) -> Vec<u8> {
-        self.0.tx_bytes.clone()
+        self.tx_bytes.clone()
     }
 }
 
 fn encode_cardano_transaction_impl(
     tx: &CxxSerializableTx,
-) -> Result<CxxEncodedCardanoTransactionValue, Error> {
+) -> Result<CxxEncodedCardanoTransaction, Error> {
     let mut arr: Vec<CborValue> = vec![];
 
     arr.push(encode_tx_body(&tx.body));
@@ -380,102 +337,102 @@ fn encode_cardano_transaction_impl(
     ciborium::ser::into_writer(&CborValue::Array(arr), &mut tx_bytes)
         .map_err(|_| Error::SerializationError)?;
 
-    Ok(CxxEncodedCardanoTransactionValue { tx_bytes })
+    Ok(CxxEncodedCardanoTransaction { tx_bytes })
 }
 
 pub fn encode_cardano_transaction(
     tx: &CxxSerializableTx,
 ) -> Box<CxxEncodedCardanoTransactionResult> {
-    Box::new(CxxEncodedCardanoTransactionResult::from(encode_cardano_transaction_impl(tx)))
+    Box::new(CxxEncodedCardanoTransactionResult(encode_cardano_transaction_impl(tx)))
 }
 
 impl CxxEncodedCardanoCoinValue {
     fn bytes(self: &CxxEncodedCardanoCoinValue) -> Vec<u8> {
-        self.0.value_bytes.clone()
+        self.value_bytes.clone()
     }
 }
 
 fn encode_cardano_coin_value_impl(
     value: &CxxSerializableCoinValue,
-) -> Result<CxxEncodedCardanoCoinValueValue, Error> {
+) -> Result<CxxEncodedCardanoCoinValue, Error> {
     let mut value_bytes = Vec::new();
     ciborium::ser::into_writer(&encode_coin_value(value), &mut value_bytes)
         .map_err(|_| Error::SerializationError)?;
 
-    Ok(CxxEncodedCardanoCoinValueValue { value_bytes })
+    Ok(CxxEncodedCardanoCoinValue { value_bytes })
 }
 
 pub fn encode_cardano_coin_value(
     value: &CxxSerializableCoinValue,
 ) -> Box<CxxEncodedCardanoCoinValueResult> {
-    Box::new(CxxEncodedCardanoCoinValueResult::from(encode_cardano_coin_value_impl(value)))
+    Box::new(CxxEncodedCardanoCoinValueResult(encode_cardano_coin_value_impl(value)))
 }
 
 impl CxxDecodedCardanoCoinValue {
     fn value(self: &CxxDecodedCardanoCoinValue) -> CxxSerializableCoinValue {
-        self.0.value.clone()
+        self.value.clone()
     }
 }
 
 fn decode_cardano_coin_value_impl(
     value_bytes: &[u8],
-) -> Result<CxxDecodedCardanoCoinValueValue, Error> {
+) -> Result<CxxDecodedCardanoCoinValue, Error> {
     let cbor_value: CborValue = from_reader(value_bytes).map_err(|_| Error::CborDecodeError)?;
     let value = decode_coin_value(&cbor_value)?;
-    Ok(CxxDecodedCardanoCoinValueValue { value })
+    Ok(CxxDecodedCardanoCoinValue { value })
 }
 
 pub fn decode_cardano_coin_value(value_bytes: &[u8]) -> Box<CxxDecodedCardanoCoinValueResult> {
-    Box::new(CxxDecodedCardanoCoinValueResult::from(decode_cardano_coin_value_impl(value_bytes)))
+    Box::new(CxxDecodedCardanoCoinValueResult(decode_cardano_coin_value_impl(value_bytes)))
 }
 
 impl CxxEncodedCardanoTransactionOutput {
     fn bytes(self: &CxxEncodedCardanoTransactionOutput) -> Vec<u8> {
-        self.0.output_bytes.clone()
+        self.output_bytes.clone()
     }
 }
 
 fn encode_cardano_transaction_output_impl(
     output: &CxxSerializableTxOutput,
-) -> Result<CxxEncodedCardanoTransactionOutputValue, Error> {
+) -> Result<CxxEncodedCardanoTransactionOutput, Error> {
     let mut output_bytes = Vec::new();
     ciborium::ser::into_writer(&encode_tx_output(output), &mut output_bytes)
         .map_err(|_| Error::SerializationError)?;
 
-    Ok(CxxEncodedCardanoTransactionOutputValue { output_bytes })
+    Ok(CxxEncodedCardanoTransactionOutput { output_bytes })
 }
 
 pub fn encode_cardano_transaction_output(
     output: &CxxSerializableTxOutput,
 ) -> Box<CxxEncodedCardanoTransactionOutputResult> {
-    Box::new(CxxEncodedCardanoTransactionOutputResult::from(
+    Box::new(CxxEncodedCardanoTransactionOutputResult(
         encode_cardano_transaction_output_impl(output),
     ))
 }
 
 impl CxxEncodedCardanoUtxo {
     fn bytes(self: &CxxEncodedCardanoUtxo) -> Vec<u8> {
-        self.0.utxo_bytes.clone()
+        self.utxo_bytes.clone()
     }
 }
 
 fn encode_cardano_utxo_impl(
     input: &CxxSerializableTxInput,
     output: &CxxSerializableTxOutput,
-) -> Result<CxxEncodedCardanoUtxoValue, Error> {
+) -> Result<CxxEncodedCardanoUtxo, Error> {
     let utxo = CborValue::Array(vec![encode_tx_input(input), encode_tx_output(output)]);
 
     let mut utxo_bytes = Vec::new();
     ciborium::ser::into_writer(&utxo, &mut utxo_bytes).map_err(|_| Error::SerializationError)?;
 
-    Ok(CxxEncodedCardanoUtxoValue { utxo_bytes })
+    Ok(CxxEncodedCardanoUtxo { utxo_bytes })
 }
 
 pub fn encode_cardano_utxo(
     input: &CxxSerializableTxInput,
     output: &CxxSerializableTxOutput,
 ) -> Box<CxxEncodedCardanoUtxoResult> {
-    Box::new(CxxEncodedCardanoUtxoResult::from(encode_cardano_utxo_impl(input, output)))
+    Box::new(CxxEncodedCardanoUtxoResult(encode_cardano_utxo_impl(input, output)))
 }
 
 fn encode_tx_input(input: &CxxSerializableTxInput) -> CborValue {
@@ -852,38 +809,36 @@ fn find_map_value(map: &[(CborValue, CborValue)], key: u8) -> Result<Option<&Cbo
 }
 
 pub fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult> {
-    Box::new(CxxDecodedCardanoTransactionResult::from(decode_cardano_transaction_impl(bytes)))
+    Box::new(CxxDecodedCardanoTransactionResult(decode_cardano_transaction_impl(bytes)))
 }
 
 fn decode_cardano_transaction_impl(
     bytes: &[u8],
-) -> Result<CxxDecodedCardanoTransactionValue, Error> {
+) -> Result<CxxDecodedCardanoTransaction, Error> {
     let cbor_value: CborValue = from_reader(bytes).map_err(|_| Error::CborDecodeError)?;
 
     let (body, raw_body) = extract_cardano_body(&cbor_value)?;
 
     let witness = extract_witness(&cbor_value)?;
 
-    Ok({
-        CxxDecodedCardanoTransactionValue {
-            tx: CxxSerializableTx { body, witness },
-            raw_body,
-            raw_tx: bytes.to_vec(),
-        }
+    Ok(CxxDecodedCardanoTransaction {
+        tx: CxxSerializableTx { body, witness },
+        raw_body,
+        raw_tx: bytes.to_vec(),
     })
 }
 
 impl CxxDecodedCardanoTransaction {
     fn tx(self: &CxxDecodedCardanoTransaction) -> CxxSerializableTx {
-        self.0.tx.clone()
+        self.tx.clone()
     }
 
     fn raw_body(self: &CxxDecodedCardanoTransaction) -> Vec<u8> {
-        self.0.raw_body.clone()
+        self.raw_body.clone()
     }
 
     fn raw_tx(self: &CxxDecodedCardanoTransaction) -> Vec<u8> {
-        self.0.raw_tx.clone()
+        self.raw_tx.clone()
     }
 }
 
@@ -891,7 +846,7 @@ pub fn apply_signatures(
     bytes: &[u8],
     witnesses: CxxSerializableTxWitness,
 ) -> Box<CxxSignedCardanoTransactionResult> {
-    Box::new(CxxSignedCardanoTransactionResult::from(apply_signatures_impl(bytes, witnesses)))
+    Box::new(CxxSignedCardanoTransactionResult(apply_signatures_impl(bytes, witnesses)))
 }
 
 /// Applies signatures to an unsigned Cardano transaction
@@ -902,7 +857,7 @@ pub fn apply_signatures(
 fn apply_signatures_impl(
     bytes: &[u8],
     witnesses: CxxSerializableTxWitness,
-) -> Result<CxxSignedCardanoTransactionValue, Error> {
+) -> Result<CxxSignedCardanoTransaction, Error> {
     let mut cbor_value: CborValue = from_reader(bytes).map_err(|_| Error::CborDecodeError)?;
 
     let transaction_array = match &mut cbor_value {
@@ -964,11 +919,11 @@ fn apply_signatures_impl(
     ciborium::ser::into_writer(&cbor_value, &mut signed_bytes)
         .map_err(|_| Error::SerializationError)?;
 
-    Ok(CxxSignedCardanoTransactionValue { signed_bytes })
+    Ok(CxxSignedCardanoTransaction { signed_bytes })
 }
 
 impl CxxSignedCardanoTransaction {
     fn bytes(self: &CxxSignedCardanoTransaction) -> Vec<u8> {
-        self.0.signed_bytes.clone()
+        self.signed_bytes.clone()
     }
 }
