@@ -16,6 +16,7 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'brave_safebrowsing_api_key',
   'brave_services_dev_domain',
   'brave_services_key_id',
+  'brave_services_key',
   'brave_services_production_domain',
   'brave_services_staging_domain',
   'brave_stats_api_key',
