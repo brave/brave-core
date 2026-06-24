@@ -147,7 +147,7 @@ struct ManagePasswordsView: View {
       if !isPrivacyOverlayActive {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            addPasswordPresentation = ManagePasswordAddPresentation(prefilledSite: "")
+            addPasswordPresentation = ManagePasswordAddPresentation()
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
           }

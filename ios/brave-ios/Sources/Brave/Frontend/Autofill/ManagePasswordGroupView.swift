@@ -66,7 +66,7 @@ struct ManagePasswordGroupView: View {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
             addPasswordPresentation = ManagePasswordAddPresentation(
-              prefilledSite: passwords.first?.site ?? URL(string: domain)?.absoluteString ?? ""
+              prefilledSite: passwords.first?.site
             )
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")

@@ -9,7 +9,11 @@ import SwiftUI
 /// Drives add password sheet presentation so each presentation carries its own prefilled site.
 struct ManagePasswordAddPresentation: Identifiable {
   let id = UUID()
-  let prefilledSite: String
+  let prefilledSite: String?
+
+  init(prefilledSite: String? = nil) {
+    self.prefilledSite = prefilledSite
+  }
 }
 
 struct ManagePasswordAddView: View {
@@ -23,17 +27,17 @@ struct ManagePasswordAddView: View {
   @State private var password = ""
 
   let viewModel: ManagePasswordsViewModel
-  let prefilledSite: String
+  let prefilledSite: String?
 
   private var isSitePrefilled: Bool {
-    !prefilledSite.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    prefilledSite != nil
   }
 
   private var isValid: Bool {
     viewModel.isValidCredential(username: username, password: password, site: site)
   }
 
-  init(viewModel: ManagePasswordsViewModel, prefilledSite: String = "") {
+  init(viewModel: ManagePasswordsViewModel, prefilledSite: String? = nil) {
     self.viewModel = viewModel
     self.prefilledSite = prefilledSite
   }
@@ -76,7 +80,7 @@ struct ManagePasswordAddView: View {
       }
     }
     .task(id: prefilledSite) {
-      site = prefilledSite
+      site = prefilledSite ?? ""
       // SwiftUI's `Form` doesn't reliably accept focus the instant a screen presents — the
       // keyboard can be suppressed if `focusedField` is set before the view is fully mounted
       // and laid out. A short delay lets the presentation transition settle so the field
