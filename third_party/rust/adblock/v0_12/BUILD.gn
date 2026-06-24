@@ -104,7 +104,7 @@ cargo_crate("lib") {
     features += [
       "object-pooling",
       "lifeguard",
-      "unsync-regex-caching",
+      "single-thread",
     ]
     deps += [ "//brave/third_party/rust/lifeguard/v0_6:lib" ]
   }
