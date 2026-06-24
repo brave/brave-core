@@ -258,11 +258,23 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
 }
 
 BraveSessionCache& BraveSessionCache::From(ExecutionContext& context) {
+  // Check for opener's context if available. If so, then we will rely on its
+  // context instead of the |context| to ensure we use the same farbling seed.
+  ExecutionContext* effective_context = &context;
+  if (auto* local_dom_window = DynamicTo<blink::LocalDOMWindow>(context)) {
+    blink::DOMWindow* opener = local_dom_window->opener();
+    if (opener) {
+      if (ExecutionContext* opener_context = opener->GetExecutionContext()) {
+        effective_context = opener_context;
+      }
+    }
+  }
+
   BraveSessionCache* cache =
-      Supplement<ExecutionContext>::From<BraveSessionCache>(context);
+      Supplement<ExecutionContext>::From<BraveSessionCache>(*effective_context);
   if (!cache) {
-    cache = MakeGarbageCollected<BraveSessionCache>(context);
-    ProvideTo(context, cache);
+    cache = MakeGarbageCollected<BraveSessionCache>(*effective_context);
+    ProvideTo(*effective_context, cache);
   }
   return *cache;
 }
