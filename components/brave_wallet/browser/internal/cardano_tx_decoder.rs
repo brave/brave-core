@@ -60,13 +60,6 @@ pub fn use_set_tag_for_testing(enable: bool) {
 macro_rules! impl_result {
     ($t:ident, $r:ident) => {
         impl $r {
-            fn error_message(self: &$r) -> String {
-                match &self.0 {
-                    Err(e) => e.to_string(),
-                    Ok(_) => String::new(),
-                }
-            }
-
             fn is_ok(self: &$r) -> bool {
                 self.0.is_ok()
             }
@@ -186,36 +179,30 @@ mod ffi {
         ) -> Box<CxxSignedCardanoTransactionResult>;
 
         fn is_ok(self: &CxxEncodedCardanoTransactionResult) -> bool;
-        fn error_message(self: &CxxEncodedCardanoTransactionResult) -> String;
         fn unwrap(
             self: &mut CxxEncodedCardanoTransactionResult,
         ) -> Box<CxxEncodedCardanoTransaction>;
         fn bytes(self: &CxxEncodedCardanoTransaction) -> Vec<u8>;
 
         fn is_ok(self: &CxxEncodedCardanoCoinValueResult) -> bool;
-        fn error_message(self: &CxxEncodedCardanoCoinValueResult) -> String;
         fn unwrap(self: &mut CxxEncodedCardanoCoinValueResult) -> Box<CxxEncodedCardanoCoinValue>;
         fn bytes(self: &CxxEncodedCardanoCoinValue) -> Vec<u8>;
 
         fn is_ok(self: &CxxDecodedCardanoCoinValueResult) -> bool;
-        fn error_message(self: &CxxDecodedCardanoCoinValueResult) -> String;
         fn unwrap(self: &mut CxxDecodedCardanoCoinValueResult) -> Box<CxxDecodedCardanoCoinValue>;
         fn value(self: &CxxDecodedCardanoCoinValue) -> CxxSerializableCoinValue;
 
         fn is_ok(self: &CxxEncodedCardanoTransactionOutputResult) -> bool;
-        fn error_message(self: &CxxEncodedCardanoTransactionOutputResult) -> String;
         fn unwrap(
             self: &mut CxxEncodedCardanoTransactionOutputResult,
         ) -> Box<CxxEncodedCardanoTransactionOutput>;
         fn bytes(self: &CxxEncodedCardanoTransactionOutput) -> Vec<u8>;
 
         fn is_ok(self: &CxxEncodedCardanoUtxoResult) -> bool;
-        fn error_message(self: &CxxEncodedCardanoUtxoResult) -> String;
         fn unwrap(self: &mut CxxEncodedCardanoUtxoResult) -> Box<CxxEncodedCardanoUtxo>;
         fn bytes(self: &CxxEncodedCardanoUtxo) -> Vec<u8>;
 
         fn is_ok(self: &CxxDecodedCardanoTransactionResult) -> bool;
-        fn error_message(self: &CxxDecodedCardanoTransactionResult) -> String;
         fn unwrap(
             self: &mut CxxDecodedCardanoTransactionResult,
         ) -> Box<CxxDecodedCardanoTransaction>;
@@ -224,7 +211,6 @@ mod ffi {
         fn raw_tx(self: &CxxDecodedCardanoTransaction) -> Vec<u8>;
 
         fn is_ok(self: &CxxSignedCardanoTransactionResult) -> bool;
-        fn error_message(self: &CxxSignedCardanoTransactionResult) -> String;
         fn unwrap(self: &mut CxxSignedCardanoTransactionResult)
             -> Box<CxxSignedCardanoTransaction>;
         fn bytes(self: &CxxSignedCardanoTransaction) -> Vec<u8>;
