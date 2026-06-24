@@ -655,20 +655,23 @@ void RenderViewContextMenu::BuildContainersMenu() {
     return;
   }
 
-  std::optional<size_t> first_separator_index;
-  for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
-    if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
-      first_separator_index = i;
-      break;
+  std::optional<size_t> insert_position =
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW);
+  if (!insert_position.has_value()) {
+    for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
+      if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+        insert_position = i;
+        break;
+      }
     }
   }
 
   containers_submenu_model_ =
       std::make_unique<containers::ContainersMenuModel>(*this, *service);
 
-  if (first_separator_index.has_value()) {
+  if (insert_position.has_value()) {
     menu_model_.InsertSubMenuWithStringIdAt(
-        *first_separator_index, IDC_OPEN_IN_CONTAINER,
+        *insert_position, IDC_OPEN_IN_CONTAINER,
         IDS_CXMENU_OPEN_LINK_IN_CONTAINER, containers_submenu_model_.get());
   } else {
     menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
