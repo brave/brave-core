@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_ANDROID_YOUTUBE_SCRIPT_INJECTOR_YOUTUBE_SCRIPT_INJECTOR_TAB_HELPER_H_
 
 #include "base/memory/weak_ptr.h"
-#include "base/supports_user_data.h"
 #include "base/values.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/render_frame_host.h"
@@ -27,36 +26,40 @@ class YouTubeScriptInjectorTabHelper
   ~YouTubeScriptInjectorTabHelper() override;
   bool IsYouTubeDomain(bool mobileOnly = false) const;
   bool IsYouTubeVideo(bool mobileOnly = false) const;
-  void MaybeSetFullscreen();
 
-  // Fullscreen state management using PageUserData
-  bool HasFullscreenBeenRequested() const;
-  void SetFullscreenRequested(bool requested);
+  // Entry point for the PiP button: injects the fullscreen script and, on the
+  // back of the resulting fullscreen transition, enters Picture-in-Picture.
+  void MaybeSetFullScreenAndPictureInPictureMode();
 
   // Check if Picture-in-Picture is available for the current page.
   bool IsPictureInPictureAvailable() const;
 
   // content::WebContentsObserver overrides:
   void PrimaryPageChanged(content::Page& page) override;
+  void RenderFrameHostChanged(content::RenderFrameHost* old_host,
+                              content::RenderFrameHost* new_host) override;
   void RenderFrameDeleted(content::RenderFrameHost* rfh) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void PrimaryMainDocumentElementAvailable() override;
   void MediaEffectivelyFullscreenChanged(bool is_fullscreen) override;
+  void MediaPictureInPictureChanged(bool is_picture_in_picture) override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
  private:
   // Callback for when the fullscreen script completes.
-  void OnFullscreenScriptComplete(content::GlobalRenderFrameHostToken token,
-                                  base::Value value);
+  void OnFullscreenScriptComplete(base::Value value);
+
+  // Enters Picture-in-Picture for the page currently showing if a request is
+  // still armed for it, consuming the request.
+  void MaybeEnterPictureInPicture();
 
   void EnsureBound(content::RenderFrameHost* rfh);
 
   // The remote used to send the fullscreen script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
-  content::GlobalRenderFrameHostId bound_rfh_id_;
 
   base::WeakPtrFactory<YouTubeScriptInjectorTabHelper> weak_factory_{this};
 };

@@ -15,7 +15,6 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/content/public/browser/fullscreen_page_data.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
@@ -202,6 +201,35 @@ bool IsAndroidPictureInPictureSupported() {
          base::android::android_info::SDK_VERSION_R;
 }
 
+// Only the address of this key identifies the user data; the string value is
+// incidental and never read. This follows the Chromium SupportsUserData key
+// idiom, e.g. kBackgroundSyncUserDataKey in
+// content/browser/background_sync/background_sync_manager.cc.
+const char kPictureInPictureRequestKey[] = "PictureInPictureRequest";
+
+// Marks a NavigationEntry as having a pending Picture-in-Picture request. The
+// state is attached to the NavigationEntry rather than the tab helper so its
+// lifetime matches the page the user acted on: same document navigations,
+// back/forward and reloads each carry their own entry, so a request can never
+// leak onto a different page. This is what keeps fullscreen and
+// Picture-in-Picture in lockstep across the async gap between injecting the
+// script and the media actually going fullscreen.
+// Callers pass the last committed NavigationEntry, which is contractually
+// non-null in WebContentsObserver callbacks once the FrameTree is initialized.
+void SetPictureInPictureRequested(content::NavigationEntry& entry,
+                                  bool requested) {
+  if (requested) {
+    entry.SetUserData(kPictureInPictureRequestKey,
+                      std::make_unique<base::SupportsUserData::Data>());
+  } else {
+    entry.RemoveUserData(kPictureInPictureRequestKey);
+  }
+}
+
+bool IsPictureInPictureRequested(content::NavigationEntry& entry) {
+  return entry.GetUserData(kPictureInPictureRequestKey);
+}
+
 }  // namespace
 
 YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
@@ -213,31 +241,40 @@ YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
 void YouTubeScriptInjectorTabHelper::PrimaryPageChanged(content::Page& page) {
   script_injector_remote_.reset();
-  bound_rfh_id_ = {};
-  SetFullscreenRequested(false);
+}
+
+void YouTubeScriptInjectorTabHelper::RenderFrameHostChanged(
+    content::RenderFrameHost* old_host,
+    content::RenderFrameHost*) {
+  if (old_host && old_host->IsInPrimaryMainFrame()) {
+    script_injector_remote_.reset();
+  }
 }
 
 void YouTubeScriptInjectorTabHelper::RenderFrameDeleted(
     content::RenderFrameHost* rfh) {
-  if (rfh->GetGlobalId() == bound_rfh_id_) {
+  if (rfh->IsInPrimaryMainFrame()) {
     script_injector_remote_.reset();
-    bound_rfh_id_ = {};
-    SetFullscreenRequested(false);
   }
 }
 
 void YouTubeScriptInjectorTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsSameDocument() &&
-      navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted()) {
-    SetFullscreenRequested(false);
+  if (navigation_handle->IsInPrimaryMainFrame() &&
+      navigation_handle->HasCommitted()) {
+    // A new entry committed in the main frame (cross document or same
+    // document). Drop the pipe bound to the previous document and clear any
+    // pending request up front, so a back/forward or same document navigation
+    // never re-enters Picture-in-Picture for a request that belonged to a
+    // different page.
+    script_injector_remote_.reset();
+    SetPictureInPictureRequested(
+        *web_contents()->GetController().GetLastCommittedEntry(), false);
   }
 }
 
 void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
-  SetFullscreenRequested(false);
   content::WebContents* contents = web_contents();
-  // Filter only YouTube videos.
   if (!IsYouTubeDomain()) {
     return;
   }
@@ -254,26 +291,24 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   }
 }
 
-void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
-    bool is_fullscreen) {
-  if (is_fullscreen && HasFullscreenBeenRequested()) {
-    SetFullscreenRequested(false);
-    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
-        IsAndroidPictureInPictureSupported()) {
-      ::youtube_script_injector::EnterPictureInPicture(web_contents());
-    }
-  }
-}
-
-void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
+void YouTubeScriptInjectorTabHelper::
+    MaybeSetFullScreenAndPictureInPictureMode() {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  // Check if fullscreen has already been requested for this page.
-  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested()) {
+  if (!rfh || !rfh->IsRenderFrameLive()) {
     return;
   }
 
-  // Mark fullscreen as requested for this page
-  SetFullscreenRequested(true);
+  // Arm the request against the page the user is looking at, then ask the
+  // renderer to go fullscreen. MediaEffectivelyFullscreenChanged() reads this
+  // back to decide whether to follow up with Picture-in-Picture.
+  //
+  // We deliberately do not block a repeated injection on an already armed
+  // request: the injected script is idempotent (it does nothing and resolves
+  // 'already_fullscreen' when the page is already fullscreen), so tapping again
+  // is safe, and not gating keeps the button working even if a prior request
+  // was left armed by an edge case we cannot observe here.
+  SetPictureInPictureRequested(
+      *web_contents()->GetController().GetLastCommittedEntry(), true);
   EnsureBound(rfh);
   script_injector_remote_->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeFullscreen,
@@ -281,7 +316,7 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
       blink::mojom::PromiseResultOption::kAwait,
       base::BindOnce(
           &YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete,
-          weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
+          weak_factory_.GetWeakPtr()));
 }
 
 bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
@@ -344,50 +379,72 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
   return !video_id.empty();
 }
 
-bool YouTubeScriptInjectorTabHelper::HasFullscreenBeenRequested() const {
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  if (!entry) {
-    return false;
-  }
-
-  auto* data = static_cast<content::FullscreenPageData*>(
-      entry->GetUserData(content::kFullscreenPageDataKey));
-  return data && data->fullscreen_requested();
-}
-
-void YouTubeScriptInjectorTabHelper::SetFullscreenRequested(bool requested) {
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  if (!entry) {
-    return;
-  }
-
-  auto* data = static_cast<content::FullscreenPageData*>(
-      entry->GetUserData(content::kFullscreenPageDataKey));
-  if (data) {
-    data->set_fullscreen_requested(requested);
-  } else {
-    entry->SetUserData(
-        content::kFullscreenPageDataKey,
-        std::make_unique<content::FullscreenPageData>(requested));
-  }
-}
-
 void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
-    content::GlobalRenderFrameHostToken token,
     base::Value value) {
-  // If the tab is visible, the script result indicates fullscreen was
-  // triggered, and the callback is for the current main frame, return early
-  // without resetting the fullscreen state. This prevents unnecessary state
-  // changes when fullscreen was successfully entered.
-  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
-      value.is_string() && value.GetString() == "fullscreen_triggered" &&
-      token == web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()) {
+  const std::string* result = value.GetIfString();
+  if (result && *result == "fullscreen_triggered") {
+    // Fullscreen is on its way; MediaEffectivelyFullscreenChanged() will pick
+    // up the request and enter Picture-in-Picture.
+    return;
+  }
+  if (result && *result == "already_fullscreen") {
+    // The page was already fullscreen when the script ran, so there is no
+    // fullscreen transition and MediaEffectivelyFullscreenChanged() never
+    // fires. The prerequisite for PiP is already met, so enter it directly
+    // here; otherwise the armed request would fall through to the failure path
+    // below and the user would get no PiP despite the page being fullscreen.
+    MaybeEnterPictureInPicture();
+    return;
+  }
+  // The script could not put the page into fullscreen (no player, timeout,
+  // etc.), so clear the request: PiP must not be entered, and the user is free
+  // to try again on the same page.
+  SetPictureInPictureRequested(
+      *web_contents()->GetController().GetLastCommittedEntry(), false);
+}
+
+void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
+    bool is_fullscreen) {
+  if (!is_fullscreen) {
+    return;
+  }
+  // Fullscreen was reached, most likely off the back of our request. Enter PiP
+  // if a request is still armed for the page currently showing.
+  MaybeEnterPictureInPicture();
+}
+
+void YouTubeScriptInjectorTabHelper::MaybeEnterPictureInPicture() {
+  // Only act when a request is still armed for the page currently showing. If
+  // the user navigated in the meantime, the new entry carries no request and we
+  // leave it alone, keeping fullscreen and PiP consistent (both or neither).
+  content::NavigationEntry& entry =
+      *web_contents()->GetController().GetLastCommittedEntry();
+  if (!IsPictureInPictureRequested(entry)) {
     return;
   }
 
-  SetFullscreenRequested(false);
+  // Consume the request as we act on it. PiP here is a native Android activity
+  // mode, so the upstream MediaPictureInPictureChanged() signal never fires to
+  // clear it; clearing it here is what lets the button work again after
+  // returning from a PiP session.
+  SetPictureInPictureRequested(entry, false);
+
+  if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
+    ::youtube_script_injector::EnterPictureInPicture(web_contents());
+  }
+}
+
+void YouTubeScriptInjectorTabHelper::MediaPictureInPictureChanged(
+    bool is_picture_in_picture) {
+  if (!is_picture_in_picture) {
+    return;
+  }
+  // Defensive backstop for the Web Picture-in-Picture path (video element /
+  // MediaSession PiP). The YouTube button uses native Android activity PiP,
+  // which does not route through here, so MediaEffectivelyFullscreenChanged()
+  // owns clearing the request in practice.
+  SetPictureInPictureRequested(
+      *web_contents()->GetController().GetLastCommittedEntry(), false);
 }
 
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
@@ -402,15 +459,9 @@ void YouTubeScriptInjectorTabHelper::EnsureBound(
   DCHECK(rfh);
   DCHECK(rfh->IsRenderFrameLive());
 
-  if (!script_injector_remote_.is_bound() ||
-      !script_injector_remote_.is_connected() ||
-      bound_rfh_id_ != rfh->GetGlobalId()) {
-    script_injector_remote_.reset();
-    bound_rfh_id_ = rfh->GetGlobalId();
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &script_injector_remote_);
-    script_injector_remote_.reset_on_disconnect();
-  }
+  script_injector_remote_.reset();
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote_);
+  script_injector_remote_.reset_on_disconnect();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);

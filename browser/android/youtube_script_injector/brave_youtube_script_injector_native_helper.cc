@@ -6,10 +6,10 @@
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 
 #include "base/android/jni_android.h"
+#include "base/check.h"
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #include "chrome/android/chrome_jni_headers/BraveYouTubeScriptInjectorNativeHelper_jni.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace youtube_script_injector {
 
@@ -19,29 +19,15 @@ void JNI_BraveYouTubeScriptInjectorNativeHelper_SetFullscreen(
     const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
+  DCHECK(web_contents);
+
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
   if (!helper) {
     return;
   }
 
-  helper->MaybeSetFullscreen();
-}
-
-// static
-jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_HasFullscreenBeenRequested(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& jweb_contents) {
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
-  if (!helper) {
-    return false;
-  }
-
-  return helper->HasFullscreenBeenRequested();
+  helper->MaybeSetFullScreenAndPictureInPictureMode();
 }
 
 // static
@@ -50,6 +36,7 @@ jboolean JNI_BraveYouTubeScriptInjectorNativeHelper_IsPictureInPictureAvailable(
     const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
+  DCHECK(web_contents);
 
   YouTubeScriptInjectorTabHelper* helper =
       YouTubeScriptInjectorTabHelper::FromWebContents(web_contents);
