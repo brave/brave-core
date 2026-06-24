@@ -16,6 +16,7 @@
 #include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_samples.h"
@@ -55,13 +56,18 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "net/base/filename_util.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/install_default_websocket_handlers.h"
@@ -124,6 +130,15 @@ using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 namespace {
+
+#if !BUILDFLAG(IS_ANDROID)
+constexpr char kSecondaryProfileDir[] = "Profile 2";
+constexpr char kSubscriptionListForSecondaryProfileStartup[] =
+    "! Title: Test list\n"
+    "! Homepage: https://example.com/list.txt\n"
+    "! Expires: 3 days\n"
+    "||b.com^*logo.png^\n";
+#endif
 
 void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
                             const std::string& selector) {
@@ -836,6 +851,99 @@ class TestAdBlockSubscriptionServiceManagerObserver
   raw_ptr<brave_shields::AdBlockSubscriptionServiceManager>
       sub_service_manager_ = nullptr;
 };
+
+#if !BUILDFLAG(IS_ANDROID)
+class AdBlockServiceSecondaryProfileStartupTest : public AdBlockServiceTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    AdBlockServiceTest::SetUpCommandLine(command_line);
+    if (GetTestPreCount() == 0) {
+      command_line->AppendSwitchASCII(switches::kProfileDirectory,
+                                      kSecondaryProfileDir);
+    }
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSecondaryProfileStartupTest,
+                       PRE_LoadsCustomSubscriptionsWithOnlySecondaryProfile) {
+  auto* profile_manager = g_browser_process->profile_manager();
+  const base::FilePath secondary_profile_path =
+      profile_manager->user_data_dir().AppendASCII(kSecondaryProfileDir);
+  profiles::testing::CreateProfileSync(profile_manager, secondary_profile_path);
+
+  const GURL subscription_url =
+      embedded_test_server()->GetURL("lists.com", "/list.txt");
+  auto* subscription_service_manager =
+      g_brave_browser_process->ad_block_service()
+          ->subscription_service_manager();
+
+  base::FilePath list_path;
+  ASSERT_TRUE(net::FileURLToFilePath(
+      subscription_service_manager->GetListTextFileUrl(subscription_url),
+      &list_path));
+
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(base::CreateDirectory(list_path.DirName()));
+    ASSERT_TRUE(base::WriteFile(list_path,
+                                kSubscriptionListForSecondaryProfileStartup));
+  }
+
+  const base::Time now = base::Time::Now();
+  {
+    ScopedDictPrefUpdate update(
+        local_state(), brave_shields::prefs::kAdBlockListSubscriptions);
+    base::DictValue subscription_dict;
+    subscription_dict.Set("enabled", true);
+    subscription_dict.Set("last_update_attempt", base::TimeToValue(now));
+    subscription_dict.Set("last_successful_update_attempt",
+                          base::TimeToValue(now));
+    subscription_dict.Set("homepage", "https://example.com/list.txt");
+    subscription_dict.Set("title", "Test list");
+    subscription_dict.Set("expires", 3 * 24);
+    update.Get().Set(subscription_url.spec(), std::move(subscription_dict));
+  }
+
+  local_state()->CommitPendingWrite();
+  CloseAllBrowsers();
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSecondaryProfileStartupTest,
+                       LoadsCustomSubscriptionsWithOnlySecondaryProfile) {
+  auto* profile_manager = g_browser_process->profile_manager();
+  EXPECT_EQ(base::FilePath::FromASCII(kSecondaryProfileDir),
+            profile()->GetPath().BaseName());
+  EXPECT_EQ(nullptr, profile_manager->GetProfileByPath(
+                         profile_manager->user_data_dir().Append(
+                             ProfileManager::GetInitialProfileDir())));
+
+  auto* service = g_brave_browser_process->ad_block_service();
+  auto* subscription_service_manager = service->subscription_service_manager();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return subscription_service_manager->GetSubscriptions().size() == 1 &&
+           service->IsFilterListLoadedForTesting(false);
+  })) << "Timed out waiting for custom subscriptions to load";
+
+  const auto subscriptions = subscription_service_manager->GetSubscriptions();
+  ASSERT_EQ(1u, subscriptions.size());
+  EXPECT_TRUE(subscriptions[0].enabled);
+  EXPECT_EQ("lists.com", subscriptions[0].subscription_url.host());
+  EXPECT_EQ("/list.txt", subscriptions[0].subscription_url.path());
+
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
+
+  const GURL tab_url =
+      embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  const GURL resource_url =
+      embedded_test_server()->GetURL("b.com", "/logo.png");
+  NavigateToURL(tab_url);
+  EXPECT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace("setExpectations(0, 0, 0, 1);"
+                                            "xhr($1)",
+                                            resource_url.spec())));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 // Make sure a list added as a custom subscription works correctly
 // The download in this test fails intermittently with a network error code,
