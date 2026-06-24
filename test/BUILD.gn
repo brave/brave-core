@@ -1690,6 +1690,7 @@ if (is_android) {
     ]
 
     deps = [
+      "//brave/android/junit:brave_junit_tests_org.chromium.base",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.app",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.autofill",
