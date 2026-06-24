@@ -6,8 +6,11 @@
 #ifndef BRAVE_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_H_
 #define BRAVE_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_H_
 
+#include <string_view>
+
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_policy/policy_pref_interceptor_list.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -80,6 +83,10 @@
 
 namespace policy {
 
+// Note: If a policy without dynamic refresh support is being added
+//       which requires preservation of the pref value at runtime,
+//       please add it to kNonDynamicPrefs below.
+//       However, please try to support dynamic refresh if possible.
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     {policy::key::kBraveRewardsDisabled,
@@ -156,6 +163,43 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      global_privacy_control::kGlobalPrivacyControlEnabled,
      base::Value::Type::BOOLEAN},
 };
+
+// Pref names that do not support dynamic policy refresh.
+inline constexpr std::string_view kNonDynamicPrefs[] = {
+    "",  // Sentinel ensuring the array is never zero-length.
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    ai_chat::prefs::kEnabledByPolicy,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    brave_news::prefs::kBraveNewsDisabledByPolicy,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+    brave_rewards::prefs::kDisabledByPolicy,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    brave_vpn::prefs::kManagedBraveVPNDisabled,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    brave_wallet::kBraveWalletDisabledByPolicy,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    brave_talk::prefs::kDisabledByPolicy,
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    playlist::kPlaylistEnabledPref,
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    speedreader::kSpeedreaderEnabled,
+#endif
+};
+
+// Populates PolicyPrefInterceptorList with the set of pref names that do not
+// support dynamic policy refresh. Must be called once, early in process
+// startup, before any PolicyPrefInterceptor is used.
+inline void InitializePolicyPrefInterceptorList() {
+  brave_policy::PolicyPrefInterceptorList::GetInstance()->SetPrefs(
+      kNonDynamicPrefs);
+}
 
 }  // namespace policy
 
