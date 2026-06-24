@@ -73,6 +73,34 @@ fn unwrap_or_panic<T>(result: &Result<T, ()>) -> &T {
     }
 }
 
+fn decode_u32(value: &CborValue) -> Result<u32, ()> {
+    match value {
+        CborValue::Integer(i) => (*i).try_into().map_err(|_| ()),
+        _ => Err(()),
+    }
+}
+
+fn decode_u64(value: &CborValue) -> Result<u64, ()> {
+    match value {
+        CborValue::Integer(i) => (*i).try_into().map_err(|_| ()),
+        _ => Err(()),
+    }
+}
+
+fn decode_bytes_array<const N: usize>(value: &CborValue) -> Result<[u8; N], ()> {
+    match value {
+        CborValue::Bytes(bytes) => bytes.clone().try_into().map_err(|_| ()),
+        _ => Err(()),
+    }
+}
+
+fn decode_bytes_vector(value: &CborValue) -> Result<Vec<u8>, ()> {
+    match value {
+        CborValue::Bytes(bytes) => Ok(bytes.clone()),
+        _ => Err(()),
+    }
+}
+
 /// CXX bridge module for FFI with C++
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
@@ -420,8 +448,8 @@ fn encode_coin_value(amount: &CxxSerializableCoinValue) -> CborValue {
 fn decode_coin_value(value: &CborValue) -> Result<CxxSerializableCoinValue, ()> {
     match value {
         // Simple case: only ADA.
-        CborValue::Integer(i) => {
-            let lovelace_amount: u64 = (*i).try_into().map_err(|_| ())?;
+        CborValue::Integer(_) => {
+            let lovelace_amount = decode_u64(value)?;
             Ok(CxxSerializableCoinValue { lovelace_amount, tokens: Vec::new() })
         }
         // Multi-asset case: [ada, tokens_map].
@@ -429,10 +457,7 @@ fn decode_coin_value(value: &CborValue) -> Result<CxxSerializableCoinValue, ()> 
             if arr.len() != 2 {
                 return Err(());
             }
-            let lovelace_amount: u64 = match &arr[0] {
-                CborValue::Integer(i) => (*i).try_into().map_err(|_| ())?,
-                _ => return Err(()),
-            };
+            let lovelace_amount = decode_u64(&arr[0])?;
             let tokens = extract_tokens(&arr[1])?;
             Ok(CxxSerializableCoinValue { lovelace_amount, tokens })
         }
@@ -546,18 +571,17 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody
 
     // Extract fee
     let fee: u64 = match find_map_value(body_map, FEE_KEY)? {
-        Some(CborValue::Integer(f)) => (*f).try_into().map_err(|_| ())?,
-        Some(_) => return Err(()),
-        None => return Err(()),
+        Some(val) => decode_u64(val)?,
+        _ => return Err(()),
     };
 
     // Extract ttl (optional)
     let (has_ttl, ttl) = match find_map_value(body_map, TTL_KEY)? {
-        Some(CborValue::Integer(t)) => {
-            let ttl_val: u64 = (*t).try_into().map_err(|_| ())?;
+        Some(val) => {
+            let ttl_val: u64 = decode_u64(val)?;
             (true, ttl_val)
         }
-        Some(_) => return Err(()),
+
         None => (false, 0),
     };
 
@@ -600,15 +624,9 @@ fn extract_inputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializ
         };
 
         // Extract transaction hash and index
-        let tx_hash: [u8; CARDANO_TX_HASH_SIZE] = match &input_array[0] {
-            CborValue::Bytes(bytes) => bytes.clone().try_into().map_err(|_| ())?,
-            _ => return Err(()),
-        };
+        let tx_hash = decode_bytes_array(&input_array[0])?;
 
-        let index: u32 = match &input_array[1] {
-            CborValue::Integer(i) => (*i).try_into().map_err(|_| ())?,
-            _ => return Err(()),
-        };
+        let index = decode_u32(&input_array[1])?;
 
         inputs.push(CxxSerializableTxInput { tx_hash, index });
     }
@@ -630,10 +648,7 @@ fn extract_tokens(multiasset: &CborValue) -> Result<Vec<CxxSerializableTxOutputT
                     CborValue::Bytes(bytes) => bytes.clone(),
                     _ => return Err(()),
                 };
-                let token_amount: u64 = match amount_val {
-                    CborValue::Integer(n) => (*n).try_into().map_err(|_| ())?,
-                    _ => return Err(()),
-                };
+                let token_amount = decode_u64(amount_val)?;
                 Ok((asset_name, token_amount))
             })
             .collect();
@@ -647,10 +662,7 @@ fn extract_tokens(multiasset: &CborValue) -> Result<Vec<CxxSerializableTxOutputT
     let mut tokens: Vec<CxxSerializableTxOutputToken> = Vec::new();
 
     for (policy_id_val, asset_map_val) in token_map {
-        let policy_id: Vec<u8> = match policy_id_val {
-            CborValue::Bytes(bytes) if bytes.len() == CARDANO_SCRIPT_HASH_SIZE => bytes.clone(),
-            _ => return Err(()),
-        };
+        let policy_id: [u8; CARDANO_SCRIPT_HASH_SIZE] = decode_bytes_array(policy_id_val)?;
         let pairs = process_asset_map(asset_map_val)?;
         for (asset_name, token_amount) in pairs {
             tokens.push(CxxSerializableTxOutputToken {
@@ -685,11 +697,7 @@ fn extract_outputs(
             _ => return Err(()),
         };
 
-        let addr_bytes = match &output_array[0] {
-            CborValue::Bytes(bytes) => bytes.clone(),
-            _ => return Err(()),
-        };
-
+        let addr_bytes = decode_bytes_vector(&output_array[0])?;
         let coin_value = decode_coin_value(&output_array[1])?;
 
         outputs.push(CxxSerializableTxOutput { addr: addr_bytes, coin_value });
