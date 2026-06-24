@@ -88,7 +88,5 @@ BraveNewsUIConfig::BraveNewsUIConfig()
 
 bool BraveNewsUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  const bool enabled =
-      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar);
-  return enabled;
+  return base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar);
 }
