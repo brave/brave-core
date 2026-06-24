@@ -192,6 +192,9 @@ source_set("browser_tests") {
   ]
 
   if (enable_containers) {
-    deps += [ "//brave/components/containers/core/common:features" ]
+    deps += [
+      "//brave/components/containers/core/browser:test_support",
+      "//brave/components/containers/core/common:features",
+    ]
   }
 }

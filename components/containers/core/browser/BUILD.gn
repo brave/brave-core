@@ -71,7 +71,6 @@ source_set("test_support") {
   public_deps = [ ":browser" ]
 
   deps = [
-    ":browser",
     "//components/prefs",
     "//testing/gmock",
     "//testing/gtest",
