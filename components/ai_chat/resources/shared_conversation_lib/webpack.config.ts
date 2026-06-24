@@ -24,7 +24,6 @@ import {
   cssRules,
   tsLoaderRule,
   fileLoaderRule,
-  braveUiFullySpecifiedRule,
   htmlAssetRule,
 } from '../../../webpack/rules.ts'
 
@@ -78,7 +77,9 @@ export default async function (
     path: outputPath,
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
-    publicPath: '/',
+    // Need publicPath: 'auto' to have file-loader resolve to script bundle URL,
+    // not the loading-websites URL.
+    publicPath: 'auto',
     clean: true,
     library: { type: 'module' },
     iife: false,
@@ -99,6 +100,7 @@ export default async function (
   }
 
   return {
+    target: 'web',
     entry,
     devtool: isDevMode ? 'inline-source-map' : false,
     devServer: {
@@ -126,6 +128,14 @@ export default async function (
       }),
     ],
     module: {
+      parser: {
+        // Leave import.meta.url untransformed so that we can use the runtime
+        // value instead of webpack's hardcoded build-time value of the local
+        // file path. Needed for loading assets from the output bundle path.
+        javascript: {
+          importMeta: false,
+        },
+      },
       rules: [
         ...cssRules({ isDevMode }),
         tsLoaderRule({ configFile: tsConfigPath }),

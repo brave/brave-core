@@ -25,7 +25,13 @@ import {
   createMockUntrustedUIHandler,
 } from '../untrusted_conversation_frame/api/mock_interfaces'
 
-setIconBasePath('./nala-icons')
+// Set the nala icon path to be relative to this script, which should be
+// the root of the output bundle.
+// Need to store import.meta.url in a separate variable to the URL building
+// otherwise webpack will try to resolve '.' locally (and probably fail).
+const scriptUrl = import.meta.url
+const relativePathUrl = new URL('./nala-icons', scriptUrl)
+setIconBasePath(relativePathUrl.toString())
 
 /**
  * Create a minimal local-only read-only version of the AI Chat API interfaces.
