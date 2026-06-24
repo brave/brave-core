@@ -12,7 +12,7 @@ deps = {
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
-    "url": "https://github.com/brave/Sparkle.git@v1.24.4",
+    "url": "https://github.com/brave/Sparkle.git@85c560460b44b98a933a18549dcb655550c37349",
     "condition": "checkout_mac",
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@8b424ccf29957fe01c88c36076fd32006a357887",
