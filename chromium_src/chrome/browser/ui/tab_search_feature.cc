@@ -5,12 +5,14 @@
 
 #include "chrome/browser/ui/tab_search_feature.h"
 
+#include "chrome/browser/ui/tabs/features.h"
+
 #define HasTabSearchToolbarButton HasTabSearchToolbarButton_ChromiumImpl
 #include <chrome/browser/ui/tab_search_feature.cc>
 #undef HasTabSearchToolbarButton
 
 namespace features {
 bool HasTabSearchToolbarButton() {
-  return true;
+  return !base::FeatureList::IsEnabled(tabs::kHorizontalTabStripComboButton);
 }
 }  // namespace features

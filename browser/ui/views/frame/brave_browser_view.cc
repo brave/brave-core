@@ -458,10 +458,6 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
     if (auto* tab_search_button = toolbar()->tab_search_button()) {
       tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
     }
-  } else if (auto* tab_search_button =
-                 BrowserElementsViews::From(browser())
-                     ->GetViewAs<TabSearchButton>(kTabSearchButtonElementId)) {
-    tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }
 
