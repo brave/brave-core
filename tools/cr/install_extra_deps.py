@@ -33,15 +33,15 @@ import tarfile
 import tempfile
 from pathlib import Path
 
-# `src/` directory (this script lives at src/brave/tools/cr/toolchains/).
-_SRC_DIR = Path(__file__).resolve().parents[4]
+# `src/` directory (this script lives at src/brave/tools/cr/).
+_SRC_DIR = Path(__file__).resolve().parents[3]
 
 # Importing script and depot_tools explicitly, so we can call this script from
 # the terminal without needing to set up the PYTHONPATH. `depot_tools` is
 # inserted at the front so its `third_party` package (which provides
 # `third_party.schema`, needed by gclient_eval) is not shadowed by the
 # `third_party` package in the vpython virtualenv.
-sys.path.append(str(Path(__file__).resolve().parents[3] / 'script'))
+sys.path.append(str(Path(__file__).resolve().parents[2] / 'script'))
 sys.path.insert(0, str(_SRC_DIR / 'third_party' / 'depot_tools'))
 
 import deps  # pylint: disable=wrong-import-position

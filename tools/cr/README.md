@@ -42,6 +42,37 @@ Shared abstractions used by the entry points and tests:
 - `versioning.py` — Chromium version number parsing.
 - `vscode.py` — IPC for opening files in VS Code in the integrated terminal.
 
+## gclient hooks
+
+- `install_extra_deps.py` — a gclient hook (wired up from `DEPS`) that installs
+  archives Brave publishes to its own download buckets. It downloads the
+  archive, verifies its `sha256sum`, and extracts it straight on top of the
+  destination path. Unlike the toolchain builders in `toolchain/`, this hook is
+  not self-contained: it imports gclient code to evaluate condition statements
+  so they are interpreted consistently as if they were in a `DEPS` file.
+
+  Downloads are declared in the `EXTRA_DEPS` table, as follows:
+
+  ```python
+  EXTRA_DEPS = {
+    'src/path/to/install/dir': {
+      'bucket': 'https://<bucket>/<prefix>/',
+      'condition': '<optional dep-level condition>',
+      'objects': [
+        {
+          'object_name': '<archive-name>.tar.xz',
+          'sha256sum': '<hex sha256>',
+          'condition': 'host_os == "linux"',  # one matching object per host
+        },
+      ],
+    },
+  }
+  ```
+
+  The archive must lay its members out relative to the destination root so it
+  can be extracted directly over it. Invoke with the target path, e.g.
+  `install_extra_deps.py src/path/to/install/dir`.
+
 ## Subdirectories
 
 - `alias/` — `git cr` git-alias subcommands (`commit`, `mv`, `follow-renames`,

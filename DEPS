@@ -202,7 +202,7 @@ hooks = [
     'name': 'download_rust_wasm_toolchain',
     'pattern': '.',
     'action': ['vpython3',
-               'tools/cr/toolchains/install_extra_deps.py',
+               'tools/cr/install_extra_deps.py',
                'src/third_party/rust-toolchain']
   },
 ]

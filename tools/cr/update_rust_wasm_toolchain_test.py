@@ -160,7 +160,7 @@ class LoadExtraDepsTest(unittest.TestCase):
 class UpdateExecuteTest(unittest.TestCase):
     """End-to-end `execute` against a `FakeChromiumRepo` (builder faked)."""
 
-    INSTALLER = 'tools/cr/toolchains/install_extra_deps.py'
+    INSTALLER = 'tools/cr/install_extra_deps.py'
 
     # The Chromium tag `execute` resolves `--to` against; the revision-bump
     # commit is tagged with it so the revision scripts can be read at the ref.
