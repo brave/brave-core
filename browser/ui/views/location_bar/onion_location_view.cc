@@ -97,12 +97,25 @@ void OnionLocationView::OnExecuting(
     return;
   }
 
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(GetWebContents());
-  if (helper) {
-    TorProfileManager::SwitchToTorProfile(
-        profile_, helper->onion_location(),
-        url::Origin::Create(GetWebContents()->GetLastCommittedURL()));
+  auto* web_contents = GetWebContents();
+  if (!web_contents) {
+    return;
   }
+  auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  if (!helper) {
+    return;
+  }
+
+  std::optional<url::Origin> initiator_origin;
+  if (web_contents->GetPrimaryMainFrame()->IsErrorDocument()) {
+    // The error page's committed URL is the blocked .onion URL, which shouldn't
+    // be used as the navigation initiator.
+    initiator_origin = helper->initiator_origin();
+  } else {
+    initiator_origin = url::Origin::Create(web_contents->GetLastCommittedURL());
+  }
+  TorProfileManager::SwitchToTorProfile(profile_, helper->onion_location(),
+                                        initiator_origin);
 }
 
 BEGIN_METADATA(OnionLocationView)

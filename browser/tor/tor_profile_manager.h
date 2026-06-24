@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_MANAGER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -25,9 +26,10 @@ class TorProfileManager : public ProfileObserver {
  public:
   static TorProfileManager& GetInstance();
   static Browser* SwitchToTorProfile(Profile* original_profile);
-  static Browser* SwitchToTorProfile(Profile* original_profile,
-                                     const GURL& url,
-                                     const url::Origin& initiator_origin);
+  static Browser* SwitchToTorProfile(
+      Profile* original_profile,
+      const GURL& url,
+      const std::optional<url::Origin>& initiator_origin);
   static void CloseTorProfileWindows(Profile* tor_profile);
   Profile* GetTorProfile(Profile* original_profile);
 

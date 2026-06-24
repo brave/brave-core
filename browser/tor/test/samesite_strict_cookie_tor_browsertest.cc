@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/string_split.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
+#include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
@@ -22,6 +24,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/views/test/button_test_api.h"
 #include "url/gurl.h"
@@ -32,6 +35,22 @@ constexpr char kSiteA[] = "a.test";
 constexpr char kSiteB[] = "b.test";
 constexpr char kOnion[] = "c.onion";
 constexpr char kSameSiteStrictCookie[] = "strict_cookie=1; SameSite=Strict";
+constexpr char kOnionLinkPagePath[] = "/onion-link-page.html";
+
+std::unique_ptr<net::test_server::HttpResponse> HandleOnionLinkPage(
+    const GURL& onion_echo_url,
+    const net::test_server::HttpRequest& request) {
+  if (request.relative_url != kOnionLinkPagePath) {
+    return nullptr;
+  }
+  auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+  response->set_code(net::HTTP_OK);
+  response->set_content_type("text/html");
+  response->set_content(absl::StrFormat(
+      R"(<html><body><a id="onion" href="%s">link</a></body></html>)",
+      onion_echo_url.spec().c_str()));
+  return response;
+}
 
 std::unique_ptr<net::test_server::HttpResponse> HandleSetStrictCookie(
     const GURL& onion_location,
@@ -61,6 +80,27 @@ IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
   return brave_location_bar_view->GetOnionLocationView();
 }
 
+void ClickOnionLocationIcon(Browser* browser) {
+  auto* onion_location_view = GetOnionLocationView(browser);
+  ASSERT_TRUE(onion_location_view);
+  ui::MouseEvent pressed(ui::EventType::kMousePressed, gfx::Point(),
+                         gfx::Point(), ui::EventTimeForNow(),
+                         ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+  ui::MouseEvent released(ui::EventType::kMouseReleased, gfx::Point(),
+                          gfx::Point(), ui::EventTimeForNow(),
+                          ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+  views::test::ButtonTestApi(onion_location_view).NotifyClick(pressed);
+  views::test::ButtonTestApi(onion_location_view).NotifyClick(released);
+}
+
+std::vector<std::string> GetEchoedHeaders(content::WebContents* web_contents) {
+  const std::string response_body =
+      content::EvalJs(web_contents, "document.body.textContent")
+          .ExtractString();
+  return base::SplitString(response_body, "\n", base::TRIM_WHITESPACE,
+                           base::SPLIT_WANT_NONEMPTY);
+}
+
 }  // namespace
 
 class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
@@ -81,7 +121,10 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &HandleSetStrictCookie,
-        onion_server_->GetURL(kOnion, "/echoheader?Cookie")));
+        onion_server_->GetURL(kOnion, "/echoheader?Cookie&Sec-Fetch-Site")));
+    https_server_->RegisterRequestHandler(base::BindRepeating(
+        &HandleOnionLinkPage,
+        onion_server_->GetURL(kOnion, "/echoheader?Cookie&Sec-Fetch-Site")));
 
     net::test_server::RegisterDefaultHandlers(https_server_.get());
     ASSERT_TRUE(https_server_->Start());
@@ -152,23 +195,63 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server_->GetURL(kSiteA, "/set-strict-cookie")));
 
-  auto* onion_location_view = GetOnionLocationView(browser());
-
   const GURL view_cookies_url =
-      onion_server_->GetURL(kOnion, "/echoheader?Cookie");
+      onion_server_->GetURL(kOnion, "/echoheader?Cookie&Sec-Fetch-Site");
   content::TestNavigationObserver observer(view_cookies_url);
   observer.StartWatchingNewWebContents();
 
-  ui::MouseEvent pressed(ui::EventType::kMousePressed, gfx::Point(),
-                         gfx::Point(), ui::EventTimeForNow(),
-                         ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
-  ui::MouseEvent released(ui::EventType::kMouseReleased, gfx::Point(),
-                          gfx::Point(), ui::EventTimeForNow(),
-                          ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
-  views::test::ButtonTestApi(onion_location_view).NotifyClick(pressed);
-  views::test::ButtonTestApi(onion_location_view).NotifyClick(released);
+  ClickOnionLocationIcon(browser());
   observer.Wait();
 
   auto* web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(content::EvalJs(web_contents, "document.body.textContent"), "None");
+  const std::vector<std::string> echoed_headers =
+      GetEchoedHeaders(web_contents);
+  ASSERT_EQ(echoed_headers.size(), 2u);
+  EXPECT_EQ(echoed_headers[0], "None");
+  EXPECT_EQ(echoed_headers[1], "cross-site");
+}
+
+IN_PROC_BROWSER_TEST_F(
+    SameSiteStrictCookieTorBrowserTest,
+    BlockedOnionLinkCrossSiteDoesNotSendSameSiteStrictCookie) {
+  Browser* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
+
+  const GURL set_cookie_url =
+      onion_server_->GetURL(kOnion, "/set-strict-cookie");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(tor_browser, set_cookie_url));
+
+  const GURL onion_echo_url =
+      onion_server_->GetURL(kOnion, "/echoheader?Cookie&Sec-Fetch-Site");
+  const GURL cross_site_page_url =
+      https_server_->GetURL(kSiteA, kOnionLinkPagePath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), cross_site_page_url));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  content::TestNavigationObserver nav_observer(web_contents);
+  ASSERT_TRUE(content::ExecJs(web_contents,
+                              "document.getElementById('onion').click()"));
+  nav_observer.Wait();
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  EXPECT_TRUE(web_contents->GetPrimaryMainFrame()->IsErrorDocument());
+
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  ASSERT_TRUE(helper);
+  EXPECT_TRUE(helper->should_show_icon());
+  EXPECT_EQ(helper->onion_location(), onion_echo_url);
+
+  content::TestNavigationObserver tor_observer(onion_echo_url);
+  tor_observer.StartWatchingNewWebContents();
+  ClickOnionLocationIcon(browser());
+  tor_observer.Wait();
+
+  content::WebContents* tor_web_contents =
+      tor_browser->tab_strip_model()->GetActiveWebContents();
+  const std::vector<std::string> echoed_headers =
+      GetEchoedHeaders(tor_web_contents);
+  ASSERT_EQ(echoed_headers.size(), 2u);
+  EXPECT_EQ(echoed_headers[0], "None");
+  EXPECT_EQ(echoed_headers[1], "cross-site");
 }

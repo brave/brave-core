@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_TOR_ONION_LOCATION_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_TOR_ONION_LOCATION_TAB_HELPER_H_
 
+#include <optional>
+
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace tor {
 
@@ -25,21 +28,29 @@ class OnionLocationTabHelper
 
   const GURL& onion_location() const { return onion_location_; }
 
+  const std::optional<url::Origin>& initiator_origin() const {
+    return initiator_origin_;
+  }
+
  private:
   friend class content::WebContentsUserData<OnionLocationTabHelper>;
   friend class OnionLocationNavigationThrottle;
 
   explicit OnionLocationTabHelper(content::WebContents* web_contents);
 
-  static void SetOnionLocationByThrottle(content::WebContents* web_contents,
-                                         const GURL& onion_location);
+  static void SetOnionLocationByThrottle(
+      content::WebContents* web_contents,
+      const GURL& onion_location,
+      const std::optional<url::Origin>& initiator_origin = std::nullopt);
 
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
   GURL throttle_reported_onion_location_;
+  std::optional<url::Origin> throttle_reported_initiator_origin_;
   GURL onion_location_;
+  std::optional<url::Origin> initiator_origin_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

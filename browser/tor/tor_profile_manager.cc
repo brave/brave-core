@@ -6,6 +6,7 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 
 #include <algorithm>
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -88,7 +89,7 @@ class TorTabNavigator final : public content::WebContentsObserver,
  public:
   static void Navigate(Browser* tor_browser,
                        const GURL& url,
-                       const url::Origin& initiator_origin) {
+                       const std::optional<url::Origin>& initiator_origin) {
     auto* tab = FindNTPTab(tor_browser);
     if (!tab) {
       tab = &chrome::NewTab(tor_browser);
@@ -110,7 +111,7 @@ class TorTabNavigator final : public content::WebContentsObserver,
  private:
   TorTabNavigator(content::WebContents* web_contents,
                   const GURL& url,
-                  const url::Origin& initiator_origin)
+                  const std::optional<url::Origin>& initiator_origin)
       : content::WebContentsObserver(web_contents),
         url_(url),
         initiator_origin_(initiator_origin) {
@@ -152,10 +153,11 @@ class TorTabNavigator final : public content::WebContentsObserver,
 
   static void OpenURL(content::WebContents* web_contents,
                       const GURL& url,
-                      const url::Origin& initiator_origin) {
+                      const std::optional<url::Origin>& initiator_origin) {
     content::NavigationController::LoadURLParams params(url);
     params.transition_type = ui::PAGE_TRANSITION_TYPED;
     params.initiator_origin = initiator_origin;
+
     web_contents->GetController().LoadURLWithParams(params);
     if (web_contents->GetDelegate()) {
       web_contents->GetDelegate()->NavigationStateChanged(
@@ -174,20 +176,20 @@ class TorTabNavigator final : public content::WebContentsObserver,
   }
 
   GURL url_;
-  url::Origin initiator_origin_;
+  std::optional<url::Origin> initiator_origin_;
 };
 
 // static
 Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile) {
-  return TorProfileManager::SwitchToTorProfile(
-      original_profile, GURL::EmptyGURL(), url::Origin());
+  return TorProfileManager::SwitchToTorProfile(original_profile,
+                                               GURL::EmptyGURL(), std::nullopt);
 }
 
 // static
 Browser* TorProfileManager::SwitchToTorProfile(
     Profile* original_profile,
     const GURL& url,
-    const url::Origin& initiator_origin) {
+    const std::optional<url::Origin>& initiator_origin) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
   if (!tor_profile) {

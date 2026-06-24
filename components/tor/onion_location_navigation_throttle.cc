@@ -100,7 +100,8 @@ OnionLocationNavigationThrottle::WillStartRequest() {
     const GURL& url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && net::IsOnion(url)) {
       OnionLocationTabHelper::SetOnionLocationByThrottle(
-          navigation_handle()->GetWebContents(), url);
+          navigation_handle()->GetWebContents(), url,
+          navigation_handle()->GetInitiatorOrigin());
       return content::NavigationThrottle::BLOCK_REQUEST;
     }
   }
