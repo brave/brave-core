@@ -44,7 +44,9 @@ class FakeSnapsServiceObserver : public mojom::SnapsServiceObserver {
     return receiver_.BindNewPipeAndPassRemote();
   }
   void OnPendingSnapInstallChanged() override { ++change_count; }
+  void OnPendingSnapConnectionChanged() override { ++connection_change_count; }
   int change_count = 0;
+  int connection_change_count = 0;
 
  private:
   mojo::Receiver<mojom::SnapsServiceObserver> receiver_{this};

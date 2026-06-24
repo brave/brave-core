@@ -45,6 +45,7 @@ import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetPendingSnapInstallQuery,
+  useGetPendingSnapConnectionQuery,
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
@@ -78,6 +79,9 @@ import {
 import {
   SnapInstallPanel, //
 } from '../components/extension/snap_install_panel/snap_install_panel'
+import {
+  SnapConnectPanel, //
+} from '../components/extension/snap_connect_panel/snap_connect_panel'
 import {
   SnapsListPanel, //
 } from '../components/extension/snaps_list_panel/snaps_list_panel'
@@ -143,6 +147,7 @@ function Container() {
   const { data: addTokenRequests = [], isLoading: isLoadingAddTokenRequests } =
     useGetPendingTokenSuggestionRequestsQuery()
   const { data: pendingSnapInstall } = useGetPendingSnapInstallQuery()
+  const { data: pendingSnapConnection } = useGetPendingSnapConnectionQuery()
   const {
     selectedPendingTransaction,
     isLoading: isLoadingPendingTransactions,
@@ -243,6 +248,18 @@ function Container() {
         height={650}
       >
         <SnapInstallPanel pending={pendingSnapInstall} />
+      </PanelWrapper>
+    )
+  }
+
+  // Snap connection approval gate — takes priority over most other views.
+  if (pendingSnapConnection) {
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <SnapConnectPanel pending={pendingSnapConnection} />
       </PanelWrapper>
     )
   }

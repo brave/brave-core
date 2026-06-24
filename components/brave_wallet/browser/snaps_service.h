@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SNAPS_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <queue>
 #include <string>
 #include <vector>
@@ -132,6 +133,20 @@ class SnapsService : public mojom::SnapsService {
                          const std::string& event_json,
                          SendSnapUserInputCallback callback) override;
 
+  void GetPendingSnapConnection(
+      GetPendingSnapConnectionCallback callback) override;
+
+  void NotifySnapConnectionRequestProcessed(
+      bool approved,
+      NotifySnapConnectionRequestProcessedCallback callback) override;
+
+  void GetConnectedOrigins(const std::string& snap_id,
+                           GetConnectedOriginsCallback callback) override;
+
+  void DisconnectSnapOrigin(const std::string& origin,
+                            const std::string& snap_id,
+                            DisconnectSnapOriginCallback callback) override;
+
  private:
   // mojom callback adapters — each converts subsystem result types to the
   // shape expected by the mojo callback.
@@ -156,6 +171,15 @@ class SnapsService : public mojom::SnapsService {
   void SetSnapInstallState(mojom::SnapInstallState state,
                            mojom::SnapInstallDataPtr install_data,
                            const std::string& error);
+
+  // Connection-approval flow. Wired into SnapController as its
+  // RequestConnectionDelegate: enqueues a request, surfaces it to the panel via
+  // OnPendingSnapConnectionChanged, and resolves |callback| once the user acts.
+  void RequestSnapConnection(url::Origin origin,
+                             std::string snap_id,
+                             base::OnceCallback<void(bool approved)> callback);
+  void ProcessNextSnapConnection();
+  void NotifyPendingSnapConnectionChanged();
 
   raw_ref<KeyringService> keyring_service_;
   raw_ref<PrefService> prefs_;
@@ -191,6 +215,21 @@ class SnapsService : public mojom::SnapsService {
     SnapInstaller::InstallCallback callback;
   };
   std::queue<PendingSnapInstallItem> snap_install_queue_;
+
+  // Pending dApp→snap connection requests awaiting user approval. At most one
+  // is active (surfaced to the panel) at a time; the rest queue behind it.
+  struct PendingSnapConnectionItem {
+    PendingSnapConnectionItem();
+    PendingSnapConnectionItem(PendingSnapConnectionItem&&);
+    PendingSnapConnectionItem& operator=(PendingSnapConnectionItem&&);
+    ~PendingSnapConnectionItem();
+
+    std::string origin;  // serialized requesting origin
+    std::string snap_id;
+    base::OnceCallback<void(bool approved)> callback;
+  };
+  std::optional<PendingSnapConnectionItem> active_snap_connection_;
+  std::queue<PendingSnapConnectionItem> snap_connection_queue_;
 
   mojo::ReceiverSet<mojom::SnapsService> receivers_;
   mojo::RemoteSet<mojom::SnapsServiceObserver> observers_;

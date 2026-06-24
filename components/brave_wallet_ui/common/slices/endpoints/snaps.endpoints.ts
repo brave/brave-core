@@ -135,6 +135,94 @@ export const snapsEndpoints = ({
       },
     }),
 
+    getPendingSnapConnection: query<
+      BraveWallet.PendingSnapConnection | null,
+      void
+    >({
+      queryFn: async (_, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { pending } =
+            await api.snapsService.getPendingSnapConnection()
+          return { data: pending ?? null }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to get pending snap connection',
+            error,
+          )
+        }
+      },
+      providesTags: ['PendingSnapConnection'],
+    }),
+
+    notifySnapConnectionRequestProcessed: mutation<
+      null,
+      { approved: boolean }
+    >({
+      queryFn: async ({ approved }, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          await api.snapsService.notifySnapConnectionRequestProcessed(approved)
+          return { data: null }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to notify snap connection processed',
+            error,
+          )
+        }
+      },
+      invalidatesTags: ['PendingSnapConnection'],
+    }),
+
+    getSnapConnectedOrigins: query<string[], { snapId: string }>({
+      queryFn: async ({ snapId }, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { origins } =
+            await api.snapsService.getConnectedOrigins(snapId)
+          return { data: origins }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to get snap connected origins',
+            error,
+          )
+        }
+      },
+      providesTags: (_result, _error, { snapId }) => [
+        { type: 'SnapConnectedOrigins', id: snapId },
+      ],
+    }),
+
+    disconnectSnapOrigin: mutation<
+      null,
+      { origin: string; snapId: string }
+    >({
+      queryFn: async (
+        { origin, snapId },
+        { endpoint },
+        _extraOptions,
+        baseQuery,
+      ) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          await api.snapsService.disconnectSnapOrigin(origin, snapId)
+          return { data: null }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to disconnect snap origin',
+            error,
+          )
+        }
+      },
+      invalidatesTags: (_result, _error, { snapId }) => [
+        { type: 'SnapConnectedOrigins', id: snapId },
+      ],
+    }),
+
     uninstallSnap: mutation<null, { snapId: string }>({
       queryFn: async (
         { snapId },

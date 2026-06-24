@@ -28,6 +28,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
 
@@ -72,6 +73,9 @@ SnapsService::SnapsService(
   snap_controller_->SetInstallSnapDelegate(
       base::BindRepeating(static_cast<InstallSnapFn>(&SnapsService::InstallSnap),
                           weak_ptr_factory_.GetWeakPtr()));
+  snap_controller_->SetRequestConnectionDelegate(
+      base::BindRepeating(&SnapsService::RequestSnapConnection,
+                          weak_ptr_factory_.GetWeakPtr()));
   const bool bg = browser_context &&
                   base::FeatureList::IsEnabled(features::kBraveWalletSnapsBackground);
   LOG(ERROR) << "XXXZZZ SnapsService: constructed, background_mode=" << bg
@@ -84,6 +88,14 @@ SnapsService::PendingSnapInstallItem::PendingSnapInstallItem() = default;
 SnapsService::PendingSnapInstallItem::PendingSnapInstallItem(
     PendingSnapInstallItem&&) = default;
 SnapsService::PendingSnapInstallItem::~PendingSnapInstallItem() = default;
+
+SnapsService::PendingSnapConnectionItem::PendingSnapConnectionItem() = default;
+SnapsService::PendingSnapConnectionItem::PendingSnapConnectionItem(
+    PendingSnapConnectionItem&&) = default;
+SnapsService::PendingSnapConnectionItem&
+SnapsService::PendingSnapConnectionItem::operator=(
+    PendingSnapConnectionItem&&) = default;
+SnapsService::PendingSnapConnectionItem::~PendingSnapConnectionItem() = default;
 
 void SnapsService::Bind(mojo::PendingReceiver<mojom::SnapsService> receiver) {
   receivers_.Add(this, std::move(receiver));
@@ -449,6 +461,85 @@ void SnapsService::GetPendingSnapInstall(
     result->error = pending_snap_error_;
   }
   std::move(callback).Run(std::move(result));
+}
+
+// ---------------------------------------------------------------------------
+// Snap connection approval flow
+// ---------------------------------------------------------------------------
+
+void SnapsService::RequestSnapConnection(
+    url::Origin origin,
+    std::string snap_id,
+    base::OnceCallback<void(bool)> callback) {
+  PendingSnapConnectionItem item;
+  item.origin = origin.Serialize();
+  item.snap_id = std::move(snap_id);
+  item.callback = std::move(callback);
+  snap_connection_queue_.push(std::move(item));
+  if (!active_snap_connection_) {
+    ProcessNextSnapConnection();
+  }
+}
+
+void SnapsService::ProcessNextSnapConnection() {
+  if (active_snap_connection_ || snap_connection_queue_.empty()) {
+    return;
+  }
+  active_snap_connection_ = std::move(snap_connection_queue_.front());
+  snap_connection_queue_.pop();
+  NotifyPendingSnapConnectionChanged();
+}
+
+void SnapsService::NotifyPendingSnapConnectionChanged() {
+  for (auto& observer : observers_) {
+    observer->OnPendingSnapConnectionChanged();
+  }
+}
+
+void SnapsService::NotifySnapConnectionRequestProcessed(
+    bool approved,
+    NotifySnapConnectionRequestProcessedCallback callback) {
+  if (!active_snap_connection_) {
+    std::move(callback).Run();
+    return;
+  }
+  PendingSnapConnectionItem item = std::move(*active_snap_connection_);
+  active_snap_connection_.reset();
+  if (item.callback) {
+    std::move(item.callback).Run(approved);
+  }
+  std::move(callback).Run();
+  NotifyPendingSnapConnectionChanged();
+  ProcessNextSnapConnection();
+}
+
+void SnapsService::GetPendingSnapConnection(
+    GetPendingSnapConnectionCallback callback) {
+  if (!active_snap_connection_) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  auto result = mojom::PendingSnapConnection::New();
+  result->origin = active_snap_connection_->origin;
+  result->snap_id = active_snap_connection_->snap_id;
+  if (auto snap = data_provider_->GetSnap(active_snap_connection_->snap_id)) {
+    result->snap_info = std::move(snap);
+  }
+  std::move(callback).Run(std::move(result));
+}
+
+void SnapsService::GetConnectedOrigins(const std::string& snap_id,
+                                       GetConnectedOriginsCallback callback) {
+  std::move(callback).Run(
+      permission_controller_->GetOriginsConnectedToSnap(snap_id));
+}
+
+void SnapsService::DisconnectSnapOrigin(const std::string& origin,
+                                        const std::string& snap_id,
+                                        DisconnectSnapOriginCallback callback) {
+  permission_controller_->RevokeSnapConnection(
+      url::Origin::Create(GURL(origin)), snap_id);
+  std::move(callback).Run();
 }
 
 }  // namespace brave_wallet

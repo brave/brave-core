@@ -94,7 +94,9 @@ export function createWalletApiBase() {
       'ZcashChainTipStatus',
       'ZCashBalance',
       'PendingSnapInstall',
+      'PendingSnapConnection',
       'InstalledSnaps',
+      'SnapConnectedOrigins',
     ],
     endpoints: ({ mutation, query }) => ({}),
   })

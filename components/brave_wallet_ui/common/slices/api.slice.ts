@@ -384,6 +384,11 @@ export const {
   useUninstallSnapMutation,
   useGetSnapHomePageQuery,
   useSendSnapUserInputMutation,
+  // snap connection approval
+  useGetPendingSnapConnectionQuery,
+  useNotifySnapConnectionRequestProcessedMutation,
+  useGetSnapConnectedOriginsQuery,
+  useDisconnectSnapOriginMutation,
 } = walletApi
 
 // Derived Data Queries

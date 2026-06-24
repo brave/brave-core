@@ -2987,11 +2987,24 @@ struct PendingSnapInstall {
   string? error;                  // populated when state == kFailed
 };
 
+// A dApp's pending request to connect to an already-installed snap, awaiting
+// the user's approval in the wallet panel. Newly-installed snaps consent to the
+// connection via the install-approval dialog instead.
+struct PendingSnapConnection {
+  string origin;               // requesting dApp origin, serialized.
+  string snap_id;
+  SnapInstallData? snap_info;  // installed-snap metadata for display.
+};
+
 // Observer for SnapsService events.
 interface SnapsServiceObserver {
   // Fired whenever the pending snap install state changes (kInstalling,
   // kPendingApproval, kSuccess, kFailed, or back to kIdle).
   OnPendingSnapInstallChanged();
+
+  // Fired whenever the pending snap connection request changes (a new request
+  // becomes pending, or the active one is resolved).
+  OnPendingSnapConnectionChanged();
 };
 
 // Manages snap lifecycle: install, invoke, uninstall, and UI bridging.
@@ -3050,6 +3063,22 @@ interface SnapsService {
   // Forward a user input event to a snap interface and return the updated UI.
   SendSnapUserInput(string snap_id, string interface_id, string event_json)
       => (string? content_json, string? error);
+
+  // Returns the dApp→snap connection awaiting user approval, or null when none
+  // is pending. Called by the panel on open and after
+  // OnPendingSnapConnectionChanged notifications.
+  GetPendingSnapConnection() => (PendingSnapConnection? pending);
+
+  // Called by the panel after the user approves (approved=true) or rejects
+  // (approved=false) the pending snap connection. No-op when none is pending.
+  NotifySnapConnectionRequestProcessed(bool approved) => ();
+
+  // Returns the serialized origins currently connected to |snap_id|. Used by
+  // the snaps list panel to show and manage a snap's connected dApps.
+  GetConnectedOrigins(string snap_id) => (array<string> origins);
+
+  // Revokes |origin|'s connection grant to |snap_id|.
+  DisconnectSnapOrigin(string origin, string snap_id) => ();
 };
 
 // For default wallet setting, user assets, permission checks, importing

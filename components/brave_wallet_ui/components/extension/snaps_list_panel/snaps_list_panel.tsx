@@ -9,9 +9,50 @@ import { BraveWallet } from '../../../constants/types'
 import {
   useGetInstalledSnapsQuery,
   useUninstallSnapMutation,
+  useGetSnapConnectedOriginsQuery,
+  useDisconnectSnapOriginMutation,
 } from '../../../common/slices/api.slice'
 import { useAppDispatch } from '../../../common/hooks/use-redux'
 import { PanelActions } from '../../../panel/actions'
+
+// Lists the origins currently connected to a snap, each with a disconnect
+// button. Only mounted while the snap's manifest drawer is expanded, so the
+// query runs lazily.
+const ConnectedOriginsList = ({ snapId }: { snapId: string }) => {
+  const { data: origins = [], isLoading } = useGetSnapConnectedOriginsQuery({
+    snapId,
+  })
+  const [disconnectSnapOrigin] = useDisconnectSnapOriginMutation()
+
+  return (
+    <div style={styles.connectionsSection}>
+      <span style={styles.connectionsLabel}>Connected sites</span>
+      {isLoading ? (
+        <span style={styles.connectionsEmpty}>Loading…</span>
+      ) : origins.length === 0 ? (
+        <span style={styles.connectionsEmpty}>No connected sites.</span>
+      ) : (
+        <ul style={styles.originList}>
+          {origins.map((origin) => (
+            <li
+              key={origin}
+              style={styles.originItem}
+            >
+              <span style={styles.originName}>{origin}</span>
+              <button
+                style={styles.disconnectBtn}
+                title='Disconnect'
+                onClick={() => disconnectSnapOrigin({ origin, snapId })}
+              >
+                Disconnect
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
 
 export const SnapsListPanel = () => {
   const dispatch = useAppDispatch()
@@ -111,19 +152,22 @@ export const SnapsListPanel = () => {
 
               {/* Manifest drawer */}
               {expandedManifestId === snap.snapId && (
-                <pre style={styles.manifest}>
-                  {JSON.stringify(
-                    {
-                      snap_id: snap.snapId,
-                      version: snap.version,
-                      proposed_name: snap.manifest?.proposedName,
-                      permissions: snap.manifest?.permissions,
-                      enabled: snap.enabled,
-                    },
-                    null,
-                    2,
-                  )}
-                </pre>
+                <>
+                  <pre style={styles.manifest}>
+                    {JSON.stringify(
+                      {
+                        snap_id: snap.snapId,
+                        version: snap.version,
+                        proposed_name: snap.manifest?.proposedName,
+                        permissions: snap.manifest?.permissions,
+                        enabled: snap.enabled,
+                      },
+                      null,
+                      2,
+                    )}
+                  </pre>
+                  <ConnectedOriginsList snapId={snap.snapId} />
+                </>
               )}
             </li>
           ))}
@@ -257,6 +301,63 @@ const styles: Record<string, React.CSSProperties> = {
     wordBreak: 'break-all' as const,
     color: '#374151',
     lineHeight: 1.5,
+  },
+  connectionsSection: {
+    width: '100%',
+    margin: '8px 0 0',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+  },
+  connectionsLabel: {
+    fontSize: '10px',
+    fontWeight: 600,
+    color: '#6b7280',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+  connectionsEmpty: {
+    fontSize: '11px',
+    color: '#6b7280',
+  },
+  originList: {
+    listStyle: 'none',
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+  },
+  originItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '6px',
+    padding: '6px 8px',
+    background: '#fff',
+    border: '1px solid #e0e2e8',
+    borderRadius: '4px',
+  },
+  originName: {
+    fontSize: '11px',
+    color: '#374151',
+    fontFamily: 'monospace',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    minWidth: 0,
+    flex: 1,
+  },
+  disconnectBtn: {
+    padding: '4px 8px',
+    fontSize: '11px',
+    background: 'transparent',
+    color: '#d32f2f',
+    border: '1px solid #d32f2f',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
   },
   empty: {
     padding: '16px',

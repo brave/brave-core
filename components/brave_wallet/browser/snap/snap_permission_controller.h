@@ -60,6 +60,11 @@ class SnapPermissionController {
   // Returns all snap_ids connected to |origin|.
   std::vector<std::string> GetConnectedSnaps(const url::Origin& origin) const;
 
+  // Returns the serialized origins currently connected to |snap_id| (the
+  // reverse of GetConnectedSnaps).
+  std::vector<std::string> GetOriginsConnectedToSnap(
+      const std::string& snap_id) const;
+
   // Returns true if |origin| is allowed to invoke |snap_id| according to the
   // snap's endowment:rpc manifest config. Does NOT check connection grants.
   bool IsOriginAllowedByManifest(const url::Origin& origin,

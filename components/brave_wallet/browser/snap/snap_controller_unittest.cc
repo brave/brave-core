@@ -180,6 +180,69 @@ TEST_F(SnapControllerTest, InvokeSnapDisconnectFailsPending) {
   EXPECT_EQ(future.Get<1>(), "SnapBridge disconnected");
 }
 
+TEST_F(SnapControllerTest, InvokeSnapConnectionApprovalApproveSucceeds) {
+  InstallSnap("npm:test-snap", /*allow_dapps=*/true);
+  const url::Origin origin = SecureOrigin();
+  ASSERT_FALSE(permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
+
+  std::optional<std::string> requested_snap;
+  controller_->SetRequestConnectionDelegate(base::BindLambdaForTesting(
+      [&](url::Origin /*o*/, std::string id,
+          SnapController::RequestConnectionResultCallback cb) {
+        requested_snap = id;
+        std::move(cb).Run(/*approved=*/true);
+      }));
+
+  InvokeFuture future;
+  controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), origin,
+                          future.GetCallback());
+
+  EXPECT_EQ(requested_snap, "npm:test-snap");
+  ASSERT_TRUE(future.Get<0>());
+  EXPECT_EQ(*future.Get<0>(), base::Value("ok"));
+  EXPECT_TRUE(permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
+}
+
+TEST_F(SnapControllerTest, InvokeSnapConnectionApprovalRejectFails) {
+  InstallSnap("npm:test-snap", /*allow_dapps=*/true);
+  const url::Origin origin = SecureOrigin();
+
+  controller_->SetRequestConnectionDelegate(base::BindLambdaForTesting(
+      [&](url::Origin /*o*/, std::string /*id*/,
+          SnapController::RequestConnectionResultCallback cb) {
+        std::move(cb).Run(/*approved=*/false);
+      }));
+
+  InvokeFuture future;
+  controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), origin,
+                          future.GetCallback());
+
+  EXPECT_EQ(future.Get<1>(), "user_rejected");
+  EXPECT_FALSE(permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
+}
+
+TEST_F(SnapControllerTest, InvokeSnapAlreadyConnectedSkipsApproval) {
+  InstallSnap("npm:test-snap", /*allow_dapps=*/true);
+  const url::Origin origin = SecureOrigin();
+  permission_controller_->GrantSnapConnection(origin, "npm:test-snap");
+
+  bool delegate_called = false;
+  controller_->SetRequestConnectionDelegate(base::BindLambdaForTesting(
+      [&](url::Origin /*o*/, std::string /*id*/,
+          SnapController::RequestConnectionResultCallback cb) {
+        delegate_called = true;
+        std::move(cb).Run(/*approved=*/true);
+      }));
+
+  InvokeFuture future;
+  controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), origin,
+                          future.GetCallback());
+
+  EXPECT_FALSE(delegate_called);
+  ASSERT_TRUE(future.Get<0>());
+  EXPECT_EQ(*future.Get<0>(), base::Value("ok"));
+}
+
 // --- RequestSnaps -----------------------------------------------------------
 
 TEST_F(SnapControllerTest, RequestSnapsInsecureOriginRejected) {

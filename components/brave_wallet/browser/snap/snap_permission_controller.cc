@@ -106,6 +106,24 @@ std::vector<std::string> SnapPermissionController::GetConnectedSnaps(
   return result;
 }
 
+std::vector<std::string> SnapPermissionController::GetOriginsConnectedToSnap(
+    const std::string& snap_id) const {
+  std::vector<std::string> result;
+  const base::DictValue& all = prefs_->GetDict(kConnectedSnapsPref);
+  for (const auto [origin_key, value] : all) {
+    if (!value.is_list()) {
+      continue;
+    }
+    for (const auto& item : value.GetList()) {
+      if (item.is_string() && item.GetString() == snap_id) {
+        result.push_back(origin_key);
+        break;
+      }
+    }
+  }
+  return result;
+}
+
 bool SnapPermissionController::IsOriginAllowedByManifest(
     const url::Origin& origin,
     const std::string& snap_id) const {

@@ -1229,6 +1229,12 @@ void EthereumProviderImpl::HandleWalletInvokeSnapMethod(
     return;
   }
 
+  // Invoking a snap this origin isn't connected to yet triggers a connection
+  // approval prompt; raise the panel so the user can act on it.
+  if (!ss->IsSnapConnected(origin_, *snap_id)) {
+    delegate_->ShowPanel(origin_);
+  }
+
   ss->snap_controller()->InvokeSnap(
       *snap_id, *method, std::move(snap_params), origin_,
       base::BindOnce(&EthereumProviderImpl::OnSnapInvokeResult,
@@ -1264,6 +1270,16 @@ void EthereumProviderImpl::HandleWalletRequestSnapsMethod(
     RejectMismatchError(std::move(request.id), "SnapsService not available",
                         std::move(request_callback));
     return;
+  }
+
+  // Raise the panel if any requested snap needs to be installed or connected,
+  // so the user can approve the install / connection.
+  for (const auto [snap_id, opts] : *snaps_dict) {
+    if (!ss->IsSnapAvailable(snap_id) ||
+        !ss->IsSnapConnected(origin_, snap_id)) {
+      delegate_->ShowPanel(origin_);
+      break;
+    }
   }
 
   ss->snap_controller()->RequestSnaps(
@@ -1357,6 +1373,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
         std::move(callback), base::Value());
     return;
   }
+
+  LOG(ERROR) << "XXXZZZ request method " << json_rpc_request->method;
 
   auto it = method_handlers_.find(json_rpc_request->method);
   if (it != method_handlers_.end()) {

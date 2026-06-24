@@ -55,6 +55,15 @@ class SnapController {
                                    std::string version,
                                    InstallSnapResultCallback callback)>;
 
+  // Callback provided by SnapsService to obtain user approval before granting a
+  // dApp→snap connection. |approved| is true once the user accepts.
+  using RequestConnectionResultCallback =
+      base::OnceCallback<void(bool approved)>;
+  using RequestConnectionDelegate =
+      base::RepeatingCallback<void(url::Origin origin,
+                                   std::string snap_id,
+                                   RequestConnectionResultCallback callback)>;
+
   SnapController(SnapDataProvider& data_provider,
                  SnapPermissionController& permission_controller,
                  SnapBridgeController& bridge_controller);
@@ -65,6 +74,10 @@ class SnapController {
 
   // Called by SnapsService after construction to wire up the install delegate.
   void SetInstallSnapDelegate(InstallSnapDelegate delegate);
+
+  // Called by SnapsService after construction to wire up the connection-approval
+  // delegate. When unset (e.g. in unit tests) connections are auto-granted.
+  void SetRequestConnectionDelegate(RequestConnectionDelegate delegate);
 
   // Invoked by EthereumProviderImpl for wallet_invokeSnap / wallet_snap.
   void InvokeSnap(const std::string& snap_id,
@@ -95,6 +108,21 @@ class SnapController {
 
  private:
   void OnBridgeDisconnected();
+
+  // Continuation of InvokeSnap after any required connection approval. Performs
+  // the install/connection checks and dispatches the invoke to the bridge.
+  void ContinueInvokeSnap(std::string snap_id,
+                          std::string method,
+                          base::Value params,
+                          std::optional<url::Origin> caller_origin,
+                          SnapResultCallback callback);
+  // Resolves an InvokeSnap connection-approval request.
+  void OnInvokeConnectionResult(std::string snap_id,
+                                std::string method,
+                                base::Value params,
+                                std::optional<url::Origin> caller_origin,
+                                SnapResultCallback callback,
+                                bool approved);
 
   void DispatchInvoke(size_t cb_index,
                       std::string snap_id,
@@ -134,12 +162,18 @@ class SnapController {
   void OnSingleSnapInstalled(std::shared_ptr<RequestSnapsState> state,
                              const std::string& snap_id,
                              base::expected<void, std::string> result);
+  // Resolves a RequestSnaps connection-approval request for an already-installed
+  // snap. Grants and records the snap on approval, then aggregates.
+  void OnSnapConnectionResolved(std::shared_ptr<RequestSnapsState> state,
+                                const std::string& snap_id,
+                                bool approved);
 
   raw_ref<SnapDataProvider> data_provider_;
   raw_ref<SnapPermissionController> permission_controller_;
   raw_ref<SnapBridgeController> bridge_controller_;
 
   InstallSnapDelegate install_snap_delegate_;
+  RequestConnectionDelegate request_connection_delegate_;
 
   // Callbacks for in-flight LoadSnap → InvokeSnap exchanges.
   std::vector<SnapResultCallback> pending_callbacks_;

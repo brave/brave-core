@@ -238,6 +238,9 @@ export function makeSnapsServiceObserver(store: Store) {
       onPendingSnapInstallChanged: function () {
         store.dispatch(walletApi.util.invalidateTags(['PendingSnapInstall']))
       },
+      onPendingSnapConnectionChanged: function () {
+        store.dispatch(walletApi.util.invalidateTags(['PendingSnapConnection']))
+      },
     })
   return snapsServiceObserverReceiver
 }
