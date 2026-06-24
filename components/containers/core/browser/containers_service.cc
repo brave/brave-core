@@ -26,8 +26,11 @@
 namespace containers {
 
 ContainersService::ContainersService(PrefService* prefs,
+                                     bool is_off_the_record,
                                      std::unique_ptr<Delegate> delegate)
-    : prefs_(CHECK_DEREF(prefs)), delegate_(std::move(delegate)) {
+    : prefs_(CHECK_DEREF(prefs)),
+      is_off_the_record_(is_off_the_record),
+      delegate_(std::move(delegate)) {
   CHECK(delegate_);
 
   pref_change_registrar_.Init(base::to_address(prefs_));
@@ -172,6 +175,10 @@ ContainersService::GetContainerIdFromContainerSpecifier(
 }
 
 void ContainersService::ScheduleOrphanedContainersCleanup() {
+  if (is_off_the_record_) {
+    return;
+  }
+
   if (orphaned_cleanup_state_ != OrphanedContainersCleanupState::kIdle) {
     return;
   }

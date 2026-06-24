@@ -29,7 +29,7 @@ class ContainerModelUnitTest : public testing::Test {
     feature_list_.InitAndEnableFeature(features::kContainers);
     RegisterProfilePrefs(prefs_.registry());
     service_ = std::make_unique<ContainersService>(
-        &prefs_,
+        &prefs_, /*is_off_the_record=*/false,
         std::make_unique<testing::NiceMock<MockContainersServiceDelegate>>());
   }
 
