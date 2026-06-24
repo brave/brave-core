@@ -194,8 +194,9 @@ assert '_ParseAstHelper' in globals()
 orig_parse_ast_helper = _ParseAstHelper
 
 
-def _ParseAstHelper(mojom_abspath, enabled_features):
+def _ParseAstHelper(mojom_abspath, mojom_path, enabled_features):
     mojom_abspath, parsed_ast = orig_parse_ast_helper(mojom_abspath,
+                                                      mojom_path,
                                                       enabled_features)
     _PatchInBraveMojomAst(mojom_abspath, parsed_ast, enabled_features)
     return mojom_abspath, parsed_ast
