@@ -513,7 +513,6 @@ brave_java_sources = [
 ]
 
 brave_java_sources += brave_ads_java_sources
-brave_java_sources += brave_browser_autofill_options_java_sources
 brave_java_sources += brave_browser_autofill_service_java_sources
 brave_java_sources += brave_components_embedder_support_java_sources
 brave_java_sources += brave_components_signin_java_sources

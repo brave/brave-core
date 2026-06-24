@@ -27,7 +27,9 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings;
-import org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsFragmentBase;
+import org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsSearchIndex;
+import org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsSearchIndex.SettingsRoutes;
+import org.chromium.chrome.browser.autofill.settings.HomeOfTransactionsFragment;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
@@ -753,6 +755,16 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     // Wraps MainSettings.SEARCH_INDEX_DATA_PROVIDER and additionally removes upstream preferences
     // that BraveMainPreferencesBase hides from the Brave main settings UI.
+    private static final SettingsRoutes AUTOFILL_OPTIONS_SEARCH_INDEX_ROUTES =
+            new SettingsRoutes(
+                    MainSettings.class.getName(),
+                    MainSettings.PREF_AUTOFILL_AND_PASSWORDS,
+                    MainSettings.PREF_AUTOFILL_OPTIONS,
+                    HomeOfTransactionsFragment.class.getName(),
+                    HomeOfTransactionsFragment.PREF_AUTOFILL_SETTINGS,
+                    HomeOfTransactionsFragment.EXTRA_REFERRER,
+                    HomeOfTransactionsFragment.AutofillSettingsReferrer.SETTINGS_MENU);
+
     public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new ChromeBaseSearchIndexProvider(MainSettings.class.getName(), 0) {
 
@@ -780,7 +792,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         Context context, SettingsIndexData indexData, Profile profile) {
                     MainSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
                             context, indexData, profile);
-                    BraveAutofillOptionsFragmentBase.updateSearchIndexEntries(context, indexData);
+                    BraveAutofillOptionsSearchIndex.updateSearchIndexEntries(
+                            context, indexData, AUTOFILL_OPTIONS_SEARCH_INDEX_ROUTES);
                     // Remove upstream preferences hidden from the main settings UI.
                     // "languages" is safe to remove now that
                     // LanguageSettings.SEARCH_INDEX_DATA_PROVIDER

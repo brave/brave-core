@@ -18,14 +18,10 @@ import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.autofill.settings.HomeOfTransactionsFragment;
+import org.chromium.chrome.browser.autofill.brave.R;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
-import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
-import org.chromium.components.browser_ui.settings.search.PreferenceParser;
-import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 
 @NullMarked
@@ -128,7 +124,9 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
         public void onBindViewHolder(PreferenceViewHolder holder) {
             super.onBindViewHolder(holder);
 
-            View iconFrame = holder.findViewById(R.id.icon_frame);
+            View iconFrame =
+                    holder.findViewById(
+                            org.chromium.components.browser_ui.settings.R.id.icon_frame);
             if (iconFrame == null) return;
 
             ViewGroup.LayoutParams layoutParams = iconFrame.getLayoutParams();
@@ -137,128 +135,11 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
             int alignedStartSlotWidth =
                     getContext()
                             .getResources()
-                            .getDimensionPixelSize(R.dimen.min_touch_target_size);
+                            .getDimensionPixelSize(org.chromium.ui.R.dimen.min_touch_target_size);
             if (layoutParams.width == alignedStartSlotWidth) return;
 
             layoutParams.width = alignedStartSlotWidth;
             iconFrame.setLayoutParams(layoutParams);
         }
-    }
-
-    private static Bundle createSettingsArgs() {
-        return AutofillOptionsFragment.createRequiredArgs(
-                AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS);
-    }
-
-    private static Bundle createHomeOfTransactionsArgs() {
-        Bundle args = new Bundle();
-        args.putInt(
-                HomeOfTransactionsFragment.EXTRA_REFERRER,
-                HomeOfTransactionsFragment.AutofillSettingsReferrer.SETTINGS_MENU);
-        return args;
-    }
-
-    private static void updateAutofillPrivateWindowEntry(
-            Context context, SettingsIndexData indexData) {
-        SettingsIndexData.Entry autofillPrivateWindowEntry =
-                indexData.getEntryForKey(
-                        AutofillOptionsFragment.class.getName(), PREF_AUTOFILL_PRIVATE_WINDOW);
-        if (autofillPrivateWindowEntry == null) {
-            indexData.addEntryForKey(
-                    AutofillOptionsFragment.class.getName(),
-                    PREF_AUTOFILL_PRIVATE_WINDOW,
-                    R.string.prefs_autofill_private_window_title,
-                    R.string.prefs_autofill_private_window_summary,
-                    createSettingsArgs());
-            return;
-        }
-
-        indexData.updateEntry(
-                autofillPrivateWindowEntry.id,
-                new SettingsIndexData.Entry.Builder(autofillPrivateWindowEntry)
-                        .setTitle(context.getString(R.string.prefs_autofill_private_window_title))
-                        .setSummary(
-                                context.getString(R.string.prefs_autofill_private_window_summary))
-                        .setArguments(createSettingsArgs())
-                        .build());
-    }
-
-    private static void updateMainAutofillAndPasswordsEntry(SettingsIndexData indexData) {
-        SettingsIndexData.Entry mainAutofillAndPasswordsEntry =
-                indexData.getEntryForKey(
-                        MainSettings.class.getName(), MainSettings.PREF_AUTOFILL_AND_PASSWORDS);
-        if (mainAutofillAndPasswordsEntry == null) {
-            return;
-        }
-
-        indexData.updateEntry(
-                mainAutofillAndPasswordsEntry.id,
-                new SettingsIndexData.Entry.Builder(mainAutofillAndPasswordsEntry)
-                        .setFragment(HomeOfTransactionsFragment.class.getName())
-                        .setArguments(createHomeOfTransactionsArgs())
-                        .build());
-    }
-
-    private static void updateLegacyAutofillOptionsEntry(
-            Context context, SettingsIndexData indexData) {
-        SettingsIndexData.Entry legacyAutofillOptionsEntry =
-                indexData.getEntryForKey(
-                        MainSettings.class.getName(), MainSettings.PREF_AUTOFILL_OPTIONS);
-        if (legacyAutofillOptionsEntry == null) {
-            return;
-        }
-
-        indexData.updateEntry(
-                legacyAutofillOptionsEntry.id,
-                new SettingsIndexData.Entry.Builder(legacyAutofillOptionsEntry)
-                        .setTitle(AutofillOptionsMediator.getFragmentTitle(context))
-                        .setFragment(AutofillOptionsFragment.class.getName())
-                        .setArguments(createSettingsArgs())
-                        .build());
-    }
-
-    private static void updateHomeOfTransactionsAutofillOptionsEntry(SettingsIndexData indexData) {
-        SettingsIndexData.Entry homeOfTransactionsAutofillOptionsEntry =
-                indexData.getEntryForKey(
-                        HomeOfTransactionsFragment.class.getName(),
-                        HomeOfTransactionsFragment.PREF_AUTOFILL_SETTINGS);
-        if (homeOfTransactionsAutofillOptionsEntry == null) {
-            return;
-        }
-
-        indexData.updateEntry(
-                homeOfTransactionsAutofillOptionsEntry.id,
-                new SettingsIndexData.Entry.Builder(homeOfTransactionsAutofillOptionsEntry)
-                        .setFragment(AutofillOptionsFragment.class.getName())
-                        .setArguments(createSettingsArgs())
-                        .build());
-    }
-
-    private static void addAutofillOptionsChildParentLinks(SettingsIndexData indexData) {
-        indexData.addChildParentLink(
-                HomeOfTransactionsFragment.class.getName(),
-                PreferenceParser.createUniqueId(
-                        MainSettings.class.getName(), MainSettings.PREF_AUTOFILL_AND_PASSWORDS));
-        indexData.addChildParentLink(
-                AutofillOptionsFragment.class.getName(),
-                PreferenceParser.createUniqueId(
-                        HomeOfTransactionsFragment.class.getName(),
-                        HomeOfTransactionsFragment.PREF_AUTOFILL_SETTINGS));
-    }
-
-    /**
-     * Updates Brave's Autofill private-window search entry after upstream providers populate or
-     * refresh {@link SettingsIndexData}.
-     *
-     * <p>This keeps the moved private-window preference under {@link AutofillOptionsFragment},
-     * rewires the legacy Autofill options and Home of Transactions routes with their required
-     * launch arguments, and restores the child-parent links used for breadcrumb resolution.
-     */
-    public static void updateSearchIndexEntries(Context context, SettingsIndexData indexData) {
-        updateAutofillPrivateWindowEntry(context, indexData);
-        updateMainAutofillAndPasswordsEntry(indexData);
-        updateLegacyAutofillOptionsEntry(context, indexData);
-        updateHomeOfTransactionsAutofillOptionsEntry(indexData);
-        addAutofillOptionsChildParentLinks(indexData);
     }
 }
