@@ -73,7 +73,9 @@ public class ReaderModeHandler: InternalSchemeResponse {
       .value
     {
       var originalPolicies = [(String, String)]()
-      for policy in originalCSP.components(separatedBy: ";") {
+      let policiesStrings = originalCSP.components(separatedBy: ";")
+        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+      for policy in policiesStrings {
         let components = policy.components(separatedBy: " ")
         if components.count == 1 {
           originalPolicies.append((policy, ""))
