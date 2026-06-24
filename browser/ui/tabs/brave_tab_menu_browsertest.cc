@@ -29,6 +29,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -482,6 +483,11 @@ class BraveTabMenuWithContainersBrowserTest : public BraveTabMenuBrowserTest {
  public:
   BraveTabMenuWithContainersBrowserTest() = default;
   ~BraveTabMenuWithContainersBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    BraveTabMenuBrowserTest::SetUpOnMainThread();
+    containers::SetContainersEnabled(true, browser()->profile()->GetPrefs());
+  }
 
  private:
   base::test::ScopedFeatureList feature_list_{

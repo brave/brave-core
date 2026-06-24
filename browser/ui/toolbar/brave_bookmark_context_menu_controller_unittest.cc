@@ -14,6 +14,7 @@
 #include "base/values.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_merged_surface_service_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
@@ -205,6 +206,7 @@ class BraveBookmarkContextMenuContainersTest
   void SetUp() override {
     feature_list_.InitAndEnableFeature(containers::features::kContainers);
     BraveBookmarkContextMenuControllerTest::SetUp();
+    containers::SetContainersEnabled(true, profile_->GetPrefs());
   }
 
  protected:

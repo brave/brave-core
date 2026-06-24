@@ -644,6 +644,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/containers:unit_tests",
 
       # For brave_bookmark_context_menu_controller_unittest.cc
+      "//brave/components/containers/core/browser:test_support",
       "//brave/components/containers/core/common",
     ]
   }

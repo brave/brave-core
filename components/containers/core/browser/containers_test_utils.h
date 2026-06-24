@@ -16,6 +16,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/skia/include/core/SkColor.h"
 
+class PrefService;
+
 namespace containers {
 
 class MockContainersServiceDelegate : public ContainersService::Delegate {
@@ -57,6 +59,8 @@ void ExpectContainer(const mojom::ContainerPtr& container,
                      const std::string& name,
                      mojom::Icon icon = mojom::Icon::kDefault,
                      SkColor color = SK_ColorBLUE);
+
+void SetContainersEnabled(bool enabled, PrefService* prefs);
 
 }  // namespace containers
 

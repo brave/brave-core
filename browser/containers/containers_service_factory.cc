@@ -16,6 +16,7 @@
 #include "chrome/browser/profiles/profile_selections.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/common/buildflags.h"
+#include "chrome/common/channel_info.h"
 
 #if BUILDFLAG(ENABLE_SESSION_SERVICE)
 #include "chrome/browser/sessions/session_service_factory.h"
@@ -50,7 +51,7 @@ ContainersServiceFactory::~ContainersServiceFactory() = default;
 
 void ContainersServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  containers::RegisterProfilePrefs(registry);
+  containers::RegisterProfilePrefs(registry, chrome::GetChannel());
 }
 
 bool ContainersServiceFactory::ServiceIsCreatedWithBrowserContext() const {
