@@ -95,12 +95,12 @@ replace: 'protected void runMenuItemEnterAnimations()'
 // ❌ WRONG - Bytecode manipulation for method visibility change
 
 // BraveAppMenuDummySuper.java
-class BraveAppMenuDummySuper extends AppMenu
+class BraveAppMenuDummySuper extends AppMenu {
 
 public void runMenuItemEnterAnimations() {
     assert false : "This class usage should be removed in the bytecode!";
 }
-
+}
 // BraveAppMenu.java
 public class BraveAppMenu extends BraveAppMenuDummySuper
 
