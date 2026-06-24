@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_REGISTRATION_H_
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_REGISTRATION_H_
 
+#include "base/version_info/channel.h"
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }
@@ -13,7 +15,9 @@ class PrefRegistrySyncable;
 namespace containers {
 
 // Registers container-related preferences with the profile's preference system.
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+void RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry,
+    version_info::Channel channel = version_info::Channel::UNKNOWN);
 
 }  // namespace containers
 
