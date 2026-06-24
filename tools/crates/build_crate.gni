@@ -58,8 +58,8 @@ template("build_crate") {
       "TEMP=" + rebase_path(cargo_target_dir),
       "TMP=" + rebase_path(cargo_target_dir),
 
-      # This `rebase_path` MUST stay absolute (new_base = ""). A relative
-      # entry like `../../third_party/rust-toolchain/bin` is resolved against the
+      # This `rebase_path` MUST stay absolute (new_base = ""). A relative entry
+      # like `../../third_party/rust-toolchain/bin` is resolved against the
       # process's CWD, so it may not resolve correctly and could silently fall
       # through to a local rustup proxy via `~/.cargo/bin`.
       "PATH=" + rebase_path("//third_party/rust-toolchain/bin") +
