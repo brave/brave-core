@@ -22,6 +22,8 @@ class Profile;
 
 namespace extensions_mv2 {
 
+class ExtensionManifestV2Installer;
+
 class ExtensionsManifestV2Migrator
     : public KeyedService,
       public extensions::ExtensionPrefsObserver,
@@ -52,8 +54,15 @@ class ExtensionsManifestV2Migrator
 
   void BackupExtensionSettings(
       const extensions::ExtensionId& webstore_extension_id);
+  void OnBackupSettingsCompleted(
+      const extensions::ExtensionId& webstore_extension_id,
+      const base::Version& version);
   void OnSettingsImported(
       const extensions::ExtensionId& brave_hosted_extension_id);
+  void OnSilentInstall(const extensions::ExtensionId& extension_id,
+                       bool success,
+                       const std::string& error,
+                       extensions::webstore_install::Result result);
 
   const raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<extensions::ExtensionPrefs,
@@ -62,6 +71,7 @@ class ExtensionsManifestV2Migrator
   base::ScopedObservation<extensions::ExtensionRegistry,
                           extensions::ExtensionRegistryObserver>
       registry_observation_{this};
+  std::vector<std::unique_ptr<ExtensionManifestV2Installer>> silent_installers_;
 
   base::WeakPtrFactory<ExtensionsManifestV2Migrator> weak_factory_{this};
 };
