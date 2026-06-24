@@ -128,8 +128,9 @@ TEST_F(SnapPermissionControllerTest, OriginAllowedUnknownSnap) {
       Origin("https://app.example.com"), "npm:unknown"));
 }
 
-TEST_F(SnapPermissionControllerTest, OriginAllowedRequiresAllowDapps) {
-  InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/false);
+TEST_F(SnapPermissionControllerTest, OriginDeniedWithoutAllowDappsOrAllowlist) {
+  InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/false,
+              /*allowed_origins=*/{});
   EXPECT_FALSE(controller_->IsOriginAllowedByManifest(
       Origin("https://app.example.com"), "npm:test-snap"));
 }
@@ -141,8 +142,21 @@ TEST_F(SnapPermissionControllerTest, OriginAllowedEmptyListAllowsAny) {
       Origin("https://anything.example.com"), "npm:test-snap"));
 }
 
-TEST_F(SnapPermissionControllerTest, OriginAllowedRespectsAllowlist) {
+TEST_F(SnapPermissionControllerTest, OriginAllowDappsIgnoresAllowlist) {
+  // allow_dapps short-circuits to allow any origin, even one absent from the
+  // allowlist.
   InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/true,
+              /*allowed_origins=*/{"https://app.example.com"});
+  EXPECT_TRUE(controller_->IsOriginAllowedByManifest(
+      Origin("https://app.example.com"), "npm:test-snap"));
+  EXPECT_TRUE(controller_->IsOriginAllowedByManifest(
+      Origin("https://anything.example.com"), "npm:test-snap"));
+}
+
+TEST_F(SnapPermissionControllerTest, OriginAllowlistRespectedWithoutAllowDapps) {
+  // Without allow_dapps the allowlist is consulted: listed origins pass,
+  // others are denied.
+  InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/false,
               /*allowed_origins=*/{"https://app.example.com"});
   EXPECT_TRUE(controller_->IsOriginAllowedByManifest(
       Origin("https://app.example.com"), "npm:test-snap"));

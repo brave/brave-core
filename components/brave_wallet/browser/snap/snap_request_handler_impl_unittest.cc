@@ -162,13 +162,107 @@ TEST_F(SnapRequestHandlerImplTest, UnsupportedMethodRejected) {
   EXPECT_EQ(future.Get<1>(), "Unsupported snap method: custom_method");
 }
 
-TEST_F(SnapRequestHandlerImplTest, GetEntropyNotImplemented) {
+TEST_F(SnapRequestHandlerImplTest, GetEntropyParamsMustBeDict) {
   InstallSnap(kSnapId, {"snap_getEntropy"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_getEntropy", base::Value(),
+  handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
+                              base::Value("not-a-dict"),
                               future.GetCallback<std::optional<base::Value>,
                                                  const std::optional<std::string>&>());
-  EXPECT_EQ(future.Get<1>(), "snap_getEntropy not yet implemented");
+  EXPECT_EQ(future.Get<1>(), "snap_getEntropy: params must be a dict");
+}
+
+TEST_F(SnapRequestHandlerImplTest, GetEntropyVersionMustBe1) {
+  InstallSnap(kSnapId, {"snap_getEntropy"});
+  // Missing version.
+  {
+    ReqFuture future;
+    handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
+                                base::Value(base::DictValue()),
+                                future.GetCallback<std::optional<base::Value>,
+                                                   const std::optional<std::string>&>());
+    EXPECT_EQ(future.Get<1>(), "snap_getEntropy: version must be 1");
+  }
+  // Wrong version.
+  {
+    base::DictValue params;
+    params.Set("version", 2);
+    ReqFuture future;
+    handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
+                                base::Value(std::move(params)),
+                                future.GetCallback<std::optional<base::Value>,
+                                                   const std::optional<std::string>&>());
+    EXPECT_EQ(future.Get<1>(), "snap_getEntropy: version must be 1");
+  }
+}
+
+// As with snap_getBip44Entropy there is no "locked wallet" test:
+// KeyringService::GetEntropyForSnap DCHECKs on encryptor_, so the happy path is
+// exercised with an unlocked wallet. The derived entropy must be a 0x-prefixed
+// 32-byte (64 hex char) string, deterministic for a given snap id + salt, and
+// distinct when a salt is supplied.
+TEST_F(SnapRequestHandlerImplTest, GetEntropyUnlockedWalletSucceeds) {
+  AccountUtils(keyring_service_.get())
+      .CreateWallet(kMnemonicDivideCruise, "brave123");
+  InstallSnap(kSnapId, {"snap_getEntropy"});
+
+  auto request = [&](std::optional<std::string> salt) -> std::string {
+    base::DictValue params;
+    params.Set("version", 1);
+    if (salt) {
+      params.Set("salt", *salt);
+    }
+    ReqFuture future;
+    handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
+                                base::Value(std::move(params)),
+                                future.GetCallback<std::optional<base::Value>,
+                                                   const std::optional<std::string>&>());
+    EXPECT_FALSE(future.Get<1>());
+    EXPECT_TRUE(future.Get<0>() && future.Get<0>()->is_string());
+    return future.Get<0>()->is_string() ? future.Get<0>()->GetString()
+                                         : std::string();
+  };
+
+  const std::string no_salt = request(std::nullopt);
+  // "0x" + 64 hex chars for a 32-byte private key.
+  EXPECT_EQ(no_salt.size(), 66u);
+  EXPECT_TRUE(no_salt.starts_with("0x"));
+
+  // Deterministic: same snap id + (no) salt yields the same entropy.
+  EXPECT_EQ(no_salt, request(std::nullopt));
+
+  // A salt produces unrelated entropy.
+  const std::string salted = request("foo");
+  EXPECT_EQ(salted.size(), 66u);
+  EXPECT_NE(no_salt, salted);
+}
+
+// Byte-exact compatibility with MetaMask's SIP-6 reference implementation.
+// Vector from @metamask/snaps-rpc-methods getEntropy.test.ts:
+//   mnemonic = "test test test test test test test test test test test ball"
+//   origin   = "npm:@metamask/example-snap" (the snap id / derivation input)
+//   salt     = "foo"
+//   result   = 0x6d8e92de419401c7da3cedd5f60ce5635b26059c2a4a8003877fec83653a4921
+TEST_F(SnapRequestHandlerImplTest, GetEntropyMatchesMetaMaskReferenceVector) {
+  constexpr char kMetaMaskTestMnemonic[] =
+      "test test test test test test test test test test test ball";
+  constexpr char kMetaMaskSnapId[] = "npm:@metamask/example-snap";
+  AccountUtils(keyring_service_.get())
+      .CreateWallet(kMetaMaskTestMnemonic, "brave123");
+  InstallSnap(kMetaMaskSnapId, {"snap_getEntropy"});
+
+  base::DictValue params;
+  params.Set("version", 1);
+  params.Set("salt", "foo");
+  ReqFuture future;
+  handler_->HandleSnapRequest(kMetaMaskSnapId, "snap_getEntropy",
+                              base::Value(std::move(params)),
+                              future.GetCallback<std::optional<base::Value>,
+                                                 const std::optional<std::string>&>());
+  ASSERT_TRUE(future.Get<0>() && future.Get<0>()->is_string());
+  EXPECT_EQ(
+      future.Get<0>()->GetString(),
+      "0x6d8e92de419401c7da3cedd5f60ce5635b26059c2a4a8003877fec83653a4921");
 }
 
 TEST_F(SnapRequestHandlerImplTest, GetBip44ParamsMustBeDict) {

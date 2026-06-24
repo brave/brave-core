@@ -46,6 +46,7 @@ export const SnapsStore = () => {
 
   const handleInstall = React.useCallback(async () => {
     const id = snapIdInput.trim()
+    console.error('XXXZZZ handleInstall: raw input=' + JSON.stringify(snapIdInput) + ' trimmed=' + JSON.stringify(id))
     if (!id) {
       setStatusMessage('Please enter a snap ID (e.g. npm:@polkagate/snap)')
       setIsError(true)
@@ -56,10 +57,12 @@ export const SnapsStore = () => {
     setIsError(false)
 
     try {
+      console.error('XXXZZZ handleInstall: calling requestInstallSnap snapId=' + id)
       const result = await requestInstallSnap({
         snapId: id,
         version: 'latest',
       }).unwrap()
+      console.error('XXXZZZ handleInstall: requestInstallSnap result=' + JSON.stringify(result))
 
       if (!result.success) {
         if (result.error === 'already_pending') {

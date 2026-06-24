@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/task/sequenced_task_runner.h"
@@ -242,6 +243,9 @@ void SnapsService::OnGetSnapBundleResult(GetSnapBundleCallback callback,
 void SnapsService::SetSnapInstallState(mojom::SnapInstallState state,
                                         mojom::SnapInstallDataPtr install_data,
                                         const std::string& error) {
+  LOG(ERROR) << "XXXZZZ SetSnapInstallState: state=" << static_cast<int>(state)
+             << " error='" << error << "'"
+             << " install_data=" << (install_data ? install_data->snap_id : "(null)");
   pending_snap_state_ = state;
   if (install_data) {
     pending_snap_install_data_ = std::move(install_data);
@@ -260,7 +264,14 @@ void SnapsService::SetSnapInstallState(mojom::SnapInstallState state,
 void SnapsService::RequestInstallSnap(const std::string& snap_id,
                                        const std::string& version,
                                        RequestInstallSnapCallback callback) {
+  const std::string normalized_id =
+      base::StartsWith(snap_id, "npm:") ? snap_id : "npm:" + snap_id;
+  LOG(ERROR) << "XXXZZZ RequestInstallSnap snap_id=" << snap_id
+             << " normalized_id=" << normalized_id
+             << " version=" << version
+             << " current_state=" << static_cast<int>(pending_snap_state_);
   if (pending_snap_state_ != mojom::SnapInstallState::kIdle) {
+    LOG(ERROR) << "XXXZZZ RequestInstallSnap: already_pending, rejecting";
     std::move(callback).Run(false, "already_pending");
     return;
   }
@@ -269,13 +280,17 @@ void SnapsService::RequestInstallSnap(const std::string& snap_id,
   std::move(callback).Run(true, std::nullopt);
 
   snap_installer_->PrepareInstall(
-      snap_id, version,
+      normalized_id, version,
       base::BindOnce(&SnapsService::OnPrepareInstallResult,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void SnapsService::OnPrepareInstallResult(
     base::expected<mojom::SnapInstallDataPtr, std::string> result) {
+  LOG(ERROR) << "XXXZZZ OnPrepareInstallResult success=" << result.has_value()
+             << (result.has_value()
+                     ? " snap_id=" + result.value()->snap_id
+                     : " error='" + result.error() + "'");
   if (!result.has_value()) {
     SetSnapInstallState(mojom::SnapInstallState::kFailed, nullptr,
                         result.error());
@@ -288,13 +303,22 @@ void SnapsService::OnPrepareInstallResult(
 void SnapsService::NotifySnapInstallRequestProcessed(
     bool approved,
     NotifySnapInstallRequestProcessedCallback callback) {
+  LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed approved=" << approved
+             << " state=" << static_cast<int>(pending_snap_state_)
+             << " has_install_data=" << (pending_snap_install_data_ ? "yes" : "no")
+             << " has_pending_callback=" << (pending_install_callback_ ? "yes" : "no")
+             << " error='" << pending_snap_error_ << "'";
   if (pending_snap_state_ == mojom::SnapInstallState::kIdle) {
+    LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed: state=kIdle, returning early";
     std::move(callback).Run();
     return;
   }
 
   if (!approved || pending_snap_state_ == mojom::SnapInstallState::kFailed ||
       pending_snap_state_ == mojom::SnapInstallState::kSuccess) {
+    LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed: rejecting/aborting"
+               << " approved=" << approved
+               << " state=" << static_cast<int>(pending_snap_state_);
     if (pending_snap_install_data_) {
       snap_installer_->AbortInstall(pending_snap_install_data_->snap_id);
     }
@@ -310,6 +334,7 @@ void SnapsService::NotifySnapInstallRequestProcessed(
 
   if (pending_snap_state_ != mojom::SnapInstallState::kPendingApproval ||
       !pending_snap_install_data_) {
+    LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed: not kPendingApproval or no data, returning early";
     std::move(callback).Run();
     return;
   }
@@ -332,6 +357,9 @@ void SnapsService::OnSnapInstallSuccessTimeout() {
 
 void SnapsService::OnSnapFinishInstalled(
     base::expected<void, std::string> result) {
+  LOG(ERROR) << "XXXZZZ OnSnapFinishInstalled success=" << result.has_value()
+             << (result.has_value() ? "" : " error='" + result.error() + "'")
+             << " has_pending_callback=" << (pending_install_callback_ ? "yes" : "no");
   // Notify the dApp callback first (if this was a dApp-triggered install)
   // so RequestSnapsState::remaining is decremented before the install state
   // transitions to kSuccess and the delayed reset fires.
@@ -357,6 +385,11 @@ void SnapsService::OnSnapFinishInstalled(
 void SnapsService::InstallSnap(std::string snap_id,
                                           std::string version,
                                           SnapInstaller::InstallCallback callback) {
+  LOG(ERROR) << "XXXZZZ InstallSnap(delegate) snap_id=" << snap_id
+             << " version=" << version
+             << " already_installed=" << data_provider_->IsInstalled(snap_id)
+             << " queue_size=" << snap_install_queue_.size()
+             << " state=" << static_cast<int>(pending_snap_state_);
   if (data_provider_->IsInstalled(snap_id)) {
     std::move(callback).Run(base::ok());
     return;
@@ -372,12 +405,18 @@ void SnapsService::InstallSnap(std::string snap_id,
 }
 
 void SnapsService::ProcessNextSnapInstallation() {
+  LOG(ERROR) << "XXXZZZ ProcessNextSnapInstallation queue_size="
+             << snap_install_queue_.size()
+             << " state=" << static_cast<int>(pending_snap_state_);
   if (snap_install_queue_.empty() ||
       pending_snap_state_ != mojom::SnapInstallState::kIdle) {
+    LOG(ERROR) << "XXXZZZ ProcessNextSnapInstallation: nothing to process";
     return;
   }
   auto item = std::move(snap_install_queue_.front());
   snap_install_queue_.pop();
+  LOG(ERROR) << "XXXZZZ ProcessNextSnapInstallation: processing snap_id="
+             << item.snap_id << " version=" << item.version;
   pending_install_callback_ = std::move(item.callback);
   SetSnapInstallState(mojom::SnapInstallState::kInstalling, nullptr, "");
   snap_installer_->PrepareInstall(

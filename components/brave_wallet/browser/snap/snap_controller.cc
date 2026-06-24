@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_bridge_controller.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
@@ -128,6 +129,7 @@ void SnapController::DispatchInvoke(size_t cb_index,
 void SnapController::RequestSnaps(const url::Origin& origin,
                                    const base::DictValue& snaps_dict,
                                    RequestSnapsCallback callback) {
+  LOG(ERROR) << "XXXZZZ RequestSnaps origin=" << origin.Serialize();
   if (origin.opaque() || (origin.scheme() != url::kHttpScheme &&
                            origin.scheme() != url::kHttpsScheme)) {
     std::move(callback).Run(std::nullopt,
@@ -169,6 +171,8 @@ void SnapController::RequestSnaps(const url::Origin& origin,
   state->origin = origin;
 
   for (const auto& item : to_install) {
+    LOG(ERROR) << "XXXZZZ installing snap_id=" << item.snap_id
+               << " version=" << item.version;
     install_snap_delegate_.Run(
         item.snap_id, item.version,
         base::BindOnce(&SnapController::OnSingleSnapInstalled,
@@ -180,6 +184,9 @@ void SnapController::OnSingleSnapInstalled(
     std::shared_ptr<RequestSnapsState> state,
     const std::string& snap_id,
     base::expected<void, std::string> result) {
+  LOG(ERROR) << "XXXZZZ OnSingleSnapInstalled snap_id=" << snap_id
+             << " success=" << result.has_value()
+             << (result.has_value() ? "" : " error=" + result.error());
   if (result.has_value()) {
     permission_controller_->GrantSnapConnection(state->origin, snap_id);
     state->result_dict.Set(snap_id, base::DictValue());

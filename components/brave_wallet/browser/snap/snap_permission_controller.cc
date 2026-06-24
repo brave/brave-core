@@ -113,11 +113,11 @@ bool SnapPermissionController::IsOriginAllowedByManifest(
   if (!snap || !snap->manifest) {
     return false;
   }
-  if (!snap->manifest->allow_dapps) {
-    return false;
+  if (snap->manifest->allow_dapps) {
+    return true;
   }
   if (snap->manifest->allowed_rpc_origins.empty()) {
-    return true;
+    return false;
   }
   const std::string serialized = origin.Serialize();
   return std::ranges::any_of(snap->manifest->allowed_rpc_origins,

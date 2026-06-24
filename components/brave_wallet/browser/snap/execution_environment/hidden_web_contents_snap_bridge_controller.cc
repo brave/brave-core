@@ -73,8 +73,8 @@ void HiddenWebContentsSnapBridgeController::EnsureBridgeReady(
   // Use IsLockedSync() rather than the cached keyring_unlocked_ flag so we
   // don't race against the async mojo Unlocked() observer delivery.
   if (locked) {
-    // Fail fast — wallet is locked.
-    std::move(on_ready).Run();
+    // Queue — caller will be drained when Unlocked() fires.
+    locked_waiting_callbacks_.push_back(std::move(on_ready));
     return;
   }
   pending_ready_callbacks_.push_back(std::move(on_ready));
@@ -154,6 +154,10 @@ void HiddenWebContentsSnapBridgeController::FailPendingCallbacks(
   // (not just dropped). Each dispatch method checks IsBound() — which is false
   // at this point — and returns the appropriate error to the mojo caller.
   std::vector<base::OnceClosure> callbacks = std::move(pending_ready_callbacks_);
+  for (auto& cb : locked_waiting_callbacks_) {
+    callbacks.push_back(std::move(cb));
+  }
+  locked_waiting_callbacks_.clear();
   for (auto& cb : callbacks) {
     std::move(cb).Run();
   }
@@ -224,7 +228,14 @@ void HiddenWebContentsSnapBridgeController::Locked() {
 }
 
 void HiddenWebContentsSnapBridgeController::Unlocked() {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::Unlocked";
+  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::Unlocked: locked_waiting=" << locked_waiting_callbacks_.size();
+  if (!locked_waiting_callbacks_.empty()) {
+    for (auto& cb : locked_waiting_callbacks_) {
+      pending_ready_callbacks_.push_back(std::move(cb));
+    }
+    locked_waiting_callbacks_.clear();
+    EnsureHostStarted();
+  }
 }
 
 void HiddenWebContentsSnapBridgeController::WalletReset() {

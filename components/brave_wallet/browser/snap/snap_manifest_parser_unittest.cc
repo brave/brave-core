@@ -85,6 +85,7 @@ TEST(SnapManifestParserTest, AllAllowedPermissionsAccepted) {
   TestSnapManifestOptions options;
   options.permissions = {"snap_getBip44Entropy",
                          "snap_getBip32Entropy",
+                         "snap_getEntropy",
                          "snap_dialog",
                          "snap_confirm",
                          "snap_notify",
@@ -97,13 +98,58 @@ TEST(SnapManifestParserTest, AllAllowedPermissionsAccepted) {
                          "endowment:cronjob",
                          "endowment:transaction-insight",
                          "endowment:signature-insight",
-                         "endowment:ethereum-provider"};
+                         "endowment:ethereum-provider",
+                         "endowment:name-lookup"};
   options.include_rpc_endowment = true;  // Emit the endowment:rpc config block.
   auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options), kSnapId,
                                           kVersion);
   ASSERT_TRUE(result.manifest);
   EXPECT_TRUE(result.error.empty());
-  EXPECT_EQ(result.manifest->permissions.size(), 15u);
+  EXPECT_EQ(result.manifest->permissions.size(), 17u);
+}
+
+TEST(SnapManifestParserTest, EndowmentNameLookupParsed) {
+  static constexpr char kJson[] = R"({
+    "source": {"shasum": "s"},
+    "initialPermissions": {
+      "endowment:name-lookup": {
+        "chains": ["eip155:1", "bip122:000000000019d6689c085ae165831e93"],
+        "matchers": {
+          "tlds": ["crypto", "eth"],
+          "schemes": ["farcaster"]
+        }
+      }
+    }
+  })";
+  auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
+  ASSERT_TRUE(result.manifest);
+  EXPECT_TRUE(result.error.empty());
+  EXPECT_THAT(result.manifest->permissions,
+              testing::ElementsAre("endowment:name-lookup"));
+  EXPECT_THAT(
+      result.manifest->name_lookup_chains,
+      testing::ElementsAre("eip155:1",
+                           "bip122:000000000019d6689c085ae165831e93"));
+  EXPECT_THAT(result.manifest->name_lookup_tlds,
+              testing::ElementsAre("crypto", "eth"));
+  EXPECT_THAT(result.manifest->name_lookup_schemes,
+              testing::ElementsAre("farcaster"));
+}
+
+TEST(SnapManifestParserTest, EndowmentNameLookupEmptyConfigParsesNoMatchers) {
+  // "endowment:name-lookup": {} grants the endowment with no chain/matcher
+  // filtering: the permission is present but every config list is empty.
+  static constexpr char kJson[] = R"({
+    "source": {"shasum": "s"},
+    "initialPermissions": {"endowment:name-lookup": {}}
+  })";
+  auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
+  ASSERT_TRUE(result.manifest);
+  EXPECT_THAT(result.manifest->permissions,
+              testing::ElementsAre("endowment:name-lookup"));
+  EXPECT_TRUE(result.manifest->name_lookup_chains.empty());
+  EXPECT_TRUE(result.manifest->name_lookup_tlds.empty());
+  EXPECT_TRUE(result.manifest->name_lookup_schemes.empty());
 }
 
 TEST(SnapManifestParserTest, EndowmentRpcParsed) {

@@ -65,6 +65,7 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
@@ -3923,6 +3924,73 @@ void KeyringService::GetBip44EntropyForSnap(
              base::StrCat({"m/44'/", base::NumberToString(coin_type), "'"}));
 
   std::move(callback).Run(base::Value(std::move(result)));
+}
+
+void KeyringService::GetEntropyForSnap(
+    const std::string& input,
+    const std::string& salt,
+    base::OnceCallback<void(std::optional<base::Value>)> callback) {
+  if (IsLockedSync()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  DCHECK(encryptor_);
+  auto mnemonic = DecryptWalletMnemonicFromPrefs(profile_prefs_, *encryptor_);
+  if (!mnemonic) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto keyring_seed =
+      MakeSeedFromMnemonic(*mnemonic, IsLegacyEthSeedFormat(profile_prefs_));
+  if (!keyring_seed) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto root = HDKey::GenerateFromSeed(keyring_seed->seed);
+  if (!root) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // SIP-6 entropy derivation (https://metamask.github.io/SIPs/SIPS/sip-6):
+  //   hash = keccak256(utf8(input) || keccak256(utf8(salt)))
+  // The salt is always hashed first, so an empty salt still contributes
+  // keccak256("") to the preimage. The 32-byte hash is then split into eight
+  // big-endian uint32 values, each used as a hardened BIP-32 child index
+  // beneath the hardened SIP-6 magic node.
+  const auto salt_hash = KeccakHash(base::as_byte_span(salt));
+  std::vector<uint8_t> preimage(base::as_byte_span(input).begin(),
+                                base::as_byte_span(input).end());
+  preimage.insert(preimage.end(), salt_hash.begin(), salt_hash.end());
+  const auto hash = KeccakHash(preimage);
+
+  // SIP_6_MAGIC_VALUE: hardened index 0xd36e6170 == 1399742832 | kHardenedOffset.
+  constexpr uint32_t kSip6MagicValue = 0xd36e6170u - kHardenedOffset;
+  auto node = root->DeriveChild(DerivationIndex::Hardened(kSip6MagicValue));
+  if (!node) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  for (size_t i = 0; i < 8 && node; ++i) {
+    const size_t off = i * 4;
+    const uint32_t be = (static_cast<uint32_t>(hash[off]) << 24) |
+                        (static_cast<uint32_t>(hash[off + 1]) << 16) |
+                        (static_cast<uint32_t>(hash[off + 2]) << 8) |
+                        static_cast<uint32_t>(hash[off + 3]);
+    // Hardened() hardens the (non-hardened) index, so mask off the high bit;
+    // (be | kHardenedOffset) - kHardenedOffset == be & 0x7fffffff.
+    node = node->DeriveChild(DerivationIndex::Hardened(be & 0x7fffffffu));
+  }
+  if (!node) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(
+      base::Value("0x" + base::HexEncodeLower(node->GetPrivateKeyBytes())));
 }
 
 void KeyringService::MaybeUnlockWithCommandLine() {

@@ -159,6 +159,8 @@ void SnapInstaller::FetchMetadata(std::unique_ptr<InstallContext> ctx) {
   // snap_id = "npm:@polkagate/snap" → package = "@polkagate/snap"
   std::string package_name = ctx->snap_id.substr(4);  // strip "npm:"
   GURL url("https://registry.npmjs.org/" + package_name + "/" + ctx->version);
+  LOG(ERROR) << "XXXZZZ FetchMetadata snap_id=" << ctx->snap_id
+             << " version=" << ctx->version << " url=" << url.spec();
   if (!url.is_valid()) {
     FailInstall(std::move(ctx), "Invalid snap metadata URL");
     return;
@@ -176,6 +178,9 @@ void SnapInstaller::FetchMetadata(std::unique_ptr<InstallContext> ctx) {
 
 void SnapInstaller::OnMetadataFetched(std::unique_ptr<InstallContext> ctx,
                                       std::optional<std::string> body) {
+  LOG(ERROR) << "XXXZZZ OnMetadataFetched snap_id=" << ctx->snap_id
+             << " body_present=" << body.has_value()
+             << " body_size=" << (body ? body->size() : 0u);
   if (!body) {
     FailInstall(std::move(ctx), "Failed to fetch snap metadata");
     return;
@@ -185,22 +190,26 @@ void SnapInstaller::OnMetadataFetched(std::unique_ptr<InstallContext> ctx,
   std::optional<base::Value> parsed =
       base::JSONReader::Read(*body, base::JSON_PARSE_RFC);
   if (!parsed || !parsed->is_dict()) {
+    LOG(ERROR) << "XXXZZZ OnMetadataFetched: JSON parse FAILED";
     FailInstall(std::move(ctx), "Invalid snap metadata JSON");
     return;
   }
 
   const base::DictValue* dist = parsed->GetDict().FindDict("dist");
   if (!dist) {
+    LOG(ERROR) << "XXXZZZ OnMetadataFetched: missing 'dist'";
     FailInstall(std::move(ctx), "Missing 'dist' in snap metadata");
     return;
   }
   const std::string* tarball_url = dist->FindString("tarball");
   if (!tarball_url) {
+    LOG(ERROR) << "XXXZZZ OnMetadataFetched: missing 'dist.tarball'";
     FailInstall(std::move(ctx), "Missing 'dist.tarball' in snap metadata");
     return;
   }
 
   ctx->tarball_url = GURL(*tarball_url);
+  LOG(ERROR) << "XXXZZZ OnMetadataFetched: tarball_url=" << ctx->tarball_url.spec();
   if (!ctx->tarball_url.is_valid()) {
     FailInstall(std::move(ctx), "Invalid tarball URL in snap metadata");
     return;
@@ -218,6 +227,8 @@ void SnapInstaller::OnMetadataFetched(std::unique_ptr<InstallContext> ctx,
 void SnapInstaller::OnTarballDownloadedToFile(
     std::unique_ptr<InstallContext> ctx,
     base::FilePath path) {
+  LOG(ERROR) << "XXXZZZ OnTarballDownloadedToFile snap_id=" << ctx->snap_id
+             << " path=" << path.value();
   if (path.empty()) {
     FailInstall(std::move(ctx), "Failed to download snap tarball");
     return;
@@ -233,6 +244,9 @@ void SnapInstaller::OnTarballDownloadedToFile(
 
 void SnapInstaller::OnTarballExtracted(std::unique_ptr<InstallContext> ctx,
                                        ExtractResult result) {
+  LOG(ERROR) << "XXXZZZ OnTarballExtracted snap_id=" << ctx->snap_id
+             << " error='" << result.error << "'"
+             << " bundle_size=" << result.bundle_size_bytes;
   ctx->bundle_size_bytes = result.bundle_size_bytes;
   ctx->temp_dir_path = std::move(result.temp_dir_path);
   OnBundleExtracted(std::move(ctx), std::move(result.manifest_json),
@@ -243,13 +257,18 @@ void SnapInstaller::OnBundleExtracted(std::unique_ptr<InstallContext> ctx,
                                       std::string manifest_json,
                                       std::string computed_shasum,
                                       std::string error) {
+  LOG(ERROR) << "XXXZZZ OnBundleExtracted snap_id=" << ctx->snap_id
+             << " error='" << error << "'";
   if (!error.empty()) {
     FailInstall(std::move(ctx), error);
     return;
   }
 
+  LOG(ERROR) << "XXXZZZ OnBundleExtracted: parsing manifest";
   SnapManifestParser::Result parsed =
       SnapManifestParser::Parse(manifest_json, ctx->snap_id, ctx->version);
+  LOG(ERROR) << "XXXZZZ OnBundleExtracted: manifest parse error='"
+             << parsed.error << "'";
   if (!parsed.error.empty()) {
     FailInstall(std::move(ctx), parsed.error);
     return;
@@ -299,6 +318,8 @@ void SnapInstaller::OnBundleExtracted(std::unique_ptr<InstallContext> ctx,
 
 void SnapInstaller::OnBundleSaved(std::unique_ptr<InstallContext> ctx,
                                   bool success) {
+  LOG(ERROR) << "XXXZZZ OnBundleSaved snap_id=" << ctx->snap_id
+             << " success=" << success;
   if (!success) {
     FailInstall(std::move(ctx), "Failed to save snap bundle to disk");
     return;

@@ -13,6 +13,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/web_contents.h"
 
 namespace {
@@ -43,6 +44,16 @@ namespace brave_wallet {
 void ShowPanel(content::WebContents* web_contents) {
   if (!web_contents) {
     return;
+  }
+
+  // If the dApp tab isn't the active one, activate it so the wallet panel
+  // can be shown (ShowBubble is suppressed on inactive tabs).
+  if (auto* browser = chrome::FindBrowserWithTab(web_contents)) {
+    int index = browser->tab_strip_model()->GetIndexOfWebContents(web_contents);
+    if (index != TabStripModel::kNoTab &&
+        browser->tab_strip_model()->active_index() != index) {
+      browser->tab_strip_model()->ActivateTabAt(index);
+    }
   }
 
   auto* tab_helper =

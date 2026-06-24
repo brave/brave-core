@@ -43,25 +43,36 @@ SnapInstaller::ExtractResult SnapInstallerTarDecompressor::ExtractTarballToDir(
 
   // Read and delete the downloaded tarball.
   std::string compressed;
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: reading tarball from "
+             << tarball_path.value();
   if (!base::ReadFileToString(tarball_path, &compressed)) {
     base::DeleteFile(tarball_path);
     return ExtractError("Failed to read tarball from disk");
   }
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: tarball read compressed_size="
+             << compressed.size();
   base::DeleteFile(tarball_path);
 
   // Gzip decompress.
   std::string decompressed;
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: gzip decompressing...";
   if (!compression::GzipUncompress(compressed, &decompressed)) {
+    LOG(ERROR) << "XXXZZZ ExtractTarballToDir: gzip decompress FAILED";
     return ExtractError("Failed to decompress tarball");
   }
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: decompressed_size="
+             << decompressed.size();
 
   // Phase 1: extract snap.manifest.json.
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: extracting snap.manifest.json";
   std::optional<std::string> manifest_json =
       ExtractFileFromTar(decompressed, "snap.manifest.json");
   if (!manifest_json) {
+    LOG(ERROR) << "XXXZZZ ExtractTarballToDir: snap.manifest.json NOT FOUND";
     return ExtractError("Failed to extract snap.manifest.json from tarball");
   }
-  LOG(ERROR) << "SNAP: manifest='" << *manifest_json << "'";
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: manifest_json='"
+             << *manifest_json << "'";
 
   // Phase 2: parse manifest for bundle filePath.
   std::string bundle_file_path;
@@ -83,23 +94,28 @@ SnapInstaller::ExtractResult SnapInstallerTarDecompressor::ExtractTarballToDir(
       }
     }
   }
-  LOG(ERROR) << "SNAP: filePath='" << bundle_file_path << "'"
-             << " expected_shasum='" << expected_shasum << "'";
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: bundle_file_path='"
+             << bundle_file_path << "' expected_shasum='" << expected_shasum
+             << "'";
 
   // Phase 3: extract bundle.
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: extracting bundle files";
   std::optional<SnapTarResult> extracted =
       ExtractSnapFiles(decompressed, bundle_file_path);
   if (!extracted) {
+    LOG(ERROR) << "XXXZZZ ExtractTarballToDir: bundle extraction FAILED";
     return ExtractError("Failed to extract snap bundle from tarball");
   }
   extracted->manifest_json = std::move(*manifest_json);
-  LOG(ERROR) << "SNAP: bundle_size=" << extracted->bundle_js.size();
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: bundle_js_size="
+             << extracted->bundle_js.size();
 
   // Compute MetaMask checksum before the in-memory content is released.
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: computing checksum...";
   std::string computed_shasum =
       SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
           decompressed, extracted->bundle_js, extracted->manifest_json);
-  LOG(ERROR) << "SNAP: shasum "
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: shasum "
              << (computed_shasum == expected_shasum ? "MATCH" : "MISMATCH")
              << " expected='" << expected_shasum << "'"
              << " computed='" << computed_shasum << "'";

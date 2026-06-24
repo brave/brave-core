@@ -105,6 +105,9 @@ TEST_F(SnapRegistryTest, PersistsAcrossReconstruction) {
   data->manifest->allow_dapps = true;
   data->manifest->allow_snaps = true;
   data->manifest->allowed_rpc_origins = {"https://app.example.com"};
+  data->manifest->name_lookup_chains = {"eip155:1"};
+  data->manifest->name_lookup_tlds = {"crypto", "eth"};
+  data->manifest->name_lookup_schemes = {"farcaster"};
   registry_->RegisterInstalledSnap(*data);
 
   // A registry rebuilt from the same prefs reloads the persisted snap.
@@ -123,6 +126,12 @@ TEST_F(SnapRegistryTest, PersistsAcrossReconstruction) {
   EXPECT_TRUE(snap->manifest->allow_snaps);
   EXPECT_THAT(snap->manifest->allowed_rpc_origins,
               testing::ElementsAre("https://app.example.com"));
+  EXPECT_THAT(snap->manifest->name_lookup_chains,
+              testing::ElementsAre("eip155:1"));
+  EXPECT_THAT(snap->manifest->name_lookup_tlds,
+              testing::ElementsAre("crypto", "eth"));
+  EXPECT_THAT(snap->manifest->name_lookup_schemes,
+              testing::ElementsAre("farcaster"));
 }
 
 }  // namespace brave_wallet
