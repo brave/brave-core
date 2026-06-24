@@ -118,6 +118,55 @@ TEST(PolkadotTransaction, JsonSerde) {
   EXPECT_EQ(tx2->extrinsic_metadata()->mortality_period(), 32u);
 }
 
+TEST(PolkadotTransaction, AssetId) {
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  EXPECT_TRUE(base::HexStringToSpan(
+      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      pubkey));
+
+  PolkadotTransaction polkadot_tx;
+  polkadot_tx.set_amount(uint128_t{12341234123412341234u});
+  polkadot_tx.set_fee(uint128_t{15937408476u});
+  polkadot_tx.set_recipient(PolkadotAddress{pubkey, 0});
+  polkadot_tx.set_transfer_all(true);
+
+  // Without an asset_id set, the key is absent from the serialized form.
+  EXPECT_FALSE(polkadot_tx.asset_id().has_value());
+  EXPECT_FALSE(polkadot_tx.ToValue().contains("asset_id"));
+
+  polkadot_tx.set_asset_id(1337);
+
+  const char tx_json[] = R"({
+    "amount": "f201ec6f0cdf44ab0000000000000000",
+    "fee": "dc8df1b5030000000000000000000000",
+    "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+    "ss58_prefix": 0,
+    "transfer_all": true,
+    "asset_id": 1337
+  })";
+
+  EXPECT_EQ(base::test::ParseJsonDict(tx_json), polkadot_tx.ToValue());
+
+  auto tx = PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json));
+  ASSERT_TRUE(tx);
+  ASSERT_TRUE(tx->asset_id().has_value());
+  EXPECT_EQ(tx->asset_id().value(), 1337u);
+
+  // A transaction without an asset_id deserializes to nullopt.
+  const char tx_json_no_asset[] = R"({
+    "amount": "f201ec6f0cdf44ab0000000000000000",
+    "fee": "dc8df1b5030000000000000000000000",
+    "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+    "ss58_prefix": 0,
+    "transfer_all": true
+  })";
+
+  auto tx_no_asset = PolkadotTransaction::FromValue(
+      base::test::ParseJsonDict(tx_json_no_asset));
+  ASSERT_TRUE(tx_no_asset);
+  EXPECT_FALSE(tx_no_asset->asset_id().has_value());
+}
+
 TEST(PolkadotTransaction, FromValue) {
   {
     // Working/default sane case.

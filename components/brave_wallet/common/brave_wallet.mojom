@@ -2414,6 +2414,7 @@ struct PolkadotTxdata {
   uint128 amount;
   uint128 fee;
   bool sending_max_amount;
+  uint32? asset_id;
 };
 
 union TxDataUnion {
