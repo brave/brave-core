@@ -138,6 +138,7 @@ void BraveTreeTabStripCollectionDelegate::WrapCollectionInTreeNodeAndInsert(
     std::optional<tab_groups::TabGroupId> parent_group) {
   auto wrapper = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(collection),
+      base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   InsertTreeNodeWrapperAt(std::move(wrapper), index, pinned, parent_group);
@@ -150,6 +151,7 @@ void BraveTreeTabStripCollectionDelegate::WrapCollectionInTreeNodeAndInsert(
     std::optional<tab_groups::TabGroupId> parent_group) {
   auto wrapper = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(collection),
+      base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   InsertTreeNodeWrapperAt(std::move(wrapper), index, pinned, parent_group);
@@ -424,6 +426,7 @@ void BraveTreeTabStripCollectionDelegate::AddTabAsTreeNodeToCollection(
 #endif
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab),
+      base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   auto* tree_tab_node_ptr = tree_tab_node.get();
@@ -466,6 +469,7 @@ void BraveTreeTabStripCollectionDelegate::AddTabToUnpinnedCollectionAsTreeNode(
   CHECK(detached_tab);
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(detached_tab),
+      base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   auto* tree_tab_node_ptr = tree_tab_node.get();
@@ -755,6 +759,7 @@ void BraveTreeTabStripCollectionDelegate::AttachDetachedGroupCollection(
   CHECK(group);
   auto wrapper = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(group),
+      base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   tabs::TreeTabNode& node = wrapper->node();
@@ -1021,6 +1026,8 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsOutOfGroup(
                 tree_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
                     tree_tab::TreeTabNodeId::GenerateNew(),
                     std::move(detached_tab),
+                    base::BindRepeating(&TreeTabModel::AddTreeTabNode,
+                                        tree_tab_model_),
                     base::BindRepeating(&TreeTabModel::RemoveTreeTabNode,
                                         tree_tab_model_),
                     base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved,
@@ -1217,6 +1224,7 @@ void BraveTreeTabStripCollectionDelegate::UnpinSplit(
 
   auto tree_node_collection = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(owned_split_collection),
+      base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   auto* tree_node_ptr = tree_node_collection.get();
@@ -1264,6 +1272,7 @@ void BraveTreeTabStripCollectionDelegate::UnpinTabs(
     // Wraps with tree node.
     auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
         tree_tab::TreeTabNodeId::GenerateNew(), std::move(detached_tab),
+        base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
         base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
         base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved,
                             tree_tab_model_));
@@ -1459,6 +1468,7 @@ bool BraveTreeTabStripCollectionDelegate::CreateSplit(
   // Wrap split in a single tree node and insert at the original position.
   auto wrapper = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(split),
+      base::BindRepeating(&TreeTabModel::AddTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::RemoveTreeTabNode, tree_tab_model_),
       base::BindRepeating(&TreeTabModel::OnTreeTabNodeMoved, tree_tab_model_));
   auto& node = wrapper->node();

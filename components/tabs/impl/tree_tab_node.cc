@@ -23,7 +23,7 @@ const TreeTabNode& TreeTabNode::GetEmptyTreeTabNode() {
       empty_tree_tab_node_tab_collection(
           tree_tab::TreeTabNodeId::GenerateNew(),
           base::WrapUnique<TabInterface>(nullptr), base::DoNothing(),
-          base::DoNothing());
+          base::DoNothing(), base::DoNothing());
   return empty_tree_tab_node_tab_collection->node();
 }
 

@@ -44,6 +44,14 @@ class TreeTabSessionManager : public TabStripModelObserver {
       int index,
       std::map<std::string, std::string>* extra_data);
 
+  // Called from BrowserLiveTabContext::AddRestoredTab after the tab has been
+  // re-inserted into the browser. Reads kBraveTreeParentNodeIdKey from
+  // |extra_data| and, if the parent tree node is still present in the strip,
+  // reparents the restored tab's TreeTabNodeTabCollection under it.
+  void MaybeRestoreTabTreeHierarchy(
+      content::WebContents* restored_web_contents,
+      const std::map<std::string, std::string>& extra_data);
+
  private:
   // TabStripModelObserver:
   void OnTreeTabChanged(const TreeTabChange& change) override;

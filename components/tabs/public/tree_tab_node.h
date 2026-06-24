@@ -31,6 +31,7 @@ class TreeTabNode {
   TreeTabNode& operator=(const TreeTabNode&) = delete;
   ~TreeTabNode() = default;
 
+  void set_node_id(const tree_tab::TreeTabNodeId& id) { id_ = id; }
   const tree_tab::TreeTabNodeId& id() const { return id_; }
 
   int height() const { return height_; }

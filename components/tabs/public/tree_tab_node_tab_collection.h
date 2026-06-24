@@ -57,9 +57,15 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   // to their parent collections and removing the TreeTabNodes themselves.
   static void FlattenTreeTabs(TabCollection& root);
 
+  // Finds the nearest TreeTabNodeTabCollection ancestor of |tab| and returns
+  // it, or nullptr if the tab is not inside a tree node.
+  static tabs::TreeTabNodeTabCollection* GetTreeTabNodeCollection(
+      const tabs::TabInterface* tab);
+
   TreeTabNodeTabCollection(
       const tree_tab::TreeTabNodeId& tree_tab_node_id,
       std::unique_ptr<tabs::TabInterface> current_tab,
+      base::RepeatingCallback<void(TreeTabNode&)> on_create,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
 
@@ -69,6 +75,7 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   TreeTabNodeTabCollection(
       const tree_tab::TreeTabNodeId& tree_tab_node_id,
       std::unique_ptr<tabs::SplitTabCollection> current_collection,
+      base::RepeatingCallback<void(TreeTabNode&)> on_create,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
 
@@ -77,6 +84,7 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   TreeTabNodeTabCollection(
       const tree_tab::TreeTabNodeId& tree_tab_node_id,
       std::unique_ptr<tabs::TabGroupTabCollection> current_collection,
+      base::RepeatingCallback<void(TreeTabNode&)> on_create,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
 
@@ -115,6 +123,10 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
 
   CurrentValueType current_value_type() const { return current_value_type_; }
 
+  // Sets the node id of this tree tab node. Used when restoring a tree tab node
+  // from a session after the node has already been created.
+  void SetNodeId(const tree_tab::TreeTabNodeId& id);
+
  private:
   // Returns all TreeTabNodeTabCollections recursively from the given parent
   // collection.
@@ -127,6 +139,9 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   // The current value: tab (WeakPtr), TabGroupTabCollection, or
   // SplitTabCollection. Empty for the empty tree node.
   std::optional<CurrentValueVariant> current_value_;
+
+  // Callback invoked when this TreeTabNode is created or its node id changes.
+  base::RepeatingCallback<void(TreeTabNode&)> on_create_;
 
   // Callback invoked when this TreeTabNode is destroyed.
   base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove_;

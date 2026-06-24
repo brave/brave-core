@@ -65,7 +65,7 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
           tree_tab::TreeTabNodeId::GenerateNew(),
           base::WrapUnique<SplitTabCollection>(
               static_cast<SplitTabCollection*>(removed.release())),
-          on_remove, on_move);
+          on_create, on_remove, on_move);
       TreeTabNode& node_ref = tree_node->node();
       grandparent->AddCollection(std::move(tree_node), index);
       on_create.Run(node_ref);
@@ -90,7 +90,7 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
           tree_tab::TreeTabNodeId::GenerateNew(),
           base::WrapUnique<TabGroupTabCollection>(
               static_cast<TabGroupTabCollection*>(removed.release())),
-          on_remove, on_move);
+          on_create, on_remove, on_move);
       TreeTabNode& node_ref = tree_node->node();
       grandparent->AddCollection(std::move(tree_node), index);
       on_create.Run(node_ref);
@@ -103,7 +103,7 @@ void TreeTabNodeTabCollection::BuildTreeTabs(
 
     auto tree_node = std::make_unique<TreeTabNodeTabCollection>(
         tree_tab::TreeTabNodeId::GenerateNew(), std::move(owned_tab_interface),
-        on_remove, on_move);
+        on_create, on_remove, on_move);
     TreeTabNode& node_ref = tree_node->node();
     parent_collection->AddCollection(std::move(tree_node), index);
     on_create.Run(node_ref);
@@ -167,10 +167,21 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
     std::ignore = parent_collection->MaybeRemoveCollection(tree_node);
   }
 }
+// static
+tabs::TreeTabNodeTabCollection*
+TreeTabNodeTabCollection::GetTreeTabNodeCollection(
+    const tabs::TabInterface* tab) {
+  tabs::TabCollection* parent = tab->GetParentCollection(GetPassKeyStatic());
+  if (parent && parent->type() == tabs::TabCollection::Type::TREE_NODE) {
+    return static_cast<tabs::TreeTabNodeTabCollection*>(parent);
+  }
+  return nullptr;
+}
 
 TreeTabNodeTabCollection::TreeTabNodeTabCollection(
     const tree_tab::TreeTabNodeId& tree_tab_node_id,
     std::unique_ptr<tabs::TabInterface> current_tab,
+    base::RepeatingCallback<void(TreeTabNode&)> on_create,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
     : TabCollection(TabCollection::Type::TREE_NODE,
@@ -179,6 +190,7 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
       current_value_type_(CurrentValueType::kTab),
+      on_create_(std::move(on_create)),
       on_remove_(std::move(on_remove)),
       on_move_(std::move(on_move)),
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
@@ -196,6 +208,7 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
 TreeTabNodeTabCollection::TreeTabNodeTabCollection(
     const tree_tab::TreeTabNodeId& tree_tab_node_id,
     std::unique_ptr<tabs::SplitTabCollection> current_collection,
+    base::RepeatingCallback<void(TreeTabNode&)> on_create,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
     : TabCollection(TabCollection::Type::TREE_NODE,
@@ -204,6 +217,7 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
       current_value_type_(CurrentValueType::kSplit),
+      on_create_(std::move(on_create)),
       on_remove_(std::move(on_remove)),
       on_move_(std::move(on_move)),
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
@@ -218,6 +232,7 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
 TreeTabNodeTabCollection::TreeTabNodeTabCollection(
     const tree_tab::TreeTabNodeId& tree_tab_node_id,
     std::unique_ptr<tabs::TabGroupTabCollection> current_collection,
+    base::RepeatingCallback<void(TreeTabNode&)> on_create,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
     : TabCollection(TabCollection::Type::TREE_NODE,
@@ -226,6 +241,7 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
       current_value_type_(CurrentValueType::kGroup),
+      on_create_(std::move(on_create)),
       on_remove_(std::move(on_remove)),
       on_move_(std::move(on_move)),
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
@@ -336,6 +352,12 @@ std::unique_ptr<TabCollection> TreeTabNodeTabCollection::MaybeRemoveCollection(
   }
 
   return removed;
+}
+
+void TreeTabNodeTabCollection::SetNodeId(const tree_tab::TreeTabNodeId& id) {
+  on_remove_.Run(node_->id());
+  node_->set_node_id(id);
+  on_create_.Run(*node_);
 }
 
 void TreeTabNodeTabCollection::OnReparented(TabCollection* new_parent) {

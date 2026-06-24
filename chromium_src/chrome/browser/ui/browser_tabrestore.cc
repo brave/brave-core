@@ -5,10 +5,31 @@
 
 #include "chrome/browser/ui/browser_tabrestore.h"
 
+#include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/tab_restore_utils.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+namespace {
+
+content::WebContents* MaybeRestoreTabTreeHierarchy(
+    Browser* browser,
+    content::WebContents* restored_web_contents,
+    const std::map<std::string, std::string>& extra_data) {
+  if (auto* tree_tab_session_manager =
+          browser->browser_window_features()->GetTreeTabSessionManager()) {
+    // tree tab session manager is only available when the browser is normal
+    // browser.
+    tree_tab_session_manager->MaybeRestoreTabTreeHierarchy(
+        restored_web_contents, extra_data);
+  }
+  return restored_web_contents;
+}
+
+}  // namespace
 
 #include <chrome/browser/ui/browser_tabrestore.cc>

@@ -48,7 +48,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
   EXPECT_DEATH(tabs::TreeTabNodeTabCollection(
                    tree_tab::TreeTabNodeId::CreateEmpty(),
                    std::make_unique<MockTabInterfaceWithWeakPtr>(),
-                   base::DoNothing(), base::DoNothing()),
+                   base::DoNothing(), base::DoNothing(), base::DoNothing()),
                "");
 
   // Valid construction with a tab should succeed.
@@ -57,7 +57,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, Constructor) {
   auto mock_tab_interface_ptr = mock_tab_interface.get();
   tabs::TreeTabNodeTabCollection tree_tab_node_tab_collection(
       tree_tab_node_id, std::move(mock_tab_interface), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
 
   // Check that the tabs::TreeTabNodeTabCollection is constructed correctly.
   EXPECT_EQ(tree_tab_node_id, tree_tab_node_tab_collection.node().id());
@@ -75,7 +75,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, CanNotBeAddedToPinnedCollection) {
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   tabs::PinnedTabCollection pinned_collection;
 
   // Verify that adding a tabs::TreeTabNodeTabCollection to a
@@ -90,7 +90,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, CanBeAddedToUnpinnedCollection) {
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto tree_tab_node_ptr = tree_tab_node.get();
   tabs::UnpinnedTabCollection unpinned_collection;
   unpinned_collection.AddCollection(std::move(tree_tab_node), 0);
@@ -106,11 +106,11 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, CanAddAnotherTreeTabNodeRecursively) {
   auto parent_tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto child_tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto child_tree_tab_node_ptr = child_tree_tab_node.get();
 
   parent_tree_tab_node->AddCollection(std::move(child_tree_tab_node), 0);
@@ -124,7 +124,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, CanAddGroupCollection) {
   tabs::TreeTabNodeTabCollection tree_tab_node(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
 
   // Create a TabGroupTabCollection and add it to the
   // tabs::TreeTabNodeTabCollection.
@@ -144,7 +144,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, CanAddSplitTabCollection) {
   tabs::TreeTabNodeTabCollection tree_tab_node(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
 
   // Create a SplitTabCollection and add it to the
   // tabs::TreeTabNodeTabCollection.
@@ -164,7 +164,7 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_SingleRootNode) {
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto* node_ptr = tree_tab_node.get();
   tabs::UnpinnedTabCollection unpinned_collection;
   unpinned_collection.AddCollection(std::move(tree_tab_node), 0);
@@ -178,11 +178,11 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_RootWithOneTreeChild) {
   auto parent = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto child = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   tabs::TreeTabNodeTabCollection* child_ptr = child.get();
 
   parent->AddCollection(std::move(child), 0);
@@ -199,15 +199,15 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_ChainOfThree) {
   auto root = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto child1 = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto child2 = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   tabs::TreeTabNodeTabCollection* child1_ptr = child1.get();
   tabs::TreeTabNodeTabCollection* child2_ptr = child2.get();
 
@@ -231,15 +231,15 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_Reparenting) {
   auto parent1 = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto parent2 = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
 
   tabs::TreeTabNodeTabCollection* parent1_ptr = parent1.get();
   tabs::TreeTabNodeTabCollection* parent2_ptr = parent2.get();
@@ -286,19 +286,19 @@ TEST_F(TreeTabNodeTabCollectionUnitTest, LevelAndHeight_ReparentingSubtree) {
   auto parent1 = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto parent2 = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto middle = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
   auto leaf = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(),
       std::make_unique<MockTabInterfaceWithWeakPtr>(), base::DoNothing(),
-      base::DoNothing());
+      base::DoNothing(), base::DoNothing());
 
   tabs::TreeTabNodeTabCollection* parent1_ptr = parent1.get();
   tabs::TreeTabNodeTabCollection* parent2_ptr = parent2.get();
