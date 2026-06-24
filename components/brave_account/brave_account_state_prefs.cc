@@ -52,23 +52,6 @@ void AccountStatePrefs::SetLoggedOut() {
                                                prefs::state_kinds::kLoggedOut));
 }
 
-void AccountStatePrefs::SetLoggedOutWithVerification(
-    const std::string& encrypted_verification_token,
-    mojom::LoggedOutVerificationIntent intent) {
-  CHECK(!encrypted_verification_token.empty());
-
-  pref_service_->SetDict(
-      prefs::kBraveAccountState,
-      base::DictValue()
-          .Set(prefs::keys::kKind, prefs::state_kinds::kLoggedOut)
-          .Set(prefs::keys::kVerification,
-               base::DictValue()
-                   .Set(prefs::keys::kVerificationToken,
-                        encrypted_verification_token)
-                   .Set(prefs::keys::kVerificationIntent,
-                        static_cast<int>(intent))));
-}
-
 void AccountStatePrefs::SetLoggedIn(
     const std::string& email,
     const std::string& encrypted_authentication_token) {
@@ -84,9 +67,50 @@ void AccountStatePrefs::SetLoggedIn(
                encrypted_authentication_token));
 }
 
+void AccountStatePrefs::AddVerification(
+    const std::string& encrypted_verification_token,
+    mojom::VerificationIntentPtr intent) {
+  CHECK(!encrypted_verification_token.empty());
+  CHECK(intent);
+
+  const int intent_value = [&] {
+    const auto account_state = GetAccountState();
+
+    switch (intent->which()) {
+      case mojom::VerificationIntent::Tag::kLoggedOutIntent:
+        CHECK(account_state->is_logged_out());
+        return static_cast<int>(intent->get_logged_out_intent());
+      case mojom::VerificationIntent::Tag::kLoggedInIntent:
+        CHECK(account_state->is_logged_in());
+        return static_cast<int>(intent->get_logged_in_intent());
+    }
+  }();
+
+  ScopedDictPrefUpdate(&*pref_service_, prefs::kBraveAccountState)
+      ->Set(prefs::keys::kVerification,
+            base::DictValue()
+                .Set(prefs::keys::kVerificationToken,
+                     encrypted_verification_token)
+                .Set(prefs::keys::kVerificationIntent, intent_value));
+}
+
 void AccountStatePrefs::SetVerificationVerifiedEmail(
     const std::string& verification_verified_email) {
   CHECK(!verification_verified_email.empty());
+
+  // The verification slot can be cleared concurrently from another surface,
+  // e.g. by clicking the cancel button in a `brave://settings` tab while a
+  // verification step is still in flight in a different tab showing the
+  // `brave://account` WebUI. `ClearVerification()` is a same-alternative
+  // transition, so the in-flight request and its callback survive and may still
+  // arrive here after the slot is gone. Drop the write in that case rather than
+  // crashing: the cancel won, so there is no slot left to record the verified
+  // email on.
+  if (!pref_service_->GetDict(prefs::kBraveAccountState)
+           .FindDict(prefs::keys::kVerification)) {
+    return;
+  }
+
   CHECK_DEREF(ScopedDictPrefUpdate(&*pref_service_, prefs::kBraveAccountState)
                   ->FindDict(prefs::keys::kVerification))
       .Set(prefs::keys::kVerificationVerifiedEmail,

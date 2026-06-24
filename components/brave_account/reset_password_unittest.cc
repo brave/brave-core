@@ -41,9 +41,9 @@ namespace {
 
 void SeedResetPasswordVerification(PrefService& pref_service) {
   AccountStatePrefs(pref_service)
-      .SetLoggedOutWithVerification(
-          EncryptedVerificationToken(),
-          mojom::LoggedOutVerificationIntent::kResetPassword);
+      .AddVerification(EncryptedVerificationToken(),
+                       mojom::VerificationIntent::NewLoggedOutIntent(
+                           mojom::LoggedOutVerificationIntent::kResetPassword));
 }
 
 }  // namespace

@@ -175,12 +175,15 @@ class StateBase : public mojom::Authentication {
   }
 
  private:
-  // `ResetPassword` is a flow helper owned by `LoggedOutState`: it implements
-  // that state's `ResetPassword*` overrides on its owner's behalf. It is
-  // friended on `StateBase` (not on the owning state) because the plumbing it
-  // borrows through its back-reference - request lifetime (`in_flight_`,
+  // Flow helpers, each owned by one state and implementing that state's
+  // password-flow overrides on its owner's behalf: `ResetPassword` owned by
+  // `LoggedOutState` (the `ResetPassword*` overrides), `ChangePassword` owned
+  // by `LoggedInState` (the `ChangePassword*` overrides). They are friended on
+  // `StateBase` (not on the owning state) because the plumbing they borrow
+  // through their back-reference - request lifetime (`in_flight_`,
   // `SendStateOwnedRequest()`), crypto, and `account_state_prefs_` - is bound
   // to `StateBase` and can't move out.
+  friend class ChangePassword;
   friend class ResetPassword;
 
   void AddObserver(
@@ -229,6 +232,22 @@ class StateBase : public mojom::Authentication {
   void LoginFinalize(const std::string& encrypted_login_token,
                      const std::string& client_mac,
                      LoginFinalizeCallback callback) override;
+
+  void ChangePasswordVerifyInit(
+      const std::string& email,
+      ChangePasswordVerifyInitCallback callback) override;
+
+  void ChangePasswordVerifyComplete(
+      const std::string& code,
+      ChangePasswordVerifyCompleteCallback callback) override;
+
+  void ChangePasswordPasswordInit(
+      const std::string& blinded_message,
+      ChangePasswordPasswordInitCallback callback) override;
+
+  void ChangePasswordPasswordFinalize(
+      const std::string& serialized_record,
+      ChangePasswordPasswordFinalizeCallback callback) override;
 
   void LogOut() override;
 

@@ -176,6 +176,34 @@ void StateBase::LoginFinalize(const std::string&,
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
+void StateBase::ChangePasswordVerifyInit(
+    const std::string& email,
+    ChangePasswordVerifyInitCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ChangePasswordError>());
+}
+
+void StateBase::ChangePasswordVerifyComplete(
+    const std::string& code,
+    ChangePasswordVerifyCompleteCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ChangePasswordError>());
+}
+
+void StateBase::ChangePasswordPasswordInit(
+    const std::string& blinded_message,
+    ChangePasswordPasswordInitCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ChangePasswordError>());
+}
+
+void StateBase::ChangePasswordPasswordFinalize(
+    const std::string& serialized_record,
+    ChangePasswordPasswordFinalizeCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::ChangePasswordError>());
+}
+
 void StateBase::LogOut() {}
 
 void StateBase::GetServiceToken(mojom::Service,

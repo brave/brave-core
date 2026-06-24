@@ -259,9 +259,10 @@ void LoggedOutState::OnRegisterFinalize(
   std::move(callback).Run(std::move(result));
 
   if (success) {
-    account_state_prefs_->SetLoggedOutWithVerification(
+    account_state_prefs_->AddVerification(
         encrypted_verification_token,
-        mojom::LoggedOutVerificationIntent::kRegistration);
+        mojom::VerificationIntent::NewLoggedOutIntent(
+            mojom::LoggedOutVerificationIntent::kRegistration));
   }
 }
 
