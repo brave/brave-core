@@ -142,7 +142,8 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
 
   send_tab_to_self_model_->SendEntry(
       url, title, target_device, send_tab_to_self::PageContext(),
-      send_tab_to_self::NavigationHistory(), base::DoNothing());
+      send_tab_to_self::NavigationHistory(), base::DoNothing(),
+      send_tab_to_self::ShareEntryPoint::kShareSheet);
 }
 
 @end
