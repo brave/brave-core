@@ -108,52 +108,33 @@ public enum NavigationPath: Equatable {
   }
 
   private static func handleURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
-    if !isPrivate {
-      if let newURL = url {
-        bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
-      } else {
-        bvc.openBlankNewTab(
-          attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-          isPrivate: isPrivate
-        )
-      }
-      return
-    }
-
-    if Preferences.Privacy.lockWithPasscode.value {
-      if let newURL = url {
-        bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
-      } else {
-        bvc.openBlankNewTab(
-          attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-          isPrivate: isPrivate
-        )
-      }
-    } else {
-      if Preferences.Privacy.privateBrowsingLock.value {
-        guard let windowProtection = bvc.windowProtection else { return }
-        bvc.askForLocalAuthentication(using: windowProtection, viewType: .external) {
-          [weak bvc] success, _ in
-          if success {
-            if let newURL = url {
-              bvc?.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
-            } else {
-              bvc?.openBlankNewTab(
-                attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-                isPrivate: isPrivate
-              )
-            }
+    // Skip private-tab auth when app passcode lock is on; the user must unlock the app first.
+    if isPrivate,
+      Preferences.Privacy.privateBrowsingLock.value,
+      !Preferences.Privacy.lockWithPasscode.value
+    {
+      guard let windowProtection = bvc.windowProtection else { return }
+      bvc.askForLocalAuthentication(using: windowProtection, viewType: .external) {
+        [weak bvc] success, _ in
+        if success {
+          if let newURL = url {
+            bvc?.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
+          } else {
+            bvc?.openBlankNewTab(
+              attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+              isPrivate: isPrivate
+            )
           }
         }
+      }
+    } else {
+      if let newURL = url {
+        bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
       } else {
-        if let newURL = url {
-          bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
-        } else {
-          bvc.openBlankNewTab(
-            attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
-            isPrivate: isPrivate
-          )
-        }
+        bvc.openBlankNewTab(
+          attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+          isPrivate: isPrivate
+        )
       }
     }
   }
