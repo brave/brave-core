@@ -204,4 +204,33 @@ TEST_F(ContainersPrefsTest, ContainersEnabledDefaultsToTrue) {
   EXPECT_FALSE(prefs_.GetBoolean(prefs::kContainersEnabled));
 }
 
+TEST(ContainersPrefsRegistrationTest,
+     ContainersEnabledDefaultsToFalseOnStable) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kContainers);
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry(), version_info::Channel::STABLE);
+  EXPECT_FALSE(prefs.GetBoolean(prefs::kContainersEnabled));
+}
+
+TEST(ContainersPrefsRegistrationTest,
+     ContainersEnabledPrefDefaultFinchOverride) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kContainers, {{"enabled_by_default", "true"}});
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry(), version_info::Channel::STABLE);
+  EXPECT_TRUE(prefs.GetBoolean(prefs::kContainersEnabled));
+}
+
+TEST(ContainersPrefsRegistrationTest,
+     ContainersEnabledPrefDefaultFinchOverrideOnUnknown) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kContainers, {{"enabled_by_default", "false"}});
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+  EXPECT_FALSE(prefs.GetBoolean(prefs::kContainersEnabled));
+}
+
 }  // namespace containers

@@ -5,15 +5,30 @@
 
 #include "brave/components/containers/core/browser/prefs_registration.h"
 
+#include "base/metrics/field_trial_params.h"
+#include "base/version_info/channel.h"
 #include "brave/components/containers/core/browser/default_containers_list.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/common/features.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 namespace containers {
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kContainersEnabled, true);
+namespace {
+
+bool GetContainersEnabledPrefDefault(version_info::Channel channel) {
+  const bool enabled_by_default = channel != version_info::Channel::STABLE;
+  return base::GetFieldTrialParamByFeatureAsBool(
+      features::kContainers, "enabled_by_default", enabled_by_default);
+}
+
+}  // namespace
+
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+                          version_info::Channel channel) {
+  registry->RegisterBooleanPref(prefs::kContainersEnabled,
+                                GetContainersEnabledPrefDefault(channel));
   registry->RegisterListPref(
       prefs::kContainersList,
       ConvertContainersToListValue(CreateDefaultContainersList()),
