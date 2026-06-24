@@ -123,7 +123,7 @@ public void runMenuItemEnterAnimations() {
             sBraveManageAccountDevicesLinkView);
 
 // 💡 Note: you can still use Bytecode to redirect constructor
-// so not to change every occurrence of the Chromium class name
+// so as not to change every occurrence of the Chromium class name
     redirectConstructor(sAppHooksClassName, sBraveAppHooksClassName);
 ```
 
