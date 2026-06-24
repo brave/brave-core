@@ -23,10 +23,8 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
   return this.state.verification
     ? html`
       <div class="first-row">
-        <div class="circle">
-          <leo-icon name="social-brave-release-favicon-fullheight-color">
-          </leo-icon>
-        </div>
+        <leo-icon name="social-brave-release-favicon-fullheight-color">
+        </leo-icon>
         <div class="title-and-description">
           <div class="title">
             ${this.i18n(
@@ -74,10 +72,8 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
       </div>`
     : html`
       <div class="first-row">
-        <div class="circle">
-          <leo-icon name="social-brave-release-favicon-fullheight-color">
-          </leo-icon>
-        </div>
+        <leo-icon name="social-brave-release-favicon-fullheight-color">
+        </leo-icon>
         <div class="title-and-description">
           <div class="title">
             ${this.i18n(BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE)}

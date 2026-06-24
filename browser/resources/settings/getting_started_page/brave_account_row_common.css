@@ -19,16 +19,8 @@
   min-height: 82px;
   padding: 0 var(--leo-spacing-2xl);
 
-  .circle {
-    align-items: center;
-    background-color: var(--leo-color-container-background);
-    border: 1px solid var(--leo-color-divider-subtle);
-    border-radius: 50%;
-    display: flex;
-    flex: none;
-    height: 38px;
-    justify-content: center;
-    width: 38px;
+  > leo-icon {
+    --leo-icon-size: var(--leo-icon-m);
   }
 
   .title-and-description {
@@ -56,9 +48,10 @@
 
 .second-row {
   align-items: flex-start;
+  border-top: 1px solid var(--leo-color-divider-subtle);
   display: flex;
   gap: var(--leo-spacing-m);
-  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-l);
+  padding: var(--leo-spacing-xl);
 
   .cancel-verification-button {
     --leo-button-color: var(--leo-color-systemfeedback-error-text);
