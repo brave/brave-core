@@ -99,6 +99,45 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     )
   }
 
+  // ── Move Up: swap item at [index] with [index-1] ────────────────────────
+  handleMoveUp_(e: any) {
+    const index: number = e.model.index
+    if (index === 0) return
+
+    const list = [...this.customScriptletsList_]
+    ;[list[index - 1], list[index]] = [list[index], list[index - 1]]
+    this.customScriptletsList_ = list
+
+    this.browserProxy_.reorderCustomScriptlet(
+      this.customScriptletsList_[index - 1].name, index - 1
+    )
+  }
+
+  // ── Move Down: swap item at [index] with [index+1] ───────────────────────
+  handleMoveDown_(e: any) {
+    const index: number = e.model.index
+    if (index === this.customScriptletsList_.length - 1) return
+
+    const list = [...this.customScriptletsList_]
+    ;[list[index], list[index + 1]] = [list[index + 1], list[index]]
+    this.customScriptletsList_ = list
+
+    this.browserProxy_.reorderCustomScriptlet(
+      this.customScriptletsList_[index + 1].name, index + 1
+    )
+  }
+
+  // ── Computed bindings for the HTML disabled="[[...]]" attributes ─────────
+  // Called by Polymer when index=0 → disables the Move Up button
+  _isMoveUpDisabled_(index: number, devMode: boolean): boolean {
+    return !devMode || index === 0
+  }
+
+  // Called by Polymer when index=last → disables the Move Down button
+  _isMoveDownDisabled_(index: number, length: number, devMode: boolean): boolean {
+    return !devMode || index === length - 1
+  }
+
   scriptletEditorClosed_(_: Event) {
     this.editingScriptlet_ = null
     this.isEditing_ = false
