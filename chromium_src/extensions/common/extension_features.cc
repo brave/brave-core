@@ -21,25 +21,25 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 // upstream GN files with dependencies.
 namespace extensions_mv2::features {
 
-BASE_FEATURE(kExtensionsManifestV2, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kExtensionsManifestV2, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE_PARAM(bool,
                    kExtensionsManifestV2BackupSettings,
                    &kExtensionsManifestV2,
                    "backup_settings",
-                   false);
+                   true);
 
 BASE_FEATURE_PARAM(bool,
                    kExtensionsManifestV2BImportSettingsOnInstall,
                    &kExtensionsManifestV2,
                    "import_settings",
-                   false);
+                   true);
 
 BASE_FEATURE_PARAM(bool,
                    kExtensionsManifestV2AutoInstallBraveHosted,
                    &kExtensionsManifestV2,
                    "auto_install_brave_hosted",
-                   false);
+                   true);
 
 bool IsSettingsBackupEnabled() {
   return base::FeatureList::IsEnabled(features::kExtensionsManifestV2) &&
