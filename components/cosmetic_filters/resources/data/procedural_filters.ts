@@ -7,8 +7,11 @@
  *
  * src/declarations.d.ts
  *
- * note: `ProceduralOperator` and `ProceduralSelector`
- *       are in components/definitions/global.d.ts
+ * note: `ProceduralOperator` and `ProceduralSelector` are also declared as
+ *       ambient globals in components/definitions/global.d.ts (used by the
+ *       webpack-based build). They are mirrored locally here so this module
+ *       can be type-checked standalone by the iOS `tsc`-based build, which
+ *       does not include those globals.
  *
  */
 
@@ -16,6 +19,11 @@ type CSSSelector = string
 type CSSInstruction = string
 type CSSValue = string
 
+interface ProceduralOperator {
+  type: OperatorType
+  arg: string
+}
+type ProceduralSelector = ProceduralOperator[]
 type OperatorType = string
 type OperatorArg = CSSSelector | ProceduralSelector | string
 type OperatorResult = HTMLElement[]

@@ -33,11 +33,6 @@ declare global {
 
   type CosmeticFilterAction = StyleAction | RemoveAction | RemoveAttrAction | RemoveClassAction;
 
-  interface ProceduralOperator {
-    type: OperatorType
-    arg: string
-  }
-  type ProceduralSelector = ProceduralOperator[];
   type ProceduralActionFilter = {
     selector: ProceduralSelector
     action?: CosmeticFilterAction
