@@ -6,8 +6,6 @@
 #include "brave/components/brave_policy/policy_pref_interceptor.h"
 
 #include "base/containers/map_util.h"
-#include "base/feature_list.h"
-#include "brave/components/brave_policy/features.h"
 #include "brave/components/brave_policy/policy_pref_interceptor_list.h"
 #include "components/prefs/pref_value_map.h"
 
@@ -29,8 +27,7 @@ void PolicyPrefInterceptor::DisableCachingForTesting() {
 }
 
 void PolicyPrefInterceptor::InterceptPrefValues(PrefValueMap* pref_value_map) {
-  if (!pref_value_map || g_disable_caching_for_testing ||
-      !base::FeatureList::IsEnabled(features::kCacheNonDynamicPolicyPrefs)) {
+  if (!pref_value_map || g_disable_caching_for_testing) {
     return;
   }
 

@@ -5,8 +5,6 @@
 
 component("policy_pref_interceptor") {
   sources = [
-    "features.cc",
-    "features.h",
     "policy_pref_interceptor.cc",
     "policy_pref_interceptor.h",
     "policy_pref_interceptor_list.cc",
