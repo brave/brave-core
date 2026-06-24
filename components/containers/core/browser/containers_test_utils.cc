@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "brave/components/containers/core/browser/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -50,6 +52,10 @@ void ExpectContainer(const mojom::ContainerPtr& container,
                      SkColor color) {
   ASSERT_TRUE(container);
   EXPECT_THAT(*container, testing::FieldsAre(id, name, icon, color));
+}
+
+void SetContainersEnabled(bool enabled, PrefService* prefs) {
+  prefs->SetBoolean(prefs::kContainersEnabled, enabled);
 }
 
 }  // namespace containers
