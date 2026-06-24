@@ -67,7 +67,7 @@ ContainersServiceFactory::BuildServiceInstanceForBrowserContext(
 
   auto* profile = Profile::FromBrowserContext(context);
   return std::make_unique<containers::ContainersService>(
-      profile->GetPrefs(),
+      profile->GetPrefs(), profile->IsOffTheRecord(),
       std::make_unique<ContainersServiceDelegate>(
           profile,
 #if BUILDFLAG(ENABLE_SESSION_SERVICE)

@@ -48,7 +48,9 @@ class ContainersService : public KeyedService {
         DeleteContainerStorageCallback callback) = 0;
   };
 
-  ContainersService(PrefService* prefs, std::unique_ptr<Delegate> delegate);
+  ContainersService(PrefService* prefs,
+                    bool is_off_the_record,
+                    std::unique_ptr<Delegate> delegate);
   ~ContainersService() override;
 
   ContainersService(const ContainersService&) = delete;
@@ -116,6 +118,7 @@ class ContainersService : public KeyedService {
   };
 
   raw_ref<PrefService> prefs_;
+  const bool is_off_the_record_;
   std::unique_ptr<Delegate> delegate_;
   PrefChangeRegistrar pref_change_registrar_;
   base::ObserverList<ContainersServiceObserver> observers_;

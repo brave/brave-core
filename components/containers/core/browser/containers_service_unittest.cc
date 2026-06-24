@@ -44,8 +44,8 @@ class ContainersServiceTest : public testing::Test {
     auto delegate =
         std::make_unique<testing::NiceMock<MockContainersServiceDelegate>>();
     delegate_ = delegate.get();
-    service_ =
-        std::make_unique<ContainersService>(&prefs_, std::move(delegate));
+    service_ = std::make_unique<ContainersService>(
+        &prefs_, /*is_off_the_record=*/false, std::move(delegate));
   }
 
   void TearDown() override {
