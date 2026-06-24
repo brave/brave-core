@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/screenshot/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -370,6 +372,33 @@ TEST_F(ListActionModifiersUnitTest,
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_ScreenshotNotAddedWhenFeatureDisabled) {
+  // Feature is disabled by default.
+  ASSERT_FALSE(screenshot::features::IsScreenshotEnabled());
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto screenshot_it =
+      std::ranges::find(modified_actions, ActionId::kShowScreenshot,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  EXPECT_EQ(screenshot_it, modified_actions.end());
+}
+
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_ScreenshotAddedWhenFeatureEnabled) {
+  base::test::ScopedFeatureList feature_list(
+      screenshot::features::kBraveScreenshot);
+  ASSERT_TRUE(screenshot::features::IsScreenshotEnabled());
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto screenshot_it =
+      std::ranges::find(modified_actions, ActionId::kShowScreenshot,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(screenshot_it, modified_actions.end());
+  EXPECT_EQ((*screenshot_it)->category,
+            side_panel::customize_chrome::mojom::CategoryId::kNavigation);
+}
+
+TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ShareMenuShouldNotBeAddedWhenDisabled) {
   // Share Menu should be added by default (Sharing Hub enabled by default)
   ASSERT_FALSE(sharing_hub::SharingIsDisabledByPolicy(
@@ -397,6 +426,8 @@ TEST_F(ListActionModifiersUnitTest,
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ComprehensiveOrderTest) {
+  base::test::ScopedFeatureList feature_list(
+      screenshot::features::kBraveScreenshot);
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -433,7 +464,8 @@ TEST_F(ListActionModifiersUnitTest,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
           EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-          EqId(ActionId::kShowBookmarks), EqId(ActionId::kDevTools),
+          EqId(ActionId::kShowScreenshot), EqId(ActionId::kShowBookmarks),
+          EqId(ActionId::kDevTools),
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
           EqId(ActionId::kShowReward),
 #endif

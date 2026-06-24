@@ -64,6 +64,7 @@ class BraveToolbarView : public ToolbarView,
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
+  void OnShowScreenshotButtonChanged();
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void VisibilityChanged(views::View* starting_from, bool visible) override;
 
@@ -116,6 +117,7 @@ class BraveToolbarView : public ToolbarView,
 #endif
 
   raw_ptr<ScreenshotButton> screenshot_button_ = nullptr;
+  BooleanPrefMember show_screenshot_button_;
 
   BooleanPrefMember show_wallet_button_;
   BooleanPrefMember wallet_disabled_by_policy_;

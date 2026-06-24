@@ -33,6 +33,7 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
       brave_wallet::kShowWalletIconOnToolbar,
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+      kShowScreenshotButton,
       prefs::kSidePanelHorizontalAlignment,
       kTabMuteIndicatorNotClickable,
       brave_tabs::kVerticalTabsExpandedWidth,

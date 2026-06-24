@@ -40,7 +40,7 @@ FilterUnsupportedChromiumActions(
 // 3. Adds Brave-specific actions.
 //   e.g. In 'Navigation' category:
 //        `kShowAddBookmarkButton`, `kShowSidePanel`, `kShowWallet`,
-//        `kShowAIChat`, `kShowVPN`.
+//        `kShowAIChat`, `kShowVPN`, `kShowScreenshot`.
 //        In 'Address bar' category: `kShowReward`,
 //        `kShowBraveNews`, `kShowShareMenu`.
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
