@@ -24,9 +24,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
-BASE_FEATURE(kExtensionsManifestV2,
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 struct ExtensionManifestV2 {
   std::string id;
   std::string sources;
@@ -188,8 +185,7 @@ void BraveExtensionsManifestV2Handler::EnableExtensionManifestV2(
         ResolveJavascriptCallback(args[0], base::Value(false));
         return;
       }
-      installer_ = std::make_unique<
-          extensions_mv2::ExtensionManifestV2Installer>(
+      installer_ = extensions_mv2::ExtensionManifestV2Installer::Create(
           id, web_ui()->GetWebContents(), profile->GetURLLoaderFactory(),
           base::BindOnce(
               &BraveExtensionsManifestV2Handler::OnExtensionManifestV2Installed,
