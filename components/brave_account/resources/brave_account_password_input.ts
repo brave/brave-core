@@ -5,6 +5,7 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
+import { focusLeoInput } from './brave_account_common.js'
 import { getCss } from './brave_account_common.css.js'
 import { getHtml } from './brave_account_password_input.html.js'
 import type { PasswordStrengthChangedEventDetail } from './brave_account_password_strength_meter.js'
@@ -51,6 +52,10 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
       password: { type: String, state: true },
       placeholder: { type: String },
     }
+  }
+
+  override focus() {
+    focusLeoInput(this.shadowRoot?.querySelector('leo-input'))
   }
 
   protected focusHandler(detail: { innerEvent: Event }) {

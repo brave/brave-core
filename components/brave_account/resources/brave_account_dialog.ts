@@ -47,6 +47,16 @@ export class BraveAccountDialogElement extends CrLitElement {
         this.isFooterSlotted = footer.assignedNodes().length > 0
       })
     }
+
+    const firstInput = this.shadowRoot
+      ?.querySelector<HTMLSlotElement>('slot[name="inputs"]')
+      ?.assignedElements()[0]
+      ?.querySelector<CrLitElement>(
+        'brave-account-email-input, brave-account-password-input',
+      )
+    // Wait for the input's own first render so its inner <leo-input> exists
+    // before forwarding focus to it.
+    firstInput?.updateComplete.then(() => firstInput.focus())
   }
 }
 

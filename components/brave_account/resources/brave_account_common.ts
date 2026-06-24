@@ -45,6 +45,22 @@ class FreezeWhenDirective extends AsyncDirective {
 
 export const freezeWhen = directive(FreezeWhenDirective)
 
+// Focuses a <leo-input>'s underlying native <input>.
+// On iOS WebKit, focusing via the shadow root's delegatesFocus leaves the
+// caret painted behind the placeholder (no selection is established).
+// Setting an explicit (empty) selection range forces WebKit to lay the caret
+// out correctly.
+export function focusLeoInput(leoInput: Element | null | undefined) {
+  const input = leoInput?.shadowRoot?.querySelector('input')
+  if (!input) {
+    // Fall back to host focus if the inner input isn't available yet.
+    ;(leoInput as HTMLElement | null | undefined)?.focus()
+    return
+  }
+  input.focus()
+  input.setSelectionRange(input.value.length, input.value.length)
+}
+
 export type Error =
   | { kind: 'changePassword'; details: ChangePasswordError }
   | { kind: 'login'; details: LoginError }
