@@ -14,12 +14,6 @@ extension Preferences {
       default: false
     )
 
-    /// The date the user's current AI-Chat subscription expires
-    public static let subscriptionExpirationDate = Option<Date?>(
-      key: "aichat.expiration-date",
-      default: nil
-    )
-
     /// A boolean indicating whether or not the user has dismissed the Premium Prompt on the Feedback Form
     public static let showPremiumFeedbackAd = Option<Bool>(
       key: "aichat.show-premium-feedback-ad",
