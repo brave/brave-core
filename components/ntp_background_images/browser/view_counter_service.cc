@@ -416,15 +416,9 @@ void ViewCounterService::OnCheckBrandedWallpaperCreativeFileExists(
     base::DictValue branded_wallpaper,
     bool file_exists) {
   if (!file_exists) {
-    if (const std::string* const creative_instance_id =
-            branded_wallpaper.FindString(kCreativeInstanceIDKey)) {
-      SCOPED_CRASH_KEY_STRING64("Issue55874", "creative_instance_id",
-                                *creative_instance_id);
-    }
-    SCOPED_CRASH_KEY_STRING64(
-        "Issue55874", "failure_reason",
-        "Creative file is missing when the wallpaper is shown");
-    DUMP_WILL_BE_NOTREACHED();
+    // TODO(https://github.com/brave/brave-browser/issues/56379): Add
+    // DUMP_WILL_BE_NOTREACHED() when NTT component geolocation switch bug is
+    // fixed.
     return std::move(callback).Run(std::nullopt);
   }
   std::move(callback).Run(std::move(branded_wallpaper));
