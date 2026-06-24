@@ -38,6 +38,7 @@ class WalletButton : public ToolbarButton {
   void CloseWalletBubble();
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();
+  views::Widget* GetBubbleWidgetForTesting();
 
   void UpdateImageAndText(bool activated = false);
 
