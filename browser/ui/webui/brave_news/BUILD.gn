@@ -12,8 +12,6 @@ source_set("brave_news") {
   sources = [
     "brave_news_ui.cc",
     "brave_news_ui.h",
-    "untrusted_brave_news_image_source.cc",
-    "untrusted_brave_news_image_source.h",
   ]
 
   deps = [

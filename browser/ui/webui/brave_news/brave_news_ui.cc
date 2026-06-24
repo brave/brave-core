@@ -9,7 +9,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
-#include "brave/browser/ui/webui/brave_news/untrusted_brave_news_image_source.h"
+#include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/resources/grit/brave_news_sidebar_generated_map.h"
 #include "brave/components/brave_news/common/features.h"
@@ -63,8 +63,9 @@ BraveNewsUI::BraveNewsUI(content::WebUI* web_ui)
       "script-src chrome-untrusted://resources 'self';");
 
   auto* profile = Profile::FromBrowserContext(browser_context);
-  content::URLDataSource::Add(
-      profile, std::make_unique<UntrustedBraveNewsImageSource>(profile));
+  content::URLDataSource::Add(profile,
+                              std::make_unique<BraveSanitizedImageSource>(
+                                  profile, /*serve_untrusted=*/true));
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
                                            profile, /*serve_untrusted=*/true));
 }

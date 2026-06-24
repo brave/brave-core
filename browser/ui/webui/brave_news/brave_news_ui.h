@@ -23,6 +23,7 @@ class BrowserContext;
 class WebUI;
 }  // namespace content
 
+// Hosts the Brave News side panel at chrome-untrusted://news.
 class BraveNewsUI : public UntrustedTopChromeWebUIController {
  public:
   explicit BraveNewsUI(content::WebUI* web_ui);

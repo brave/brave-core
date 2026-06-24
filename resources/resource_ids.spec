@@ -170,12 +170,12 @@
     "includes": [53760],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_internals/brave_news_internals.grd": {
-    "META": {"sizes": {"includes": [1]}},
+    "META": {"sizes": {"includes": [10]}},
     "includes": [53780],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_sidebar/brave_news_sidebar.grd": {
     "META": {"sizes": {"includes": [9]}},
-    "includes": [53781],
+    "includes": [53790],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-line_chart_display/line_chart_display.grd": {
