@@ -128,6 +128,13 @@ for simple global **symbol** replacement (`kOldConst` → `kNewConst`,
 `ChromiumMethod` → `BraveMethod`). Use `re_pattern` the moment you need context,
 capture groups, or whitespace flexibility.
 
+Mind the subtlety: `pattern` is a **literal substring** match, so
+`pattern: 'value'` also matches `value` _inside_ `kMyValueThing` or `valueXyz` —
+any larger identifier containing it. When you mean the whole symbol and nothing
+else, use a regex with word boundaries instead: `re_pattern: '\bvalue\b'`.
+Prefer `pattern` only when the substring is unique enough that an embedded match
+can't happen; otherwise reach for `\b…\b`.
+
 **Whitespace.** Don't depend on specific spacing — prefer `\s*` / `\s+` over
 literal runs, and pair flexible whitespace with `re_flags: [DOTALL]` so `.`
 crosses newlines (and the regex reads better). A single literal space is
@@ -204,6 +211,7 @@ cp patches/<dashed>.patch /tmp/plaster-original.patch
 
 # 2. Regenerate the patch from the config: this rewrites the source from
 #    git + the plaster and writes patches/<dashed>.patch + .patchinfo.
+#    ALWAYS pass the specific rewrite/<path>.yaml — never run `apply` bare.
 tools/cr/plaster.py apply rewrite/<path>.yaml
 
 # 3. The regenerated patch MUST equal the original — empty diff.
@@ -216,9 +224,13 @@ matched the wrong region, the replacement is off, or `count` didn't match (found
 0 or several). Fix the substitution and re-run the apply+diff. Iterate until the
 diff is empty.
 
-`apply` / `check` take the **plaster or patch path**, never the chromium source
-path — passing `../<source_path>` raises `ValueError: Unexpected file path`.
-Accepted forms are `rewrite/<path>.yaml` and `patches/<dashed>.patch`.
+**Always run `apply` against the specific `rewrite/<path>.yaml`, never bare.** A
+bare `tools/cr/plaster.py apply` (no file argument) reapplies _every_ plaster in
+the tree, touching sources and patches far beyond the one you're working on —
+scope it to your file every time. `apply` / `check` take the **plaster or patch
+path**, never the chromium source path — passing `../<source_path>` raises
+`ValueError: Unexpected file path`. Accepted forms are `rewrite/<path>.yaml` and
+`patches/<dashed>.patch`.
 
 `plaster.py` needs PyYAML. If it fails with
 `ModuleNotFoundError: No module named 'yaml'`, retry with the depot_tools
