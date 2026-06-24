@@ -13,6 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
+#include "chrome/browser/image_editor/screenshot_flow.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "printing/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,6 +21,7 @@
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/image/image.h"
 #include "ui/gfx/native_ui_types.h"
 #include "ui/shell_dialogs/fake_select_file_dialog.h"
 
@@ -92,6 +94,29 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
 
   void SetPendingCallback(ScreenshotController::ResultCallback cb) {
     controller_->pending_callback_ = std::move(cb);
+  }
+
+  // Drives the pipeline from OnRegionCaptured() onward, bypassing
+  // CaptureSelectedArea() and the real ScreenshotFlow UI overlay.
+  void InjectRegionCapture(image_editor::ScreenshotCaptureResult result,
+                           ScreenshotController::ResultCallback cb) {
+    controller_->pending_callback_ = std::move(cb);
+    controller_->OnRegionCaptured(result);
+  }
+
+  static image_editor::ScreenshotCaptureResult MakeSuccessResult(
+      const SkBitmap& bitmap) {
+    image_editor::ScreenshotCaptureResult result;
+    result.result_code = image_editor::ScreenshotCaptureResultCode::SUCCESS;
+    result.image = gfx::Image::CreateFrom1xBitmap(bitmap);
+    return result;
+  }
+
+  static image_editor::ScreenshotCaptureResult MakeFailureResult(
+      image_editor::ScreenshotCaptureResultCode code) {
+    image_editor::ScreenshotCaptureResult result;
+    result.result_code = code;
+    return result;
   }
 
   base::ScopedTempDir temp_dir_;
@@ -315,5 +340,115 @@ TEST_F(ScreenshotControllerTest,
 }
 
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
+
+// ---------------------------------------------------------------------------
+// CaptureSelectedArea / OnRegionCaptured tests
+// ---------------------------------------------------------------------------
+
+TEST_F(ScreenshotControllerTest,
+       CaptureSelectedArea_NullWebContents_ReturnsNoTab) {
+  base::test::TestFuture<Result> future;
+  controller_->CaptureSelectedArea(nullptr, future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kNoTab));
+}
+
+TEST_F(ScreenshotControllerTest, CaptureSelectedArea_AlreadyBusy_ReturnsBusy) {
+  base::test::TestFuture<Result> pending_callback_future;
+  SetPendingCallback(pending_callback_future.GetCallback());
+
+  base::test::TestFuture<Result> future;
+  controller_->CaptureSelectedArea(web_contents(), future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kBusy));
+}
+
+TEST_F(ScreenshotControllerTest, SelectedArea_EscapeExit_ReturnsCaptureFailed) {
+  base::test::TestFuture<Result> future;
+  InjectRegionCapture(
+      MakeFailureResult(
+          image_editor::ScreenshotCaptureResultCode::USER_ESCAPE_EXIT),
+      future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kCaptureFailed));
+}
+
+TEST_F(ScreenshotControllerTest,
+       SelectedArea_NavigationExit_ReturnsCaptureFailed) {
+  base::test::TestFuture<Result> future;
+  InjectRegionCapture(
+      MakeFailureResult(
+          image_editor::ScreenshotCaptureResultCode::USER_NAVIGATED_EXIT),
+      future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kCaptureFailed));
+}
+
+TEST_F(ScreenshotControllerTest,
+       SelectedArea_SuccessButEmptyImage_ReturnsCaptureFailed) {
+  base::test::TestFuture<Result> future;
+  // result_code is SUCCESS but image is empty (no bitmap).
+  image_editor::ScreenshotCaptureResult result;
+  result.result_code = image_editor::ScreenshotCaptureResultCode::SUCCESS;
+  InjectRegionCapture(std::move(result), future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kCaptureFailed));
+}
+
+TEST_F(ScreenshotControllerTest,
+       SelectedArea_UserCancelsDialog_ReturnsUserCancelled) {
+  base::test::TestFuture<void> dialog_opened;
+  dialog_factory_->SetOpenCallback(dialog_opened.GetRepeatingCallback());
+
+  base::test::TestFuture<Result> future;
+  InjectRegionCapture(MakeSuccessResult(MakeSolidBitmap(64, 64, SK_ColorBLUE)),
+                      future.GetCallback());
+
+  ASSERT_TRUE(dialog_opened.Wait());
+  ui::FakeSelectFileDialog* dialog = dialog_factory_->GetLastDialog();
+  ASSERT_TRUE(dialog);
+  dialog->CallFileSelectionCanceled();
+
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kUserCancelled));
+}
+
+TEST_F(ScreenshotControllerTest,
+       SelectedArea_FileSelected_WritesToDiskAndReturnsPath) {
+  base::test::TestFuture<void> dialog_opened;
+  dialog_factory_->SetOpenCallback(dialog_opened.GetRepeatingCallback());
+
+  base::test::TestFuture<Result> future;
+  InjectRegionCapture(MakeSuccessResult(MakeSolidBitmap(64, 64, SK_ColorGREEN)),
+                      future.GetCallback());
+
+  ASSERT_TRUE(dialog_opened.Wait());
+  ui::FakeSelectFileDialog* dialog = dialog_factory_->GetLastDialog();
+  ASSERT_TRUE(dialog);
+
+  base::FilePath save_path =
+      temp_dir_.GetPath().AppendASCII("selected_area.png");
+  ASSERT_TRUE(dialog->CallFileSelected(save_path, "png"));
+
+  Result result = future.Get();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result.value(), save_path);
+  EXPECT_TRUE(base::PathExists(save_path));
+}
+
+TEST_F(ScreenshotControllerTest,
+       SelectedArea_WriteToUnwritablePath_ReturnsWriteFailed) {
+  base::test::TestFuture<void> dialog_opened;
+  dialog_factory_->SetOpenCallback(dialog_opened.GetRepeatingCallback());
+
+  base::test::TestFuture<Result> future;
+  InjectRegionCapture(MakeSuccessResult(MakeSolidBitmap(64, 64, SK_ColorRED)),
+                      future.GetCallback());
+
+  ASSERT_TRUE(dialog_opened.Wait());
+  ui::FakeSelectFileDialog* dialog = dialog_factory_->GetLastDialog();
+  ASSERT_TRUE(dialog);
+
+  base::FilePath bad_path = temp_dir_.GetPath()
+                                .AppendASCII("nonexistent_subdir")
+                                .AppendASCII("selected_area.png");
+  ASSERT_TRUE(dialog->CallFileSelected(bad_path, "png"));
+
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kWriteFailed));
+}
 
 }  // namespace screenshot

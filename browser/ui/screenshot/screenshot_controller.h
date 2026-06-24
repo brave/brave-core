@@ -27,6 +27,11 @@ class BrowserContext;
 class WebContents;
 }  // namespace content
 
+namespace image_editor {
+struct ScreenshotCaptureResult;
+class ScreenshotFlow;
+}  // namespace image_editor
+
 namespace screenshot {
 class PrintPreviewExtractor;
 
@@ -70,6 +75,13 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   // encodes the result as PNG, and drives a Save As dialog.
   void CaptureVisibleArea(content::WebContents* web_contents,
                           ResultCallback done);
+
+  // Starts an interactive region-selection UI over `web_contents`. Once the
+  // user drags a rectangle, the selected region is encoded as PNG and a Save
+  // As dialog is shown.
+  void CaptureSelectedArea(content::WebContents* web_contents,
+                           ResultCallback done);
+
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void CaptureFullPage(content::WebContents* web_contents, ResultCallback done);
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -92,6 +104,7 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void OnFullPageChunks(ChunkResult result);
 #endif
+  void OnRegionCaptured(const image_editor::ScreenshotCaptureResult& result);
 
   void OnEncoded(std::optional<std::vector<uint8_t>> png);
   void ShowSaveDialog(std::vector<uint8_t> png);
@@ -112,6 +125,10 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 #endif
 
   std::optional<base::FilePath> download_dir_for_testing_;
+
+  // Owns the interactive region-selection overlay during CaptureSelectedArea().
+  // Reset as soon as the selection callback fires.
+  std::unique_ptr<image_editor::ScreenshotFlow> screenshot_flow_;
 
   raw_ptr<content::BrowserContext> profile_;
 
