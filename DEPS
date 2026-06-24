@@ -75,7 +75,7 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
     'action': ['vpython3', 'build/download_dep.py',
-               'sparkle/sparkle-1.24.3.tar.gz',
+               'sparkle/sparkle-1.24.4.tar.gz',
                '//build/mac_files/sparkle_binaries'],
   },
   {
