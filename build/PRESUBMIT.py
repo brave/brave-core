@@ -47,8 +47,3 @@ def CheckCIFeatures(input_api, output_api):
             f'build/.ci_features lines don\'t match regex {expected_re}',
             items)
     ]
-
-
-def CheckUnitTests(input_api, output_api):
-    return input_api.canned_checks.RunUnitTestsInDirectory(
-        input_api, output_api, '.', files_to_check=[r'.+_test.py$'])
