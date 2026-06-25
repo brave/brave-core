@@ -920,22 +920,26 @@ def CheckTodoBugReferences(_original_check, input_api, output_api):
         return input_api.FilterSourceFile(affected_file,
                                           files_to_skip=files_to_skip)
 
-    # Check for bug link in TODO comments.
+    # Check for bug link in TODO comments. A valid reference is either a full
+    # brave-browser issue URL or a brave.dev short link (brave.dev/bug/<id> or
+    # brave.dev/b/<id>).
     pattern = input_api.re.compile(r'.*\bTODO\((.+)\).*')
+    bug_ref_pattern = input_api.re.compile(
+        r'(?:https://)?github\.com/brave/brave-browser/issues/'
+        r'|(?:https://)?brave\.dev/(?:bug|b)/\d+')
     problems = []
     for f in input_api.AffectedSourceFiles(_FilterFile):
         for line_number, line in f.ChangedContents():
             match = pattern.match(line)
-            if match and 'https://github.com/brave/brave-browser/issues/' not in match.group(
-                    1):
+            if match and not bug_ref_pattern.search(match.group(1)):
                 problems.append(f"{f.LocalPath()}:{line_number}\n    {line}")
 
     if problems:
         return [
             output_api.PresubmitPromptWarning(
                 'TODO comments must be accompanied with a valid brave-browser '
-                'issue. https://github.com/brave/brave-browser/issues',
-                problems)
+                'issue, e.g. https://github.com/brave/brave-browser/issues/123,'
+                ' brave.dev/bug/123 or brave.dev/b/123.', problems)
         ]
     return []
 

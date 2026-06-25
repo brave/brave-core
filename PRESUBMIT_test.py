@@ -152,5 +152,48 @@ class CheckJson5ParseErrorsTest(unittest.TestCase):
         self.assertEqual([], errors)
 
 
+class CheckTodoBugReferencesTest(unittest.TestCase):
+
+    def _Check(self, line):
+        input_api = MockInputApi()
+        input_api.files = [MockAffectedFile('brave/foo.cc', [line])]
+        # CheckTodoBugReferences is wrapped by @override_check, which injects
+        # the _original_check argument at runtime; pylint can't see that.
+        # pylint: disable=no-value-for-parameter
+        return PRESUBMIT.CheckTodoBugReferences(input_api, MockOutputApi())
+
+    def testAllowsGithubIssueUrl(self):
+        line = ('// TODO(https://github.com/brave/brave-browser/issues/123): '
+                'fix this')
+        self.assertEqual([], self._Check(line))
+
+    def testAllowsGithubIssueUrlWithoutScheme(self):
+        line = '// TODO(github.com/brave/brave-browser/issues/123): fix this'
+        self.assertEqual([], self._Check(line))
+
+    def testAllowsBraveDevBugLink(self):
+        self.assertEqual([], self._Check('// TODO(brave.dev/bug/55738): fix'))
+
+    def testAllowsBraveDevShortBugLink(self):
+        self.assertEqual([], self._Check('// TODO(brave.dev/b/55738): fix'))
+
+    def testAllowsBraveDevBugLinkWithScheme(self):
+        line = '// TODO(https://brave.dev/bug/55738): fix this'
+        self.assertEqual([], self._Check(line))
+
+    def testFlagsTodoWithoutBugReference(self):
+        warnings = self._Check('// TODO(bbondy): fix this')
+
+        self.assertEqual(1, len(warnings))
+        self.assertEqual(1, len(warnings[0].items))
+        self.assertIn('brave/foo.cc:1', warnings[0].items[0])
+
+    def testFlagsBraveDevLinkWithoutId(self):
+        self.assertEqual(1, len(self._Check('// TODO(brave.dev/bug/): fix')))
+
+    def testIgnoresLinesWithoutTodo(self):
+        self.assertEqual([], self._Check('// just a comment, no todo here'))
+
+
 if __name__ == '__main__':
     unittest.main()
