@@ -41,6 +41,7 @@
 #include "components/sync/nigori/required_passphrase_verifier_impl.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/service/glue/sync_transport_data_prefs.h"
+#include "components/sync/service/sync_user_settings.h"
 #include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_data_type_controller.h"
 #include "components/sync/test/fake_sync_engine.h"
@@ -143,7 +144,9 @@ class BraveSyncServiceImplTest : public testing::Test {
       DataTypeSet registered_types = DataTypeSet({BOOKMARKS, PASSWORDS})) {
     DataTypeController::TypeVector controllers;
     for (DataType type : registered_types) {
-      controllers.push_back(std::make_unique<FakeDataTypeController>(type));
+      // Types newer than transport mode must support it.
+      controllers.push_back(std::make_unique<FakeDataTypeController>(
+          type, /*enable_transport_mode=*/type == AI_CHAT_CONVERSATION));
     }
 
     std::unique_ptr<SyncClientMock> sync_client =
@@ -735,6 +738,19 @@ TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
   EXPECT_EQ(selected_types.size(), 2u);
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kPasswords));
+}
+
+// Joining a sync chain also selects AI Chat whenever its data type is
+// registered.
+TEST_F(BraveSyncServiceImplTest, AIChatAfterSetupWhenRegistered) {
+  CreateSyncService(DataTypeSet({BOOKMARKS, PASSWORDS, AI_CHAT_CONVERSATION}));
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  SyncUserSettings* settings = brave_sync_service_impl()->GetUserSettings();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return settings->GetSelectedTypes().Has(UserSelectableType::kBookmarks);
+  }));
+
+  EXPECT_TRUE(settings->GetSelectedTypes().Has(UserSelectableType::kAIChat));
 }
 
 #if BUILDFLAG(IS_ANDROID)

@@ -84,6 +84,8 @@ static_library("browser") {
     "remote_models_serialization.h",
     "skills_metrics.cc",
     "skills_metrics.h",
+    "sync/ai_chat_data_type_controller.cc",
+    "sync/ai_chat_data_type_controller.h",
     "sync/ai_chat_sync_backend.cc",
     "sync/ai_chat_sync_backend.h",
     "sync/ai_chat_sync_bridge.cc",
@@ -127,6 +129,7 @@ static_library("browser") {
     "//base",
     "//components/os_crypt/async/common",
     "//components/sync/model",
+    "//components/sync/service",
   ]
 
   deps = [
@@ -264,6 +267,7 @@ source_set("unit_tests") {
     # to initialize the database
     sources += [
       "ai_chat_database_unittest.cc",
+      "sync/ai_chat_data_type_controller_unittest.cc",
       "sync/ai_chat_sync_bridge_unittest.cc",
       "sync/ai_chat_sync_conversions_unittest.cc",
     ]

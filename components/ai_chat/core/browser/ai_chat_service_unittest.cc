@@ -14,6 +14,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/check.h"
 #include "base/containers/to_vector.h"
 #include "base/files/scoped_temp_dir.h"
@@ -56,6 +57,7 @@
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/sync/model/data_type_controller_delegate.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/network_context_getter.h"
@@ -1065,6 +1067,33 @@ TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
   EXPECT_TRUE(ai_chat_service_->CreateConversation());
 }
 
+// AI Chat sync can start only once the database is attached to the sync
+// bridge. Turning storage off detaches it, and turning storage on again
+// attaches the new database and notifies RegisterSyncDatabaseReadyCallback()
+// listeners, so sync checks again whether AI Chat sync can start.
+TEST_P(AIChatServiceUnitTest, SyncDatabaseReadyCallbackFiresOnStorageReEnable) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  ResetService();
+  WaitForSyncBridgeReady();
+  EXPECT_TRUE(ai_chat_service_->IsSyncDatabaseReady());
+
+  int ready_count = 0;
+  base::CallbackListSubscription subscription =
+      ai_chat_service_->RegisterSyncDatabaseReadyCallback(
+          base::BindLambdaForTesting([&] { ++ready_count; }));
+
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  EXPECT_FALSE(ai_chat_service_->IsSyncDatabaseReady());
+
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  WaitForSyncBridgeReady();
+  EXPECT_TRUE(ai_chat_service_->IsSyncDatabaseReady());
+  EXPECT_EQ(ready_count, 1);
+}
+
 // A remote batch must refresh only the conversations it names. An open
 // conversation sync did not write can hold history that is not in the database
 // — a temporary conversation never persists, and CreateConversation() defers
@@ -1389,6 +1418,18 @@ TEST_P(AIChatServiceUnitTest, DeleteAllConversationsWithSyncWipesTheDatabase) {
   saved = ReadConversationFromDatabase(uuid);
   ASSERT_TRUE(saved);
   EXPECT_THAT(saved->entries, testing::IsEmpty());
+}
+
+// AIChatDataTypeController is registered even with chat history storage off
+// (see its class comment), so the delegate it forwards to must exist then too.
+TEST_P(AIChatServiceUnitTest, SyncControllerDelegateExistsWithStorageOff) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  ResetService();
+
+  EXPECT_TRUE(ai_chat_service_->CreateSyncControllerDelegate());
 }
 
 TEST_P(AIChatServiceUnitTest, GetConversations_StorageTurnedOffWhileLoading) {

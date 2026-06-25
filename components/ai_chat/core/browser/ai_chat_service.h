@@ -17,6 +17,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -114,9 +115,23 @@ class AIChatService : public KeyedService,
 
   // Creates a sync controller delegate for the AI Chat data type. Uses
   // ProxyDataTypeControllerDelegate to forward from UI thread to the
-  // background sequence where the bridge lives.
+  // background sequence where the bridge lives. Returns non-null whenever AI
+  // Chat sync is enabled, even with chat history storage off, as
+  // AIChatDataTypeController is registered then too.
   std::unique_ptr<syncer::DataTypeControllerDelegate>
   CreateSyncControllerDelegate();
+
+  // Whether the database is attached to the AI Chat sync bridge. AI Chat sync
+  // can't start before it is.
+  bool IsSyncDatabaseReady() const;
+
+  // Registers `callback` to run each time the database is attached to the AI
+  // Chat sync bridge, which happens when chat history storage is turned on.
+  // AIChatDataTypeController uses it to have sync check again whether AI Chat
+  // sync can start. Destroying the returned subscription unregisters
+  // `callback`.
+  base::CallbackListSubscription RegisterSyncDatabaseReadyCallback(
+      base::RepeatingClosure callback);
 
   // After remote sync changed the conversation of `handler`, reads it from the
   // database for `ConversationHandler::OnRemoteSyncDataApplied()`.
@@ -571,6 +586,10 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  // Notified each time the database is attached to |sync_backend_|'s bridge;
+  // see RegisterSyncDatabaseReadyCallback().
+  base::RepeatingClosureList sync_database_ready_callbacks_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

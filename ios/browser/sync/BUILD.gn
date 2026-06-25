@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+# Implements the hook that the chromium_src override of
+# //ios/chrome/browser/sync/model's sync_service_factory.mm forward declares.
+source_set("chromium_impl") {
+  sources = [ "brave_sync_controllers.mm" ]
+
+  deps = [
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//components/sync/service",
+    "//ios/chrome/browser/shared/model/profile",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//base",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//brave/ios/browser/ai_chat",
+    ]
+  }
+}

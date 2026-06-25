@@ -159,6 +159,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/skus",
   "//brave/browser/speech:chromium_impl",
   "//brave/browser/sync",
+  "//brave/browser/sync:chromium_impl",
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/brave_account",

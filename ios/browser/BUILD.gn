@@ -60,6 +60,7 @@ group("browser") {
     "//brave/ios/browser/safari_data_import",
     "//brave/ios/browser/search_engines",
     "//brave/ios/browser/shared/prefs",
+    "//brave/ios/browser/sync:chromium_impl",
     "//brave/ios/browser/ui/webui",
     "//brave/ios/browser/web",
     "//brave/ios/components/prefs",

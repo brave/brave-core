@@ -7,6 +7,19 @@
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
+#include "components/sync/service/data_type_controller.h"
+
+class Profile;
+
+namespace syncer {
+class SyncService;
+}  // namespace syncer
+
+// Forward declared to avoid adding a compile-time dependency.
+// Implementation is provided by //brave/browser/sync:chromium_impl.
+syncer::DataTypeController::TypeVector CreateBraveControllers(
+    Profile* profile,
+    syncer::SyncService* sync_service);
 
 #define BRAVE_BUILD_SERVICE_INSTANCE_FOR                        \
   std::make_unique<syncer::BraveSyncServiceImpl>(               \
@@ -17,6 +30,10 @@
               profile, ServiceAccessType::IMPLICIT_ACCESS)),    \
       g_browser_process->os_crypt_async());
 
+#define BRAVE_CREATE_CONTROLLERS \
+  base::Extend(controllers, CreateBraveControllers(profile, sync_service));
+
 #include <chrome/browser/sync/sync_service_factory.cc>
 
+#undef BRAVE_CREATE_CONTROLLERS
 #undef BRAVE_BUILD_SERVICE_INSTANCE_FOR

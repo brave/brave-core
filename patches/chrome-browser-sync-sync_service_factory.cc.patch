@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/sync/sync_service_factory.cc b/chrome/browser/sync/sync_service_factory.cc
-index 64323bef78dd3822ed299f75f5d7bbcfc636c46c..afab4ba16794552888ab0cf230e334e80bd4d460 100644
+index 64323bef78dd3822ed299f75f5d7bbcfc636c46c..417559f50602f2c97de7d77dbd203bf8b65ac40e 100644
 --- a/chrome/browser/sync/sync_service_factory.cc
 +++ b/chrome/browser/sync/sync_service_factory.cc
-@@ -472,7 +472,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
+@@ -386,6 +386,7 @@ syncer::DataTypeController::TypeVector CreateControllers(
+   syncer::DataTypeController::TypeVector controllers =
+       CreateCommonControllers(profile, sync_service);
+   base::Extend(controllers, CreateChromeControllers(profile, sync_service));
++  BRAVE_CREATE_CONTROLLERS
+   return controllers;
+ }
+ 
+@@ -472,7 +473,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
    }
  
    auto sync_service =
