@@ -148,7 +148,7 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
     EXPECT_EQ(tx_data->amount, Uint128ToMojom(1234));
     EXPECT_EQ(tx_data->fee, Uint128ToMojom(0));
     EXPECT_FALSE(tx_data->sending_max_amount);
-    EXPECT_FALSE(tx_data->asset_id.has_value());
+    EXPECT_FALSE(tx_data->asset_id);
   }
 
   meta = MakePolkadotTxMeta(polkadot_account_id->Clone(),
@@ -157,8 +157,8 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
   {
     mojom::TransactionInfoPtr ti = meta->ToTransactionInfo();
     const auto& tx_data = ti->tx_data_union->get_polkadot_tx_data();
-    ASSERT_TRUE(tx_data->asset_id.has_value());
-    EXPECT_EQ(tx_data->asset_id.value(), 1337u);
+    ASSERT_TRUE(tx_data->asset_id);
+    EXPECT_EQ(tx_data->asset_id->id, 1337u);
     EXPECT_FALSE(tx_data->sending_max_amount);
   }
 
@@ -168,8 +168,8 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
   {
     mojom::TransactionInfoPtr ti = meta->ToTransactionInfo();
     const auto& tx_data = ti->tx_data_union->get_polkadot_tx_data();
-    ASSERT_TRUE(tx_data->asset_id.has_value());
-    EXPECT_EQ(tx_data->asset_id.value(), 1337u);
+    ASSERT_TRUE(tx_data->asset_id);
+    EXPECT_EQ(tx_data->asset_id->id, 1337u);
     EXPECT_TRUE(tx_data->sending_max_amount);
   }
 }

@@ -29,12 +29,18 @@ PolkadotTransaction* PolkadotTxMeta::tx() {
 }
 
 mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
+  mojom::PolkadotAssetIdPtr asset_id = nullptr;
+  if (tx_->asset_id().has_value()) {
+    asset_id = mojom::PolkadotAssetId::New();
+    asset_id->id = *tx_->asset_id();
+  }
+
   return mojom::TransactionInfo::New(
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewPolkadotTxData(mojom::PolkadotTxdata::New(
           tx_->recipient().ToString().value_or(""),
           Uint128ToMojom(tx_->amount()), Uint128ToMojom(tx_->fee()),
-          tx_->transfer_all(), tx_->asset_id())),
+          tx_->transfer_all(), std::move(asset_id))),
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
