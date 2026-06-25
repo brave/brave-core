@@ -11,7 +11,6 @@
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/browser_window/public/browser_window_features.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
