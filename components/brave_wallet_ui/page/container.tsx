@@ -329,7 +329,11 @@ export const Container = () => {
           requirement={!isWalletLocked && !walletNotYetCreated}
           redirectRoute={defaultRedirect}
         >
-          <SnapPage />
+          <WalletPageLayout>
+            <SimplePageWrapper>
+              <SnapPage />
+            </SimplePageWrapper>
+          </WalletPageLayout>
         </ProtectedRoute>
 
         {/* Insures that we redirect to the default route if the user

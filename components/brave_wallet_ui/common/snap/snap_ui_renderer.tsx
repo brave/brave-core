@@ -8,6 +8,35 @@
 // PascalCase types (Box, Text, Heading, Section, etc.) from @metamask/snaps-sdk v6+.
 
 import * as React from 'react'
+import ProgressRing from '@brave/leo/react/progressRing'
+
+import { LoadingSkeleton } from '../../components/shared/loading-skeleton/index'
+import {
+  SnapAddress,
+  SnapBanner,
+  SnapBox,
+  SnapButton,
+  SnapContainer,
+  SnapCopyable,
+  SnapDivider,
+  SnapDropdown,
+  SnapFallbackPre,
+  SnapField,
+  SnapFieldError,
+  SnapFieldLabel,
+  SnapFooter,
+  SnapHeading,
+  SnapImage,
+  SnapInput,
+  SnapLink,
+  SnapNoDataText,
+  SnapRow,
+  SnapRowLabel,
+  SnapSection,
+  SnapSpinnerWrapper,
+  SnapText,
+  SnapUnknown,
+} from './snap_ui_renderer.style'
 
 // --------------------------------------------------------------------------
 // Types — mirrors the shape produced by snaps-sdk createSnapComponent()
@@ -79,110 +108,57 @@ function renderChildren(
   return String(children)
 }
 
-// --------------------------------------------------------------------------
-// Styles
-// --------------------------------------------------------------------------
+function getBannerAlertType(
+  severity: string | undefined,
+): 'error' | 'warning' | 'info' {
+  if (severity === 'danger') {
+    return 'error'
+  }
+  if (severity === 'warning') {
+    return 'warning'
+  }
+  return 'info'
+}
 
-const styles: Record<string, React.CSSProperties> = {
-  box: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-  },
-  section: {
-    padding: '12px',
-    border: '1px solid #e0e0e0',
-    borderRadius: '8px',
-    backgroundColor: '#f9f9f9',
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-  },
-  footer: {
-    display: 'flex',
-    gap: '8px',
-    paddingTop: '12px',
-    borderTop: '1px solid #e0e0e0',
-    justifyContent: 'flex-end',
-  },
-  heading: {
-    fontSize: '16px',
-    fontWeight: 600,
-    margin: '0 0 4px',
-  },
-  text: {
-    fontSize: '13px',
-    margin: '0',
-    lineHeight: '1.4',
-  },
-  button: {
-    padding: '8px 16px',
-    borderRadius: '6px',
-    border: '1px solid #0c5460',
-    backgroundColor: '#17a2b8',
-    color: 'white',
-    cursor: 'pointer',
-    fontSize: '13px',
-  },
-  buttonDestructive: {
-    padding: '8px 16px',
-    borderRadius: '6px',
-    border: '1px solid #dc3545',
-    backgroundColor: '#dc3545',
-    color: 'white',
-    cursor: 'pointer',
-    fontSize: '13px',
-  },
-  row: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '4px 0',
-  },
-  rowLabel: {
-    fontWeight: 500,
-    fontSize: '13px',
-    color: '#555',
-  },
-  address: {
-    fontFamily: 'monospace',
-    fontSize: '12px',
-    wordBreak: 'break-all' as const,
-  },
-  copyable: {
-    fontFamily: 'monospace',
-    fontSize: '12px',
-    backgroundColor: '#f0f0f0',
-    padding: '6px 8px',
-    borderRadius: '4px',
-    wordBreak: 'break-all' as const,
-    cursor: 'pointer',
-  },
-  divider: {
-    border: 'none',
-    borderTop: '1px solid #e0e0e0',
-    margin: '8px 0',
-  },
-  spinner: {
-    display: 'inline-block',
-    width: '20px',
-    height: '20px',
-    border: '2px solid #e0e0e0',
-    borderTopColor: '#17a2b8',
-    borderRadius: '50%',
-    animation: 'snap-spin 0.6s linear infinite',
-  },
-  link: {
-    color: '#17a2b8',
-    textDecoration: 'underline',
-    cursor: 'pointer',
-  },
-  image: {
-    maxWidth: '100%',
-    borderRadius: '4px',
-  },
+interface DropdownOption {
+  value: string
+  label: string
+}
+
+function getSnapChildText(children: unknown): string {
+  if (children === undefined || children === null) {
+    return ''
+  }
+  if (typeof children === 'string') {
+    return children
+  }
+  if (Array.isArray(children)) {
+    return children.map(getSnapChildText).join('')
+  }
+  if (isSnapComponent(children)) {
+    return getSnapChildText(children.props.children)
+  }
+  return String(children)
+}
+
+function parseDropdownOptions(children: unknown): DropdownOption[] {
+  const childArray = Array.isArray(children)
+    ? children
+    : children
+      ? [children]
+      : []
+
+  const options: DropdownOption[] = []
+  for (const child of childArray) {
+    if (!isSnapComponent(child) || child.type !== 'Option') {
+      continue
+    }
+    options.push({
+      value: String(child.props.value ?? ''),
+      label: getSnapChildText(child.props.children),
+    })
+  }
+  return options
 }
 
 // --------------------------------------------------------------------------
@@ -202,24 +178,25 @@ export function SnapUIRenderer({
   switch (type) {
     case 'Box': {
       const direction = props.direction === 'horizontal' ? 'row' : 'column'
-      const boxStyle: React.CSSProperties = {
-        ...styles.box,
-        flexDirection: direction,
-        alignItems:
-          props.alignment === 'center'
-            ? 'center'
-            : props.alignment === 'end'
-              ? 'flex-end'
-              : 'flex-start',
-      }
-      return <div style={boxStyle}>{renderChildren(children, onUserInput)}</div>
+      const alignment =
+        props.alignment === 'center'
+          ? 'center'
+          : props.alignment === 'end'
+            ? 'flex-end'
+            : 'flex-start'
+      return (
+        <SnapBox
+          direction={direction}
+          alignment={alignment}
+        >
+          {renderChildren(children, onUserInput)}
+        </SnapBox>
+      )
     }
 
     case 'Section':
       return (
-        <div style={styles.section}>
-          {renderChildren(children, onUserInput)}
-        </div>
+        <SnapSection>{renderChildren(children, onUserInput)}</SnapSection>
       )
 
     case 'Container': {
@@ -235,22 +212,22 @@ export function SnapUIRenderer({
         (c: unknown) => !(isSnapComponent(c) && c.type === 'Footer'),
       )
       return (
-        <div style={styles.container}>
+        <SnapContainer>
           {renderChildren(bodyChildren, onUserInput)}
           {footerChild && isSnapComponent(footerChild) && (
             <SnapUIRenderer component={footerChild} />
           )}
-        </div>
+        </SnapContainer>
       )
     }
 
     case 'Footer':
       return (
-        <div style={styles.footer}>{renderChildren(children, onUserInput)}</div>
+        <SnapFooter>{renderChildren(children, onUserInput)}</SnapFooter>
       )
 
     case 'Text':
-      return <p style={styles.text}>{renderChildren(children, onUserInput)}</p>
+      return <SnapText>{renderChildren(children, onUserInput)}</SnapText>
 
     case 'Bold':
       return <strong>{renderChildren(children, onUserInput)}</strong>
@@ -259,22 +236,24 @@ export function SnapUIRenderer({
       return <em>{renderChildren(children, onUserInput)}</em>
 
     case 'Heading': {
-      const size = props.size
+      const size =
+        props.size === 'lg' ? 'lg' : props.size === 'sm' ? 'sm' : 'md'
       const tag = size === 'lg' ? 'h1' : size === 'sm' ? 'h3' : 'h2'
-      return React.createElement(
-        tag,
-        { style: styles.heading },
-        renderChildren(children, onUserInput),
+      return (
+        <SnapHeading
+          as={tag}
+          size={size}
+        >
+          {renderChildren(children, onUserInput)}
+        </SnapHeading>
       )
     }
 
     case 'Button': {
-      const variant = props.variant
-      const btnStyle =
-        variant === 'destructive' ? styles.buttonDestructive : styles.button
+      const isDestructive = props.variant === 'destructive'
       return (
-        <button
-          style={btnStyle}
+        <SnapButton
+          isDestructive={isDestructive}
           disabled={!!props.disabled}
           type={props.type === 'submit' ? 'submit' : 'button'}
           onClick={() => {
@@ -287,17 +266,17 @@ export function SnapUIRenderer({
           }}
         >
           {renderChildren(children, onUserInput)}
-        </button>
+        </SnapButton>
       )
     }
 
     case 'Row': {
       const label = props.label as string | undefined
       return (
-        <div style={styles.row}>
-          {label && <span style={styles.rowLabel}>{label}</span>}
+        <SnapRow>
+          {label && <SnapRowLabel>{label}</SnapRowLabel>}
           <span>{renderChildren(children, onUserInput)}</span>
-        </div>
+        </SnapRow>
       )
     }
 
@@ -307,7 +286,7 @@ export function SnapUIRenderer({
     case 'Address': {
       const addr =
         (props.address as string) ?? renderChildren(children, onUserInput)
-      return <span style={styles.address}>{addr}</span>
+      return <SnapAddress>{addr}</SnapAddress>
     }
 
     case 'Image': {
@@ -325,17 +304,15 @@ export function SnapUIRenderer({
       ) {
         const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(imgData)}`
         return (
-          <img
+          <SnapImage
             src={dataUrl}
-            style={styles.image}
             alt=''
           />
         )
       }
       return (
-        <img
+        <SnapImage
           src={imgData}
-          style={styles.image}
           alt=''
         />
       )
@@ -349,35 +326,37 @@ export function SnapUIRenderer({
     case 'Link': {
       const href = (props.href as string) ?? '#'
       return (
-        <a
+        <SnapLink
           href={href}
-          style={styles.link}
           target='_blank'
           rel='noopener noreferrer'
         >
           {renderChildren(children, onUserInput)}
-        </a>
+        </SnapLink>
       )
     }
 
     case 'Copyable': {
       const value = (props.value as string) ?? ''
       return (
-        <span
-          style={styles.copyable}
+        <SnapCopyable
           onClick={() => navigator.clipboard.writeText(value)}
           title='Click to copy'
         >
           {value}
-        </span>
+        </SnapCopyable>
       )
     }
 
     case 'Divider':
-      return <hr style={styles.divider} />
+      return <SnapDivider />
 
     case 'Spinner':
-      return <span style={styles.spinner} />
+      return (
+        <SnapSpinnerWrapper>
+          <ProgressRing mode='indeterminate' />
+        </SnapSpinnerWrapper>
+      )
 
     case 'Input': {
       const inputType =
@@ -387,7 +366,7 @@ export function SnapUIRenderer({
             ? 'number'
             : 'text'
       return (
-        <input
+        <SnapInput
           type={inputType}
           name={props.name as string}
           placeholder={props.placeholder as string}
@@ -401,17 +380,46 @@ export function SnapUIRenderer({
               })
             }
           }}
-          style={{
-            padding: '6px 10px',
-            border: '1px solid #ccc',
-            borderRadius: '6px',
-            fontSize: '13px',
-            width: '100%',
-            boxSizing: 'border-box',
-          }}
         />
       )
     }
+
+    case 'Dropdown': {
+      const name = props.name as string | undefined
+      const options = parseDropdownOptions(children)
+      const defaultValue =
+        typeof props.value === 'string' ? props.value : options[0]?.value
+
+      return (
+        <SnapDropdown
+          name={name}
+          defaultValue={defaultValue}
+          disabled={!!props.disabled}
+          onChange={(e) => {
+            if (onUserInput && name) {
+              onUserInput({
+                type: 'InputChangeEvent',
+                name,
+                value: e.target.value,
+              })
+            }
+          }}
+        >
+          {options.map((option, index) => (
+            <option
+              key={`${option.value}-${index}`}
+              value={option.value}
+            >
+              {option.label || option.value}
+            </option>
+          ))}
+        </SnapDropdown>
+      )
+    }
+
+    case 'Option':
+      // Rendered by the parent Dropdown.
+      return null
 
     case 'Form':
       return (
@@ -440,24 +448,11 @@ export function SnapUIRenderer({
       const label = props.label as string | undefined
       const error = props.error as string | undefined
       return (
-        <div style={{ marginBottom: '8px' }}>
-          {label && (
-            <label
-              style={{
-                fontSize: '12px',
-                fontWeight: 500,
-                display: 'block',
-                marginBottom: '4px',
-              }}
-            >
-              {label}
-            </label>
-          )}
+        <SnapField>
+          {label && <SnapFieldLabel>{label}</SnapFieldLabel>}
           {renderChildren(children, onUserInput)}
-          {error && (
-            <span style={{ color: '#dc3545', fontSize: '11px' }}>{error}</span>
-          )}
-        </div>
+          {error && <SnapFieldError>{error}</SnapFieldError>}
+        </SnapField>
       )
     }
 
@@ -470,45 +465,30 @@ export function SnapUIRenderer({
 
     case 'Skeleton':
       return (
-        <div
-          style={{
-            backgroundColor: '#e0e0e0',
-            borderRadius: '4px',
-            height: '16px',
-            animation: 'snap-pulse 1.5s ease-in-out infinite',
-          }}
+        <LoadingSkeleton
+          height={16}
+          width='100%'
+          borderRadius={4}
         />
       )
 
     case 'Banner': {
-      const severity = props.severity as string
-      const bg =
-        severity === 'danger'
-          ? '#f8d7da'
-          : severity === 'warning'
-            ? '#fff3cd'
-            : '#d1ecf1'
+      const severity = props.severity as string | undefined
+      const title = typeof props.title === 'string' ? props.title : undefined
       return (
-        <div
-          style={{
-            padding: '8px 12px',
-            borderRadius: '6px',
-            backgroundColor: bg,
-            fontSize: '13px',
-          }}
-        >
-          {typeof props.title === 'string' && <strong>{props.title}: </strong>}
+        <SnapBanner type={getBannerAlertType(severity)}>
+          {title && <strong>{title}: </strong>}
           {renderChildren(children, onUserInput)}
-        </div>
+        </SnapBanner>
       )
     }
 
     default:
       console.warn('SnapUIRenderer: unknown component type', type)
       return (
-        <div style={{ color: '#999', fontSize: '11px' }}>
+        <SnapUnknown>
           [{type}] {renderChildren(children, onUserInput)}
-        </div>
+        </SnapUnknown>
       )
   }
 }
@@ -525,7 +505,7 @@ export function SnapHomePageRenderer({
   onUserInput?: UserInputCallback
 }): React.ReactElement | null {
   if (!data || typeof data !== 'object') {
-    return <p>No homepage data</p>
+    return <SnapNoDataText>No homepage data</SnapNoDataText>
   }
 
   // onHomePage returns { content: <component tree> }
@@ -549,7 +529,9 @@ export function SnapHomePageRenderer({
     )
   }
 
-  return <pre style={{ fontSize: '11px' }}>{JSON.stringify(data, null, 2)}</pre>
+  return (
+    <SnapFallbackPre>{JSON.stringify(data, null, 2)}</SnapFallbackPre>
+  )
 }
 
 export default SnapUIRenderer

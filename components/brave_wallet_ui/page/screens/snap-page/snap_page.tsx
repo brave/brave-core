@@ -7,6 +7,9 @@
 
 import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 import { WalletRoutes } from '../../../constants/types'
 import getWalletPageApiProxy from '../../wallet_page_api_proxy'
@@ -14,6 +17,21 @@ import {
   SnapHomePageRenderer,
   type SnapUserInputEvent,
 } from '../../../common/snap/snap_ui_renderer'
+import {
+  BackLink,
+  ContentCard,
+  EmptyState,
+  EmptyStateText,
+  ErrorAlert,
+  Header,
+  HeaderActions,
+  LoadingState,
+  LoadingText,
+  Page,
+  SnapIdHeading,
+  TitleRow,
+  UnloadButton,
+} from './snap_page.style'
 
 export function SnapPage() {
   const { snapId: encodedSnapId } = useParams<{ snapId: string }>()
@@ -75,143 +93,58 @@ export function SnapPage() {
   }, [snapId])
 
   return (
-    <div style={styles.page}>
-      {/* Header */}
-      <div style={styles.header}>
-        <button
-          style={styles.backBtn}
-          onClick={() => history.push(WalletRoutes.SnapsStore)}
-        >
-          ← Snaps Store
-        </button>
-        <div style={styles.titleRow}>
-          <h2 style={styles.heading}>{snapId}</h2>
-          <div style={styles.headerActions}>
-            <button
-              style={styles.reloadBtn}
+    <Page>
+      <Header>
+        <BackLink onClick={() => history.push(WalletRoutes.SnapsStore)}>
+          <Icon name='arrow-left' />
+          Snaps Store
+        </BackLink>
+        <TitleRow>
+          <SnapIdHeading>{snapId}</SnapIdHeading>
+          <HeaderActions>
+            <Button
               onClick={loadHomePage}
-              disabled={loading}
+              isDisabled={loading}
             >
               {loading ? 'Loading…' : 'Reload'}
-            </button>
-            <button
-              style={styles.unloadBtn}
+            </Button>
+            <UnloadButton
+              kind='outline'
               onClick={handleUnload}
             >
               Unload
-            </button>
-          </div>
-        </div>
-      </div>
+            </UnloadButton>
+          </HeaderActions>
+        </TitleRow>
+      </Header>
 
-      {/* Error */}
-      {error && <div style={styles.errorBox}>{error}</div>}
+      {error && <ErrorAlert type='error'>{error}</ErrorAlert>}
 
-      {/* Loading spinner */}
       {loading && !homePageData && (
-        <div style={styles.loadingBox}>Loading snap UI…</div>
+        <LoadingState>
+          <ProgressRing mode='indeterminate' />
+          <LoadingText>Loading snap UI…</LoadingText>
+        </LoadingState>
       )}
 
-      {/* Snap UI */}
       {homePageData && (
-        <div style={styles.contentBox}>
+        <ContentCard>
           <SnapHomePageRenderer
             data={homePageData}
             onUserInput={handleUserInput}
           />
-        </div>
+        </ContentCard>
       )}
 
-      {/* Empty state */}
       {!loading && !homePageData && !error && (
-        <div style={styles.emptyBox}>
-          <p>This snap does not provide a home page UI.</p>
-        </div>
+        <EmptyState>
+          <EmptyStateText>
+            This snap does not provide a home page UI.
+          </EmptyStateText>
+        </EmptyState>
       )}
-    </div>
+    </Page>
   )
-}
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    padding: '24px',
-    maxWidth: '800px',
-    fontFamily: 'system-ui, sans-serif',
-    color: '#1d1f25',
-  },
-  header: {
-    marginBottom: '20px',
-  },
-  backBtn: {
-    background: 'none',
-    border: 'none',
-    color: '#6b7280',
-    cursor: 'pointer',
-    fontSize: '13px',
-    padding: '0 0 8px',
-  },
-  titleRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '12px',
-  },
-  heading: {
-    margin: 0,
-    fontSize: '16px',
-    fontWeight: 600,
-    fontFamily: 'monospace',
-    wordBreak: 'break-all' as const,
-  },
-  headerActions: {
-    display: 'flex',
-    gap: '8px',
-    flexShrink: 0,
-  },
-  reloadBtn: {
-    padding: '6px 14px',
-    fontSize: '13px',
-    background: '#17a2b8',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-  },
-  unloadBtn: {
-    padding: '6px 14px',
-    fontSize: '13px',
-    background: 'transparent',
-    color: '#d32f2f',
-    border: '1px solid #d32f2f',
-    borderRadius: '6px',
-    cursor: 'pointer',
-  },
-  errorBox: {
-    background: '#fde8e8',
-    border: '1px solid #f5c6cb',
-    borderRadius: '6px',
-    padding: '10px 14px',
-    fontSize: '13px',
-    color: '#721c24',
-    marginBottom: '16px',
-  },
-  loadingBox: {
-    padding: '32px',
-    textAlign: 'center' as const,
-    color: '#6b7280',
-    fontSize: '14px',
-  },
-  contentBox: {
-    border: '1px solid #e0e2e8',
-    borderRadius: '8px',
-    padding: '16px',
-  },
-  emptyBox: {
-    padding: '32px',
-    textAlign: 'center' as const,
-    color: '#6b7280',
-    fontSize: '14px',
-  },
 }
 
 export default SnapPage
