@@ -26,7 +26,8 @@ base::DictValue PolkadotTransaction::ToValue() const {
   }
 
   if (asset_id_.has_value()) {
-    dict.Set("asset_id", base::checked_cast<int>(*asset_id_));
+    dict.Set("asset_id",
+             base::HexEncodeLower(base::byte_span_from_ref(*asset_id_)));
   }
 
   if (extrinsic_metadata_) {
@@ -91,9 +92,13 @@ std::optional<PolkadotTransaction> PolkadotTransaction::FromValue(
   }
 
   std::optional<uint32_t> asset_id;
-  const auto asset_id_json = value.FindInt("asset_id");
-  if (asset_id_json.has_value() && *asset_id_json >= 0) {
-    asset_id = base::checked_cast<uint32_t>(*asset_id_json);
+  const auto* asset_id_json = value.FindString("asset_id");
+  if (asset_id_json) {
+    uint32_t id = 0;
+    if (!base::HexStringToSpan(*asset_id_json, base::byte_span_from_ref(id))) {
+      return std::nullopt;
+    }
+    asset_id = id;
   }
 
   std::optional<PolkadotExtrinsicMetadata> metadata;

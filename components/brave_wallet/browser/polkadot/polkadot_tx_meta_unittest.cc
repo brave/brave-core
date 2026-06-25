@@ -103,7 +103,7 @@ TEST(PolkadotTxMeta, ToValue) {
         "amount": "d2040000000000000000000000000000",
         "fee": "00000000000000000000000000000000",
         "transfer_all": false,
-        "asset_id": 1337
+        "asset_id": "39050000"
       }
     })";
 

@@ -142,7 +142,7 @@ TEST(PolkadotTransaction, AssetId) {
     "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
     "ss58_prefix": 0,
     "transfer_all": true,
-    "asset_id": 1337
+    "asset_id": "39050000"
   })";
 
   EXPECT_EQ(base::test::ParseJsonDict(tx_json), polkadot_tx.ToValue());
@@ -312,6 +312,54 @@ TEST(PolkadotTransaction, FromValue) {
       "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
       "ss58_prefix": 0,
       "transfer_all": "hello, world"
+    })";
+
+    EXPECT_FALSE(
+        PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json)));
+  }
+
+  {
+    // asset_id is too small.
+
+    const char tx_json[] = R"({
+      "amount": "f201ec6f0cdf44ab0000000000000000",
+      "fee": "dc8df1b5030000000000000000000000",
+      "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      "ss58_prefix": 0,
+      "transfer_all": true,
+      "asset_id": "01"
+    })";
+
+    EXPECT_FALSE(
+        PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json)));
+  }
+
+  {
+    // asset_id is too large.
+
+    const char tx_json[] = R"({
+      "amount": "f201ec6f0cdf44ab0000000000000000",
+      "fee": "dc8df1b5030000000000000000000000",
+      "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      "ss58_prefix": 0,
+      "transfer_all": true,
+      "asset_id": "010101010101"
+    })";
+
+    EXPECT_FALSE(
+        PolkadotTransaction::FromValue(base::test::ParseJsonDict(tx_json)));
+  }
+
+  {
+    // asset_id is non-hex.
+
+    const char tx_json[] = R"({
+      "amount": "f201ec6f0cdf44ab0000000000000000",
+      "fee": "dc8df1b5030000000000000000000000",
+      "recipient": "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
+      "ss58_prefix": 0,
+      "transfer_all": true,
+      "asset_id": "cat"
     })";
 
     EXPECT_FALSE(
