@@ -1958,6 +1958,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/logo/LogoMediator",
                         "org/chromium/chrome/browser/logo/BraveLogoMediator",
+                        Context.class,
                         Callback.class,
                         PropertyModel.class,
                         Callback.class,
