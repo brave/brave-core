@@ -16,15 +16,13 @@ import androidx.test.filters.SmallTest;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.test.BaseActivityTestRule;
-import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
+import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.test.util.DisableLeakChecks;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
@@ -34,19 +32,20 @@ import org.chromium.chrome.browser.autofill.options.AutofillOptionsFragment.Auto
 import org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsFragmentBase;
 import org.chromium.chrome.browser.autofill.settings.HomeOfTransactionsFragment;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.MainSettings;
+import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
 import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
-import org.chromium.content_public.browser.test.NativeLibraryTestUtils;
-import org.chromium.ui.test.util.BlankUiTestActivity;
 
 import java.util.List;
 
 /** Tests Brave additions to the Autofill options search index. */
-@RunWith(BaseJUnit4ClassRunner.class)
+@RunWith(ChromeJUnit4ClassRunner.class)
 @Batch(Batch.PER_CLASS)
+@CommandLineFlags.Add({ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE})
 @EnableFeatures({
     ChromeFeatureList.AUTOFILL_AI_WITH_DATA_SCHEMA,
     ChromeFeatureList.AUTOFILL_ENABLE_NEW_CARD_BENEFITS_TOGGLE_TEXT,
@@ -58,28 +57,22 @@ import java.util.List;
 })
 @DisableLeakChecks("crbug.com/512492984 (SearchIndexProviderRegistryTest)")
 public class BraveAutofillOptionsSearchIndexTest {
-    @ClassRule
-    public static BaseActivityTestRule<BlankUiTestActivity> sActivityTestRule =
-            new BaseActivityTestRule<>(BlankUiTestActivity.class);
+    @Rule
+    public ChromeTabbedActivityTestRule mActivityTestRule = new ChromeTabbedActivityTestRule();
 
-    private static Context sContext;
-
+    private Context mContext;
     private Profile mProfile;
     private SettingsIndexData mIndexData;
 
-    @BeforeClass
-    public static void setupSuite() {
-        sActivityTestRule.launchActivity(null);
-        sContext = sActivityTestRule.getActivity();
-    }
-
     @Before
     public void setUp() {
-        NativeLibraryTestUtils.loadNativeLibraryAndInitBrowserProcess();
+        mActivityTestRule.startMainActivityOnBlankPage();
+        mContext = mActivityTestRule.getActivity();
 
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
-                    mProfile = ProfileManager.getLastUsedRegularProfile();
+                    mProfile = mActivityTestRule.getActivity().getActivityTab().getProfile();
+                    assertNull(mProfile.getOtrProfileId());
                     mIndexData = SettingsIndexData.createInstance();
                 });
     }
@@ -151,19 +144,17 @@ public class BraveAutofillOptionsSearchIndexTest {
 
     private void buildIndex() {
         ThreadUtils.runOnUiThreadBlocking(
-                () -> SettingsSearchCoordinator.buildIndexInternal(sContext, mProfile, mIndexData));
+                () -> SettingsSearchCoordinator.buildIndexInternal(mContext, mProfile, mIndexData));
     }
 
     private SettingsIndexData.Entry getPrivateWindowEntry() {
-        SettingsIndexData.Entry entry = mIndexData.getEntry(getPrivateWindowEntryId());
+        SettingsIndexData.Entry entry =
+                mIndexData.getEntry(
+                        PreferenceParser.createUniqueId(
+                                AutofillOptionsFragment.class.getName(),
+                                BraveAutofillOptionsFragmentBase.PREF_AUTOFILL_PRIVATE_WINDOW));
         assertNotNull(entry);
         return entry;
-    }
-
-    private String getPrivateWindowEntryId() {
-        return PreferenceParser.createUniqueId(
-                AutofillOptionsFragment.class.getName(),
-                BraveAutofillOptionsFragmentBase.PREF_AUTOFILL_PRIVATE_WINDOW);
     }
 
     private void assertSettingsReferrerExtras(SettingsIndexData.Entry entry) {
@@ -182,7 +173,7 @@ public class BraveAutofillOptionsSearchIndexTest {
 
     private void assertSearchFindsPrivateWindowEntry(SettingsIndexData.Entry entry) {
         SettingsIndexData.SearchResults searchResults =
-                mIndexData.search(sContext.getString(R.string.prefs_autofill_private_window_title));
+                mIndexData.search(mContext.getString(R.string.prefs_autofill_private_window_title));
 
         assertTrue(
                 searchResults.getItems().stream()
