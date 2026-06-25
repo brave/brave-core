@@ -5,6 +5,10 @@
 
 #include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 
+#include "brave/components/local_ai/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+
 #include "base/process/process.h"
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 
@@ -53,3 +57,11 @@ void ChromePassageEmbeddingsServiceController::OnServiceLaunched(
 void ChromePassageEmbeddingsServiceController::InitializeCpuLogger() {}
 
 }  // namespace passage_embeddings
+
+#else  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+// Fall back to upstream's implementation when local AI is compiled out
+// (e.g., Brave Origin builds).
+#include <chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.cc>
+
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)

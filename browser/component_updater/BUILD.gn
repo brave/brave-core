@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
 source_set("component_updater") {
   sources = [
     "brave_component_updater_configurator.cc",
@@ -12,7 +14,7 @@ source_set("component_updater") {
   deps = [
     "//base",
     "//brave/components/constants",
-    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/buildflags",
     "//chrome/common",
     "//components/component_updater",
     "//components/prefs",
@@ -25,6 +27,10 @@ source_set("component_updater") {
     "//content/public/browser",
     "//services/network/public/cpp",
   ]
+
+  if (enable_local_ai) {
+    deps += [ "//brave/components/local_ai/core" ]
+  }
 
   if (is_win) {
     deps += [ "//chrome/installer/util:with_no_strings" ]

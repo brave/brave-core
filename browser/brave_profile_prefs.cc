@@ -43,7 +43,7 @@
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
-#include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
@@ -167,6 +167,10 @@ using extensions::FeatureSwitch;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
 #endif
 
 namespace brave {
@@ -561,7 +565,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   ai_chat::ModelService::RegisterProfilePrefs(registry);
 #endif
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::prefs::RegisterProfilePrefs(registry);
+#endif
 
   brave_account::prefs::RegisterPrefs(registry);
   brave_origin::prefs::RegisterProfilePrefs(registry);

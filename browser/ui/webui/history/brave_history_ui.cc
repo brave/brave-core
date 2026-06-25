@@ -5,14 +5,17 @@
 
 #include "brave/browser/ui/webui/history/brave_history_ui.h"
 
-#include "brave/browser/ui/webui/history/brave_history_embeddings_page_handler.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/ui/webui/history/brave_history_embeddings_page_handler.h"
+#endif
 
 BraveHistoryUI::BraveHistoryUI(content::WebUI* web_ui) : HistoryUI(web_ui) {}
 
 BraveHistoryUI::~BraveHistoryUI() = default;
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 void BraveHistoryUI::BindInterface(
     mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandlerFactory>
         receiver) {
@@ -28,3 +31,4 @@ void BraveHistoryUI::CreatePageHandler(
       std::move(receiver), std::move(page),
       Profile::FromWebUI(web_ui())->GetPrefs());
 }
+#endif

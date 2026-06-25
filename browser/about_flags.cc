@@ -27,6 +27,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -708,6 +709,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 // The upstream "history-embeddings" flag expired at M145. Use a
 // different name to bypass the expiry system while controlling the
 // same underlying kHistoryEmbeddings feature.
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 #define BRAVE_HISTORY_EMBEDDINGS_FLAG                             \
   EXPAND_FEATURE_ENTRIES({                                        \
       "brave-history-embeddings",                                 \
@@ -716,6 +718,9 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       kOsDesktop,                                                 \
       FEATURE_VALUE_TYPE(history_embeddings::kHistoryEmbeddings), \
   })
+#else
+#define BRAVE_HISTORY_EMBEDDINGS_FLAG
+#endif
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
   EXPAND_FEATURE_ENTRIES(                                                     \

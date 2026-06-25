@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//pdf/features.gni")
 import("//printing/buildflags/buildflags.gni")
@@ -363,7 +364,6 @@ source_set("browser_tests") {
       "code_execution_tool_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
       "text_file_extractor_browsertest.cc",
-      "tools/history_search_tool_browsertest.cc",
       "web_mcp_browsertest.cc",
     ]
 
@@ -385,7 +385,6 @@ source_set("browser_tests") {
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/constants",
       "//brave/components/l10n/common:test_support",
-      "//brave/components/local_ai/core",
       "//brave/components/resources:strings_grit",
       "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
@@ -407,6 +406,11 @@ source_set("browser_tests") {
       "//ui/accessibility:ax_base",
       "//ui/accessibility:ax_features_mojo",
     ]
+
+    if (enable_local_ai) {
+      sources += [ "tools/history_search_tool_browsertest.cc" ]
+      deps += [ "//brave/components/local_ai/core" ]
+    }
 
     if (enable_ai_chat_tab_management_tool) {
       sources += [ "tools/tab_management_tool_browsertest.cc" ]
